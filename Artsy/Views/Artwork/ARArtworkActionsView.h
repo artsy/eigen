@@ -13,6 +13,7 @@
 - (void)tappedAuctionInfo;
 - (void)tappedConditionsOfSale;
 - (void)tappedBidButton;
+- (void)tappedLiveSaleButton;
 - (void)tappedBuyersPremium;
 - (void)tappedBuyButton;
 - (void)tappedMoreInfo;

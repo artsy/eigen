@@ -117,6 +117,16 @@
 
     NSMutableArray *buttonsWhoseMarginCanChange = [NSMutableArray array];
 
+    if ([self shouldShowLiveAuctionControls]) {
+        ARBlackFlatButton *openLiveSale = [[ARBlackFlatButton alloc] init];
+        [openLiveSale setTitle:@"Enter Live Auction" forState:UIControlStateNormal];
+        [openLiveSale addTarget:self action:@selector(tappedLiveSaleButton:) forControlEvents:UIControlEventTouchUpInside];
+
+        [buttonsWhoseMarginCanChange addObject:openLiveSale];
+
+        [self addSubview:openLiveSale withTopMargin:@"8" sideMargin:nil];
+    }
+
     if ([self showAuctionControls]) {
         ARAuctionState state = self.saleArtwork.auctionState;
 
@@ -265,6 +275,11 @@
     [self.delegate tappedBidButton];
 }
 
+- (void)tappedLiveSaleButton:(id)sender
+{
+    [self.delegate tappedLiveSaleButton];
+}
+
 - (void)tappedBuyersPremium:(id)sender
 {
     [self.delegate tappedBuyersPremium];
@@ -339,10 +354,15 @@ return [navigationButtons copy];
     return self.artwork.acquireable.boolValue;
 }
 
-
 - (BOOL)showAuctionControls
 {
-    return (self.saleArtwork != nil) && !self.artwork.sold.boolValue;
+    // We don't want to show regular auction controls and live auction ones at the same time, and live takes precedence.
+    return (self.saleArtwork != nil) && !self.artwork.sold.boolValue && ![self shouldShowLiveAuctionControls];
+}
+
+- (BOOL)shouldShowLiveAuctionControls
+{
+    return (self.saleArtwork != nil) && self.saleArtwork.auction.shouldShowLiveInterface;
 }
 
 - (BOOL)showConditionsOfSale

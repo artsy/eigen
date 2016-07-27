@@ -29,6 +29,7 @@
 #import "ARTrialController.h"
 #import "ARTopMenuViewController.h"
 #import "ARLogger.h"
+#import "Artsy-Swift.h"
 
 
 @implementation ARArtworkViewController (ButtonActions)
@@ -116,6 +117,16 @@
 {
     ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/how-auctions-work"]];
     [[ARTopMenuViewController sharedController] pushViewController:viewController];
+}
+
+- (void)tappedLiveSaleButton
+{
+    [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
+        LiveAuctionViewController *viewController = [[LiveAuctionViewController alloc] initWithSaleSlugOrID:saleArtwork.auction.saleID];
+        [self presentViewController:viewController animated:true completion:nil];
+    } failure:^(NSError *error) {
+        ARErrorLog(@"Can't get sale to bid for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
+    }];
 }
 
 - (void)tappedConditionsOfSale

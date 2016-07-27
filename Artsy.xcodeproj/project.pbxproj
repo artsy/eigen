@@ -312,8 +312,6 @@
 		5E79FCB71C761E49003D5D65 /* ARSaleArtworkMasonryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB61C761E49003D5D65 /* ARSaleArtworkMasonryCollectionViewCell.m */; };
 		5E79FCBA1C768108003D5D65 /* ARNvagiationButton+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB91C768108003D5D65 /* ARNvagiationButton+Swift.swift */; };
 		5E79FCBC1C76856C003D5D65 /* NavigationButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCBB1C76856C003D5D65 /* NavigationButtonTests.swift */; };
-		5E7F368F1D47BDA5001DD832 /* NSDate+Comparison.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F368E1D47BDA5001DD832 /* NSDate+Comparison.swift */; };
-		5E7F36911D47BF8F001DD832 /* NSDate+ComparisonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7F36901D47BF8F001DD832 /* NSDate+ComparisonTests.swift */; };
 		5E8585F71CF61E8F00B2B487 /* PanDirectionGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8585F61CF61E8F00B2B487 /* PanDirectionGestureRecognizer.swift */; };
 		5E8585F91CF743D800B2B487 /* LiveAuctionSaleLotsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8585F81CF743D800B2B487 /* LiveAuctionSaleLotsDataSource.swift */; };
 		5E88414E1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E88414D1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift */; };
@@ -1288,8 +1286,6 @@
 		5E79FCB81C764780003D5D65 /* ARSaleArtworkItemWidthDependentModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARSaleArtworkItemWidthDependentModule.h; sourceTree = "<group>"; };
 		5E79FCB91C768108003D5D65 /* ARNvagiationButton+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ARNvagiationButton+Swift.swift"; sourceTree = "<group>"; };
 		5E79FCBB1C76856C003D5D65 /* NavigationButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationButtonTests.swift; sourceTree = "<group>"; };
-		5E7F368E1D47BDA5001DD832 /* NSDate+Comparison.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Comparison.swift"; sourceTree = "<group>"; };
-		5E7F36901D47BF8F001DD832 /* NSDate+ComparisonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+ComparisonTests.swift"; sourceTree = "<group>"; };
 		5E8585F61CF61E8F00B2B487 /* PanDirectionGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanDirectionGestureRecognizer.swift; sourceTree = "<group>"; };
 		5E8585F81CF743D800B2B487 /* LiveAuctionSaleLotsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionSaleLotsDataSource.swift; path = Live_Auctions/LiveAuctionSaleLotsDataSource.swift; sourceTree = "<group>"; };
 		5E88414D1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionStaticDataFetcher.swift; path = Live_Auctions/LiveAuctionStaticDataFetcher.swift; sourceTree = "<group>"; };
@@ -2297,7 +2293,6 @@
 				5EA250651C4EE95B001E4950 /* NSArray+Additions.m */,
 				5E79FCB01C7612D8003D5D65 /* Int+Metrification.swift */,
 				5E4962431CA1C7E800E77DD5 /* NSAttributedString+Additions.swift */,
-				5E7F368E1D47BDA5001DD832 /* NSDate+Comparison.swift */,
 				6002C25E1CC5125200E249B2 /* UIViewController+TopMenuViewController.h */,
 				6002C25F1CC5125200E249B2 /* UIViewController+TopMenuViewController.m */,
 			);
@@ -2430,7 +2425,6 @@
 				60C2CBEC1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m */,
 				60107F151CC7DC1D002F772E /* ARTestImageCachingFunctions.swift */,
 				603338351CF3572A0085AB5A /* ARUserManager+TestExtensions.swift */,
-				5E7F36901D47BF8F001DD832 /* NSDate+ComparisonTests.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -5483,7 +5477,6 @@
 				609A82FB17A1147800AFDF13 /* ARNavigationTransition.m in Sources */,
 				CB8D9D4417CEA7B900F3286B /* AROnboardingMoreInfoViewController.m in Sources */,
 				5EDB120B197E691100E241F0 /* ARParallaxHeaderViewController.m in Sources */,
-				5E7F368F1D47BDA5001DD832 /* NSDate+Comparison.swift in Sources */,
 				5EA7BC3A1C612454009C52C9 /* AuctionSaleArtworksNetworkModel.swift in Sources */,
 				5E79FCBA1C768108003D5D65 /* ARNvagiationButton+Swift.swift in Sources */,
 				6038B78A1C2856BA00359F3B /* ARSwitchboard+Eigen.m in Sources */,
@@ -5796,7 +5789,6 @@
 				60B8D1241CBB7C1D006C3E42 /* TextStackTests.swift in Sources */,
 				5E174F5C1CADB35800657743 /* LiveAuctionStateReconcilerSpec.swift in Sources */,
 				3C6BDCC318E0B8D50028EF5D /* ARInquireForArtworkViewControllerTests.m in Sources */,
-				5E7F36911D47BF8F001DD832 /* NSDate+ComparisonTests.swift in Sources */,
 				5142071A1BB1B5D2000CC01C /* ARStubbedFavoritesNetworkModel.m in Sources */,
 				6044B0901CFF59BB00077D53 /* ARSerifStatusMaintainerSpecs.m in Sources */,
 				51B4BA451C6A24490014A394 /* AuctionInformationViewControllerTests.swift in Sources */,

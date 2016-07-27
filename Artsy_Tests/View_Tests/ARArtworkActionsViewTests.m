@@ -17,6 +17,7 @@
 - (void)tappedContactGallery:(id)sender;
 - (void)tappedAuctionInfo:(id)sender;
 - (void)tappedConditionsOfSale:(id)sender;
+- (void)tappedLiveSaleButton:(id)sender;
 - (void)tappedBidButton:(id)sender;
 - (void)tappedBuyersPremium:(id)sender;
 - (void)tappedBuyButton:(id)sender;
@@ -106,6 +107,27 @@ it(@"displays contact seller when the partner is not a gallery", ^{
     [view updateUI];
     [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
     expect(view).to.haveValidSnapshotNamed(@"forSaleByAnInstitution");
+});
+
+it(@"displays only the live button when live auction is running", ^{
+    view.artwork = [Artwork modelWithJSON:@{
+        @"id" : @"artwork-id",
+        @"title" : @"Artwork Title",
+        @"availability" : @"for sale"
+    }];
+    view.saleArtwork = [SaleArtwork modelWithJSON:@{
+        @"high_estimate_cents" : @20000,
+        @"low_estimate_cents" : @10000,
+    }];
+    view.saleArtwork.auction = [Sale modelWithJSON:@{
+        @"start_at" : @"1-12-30 00:00:00",
+        @"live_start_at" : @"1-12-30 00:00:00",
+        @"end_at" : @"4001-01-01 00:00:00"
+    }];
+    [view updateUI];
+    [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+    [view snapshotViewAfterScreenUpdates:YES];
+    expect(view).to.haveValidSnapshot();
 });
 
 it(@"does not display contact when artwork is in auction", ^{
