@@ -59,10 +59,15 @@ extension SaleViewModel {
         return sale.liveAuctionStartDate != nil
     }
 
-    var liveAuctionHasStarted: Bool {
-        guard let liveStartDate = sale.liveAuctionStartDate else { return false }
+    var shouldShowLiveInterface: Bool {
+        return sale.shouldShowLiveInterface()
+    }
+
+    var timeToLiveStart: NSTimeInterval? {
+        guard let liveStartDate = sale.liveAuctionStartDate where shouldShowLiveInterface else { return nil }
+
         let now = ARSystemTime.date()
-        return liveStartDate.laterDate(now) == now
+        return liveStartDate.timeIntervalSinceDate(now)
     }
 
     var saleID: NSString {

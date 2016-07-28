@@ -13,6 +13,8 @@ class AuctionViewController: UIViewController {
 
     var allowAnimations = true
 
+    private var showLiveInterfaceWhenAuctionOpensTimer: NSTimer?
+
     /// Variable for storing lazily-computed default refine settings.
     /// Should not be accessed directly, call defaultRefineSettings() instead.
     private var _defaultRefineSettings: AuctionRefineSettings?
@@ -53,16 +55,17 @@ class AuctionViewController: UIViewController {
 
         self.networkModel.fetch().next { [weak self] saleViewModel in
 
-            if saleViewModel.liveAuctionHasStarted {
-                let liveCV = ARSwitchBoard.sharedInstance().loadLiveAuction(self?.saleID)
-                ARTopMenuViewController.sharedController().pushViewController(liveCV, animated: true) {
-                    self?.navigationController?.popViewControllerAnimated(false)
-                }
-
+            if saleViewModel.shouldShowLiveInterface {
+                self?.setupLiveInterfaceAndPop()
             } else if saleViewModel.isUpcomingAndHasNoLots {
                 self?.setupForUpcomingSale(saleViewModel)
             } else {
                 self?.setupForSale(saleViewModel)
+            }
+
+            if let timeToLiveStart = saleViewModel.timeToLiveStart {
+                self?.setupForUpcomingLiveInterface(timeToLiveStart)
+
             }
 
             saleViewModel.registerSaleAsActiveActivity(self)
@@ -76,6 +79,7 @@ class AuctionViewController: UIViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         userActivity?.invalidate()
+        showLiveInterfaceWhenAuctionOpensTimer?.invalidate()
     }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -169,6 +173,18 @@ extension AuctionViewController {
         displayCurrentItems()
 
         ar_removeIndeterminateLoadingIndicatorAnimated(allowAnimations)
+    }
+
+    func setupForUpcomingLiveInterface(timeToLiveStart: NSTimeInterval) {
+        self.showLiveInterfaceWhenAuctionOpensTimer = NSTimer.scheduledTimerWithTimeInterval(timeToLiveStart, target: self, selector: #selector(AuctionViewController.setupLiveInterfaceAndPop), userInfo: nil, repeats: false)
+    }
+
+    func setupLiveInterfaceAndPop() {
+        let liveCV = ARSwitchBoard.sharedInstance().loadLiveAuction(saleID)
+
+        ARTopMenuViewController.sharedController().pushViewController(liveCV, animated: true) {
+            self.navigationController?.popViewControllerAnimated(false)
+        }
     }
 
     func defaultRefineSettings() -> AuctionRefineSettings {

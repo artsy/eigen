@@ -106,9 +106,3 @@ if outliers.any?
   markdown(([headings] + warnings).join)
 end
 
-# Use the `danger-swiftlint` plugin to lint our modified, and new files.
-swiftlint.config_file = 'Artsy/.swiftlint.yml'
-swiftlint.lint_files
-
-swiftlint.config_file = 'Artsy_Tests/.swiftlint.yml'
-swiftlint.lint_files

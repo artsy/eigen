@@ -24,6 +24,7 @@
 @property (nonatomic, readonly) BOOL requireBidderApproval;
 
 
+- (BOOL)shouldShowLiveInterface;
 - (NSString *)bannerImageURLString;
 - (BOOL)isCurrentlyActive;
 - (BOOL)hasBuyersPremium;

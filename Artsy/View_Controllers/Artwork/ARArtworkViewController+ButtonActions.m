@@ -29,6 +29,7 @@
 #import "ARTrialController.h"
 #import "ARTopMenuViewController.h"
 #import "ARLogger.h"
+#import "Artsy-Swift.h"
 
 
 @implementation ARArtworkViewController (ButtonActions)
@@ -118,21 +119,36 @@
     [[ARTopMenuViewController sharedController] pushViewController:viewController];
 }
 
+- (void)tappedLiveSaleButton:(UIButton *)button
+{
+    button.enabled = false;
+    [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
+        button.enabled = true;
+        LiveAuctionViewController *viewController = [[LiveAuctionViewController alloc] initWithSaleSlugOrID:saleArtwork.auction.saleID];
+        [self presentViewController:viewController animated:true completion:nil];
+    } failure:^(NSError *error) {
+        ARErrorLog(@"Can't get sale to bid for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
+    }];
+}
+
 - (void)tappedConditionsOfSale
 {
     ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/conditions-of-sale"]];
     [[ARTopMenuViewController sharedController] pushViewController:viewController];
 }
 
-- (void)tappedBidButton
+- (void)tappedBidButton:(UIButton *)button
 {
     if ([User isTrialUser]) {
         [ARTrialController presentTrialWithContext:ARTrialContextAuctionBid success:^(BOOL newUser) {
-            [self tappedBidButton];
+            [self tappedBidButton:button];
         }];
         return;
     }
+
+    button.enabled = false;
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
+        button.enabled = true;
         [self bidCompleted:saleArtwork];
     } failure:^(NSError *error) {
         ARErrorLog(@"Can't get sale to bid for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
@@ -151,9 +167,11 @@
     [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
-- (void)tappedBuyersPremium
+- (void)tappedBuyersPremium:(UIButton *)button
 {
+    button.enabled = false;
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
+        button.enabled = true;
         NSString *path = [NSString stringWithFormat:@"/auction/%@/buyers-premium", saleArtwork.auction.saleID];
         UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:path fair:self.fair];
         [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];

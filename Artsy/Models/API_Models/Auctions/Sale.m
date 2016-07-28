@@ -65,6 +65,14 @@
     return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:Bid.class];
 }
 
+- (BOOL)shouldShowLiveInterface
+{
+    NSDate *now = [ARSystemTime date];
+    BOOL hasStarted = [self.liveAuctionStartDate compare:now] == NSOrderedAscending;
+    BOOL hasEnded = [self.endDate compare:now] == NSOrderedAscending;
+    return self.liveAuctionStartDate && hasStarted && !hasEnded;
+}
+
 - (BOOL)isCurrentlyActive
 {
     NSDate *now = [ARSystemTime date];
