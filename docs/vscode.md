@@ -3,6 +3,7 @@
 ### Getting Set Up
 
 1. [Install VS Code](https://code.visualstudio.com).
+2. Install the React Native CLI, globally: `npm install -g react-native-cli`
 1. Install the [React Native Extension](https://github.com/Microsoft/vscode-react-native)
 1. Next install these extensions: ESLint, View Node Package, Flow Language, npm Intellisense, Spelling and Grammar Checker.
 1. In order to launch VSCode from your terminal, in VS Code install the command line tools via the command: "Install 'code' command in PATH"/
