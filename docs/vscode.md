@@ -119,3 +119,25 @@ This means you use `cmd+r` to start up emission in a iOS simulator. It's the sam
   ```json
     { "key": "ctrl+cmd+e",       "command" : "editor.action.changeAll" }
   ```
+  
+#### All Keybindings ATM
+
+```json
+// Place your key bindings in this file to overwrite the defaults
+[
+    { "key": "ctrl+cmd+left",      "command": "workbench.action.navigateBack" },
+    { "key": "ctrl+cmd+right",     "command": "workbench.action.navigateForward" },
+    { "key": "cmd+e",              "command": "editor.action.addSelectionToNextFindMatch"},
+    { "key": "cmd+t",              "command": "workbench.action.quickOpen" },
+    { "key": "cmd+r",              "command": "workbench.action.debug.start" },
+    { "key": "cmd+shift+.",        "command": "workbench.action.debug.stop" },
+    { "key": "cmd+shift+[",        "command": "workbench.action.previousEditor" },
+    { "key": "cmd+shift+]",        "command": "workbench.action.nextEditor" },
+    { "key": "ctrl+cmd+e",         "command": "editor.action.changeAll"},
+    { "key": "cmd+1",              "command": "workbench.view.explorer" },
+    { "key": "cmd+2",              "command": "workbench.view.search" },
+    { "key": "cmd+3",              "command": "workbench.view.git" },
+    { "key": "cmd+4",              "command": "workbench.view.debug" },
+    { "key": "cmd+5",              "command": "workbench.view.extensions" }
+]
+```
