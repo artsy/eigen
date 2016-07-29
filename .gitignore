@@ -36,3 +36,5 @@ node_modules
 Example/Pods
 Example/compile_commands.json
 Example/Emission/Configuration.h
+.vscode/launchReactNative.json
+.vscode/.react/
