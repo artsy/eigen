@@ -22,7 +22,7 @@ A task is a customizable command that is set up per-project.
 
 The default theme for VS Code is pretty intense, if you're a light theme kind of person. I would recommend switching to "Light (Visual Studio)", via the "Change Theme" command.
 
-![https://github.com/artsy/emission/blob/master/docs/choose-theme.png?raw=true](https://github.com/artsy/emission/master/flow/docs/choose-theme.png?raw=true)
+![https://github.com/artsy/emission/blob/master/docs/choose-theme.png?raw=true](https://github.com/artsy/emission/blob/master/docs/choose-theme.png?raw=true)
 
 This screenshot also includes a code font with JS ligatures, called [Fira Code](https://github.com/tonsky/FiraCode).
 
