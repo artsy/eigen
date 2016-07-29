@@ -138,6 +138,7 @@ This means you use `cmd+r` to start up emission in a iOS simulator. It's the sam
     { "key": "cmd+2",              "command": "workbench.view.search" },
     { "key": "cmd+3",              "command": "workbench.view.git" },
     { "key": "cmd+4",              "command": "workbench.view.debug" },
-    { "key": "cmd+5",              "command": "workbench.view.extensions" }
+    { "key": "cmd+5",              "command": "workbench.view.extensions" },
+    { "key": "cmd+shift+t",        "command": "workbench.action.tasks.runTask" }
 ]
 ```
