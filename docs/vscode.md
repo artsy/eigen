@@ -101,7 +101,7 @@ This means you use `cmd+r` to start up emission in a iOS simulator. It's the sam
 ### Useful bits of VS Code
 
 * To jump between splits, use `cmd + 1` and `cmd + 2`.
-* To navigate left/right through all tabs, use `cmd + alt + left` and `cmd + alt + right`. I remap these to be the same as most macOS apps: `ctrl + shit + [` and `ctrl + shit + ]`.
+* To navigate left/right through all tabs, use `cmd + alt + left` and `cmd + alt + right`. I remap these to be the same as most macOS apps: `ctrl + shift + [` and `ctrl + shift + ]`.
   ```json
     { "key": "cmd+shift+[",       "command": "workbench.action.previousEditor" },
     { "key": "cmd+shift+]",       "command": "workbench.action.nextEditor" },
