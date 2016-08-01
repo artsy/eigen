@@ -11674,18 +11674,7 @@
             {
               "name": "artworks",
               "description": null,
-              "args": [
-                {
-                  "name": "size",
-                  "description": null,
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                }
-              ],
+              "args": [],
               "type": {
                 "kind": "LIST",
                 "name": null,
@@ -13823,7 +13812,7 @@
             },
             {
               "name": "key",
-              "description": null,
+              "description": "Module identifier.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -14333,14 +14322,14 @@
             },
             {
               "name": "artist_module",
-              "description": "Single artist module to show on the home screen",
+              "description": "Single artist module to show on the home screen.",
               "args": [
                 {
                   "name": "key",
-                  "description": "Module key",
+                  "description": "Module identifier.",
                   "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
+                    "kind": "ENUM",
+                    "name": "HomePageArtistModuleTypes",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -14374,6 +14363,35 @@
           "inputFields": null,
           "interfaces": [],
           "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "HomePageArtistModuleTypes",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "SUGGESTED",
+              "description": "Artists recommended for the specific user.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TRENDING",
+              "description": "The trending artists.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "POPULAR",
+              "description": "The most searched for artists.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
           "possibleTypes": null
         },
         {

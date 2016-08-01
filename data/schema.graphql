@@ -415,7 +415,7 @@ type ArtworkLayer {
   name: String
   href: String
   description: String
-  artworks(size: Int): [Artwork]
+  artworks: [Artwork]
 }
 
 type ArtworkMeta {
@@ -799,7 +799,7 @@ type HighlightedShow implements Node {
 type HomePage {
   artwork_module(key: String, id: String): HomePageArtworkModule
   artwork_modules(max_rails: Int = 8): [HomePageArtworkModule]
-  artist_module(key: String): HomePageArtistModule
+  artist_module(key: HomePageArtistModuleTypes): HomePageArtistModule
   artist_modules: [HomePageArtistModule]
 }
 
@@ -807,6 +807,12 @@ type HomePageArtistModule implements Node {
   __id: ID!
   key: String
   results: [Artist]
+}
+
+enum HomePageArtistModuleTypes {
+  SUGGESTED
+  TRENDING
+  POPULAR
 }
 
 type HomePageArtworkModule implements Node {
