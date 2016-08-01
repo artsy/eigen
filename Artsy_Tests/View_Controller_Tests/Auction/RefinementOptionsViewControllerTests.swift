@@ -10,25 +10,25 @@ class RefinementOptionsViewControllerSpec: QuickSpec {
     override func spec() {
         let openSale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": NSDate.distantPast(), "endDate": NSDate.distantFuture() ], error: Void())
 
-        let openSaleViewModel = SaleViewModel(sale: openSale, saleArtworks: [])
+        let openSaleViewModel = SaleViewModel(sale: openSale, saleArtworks: [], bidders: [])
 
         let defaultSettings = AuctionRefineSettings(ordering: .LotNumber, priceRange: (min: 500_00, max: 100_000_00), saleViewModel: openSaleViewModel)
         let differentSettings = AuctionRefineSettings(ordering: .ArtistAlphabetical, priceRange: (min: 500_00, max: 50_000_00), saleViewModel: openSaleViewModel)
         let settingsWithNoEstimates = AuctionRefineSettings(ordering: .ArtistAlphabetical, priceRange: (min: 0, max: 0), saleViewModel: openSaleViewModel)
 
         it("looks good by default") {
-            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: defaultSettings, userDidCancelClosure: nil, userDidApplyClosure: nil)
+            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: defaultSettings, currencySymbol: "$", userDidCancelClosure: nil, userDidApplyClosure: nil)
 
             expect(subject).to( haveValidSnapshot() )
         }
 
         it("looks good by when there are no estimates") {
-            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: settingsWithNoEstimates, userDidCancelClosure: nil, userDidApplyClosure: nil)
+            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: settingsWithNoEstimates, currencySymbol: "$", userDidCancelClosure: nil, userDidApplyClosure: nil)
             expect(subject).to( haveValidSnapshot() )
         }
 
         it("enables apply/reset buttons when options are changed") {
-            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: defaultSettings, userDidCancelClosure: nil, userDidApplyClosure: nil)
+            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: defaultSettings, currencySymbol: "$", userDidCancelClosure: nil, userDidApplyClosure: nil)
 
             subject.loadViewProgrammatically()
 
@@ -41,13 +41,13 @@ class RefinementOptionsViewControllerSpec: QuickSpec {
         }
 
         it("looks good when configured with options and changed options") {
-            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: differentSettings, userDidCancelClosure: nil, userDidApplyClosure: nil)
+            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: differentSettings, currencySymbol: "$", userDidCancelClosure: nil, userDidApplyClosure: nil)
 
             expect(subject).to( haveValidSnapshot() )
         }
 
         it("looks good when reset") {
-            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: differentSettings, userDidCancelClosure: nil, userDidApplyClosure: nil)
+            let subject = RefinementOptionsViewController(defaultSettings: defaultSettings, initialSettings: differentSettings, currencySymbol: "$", userDidCancelClosure: nil, userDidApplyClosure: nil)
 
             subject.loadViewProgrammatically()
 

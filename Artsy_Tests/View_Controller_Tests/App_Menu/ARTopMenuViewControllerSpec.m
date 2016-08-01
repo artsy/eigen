@@ -176,6 +176,19 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
     });
 });
 
+
+describe(@"presenting modally", ^{
+    it(@"returns true for a UINavigationController", ^{
+        UIViewController *controller = [[UIViewController alloc] init];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
+        expect([ARTopMenuViewController shouldPresentViewControllerAsModal:nav]).to.beTruthy();
+    });
+    it(@"returns false for a UIViewController", ^{
+        UIViewController *controller = [[UIViewController alloc] init];
+        expect([ARTopMenuViewController shouldPresentViewControllerAsModal:controller]).to.beFalsy();
+    });
+});
+
 describe(@"navigation", ^{
    __block NSInteger tabIndex;
    before(^{

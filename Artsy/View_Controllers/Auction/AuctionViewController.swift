@@ -13,6 +13,8 @@ class AuctionViewController: UIViewController {
 
     var allowAnimations = true
 
+    private var showLiveInterfaceWhenAuctionOpensTimer: NSTimer?
+
     /// Variable for storing lazily-computed default refine settings.
     /// Should not be accessed directly, call defaultRefineSettings() instead.
     private var _defaultRefineSettings: AuctionRefineSettings?
@@ -53,12 +55,18 @@ class AuctionViewController: UIViewController {
 
         self.networkModel.fetch().next { [weak self] saleViewModel in
 
-            if saleViewModel.isUpcomingAndHasNoLots {
+            if saleViewModel.shouldShowLiveInterface {
+                self?.setupLiveInterfaceAndPop()
+            } else if saleViewModel.isUpcomingAndHasNoLots {
                 self?.setupForUpcomingSale(saleViewModel)
             } else {
                 self?.setupForSale(saleViewModel)
             }
 
+            if let timeToLiveStart = saleViewModel.timeToLiveStart {
+                self?.setupForUpcomingLiveInterface(timeToLiveStart)
+
+            }
 
             saleViewModel.registerSaleAsActiveActivity(self)
             }.error { error in
@@ -71,12 +79,14 @@ class AuctionViewController: UIViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         userActivity?.invalidate()
+        showLiveInterfaceWhenAuctionOpensTimer?.invalidate()
     }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        guard saleViewModel != nil else {
+        // titleView being nil indicates this is an upcoming sale with no lots, so we shouldn't displayCurrentItems()
+        guard saleViewModel != nil && titleView != nil else {
             // We can't set up our current saleArtworksViewController if it has no models.
             return
         }
@@ -110,6 +120,7 @@ extension AuctionViewController {
 
     func setupForUpcomingSale(saleViewModel: SaleViewModel) {
 
+        self.saleViewModel = saleViewModel
         let auctionInfoVC = AuctionInformationViewController(saleViewModel: saleViewModel)
 
         auctionInfoVC.titleViewDelegate = self
@@ -144,7 +155,7 @@ extension AuctionViewController {
         let compactSize = traitCollection.horizontalSizeClass == .Compact
         let topSpacing = compactSize ? 20 : 30
         let sideSpacing = compactSize ? 40 : 80
-        let titleView = AuctionTitleView(viewModel: saleViewModel, registrationStatus: networkModel.registrationStatus, delegate: self, fullWidth: compactSize, showAdditionalInformation: true)
+        let titleView = AuctionTitleView(viewModel: saleViewModel, delegate: self, fullWidth: compactSize, showAdditionalInformation: true)
         titleView.tag = ViewTags.Title.rawValue
         headerStack.addSubview(titleView, withTopMargin: "\(topSpacing)", sideMargin: "\(sideSpacing)")
         self.titleView = titleView
@@ -164,6 +175,18 @@ extension AuctionViewController {
         ar_removeIndeterminateLoadingIndicatorAnimated(allowAnimations)
     }
 
+    func setupForUpcomingLiveInterface(timeToLiveStart: NSTimeInterval) {
+        self.showLiveInterfaceWhenAuctionOpensTimer = NSTimer.scheduledTimerWithTimeInterval(timeToLiveStart, target: self, selector: #selector(AuctionViewController.setupLiveInterfaceAndPop), userInfo: nil, repeats: false)
+    }
+
+    func setupLiveInterfaceAndPop() {
+        let liveCV = ARSwitchBoard.sharedInstance().loadLiveAuction(saleID)
+
+        ARTopMenuViewController.sharedController().pushViewController(liveCV, animated: true) {
+            self.navigationController?.popViewControllerAnimated(false)
+        }
+    }
+
     func defaultRefineSettings() -> AuctionRefineSettings {
         guard let defaultSettings = _defaultRefineSettings else {
             let defaultSettings = AuctionRefineSettings(ordering: AuctionOrderingSwitchValue.LotNumber, priceRange:self.saleViewModel.lowEstimateRange, saleViewModel:saleViewModel)
@@ -176,11 +199,12 @@ extension AuctionViewController {
     func showRefineTappedAnimated(animated: Bool) {
         let refineViewController = RefinementOptionsViewController(defaultSettings: defaultRefineSettings(),
             initialSettings: refineSettings,
+            currencySymbol: saleViewModel.currencySymbol,
             userDidCancelClosure: { (refineVC) in
                 self.dismissViewControllerAnimated(animated, completion: nil)},
             userDidApplyClosure: { (settings: AuctionRefineSettings) in
                 self.refineSettings = settings
-                
+
                 self.displayCurrentItems()
                 self.dismissViewControllerAnimated(animated, completion: nil)
         })
@@ -191,16 +215,16 @@ extension AuctionViewController {
             "context_type": "sale",
             "slug": NSString(format:"/auction/%@/refine", saleViewModel.saleID)
         ])
-        
+
         refineViewController.viewDidAppearAnalyticsOption = RefinementAnalyticsOption(name: "Sale Information", properties: [ "context": "auction", "slug": "/auction/\(saleViewModel.saleID)/refine"])
         refineViewController.changeStatusBar = self.traitCollection.horizontalSizeClass == .Compact
         presentViewController(refineViewController, animated: animated, completion: nil)
     }
-    
+
     func showRefineTapped() {
         self.showRefineTappedAnimated(true)
     }
-    
+
     var sideSpacing: CGFloat {
         let compactSize = traitCollection.horizontalSizeClass == .Compact
         return compactSize ? 40 : 80
@@ -231,8 +255,9 @@ extension AuctionViewController {
 private typealias NotificationCenterObservers = AuctionViewController
 extension NotificationCenterObservers {
     func registrationUpdated(notification: NSNotification) {
-        networkModel.fetchRegistrationStatus().next { [weak self] registrationStatus in
-            self?.titleView?.registrationStatus = registrationStatus
+        networkModel.fetchBidders().next { [weak self] bidders in
+            self?.saleViewModel.bidders = bidders
+            self?.titleView?.updateRegistrationStatus()
         }
     }
 }
@@ -274,7 +299,7 @@ extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, shouldPresentViewController viewController: UIViewController!) {
         navigationController?.pushViewController(viewController, animated: true)
     }
-    
+
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, stickyHeaderDidChangeStickyness isAttatchedToLeadingEdge: Bool) {
         stickyHeader.stickyHeaderHeight.constant = isAttatchedToLeadingEdge ? 120 : 60
         stickyHeader.toggleAttatched(isAttatchedToLeadingEdge, animated: true)

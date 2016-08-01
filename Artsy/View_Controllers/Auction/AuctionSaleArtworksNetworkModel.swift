@@ -16,10 +16,10 @@ class AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType {
 
         /// Fetches all the sale artworks associated with the sale.
         /// This serves as a trampoline for the actual recursive call.
-        fetchPage(1, forSaleID: saleID, alreadyFetched: []) { result in
+        fetchPage(1, forSaleID: saleID, alreadyFetched: []) { [weak self] result in
             switch result {
             case .Success(let saleArtworks):
-                self.saleArtworks = saleArtworks
+                self?.saleArtworks = saleArtworks
                 observable.update(.Success(saleArtworks))
             case .Error(let error):
                 observable.update(.Error(error))
@@ -32,17 +32,17 @@ class AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType {
 
 
 /// Number of sale artworks to fetch at once.
-private let PageSize = 100
+private let pageSize = 100
 
 /// Recursively calls itself with page+1 until the count of the returned array is < pageSize.
 private func fetchPage(page: Int, forSaleID saleID: String, alreadyFetched: [SaleArtwork], callback: Result<[SaleArtwork]> -> Void) {
     ArtsyAPI.getSaleArtworksWithSale(saleID,
         page: page,
-        pageSize: PageSize,
+        pageSize: pageSize,
         success: { saleArtworks in
             let totalFetchedSoFar = alreadyFetched + saleArtworks
 
-            if saleArtworks.count < PageSize {
+            if saleArtworks.count < pageSize {
                 // We have reached the end of the sale artworks, stop recursing.
                 callback(.Success(totalFetchedSoFar))
             } else {
@@ -56,4 +56,3 @@ private func fetchPage(page: Int, forSaleID saleID: String, alreadyFetched: [Sal
         }
     )
 }
-

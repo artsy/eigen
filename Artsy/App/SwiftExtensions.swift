@@ -1,5 +1,5 @@
-/// Given a closure T -> Void, returns a function that takes a T and invokes the closure. 
-/// Useful for performing operations with curried functions. 
+/// Given a closure T -> Void, returns a function that takes a T and invokes the closure.
+/// Useful for performing operations with curried functions.
 /// Ex: [a, b, c,].forEach(apply(self.function)) will call self.function with a, b, then c as parameters.
 func apply<T>(closure: T -> Void) -> (T -> Void) {
     return { instance in
@@ -14,6 +14,14 @@ func applyUnowned<Type: AnyObject, Parameters, ReturnValue>(instance: Type, _ fu
     }
 }
 
+// Applies an instance method to the instance with a weak reference. If the instance is nil, the function is not invoked.
+func applyWeakly<Type: AnyObject, Parameters>(instance: Type, _ function: (Type -> Parameters -> Void)) -> (Parameters -> Void) {
+    return { [weak instance] parameters in
+        guard let instance = instance else { return }
+        function(instance)(parameters)
+    }
+}
+
 // "Adds" two dictionaries of corresponding types. Duplicated keys result in rhs taking priority.
 func +<K, V>(lhs: Dictionary<K, V>, rhs: Dictionary<K, V>) -> Dictionary<K, V> {
     // This is possible using reduce, but the imperative method is a lot more readable.
@@ -24,32 +32,37 @@ func +<K, V>(lhs: Dictionary<K, V>, rhs: Dictionary<K, V>) -> Dictionary<K, V> {
     return copy
 }
 
-extension Array where Element: Equatable {
-
-    /// Returns the subarray formed from the first differing index to the end of
-    /// the receiver. If the receiver and parameter share no common element,
-    /// the receiver is returned.
-    func subarrayFromFirstDifference(other: [Element]) -> [Element] {
-        guard let firstDifferentIndex = indexOfFirstDifferentElement(other) else {
-            return self
+extension CGFloat {
+    mutating func capAtMax(max: CGFloat?, min: CGFloat?) {
+        if let min = min {
+            self = Swift.max(self, min)
         }
+        if let max = max {
+            self = Swift.min(self, max)
+        }
+    }
+}
 
-        return Array(self[firstDifferentIndex..<count])
+extension CollectionType {
+    var isNotEmpty: Bool {
+        return isEmpty == false
+    }
+}
+
+extension Array {
+    mutating func remove(@noescape closure: (Element -> Bool)) -> Element? {
+        return enumerate().reduce(nil) { (memo, e) in
+            return memo ?? (closure(e.element) ? removeAtIndex(e.index) : nil)
+        }
     }
 
-    /// Loops through the receiver and parameter and returns the first index where
-    /// the two have differing elements. Returns nil iff either of the arrays is
-    /// entirely looped over with no differing elements found.
-    func indexOfFirstDifferentElement(other: [Element]) -> Index? {
-        var index = 0
-
-        while index < self.count && index < other.count {
-            if self[index] == other[index] {
-                return index
-            }
-            index += 1
+    func first(@noescape closure: (Element -> Bool)) -> Element? {
+        return reduce(nil) { (memo, element) in
+            return memo ?? (closure(element) ? element : nil)
         }
+    }
 
-        return nil
+    func last(@noescape closure: (Element -> Bool)) -> Element? {
+        return reverse().first(closure)
     }
 }

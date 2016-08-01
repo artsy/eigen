@@ -11,6 +11,7 @@ class LotListCollectionViewCell: UICollectionViewCell {
     let lotImageView = UIImageView()
     let hammerImageView = UIImageView(image: UIImage(asset: .Lot_bidder_hammer_white))
     let labelContainerView = LotListCollectionViewCell._labelContainerView()
+    let closedLabel = LotListCollectionViewCell._closedLabel()
     let currentLotIndicatorImageView = UIImageView()
     let lotNumberLabel = LotListCollectionViewCell._lotNumberLabel()
     let artistsNamesLabel = LotListCollectionViewCell._artistNamesLabel()
@@ -20,8 +21,13 @@ class LotListCollectionViewCell: UICollectionViewCell {
     var isNotTopCell = true
 
     private var userInterfaceNeedsSetup = true
-    private var computedLotStateSubscription: (ObserverToken, Observable<LotState>)?
-    private var askingPriceSubscription: (ObserverToken, Observable<UInt64>)?
+    private var lotStateSubscription: ObserverToken<LotState>?
+    private var askingPriceSubscription: ObserverToken<UInt64>?
+
+    deinit {
+        lotStateSubscription?.unsubscribe()
+        askingPriceSubscription?.unsubscribe()
+    }
 }
 
 private typealias Overrides = LotListCollectionViewCell
@@ -29,47 +35,46 @@ extension Overrides {
     override func prepareForReuse() {
         super.prepareForReuse()
         defer {
-            computedLotStateSubscription = nil
+            lotStateSubscription = nil
             askingPriceSubscription = nil
         }
 
-        if let computedLotStateSubscription = computedLotStateSubscription {
-            computedLotStateSubscription.1.unsubscribe(computedLotStateSubscription.0)
-        }
-
-        if let askingPriceSubscription = askingPriceSubscription {
-            askingPriceSubscription.1.unsubscribe(askingPriceSubscription.0)
-        }
+        lotStateSubscription?.unsubscribe()
+        askingPriceSubscription?.unsubscribe()
     }
 }
 
 private typealias PublicFunctions = LotListCollectionViewCell
 extension PublicFunctions {
-    func configureForViewModel(viewModel: LiveAuctionLotViewModelType, auctionViewModel: LiveAuctionViewModelType, indexPath: NSIndexPath) {
+    func configureForViewModel(viewModel: LiveAuctionLotViewModelType, indexPath: NSIndexPath) {
+
+        let currencySymbol = viewModel.currencySymbol
 
         if userInterfaceNeedsSetup {
             userInterfaceNeedsSetup = false
-            setup()
+            contentView.translatesAutoresizingMaskIntoConstraints = false
+            contentView.alignToView(self)
+            lotImageView.contentMode = .ScaleAspectFill
+            lotImageView.clipsToBounds = true
         }
+
+        resetViewHierarchy()
 
         isNotTopCell = (indexPath.item > 0)
 
-        // TODO: Pending https://github.com/JensRavens/Interstellar/issues/40 this might look less messy.
-        let computedLotStateSignal = viewModel
-            .computedLotStateSignal(auctionViewModel)
-
-        self.computedLotStateSubscription = (computedLotStateSignal.subscribe { [weak self] state in
+        self.lotStateSubscription = viewModel.lotStateSignal.subscribe { [weak self] state in
                 self?.setLotState(state)
-            }, computedLotStateSignal)
+            }
 
-        askingPriceSubscription = (viewModel
+        askingPriceSubscription = viewModel
             .askingPriceSignal
             .subscribe { [weak self] askingPrice in
-                self?.currentAskingPriceLabel.text = "$30,000"
-            }, viewModel.askingPriceSignal)
+                self?.currentAskingPriceLabel.text = askingPrice.convertToDollarString(currencySymbol)
+                return
+            }
 
         lotImageView.ar_setImageWithURL(viewModel.urlForThumbnail)
-        lotNumberLabel.text = "Lot \(viewModel.lotIndex)"
+        lotNumberLabel.text = viewModel.lotIndexDisplayString
         artistsNamesLabel.text = viewModel.lotArtist
     }
 }

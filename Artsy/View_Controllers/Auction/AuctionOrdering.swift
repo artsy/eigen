@@ -50,9 +50,10 @@ extension AuctionOrderingSwitchValue {
     }
 
     static func allSwitchValuesWithViewModel(saleViewModel: SaleViewModel) -> [AuctionOrderingSwitchValue] {
-        if saleViewModel.saleAvailability == .Closed {
+        switch saleViewModel.saleAvailability {
+        case .Closed:
             return [LotNumber, ArtistAlphabetical]
-        } else {
+        default:
             return [LotNumber, ArtistAlphabetical, LeastBids, MostBids, HighestCurrentBid, LowestCurrentBid]
         }
     }

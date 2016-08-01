@@ -58,6 +58,7 @@
 #import "ARSearchViewController.h"
 #import "ARNavigationController.h"
 #import "ARHeroUnitViewController.h"
+#import <Emission/ARArtistComponentViewController.h>
 
 // Views
 #import "ARHeartButton.h"
@@ -446,6 +447,8 @@
                                 return @{
                                     @"errors" : ([error localizedDescription] ?: [error description]) ?: @"",
                                     @"response" : responseString ?: @"",
+                                    @"artwork_id" : controller.artwork.artworkID ?: @"",
+                                    @"inquirable" : controller.artwork.inquireable ?: @1
                                 };
                             }
                         },
@@ -894,11 +897,25 @@
                     ]
                 },
                 @{
+                    ARAnalyticsClass: ARArtistComponentViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: ARAnalyticsArtistView,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtistComponentViewController *controller, NSArray *_){
+                                return @{
+                                    @"artist_id" : controller.artistID ?: @"",
+                                };
+                            },
+                        },
+                    ],
+                },
+                @{
                     ARAnalyticsClass: ARArtistViewController.class,
                     ARAnalyticsDetails: @[
                         @{
                             ARAnalyticsEventName: ARAnalyticsArtistView,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidLoad)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
                             ARAnalyticsProperties: ^NSDictionary*(ARArtistViewController *controller, NSArray *_){
                                 return @{
                                     @"artist_id" : controller.artist.artistID ?: @"",

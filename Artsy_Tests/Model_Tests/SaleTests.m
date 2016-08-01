@@ -24,6 +24,38 @@ describe(@"current auction", ^{
     });
 });
 
+describe(@"live auction", ^{
+    it(@"doesn't show live button before live auction", ^{
+        Sale *sale = [Sale modelWithJSON:@{
+            @"start_at" : @"1-12-30 00:00:00",
+            @"live_start_at" : @"4000-12-30 00:00:00",
+            @"end_at" : @"4001-01-01 00:00:00"
+        }];
+
+        expect([sale shouldShowLiveInterface]).to.beFalsy();
+    });
+
+    it(@"shows live button while live auction is open", ^{
+        Sale *sale = [Sale modelWithJSON:@{
+            @"start_at" : @"1-12-30 00:00:00",
+            @"live_start_at" : @"1-12-30 00:00:00",
+            @"end_at" : @"4001-01-01 00:00:00"
+        }];
+
+        expect([sale shouldShowLiveInterface]).to.beTruthy();
+    });
+
+    it(@"doesn't show live button after live auction closes", ^{
+        Sale *sale = [Sale modelWithJSON:@{
+            @"start_at" : @"1-12-30 00:00:00",
+            @"live_start_at" : @"1-12-30 00:00:00",
+            @"end_at" : @"2-01-01 00:00:00"
+        }];
+
+        expect([sale shouldShowLiveInterface]).to.beFalsy();
+    });
+});
+
 describe(@"future auction", ^{
     __block Sale *_futureAuction;
 

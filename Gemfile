@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
-gem 'cocoapods', '1.0.0.beta.8'
+gem 'cocoapods', '>= 1.0.0'
 gem 'cocoapods-keys'
+gem 'cocoapods-check'
 
-# 1.6.7 contains the OS X build fix.
-gem 'nokogiri', '1.6.7.rc4'
+gem 'nokogiri', '>= 1.6.7'
 
 
 group :development do
