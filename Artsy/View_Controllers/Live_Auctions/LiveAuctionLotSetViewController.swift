@@ -270,10 +270,11 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func jumpToLiveLot() {
-        guard let currentLot = salesPerson.currentLotSignal.peek() else { return }
-        guard let focusedIndex = currentLot?.lotIndex else { return }
+        // currentLotSignal might have a nil, and peek() returns a wrapped optional, so we need to double-unwrap.
+        guard case let .Some(.Some(currentLot)) = salesPerson.currentLotSignal.peek() else { return }
+        guard let liveLotIndex = salesPerson.indexForViewModel(currentLot) else { return }
 
-        jumpToLotAtIndex(focusedIndex)
+        jumpToLotAtIndex(liveLotIndex)
     }
 
     func nextLot() {
