@@ -14,7 +14,7 @@ target 'Emission' do
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-OSSUIFonts.git"
   end
 
-  pod 'React', :path => react_path, :subspecs => ['RCTWebSocket']
+  pod 'React', :path => react_path, :subspecs => ['RCTWebSocket', 'RCTImage']
 
   target 'EmissionTests' do
     inherit! :search_paths
