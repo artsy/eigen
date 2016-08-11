@@ -157,6 +157,7 @@ extension LiveAuctionsSalesPerson {
         return lots[index]
     }
 
+    // Performs a linear scan through all the lots, use parsimoniously.
     func indexForViewModel(viewModel: LiveAuctionLotViewModelType) -> Int? {
         return lots.indexOf { $0.lotID == viewModel.lotID }
     }

@@ -21,7 +21,7 @@ class LiveAuctionToolbarView: UIView {
     }
 
     func lotCountString() -> NSAttributedString {
-        let lotString = NSMutableAttributedString(string: String(lotViewModel.lotIndex + 1), attributes:
+        let lotString = NSMutableAttributedString(string: String(lotViewModel.lotIndex), attributes:
             [NSForegroundColorAttributeName: UIColor.artsyPurpleRegular()]
         )
         let countString = NSMutableAttributedString(string: "/\(auctionViewModel.lotCount)", attributes: [:])
