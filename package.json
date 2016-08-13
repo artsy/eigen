@@ -66,6 +66,7 @@
     "jest-cli": "^14.1.0",
     "jest-react-native": "^14.1.2",
     "react-storybooks-relay-container": "^1.0.0",
+    "react-test-renderer": "^15.3.0",
     "typings": "^1.3.2"
   },
   "peerDependencies": {
