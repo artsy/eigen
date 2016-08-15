@@ -12,3 +12,4 @@ install:
 
 before_script:
   - bundle exec danger
+  - npm run lint

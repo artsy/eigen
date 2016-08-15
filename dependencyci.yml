@@ -1,4 +1,8 @@
 platforms:
+  rubygems:
+    colored:
+      tests:
+        unmaintained: skip
   NPM:
     jade:
       tests:
