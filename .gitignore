@@ -38,3 +38,5 @@ Example/compile_commands.json
 Example/Emission/Configuration.h
 .vscode/launchReactNative.js
 .vscode/.react/
+typings
+
