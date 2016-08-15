@@ -69,13 +69,17 @@ class LiveAuctionLotSetViewController: UIViewController {
     var suppressJumpingToOpenLots = false
 
     func hasChangedLot(lot: LiveAuctionLotViewModelType?) {
-        guard let newLot = lot where !suppressJumpingToOpenLots else { return }
+        guard let
+            newLot = lot,
+            newLotIndex = salesPerson.indexForViewModel(newLot)
+            where !suppressJumpingToOpenLots
+            else { return }
 
         /// Support jumping directly to the live lot when we load
 
         guard hasJumpedToOpenLotAtLaunch else {
             hasJumpedToOpenLotAtLaunch = true
-            jumpToLotAtIndex(newLot.lotIndex)
+            jumpToLotAtIndex(newLotIndex)
             return
         }
 
@@ -84,11 +88,11 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         guard let focusedLotIndex = salesPerson.currentFocusedLotIndex.peek() else { return }
 
-        if focusedLotIndex == newLot.lotIndex - 1 {
+        if focusedLotIndex == newLotIndex {
             ar_dispatch_after(1) {
                 guard let focusedLotAfterDelayIndex = self.salesPerson.currentFocusedLotIndex.peek() where focusedLotAfterDelayIndex == focusedLotIndex else { return }
 
-                guard let currentLotVC = self.auctionDataSource.liveAuctionPreviewViewControllerForIndex(newLot.lotIndex) else { return }
+                guard let currentLotVC = self.auctionDataSource.liveAuctionPreviewViewControllerForIndex(newLotIndex) else { return }
                 self.pageController.setViewControllers([currentLotVC], direction: .Forward, animated: true) { _ in
                     self.pageViewController(self.pageController, didFinishAnimating: true, previousViewControllers: [], transitionCompleted: true)
                 }
@@ -223,7 +227,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     func showLots() {
         let lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
         lotListController.delegate = self
-        lotListController.selectedIndex = salesPerson.currentLotSignal.peek()??.lotIndex
+        lotListController.selectedIndex = salesPerson.currentFocusedLotIndex.peek()
 
         let navController = ARSerifNavigationViewController(rootViewController: lotListController)
         presentViewController(navController, animated: true, completion: nil)
@@ -254,7 +258,8 @@ class LiveAuctionLotSetViewController: UIViewController {
                 }
 
                 let total = self?.salesPerson.auctionViewModel.lotCount ?? 1 // We're dividing by the total, it should not be zero 😬
-                self?.progressBar.progress = CGFloat(currentLot.lotIndex) / CGFloat(total)
+                let liveLotIndex = self?.salesPerson.indexForViewModel(currentLot)
+                self?.progressBar.progress = CGFloat(liveLotIndex ?? 0) / CGFloat(total)
         }
 
         // To make sure we can handle transitioning to the next live auction
@@ -270,10 +275,11 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func jumpToLiveLot() {
-        guard let currentLot = salesPerson.currentLotSignal.peek() else { return }
-        guard let focusedIndex = currentLot?.lotIndex else { return }
+        // currentLotSignal might have a nil, and peek() returns a wrapped optional, so we need to double-unwrap.
+        guard case let .Some(.Some(currentLot)) = salesPerson.currentLotSignal.peek() else { return }
+        guard let liveLotIndex = salesPerson.indexForViewModel(currentLot) else { return }
 
-        jumpToLotAtIndex(focusedIndex)
+        jumpToLotAtIndex(liveLotIndex)
     }
 
     func nextLot() {

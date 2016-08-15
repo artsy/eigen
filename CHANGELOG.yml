@@ -11,6 +11,7 @@ upcoming:
       - Fallback to higher or lower available artwork image. - alloy
       - Fixes problem where users looking at a closed live auction would be directed to the live interface. - ash
       - Fixes problem where users weren't directed to live auction when it started. - ash
+      - Fixes problems going to the current lot of a live auction caused by inaccurate sale artwork position values. - ash
 
 releases:
   - version: 2.6.3
