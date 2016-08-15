@@ -82,11 +82,12 @@ _Note:_ React Native decides what part of what languages are exposed to us. This
 
 VS Code uses Typescript under the hood to figure out all of the symbols.
 
-TODO: Decide re:typings.
-
 ```sh
 npm install typings --global
+typings install
 ```
+
+This currently will give you type data for react, react-native, lodast and jest. You can see an up-to-date list in [../typings.json](../typings.json).
 
 ### Recommended Changes for Keyboard Shortcuts
 
@@ -119,7 +120,7 @@ This means you use `cmd+r` to start up emission in a iOS simulator. It's the sam
   ```json
     { "key": "ctrl+cmd+e",       "command" : "editor.action.changeAll" }
   ```
-  
+
 #### All Keybindings ATM
 
 ```json
@@ -139,6 +140,7 @@ This means you use `cmd+r` to start up emission in a iOS simulator. It's the sam
     { "key": "cmd+3",              "command": "workbench.view.git" },
     { "key": "cmd+4",              "command": "workbench.view.debug" },
     { "key": "cmd+5",              "command": "workbench.view.extensions" },
-    { "key": "cmd+shift+t",        "command": "workbench.action.tasks.runTask" }
+    { "key": "cmd+shift+t",        "command": "workbench.action.tasks.runTask" },
+    { "key": "cmd+0",                 "command": "workbench.action.toggleSidebarVisibility" },
 ]
 ```
