@@ -2,32 +2,26 @@ import UIKit
 import Interstellar
 import FLKAutoLayout
 
-class LiveAuctionToolbarView : UIView {
+class LiveAuctionToolbarView: UIView {
 
     var lotViewModel: LiveAuctionLotViewModelType!
     var auctionViewModel: LiveAuctionViewModelType!
 
-    lazy var computedLotStateSignal: Observable<LotState> = {
-        return self.lotViewModel.computedLotStateSignal(self.auctionViewModel)
-    }()
-    var lotStateObserver: ObserverToken?
+    var lotStateObserver: ObserverToken<LotState>?
+    var numberOfBidsObserver: ObserverToken<Int>?
 
     deinit {
-        if let lotStateObserver = lotStateObserver {
-            computedLotStateSignal.unsubscribe(lotStateObserver)
-        }
+        lotStateObserver?.unsubscribe()
+        numberOfBidsObserver?.unsubscribe()
     }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
-        // Remove all subviews and call setupViews() again to start from scratch.
-        subviews.forEach { $0.removeFromSuperview() }
         setupViews()
     }
 
     func lotCountString() -> NSAttributedString {
-        let lotString = NSMutableAttributedString(string: String(lotViewModel.lotIndex), attributes:
+        let lotString = NSMutableAttributedString(string: String(lotViewModel.lotIndex + 1), attributes:
             [NSForegroundColorAttributeName: UIColor.artsyPurpleRegular()]
         )
         let countString = NSMutableAttributedString(string: "/\(auctionViewModel.lotCount)", attributes: [:])
@@ -41,15 +35,24 @@ class LiveAuctionToolbarView : UIView {
     }
 
     func setupViews() {
-        lotStateObserver = computedLotStateSignal.subscribe { [weak self] lotState in
+        lotStateObserver = lotViewModel.lotStateSignal.subscribe { [weak self] lotState in
+            self?.timeSinceLotOpenedTimer?.invalidate()
+            self?.subviews.forEach { $0.removeFromSuperview() }
             self?.setupUsingState(lotState)
         }
     }
 
+    // during a live lot we need to keep a reference to the timer
+    var timeSinceLotOpenedTimer: NSTimer?
+    var timeSinceLotOpenedLabel: UILabel?
+
     func setupUsingState(lotState: LotState) {
         let viewStructure: [[String: NSAttributedString]]
         var clockClosure: ((UILabel) -> ())?
+        var numberOfBidsClosure: ((UILabel) -> Void)?
+
         switch lotState {
+
         case .ClosedLot:
             viewStructure = [
                 ["lot": lotCountString()],
@@ -59,28 +62,48 @@ class LiveAuctionToolbarView : UIView {
         case .LiveLot:
             viewStructure = [
                 ["lot": lotCountString()],
-                ["time": attributify("00:12")],
-                ["watchers": attributify("09")],
+                ["time": attributify("--:--")],
                 ["bidders": attributify(String(lotViewModel.numberOfBids))]
             ]
-            clockClosure = { label in
-                // do timer
-                label.text = "00:12"
+
+            numberOfBidsClosure = { [unowned self] label in
+                guard self.numberOfBidsObserver == nil else { return }
+
+                self.numberOfBidsObserver = self.lotViewModel
+                    .newEventsSignal
+                    .map { [unowned self] _ in self.lotViewModel.numberOfBids }
+                    .subscribe { numberOfBids in
+                        label.attributedText = self.attributify(String(numberOfBids))
+                }
             }
 
-        case let .UpcomingLot(distance):
-            let lots = distance == 1 ? "lot" : "lots"
-            let lotString = "\(distance) \(lots) away"
+            clockClosure = { [unowned self] label in
+                self.formatter.dateFormat = "mm:ss"
+                self.timeSinceLotOpenedLabel = label
+                self.timeSinceLotOpenedTimer = NSTimer.scheduledTimerWithTimeInterval(0.9, target: self, selector: #selector(self.updateTimerLabel), userInfo: nil, repeats: true)
+                if let timeSinceLotOpenedTimer = self.timeSinceLotOpenedTimer {
+                    self.updateTimerLabel(timeSinceLotOpenedTimer)
+                }
+            }
+
+        case .UpcomingLot:
+            let lotString: String
+            if let distance = auctionViewModel.distanceFromCurrentLot(lotViewModel) where distance > 0 {
+                let lots = distance == 1 ? "lot" : "lots"
+                lotString = "\(distance) \(lots) away"
+            } else {
+                lotString = "Upcoming"
+            }
 
             viewStructure = [
                 ["lot": lotCountString()],
                 ["time": attributify(lotString, color: .artsyPurpleRegular())],
-                ["watchers": attributify("09")],
                 ["bidders": attributify(String(lotViewModel.numberOfBids))]
             ]
         }
 
-        let views:[UIView] = viewStructure.map { dict in
+        // swiftlint:disable force_unwrapping
+        let views: [UIView] = viewStructure.map { dict in
             let key = dict.keys.first!
             let thumbnail = UIImage(named: "lot_\(key)_info")
 
@@ -92,10 +115,14 @@ class LiveAuctionToolbarView : UIView {
             label.font = UIFont.sansSerifFontWithSize(12)
             view.addSubview(label)
 
-            if key == "time" && clockClosure != nil {
+            label.attributedText = dict.values.first!
+
+            if key == "time" {
                 clockClosure?(label)
-            } else {
-                label.attributedText = dict.values.first!
+            }
+
+            if key == "bidders" {
+                numberOfBidsClosure?(label)
             }
 
             view.constrainHeight("14")
@@ -143,9 +170,20 @@ class LiveAuctionToolbarView : UIView {
 
             spacerView2.alignAttribute(.Leading, toAttribute: .Trailing, ofView: middleLeft, predicate: "0")
             spacerView2.alignAttribute(.Trailing, toAttribute: .Leading, ofView: middleRight, predicate: "0")
-            
+
             spacerView3.alignAttribute(.Leading, toAttribute: .Trailing, ofView: middleRight, predicate: "0")
             spacerView3.alignAttribute(.Trailing, toAttribute: .Leading, ofView: last, predicate: "0")
         }
+
+        // swiftlint:enable force_unwrapping
+    }
+
+    private lazy var formatter = NSDateFormatter()
+
+    func updateTimerLabel(timer: NSTimer) {
+        guard let startDate = lotViewModel.dateLotOpened else { return }
+        let now = NSDate().timeIntervalSinceReferenceDate
+        let date = NSDate(timeIntervalSinceReferenceDate: now - startDate.timeIntervalSinceReferenceDate)
+        timeSinceLotOpenedLabel?.text = formatter.stringFromDate(date)
     }
 }

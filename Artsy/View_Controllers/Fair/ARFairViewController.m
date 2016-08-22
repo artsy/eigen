@@ -367,7 +367,7 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
         controller = [switchBoard loadGeneWithID:result.modelID];
 
     } else if (result.model == [Profile class]) {
-        controller = [switchBoard routeProfileWithID:result.modelID];
+        controller = [switchBoard loadProfileWithID:result.modelID];
 
     } else if (result.model == [SiteFeature class]) {
         NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);

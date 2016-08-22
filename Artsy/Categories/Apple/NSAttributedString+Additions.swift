@@ -6,7 +6,7 @@ extension NSAttributedString {
     func makeBoldOccurencesSansSerifSemiBold() -> NSAttributedString {
         let copy = NSMutableAttributedString(attributedString: self)
 
-        enumerateAttributesInRange(NSMakeRange(0, length), options: []) { (attrs, range, _) in
+        enumerateAttributesInRange(NSRange(location: 0, length: length), options: []) { (attrs, range, _) in
             guard let font = attrs[NSFontAttributeName] as? UIFont else { return }
 
             if font.isBold {

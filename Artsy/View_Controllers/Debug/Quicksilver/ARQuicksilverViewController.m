@@ -222,7 +222,13 @@
 {
     [self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
 
-    SearchResult *result = self.contentArray[indexPath.row];
+    SearchResult *result;
+    if (!self.contentArray || self.contentArray.count == 0) {
+        result = (id)self.searchController.searchBar.text;
+    } else {
+        result = self.contentArray[indexPath.row];
+    }
+
     [self addObjectToRecents:result];
 
     UIViewController *controller = nil;
@@ -245,7 +251,7 @@
         controller = [[ARGeneViewController alloc] initWithGeneID:result.modelID];
 
     } else if (result.model == [Profile class]) {
-        controller = [ARSwitchBoard.sharedInstance routeProfileWithID:result.modelID];
+        controller = [ARSwitchBoard.sharedInstance loadProfileWithID:result.modelID];
 
     } else if (result.model == [SiteFeature class]) {
         NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);

@@ -1,39 +1,80 @@
 import QuartzCore
 import Interstellar
 import Artsy_UIButtons
+import Extraction
 
-enum LiveAuctionBidButtonState {
+enum LiveAuctionBidButtonState: Equatable {
     case Active(biddingState: LiveAuctionBiddingProgressState)
     case InActive(lotState: LotState)
 }
 
-@objc protocol LiveAuctionBidButtonDelegate {
-    func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton)
-    func bidButtonRequestedBid(button: LiveAuctionBidButton)
-    func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton)
+func == (lhs: LiveAuctionBidButtonState, rhs: LiveAuctionBidButtonState) -> Bool {
+    switch (lhs, rhs) {
+    case (.Active(let lhsBiddingState), .Active(let rhsBiddingState)) where lhsBiddingState == rhsBiddingState: return true
+    case (.InActive(let lhsLotState), .InActive(let rhsLotState)) where lhsLotState == rhsLotState: return true
+    default: return false
+    }
 }
 
-class LiveAuctionBidButton : ARFlatButton {
-    let progressSignal = Observable<LiveAuctionBidButtonState>()
-    @IBOutlet var delegate: LiveAuctionBidButtonDelegate?
+@objc protocol LiveAuctionBidButtonDelegate {
+    optional func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton)
+    optional func bidButtonRequestedBid(button: LiveAuctionBidButton)
+    optional func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton)
+}
+
+class LiveAuctionBidButton: ARFlatButton {
+    var viewModel: LiveAuctionBiddingViewModelType
+
+    // On the lotVC we want to indicate being outbid
+    // but on the max-bid modal we don't.
+    var flashOutbidOnBiddableStateChanges = true
+
+    // Used almost exclusively in testing
+    var outbidNoticeAnimationComplete: () -> Void = {}
+    var outbidNoticeDuration: NSTimeInterval = 1
+    let spinner = ARSpinner()
+
+
+    @IBOutlet weak var delegate: LiveAuctionBidButtonDelegate?
+
+    init(viewModel: LiveAuctionBiddingViewModelType) {
+        self.viewModel = viewModel
+
+        super.init(frame: CGRect.zero)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        // This is an acceptable default, it can be replaced before added to a view and setup() getting called.
+        viewModel = LiveAuctionLeaveMaxBidButtonViewModel()
+        super.init(coder: aDecoder)
+    }
+
+    override func intrinsicContentSize() -> CGSize {
+        return CGSize(width: 48, height: 40)
+    }
 
     override func setup() {
         super.setup()
+        shouldDimWhenDisabled = false
         setContentCompressionResistancePriority(1000, forAxis: .Vertical)
         addTarget(self, action: #selector(tappedBidButton), forControlEvents: .TouchUpInside)
-        progressSignal.subscribe(setupWithState)
+        viewModel.progressSignal.subscribe(attemptSetupWithState)
+        viewModel.bidPendingSignal.subscribe(updateForBidProgress)
+
+        spinner.frame.size = CGSize(width: 44, height: 44)
+        spinner.spinnerColor = .whiteColor()
     }
 
     func tappedBidButton() {
-        guard let state = progressSignal.peek() else { return }
+        guard let state = viewModel.progressSignal.peek() else { return }
         switch state {
         case .Active(let bidState):
             switch bidState {
 
-            case .TrialUser:
-                delegate?.bidButtonRequestedRegisterToBid(self)
+            case .UserRegistrationRequired:
+                delegate?.bidButtonRequestedRegisterToBid?(self)
             case .Biddable:
-                delegate?.bidButtonRequestedBid(self)
+                delegate?.bidButtonRequestedBid?(self)
 
             default: break
             }
@@ -41,7 +82,7 @@ class LiveAuctionBidButton : ARFlatButton {
         case .InActive(let lotState):
             switch lotState {
             case .UpcomingLot:
-                delegate?.bidButtonRequestedSubmittingMaxBid(self)
+                delegate?.bidButtonRequestedSubmittingMaxBid?(self)
 
             default: break
             }
@@ -50,67 +91,169 @@ class LiveAuctionBidButton : ARFlatButton {
         enabled = false
     }
 
+
+    private var _previousButtonState: LiveAuctionBidButtonState?
+    private var _outbidAnimationIsInProgress = false
+    private var _mostRecentlyReceivedButtonStateDuringAnimation: LiveAuctionBidButtonState?
+
+    private func attemptSetupWithState(buttonState: LiveAuctionBidButtonState) {
+        // We want to update our _previousButtonState if it is distinct from our new buttonState.
+        defer {
+            switch _previousButtonState {
+            case .None:
+                _previousButtonState = buttonState
+            case .Some(let previousButtonState) where previousButtonState != buttonState:
+                _previousButtonState = buttonState
+            default: break
+            }
+        }
+
+        // If our outbid animation is in progress, we want to skip the new update, but keep track
+        // of the button state so we can use it after the animation completes.
+        guard _outbidAnimationIsInProgress == false else {
+            _mostRecentlyReceivedButtonStateDuringAnimation = buttonState
+            return
+        }
+
+        // If, during our outbid animation, we received a buttonState, we're going to use _that_ state
+        // instead of the state we had when we started the animation.
+        // Example: User is highest bidder, then gets sniped. During the outbid animation, the lot closes (improbable, but possible!).
+        //          This would keep track of the .InActive button state and use that when the animation is completed.
+        if let mostRecentlyReceivedButtonStateDuringAnimation = _mostRecentlyReceivedButtonStateDuringAnimation {
+            _mostRecentlyReceivedButtonStateDuringAnimation = nil
+            attemptSetupWithState(mostRecentlyReceivedButtonStateDuringAnimation)
+            return
+        }
+
+        setupWithState(buttonState)
+    }
+
+    private func setupUI(title: String, background: UIColor = .blackColor(), border: UIColor? = nil, textColor: UIColor = UIColor.whiteColor(), applySpinAnimation: Bool = false) {
+        [UIControlState.Normal, .Disabled].forEach { state in
+            setTitle(title.uppercaseString, forState: state)
+            setTitleColor(textColor, forState: state)
+
+            let borderColor = border ?? background
+            setBorderColor(borderColor, forState: state, animated: false)
+            setBackgroundColor(background, forState: state)
+        }
+
+        if applySpinAnimation {
+            addSubview(spinner)
+            spinner.alignCenterWithView(self)
+            spinner.fadeInAnimated(false)
+        } else {
+            self.spinner.removeFromSuperview()
+        }
+    }
+
     private func setupWithState(buttonState: LiveAuctionBidButtonState) {
-
-        let white = UIColor.whiteColor()
-        let purple = UIColor.artsyPurpleRegular()
-        let green = UIColor.artsyGreenRegular()
-        let red = UIColor.artsyRedRegular()
-        let grey = UIColor.artsyGrayRegular()
-
+        let highestBidderSetup = {
+            self.setupUI("You're the highest bidder", background: .whiteColor(), border: green, textColor: green)
+        }
 
         switch buttonState {
+
         // When the lot is live
         case .Active(let state):
-
             switch state {
-            case .TrialUser:
+            case .UserRegistrationRequired:
                 setupUI("Register To Bid")
                 enabled = true
+
+            case .UserRegistrationPending:
+                setupUI("Registration Pending")
+                enabled = false
+
+            case .UserRegistrationClosed:
+                setupUI("Registration Closed")
+                enabled = false
+
             case .LotSold:
                 setupUI("Sold", background: .whiteColor(), border: purple, textColor: purple)
             case .LotWaitingToOpen:
                 setupUI("Waiting for Auctioneer…", background: white, border: grey, textColor: grey)
 
-            case .Biddable(let price):
-                setupUI("Bid \(price)")
-                enabled = true
+            case .Biddable(let price, let currencySymbol):
+                let formattedPrice = price.convertToDollarString(currencySymbol)
+                handleBiddable(buttonState, formattedPrice: formattedPrice)
+
             case .BiddingInProgress:
-                setupUI("Bidding...", background: purple)
-            case .BidSuccess(let outbid):
-                if outbid {
-                    setupUI("Outbid", background: red)
-                } else {
-                    setupUI("You're the highest bidder", background: .whiteColor(), border: green, textColor: green)
-                }
+                setupUI("", background: purple, applySpinAnimation: Bool(ARPerformWorkAsynchronously))
+
+            case .BidBecameMaxBidder, .BidAcknowledged:
+                // If the bid has been acknowledged, we'll bee the max bidder until the next Biddable state, even if that's directly following this one.
+                highestBidderSetup()
 
             case .BidNetworkFail:
                 setupUI("Network Failed", background: .whiteColor(), border: red, textColor: red)
+
+            case .BidOutbid:
+                self.setupUI("Outbid", background: red)
             }
 
 
         // When the lot is not live
-        case .InActive(let state):
+        case let .InActive(state):
             switch state {
-                case .ClosedLot:
-                    setupUI("Bidding Closed")
-                case .LiveLot: break // Should never happen, as it'd be handled above
-                case .UpcomingLot(_):
-                    setupUI("Leave Max Bid")
+            case .ClosedLot(let wasPassed):
+                if wasPassed {
+                    setupUI("Lot Closed", background: .whiteColor(), border: passedGrey, textColor: passedGrey)
+                } else {
+                    setupUI("Sold", background: .whiteColor(), border: purple, textColor: purple)
+                }
+                enabled = false
+            case .LiveLot: break // Should never happen, as it'd be handled above
+            case .UpcomingLot(let isHighestBidder):
+                enabled = true
+                if isHighestBidder {
+                    highestBidderSetup()
+                } else {
+                    setupUI("Bid")
+                }
             }
         }
     }
 
-    private func setupUI(title: String, background: UIColor = .blackColor(), border: UIColor? = nil, textColor: UIColor = UIColor.whiteColor() ) {
-        setTitle(title.uppercaseString, forState: .Normal)
-        setTitleColor(textColor, forState: .Normal)
+    private func handleBiddable(buttonState: LiveAuctionBidButtonState, formattedPrice: String) {
+        // First we check to see if our previous button state was "I'm the highest bidder" and now
+        // our state is "I'm Biddable", then we infer the user got outbid. Let's present a nice animation.
+        if  let previousButtonState = _previousButtonState,
+            case .Active(let previousState) = previousButtonState,
+            case .BidBecameMaxBidder = previousState {
 
-        let borderColor = border ?? background
-        setBorderColor(borderColor, forState: .Normal, animated: false)
-        setBackgroundColor(background, forState: .Normal)
+            if !flashOutbidOnBiddableStateChanges { return }
+            // User was previously the highest bidder but has been outbid
+
+            _outbidAnimationIsInProgress = true
+            enabled = false
+            UIView.animateIf(Bool(ARPerformWorkAsynchronously), duration: ARAnimationQuickDuration, {
+                    self.setupWithState(.Active(biddingState: .BidOutbid))
+                }, completion: { _ in
+                    // Note: we're not using ar_dispatch_after because if the completion and dispatch_after blocks are run synchronously, we'll get a stack overflow 😬
+                    let time = dispatch_time(DISPATCH_TIME_NOW, Int64(self.outbidNoticeDuration * Double(NSEC_PER_SEC)))
+                    dispatch_after(time, dispatch_get_main_queue(), { [weak self] in
+                        self?.enabled = true
+                        self?._outbidAnimationIsInProgress = false
+                        self?.attemptSetupWithState(buttonState) // Once the animation is complete, try to re-apply our original button state.
+                        self?.outbidNoticeAnimationComplete()
+                    })
+            })
+        } else {
+            setupUI("Bid \(formattedPrice)")
+            enabled = true
+        }
     }
 
-    override func intrinsicContentSize() -> CGSize {
-        return CGSize(width: 48, height: 40);
+    private func updateForBidProgress(state: LiveAuctionBiddingProgressState) {
+        setupWithState(.Active(biddingState: state))
     }
 }
+
+
+private let white = UIColor.whiteColor()
+private let purple = UIColor.artsyPurpleRegular()
+private let green = UIColor.artsyGreenRegular()
+private let red = UIColor.artsyRedRegular()
+private let grey = UIColor.artsyGrayRegular()
+private let passedGrey = UIColor(white: 0, alpha: 0.5)

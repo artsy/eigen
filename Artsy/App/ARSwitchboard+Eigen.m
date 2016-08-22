@@ -3,18 +3,22 @@
 // View Controllers
 #import "ARArtworkSetViewController.h"
 #import "ARShowViewController.h"
-#import "ARFairArtistViewController.h"
 #import "ARGeneViewController.h"
 #import "ARArtworkInfoViewController.h"
 #import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARFairGuideContainerViewController.h"
-#import "ARArtistViewController.h"
 #import "ARAuctionWebViewController.h"
 #import "ARFavoritesViewController.h"
 #import "ARFairMapViewController.h"
 #import "ARProfileViewController.h"
+#import "ARMutableLinkViewController.h"
+
+#import <Emission/ARArtistComponentViewController.h>
+#import "ARArtistViewController.h"
+// TODO This does not use the new React based VC yet.
+#import "ARFairArtistViewController.h"
 
 #import "Artsy-Swift.h"
 #import "AROptions.h"
@@ -54,6 +58,19 @@
     } else {
         return [[AuctionViewController alloc] initWithSaleID:saleID];
     }
+}
+
+- (UIViewController *)loadLiveAuction:(NSString *)auctionID
+{
+    /// In order for others to use Live Auctions inside the app, there
+    /// has to be some palce where the knowledge of what the official routes are
+    /// rather than let VCs know about it, this lets it stay inside the switchboard.
+
+    BOOL useStaging = [AROptions boolForOption:ARUseStagingDefault];
+    NSString *echoDomainKey = useStaging ? @"ARLiveAuctionsStagingURLDomain" : @"ARLiveAuctionsURLDomain";
+    NSString *domain = self.echo.routes[echoDomainKey].path;
+    NSURL *liveAuctionsURL = [NSURL URLWithString:[@"https://" stringByAppendingString:domain]];
+    return [self loadURL:[liveAuctionsURL URLByAppendingPathComponent:auctionID]];
 }
 
 - (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
@@ -124,11 +141,16 @@
 
 - (UIViewController<ARFairAwareObject> *)loadArtistWithID:(NSString *)artistID inFair:(Fair *)fair
 {
+    BOOL blacklistUsingReactArtists = self.echo.features[@"DisableReactArtists"] != nil;
+
     if (fair) {
         return [[ARFairArtistViewController alloc] initWithArtistID:artistID fair:fair];
-    } else {
+
+    } else if (blacklistUsingReactArtists) {
         return [[ARArtistViewController alloc] initWithArtistID:artistID];
-        ;
+
+    } else {
+        return (UIViewController<ARFairAwareObject> *)[[ARArtistComponentViewController alloc] initWithArtistID:artistID];
     }
 }
 
@@ -148,16 +170,20 @@
 
 - (ARArtistViewController *)loadArtistWithID:(NSString *)artistID
 {
-    return [[ARArtistViewController alloc] initWithArtistID:artistID];
+    return (ARArtistViewController *)[self loadArtistWithID:artistID inFair:nil];
 }
 
 - (ARFairArtistViewController *)loadArtistInFairWithID:(NSString *)artistID fair:(Fair *)fair
 {
-    return [[ARFairArtistViewController alloc] initWithArtistID:artistID fair:fair];
+    return (ARFairArtistViewController *)[self loadArtistWithID:artistID inFair:fair];
 }
 
+- (ARMutableLinkViewController *)loadUnknownPathWithID:(NSString *)path
+{
+    return [[ARMutableLinkViewController alloc] initWithPath:path];
+}
 
-- (ARProfileViewController *)routeProfileWithID:(NSString *)profileID
+- (ARProfileViewController *)loadProfileWithID:(NSString *)profileID
 {
     return [[ARProfileViewController alloc] initWithProfileID:profileID];
 }

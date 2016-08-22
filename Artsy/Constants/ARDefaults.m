@@ -50,10 +50,10 @@ NSString *const ARPushNotificationFollowArtist = @"eigen-push-followed-artist";
 
         ARUseStagingDefault : @(useStagingDefault),
         ARStagingAPIURLDefault : @"https://stagingapi.artsy.net",
-        ARStagingPhoneWebURLDefault : @"http://m-staging.artsy.net",
+        ARStagingPhoneWebURLDefault : @"https://m-staging.artsy.net",
         ARStagingPadWebURLDefault : @"https://staging.artsy.net",
         ARStagingMetaphysicsURLDefault : @"http://metaphysics-staging.artsy.net",
-        ARStagingLiveAuctionSocketURLDefault : @"https://prediction-staging.artsy.net"
+        ARStagingLiveAuctionSocketURLDefault : @"wss://causality-staging.artsy.net"
     }];
 }
 

@@ -19,14 +19,15 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
     var resetButton: UIButton?
     var userDidCancelClosure: (RefinementOptionsViewController -> Void)?
     var userDidApplyClosure: (R -> Void)?
-    
+
     // this is semantically "private" to guarantee it doesn't outlive this instance of RefinementOptionsViewController
     var tableViewHandler: RefinementOptionsViewControllerTableViewHandler?
     var sortTableView: UITableView?
-    
+
     var viewDidAppearAnalyticsOption: RefinementAnalyticsOption?
     var applyButtonPressedAnalyticsOption: RefinementAnalyticsOption?
-    
+
+    let currencySymbol: String
     // defaultSettings also implies min/max price ranges
     var defaultSettings: R
     var initialSettings: R
@@ -39,10 +40,11 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
 
     var changeStatusBar = false
 
-    init(defaultSettings: R, initialSettings: R, userDidCancelClosure: (RefinementOptionsViewController -> Void)?, userDidApplyClosure: (R -> Void)?) {
+    init(defaultSettings: R, initialSettings: R, currencySymbol: String, userDidCancelClosure: (RefinementOptionsViewController -> Void)?, userDidApplyClosure: (R -> Void)?) {
         self.defaultSettings = defaultSettings
         self.initialSettings = initialSettings
         self.currentSettings = initialSettings
+        self.currencySymbol = currencySymbol
         self.userDidCancelClosure = userDidCancelClosure
         self.userDidApplyClosure = userDidApplyClosure
 
@@ -99,10 +101,10 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
             UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: animated ? .Slide : .None)
         }
     }
-    
+
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         viewDidAppearAnalyticsOption?.sendAsPageView()
     }
 
@@ -126,20 +128,19 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
 class RefinementAnalyticsOption: NSObject {
     let name: String
     let properties: [NSObject: AnyObject]
-    
+
     init(name: String, properties: [NSObject: AnyObject]) {
         self.name = name
         self.properties = properties
-        
+
         super.init()
     }
 
     func sendAsEvent() {
         ARAnalytics.event(name, withProperties: properties)
     }
-    
+
     func sendAsPageView() {
         ARAnalytics.pageView(name, withProperties: properties)
     }
 }
-

@@ -7,12 +7,14 @@ extern NSString *const AROptionsUseVCR;
 extern NSString *const AROptionsSettingsMenu;
 extern NSString *const AROptionsTappingPartnerSendsToPartner;
 extern NSString *const AROptionsShowAnalyticsOnScreen;
+extern NSString *const AROptionsDisableNativeLiveAuctions;
 
 
 @interface AROptions : NSObject
 
 /// Returns all the current options
 + (NSArray *)labsOptions;
++ (NSArray *)labsOptionsThatRequireRestart;
 
 /// Get and set individual options
 + (BOOL)boolForOption:(NSString *)option;

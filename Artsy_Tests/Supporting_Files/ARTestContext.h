@@ -11,7 +11,7 @@ typedef NS_ENUM(NSInteger, ARDeviceType) {
 @interface ARTestContext : NSObject
 
 /// Runs the block in the specified device context
-+ (void)useDevice:(enum ARDeviceType)device :(void (^)(void))block;
++ (void)useDevice:(enum ARDeviceType)device:(void (^)(void))block;
 
 /// Stubs the device related Apple objects
 + (void)stubDevice:(enum ARDeviceType)device;
@@ -27,5 +27,8 @@ typedef NS_ENUM(NSInteger, ARDeviceType) {
 
 /// Freeze time returned from [ARSystemTime date] class method. Returns the mock so time may be unfrozen.
 + (OCMockObject *)freezeSystemTime:(NSDate *)now;
+
+/// A closure where time is frozen
++ (void)freezeTime:(NSDate *)now closure:(void (^)(void))closure;
 
 @end

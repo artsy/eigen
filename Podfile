@@ -55,6 +55,7 @@ target 'Artsy' do
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
   pod 'EDColor'
+  pod 'SSFadingScrollView', :git => 'https://github.com/alloy/SSFadingScrollView.git', :branch => 'add-axial-support'
 
   # Core owned by Artsy
   pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView'
@@ -79,6 +80,8 @@ target 'Artsy' do
   pod 'Artsy-UIButtons'
   pod 'Artsy+UIColors'
   pod 'Artsy+UILabels'
+  pod 'Extraction'
+  pod 'Emission'
 
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
@@ -105,8 +108,12 @@ target 'Artsy' do
 
   # Swift pods 🎉
   pod 'Then'
-  pod 'Interstellar/Core', git: 'https://github.com/ashfurrow/Interstellar.git', branch: 'observable-merge'
-  pod 'Socket.IO-Client-Swift'
+  pod 'Interstellar/Core', git: 'https://github.com/JensRavens/Interstellar.git', branch: 'feature/v2'
+  pod 'Starscream'
+  pod 'SwiftyJSON'
+
+  # Used in Live Auctions to hold user-state 
+  pod 'JWTDecode'
 
   target 'Artsy Tests' do
       inherit! :search_paths
@@ -146,6 +153,11 @@ post_install do |installer|
       config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
       config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
     end
+  end
+
+  react = installer.pods_project.targets.find { |target| target.name == 'React' }
+  react.build_configurations.each do |config|
+    config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = "$(inherited) RCT_DEV=0"
   end
 
   # TODO:

@@ -19,7 +19,7 @@
     self.lineHeight = 3;
 }
 
-- (void)setTitle:(NSString *)artworkTitle date:(NSString *)date;
+- (void)setTitle:(NSString *)artworkTitle date:(NSString *)date
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setLineSpacing:self.lineHeight];

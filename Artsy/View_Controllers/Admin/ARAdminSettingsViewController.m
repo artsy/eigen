@@ -4,6 +4,7 @@
 
 #import "ARAdminSettingsViewController.h"
 #import "ARQuicksilverViewController.h"
+#import "ARInternalMobileWebViewController.h"
 
 #import "ARDefaults.h"
 #import "ARGroupedTableViewCell.h"
@@ -44,14 +45,16 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     NSString *gitCommitRevision = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"GITCommitRev"];
 
     miscSectionData.headerTitle = [NSString stringWithFormat:@"%@ v%@, build %@ (%@)", name, version, build, gitCommitRevision];
-
-    [miscSectionData addCellData:[self generateLogOut]];
-    [miscSectionData addCellData:[self generateOnboarding]];
-    [miscSectionData addCellData:[self generateFeedback]];
-    [miscSectionData addCellData:[self generateRestart]];
-    [miscSectionData addCellData:[self generateStagingSwitch]];
-    [miscSectionData addCellData:[self generateQuicksilver]];
-    [miscSectionData addCellData:[self generateOnScreenAnalytics]];
+    [miscSectionData addCellDataFromArray:@[
+        [self generateLogOut],
+        [self generateOnboarding],
+        [self generateFeedback],
+        [self generateRestart],
+        [self generateStagingSwitch],
+        [self generateQuicksilver],
+        [self generateShowAllLiveAuctions],
+        [self generateOnScreenAnalytics]
+    ]];
 
 #if !TARGET_IPHONE_SIMULATOR
     [miscSectionData addCellData:[self generateNotificationTokenPasteboardCopy]];
@@ -162,6 +165,21 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     return crashCellData;
 }
 
+- (ARCellData *)generateShowAllLiveAuctions
+{
+    ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
+        cell.textLabel.text = @"Show all live auctions";
+    }];
+
+    [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+        NSURL *url = [NSURL URLWithString:@"https://live-staging.artsy.net"];
+        ARInternalMobileWebViewController *webVC = [[ARInternalMobileWebViewController alloc] initWithURL:url];
+        [self.navigationController pushViewController:webVC animated:YES];
+    }];
+    return crashCellData;
+}
+
 - (ARCellData *)generateOnScreenAnalytics
 {
     ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
@@ -205,16 +223,24 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     NSArray *options = [AROptions labsOptions];
     for (NSInteger index = 0; index < options.count; index++) {
         NSString *title = options[index];
+        BOOL requiresRestart = [[AROptions labsOptionsThatRequireRestart] indexOfObject:title] != NSNotFound;
 
         ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
         [cellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-            cell.textLabel.text = title;
+            cell.textLabel.text = requiresRestart ? [title stringByAppendingString:@" (restarts)"] : title;
             cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:[AROptions boolForOption:title]];
         }];
 
         [cellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
             BOOL currentSelection = [AROptions boolForOption:title];
             [AROptions setBool:!currentSelection forOption:title];
+
+            if (requiresRestart) {
+                // Show checkmark.
+                ar_dispatch_after(1, ^{
+                    exit(0);
+                });
+            }
 
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             [(ARAnimatedTickView *)cell.accessoryView setSelected:!currentSelection animated:YES];

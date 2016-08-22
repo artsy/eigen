@@ -305,12 +305,12 @@
         controller = [switchboard loadGeneWithID:result.modelID];
 
     } else if (result.model == [Profile class]) {
-        controller = [switchboard routeProfileWithID:result.modelID];
+        controller = [switchboard loadProfileWithID:result.modelID];
     } else if (result.model == [SiteFeature class]) {
         NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);
         controller = [switchboard loadPath:path];
     }
-    
+
     if (controller) {
         [self.ar_TopMenuViewController pushViewController:controller animated:ARPerformWorkAsynchronously];
     }

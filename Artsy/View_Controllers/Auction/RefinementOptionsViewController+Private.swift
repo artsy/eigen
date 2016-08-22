@@ -6,7 +6,7 @@ import Then
 import MARKRangeSlider
 import ARAnalytics
 
-private let CellIdentifier = "Cell"
+private let cellIdentifier = "Cell"
 
 extension RefinementOptionsViewController {
     func setupViews() {
@@ -31,8 +31,8 @@ extension RefinementOptionsViewController {
 
     func updatePriceLabels() {
         guard let priceRange = currentSettings.priceRange else { return }
-        minLabel?.text = priceRange.min.metricSuffixify()
-        maxLabel?.text = priceRange.max.metricSuffixify()
+        minLabel?.text = priceRange.min.metricSuffixify(currencySymbol)
+        maxLabel?.text = priceRange.max.metricSuffixify(currencySymbol)
     }
 
     func updateButtonEnabledStates() {
@@ -76,7 +76,7 @@ private extension RefinementOptionsViewController {
             changeSettingsClosure: { [unowned self] indexPath in self.currentSettings = self.currentSettings.refineSettingsWithSelectedIndexPath(indexPath) })
 
         let tableView = UITableView().then {
-            $0.registerClass(RefinementOptionsTableViewCell.self, forCellReuseIdentifier: CellIdentifier)
+            $0.registerClass(RefinementOptionsTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
             $0.scrollEnabled = false
             $0.separatorColor = .artsyGrayRegular()
             $0.separatorInset = UIEdgeInsetsZero
@@ -197,7 +197,7 @@ enum SliderPriorities: String {
     case StayCenteredOverThumb = "425"
 }
 
-class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate  {
+class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
     let numberOfSections: Int
     let numberOfRowsInSection: Int -> Int
     let titleForRowAtIndexPath: NSIndexPath -> String
@@ -229,7 +229,7 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
 
         cell.textLabel?.text = titleForRowAtIndexPath(indexPath)
 
@@ -245,7 +245,7 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
+
         let oldCheckedCellIndices = selectedRowsInSection(indexPath.section)
 
         if allowsMultipleSelectionInSection(indexPath.section) {
@@ -256,10 +256,10 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
                 let formerlySelected = tableView.cellForRowAtIndexPath(oldCheckedCellIndex)
                 formerlySelected?.checked = false
             }
-            
+
             // Change setting.
             changeSettingsClosure(indexPath)
-            
+
             // Check newly selected cell.
             let selectedCell = tableView.cellForRowAtIndexPath(indexPath)
             selectedCell?.checked = true

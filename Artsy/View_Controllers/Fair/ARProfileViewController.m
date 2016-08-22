@@ -16,6 +16,7 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
+
 @interface ARProfileViewController () <ARMenuAwareViewController>
 
 @property (nonatomic, strong, readwrite) NSString *profileID;
@@ -44,8 +45,8 @@
 {
     [super viewDidLoad];
 
-    __weak typeof (self) wself = self;
-        // On the first viewWillAppear:
+    __weak typeof(self) wself = self;
+    // On the first viewWillAppear:
     [[[self rac_signalForSelector:@selector(viewWillAppear:)] take:1] subscribeNext:^(id _) {
         __strong typeof (wself) sself = wself;
         [sself loadProfile];

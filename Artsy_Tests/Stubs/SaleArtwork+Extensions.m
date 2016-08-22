@@ -8,7 +8,8 @@
         @"artworkNumPositions" : @(5),
         @"saleHighestBid" : bid,
         @"minimumNextBidCents" : @(11000000),
-        @"reserveStatus" : @(status)
+        @"reserveStatus" : @(status),
+        @"currencySymbol" : @"$"
     }];
 }
 @end

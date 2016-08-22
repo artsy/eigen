@@ -157,7 +157,6 @@ static CGFloat UpwardScrollDistanceForShowing = 160;
         self.lastDirection = ARScrollDirectionUp;
     } else if (self.lastOffset == 0) {
         self.lastDirection = ARScrollDirectionDown;
-
     } else {
         CGFloat delta = offset - self.lastOffset;
         self.lastDirection = delta > 0 ? ARScrollDirectionDown : ARScrollDirectionUp;
