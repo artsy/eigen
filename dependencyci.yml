@@ -7,3 +7,6 @@ platforms:
     jade:
       tests:
         deprecated: skip
+    firebase:
+      tests:
+        unlicensed: skip
