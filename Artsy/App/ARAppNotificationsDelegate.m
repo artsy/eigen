@@ -19,11 +19,6 @@
 
 @implementation ARAppNotificationsDelegate
 
-+ (void)load
-{
-    [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[self alloc] init];
-}
-
 #pragma mark -
 #pragma mark Local Push Notification Alerts
 

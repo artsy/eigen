@@ -118,6 +118,8 @@ static ARAppDelegate *_sharedInstance = nil;
     // one of the first things that happen.
     [self setupAnalytics];
 
+    [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[ARAppNotificationsDelegate alloc] init];
+
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.viewController = [ARTopMenuViewController sharedController];
     self.window.rootViewController = self.viewController;
