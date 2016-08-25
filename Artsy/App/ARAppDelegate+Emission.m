@@ -10,6 +10,7 @@
 #import "ARTopMenuViewController.h"
 #import "ARAppConstants.h"
 #import "ARMenuAwareViewController.h"
+#import "ARAppNotificationsDelegate.h"
 
 #import <Aerodramus/Aerodramus.h>
 #import <Emission/AREmission.h>
@@ -82,6 +83,11 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
             // TODO: Can’t optimistically change the view state before the request, because a RCTResponseSenderBlock may
             //       only be invoked once.
             ArtistSetFollowStatus(artistID, following, block);
+            if (following) {
+                // Ask for push notification permission, if not already
+                ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+                [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
+            }
         }
     };
 

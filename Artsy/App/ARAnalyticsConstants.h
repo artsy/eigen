@@ -40,6 +40,11 @@ extern NSString *const ARAnalyticsOnboardingSignupStarted;
 extern NSString *const ARAnalyticsOnboardingSignupSuccess;
 extern NSString *const ARAnalyticsOnboardingSignupFailed;
 
+// Push notifications
+
+extern NSString *const ARAnalyticsPushNotificationLocal;
+extern NSString *const ARAnalyticsPushNotificationApple;
+
 // These are used whenever there is a button to tap
 // for sign in, or create account
 

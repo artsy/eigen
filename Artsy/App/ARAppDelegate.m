@@ -118,6 +118,8 @@ static ARAppDelegate *_sharedInstance = nil;
     // one of the first things that happen.
     [self setupAnalytics];
 
+    [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[ARAppNotificationsDelegate alloc] init];
+
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.viewController = [ARTopMenuViewController sharedController];
     self.window.rootViewController = self.viewController;
@@ -165,7 +167,7 @@ static ARAppDelegate *_sharedInstance = nil;
         // In case the user has not signed-in yet, this will register as an anonymous device on the Artsy API. Later on,
         // when the user does sign-in, this will be ran again and the device will be associated with the user account.
         if (!showOnboarding) {
-            [self.remoteNotificationsDelegate registerForDeviceNotifications];
+            [self.remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextLaunch];
             if ([User currentUser]) {
                 [ARSpotlight indexAllUsersFavorites];
             };
@@ -248,7 +250,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
     if (!cancelledSignIn) {
         ar_dispatch_main_queue(^{
-            [self.remoteNotificationsDelegate registerForDeviceNotifications];
+            [self.remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
             if ([User currentUser]) {
                 [self.remoteNotificationsDelegate fetchNotificationCounts];
                 [ARSpotlight indexAllUsersFavorites];
