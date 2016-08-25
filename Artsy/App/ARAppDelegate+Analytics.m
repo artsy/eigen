@@ -758,31 +758,59 @@
                     ARAnalyticsDetails: @[
                         @{
                             ARAnalyticsEventName: ARAnalyticsPushNotificationLocal,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(registerUserInterest:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id class, NSArray *_){
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(registerUserInterest)),
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                ARAppNotificationsRequestContext context = ((ARAppNotificationsDelegate *)controller).requestContext;
+                                NSString *analyticsContext = @"";
+                                if (context == ARAppNotificationsRequestContextArtistFollow) {
+                                    analyticsContext = @"artist follow";
+                                } else if (context == ARAppNotificationsRequestContextOnboarding) {
+                                    analyticsContext = @"onboarding";
+                                } else if (context == ARAppNotificationsRequestContextLaunch) {
+                                    analyticsContext = @"launch";
+                                }
+                                
                                 return @{
                                          @"outcome"      : @"yes",
-                                         @"context_type" : @"onboarding"
+                                         @"context_type" : analyticsContext
                                          };
                             }
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsPushNotificationLocal,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(registerUserDisinterest:)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(registerUserDisinterest)),
                             ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                ARAppNotificationsRequestContext context = ((ARAppNotificationsDelegate *)controller).requestContext;
+                                NSString *analyticsContext = @"";
+                                if (context == ARAppNotificationsRequestContextArtistFollow) {
+                                    analyticsContext = @"artist follow";
+                                } else if (context == ARAppNotificationsRequestContextOnboarding) {
+                                    analyticsContext = @"onboarding";
+                                } else if (context == ARAppNotificationsRequestContextLaunch) {
+                                    analyticsContext = @"launch";
+                                }
                                 return @{
                                          @"outcome"      : @"cancel",
-                                         @"context_type" : @"onboarding"
+                                         @"context_type" : analyticsContext
                                          };
                             }
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsPushNotificationApple,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(application:didRegisterForRemoteNotificationsWithDeviceToken:)),
-                            ARAnalyticsProperties: ^NSDictionary*(id class, NSArray *_){
+                            ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                ARAppNotificationsRequestContext context = ((ARAppNotificationsDelegate *)controller).requestContext;
+                                NSString *analyticsContext = @"";
+                                if (context == ARAppNotificationsRequestContextArtistFollow) {
+                                    analyticsContext = @"artist follow";
+                                } else if (context == ARAppNotificationsRequestContextOnboarding) {
+                                    analyticsContext = @"onboarding";
+                                } else if (context == ARAppNotificationsRequestContextLaunch) {
+                                    analyticsContext = @"launch";
+                                }
                                 return @{
                                          @"outcome"      : @"yes",
-                                         @"context_type" : @"onboarding"
+                                         @"context_type" : analyticsContext
                                          };
                             }
                         },
@@ -790,9 +818,18 @@
                             ARAnalyticsEventName: ARAnalyticsPushNotificationApple,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(application:didFailToRegisterForRemoteNotificationsWithError:)),
                             ARAnalyticsProperties: ^NSDictionary*(id controller, NSArray *_){
+                                ARAppNotificationsRequestContext context = ((ARAppNotificationsDelegate *)controller).requestContext;
+                                NSString *analyticsContext = @"";
+                                if (context == ARAppNotificationsRequestContextArtistFollow) {
+                                    analyticsContext = @"artist follow";
+                                } else if (context == ARAppNotificationsRequestContextOnboarding) {
+                                    analyticsContext = @"onboarding";
+                                } else if (context == ARAppNotificationsRequestContextLaunch) {
+                                    analyticsContext = @"launch";
+                                }
                                 return @{
                                          @"outcome"      : @"cancel",
-                                         @"context_type" : @"onboarding"
+                                         @"context_type" : analyticsContext
                                          };
                             }
                         },

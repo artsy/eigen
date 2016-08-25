@@ -242,7 +242,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
     // If we're now following the artist, show push notification prompt if needed
     if (self.followableNetwork.following) {
         ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
-        [remoteNotificationsDelegate registerForDeviceNotifications];
+        [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
     }
 }
 

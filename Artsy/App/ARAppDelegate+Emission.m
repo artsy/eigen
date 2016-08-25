@@ -86,7 +86,7 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
             if (following) {
                 // Ask for push notification permission, if not already
                 ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
-                [remoteNotificationsDelegate registerForDeviceNotifications];
+                [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
             }
         }
     };
