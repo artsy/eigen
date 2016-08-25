@@ -4,8 +4,8 @@
 
 1. [Install VS Code](https://code.visualstudio.com).
 2. Install the React Native CLI, globally: `npm install -g react-native-cli`
-1. Install the [React Native Extension](https://github.com/Microsoft/vscode-react-native)
-1. Next install these extensions: ESLint, View Node Package, Flow Language, npm Intellisense, Spelling and Grammar Checker.
+1. Install the [React Native Tools](https://github.com/Microsoft/vscode-react-native) extension.
+1. Next install these extensions: ESLint, View Node Package, Flow Language Support, npm Intellisense, Spelling and Grammar Checker.
 1. In order to launch VSCode from your terminal, in VS Code install the command line tools via the command: "Install 'code' command in PATH"/
 
 Note, if you are using [nvm](https://github.com/creationix/nvm), I strongly recommend always opening VS code from the terminal to ensure all the environment variables are correct.
@@ -28,20 +28,12 @@ This screenshot also includes a code font with JS ligatures, called [Fira Code](
 
 ### Starting React-Native Services
 
-_note:_ this is not 100% where I want this, but it's at a "works well" stage. I'd like to turn these into one command eventually.
-
 You need to run two services. These get tied to your VS Code window, so when you close the window, the processes will be closed too.
 
-With all React-Native apps, you need to run the packager. The packager's job is to transpile code, and to track changes for hot-reloading. To run the packager, use the command - "React: Start Packager".
+* With all React-Native apps, you need to run the packager. The packager's job is to transpile code, and to track changes for hot-reloading.
+* To be able to use Storybook, you need to runthe Storybook server.
 
-You should be writing stories for your components, to ensure the storybook server is running you need to run the storybook task. To run this use the command "Run Task" press enter, then "Start Storyboard Server".
-
-To show/hide these logs, press `cmd + j`.
-
-Summary, ensure:
-
-* Packager is running - "React: Start Packager"
-* Storybooks is running - "Run Task" - "Start Storyboard Server"
+Both these services will get launched with `Tasks: Run Build Task`, or `cmd + shift + b`. To show/hide these logs, press `cmd + j`.
 
 ### Debugging
 
@@ -87,7 +79,7 @@ npm install typings --global
 typings install
 ```
 
-This currently will give you type data for react, react-native, lodast and jest. You can see an up-to-date list in [../typings.json](../typings.json).
+This currently will give you type data for react, react-native, lodash and jest. You can see an up-to-date list in [../typings.json](../typings.json).
 
 ### Recommended Changes for Keyboard Shortcuts
 
