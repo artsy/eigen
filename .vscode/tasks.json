@@ -6,8 +6,9 @@
   "suppressTaskName": true,
   "tasks": [
     {
-      "taskName": "Start Storybook Server",
-      "args": ["run", "storybook"]
-    },
+      "taskName": "Start Packager and Storybook Server",
+      "isBuildCommand": true,
+      "args": ["start"]
+    }
   ]
 }
