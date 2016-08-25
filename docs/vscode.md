@@ -31,7 +31,7 @@ This screenshot also includes a code font with JS ligatures, called [Fira Code](
 You need to run two services. These get tied to your VS Code window, so when you close the window, the processes will be closed too.
 
 * With all React-Native apps, you need to run the packager. The packager's job is to transpile code, and to track changes for hot-reloading.
-* To be able to use Storybook, you need to runthe Storybook server.
+* To be able to use Storybook, you need to run the Storybook server.
 
 Both these services will get launched with `Tasks: Run Build Task`, or `cmd + shift + b`. To show/hide these logs, press `cmd + j`.
 
