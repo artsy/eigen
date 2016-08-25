@@ -6,7 +6,7 @@
 #import "ARTextFieldWithPlaceholder.h"
 #import "ARSecureTextFieldWithPlaceholder.h"
 #import "ARUserManager.h"
-#import "ARSpinner.h"
+#import <Extraction/ARSpinner.h>
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "UIView+HitTestExpansion.h"

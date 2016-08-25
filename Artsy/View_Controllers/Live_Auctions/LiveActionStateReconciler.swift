@@ -22,25 +22,31 @@ State update includes:
 
 */
 
+typealias LotEventJSON = [[String: AnyObject]]
+
 protocol LiveAuctionStateReconcilerType {
     func updateState(state: AnyObject)
-    var newLotsSignal: Observable<[LiveAuctionLotViewModelType]> { get }
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> { get }
-    var saleSignal: Observable<LiveAuctionViewModelType> { get }
+    func processLotEventBroadcast(broadcast: AnyObject)
+    func processCurrentLotUpdate(update: AnyObject)
+
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
+    var debugAllEventsSignal: Observable<LotEventJSON> { get }
 }
 
 class LiveAuctionStateReconciler: NSObject {
     typealias LotID = String
 
-    // Updated when initial lots are ready, and if at any point we need to replace the lots completely (very rare, only if a lot is added/removed from sale).
-    let newLotsSignal = Observable<[LiveAuctionLotViewModelType]>()
+    private let saleArtworks: [LiveAuctionLotViewModel]
 
-    private let _currentLotSignal = Observable<LiveAuctionLotViewModel>()
+    init(saleArtworks: [LiveAuctionLotViewModel]) {
+        self.saleArtworks = saleArtworks
+        super.init()
+    }
+
+    private let _currentLotSignal = Observable<LiveAuctionLotViewModel?>(nil)
+    private let _debugAllEventsSignal = Observable<LotEventJSON>(options: [])
+
     private var _currentLotID: String?
-    private let _saleSignal = Observable<LiveAuctionViewModel>()
-
-    private var _state = [LotID: LiveAuctionLotViewModel]()
-    private var _sale: LiveAuctionViewModel?
 }
 
 
@@ -48,136 +54,120 @@ private typealias PublicFunctions = LiveAuctionStateReconciler
 extension PublicFunctions: LiveAuctionStateReconcilerType {
 
     func updateState(state: AnyObject) {
-        // TODO: don't fail silently on bad input
-        guard let lotsJSON = state["lots"] as? ObjectJSON else { return }
-        guard let saleJSON = state["sale"] as? [String: AnyObject] else { return }
-        guard let orderedLotIDs = saleJSON["lots"] as? [String] else { return }
-        guard let currentLotID = state["currentLotId"] as? String else { return }
-        guard let eventsJSON = state["lotEvents"] as? ObjectJSON  else { return }
+        // TODO: how to handle changes to start/end times? Necessary at all?
 
-        // Convert the ordered lot IDs into an ordered list of lots in JSON form.
-        let sortedLotsJSON = orderedLotIDs.flatMap { lotID in
-            return lotsJSON[lotID]
+        guard let fullLotStateById = state["fullLotStateById"] as? [String: [String: AnyObject]] else { return }
+        let currentLotID = state["currentLotId"] as? String
+
+        for lot in saleArtworks {
+            // TODO: How should we handle failed parsing? Not silently, that's for sure!
+            guard let json = fullLotStateById[lot.liveAuctionLotID] else { continue }
+            guard let derivedLotState = json["derivedLotState"] as? [String: AnyObject] else { continue }
+            guard let eventHistory = json["eventHistory"] as? [[String: AnyObject]] else { continue } // TODO move to events
+
+            updateUserSpecificLotState(lot, derivedState: derivedLotState)
+            updateLotWithEvents(lot, lotEvents: eventHistory)
+            updateLotDerivedState(lot, derivedState: derivedLotState)
         }
 
-        let replacedLots = createOrUpdateLots(sortedLotsJSON, sortedLotIDs: orderedLotIDs)
-        updateLotsWithEvents(eventsJSON, sortedLotsJSON: sortedLotsJSON, sortedLotIDs: orderedLotIDs)
-        updateCurrentLots(replacedLots, sortedLotsIDs: orderedLotIDs)
+        // TODO: This is always nil for some reason, but regardless, the UI looks terrible if it is nil. It will be nil sometimes in production, so we should operate without it!
         updateCurrentLotWithIDIfNecessary(currentLotID)
-        updateSaleIfNecessary(saleJSON)
     }
 
-    var currentLotSignal: Observable<LiveAuctionLotViewModelType> {
-        return _currentLotSignal.map { $0 as LiveAuctionLotViewModelType }
-    }
-    
-    var saleSignal: Observable<LiveAuctionViewModelType> {
-        return _saleSignal.map { $0 as LiveAuctionViewModelType }
+    func processLotEventBroadcast(broadcast: AnyObject) {
+
+        guard let
+            json = broadcast as? [String: AnyObject],
+            events = json["events"] as? [String: [String: AnyObject]],
+            lotID = events.values.first?["lotId"] as? String,
+            lot = saleArtworks.filter({ $0.lotID == lotID }).first,
+            derivedLotState = json["derivedLotState"] as? [String: AnyObject],
+            fullEventOrder = json["fullEventOrder"] as? [String] else { return }
+
+        updateUserSpecificLotState(lot, derivedState: derivedLotState)
+        updateLotWithEvents(lot, lotEvents: Array(events.values), fullEventOrder: fullEventOrder)
+        updateLotDerivedState(lot, derivedState: derivedLotState)
     }
 
+    func processCurrentLotUpdate(update: AnyObject) {
+        let currentLotID = update["lotId"] as? String
+        updateCurrentLotWithIDIfNecessary(currentLotID)
+    }
+
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
+        return _currentLotSignal.map { $0 as LiveAuctionLotViewModelType? }
+    }
+
+    var debugAllEventsSignal: Observable<LotEventJSON> {
+        return _debugAllEventsSignal
+    }
 }
 
 
 private typealias PrivateFunctions = LiveAuctionStateReconciler
 private extension PrivateFunctions {
-    typealias ObjectJSON = [String: [String: AnyObject]]
-    typealias NewEventIDs = Set<String>
 
-    /// Returns true iff we've had to replace all lots.
-    func createOrUpdateLots(sortedLotsJSON: [[String: AnyObject]], sortedLotIDs: [LotID]) -> Bool {
-        let replaced: Bool
-        let sortedLotViewModels = sortedLotViewModelsFromLotIDs(sortedLotIDs)
+    func updateUserSpecificLotState(lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
 
-        // If we have same lot counts, we can do a linear scan to update; otherwise, we replace.
-        if sortedLotsJSON.count == sortedLotViewModels.count {
-            // Loop through our json and in-memory models pairwise, updating the reserve status and asking price.
-            replaced = false
+        let winningBidEventID = derivedState["winningBidEventId"] as? String
+        lot.updateWinningBidEventID(winningBidEventID)
 
-            for (json, lotViewModel) in zip(sortedLotsJSON, sortedLotViewModels) {
-                guard let reserveStatusString = json["reserveStatus"] as? String else { continue }
-                guard let askingPrice = json["onlineAskingPriceCents"] as? NSNumber else { continue }
+        let bidder = derivedState["sellingToBidder"] as? [String: AnyObject]
+        let bidderID = bidder?["bidderId"] as? String
+        lot.updateSellingToBidder(bidderID)
+    }
 
-                lotViewModel.updateReserveStatus(reserveStatusString)
-                lotViewModel.updateOnlineAskingPrice(askingPrice.unsignedLongLongValue)
+    func updateLotDerivedState(lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
+
+        if let reserveStatusString = derivedState["reserveStatus"] as? String {
+            lot.updateReserveStatus(reserveStatusString)
+        }
+
+        // OK, this looks weird. Let's unpack.
+        // derivedState["askingPriceCents"] is an AnyObject?, and casting it conditionally to a UInt64 always fails.
+        // Instead, we'll use the UInt64(_ text: String) initialzer, which means we need to unwrap the AnyObject? and
+        // then stick it in a string so it's not "Optional(23000)", then initialize the UInt64
+        if let extractedAskingPrice = derivedState["askingPriceCents"],
+           let askingPrice = UInt64("\(extractedAskingPrice)") {
+            lot.updateOnlineAskingPrice(askingPrice)
+        }
+
+        if let biddingStatus = derivedState["biddingStatus"] as? String {
+            let soldStatus = derivedState["soldStatus"] as? String
+            let passed = soldStatus == "Passed"
+
+            lot.updateBiddingStatus(biddingStatus, wasPassed: passed)
+        }
+    }
+
+    func updateLotWithEvents(lot: LiveAuctionLotViewModel, lotEvents: [[String: AnyObject]], fullEventOrder: [String]? = nil) {
+        // TODO: fullEventOrder, if specified, yields the _exact_ history and order of events. We need to remove any local events not present in fullEventOrder in case they were undo'd by the operator.
+
+        let existingEventIds = Set(lot.eventIDs)
+        let newEvents = lotEvents.filter { existingEventIds.contains($0["eventId"] as? String ?? "") == false }
+
+        if ARDeveloperOptions.keyExists("log_live_events") {
+            for event in newEvents {
+                print("Event: \(event)\n\n")
             }
-
-        } else {
-            replaced = true
-            // Create new lots, and corresponding view models
-            let newViewModels = sortedLotsJSON
-                .map { LiveAuctionLot(JSON: $0) }
-                .map { LiveAuctionLotViewModel(lot: $0) }
-
-            // Note: we're not adding event IDs here to the model we'll do that in updateLotsWithEvents()
-
-            // Update state by zipping lots/view models, and then reducing them into a dictionary to satisfy _state type.
-            self._state = newViewModels.reduce([:], combine: { (dict, lotViewModel) -> [LotID: LiveAuctionLotViewModel] in
-                return dict + [lotViewModel.liveAuctionLotID: lotViewModel]
-            })
         }
+        _debugAllEventsSignal.update(newEvents)
 
-        return replaced
+        // TODO: is this a good idea? This will remove events we don't know yet
+        let events = newEvents.flatMap { LiveEvent(JSON: $0) }
+        lot.addEvents(events)
     }
 
-    func updateLotsWithEvents(lotEvents: ObjectJSON, sortedLotsJSON: [[String: AnyObject]], sortedLotIDs: [LotID]) {
-
-        let sortedLotViewModels = sortedLotViewModelsFromLotIDs(sortedLotIDs)
-
-        zip(sortedLotsJSON, sortedLotViewModels).forEach { (lotJSON, viewModel) in
-            let jsonEventIDs = lotJSON["events"] as? [String] ?? []
-            let newEventIDs = jsonEventIDs.subarrayFromFirstDifference(viewModel.eventIDs)
-
-            let newEvents = newEventIDs
-                .flatMap { eventID in
-                    return lotEvents[eventID]
-                }
-                .flatMap { eventJSON in
-                    return LiveEvent(JSON: eventJSON)
-                }
-
-            viewModel.addEvents(newEvents)
+    func updateCurrentLotWithIDIfNecessary(newCurrentLotID: LotID?) {
+        guard let newCurrentLotID = newCurrentLotID else {
+            return _currentLotSignal.update(nil)
         }
-
-    }
-
-    func updateCurrentLots(replaced: Bool, sortedLotsIDs: [String]) {
-        guard replaced else { return }
-
-        let sortedLots = sortedLotsIDs.flatMap { lotID in
-            return _state[lotID] as? LiveAuctionLotViewModelType
-        }
-
-        newLotsSignal.update(sortedLots)
-    }
-
-    func updateCurrentLotWithIDIfNecessary(newCurrentLotID: LotID) {
         guard newCurrentLotID != _currentLotID ?? "" else { return }
 
-        if let currentLotViewModel = _state[newCurrentLotID] {
-            self._currentLotSignal.update(currentLotViewModel)
-            _currentLotID = newCurrentLotID
-        }
-    }
+        guard let newCurrentViewModel = saleArtworks.filter({ $0.lotID == newCurrentLotID }).first else { return }
 
-    func updateSaleIfNecessary(saleJSON: [String: AnyObject]) {
-        let newSale = LiveSale(JSON: saleJSON)
-        let currentLotID = saleJSON["currentLotId"] as? String
-
-        // The first time we get a sale, we need to create a view model.
-        guard let oldSale = _sale else {
-            let saleViewModel = LiveAuctionViewModel(sale: newSale, currentLotID: currentLotID)
-            self._sale = saleViewModel
-            self._saleSignal.update(saleViewModel)
-            return
-        }
-
-        oldSale.updateWithNewSale(newSale, currentLotID: currentLotID)
-    }
-
-    func sortedLotViewModelsFromLotIDs(lotIDs: [LotID]) -> [LiveAuctionLotViewModel] {
-        return lotIDs.flatMap { lotID in
-            return _state[lotID]
-        }
+        self._currentLotSignal.update(newCurrentViewModel)
+        _currentLotID = newCurrentLotID
     }
 }
 

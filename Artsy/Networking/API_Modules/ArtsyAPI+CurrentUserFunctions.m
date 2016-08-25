@@ -18,18 +18,15 @@
     [self getRequest:request parseIntoAClass:[User class] success:success failure:failure];
 }
 
-+ (void)getCurrentUserRegistrationStatusForSale:(NSString *)saleID success:(void (^)(ArtsyAPISaleRegistrationStatus status))success failure:(void (^)(NSError *error))failure
++ (void)getCurrentUserBiddersForSale:(NSString *)saleID success:(void (^)(NSArray<Bidder *> *))success failure:(void (^)(NSError *error))failure
 {
     if ([[ARUserManager sharedManager] currentUser] == nil) {
-        success(ArtsyAPISaleRegistrationStatusNotLoggedIn);
+        success(@[]);
         return;
     }
 
     NSURLRequest *request = [ARRouter biddersRequestForSale:saleID];
-    [self getRequest:request parseIntoAnArrayOfClass:[Bidder class] success:^(id bidders) {
-        ArtsyAPISaleRegistrationStatus status = ([bidders count] > 0) ? ArtsyAPISaleRegistrationStatusRegistered : ArtsyAPISaleRegistrationStatusNotRegistered;
-        success(status);
-    } failure:failure];
+    [self getRequest:request parseIntoAnArrayOfClass:[Bidder class] success:success failure:failure];
 }
 
 

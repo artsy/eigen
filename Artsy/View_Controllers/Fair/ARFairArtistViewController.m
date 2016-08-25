@@ -23,6 +23,7 @@
 #import "ARSwitchboard+Eigen.h"
 #import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
+#import "ARAppNotificationsDelegate.h"
 
 #import "UIDevice-Hardware.h"
 
@@ -237,6 +238,12 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
         return;
     }
     self.followableNetwork.following = !self.followableNetwork.following;
+
+    // If we're now following the artist, show push notification prompt if needed
+    if (self.followableNetwork.following) {
+        ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+        [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
+    }
 }
 
 #pragma mark - Public Methods

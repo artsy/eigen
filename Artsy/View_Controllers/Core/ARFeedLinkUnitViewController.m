@@ -81,7 +81,8 @@
             },
             ARNavigationButtonHandlerKey: ^(UIButton *sender) {
                 __strong typeof (wself) sself = wself;
-                UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:featuredLink.href];
+                NSString *strippedAddress = [featuredLink.href stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:strippedAddress];
                 [sself.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
             }
         }];

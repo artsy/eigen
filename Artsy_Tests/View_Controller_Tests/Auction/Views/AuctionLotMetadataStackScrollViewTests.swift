@@ -11,11 +11,10 @@ class AuctionLotMetadataStackScrollViewTests: QuickSpec {
     override func spec() {
         it("looks as expected when small") {
             let testVM = Test_LiveAuctionLotViewModel()
-            let subject = AuctionLotMetadataStackScrollView()
+            let subject = AuctionLotMetadataStackScrollView(viewModel: testVM, salesPerson: stub_auctionSalesPerson(), sideMargin: "20")
 
             subject.backgroundColor = .whiteColor()
             subject.constrainWidth("280")
-            subject.viewModel.update(testVM)
             subject.layoutIfNeeded()
 
             expect(subject) == snapshot()
@@ -33,13 +32,12 @@ class AuctionLotMetadataStackScrollViewTests: QuickSpec {
         it("looks right when expanded") {
             let wrapper = UIView(frame: CGRect(x: 0, y: 0, width: 280, height: 1000))
             let testVM = Test_LiveAuctionLotViewModel()
-            let subject = AuctionLotMetadataStackScrollView()
+            let subject = AuctionLotMetadataStackScrollView(viewModel: testVM, salesPerson: stub_auctionSalesPerson(), sideMargin: "20")
 
             wrapper.addSubview(subject)
             subject.alignToView(wrapper)
 
             subject.backgroundColor = .whiteColor()
-            subject.viewModel.update(testVM)
             subject.showFullMetadata(false)
 
             expect(wrapper) == snapshot()

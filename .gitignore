@@ -17,7 +17,6 @@ profile
 DerivedData
 .idea/
 *.xcscmblueprint
-Pods
 .pt
 .build
 tmtags

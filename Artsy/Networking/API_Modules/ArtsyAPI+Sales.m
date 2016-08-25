@@ -39,22 +39,12 @@
     [self getRequest:request parseIntoAnArrayOfClass:[SaleArtwork class] success:success failure:failure];
 }
 
-+ (void)getLiveSaleStateWithSaleID:(NSString *)saleID
-                              host:(NSString *)host
-                           success:(void (^)(id state))success
-                           failure:(void (^)(NSError *error))failure
-{
-    NSURLRequest *request = [ARRouter liveSaleStateRequest:saleID host:host];
-    [self performRequest:request
-                 success:success
-                 failure:passOnNetworkError(failure)];
-}
-
 + (void)getLiveSaleStaticDataWithSaleID:(NSString *)saleID
+                                   role:(NSString *)role
                                 success:(void (^)(id state))success
                                 failure:(void (^)(NSError *error))failure
 {
-    NSURLRequest *request = [ARRouter liveSaleStaticDataRequest:saleID];
+    NSURLRequest *request = [ARRouter liveSaleStaticDataRequest:saleID role:role];
     [self performRequest:request
                  success:success
                  failure:passOnNetworkError(failure)];

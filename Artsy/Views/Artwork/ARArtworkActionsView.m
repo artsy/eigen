@@ -117,8 +117,19 @@
 
     NSMutableArray *buttonsWhoseMarginCanChange = [NSMutableArray array];
 
+    if ([self shouldShowLiveAuctionControls]) {
+        ARBlackFlatButton *openLiveSale = [[ARBlackFlatButton alloc] init];
+        [openLiveSale setTitle:@"Enter Live Auction" forState:UIControlStateNormal];
+        [openLiveSale addTarget:self action:@selector(tappedLiveSaleButton:) forControlEvents:UIControlEventTouchUpInside];
+
+        [buttonsWhoseMarginCanChange addObject:openLiveSale];
+
+        [self addSubview:openLiveSale withTopMargin:@"8" sideMargin:nil];
+    }
+
     if ([self showAuctionControls]) {
         ARAuctionState state = self.saleArtwork.auctionState;
+
         if (state & (ARAuctionStateUserIsHighBidder | ARAuctionStateUserIsBidder)) {
             self.bidderStatusLabel = [[ARAuctionBidderStateLabel alloc] init];
             [self.bidderStatusLabel updateWithSaleArtwork:self.saleArtwork];
@@ -132,7 +143,7 @@
         }
 
         ARBidButton *bidButton = [[ARBidButton alloc] init];
-        bidButton.auctionState = self.saleArtwork.auctionState;
+        bidButton.auctionState = state;
         [self addSubview:bidButton withTopMargin:@"30" sideMargin:@"0"];
         [bidButton addTarget:self action:@selector(tappedBidButton:) forControlEvents:UIControlEventTouchUpInside];
         self.bidButton = bidButton;
@@ -261,12 +272,17 @@
 
 - (void)tappedBidButton:(id)sender
 {
-    [self.delegate tappedBidButton];
+    [self.delegate tappedBidButton:sender];
+}
+
+- (void)tappedLiveSaleButton:(id)sender
+{
+    [self.delegate tappedLiveSaleButton:sender];
 }
 
 - (void)tappedBuyersPremium:(id)sender
 {
-    [self.delegate tappedBuyersPremium];
+    [self.delegate tappedBuyersPremium:sender];
 }
 
 - (void)tappedBuyButton:(id)sender
@@ -338,10 +354,15 @@ return [navigationButtons copy];
     return self.artwork.acquireable.boolValue;
 }
 
-
 - (BOOL)showAuctionControls
 {
-    return (self.saleArtwork != nil) && !self.artwork.sold.boolValue;
+    // We don't want to show regular auction controls and live auction ones at the same time, and live takes precedence.
+    return (self.saleArtwork != nil) && !self.artwork.sold.boolValue && ![self shouldShowLiveAuctionControls];
+}
+
+- (BOOL)shouldShowLiveAuctionControls
+{
+    return (self.saleArtwork != nil) && self.saleArtwork.auction.shouldShowLiveInterface;
 }
 
 - (BOOL)showConditionsOfSale

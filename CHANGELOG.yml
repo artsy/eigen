@@ -1,8 +1,10 @@
 upcoming:
-  version: 2.4.2
-  details: Onboarding / New Gene VC / Live
+    version: 2.6.4
+    details: Auctions Fixes?
 
   dev:
+    - Push notification on artist follow added - maxim
+    - Pre push notification prompt added - maxim
     - Analytics added for onboarding - maxim
     - Onboarding budget and navigation flow - maxim
     - Onboarding login and sign up view controllers - maxim
@@ -34,20 +36,171 @@ upcoming:
     - Support splitting between lot list and lots on iPad - orta
     - Updates to Interstellar v2. - ash
     - Moves to Interstellar v2 unsubscription mechanism where needed. - ash
-
-  notes:
-    - Fixes long auction names falling off right edge. - ash
-    - Fixes live auction lots being in the wrong order. - ash
-    - Adds support for loading Artsy subdomains internally. - ash
-    - Live auction lot list. - ash
-    - Fixes crash due to missing nullability specifiers on Artwork. - ash
-    - Show Preview images are edge to edge fill, instead of scale fit - orta
-
+    dev:
+      infrastructure:
+        - Fixes various memory leaks in live. - ash
+        - Fixes problems that arose from fixing memory leaks. - ash
+    user_facing:
+      - iPad Pro gets full screen lot thumbnails during Live Auctions - orta
+      - Fallback to higher or lower available artwork image. - alloy
+      - Fixes problem where users looking at a closed live auction would be directed to the live interface. - ash
+      - Fixes problem where users weren't directed to live auction when it started. - ash
 
 releases:
+  - version: 2.6.3
+    details: Bug fixes in Artist profile view
+    date: Not released yet
+    dev:
+      infrastructure:
+        - Fixes various memory leaks in live. - ash
+        - Fixes problems that arose from fixing memory leaks. - ash
+    user_facing:
+      - Fixes various nullability issues. - sarah
+      - Fixes iOS 8 by not using new JS API. - sarah & alloy
+
+  - version: 2.6.2
+    details: Bug fix around re-directs
+    date: Jun 23, 2016
+
+    dev:
+    user_facing:
+      - Fixes bug where a black screen would appear instead of the intended view. - ash
+
+  - version: 2.6.1
+    details: Live Auctions Polish
+    date: Jun 22, 2016
+
+    dev:
+      infrastructure:
+        - Correctly handle routing to modals via paths - orta
+        - WIP support for iOS10 at runtime - orta
+      live_auctions:
+        - Uses server-defined increment strategy. - ash
+        - Parnter name shows on iPhone. - ash
+        - New loading indicator. - ash
+        - Improved bid button interaction. - ash
+        - Use a spinner UI for the Max Bid - orta/ash
+        - Better bid history cell separators. - ash
+    user_facing:
+      - Fade truncated parts of current refine settings on auction view. - alloy
+
+  - version: 2.6.0
+    details: Live Auctions / Artist Profile polish
+    date: Jun 14, 2016
+    dev:
+      infra:
+        - Adds SwiftLint. - ash
+      live_actions:
+        - Adds visual feedback to placing a max bid - orta
+        - Adds a disconnection overlay for the socket - orta
+        - Pre-cache the lot thumbnails after 2 seconds of being connected -  orta
+        - Logging in as an observer works - orta
+        - Fixes duplicated events in event history, supports changes in # of user-visible events. - ash
+        - Adds overlay for oeprator disconnects - ash
+        - Fixes redirect to live in Auctions pages - orta
+        - Registration is cancellable. - ash
+        - Differentiate between a max bid, and a winning bid. - orta
+        - Entering max bid VC will dismiss when the user is already the highest bidder. - ash
+        - User registration pending states. - ash
+        - Hide bid history whena  lot closes - orta
+        - Uses server-defined increment strategy. - ash
+        - Updates to bid-handling in history. - ash
+        - Fixes jump bid ordering. - ash
+        - Partner name shows on iPhone. - ash
+        - New loading indicator. - ash
+        - Improved bid button interaction. - ash
+    user_facing:
+        - Allows max bids on live auctions - orta
+        - Shows reserve status for live auctions. - ash
+        - Live Auction are now native by default - orta/ash
+        - Number of bids updates. - ash
+        - UI polish and some bug fixes on the Artist Profile view. - alloy/maxim/sarah
+
+  - version: 2.5.0
+    details: New Artist View
+    date: Jun 5, 2016
+
+    dev:
+      live_actions:
+        - Present the Live AuctionVC in a modal - orta
+        - Support splitting between lot list and lots on iPad - orta
+        - New socket communication work for updated Causality. - ash
+        - Put native live auctions behind AROptions. - ash
+        - Danger is aware of how long classes take to compile. - orta
+        - Adds socket authentication from metaphysics JWT. - ash
+        - Adds implementation to handle some socket events. - ash
+        - Adds more socket event-handling. - ash
+        - Staging causality socket points to staging now instead of localhost. - ash
+        - Adds sale-wide event handling (changes to current lot). - ash
+        - Successfuly sends JSON to websocket for bidding, though bids fail. - ash
+        - Fixes to the design for the max bid view controller - orta
+        - Add support for showing the time since the lot was opened. - orta
+        - Changes to collectionview-based layout for live auction artwork image previews with fancy layout. - ash
+        - Offline support for Live. - orta
+        - Support for trial users, and non-registered users on live auctions - orta
+        - Lot list displays proper price. - ash
+        - New state reconciliation for live auctions. -ash
+        - Scaffolding for sending live auction events. - ash
+        - Started the Live Auction Bidding Interface - orta
+        - Handles bidding in an auction with stubbed API interfaces. - orta
+        - Basic metaphysics access for live sale static data. - ash
+        - Lot metadata can toggle between a short artwork blurb and full metadata - orta
+        - Fixed lot view layout for iPad. - ash
+        - Removes buyer's premium. - ash
+        - Bid history scrolling. - ash/orta
+        - Disables horizontal scrolling on iPad. - ash
+        - Don't let the device sleep during a live auction - orta
+        - Displays lot info. - ash
+        - Placing bids / setting max bids is functional. - ash
+        - Removes current lot CTA when there is no current lot. - ash
+        - Adds websocket versioning. - ash
+        - Handle undo events. - orta
+        - Adds collection view image layout to iPad. - ash
+        - Highest bidder status on bid button works. - ash / orta
+        - Outbid notice persists. - ash / orta
+        
+      infra:
+        - CocoaPods now is v1. - alloy
+        - Pods dependencies are now stored in a submodule https://github.com/artsy/eigen-artefacts. - alloy
+        - Updates to Interstellar v2. - ash
+        - Moves to Interstellar v2 unsubscription mechanism where needed. - ash
+        - Updates for Xcode 7.3. - ash
+        - QuickSilver now supports direct URLs. - ash
+        - Allow menu aware view controllers to specify what scrollview should report to the chief. - alloy
+      
+      gmv:
+        - Removed artwork auction results - sarah
+        - WorksForYouVC reloads content upon network failure if you leave and then return to its tab - sarah
+        - Removed updateConstraintsIfNeeded from ARNavigationButton to solve autolayout bugs in home screen tableview - sarah
+        - Artwork view hides Contact button for uninquireable works - sarah
+        - Adds support for unknown Artsy URLs using internal web browsers. - ash
+        - Removed the Ask a Specialist button from artwork view - sarah
+        - Added a check in danger for ARTopMenuViewController+SwiftDeveloperExtras - sarah
+        - Generalized the RefineViewController - sarah
+        - All UIViewController routing goes through ARTopMenuVC instead of self.navigationController - orta
+        - All cent values are handled by UInt64 in Live Auction context - orta
+        - Changed the paragraph padding on all ARTextView instances - orta
+        - Moved ARSwitchView and ARSpinner into new Extraction pod. - alloy
+        - Buyer's Premiunm is shown on AuctionInformationViewControllers - orta
+        - Update Emission since first QA. - alloy
+        - Integrate Emission analytics. - alloy
+
+    user_facing:
+      - Fixes long auction names falling off right edge. - ash
+      - Fixes live auction lots being in the wrong order. - ash
+      - Adds support for loading Artsy subdomains internally. - ash
+      - Live auction lot list. - ash
+      - Fixes crash due to missing nullability specifiers on Artwork. - ash
+      - Show Preview images are edge to edge fill, instead of scale fit - orta
+      - Delays initializing live auctions view controllers until an initial metaphysics fetch is completed. - ash
+      - Consolidates app-wide currency formatting use to rely on server-provided currency symbol. - ash
+      - Auctions page now show the info about live auctions - orta
+      - Integrate the new artist view. - alloy
+      - Status bars on Auction info and live pages are black - orta
 
   - version: 2.4.1
     details: Analytics improvements
+    date: March 25, 2016
 
     dev:
       - Added a max height for single images in WorksForYouVC - sarah
@@ -85,6 +238,7 @@ releases:
 
   - version: 2.4.0
     details: Auctions Overview + For You Native Views
+    date: March 15, 2016
 
     dev:
       - Made a class for notification item views and added tests for WorksForYouVC - sarah
@@ -138,6 +292,7 @@ releases:
 
   - version: 2.3.5
     details: Ideally a small release for iOS8 + Push fixes.
+    date: "Was not submitted to the app store"
     dev:
       - Updated Danger - orta
       - Use Hockey for feedback, take a screenshot in app or use the admin menu to trigger - orta

@@ -14,7 +14,8 @@
     ARUserSettingsViewController,
     ARAuctionWebViewController,
     ARFairGuideContainerViewController,
-    AuctionViewController;
+    AuctionViewController,
+    ARMutableLinkViewController;
 
 // Eigen model object forward decs
 @class ARPostFeedItem,
@@ -43,17 +44,18 @@
 
 #pragma mark - Auctions
 
-- (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
-
 - (UIViewController *)loadAuctionWithID:(NSString *)auctionID;
+- (UIViewController *)loadLiveAuction:(NSString *)auctionID;
 
 - (ARAuctionWebViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID;
+
+- (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
 
 /// Load a Partner Page in Martsy
 - (UIViewController *)loadPartnerWithID:(NSString *)partnerID;
 
 /// Load a Profile. Used to separate profiles with a fair from regular profiles.
-- (UIViewController *)routeProfileWithID:(NSString *)profileID;
+- (UIViewController *)loadProfileWithID:(NSString *)profileID;
 
 /// Load a Gene
 - (ARGeneViewController *)loadGene:(Gene *)gene;
@@ -68,4 +70,6 @@
 /// Buy artwork
 - (UIViewController *)loadOrderUIForID:(NSString *)orderID resumeToken:(NSString *)resumeToken;
 
+/// Handle unknown redirects (normally special featured links)
+- (ARMutableLinkViewController *)loadUnknownPathWithID:(NSString *)path;
 @end

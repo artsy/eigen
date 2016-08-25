@@ -6,10 +6,8 @@ import Then
 private typealias PrivateFunctions = LotListCollectionViewCell
 extension PrivateFunctions {
 
-    func setup() {
-        // Necessary setup
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.alignToView(self)
+    func resetViewHierarchy() {
+        contentView.subviews.forEach { $0.removeFromSuperview() }
 
         // Separators
         [topSeparator, bottomSeparator].forEach { separator in
@@ -49,6 +47,11 @@ extension PrivateFunctions {
         labelContainerView.constrainHeight("<= 60")
         labelContainerView.alignCenterYWithView(lotImageView, predicate: "0")
 
+        contentView.addSubview(closedLabel)
+        closedLabel.alignTrailingEdgeWithView(contentView, predicate: "-20")
+        closedLabel.alignCenterYWithView(lotImageView, predicate: "0")
+        closedLabel.constrainLeadingSpaceToView(labelContainerView, predicate: ">= 10")
+
         // Hammer image view.
         contentView.addSubview(hammerImageView)
         hammerImageView.alignCenterYWithView(contentView, predicate: "0")
@@ -57,6 +60,8 @@ extension PrivateFunctions {
     }
 
     func setLotState(lotState: LotState) {
+        resetViewHierarchy()
+
         let contentViewAlpha: CGFloat
         let currentLot: Bool
 
@@ -67,17 +72,17 @@ extension PrivateFunctions {
         case .LiveLot:
             contentViewAlpha = 1
             currentLot = true
+            closedLabel.removeFromSuperview()
         case .UpcomingLot:
             contentViewAlpha = 1
             currentLot = false
+            closedLabel.removeFromSuperview()
         }
 
         let labelColor: UIColor
 
         if currentLot {
             selectedBackgroundView = nil
-            labelContainerView.addSubview(currentAskingPriceLabel)
-            labelContainerView.addSubview(hammerImageView)
 
             [topSeparator, bottomSeparator].forEach { $0.hidden = true }
 
@@ -94,7 +99,6 @@ extension PrivateFunctions {
             }
             currentAskingPriceLabel.removeFromSuperview()
             hammerImageView.removeFromSuperview()
-            hammerImageView.hidden = true
 
             topSeparator.hidden = isNotTopCell
             bottomSeparator.hidden = false
@@ -145,4 +149,14 @@ extension ClassFunctions {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
     }
+
+    class func _closedLabel() -> UILabel {
+        return ARSansSerifLabel().then {
+            $0.font = UIFont.sansSerifFontWithSize(12)
+            $0.backgroundColor = .clearColor()
+            $0.textColor = .artsyRedRegular()
+            $0.text = "CLOSED"
+        }
+    }
+
 }

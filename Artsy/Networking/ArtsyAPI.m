@@ -26,6 +26,13 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 
 @implementation ArtsyAPI
 
++ (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request fullSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback
+{
+    AFHTTPRequestOperation *operation = [self.sharedAPI requestOperation:request success:success failure:failureCallback];
+    [operation start];
+    return operation;
+}
+
 + (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure
 {
     NSParameterAssert(success);

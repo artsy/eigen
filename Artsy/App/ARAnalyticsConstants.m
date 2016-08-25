@@ -46,6 +46,9 @@ NSString *const ARAnalyticsOnboardingSignupStarted = @"Tapped sign up";
 NSString *const ARAnalyticsOnboardingSignupSuccess = @"Created account";
 NSString *const ARAnalyticsOnboardingSignupFailed = @"Sign up failed";
 
+NSString *const ARAnalyticsPushNotificationLocal = @"Artsy notification prompt response";
+NSString *const ARAnalyticsPushNotificationApple = @"Apple notification prompt response";
+
 NSString *const ARAnalyticsShowTrialSplash = @"user trial splash presented";
 
 NSString *const ARAnalyticsTappedHeroUnit = @"Tapped banner";
@@ -128,4 +131,5 @@ NSInteger const ARNavButtonNotificationsTag = (NSInteger)&ARNavButtonNotificatio
 NSString *const ARAnalyticsAuctionBidButtonTapped = @"Tapped Register To Bid";
 NSString *const ARAnalyticsArtworksRefineTapped = @"Tapped Artworks Refine";
 NSString *const ARAnalyticsAuctionContactTapped = @"Tapped Auction Contact";
+NSString *const ARAnalyticsAuctionBuyersPremiumTapped = @"Tapped Auction Show Buyers Premium";
 NSString *const ARAnalyticsTappedApplyRefine = @"Tapped Apply Refine";

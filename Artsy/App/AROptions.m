@@ -5,6 +5,7 @@ NSString *const AROptionsUseVCR = @"Use offline recording";
 NSString *const AROptionsSettingsMenu = @"Enable user settings";
 NSString *const AROptionsTappingPartnerSendsToPartner = @"Partner name in feed goes to partner";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
+NSString *const AROptionsDisableNativeLiveAuctions = @"Disable native live auctions";
 
 
 @implementation AROptions
@@ -14,7 +15,15 @@ NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScree
     return @[
         AROptionsUseVCR,
         AROptionsSettingsMenu,
-        AROptionsTappingPartnerSendsToPartner
+        AROptionsTappingPartnerSendsToPartner,
+        AROptionsDisableNativeLiveAuctions,
+    ];
+}
+
++ (NSArray *)labsOptionsThatRequireRestart
+{
+    return @[
+        AROptionsDisableNativeLiveAuctions,
     ];
 }
 

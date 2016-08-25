@@ -9,6 +9,7 @@
 
 #import "UIDevice-Hardware.h"
 
+
 @implementation ARAuctionWebViewController
 
 - (void)dealloc;
@@ -61,8 +62,7 @@
     for (NSString *param in [requestURL.query componentsSeparatedByString:@"&"]) {
         NSArray *pair = [param componentsSeparatedByString:@"="];
         // On Force when tapping a ‘bid’ button from an auction overview.
-        if (pair.count == 2
-                && [pair[0] isEqualToString:@"redirect_uri"] && [pair[1] isEqualToString:self.initialURL.path]) {
+        if (pair.count == 2 && [pair[0] isEqualToString:@"redirect_uri"] && [pair[1] isEqualToString:self.initialURL.path]) {
             return ARTrialContextAuctionBid;
         }
     }
@@ -99,15 +99,14 @@
 {
     NSArray *stack = self.navigationController.viewControllers;
 
-    ARArtworkSetViewController *artworkViewController = stack[stack.count-2];
-    if ([artworkViewController isKindOfClass:ARArtworkSetViewController.class]
-            && [artworkViewController.currentArtworkViewController.artwork.artworkID isEqualToString:self.artworkID]) {
+    ARArtworkSetViewController *artworkViewController = stack[stack.count - 2];
+    if ([artworkViewController isKindOfClass:ARArtworkSetViewController.class] && [artworkViewController.currentArtworkViewController.artwork.artworkID isEqualToString:self.artworkID]) {
         return;
     }
 
     artworkViewController = [ARSwitchBoard.sharedInstance loadArtworkWithID:self.artworkID inFair:nil];
     NSMutableArray *mutatedStack = [stack mutableCopy];
-    [mutatedStack insertObject:artworkViewController atIndex:stack.count-1];
+    [mutatedStack insertObject:artworkViewController atIndex:stack.count - 1];
     self.navigationController.viewControllers = mutatedStack;
 }
 
@@ -121,7 +120,7 @@
 
     [nc postNotificationName:ARAuctionArtworkBidUpdatedNotification
                       object:self
-                    userInfo:@{ ARAuctionIDKey:self.auctionID, ARAuctionArtworkIDKey: self.artworkID }];
+                    userInfo:@{ARAuctionIDKey : self.auctionID, ARAuctionArtworkIDKey : self.artworkID}];
 
     [self ensureArtworkViewControllerIsLowerInStack];
     [self.navigationController popViewControllerAnimated:ARPerformWorkAsynchronously];
@@ -130,8 +129,7 @@
 - (void)artworkBidUpdated:(NSNotification *)notification;
 {
     NSDictionary *info = notification.userInfo;
-    if ([info[ARAuctionIDKey] isEqualToString:self.auctionID]
-            && (self.artworkID == nil || [info[ARAuctionArtworkIDKey] isEqualToString:self.artworkID])) {
+    if ([info[ARAuctionIDKey] isEqualToString:self.auctionID] && (self.artworkID == nil || [info[ARAuctionArtworkIDKey] isEqualToString:self.artworkID])) {
         ARActionLog(@"Will reload due to auction artwork bid updated: %@ - auction:%@ - artwork:%@",
                     self, self.auctionID, self.artworkID);
         [self reload];
@@ -148,9 +146,13 @@
 
     [nc postNotificationName:ARAuctionArtworkRegistrationUpdatedNotification
                       object:self
-                    userInfo:@{ ARAuctionIDKey:self.auctionID }];
+                    userInfo:@{ARAuctionIDKey : self.auctionID}];
 
-    [self.navigationController popViewControllerAnimated:ARPerformWorkAsynchronously];
+    if (self.presentingViewController) {
+        [self.presentingViewController dismissViewControllerAnimated:ARPerformWorkAsynchronously completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:ARPerformWorkAsynchronously];
+    }
 }
 
 - (void)registrationUpdated:(NSNotification *)notification;

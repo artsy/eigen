@@ -12,7 +12,7 @@ static OCMockObject *ARPartialScreenMock;
 
 @implementation ARTestContext
 
-+ (void)useDevice:(enum ARDeviceType)device :(void (^)(void))block
++ (void)useDevice:(enum ARDeviceType)device:(void (^)(void))block
 {
     [self stubDevice:device];
     block();
@@ -78,6 +78,25 @@ static OCMockObject *ARPartialScreenMock;
     id mock = [OCMockObject mockForClass:[ARSystemTime class]];
     [[[mock stub] andReturn:now] date];
     return mock;
+}
+
+static OCMockObject *dateMock;
+static OCMockObject *dateSystemMock;
+
++ (void)freezeTime:(NSDate *)now closure:(void (^)(void))closure
+{
+    dateMock = [self freezeTime:now];
+    dateSystemMock = [self freezeSystemTime:now];
+
+    @try {
+        closure();
+    } @catch (NSException *exception) {
+        NSLog(@"---------------------");
+        NSLog(@"A crash occured during frzen time, %@", exception);
+    } @finally {
+        dateSystemMock = nil;
+        dateMock = nil;
+    }
 }
 
 @end
