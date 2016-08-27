@@ -14,9 +14,6 @@
    * `$ brew install watchman --HEAD`
 3. Install NPM modules: `$ npm install`
 4. Install Pods: `$ cd Example && pod install`
-5. Configure secrets:
-   * Copy configuration file: `$ cd Example/Emission && cp Configuration.h.sample Configuration.h`
-   * Edit the configuration file as per the instructions inside.
 
 ### Development
 

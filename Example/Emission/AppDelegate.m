@@ -1,8 +1,6 @@
 #import "AppDelegate.h"
 #import "RotationNavigationController.h"
 
-#import "Configuration.h"
-
 #import <Emission/AREmission.h>
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
