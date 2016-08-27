@@ -7,19 +7,23 @@ target 'Emission' do
   pod 'Emission', :path => '../'
   # TODO: Push a release to our spec repo.
   pod 'Extraction', :git => 'https://github.com/artsy/extraction.git'
-
+  pod 'React', :path => react_path, :subspecs => %w(RCTWebSocket RCTImage)
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
   else
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-OSSUIFonts.git"
   end
 
-  pod 'React', :path => react_path, :subspecs => ['RCTWebSocket', 'RCTImage']
+  # Example app only
+  pod 'SAMKeychain'
+  pod 'Artsy+Authentication', :subspecs => %w(email),
+                              :git => 'https://github.com/artsy/Artsy-Authentication.git',
+                              :branch => 'fetch-user-details'
 
   target 'EmissionTests' do
     inherit! :search_paths
 
-    pod 'React', :path => react_path, :subspecs => ['RCTTest']
+    pod 'React', :path => react_path, :subspecs => %w(RCTTest)
 
     pod 'Specta'
     # pod 'Expecta'

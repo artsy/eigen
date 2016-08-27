@@ -15,6 +15,12 @@
 #import <React/RCTUtils.h>
 #import <TargetConditionals.h>
 
+#import <Artsy+Authentication/ArtsyAuthentication.h>
+#import <Artsy+Authentication/ArtsyAuthenticationRouter.h>
+#import <Artsy+Authentication/ArtsyToken.h>
+#import <Extraction/ARSpinner.h>
+#import <SAMKeychain/SAMKeychain.h>
+
 #define ARTIST @"alex-katz"
 
 #if TARGET_OS_SIMULATOR
@@ -29,14 +35,13 @@ randomBOOL(void)
 
 @interface AppDelegate () <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UINavigationController *navigationController;
+@property (nonatomic, strong) UIViewController *authenticationSpinnerController;
 @end
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
 {
-  [self setupEmission];
-
   UITableViewController *tableViewController = [UITableViewController new];
   tableViewController.tableView.dataSource = self;
   tableViewController.tableView.delegate = self;
@@ -48,23 +53,102 @@ randomBOOL(void)
   self.window.rootViewController = self.navigationController;
   [self.window makeKeyAndVisible];
 
+  NSString *userID = [SAMKeychain accountsForService:@"Emission-Example"][0][kSAMKeychainAccountKey];
+  if (userID) {
+    NSString *accessToken = [SAMKeychain passwordForService:@"Emission-Example" account:userID];
+    if (accessToken) {
+      [self setupEmissionWithUserID:userID accessToken:accessToken];
+      return YES;
+    }
+  }
+
+  [self setupAuthentication];
   return YES;
+}
+
+#pragma mark - Authentication
+
+- (void)setupAuthentication;
+{
+  if (self.authenticationSpinnerController == nil) {
+    ARSpinner *spinner = [ARSpinner new];
+    [spinner startAnimating];
+    self.authenticationSpinnerController = [UIViewController new];
+    self.authenticationSpinnerController.view = spinner;
+    [self.navigationController presentViewController:self.authenticationSpinnerController animated:NO completion:nil];
+  }
+  
+  UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Authentication"
+                                                                 message:@"Enter your Artsy credentials"
+                                                          preferredStyle:UIAlertControllerStyleAlert];
+  [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+    textField.placeholder = @"Email";
+  }];
+  [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+    textField.placeholder = @"Password";
+    textField.secureTextEntry = YES;
+  }];
+  
+  __weak UIAlertController *weakAlert = alert;
+  [alert addAction:[UIAlertAction actionWithTitle:@"OK"
+                                            style:UIAlertActionStyleDefault
+                                          handler:^(UIAlertAction *action) {
+                                            [self authenticateWithEmail:weakAlert.textFields[0].text
+                                                               password:weakAlert.textFields[1].text];
+                                          }]];
+  
+  [self.authenticationSpinnerController presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)authenticateWithEmail:(NSString *)email password:(NSString *)password;
+{
+  ArtsyAuthentication *auth = [[ArtsyAuthentication alloc] initWithClientID:@"e750db60ac506978fc70"
+                                                               clientSecret:@"3a33d2085cbd1176153f99781bbce7c6"];
+#ifdef ENABLE_DEV_MODE
+  auth.router.staging = YES;
+#endif
+
+  [auth getWeekLongXAppTrialToken:^(ArtsyToken *token, NSError *error) {
+    if (error) {
+      NSLog(@"%@", error);
+      [self setupAuthentication];
+    } else {
+      [auth logInAndFetchUserDetailsWithEmail:email
+                                     password:password
+                                   completion:^(ArtsyToken *token, NSDictionary *userDetails, NSError *error) {
+        (void)auth; // keep a strong reference for as long as needed
+        dispatch_async(dispatch_get_main_queue(), ^{
+          if (error) {
+            NSLog(@"%@", error);
+            [self setupAuthentication];
+          } else {
+            NSString *userID = userDetails[@"_id"];
+            NSString *accessToken = token.token;
+            NSParameterAssert(userID);
+            NSParameterAssert(accessToken);
+
+            [SAMKeychain setPassword:accessToken forService:@"Emission-Example" account:userID];
+
+            [self.authenticationSpinnerController dismissViewControllerAnimated:YES completion:nil];
+            [self setupEmissionWithUserID:userID accessToken:accessToken];
+          }
+        });
+      }];
+    }
+  }];
 }
 
 #pragma mark - Emission
 
-- (void)setupEmission;
+- (void)setupEmissionWithUserID:(NSString *)userID accessToken:(NSString *)accessToken;
 {
-  NSAssert(![USER_ID isEqualToString:@"USER ID GOES HERE"], @"Specify your user ID in Configuration.h");
-  NSAssert(![OAUTH_TOKEN isEqualToString:@"TOKEN GOES HERE"], @"Specify your access token in Configuration.h");
-
   AREmission *emission = nil;
 
 #ifdef ENABLE_DEV_MODE
   NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
-  emission = [[AREmission alloc] initWithUserID:USER_ID authenticationToken:OAUTH_TOKEN packagerURL:packagerURL];
+  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken packagerURL:packagerURL];
 #else
-  emission = [[AREmission alloc] initWithUserID:USER_ID authenticationToken:OAUTH_TOKEN];
+  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken];
 #endif
   [AREmission setSharedInstance:emission];
 
