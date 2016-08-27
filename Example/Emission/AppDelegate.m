@@ -100,6 +100,7 @@ randomBOOL(void)
 
 - (void)authenticateWithEmail:(NSString *)email password:(NSString *)password;
 {
+  // These are of Eigen OSS: https://github.com/artsy/eigen/blob/0e193d1b/Makefile#L36-L37
   ArtsyAuthentication *auth = [[ArtsyAuthentication alloc] initWithClientID:@"e750db60ac506978fc70"
                                                                clientSecret:@"3a33d2085cbd1176153f99781bbce7c6"];
 #ifdef ENABLE_DEV_MODE
