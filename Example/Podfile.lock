@@ -1,4 +1,7 @@
 PODS:
+  - Artsy+Authentication/email (1.5.0):
+    - ISO8601DateFormatter
+    - NSURL+QueryDictionary
   - Artsy+UIColors (3.0.1)
   - Artsy+UIFonts (1.1.0)
   - Emission (1.0.3):
@@ -22,6 +25,8 @@ PODS:
     - UIView+BooleanAnimations
   - Extraction/UIView+ARSpinner (0.1.0)
   - FLKAutoLayout (1.0.0)
+  - ISO8601DateFormatter (0.8)
+  - NSURL+QueryDictionary (1.2.0)
   - React/Core (0.30.0)
   - React/RCTImage (0.30.0):
     - React/Core
@@ -34,6 +39,7 @@ PODS:
     - React/Core
   - React/RCTWebSocket (0.30.0):
     - React/Core
+  - SAMKeychain (1.5.0)
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
@@ -41,25 +47,33 @@ PODS:
   - UIView+BooleanAnimations (1.0.2)
 
 DEPENDENCIES:
+  - Artsy+Authentication/email (from `https://github.com/artsy/Artsy-Authentication.git`, branch `fetch-user-details`)
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
   - Emission (from `../`)
   - Extraction (from `https://github.com/artsy/extraction.git`)
   - React/RCTImage (from `../node_modules/react-native`)
   - React/RCTTest (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - SAMKeychain
   - Specta
 
 EXTERNAL SOURCES:
+  Artsy+Authentication:
+    :branch: fetch-user-details
+    :git: https://github.com/artsy/Artsy-Authentication.git
   Artsy+UIFonts:
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Emission:
-    :path: "../"
+    :path: ../
   Extraction:
     :git: https://github.com/artsy/extraction.git
   React:
-    :path: "../node_modules/react-native"
+    :path: ../node_modules/react-native
 
 CHECKOUT OPTIONS:
+  Artsy+Authentication:
+    :commit: 1b582675598c999726d9edacd3b8559e01cf7c48
+    :git: https://github.com/artsy/Artsy-Authentication.git
   Artsy+UIFonts:
     :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts.git
@@ -68,16 +82,20 @@ CHECKOUT OPTIONS:
     :git: https://github.com/artsy/extraction.git
 
 SPEC CHECKSUMS:
+  Artsy+Authentication: 3bf11ceca61c52e9e31490535bf5798f625406fa
   Artsy+UIColors: 10a2d71e9ffe1015be43d4e084d13ff4337aab97
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
   Emission: 1d091d2363263adf4a4fd6bfc59c7b66aec85a46
   Extraction: 30a669899836cbe9c31bbc0e86918cd7a2dab463
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
+  ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
+  NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
   React: ed499ad8bb72560821a80fefa59e15a18f3ec75c
+  SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
 
-PODFILE CHECKSUM: 916cdef913692cbe09529b33e472f74b72e23f80
+PODFILE CHECKSUM: 4469950fdaf3be8914616730e837bd641463025f
 
 COCOAPODS: 1.0.1
