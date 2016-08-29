@@ -19,6 +19,8 @@
 #import <Extraction/ARSpinner.h>
 #import <SAMKeychain/SAMKeychain.h>
 
+#import <AppHub/AppHub.h>
+
 #define ARTIST @"alex-katz"
 
 #if TARGET_OS_SIMULATOR
@@ -50,6 +52,10 @@ randomBOOL(void)
   self.window.backgroundColor = [UIColor whiteColor];
   self.window.rootViewController = self.navigationController;
   [self.window makeKeyAndVisible];
+
+  // [AppHub setLogLevel: AHLogLevelDebug];
+  [AppHub setApplicationID: @"Z6IwqK52JBXrKLI4kpvJ"];
+  [[AppHub buildManager] setDebugBuildsEnabled:YES];
 
   NSString *userID = [SAMKeychain accountsForService:@"Emission-Example"][0][kSAMKeychainAccountKey];
   if (userID) {
@@ -147,8 +153,14 @@ randomBOOL(void)
   NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
   emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken packagerURL:packagerURL];
 #else
-  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken];
-#endif
+  AHBuild *build = [[AppHub buildManager] currentBuild];
+  NSURL *jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
+  if (!jsCodeLocation) {
+    NSBundle *emissionBundle = [NSBundle bundleForClass:AREmission.class];
+    jsCodeLocation = [emissionBundle URLForResource:@"Emission" withExtension:@"js"];
+  }
+  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken packagerURL: jsCodeLocation];
+#endif 
   [AREmission setSharedInstance:emission];
 
 
