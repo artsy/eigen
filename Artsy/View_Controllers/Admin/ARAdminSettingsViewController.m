@@ -53,7 +53,8 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
         [self generateStagingSwitch],
         [self generateQuicksilver],
         [self generateShowAllLiveAuctions],
-        [self generateOnScreenAnalytics]
+        [self generateOnScreenAnalytics],
+        [self generateReactNative]
     ]];
 
 #if !TARGET_IPHONE_SIMULATOR
@@ -214,6 +215,24 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     return cellData;
 }
 #endif
+
+- (ARCellData *)generateReactNative
+{
+    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    BOOL isStagingReact = [AROptions boolForOption:AROptionsStagingReactEnv];
+
+    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
+        if (isStagingReact) {
+            cell.textLabel.text = @"Use staging React ENV";
+        } else {
+            cell.textLabel.text = @"Use production React ENV";
+        }
+    };
+    cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
+        [AROptions setBool: !isStagingReact forOption:AROptionsStagingReactEnv];
+    };
+    return cellData;
+}
 
 - (ARSectionData *)createLabsSection
 {

@@ -32,6 +32,8 @@ PODS:
     - AFNetworking (~> 2.5)
   - ALPValidator (0.0.3)
   - Analytics (3.0.7)
+  - AppHub (0.5.1):
+    - React
   - ARAnalytics/Adjust (3.9.0):
     - Adjust
     - ARAnalytics/CoreIOS
@@ -151,6 +153,8 @@ PODS:
   - ORStackView (2.0.3):
     - FLKAutoLayout
   - Quick (0.9.2)
+  - React (0.27.1):
+    - React/Core (= 0.27.1)
   - React/Core (0.27.1)
   - React/RCTNetwork (0.27.1):
     - React/Core
@@ -186,6 +190,7 @@ DEPENDENCIES:
   - AFOAuth1Client (from `https://github.com/lxcid/AFOAuth1Client.git`, tag `0.4.0`)
   - ALPValidator
   - Analytics
+  - AppHub
   - ARAnalytics/Adjust (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
   - ARAnalytics/DSL (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
   - ARAnalytics/HockeyApp (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
@@ -350,6 +355,7 @@ SPEC CHECKSUMS:
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
   Analytics: b342fb4f43fa4f97ca6f4358b44d3295217ba294
+  AppHub: f073cd229f87afe1a27200670e1adab24ebda2b8
   ARAnalytics: 96e23ba7f54298f4914de9e1ac999db7a15f3fdd
   ARASCIISwizzle: 4800c50a918bdc06f6304020e348ef8c15c554ee
   ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
@@ -413,6 +419,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: 45ae960492b6789135b90a6a22be9449f97bae07
+PODFILE CHECKSUM: c194b15301833a475a1e092d159dd780d4f90ef5
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.0.0

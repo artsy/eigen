@@ -114,6 +114,7 @@ target 'Artsy' do
 
   # Used in Live Auctions to hold user-state 
   pod 'JWTDecode'
+  pod 'AppHub'
 
   target 'Artsy Tests' do
       inherit! :search_paths
