@@ -10,33 +10,33 @@ PODS:
     - UIView+BooleanAnimations
   - Emission (1.0.3):
     - Artsy+UIFonts (>= 1.1.0)
-    - Extraction
+    - Extraction (>= 1.2.0)
     - React/Core (~> 0.30.0)
     - React/RCTNetwork (~> 0.30.0)
     - React/RCTText (~> 0.30.0)
     - SDWebImage (>= 3.7.2)
-  - Extraction (1.1.0):
-    - Extraction/ARAnimationContinuation (= 1.1.0)
-    - Extraction/ARLoadFailureView (= 1.1.0)
-    - Extraction/ARSpinner (= 1.1.0)
-    - Extraction/ARSwitchView (= 1.1.0)
-    - Extraction/UILabel+Typography (= 1.1.0)
-    - Extraction/UIView+ARSpinner (= 1.1.0)
-  - Extraction/ARAnimationContinuation (1.1.0)
-  - Extraction/ARLoadFailureView (1.1.0):
+  - Extraction (1.2.0):
+    - Extraction/ARAnimationContinuation (= 1.2.0)
+    - Extraction/ARLoadFailureView (= 1.2.0)
+    - Extraction/ARSpinner (= 1.2.0)
+    - Extraction/ARSwitchView (= 1.2.0)
+    - Extraction/UILabel+Typography (= 1.2.0)
+    - Extraction/UIView+ARSpinner (= 1.2.0)
+  - Extraction/ARAnimationContinuation (1.2.0)
+  - Extraction/ARLoadFailureView (1.2.0):
     - Artsy-UIButtons
     - Extraction/UILabel+Typography
-    - ORStackView
-  - Extraction/ARSpinner (1.1.0):
+    - ORStackView (< 3)
+  - Extraction/ARSpinner (1.2.0):
     - Extraction/UIView+ARSpinner
     - UIView+BooleanAnimations
-  - Extraction/ARSwitchView (1.1.0):
+  - Extraction/ARSwitchView (1.2.0):
     - Artsy+UIColors
     - Artsy+UIFonts (>= 1.1.0)
     - FLKAutoLayout
     - UIView+BooleanAnimations
-  - Extraction/UILabel+Typography (1.1.0)
-  - Extraction/UIView+ARSpinner (1.1.0):
+  - Extraction/UILabel+Typography (1.2.0)
+  - Extraction/UIView+ARSpinner (1.2.0):
     - Extraction/ARAnimationContinuation
   - FLKAutoLayout (1.0.0)
   - ISO8601DateFormatter (0.8)
@@ -66,7 +66,7 @@ DEPENDENCIES:
   - Artsy+Authentication/email (from `https://github.com/artsy/Artsy-Authentication.git`, branch `fetch-user-details`)
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
   - Emission (from `../`)
-  - Extraction (from `https://github.com/artsy/extraction.git`)
+  - Extraction
   - React/RCTImage (from `../node_modules/react-native`)
   - React/RCTTest (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
@@ -81,8 +81,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Emission:
     :path: ../
-  Extraction:
-    :git: https://github.com/artsy/extraction.git
   React:
     :path: ../node_modules/react-native
 
@@ -93,17 +91,14 @@ CHECKOUT OPTIONS:
   Artsy+UIFonts:
     :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts.git
-  Extraction:
-    :commit: f0eb4793654423f114c4ea4b672b519da44e7140
-    :git: https://github.com/artsy/extraction.git
 
 SPEC CHECKSUMS:
   Artsy+Authentication: 3bf11ceca61c52e9e31490535bf5798f625406fa
   Artsy+UIColors: 10a2d71e9ffe1015be43d4e084d13ff4337aab97
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
   Artsy-UIButtons: 26e6d1e0d2174773e9cf7693985d27faddd61743
-  Emission: 1d091d2363263adf4a4fd6bfc59c7b66aec85a46
-  Extraction: a433f014365005b19106a81cb1d18bb711384297
+  Emission: 613ed2776d20fbb74b4809ecac1085213c10eaf5
+  Extraction: fa0b2384907cb1842b07236fc5c2014e26bc0e51
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
@@ -114,6 +109,6 @@ SPEC CHECKSUMS:
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
 
-PODFILE CHECKSUM: 4469950fdaf3be8914616730e837bd641463025f
+PODFILE CHECKSUM: 371afd491d645539a02b6e1d43851930fe8c03ec
 
 COCOAPODS: 1.0.1
