@@ -1,6 +1,6 @@
 {
   "name": "emission",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "dependencies": {
     "@kadira/react-native-storybook": {
       "version": "1.12.6",
