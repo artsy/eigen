@@ -51,7 +51,7 @@
     "remove-markdown": "0.1.0"
   },
   "devDependencies": {
-    "@kadira/react-native-storybook": "^1.11.3",
+    "@kadira/react-native-storybook": "^1.12.6",
     "babel-eslint": "^6.0.0",
     "babel-jest": "^14.1.0",
     "babel-polyfill": "^6.13.0",

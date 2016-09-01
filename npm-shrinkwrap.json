@@ -3,14 +3,14 @@
   "version": "1.0.3",
   "dependencies": {
     "@kadira/react-native-storybook": {
-      "version": "1.12.3",
-      "from": "@kadira/react-native-storybook@>=1.11.3 <2.0.0",
-      "resolved": "https://registry.npmjs.org/@kadira/react-native-storybook/-/react-native-storybook-1.12.3.tgz",
+      "version": "1.12.6",
+      "from": "@kadira/react-native-storybook@1.12.6",
+      "resolved": "https://registry.npmjs.org/@kadira/react-native-storybook/-/react-native-storybook-1.12.6.tgz",
       "dependencies": {
         "glob": {
-          "version": "7.0.5",
+          "version": "7.0.6",
           "from": "glob@>=7.0.0 <8.0.0",
-          "resolved": "https://registry.npmjs.org/glob/-/glob-7.0.5.tgz"
+          "resolved": "https://registry.npmjs.org/glob/-/glob-7.0.6.tgz"
         },
         "minimatch": {
           "version": "3.0.3",
@@ -18,9 +18,9 @@
           "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-3.0.3.tgz"
         },
         "shelljs": {
-          "version": "0.7.3",
+          "version": "0.7.4",
           "from": "shelljs@>=0.7.0 <0.8.0",
-          "resolved": "https://registry.npmjs.org/shelljs/-/shelljs-0.7.3.tgz"
+          "resolved": "https://registry.npmjs.org/shelljs/-/shelljs-0.7.4.tgz"
         }
       }
     },
@@ -2538,9 +2538,9 @@
       "resolved": "https://registry.npmjs.org/function-bind/-/function-bind-1.1.0.tgz"
     },
     "fuse.js": {
-      "version": "2.4.1",
+      "version": "2.5.0",
       "from": "fuse.js@>=2.2.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/fuse.js/-/fuse.js-2.4.1.tgz"
+      "resolved": "https://registry.npmjs.org/fuse.js/-/fuse.js-2.5.0.tgz"
     },
     "fuzzysearch": {
       "version": "1.0.3",
@@ -4128,9 +4128,9 @@
       }
     },
     "mobx": {
-      "version": "2.4.4",
+      "version": "2.5.0",
       "from": "mobx@>=2.3.4 <3.0.0",
-      "resolved": "https://registry.npmjs.org/mobx/-/mobx-2.4.4.tgz"
+      "resolved": "https://registry.npmjs.org/mobx/-/mobx-2.5.0.tgz"
     },
     "mocha": {
       "version": "2.5.3",
@@ -4712,9 +4712,9 @@
       "resolved": "https://registry.npmjs.org/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz"
     },
     "react-dom": {
-      "version": "15.1.0",
-      "from": "https://registry.npmjs.org/react-dom/-/react-dom-15.1.0.tgz",
-      "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-15.1.0.tgz"
+      "version": "15.2.0",
+      "from": "react-dom@15.2.0",
+      "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-15.2.0.tgz"
     },
     "react-fuzzy": {
       "version": "0.2.3",
