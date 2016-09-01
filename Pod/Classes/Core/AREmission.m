@@ -10,6 +10,7 @@
 @interface AREmissionConfiguration : NSObject <RCTBridgeModule>
 @property (nonatomic, strong, readwrite) NSString *userID;
 @property (nonatomic, strong, readwrite) NSString *authenticationToken;
+@property (nonatomic, assign, readwrite) BOOL useStagingEnvironment;
 @end
 
 @implementation AREmissionConfiguration
@@ -21,6 +22,7 @@ RCT_EXPORT_MODULE(Emission);
   return @{
     @"userID": self.userID,
     @"authenticationToken": self.authenticationToken,
+    @"useStagingEnvironment": @(self.useStagingEnvironment),
   };
 }
 
@@ -49,12 +51,16 @@ static AREmission *_sharedInstance = nil;
 - (instancetype)initWithUserID:(NSString *)userID
            authenticationToken:(NSString *)authenticationToken;
 {
-  return [self initWithUserID:userID authenticationToken:authenticationToken packagerURL:nil];
+  return [self initWithUserID:userID
+          authenticationToken:authenticationToken
+                  packagerURL:nil
+        useStagingEnvironment:NO];
 }
 
 - (instancetype)initWithUserID:(NSString *)userID
            authenticationToken:(NSString *)authenticationToken
-                   packagerURL:(nullable NSURL *)packagerURL;
+                   packagerURL:(nullable NSURL *)packagerURL
+         useStagingEnvironment:(BOOL)useStagingEnvironment;
 {
   if ((self = [super init])) {
     _eventsModule = [AREventsModule new];
@@ -64,6 +70,7 @@ static AREmission *_sharedInstance = nil;
     _configurationModule = [AREmissionConfiguration new];
     _configurationModule.userID = userID;
     _configurationModule.authenticationToken = authenticationToken;
+    _configurationModule.useStagingEnvironment = useStagingEnvironment;
 
     NSArray *modules = @[_APIModule, _configurationModule, _eventsModule, _switchBoardModule];
 
