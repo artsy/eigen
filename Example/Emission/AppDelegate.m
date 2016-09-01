@@ -25,6 +25,12 @@
 #define ENABLE_DEV_MODE
 #endif
 
+#ifdef ENABLE_DEV_MODE
+#define KEYCHAIN_SERVICE @"Emission-Staging"
+#else
+#define KEYCHAIN_SERVICE @"Emission-Production"
+#endif
+
 static BOOL
 randomBOOL(void)
 {
@@ -51,9 +57,9 @@ randomBOOL(void)
   self.window.rootViewController = self.navigationController;
   [self.window makeKeyAndVisible];
 
-  NSString *userID = [SAMKeychain accountsForService:@"Emission-Example"][0][kSAMKeychainAccountKey];
+  NSString *userID = [SAMKeychain accountsForService:KEYCHAIN_SERVICE][0][kSAMKeychainAccountKey];
   if (userID) {
-    NSString *accessToken = [SAMKeychain passwordForService:@"Emission-Example" account:userID];
+    NSString *accessToken = [SAMKeychain passwordForService:KEYCHAIN_SERVICE account:userID];
     if (accessToken) {
       [self setupEmissionWithUserID:userID accessToken:accessToken];
       return YES;
@@ -126,7 +132,7 @@ randomBOOL(void)
             NSParameterAssert(userID);
             NSParameterAssert(accessToken);
 
-            [SAMKeychain setPassword:accessToken forService:@"Emission-Example" account:userID];
+            [SAMKeychain setPassword:accessToken forService:KEYCHAIN_SERVICE account:userID];
 
             [self.authenticationSpinnerController dismissViewControllerAnimated:YES completion:nil];
             [self setupEmissionWithUserID:userID accessToken:accessToken];
