@@ -233,12 +233,14 @@ static NSArray *sharedRoutingMap;
 {
     if (!sharedRoutingMap) {
       sharedRoutingMap = @[
+#ifdef ENABLE_DEV_MODE
         @{
           @"name" : @"Storybook",
           @"router" : ^() {
             return [[ARStorybookComponentViewController alloc] init];
           }
         },
+#endif
         @{
            @"name" : @"Home",
            @"router" : ^() {
