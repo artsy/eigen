@@ -17,4 +17,5 @@ group :test do
   gem 'xcpretty'
   gem 'second_curtain'
   gem 'danger'
+  gem 'danger-junit'
 end
