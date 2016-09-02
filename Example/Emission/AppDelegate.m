@@ -35,9 +35,9 @@
 // * Disable all of this to use the production env in a Debug build
 // * or just the ENABLE_DEV_MODE check to use staging in a Release build
 //
-#ifdef ENABLE_DEV_MODE
-#define USE_STAGING_ENV
-#endif
+//#ifdef ENABLE_DEV_MODE
+//#define USE_STAGING_ENV
+//#endif
 
 #ifdef USE_STAGING_ENV
 #define KEYCHAIN_SERVICE @"Emission-Staging"

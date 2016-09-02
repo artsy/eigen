@@ -729,9 +729,9 @@
       }
     },
     "babel-relay-plugin": {
-      "version": "0.9.2",
-      "from": "https://github.com/alloy/relay/releases/download/v0.9.2/babel-relay-plugin-0.9.2.tgz",
-      "resolved": "https://github.com/alloy/relay/releases/download/v0.9.2/babel-relay-plugin-0.9.2.tgz"
+      "version": "0.9.3",
+      "from": "https://github.com/alloy/relay/releases/download/v0.9.3/babel-relay-plugin-0.9.3.tgz",
+      "resolved": "https://github.com/alloy/relay/releases/download/v0.9.3/babel-relay-plugin-0.9.3.tgz"
     },
     "babel-runtime": {
       "version": "6.9.2",
@@ -2691,9 +2691,9 @@
       "resolved": "https://registry.npmjs.org/graceful-readlink/-/graceful-readlink-1.0.1.tgz"
     },
     "graphql": {
-      "version": "0.6.1",
+      "version": "0.6.2",
       "from": "graphql@>=0.6.0 <0.7.0",
-      "resolved": "https://registry.npmjs.org/graphql/-/graphql-0.6.1.tgz"
+      "resolved": "https://registry.npmjs.org/graphql/-/graphql-0.6.2.tgz"
     },
     "grouped-queue": {
       "version": "0.3.2",
@@ -3268,6 +3268,11 @@
       "version": "1.0.2",
       "from": "https://registry.npmjs.org/istextorbinary/-/istextorbinary-1.0.2.tgz",
       "resolved": "https://registry.npmjs.org/istextorbinary/-/istextorbinary-1.0.2.tgz"
+    },
+    "iterall": {
+      "version": "1.0.2",
+      "from": "iterall@1.0.2",
+      "resolved": "https://registry.npmjs.org/iterall/-/iterall-1.0.2.tgz"
     },
     "jade": {
       "version": "0.26.3",
@@ -4834,9 +4839,9 @@
       }
     },
     "react-relay": {
-      "version": "0.9.2",
-      "from": "https://github.com/alloy/relay/releases/download/v0.9.2/react-relay-0.9.2.tgz",
-      "resolved": "https://github.com/alloy/relay/releases/download/v0.9.2/react-relay-0.9.2.tgz"
+      "version": "0.9.3",
+      "from": "https://github.com/alloy/relay/releases/download/v0.9.3/react-relay-0.9.3.tgz",
+      "resolved": "https://github.com/alloy/relay/releases/download/v0.9.3/react-relay-0.9.3.tgz"
     },
     "react-simple-di": {
       "version": "1.2.0",
