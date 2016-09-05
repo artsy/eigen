@@ -1,4 +1,5 @@
 # See: https://github.com/joshuapinter/apphubdeploy
+#
 # Create a .apphub credentials file
 echo "{\"appHubId\":\"Z6IwqK52JBXrKLI4kpvJ\",\"appHubSecret\":\"$APP_HUB_SECRET\"}" > .apphub
 
