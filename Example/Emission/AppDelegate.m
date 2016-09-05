@@ -21,10 +21,30 @@
 
 #import <AppHub/AppHub.h>
 
+// The slug of the artist to show as the root artist from the component selection list.
+//
 #define ARTIST @"alex-katz"
 
-#if TARGET_OS_SIMULATOR
+// Disable this to force using the release JS bundle, note that you should really do so by running a Release build.
+//
+// To do this, hold down the alt key when clicking the run button and select the Release configuration. Remember to
+// change this back afterwards.
+//
+#if TARGET_OS_SIMULATOR && defined(DEBUG)
 #define ENABLE_DEV_MODE
+#endif
+
+// * Disable all of this to use the production env in a Debug build
+// * or just the ENABLE_DEV_MODE check to use staging in a Release build
+//
+#ifdef ENABLE_DEV_MODE
+#define USE_STAGING_ENV
+#endif
+
+#ifdef USE_STAGING_ENV
+#define KEYCHAIN_SERVICE @"Emission-Staging"
+#else
+#define KEYCHAIN_SERVICE @"Emission-Production"
 #endif
 
 static BOOL
@@ -57,9 +77,10 @@ randomBOOL(void)
   [AppHub setApplicationID: @"Z6IwqK52JBXrKLI4kpvJ"];
   [[AppHub buildManager] setDebugBuildsEnabled:YES];
 
-  NSString *userID = [SAMKeychain accountsForService:@"Emission-Example"][0][kSAMKeychainAccountKey];
+  NSString *userID = [SAMKeychain accountsForService:KEYCHAIN_SERVICE][0][kSAMKeychainAccountKey];
+
   if (userID) {
-    NSString *accessToken = [SAMKeychain passwordForService:@"Emission-Example" account:userID];
+    NSString *accessToken = [SAMKeychain passwordForService:KEYCHAIN_SERVICE account:userID];
     if (accessToken) {
       [self setupEmissionWithUserID:userID accessToken:accessToken];
       return YES;
@@ -81,7 +102,7 @@ randomBOOL(void)
     self.authenticationSpinnerController.view = spinner;
     [self.navigationController presentViewController:self.authenticationSpinnerController animated:NO completion:nil];
   }
-  
+
   UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Authentication"
                                                                  message:@"Enter your Artsy credentials"
                                                           preferredStyle:UIAlertControllerStyleAlert];
@@ -92,7 +113,7 @@ randomBOOL(void)
     textField.placeholder = @"Password";
     textField.secureTextEntry = YES;
   }];
-  
+
   __weak UIAlertController *weakAlert = alert;
   [alert addAction:[UIAlertAction actionWithTitle:@"OK"
                                             style:UIAlertActionStyleDefault
@@ -100,7 +121,7 @@ randomBOOL(void)
                                             [self authenticateWithEmail:weakAlert.textFields[0].text
                                                                password:weakAlert.textFields[1].text];
                                           }]];
-  
+
   [self.authenticationSpinnerController presentViewController:alert animated:YES completion:nil];
 }
 
@@ -109,7 +130,7 @@ randomBOOL(void)
   // These are of Eigen OSS: https://github.com/artsy/eigen/blob/0e193d1b/Makefile#L36-L37
   ArtsyAuthentication *auth = [[ArtsyAuthentication alloc] initWithClientID:@"e750db60ac506978fc70"
                                                                clientSecret:@"3a33d2085cbd1176153f99781bbce7c6"];
-#ifdef ENABLE_DEV_MODE
+#ifdef USE_STAGING_ENV
   auth.router.staging = YES;
 #endif
 
@@ -132,7 +153,7 @@ randomBOOL(void)
             NSParameterAssert(userID);
             NSParameterAssert(accessToken);
 
-            [SAMKeychain setPassword:accessToken forService:@"Emission-Example" account:userID];
+            [SAMKeychain setPassword:accessToken forService:KEYCHAIN_SERVICE account:userID];
 
             [self.authenticationSpinnerController dismissViewControllerAnimated:YES completion:nil];
             [self setupEmissionWithUserID:userID accessToken:accessToken];
@@ -150,8 +171,16 @@ randomBOOL(void)
   AREmission *emission = nil;
 
 #ifdef ENABLE_DEV_MODE
+#ifdef USE_STAGING_ENV
+  BOOL staging = YES;
+#else
+  BOOL staging = NO;
+#endif
   NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
-  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken packagerURL:packagerURL];
+  emission = [[AREmission alloc] initWithUserID:userID
+                            authenticationToken:accessToken
+                                    packagerURL:packagerURL
+                          useStagingEnvironment:staging];
 #else
   AHBuild *build = [[AppHub buildManager] currentBuild];
   NSURL *jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
@@ -160,7 +189,7 @@ randomBOOL(void)
     jsCodeLocation = [emissionBundle URLForResource:@"Emission" withExtension:@"js"];
   }
   emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken packagerURL: jsCodeLocation];
-#endif 
+#endif
   [AREmission setSharedInstance:emission];
 
 
@@ -245,12 +274,14 @@ static NSArray *sharedRoutingMap;
 {
     if (!sharedRoutingMap) {
       sharedRoutingMap = @[
+#ifdef ENABLE_DEV_MODE
         @{
           @"name" : @"Storybook",
           @"router" : ^() {
             return [[ARStorybookComponentViewController alloc] init];
           }
         },
+#endif
         @{
            @"name" : @"Home",
            @"router" : ^() {

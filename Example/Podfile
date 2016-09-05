@@ -5,8 +5,7 @@ react_path = '../node_modules/react-native'
 
 target 'Emission' do
   pod 'Emission', :path => '../'
-  # TODO: Push a release to our spec repo.
-  pod 'Extraction', :git => 'https://github.com/artsy/extraction.git'
+  pod 'Extraction'
   pod 'React', :path => react_path, :subspecs => %w(RCTWebSocket RCTImage)
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
