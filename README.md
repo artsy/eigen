@@ -82,7 +82,9 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 
 ### Deployment
 
+Currently deploying the emission example app to Testflight is done manually.
 
+On the other hand, our JS is deployed from master to our dev build on Testflight [via AppHub](https://github.com/artsy/emission/pull/263).
 
 ### Resources
 
