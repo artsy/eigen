@@ -83,7 +83,7 @@ lane :deploy_latest_to_external do
   )
 end
 
-## We want to have a simpler version of Fastlane's match
+## We want to have a simpler version of fastlane's match
 ## this does it in a pretty reasonable amount of code.
 
 lane :setup_for_app_store do
