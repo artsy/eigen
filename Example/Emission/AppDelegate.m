@@ -19,6 +19,8 @@
 #import <Extraction/ARSpinner.h>
 #import <SAMKeychain/SAMKeychain.h>
 
+#import <AppHub/AppHub.h>
+
 // The slug of the artist to show as the root artist from the component selection list.
 //
 #define ARTIST @"alex-katz"
@@ -71,7 +73,12 @@ randomBOOL(void)
   self.window.rootViewController = self.navigationController;
   [self.window makeKeyAndVisible];
 
+  // [AppHub setLogLevel: AHLogLevelDebug];
+  [AppHub setApplicationID: @"Z6IwqK52JBXrKLI4kpvJ"];
+  [[AppHub buildManager] setDebugBuildsEnabled:YES];
+
   NSString *userID = [SAMKeychain accountsForService:KEYCHAIN_SERVICE][0][kSAMKeychainAccountKey];
+
   if (userID) {
     NSString *accessToken = [SAMKeychain passwordForService:KEYCHAIN_SERVICE account:userID];
     if (accessToken) {
@@ -95,7 +102,7 @@ randomBOOL(void)
     self.authenticationSpinnerController.view = spinner;
     [self.navigationController presentViewController:self.authenticationSpinnerController animated:NO completion:nil];
   }
-  
+
   UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Authentication"
                                                                  message:@"Enter your Artsy credentials"
                                                           preferredStyle:UIAlertControllerStyleAlert];
@@ -106,7 +113,7 @@ randomBOOL(void)
     textField.placeholder = @"Password";
     textField.secureTextEntry = YES;
   }];
-  
+
   __weak UIAlertController *weakAlert = alert;
   [alert addAction:[UIAlertAction actionWithTitle:@"OK"
                                             style:UIAlertActionStyleDefault
@@ -114,7 +121,7 @@ randomBOOL(void)
                                             [self authenticateWithEmail:weakAlert.textFields[0].text
                                                                password:weakAlert.textFields[1].text];
                                           }]];
-  
+
   [self.authenticationSpinnerController presentViewController:alert animated:YES completion:nil];
 }
 
@@ -175,7 +182,13 @@ randomBOOL(void)
                                     packagerURL:packagerURL
                           useStagingEnvironment:staging];
 #else
-  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken];
+  AHBuild *build = [[AppHub buildManager] currentBuild];
+  NSURL *jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
+  if (!jsCodeLocation) {
+    NSBundle *emissionBundle = [NSBundle bundleForClass:AREmission.class];
+    jsCodeLocation = [emissionBundle URLForResource:@"Emission" withExtension:@"js"];
+  }
+  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken packagerURL: jsCodeLocation];
 #endif
   [AREmission setSharedInstance:emission];
 

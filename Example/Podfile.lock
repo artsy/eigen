@@ -1,4 +1,6 @@
 PODS:
+  - AppHub (0.5.1):
+    - React/Core
   - Artsy+Authentication/email (1.5.0):
     - ISO8601DateFormatter
     - NSURL+QueryDictionary
@@ -63,6 +65,7 @@ PODS:
   - UIView+BooleanAnimations (1.0.2)
 
 DEPENDENCIES:
+  - AppHub (from `https://github.com/orta/apphub.git`)
   - Artsy+Authentication/email (from `https://github.com/artsy/Artsy-Authentication.git`, branch `fetch-user-details`)
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
   - Emission (from `../`)
@@ -74,17 +77,22 @@ DEPENDENCIES:
   - Specta
 
 EXTERNAL SOURCES:
+  AppHub:
+    :git: https://github.com/orta/apphub.git
   Artsy+Authentication:
     :branch: fetch-user-details
     :git: https://github.com/artsy/Artsy-Authentication.git
   Artsy+UIFonts:
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Emission:
-    :path: ../
+    :path: "../"
   React:
-    :path: ../node_modules/react-native
+    :path: "../node_modules/react-native"
 
 CHECKOUT OPTIONS:
+  AppHub:
+    :commit: ef744742a47f089fc89887d10b90294e4faf0b6b
+    :git: https://github.com/orta/apphub.git
   Artsy+Authentication:
     :commit: 1b582675598c999726d9edacd3b8559e01cf7c48
     :git: https://github.com/artsy/Artsy-Authentication.git
@@ -93,6 +101,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/artsy/Artsy-UIFonts.git
 
 SPEC CHECKSUMS:
+  AppHub: 03788112dd48c42b60d51321c0ffff4ef15a4432
   Artsy+Authentication: 3bf11ceca61c52e9e31490535bf5798f625406fa
   Artsy+UIColors: 10a2d71e9ffe1015be43d4e084d13ff4337aab97
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
@@ -109,6 +118,6 @@ SPEC CHECKSUMS:
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
 
-PODFILE CHECKSUM: 371afd491d645539a02b6e1d43851930fe8c03ec
+PODFILE CHECKSUM: ab2b14498bb09c9ba993d5484696be2421070207
 
 COCOAPODS: 1.0.1

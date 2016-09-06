@@ -47,7 +47,8 @@
     "react": "^15.2.0",
     "react-native": "^0.30.0",
     "react-relay": "https://github.com/alloy/relay/releases/download/v0.9.3/react-relay-0.9.3.tgz",
-    "remove-markdown": "0.1.0"
+    "remove-markdown": "0.1.0",
+    "apphub": "^0.5.1"
   },
   "devDependencies": {
     "@kadira/react-native-storybook": "^1.12.6",
