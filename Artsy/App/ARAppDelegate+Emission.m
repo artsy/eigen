@@ -11,6 +11,7 @@
 #import "ARAppConstants.h"
 #import "AROptions.h"
 #import "ARMenuAwareViewController.h"
+#import "ARDefaults.h"
 
 #import <Aerodramus/Aerodramus.h>
 #import <Emission/AREmission.h>
@@ -68,12 +69,17 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
     AREmission *emission;
 
     if ([AROptions boolForOption:AROptionsStagingReactEnv]) {
+        [AppHub setLogLevel: AHLogLevelDebug];
         [AppHub setApplicationID:@"Z6IwqK52JBXrKLI4kpvJ"];
+
+        NSString *emissionHeadVersion = [[NSUserDefaults standardUserDefaults] valueForKey:AREmissionHeadVersionDefault];
+        [[AppHub buildManager] setInstalledAppVersion: emissionHeadVersion];
+
         [[AppHub buildManager] setDebugBuildsEnabled:YES];
 
         AHBuild *build = [[AppHub buildManager] currentBuild];
         NSURL *jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
-        AREmission *stagingEmission = [AREmission initWithPackagerURL:jsCodeLocation];
+        AREmission *stagingEmission = [[AREmission  alloc] initWithPackagerURL: jsCodeLocation];
         [AREmission setSharedInstance:stagingEmission];
     }
 

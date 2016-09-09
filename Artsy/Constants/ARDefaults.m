@@ -25,6 +25,8 @@ NSString *const AROnboardingSkipCollectorLevelDefault = @"eigen-onboard-skip-col
 NSString *const AROnboardingSkipPriceRangeDefault = @"eigen-onboard-skip-price-range";
 NSString *const AROnboardingPromptThresholdDefault = @"eigen-onboard-prompt-threshold";
 
+NSString *const AREmissionHeadVersionDefault = @"emission-head-version";
+
 
 @implementation ARDefaults
 
