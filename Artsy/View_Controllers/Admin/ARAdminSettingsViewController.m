@@ -22,6 +22,7 @@
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AppHub/AppHub.h>
+#import "ARAdminLoadReactComponentViewController.h"
 
 #if DEBUG
 #import <VCRURLConnection/VCR.h>
@@ -230,6 +231,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     if (isStagingReact) {
         [sectionData addCellData:self.appHubMetadata];
         [sectionData addCellData:self.emissionVersionUpdater];
+        [sectionData addCellData:self.openEmissionModule];
         [sectionData addCellData:self.appHubBuildChooser];
     }
     [sectionData addCellData:self.generateReactNative];
@@ -258,6 +260,20 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     };
     return cellData;
 }
+
+- (ARCellData *)openEmissionModule
+{
+    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
+        cell.textLabel.text = @"Open Emission Module";
+    };
+    cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
+        ARAdminLoadReactComponentViewController *loadVC = [[ARAdminLoadReactComponentViewController alloc] init];
+        [self.navigationController pushViewController:loadVC animated: YES];
+    };
+    return cellData;
+}
+
 
 - (ARCellData *)appHubBuildChooser
 {

@@ -66,24 +66,40 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
 
 - (void)setupEmission;
 {
-    AREmission *emission;
-
+    // AppHub's loading of our Emission instance is Async, so we let
+    // the normal  JS run, then if we get the notification of a new build
+    // we switch out the current emission instance.
+    //
     if ([AROptions boolForOption:AROptionsStagingReactEnv]) {
         [AppHub setLogLevel: AHLogLevelDebug];
         [AppHub setApplicationID:@"Z6IwqK52JBXrKLI4kpvJ"];
 
         NSString *emissionHeadVersion = [[NSUserDefaults standardUserDefaults] valueForKey:AREmissionHeadVersionDefault];
+        [[AppHub buildManager] setAutomaticPollingEnabled:NO];
         [[AppHub buildManager] setInstalledAppVersion: emissionHeadVersion];
-
         [[AppHub buildManager] setDebugBuildsEnabled:YES];
 
-        AHBuild *build = [[AppHub buildManager] currentBuild];
-        NSURL *jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
-        AREmission *stagingEmission = [[AREmission  alloc] initWithPackagerURL: jsCodeLocation];
-        [AREmission setSharedInstance:stagingEmission];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newEmissionBuild) name:AHBuildManagerDidMakeBuildAvailableNotification object:nil];
+
+        [[AppHub buildManager] fetchBuildWithCompletionHandler:^(AHBuild *result, NSError *error) {
+            [self newEmissionBuild];
+        }];
     }
 
-    emission = [AREmission sharedInstance];
+    [self setupSharedEmission];
+}
+
+- (void)newEmissionBuild
+{
+    AHBuild *build = [[AppHub buildManager] currentBuild];
+    NSURL *jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
+    AREmission *stagingEmission = [[AREmission alloc] initWithPackagerURL: jsCodeLocation];
+    [AREmission setSharedInstance:stagingEmission];
+}
+
+- (void)setupSharedEmission
+{
+    AREmission *emission = [AREmission sharedInstance];
     emission.APIModule.artistFollowStatusProvider = ^(NSString *artistID, RCTResponseSenderBlock block) {
         // Leave the view state ‘unselected’ if there’s no signed-in user.
         if ([[ARUserManager sharedManager] currentUser] != nil) {
@@ -124,6 +140,7 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
         [properties removeObjectForKey:@"name"];
         [ARAnalytics event:info[@"name"] withProperties:[properties copy]];
     };
+
 }
 
 @end
