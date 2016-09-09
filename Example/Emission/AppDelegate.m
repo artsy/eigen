@@ -176,6 +176,7 @@ randomBOOL(void)
 #else
   BOOL staging = NO;
 #endif
+
   NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
   emission = [[AREmission alloc] initWithUserID:userID
                             authenticationToken:accessToken
@@ -188,7 +189,7 @@ randomBOOL(void)
     NSBundle *emissionBundle = [NSBundle bundleForClass:AREmission.class];
     jsCodeLocation = [emissionBundle URLForResource:@"Emission" withExtension:@"js"];
   }
-  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken packagerURL: jsCodeLocation];
+  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken packagerURL:jsCodeLocation useStagingEnvironment:NO];
 #endif
   [AREmission setSharedInstance:emission];
 
