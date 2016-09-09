@@ -6,10 +6,10 @@ declared_trivial = github.pr_title.include? "#trivial"
 warn("PR is classed as Work in Progress") if github.pr_title.include? "[WIP]"
 
 # Oi, CHANGELOGs please
-fail("No CHANGELOG changes made") if git.lines_of_code > 50 && !github.modified_files.include?("CHANGELOG.yml") && !declared_trivial
+fail("No CHANGELOG changes made") if git.lines_of_code > 50 && !git.modified_files.include?("CHANGELOG.yml") && !declared_trivial
 
 # Stop skipping some manual testing
-warn("Needs testing on a Phone if change is non-trivial") if git.lines_of_code > 50 && !pr_title.include?("📱")
+warn("Needs testing on a Phone if change is non-trivial") if git.lines_of_code > 50 && !github.pr_title.include?("📱")
 
 # Don't let testing shortcuts get into master
 fail("fdescribe left in tests") if `grep -r fdescribe Artsy_Tests/`.length > 1
@@ -43,12 +43,12 @@ begin
   readme_data = YAML.load readme_yaml
 
   # Common error when making a new version
-  fail "Upcoming is an array, it should be an object" if readme_data["upcoming"].is_a? Array  
+  fail "Upcoming is an array, it should be an object" if readme_data["upcoming"].is_a? Array
 
   # Tie all releases to a date
   for release in readme_data["releases"]
-    fail "Release #{release["version"]} does not have a date" unless release["date"]
-  end 
+    fail "Release #{release['version']} does not have a date" unless release["date"]
+  end
 
 rescue StandardError
   # YAML could not be parsed, fail the build.
@@ -106,3 +106,7 @@ if outliers.any?
   markdown(([headings] + warnings).join)
 end
 
+# Give inline test fail reports
+results_file = File.join(ENV["CIRCLE_TEST_REPORTS"], "/xcode/results.xml")
+junit.parse results_file
+junit.report
