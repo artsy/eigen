@@ -15,4 +15,5 @@ group :test do
   gem 'second_curtain'
   gem 'nokogiri', '>= 1.6.7'
   gem 'danger'
+  gem 'danger-junit'
 end
