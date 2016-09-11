@@ -678,6 +678,17 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
 }
 
++ (NSURLRequest *)newGeneRelatedToGeneRequest:(Gene *)gene
+{
+    NSDictionary *params = @{ @"size" : @1 };
+    return [self requestWithMethod:@"GET" path:NSStringWithFormat(ARRelatedGeneURLFormat, gene.geneID) parameters:params];
+}
+
++ (NSURLRequest *)newGenesRelatedToGeneRequest:(Gene *)gene
+{
+    return [self requestWithMethod:@"GET" path:NSStringWithFormat(ARRelatedGeneURLFormat, gene.geneID) parameters:nil];
+}
+
 + (NSURLRequest *)newArtistsTrendingRequest
 {
     return [self requestWithMethod:@"GET" path:ARTrendingArtistsURL parameters:nil];

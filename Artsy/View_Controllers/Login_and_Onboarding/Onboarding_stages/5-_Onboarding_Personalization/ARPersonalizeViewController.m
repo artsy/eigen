@@ -275,8 +275,33 @@
     self.followedAtLeastOneCategory = YES;
     [self allowUserToContinue];
 
-    // suggest more categories
-    // which API to use, that is the question
+    switch (self.searchResultsTable.contentDisplayMode) {
+        case ARTableViewContentDisplayModeSearchResults: {
+            self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
+            self.searchRequestOperation = [ArtsyAPI getRelatedGenesForGene:category success:^(NSArray *genes) {
+                [self.searchResultsTable updateTableContentsFor:genes
+                                                replaceContents:ARSearchResultsReplaceAll
+                                                       animated:YES];
+            } failure:^(NSError *error) {
+                [self reportError:error];
+            }];
+
+            break;
+        }
+        case ARTableViewContentDisplayModeRelatedResults: {
+            self.searchRequestOperation = [ArtsyAPI getRelatedGeneForGene:category success:^(NSArray *relatedGene) {
+                [self.searchResultsTable updateTableContentsFor:relatedGene
+                                                replaceContents:ARSearchResultsReplaceSingle
+                                                       animated:NO];
+            } failure:^(NSError *error) {
+                [self reportError:error];
+            }];
+
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (void)budgetSelected

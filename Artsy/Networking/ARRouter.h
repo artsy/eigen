@@ -97,6 +97,8 @@
 
 + (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist;
 + (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist;
++ (NSURLRequest *)newGeneRelatedToGeneRequest:(Gene *)gene;
++ (NSURLRequest *)newGenesRelatedToGeneRequest:(Gene *)gene;
 + (NSURLRequest *)newArtistsTrendingRequest;
 + (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID;
 + (NSURLRequest *)newShowsRequestForArtistID:(NSString *)artistID inFairID:(NSString *)fairID;

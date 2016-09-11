@@ -1,5 +1,6 @@
 #import "Artist.h"
 #import "Artwork.h"
+#import "Gene.h"
 #import "ArtsyAPI+Private.h"
 #import "ARPostFeedItem.h"
 #import "ARRouter.h"
@@ -22,6 +23,23 @@
     NSURLRequest *request = [ARRouter newArtistRelatedToArtistRequest:artist];
     return [self getRequest:request parseIntoAnArrayOfClass:[Artist class] fromDictionaryWithKey:@"best_matches" success:success failure:failure];
 }
+
++ (AFHTTPRequestOperation *)getRelatedGenesForGene:(Gene *)gene
+                                           success:(void (^)(NSArray *genes))success
+                                           failure:(void (^)(NSError *error))failure
+{
+    NSURLRequest *request = [ARRouter newGenesRelatedToGeneRequest:gene];
+    return [self getRequest:request parseIntoAnArrayOfClass:[Gene class] fromDictionaryWithKey:@"best_matches" success:success failure:failure];
+}
+
++ (AFHTTPRequestOperation *)getRelatedGeneForGene:(Gene *)gene
+                                          success:(void (^)(NSArray *relatedGene))success
+                                          failure:(void (^)(NSError *error))failure
+{
+    NSURLRequest *request = [ARRouter newGeneRelatedToGeneRequest:gene];
+    return [self getRequest:request parseIntoAnArrayOfClass:[Gene class] fromDictionaryWithKey:@"best_matches" success:success failure:failure];
+}
+
 
 + (AFHTTPRequestOperation *)getTrendingArtistsWithSuccess:(void (^)(NSArray *artists))success
                                                   failure:(void (^)(NSError *error))failure
