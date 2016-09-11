@@ -50,7 +50,7 @@ NSString *const ARRelatedShowsURL = @"/api/v1/related/shows";
 NSString *const ARArtistArtworksURLFormat = @"/api/v1/artist/%@/artworks";
 NSString *const ARArtistInformationURLFormat = @"/api/v1/artist/%@";
 
-NSString *const ARRelatedArtistsURL = @"/api/v1/related/artists";
+NSString *const ARRelatedArtistsURL = @"/api/v1/me/suggested/artists";
 NSString *const ARRelatedGeneURLFormat = @"/api/v1/gene/%@/similar";
 NSString *const ARTrendingArtistsURL = @"/api/v1/artists/trending";
 NSString *const ARSampleArtistsURL = @"/api/v1/artists/sample";

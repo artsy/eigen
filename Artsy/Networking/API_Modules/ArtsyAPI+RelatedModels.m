@@ -13,7 +13,7 @@
                                                failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newArtistsRelatedToArtistRequest:artist];
-    return [self getRequest:request parseIntoAnArrayOfClass:[Artist class] fromDictionaryWithKey:@"best_matches" success:success failure:failure];
+    return [self getRequest:request parseIntoAnArrayOfClass:[Artist class] success:success failure:failure];
 }
 
 + (AFHTTPRequestOperation *)getRelatedArtistForArtist:(Artist *)artist
@@ -21,7 +21,7 @@
                                               failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newArtistRelatedToArtistRequest:artist];
-    return [self getRequest:request parseIntoAnArrayOfClass:[Artist class] fromDictionaryWithKey:@"best_matches" success:success failure:failure];
+    return [self getRequest:request parseIntoAnArrayOfClass:[Artist class] success:success failure:failure];
 }
 
 + (AFHTTPRequestOperation *)getRelatedGenesForGene:(Gene *)gene

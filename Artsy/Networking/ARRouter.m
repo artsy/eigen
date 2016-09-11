@@ -667,14 +667,14 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist
 {
-    NSDictionary *params = @{ @"artist" : @[ artist.artistID ],
+    NSDictionary *params = @{ @"artist_id" : artist.artistID,
                               @"size" : @1 };
     return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
 }
 
 + (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist
 {
-    NSDictionary *params = @{ @"artist" : @[ artist.artistID ] };
+    NSDictionary *params = @{ @"artist_id" : artist.artistID };
     return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
 }
 
