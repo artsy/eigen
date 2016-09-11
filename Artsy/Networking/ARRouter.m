@@ -689,9 +689,9 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:NSStringWithFormat(ARRelatedGeneURLFormat, gene.geneID) parameters:nil];
 }
 
-+ (NSURLRequest *)newArtistsTrendingRequest
++ (NSURLRequest *)newArtistsPopularRequest
 {
-    return [self requestWithMethod:@"GET" path:ARTrendingArtistsURL parameters:nil];
+    return [self requestWithMethod:@"GET" path:ARPopularArtistsURL parameters:nil];
 }
 
 + (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID

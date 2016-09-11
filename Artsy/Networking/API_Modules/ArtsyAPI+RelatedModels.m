@@ -41,10 +41,10 @@
 }
 
 
-+ (AFHTTPRequestOperation *)getTrendingArtistsWithSuccess:(void (^)(NSArray *artists))success
-                                                  failure:(void (^)(NSError *error))failure
++ (AFHTTPRequestOperation *)getPopularArtistsWithSuccess:(void (^)(NSArray *artists))success
+                                                 failure:(void (^)(NSError *error))failure
 {
-    NSURLRequest *request = [ARRouter newArtistsTrendingRequest];
+    NSURLRequest *request = [ARRouter newArtistsPopularRequest];
     return [self getRequest:request parseIntoAnArrayOfClass:[Artist class] withKey:nil success:success failure:failure];
 }
 
