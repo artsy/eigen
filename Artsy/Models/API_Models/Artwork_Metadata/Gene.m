@@ -20,6 +20,7 @@
 {
     return @{
         @"geneID" : @"id",
+        @"uuid" : @"_id",
         @"name" : @"name",
         @"geneDescription" : @"description",
         @"artistCount" : @"counts.artists",

@@ -693,13 +693,26 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newGeneRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude
 {
-    NSDictionary *params = @{ @"size" : @1 };
+    NSMutableArray *geneIDsToExclude = [NSMutableArray new];
+    for (Gene *gene in genesToExclude) {
+        [geneIDsToExclude addObject:gene.uuid];
+    }
+
+    NSDictionary *params = @{ @"size" : @1,
+                              @"exclude_gene_ids" : geneIDsToExclude };
     return [self requestWithMethod:@"GET" path:NSStringWithFormat(ARRelatedGeneURLFormat, gene.geneID) parameters:params];
 }
 
 + (NSURLRequest *)newGenesRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude
 {
-    return [self requestWithMethod:@"GET" path:NSStringWithFormat(ARRelatedGeneURLFormat, gene.geneID) parameters:nil];
+    NSMutableArray *geneIDsToExclude = [NSMutableArray new];
+    for (Gene *gene in genesToExclude) {
+        [geneIDsToExclude addObject:gene.uuid];
+    }
+
+    NSDictionary *params = @{ @"exclude_gene_ids" : geneIDsToExclude };
+
+    return [self requestWithMethod:@"GET" path:NSStringWithFormat(ARRelatedGeneURLFormat, gene.geneID) parameters:params];
 }
 
 + (NSURLRequest *)newArtistsPopularRequest
