@@ -203,7 +203,8 @@
     } else if ([result isKindOfClass:[Gene class]]) {
         Gene *gene = (Gene *)result;
         cell.title.text = gene.name;
-        [cell.thumbnail ar_setImageWithURL:gene.onboardingImageURL];
+        NSURL *geneImageURL = self.contentDisplayMode == ARTableViewContentDisplayModePlaceholder ? gene.onboardingImageURL : gene.smallImageURL;
+        [cell.thumbnail ar_setImageWithURL:geneImageURL];
     }
     cell.thumbnail.backgroundColor = [UIColor purpleColor];
     cell.follow.image = [UIImage imageNamed:@"followButton"];
