@@ -29,7 +29,7 @@
                                            failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newGenesRelatedToGeneRequest:gene];
-    return [self getRequest:request parseIntoAnArrayOfClass:[Gene class] fromDictionaryWithKey:@"best_matches" success:success failure:failure];
+    return [self getRequest:request parseIntoAnArrayOfClass:[Gene class] success:success failure:failure];
 }
 
 + (AFHTTPRequestOperation *)getRelatedGeneForGene:(Gene *)gene
@@ -37,7 +37,7 @@
                                           failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newGeneRelatedToGeneRequest:gene];
-    return [self getRequest:request parseIntoAnArrayOfClass:[Gene class] fromDictionaryWithKey:@"best_matches" success:success failure:failure];
+    return [self getRequest:request parseIntoAnArrayOfClass:[Gene class] success:success failure:failure];
 }
 
 
