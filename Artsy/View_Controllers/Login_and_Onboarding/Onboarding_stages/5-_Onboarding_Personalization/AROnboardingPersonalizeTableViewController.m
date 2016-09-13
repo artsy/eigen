@@ -12,7 +12,6 @@
 
 
 @interface AROnboardingPersonalizeTableViewController ()
-@property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, assign) BOOL shouldAnimate;
 @property (nonatomic, strong) NSIndexPath *selectedRowToReplace;
 @end

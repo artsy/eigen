@@ -260,7 +260,9 @@
             break;
         }
         case ARTableViewContentDisplayModeRelatedResults: {
-            self.searchRequestOperation = [ArtsyAPI getRelatedArtistForArtist:artist excluding:self.artistsFollowed success:^(NSArray *relatedArtist) {
+            // exclude currently displayed artists as well
+            NSArray *toExclude = [self.searchResultsTable.searchResults arrayByAddingObjectsFromArray:self.artistsFollowed];
+            self.searchRequestOperation = [ArtsyAPI getRelatedArtistForArtist:artist excluding:toExclude success:^(NSArray *relatedArtist) {
                 [self.searchResultsTable updateTableContentsFor:relatedArtist
                                                 replaceContents:ARSearchResultsReplaceSingle
                                                        animated:NO];
@@ -294,7 +296,9 @@
             break;
         }
         case ARTableViewContentDisplayModeRelatedResults: {
-            self.searchRequestOperation = [ArtsyAPI getRelatedGeneForGene:category excluding:self.categoriesFollowed success:^(NSArray *relatedGene) {
+            // exclude currently displayed artists as well
+            NSArray *toExclude = [self.searchResultsTable.searchResults arrayByAddingObjectsFromArray:self.categoriesFollowed];
+            self.searchRequestOperation = [ArtsyAPI getRelatedGeneForGene:category excluding:toExclude success:^(NSArray *relatedGene) {
                 [self.searchResultsTable updateTableContentsFor:relatedGene
                                                 replaceContents:ARSearchResultsReplaceSingle
                                                        animated:NO];
