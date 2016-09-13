@@ -1,5 +1,6 @@
 ### Master
 
+- Home now asks for maximum of 99 artwork rails - sarah
 - Added pull-to-refresh functionality to home view - sarah
 - Added a default minimum height for all rails - maxim
 - Added a pretty load failure view and allow for retrying - alloy
