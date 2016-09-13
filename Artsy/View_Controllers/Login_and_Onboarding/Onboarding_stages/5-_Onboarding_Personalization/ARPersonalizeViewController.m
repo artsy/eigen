@@ -32,6 +32,9 @@
 @property (nonatomic, strong, readwrite) ARPriceRangeViewController *budgetTable;
 @property (nonatomic, assign, readwrite) BOOL followedAtLeastOneCategory;
 
+@property (nonatomic, strong, readwrite) NSMutableArray *artistsFollowed;
+@property (nonatomic, strong, readwrite) NSMutableArray *categoriesFollowed;
+
 @property (nonatomic, weak) AFHTTPRequestOperation *searchRequestOperation;
 @end
 
@@ -43,6 +46,8 @@
     self = [super init];
     if (self) {
         _state = stage;
+        _artistsFollowed = [NSMutableArray new];
+        _categoriesFollowed = [NSMutableArray new];
     }
     return self;
 }
@@ -244,7 +249,7 @@
     switch (self.searchResultsTable.contentDisplayMode) {
         case ARTableViewContentDisplayModeSearchResults: {
             self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
-            self.searchRequestOperation = [ArtsyAPI getRelatedArtistsForArtist:artist success:^(NSArray *artists) {
+            self.searchRequestOperation = [ArtsyAPI getRelatedArtistsForArtist:artist excluding:self.artistsFollowed success:^(NSArray *artists) {
                 [self.searchResultsTable updateTableContentsFor:artists
                                                 replaceContents:ARSearchResultsReplaceAll
                                                        animated:YES];
@@ -255,7 +260,7 @@
             break;
         }
         case ARTableViewContentDisplayModeRelatedResults: {
-            self.searchRequestOperation = [ArtsyAPI getRelatedArtistForArtist:artist success:^(NSArray *relatedArtist) {
+            self.searchRequestOperation = [ArtsyAPI getRelatedArtistForArtist:artist excluding:self.artistsFollowed success:^(NSArray *relatedArtist) {
                 [self.searchResultsTable updateTableContentsFor:relatedArtist
                                                 replaceContents:ARSearchResultsReplaceSingle
                                                        animated:NO];
@@ -278,7 +283,7 @@
     switch (self.searchResultsTable.contentDisplayMode) {
         case ARTableViewContentDisplayModeSearchResults: {
             self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
-            self.searchRequestOperation = [ArtsyAPI getRelatedGenesForGene:category success:^(NSArray *genes) {
+            self.searchRequestOperation = [ArtsyAPI getRelatedGenesForGene:category excluding:self.categoriesFollowed success:^(NSArray *genes) {
                 [self.searchResultsTable updateTableContentsFor:genes
                                                 replaceContents:ARSearchResultsReplaceAll
                                                        animated:YES];
@@ -289,7 +294,7 @@
             break;
         }
         case ARTableViewContentDisplayModeRelatedResults: {
-            self.searchRequestOperation = [ArtsyAPI getRelatedGeneForGene:category success:^(NSArray *relatedGene) {
+            self.searchRequestOperation = [ArtsyAPI getRelatedGeneForGene:category excluding:self.categoriesFollowed success:^(NSArray *relatedGene) {
                 [self.searchResultsTable updateTableContentsFor:relatedGene
                                                 replaceContents:ARSearchResultsReplaceSingle
                                                        animated:NO];
@@ -366,11 +371,13 @@
 
     switch (self.state) {
         case AROnboardingStagePersonalizeArtists: {
+            [self.artistsFollowed addObject:(Artist *)item];
             [self artistFollowed:(Artist *)item];
             break;
         }
 
         case AROnboardingStagePersonalizeCategories: {
+            [self.categoriesFollowed addObject:(Gene *)item];
             [self categoryFollowed:(Gene *)item];
             break;
         }

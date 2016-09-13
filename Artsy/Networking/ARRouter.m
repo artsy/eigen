@@ -665,26 +665,32 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARFollowArtistsURL parameters:@{ @"fair_id" : fair.fairID }];
 }
 
-+ (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist
++ (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude
 {
     NSDictionary *params = @{ @"artist_id" : artist.artistID,
                               @"size" : @1 };
     return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
 }
 
-+ (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist
++ (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude
 {
-    NSDictionary *params = @{ @"artist_id" : artist.artistID };
+    NSMutableArray *artistIDsToExclude = [NSMutableArray new];
+    for (Artist *artist in artistsToExclude) {
+        [artistIDsToExclude addObject:artist.artistID];
+    }
+
+    NSDictionary *params = @{ @"artist_id" : artist.artistID,
+                              @"exclude_artist_ids" : @[ artistIDsToExclude ] };
     return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
 }
 
-+ (NSURLRequest *)newGeneRelatedToGeneRequest:(Gene *)gene
++ (NSURLRequest *)newGeneRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude
 {
     NSDictionary *params = @{ @"size" : @1 };
     return [self requestWithMethod:@"GET" path:NSStringWithFormat(ARRelatedGeneURLFormat, gene.geneID) parameters:params];
 }
 
-+ (NSURLRequest *)newGenesRelatedToGeneRequest:(Gene *)gene
++ (NSURLRequest *)newGenesRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude
 {
     return [self requestWithMethod:@"GET" path:NSStringWithFormat(ARRelatedGeneURLFormat, gene.geneID) parameters:nil];
 }

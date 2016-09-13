@@ -9,34 +9,38 @@
 @implementation ArtsyAPI (RelatedModels)
 
 + (AFHTTPRequestOperation *)getRelatedArtistsForArtist:(Artist *)artist
+                                             excluding:(NSArray *)artistsToExclude
                                                success:(void (^)(NSArray *artists))success
                                                failure:(void (^)(NSError *error))failure
 {
-    NSURLRequest *request = [ARRouter newArtistsRelatedToArtistRequest:artist];
+    NSURLRequest *request = [ARRouter newArtistsRelatedToArtistRequest:artist excluding:artistsToExclude];
     return [self getRequest:request parseIntoAnArrayOfClass:[Artist class] success:success failure:failure];
 }
 
 + (AFHTTPRequestOperation *)getRelatedArtistForArtist:(Artist *)artist
+                                            excluding:(NSArray *)artistsToExclude
                                               success:(void (^)(NSArray *relatedArtist))success
                                               failure:(void (^)(NSError *error))failure
 {
-    NSURLRequest *request = [ARRouter newArtistRelatedToArtistRequest:artist];
+    NSURLRequest *request = [ARRouter newArtistRelatedToArtistRequest:artist excluding:artistsToExclude];
     return [self getRequest:request parseIntoAnArrayOfClass:[Artist class] success:success failure:failure];
 }
 
 + (AFHTTPRequestOperation *)getRelatedGenesForGene:(Gene *)gene
+                                         excluding:(NSArray *)genesToExclude
                                            success:(void (^)(NSArray *genes))success
                                            failure:(void (^)(NSError *error))failure
 {
-    NSURLRequest *request = [ARRouter newGenesRelatedToGeneRequest:gene];
+    NSURLRequest *request = [ARRouter newGenesRelatedToGeneRequest:gene excluding:genesToExclude];
     return [self getRequest:request parseIntoAnArrayOfClass:[Gene class] success:success failure:failure];
 }
 
 + (AFHTTPRequestOperation *)getRelatedGeneForGene:(Gene *)gene
+                                        excluding:(NSArray *)genesToExclude
                                           success:(void (^)(NSArray *relatedGene))success
                                           failure:(void (^)(NSError *error))failure
 {
-    NSURLRequest *request = [ARRouter newGeneRelatedToGeneRequest:gene];
+    NSURLRequest *request = [ARRouter newGeneRelatedToGeneRequest:gene excluding:genesToExclude];
     return [self getRequest:request parseIntoAnArrayOfClass:[Gene class] success:success failure:failure];
 }
 

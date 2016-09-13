@@ -152,6 +152,7 @@
 - (AFHTTPRequestOperation *)getRelatedArtists:(void (^)(NSArray *artists))success
 {
     return [ArtsyAPI getRelatedArtistsForArtist:self
+                                      excluding:nil
                                         success:success
                                         failure:^(NSError *error) {
             success(@[]);
