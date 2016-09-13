@@ -667,8 +667,15 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude
 {
+    NSMutableArray *artistIDsToExclude = [NSMutableArray new];
+    for (Artist *artist in artistsToExclude) {
+        [artistIDsToExclude addObject:artist.uuid];
+    }
+
     NSDictionary *params = @{ @"artist_id" : artist.artistID,
-                              @"size" : @1 };
+                              @"size" : @1,
+                              @"exclude_artist_ids" : artistIDsToExclude };
+
     return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
 }
 
@@ -676,11 +683,11 @@ static NSString *hostFromString(NSString *string)
 {
     NSMutableArray *artistIDsToExclude = [NSMutableArray new];
     for (Artist *artist in artistsToExclude) {
-        [artistIDsToExclude addObject:artist.artistID];
+        [artistIDsToExclude addObject:artist.uuid];
     }
 
     NSDictionary *params = @{ @"artist_id" : artist.artistID,
-                              @"exclude_artist_ids" : @[ artistIDsToExclude ] };
+                              @"exclude_artist_ids" : artistIDsToExclude };
     return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
 }
 

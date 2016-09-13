@@ -22,6 +22,7 @@
 {
     return @{
         @"artistID" : @"id",
+        @"uuid" : @"_id",
         @"name" : @"name",
         @"years" : @"years",
         @"birthday" : @"birthday",
