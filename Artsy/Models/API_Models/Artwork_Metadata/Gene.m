@@ -48,7 +48,8 @@
 
 - (NSURL *)onboardingImageURL
 {
-    return [NSURL URLWithString:self.urlFormatString];
+    NSString *geminiStringURL = @"https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=50&height=50&quality=85&src=%@";
+    return [NSURL URLWithString:[NSString stringWithFormat:geminiStringURL, self.urlFormatString]];
 }
 
 - (instancetype)initWithGeneID:(NSString *)geneID
