@@ -52,6 +52,13 @@
     return [self getRequest:request parseIntoAnArrayOfClass:[Artist class] withKey:nil success:success failure:failure];
 }
 
++ (AFHTTPRequestOperation *)getPopularGenesWithSuccess:(void (^)(NSArray *genes))success
+                                               failure:(void (^)(NSError *error))failure
+{
+    NSURLRequest *request = [ARRouter newGenesPopularRequest];
+    return [self getRequest:request parseIntoAnArrayOfClass:[Gene class] success:success failure:failure];
+}
+
 + (AFHTTPRequestOperation *)getRelatedArtworksForArtwork:(Artwork *)artwork
                                                  success:(void (^)(NSArray *artworks))success
                                                  failure:(void (^)(NSError *error))failure

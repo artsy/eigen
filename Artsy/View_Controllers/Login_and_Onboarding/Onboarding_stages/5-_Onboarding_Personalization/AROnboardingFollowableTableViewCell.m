@@ -34,7 +34,8 @@
         [self.thumbnail constrainHeight:@"50"];
         [self.thumbnail alignCenterYWithView:self predicate:@"0"];
 
-        self.thumbnail.contentMode = UIViewContentModeScaleAspectFit;
+        self.thumbnail.clipsToBounds = YES;
+        self.thumbnail.contentMode = UIViewContentModeScaleAspectFill;
 
         [self.title constrainLeadingSpaceToView:self.thumbnail predicate:@"10"];
         [self.title alignCenterYWithView:self predicate:@"0"];

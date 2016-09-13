@@ -31,6 +31,7 @@
 
 - (AFHTTPRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;
 
+- (NSURL *)onboardingImageURL;
 - (NSURL *)smallImageURL;
 - (NSURL *)largeImageURL;
 @end

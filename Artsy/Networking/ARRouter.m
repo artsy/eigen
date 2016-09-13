@@ -720,6 +720,15 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARPopularArtistsURL parameters:nil];
 }
 
++ (NSURLRequest *)newGenesPopularRequest
+
+{
+    // we get hard coded categories from this json file that force uses also
+    NSString *stringURL = @"https://s3.amazonaws.com/force-production/json/eigen_popular_categories.json";
+
+    return [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:stringURL]];
+}
+
 + (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID
 {
     NSDictionary *params = @{ @"artist" : @[ artistID ] };

@@ -122,7 +122,7 @@
             self.searchResultsTable.headerPlaceholderText = @"POPULAR CATEGORIES OF ART ON ARTSY";
             [self.headerView.searchField.searchField setPlaceholder:@"Search medium, movement, or style"];
             [self.onboardingNavigationItems disableNextStep];
-            [self populateTrendingArtists];
+            [self populateTrendingCategories];
             break;
         case AROnboardingStagePersonalizeBudget:
             [self addBudgetTable];
@@ -241,7 +241,14 @@
 
     self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModePlaceholder;
 
-    // call into gene API
+
+    self.searchRequestOperation = [ArtsyAPI getPopularGenesWithSuccess:^(NSArray *genes) {
+        [self.searchResultsTable updateTableContentsFor:genes
+                                        replaceContents:ARSearchResultsReplaceAll
+                                               animated:NO];
+    } failure:^(NSError *error) {
+        [self reportError:error];
+    }];
 }
 
 - (void)artistFollowed:(Artist *)artist

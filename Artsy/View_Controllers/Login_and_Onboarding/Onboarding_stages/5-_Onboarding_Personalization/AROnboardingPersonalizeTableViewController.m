@@ -203,9 +203,9 @@
     } else if ([result isKindOfClass:[Gene class]]) {
         Gene *gene = (Gene *)result;
         cell.title.text = gene.name;
-        [cell.thumbnail ar_setImageWithURL:gene.smallImageURL];
+        [cell.thumbnail ar_setImageWithURL:gene.onboardingImageURL];
     }
-
+    cell.thumbnail.backgroundColor = [UIColor purpleColor];
     cell.follow.image = [UIImage imageNamed:@"followButton"];
 
     return cell;

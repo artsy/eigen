@@ -46,6 +46,11 @@
     return [NSURL URLWithString:[self.urlFormatString stringByReplacingOccurrencesOfString:@":version" withString:@"thumb"]];
 }
 
+- (NSURL *)onboardingImageURL
+{
+    return [NSURL URLWithString:self.urlFormatString];
+}
+
 - (instancetype)initWithGeneID:(NSString *)geneID
 {
     self = [super init];
