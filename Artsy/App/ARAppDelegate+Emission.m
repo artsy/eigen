@@ -44,9 +44,11 @@ static void
 ArtistGetFollowStatus(NSString *artistID, RCTResponseSenderBlock block)
 {
     [ArtsyAPI checkFavoriteStatusForArtist:[[Artist alloc] initWithArtistID:artistID]
-        success:^(BOOL following) { ArtistFollowRequestSuccess(block, following);
+        success:^(BOOL following) {
+            ArtistFollowRequestSuccess(block, following);
         }
-        failure:^(NSError *error) { ArtistFollowRequestFailure(block, NO, error);
+        failure:^(NSError *error) {
+            ArtistFollowRequestFailure(block, NO, error);
         }];
 }
 
@@ -55,9 +57,11 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
 {
     [ArtsyAPI setFavoriteStatus:following
         forArtist:[[Artist alloc] initWithArtistID:artistID]
-        success:^(id response) { ArtistFollowRequestSuccess(block, following);
+        success:^(id response) {
+            ArtistFollowRequestSuccess(block, following);
         }
-        failure:^(NSError *error) { ArtistFollowRequestFailure(block, !following, error);
+        failure:^(NSError *error) {
+            ArtistFollowRequestFailure(block, !following, error);
         }];
 }
 

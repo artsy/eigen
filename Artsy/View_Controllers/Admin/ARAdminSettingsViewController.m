@@ -14,7 +14,6 @@
 #import "ARFileUtils.h"
 #import "ARRouter.h"
 #import "AROptions.h"
-#import "NSDate+Util.h"
 
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
@@ -22,6 +21,7 @@
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AppHub/AppHub.h>
+#import <Emission/AREmission.h>
 #import "ARAdminLoadReactComponentViewController.h"
 
 #if DEBUG
@@ -247,7 +247,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
         if (!build) {
             cell.textLabel.text = @"Not downloaded yet";
         } if (build && !build.creationDate) {
-            cell.textLabel.text = @"Build: Bundled - hit sync";
+            cell.textLabel.text = @"Build: Bundled with Eigen";
         } else {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             formatter.doesRelativeDateFormatting = YES;
@@ -337,9 +337,11 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     };
     cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
         [AROptions setBool: !isStagingReact forOption:AROptionsStagingReactEnv];
-        [self updateEmissionVersion:^(NSString *version) {
-            exit(0);
-        }];
+        NSBundle *bundle = [NSBundle bundleForClass:AREmission.class];
+        NSString *version = bundle.infoDictionary[@"CFBundleShortVersionString"];
+        [[NSUserDefaults standardUserDefaults] setValue:version forKey:AREmissionHeadVersionDefault];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        exit(0);
     };
     return cellData;
 }
