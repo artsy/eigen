@@ -15,6 +15,7 @@
 
 @property (nonatomic, copy, readonly) NSNumber *longitude;
 @property (nonatomic, copy, readonly) NSNumber *latitude;
+
 - (NSDictionary *)coordinatesAsDictionary;
 - (CLLocation *)clLocation;
 

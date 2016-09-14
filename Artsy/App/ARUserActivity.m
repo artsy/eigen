@@ -5,12 +5,14 @@
 #import "Fair.h"
 #import "Gene.h"
 #import "PartnerShow.h"
+#import "Partner.h"
 #import "Sale.h"
+#import "Location.h"
 
 #import "ARDispatchManager.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
-
+#import <MapKit/MapKit.h>
 
 NSString *const ARUserActivityTypeArtwork = @"net.artsy.artsy.artwork";
 NSString *const ARUserActivityTypeArtist = @"net.artsy.artsy.artist";
@@ -58,6 +60,34 @@ NSString *const ARUserActivityTypeSale = @"net.artsy.artsy.sale";
                                                                    completion:^(CSSearchableItemAttributeSet *attributeSet) {
             [activity updateContentAttributeSet:attributeSet];
                                                                    }];
+    }
+
+    if (type == ARUserActivityTypeShow) {
+        PartnerShow *show = (id)entity;
+//        BOOL supportsMapItems = [activity respondsToSelector:@selector(setMapItem:)];
+        BOOL supportsMapItems = YES;
+        if (supportsMapItems && show.location.publiclyViewable) {
+            CLLocation *location = show.location.clLocation;
+            CLLocationCoordinate2D *coords = malloc(sizeof(CLLocationCoordinate2D));
+            coords[0] = location.coordinate;
+
+            MKPolygon *polygon = [MKPolygon polygonWithCoordinates:coords count:1];
+            MKCoordinateRegion region = MKCoordinateRegionForMapRect(polygon.boundingMapRect);
+
+            MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
+            request.naturalLanguageQuery = show.partner.name;
+            request.region = region;
+
+            MKLocalSearch *search = [[MKLocalSearch alloc] initWithRequest:request];
+            [search startWithCompletionHandler:^(MKLocalSearchResponse * _Nullable response, NSError * _Nullable error) {
+                if (error) { return; }
+                // Set the mapItem
+//                [activity performSelector:@selector(setMapItem:) withObject:response.mapItems.firstObject afterDelay:0];
+
+            }];
+
+            free(coords);
+        }
     }
 
     return activity;
