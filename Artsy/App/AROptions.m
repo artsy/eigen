@@ -6,6 +6,7 @@ NSString *const AROptionsSettingsMenu = @"Enable user settings";
 NSString *const AROptionsTappingPartnerSendsToPartner = @"Partner name in feed goes to partner";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
 NSString *const AROptionsDisableNativeLiveAuctions = @"Disable native live auctions";
+NSString *const AROptionsStagingReactEnv = @"Use Staging React ENV";
 
 
 @implementation AROptions
