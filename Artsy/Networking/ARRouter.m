@@ -667,10 +667,7 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude
 {
-    NSMutableArray *artistIDsToExclude = [NSMutableArray new];
-    for (Artist *artist in artistsToExclude) {
-        [artistIDsToExclude addObject:artist.uuid];
-    }
+    NSArray *artistIDsToExclude = [artistsToExclude valueForKey:@"uuid"];
 
     NSDictionary *params = @{ @"artist_id" : artist.artistID,
                               @"size" : @1,
@@ -681,10 +678,7 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude
 {
-    NSMutableArray *artistIDsToExclude = [NSMutableArray new];
-    for (Artist *artist in artistsToExclude) {
-        [artistIDsToExclude addObject:artist.uuid];
-    }
+    NSArray *artistIDsToExclude = [artistsToExclude valueForKey:@"uuid"];
 
     NSDictionary *params = @{ @"artist_id" : artist.artistID,
                               @"exclude_artist_ids" : artistIDsToExclude };
@@ -693,10 +687,7 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newGeneRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude
 {
-    NSMutableArray *geneIDsToExclude = [NSMutableArray new];
-    for (Gene *gene in genesToExclude) {
-        [geneIDsToExclude addObject:gene.uuid];
-    }
+    NSArray *geneIDsToExclude = [genesToExclude valueForKey:@"uuid"];
 
     NSDictionary *params = @{ @"size" : @1,
                               @"exclude_gene_ids" : geneIDsToExclude };
@@ -705,10 +696,7 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newGenesRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude
 {
-    NSMutableArray *geneIDsToExclude = [NSMutableArray new];
-    for (Gene *gene in genesToExclude) {
-        [geneIDsToExclude addObject:gene.uuid];
-    }
+    NSArray *geneIDsToExclude = [genesToExclude valueForKey:@"uuid"];
 
     NSDictionary *params = @{ @"exclude_gene_ids" : geneIDsToExclude };
 

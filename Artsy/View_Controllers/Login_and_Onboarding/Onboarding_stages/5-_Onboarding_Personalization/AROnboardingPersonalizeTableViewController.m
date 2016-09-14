@@ -14,6 +14,7 @@
 @interface AROnboardingPersonalizeTableViewController ()
 @property (nonatomic, assign) BOOL shouldAnimate;
 @property (nonatomic, strong) NSIndexPath *selectedRowToReplace;
+@property (nonatomic, strong, readwrite) NSMutableArray *searchResults;
 @end
 
 
@@ -48,9 +49,9 @@
     switch (replaceStyle) {
         case ARSearchResultsReplaceSingle:
             if (searchResults[0]) {
-                [self.searchResults replaceObjectAtIndex:self.tableView.indexPathForSelectedRow.row withObject:searchResults[0]];
+                [_searchResults replaceObjectAtIndex:self.tableView.indexPathForSelectedRow.row withObject:searchResults[0]];
             } else {
-                [self.searchResults removeObjectAtIndex:self.tableView.indexPathForSelectedRow.row];
+                [_searchResults removeObjectAtIndex:self.tableView.indexPathForSelectedRow.row];
             }
             self.selectedRowToReplace = self.tableView.indexPathForSelectedRow;
 

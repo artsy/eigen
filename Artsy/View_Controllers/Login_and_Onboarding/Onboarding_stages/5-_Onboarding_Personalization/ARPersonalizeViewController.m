@@ -382,13 +382,13 @@
 
     switch (self.state) {
         case AROnboardingStagePersonalizeArtists: {
-            [self.artistsFollowed addObject:(Artist *)item];
+            [self.artistsFollowed addObject:item];
             [self artistFollowed:(Artist *)item];
             break;
         }
 
         case AROnboardingStagePersonalizeCategories: {
-            [self.categoriesFollowed addObject:(Gene *)item];
+            [self.categoriesFollowed addObject:item];
             [self categoryFollowed:(Gene *)item];
             break;
         }

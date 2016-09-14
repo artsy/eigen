@@ -4,6 +4,7 @@
 #import "ARSpotlight.h"
 #import "User.h"
 #import "Gene.h"
+#import <UIKit/UIScreen.h>
 
 
 @interface Gene () {
@@ -48,8 +49,10 @@
 
 - (NSURL *)onboardingImageURL
 {
-    NSString *geminiStringURL = @"https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=50&height=50&quality=85&src=%@";
-    return [NSURL URLWithString:[NSString stringWithFormat:geminiStringURL, self.urlFormatString]];
+    NSString *geminiStringURL = @"https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=50&height=50&quality=%i&src=%@";
+    NSString *completeURL = [NSString stringWithFormat:geminiStringURL, [[UIScreen mainScreen] scale], self.urlFormatString];
+
+    return [NSURL URLWithString:completeURL];
 }
 
 - (instancetype)initWithGeneID:(NSString *)geneID
