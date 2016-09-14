@@ -30,6 +30,11 @@
     return self;
 }
 
+- (NSArray *)displayedResults
+{
+    return self.searchResults;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -41,7 +46,6 @@
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
-
 - (void)updateTableContentsFor:(NSArray *)searchResults
                replaceContents:(ARSearchResultsReplaceContents)replaceStyle
                       animated:(BOOL)animated
@@ -49,9 +53,9 @@
     switch (replaceStyle) {
         case ARSearchResultsReplaceSingle:
             if (searchResults[0]) {
-                [_searchResults replaceObjectAtIndex:self.tableView.indexPathForSelectedRow.row withObject:searchResults[0]];
+                [self.searchResults replaceObjectAtIndex:self.tableView.indexPathForSelectedRow.row withObject:searchResults[0]];
             } else {
-                [_searchResults removeObjectAtIndex:self.tableView.indexPathForSelectedRow.row];
+                [self.searchResults removeObjectAtIndex:self.tableView.indexPathForSelectedRow.row];
             }
             self.selectedRowToReplace = self.tableView.indexPathForSelectedRow;
 

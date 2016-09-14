@@ -268,7 +268,7 @@
         }
         case ARTableViewContentDisplayModeRelatedResults: {
             // exclude currently displayed artists as well
-            NSArray *toExclude = [self.searchResultsTable.searchResults arrayByAddingObjectsFromArray:self.artistsFollowed];
+            NSArray *toExclude = [self.searchResultsTable.displayedResults arrayByAddingObjectsFromArray:self.artistsFollowed];
             self.searchRequestOperation = [ArtsyAPI getRelatedArtistForArtist:artist excluding:toExclude success:^(NSArray *relatedArtist) {
                 [self.searchResultsTable updateTableContentsFor:relatedArtist
                                                 replaceContents:ARSearchResultsReplaceSingle
@@ -304,7 +304,7 @@
         }
         case ARTableViewContentDisplayModeRelatedResults: {
             // exclude currently displayed artists as well
-            NSArray *toExclude = [self.searchResultsTable.searchResults arrayByAddingObjectsFromArray:self.categoriesFollowed];
+            NSArray *toExclude = [self.searchResultsTable.displayedResults arrayByAddingObjectsFromArray:self.categoriesFollowed];
             self.searchRequestOperation = [ArtsyAPI getRelatedGeneForGene:category excluding:toExclude success:^(NSArray *relatedGene) {
                 [self.searchResultsTable updateTableContentsFor:relatedGene
                                                 replaceContents:ARSearchResultsReplaceSingle
