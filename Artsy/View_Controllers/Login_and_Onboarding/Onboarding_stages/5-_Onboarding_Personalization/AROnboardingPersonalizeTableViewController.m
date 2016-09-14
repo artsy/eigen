@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (nonatomic, assign) BOOL shouldAnimate;
 @property (nonatomic, strong) NSIndexPath *selectedRowToReplace;
+@property (nonatomic, strong) UILabel *noResultsLabel;
 @end
 
 
@@ -39,6 +40,8 @@
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+
+    [self setupEmptyResultsLabel];
 }
 
 
@@ -90,6 +93,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (self.searchResults.count == 0) {
+        self.noResultsLabel.hidden = NO;
+    } else {
+        self.noResultsLabel.hidden = YES;
+    }
+
     return self.searchResults.count;
 }
 
@@ -229,5 +238,22 @@
 {
     return 40;
 }
+
+#pragma mark - Accessory views
+
+- (void)setupEmptyResultsLabel
+{
+    self.noResultsLabel = [[UILabel alloc] init];
+    self.noResultsLabel.text = @"No results found";
+    self.noResultsLabel.font = [UIFont serifItalicFontWithSize:20.0];
+    self.noResultsLabel.textColor = [UIColor artsyGraySemibold];
+    self.noResultsLabel.textAlignment = NSTextAlignmentCenter;
+    [self.tableView addSubview:self.noResultsLabel];
+
+    [self.noResultsLabel constrainWidth:@"300" height:@"60"];
+    [self.noResultsLabel alignCenterXWithView:self.tableView predicate:@"0"];
+    [self.noResultsLabel alignCenterYWithView:self.tableView predicate:@"-60"];
+}
+
 
 @end
