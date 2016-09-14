@@ -116,7 +116,7 @@ target 'Artsy' do
   pod 'JWTDecode'
 
   # This can be changed when 0.5.2 is out
-  pod 'AppHub', :git => 'https://github.com/orta/apphub.git', :branch => "specify_version"
+  pod 'AppHub', :git => 'https://github.com/orta/apphub.git', :branch => "build_list"
 
   target 'Artsy Tests' do
       inherit! :search_paths
