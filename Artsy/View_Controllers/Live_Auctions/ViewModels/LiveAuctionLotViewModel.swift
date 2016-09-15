@@ -36,6 +36,7 @@ protocol LiveAuctionLotViewModelType: class {
     var lotName: String { get }
     var lotID: String { get }
     var lotIndex: String { get }
+    var lotNumber: String { get }
     var lotArtworkCreationDate: String? { get }
     var urlForThumbnail: NSURL { get }
     var urlForProfile: NSURL { get }
@@ -144,6 +145,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     var lotIndex: String {
         // TODO: a lot's position is not the same as it's lot number. See: https://github.com/artsy/eigen/issues/1791
         return String(model.position)
+    }
+
+    var lotNumber: String {
+        return String(model.lotNumber)
     }
 
     var askingPrice: UInt64 {
