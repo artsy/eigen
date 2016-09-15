@@ -143,6 +143,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var reserveStatusString = "is testing reserve"
     var numberOfDerivedEvents = 1
     var lotIndex = "2"
+    var lotNumber = "2"
     var highEstimateCents: UInt64 = 2_000_00
     var numberOfBids = 1
     var currencySymbol = "$"
