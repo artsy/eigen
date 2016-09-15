@@ -3,6 +3,7 @@ upcoming:
     details: Auctions Fixes?
 
   dev:
+    - Update API to exclude artists and use /me/suggested - maxim
     - Push notification on artist follow added - maxim
     - Pre push notification prompt added - maxim
     - Analytics added for onboarding - maxim

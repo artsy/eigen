@@ -95,9 +95,12 @@
 + (NSURLRequest *)newFollowArtistRequest:(Artist *)artist;
 + (NSURLRequest *)newUnfollowArtistRequest:(Artist *)artist;
 
-+ (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist;
-+ (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist;
-+ (NSURLRequest *)newArtistsTrendingRequest;
++ (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude;
++ (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude;
++ (NSURLRequest *)newGeneRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude;
++ (NSURLRequest *)newGenesRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude;
++ (NSURLRequest *)newArtistsPopularRequest;
++ (NSURLRequest *)newGenesPopularRequest;
 + (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID;
 + (NSURLRequest *)newShowsRequestForArtistID:(NSString *)artistID inFairID:(NSString *)fairID;
 

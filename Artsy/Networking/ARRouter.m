@@ -665,22 +665,56 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARFollowArtistsURL parameters:@{ @"fair_id" : fair.fairID }];
 }
 
-+ (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist
++ (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude
 {
-    NSDictionary *params = @{ @"artist" : @[ artist.artistID ],
-                              @"size" : @1 };
+    NSArray *artistIDsToExclude = [artistsToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"artist_id" : artist.artistID,
+                              @"size" : @1,
+                              @"exclude_artist_ids" : artistIDsToExclude };
+
     return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
 }
 
-+ (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist
++ (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude
 {
-    NSDictionary *params = @{ @"artist" : @[ artist.artistID ] };
+    NSArray *artistIDsToExclude = [artistsToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"artist_id" : artist.artistID,
+                              @"exclude_artist_ids" : artistIDsToExclude };
     return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
 }
 
-+ (NSURLRequest *)newArtistsTrendingRequest
++ (NSURLRequest *)newGeneRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude
 {
-    return [self requestWithMethod:@"GET" path:ARTrendingArtistsURL parameters:nil];
+    NSArray *geneIDsToExclude = [genesToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"size" : @1,
+                              @"exclude_gene_ids" : geneIDsToExclude };
+    return [self requestWithMethod:@"GET" path:NSStringWithFormat(ARRelatedGeneURLFormat, gene.geneID) parameters:params];
+}
+
++ (NSURLRequest *)newGenesRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude
+{
+    NSArray *geneIDsToExclude = [genesToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"exclude_gene_ids" : geneIDsToExclude };
+
+    return [self requestWithMethod:@"GET" path:NSStringWithFormat(ARRelatedGeneURLFormat, gene.geneID) parameters:params];
+}
+
++ (NSURLRequest *)newArtistsPopularRequest
+{
+    return [self requestWithMethod:@"GET" path:ARPopularArtistsURL parameters:nil];
+}
+
++ (NSURLRequest *)newGenesPopularRequest
+
+{
+    // we get hard coded categories from this json file that force uses also
+    NSString *stringURL = @"https://s3.amazonaws.com/force-production/json/eigen_popular_categories.json";
+
+    return [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:stringURL]];
 }
 
 + (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID

@@ -12,10 +12,12 @@
 
 
 @interface AROnboardingPersonalizeTableViewController ()
-@property (nonatomic, strong) NSMutableArray *searchResults;
+
 @property (nonatomic, assign) BOOL shouldAnimate;
 @property (nonatomic, strong) NSIndexPath *selectedRowToReplace;
+@property (nonatomic, strong, readwrite) NSMutableArray *searchResults;
 @property (nonatomic, strong) UILabel *noResultsLabel;
+
 @end
 
 
@@ -31,6 +33,11 @@
     return self;
 }
 
+- (NSArray *)displayedResults
+{
+    return self.searchResults;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -43,7 +50,6 @@
 
     [self setupEmptyResultsLabel];
 }
-
 
 - (void)updateTableContentsFor:(NSArray *)searchResults
                replaceContents:(ARSearchResultsReplaceContents)replaceStyle
@@ -213,9 +219,10 @@
     } else if ([result isKindOfClass:[Gene class]]) {
         Gene *gene = (Gene *)result;
         cell.title.text = gene.name;
-        [cell.thumbnail ar_setImageWithURL:gene.smallImageURL];
+        NSURL *geneImageURL = self.contentDisplayMode == ARTableViewContentDisplayModePlaceholder ? gene.onboardingImageURL : gene.smallImageURL;
+        [cell.thumbnail ar_setImageWithURL:geneImageURL];
     }
-
+    cell.thumbnail.backgroundColor = [UIColor purpleColor];
     cell.follow.image = [UIImage imageNamed:@"followButton"];
 
     return cell;

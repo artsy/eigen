@@ -24,6 +24,8 @@ typedef NS_ENUM(NSInteger, ARTableViewContentDisplayMode) {
 
 @interface AROnboardingPersonalizeTableViewController : UITableViewController
 
+@property (nonatomic, strong, readonly) NSArray *displayedResults;
+
 @property (nonatomic, weak) id<ARPersonalizeNetworkDelegate> networkDelegate;
 @property (nonatomic, strong, readwrite) NSString *headerPlaceholderText;
 @property (nonatomic, readwrite) ARTableViewContentDisplayMode contentDisplayMode;

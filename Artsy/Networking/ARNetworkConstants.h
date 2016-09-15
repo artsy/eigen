@@ -60,7 +60,8 @@ extern NSString *const ARFollowProfilesURL;
 extern NSString *const ARFollowingProfileURLFormat;
 
 extern NSString *const ARRelatedArtistsURL;
-extern NSString *const ARTrendingArtistsURL;
+extern NSString *const ARRelatedGeneURLFormat;
+extern NSString *const ARPopularArtistsURL;
 extern NSString *const ARNotificationsURL;
 
 extern NSString *const ARGeneArtworksURL;
