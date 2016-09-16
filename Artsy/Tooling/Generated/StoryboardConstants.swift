@@ -39,8 +39,8 @@ struct StoryboardScene {
     static let storyboardName = "LiveAuctions"
 
     case BidScene = "bid"
-    static func instantiateBid() -> LiveAuctionBidViewController {
-      return StoryboardScene.LiveAuctions.BidScene.viewController() as! LiveAuctionBidViewController
+    static func instantiateBid() -> LiveAuctionPlaceMaxBidViewController {
+      return StoryboardScene.LiveAuctions.BidScene.viewController() as! LiveAuctionPlaceMaxBidViewController
     }
   }
 }

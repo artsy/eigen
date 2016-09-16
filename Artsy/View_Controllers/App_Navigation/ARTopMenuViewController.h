@@ -8,6 +8,8 @@
 #import "ARNavigationController.h"
 #import "ARTopMenuNavigationDataSource.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class ARTabContentView;
 
 
@@ -35,6 +37,11 @@
 /// Same as above but with the option to animate
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated;
 
+/// Same as above, but allows you to hook in to the completion callback
+/// @Note : This does _not_ run your a callback if you are pushing on to the navigation stack,
+///         and thus should only be relied upon when knowing you are presenting a modal
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion;
+
 /// Hides the toolbar
 - (void)hideToolbar:(BOOL)hideToolbar animated:(BOOL)animated;
 
@@ -58,4 +65,10 @@
 /// Update the badge number on the data source for the navigation root view controller at the specified tab index.
 - (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
 
+/// Not all view controllers should be presented as a push, use this to determine whether the topVC will present modally or push.
++ (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController;
+
+
 @end
+
+NS_ASSUME_NONNULL_END

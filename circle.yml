@@ -1,6 +1,6 @@
 machine:
   xcode:
-    version: "7.3"
+    version: "7.3.1"
   environment:
     # Public - Yay
     UPLOAD_IOS_SNAPSHOT_BUCKET_NAME: eigen-ci
@@ -32,11 +32,15 @@ machine:
 
 dependencies:
   override:
+    - if [ ! -d "Pods" ]; then git submodule update --init; fi; 
     - bundle install --path=vendor/bundle --jobs=4 --retry=3 --without development
-    - bundle exec pod install
+    - bundle exec pod install --verbose
 
 test:
   pre:
+    # See https://discuss.circleci.com/t/xcode-exit-code-65/4284/13 
+    - xcrun instruments -w '547B1B63-3F66-4E5B-8001-F78F2F1CDEA7' || true
+    - sleep 15
     - make ci
   override:
     - make test

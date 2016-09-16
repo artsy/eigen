@@ -12,5 +12,5 @@
 
 - (id)objectForKeyedSubscript:(id<NSCopying>)key;
 - (void)updateWithStringContents:(NSString *)contents;
-
++ (BOOL)keyExists:(id<NSCopying>)key;
 @end

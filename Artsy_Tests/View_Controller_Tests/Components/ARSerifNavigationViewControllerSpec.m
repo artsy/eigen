@@ -92,7 +92,7 @@ describe(@"", ^{
             [subject beginAppearanceTransition:YES animated:NO];
             [subject endAppearanceTransition];
 
-            expect(subject.sharedApplication.isStatusBarHidden).to.equal(YES);
+            expect(subject.sharedApplication.isStatusBarHidden).to.equal(NO);
         });
 
         it(@"returns the hidden back to the original value", ^{
@@ -101,7 +101,7 @@ describe(@"", ^{
 
             [subject beginAppearanceTransition:YES animated:NO];
             [subject endAppearanceTransition];
-            expect(subject.sharedApplication.isStatusBarHidden).to.equal(YES);
+            expect(subject.sharedApplication.isStatusBarHidden).to.equal(NO);
 
             [subject beginAppearanceTransition:NO animated:NO];
             [subject endAppearanceTransition];

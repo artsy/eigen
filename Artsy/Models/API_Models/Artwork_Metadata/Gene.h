@@ -7,10 +7,12 @@
 
 @class AFHTTPRequestOperation;
 
+
 @interface Gene : MTLModel <MTLJSONSerializing, ARFollowable, ARShareableObject, ARHasImageBaseURL, ARSpotlightMetadataProvider>
 
 @property (readonly, nonatomic, copy) NSString *name;
 @property (readonly, nonatomic, copy) NSString *geneID;
+@property (readonly, nonatomic, copy) NSString *uuid;
 
 @property (readonly, nonatomic, copy) NSString *geneDescription;
 
@@ -29,6 +31,7 @@
 
 - (AFHTTPRequestOperation *)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success;
 
+- (NSURL *)onboardingImageURL;
 - (NSURL *)smallImageURL;
 - (NSURL *)largeImageURL;
 @end

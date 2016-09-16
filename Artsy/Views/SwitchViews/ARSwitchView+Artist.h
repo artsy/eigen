@@ -1,4 +1,4 @@
-#import "ARSwitchView.h"
+#import <Extraction/ARSwitchView.h>
 
 extern NSInteger ARSwitchViewArtistButtonIndex;
 extern NSInteger ARSwitchViewForSaleButtonIndex;

@@ -95,9 +95,12 @@
 + (NSURLRequest *)newFollowArtistRequest:(Artist *)artist;
 + (NSURLRequest *)newUnfollowArtistRequest:(Artist *)artist;
 
-+ (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist;
-+ (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist;
-+ (NSURLRequest *)newArtistsTrendingRequest;
++ (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude;
++ (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude;
++ (NSURLRequest *)newGeneRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude;
++ (NSURLRequest *)newGenesRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude;
++ (NSURLRequest *)newArtistsPopularRequest;
++ (NSURLRequest *)newGenesPopularRequest;
 + (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID;
 + (NSURLRequest *)newShowsRequestForArtistID:(NSString *)artistID inFairID:(NSString *)fairID;
 
@@ -159,13 +162,19 @@
 + (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID;
 + (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID page:(NSInteger)page pageSize:(NSInteger)pageSize;
 + (NSURLRequest *)liveSaleStateRequest:(NSString *)saleID host:(NSString *)host;
-+ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID;
+
+// Send in role as nil for when a user is logged out
++ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role;
+
 + (NSURLRequest *)biddersRequest;
 + (NSURLRequest *)biddersRequestForSale:(NSString *)saleID;
 + (NSURLRequest *)createBidderPositionsForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID maxBidAmountCents:(NSInteger)maxBidAmountCents;
 + (NSURLRequest *)bidderPositionsRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID;
 + (NSURLRequest *)saleArtworkRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID;
 + (NSURLRequest *)requestForSaleID:(NSString *)saleID;
+
++ (NSString *)baseObserverCausalitySocketURLString;
++ (NSString *)baseBidderCausalitySocketURLString;
 
 #pragma mark - Ordered Sets
 
@@ -195,5 +204,10 @@
 #pragma mark - Pages
 
 + (NSURLRequest *)newRequestForPageContent:(NSString *)slug;
+
+
+#pragma mark - Misc
+
++ (NSURLRequest *)newHEADRequestForPath:(NSString *)path;
 
 @end

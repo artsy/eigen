@@ -29,7 +29,9 @@ typedef NS_OPTIONS(NSUInteger, ARAuctionState) {
     ARAuctionStateUserIsRegistered = 1 << 3,
     ARAuctionStateArtworkHasBids = 1 << 4,
     ARAuctionStateUserIsBidder = 1 << 5,
-    ARAuctionStateUserIsHighBidder = 1 << 6
+    ARAuctionStateUserIsHighBidder = 1 << 6,
+    ARAuctionStateUserPendingRegistration = 1 << 7,
+    ARAuctionStateUserRegistrationClosed = 1 << 8
 };
 
 extern BOOL ARPerformWorkAsynchronously;

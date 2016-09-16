@@ -79,6 +79,26 @@ static NSString *hostFromString(NSString *string)
     }
 }
 
++ (NSString *)baseObserverCausalitySocketURLString
+{
+    return [self causalitySocketURLStringWithProduction:ARCausalityObserverSocketURL];
+}
+
++ (NSString *)baseBidderCausalitySocketURLString
+{
+    return [self causalitySocketURLStringWithProduction:ARCausalityBidderSocketURL];
+}
+
++ (NSString *)causalitySocketURLStringWithProduction:(NSString *)productionURL;
+{
+    if ([AROptions boolForOption:ARUseStagingDefault]) {
+        NSString *stagingSocketURLString = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingLiveAuctionSocketURLDefault];
+        return stagingSocketURLString;
+    } else {
+        return productionURL;
+    }
+}
+
 + (NSURL *)baseWebURL
 {
     return [UIDevice isPad] ? [self baseDesktopWebURL] : [self baseMobileWebURL];
@@ -645,22 +665,56 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARFollowArtistsURL parameters:@{ @"fair_id" : fair.fairID }];
 }
 
-+ (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist
++ (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude
 {
-    NSDictionary *params = @{ @"artist" : @[ artist.artistID ],
-                              @"size" : @1 };
+    NSArray *artistIDsToExclude = [artistsToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"artist_id" : artist.artistID,
+                              @"size" : @1,
+                              @"exclude_artist_ids" : artistIDsToExclude };
+
     return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
 }
 
-+ (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist
++ (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude
 {
-    NSDictionary *params = @{ @"artist" : @[ artist.artistID ] };
+    NSArray *artistIDsToExclude = [artistsToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"artist_id" : artist.artistID,
+                              @"exclude_artist_ids" : artistIDsToExclude };
     return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
 }
 
-+ (NSURLRequest *)newArtistsTrendingRequest
++ (NSURLRequest *)newGeneRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude
 {
-    return [self requestWithMethod:@"GET" path:ARTrendingArtistsURL parameters:nil];
+    NSArray *geneIDsToExclude = [genesToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"size" : @1,
+                              @"exclude_gene_ids" : geneIDsToExclude };
+    return [self requestWithMethod:@"GET" path:NSStringWithFormat(ARRelatedGeneURLFormat, gene.geneID) parameters:params];
+}
+
++ (NSURLRequest *)newGenesRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude
+{
+    NSArray *geneIDsToExclude = [genesToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"exclude_gene_ids" : geneIDsToExclude };
+
+    return [self requestWithMethod:@"GET" path:NSStringWithFormat(ARRelatedGeneURLFormat, gene.geneID) parameters:params];
+}
+
++ (NSURLRequest *)newArtistsPopularRequest
+{
+    return [self requestWithMethod:@"GET" path:ARPopularArtistsURL parameters:nil];
+}
+
++ (NSURLRequest *)newGenesPopularRequest
+
+{
+    // we get hard coded categories from this json file that force uses also
+    NSString *stringURL = @"https://s3.amazonaws.com/force-production/json/eigen_popular_categories.json";
+
+    return [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:stringURL]];
 }
 
 + (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID
@@ -1005,38 +1059,69 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" URLString:url parameters:nil];
 }
 
-+ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID
++ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role
 {
     // Note that we're relying on the host to specify the domain for the request.
     NSString *url = [self baseMetaphysicsApiURLString];
+
+    NSString *accessType = role ? [NSString stringWithFormat:@"role: %@,", [role uppercaseString]] : @"";
+    NSString *causalityRole = [NSString stringWithFormat:@"causality_jwt(%@ sale_id: \"%@\")", accessType, saleID];
+
     // Ending spaces are to avoid stripping newlines characters later on.
     NSString *query = [NSString stringWithFormat:@"\
 {\
-  sale(id: \"%@\") { \
-    sale_artworks { \
-      id \
-      position \
-      currency \
-      symbol \
-      reserve_status \
-      low_estimate_cents \
-      high_estimate_cents \
-      amount_cents \
-      artwork { \
-        title \
-        artist { \
-          name \
-        } \
-        image { \
-          width \
-          height \
-          url(version: \"large\") \
-        } \
-      } \
-    } \
-  } \
+  %@\
+  me {\
+    paddle_number\
+    bidders(sale_id: \"%@\") {\
+      id\
+    }\
+  }\
+  sale(id: \"%@\") {\
+    _id\
+    id\
+    start_at\
+    bid_increments {\
+      from\
+      amount\
+    }\
+    end_at\
+    registration_ends_at\
+    name\
+    is_with_buyers_premium\
+    description\
+    sale_artworks(all: true) {\
+      _id\
+      position\
+      currency\
+      symbol\
+      reserve_status\
+      low_estimate_cents\
+      high_estimate_cents\
+      currency\
+      estimate\
+      artwork {\
+        title\
+        blurb: description\
+        medium\
+        dimensions {\
+          in\
+          cm\
+        }\
+        artist {\
+          name\
+          blurb\
+        }\
+        image {\
+          aspect_ratio\
+          large: url(version: \"large\")\
+          thumb: url(version: \"thumb\")\
+        }\
+      }\
+    }\
+  }\
 }",
-                                                 saleID];
+                                                 causalityRole, saleID, saleID];
 
     NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url parameters:@{ @"query" : query }];
 
@@ -1149,6 +1234,12 @@ static NSString *hostFromString(NSString *string)
 {
     NSString *url = [NSString stringWithFormat:ARPageURLFormat, slug];
     return [self requestWithMethod:@"GET" path:url parameters:nil];
+}
+
++ (NSURLRequest *)newHEADRequestForPath:(NSString *)path
+{
+    NSString *fullPath = [[NSURL URLWithString:path relativeToURL:[ARRouter baseWebURL]] absoluteString];
+    return [self requestWithMethod:@"HEAD" URLString:fullPath parameters:nil];
 }
 
 @end

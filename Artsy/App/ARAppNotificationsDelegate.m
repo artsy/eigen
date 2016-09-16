@@ -19,22 +19,19 @@
 
 @implementation ARAppNotificationsDelegate
 
-+ (void)load
-{
-    [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[self alloc] init];
-}
-
 #pragma mark -
 #pragma mark Local Push Notification Alerts
 
-- (void)registerForDeviceNotifications
+- (void)registerForDeviceNotificationsWithContext:(ARAppNotificationsRequestContext)requestContext
 {
+    self.requestContext = requestContext;
+
     if (![AROptions boolForOption:ARPushNotificationsSettingsPromptSeen] &&
         [AROptions boolForOption:ARPushNotificationsAppleDialogueRejected]) {
         // if you've rejected Apple's push notification and you've not seen our prompt to send you to settings
         // lets show you a prompt to go to stettings
         [self displayPushNotificationSettingsPrompt];
-        
+
     } else if (![AROptions boolForOption:ARPushNotificationsAppleDialogueSeen]) {
         // As long as you've not seen Apple's dialogue already, we will show you our pre-prompt.
         [self displayPushNotificationLocalRequestPrompt];
@@ -70,9 +67,8 @@
                                                            }];
     [alert addAction:settingsAction];
     [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
-    
-    [AROptions setBool:YES forOption:ARPushNotificationsSettingsPromptSeen];
 
+    [AROptions setBool:YES forOption:ARPushNotificationsSettingsPromptSeen];
 }
 
 - (void)registerUserInterest
@@ -107,9 +103,8 @@
     UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:allTypes categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     [[UIApplication sharedApplication] registerForRemoteNotifications];
-    
-    [AROptions setBool:YES forOption:ARPushNotificationsAppleDialogueSeen];
 
+    [AROptions setBool:YES forOption:ARPushNotificationsAppleDialogueSeen];
 }
 
 #pragma mark -

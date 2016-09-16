@@ -13,6 +13,7 @@
 
 #import "ARAppDelegate.h"
 #import "ARAppDelegate+Analytics.h"
+#import "ARAppDelegate+Emission.h"
 #import "ARAppNotificationsDelegate.h"
 #import "ARAppConstants.h"
 #import "ARFonts.h"
@@ -117,6 +118,8 @@ static ARAppDelegate *_sharedInstance = nil;
     // one of the first things that happen.
     [self setupAnalytics];
 
+    [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[ARAppNotificationsDelegate alloc] init];
+
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.viewController = [ARTopMenuViewController sharedController];
     self.window.rootViewController = self.viewController;
@@ -133,6 +136,8 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[ARLogger sharedLogger] startLogging];
     [FBSDKSettings setAppID:[ArtsyKeys new].artsyFacebookAppID];
+
+    [self setupEmission];
 
     // This has to be checked *before* creating the first Xapp token.
     BOOL shouldShowOnboarding = ![[ARUserManager sharedManager] hasExistingAccount];
@@ -161,8 +166,10 @@ static ARAppDelegate *_sharedInstance = nil;
         //
         // In case the user has not signed-in yet, this will register as an anonymous device on the Artsy API. Later on,
         // when the user does sign-in, this will be ran again and the device will be associated with the user account.
+
         if (!shouldShowOnboarding) {
-            [self.remoteNotificationsDelegate registerForDeviceNotifications];
+            [self.remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextLaunch];
+            
             if ([User currentUser]) {
                 [ARSpotlight indexAllUsersFavorites];
             };
@@ -245,7 +252,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
     if (!cancelledSignIn) {
         ar_dispatch_main_queue(^{
-            [self.remoteNotificationsDelegate registerForDeviceNotifications];
+            [self.remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
             if ([User currentUser]) {
                 [self.remoteNotificationsDelegate fetchNotificationCounts];
                 [ARSpotlight indexAllUsersFavorites];
@@ -258,7 +265,12 @@ static ARAppDelegate *_sharedInstance = nil;
 {
     AROnboardingViewController *onboardVC = [[AROnboardingViewController alloc] initWithState:state];
     onboardVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
-    [self.viewController presentViewController:onboardVC animated:NO completion:nil];
+    UIViewController *controller = self.viewController;
+    // Loop till we find the topmost VC
+    while (controller.presentedViewController) {
+        controller = controller.presentedViewController;
+    }
+    [controller presentViewController:onboardVC animated:NO completion:nil];
 }
 
 - (void)setupAdminTools

@@ -204,4 +204,18 @@ describe(@"baseWebURL", ^{
     });
 });
 
+describe(@"metaphysics", ^{
+    it(@"does not add a role for nil role param", ^{
+        NSURLRequest *request = [ARRouter liveSaleStaticDataRequest:@"my-sale" role:nil];
+        expect(request.URL.absoluteString).toNot.contain(@"role:");
+    });
+
+    it(@"adds an uppercased role when using the role param", ^{
+        NSURLRequest *request = [ARRouter liveSaleStaticDataRequest:@"my-sale" role:@"my_role"];
+        // This is URL encoded: "role: MY_ROLE"
+        expect(request.URL.absoluteString).to.contain(@"role%3A%20MY_ROLE");
+    });
+
+});
+
 SpecEnd;

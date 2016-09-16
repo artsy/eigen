@@ -55,8 +55,7 @@ extension AuctionBannerView {
         backgroundImageView.alignToView(self)
         darkeningView.alignToView(self)
 
-
-        if viewModel.saleAvailability == .Closed {
+        if viewModel.saleIsClosed {
             let closedLabel = ARSansSerifHeaderLabel()
             closedLabel.text = "Auction Closed"
             closedLabel.textColor = .whiteColor()
@@ -68,10 +67,24 @@ extension AuctionBannerView {
         } else {
             let countdownView = ARCountdownView(color: .whiteColor()).then {
                 let model = self.viewModel
-                let isNotOpenYes = model.saleAvailability == .NotYetOpen
 
-                $0.targetDate = isNotOpenYes ? model.startDate : model.closingDate
-                $0.heading = isNotOpenYes ? "Opening In" : "Closing In"
+                switch model.saleAvailability {
+                case .NotYetOpen:
+                    $0.targetDate = model.startDate
+                    $0.heading = "Opening In"
+
+                case .Active(let liveAuctionStartDate):
+                    if let liveStartDate = liveAuctionStartDate {
+                        $0.targetDate = liveStartDate
+                        $0.heading = "Starting Live Bidding In"
+
+                    } else {
+                        $0.targetDate = model.closingDate
+                        $0.heading = "Closing In"
+                    }
+
+                default: break // shouldn't happen
+                }
 
                 if let _ = self.superview {
                     $0.startTimer()

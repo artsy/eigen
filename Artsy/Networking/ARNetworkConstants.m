@@ -4,6 +4,8 @@ NSString *const ARBaseDesktopWebURL = @"https://www.artsy.net";
 NSString *const ARBaseMobileWebURL = @"https://m.artsy.net";
 NSString *const ARBaseApiURL = @"https://api.artsy.net";
 NSString *const ARBaseMetaphysicsApiURL = @"https://metaphysics-production.artsy.net/";
+NSString *const ARCausalityBidderSocketURL = @"wss://causality-bidders.artsy.net";
+NSString *const ARCausalityObserverSocketURL = @"wss://causality-observers.artsy.net";
 
 NSString *const ARPersonalizePath = @"personalize";
 
@@ -48,8 +50,9 @@ NSString *const ARRelatedShowsURL = @"/api/v1/related/shows";
 NSString *const ARArtistArtworksURLFormat = @"/api/v1/artist/%@/artworks";
 NSString *const ARArtistInformationURLFormat = @"/api/v1/artist/%@";
 
-NSString *const ARRelatedArtistsURL = @"/api/v1/related/artists";
-NSString *const ARTrendingArtistsURL = @"/api/v1/artists/trending";
+NSString *const ARRelatedArtistsURL = @"/api/v1/me/suggested/artists";
+NSString *const ARRelatedGeneURLFormat = @"/api/v1/gene/%@/similar";
+NSString *const ARPopularArtistsURL = @"/api/v1/artists/popular";
 NSString *const ARSampleArtistsURL = @"/api/v1/artists/sample";
 
 NSString *const ARFollowArtistURL = @"/api/v1/me/follow/artist";
