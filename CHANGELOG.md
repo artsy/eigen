@@ -1,5 +1,6 @@
 ### Master
 
+- Make follow artist button in artist rail work and replace with a new suggestion based on that artist - alloy
 - Home now asks for maximum of 99 artwork rails - sarah
 - Added pull-to-refresh functionality to home view - sarah
 - Added a default minimum height for all rails - maxim
