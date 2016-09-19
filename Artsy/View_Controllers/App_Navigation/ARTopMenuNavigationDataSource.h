@@ -5,9 +5,7 @@
 typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
     ARTopTabControllerIndexSearch,
     ARTopTabControllerIndexFeed,
-    ARTopTabControllerIndexShows,
     ARTopTabControllerIndexBrowse,
-    ARTopTabControllerIndexMagazine,
     ARTopTabControllerIndexFavorites,
     ARTopTabControllerIndexNotifications,
     // This should not really be used. It should always be the last and is meant only to have a count of total number

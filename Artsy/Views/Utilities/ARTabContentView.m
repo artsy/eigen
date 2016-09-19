@@ -144,7 +144,7 @@ static BOOL ARTabViewDirectionRight = YES;
         return;
     }
 
-    // Otherwise, if the search VC is already present, remove it and continue as normal. This is only necessary in the interim because soon the search VC will cover & disable the tab content view anyway.
+    // Otherwise, if the search VC is already present, remove it and continue as normal. This part is only necessary if the app is running with a hardware keyboard enabled; the nav bar is covered by the keyboard otherwise.
     if ([(ARNavigationController *)self.currentNavigationController isShowingSearch]) {
         [(ARNavigationController *)self.currentNavigationController toggleSearch];
     }
