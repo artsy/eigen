@@ -5,7 +5,7 @@
 ### Meta
 
 * __State:__ production
-* __Point People:__ [@alloy](https://github.com/alloy)
+* __Point People:__ [@sarahscott](https://github.com/sarahscott), [@alloy](https://github.com/alloy)
 
 This is a core [Artsy Mobile](https://github.com/artsy/mobile) OSS project, along with [Energy](https://github.com/artsy/energy), [Eidolon](https://github.com/artsy/eidolon), [Eigen](https://github.com/artsy/eigen) and [Emergence](https://github.com/artsy/emergence).
 
