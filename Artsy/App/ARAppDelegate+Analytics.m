@@ -1306,22 +1306,10 @@
                                 return [parameters.firstObject integerValue] == ARTopTabControllerIndexFeed;
                             }
                         },@{
-                            ARAnalyticsPageName: @"Shows",
-                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
-                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
-                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexShows;
-                            }
-                        },@{
                             ARAnalyticsPageName: @"Explore",
                             ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
                             ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
                                 return [parameters.firstObject integerValue] == ARTopTabControllerIndexBrowse;
-                            }
-                        },@{
-                            ARAnalyticsPageName: @"Mag",
-                            ARAnalyticsSelectorName: @"forceSetCurrentViewIndex:animated:",
-                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
-                                return [parameters.firstObject integerValue] == ARTopTabControllerIndexMagazine;
                             }
                         },@{
                             ARAnalyticsPageName: @"You",

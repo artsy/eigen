@@ -108,12 +108,12 @@ static const CGFloat ARMenuButtonDimension = 46;
         [button constrainTopSpaceToView:separator predicate:@"0"];
         [button alignBottomEdgeWithView:tabContainer predicate:@"0"];
         if (index == 0) {
-            [button alignLeadingEdgeWithView:tabContainer predicate:@"0"];
+            [button alignLeadingEdgeWithView:tabContainer predicate:@"20"];
         } else {
             [constraintsForButtons addObject:[button constrainLeadingSpaceToView:buttons[index - 1] predicate:@"0"]];
         }
         if (index == buttons.count - 1) {
-            [constraintsForButtons addObject:[tabContainer alignTrailingEdgeWithView:button predicate:@"0"]];
+            [constraintsForButtons addObject:[tabContainer alignTrailingEdgeWithView:button predicate:@"20"]];
         }
     }];
     self.constraintsForButtons = [constraintsForButtons copy];
@@ -129,37 +129,30 @@ static const CGFloat ARMenuButtonDimension = 46;
 - (NSArray *)buttons
 {
     ARNavigationTabButton *homeButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *showsButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *browseButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *magazineButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *notificationsButton = [[ARNavigationTabButton alloc] init];
     ARNavigationTabButton *searchButton = [[ARNavigationTabButton alloc] init];
     notificationsButton.tag = ARNavButtonNotificationsTag;
 
-    homeButton.accessibilityLabel = @"Home";
-    [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateNormal];
-    [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateSelected];
-    CGFloat buttonImageSize = 20;
-    CGFloat inset = (ARMenuButtonDimension - buttonImageSize) / 2;
-    homeButton.contentEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset);
+    searchButton.accessibilityLabel = @"Search";
+    [searchButton setImage:[UIImage imageNamed:@"SearchButton"] forState:UIControlStateNormal];
+    [searchButton setImage:[UIImage imageNamed:@"SearchButton"] forState:UIControlStateSelected];
+    [searchButton.imageView constrainWidth:@"15" height:@"15"];
 
-    [showsButton setTitle:@"SHOWS" forState:UIControlStateNormal];
+    [homeButton setTitle:@"HOME" forState:UIControlStateNormal];
     [browseButton setTitle:@"EXPLORE" forState:UIControlStateNormal];
-    [magazineButton setTitle:@"MAG" forState:UIControlStateNormal];
     [favoritesButton setTitle:@"YOU" forState:UIControlStateNormal];
-    [searchButton setTitle:@"S" forState:UIControlStateNormal];
 
     notificationsButton.accessibilityLabel = @"Notifications";
     [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateNormal];
     [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateSelected];
     [notificationsButton.imageView constrainWidth:@"12" height:@"14"];
 
-    [magazineButton ar_extendHitTestSizeByWidth:5 andHeight:0];
     [favoritesButton ar_extendHitTestSizeByWidth:5 andHeight:0];
     [notificationsButton ar_extendHitTestSizeByWidth:10 andHeight:0];
 
-    return @[ searchButton, homeButton, showsButton, browseButton, magazineButton, favoritesButton, notificationsButton ];
+    return @[ searchButton, homeButton, browseButton, favoritesButton, notificationsButton ];
 }
 
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
@@ -167,9 +160,7 @@ static const CGFloat ARMenuButtonDimension = 46;
     NSDictionary *menuToPaths = @{
         @(ARTopTabControllerIndexFeed) : @"/",
         @(ARTopTabControllerIndexBrowse) : @"/browse",
-        @(ARTopTabControllerIndexMagazine) : @"/articles",
         @(ARTopTabControllerIndexFavorites) : @"/favorites",
-        @(ARTopTabControllerIndexShows) : @"/shows",
         @(ARTopTabControllerIndexNotifications) : @"/works-for-you",
     };
 
