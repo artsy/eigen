@@ -9,6 +9,7 @@
 - (NSInteger)numberOfViewControllersForTabContentView:(ARTabContentView *)tabContentView;
 - (NSUInteger)badgeNumberForTabAtIndex:(NSInteger)index;
 - (void)setBadgeNumber:(NSUInteger)number forTabAtIndex:(NSInteger)index;
+- (BOOL)searchButtonAtIndex:(NSInteger)index;
 @end
 
 @protocol ARTabViewDelegate <NSObject>

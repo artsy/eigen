@@ -20,9 +20,9 @@
 
 - (IBAction)back:(id)sender;
 
-- (void)showSearch;
 - (BOOL)isShowingSearch;
-- (void)closeSearch;
+- (void)showSearch;
+- (void)toggleSearch;
 
 /// Removes the specified viewController from anywhere in the stack.
 - (void)removeViewControllerFromStack:(UIViewController *)viewController;
