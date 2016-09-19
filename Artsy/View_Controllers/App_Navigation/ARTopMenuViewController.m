@@ -65,36 +65,7 @@ static const CGFloat ARMenuButtonDimension = 46;
 
     // TODO: Turn into custom view?
 
-    ARNavigationTabButton *homeButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *showsButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *browseButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *magazineButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *notificationsButton = [[ARNavigationTabButton alloc] init];
-    notificationsButton.tag = ARNavButtonNotificationsTag;
-
-    homeButton.accessibilityLabel = @"Home";
-    [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateNormal];
-    [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateSelected];
-    CGFloat buttonImageSize = 20;
-    CGFloat inset = (ARMenuButtonDimension - buttonImageSize) / 2;
-    homeButton.contentEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset);
-
-    [showsButton setTitle:@"SHOWS" forState:UIControlStateNormal];
-    [browseButton setTitle:@"EXPLORE" forState:UIControlStateNormal];
-    [magazineButton setTitle:@"MAG" forState:UIControlStateNormal];
-    [favoritesButton setTitle:@"YOU" forState:UIControlStateNormal];
-
-    notificationsButton.accessibilityLabel = @"Notifications";
-    [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateNormal];
-    [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateSelected];
-    [notificationsButton.imageView constrainWidth:@"12" height:@"14"];
-
-    [magazineButton ar_extendHitTestSizeByWidth:5 andHeight:0];
-    [favoritesButton ar_extendHitTestSizeByWidth:5 andHeight:0];
-    [notificationsButton ar_extendHitTestSizeByWidth:10 andHeight:0];
-
-    NSArray *buttons = @[ homeButton, showsButton, browseButton, magazineButton, favoritesButton, notificationsButton ];
+    NSArray *buttons = [self buttons];
 
     UIView *tabContainer = [[UIView alloc] init];
     self.tabContainer = tabContainer;
@@ -153,6 +124,42 @@ static const CGFloat ARMenuButtonDimension = 46;
     (void)self.keyboardLayoutGuide;
 
     [self registerWithSwitchBoard:ARSwitchBoard.sharedInstance];
+}
+
+- (NSArray *)buttons
+{
+    ARNavigationTabButton *homeButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *showsButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *browseButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *magazineButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *notificationsButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *searchButton = [[ARNavigationTabButton alloc] init];
+    notificationsButton.tag = ARNavButtonNotificationsTag;
+
+    homeButton.accessibilityLabel = @"Home";
+    [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateNormal];
+    [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateSelected];
+    CGFloat buttonImageSize = 20;
+    CGFloat inset = (ARMenuButtonDimension - buttonImageSize) / 2;
+    homeButton.contentEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset);
+
+    [showsButton setTitle:@"SHOWS" forState:UIControlStateNormal];
+    [browseButton setTitle:@"EXPLORE" forState:UIControlStateNormal];
+    [magazineButton setTitle:@"MAG" forState:UIControlStateNormal];
+    [favoritesButton setTitle:@"YOU" forState:UIControlStateNormal];
+    [searchButton setTitle:@"S" forState:UIControlStateNormal];
+
+    notificationsButton.accessibilityLabel = @"Notifications";
+    [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateNormal];
+    [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateSelected];
+    [notificationsButton.imageView constrainWidth:@"12" height:@"14"];
+
+    [magazineButton ar_extendHitTestSizeByWidth:5 andHeight:0];
+    [favoritesButton ar_extendHitTestSizeByWidth:5 andHeight:0];
+    [notificationsButton ar_extendHitTestSizeByWidth:10 andHeight:0];
+
+    return @[ homeButton, showsButton, browseButton, magazineButton, favoritesButton, notificationsButton, searchButton ];
 }
 
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard

@@ -7,4 +7,6 @@
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage;
 
+- (void)closeSearch:(id)sender;
+
 @end

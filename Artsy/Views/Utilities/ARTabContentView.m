@@ -1,6 +1,7 @@
 #import "ARTabContentView.h"
 
 #import "ARDispatchManager.h"
+#import "ARNavigationController.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -137,6 +138,18 @@ static BOOL ARTabViewDirectionRight = YES;
 
 - (void)forceSetCurrentViewIndex:(NSInteger)index animated:(BOOL)animated
 {
+    if ([(ARNavigationController *)self.currentNavigationController isShowingSearch]) {
+        [(ARNavigationController *)self.currentNavigationController closeSearch];
+        if (index == 6) {
+            return;
+        }
+    }
+
+    if (index == 6) {
+        [(ARNavigationController *)self.currentNavigationController showSearch];
+        return;
+    }
+
     [self.buttons each:^(UIButton *button) {
         button.selected = NO;
     }];
