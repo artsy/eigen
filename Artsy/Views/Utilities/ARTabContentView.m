@@ -138,16 +138,15 @@ static BOOL ARTabViewDirectionRight = YES;
 
 - (void)forceSetCurrentViewIndex:(NSInteger)index animated:(BOOL)animated
 {
-    if ([(ARNavigationController *)self.currentNavigationController isShowingSearch]) {
-        [(ARNavigationController *)self.currentNavigationController closeSearch];
-        if (index == 6) {
-            return;
-        }
+    // If selecting search button, toggle search VC
+    if ([self.dataSource searchButtonAtIndex:index]) {
+        [(ARNavigationController *)self.currentNavigationController toggleSearch];
+        return;
     }
 
-    if (index == 6) {
-        [(ARNavigationController *)self.currentNavigationController showSearch];
-        return;
+    // Otherwise, if the search VC is already present, remove it and continue as normal. This is only necessary in the interim because soon the search VC will cover & disable the tab content view anyway.
+    if ([(ARNavigationController *)self.currentNavigationController isShowingSearch]) {
+        [(ARNavigationController *)self.currentNavigationController toggleSearch];
     }
 
     [self.buttons each:^(UIButton *button) {

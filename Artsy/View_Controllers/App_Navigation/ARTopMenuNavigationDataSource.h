@@ -3,6 +3,7 @@
 @class ARHomeComponentViewController, ARNavigationController;
 
 typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
+    ARTopTabControllerIndexSearch,
     ARTopTabControllerIndexFeed,
     ARTopTabControllerIndexShows,
     ARTopTabControllerIndexBrowse,
@@ -24,5 +25,6 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
 
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
 - (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
+- (BOOL)searchButtonAtIndex:(NSInteger)index;
 
 @end

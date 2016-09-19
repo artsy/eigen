@@ -159,7 +159,7 @@ static const CGFloat ARMenuButtonDimension = 46;
     [favoritesButton ar_extendHitTestSizeByWidth:5 andHeight:0];
     [notificationsButton ar_extendHitTestSizeByWidth:10 andHeight:0];
 
-    return @[ homeButton, showsButton, browseButton, magazineButton, favoritesButton, notificationsButton, searchButton ];
+    return @[ searchButton, homeButton, showsButton, browseButton, magazineButton, favoritesButton, notificationsButton ];
 }
 
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard

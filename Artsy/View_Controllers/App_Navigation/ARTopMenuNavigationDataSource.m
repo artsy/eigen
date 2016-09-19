@@ -111,6 +111,13 @@ WebViewNavigationControllerWithPath(NSString *path)
     return nil;
 }
 
+#pragma mark Search
+
+- (BOOL)searchButtonAtIndex:(NSInteger)index
+{
+    return index == ARTopTabControllerIndexSearch;
+}
+
 #pragma mark ARTabViewDataSource
 
 - (UINavigationController *)viewControllerForTabContentView:(ARTabContentView *)tabContentView atIndex:(NSInteger)index

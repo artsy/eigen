@@ -489,6 +489,21 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     }
 }
 
+- (void)toggleSearch
+{
+    if (self.isShowingSearch) {
+        [self closeSearch];
+        return;
+    }
+
+    [self showSearch];
+}
+
+- (BOOL)isShowingSearch
+{
+    return self.ar_innermostTopViewController.navigationController.topViewController == self.searchViewController;
+}
+
 - (void)showSearch
 {
     if (self.searchViewController == nil) {
@@ -500,11 +515,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
     [navigationController pushViewController:self.searchViewController
                                     animated:ARPerformWorkAsynchronously];
-}
-
-- (BOOL)isShowingSearch
-{
-    return self.ar_innermostTopViewController.navigationController.topViewController == self.searchViewController;
 }
 
 - (void)closeSearch
