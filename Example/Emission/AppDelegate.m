@@ -204,12 +204,12 @@ randomBOOL(void)
   emission.APIModule.artistFollowStatusAssigner = ^(NSString *artistID, BOOL following, RCTResponseSenderBlock block) {
     NSLog(@"Artist(%@).follow = %@", artistID, @(following));
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-      if (randomBOOL()) {
+//      if (randomBOOL()) {
         block(@[[NSNull null], @(following)]);
-      } else {
-        NSLog(@"Simulated follow request ‘failed’.");
-        block(@[RCTJSErrorFromNSError([NSError errorWithDomain:@"Artsy" code:42 userInfo:nil]), @(!following)]);
-      }
+//      } else {
+//        NSLog(@"Simulated follow request ‘failed’.");
+//        block(@[RCTJSErrorFromNSError([NSError errorWithDomain:@"Artsy" code:42 userInfo:nil]), @(!following)]);
+//      }
     });
   };
 
