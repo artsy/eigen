@@ -7,6 +7,7 @@
 #import "User.h"
 #import "ARTrialController.h"
 
+
 @implementation ARApplicationShortcutItemDelegate
 
 + (void)load
@@ -35,7 +36,7 @@
 - (void)openSearch
 {
     ARNavigationController *rootNavigationController = [[ARTopMenuViewController sharedController] rootNavigationController];
-    [rootNavigationController search:self];
+    [rootNavigationController showSearch];
 }
 
 - (void)openFavorites
