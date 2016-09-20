@@ -5,12 +5,14 @@
 #import "Fair.h"
 #import "Gene.h"
 #import "PartnerShow.h"
+#import "Partner.h"
 #import "Sale.h"
+#import "Location.h"
 
 #import "ARDispatchManager.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
-
+#import <MapKit/MapKit.h>
 
 NSString *const ARUserActivityTypeArtwork = @"net.artsy.artsy.artwork";
 NSString *const ARUserActivityTypeArtist = @"net.artsy.artsy.artist";
@@ -58,6 +60,45 @@ NSString *const ARUserActivityTypeSale = @"net.artsy.artsy.sale";
                                                                    completion:^(CSSearchableItemAttributeSet *attributeSet) {
             [activity updateContentAttributeSet:attributeSet];
                                                                    }];
+    }
+
+    // Specifically when we have shows, we want to attach location data when it's
+    // available to make it show up in recommendations around the OS
+
+    if (type == ARUserActivityTypeShow) {
+        PartnerShow *show = (id)entity;
+        BOOL supportsMapItems = [activity respondsToSelector:@selector(setMapItem:)];
+        if (supportsMapItems && show.location.publiclyViewable) {
+
+            // We have to do a whole song and dance to create a `MKMapItem`
+            // so we get our long/lat, then search for the partner name using
+            // the mapkit API.
+
+            CLLocation *location = show.location.clLocation;
+            CLLocationCoordinate2D coords = location.coordinate;
+
+            MKPolygon *polygon = [MKPolygon polygonWithCoordinates:&coords count:1];
+            MKCoordinateRegion region = MKCoordinateRegionForMapRect(polygon.boundingMapRect);
+
+            // Create a request, which I assume uses a remote mapkit API somewhere
+            MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
+            request.naturalLanguageQuery = show.partner.name;
+            request.region = region;
+
+            MKLocalSearch *search = [[MKLocalSearch alloc] initWithRequest:request];
+            [search startWithCompletionHandler:^(MKLocalSearchResponse * _Nullable response, NSError * _Nullable error) {
+                if (error) { return; }
+                MKMapItem *closest = response.mapItems.firstObject;
+
+                // Set the mapItem dynamically, so we can use Xcode 7
+                NSMethodSignature *setMapItemSignature = [activity.class instanceMethodSignatureForSelector:@selector(setMapItem:)];
+                NSInvocation *setMapItemInvocation = [NSInvocation invocationWithMethodSignature:setMapItemSignature];
+                [setMapItemInvocation setSelector:@selector(setMapItem:)];
+                [setMapItemInvocation setTarget:activity];
+                [setMapItemInvocation setArgument:&closest atIndex:2];
+                [setMapItemInvocation invoke];
+            }];
+        }
     }
 
     return activity;
