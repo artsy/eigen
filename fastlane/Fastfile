@@ -4,7 +4,6 @@ require 'spaceship'
 APP_ID = "net.artsy.artsy"
 
 lane :ship_beta do
-  update_fastlane
   setup_for_app_store
   verify_pod_keys
 
@@ -15,7 +14,7 @@ lane :ship_beta do
 
   upcoming = readme_data["upcoming"]
   commit =  `git log -n1 --format='%h'`.strip
-  beta_readme =  "## #{upcoming["version"]} - #{commit} \n\n - #{upcoming["notes"].join "\n - "} \n\n"
+  beta_readme =  "## #{upcoming["version"]} - #{commit} \n\n - #{upcoming["user_facing"].join "\n - "} \n\n"
 
   # Builds the app
   gym
@@ -55,7 +54,6 @@ lane :ship_beta do
 
   # Let us know everything has finished
   slack message: "There is a new Eigen beta available. Grab it from Testflight on your iOS device.",
-        channel: "collector-gmv-ios",
         payload: {
           'Version' => latest_version,
           'What\'s new' => beta_readme
@@ -85,7 +83,7 @@ lane :deploy_latest_to_external do
   )
 end
 
-## We want to have a simpler version of Fastlane's match
+## We want to have a simpler version of fastlane's match
 ## this does it in a pretty reasonable amount of code.
 
 lane :setup_for_app_store do

@@ -32,6 +32,8 @@ PODS:
     - AFNetworking (~> 2.5)
   - ALPValidator (0.0.3)
   - Analytics (3.0.7)
+  - AppHub (0.5.1):
+    - React/Core
   - ARAnalytics/Adjust (3.9.0):
     - Adjust
     - ARAnalytics/CoreIOS
@@ -52,7 +54,7 @@ PODS:
     - SDWebImage/Core
   - Artsy+UIColors (3.0.1)
   - Artsy+UIFonts (1.1.0)
-  - Artsy+UILabels (2.0.1):
+  - Artsy+UILabels (2.0.2):
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
   - Artsy-UIButtons (2.0.1):
@@ -76,11 +78,34 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DRKonamiCode (1.1.0)
   - EDColor (1.0.0)
+  - Emission (1.0.3):
+    - Artsy+UIFonts (>= 1.1.0)
+    - Extraction
+    - React/Core (= 0.27.1)
+    - React/RCTNetwork (= 0.27.1)
+    - React/RCTText (= 0.27.1)
+    - SDWebImage (>= 3.7.2)
   - Expecta (1.0.5)
   - Expecta+Snapshots (3.0.0):
     - Expecta (~> 1.0)
     - FBSnapshotTestCase/Core (~> 2.0)
     - Specta (~> 1.0)
+  - Extraction (1.1.0):
+    - Extraction/ARAnimationContinuation (= 1.1.0)
+    - Extraction/ARSpinner (= 1.1.0)
+    - Extraction/ARSwitchView (= 1.1.0)
+    - Extraction/UIView+ARSpinner (= 1.1.0)
+  - Extraction/ARAnimationContinuation (1.1.0)
+  - Extraction/ARSpinner (1.1.0):
+    - Extraction/UIView+ARSpinner
+    - UIView+BooleanAnimations
+  - Extraction/ARSwitchView (1.1.0):
+    - Artsy+UIColors
+    - Artsy+UIFonts (>= 1.1.0)
+    - FLKAutoLayout
+    - UIView+BooleanAnimations
+  - Extraction/UIView+ARSpinner (1.1.0):
+    - Extraction/ARAnimationContinuation
   - FBSDKCoreKit (4.10.1):
     - Bolts (~> 1.5)
   - FBSDKLoginKit (4.10.1):
@@ -90,19 +115,20 @@ PODS:
   - FBSnapshotTestCase/Core (2.1.0)
   - FBSnapshotTestCase/SwiftSupport (2.1.0):
     - FBSnapshotTestCase/Core
-  - FLKAutoLayout (0.2.1)
+  - FLKAutoLayout (1.0.0)
   - Forgeries/Core (0.6.1)
   - Forgeries/Mocks (0.6.1):
     - Forgeries/Core
     - OCMock
   - FXBlurView (1.6.1)
   - HockeySDK-Source (3.8.5)
-  - Interstellar/Core (1.4.0)
+  - Interstellar/Core (1.5.0)
   - iRate (1.10.2)
   - ISO8601DateFormatter (0.7.1)
   - JLRoutes (2.0.0)
   - JSBadgeView (1.4.1)
   - JSDecoupledAppDelegate (1.2.0)
+  - JWTDecode (1.0.0)
   - Keys (1.0.0)
   - KSDeferred (0.2.0)
   - Mantle (1.5.6):
@@ -114,8 +140,8 @@ PODS:
   - NAMapKit (3.2.0):
     - ARTiledImageView
     - SDWebImage
-  - Nimble (3.2.0)
-  - Nimble-Snapshots (4.0.0):
+  - Nimble (4.0.1)
+  - Nimble-Snapshots (4.0.1):
     - FBSnapshotTestCase (~> 2.0)
     - Nimble
     - Quick
@@ -124,9 +150,14 @@ PODS:
   - OCMock (2.2.4)
   - OHHTTPStubs (3.1.2)
   - ORKeyboardReactingApplication (0.5.3)
-  - ORStackView (2.0.0):
-    - FLKAutoLayout (~> 0.1)
-  - Quick (0.9.1)
+  - ORStackView (2.0.3):
+    - FLKAutoLayout
+  - Quick (0.9.2)
+  - React/Core (0.27.1)
+  - React/RCTNetwork (0.27.1):
+    - React/Core
+  - React/RCTText (0.27.1):
+    - React/Core
   - ReactiveCocoa (2.3):
     - ReactiveCocoa/UI (= 2.3)
   - ReactiveCocoa/Core (2.3):
@@ -138,8 +169,10 @@ PODS:
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
-  - Socket.IO-Client-Swift (5.5.0)
   - Specta (1.0.5)
+  - SSFadingScrollView (1.1.0)
+  - Starscream (1.1.3)
+  - SwiftyJSON (2.3.2)
   - Then (1.0.0)
   - UIAlertView+Blocks (0.8)
   - UICKeyChainStore (1.0.5)
@@ -155,6 +188,7 @@ DEPENDENCIES:
   - AFOAuth1Client (from `https://github.com/lxcid/AFOAuth1Client.git`, tag `0.4.0`)
   - ALPValidator
   - Analytics
+  - AppHub (from `https://github.com/orta/apphub.git`, branch `build_list`)
   - ARAnalytics/Adjust (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
   - ARAnalytics/DSL (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
   - ARAnalytics/HockeyApp (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
@@ -171,20 +205,23 @@ DEPENDENCIES:
   - DHCShakeNotifier
   - DRKonamiCode
   - EDColor
+  - Emission
   - Expecta
   - Expecta+Snapshots
+  - Extraction
   - FBSDKCoreKit (~> 4.9)
   - FBSDKLoginKit (~> 4.9)
   - FBSnapshotTestCase (from `https://github.com/orta/ios-snapshot-test-case.git`)
-  - FLKAutoLayout (from `https://github.com/alloy/FLKAutoLayout.git`, branch `add-support-for-layout-guides-take-2`)
+  - FLKAutoLayout (from `https://github.com/orta/FLKAutoLayout.git`, branch `v1`)
   - Forgeries/Mocks (from `https://github.com/ashfurrow/Forgeries.git`, branch `application`)
   - FXBlurView
-  - Interstellar/Core
+  - Interstellar/Core (from `https://github.com/JensRavens/Interstellar.git`, branch `feature/v2`)
   - iRate
   - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
   - JSBadgeView
   - JSDecoupledAppDelegate
+  - JWTDecode
   - Keys (from `Pods/CocoaPodsKeys`)
   - KSDeferred
   - Mantle (~> 1.5.6)
@@ -192,19 +229,21 @@ DEPENDENCIES:
   - MMMarkdown
   - MultiDelegate
   - NAMapKit (from `https://github.com/neilang/NAMapKit`)
-  - Nimble (from `https://github.com/Quick/Nimble.git`)
+  - Nimble
   - Nimble-Snapshots
   - NPKeyboardLayoutGuide
   - ObjectiveSugar
   - OCMock
   - OHHTTPStubs
   - ORKeyboardReactingApplication
-  - ORStackView (from `https://github.com/1aurabrown/ORStackView.git`)
-  - Quick (from `https://github.com/Quick/Quick.git`)
+  - ORStackView (= 2.0.3)
+  - Quick
   - ReactiveCocoa
   - SDWebImage (>= 3.7.2)
-  - Socket.IO-Client-Swift
   - Specta
+  - SSFadingScrollView (from `https://github.com/alloy/SSFadingScrollView.git`, branch `add-axial-support`)
+  - Starscream
+  - SwiftyJSON
   - Then
   - UIAlertView+Blocks
   - UICKeyChainStore
@@ -219,6 +258,9 @@ EXTERNAL SOURCES:
   AFOAuth1Client:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
+  AppHub:
+    :branch: build_list
+    :git: https://github.com/orta/apphub.git
   ARAnalytics:
     :commit: 6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e
     :git: https://github.com/orta/ARAnalytics.git
@@ -236,11 +278,14 @@ EXTERNAL SOURCES:
   FBSnapshotTestCase:
     :git: https://github.com/orta/ios-snapshot-test-case.git
   FLKAutoLayout:
-    :branch: add-support-for-layout-guides-take-2
-    :git: https://github.com/alloy/FLKAutoLayout.git
+    :branch: v1
+    :git: https://github.com/orta/FLKAutoLayout.git
   Forgeries:
     :branch: application
     :git: https://github.com/ashfurrow/Forgeries.git
+  Interstellar:
+    :branch: feature/v2
+    :git: https://github.com/JensRavens/Interstellar.git
   ISO8601DateFormatter:
     :git: https://github.com/orta/iso-8601-date-formatter
   JLRoutes:
@@ -249,12 +294,9 @@ EXTERNAL SOURCES:
     :path: Pods/CocoaPodsKeys
   NAMapKit:
     :git: https://github.com/neilang/NAMapKit
-  Nimble:
-    :git: https://github.com/Quick/Nimble.git
-  ORStackView:
-    :git: https://github.com/1aurabrown/ORStackView.git
-  Quick:
-    :git: https://github.com/Quick/Quick.git
+  SSFadingScrollView:
+    :branch: add-axial-support
+    :git: https://github.com/alloy/SSFadingScrollView.git
 
 CHECKOUT OPTIONS:
   Aerodramus:
@@ -263,6 +305,9 @@ CHECKOUT OPTIONS:
   AFOAuth1Client:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
+  AppHub:
+    :commit: 58396c3deea06aced7fc9670b7e24a41c6155f6c
+    :git: https://github.com/orta/apphub.git
   ARAnalytics:
     :commit: 6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e
     :git: https://github.com/orta/ARAnalytics.git
@@ -285,11 +330,14 @@ CHECKOUT OPTIONS:
     :commit: 6b3e8978084388f9aae392fd1e0e21b1ddb88ae3
     :git: https://github.com/orta/ios-snapshot-test-case.git
   FLKAutoLayout:
-    :commit: dd2cd4fe901ff5dcfc47c2c29c7746779fc12b64
-    :git: https://github.com/alloy/FLKAutoLayout.git
+    :commit: 4aa27fa1a9aba36d5465e6cd181ba4b78b0691d3
+    :git: https://github.com/orta/FLKAutoLayout.git
   Forgeries:
     :commit: 49d17e014367b64d8a91dbe10f28f5d59c7aefb3
     :git: https://github.com/ashfurrow/Forgeries.git
+  Interstellar:
+    :commit: ea73e21c40255afa5ff77a5a5beaaf949347deb1
+    :git: https://github.com/JensRavens/Interstellar.git
   ISO8601DateFormatter:
     :commit: 1a48b819c85903ded669e74e476aceffebf311fc
     :git: https://github.com/orta/iso-8601-date-formatter
@@ -299,15 +347,9 @@ CHECKOUT OPTIONS:
   NAMapKit:
     :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
     :git: https://github.com/neilang/NAMapKit
-  Nimble:
-    :commit: d3ed3a367927c98bca7bf7e7e0ff36124c634f73
-    :git: https://github.com/Quick/Nimble.git
-  ORStackView:
-    :commit: 80bfeb0a4176e307a8b94b1662104e64cc8bb50c
-    :git: https://github.com/1aurabrown/ORStackView.git
-  Quick:
-    :commit: 3a1d88fb81476001c62f086dbd94bb0f5354f1a3
-    :git: https://github.com/Quick/Quick.git
+  SSFadingScrollView:
+    :commit: 3920e3582e46c9fe23b0d1200e28614ebd66d801
+    :git: https://github.com/alloy/SSFadingScrollView.git
 
 SPEC CHECKSUMS:
   Adjust: 297176446c127f1232b9591b2b37cdc4796850b8
@@ -317,35 +359,39 @@ SPEC CHECKSUMS:
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
   Analytics: b342fb4f43fa4f97ca6f4358b44d3295217ba294
-  ARAnalytics: ab25a3d8c6c950f69f25100de470614b6a7d6d9b
+  AppHub: 03788112dd48c42b60d51321c0ffff4ef15a4432
+  ARAnalytics: 96e23ba7f54298f4914de9e1ac999db7a15f3fdd
   ARASCIISwizzle: 4800c50a918bdc06f6304020e348ef8c15c554ee
   ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
   Artsy+UIColors: 10a2d71e9ffe1015be43d4e084d13ff4337aab97
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
-  Artsy+UILabels: b4e82b2a9a914279109656dda21c70b833e7cff1
+  Artsy+UILabels: 9b8e8b683488e22633625db9627cd79ab64b610f
   Artsy-UIButtons: 26e6d1e0d2174773e9cf7693985d27faddd61743
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
+  Emission: 2cc5985953229faa9584dac67298711f384e7a2a
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
+  Extraction: c0b413dc7d379f2a2e54f242e81d21c88fe3115a
   FBSDKCoreKit: d2aaed5e9ab7d8d6301c533376a1fbff1cf3deb5
   FBSDKLoginKit: 699ff169080e3072de4b9b0faca90bf23dc36deb
   FBSnapshotTestCase: 68c3221ddd3bf5bbe783c1015f8acc12c3768a4d
-  FLKAutoLayout: 9db6b30c2008d230da608e62c607b11c23b942e6
+  FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   Forgeries: f5c991dda5977f42d11fa9313fd1e17bc3edbb27
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
   HockeySDK-Source: 85233ef10090148e5571f7a0a82deb8213b1691e
-  Interstellar: 40fc666872436d6c1b3524c59437ebdb5dec1c6a
+  Interstellar: 31bbacb2bfc26f369a38ee853311df820dbcb280
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
   JSBadgeView: 3861ddee41094284d9468e6d0af5107f703aaac5
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
+  JWTDecode: d172edcb1607cc15aed85d58eceedcbb675a4534
   Keys: 9c35bf00f612ee1d48556f4a4b9b4551e224e90f
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
@@ -353,20 +399,23 @@ SPEC CHECKSUMS:
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
   NAMapKit: bdcb666fa84122eed344661b132e1d93dbafac71
-  Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
-  Nimble-Snapshots: 1cb1c223a97383d4744f742422eab84df9425742
+  Nimble: 0f3c8b8b084cda391209c3c5efbb48bedeeb920a
+  Nimble-Snapshots: 2d15a585b816f7d14947ed6e172218f9d0980ea8
   NPKeyboardLayoutGuide: fea27700582570c8825a97b5cb96579a57bf0b73
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   OCMock: a6a7dc0e3997fb9f35d99f72528698ebf60d64f2
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
-  ORStackView: 752d81ca2e2a0bd6c01a2ece30fd24923434be1e
-  Quick: a5221fc21788b6aeda934805e68b061839bc3165
+  ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
+  Quick: 18d057bc66451eedd5d1c8dc99ba2a5db6e60226
+  React: 36037bee3d492dd404501c83f7059630786c62c2
   ReactiveCocoa: 81ee2fb7df2dfc6bd52b5d70473662195e20ca7d
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
-  Socket.IO-Client-Swift: f39dbd4e9b295907bb7fd4b9588b89c00426783d
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
+  SSFadingScrollView: a2f142312afad23585e354a41a6ed337045e1aa3
+  Starscream: d662732354b40dd19ed1ece3e3c44c80b536b83c
+  SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
   Then: 291c4c489fb76349a987c0f1769a30b3551d091e
   UIAlertView+Blocks: 6b408d63507287b22c6e631a2b25ca26f96fb609
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
@@ -374,6 +423,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: ebcd9ce0e1c59d83da530c94f10f18c5f3f2890e
+PODFILE CHECKSUM: 65bb56b048e1fad7205f78f57d93a5e992671763
 
-COCOAPODS: 1.0.0.beta.6
+COCOAPODS: 1.0.1

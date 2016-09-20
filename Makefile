@@ -10,12 +10,15 @@ GIT_COMMIT_SHA = $(shell git log -n1 --format='%H')
 GIT_REMOTE_ORIGIN_URL = $(shell git config --get remote.origin.url)
 
 DATE_MONTH = $(shell date "+%e %h" | tr "[:lower:]" "[:upper:]")
-DATE_VERSION = $(shell date "+%Y.%m.%d")
+DATE_VERSION = $(shell date "+%Y.%m.%d.%H")
 
 CHANGELOG = CHANGELOG.md
 
 LOCAL_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*username=(.+)\n?.*/\1/')-$(shell git rev-parse --abbrev-ref HEAD)
+
+## Allows us to determine how long it takes to compile a
+SWIFT_BUILD_FLAGS = OTHER_SWIFT_FLAGS="-Xfrontend -debug-time-function-bodies"
 
 .PHONY: all build ci test oss pr artsy
 
@@ -29,6 +32,8 @@ next: update_bundle_version set_git_properties change_version_to_date
 ### General setup
 
 oss:
+	git submodule update --init
+	bundle exec pod repo update
 	bundle exec pod keys set "ArtsyAPIClientSecret" "3a33d2085cbd1176153f99781bbce7c6" Artsy
 	bundle exec pod keys set "ArtsyAPIClientKey" "e750db60ac506978fc70"
 	bundle exec pod keys set "ArtsyFacebookAppID" "-"
@@ -42,23 +47,27 @@ oss:
 	bundle exec pod keys set "ArtsyEchoProductionToken" "-"
 
 artsy:
-	git submodule init
-	git submodule update
+	git submodule update --init
 	config/spacecommander/setup-repo.sh
 	brew install swiftgen
+	brew install swiftlint
 	git update-index --assume-unchanged Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m
+	config/setup_swiftlint_precommit_hook.rb
 
 certs:
 	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
 	bundle exec match appstore
 
-distribute:  change_version_to_date set_git_properties
-	bundle exec fastlane ship_beta
+distribute:  change_version_to_date set_git_properties setup_fastlane
+	fastlane ship_beta
+
+setup_fastlane:
+	gem install cocoapods fastlane pilot gym deliver
 
 ### General Xcode tooling
 
 build:
-	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' -sdk iphonesimulator build -destination $(DEVICE_HOST) | tee $(CIRCLE_ARTIFACTS)/xcode_build_raw.log | bundle exec xcpretty -c
+	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration '$(CONFIGURATION)' -sdk iphonesimulator build -destination $(DEVICE_HOST) $(SWIFT_BUILD_FLAGS) | tee $(CIRCLE_ARTIFACTS)/xcode_build_raw.log | bundle exec xcpretty -c
 
 test:
 	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug build test -sdk iphonesimulator -destination $(DEVICE_HOST) | bundle exec second_curtain 2>&1 | tee $(CIRCLE_ARTIFACTS)/xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output $(CIRCLE_TEST_REPORTS)/xcode/results.xml
@@ -98,7 +107,7 @@ set_git_properties:
 	$(PLIST_BUDDY) -c "Set GITRemoteOriginURL $(GIT_REMOTE_ORIGIN_URL)" $(APP_PLIST)
 
 update_echo:
-	curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell bundle exec pod keys get ArtsyEchoProductionToken)" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/Echo.json
+	curl https://echo-api-production.herokuapp.com/accounts/1 --header "Http-Authorization: $(shell bundle exec pod keys get ArtsyEchoProductionToken Artsy)" --header "Accept: application/vnd.echo-v2+json" > Artsy/App/Echo.json
 
 storyboards:
 	swiftgen storyboards Artsy --output Artsy/Tooling/Generated/StoryboardConstants.swift

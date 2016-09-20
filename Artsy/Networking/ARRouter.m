@@ -79,6 +79,26 @@ static NSString *hostFromString(NSString *string)
     }
 }
 
++ (NSString *)baseObserverCausalitySocketURLString
+{
+    return [self causalitySocketURLStringWithProduction:ARCausalityObserverSocketURL];
+}
+
++ (NSString *)baseBidderCausalitySocketURLString
+{
+    return [self causalitySocketURLStringWithProduction:ARCausalityBidderSocketURL];
+}
+
++ (NSString *)causalitySocketURLStringWithProduction:(NSString *)productionURL;
+{
+    if ([AROptions boolForOption:ARUseStagingDefault]) {
+        NSString *stagingSocketURLString = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingLiveAuctionSocketURLDefault];
+        return stagingSocketURLString;
+    } else {
+        return productionURL;
+    }
+}
+
 + (NSURL *)baseWebURL
 {
     return [UIDevice isPad] ? [self baseDesktopWebURL] : [self baseMobileWebURL];
@@ -988,38 +1008,70 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" URLString:url parameters:nil];
 }
 
-+ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID
++ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role
 {
     // Note that we're relying on the host to specify the domain for the request.
     NSString *url = [self baseMetaphysicsApiURLString];
+
+    NSString *accessType = role ? [NSString stringWithFormat:@"role: %@,", [role uppercaseString]] : @"";
+    NSString *causalityRole = [NSString stringWithFormat:@"causality_jwt(%@ sale_id: \"%@\")", accessType, saleID];
+
     // Ending spaces are to avoid stripping newlines characters later on.
     NSString *query = [NSString stringWithFormat:@"\
 {\
-  sale(id: \"%@\") { \
-    sale_artworks { \
-      id \
-      position \
-      currency \
-      symbol \
-      reserve_status \
-      low_estimate_cents \
-      high_estimate_cents \
-      amount_cents \
-      artwork { \
-        title \
-        artist { \
-          name \
-        } \
-        image { \
-          width \
-          height \
-          url(version: \"large\") \
-        } \
-      } \
-    } \
-  } \
+  %@\
+  me {\
+    paddle_number\
+    bidders(sale_id: \"%@\") {\
+      id\
+    }\
+  }\
+  sale(id: \"%@\") {\
+    _id\
+    id\
+    start_at\
+    bid_increments {\
+      from\
+      amount\
+    }\
+    end_at\
+    registration_ends_at\
+    name\
+    is_with_buyers_premium\
+    description\
+    sale_artworks(all: true) {\
+      _id\
+      position\
+      currency\
+      symbol\
+      reserve_status\
+      low_estimate_cents\
+      high_estimate_cents\
+      lot_number\
+      currency\
+      estimate\
+      artwork {\
+        title\
+        blurb: description\
+        medium\
+        dimensions {\
+          in\
+          cm\
+        }\
+        artist {\
+          name\
+          blurb\
+        }\
+        image {\
+          aspect_ratio\
+          large: url(version: \"large\")\
+          thumb: url(version: \"thumb\")\
+        }\
+      }\
+    }\
+  }\
 }",
-                                                 saleID];
+                                                 causalityRole, saleID, saleID];
 
     NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url parameters:@{ @"query" : query }];
 
@@ -1132,6 +1184,12 @@ static NSString *hostFromString(NSString *string)
 {
     NSString *url = [NSString stringWithFormat:ARPageURLFormat, slug];
     return [self requestWithMethod:@"GET" path:url parameters:nil];
+}
+
++ (NSURLRequest *)newHEADRequestForPath:(NSString *)path
+{
+    NSString *fullPath = [[NSURL URLWithString:path relativeToURL:[ARRouter baseWebURL]] absoluteString];
+    return [self requestWithMethod:@"HEAD" URLString:fullPath parameters:nil];
 }
 
 @end

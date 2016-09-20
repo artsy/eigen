@@ -71,4 +71,26 @@ describe(@"success", ^{
     });
 });
 
+describe(@"handling failures", ^{
+    beforeEach(^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return [request.URL.path isEqualToString:@"/api/v1/me/notifications"];
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:404 userInfo:nil]];
+        }];
+
+    });
+
+    it(@"sets networkingDidFail to YES if on first page", ^{
+        [networkModel getWorksForYou:^(NSArray<ARWorksForYouNotificationItem *> *items) {} failure:nil];
+        expect(networkModel.networkingDidFail).to.beTruthy();
+    });
+
+    it(@"does not set networkingDidFail if not on first page", ^{
+        networkModel.currentPage = 2;
+        [networkModel getWorksForYou:^(NSArray<ARWorksForYouNotificationItem *> *items) {} failure:nil];
+        expect(networkModel.networkingDidFail).to.beFalsy();
+    });
+});
+
 SpecEnd;

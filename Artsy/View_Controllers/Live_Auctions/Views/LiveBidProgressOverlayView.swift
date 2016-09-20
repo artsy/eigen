@@ -3,7 +3,7 @@ import Interstellar
 
 class LiveBidProgressOverlayView: UIView {
 
-    var biddingProgressSignal = Signal<LiveAuctionBiddingProgressState>()
+    var biddingProgressSignal = Observable<LiveAuctionBiddingProgressState>()
 
     @IBOutlet weak var bidProgressImageView: UIImageView!
     @IBOutlet weak var bidProgressTitleLabel: UILabel!
@@ -11,7 +11,7 @@ class LiveBidProgressOverlayView: UIView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        biddingProgressSignal.next(biddingProgressUpdated)
+        biddingProgressSignal.subscribe(biddingProgressUpdated)
     }
 
     private func biddingProgressUpdated(state: LiveAuctionBiddingProgressState) {
@@ -21,9 +21,12 @@ class LiveBidProgressOverlayView: UIView {
         let red = UIColor.artsyRedRegular()
 
         switch state {
-        case .Biddable, .TrialUser: break
+        case .Biddable, .UserRegistrationRequired, .UserRegistrationClosed, .UserRegistrationPending: break
         case .LotSold:
             setupProgressUI("Sold", subtitle:"The Lot has finished", textColor: red, image: .LiveAuctionOutbidWarningIcon)
+
+        case .BidOutbid:
+            setupProgressUI("", textColor: red, image: .LiveAuctionOutbidWarningIcon)
 
         case .LotWaitingToOpen:
             // Hrm, is this a possible state for it to get to?
@@ -32,16 +35,15 @@ class LiveBidProgressOverlayView: UIView {
         case .BiddingInProgress:
             setupProgressUI("Placing Bid", textColor: purple, image: .LiveAuctionSpinner, spinImage: true)
 
-        case .BidSuccess(let outbid):
-            if outbid {
-                setupProgressUI("Outbid", subtitle: "Set a higher max bid", textColor: red, image: .LiveAuctionOutbidWarningIcon)
-
-            } else {
-                setupProgressUI("Bid Placed", textColor: green, image: .LiveAuctionMaxBidIcon)
-            }
+        case .BidAcknowledged:
+            // TODO: this needs to keep track of the previous bidding state
+            setupProgressUI("Bid Placed", textColor: green, image: .LiveAuctionMaxBidIcon)
 
         case .BidNetworkFail:
             setupProgressUI("Connection Issues", subtitle: "Please check your signal strength", textColor: red, image: .LiveAuctionOutbidWarningIcon)
+
+        case .BidBecameMaxBidder:
+            setupProgressUI("", textColor: green, image: .LiveAuctionMaxBidIcon)
         }
     }
 

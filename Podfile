@@ -41,7 +41,7 @@ target 'Artsy' do
 
   pod 'ARGenericTableViewController', :git => 'https://github.com/orta/ARGenericTableViewController.git'
   pod 'CocoaLumberjack', :git => 'https://github.com/CocoaLumberjack/CocoaLumberjack.git' # Unreleased > 2.0.1 version has a CP modulemap fix
-  pod 'FLKAutoLayout', :git => 'https://github.com/alloy/FLKAutoLayout.git', :branch => 'add-support-for-layout-guides-take-2'
+  pod 'FLKAutoLayout', :git => 'https://github.com/orta/FLKAutoLayout.git', :branch => 'v1'
   pod 'FXBlurView'
   pod 'iRate'
   pod 'ISO8601DateFormatter', :git => "https://github.com/orta/iso-8601-date-formatter"
@@ -55,10 +55,11 @@ target 'Artsy' do
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
   pod 'EDColor'
+  pod 'SSFadingScrollView', :git => 'https://github.com/alloy/SSFadingScrollView.git', :branch => 'add-axial-support'
 
   # Core owned by Artsy
   pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView'
-  pod 'ORStackView', :git => 'https://github.com/1aurabrown/ORStackView.git'
+  pod 'ORStackView', '2.0.3'
   pod 'UIView+BooleanAnimations'
   pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit'
   pod 'Aerodramus', :git => 'https://github.com/artsy/Aerodramus.git', :branch => 'tests'
@@ -70,7 +71,7 @@ target 'Artsy' do
   # UIAlertView is deprecated for iOS8 APIs
   pod 'UIAlertView+Blocks'
 
-  # Language Enhancments
+  # Language Enhancements
   pod 'KSDeferred'
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
@@ -79,6 +80,8 @@ target 'Artsy' do
   pod 'Artsy-UIButtons'
   pod 'Artsy+UIColors'
   pod 'Artsy+UILabels'
+  pod 'Extraction'
+  pod 'Emission'
 
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
@@ -105,8 +108,15 @@ target 'Artsy' do
 
   # Swift pods 🎉
   pod 'Then'
-  pod 'Interstellar/Core'
-  pod 'Socket.IO-Client-Swift'
+  pod 'Interstellar/Core', git: 'https://github.com/JensRavens/Interstellar.git', branch: 'feature/v2'
+  pod 'Starscream'
+  pod 'SwiftyJSON'
+
+  # Used in Live Auctions to hold user-state
+  pod 'JWTDecode'
+
+  # This can be changed when 0.5.2 is out
+  pod 'AppHub', :git => 'https://github.com/orta/apphub.git', :branch => "build_list"
 
   target 'Artsy Tests' do
       inherit! :search_paths
@@ -123,8 +133,8 @@ target 'Artsy' do
       pod 'Forgeries/Mocks', :git => "https://github.com/ashfurrow/Forgeries.git", :branch => "application"
 
       # Swift pods 🎉
-      pod 'Quick', git: 'https://github.com/Quick/Quick.git'
-      pod 'Nimble', git: 'https://github.com/Quick/Nimble.git'
+      pod 'Quick'
+      pod 'Nimble'
       pod 'Nimble-Snapshots'
   end
 end
@@ -146,6 +156,11 @@ post_install do |installer|
       config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
       config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
     end
+  end
+
+  react = installer.pods_project.targets.find { |target| target.name == 'React' }
+  react.build_configurations.each do |config|
+    config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = "$(inherited) RCT_DEV=0"
   end
 
   # TODO:

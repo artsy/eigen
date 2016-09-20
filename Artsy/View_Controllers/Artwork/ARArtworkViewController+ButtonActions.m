@@ -9,7 +9,6 @@
 #import "ARArtworkViewController+ButtonActions.h"
 #import "ARZoomArtworkImageViewController.h"
 #import "ARArtworkInfoViewController.h"
-#import "ARAuctionArtworkResultsViewController.h"
 #import "ARViewInRoomViewController.h"
 #import "ARSharingController.h"
 #import "ARArtworkPreviewImageView.h"
@@ -30,6 +29,7 @@
 #import "ARTrialController.h"
 #import "ARTopMenuViewController.h"
 #import "ARLogger.h"
+#import "Artsy-Swift.h"
 
 
 @implementation ARArtworkViewController (ButtonActions)
@@ -92,7 +92,7 @@
 {
     [ArtsyAPI getShowsForArtworkID:self.artwork.artworkID inFairID:self.fair.fairID success:^(NSArray *shows) {
         if (shows.count > 0) {
-            ARFairMapViewController *viewController = [[ARSwitchBoard sharedInstance] loadMapInFair:self.fair title:self.artwork.partner.name selectedPartnerShows:shows];
+            ARFairMapViewController *viewController = [ARSwitchBoard.sharedInstance loadMapInFair:self.fair title:self.artwork.partner.name selectedPartnerShows:shows];
             [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
         }
     } failure:^(NSError *error){
@@ -119,21 +119,36 @@
     [[ARTopMenuViewController sharedController] pushViewController:viewController];
 }
 
+- (void)tappedLiveSaleButton:(UIButton *)button
+{
+    button.enabled = false;
+    [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
+        button.enabled = true;
+        LiveAuctionViewController *viewController = [[LiveAuctionViewController alloc] initWithSaleSlugOrID:saleArtwork.auction.saleID];
+        [self presentViewController:viewController animated:true completion:nil];
+    } failure:^(NSError *error) {
+        ARErrorLog(@"Can't get sale to bid for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
+    }];
+}
+
 - (void)tappedConditionsOfSale
 {
     ARInternalMobileWebViewController *viewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/conditions-of-sale"]];
     [[ARTopMenuViewController sharedController] pushViewController:viewController];
 }
 
-- (void)tappedBidButton
+- (void)tappedBidButton:(UIButton *)button
 {
     if ([User isTrialUser]) {
         [ARTrialController presentTrialWithContext:ARTrialContextAuctionBid success:^(BOOL newUser) {
-            [self tappedBidButton];
+            [self tappedBidButton:button];
         }];
         return;
     }
+
+    button.enabled = false;
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
+        button.enabled = true;
         [self bidCompleted:saleArtwork];
     } failure:^(NSError *error) {
         ARErrorLog(@"Can't get sale to bid for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
@@ -152,9 +167,11 @@
     [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
-- (void)tappedBuyersPremium
+- (void)tappedBuyersPremium:(UIButton *)button
 {
+    button.enabled = false;
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
+        button.enabled = true;
         NSString *path = [NSString stringWithFormat:@"/auction/%@/buyers-premium", saleArtwork.auction.saleID];
         UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPath:path fair:self.fair];
         [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
@@ -192,7 +209,7 @@
         NSString *orderID = [JSON valueForKey:@"id"];
         NSString *resumeToken = [JSON valueForKey:@"token"];
         ARErrorLog(@"Created order %@", orderID);
-        UIViewController *controller = [[ARSwitchBoard sharedInstance] loadOrderUIForID:orderID resumeToken:resumeToken];
+        UIViewController *controller = [ARSwitchBoard.sharedInstance loadOrderUIForID:orderID resumeToken:resumeToken];
         [self.navigationController pushViewController:controller animated:YES];
 
     }
@@ -201,12 +218,6 @@
         ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
         [sself tappedContactGallery];
         }];
-}
-
-- (void)tappedAuctionResults
-{
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadAuctionResultsForArtwork:self.artwork];
-    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)tappedMoreInfo
@@ -246,7 +257,7 @@
 {
     Fair *fair = self.fair ?: self.artwork.fair;
     NSString *fairID = fair.defaultProfileID ?: fair.organizer.profileID;
-    UIViewController *viewController = [ARSwitchBoard.sharedInstance routeProfileWithID:fairID];
+    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadProfileWithID:fairID];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

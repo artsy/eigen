@@ -17,7 +17,6 @@ profile
 DerivedData
 .idea/
 *.xcscmblueprint
-Pods
 .pt
 .build
 tmtags
@@ -45,3 +44,4 @@ Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+SwiftDeveloperExtr
 Artsy/Eigen.playground/
 
 iOSInjectionProject/
+.vscode/

@@ -6,7 +6,7 @@ import Then
 import MARKRangeSlider
 import ARAnalytics
 
-private let CellIdentifier = "Cell"
+private let cellIdentifier = "Cell"
 
 extension RefinementOptionsViewController {
     func setupViews() {
@@ -31,8 +31,8 @@ extension RefinementOptionsViewController {
 
     func updatePriceLabels() {
         guard let priceRange = currentSettings.priceRange else { return }
-        minLabel?.text = priceRange.min.metricSuffixify()
-        maxLabel?.text = priceRange.max.metricSuffixify()
+        minLabel?.text = priceRange.min.metricSuffixify(currencySymbol)
+        maxLabel?.text = priceRange.max.metricSuffixify(currencySymbol)
     }
 
     func updateButtonEnabledStates() {
@@ -76,7 +76,7 @@ private extension RefinementOptionsViewController {
             changeSettingsClosure: { [unowned self] indexPath in self.currentSettings = self.currentSettings.refineSettingsWithSelectedIndexPath(indexPath) })
 
         let tableView = UITableView().then {
-            $0.registerClass(RefinementOptionsTableViewCell.self, forCellReuseIdentifier: CellIdentifier)
+            $0.registerClass(RefinementOptionsTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
             $0.scrollEnabled = false
             $0.separatorColor = .artsyGrayRegular()
             $0.separatorInset = UIEdgeInsetsZero
@@ -129,8 +129,10 @@ private extension RefinementOptionsViewController {
             labelContainer.addSubview(minLabel)
 
             minLabel.alignCenterYWithView(labelContainer, predicate: "0") // Center vertically in container.
-            minLabel.alignCenterXWithView(slider.leftThumbView, predicate: "0").forEach(setConstraintPriority(.StayCenteredOverThumb))
-            minLabel.alignAttribute(.Leading, toAttribute: .Leading, ofView: labelContainer, predicate: ">= 0").forEach(setConstraintPriority(.StayWithinFrame))
+            let labelPriority = SliderPriorities.StayCenteredOverThumb.rawValue
+            minLabel.alignCenterXWithView(slider.leftThumbView, predicate: "0@\(labelPriority)")
+
+            minLabel.alignAttribute(.Leading, toAttribute: .Leading, ofView: labelContainer, predicate: ">= 0@\(SliderPriorities.StayWithinFrame.rawValue)")
 
             let maxLabel = ARItalicsSerifLabel().then {
                 $0.font = UIFont.serifFontWithSize(15)
@@ -139,11 +141,11 @@ private extension RefinementOptionsViewController {
             labelContainer.addSubview(maxLabel)
 
             maxLabel.alignCenterYWithView(labelContainer, predicate: "0") // Center vertically in container.
-            maxLabel.alignCenterXWithView(slider.rightThumbView, predicate: "0").forEach(setConstraintPriority(.StayCenteredOverThumb))
-            maxLabel.alignAttribute(.Trailing, toAttribute: .Trailing, ofView: labelContainer, predicate: "<= 0").forEach(setConstraintPriority(.StayWithinFrame))
+            maxLabel.alignCenterXWithView(slider.rightThumbView, predicate: "0@\(SliderPriorities.StayCenteredOverThumb.rawValue)")
+            maxLabel.alignAttribute(.Trailing, toAttribute: .Trailing, ofView: labelContainer, predicate: "<= 0@\(SliderPriorities.StayWithinFrame.rawValue)")
 
             // Make sure they don't touch! Shouldn't be necessary since they'll be 10% appart, but this is "just in case" make sure the labels never overlap.
-            minLabel.constrainTrailingSpaceToView(maxLabel, predicate: "<= -10").forEach(setConstraintPriority(.DoNotOverlap))
+            minLabel.constrainTrailingSpaceToView(maxLabel, predicate: "<= -10@\(SliderPriorities.DoNotOverlap.rawValue)")
 
             self.minLabel = minLabel
             self.maxLabel = maxLabel
@@ -189,24 +191,13 @@ private extension RefinementOptionsViewController {
     }
 }
 
-enum SliderPriorities: UILayoutPriority {
-    case StayWithinFrame = 475
-    case DoNotOverlap = 450
-    case StayCenteredOverThumb = 425
+enum SliderPriorities: String {
+    case StayWithinFrame = "475"
+    case DoNotOverlap = "450"
+    case StayCenteredOverThumb = "425"
 }
 
-extension RefinementOptionsViewController {
-
-
-    // Sets priority of the constraint, using AnyObject! because of FLKAutoLayout
-    func setConstraintPriority(priority: SliderPriorities) -> (AnyObject! -> Void) {
-        return { constraint in
-            (constraint as? NSLayoutConstraint)?.priority = priority.rawValue
-        }
-    }
-}
-
-class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate  {
+class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
     let numberOfSections: Int
     let numberOfRowsInSection: Int -> Int
     let titleForRowAtIndexPath: NSIndexPath -> String
@@ -238,7 +229,7 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
 
         cell.textLabel?.text = titleForRowAtIndexPath(indexPath)
 
@@ -254,7 +245,7 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
+
         let oldCheckedCellIndices = selectedRowsInSection(indexPath.section)
 
         if allowsMultipleSelectionInSection(indexPath.section) {
@@ -265,10 +256,10 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
                 let formerlySelected = tableView.cellForRowAtIndexPath(oldCheckedCellIndex)
                 formerlySelected?.checked = false
             }
-            
+
             // Change setting.
             changeSettingsClosure(indexPath)
-            
+
             // Check newly selected cell.
             let selectedCell = tableView.cellForRowAtIndexPath(indexPath)
             selectedCell?.checked = true

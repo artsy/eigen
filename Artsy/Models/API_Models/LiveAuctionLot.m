@@ -6,7 +6,8 @@
 @interface LiveAuctionLot ()
 
 @property (nonatomic, assign, readwrite) ARReserveStatus reserveStatus;
-@property (nonatomic, assign, readwrite) NSInteger onlineAskingPriceCents;
+@property (nonatomic, assign, readwrite) ARLiveBiddingStatus biddingStatus;
+@property (nonatomic, assign, readwrite) UInt64 askingPriceCents;
 @property (nonatomic, copy, readwrite) NSArray<NSString *> *eventIDs;
 
 @end
@@ -28,33 +29,47 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        ar_keypath(LiveAuctionLot.new, liveAuctionLotID) : @"id",
+        ar_keypath(LiveAuctionLot.new, liveAuctionLotID) : @"_id",
         ar_keypath(LiveAuctionLot.new, artworkTitle) : @"artwork.title",
+        ar_keypath(LiveAuctionLot.new, artworkDate) : @"artwork.date",
+        ar_keypath(LiveAuctionLot.new, artwork) : @"artwork",
         ar_keypath(LiveAuctionLot.new, artistName) : @"artwork.artist.name",
+        ar_keypath(LiveAuctionLot.new, artistBlurb) : @"artwork.artist.blurb",
+        ar_keypath(LiveAuctionLot.new, highEstimateCents) : @"high_estimate_cents",
+        ar_keypath(LiveAuctionLot.new, lowEstimateCents) : @"low_estimate_cents",
+        ar_keypath(LiveAuctionLot.new, lotNumber) : @"lot_number",
         ar_keypath(LiveAuctionLot.new, imageDictionary) : @"artwork.image",
-        ar_keypath(LiveAuctionLot.new, currencySymbol) : @"symbol"
+        ar_keypath(LiveAuctionLot.new, currencySymbol) : @"symbol",
     };
 }
 
 - (NSURL *)urlForThumbnail
 {
-    return [NSURL URLWithString:self.imageDictionary[@"large"][@"url"]];
+    return [NSURL URLWithString:self.imageDictionary[@"large"]];
 }
 
 - (NSURL *)urlForProfile
 {
-    return [NSURL URLWithString:self.imageDictionary[@"thumb"][@"url"]];
+    return [NSURL URLWithString:self.imageDictionary[@"thumb"]];
 }
 
-- (CGSize)imageProfileSize
+- (CGFloat)imageAspectRatio
 {
-    NSDictionary *profile = self.imageDictionary[@"large"];
-    return CGSizeMake([profile[@"width"] floatValue], [profile[@"height"] floatValue]);
+    NSNumber *imageRatio = self.imageDictionary[@"aspect_ratio"];
+    if ([imageRatio isEqual:[NSNull null]]) {
+        imageRatio = @(1);
+    }
+    return [imageRatio floatValue];
 }
 
 + (NSValueTransformer *)reserveStatusJSONTransformer
 {
     return [SaleArtwork reserveStatusJSONTransformer];
+}
+
++ (NSValueTransformer *)artworkJSONTransformer
+{
+    return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:Artwork.class];
 }
 
 - (BOOL)updateReserveStatusWithString:(NSString *)reserveStatusString
@@ -71,11 +86,35 @@
     }
 }
 
-- (BOOL)updateOnlineAskingPrice:(NSInteger)newOnlineAskingPrice
+- (BOOL)updateBiddingStatusWithString:(NSString *)biddingStatusString
 {
-    NSInteger currentAskingPrice = self.onlineAskingPriceCents;
+    ARLiveBiddingStatus currentBiddingStatus = self.biddingStatus;
+    NSDictionary *types = @{
+        @"Upcoming" : @(ARLiveBiddingStatusUpcoming),
+        @"Open" : @(ARLiveBiddingStatusOpen),
+        @"OnBlock" : @(ARLiveBiddingStatusOnBlock),
+        @"Complete" : @(ARLiveBiddingStatusComplete)
+    };
+
+    NSNumber *type = types[biddingStatusString];
+    if (!type) {
+        return NO;
+    }
+
+    ARLiveBiddingStatus newBiddingStatus = type.integerValue;
+    if (currentBiddingStatus != newBiddingStatus) {
+        self.biddingStatus = newBiddingStatus;
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (BOOL)updateOnlineAskingPrice:(UInt64)newOnlineAskingPrice
+{
+    NSInteger currentAskingPrice = self.askingPriceCents;
     if (currentAskingPrice != newOnlineAskingPrice) {
-    self.onlineAskingPriceCents = newOnlineAskingPrice;
+        self.askingPriceCents = newOnlineAskingPrice;
         return YES;
     } else {
         return NO;

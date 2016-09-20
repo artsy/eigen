@@ -1,14 +1,16 @@
-![Artsy](AppIcon_114.png "Artsy")
+<a href="http://iphone.artsy.net"><img src ="docs/screenshots/overview.jpg"></a>
 
-## Artsy Eigen
+### Meta
 
-[![Build Status](https://circleci.com/gh/artsy/eigen/tree/master.svg?style=shield&circle-token=f7a3e9b08ab306cd01a15da49933c0774d508ecb)](https://circleci.com/gh/artsy/eigen)
+* __State:__ production
+* __Point People:__ [@alloy](https://github.com/alloy), [@orta](https://github.com/orta)
+* __CI :__  [![Build Status](https://circleci.com/gh/artsy/eigen/tree/master.svg?style=shield&circle-token=f7a3e9b08ab306cd01a15da49933c0774d508ecb)](https://circleci.com/gh/artsy/eigen)
 
+This is a core [Artsy Mobile](https://github.com/artsy/mobile) OSS project, along with [Energy](https://github.com/artsy/energy), [Eidolon](https://github.com/artsy/eidolon), [Emission](https://github.com/artsy/emission) and [Emergence](https://github.com/artsy/emergence).
 
-<a href="http://iphone.artsy.net"><img src ="https://raw.githubusercontent.com/artsy/eigen/master/docs/screenshots/overview.jpg"></a>
+Don't know what Artsy is? Check out [this overview](https://github.com/artsy/meta/blob/master/meta/what_is_artsy.md) and [more](https://github.com/artsy/meta/blob/master/README.md), or read our objc.io on [team culture](https://www.objc.io/issues/22-scale/artsy).
 
-
-I'm in your [phone](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) or [ipad](https://itunes.apple.com/us/app/artsy-art-world-in-your-pocket/id703796080?mt=8) letting you browse the arts.
+Want to know more about Eigen? Read the [mobile](http://artsy.github.io/blog/categories/mobile/) blog posts, or [eigen's](http://artsy.github.io/blog/categories/eigen/) specifically.
 
 ### Docs
 
@@ -34,9 +36,8 @@ This will set you up on our staging server, you will have a running version of t
 
 ### Work at Artsy?
 
-Instead of `make oss` in the above, run `make artsy` to set up [spacecommander](https://github.com/square/spacecommander). Make sure you have an environment variable of `ARTSY_STAFF_MEMBER` set to be true too.
-
+Instead of `make oss` in the above, run `make artsy` to set up [spacecommander](https://github.com/square/spacecommander) and [SwiftLint](https://github.com/realm/SwiftLint). Make sure you have an environment variable of `ARTSY_STAFF_MEMBER` set to be true too.
 
 ### Thanks
 
-**Copyright**: 2012-2015, Artsy. Thanks to all [our contributors](/docs/thanks.md).
+**Copyright**: 2012-2016, Artsy. Thanks to all [our contributors](/docs/thanks.md).

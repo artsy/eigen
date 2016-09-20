@@ -22,9 +22,9 @@ extern NSString *const AROnboardingSkipPriceRangeDefault;
 extern NSString *const AROnboardingPromptThresholdDefault;
 
 #pragma mark -
-#pragma mark Things we wanna trigger server-side
+#pragma mark Admin features
 
-extern NSString *const ARShowAuctionResultsButtonDefault;
+extern NSString *const AREmissionHeadVersionDefault;
 
 
 @interface ARDefaults : NSObject

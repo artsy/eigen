@@ -157,9 +157,9 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
 - (void)createHeightConstraints
 {
-    NSLayoutConstraint *minimumHeight = [[self.stackView constrainHeightToView:self.superview predicate:@">=0"] lastObject];
+    NSLayoutConstraint *minimumHeight = [self.stackView constrainHeightToView:self.superview predicate:@">=0"];
     minimumHeight.constant -= self.contentInset.top;
-    NSLayoutConstraint *imageMaxHeight = [[self.metadataView.imageView constrainHeightToView:self.superview predicate:@"<=0"] lastObject];
+    NSLayoutConstraint *imageMaxHeight = [self.metadataView.imageView constrainHeightToView:self.superview predicate:@"<=0"];
     // Make the image height somewhat smaller than the superview height so that Artwork favorite and share buttons are visible.
     imageMaxHeight.constant = [UIDevice isPad] ? ARArtworkImageHeightAdjustmentForPad : ARArtworkImageHeightAdjustmentForPhone;
 }

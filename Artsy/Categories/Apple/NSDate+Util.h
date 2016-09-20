@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
 
-// TODO: Util is a bad name category name, plus this is in the networking stack so can it be dealt with another way?
-
 
 @interface NSDate (Util)
+
+/// Ensures we're always using GMT instead of the user's timezone
 - (NSDate *)GMTDate;
-- (NSString *)relativeDate;
+
 @end

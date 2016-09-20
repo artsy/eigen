@@ -103,7 +103,9 @@
 {
     [super viewWillAppear:animated];
 
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    if (self.ignoreStatusBar == NO) {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -156,7 +158,7 @@
 {
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         NSURL *URL = navigationAction.request.URL;
-        ARSwitchBoard *switchboard = [ARSwitchBoard sharedInstance];
+        ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
         if ([switchboard canRouteURL:URL]) {
             UIViewController *controller = [switchboard loadURL:URL];
             if (controller) {

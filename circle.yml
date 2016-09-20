@@ -1,6 +1,6 @@
 machine:
   xcode:
-    version: "7.3"
+    version: "7.3.1"
   environment:
     # Public - Yay
     UPLOAD_IOS_SNAPSHOT_BUCKET_NAME: eigen-ci
@@ -9,7 +9,6 @@ machine:
     AWS_ACCESS_KEY_ID: from_admin
     AWS_SECRET_ACCESS_KEY: from_admin
     DANGER_GITHUB_API_TOKEN: from_admin
-    GITHUB_API_KEY : from_admin
     MATCH_PASSWORD : from_admin
     HOCKEY_API_TOKEN : from_admin
     FASTLANE_USERNAME : from_admin
@@ -26,20 +25,17 @@ machine:
     AdjustProductionAppToken: from_admin
     ArtsyEchoProductionToken:  from_admin
 
-  post:
-    - echo "machine github.com login $GITHUB_API_KEY" > ~/.netrc
-    - chmod 600 ~/.netrc
-
 dependencies:
   override:
+    - if [ ! -d "Pods" ]; then git submodule update --init; fi; 
     - bundle install --path=vendor/bundle --jobs=4 --retry=3 --without development
-    - bundle exec pod install
-  # cache_directories:
-  #   - vendor/bundle
-  #   - Pods
+    - bundle exec pod install --verbose
 
 test:
   pre:
+    # See https://discuss.circleci.com/t/xcode-exit-code-65/4284/13 
+    - xcrun instruments -w '547B1B63-3F66-4E5B-8001-F78F2F1CDEA7' || true
+    - sleep 15
     - make ci
   override:
     - make test

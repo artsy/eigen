@@ -8,6 +8,7 @@
 #import <Artsy_UILabels/NSNumberFormatter+ARCurrency.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
+
 @implementation ARArtworkAuctionPriceView
 
 - (void)updateWithSaleArtwork:(SaleArtwork *)saleArtwork
@@ -18,7 +19,7 @@
     row.messageLabel.font = [UIFont serifSemiBoldFontWithSize:16];
 
     NSNumber *cents = hasBids ? saleArtwork.saleHighestBid.cents : saleArtwork.openingBidCents;
-    row.priceLabel.text = [NSNumberFormatter currencyStringForDollarCents:cents];
+    row.priceLabel.text = [SaleArtwork dollarsFromCents:cents currencySymbol:saleArtwork.currencySymbol];
     row.priceLabel.font = [UIFont sansSerifFontWithSize:24];
 
     row.margin = 16;

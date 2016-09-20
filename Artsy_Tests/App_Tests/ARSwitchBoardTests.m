@@ -5,6 +5,7 @@
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Profiles.h"
 #import "ARTopMenuViewController.h"
+#import "ARSerifNavigationViewController.h"
 #import "ARFavoritesViewController.h"
 #import "ARProfileViewController.h"
 #import "ARArtistViewController.h"
@@ -19,6 +20,8 @@
 #import "ARFairArtistViewController.h"
 #import "ARFairGuideContainerViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
+#import "ARMutableLinkViewController.h"
+#import <Emission/ARArtistComponentViewController.h>
 
 
 @interface ARSwitchBoard (Tests)
@@ -151,12 +154,17 @@ describe(@"ARSwitchboard", ^{
             });
         });
 
+        it(@"loads internal webviews for trusted but unpredictable hosts", ^{
+            NSURL *internalButUnpredictableURL = [[NSURL alloc] initWithString:@"https://asdasdasdasdas-staging.artsy.net/54c7e8fa7261692b5acd0600"];
+            id viewController = [switchboard loadURL:internalButUnpredictableURL];
+            expect(viewController).to.beKindOf(ARInternalMobileWebViewController.class);
+        });
+
         it(@"loads web view for external urls", ^{
             it(@"loads browser", ^{
                 NSURL *externalURL = [[NSURL alloc] initWithString:@"http://google.com"];
                 id viewController = [switchboard loadURL:externalURL];
                 expect([viewController isKindOfClass:[ARExternalWebBrowserViewController class]]).to.beTruthy();
-
             });
 
             it(@"does not route url", ^{
@@ -174,7 +182,7 @@ describe(@"ARSwitchboard", ^{
             id subject = [switchboard loadPath:@"thingy"];
             // Yeah, so, we have this awkward catch-all profile class for any route
             // thus if the route isn't registered, it'll go to that
-            expect(subject).to.beAKindOf(ARProfileViewController.class);
+            expect(subject).to.beAKindOf(ARMutableLinkViewController.class);
             [switchboard registerPathCallbackAtPath:@"/thingy" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
                 return newVC;
             }];
@@ -205,19 +213,18 @@ describe(@"ARSwitchboard", ^{
         });
     });
 
-
     describe(@"routeInternalURL", ^{
         it(@"routes profiles", ^{
             // See aditional tests for profile routing below.
             NSURL *profileURL = [[NSURL alloc] initWithString:@"http://artsy.net/myprofile"];
             id subject = [switchboard routeInternalURL:profileURL fair:nil];
-            expect(subject).to.beKindOf(ARProfileViewController.class);
+            expect(subject).to.beKindOf(ARMutableLinkViewController.class);
 
         });
 
         it(@"routes artists", ^{
             id subject = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/artist/artistname"] fair:nil];
-            expect(subject).to.beKindOf(ARArtistViewController.class);
+            expect(subject).to.beKindOf(ARArtistComponentViewController.class);
         });
 
         it(@"routes artists in a gallery context on iPad", ^{
@@ -227,7 +234,7 @@ describe(@"ARSwitchboard", ^{
                 [switchboard updateRoutes];
 
                 id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/some-gallery/artist/artistname"] fair:nil];
-                expect(viewController).to.beKindOf(ARArtistViewController.class);
+                expect(viewController).to.beKindOf(ARArtistComponentViewController.class);
             }];
         });
 
@@ -321,24 +328,6 @@ describe(@"ARSwitchboard", ^{
             expect(subject).to.beAKindOf(ARGeneViewController.class);
         });
 
-        /// As the class is in swift-world, lets not complicate this by bridging when it's not important
-        it(@"routes live auctions", ^{
-            switchboard = [[ARSwitchBoard alloc] init];
-            [switchboard updateRoutes];
-
-            id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net"]];
-            NSString *classString = NSStringFromClass([subject class]);
-            expect(classString).to.contain(@"LiveAuctionViewController");
-        });
-
-        it(@"routes un-registered subdomains internally", ^{
-            switchboard = [[ARSwitchBoard alloc] init];
-            [switchboard updateRoutes];
-
-            id subject = [switchboard loadURL:[NSURL URLWithString:@"https://whatever.artsy.net"]];
-            expect(subject).to.beKindOf(ARInternalMobileWebViewController.class);
-        });
-
         it(@"routes auctions", ^{
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
@@ -346,6 +335,40 @@ describe(@"ARSwitchboard", ^{
             id subject = [switchboard loadPath:@"/auction/myauctionthing"];
             NSString *classString = NSStringFromClass([subject class]);
             expect(classString).to.contain(@"AuctionViewController");
+        });
+
+        it(@"routes live auctions", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            [switchboard updateRoutes];
+
+            id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net/live_auction"]];
+            NSString *classString = NSStringFromClass([subject class]);
+            expect(classString).to.contain(@"LiveAuctionViewController");
+        });
+
+        it(@"routes live auctions to web when disabled live is set", ^{
+            [AROptions setBool:YES forOption:AROptionsDisableNativeLiveAuctions];
+
+            switchboard = [[ARSwitchBoard alloc] init];
+            [switchboard updateRoutes];
+
+            id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net/live_auction"]];
+            NSString *classString = NSStringFromClass([subject class]);
+            expect(classString).to.contain(@"SerifModalWeb");
+
+        });
+
+
+        it(@"falls back to web views when websocket becomes outdated", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            id echoMock = [OCMockObject partialMockForObject:switchboard.echo];
+            [[[echoMock stub] andReturn:@[[[Message alloc] initWithName:@"LiveAuctionsCurrentWebSocketVersion" content:@"1000000"]]] messages]; // A really big version we won't actually hit for... a while.
+            [switchboard updateRoutes];
+
+            id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net/live_auction"]];
+
+            NSString *classString = NSStringFromClass([subject class]);
+            expect(classString).toNot.contain(@"LiveAuctionViewController");
         });
 
         it(@"can not route to native auctions when echo has a feature called 'DisableNativeAuctions'", ^{
@@ -359,9 +382,22 @@ describe(@"ARSwitchboard", ^{
             NSString *classString = NSStringFromClass([subject class]);
             expect(classString).toNot.contain(@"AuctionViewController");
         });
+
+        it(@"can not route to react artists when echo has a feature called 'DisableReactArtists'", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            [switchboard updateRoutes];
+            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+            echo.features = @{ @"DisableReactArtists" : [[Feature alloc] initWithName:@"" state:@1] };
+            switchboard.echo = echo;
+
+            id subject = [switchboard loadPath:@"/artist/myauctionthing"];
+            NSString *classString = NSStringFromClass([subject class]);
+            expect(classString).to.contain(@"ARArtistViewController");
+        });
+
     });
 
-    describe(@"routeProfileWithID", ^{
+    describe(@"loadProfileWithIDileWithID", ^{
         __block id mockProfileVC;
 
         before(^{
@@ -381,12 +417,12 @@ describe(@"ARSwitchboard", ^{
 
             it(@"internally does not load martsy", ^{
                 [[mockProfileVC reject] showViewController:[OCMArg checkForClass:[ARInternalMobileWebViewController class]]];
-                [switchboard routeProfileWithID:@"myfairprofile"];
+                [switchboard loadPartnerWithID:@"myfairprofile"];
             });
 
             it(@"routes fair profiles specially", ^{
                 [[mockProfileVC expect] showViewController:[OCMArg checkForClass:[ARFairViewController class]]];
-                [switchboard routeProfileWithID:@"myfairprofile"];
+                [switchboard loadPartnerWithID:@"myfairprofile"];
             });
         });
     });

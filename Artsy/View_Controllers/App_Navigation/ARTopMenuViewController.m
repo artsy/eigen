@@ -120,7 +120,7 @@ static const CGFloat ARMenuButtonDimension = 46;
 
     [tabContainer constrainHeight:@(ARMenuButtonDimension).stringValue];
     [tabContainer alignLeading:@"0" trailing:@"0" toView:self.view];
-    self.tabBottomConstraint = [[tabContainer alignBottomEdgeWithView:self.view predicate:@"0"] lastObject];
+    self.tabBottomConstraint = [tabContainer alignBottomEdgeWithView:self.view predicate:@"0"];
 
     for (ARNavigationTabButton *button in buttons) {
         [tabContainer addSubview:button];
@@ -140,10 +140,10 @@ static const CGFloat ARMenuButtonDimension = 46;
         if (index == 0) {
             [button alignLeadingEdgeWithView:tabContainer predicate:@"0"];
         } else {
-            [constraintsForButtons addObject:[[button constrainLeadingSpaceToView:buttons[index - 1] predicate:@"0"] lastObject] ];
+            [constraintsForButtons addObject:[button constrainLeadingSpaceToView:buttons[index - 1] predicate:@"0"]];
         }
         if (index == buttons.count - 1) {
-            [constraintsForButtons addObject:[[tabContainer alignTrailingEdgeWithView:button predicate:@"0"] lastObject]];
+            [constraintsForButtons addObject:[tabContainer alignTrailingEdgeWithView:button predicate:@"0"]];
         }
     }];
     self.constraintsForButtons = [constraintsForButtons copy];
@@ -153,7 +153,7 @@ static const CGFloat ARMenuButtonDimension = 46;
     // be assured that any VCs guide can be trusted.
     (void)self.keyboardLayoutGuide;
 
-    [self registerWithSwitchBoard:[ARSwitchBoard sharedInstance]];
+    [self registerWithSwitchBoard:ARSwitchBoard.sharedInstance];
 }
 
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
@@ -346,12 +346,34 @@ static const CGFloat ARMenuButtonDimension = 46;
 
 - (void)pushViewController:(UIViewController *)viewController
 {
-    [self pushViewController:viewController animated:YES];
+    [self pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    [self pushViewController:viewController animated:animated completion:nil];
+}
+
++ (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController
+{
+    NSArray *modalClasses = @[ UINavigationController.class, UISplitViewController.class ];
+    for (Class klass in modalClasses) {
+        if ([viewController isKindOfClass:klass]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
+{
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
+
+    if ([self.class shouldPresentViewControllerAsModal:viewController]) {
+        [self presentViewController:viewController animated:animated completion:completion];
+        return;
+    }
+
     NSInteger index = [self indexOfRootViewController:viewController];
     if (index != NSNotFound) {
         [self presentRootViewControllerAtIndex:index animated:(animated && index != self.selectedTabIndex)];

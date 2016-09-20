@@ -24,10 +24,10 @@ class AuctionSaleArtworksNetworkModelSpec: QuickSpec {
 
             var saleArtworks: [SaleArtwork]?
             waitUntil { done in
-                subject.fetchSaleArtworks(saleID, callback: { result in
+                subject.fetchSaleArtworks(saleID).subscribe { result in
                     if case .Success(let a) = result { saleArtworks = a }
                     done()
-                })
+                }
             }
 
             expect(saleArtworks?.first?.saleArtworkID) == saleArtworkID
@@ -37,9 +37,9 @@ class AuctionSaleArtworksNetworkModelSpec: QuickSpec {
             OHHTTPStubs.stubJSONResponseAtPath("/api/v1/sale/\(saleID)/sale_artworks", withResponse: saleArtworksJSON)
 
             waitUntil { done in
-                subject.fetchSaleArtworks(saleID, callback: { result in
+                subject.fetchSaleArtworks(saleID).subscribe { result in
                     done()
-                })
+                }
             }
 
             expect(subject.saleArtworks?.first?.saleArtworkID) == saleArtworkID
@@ -67,9 +67,9 @@ class AuctionSaleArtworksNetworkModelSpec: QuickSpec {
 
 
             waitUntil { done in
-                subject.fetchSaleArtworks(saleID, callback: { _ in
+                subject.fetchSaleArtworks(saleID).subscribe { _ in
                     done()
-                })
+                }
             }
 
             expect(callNumber) == 2

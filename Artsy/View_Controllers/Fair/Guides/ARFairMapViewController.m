@@ -24,6 +24,7 @@
 #import "ARCustomEigenLabels.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuViewController.h"
+#import "UIViewController+TopMenuViewController.h"
 #import "ARMacros.h"
 
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
@@ -285,26 +286,33 @@
 
 - (void)selectedResult:(SearchResult *)result ofType:(NSString *)type fromQuery:(NSString *)query
 {
-    ARSwitchBoard *switchboard = [ARSwitchBoard sharedInstance];
-    if (result.model == [Artwork class]) {
-        UIViewController *controller = [switchboard loadArtworkWithID:result.modelID inFair:self.fair];
-        [self.navigationController pushViewController:controller animated:YES];
-    } else if (result.model == [Artist class]) {
+    ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
+    UIViewController *controller = nil;
+
+    // Top two don't need new view controllers
+    if (result.model == [Artist class]) {
         Artist *artist = [[Artist alloc] initWithArtistID:result.modelID];
         [self selectedArtist:artist];
-    } else if (result.model == [Gene class]) {
-        UIViewController *controller = [switchboard loadGeneWithID:result.modelID];
-        [self.navigationController pushViewController:controller animated:YES];
-    } else if (result.model == [Profile class]) {
-        UIViewController *controller = [switchboard routeProfileWithID:result.modelID];
-        [self.navigationController pushViewController:controller animated:YES];
-    } else if (result.model == [SiteFeature class]) {
-        NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);
-        UIViewController *controller = [switchboard loadPath:path];
-        [self.navigationController pushViewController:controller animated:YES];
+
     } else if (result.model == [PartnerShow class]) {
         PartnerShow *partnerShow = [[PartnerShow alloc] initWithShowID:result.modelID];
         [self selectedPartnerShow:partnerShow];
+
+    } else if (result.model == [Artwork class]) {
+        controller = [switchboard loadArtworkWithID:result.modelID inFair:self.fair];
+
+    } else if (result.model == [Gene class]) {
+        controller = [switchboard loadGeneWithID:result.modelID];
+
+    } else if (result.model == [Profile class]) {
+        controller = [switchboard loadProfileWithID:result.modelID];
+    } else if (result.model == [SiteFeature class]) {
+        NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);
+        controller = [switchboard loadPath:path];
+    }
+
+    if (controller) {
+        [self.ar_TopMenuViewController pushViewController:controller animated:ARPerformWorkAsynchronously];
     }
 }
 
@@ -326,7 +334,7 @@
         }];
     } failure:^(NSError *error) {
         [[completionCommand execute:nil] subscribeCompleted:^{
-            UIViewController *controller = [[ARSwitchBoard sharedInstance] loadShowWithID:partnerShow.showID fair:self.fair];
+            UIViewController *controller = [ARSwitchBoard.sharedInstance loadShowWithID:partnerShow.showID fair:self.fair];
             [self.navigationController pushViewController:controller animated:YES];
         }];
     }];
@@ -344,8 +352,8 @@
         }];
     } failure:^(NSError *error) {
         [[completionCommand execute:nil] subscribeCompleted:^{
-            UIViewController *controller = [[ARSwitchBoard sharedInstance] loadArtistWithID:artist.artistID inFair:self.fair];
-            [self.navigationController pushViewController:controller animated:YES];
+            UIViewController *controller = [ARSwitchBoard.sharedInstance loadArtistWithID:artist.artistID inFair:self.fair];
+            [self.ar_TopMenuViewController pushViewController:controller animated:ARPerformWorkAsynchronously];
         }];
     }];
 }

@@ -12,10 +12,10 @@
 - (void)tappedContactGallery;
 - (void)tappedAuctionInfo;
 - (void)tappedConditionsOfSale;
-- (void)tappedBidButton;
-- (void)tappedBuyersPremium;
+- (void)tappedBidButton:(UIButton *)button;
+- (void)tappedLiveSaleButton:(UIButton *)button;
+- (void)tappedBuyersPremium:(UIButton *)button;
 - (void)tappedBuyButton;
-- (void)tappedAuctionResults;
 - (void)tappedMoreInfo;
 @end
 

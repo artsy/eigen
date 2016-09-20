@@ -4,6 +4,7 @@
 
 #import "ARAdminSettingsViewController.h"
 #import "ARQuicksilverViewController.h"
+#import "ARInternalMobileWebViewController.h"
 
 #import "ARDefaults.h"
 #import "ARGroupedTableViewCell.h"
@@ -16,8 +17,12 @@
 
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
+#import "ARAdminNetworkModel.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
+#import <AppHub/AppHub.h>
+#import <Emission/AREmission.h>
+#import "ARAdminLoadReactComponentViewController.h"
 
 #if DEBUG
 #import <VCRURLConnection/VCR.h>
@@ -44,20 +49,25 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     NSString *gitCommitRevision = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"GITCommitRev"];
 
     miscSectionData.headerTitle = [NSString stringWithFormat:@"%@ v%@, build %@ (%@)", name, version, build, gitCommitRevision];
-
-    [miscSectionData addCellData:[self generateLogOut]];
-    [miscSectionData addCellData:[self generateOnboarding]];
-    [miscSectionData addCellData:[self generateFeedback]];
-    [miscSectionData addCellData:[self generateRestart]];
-    [miscSectionData addCellData:[self generateStagingSwitch]];
-    [miscSectionData addCellData:[self generateQuicksilver]];
-    [miscSectionData addCellData:[self generateOnScreenAnalytics]];
+    [miscSectionData addCellDataFromArray:@[
+        [self generateLogOut],
+        [self generateOnboarding],
+        [self generateFeedback],
+        [self generateRestart],
+        [self generateStagingSwitch],
+        [self generateQuicksilver],
+        [self generateShowAllLiveAuctions],
+        [self generateOnScreenAnalytics],
+    ]];
 
 #if !TARGET_IPHONE_SIMULATOR
     [miscSectionData addCellData:[self generateNotificationTokenPasteboardCopy]];
 #endif
 
     [tableViewData addSectionData:miscSectionData];
+
+    ARSectionData *rnSection = [self createReactNativeSection];
+    [tableViewData addSectionData:rnSection];
 
     ARSectionData *labsSection = [self createLabsSection];
     [tableViewData addSectionData:labsSection];
@@ -162,6 +172,21 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     return crashCellData;
 }
 
+- (ARCellData *)generateShowAllLiveAuctions
+{
+    ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
+        cell.textLabel.text = @"Show all live auctions";
+    }];
+
+    [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+        NSURL *url = [NSURL URLWithString:@"https://live-staging.artsy.net"];
+        ARInternalMobileWebViewController *webVC = [[ARInternalMobileWebViewController alloc] initWithURL:url];
+        [self.navigationController pushViewController:webVC animated:YES];
+    }];
+    return crashCellData;
+}
+
 - (ARCellData *)generateOnScreenAnalytics
 {
     ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
@@ -197,6 +222,130 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 }
 #endif
 
+- (ARSectionData *)createReactNativeSection
+{
+    ARSectionData *sectionData = [[ARSectionData alloc] init];
+    sectionData.headerTitle = @"React Native";
+
+    BOOL isStagingReact = [AROptions boolForOption:AROptionsStagingReactEnv];
+    if (isStagingReact) {
+        [sectionData addCellData:self.appHubMetadata];
+        [sectionData addCellData:self.emissionVersionUpdater];
+        [sectionData addCellData:self.openEmissionModule];
+        [sectionData addCellData:self.appHubBuildChooser];
+    }
+    [sectionData addCellData:self.generateReactNative];
+    return sectionData;
+}
+
+
+- (ARCellData *)appHubMetadata
+{
+    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
+        AHBuild *build = [[AppHub buildManager] currentBuild];
+        if (!build) {
+            cell.textLabel.text = @"Not downloaded yet";
+        } if (build && !build.creationDate) {
+            cell.textLabel.text = @"Build: Bundled with Eigen";
+        } else {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            formatter.doesRelativeDateFormatting = YES;
+            formatter.locale = [NSLocale currentLocale];
+            formatter.dateStyle = NSDateFormatterShortStyle;
+            formatter.timeStyle = NSDateFormatterShortStyle;
+            NSString *timeString = [formatter stringFromDate:build.creationDate];
+            cell.textLabel.text = [NSString stringWithFormat:@"Build: %@", timeString];
+        }
+    };
+    return cellData;
+}
+
+- (ARCellData *)openEmissionModule
+{
+    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
+        cell.textLabel.text = @"Open Emission Module";
+    };
+    cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
+        ARAdminLoadReactComponentViewController *loadVC = [[ARAdminLoadReactComponentViewController alloc] init];
+        [self.navigationController pushViewController:loadVC animated: YES];
+    };
+    return cellData;
+}
+
+
+- (ARCellData *)appHubBuildChooser
+{
+    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
+        cell.textLabel.text = @"Choose an RN build";
+    };
+    cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
+        [AppHub presentSelectorOnViewController:self withBuildHandler:^(AHBuild *build, NSError *error) {
+
+        }];
+    };
+    return cellData;
+}
+
+- (ARCellData *)emissionVersionUpdater
+{
+    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    cellData.keepSelection = YES;
+
+    NSString *emissionVersion = [[NSUserDefaults standardUserDefaults] valueForKey:AREmissionHeadVersionDefault];
+
+    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
+        cell.textLabel.text = [NSString stringWithFormat:@"Emission v%@", emissionVersion];
+    };
+
+    cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
+        NSIndexPath *selection = tableView.indexPathForSelectedRow;
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:selection];
+        cell.textLabel.text = @"Updating...";
+
+        [self updateEmissionVersion:^(NSString *version) {
+            [tableView reloadData];
+        }];
+    };
+    return cellData;
+}
+
+- (void)updateEmissionVersion:(void (^)(NSString *version))completion;
+{
+    ARAdminNetworkModel *model = [[ARAdminNetworkModel alloc] init];
+    [model getEmissionJSON:@"package.json" completion:^(NSDictionary *JSON, NSError *error) {
+        if (JSON) {
+            [[NSUserDefaults standardUserDefaults] setValue:JSON[@"version"] forKey:AREmissionHeadVersionDefault];
+            completion(JSON[@"version"]);
+        }
+    }];
+}
+
+- (ARCellData *)generateReactNative
+{
+    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    BOOL isStagingReact = [AROptions boolForOption:AROptionsStagingReactEnv];
+
+    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
+        if (isStagingReact) {
+            cell.textLabel.text = @"Use production React ENV (restarts)";
+        } else {
+            cell.textLabel.text = @"Use staging React ENV (restarts)";
+        }
+    };
+    cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
+        [AROptions setBool: !isStagingReact forOption:AROptionsStagingReactEnv];
+        NSBundle *bundle = [NSBundle bundleForClass:AREmission.class];
+        NSString *version = bundle.infoDictionary[@"CFBundleShortVersionString"];
+        [[NSUserDefaults standardUserDefaults] setValue:version forKey:AREmissionHeadVersionDefault];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        exit(0);
+    };
+    return cellData;
+}
+
 - (ARSectionData *)createLabsSection
 {
     ARSectionData *labsSectionData = [[ARSectionData alloc] init];
@@ -205,16 +354,24 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     NSArray *options = [AROptions labsOptions];
     for (NSInteger index = 0; index < options.count; index++) {
         NSString *title = options[index];
+        BOOL requiresRestart = [[AROptions labsOptionsThatRequireRestart] indexOfObject:title] != NSNotFound;
 
         ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
         [cellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-            cell.textLabel.text = title;
+            cell.textLabel.text = requiresRestart ? [title stringByAppendingString:@" (restarts)"] : title;
             cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:[AROptions boolForOption:title]];
         }];
 
         [cellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
             BOOL currentSelection = [AROptions boolForOption:title];
             [AROptions setBool:!currentSelection forOption:title];
+
+            if (requiresRestart) {
+                // Show checkmark.
+                ar_dispatch_after(1, ^{
+                    exit(0);
+                });
+            }
 
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             [(ARAnimatedTickView *)cell.accessoryView setSelected:!currentSelection animated:YES];

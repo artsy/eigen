@@ -1,9 +1,19 @@
-import Foundation
 import Interstellar
 
-/// Convenience function for invoking callback with the given error.
-func invokeCallbackWithFailure<T>(callback: Result<T> -> Void) -> (NSError!) -> Void {
-    return { error in
-        callback(.Error(error))
+extension Observable {
+    func merge<U>(merge: Observable<U>) -> Observable<(T, U)> {
+        let signal = Observable<(T, U)>()
+        self.subscribe { a in
+            if let b = merge.peek() {
+                signal.update((a, b))
+            }
+        }
+        merge.subscribe { b in
+            if let a = self.peek() {
+                signal.update((a, b))
+            }
+        }
+
+        return signal
     }
 }

@@ -14,7 +14,11 @@
 #import "UIView+HitTestExpansion.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARMenuAwareViewController.h"
+#import "ARTopMenuViewController.h"
+#import "UIViewController+TopMenuViewController.h"
+#import "AROptions.h"
 
+#import <Emission/ARArtistComponentViewController.h>
 #import <FXBlurView/FXBlurView.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -104,17 +108,18 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
     if (result.model == [Artwork class]) {
         controller = [[ARArtworkSetViewController alloc] initWithArtworkID:result.modelID];
     } else if (result.model == [Artist class]) {
-        controller = [[ARArtistViewController alloc] initWithArtistID:result.modelID];
+        NSString *path = NSStringWithFormat(@"/artist/%@", result.modelID);
+        controller = [[ARSwitchBoard sharedInstance] loadPath:path];
     } else if (result.model == [Gene class]) {
         controller = [[ARGeneViewController alloc] initWithGeneID:result.modelID];
     } else if (result.model == [Profile class]) {
-        controller = [ARSwitchBoard.sharedInstance routeProfileWithID:result.modelID];
+        controller = [ARSwitchBoard.sharedInstance loadProfileWithID:result.modelID];
     } else if (result.model == [SiteFeature class]) {
         NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);
         controller = [ARSwitchBoard.sharedInstance loadPath:path];
     }
 
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.ar_TopMenuViewController pushViewController:controller animated:YES];
 }
 
 - (void)closeSearch:(id)sender

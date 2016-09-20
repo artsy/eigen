@@ -1,4 +1,5 @@
 #import "ARTopMenuViewController.h"
+#import "ARTopMenuViewController+Testing.h"
 #import "ARTestTopMenuNavigationDataSource.h"
 #import "ARTabContentView.h"
 #import "ARTopMenuNavigationDataSource.h"
@@ -25,7 +26,7 @@
 @end
 
 
-@interface ARTopMenuViewController (Testing) <ARTabViewDelegate>
+@interface ARTopMenuViewController (ExposedForTesting) <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
 - (JSBadgeView *)badgeForButtonAtIndex:(NSInteger)index createIfNecessary:(BOOL)createIfNecessary;
 @property (readwrite, nonatomic, assign) enum ARTopTabControllerIndex selectedTabIndex;
@@ -37,11 +38,7 @@ __block ARTopMenuViewController *sut;
 __block ARTopMenuNavigationDataSource *dataSource;
 
 dispatch_block_t sharedBefore = ^{
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/xapp_token" withResponse:@{}];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/site_hero_units" withResponse:@[@{ @"heading": @"something" }]];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sets" withResponse:@{}];
-
-    sut = [[ARTopMenuViewController alloc] init];
+    sut = [[ARTopMenuViewController alloc] initWithStubbedNetworking];
     sut.navigationDataSource = dataSource;
     dataSource.browseViewController.networkModel = [[ARStubbedBrowseNetworkModel alloc] init];
     [sut ar_presentWithFrame:[UIScreen mainScreen].bounds];
@@ -176,6 +173,19 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
             [sut setNotificationCount:0 forControllerAtIndex:tab];
             expect(badgeView.isHidden).to.beTruthy;
         });
+    });
+});
+
+
+describe(@"presenting modally", ^{
+    it(@"returns true for a UINavigationController", ^{
+        UIViewController *controller = [[UIViewController alloc] init];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
+        expect([ARTopMenuViewController shouldPresentViewControllerAsModal:nav]).to.beTruthy();
+    });
+    it(@"returns false for a UIViewController", ^{
+        UIViewController *controller = [[UIViewController alloc] init];
+        expect([ARTopMenuViewController shouldPresentViewControllerAsModal:controller]).to.beFalsy();
     });
 });
 

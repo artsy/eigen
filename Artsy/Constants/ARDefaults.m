@@ -24,7 +24,8 @@ NSString *const AROnboardingSkipPersonalizeDefault = @"eigen-onboard-skip-person
 NSString *const AROnboardingSkipCollectorLevelDefault = @"eigen-onboard-skip-collector-level";
 NSString *const AROnboardingSkipPriceRangeDefault = @"eigen-onboard-skip-price-range";
 NSString *const AROnboardingPromptThresholdDefault = @"eigen-onboard-prompt-threshold";
-NSString *const ARShowAuctionResultsButtonDefault = @"auction-results";
+
+NSString *const AREmissionHeadVersionDefault = @"emission-head-version";
 
 
 @implementation ARDefaults
@@ -47,10 +48,10 @@ NSString *const ARShowAuctionResultsButtonDefault = @"auction-results";
 
         ARUseStagingDefault : @(useStagingDefault),
         ARStagingAPIURLDefault : @"https://stagingapi.artsy.net",
-        ARStagingPhoneWebURLDefault : @"http://m-staging.artsy.net",
+        ARStagingPhoneWebURLDefault : @"https://m-staging.artsy.net",
         ARStagingPadWebURLDefault : @"https://staging.artsy.net",
         ARStagingMetaphysicsURLDefault : @"http://metaphysics-staging.artsy.net",
-        ARStagingLiveAuctionSocketURLDefault : @"https://prediction-staging.artsy.net"
+        ARStagingLiveAuctionSocketURLDefault : @"wss://causality-staging.artsy.net"
     }];
 }
 

@@ -4,107 +4,171 @@ import Interstellar
 /// Something to pretend to either be a network model or whatever
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
 
-protocol LiveAuctionsSalesPersonType {
-    var currentFocusedLot: Signal<Int> { get }
-    var updatedStateSignal: Signal<LiveAuctionViewModelType> { get }
-    var currentLotSignal: Signal<LiveAuctionLotViewModelType> { get }
+protocol LiveAuctionsSalesPersonType: class {
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
+    var initialStateLoadedSignal: Observable<Void> { get }
 
-    var auctionViewModel: LiveAuctionViewModelType? { get }
-    var pageControllerDelegate: LiveAuctionPageControllerDelegate! { get }
+    /// Current lot "in focus" based on the page view controller.
+    var currentFocusedLotIndex: Observable<Int> { get }
+
+    var auctionViewModel: LiveAuctionViewModelType { get }
     var lotCount: Int { get }
+    var liveSaleID: String { get }
+    var liveSaleName: String { get }
+    var bidIncrements: [BidIncrementStrategy] { get }
 
-    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType?
-    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType?
+    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType
+    func indexForViewModel(viewModel: LiveAuctionLotViewModelType) -> Int?
+    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType
+    func currentLotValue(lot: LiveAuctionLotViewModelType) -> UInt64
+    func currentLotValueString(lot: LiveAuctionLotViewModelType) -> String
 
-    func bidOnLot(lot: LiveAuctionLotViewModelType)
-    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel)
+    func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
+    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
+
+    // When we connect/disconnect true/false is sent down
+    var socketConnectionSignal: Observable<Bool> { get }
+    var operatorConnectedSignal: Observable<Bool> { get }
+
+    /// Lets a client hook in to listen to all events
+    /// shoud not be used outside of developer tools.
+    var debugAllEventsSignal: Observable<LotEventJSON> { get }
 }
 
-class LiveAuctionsSalesPerson:  NSObject, LiveAuctionsSalesPersonType {
-    typealias StateManagerCreator = (host: String, saleID: String, accessToken: String) -> LiveAuctionStateManager
+class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
 
-    let saleID: String
+    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderCredentials: BiddingCredentials) -> LiveAuctionStateManager
+    typealias AuctionViewModelCreator = (sale: LiveSale, currentLotSignal: Observable<LiveAuctionLotViewModelType?>, biddingCredentials: BiddingCredentials) -> LiveAuctionViewModelType
 
-    var auctionViewModel: LiveAuctionViewModelType?
-    var pageControllerDelegate: LiveAuctionPageControllerDelegate!
+    let sale: LiveSale
+    let lots: [LiveAuctionLotViewModel]
 
-    private var lots = [LiveAuctionLotViewModelType]()
+    let dataReadyForInitialDisplay = Observable<Void>()
+    let auctionViewModel: LiveAuctionViewModelType
+
+    var socketConnectionSignal: Observable<Bool> {
+        return stateManager.socketConnectionSignal
+    }
+
     private let stateManager: LiveAuctionStateManager
+    private let bidderCredentials: BiddingCredentials
 
-    // Lot currentloy being looked at by the user.
-    var currentFocusedLot = Signal<Int>()
+    // Lot currently being looked at by the user. Defaults to zero, the first lot in a sale.
+    var currentFocusedLotIndex = Observable(0)
+    var initialStateLoadedSignal: Observable<Void> {
+        return stateManager.initialStateLoadedSignal
+    }
 
-    init(saleID: String,
-         accessToken: String,
+    init(sale: LiveSale,
+         jwt: JWT,
+         biddingCredentials: BiddingCredentials,
          defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults(),
-         stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator()) {
+         stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator(),
+         auctionViewModelCreator: AuctionViewModelCreator = LiveAuctionsSalesPerson.defaultAuctionViewModelCreator()) {
 
-        self.saleID = saleID
-        let host = defaults.stringForKey(ARStagingLiveAuctionSocketURLDefault) ?? "http://localhost:5000"
-        stateManager = stateManagerCreator(host: host, saleID: saleID, accessToken: accessToken)
+        self.sale = sale
+        self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0, bidderCredentials: biddingCredentials) }
+        self.bidderCredentials = biddingCredentials
 
-        super.init()
+        let useBidderServer = (jwt.role == .Bidder)
+        let host = useBidderServer ? ARRouter.baseBidderCausalitySocketURLString() : ARRouter.baseObserverCausalitySocketURLString()
 
-        pageControllerDelegate = LiveAuctionPageControllerDelegate(salesPerson: self)
+        self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderCredentials: biddingCredentials)
+        self.auctionViewModel = auctionViewModelCreator(sale: sale, currentLotSignal: stateManager.currentLotSignal, biddingCredentials: biddingCredentials)
+    }
 
+    lazy var bidIncrements: [BidIncrementStrategy] = { [weak self] in
+        // It's very unikely the API would fail to send us bid increments, but just in case, let's avoid a crash.
+        guard let bidIncrements = self?.sale.bidIncrementStrategy else { return [] }
+        return bidIncrements.sort()
+    }()
 
-        stateManager
-            .newLotsSignal
-            .next { [weak self] lots -> Void in
-                self?.lots = lots
-            }
+    func currentLotValue(lot: LiveAuctionLotViewModelType) -> UInt64 {
+        return sale.bidIncrementStrategy.minimumNextBidCentsIncrement(lot.askingPrice)
+    }
 
-        stateManager
-            .saleSignal
-            .next { [weak self] sale -> Void in
-                self?.auctionViewModel = sale
-            }
+    func currentLotValueString(lot: LiveAuctionLotViewModelType) -> String {
+        return currentLotValue(lot).convertToDollarString(lot.currencySymbol)
     }
 }
 
 private typealias ComputedProperties = LiveAuctionsSalesPerson
 extension ComputedProperties {
-    var currentLotSignal: Signal<LiveAuctionLotViewModelType> {
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
         return stateManager.currentLotSignal
     }
 
-    var updatedStateSignal: Signal<LiveAuctionViewModelType> {
-        return stateManager
-            .saleSignal
-            .merge(stateManager.newLotsSignal) // Reacts to a change in the lots as well.
-            .map { auctionViewModel, _ -> LiveAuctionViewModelType in
-                return auctionViewModel
-            }
+    var lotCount: Int {
+        return lots.count
     }
 
-    var lotCount: Int {
-        return auctionViewModel?.lotCount ?? 0
+    var liveSaleID: String {
+        return sale.liveSaleID
+    }
+
+    var liveSaleName: String {
+        let saleName = sale.name
+        // Bit of a hack until we have our server-side stuff figured out. If the sale name has a :, it's likely
+        // "Partner Name: The Awesome Sale", and we want just "Partner Name"
+        let colonRange = saleName.rangeOfString(":", options: [], range: nil, locale: nil)
+
+        if let colonRange = colonRange {
+            return saleName.substringToIndex(colonRange.startIndex)
+        } else {
+            return saleName
+        }
+    }
+
+    var debugAllEventsSignal: Observable<LotEventJSON> {
+        return stateManager.debugAllEventsSignal
+    }
+
+    var operatorConnectedSignal: Observable<Bool> {
+        return stateManager.operatorConnectedSignal
     }
 }
-
 
 private typealias PublicFunctions = LiveAuctionsSalesPerson
 extension LiveAuctionsSalesPerson {
 
-    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType? {
-        guard let currentlyShowingIndex = currentFocusedLot.peek() else { return nil }
+    // Returns nil if there is no current lot.
+    func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType {
+        precondition(abs(offset) < lotCount)
+
+        let currentlyShowingIndex = currentFocusedLotIndex.peek() ?? 0 // The coalesce is only to satisfy the compiler, should never happen since the currentFocusedLotIndex is created with an initial value.
+
+        // Apply the offset
         let newIndex = currentlyShowingIndex + offset
-        let loopingIndex = newIndex > 0 ? newIndex : lots.count + offset
+
+        // Guarantee the offset is within the bounds of our array.
+        let loopingIndex: Int
+        if newIndex >= lotCount {
+            loopingIndex = newIndex - lotCount
+        } else if newIndex < 0 {
+            loopingIndex = newIndex + lotCount
+        } else {
+            loopingIndex = newIndex
+        }
+
         return lotViewModelForIndex(loopingIndex)
     }
 
-    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType? {
-        guard 0..<lots.count ~= index else { return nil }
-
+    func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType {
         return lots[index]
     }
 
-    func bidOnLot(lot: LiveAuctionLotViewModelType) {
-        stateManager.bidOnLot("") // TODO: Extract lot ID once https://github.com/artsy/eigen/pull/1386 is merged.
+    // Performs a linear scan through all the lots, use parsimoniously.
+    func indexForViewModel(viewModel: LiveAuctionLotViewModelType) -> Int? {
+        return lots.indexOf { $0.lotID == viewModel.lotID }
     }
 
-    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModel) {
-        stateManager.bidOnLot("") // TODO: Extract lot ID once https://github.com/artsy/eigen/pull/1386 is merged.
+    func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
+        guard let askingPrice = lot.askingPriceSignal.peek() else { return }
+        stateManager.bidOnLot(lot.lotID, amountCents: askingPrice, biddingViewModel: biddingViewModel)
+    }
+
+    func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
+        stateManager.leaveMaxBidOnLot(lot.lotID, amountCents: amountCents, biddingViewModel: biddingViewModel)
     }
 }
 
@@ -112,30 +176,21 @@ private typealias ClassMethods = LiveAuctionsSalesPerson
 extension ClassMethods {
 
     class func defaultStateManagerCreator() -> StateManagerCreator {
-        return { host, saleID, accessToken in
-            LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken)
+        return { host, sale, saleArtworks, jwt, bidderCredentials in
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderCredentials: bidderCredentials)
         }
     }
 
     class func stubbedStateManagerCreator() -> StateManagerCreator {
-        return { host, saleID, accessToken in
-            LiveAuctionStateManager(host: host, saleID: saleID, accessToken: accessToken, stateFetcherCreator: LiveAuctionStateManager.stubbedStateFetcherCreator())
+        return { host, sale, saleArtworks, jwt, bidderCredentials in
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderCredentials: bidderCredentials, socketCommunicatorCreator: LiveAuctionStateManager.stubbedSocketCommunicatorCreator())
         }
     }
 
-}
-
-
-class LiveAuctionPageControllerDelegate: NSObject, UIPageViewControllerDelegate {
-    let salesPerson: LiveAuctionsSalesPersonType
-
-    init(salesPerson: LiveAuctionsSalesPersonType) {
-        self.salesPerson = salesPerson
+    class func defaultAuctionViewModelCreator() -> AuctionViewModelCreator {
+        return { sale, currentLotSignal, biddingCredentials in
+            return LiveAuctionViewModel(sale: sale, currentLotSignal: currentLotSignal, biddingCredentials: biddingCredentials)
+        }
     }
 
-    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-
-        guard let viewController = pageViewController.viewControllers?.first as? LiveAuctionLotViewController else { return }
-        salesPerson.currentFocusedLot.update(viewController.index)
-    }
 }

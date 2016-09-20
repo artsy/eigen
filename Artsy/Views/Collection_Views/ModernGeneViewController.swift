@@ -60,7 +60,6 @@ class ModernGeneViewController: UIViewController {
             geneDescriptionView.setMarkdownString(self.viewModel.geneDescription)
         }
         
-        
         artworksViewController = AREmbeddedModelsViewController()
         
         ar_addAlignedModernChildViewController(artworksViewController)
@@ -74,9 +73,6 @@ class ModernGeneViewController: UIViewController {
         view.layoutIfNeeded()
 
     }
-    
-    
-    
 }
 
 private typealias TextViewCallbacks = ModernGeneViewController

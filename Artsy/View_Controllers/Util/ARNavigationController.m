@@ -23,9 +23,11 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
+#import <MultiDelegate/AIMultiDelegate.h>
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
+static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationControllerMenuAwareScrollViewContext;
 
 @protocol ARMenuAwareViewController;
 
@@ -111,7 +113,7 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
 
     [self.view addSubview:_statusBarView];
 
-    _statusBarVerticalConstraint = [_statusBarView constrainHeight:@"20"][0];
+    _statusBarVerticalConstraint = [_statusBarView constrainHeight:@"20"];
     [_statusBarView constrainWidthToView:self.view predicate:@"0"];
     [_statusBarView alignTopEdgeWithView:self.view predicate:@"0"];
     [_statusBarView alignLeadingEdgeWithView:self.view predicate:@"0"];
@@ -201,10 +203,12 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
     }
 }
 
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (void)navigationController:(UINavigationController *)navigationController
+       didShowViewController:(UIViewController<ARMenuAwareViewController> *)viewController
+                    animated:(BOOL)animated
 {
     if ([viewController conformsToProtocol:@protocol(ARMenuAwareViewController)]) {
-        self.observedViewController = (UIViewController<ARMenuAwareViewController> *)viewController;
+        self.observedViewController = viewController;
     } else {
         self.observedViewController = nil;
     }
@@ -216,7 +220,7 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
     BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
     [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:NO];
 
-    if (viewController != self.searchViewController) {
+    if ((id)viewController != self.searchViewController) {
         [self removeViewControllerFromStack:self.searchViewController];
     }
 }
@@ -274,7 +278,21 @@ static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControll
     }
 }
 
-#pragma mark - Menu buttons
+#pragma mark - ARMenuAwareViewController
+
+- (void)makeScrollViewReportToTheChief:(UIViewController<ARMenuAwareViewController> *)viewController;
+{
+    UIScrollView *scrollView = viewController.menuAwareScrollView;
+    if (scrollView && scrollView.delegate && ![scrollView.delegate respondsToSelector:@selector(addDelegate:)]) {
+        id<UIScrollViewDelegate> delegate = scrollView.delegate;
+        AIMultiDelegate *multiDelegate = [[AIMultiDelegate alloc] initWithDelegates:@[delegate, [ARScrollNavigationChief chief]]];
+        scrollView.delegate = (id<UIScrollViewDelegate>)multiDelegate;
+
+        // Store the multi-delegate on the scrollview so that its lifetime is tied to it.
+        static char associatedObjectKey;
+        objc_setAssociatedObject(scrollView, &associatedObjectKey, multiDelegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+}
 
 static void
 ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
@@ -432,6 +450,15 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
             }
         }
     }];
+    
+    if ([vc respondsToSelector:@selector(menuAwareScrollView)]) {
+        if (observe) {
+            [vc addObserver:self forKeyPath:@"menuAwareScrollView" options:0 context:ARNavigationControllerMenuAwareScrollViewContext];
+            [self makeScrollViewReportToTheChief:vc];
+        } else {
+            [vc removeObserver:self forKeyPath:@"menuAwareScrollView" context:ARNavigationControllerMenuAwareScrollViewContext];
+        }
+    }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -453,6 +480,10 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
         [self showBackButton:[self shouldShowBackButtonForViewController:self.topViewController] && chief.allowsMenuButtons animated:YES];
         [self showSearchButton:[self shouldShowSearchButtonForViewController:self.topViewController] && chief.allowsMenuButtons animated:YES];
 
+    } else if (context == ARNavigationControllerMenuAwareScrollViewContext) {
+        UIViewController<ARMenuAwareViewController> *vc = object;
+        [self makeScrollViewReportToTheChief:vc];
+        
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }

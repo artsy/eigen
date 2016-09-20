@@ -17,10 +17,10 @@
 - (void)tappedContactGallery:(id)sender;
 - (void)tappedAuctionInfo:(id)sender;
 - (void)tappedConditionsOfSale:(id)sender;
+- (void)tappedLiveSaleButton:(id)sender;
 - (void)tappedBidButton:(id)sender;
 - (void)tappedBuyersPremium:(id)sender;
 - (void)tappedBuyButton:(id)sender;
-- (void)tappedAuctionResults:(id)sender;
 - (void)tappedMoreInfo:(id)sender;
 @end
 
@@ -109,6 +109,27 @@ it(@"displays contact seller when the partner is not a gallery", ^{
     expect(view).to.haveValidSnapshotNamed(@"forSaleByAnInstitution");
 });
 
+it(@"displays only the live button when live auction is running", ^{
+    view.artwork = [Artwork modelWithJSON:@{
+        @"id" : @"artwork-id",
+        @"title" : @"Artwork Title",
+        @"availability" : @"for sale"
+    }];
+    view.saleArtwork = [SaleArtwork modelWithJSON:@{
+        @"high_estimate_cents" : @20000,
+        @"low_estimate_cents" : @10000,
+    }];
+    view.saleArtwork.auction = [Sale modelWithJSON:@{
+        @"start_at" : @"1-12-30 00:00:00",
+        @"live_start_at" : @"1-12-30 00:00:00",
+        @"end_at" : @"4001-01-01 00:00:00"
+    }];
+    [view updateUI];
+    [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+    [view snapshotViewAfterScreenUpdates:YES];
+    expect(view).to.haveValidSnapshot();
+});
+
 it(@"does not display contact when artwork is in auction", ^{
     view.artwork = [Artwork modelWithJSON:@{
         @"id" : @"artwork-id",
@@ -133,11 +154,13 @@ it(@"displays both bid and buy when artwork is in auction and is acquireable", ^
         @"availability" : @"for sale",
         @"price" : @"$5,000",
         @"sold" : @NO,
-        @"acquireable" : @YES
+        @"acquireable" : @YES,
+        @"symbol" : @"$"
     }];
     view.saleArtwork = [SaleArtwork modelWithJSON:@{
         @"high_estimate_cents" : @20000,
-        @"low_estimate_cents" : @10000
+        @"low_estimate_cents" : @10000,
+        @"symbol" : @"$"
     }];
     view.saleArtwork.auction = [Sale modelWithJSON:@{
         @"start_at" : @"1-12-30 00:00:00",
@@ -159,12 +182,14 @@ it(@"shows a buyers premium notice", ^{
     }];
     view.saleArtwork = [SaleArtwork modelWithJSON:@{
         @"high_estimate_cents" : @20000,
-        @"low_estimate_cents" : @10000
+        @"low_estimate_cents" : @10000,
+        @"symbol" : @"$"
     }];
     view.saleArtwork.auction = [Sale modelWithJSON:@{
         @"start_at" : @"1-12-30 00:00:00",
         @"end_at" : @"4001-01-01 00:00:00",
-        @"buyers_premium" : @{ }
+        @"buyers_premium" : @{ },
+        @"symbol" : @"$"
     }];
     [view updateUI];
     [view snapshotViewAfterScreenUpdates:YES];
@@ -182,11 +207,13 @@ it(@"displays sold when artwork is in auction and has been acquired", ^{
     }];
     view.saleArtwork = [SaleArtwork modelWithJSON:@{
         @"high_estimate_cents" : @20000,
-        @"low_estimate_cents" : @10000
+        @"low_estimate_cents" : @10000,
+        @"symbol" : @"$"
     }];
     view.saleArtwork.auction = [Sale modelWithJSON:@{
         @"start_at" : @"1-12-30 00:00:00",
-        @"end_at" : @"4001-01-01 00:00:00"
+        @"end_at" : @"4001-01-01 00:00:00",
+        @"symbol" : @"$"
     }];
     [view updateUI];
     [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
@@ -284,7 +311,7 @@ context(@"price view", ^{
     context(@"at auction", ^{
 
         it(@"no bids", ^{
-            view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000) }];
+            view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000), @"symbol" : @"$" }];
             view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
             view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
             [view updateUI];
@@ -294,7 +321,7 @@ context(@"price view", ^{
         });
 
         it(@"has bids", ^{
-            Bid *highBid = [Bid modelWithJSON:@{ @"id" : @"abc", @"amount_cents" : @(10000000) }];
+            Bid *highBid = [Bid modelWithJSON:@{ @"id" : @"abc", @"amount_cents" : @(10000000), @"symbol" : @"$" }];
             expect(highBid.cents).to.equal(10000000);
             view.saleArtwork = [SaleArtwork saleArtworkWithHighBid:highBid AndReserveStatus:ARReserveStatusNoReserve];;
             view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
@@ -308,7 +335,7 @@ context(@"price view", ^{
         });
 
         it(@"reserve met and has bids", ^{
-            Bid *highBid = [Bid modelWithJSON:@{ @"id" : @"abc", @"amount_cents" : @(10000000) }];
+            Bid *highBid = [Bid modelWithJSON:@{ @"id" : @"abc", @"amount_cents" : @(10000000), @"symbol" : @"$" }];
             view.saleArtwork = [SaleArtwork saleArtworkWithHighBid:highBid AndReserveStatus:ARReserveStatusReserveMet];
             view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
 
@@ -320,7 +347,7 @@ context(@"price view", ^{
         });
 
         it(@"current auction reserve not met and has bids", ^{
-            Bid *highBid = [Bid modelWithJSON:@{ @"id" : @"abc", @"amount_cents" : @(10000000) }];
+            Bid *highBid = [Bid modelWithJSON:@{ @"id" : @"abc", @"amount_cents" : @(10000000), @"symbol" : @"$" }];
             view.saleArtwork = [SaleArtwork saleArtworkWithHighBid:highBid AndReserveStatus:ARReserveStatusReserveNotMet];
             view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
             view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
@@ -331,7 +358,7 @@ context(@"price view", ^{
         });
         
         it(@"reserve not met and has no bids", ^{
-            view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000), @"reserve_status" : @"reserve_not_met", @"currency" :@"$" }];
+            view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000), @"reserve_status" : @"reserve_not_met", @"symbol" : @"$" }];
             view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
             view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
             [view updateUI];
@@ -385,7 +412,7 @@ describe(@"mocked artwork promises", ^{
         id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
         view.delegate = mockDelegate;
 
-        [[mockDelegate expect] tappedBidButton];
+        [[mockDelegate expect] tappedBidButton:nil];
         [view tappedBidButton:nil];
 
         [mockDelegate verify];
@@ -395,7 +422,7 @@ describe(@"mocked artwork promises", ^{
         id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
         view.delegate = mockDelegate;
 
-        [[mockDelegate expect] tappedBuyersPremium];
+        [[mockDelegate expect] tappedBuyersPremium:nil];
         [view tappedBuyersPremium:nil];
 
         [mockDelegate verify];
@@ -407,16 +434,6 @@ describe(@"mocked artwork promises", ^{
 
         [[mockDelegate expect] tappedBuyButton];
         [view tappedBuyButton:nil];
-
-        [mockDelegate verify];
-    });
-
-    it(@"forwards auction results to delegate", ^{
-        id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
-        view.delegate = mockDelegate;
-
-        [[mockDelegate expect] tappedAuctionResults];
-        [view tappedAuctionResults:nil];
 
         [mockDelegate verify];
     });

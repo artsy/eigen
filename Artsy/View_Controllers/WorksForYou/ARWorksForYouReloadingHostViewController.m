@@ -37,7 +37,7 @@
 
 - (void)viewWillAppear:(BOOL)animated;
 {
-    if (self.isContentStale) {
+    if (self.isContentStale || self.worksForYouViewController.worksForYouNetworkModel.networkingDidFail) {
         [self reloadData];
     }
     [super viewWillAppear:animated];
@@ -68,7 +68,7 @@
 
 - (BOOL)shouldAutorotate
 {
-  return self.traitDependentAutorotateSupport;
+    return self.traitDependentAutorotateSupport;
 }
 
 @end

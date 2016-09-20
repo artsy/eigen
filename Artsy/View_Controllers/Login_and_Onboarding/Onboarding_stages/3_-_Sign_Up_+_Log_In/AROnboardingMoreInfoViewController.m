@@ -93,7 +93,7 @@
     [self.containerView alignCenterXWithView:self.view predicate:@"0"];
     NSString *centerYOffset = [UIDevice isPad] ? @"0" : @"-30";
     [self.containerView alignCenterYWithView:self.view predicate:NSStringWithFormat(@"%@@750", centerYOffset)];
-    self.keyboardConstraint = [[self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"] lastObject];
+    self.keyboardConstraint = [self.containerView alignBottomEdgeWithView:self.view predicate:@"<=0@1000"];
     [self.containerView constrainWidth:@"280"];
 
     self.nameField = [[ARTextFieldWithPlaceholder alloc] init];

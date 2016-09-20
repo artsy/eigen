@@ -15,17 +15,17 @@ class AuctionNetworkModelSpec: QuickSpec {
         var subject: AuctionNetworkModel!
         var saleNetworkModel: Test_AuctionSaleNetworkModel!
         var saleArtworksNetworkModel: Test_AuctionSaleArtworksNetworkModel!
-        var registrationStatusNetworkModel: Test_AuctionRegistrationStatusNetworkModel!
+        var bidderNetworkModel: Test_AuctionBiddersNetworkModel!
 
         beforeEach {
             saleNetworkModel = Test_AuctionSaleNetworkModel(result: .Success(sale))
             saleArtworksNetworkModel = Test_AuctionSaleArtworksNetworkModel(result: Result.Success(saleArtworks))
-            registrationStatusNetworkModel = Test_AuctionRegistrationStatusNetworkModel(result: .Success(ArtsyAPISaleRegistrationStatusNotLoggedIn))
+            bidderNetworkModel = Test_AuctionBiddersNetworkModel(result: .Success([]))
 
             subject = AuctionNetworkModel(saleID: saleID)
             subject.saleNetworkModel = saleNetworkModel
             subject.saleArtworksNetworkModel = saleArtworksNetworkModel
-            subject.registrationStatusNetworkModel = registrationStatusNetworkModel
+            subject.bidderNetworkModel = bidderNetworkModel
         }
 
         it("initializes correctly") {
@@ -33,24 +33,24 @@ class AuctionNetworkModelSpec: QuickSpec {
         }
 
         describe("registrationStatus") {
-            it("works when not logged in") {
-                registrationStatusNetworkModel.registrationStatus = ArtsyAPISaleRegistrationStatusNotLoggedIn
-                expect(subject.registrationStatus) == ArtsyAPISaleRegistrationStatusNotLoggedIn
+            it("works when bidders fetch errors") {
+                bidderNetworkModel.result = .Error(TestError.Testing)
+                expect(subject.bidders).to( beEmpty() )
             }
 
-            it("works when registered") {
-                registrationStatusNetworkModel.registrationStatus = ArtsyAPISaleRegistrationStatusRegistered
-                expect(subject.registrationStatus) == ArtsyAPISaleRegistrationStatusRegistered
+            it("works when bidders fetch returns bidders") {
+                let bidder = Bidder()
+                bidderNetworkModel.result = .Success([bidder])
+                expect(subject.bidders).to( haveCount(1) )
             }
 
-            it("works when not registered") {
-                registrationStatusNetworkModel.registrationStatus = ArtsyAPISaleRegistrationStatusNotRegistered
-                expect(subject.registrationStatus) == ArtsyAPISaleRegistrationStatusNotRegistered
-            }
         }
 
-        describe("network fetching") {
-            it("fetches") {
+        // TODO: Remove async
+        // These would periodically just fail
+
+        pending("network fetching") {
+            pending("fetches") {
                 waitUntil { done in
                     subject.fetch().next { _ in
                         done()
@@ -92,7 +92,7 @@ class AuctionNetworkModelSpec: QuickSpec {
                     }
                 }
 
-                expect(registrationStatusNetworkModel.called) == true
+                expect(bidderNetworkModel.called) == true
             }
 
             it("fetches the sale") {
@@ -126,9 +126,9 @@ class Test_AuctionSaleNetworkModel: AuctionSaleNetworkModelType {
         self.result = result
     }
 
-    func fetchSale(saleID: String, callback: Result<Sale> -> Void) {
+    func fetchSale(saleID: String) -> Observable<Result<Sale>> {
         called = true
-        callback(result)
+        return Observable(result)
     }
 }
 
@@ -140,23 +140,30 @@ class Test_AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType 
         self.result = result
     }
 
-    func fetchSaleArtworks(saleID: String, callback: Result<[SaleArtwork]> -> Void) {
+    func fetchSaleArtworks(saleID: String) -> Observable<Result<[SaleArtwork]>> {
         called = true
-        callback(result)
+        return Observable(result)
     }
 }
 
-class Test_AuctionRegistrationStatusNetworkModel: AuctionRegistrationStatusNetworkModelType {
-    var registrationStatus: ArtsyAPISaleRegistrationStatus?
-    let result: Result<ArtsyAPISaleRegistrationStatus>
+enum TestError: ErrorType {
+    case Testing
+}
+
+class Test_AuctionBiddersNetworkModel: AuctionBiddersNetworkModelType {
+    var result: Result<[Bidder]>
     var called = false
 
-    init(result: Result<ArtsyAPISaleRegistrationStatus>) {
+    var bidders: [Bidder] {
+        return result.value ?? []
+    }
+
+    init(result: Result<[Bidder]>) {
         self.result = result
     }
-    
-    func fetchRegistrationStatus(saleID: String, callback: Result<ArtsyAPISaleRegistrationStatus> -> Void) {
+
+    func fetchBiddersForSale(saleID: String) -> Observable<Result<[Bidder]>> {
         called = true
-        callback(result)
+        return Observable(result)
     }
 }

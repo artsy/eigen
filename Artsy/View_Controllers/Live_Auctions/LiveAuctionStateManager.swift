@@ -1,5 +1,6 @@
 import Foundation
 import Interstellar
+import SwiftyJSON
 
 /*
 Independent of sockets:
@@ -12,81 +13,115 @@ Based on socket events:
 - # of watchers
 - next bid amount $
 - bid history
+- bid request (command) success/failure
 */
 
 class LiveAuctionStateManager: NSObject {
-    typealias SocketCommunicatorCreator = (host: String, saleID: String, accessToken: String) -> LiveAuctionSocketCommunicatorType
-    typealias StateFetcherCreator = (host: String, saleID: String) -> LiveAuctionStateFetcherType
-    typealias StaticDataFetcherCreator = (saleID: String) -> LiveAuctionStaticDataFetcherType
-    typealias StateReconcilerCreator = () -> LiveAuctionStateReconcilerType
+    typealias SocketCommunicatorCreator = (host: String, causalitySaleID: String, jwt: JWT) -> LiveAuctionSocketCommunicatorType
+    typealias StateReconcilerCreator = (saleArtworks: [LiveAuctionLotViewModel]) -> LiveAuctionStateReconcilerType
 
-    let saleID: String
+    let sale: LiveSale
+    let bidderCredentials: BiddingCredentials
+    let operatorConnectedSignal = Observable<Bool>()
+    let initialStateLoadedSignal = Observable<Void>(options: .Once)
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
-    private let stateFetcher: LiveAuctionStateFetcherType
-    private let staticDataFetcher: LiveAuctionStaticDataFetcherType
     private let stateReconciler: LiveAuctionStateReconcilerType
+    private var biddingStates = [String: LiveAuctionBiddingViewModelType]()
+
+    var socketConnectionSignal: Observable<Bool> {
+        return socketCommunicator.socketConnectionSignal
+    }
 
     init(host: String,
-        saleID: String,
-        accessToken: String,
-        socketCommunicatorCreator: SocketCommunicatorCreator = LiveAuctionStateManager.defaultSocketCommunicatorCreator(),
-        stateFetcherCreator: StateFetcherCreator = LiveAuctionStateManager.defaultStateFetcherCreator(),
-        staticDataFetcherCreator: StaticDataFetcherCreator = LiveAuctionStateManager.defaultStaticDataFetcherCreator(),
-        stateReconcilerCreator: StateReconcilerCreator = LiveAuctionStateManager.defaultStateReconcilerCreator()) {
+         sale: LiveSale,
+         saleArtworks: [LiveAuctionLotViewModel],
+         jwt: JWT,
+         bidderCredentials: BiddingCredentials,
+         socketCommunicatorCreator: SocketCommunicatorCreator = LiveAuctionStateManager.defaultSocketCommunicatorCreator(),
+         stateReconcilerCreator: StateReconcilerCreator = LiveAuctionStateManager.defaultStateReconcilerCreator()) {
 
-        self.saleID = saleID
-        self.socketCommunicator = socketCommunicatorCreator(host: host, saleID: saleID, accessToken: accessToken)
-        self.stateFetcher = stateFetcherCreator(host: host, saleID: saleID)
-        self.staticDataFetcher = staticDataFetcherCreator(saleID: saleID)
-        self.stateReconciler = stateReconcilerCreator()
+        self.sale = sale
+        self.bidderCredentials = bidderCredentials
+        self.socketCommunicator = socketCommunicatorCreator(host: host, causalitySaleID: sale.causalitySaleID, jwt: jwt)
+        self.stateReconciler = stateReconcilerCreator(saleArtworks: saleArtworks)
 
         super.init()
 
-        staticDataFetcher.fetchStaticData().next { [weak self] staticData in
-            print("Static Data: \(staticData)")
-        }
-
-        stateFetcher.fetchSale().next { [weak self] state in
+        socketCommunicator.updatedAuctionState.subscribe { [weak self] state in
             self?.stateReconciler.updateState(state)
+            self?.handleOperatorConnectedState(state)
+            self?.initialStateLoadedSignal.update()
         }
 
-        socketCommunicator.delegate = self
+        socketCommunicator.lotUpdateBroadcasts.subscribe { [weak self] broadcast in
+            self?.stateReconciler.processLotEventBroadcast(broadcast)
+        }
+
+        socketCommunicator.currentLotUpdate.subscribe { [weak self] update in
+            self?.stateReconciler.processCurrentLotUpdate(update)
+        }
+
+        socketCommunicator.postEventResponses.subscribe { [weak self] response in
+
+            let json = JSON(response)
+            let bidUUID = json["key"].stringValue
+            let biddingViewModel = self?.biddingStates.removeValueForKey(bidUUID)
+//            So far this event isn't needed anywhere, but keeping for prosperities sake
+//            let eventJSON = json["event"].dictionaryObject
+//            let liveEvent = LiveEvent(JSON: eventJSON)
+            let confirmed = LiveAuctionBiddingProgressState.BidAcknowledged
+            biddingViewModel?.bidPendingSignal.update(confirmed)
+        }
+
+        socketCommunicator.operatorConnectedSignal.subscribe(applyWeakly(self, LiveAuctionStateManager.handleOperatorConnectedState))
     }
 }
 
 private typealias PublicFunctions = LiveAuctionStateManager
 extension PublicFunctions {
 
-    func bidOnLot(lotID: String) {
-        socketCommunicator.bidOnLot(lotID)
+    func bidOnLot(lotID: String, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
+        if !bidderCredentials.canBid {
+            return print("Tried to bid without a bidder ID on account")
+        }
+
+        biddingViewModel.bidPendingSignal.update(.BiddingInProgress)
+
+        let bidID = NSUUID().UUIDString
+        biddingStates[bidID] = biddingViewModel
+        socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderCredentials: bidderCredentials, bidUUID: bidID)
     }
 
-    func leaveMaxBidOnLot(lotID: String) {
-        socketCommunicator.leaveMaxBidOnLot(lotID)
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
+        if !bidderCredentials.canBid {
+            return print("Tried to leave a max bid without a bidder ID on account")
+        }
+
+        biddingViewModel.bidPendingSignal.update(.BiddingInProgress)
+        let bidID = NSUUID().UUIDString
+        biddingStates[bidID] = biddingViewModel
+        socketCommunicator.leaveMaxBidOnLot(lotID, amountCents: amountCents, bidderCredentials: bidderCredentials, bidUUID: bidID)
+    }
+
+    var debugAllEventsSignal: Observable<LotEventJSON> {
+        return stateReconciler.debugAllEventsSignal
     }
 }
 
 private typealias ComputedProperties = LiveAuctionStateManager
 extension ComputedProperties {
-    var newLotsSignal: Signal<[LiveAuctionLotViewModelType]> {
-        return stateReconciler.newLotsSignal
-    }
-
-    var currentLotSignal: Signal<LiveAuctionLotViewModelType> {
+    var currentLotSignal: Observable<LiveAuctionLotViewModelType?> {
         return stateReconciler.currentLotSignal
-    }
-
-    var saleSignal: Signal<LiveAuctionViewModelType> {
-        return stateReconciler.saleSignal
     }
 }
 
-
-private typealias SocketDelegate = LiveAuctionStateManager
-extension SocketDelegate: LiveAuctionSocketCommunicatorDelegate {
-    func didUpdateAuctionState(state: AnyObject) {
-        stateReconciler.updateState(state)
+private typealias PrivateFunctions = LiveAuctionStateManager
+private extension PrivateFunctions {
+    func handleOperatorConnectedState(state: AnyObject) {
+        let json = JSON(state)
+        let operatorConnected = json["operatorConnected"].bool ?? true // Defaulting to true in case the value isn't specified, we don't want to obstruct the user.
+        self.operatorConnectedSignal.update(operatorConnected)
     }
 }
 
@@ -94,46 +129,42 @@ extension SocketDelegate: LiveAuctionSocketCommunicatorDelegate {
 private typealias DefaultCreators = LiveAuctionStateManager
 extension DefaultCreators {
     class func defaultSocketCommunicatorCreator() -> SocketCommunicatorCreator {
-        return { host, accessToken, saleID in
-            return LiveAuctionSocketCommunicator(host: host, saleID: saleID, accessToken: accessToken)
+        return { host, causalitySaleID, jwt in
+            return LiveAuctionSocketCommunicator(host: host, causalitySaleID: causalitySaleID, jwt: jwt)
         }
     }
 
-    class func defaultStateFetcherCreator() -> StateFetcherCreator {
-        return { host, saleID in
-            return LiveAuctionStateFetcher(host: host, saleID: saleID)
-        }
-    }
-
-    class func defaultStaticDataFetcherCreator() -> StaticDataFetcherCreator {
-        return { saleID in
-            return LiveAuctionStaticDataFetcher(saleID: saleID)
+    class func stubbedSocketCommunicatorCreator() -> SocketCommunicatorCreator {
+        return { host, causalitySaleID, jwt in
+            return Stubbed_SocketCommunicator(state: loadJSON("live_auctions_socket"))
         }
     }
 
     class func defaultStateReconcilerCreator() -> StateReconcilerCreator {
-        return {
-            return LiveAuctionStateReconciler()
-        }
-    }
-
-    class func stubbedStateFetcherCreator() -> StateFetcherCreator {
-        return { _, _ in
-            return Stub_StateFetcher()
+        return { saleArtworks in
+            return LiveAuctionStateReconciler(saleArtworks: saleArtworks)
         }
     }
 }
 
-class Stub_StateFetcher: LiveAuctionStateFetcherType {
-    func fetchSale() -> Signal<AnyObject> {
-        let signal = Signal<AnyObject>()
+private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
+    let updatedAuctionState: Observable<AnyObject>
+    let lotUpdateBroadcasts = Observable<AnyObject>()
+    let currentLotUpdate = Observable<AnyObject>()
+    let postEventResponses = Observable<AnyObject>()
+    let socketConnectionSignal = Observable<Bool>(true) // We're conencted by default.
+    let operatorConnectedSignal = Observable<AnyObject>()
 
-        let jsonPath = NSBundle.mainBundle().pathForResource("live_auctions", ofType: "json")
-        let jsonData = NSData(contentsOfFile: jsonPath!)!
-        let json = try! NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
-
-        signal.update(json)
-
-        return signal
+    init (state: AnyObject) {
+        updatedAuctionState = Observable(state)
     }
+
+    func bidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
+
+    }
+
+    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
+
+    }
+
 }

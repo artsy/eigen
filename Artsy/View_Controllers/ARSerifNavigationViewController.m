@@ -5,7 +5,9 @@
 #import "UIImage+ImageFromColor.h"
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import "ARTopMenuViewController.h"
+#import "ARSerifStatusMaintainer.h"
 @import Artsy_UILabels;
+@import ObjectiveSugar;
 
 
 @interface ARSerifNavigationBar : UINavigationBar
@@ -17,8 +19,9 @@
 @interface ARSerifNavigationViewController () <UINavigationControllerDelegate>
 @property (nonatomic, strong) ARSerifToolbarButtonItem *exitButton;
 @property (nonatomic, strong) UIBarButtonItem *backButton;
-@property (nonatomic, assign) BOOL oldStatusBarHiddenStatus;
+
 @property (nonatomic, strong) UIApplication *sharedApplication;
+@property (nonatomic, strong) ARSerifStatusMaintainer *statusMaintainer;
 
 @end
 
@@ -46,8 +49,9 @@
         return nil;
     }
 
+    self.statusMaintainer = [[ARSerifStatusMaintainer alloc] init];
     self.edgesForExtendedLayout = UIRectEdgeNone;
-
+    _hideCloseButton = NO;
 
     UIImage *image = [[UIImage imageNamed:@"serif_modal_close"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     ARSerifToolbarButtonItem *exit = [[ARSerifToolbarButtonItem alloc] initWithImage:image];
@@ -71,10 +75,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    UIApplication *app = self.sharedApplication;
-    self.oldStatusBarHiddenStatus = app.statusBarHidden;
-    [app setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+    [self.statusMaintainer viewWillAppear:animated app:self.sharedApplication];
 
     self.view.layer.cornerRadius = 0;
     self.view.superview.layer.cornerRadius = 0;
@@ -83,9 +84,19 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [self.statusMaintainer viewWillDisappear:animated app:self.sharedApplication];
+}
 
-    UIApplication *app = self.sharedApplication;
-    [app setStatusBarHidden:self.oldStatusBarHiddenStatus withAnimation:UIStatusBarAnimationNone];
+- (void)setHideCloseButton:(BOOL)hideCloseButton
+{
+    _hideCloseButton = hideCloseButton;
+    UINavigationItem *nav = self.topViewController.navigationItem;
+
+    if (hideCloseButton) {
+        nav.rightBarButtonItem = nil;
+    } else {
+        nav.rightBarButtonItem = self.exitButton;
+    }
 }
 
 - (void)closeModal
@@ -98,7 +109,7 @@
     UINavigationItem *nav = viewController.navigationItem;
     nav.hidesBackButton = YES;
 
-    if (nav.rightBarButtonItems == nil) {
+    if (nav.rightBarButtonItems == nil && self.hideCloseButton == NO) {
         nav.rightBarButtonItem = self.exitButton;
     }
 
@@ -124,7 +135,7 @@
 
         CGRect labelFrame = label.bounds;
         CGFloat idealWidth = CGRectGetWidth(labelFrame) + xOffset;
-        CGFloat max = CGRectGetWidth(navigationController.view.bounds) - (rightButtonsCount * 48) - ((rightButtonsCount - 1) * 10);
+        CGFloat max = CGRectGetWidth(navigationController.view.bounds) - (rightButtonsCount * 48) - ((rightButtonsCount - 1) * 10) - 20;
 
         label.frame = CGRectMake(xOffset, 0, MIN(idealWidth, max), 20);
         UIView *titleMarginWrapper = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, {MIN(idealWidth, max), CGRectGetHeight(labelFrame)}}];
@@ -137,6 +148,10 @@
 
         [navBar hideNavigationBarShadow:true];
     }
+
+    // Sets the background view shown behind us (but visible for 1pt).
+    // See similar work in ARSerifNavigationBar's -layoutSubviews.
+    self.view.superview.backgroundColor = [UIColor artsyGraySemibold];
 }
 
 - (BOOL)wantsFullScreenLayout
@@ -196,6 +211,17 @@
         [self verticallyCenterView:self.topItem.leftBarButtonItems];
         [self verticallyCenterView:self.topItem.rightBarButtonItems];
     }
+
+    [self nudgeViews:self.topItem.rightBarButtonItems horizontally:10];
+
+    // This is a total hack.
+    // UIKit inserts a view behind us which, when we're presented in the left side of a split view controller,
+    // has a single column pixel visible to our right.
+    [self.superview.superview.subviews each:^(UIView *object) {
+        if ([NSStringFromClass([object class]) isEqualToString:@"UIView"]) {
+            object.backgroundColor = [UIColor artsyGraySemibold];
+        }
+    }];
 }
 
 - (void)verticallyCenterView:(id)viewOrArray
@@ -218,6 +244,13 @@
     CGRect newFrame = viewToCenter.frame;
     newFrame.origin.y = roundf(barMidpoint - viewMidpoint);
     viewToCenter.frame = newFrame;
+}
+
+- (void)nudgeViews:(NSArray *)buttons horizontally:(CGFloat)offset
+{
+    for (UIBarButtonItem *button in buttons) {
+        button.customView.frame = CGRectOffset(button.customView.frame, offset, 0);
+    }
 }
 
 - (void)hideNavigationBarShadow:(BOOL)hide

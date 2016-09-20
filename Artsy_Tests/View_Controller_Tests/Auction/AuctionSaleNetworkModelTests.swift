@@ -19,7 +19,7 @@ class AuctionSaleNetworkModelSpec: QuickSpec {
 
             var sale: Sale?
             waitUntil { done in
-                subject.fetchSale(saleID) { result in
+                subject.fetchSale(saleID).subscribe { result in
                     if case .Success(let s) = result { sale = s }
                     done()
                 }
@@ -34,7 +34,7 @@ class AuctionSaleNetworkModelSpec: QuickSpec {
             let subject = AuctionSaleNetworkModel()
 
             waitUntil { done in
-                subject.fetchSale(saleID) { result in
+                subject.fetchSale(saleID).subscribe { result in
                     done()
                 }
             }
