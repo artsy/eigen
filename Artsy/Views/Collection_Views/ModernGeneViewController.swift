@@ -24,28 +24,25 @@ class ModernGeneViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         return nil
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
         ar_presentIndeterminateLoadingIndicatorAnimated(ARPerformWorkAsynchronously.boolValue)
-        
         networkModel.getGene { [weak self] viewModel in
             self?.viewModel = viewModel
-            self?.setupSubviews()
+            self?.setAr_userActivityEntity(viewModel.userActivityEntity)
         }
     }
     
     func setupSubviews() {
-        guard viewModel == viewModel else { return; }
-                
         headerStack = ORStackView()
         headerStack.bottomMarginHeight = 20
         
         headerStack.addPageTitleWithString(viewModel.displayName)
         headerStack.addWhiteSpaceWithHeight("20")
         
-        if self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Regular {
+        if traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Regular {
             geneDescriptionView = ARTextView()
         } else {
             let descriptionView = ARCollapsableTextView()
@@ -73,8 +70,16 @@ class ModernGeneViewController: UIViewController {
         headerStack.layoutIfNeeded()
         view.setNeedsLayout()
         view.layoutIfNeeded()
-
     }
+
+    override func shouldAutorotate() -> Bool {
+        return traitDependentAutorotateSupport
+    }
+
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return traitDependentSupportedInterfaceOrientations
+    }
+
 }
 
 private typealias TextViewCallbacks = ModernGeneViewController

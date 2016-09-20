@@ -28,7 +28,7 @@ class GeneViewModel: NSObject {
         return [ "gene" : gene.geneID, "type" : "gene" ]
     }
 
-    var userActivityEntity: Gene {
+    var userActivityEntity: ARSpotlightMetadataProvider {
         return gene
     }
 }
