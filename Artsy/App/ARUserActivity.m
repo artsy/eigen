@@ -90,7 +90,7 @@ NSString *const ARUserActivityTypeSale = @"net.artsy.artsy.sale";
                 if (error) { return; }
                 MKMapItem *closest = response.mapItems.firstObject;
 
-                // Set the mapItem dynamically, so we can use Xcode 7
+                // Set the mapItem dynamically, so we can use Xcode 7 with the iOS9 SDK
                 NSMethodSignature *setMapItemSignature = [activity.class instanceMethodSignatureForSelector:@selector(setMapItem:)];
                 NSInvocation *setMapItemInvocation = [NSInvocation invocationWithMethodSignature:setMapItemSignature];
                 [setMapItemInvocation setSelector:@selector(setMapItem:)];
