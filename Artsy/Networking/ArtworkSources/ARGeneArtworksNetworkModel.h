@@ -9,7 +9,7 @@
 - (id)initWithGene:(Gene *)gene;
 - (id)initWithGeneID:(NSString *)geneID;
 
-- (void)viewModel:(void (^)(GeneViewModel *viewModel))success;
+- (void)getGene:(void (^)(GeneViewModel *viewModel))success;
 
 - (void)getNextArtworkPage:(void (^)(NSArray *artworks))success;
 

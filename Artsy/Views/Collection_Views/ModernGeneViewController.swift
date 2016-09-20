@@ -28,13 +28,12 @@ class ModernGeneViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.ar_presentIndeterminateLoadingIndicatorAnimated(ARPerformWorkAsynchronously.boolValue)
+        ar_presentIndeterminateLoadingIndicatorAnimated(ARPerformWorkAsynchronously.boolValue)
         
-//         suggestions for error handling anyone?
-        self.networkModel.viewModel({ [weak self] viewModel in
+        networkModel.getGene { [weak self] viewModel in
             self?.viewModel = viewModel
             self?.setupSubviews()
-        })
+        }
     }
     
     func setupSubviews() {
@@ -49,15 +48,18 @@ class ModernGeneViewController: UIViewController {
         if self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Regular {
             geneDescriptionView = ARTextView()
         } else {
-            geneDescriptionView = ARCollapsableTextView().then {
-                $0.swiftExpansionBlock = {(textView: ARCollapsableTextView!) in self.viewWillLayoutSubviews()}
+            let descriptionView = ARCollapsableTextView()
+            descriptionView.expansionBlock = { [weak self] textView in
+                self?.viewWillLayoutSubviews()
             }
+            geneDescriptionView = descriptionView
         }
+
         geneDescriptionView.viewControllerDelegate = self
         headerStack.addSubview(geneDescriptionView, withTopMargin: "20", sideMargin: "40")
         
         if viewModel.geneHasDescription {
-            geneDescriptionView.setMarkdownString(self.viewModel.geneDescription)
+            geneDescriptionView.setMarkdownString(viewModel.geneDescription)
         }
         
         artworksViewController = AREmbeddedModelsViewController()
@@ -90,7 +92,4 @@ extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
     func embeddedModelsViewController(controller: AREmbeddedModelsViewController!, shouldPresentViewController viewController: UIViewController!) {
         navigationController?.pushViewController(viewController, animated: true)
     }
-
 }
-
-

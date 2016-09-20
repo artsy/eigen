@@ -6,10 +6,7 @@ class GeneViewModel: NSObject {
     init(gene: Gene) {
         self.gene = gene
     }
-}
 
-
-extension GeneViewModel {
     var geneHasDescription: Bool {
         return gene.geneDescription.characters.count > 0
     }
@@ -30,8 +27,7 @@ extension GeneViewModel {
         guard gene == gene else { return nil }
         return [ "gene" : gene.geneID, "type" : "gene" ]
     }
-    
-    // for spotlight; could use some feedback on how best to deal with this one
+
     var userActivityEntity: Gene {
         return gene
     }
