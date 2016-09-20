@@ -256,9 +256,7 @@ describe(@"navigation", ^{
             NSDictionary *menuToPaths = @{
                 @(ARTopTabControllerIndexFeed): @"/",
                 @(ARTopTabControllerIndexBrowse): @"/browse",
-                @(ARTopTabControllerIndexMagazine): @"/articles",
                 @(ARTopTabControllerIndexFavorites): @"/favorites",
-                @(ARTopTabControllerIndexShows): @"/shows",
                 @(ARTopTabControllerIndexNotifications): @"/works-for-you",
             };
 
