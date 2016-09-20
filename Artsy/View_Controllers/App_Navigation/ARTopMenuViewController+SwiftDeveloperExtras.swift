@@ -22,8 +22,5 @@ extension ARTopMenuViewController {
 
     func runSwiftDeveloperExtras() {
         // run swift code here at startup
-        
-        let viewController = ARSwitchBoard.sharedInstance().loadPath("gene/political");
-        self.pushViewController(viewController)
     }
 }
