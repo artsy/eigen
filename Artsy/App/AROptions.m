@@ -5,6 +5,7 @@ NSString *const AROptionsUseVCR = @"Use offline recording";
 NSString *const AROptionsSettingsMenu = @"Enable user settings";
 NSString *const AROptionsTappingPartnerSendsToPartner = @"Partner name in feed goes to partner";
 NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScreen";
+NSString *const AROptionsUseModernGeneVC = @"Use ModernGeneViewController";
 NSString *const AROptionsDisableNativeLiveAuctions = @"Disable native live auctions";
 NSString *const AROptionsStagingReactEnv = @"Use Staging React ENV";
 
@@ -17,6 +18,7 @@ NSString *const AROptionsStagingReactEnv = @"Use Staging React ENV";
         AROptionsUseVCR,
         AROptionsSettingsMenu,
         AROptionsTappingPartnerSendsToPartner,
+        AROptionsUseModernGeneVC,
         AROptionsDisableNativeLiveAuctions,
     ];
 }

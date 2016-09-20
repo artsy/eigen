@@ -7,6 +7,7 @@ extern NSString *const AROptionsUseVCR;
 extern NSString *const AROptionsSettingsMenu;
 extern NSString *const AROptionsTappingPartnerSendsToPartner;
 extern NSString *const AROptionsShowAnalyticsOnScreen;
+extern NSString *const AROptionsUseModernGeneVC;
 extern NSString *const AROptionsDisableNativeLiveAuctions;
 extern NSString *const AROptionsStagingReactEnv;
 

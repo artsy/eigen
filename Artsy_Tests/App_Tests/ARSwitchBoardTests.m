@@ -22,7 +22,7 @@
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARMutableLinkViewController.h"
 #import <Emission/ARArtistComponentViewController.h>
-
+#import "Artsy-Swift.h"
 
 @interface ARSwitchBoard (Tests)
 - (NSURL *)resolveRelativeUrl:(NSString *)path;
@@ -328,6 +328,16 @@ describe(@"ARSwitchboard", ^{
             expect(subject).to.beAKindOf(ARGeneViewController.class);
         });
 
+        it(@"routes modern genes when using the dev option", ^{
+            BOOL originalModernGene = [AROptions boolForOption:AROptionsUseModernGeneVC];
+            [AROptions setBool:YES forOption:AROptionsUseModernGeneVC];
+
+            id subject = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/gene/surrealism"] fair:nil];
+            expect(subject).to.beAKindOf(ModernGeneViewController.class);
+
+            [AROptions setBool:originalModernGene forOption:AROptionsUseModernGeneVC];
+        });
+
         it(@"routes auctions", ^{
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
@@ -355,9 +365,7 @@ describe(@"ARSwitchboard", ^{
             id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net/live_auction"]];
             NSString *classString = NSStringFromClass([subject class]);
             expect(classString).to.contain(@"SerifModalWeb");
-
         });
-
 
         it(@"falls back to web views when websocket becomes outdated", ^{
             switchboard = [[ARSwitchBoard alloc] init];

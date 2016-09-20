@@ -123,16 +123,15 @@
 #pragma mark -
 #pragma mark Genes
 
-- (ARGeneViewController *)loadGene:(Gene *)gene
+- (UIViewController *)loadGene:(Gene *)gene
 {
-    ARGeneViewController *viewController = [[ARGeneViewController alloc] initWithGene:gene];
-    return viewController;
+    return [self loadGeneWithID:gene.geneID];
 }
 
 
-- (ARGeneViewController *)loadGeneWithID:(NSString *)geneID
+- (UIViewController *)loadGeneWithID:(NSString *)geneID
 {
-    ARGeneViewController *viewController = [[ARGeneViewController alloc] initWithGeneID:geneID];
+    UIViewController *viewController = [AROptions boolForOption:AROptionsUseModernGeneVC] ? [[ModernGeneViewController alloc] initWithGeneID:geneID] : [[ARGeneViewController alloc] initWithGeneID:geneID];
     return viewController;
 }
 
