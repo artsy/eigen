@@ -19,7 +19,9 @@
 #import <Extraction/ARSpinner.h>
 #import <SAMKeychain/SAMKeychain.h>
 
+#ifdef DEPLOY
 #import <AppHub/AppHub.h>
+#endif
 
 // The slug of the artist to show as the root artist from the component selection list.
 //
@@ -73,9 +75,11 @@ randomBOOL(void)
   self.window.rootViewController = self.navigationController;
   [self.window makeKeyAndVisible];
 
+#ifdef DEPLOY
   // [AppHub setLogLevel: AHLogLevelDebug];
   [AppHub setApplicationID: @"Z6IwqK52JBXrKLI4kpvJ"];
   [[AppHub buildManager] setDebugBuildsEnabled:YES];
+#endif
 
   NSString *userID = [SAMKeychain accountsForService:KEYCHAIN_SERVICE][0][kSAMKeychainAccountKey];
 
@@ -153,7 +157,11 @@ randomBOOL(void)
             NSParameterAssert(userID);
             NSParameterAssert(accessToken);
 
-            [SAMKeychain setPassword:accessToken forService:KEYCHAIN_SERVICE account:userID];
+            NSError *error = nil;
+            [SAMKeychain setPassword:accessToken forService:KEYCHAIN_SERVICE account:userID error:&error];
+            if (error) {
+              NSLog(@"%@", error);
+            }
 
             [self.authenticationSpinnerController dismissViewControllerAnimated:YES completion:nil];
             [self setupEmissionWithUserID:userID accessToken:accessToken];
@@ -183,8 +191,12 @@ randomBOOL(void)
                                     packagerURL:packagerURL
                           useStagingEnvironment:staging];
 #else
+#ifdef DEPLOY
   AHBuild *build = [[AppHub buildManager] currentBuild];
   NSURL *jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
+#else
+  NSURL *jsCodeLocation = nil;
+#endif
   if (!jsCodeLocation) {
     NSBundle *emissionBundle = [NSBundle bundleForClass:AREmission.class];
     jsCodeLocation = [emissionBundle URLForResource:@"Emission" withExtension:@"js"];
