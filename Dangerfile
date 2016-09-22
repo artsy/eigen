@@ -50,7 +50,7 @@ begin
     fail "Release #{release['version']} does not have a date" unless release["date"]
   end
 
-  # Ensure that our version number is consitant with the upcoming version
+  # Ensure that our version number is consistent with the upcoming version
   upcoming_version = readme_data["upcoming"]["version"]
   current_version = `/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" Artsy/App_Resources/Artsy-Info.plist`.strip
   fail("You need to set the App's plist version to #{upcoming_version}") if current_version != upcoming_version

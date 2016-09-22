@@ -24,7 +24,7 @@ Want to get the app running as an OSS project? Run this in your shell:
 git clone https://github.com/artsy/eigen.git
 cd eigen
 gem install bundler
-bundle install --without development distribution deployment
+bundle install --without development distribution
 make oss
 bundle exec pod install
 open Artsy.xcworkspace
