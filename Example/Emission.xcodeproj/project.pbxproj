@@ -65,8 +65,10 @@
 		7F3A1FEFE0AEAB158547A0BB /* Pods-Emission.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.release.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.release.xcconfig"; sourceTree = "<group>"; };
 		822BF881E9F1716840710C01 /* Pods-Emission.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.debug.xcconfig"; sourceTree = "<group>"; };
 		8AE50579AAAEFF0316B49796 /* Pods_Emission_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Emission_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9EDBCE5F6E1D1A6CEA0264A /* Pods-Emission.deploy.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.deploy.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.deploy.xcconfig"; sourceTree = "<group>"; };
 		BD6A42932C7B5D57AE022D1A /* Emission.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Emission.podspec; path = ../Emission.podspec; sourceTree = "<group>"; };
 		DB1BB078CB1708CE8106DA15 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		E8B24D636FF40683E534C17A /* Pods-EmissionTests.deploy.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmissionTests.deploy.xcconfig"; path = "Pods/Target Support Files/Pods-EmissionTests/Pods-EmissionTests.deploy.xcconfig"; sourceTree = "<group>"; };
 		EC7AE6B33EE1261C1E96D2FC /* Pods-EmissionTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmissionTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EmissionTests/Pods-EmissionTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -211,6 +213,8 @@
 				7F3A1FEFE0AEAB158547A0BB /* Pods-Emission.release.xcconfig */,
 				EC7AE6B33EE1261C1E96D2FC /* Pods-EmissionTests.debug.xcconfig */,
 				186D8F421D3B6F269A41D65F /* Pods-EmissionTests.release.xcconfig */,
+				A9EDBCE5F6E1D1A6CEA0264A /* Pods-Emission.deploy.xcconfig */,
+				E8B24D636FF40683E534C17A /* Pods-EmissionTests.deploy.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -472,7 +476,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		A8F7E39266D829B493F51B56 /* 📦 Embed Pods Frameworks */ = {
@@ -502,7 +506,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		B6DE56647444807EBDA331C0 /* 📦 Copy Pods Resources */ = {
@@ -748,7 +752,7 @@
 		};
 		51D5E9111D92814800C74594 /* Deploy */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7F3A1FEFE0AEAB158547A0BB /* Pods-Emission.release.xcconfig */;
+			baseConfigurationReference = A9EDBCE5F6E1D1A6CEA0264A /* Pods-Emission.deploy.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
@@ -772,7 +776,7 @@
 		};
 		51D5E9121D92814800C74594 /* Deploy */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 186D8F421D3B6F269A41D65F /* Pods-EmissionTests.release.xcconfig */;
+			baseConfigurationReference = E8B24D636FF40683E534C17A /* Pods-EmissionTests.deploy.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = EmissionTests/Info.plist;
