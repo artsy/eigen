@@ -4,7 +4,7 @@
   "description": "Artsy React(Native) components.",
   "main": "index.ios.js",
   "scripts": {
-    "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map",
+    "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -r Pod/Assets/assets/node_modules",
     "ci": "npm run-script lint && npm run-script flow && npm test",
     "clean-example": "cd Example && xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",
     "flow": "flow",
