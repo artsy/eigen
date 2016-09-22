@@ -58,11 +58,13 @@ certs:
 	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
 	bundle exec match appstore
 
-distribute:  change_version_to_date set_git_properties setup_fastlane
-	fastlane ship_beta
+distribute:  change_version_to_date set_git_properties setup_fastlane_env
+	bundle exec fastlane ship_beta
 
-setup_fastlane:
-	gem install cocoapods fastlane pilot gym deliver
+setup_fastlane_env:
+	rm Gemfile.lock Gemfile
+	cp fastlane/Gemfile .
+	bundle install
 
 ### General Xcode tooling
 
