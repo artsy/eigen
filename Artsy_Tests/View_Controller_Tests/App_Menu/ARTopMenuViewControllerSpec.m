@@ -205,21 +205,6 @@ describe(@"navigation", ^{
            tabIndex = ARTopTabControllerIndexFavorites;
        });
 
-       describe(@"logged out", ^{
-           __block id userMock;
-           before(^{
-               userMock = [OCMockObject niceMockForClass:[User class]];
-           });
-
-           after(^{
-               [userMock stopMocking];
-           });
-
-           it(@"is not selectable", ^{
-               expect([sut tabContentView:sut.tabContentView shouldChangeToIndex:tabIndex]).to.beFalsy();
-           });
-       });
-
        describe(@"logged in", ^{
            before(^{
                [ARUserManager stubAndLoginWithUsername];

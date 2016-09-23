@@ -79,10 +79,6 @@ describe(@"a loaded view controller", ^{
     
     describe(@"that has appeared", ^{
         
-        it(@"has a valid snapshot", ^{
-            expect(_fairGuideVC).to.haveValidSnapshot();
-        });
-        
         pending(@"after uncollapsing map, it has a valid snapshot", ^{ // TODO: fix this
             [_fairGuideVC didReceiveTap:nil];
             expect(_fairGuideVC).to.haveValidSnapshot();
