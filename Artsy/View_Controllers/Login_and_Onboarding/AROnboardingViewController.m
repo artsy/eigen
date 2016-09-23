@@ -339,11 +339,8 @@
 
     if (createdAccount) {
         [self applyPersonalizationToUser];
-        [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount];
-    } else {
-        self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount];
     }
+    [[ARAppDelegate sharedInstance] finishOnboarding:self animated:createdAccount];
 }
 
 - (void)showTermsAndConditions

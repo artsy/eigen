@@ -2,7 +2,8 @@
 
 #import "ARFeedTimeline.h"
 #import "ARBrowseViewController.h"
-#import "ARSimpleShowFeedViewController.h"
+#import <Emission/AREmission.h>
+#import <Emission/ARHomeComponentViewController.h>
 #import "ARFavoritesViewController.h"
 #import "ARHeroUnitsNetworkModel.h"
 #import "ARHeroUnitViewController.h"
@@ -14,6 +15,7 @@
 #import "ARAppBackgroundFetchDelegate.h"
 #import "ARWorksForYouReloadingHostViewController.h"
 #import "AROptions.h"
+#import "ARSwitchBoard.h"
 
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -60,13 +62,8 @@ WebViewNavigationControllerWithPath(NSString *path)
         _badgeCounts[i] = 0;
     }
 
-    NSString *filePath = [ARAppBackgroundFetchDelegate pathForDownloadedShowFeed];
-    ARShowFeed *showFeed = [[ARShowFeed alloc] initWithFileAtPath:filePath];
-    ARFeedTimeline *showFeedTimeline = [[ARFeedTimeline alloc] initWithFeed:showFeed];
-    _showFeedViewController = [[ARSimpleShowFeedViewController alloc] initWithFeedTimeline:showFeedTimeline];
-    _showFeedViewController.heroUnitVC.heroUnitNetworkModel = [[ARHeroUnitsNetworkModel alloc] init];
-
-    _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:_showFeedViewController];
+    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] init];
+    _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
 
     _showsNavigationController = WebViewNavigationControllerWithPath(@"/shows");
 
@@ -82,29 +79,6 @@ WebViewNavigationControllerWithPath(NSString *path)
     return self;
 }
 
-- (void)prefetchBrowse
-{
-    [self.browseViewController.networkModel getBrowseFeaturedLinks:^(NSArray *links) {
-        NSArray *urls = [links map:^(FeaturedLink * link){
-            return link.largeImageURL;
-        }];
-        SDWebImagePrefetcher *browsePrefetcher = [[SDWebImagePrefetcher alloc] init];
-        [browsePrefetcher prefetchURLs:urls];
-    } failure:nil];
-}
-
-- (void)prefetchHeroUnits
-{
-    [self.showFeedViewController.heroUnitVC.heroUnitNetworkModel getHeroUnitsWithSuccess:^(NSArray *heroUnits) {
-        NSArray *urls = [heroUnits map:^id(SiteHeroUnit *unit) {
-            return unit.preferredImageURL;
-        }];
-
-        SDWebImagePrefetcher *heroUnitPrefetcher = [[SDWebImagePrefetcher alloc] init];
-        [heroUnitPrefetcher prefetchURLs:urls];
-
-    } failure:nil];
-}
 
 - (ARNavigationController *)favoritesNavigationController
 {

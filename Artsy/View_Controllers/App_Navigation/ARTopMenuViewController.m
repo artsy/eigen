@@ -173,15 +173,6 @@ static const CGFloat ARMenuButtonDimension = 46;
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-        [self.navigationDataSource prefetchBrowse];
-        [self.navigationDataSource prefetchHeroUnits];
-    }];
-}
-
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
