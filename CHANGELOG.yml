@@ -2,41 +2,6 @@ upcoming:
     version: 2.6.4
     details: Auctions Fixes?
 
-  dev:
-    - Update API to exclude artists and use /me/suggested - maxim
-    - Push notification on artist follow added - maxim
-    - Pre push notification prompt added - maxim
-    - Analytics added for onboarding - maxim
-    - Onboarding budget and navigation flow - maxim
-    - Onboarding login and sign up view controllers - maxim
-    - Onboarding artist search and related suggestions - maxim
-    - Onboarding sequencing for personalisation questionnaire - maxim
-    - Updates for Xcode 7.3. - ash
-    - Onboarding splash screen - maxim
-    - New state reconciliation for live auctions.
-    - CocoaPods now is v1.0b. - orta
-
-    - Removed artwork auction results - sarah
-    - WorksForYouVC reloads content upon network failure if you leave and then return to its tab - sarah
-    - Removed updateConstraintsIfNeeded from ARNavigationButton to solve autolayout bugs in home screen tableview - sarah
-    - Artwork view hides Contact button for uninquireable works - sarah
-    - Removed the Ask a Specialist button from artwork view - sarah
-    - Added a check in danger for ARTopMenuViewController+SwiftDeveloperExtras - sarah
-    - Generalized the RefineViewController - sarah
-    - Updates for Xcode 7.3. - ash
-    - CocoaPods now is v1.0b.8 - orta
-    - All UIViewController routing goes through ARTopMenuVC instead of self.navigationController - orta
-    - New state reconciliation for live auctions. -ash
-    - Scaffolding for sending live auction events. - ash
-    - Started the Live Auction Bidding Interface - orta
-    - Handles bidding in an auction with stubbed API interfaces. - orta
-    - Basic metaphysics access for live sale static data. - ash
-    - Lot metadata can toggle between a short artwork blurb and full metadata - orta
-    - All cent values are handled by UInt64 in Live Auction context - orta
-    - Present the Live AuctionVC in a modal - orta
-    - Support splitting between lot list and lots on iPad - orta
-    - Updates to Interstellar v2. - ash
-    - Moves to Interstellar v2 unsubscription mechanism where needed. - ash
     dev:
       infrastructure:
         - Fixes various memory leaks in live. - ash
@@ -44,6 +9,14 @@ upcoming:
         - Admins can choose to use the lastest build of our React code - orta
         - Adds infrastructure for a new Gene View Controller based on Auctions - orta
     user_facing:
+      - Update API to exclude artists and use /me/suggested - maxim
+      - Push notification on artist follow added - maxim
+      - Pre push notification prompt added - maxim
+      - Analytics added for onboarding - maxim
+      - Onboarding budget and navigation flow - maxim
+      - Onboarding login and sign up view controllers - maxim
+      - Onboarding artist search and related suggestions - maxim
+      - Onboarding sequencing for personalisation questionnaire - maxim
       - iPad Pro gets full screen lot thumbnails during Live Auctions - orta
       - Fallback to higher or lower available artwork image. - alloy
       - Fixes problem where users looking at a closed live auction would be directed to the live interface. - ash
