@@ -107,7 +107,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
 - (BOOL)hasExistingAccount
 {
-    return (self.currentUser && [self hasValidAuthenticationToken]) || [self hasValidXAppToken];
+    return (self.currentUser && [self hasValidAuthenticationToken]);
 }
 
 - (BOOL)hasValidAuthenticationToken

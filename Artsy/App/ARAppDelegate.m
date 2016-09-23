@@ -161,15 +161,11 @@ static ARAppDelegate *_sharedInstance = nil;
         // Sync clock with server
         [ARSystemTime sync];
 
-        // Register for push notifications as early as possible, but not on top of the onboarding view, in which case it
-        // will be called from the -finishOnboardingAnimated: callback.
-        //
-        // In case the user has not signed-in yet, this will register as an anonymous device on the Artsy API. Later on,
-        // when the user does sign-in, this will be ran again and the device will be associated with the user account.
+        // In case the user has not signed-in yet, this will register as an anonymous device on the Artsy API.
+        // This way we can use the Artsy API for onboarding searches and suggestsions
+        // From there onwards, once the user account is created, technically everything should be done with user authentication.
 
         if (!shouldShowOnboarding) {
-            [self.remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextLaunch];
-            
             if ([User currentUser]) {
                 [ARSpotlight indexAllUsersFavorites];
             };
@@ -237,12 +233,12 @@ static ARAppDelegate *_sharedInstance = nil;
     font = [UIFont smallCapsSerifFontWithSize:12];
 }
 
-- (void)finishOnboardingAnimated:(BOOL)animated didCancel:(BOOL)cancelledSignIn;
+- (void)finishOnboardingAnimated:(BOOL)animated
 {
     // We now have a proper Artsy user, not just a local temporary ID
     // So we have to re-identify the analytics user
     // to ensure we start sending the Gravity ID as well as the local temporary ID
-    
+
     [ARUserManager identifyAnalyticsUser];
 
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
@@ -253,15 +249,13 @@ static ARAppDelegate *_sharedInstance = nil;
         [topVC.presentedViewController dismissViewControllerAnimated:animated completion:nil];
     }
 
-    if (!cancelledSignIn) {
-        ar_dispatch_main_queue(^{
-            [self.remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
-            if ([User currentUser]) {
-                [self.remoteNotificationsDelegate fetchNotificationCounts];
-                [ARSpotlight indexAllUsersFavorites];
-            }
-        });
-    }
+    ar_dispatch_main_queue(^{
+        [self.remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
+        if ([User currentUser]) {
+            [self.remoteNotificationsDelegate fetchNotificationCounts];
+            [ARSpotlight indexAllUsersFavorites];
+        }
+    });
 }
 
 - (void)showOnboardingWithState:(enum ARInitialOnboardingState)state
