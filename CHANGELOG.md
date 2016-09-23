@@ -1,4 +1,4 @@
-### Master
+### 1.1.0-beta.2
 
 - Adds an initial Gene view - orta
 - Animate inverted button state change - alloy
