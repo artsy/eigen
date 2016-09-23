@@ -129,23 +129,6 @@ static void *ARProgressContext = &ARProgressContext;
     [self hideLoading];
 }
 
-//- (ARTrialContext)trialContextForRequestURL:(NSURL *)requestURL;
-//{
-//    return ARTrialContextNotTrial;
-//}
-
-//- (void)startLoginOrSignup:(NSURL *)requestURL;
-//{
-//    [self startLoginOrSignupWithTrialContext:[self trialContextForRequestURL:requestURL]];
-//}
-//
-//- (void)startLoginOrSignupWithTrialContext:(ARTrialContext)context;
-//{
-//    [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
-//        [self userDidSignUp];
-//    }];
-//}
-
 // Load a new internal web VC for each link we can do
 
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
@@ -156,15 +139,6 @@ static void *ARProgressContext = &ARProgressContext;
     // This is to take into account AJAX requests which are not
     // strictly classed as a WKNavigationTypeLinkActivated
     // as the user may not have _directly_ loaded it
-
-    BOOL urlIsLoginOrSignUp = [URL.path isEqual:@"/log_in"] || [URL.path isEqual:@"/sign_up"];
-    if ([ARRouter isInternalURL:URL] && (urlIsLoginOrSignUp)) {
-//        if ([User isLocalTemporaryUser]) {
-//            [self startLoginOrSignup:URL];
-//        }
-        ARActionLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
-        return WKNavigationActionPolicyCancel;
-    }
 
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         if ([self.shareValidator isSocialSharingURL:URL]) {
@@ -192,12 +166,6 @@ static void *ARProgressContext = &ARProgressContext;
 }
 
 // A full reload, not just a webView.reload, which only refreshes the view without re-requesting data.
-
-- (void)userDidSignUp
-{
-    NSURL *url = self.webView.URL ?: self.initialURL;
-    [self.webView loadRequest:[self requestWithURL:url]];
-}
 
 - (NSURLRequest *)requestWithURL:(NSURL *)URL
 {

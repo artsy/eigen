@@ -70,15 +70,6 @@
             [self registrationHasBeenConfirmed];
             return WKNavigationActionPolicyCancel;
         }
-        
-        // TODO MAXIM URGENT: Do we put them in general onboarding? Or keep them in Force?
-//        if ([UIDevice isPad] && [User isLocalTemporaryUser]) {
-//            // On Force when tapping the ‘register to bid’ button.
-//            if ([URL.path isEqualToString:[NSString stringWithFormat:@"/auction-registration/%@", self.auctionID]]) {
-//                [self startLoginOrSignupWithTrialContext:ARTrialContextAuctionBid];
-//                return WKNavigationActionPolicyCancel;
-//            }
-//        }
     }
     return [super shouldLoadNavigationAction:navigationAction];
 }
