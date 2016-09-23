@@ -4,6 +4,7 @@
 - Animate inverted button state change - alloy
 - Do not show follow button on artist view until current status is retrieved - alloy
 - Optimistically change state of follow button on artist view - alloy
+- Bundle assets into a dir that can be included in release builds - alloy
 - Remove typings from the npm `package.json` as the recommendation is a global install - orta
 - Make follow artist button in artist rail work and replace with a new suggestion based on that artist - alloy
 - Home now asks for maximum of 99 artwork rails - sarah
