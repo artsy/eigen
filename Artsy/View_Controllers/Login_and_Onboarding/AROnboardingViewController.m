@@ -333,21 +333,16 @@
     }
 }
 
-- (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount;
-{
-    [self dismissOnboardingWithVoidAnimation:createdAccount didCancel:NO];
-}
-
-- (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount didCancel:(BOOL)cancelledSignIn;
+- (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount
 {
     // send them off into the app
 
     if (createdAccount) {
         [self applyPersonalizationToUser];
-        [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount didCancel:cancelledSignIn];
+        [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount];
     } else {
         self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount didCancel:cancelledSignIn];
+        [[ARAppDelegate sharedInstance] finishOnboardingAnimated:createdAccount];
     }
 }
 

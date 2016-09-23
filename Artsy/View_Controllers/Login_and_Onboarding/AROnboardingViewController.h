@@ -52,8 +52,6 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 - (void)showTermsAndConditions;
 - (void)showPrivacyPolicy;
 
-// Technically one can't cancel the onboarding currently
-- (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount didCancel:(BOOL)cancelledSignIn;
 - (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount;
 
 @end
