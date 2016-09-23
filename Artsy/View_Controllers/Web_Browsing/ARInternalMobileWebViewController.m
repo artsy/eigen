@@ -129,22 +129,22 @@ static void *ARProgressContext = &ARProgressContext;
     [self hideLoading];
 }
 
-- (ARTrialContext)trialContextForRequestURL:(NSURL *)requestURL;
-{
-    return ARTrialContextNotTrial;
-}
+//- (ARTrialContext)trialContextForRequestURL:(NSURL *)requestURL;
+//{
+//    return ARTrialContextNotTrial;
+//}
 
-- (void)startLoginOrSignup:(NSURL *)requestURL;
-{
-    [self startLoginOrSignupWithTrialContext:[self trialContextForRequestURL:requestURL]];
-}
-
-- (void)startLoginOrSignupWithTrialContext:(ARTrialContext)context;
-{
-    [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
-        [self userDidSignUp];
-    }];
-}
+//- (void)startLoginOrSignup:(NSURL *)requestURL;
+//{
+//    [self startLoginOrSignupWithTrialContext:[self trialContextForRequestURL:requestURL]];
+//}
+//
+//- (void)startLoginOrSignupWithTrialContext:(ARTrialContext)context;
+//{
+//    [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
+//        [self userDidSignUp];
+//    }];
+//}
 
 // Load a new internal web VC for each link we can do
 
@@ -159,9 +159,9 @@ static void *ARProgressContext = &ARProgressContext;
 
     BOOL urlIsLoginOrSignUp = [URL.path isEqual:@"/log_in"] || [URL.path isEqual:@"/sign_up"];
     if ([ARRouter isInternalURL:URL] && (urlIsLoginOrSignUp)) {
-        if ([User isTrialUser]) {
-            [self startLoginOrSignup:URL];
-        }
+//        if ([User isTrialUser]) {
+//            [self startLoginOrSignup:URL];
+//        }
         ARActionLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
         return WKNavigationActionPolicyCancel;
     }

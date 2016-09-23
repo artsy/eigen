@@ -111,20 +111,6 @@
         [ARAnalytics setupProvider:visualizer];
     }
 
-    if (![[ARUserManager sharedManager] hasExistingAccount]) {
-        // With the new onboarding, we no longer collect data on trial users
-        // because there is no option to create a trial user account
-        
-        // TODO: decide what to do with the papertrail file
-        
-        // This data is only meant for future sign-ups, so trial users only.
-        
-//        NSString *documentsDir = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
-//        NSURL *papertrailURL = [NSURL fileURLWithPath:[documentsDir stringByAppendingPathComponent:@"papertrail.json"]];
-//        ARAnalyticsPapertrail *papertrail = [[ARAnalyticsPapertrail alloc] initWithDestinationURL:papertrailURL];
-//        [ARAnalytics setupProvider:papertrail];
-    }
-
 #if DEBUG
     BITHockeyManager *hockey = [BITHockeyManager sharedHockeyManager];
     hockey.disableUpdateManager = YES;
@@ -1118,22 +1104,6 @@
                                 ARButtonWithImage *button = parameters.firstObject;
                                 return @{
                                     @"button_text" : button.title ?: @"",
-                                };
-                            },
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARTrialController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsShowTrialSplash,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(presentTrialWithContext:success:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARTrialController *controller, NSArray *parameters){
-                                enum ARTrialContext context = [parameters.firstObject integerValue];
-                                return @{
-                                    @"context" : [ARTrialController stringForTrialContext:context],
-                                    @"tap_threshold" : @(controller.threshold)
                                 };
                             },
                         }

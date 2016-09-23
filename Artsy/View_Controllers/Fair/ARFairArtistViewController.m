@@ -21,7 +21,6 @@
 #import "User.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARSwitchboard+Eigen.h"
-#import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
 #import "ARAppNotificationsDelegate.h"
 
@@ -231,12 +230,6 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
 - (void)toggleFollowArtist:(id)sender
 {
-    if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtist success:^(BOOL newUser) {
-            [self toggleFollowArtist:sender];
-        }];
-        return;
-    }
     self.followableNetwork.following = !self.followableNetwork.following;
 
     // If we're now following the artist, show push notification prompt if needed

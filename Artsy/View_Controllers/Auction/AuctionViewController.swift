@@ -274,11 +274,12 @@ extension TitleCallbacks: AuctionTitleViewDelegate {
 
     func userDidPressRegister(titleView: AuctionTitleView) {
         let showRegister = {
-            ARTrialController.presentTrialIfNecessaryWithContext(.AuctionRegistration) { created in
-                let registrationPath = "/auction-registration/\(self.saleID)"
-                let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
-                self.navigationController?.pushViewController(viewController, animated: true)
-            }
+            // TODO MAXIM URGENT : find alternative
+//            ARTrialController.presentTrialIfNecessaryWithContext(.AuctionRegistration) { created in
+//                let registrationPath = "/auction-registration/\(self.saleID)"
+//                let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
+//                self.navigationController?.pushViewController(viewController, animated: true)
+//            }
         }
         if let _ = presentedViewController {
             dismissViewControllerAnimated(true, completion: showRegister)

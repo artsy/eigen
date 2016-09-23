@@ -51,7 +51,7 @@
 {
     NSString *geminiStringURL = @"https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=50&height=50&quality=%i&src=%@";
     NSString *completeURL = [NSString stringWithFormat:geminiStringURL, [[UIScreen mainScreen] scale], self.urlFormatString];
-
+    
     return [NSURL URLWithString:completeURL];
 }
 
@@ -120,11 +120,6 @@
 
 - (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure
 {
-    if ([User isTrialUser]) {
-        success(ARHeartStatusNo);
-        return;
-    }
-
     __weak typeof(self) wself = self;
     [ArtsyAPI checkFavoriteStatusForGene:self success:^(BOOL result) {
         __strong typeof (wself) sself = wself;

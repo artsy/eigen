@@ -98,11 +98,6 @@
 
 - (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure
 {
-    if ([User isTrialUser]) {
-        success(ARHeartStatusNo);
-        return;
-    }
-
     __weak typeof(self) wself = self;
     [ArtsyAPI checkFavoriteStatusForArtist:self success:^(BOOL result) {
         __strong typeof (wself) sself = wself;

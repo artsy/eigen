@@ -3,7 +3,6 @@
 #import "ARUserManager.h"
 #import "Artist.h"
 #import "ArtsyAPI+Following.h"
-#import "ARTrialController.h"
 #import "ARDispatchManager.h"
 #import "ARNetworkErrorManager.h"
 #import "ARSwitchBoard+Eigen.h"
@@ -72,22 +71,13 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
         }
     };
     emission.APIModule.artistFollowStatusAssigner = ^(NSString *artistID, BOOL following, RCTResponseSenderBlock block) {
-        if ([[ARUserManager sharedManager] currentUser] == nil) {
-            // Leave the view state ‘unselected’ until after the user signs in/up.
-            ar_dispatch_main_queue(^{
-                [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtist success:^(BOOL _) {
-                    ArtistSetFollowStatus(artistID, following, block);
-                }];
-            });
-        } else {
-            // TODO: Can’t optimistically change the view state before the request, because a RCTResponseSenderBlock may
-            //       only be invoked once.
-            ArtistSetFollowStatus(artistID, following, block);
-            if (following) {
-                // Ask for push notification permission, if not already
-                ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
-                [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
-            }
+        // TODO: Can’t optimistically change the view state before the request, because a RCTResponseSenderBlock may
+        //       only be invoked once.
+        ArtistSetFollowStatus(artistID, following, block);
+        if (following) {
+            // Ask for push notification permission, if not already
+            ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+            [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
         }
     };
 

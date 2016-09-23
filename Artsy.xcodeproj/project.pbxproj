@@ -82,7 +82,6 @@
 		342F9D3F000632CC30AC5260 /* ARNavigationButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9C3811C6F12C261F04D4 /* ARNavigationButtonsViewController.m */; };
 		342F9D9296B47F66184FA760 /* NSDate+DateRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9175329F0389E644C194 /* NSDate+DateRange.m */; };
 		342F9D9D248E4024524174E8 /* ARFairMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F939F8B8D9AC1A4773325 /* ARFairMapViewController.m */; };
-		342F9DDFA581974195A708D3 /* ARTrialController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F96EF94FE8A32662F8BF1 /* ARTrialController.m */; };
 		342F9E0892E99A2F66657964 /* Artwork+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F93309D1B60C53E2E0732 /* Artwork+Extensions.m */; };
 		342F9F54666BFDFF200E31AE /* UIView+HitTestExpansion.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9F4385F10D19BC94E456 /* UIView+HitTestExpansion.m */; };
 		342F9F5789AD65AD09205030 /* MapFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F93E38025E2D2DA90C6DA /* MapFeature.m */; };
@@ -888,7 +887,6 @@
 		342F969E68B7F84A152937EF /* ARCollapsableTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCollapsableTextView.h; sourceTree = "<group>"; };
 		342F96AD6F2466A26A3152F8 /* ORStackView+ArtsyViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ORStackView+ArtsyViews.h"; sourceTree = "<group>"; };
 		342F96B30465B8B7722DBD1D /* UIImage+ImageFromColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageFromColor.h"; sourceTree = "<group>"; };
-		342F96EF94FE8A32662F8BF1 /* ARTrialController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTrialController.m; sourceTree = "<group>"; };
 		342F972963924EC91C9B5CFD /* ARFollowableButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFollowableButton.h; sourceTree = "<group>"; };
 		342F9737E2E62CEC8B68D181 /* ARFileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFileUtils.h; sourceTree = "<group>"; };
 		342F976360A7DAA65AF7D755 /* MapPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapPoint.m; sourceTree = "<group>"; };
@@ -903,7 +901,6 @@
 		342F98A73E2E1162514B5A24 /* ARScrollNavigationChief.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARScrollNavigationChief.m; sourceTree = "<group>"; };
 		342F994893B9660BEA23C18D /* ARFairViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairViewController.h; sourceTree = "<group>"; };
 		342F995897B0B106E59A39A0 /* ARFairMapAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapAnnotationView.h; sourceTree = "<group>"; };
-		342F9960EEF42063F7494D42 /* ARTrialController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTrialController.h; sourceTree = "<group>"; };
 		342F9983D46712773FC71FC3 /* Fair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fair.h; sourceTree = "<group>"; };
 		342F9A069BB0267F7BF6F260 /* UIView+HitTestExpansion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+HitTestExpansion.h"; sourceTree = "<group>"; };
 		342F9A17225A44AC4BE26303 /* PartnerShowFairLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartnerShowFairLocation.m; sourceTree = "<group>"; };
@@ -2156,8 +2153,6 @@
 				342F9F3E8A0C15DD0DB437D1 /* ARStandardDateFormatter.m */,
 				342F96255EEC90B05A4FF213 /* ARFeedImageLoader.h */,
 				342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */,
-				342F9960EEF42063F7494D42 /* ARTrialController.h */,
-				342F96EF94FE8A32662F8BF1 /* ARTrialController.m */,
 				342F9B088114B9396356A2FC /* ARSplitStackView.h */,
 				342F91131CCE3110E3E44E19 /* ARSplitStackView.m */,
 				3CFB078918EB417F00792024 /* ARSecureTextFieldWithPlaceholder.h */,
@@ -5778,7 +5773,6 @@
 				342F95D6D6422286C9F5A33A /* ARStandardDateFormatter.m in Sources */,
 				342F9061CC93426E7F8579A2 /* ARFeedImageLoader.m in Sources */,
 				342F906FD605E75158D32876 /* ARSharingController.m in Sources */,
-				342F9DDFA581974195A708D3 /* ARTrialController.m in Sources */,
 				342F91E3124D3E5EA18AB301 /* ARSplitStackView.m in Sources */,
 				342F9D9D248E4024524174E8 /* ARFairMapViewController.m in Sources */,
 				342F92E8397ACCA0D2EFF1CB /* MapPoint.m in Sources */,

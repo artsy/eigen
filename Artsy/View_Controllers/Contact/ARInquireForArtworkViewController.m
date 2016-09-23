@@ -401,7 +401,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     _nameEmailForm = nameEmailForm;
 
     UITextField *nameInput = [[UITextField alloc] init];
-    nameInput.text = [ARUserManager sharedManager].trialUserName;
+    nameInput.text = [ARUserManager sharedManager].currentUser.name;
     nameInput.textColor = [UIColor blackColor];
     nameInput.tintColor = [self inputTintColor];
     nameInput.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Your Full Name" attributes:@{
@@ -428,7 +428,7 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 
     UITextField *emailInput = [[UITextField alloc] init];
-    emailInput.text = [ARUserManager sharedManager].trialUserEmail;
+    emailInput.text = [ARUserManager sharedManager].currentUser.email;
     [self setUpEmailValidator];
     // Initial validation of existing trialUseEmail to set initial SEND button state.
     [self.emailValidator validate:emailInput.text];
@@ -855,17 +855,6 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 {
     self.failureTryAgainButton.hidden = NO;
     self.failureDismissButton.hidden = NO;
-}
-
-- (void)nameInputHasChanged:(id)sender
-{
-    [ARUserManager sharedManager].trialUserName = self.nameInput.text;
-}
-
-- (void)emailInputHasChanged:(id)sender
-{
-    [self.emailValidator validate:self.emailInput.text];
-    [ARUserManager sharedManager].trialUserEmail = self.emailInput.text;
 }
 
 - (void)setUpEmailValidator

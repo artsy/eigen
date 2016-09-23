@@ -511,12 +511,6 @@
 
 - (void)getFavoriteStatus:(nullable void (^)(ARHeartStatus status))success failure:(nullable void (^)(NSError *error))failure
 {
-    if ([User isTrialUser]) {
-        _heartStatus = ARHeartStatusNo;
-        success(ARHeartStatusNo);
-        return;
-    }
-
     __weak typeof(self) wself = self;
 
     if (!_favDeferred) {

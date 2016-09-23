@@ -304,11 +304,12 @@ extension LiveAuctionLotSetViewController: AuctionTitleViewDelegate {
     }
 
     func userDidPressRegister(titleView: AuctionTitleView) {
-        ARTrialController.presentTrialIfNecessaryWithContext(.AuctionRegistration) { created in
-            let registrationPath = "/auction-registration/\(self.salesPerson.liveSaleID)"
-            let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
-            self.presentViewController(viewController, animated: true) {}
-        }
+        // TODO MAXIM URGENT: find alternative
+//        ARTrialController.presentTrialIfNecessaryWithContext(.AuctionRegistration) { created in
+//            let registrationPath = "/auction-registration/\(self.salesPerson.liveSaleID)"
+//            let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
+//            self.presentViewController(viewController, animated: true) {}
+//        }
     }
 }
 

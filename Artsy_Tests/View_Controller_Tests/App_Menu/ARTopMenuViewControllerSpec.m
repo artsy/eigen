@@ -5,7 +5,6 @@
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARFairViewController.h"
 #import "ARUserManager+Stubs.h"
-#import "ARTrialController.h"
 #import "AROnboardingViewController.h"
 #import "ARStubbedBrowseNetworkModel.h"
 #import "ARBrowseViewController.h"
@@ -19,12 +18,6 @@
 @property (nonatomic, assign, readonly) NSUInteger *badgeCounts;
 
 @end
-
-
-@interface ARTrialController (Testing)
-- (void)presentTrialWithContext:(enum ARTrialContext)context success:(void (^)(BOOL newUser))success;
-@end
-
 
 @interface ARTopMenuViewController (ExposedForTesting) <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
@@ -216,7 +209,6 @@ describe(@"navigation", ^{
            __block id userMock;
            before(^{
                userMock = [OCMockObject niceMockForClass:[User class]];
-               [[[userMock stub] andReturnValue:@(YES)] isTrialUser];
            });
 
            after(^{
@@ -225,11 +217,6 @@ describe(@"navigation", ^{
 
            it(@"is not selectable", ^{
                expect([sut tabContentView:sut.tabContentView shouldChangeToIndex:tabIndex]).to.beFalsy();
-           });
-
-           it(@"invokes signup popover", ^{
-               id mock = [OCMockObject niceMockForClass:[ARTrialController class]];
-               [[mock expect] presentTrialWithContext:0 success:[OCMArg any]];
            });
        });
 

@@ -190,7 +190,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)registerNewSessionOpened
 {
-    [ARTrialController extendTrial];
     [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
 
     if ([User currentUser]) {
@@ -245,9 +244,7 @@ static ARAppDelegate *_sharedInstance = nil;
     ARTopMenuViewController *topVC = ARTopMenuViewController.sharedController;
     if (topVC.presentedViewController) {
         topVC.presentedViewController.transitioningDelegate = topVC;
-        [topVC.presentedViewController dismissViewControllerAnimated:animated completion:^{
-            [ARTrialController performCompletionNewUser:[ARUserManager didCreateAccountThisSession]];
-        }];
+        [topVC.presentedViewController dismissViewControllerAnimated:animated completion:nil];
     }
 
     if (!cancelledSignIn) {

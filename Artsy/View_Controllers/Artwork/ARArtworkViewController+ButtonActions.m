@@ -26,7 +26,6 @@
 #import "User.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARNetworkErrorManager.h"
-#import "ARTrialController.h"
 #import "ARTopMenuViewController.h"
 #import "ARLogger.h"
 #import "Artsy-Swift.h"
@@ -47,13 +46,6 @@
 
 - (void)tappedArtworkFavorite:(ARHeartButton *)sender
 {
-    if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtwork success:^(BOOL newUser) {
-            [self tappedArtworkFavorite:sender];
-        }];
-        return;
-    }
-
     BOOL hearted = !sender.hearted;
     [sender setHearted:hearted animated:YES];
 
@@ -139,13 +131,6 @@
 
 - (void)tappedBidButton:(UIButton *)button
 {
-    if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextAuctionBid success:^(BOOL newUser) {
-            [self tappedBidButton:button];
-        }];
-        return;
-    }
-
     button.enabled = false;
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
         button.enabled = true;
@@ -183,13 +168,6 @@
 
 - (void)tappedBuyButton
 {
-    if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextArtworkOrder success:^(BOOL newUser) {
-            [self tappedBuyButton];
-        }];
-        return;
-    }
-
     // We currently don't have a UI for a user to select from multiple editions. Instead, send the user
     // to the inquiry form.
     if (self.artwork.hasMultipleEditions) {

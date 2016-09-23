@@ -26,7 +26,6 @@
 #import "Profile.h"
 #import "User.h"
 #import "ARSwitchBoard+Eigen.h"
-#import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
 
 #import "Artsy-Swift.h"
@@ -451,13 +450,6 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
 - (void)toggleFollowShow:(id)sender
 {
-    if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteProfile success:^(BOOL newUser) {
-            [self toggleFollowShow:sender];
-        }];
-        return;
-    }
-
     self.followableNetwork.following = !self.followableNetwork.following;
 }
 
