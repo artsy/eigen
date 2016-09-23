@@ -63,9 +63,9 @@
     "eslint-plugin-flowtype": "^2.3.1",
     "eslint-plugin-react": "^4.2.1",
     "flow-bin": "0.29.0",
-    "jest": "^14.1.0",
-    "jest-cli": "^14.1.0",
-    "jest-react-native": "^14.1.2",
+    "jest": "^15.0.0",
+    "jest-cli": "^15.0.0",
+    "jest-react-native": "^15.0.0",
     "react-storybooks-relay-container": "^1.0.0",
     "react-test-renderer": "^15.3.0"
   },
