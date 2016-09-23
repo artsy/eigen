@@ -51,11 +51,11 @@
     return searchOperation;
 }
 
-+ (AFHTTPRequestOperation *)artistSearchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
++ (AFHTTPRequestOperation *)artistSearchWithQuery:(NSString *)query excluding:(NSArray *)artistsToExclude success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(success);
 
-    NSURLRequest *request = [ARRouter newArtistSearchRequestWithQuery:query];
+    NSURLRequest *request = [ARRouter newArtistSearchRequestWithQuery:query excluding:artistsToExclude];
     AFHTTPRequestOperation *searchOperation = nil;
     searchOperation = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         NSArray *jsonDictionaries = JSON;
@@ -83,11 +83,11 @@
     return searchOperation;
 }
 
-+ (AFHTTPRequestOperation *)geneSearchWithQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
++ (AFHTTPRequestOperation *)geneSearchWithQuery:(NSString *)query excluding:(NSArray *)genesToExclude success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(success);
 
-    NSURLRequest *request = [ARRouter newGeneSearchRequestWithQuery:query];
+    NSURLRequest *request = [ARRouter newGeneSearchRequestWithQuery:query excluding:genesToExclude];
     AFHTTPRequestOperation *searchOperation = nil;
     searchOperation = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         NSArray *jsonDictionaries = JSON;

@@ -182,14 +182,14 @@
 
     switch (self.state) {
         case AROnboardingStagePersonalizeArtists: {
-            self.searchRequestOperation = [ArtsyAPI artistSearchWithQuery:self.headerView.searchField.searchField.text success:^(NSArray *results) {
+            self.searchRequestOperation = [ArtsyAPI artistSearchWithQuery:self.headerView.searchField.searchField.text excluding:self.artistsFollowed success:^(NSArray *results) {
                 [self.searchResultsTable updateTableContentsFor:results replaceContents:ARSearchResultsReplaceAll animated:NO];
             } failure:^(NSError *error) {
                 [self reportError:error];
             }];
         } break;
         case AROnboardingStagePersonalizeCategories: {
-            self.searchRequestOperation = [ArtsyAPI geneSearchWithQuery:self.headerView.searchField.searchField.text success:^(NSArray *results) {
+            self.searchRequestOperation = [ArtsyAPI geneSearchWithQuery:self.headerView.searchField.searchField.text excluding:self.categoriesFollowed success:^(NSArray *results) {
                 [self.searchResultsTable updateTableContentsFor:results replaceContents:ARSearchResultsReplaceAll animated:NO];
             } failure:^(NSError *error) {
                 [self reportError:error];
