@@ -1,30 +1,36 @@
 upcoming:
-    version: 2.6.4
-    details: Auctions Fixes?
-
-    dev:
-      infrastructure:
-        - Fixes various memory leaks in live. - ash
-        - Fixes problems that arose from fixing memory leaks. - ash
-        - Admins can choose to use the lastest build of our React code - orta
-        - Adds infrastructure for a new Gene View Controller based on Auctions - orta
+    version: 3.0.0
+    details: New personalised collectors edition.
     user_facing:
-      - Update API to exclude artists and use /me/suggested - maxim
-      - Push notification on artist follow added - maxim
-      - Pre push notification prompt added - maxim
-      - Analytics added for onboarding - maxim
-      - Onboarding budget and navigation flow - maxim
-      - Onboarding login and sign up view controllers - maxim
-      - Onboarding artist search and related suggestions - maxim
-      - Onboarding sequencing for personalisation questionnaire - maxim
-      - iPad Pro gets full screen lot thumbnails during Live Auctions - orta
-      - Fallback to higher or lower available artwork image. - alloy
-      - Fixes problem where users looking at a closed live auction would be directed to the live interface. - ash
-      - Fixes problem where users weren't directed to live auction when it started. - ash
-      - Fixes problems going to the current lot of a live auction caused by inaccurate sale artwork position values. - ash
-      - Fair search now includes partners - orta
+      - Everybody is now required to sign-in - maxim
+      - New on-boarding - maxim
+      - New home view - sarah, maxim, alloy
 
 releases:
+  version: 2.6.4
+  details: Auctions Fixes?
+  dev:
+    infrastructure:
+      - Fixes various memory leaks in live. - ash
+      - Fixes problems that arose from fixing memory leaks. - ash
+      - Admins can choose to use the lastest build of our React code - orta
+      - Adds infrastructure for a new Gene View Controller based on Auctions - orta
+  user_facing:
+    - Update API to exclude artists and use /me/suggested - maxim
+    - Push notification on artist follow added - maxim
+    - Pre push notification prompt added - maxim
+    - Analytics added for onboarding - maxim
+    - Onboarding budget and navigation flow - maxim
+    - Onboarding login and sign up view controllers - maxim
+    - Onboarding artist search and related suggestions - maxim
+    - Onboarding sequencing for personalisation questionnaire - maxim
+    - iPad Pro gets full screen lot thumbnails during Live Auctions - orta
+    - Fallback to higher or lower available artwork image. - alloy
+    - Fixes problem where users looking at a closed live auction would be directed to the live interface. - ash
+    - Fixes problem where users weren't directed to live auction when it started. - ash
+    - Fixes problems going to the current lot of a live auction caused by inaccurate sale artwork position values. - ash
+    - Fair search now includes partners - orta
+
   - version: 2.6.3
     details: Bug fixes in Artist profile view
     date: Not released yet
