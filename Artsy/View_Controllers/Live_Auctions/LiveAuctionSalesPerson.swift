@@ -18,6 +18,7 @@ protocol LiveAuctionsSalesPersonType: class {
     var bidIncrements: [BidIncrementStrategy] { get }
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType
+    func indexForViewModel(viewModel: LiveAuctionLotViewModelType) -> Int?
     func lotViewModelRelativeToShowingIndex(offset: Int) -> LiveAuctionLotViewModelType
     func currentLotValue(lot: LiveAuctionLotViewModelType) -> UInt64
     func currentLotValueString(lot: LiveAuctionLotViewModelType) -> String
@@ -154,6 +155,11 @@ extension LiveAuctionsSalesPerson {
 
     func lotViewModelForIndex(index: Int) -> LiveAuctionLotViewModelType {
         return lots[index]
+    }
+
+    // Performs a linear scan through all the lots, use parsimoniously.
+    func indexForViewModel(viewModel: LiveAuctionLotViewModelType) -> Int? {
+        return lots.indexOf { $0.lotID == viewModel.lotID }
     }
 
     func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {

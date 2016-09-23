@@ -2,6 +2,7 @@
 
 @class Gene;
 
+
 @interface ARGeneViewController : UIViewController
 
 - (instancetype)initWithGeneID:(NSString *)geneID;

@@ -21,6 +21,7 @@
 #import "ARSwitchBoard.h"
 #import "ARSwitchboard+Eigen.h"
 #import "ARDefaults.h"
+#import "ARAppConstants.h"
 #import "ARRouter.h" // Required for +baseCausalitySocketURLString in the LiveAuctionSalesPerson.
 
 // Perhaps in the future we could use https://github.com/orta/ar_dispatch/ for now though eigen does more than this lib
@@ -43,6 +44,10 @@
 #import "LiveBidder.h"
 
 #import "Artwork.h"
+#import "Gene.h"
+
+#import "ARGeneArtworksNetworkModel.h"
+
 #import "AREmbeddedModelsViewController.h"
 #import "ARArtworkMasonryModule.h"
 #import "ARSaleArtworkItemFlowModule.h"
@@ -51,6 +56,9 @@
 #import "UIViewController+SimpleChildren.h"
 #import "UIViewController+ARUserActivity.h"
 #import "ARMenuAwareViewController.h"
+#import "ARSharingController.h"
+
+#import "ORStackView+ArtsyViews.h"
 
 // For building out Auction Information VC
 
@@ -60,8 +68,12 @@
 #import "ARSerifNavigationViewController.h"
 
 #import "ARTextView.h"
+#import "ARCollapsableTextView.h"
 #import "ARFonts.h"
 #import "ARCustomEigenLabels.h"
+
+#import "ARSwitchBoard.h"
+#import "ARSwitchBoard+Eigen.h"
 
 #import "ARTopMenuViewController.h"
 

@@ -44,3 +44,5 @@ Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+SwiftDeveloperExtr
 Artsy/Eigen.playground/
 
 iOSInjectionProject/
+.vscode/
+fastlane/Gemfile.lock

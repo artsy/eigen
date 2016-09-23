@@ -8,8 +8,10 @@
 #import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuViewController.h"
 #import "ARAppConstants.h"
+#import "AROptions.h"
 #import "ARMenuAwareViewController.h"
 #import "ARAppNotificationsDelegate.h"
+#import "ARDefaults.h"
 
 #import <Aerodramus/Aerodramus.h>
 #import <Emission/AREmission.h>
@@ -21,6 +23,7 @@
 #import <React/RCTUtils.h>
 #import <objc/runtime.h>
 #import <ARAnalytics/ARAnalytics.h>
+#import <AppHub/AppHub.h>
 
 static void
 ArtistFollowRequestSuccess(RCTResponseSenderBlock block, BOOL following)
@@ -41,9 +44,11 @@ static void
 ArtistGetFollowStatus(NSString *artistID, RCTResponseSenderBlock block)
 {
     [ArtsyAPI checkFavoriteStatusForArtist:[[Artist alloc] initWithArtistID:artistID]
-        success:^(BOOL following) { ArtistFollowRequestSuccess(block, following);
+        success:^(BOOL following) {
+            ArtistFollowRequestSuccess(block, following);
         }
-        failure:^(NSError *error) { ArtistFollowRequestFailure(block, NO, error);
+        failure:^(NSError *error) {
+            ArtistFollowRequestFailure(block, NO, error);
         }];
 }
 
@@ -52,9 +57,11 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
 {
     [ArtsyAPI setFavoriteStatus:following
         forArtist:[[Artist alloc] initWithArtistID:artistID]
-        success:^(id response) { ArtistFollowRequestSuccess(block, following);
+        success:^(id response) {
+            ArtistFollowRequestSuccess(block, following);
         }
-        failure:^(NSError *error) { ArtistFollowRequestFailure(block, !following, error);
+        failure:^(NSError *error) {
+            ArtistFollowRequestFailure(block, !following, error);
         }];
 }
 
@@ -62,6 +69,39 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
 @implementation ARAppDelegate (Emission)
 
 - (void)setupEmission;
+{
+    // AppHub's loading of our Emission instance is Async, so we let
+    // the normal  JS run, then if we get the notification of a new build
+    // we switch out the current emission instance.
+    //
+    if ([AROptions boolForOption:AROptionsStagingReactEnv]) {
+        [AppHub setLogLevel: AHLogLevelDebug];
+        [AppHub setApplicationID:@"Z6IwqK52JBXrKLI4kpvJ"];
+
+        NSString *emissionHeadVersion = [[NSUserDefaults standardUserDefaults] valueForKey:AREmissionHeadVersionDefault];
+        [[AppHub buildManager] setAutomaticPollingEnabled:NO];
+        [[AppHub buildManager] setInstalledAppVersion: emissionHeadVersion];
+        [[AppHub buildManager] setDebugBuildsEnabled:YES];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newEmissionBuild) name:AHBuildManagerDidMakeBuildAvailableNotification object:nil];
+
+        [[AppHub buildManager] fetchBuildWithCompletionHandler:^(AHBuild *result, NSError *error) {
+            [self newEmissionBuild];
+        }];
+    }
+
+    [self setupSharedEmission];
+}
+
+- (void)newEmissionBuild
+{
+    AHBuild *build = [[AppHub buildManager] currentBuild];
+    NSURL *jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
+    AREmission *stagingEmission = [[AREmission alloc] initWithPackagerURL: jsCodeLocation];
+    [AREmission setSharedInstance:stagingEmission];
+}
+
+- (void)setupSharedEmission
 {
     AREmission *emission = [AREmission sharedInstance];
     emission.APIModule.artistFollowStatusProvider = ^(NSString *artistID, RCTResponseSenderBlock block) {
@@ -100,6 +140,7 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
         [properties removeObjectForKey:@"name"];
         [ARAnalytics event:info[@"name"] withProperties:[properties copy]];
     };
+
 }
 
 @end

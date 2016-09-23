@@ -20,14 +20,8 @@ class LiveAuctionToolbarView: UIView {
         setupViews()
     }
 
-    func lotCountString() -> NSAttributedString {
-        let lotString = NSMutableAttributedString(string: String(lotViewModel.lotIndex + 1), attributes:
-            [NSForegroundColorAttributeName: UIColor.artsyPurpleRegular()]
-        )
-        let countString = NSMutableAttributedString(string: "/\(auctionViewModel.lotCount)", attributes: [:])
-
-        lotString.appendAttributedString(countString)
-        return lotString
+    func lotNumberString() -> NSAttributedString {
+        return NSAttributedString(string: lotViewModel.lotNumber, attributes: [:])
     }
 
     func attributify(string: String, color: UIColor = .blackColor()) -> NSAttributedString {
@@ -55,13 +49,13 @@ class LiveAuctionToolbarView: UIView {
 
         case .ClosedLot:
             viewStructure = [
-                ["lot": lotCountString()],
+                ["lot": lotNumberString()],
                 ["time": attributify("Closed", color: .auctionRed())],
             ]
 
         case .LiveLot:
             viewStructure = [
-                ["lot": lotCountString()],
+                ["lot": lotNumberString()],
                 ["time": attributify("--:--")],
                 ["bidders": attributify(String(lotViewModel.numberOfBids))]
             ]
@@ -96,7 +90,7 @@ class LiveAuctionToolbarView: UIView {
             }
 
             viewStructure = [
-                ["lot": lotCountString()],
+                ["lot": lotNumberString()],
                 ["time": attributify(lotString, color: .artsyPurpleRegular())],
                 ["bidders": attributify(String(lotViewModel.numberOfBids))]
             ]

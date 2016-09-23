@@ -12,9 +12,17 @@ lane :ship_beta do
 
   latest_version = readme_data["upcoming"]["version"]
 
+  Spaceship::Tunes.login(ENV["FASTLANE_USERNAME"], ENV["FASTLANE_PASSWORD"])
+  app = Spaceship::Tunes::Application.find("net.artsy.artsy")
+
+  # Fail early if we need to make a new version on iTunes
+  if app.latest_version.version != latest_version
+    raise "You need to create an app version for #{latest_version} in iTunes before deploying"
+  end
+
   upcoming = readme_data["upcoming"]
-  commit =  `git log -n1 --format='%h'`.strip
-  beta_readme =  "## #{upcoming["version"]} - #{commit} \n\n - #{upcoming["user_facing"].join "\n - "} \n\n"
+  commit = `git log -n1 --format='%h'`.strip
+  beta_readme = "## #{upcoming["version"]} - #{commit} \n\n - #{upcoming["user_facing"].join "\n - "} \n\n"
 
   # Builds the app
   gym
@@ -23,8 +31,6 @@ lane :ship_beta do
   # if it's zero, it will raise an exception
   build_version = 0
   begin
-    Spaceship::Tunes.login(ENV["FASTLANE_USERNAME"], ENV["FASTLANE_PASSWORD"])
-    app = Spaceship::Tunes::Application.find("net.artsy.artsy")
     train = app.build_trains[latest_version]
     build_version = train.builds.count + 1
   rescue
@@ -83,7 +89,7 @@ lane :deploy_latest_to_external do
   )
 end
 
-## We want to have a simpler version of Fastlane's match
+## We want to have a simpler version of fastlane's match
 ## this does it in a pretty reasonable amount of code.
 
 lane :setup_for_app_store do

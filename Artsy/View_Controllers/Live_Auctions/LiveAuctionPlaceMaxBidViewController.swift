@@ -59,7 +59,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
 
     private func updateLotInformation() {
         let lotVM = bidViewModel.lotViewModel
-        lotNumberLabel.text = lotVM.lotIndexDisplayString.uppercaseString
+        lotNumberLabel.text = lotVM.formattedLotIndexDisplayString.uppercaseString
         lotArtistLabel.text = lotVM.lotArtist
         lotNameLabel.text = lotVM.lotName
         lotPreviewImageView.ar_setImageWithURL(lotVM.urlForProfile)

@@ -29,6 +29,7 @@ NSString *const ARPushNotificationsAppleDialogueSeen = @"eigen-push-seen-dialogu
 NSString *const ARPushNotificationsAppleDialogueRejected = @"eigen-push-reject-dialogue";
 NSString *const ARPushNotificationsSettingsPromptSeen = @"eigen-push-seen-settings-dialogue";
 NSString *const ARPushNotificationFollowArtist = @"eigen-push-followed-artist";
+NSString *const AREmissionHeadVersionDefault = @"emission-head-version";
 
 
 @implementation ARDefaults

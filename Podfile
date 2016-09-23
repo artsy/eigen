@@ -112,8 +112,11 @@ target 'Artsy' do
   pod 'Starscream'
   pod 'SwiftyJSON'
 
-  # Used in Live Auctions to hold user-state 
+  # Used in Live Auctions to hold user-state
   pod 'JWTDecode'
+
+  # This can be changed when 0.5.2 is out
+  pod 'AppHub', :git => 'https://github.com/orta/apphub.git', :branch => "build_list"
 
   target 'Artsy Tests' do
       inherit! :search_paths

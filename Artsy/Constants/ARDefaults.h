@@ -31,7 +31,9 @@ extern NSString *const ARPushNotificationFollowArtist;
 
 
 #pragma mark -
-#pragma mark Things we wanna trigger server-side
+#pragma mark Admin features
+
+extern NSString *const AREmissionHeadVersionDefault;
 
 
 @interface ARDefaults : NSObject

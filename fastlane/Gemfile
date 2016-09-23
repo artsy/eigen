@@ -1,0 +1,10 @@
+# This is copied over into the Eigen root
+# during beta deployment
+
+source 'https://rubygems.org'
+
+gem 'fastlane'
+gem 'pilot'
+gem 'gym'
+gem 'deliver'
+gem 'cocoapods'
