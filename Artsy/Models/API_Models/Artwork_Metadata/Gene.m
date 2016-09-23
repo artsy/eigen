@@ -50,7 +50,7 @@
 - (NSURL *)onboardingImageURL
 {
     NSInteger heightAndWidth = 50 * [[UIScreen mainScreen] scale];
-    NSString *geminiStringURL = @"https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=%i&height=%i&quality=85&src=%@";
+    NSString *geminiStringURL = @"https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=%ld&height=%ld&quality=85&src=%@";
     NSString *completeURL = [NSString stringWithFormat:geminiStringURL, heightAndWidth, heightAndWidth, self.urlFormatString];
 
     return [NSURL URLWithString:completeURL];
