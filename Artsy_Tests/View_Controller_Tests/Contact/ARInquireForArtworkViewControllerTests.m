@@ -101,69 +101,6 @@ describe(@"as an admin", ^{
     });
 });
 
-describe(@"send button", ^{
-        __block Artwork *artwork;
-        
-        beforeEach(^{
-            [ARUserManager clearUserData];
-            [ARUserManager sharedManager].localTemporaryUserName = @"Trial User";
-        });
-
-        afterEach(^{
-            [ARUserManager sharedManager].localTemporaryUserName = nil;
-            [ARUserManager sharedManager].localTemporaryUserEmail = nil;
-            artwork = nil;
-        });
-
-        itHasAsyncronousSnapshotsForDevicesWithName(@"does not initially enable send if stored email is invalid", ^{
-            [ARUserManager sharedManager].localTemporaryUserEmail = @"invalidEmail";
-            
-            ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
-            [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
-            return vc;
-        });
-
-        itHasAsyncronousSnapshotsForDevicesWithName(@"does initially enables send if stored email is valid", ^{
-            [ARUserManager sharedManager].localTemporaryUserEmail = @"validemail@gmail.com";
-
-            ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
-            [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
-            return vc;
-        });
-        
-        itHasAsyncronousSnapshotsForDevicesWithName(@"toggles the send button with empty email", ^{
-            [ARUserManager sharedManager].localTemporaryUserEmail = nil;
-            
-            ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
-            [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
-            return vc;
-        });
-        
-        itHasAsyncronousSnapshotsForDevicesWithName(@"toggles the send button when email becomes valid", ^{
-            [ARUserManager sharedManager].localTemporaryUserEmail = nil;
-            
-            ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
-            [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
-            
-            vc.emailInput.text = @"validemail@gmail.com";
-            [vc emailInputHasChanged:vc.emailInput];
-            return vc;
-        });
-        
-        itHasAsyncronousSnapshotsForDevicesWithName(@"toggles the send button when valid email becomes invalid", ^{
-            [ARUserManager sharedManager].localTemporaryUserEmail = nil;
-            
-            ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
-            [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
-            
-            vc.emailInput.text = @"validemail@gmail.com";
-            [vc emailInputHasChanged:vc.emailInput];
-            vc.emailInput.text = @"invalidEmail";
-            [vc emailInputHasChanged:vc.emailInput];
-            return vc;
-        });
-});
-
 describe(@"sending", ^{
     __block ARInquireForArtworkViewController *vc;
     __block id userMock;
