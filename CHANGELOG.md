@@ -1,5 +1,6 @@
 ### Master
 
+- Adds an initial Gene view - orta
 - Animate inverted button state change - alloy
 - Do not show follow button on artist view until current status is retrieved - alloy
 - Optimistically change state of follow button on artist view - alloy

@@ -47,10 +47,10 @@
     "react": "^15.2.0",
     "react-native": "^0.30.0",
     "react-relay": "https://github.com/alloy/relay/releases/download/v0.9.3/react-relay-0.9.3.tgz",
-    "remove-markdown": "0.1.0",
-    "apphub": "^0.5.1"
+    "remove-markdown": "0.1.0"
   },
   "devDependencies": {
+    "apphub": "^0.5.1",
     "@kadira/react-native-storybook": "^1.12.6",
     "babel-eslint": "^6.0.0",
     "babel-jest": "^14.1.0",
@@ -63,8 +63,8 @@
     "eslint-plugin-flowtype": "^2.3.1",
     "eslint-plugin-react": "^4.2.1",
     "flow-bin": "0.29.0",
-    "jest": "^15.0.0",
-    "jest-cli": "^15.0.0",
+    "jest": "^15.1.1",
+    "jest-cli": "^15.1.1",
     "jest-react-native": "^15.0.0",
     "react-storybooks-relay-container": "^1.0.0",
     "react-test-renderer": "^15.3.0"
