@@ -49,8 +49,6 @@ NSString *const ARAnalyticsOnboardingSignupFailed = @"Sign up failed";
 NSString *const ARAnalyticsPushNotificationLocal = @"Artsy notification prompt response";
 NSString *const ARAnalyticsPushNotificationApple = @"Apple notification prompt response";
 
-NSString *const ARAnalyticsShowTrialSplash = @"user trial splash presented";
-
 NSString *const ARAnalyticsTappedHeroUnit = @"Tapped banner";
 NSString *const ARAnalyticsTappedMainNavigationItem = @"view main navigation item";
 

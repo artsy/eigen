@@ -11,7 +11,6 @@
 #import "ARAnalyticsConstants.h"
 #import "ARFonts.h"
 #import "User.h"
-#import "ARTrialController.h"
 #import "ARSwitchBoard.h"
 
 #import "UIView+HitTestExpansion.h"
@@ -431,19 +430,21 @@ static const CGFloat ARMenuButtonDimension = 46;
 
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
 {
-    BOOL favoritesInDemoMode = (index == ARTopTabControllerIndexFavorites && ARIsRunningInDemoMode);
-    BOOL loggedOutBellOrFavorites = (index == ARTopTabControllerIndexFavorites || index == ARTopTabControllerIndexNotifications) && [User isTrialUser];
-    if (!favoritesInDemoMode && loggedOutBellOrFavorites) {
-        ARTrialContext context = (index == ARTopTabControllerIndexFavorites) ? ARTrialContextShowingFavorites : ARTrialContextNotifications;
-        [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
-            if (newUser) {
-                [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
-            } else {
-                [self.tabContentView setCurrentViewIndex:index animated:NO];
-            }
-        }];
-        return NO;
-    }
+    
+    // TODO MAXIM : Change this for demo mode
+//    BOOL favoritesInDemoMode = (index == ARTopTabControllerIndexFavorites && ARIsRunningInDemoMode);
+//    BOOL loggedOutBellOrFavorites = (index == ARTopTabControllerIndexFavorites || index == ARTopTabControllerIndexNotifications) && [User isLocalTemporaryUser];
+//    if (!favoritesInDemoMode && loggedOutBellOrFavorites) {
+//        ARTrialContext context = (index == ARTopTabControllerIndexFavorites) ? ARTrialContextShowingFavorites : ARTrialContextNotifications;
+//        [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
+//            if (newUser) {
+//                [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
+//            } else {
+//                [self.tabContentView setCurrentViewIndex:index animated:NO];
+//            }
+//        }];
+//        return NO;
+//    }
 
     if (index == self.selectedTabIndex) {
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];

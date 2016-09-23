@@ -16,7 +16,6 @@
 #import "Gene.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARNetworkErrorManager.h"
-#import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
 
 #import "ARTopMenuViewController.h"
@@ -198,13 +197,6 @@
 
 - (void)toggleFollowingGene:(ARHeartButton *)sender
 {
-    if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteGene success:^(BOOL newUser) {
-            [self toggleFollowingGene:sender];
-        }];
-        return;
-    }
-
     BOOL hearted = !sender.hearted;
     [sender setHearted:hearted animated:ARPerformWorkAsynchronously];
 

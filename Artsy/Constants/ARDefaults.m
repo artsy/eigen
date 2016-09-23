@@ -30,6 +30,7 @@ NSString *const ARPushNotificationsAppleDialogueRejected = @"eigen-push-reject-d
 NSString *const ARPushNotificationsSettingsPromptSeen = @"eigen-push-seen-settings-dialogue";
 NSString *const ARPushNotificationFollowArtist = @"eigen-push-followed-artist";
 
+
 @implementation ARDefaults
 
 + (void)setup

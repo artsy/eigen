@@ -151,13 +151,13 @@ static NSString *hostFromString(NSString *string)
         [ARRouter setAuthToken:token];
 
     } else {
-        ARActionLog(@"Found trial XApp token in keychain");
+        ARActionLog(@"Found temporary local user XApp token in keychain");
         NSString *xapp = [UICKeyChainStore stringForKey:ARXAppTokenKeychainKey];
         [ARRouter setXappToken:xapp];
     }
 
-    if ([User isTrialUser]) {
-        [self setHTTPHeader:AREigenTrialUserIDHeader value:user.trialUserUUID];
+    if ([User isLocalTemporaryUser]) {
+        [self setHTTPHeader:AREigenLocalTemporaryUserIDHeader value:user.localTemporaryUserUUID];
     }
 }
 
@@ -229,7 +229,7 @@ static NSString *hostFromString(NSString *string)
     if (![ARRouter isInternalURL:url]) {
         [request setValue:nil forHTTPHeaderField:ARAuthHeader];
         [request setValue:nil forHTTPHeaderField:ARXappHeader];
-        [request setValue:nil forHTTPHeaderField:AREigenTrialUserIDHeader];
+        [request setValue:nil forHTTPHeaderField:AREigenLocalTemporaryUserIDHeader];
     }
 
     return request;
@@ -960,12 +960,12 @@ static NSString *hostFromString(NSString *string)
         }
     }];
 
-    if ([User isTrialUser]) {
+    if ([User isLocalTemporaryUser]) {
         NSParameterAssert(name);
         NSParameterAssert(email);
         [params setValue:name forKey:@"name"];
         [params setValue:email forKey:@"email"];
-        [params setValue:[ARUserManager sharedManager].trialUserUUID forKey:@"session_id"];
+        [params setValue:[ARUserManager sharedManager].localTemporaryUserUUID forKey:@"session_id"];
     } else {
         NSParameterAssert(!name);
         NSParameterAssert(!email);

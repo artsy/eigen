@@ -32,13 +32,6 @@ it(@"looks correct with a logged in user", ^{
     expect(fairGuideVC).to.haveValidSnapshot();
 });
 
-it(@"looks correct with a trial user", ^{
-    fairGuideVC.currentUser = (id)[NSNull null];
-    fairGuideVC.view.frame = CGRectMake(0, 0, 320, 480);
-    [fairGuideVC fairDidLoad];
-    expect(fairGuideVC).to.haveValidSnapshot();
-});
-
 it(@"adds a top border", ^{
     fairGuideVC.currentUser = [User modelWithJSON:@{ @"name" : @"User Name"}];
     fairGuideVC.view.frame = CGRectMake(0, 0, 320, 480);

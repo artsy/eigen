@@ -336,7 +336,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 - (void)showSlideshow
 {
     ARAppDelegate *delegate = [ARAppDelegate sharedInstance];
-    [delegate showTrialOnboardingWithState:ARInitialOnboardingStateSlideShow andContext:ARTrialContextNotTrial];
+    [delegate showOnboardingWithState:ARInitialOnboardingStateSlideShow];
 
     [self.navigationController popViewControllerAnimated:NO];
 }

@@ -76,9 +76,7 @@ extern NSString *const ARAnalyticsStartedSpecialistInquiry;
 extern NSString *const ARAnalyticsSubmittedInquiry;
 extern NSString *const ARAnalyticsInquiryError;
 
-// Trial
 
-extern NSString *const ARAnalyticsShowTrialSplash;
 extern NSString *const ARAnalyticsTappedHeroUnit;
 extern NSString *const ARAnalyticsTappedMainNavigationItem;
 

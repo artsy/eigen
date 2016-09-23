@@ -38,18 +38,7 @@ describe(@"iPhone peek", ^{
     
         expect(vc).to.haveValidSnapshot();
     });
-    
-    it(@"shows only Share button for trial user", ^{
-    
-        AREmbeddedModelPreviewViewController *vc = [[AREmbeddedModelPreviewViewController alloc] initWithObject:artwork];
-        NSArray* previewActions = [vc previewActionItems];
-    
-        for (UIPreviewAction* item in previewActions) {
-            expect(item.title).notTo.startWith(@"Follow");
-            expect(item.title).notTo.startWith(@"Like");
-        }
-    });
-    
+
     it(@"shows favorite and follow buttons for logged in user", ^{
 
         [ARUserManager stubAndLoginWithUsername];

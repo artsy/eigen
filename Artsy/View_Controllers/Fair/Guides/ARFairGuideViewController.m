@@ -7,7 +7,6 @@
 #import "ARFonts.h"
 #import "User.h"
 #import "ARTheme.h"
-#import "ARTrialController.h"
 
 #import "UIDevice-Hardware.h"
 
@@ -80,7 +79,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 {
     self.view = [[ORStackScrollView alloc] initWithStackViewClass:ORTagBasedAutoStackView.class];
     self.view.stackView.bottomMarginHeight = 15;
-    self.view.showsVerticalScrollIndicator = ![User isTrialUser];
+    self.view.showsVerticalScrollIndicator = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     self.view.alwaysBounceVertical = YES;
 }
@@ -196,8 +195,6 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
         [self addPersonalLabel];
         [self addTabView];
         [self addUserContent];
-    } else {
-        [self addTrialLabel];
     }
 
     self.selectedTabIndex = ARFairGuideSelectedTabWork;
@@ -224,39 +221,6 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
     titleLabel.userInteractionEnabled = YES;
     titleLabel.tag = ARFairGuideViewTitle;
     [self.view.stackView addSubview:titleLabel withTopMargin:@"22" sideMargin:@"110"];
-}
-
-- (void)addTrialLabel
-{
-    UILabel *titleLabel = [ARThemedFactory labelForViewSubHeaders];
-    NSString *text = @"Discover Your Personal Guide";
-    titleLabel.text = [text uppercaseString];
-    titleLabel.userInteractionEnabled = YES;
-    titleLabel.tag = ARFairGuideViewTitle;
-    [self.view.stackView addSubview:titleLabel withTopMargin:@"22" sideMargin:@"110"];
-    [titleLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(signupForArtsy:)]];
-
-    UILabel *subtitleLabel = [ARThemedFactory labelForSerifSubHeaders];
-    subtitleLabel.text = @"To view recommendations\nsign up for Artsy";
-    subtitleLabel.tag = ARFairGuideViewSubtitle;
-    subtitleLabel.userInteractionEnabled = YES;
-    [subtitleLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(signupForArtsy:)]];
-    [self.view.stackView addSubview:subtitleLabel withTopMargin:@"44" sideMargin:@"40"];
-
-    ARBlackFlatButton *signupForArtsy = [[ARBlackFlatButton alloc] init];
-    signupForArtsy.tag = ARFairGuideViewSignupForArtsyButton;
-    [signupForArtsy setTitle:@"Sign up for Artsy" forState:UIControlStateNormal];
-    [signupForArtsy addTarget:self action:@selector(signupForArtsy:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view.stackView addSubview:signupForArtsy withTopMargin:@"20" sideMargin:@"40"];
-}
-
-- (void)signupForArtsy:(id)sender
-{
-    if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFairGuide success:^(BOOL newUser) {
-            [self userDidLoginOrSignUp];
-        }];
-    }
 }
 
 - (void)userDidLoginOrSignUp

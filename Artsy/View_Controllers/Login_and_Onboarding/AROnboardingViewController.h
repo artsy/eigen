@@ -1,5 +1,4 @@
 #import "ARNavigationController.h"
-#import "ARTrialController.h"
 #import "User.h"
 
 @class ARSignUpSplashViewController;
@@ -53,11 +52,8 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 - (void)showTermsAndConditions;
 - (void)showPrivacyPolicy;
 
-// A sign-in is considered cancelled when the user taps the close button on a ARSignUpActiveUserViewController,
-// not when the user initially chooses to use the app as a trial user.
+// Technically one can't cancel the onboarding currently
 - (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount didCancel:(BOOL)cancelledSignIn;
 - (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount;
-
-@property (nonatomic, assign) enum ARTrialContext trialContext;
 
 @end

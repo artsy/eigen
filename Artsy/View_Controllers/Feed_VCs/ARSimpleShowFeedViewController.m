@@ -197,7 +197,7 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
             [sself performSelector:@selector(refreshFeedItems) withObject:nil afterDelay:1];
             [ARAnalytics finishTimingEvent:ARAnalyticsInitialFeedLoadTime];
 
-            if ([User isTrialUser] == false && response.statusCode == 401) {
+            if (response.statusCode == 401) {
                 // If you have changed your password
                 [self offerLogoutForExpiredCredentials];
             }

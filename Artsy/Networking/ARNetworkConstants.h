@@ -13,7 +13,7 @@ extern NSString *const ARTwitterCallbackPath;
 
 extern NSString *const ARAuthHeader;
 extern NSString *const ARXappHeader;
-extern NSString *const AREigenTrialUserIDHeader;
+extern NSString *const AREigenLocalTemporaryUserIDHeader;
 
 extern NSString *const ARTotalHeader;
 

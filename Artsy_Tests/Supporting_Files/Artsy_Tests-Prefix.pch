@@ -55,7 +55,6 @@
     #import "ARSwitchBoard.h"
     #import "ARSwitchboard+Eigen.h"
     #import "ARNetworkErrorManager.h"
-    #import "ARTrialController.h"
     #import "ARTopMenuViewController.h"
     #import "ARScrollNavigationChief.h"
     #import "ARSystemTime.h"

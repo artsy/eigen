@@ -140,20 +140,20 @@ static ARAppDelegate *_sharedInstance = nil;
     [self setupEmission];
 
     // This has to be checked *before* creating the first Xapp token.
-    BOOL showOnboarding = ![[ARUserManager sharedManager] hasExistingAccount];
+    BOOL shouldShowOnboarding = ![[ARUserManager sharedManager] hasExistingAccount];
 
     if (ARIsRunningInDemoMode) {
         [self.viewController presentViewController:[[ARDemoSplashViewController alloc] init] animated:NO completion:nil];
         [self performSelector:@selector(finishDemoSplash) withObject:nil afterDelay:1];
 
-    } else if (showOnboarding) {
+    } else if (shouldShowOnboarding) {
         [self fetchSiteFeatures];
 
         // Do not show the splash/onboarding when a user comes in through a user activity, as it breaks the expectation
         // of the user to see the activity. This is probably just an edge-case, most people will probably launch the app
         // after installing it.
         if (self.initialLaunchOptions[UIApplicationLaunchOptionsUserActivityDictionaryKey] == nil) {
-            [self showTrialOnboarding];
+            [self showOnboarding];
         }
     }
 
@@ -166,8 +166,10 @@ static ARAppDelegate *_sharedInstance = nil;
         //
         // In case the user has not signed-in yet, this will register as an anonymous device on the Artsy API. Later on,
         // when the user does sign-in, this will be ran again and the device will be associated with the user account.
-        if (!showOnboarding) {
+
+        if (!shouldShowOnboarding) {
             [self.remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextLaunch];
+            
             if ([User currentUser]) {
                 [ARSpotlight indexAllUsersFavorites];
             };
@@ -188,7 +190,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)registerNewSessionOpened
 {
-    [ARTrialController extendTrial];
     [ARAnalytics startTimingEvent:ARAnalyticsTimePerSession];
 
     if ([User currentUser]) {
@@ -215,9 +216,9 @@ static ARAppDelegate *_sharedInstance = nil;
     return [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
 }
 
-- (void)showTrialOnboarding;
+- (void)showOnboarding;
 {
-    [self showTrialOnboardingWithState:ARInitialOnboardingStateSlideShow andContext:ARTrialContextNotTrial];
+    [self showOnboardingWithState:ARInitialOnboardingStateSlideShow];
 }
 
 - (void)finishDemoSplash
@@ -238,14 +239,18 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)finishOnboardingAnimated:(BOOL)animated didCancel:(BOOL)cancelledSignIn;
 {
+    // We now have a proper Artsy user, not just a local temporary ID
+    // So we have to re-identify the analytics user
+    // to ensure we start sending the Gravity ID as well as the local temporary ID
+    
+    [ARUserManager identifyAnalyticsUser];
+
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 
     ARTopMenuViewController *topVC = ARTopMenuViewController.sharedController;
     if (topVC.presentedViewController) {
         topVC.presentedViewController.transitioningDelegate = topVC;
-        [topVC.presentedViewController dismissViewControllerAnimated:animated completion:^{
-            [ARTrialController performCompletionNewUser:[ARUserManager didCreateAccountThisSession]];
-        }];
+        [topVC.presentedViewController dismissViewControllerAnimated:animated completion:nil];
     }
 
     if (!cancelledSignIn) {
@@ -259,10 +264,9 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 }
 
-- (void)showTrialOnboardingWithState:(enum ARInitialOnboardingState)state andContext:(enum ARTrialContext)context
+- (void)showOnboardingWithState:(enum ARInitialOnboardingState)state
 {
     AROnboardingViewController *onboardVC = [[AROnboardingViewController alloc] initWithState:state];
-    onboardVC.trialContext = context;
     onboardVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
     UIViewController *controller = self.viewController;
     // Loop till we find the topmost VC

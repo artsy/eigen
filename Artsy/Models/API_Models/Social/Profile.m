@@ -175,11 +175,6 @@
 
 - (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure
 {
-    if ([User isTrialUser]) {
-        success(ARHeartStatusNo);
-        return;
-    }
-
     [ArtsyAPI checkFollowProfile:self success:^(BOOL status) {
         success(status);
     } failure:failure];
