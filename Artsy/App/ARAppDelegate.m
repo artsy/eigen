@@ -239,6 +239,12 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)finishOnboardingAnimated:(BOOL)animated didCancel:(BOOL)cancelledSignIn;
 {
+    // We now have a proper Artsy user, not just a local temporary ID
+    // So we have to re-identify the analytics user
+    // to ensure we start sending the Gravity ID as well as the local temporary ID
+    
+    [ARUserManager identifyAnalyticsUser];
+
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 
     ARTopMenuViewController *topVC = ARTopMenuViewController.sharedController;

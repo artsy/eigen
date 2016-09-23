@@ -143,17 +143,17 @@ describe(@"logged out", ^{
         
         beforeEach(^{
             [ARUserManager clearUserData];
-            [ARUserManager sharedManager].trialUserName = @"Trial User";
+            [ARUserManager sharedManager].localTemporaryUserName = @"Trial User";
         });
 
         afterEach(^{
-            [ARUserManager sharedManager].trialUserName = nil;
-            [ARUserManager sharedManager].trialUserEmail = nil;
+            [ARUserManager sharedManager].localTemporaryUserName = nil;
+            [ARUserManager sharedManager].localTemporaryUserEmail = nil;
             artwork = nil;
         });
 
         itHasAsyncronousSnapshotsForDevicesWithName(@"does not initially enable send if stored email is invalid", ^{
-            [ARUserManager sharedManager].trialUserEmail = @"invalidEmail";
+            [ARUserManager sharedManager].localTemporaryUserEmail = @"invalidEmail";
             
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
@@ -161,7 +161,7 @@ describe(@"logged out", ^{
         });
 
         itHasAsyncronousSnapshotsForDevicesWithName(@"does initially enables send if stored email is valid", ^{
-            [ARUserManager sharedManager].trialUserEmail = @"validemail@gmail.com";
+            [ARUserManager sharedManager].localTemporaryUserEmail = @"validemail@gmail.com";
 
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
@@ -169,7 +169,7 @@ describe(@"logged out", ^{
         });
         
         itHasAsyncronousSnapshotsForDevicesWithName(@"toggles the send button with empty email", ^{
-            [ARUserManager sharedManager].trialUserEmail = nil;
+            [ARUserManager sharedManager].localTemporaryUserEmail = nil;
             
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
@@ -177,7 +177,7 @@ describe(@"logged out", ^{
         });
         
         itHasAsyncronousSnapshotsForDevicesWithName(@"toggles the send button when email becomes valid", ^{
-            [ARUserManager sharedManager].trialUserEmail = nil;
+            [ARUserManager sharedManager].localTemporaryUserEmail = nil;
             
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
@@ -188,7 +188,7 @@ describe(@"logged out", ^{
         });
         
         itHasAsyncronousSnapshotsForDevicesWithName(@"toggles the send button when valid email becomes invalid", ^{
-            [ARUserManager sharedManager].trialUserEmail = nil;
+            [ARUserManager sharedManager].localTemporaryUserEmail = nil;
             
             ARInquireForArtworkViewController *vc = [[ARInquireForArtworkViewController alloc] initWithAdminInquiryForArtwork:museumGallery fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
@@ -208,10 +208,10 @@ describe(@"sending", ^{
 
     beforeEach(^{
         [ARUserManager clearUserData];
-        [ARUserManager sharedManager].trialUserName = @"Trial User";
-        [ARUserManager sharedManager].trialUserEmail = @"trial@example.com";
+        [ARUserManager sharedManager].localTemporaryUserName = @"Trial User";
+        [ARUserManager sharedManager].localTemporaryUserEmail = @"trial@example.com";
         userMock = [OCMockObject mockForClass:[User class]];
-        [[[[userMock stub] classMethod] andReturnValue:OCMOCK_VALUE(YES)] isTrialUser];
+        [[[[userMock stub] classMethod] andReturnValue:OCMOCK_VALUE(YES)] isLocalTemporaryUser];
 
         vc = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:galleryArtwork fair:nil];
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
@@ -219,8 +219,8 @@ describe(@"sending", ^{
     
     afterEach(^{
         [userMock stopMocking];
-        [ARUserManager sharedManager].trialUserName = nil;
-        [ARUserManager sharedManager].trialUserEmail = nil;
+        [ARUserManager sharedManager].localTemporaryUserName = nil;
+        [ARUserManager sharedManager].localTemporaryUserEmail = nil;
     });
 
     it(@"displays sending message", ^{

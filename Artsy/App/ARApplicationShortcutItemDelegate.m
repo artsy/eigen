@@ -42,7 +42,7 @@
     ARNavigationController *rootNavigationController = [[ARTopMenuViewController sharedController] rootNavigationController];
 
     // TODO MAXIM: add new demo mode here
-//    if (!ARIsRunningInDemoMode && [User isTrialUser]) {
+//    if (!ARIsRunningInDemoMode && [User isLocalTemporaryUser]) {
 //        ARTrialContext context = ARTrialContextShowingFavorites;
 //        [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
 //            if (newUser) {

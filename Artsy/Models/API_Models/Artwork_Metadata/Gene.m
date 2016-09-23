@@ -50,7 +50,7 @@
 - (NSURL *)onboardingImageURL
 {
     NSString *geminiStringURL = @"https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=50&height=50&quality=%i&src=%@";
-    NSString *completeURL = [NSString stringWithFormat:geminiStringURL, [[UIScreen mainScreen] scale], self.urlFormatString];
+    NSString *completeURL = [NSString stringWithFormat:geminiStringURL, 4, self.urlFormatString]; //[[UIScreen mainScreen] scale]
     
     return [NSURL URLWithString:completeURL];
 }

@@ -433,7 +433,7 @@ static const CGFloat ARMenuButtonDimension = 46;
     
     // TODO MAXIM : Change this for demo mode
 //    BOOL favoritesInDemoMode = (index == ARTopTabControllerIndexFavorites && ARIsRunningInDemoMode);
-//    BOOL loggedOutBellOrFavorites = (index == ARTopTabControllerIndexFavorites || index == ARTopTabControllerIndexNotifications) && [User isTrialUser];
+//    BOOL loggedOutBellOrFavorites = (index == ARTopTabControllerIndexFavorites || index == ARTopTabControllerIndexNotifications) && [User isLocalTemporaryUser];
 //    if (!favoritesInDemoMode && loggedOutBellOrFavorites) {
 //        ARTrialContext context = (index == ARTopTabControllerIndexFavorites) ? ARTrialContextShowingFavorites : ARTrialContextNotifications;
 //        [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {

@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, ARCollectorLevel) {
 @property (nonatomic, readonly) BOOL receiveFollowUsersEmail;
 
 + (User *)currentUser;
-+ (BOOL)isTrialUser;
++ (BOOL)isLocalTemporaryUser;
 
 - (void)userFollowsProfile:(Profile *)profile success:(void (^)(BOOL doesFollow))success failure:(void (^)(NSError *error))failure;
 

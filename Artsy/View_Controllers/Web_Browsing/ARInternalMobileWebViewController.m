@@ -159,7 +159,7 @@ static void *ARProgressContext = &ARProgressContext;
 
     BOOL urlIsLoginOrSignUp = [URL.path isEqual:@"/log_in"] || [URL.path isEqual:@"/sign_up"];
     if ([ARRouter isInternalURL:URL] && (urlIsLoginOrSignUp)) {
-//        if ([User isTrialUser]) {
+//        if ([User isLocalTemporaryUser]) {
 //            [self startLoginOrSignup:URL];
 //        }
         ARActionLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));

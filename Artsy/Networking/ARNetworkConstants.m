@@ -13,7 +13,7 @@ NSString *const ARTwitterCallbackPath = @"artsy://twitter-callback";
 
 NSString *const ARAuthHeader = @"X-Access-Token";
 NSString *const ARXappHeader = @"X-Xapp-Token";
-NSString *const AREigenTrialUserIDHeader = @"X-Eigen-Trial-ID";
+NSString *const AREigenLocalTemporaryUserIDHeader = @"X-Eigen-Trial-ID";
 
 NSString *const ARTotalHeader = @"X-Total-Count";
 

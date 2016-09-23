@@ -160,21 +160,21 @@ describe(@"User-Agent", ^{
 //
 //    it(@"logged in users don't send the uuid", ^{
 //        id userMock = [OCMockObject niceMockForClass:[User class]];
-//        [[[userMock stub] andReturnValue:@(NO)] isTrialUser];
+//        [[[userMock stub] andReturnValue:@(NO)] isLocalTemporaryUser];
 //        [ARRouter setup];
 //
 //        NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://m.artsy.net"]];
-//        expect([request valueForHTTPHeaderField:AREigenTrialUserIDHeader]).to.beFalsy();
+//        expect([request valueForHTTPHeaderField:AREigenLocalTemporaryUserIDHeader]).to.beFalsy();
 //    });
 //
 //    it(@"other websites dont get the uuid", ^{
 //        id userMock = [OCMockObject niceMockForClass:[User class]];
-//        [[[userMock stub] andReturnValue:@(YES)] isTrialUser];
+//        [[[userMock stub] andReturnValue:@(YES)] isLocalTemporaryUser];
 //
 //        [ARRouter setup];
 //
 //        NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://orta.io"]];
-//        expect([request valueForHTTPHeaderField:AREigenTrialUserIDHeader]).to.beFalsy();
+//        expect([request valueForHTTPHeaderField:AREigenLocalTemporaryUserIDHeader]).to.beFalsy();
 //    });
 //});
 
