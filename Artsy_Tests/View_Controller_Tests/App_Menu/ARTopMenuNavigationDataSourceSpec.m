@@ -6,7 +6,6 @@
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Artworks.h"
 
-
 @interface ARTopMenuNavigationDataSource (Testing)
 @property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;

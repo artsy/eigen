@@ -23,7 +23,7 @@
 - (void)showOnboarding;
 - (void)showOnboardingWithState:(enum ARInitialOnboardingState)state;
 
-- (void)finishOnboardingAnimated:(BOOL)animated;
+- (void)finishOnboarding:(AROnboardingViewController *)viewController animated:(BOOL)animated;
 
 @end
 

@@ -71,7 +71,7 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
 - (void)setupEmission;
 {
     // AppHub's loading of our Emission instance is Async, so we let
-    // the normal  JS run, then if we get the notification of a new build
+    // the normal JS run, then if we get the notification of a new build
     // we switch out the current emission instance.
     //
     if ([AROptions boolForOption:AROptionsStagingReactEnv]) {
@@ -102,9 +102,6 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
 
 - (void)setupSharedEmissionWithPackagerURL:(NSURL *)packagerURL;
 {
-    // TODO Emission should not be initialised until after onboarding.
-    return;
-    
     NSString *userID = [[[ARUserManager sharedManager] currentUser] userID];
     NSString *authenticationToken = [[ARUserManager sharedManager] userAuthenticationToken];
     NSParameterAssert(userID);

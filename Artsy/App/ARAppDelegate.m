@@ -23,7 +23,6 @@
 #import "ARTopMenuViewController.h"
 
 #import "UIViewController+InnermostTopViewController.h"
-#import "ARSimpleShowFeedViewController.h"
 #import "ARAdminSettingsViewController.h"
 #import "ARQuicksilverViewController.h"
 #import "ARRouter.h"
@@ -121,23 +120,16 @@ static ARAppDelegate *_sharedInstance = nil;
     [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[ARAppNotificationsDelegate alloc] init];
 
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.viewController = [ARTopMenuViewController sharedController];
-    self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
 
     [self setupAdminTools];
 
     [self setupRatingTool];
     [self countNumberOfRuns];
 
-    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-
     _landingURLRepresentation = self.landingURLRepresentation ?: @"https://artsy.net";
 
     [[ARLogger sharedLogger] startLogging];
     [FBSDKSettings setAppID:[ArtsyKeys new].artsyFacebookAppID];
-
-    [self setupEmission];
 
     // This has to be checked *before* creating the first Xapp token.
     BOOL shouldShowOnboarding = ![[ARUserManager sharedManager] hasExistingAccount];
@@ -147,15 +139,14 @@ static ARAppDelegate *_sharedInstance = nil;
         [self performSelector:@selector(finishDemoSplash) withObject:nil afterDelay:1];
 
     } else if (shouldShowOnboarding) {
-        [self fetchSiteFeatures];
+        [self showOnboarding];
 
-        // Do not show the splash/onboarding when a user comes in through a user activity, as it breaks the expectation
-        // of the user to see the activity. This is probably just an edge-case, most people will probably launch the app
-        // after installing it.
-        if (self.initialLaunchOptions[UIApplicationLaunchOptionsUserActivityDictionaryKey] == nil) {
-            [self showOnboarding];
-        }
+    } else {
+        // Default logged in setup path
+        [self startupApp];
     }
+    [self.window makeKeyAndVisible];
+
 
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         // Sync clock with server
@@ -182,6 +173,13 @@ static ARAppDelegate *_sharedInstance = nil;
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
     [self checkForiOS8Deprecation];
+}
+
+- (void)startupApp
+{
+    [self setupEmission];
+    self.viewController = [ARTopMenuViewController sharedController];
+    self.window.rootViewController = self.viewController;
 }
 
 - (void)registerNewSessionOpened
@@ -217,6 +215,12 @@ static ARAppDelegate *_sharedInstance = nil;
     [self showOnboardingWithState:ARInitialOnboardingStateSlideShow];
 }
 
+- (void)showOnboardingWithState:(enum ARInitialOnboardingState)state
+{
+    AROnboardingViewController *onboardVC = [[AROnboardingViewController alloc] initWithState:ARInitialOnboardingStateSlideShow];
+    self.window.rootViewController = onboardVC;
+}
+
 - (void)finishDemoSplash
 {
     [self.viewController dismissViewControllerAnimated:YES completion:nil];
@@ -233,21 +237,17 @@ static ARAppDelegate *_sharedInstance = nil;
     font = [UIFont smallCapsSerifFontWithSize:12];
 }
 
-- (void)finishOnboardingAnimated:(BOOL)animated
+- (void)finishOnboarding:(AROnboardingViewController *)viewController animated:(BOOL)animated
 {
     // We now have a proper Artsy user, not just a local temporary ID
     // So we have to re-identify the analytics user
     // to ensure we start sending the Gravity ID as well as the local temporary ID
-
     [ARUserManager identifyAnalyticsUser];
 
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    // And set up emission
+    [self startupApp];
 
-    ARTopMenuViewController *topVC = ARTopMenuViewController.sharedController;
-    if (topVC.presentedViewController) {
-        topVC.presentedViewController.transitioningDelegate = topVC;
-        [topVC.presentedViewController dismissViewControllerAnimated:animated completion:nil];
-    }
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 
     ar_dispatch_main_queue(^{
         [self.remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
@@ -256,18 +256,6 @@ static ARAppDelegate *_sharedInstance = nil;
             [ARSpotlight indexAllUsersFavorites];
         }
     });
-}
-
-- (void)showOnboardingWithState:(enum ARInitialOnboardingState)state
-{
-    AROnboardingViewController *onboardVC = [[AROnboardingViewController alloc] initWithState:state];
-    onboardVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
-    UIViewController *controller = self.viewController;
-    // Loop till we find the topmost VC
-    while (controller.presentedViewController) {
-        controller = controller.presentedViewController;
-    }
-    [controller presentViewController:onboardVC animated:NO completion:nil];
 }
 
 - (void)setupAdminTools
