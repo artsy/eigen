@@ -101,7 +101,7 @@ describe(@"as an admin", ^{
     });
 });
 
-    describe(@"send button", ^{
+describe(@"send button", ^{
         __block Artwork *artwork;
         
         beforeEach(^{
@@ -162,7 +162,6 @@ describe(@"as an admin", ^{
             [vc emailInputHasChanged:vc.emailInput];
             return vc;
         });
-    });
 });
 
 describe(@"sending", ^{
