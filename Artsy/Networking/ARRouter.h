@@ -133,8 +133,8 @@
 
 + (NSURLRequest *)newSearchRequestWithQuery:(NSString *)query;
 + (NSURLRequest *)newSearchRequestWithFairID:(NSString *)fairID andQuery:(NSString *)query;
-+ (NSURLRequest *)newArtistSearchRequestWithQuery:(NSString *)query;
-+ (NSURLRequest *)newGeneSearchRequestWithQuery:(NSString *)query;
++ (NSURLRequest *)newArtistSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)artistsToExclude;
++ (NSURLRequest *)newGeneSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)genesToExclude;
 
 + (NSURLRequest *)directImageRequestForModel:(Class)model andSlug:(NSString *)slug;
 

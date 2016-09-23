@@ -827,14 +827,24 @@ static NSString *hostFromString(NSString *string)
                                                                             @"fair_id" : fairID }];
 }
 
-+ (NSURLRequest *)newArtistSearchRequestWithQuery:(NSString *)query
++ (NSURLRequest *)newArtistSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)artistsToExclude
 {
-    return [self requestWithMethod:@"GET" path:ARNewArtistSearchURL parameters:@{ @"term" : query }];
+    NSArray *artistIDsToExclude = [artistsToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"term" : query,
+                              @"exclude_ids" : artistIDsToExclude };
+
+    return [self requestWithMethod:@"GET" path:ARNewArtistSearchURL parameters:params];
 }
 
-+ (NSURLRequest *)newGeneSearchRequestWithQuery:(NSString *)query
++ (NSURLRequest *)newGeneSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)genesToExclude
 {
-    return [self requestWithMethod:@"GET" path:ARNewGeneSearchURL parameters:@{ @"term" : query }];
+    NSArray *geneIDsToExclude = [genesToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"term" : query,
+                              @"exclude_ids" : geneIDsToExclude };
+
+    return [self requestWithMethod:@"GET" path:ARNewGeneSearchURL parameters:params];
 }
 
 + (NSURLRequest *)directImageRequestForModel:(Class)model andSlug:(NSString *)slug
