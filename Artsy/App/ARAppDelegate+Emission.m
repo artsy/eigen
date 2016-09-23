@@ -90,20 +90,32 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
         }];
     }
 
-    [self setupSharedEmission];
+    [self setupSharedEmissionWithPackagerURL:nil];
 }
 
 - (void)newEmissionBuild
 {
     AHBuild *build = [[AppHub buildManager] currentBuild];
     NSURL *jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
-    AREmission *stagingEmission = [[AREmission alloc] initWithPackagerURL: jsCodeLocation];
-    [AREmission setSharedInstance:stagingEmission];
+    [self setupSharedEmissionWithPackagerURL:jsCodeLocation];
 }
 
-- (void)setupSharedEmission
+- (void)setupSharedEmissionWithPackagerURL:(NSURL *)packagerURL;
 {
-    AREmission *emission = [AREmission sharedInstance];
+    // TODO Emission should not be initialised until after onboarding.
+    return;
+    
+    NSString *userID = [[[ARUserManager sharedManager] currentUser] userID];
+    NSString *authenticationToken = [[ARUserManager sharedManager] userAuthenticationToken];
+    NSParameterAssert(userID);
+    NSParameterAssert(authenticationToken);
+    
+    AREmission *emission = [[AREmission alloc] initWithUserID:userID
+                                          authenticationToken:authenticationToken
+                                                  packagerURL:packagerURL
+                                        useStagingEnvironment:[AROptions boolForOption:ARUseStagingDefault]];
+    [AREmission setSharedInstance:emission];
+
     emission.APIModule.artistFollowStatusProvider = ^(NSString *artistID, RCTResponseSenderBlock block) {
         // Leave the view state ‘unselected’ if there’s no signed-in user.
         if ([[ARUserManager sharedManager] currentUser] != nil) {

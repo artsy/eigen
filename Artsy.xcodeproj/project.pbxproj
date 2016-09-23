@@ -247,6 +247,7 @@
 		5152C65E1B50428A0018D4E4 /* ARAppSearchTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 5152C65D1B50428A0018D4E4 /* ARAppSearchTransition.m */; };
 		5168A76E1B46A70500FFBCBF /* ARFilteredStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 5168A76D1B46A70500FFBCBF /* ARFilteredStackTrace.m */; };
 		5168A7701B46D6D000FFBCBF /* NotificationsButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5168A76F1B46D6D000FFBCBF /* NotificationsButton@2x.png */; };
+		516C829A1D9581D50087B786 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 516C82991D9581D50087B786 /* assets */; };
 		516CDA631BB32B6A001C02B2 /* ARSpotlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 516CDA621BB32B6A001C02B2 /* ARSpotlight.m */; };
 		516CDA691BB55B54001C02B2 /* UIViewController+WithLoadedData.m in Sources */ = {isa = PBXBuildFile; fileRef = 516CDA681BB55B54001C02B2 /* UIViewController+WithLoadedData.m */; };
 		516CDA6C1BB56611001C02B2 /* UIViewController+ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 516CDA6B1BB56611001C02B2 /* UIViewController+ARUserActivity.m */; };
@@ -1207,6 +1208,7 @@
 		5168A76C1B46A70500FFBCBF /* ARFilteredStackTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFilteredStackTrace.h; sourceTree = "<group>"; };
 		5168A76D1B46A70500FFBCBF /* ARFilteredStackTrace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFilteredStackTrace.m; sourceTree = "<group>"; };
 		5168A76F1B46D6D000FFBCBF /* NotificationsButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationsButton@2x.png"; sourceTree = "<group>"; };
+		516C82991D9581D50087B786 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = Pods/Emission/Pod/Assets/assets; sourceTree = SOURCE_ROOT; };
 		516CDA611BB32B6A001C02B2 /* ARSpotlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSpotlight.h; sourceTree = "<group>"; };
 		516CDA621BB32B6A001C02B2 /* ARSpotlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpotlight.m; sourceTree = "<group>"; };
 		516CDA671BB55B54001C02B2 /* UIViewController+WithLoadedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WithLoadedData.h"; sourceTree = "<group>"; };
@@ -4288,6 +4290,7 @@
 				607BF5AA1C2413810034B519 /* ARAppStatus.m */,
 				51F2C5F21CEE8A7700B881BE /* ARAppDelegate+Emission.h */,
 				51F2C5F31CEE8A7700B881BE /* ARAppDelegate+Emission.m */,
+				516C82991D9581D50087B786 /* assets */,
 			);
 			name = Setup;
 			sourceTree = "<group>";
@@ -5135,6 +5138,7 @@
 				5E17B1941C59645E00CE6E98 /* Range@2x.png in Resources */,
 				1CC9EBA31CC76CDD00A74E3C /* followButton@3x.png in Resources */,
 				608B709417D4A1C80088A56C /* CloseButtonLarge@2x.png in Resources */,
+				516C829A1D9581D50087B786 /* assets in Resources */,
 				608B708017D4A1C80088A56C /* MenuClose@2x.png in Resources */,
 				60D8E63C18D256BB0040BEFD /* ARDemoSplashViewController.xib in Resources */,
 				5E6BA6E91C56B5D700B942C1 /* CircularCancelButton@2x.png in Resources */,
