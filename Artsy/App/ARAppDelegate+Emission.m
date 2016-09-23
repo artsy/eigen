@@ -124,9 +124,11 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
         //       only be invoked once.
         ArtistSetFollowStatus(artistID, following, block);
         if (following) {
-            // Ask for push notification permission, if not already
-            ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
-            [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // Ask for push notification permission, if not already
+                ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+                [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
+            });
         }
     };
 
