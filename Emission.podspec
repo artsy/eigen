@@ -15,8 +15,7 @@ Pod::Spec.new do |s|
   s.platform       = :ios, '8.0'
   s.requires_arc   = true
   s.source_files   = 'Pod/Classes/**/*.{h,m}'
-  s.resource       = 'Pod/Assets/Emission.js'
-  s.preserve_paths = 'Pod/Assets/assets/images/*.png'
+  s.resources      = 'Pod/Assets/{Emission.js,assets}'
 
   # Artsy pods
   s.dependency 'Artsy+UIFonts', '>= 1.1.0'

@@ -1,3 +1,7 @@
+### 1.1.0-beta.3
+
+- Fix missing image asset issue - alloy
+
 ### 1.1.0-beta.2
 
 - Adds an initial Gene view - orta
