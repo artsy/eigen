@@ -1,13 +1,13 @@
-'use strict';
+'use strict'
 
-import React from 'react';
-import { View } from 'react-native';
+import React from 'react'
+import { View } from 'react-native'
 
-import { storiesOf } from '@kadira/react-native-storybook';
-import StubContainer from "react-storybooks-relay-container";
+import { storiesOf } from '@kadira/react-native-storybook'
+import StubContainer from 'react-storybooks-relay-container'
 
-import ArtistArticles from '../lib/components/artist/articles';
-import Routes from '../lib/relay/routes';
+import ArtistArticles from '../lib/components/artist/articles'
+import Routes from '../lib/relay/routes'
 
 storiesOf('Artist Articles')
   .addDecorator((story) => (
@@ -20,10 +20,10 @@ storiesOf('Artist Articles')
         href: '/artist/glenn-brown',
         id: '1',
         author : { name: 'Made by Orta' },
-        thumbnail_image: { url: "" }
+        thumbnail_image: { url: '' }
       }]
-    };
-    return <StubContainer Component={ArtistArticles} props={props}/>;
+    }
+    return <StubContainer Component={ArtistArticles} props={props}/>
   })
   .add('Multiple Items', () => {
     const props = {
@@ -32,14 +32,14 @@ storiesOf('Artist Articles')
         href: '/artist/glenn-brown',
         id: '2',
         author : { name: 'Made by Orta' },
-        thumbnail_image: { url: "" }
+        thumbnail_image: { url: '' }
       }, {
         thumbnail_title : 'Second Article',
         href: '/artist/leda-catunda',
         id: '3',
         author : { name: 'Made by Danger' },
-        thumbnail_image: { url: "" }
+        thumbnail_image: { url: '' }
       }]
-    };
-    return <StubContainer Component={ArtistArticles} props={props}/>;
+    }
+    return <StubContainer Component={ArtistArticles} props={props}/>
   })

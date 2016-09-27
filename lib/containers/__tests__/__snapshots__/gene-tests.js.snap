@@ -1,0 +1,73 @@
+exports[`test looks like expected 1`] = `
+<ScrollView
+  scrollsToTop={true}>
+  <View
+    style={
+      Object {
+        "paddingLeft": 20,
+        "paddingRight": 20
+      }
+    }>
+    <View
+      style={
+        Object {
+          "paddingTop": 20
+        }
+      }>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        lineBreakMode="tail"
+        style={
+          Array [
+            Object {
+              "fontSize": 12
+            },
+            Array [
+              Object {
+                "textAlign": "center"
+              },
+              Object {
+                "fontSize": 14
+              }
+            ],
+            Object {
+              "fontFamily": "Avant Garde Gothic ITCW01Dm"
+            }
+          ]
+        }>
+        EXAMPLE GENE
+      </Text>
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignSelf": "flex-start",
+              "borderColor": "red",
+              "borderWidth": 1
+            },
+            Array [
+              Object {
+                "height": 46
+              },
+              Object {
+                "marginBottom": 30,
+                "marginLeft": 0,
+                "marginRight": 0,
+                "marginTop": 30
+              }
+            ]
+          ]
+        } />
+      <View>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          lineBreakMode="tail" />
+      </View>
+    </View>
+  </View>
+</ScrollView>
+`;

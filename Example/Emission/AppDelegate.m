@@ -19,6 +19,10 @@
 #import <Extraction/ARSpinner.h>
 #import <SAMKeychain/SAMKeychain.h>
 
+#ifdef DEPLOY
+#import <AppHub/AppHub.h>
+#endif
+
 // The slug of the artist to show as the root artist from the component selection list.
 //
 #define ARTIST @"alex-katz"
@@ -71,7 +75,14 @@ randomBOOL(void)
   self.window.rootViewController = self.navigationController;
   [self.window makeKeyAndVisible];
 
+#ifdef DEPLOY
+  // [AppHub setLogLevel: AHLogLevelDebug];
+  [AppHub setApplicationID: @"Z6IwqK52JBXrKLI4kpvJ"];
+  [[AppHub buildManager] setDebugBuildsEnabled:YES];
+#endif
+
   NSString *userID = [SAMKeychain accountsForService:KEYCHAIN_SERVICE][0][kSAMKeychainAccountKey];
+
   if (userID) {
     NSString *accessToken = [SAMKeychain passwordForService:KEYCHAIN_SERVICE account:userID];
     if (accessToken) {
@@ -95,7 +106,7 @@ randomBOOL(void)
     self.authenticationSpinnerController.view = spinner;
     [self.navigationController presentViewController:self.authenticationSpinnerController animated:NO completion:nil];
   }
-  
+
   UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Authentication"
                                                                  message:@"Enter your Artsy credentials"
                                                           preferredStyle:UIAlertControllerStyleAlert];
@@ -106,7 +117,7 @@ randomBOOL(void)
     textField.placeholder = @"Password";
     textField.secureTextEntry = YES;
   }];
-  
+
   __weak UIAlertController *weakAlert = alert;
   [alert addAction:[UIAlertAction actionWithTitle:@"OK"
                                             style:UIAlertActionStyleDefault
@@ -114,7 +125,7 @@ randomBOOL(void)
                                             [self authenticateWithEmail:weakAlert.textFields[0].text
                                                                password:weakAlert.textFields[1].text];
                                           }]];
-  
+
   [self.authenticationSpinnerController presentViewController:alert animated:YES completion:nil];
 }
 
@@ -146,7 +157,11 @@ randomBOOL(void)
             NSParameterAssert(userID);
             NSParameterAssert(accessToken);
 
-            [SAMKeychain setPassword:accessToken forService:KEYCHAIN_SERVICE account:userID];
+            NSError *error = nil;
+            [SAMKeychain setPassword:accessToken forService:KEYCHAIN_SERVICE account:userID error:&error];
+            if (error) {
+              NSLog(@"%@", error);
+            }
 
             [self.authenticationSpinnerController dismissViewControllerAnimated:YES completion:nil];
             [self setupEmissionWithUserID:userID accessToken:accessToken];
@@ -169,13 +184,24 @@ randomBOOL(void)
 #else
   BOOL staging = NO;
 #endif
+
   NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
   emission = [[AREmission alloc] initWithUserID:userID
                             authenticationToken:accessToken
                                     packagerURL:packagerURL
                           useStagingEnvironment:staging];
 #else
-  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken];
+#ifdef DEPLOY
+  AHBuild *build = [[AppHub buildManager] currentBuild];
+  NSURL *jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
+#else
+  NSURL *jsCodeLocation = nil;
+#endif
+  if (!jsCodeLocation) {
+    NSBundle *emissionBundle = [NSBundle bundleForClass:AREmission.class];
+    jsCodeLocation = [emissionBundle URLForResource:@"Emission" withExtension:@"js"];
+  }
+  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken packagerURL:jsCodeLocation useStagingEnvironment:NO];
 #endif
   [AREmission setSharedInstance:emission];
 
@@ -190,12 +216,12 @@ randomBOOL(void)
   emission.APIModule.artistFollowStatusAssigner = ^(NSString *artistID, BOOL following, RCTResponseSenderBlock block) {
     NSLog(@"Artist(%@).follow = %@", artistID, @(following));
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-      if (randomBOOL()) {
+//      if (randomBOOL()) {
         block(@[[NSNull null], @(following)]);
-      } else {
-        NSLog(@"Simulated follow request ‘failed’.");
-        block(@[RCTJSErrorFromNSError([NSError errorWithDomain:@"Artsy" code:42 userInfo:nil]), @(!following)]);
-      }
+//      } else {
+//        NSLog(@"Simulated follow request ‘failed’.");
+//        block(@[RCTJSErrorFromNSError([NSError errorWithDomain:@"Artsy" code:42 userInfo:nil]), @(!following)]);
+//      }
     });
   };
 

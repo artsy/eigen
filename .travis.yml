@@ -13,3 +13,9 @@ install:
 before_script:
   - bundle exec danger
   - npm run lint
+
+deploy:
+  provider: script
+  script: scripts/deploy_apphub.sh
+  on:
+    branch: master
