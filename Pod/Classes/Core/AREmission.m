@@ -62,11 +62,14 @@ static AREmission *_sharedInstance = nil;
                    packagerURL:(nullable NSURL *)packagerURL
          useStagingEnvironment:(BOOL)useStagingEnvironment;
 {
+  NSParameterAssert(userID);
+  NSParameterAssert(authenticationToken);
+
   if ((self = [super init])) {
     _eventsModule = [AREventsModule new];
     _switchBoardModule = [ARSwitchBoardModule new];
     _APIModule = [ARTemporaryAPIModule new];
-    
+
     _configurationModule = [AREmissionConfiguration new];
     _configurationModule.userID = userID;
     _configurationModule.authenticationToken = authenticationToken;
