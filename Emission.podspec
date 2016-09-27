@@ -27,5 +27,6 @@ Pod::Spec.new do |s|
   react_native_version = npm_package['dependencies']['react-native'].sub('^', '~>')
   s.dependency 'React/Core', react_native_version
   s.dependency 'React/RCTText', react_native_version
+  s.dependency 'React/RCTImage', react_native_version
   s.dependency 'React/RCTNetwork', react_native_version
 end

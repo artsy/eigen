@@ -6,7 +6,7 @@ react_path = '../node_modules/react-native'
 target 'Emission' do
   pod 'Emission', :path => '../'
   pod 'Extraction'
-  pod 'React', :path => react_path, :subspecs => %w(RCTWebSocket RCTImage)
+  pod 'React', :path => react_path, :subspecs => %w(RCTWebSocket)
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
   else
