@@ -6,7 +6,7 @@
 - [dev] Turns on "keychain sharing" to fix a keychain bug in sim - orta
 - GeneVC now shows about information, and trending artists - orta
 - GeneVC now shows artworks for the gene - orta
-
+- Show ‘bid now’ call to action on artworks that are in an auction - alloy
 
 ### 1.1.0-beta.2
 
