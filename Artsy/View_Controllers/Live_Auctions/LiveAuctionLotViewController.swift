@@ -17,6 +17,7 @@ class LiveAuctionLotViewController: UIViewController {
     let lotViewModel: LiveAuctionLotViewModelType
     let salesPerson: LiveAuctionsSalesPersonType
     let bidHistoryState = Observable<BidHistoryState>(.Closed)
+    // Changes in the bid history frame.origin.y from its original, at rest position.
     let bidHistoryDelta = Observable<(delta: CGFloat, animating: Bool)>((delta: 0, animating: false))
 
     private weak var bidHistoryViewController: LiveAuctionBidHistoryViewController?
@@ -73,15 +74,11 @@ class LiveAuctionLotViewController: UIViewController {
         view.addSubview(lotMetadataStack)
         lotMetadataStack.constrainWidthToView(view, predicate: "0")
         lotMetadataStack.alignCenterXWithView(view, predicate: "0")
+
+        /// This is a constraint that says "stick to the top of the lot view."
+        /// We use it for both showing lot info and for expanding the bid history.
         alignMetadataToTopConstraint = lotMetadataStack.alignTopEdgeWithView(view, predicate: "0")
         alignMetadataToTopConstraint?.active = false
-
-        /// This is a constraint that says "stick to the top of the lot view"
-        /// it's initially turned off, otherwise it uses it's own height constraint
-        /// that is only as big as it's `aboveFoldStackWrapper`
-
-        let topMetadataStackConstraint = lotMetadataStack.alignTopEdgeWithView(view, predicate: "0")
-        topMetadataStackConstraint.active = false
 
 
         // Metadata stack setup
@@ -102,14 +99,15 @@ class LiveAuctionLotViewController: UIViewController {
         infoToolbar.constrainHeight("38")
 
         /// Toggles the top constraint, and tells the stack to re-layout
-        lotMetadataStack.showAdditionalInformation = { [weak lotMetadataStack, weak topMetadataStackConstraint, weak metadataStack, weak infoToolbar] in
-            topMetadataStackConstraint?.active = true
+        lotMetadataStack.showAdditionalInformation = { [weak lotMetadataStack, weak alignMetadataToTopConstraint, weak metadataStack, weak infoToolbar] in
+            alignMetadataToTopConstraint?.active = true
+            alignMetadataToTopConstraint?.constant = 0 // Stick to the _very_ top of our view.
             metadataStack?.updateTopMargin("10", forView: infoToolbar)
             lotMetadataStack?.showFullMetadata(true)
         }
 
-        lotMetadataStack.hideAdditionalInformation = { [weak lotMetadataStack, weak topMetadataStackConstraint, weak metadataStack, weak infoToolbar] in
-            topMetadataStackConstraint?.active = false
+        lotMetadataStack.hideAdditionalInformation = { [weak lotMetadataStack, weak alignMetadataToTopConstraint, weak metadataStack, weak infoToolbar] in
+            alignMetadataToTopConstraint?.active = false
             metadataStack?.updateTopMargin("28", forView: infoToolbar)
             lotMetadataStack?.hideFullMetadata(true)
         }
@@ -198,6 +196,7 @@ class LiveAuctionLotViewController: UIViewController {
         // This should occur during the view's initial layout pass, before any user interaction.
         if atRestMetadataPosition == nil {
             atRestMetadataPosition = lotMetadataStack?.frame.origin.y
+            print("Resetting atRestMetadataPosition to \(atRestMetadataPosition)")
         }
     }
 
@@ -230,7 +229,7 @@ class LiveAuctionLotViewController: UIViewController {
 
     private var lotHistoryHeightConstraint: NSLayoutConstraint?
     private var alignMetadataToTopConstraint: NSLayoutConstraint?
-    private var initialGestureMetadataPosition: CGFloat = 0
+
     private var atRestMetadataPosition: CGFloat?
     private var openedMetadataPosition: CGFloat? {
         switch atRestMetadataPosition {
@@ -238,6 +237,7 @@ class LiveAuctionLotViewController: UIViewController {
         case nil: return nil
         }
     }
+
     // Having an internal, non-Observable bidHistoryState helps us in our gesture recognizer by simplifying the code.
     private var _bidHistoryState: BidHistoryState = .Closed {
         willSet(newValue) {
@@ -256,20 +256,23 @@ class LiveAuctionLotViewController: UIViewController {
         let atRestMetadataPosition = self.atRestMetadataPosition ?? 0
         let openedMetadataPosition = self.openedMetadataPosition ?? 0
 
-        switch gestureRecognizer.state {
+        print(alignMetadataToTopConstraint?.constant)
 
+        switch gestureRecognizer.state {
         case .Began:
             _initialBidHistoryState = _bidHistoryState
 
-            // TODO: If we are showing the metadata stack when we begin the gesture, initialGestureMetadataPosition is invalid.
-            lotMetadataStack?.hideAdditionalInformation?()
-            self.lotMetadataStack?.setShowInfoButtonEnabled(false)
+            if case .Closed = _initialBidHistoryState {
+                // We're opening.
+                // Close the lot metadata, in case its open.
+                lotMetadataStack?.hideAdditionalInformation?()
+                lotMetadataStack?.setShowInfoButtonEnabled(false)
 
-            initialGestureMetadataPosition = lotMetadataStack?.frame.origin.y ?? 0
-            alignMetadataToTopConstraint?.constant = initialGestureMetadataPosition
-
-            alignMetadataToTopConstraint?.active = true
-            lotHistoryHeightConstraint?.active = false
+                // Set up our constraint to take over from lotHistoryHeightConstraint. One of them needs to be active at all times.
+                alignMetadataToTopConstraint?.constant = atRestMetadataPosition
+                alignMetadataToTopConstraint?.active = true
+                lotHistoryHeightConstraint?.active = false
+            }
 
             // We'll be "open" for now, which is really shorthand for "opening", which will be set appropriately when the recognizer ends.
             _bidHistoryState = .Open
@@ -277,17 +280,21 @@ class LiveAuctionLotViewController: UIViewController {
         case .Changed:
             // TODO: What happens when the current lot is closed, and a new one is opened?
 
-            var candidateConstant = initialGestureMetadataPosition + translation.y
-            candidateConstant.capAtMax(atRestMetadataPosition, min: openedMetadataPosition)
-            alignMetadataToTopConstraint?.constant = candidateConstant
+            var candidateConstant: CGFloat // Distance from the top of the view
+            var delta: CGFloat // How far the view has moved from its initial, at rest position
 
-            var delta: CGFloat
             switch _initialBidHistoryState {
             case .Closed: // Opening
                 delta = translation.y
+                candidateConstant = atRestMetadataPosition + translation.y
             case .Open:   // Closing
-                delta = initialGestureMetadataPosition - atRestMetadataPosition + translation.y
+                delta = openedMetadataPosition - atRestMetadataPosition + translation.y
+                candidateConstant = openedMetadataPosition + translation.y
             }
+
+            candidateConstant.capAtMax(atRestMetadataPosition, min: openedMetadataPosition)
+            alignMetadataToTopConstraint?.constant = candidateConstant
+
             delta.capAtMax(0, min: openedMetadataPosition - atRestMetadataPosition)
             bidHistoryDelta.update((delta: delta, animating: false))
 
@@ -299,9 +306,14 @@ class LiveAuctionLotViewController: UIViewController {
 
             // TODO: be clever about animation velocity
             UIView.animateWithDuration(ARAnimationDuration, animations: {
-                self.alignMetadataToTopConstraint?.constant = self.openedMetadataPosition ?? 0 // Reset this to stick to the top, we'll set its active status below.
-                self.alignMetadataToTopConstraint?.active = (targetState == .Open)
-                self.lotHistoryHeightConstraint?.active = (targetState == .Closed)
+                if targetState == .Open {
+                    self.alignMetadataToTopConstraint?.constant = openedMetadataPosition // Reset this to stick to the top
+                    self.alignMetadataToTopConstraint?.active = true
+                    self.lotHistoryHeightConstraint?.active = false
+                } else {
+                    self.alignMetadataToTopConstraint?.active = false
+                    self.lotHistoryHeightConstraint?.active = true
+                }
 
                 let delta = (targetState == .Open ? -openedMetadataPosition : 0)
                 self.bidHistoryDelta.update((delta: delta, animating: true))
@@ -315,6 +327,8 @@ class LiveAuctionLotViewController: UIViewController {
 
         default: break
         }
+
+        print(alignMetadataToTopConstraint?.constant)
     }
 }
 
