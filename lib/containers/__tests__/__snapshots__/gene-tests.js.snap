@@ -17,7 +17,7 @@ exports[`test looks like expected 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        lineBreakMode="tail"
+        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -65,7 +65,7 @@ exports[`test looks like expected 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          lineBreakMode="tail" />
+          ellipsizeMode="tail" />
       </View>
     </View>
   </View>
