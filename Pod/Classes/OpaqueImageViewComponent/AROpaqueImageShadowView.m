@@ -4,19 +4,19 @@
 
 @implementation AROpaqueImageShadowView
 
-static css_dim_t
-RCTMeasure(void *context, float width, float height)
+static CSSSize
+RCTMeasure(void *context, float width, CSSMeasureMode widthMode, float height, CSSMeasureMode heightMode)
 {
   AROpaqueImageShadowView *shadowImage = (__bridge AROpaqueImageShadowView *)context;
-  css_dim_t result;
+  CSSSize result;
   if (!isnan(width)) {
-    result.dimensions[CSS_WIDTH] = RCTCeilPixelValue(width);
-    result.dimensions[CSS_HEIGHT] = RCTCeilPixelValue(width / shadowImage.aspectRatio);
+    result.width = RCTCeilPixelValue(width);
+    result.height = RCTCeilPixelValue(width / shadowImage.aspectRatio);
   } else if (!isnan(height)) {
-    result.dimensions[CSS_WIDTH] = RCTCeilPixelValue(height * shadowImage.aspectRatio);
-    result.dimensions[CSS_HEIGHT] = RCTCeilPixelValue(height);
+    result.width = RCTCeilPixelValue(height * shadowImage.aspectRatio);
+    result.height = RCTCeilPixelValue(height);
   }
-  NSCAssert(!(isnan(result.dimensions[CSS_WIDTH]) || isnan(result.dimensions[CSS_HEIGHT])), @"Invalid layout!");
+  NSCAssert(!(isnan(result.width) || isnan(result.height)), @"Invalid layout!");
   return result;
 }
 
@@ -24,14 +24,9 @@ RCTMeasure(void *context, float width, float height)
 {
   if ((self = [super init])) {
     _aspectRatio = 1;
+      CSSNodeSetMeasureFunc(self.cssNode, RCTMeasure);
   }
   return self;
-}
-
-- (void)fillCSSNode:(css_node_t *)node;
-{
-  [super fillCSSNode:node];
-  node->measure = RCTMeasure;
 }
 
 @end
