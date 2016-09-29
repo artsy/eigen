@@ -57,7 +57,7 @@ PODS:
   - Artsy+UILabels (2.0.2):
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
-  - Artsy-UIButtons (2.0.1):
+  - Artsy-UIButtons (2.0.2):
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
     - UIView+BooleanAnimations
@@ -207,7 +207,7 @@ DEPENDENCIES:
   - Artsy+UIColors
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
   - Artsy+UILabels
-  - Artsy-UIButtons
+  - Artsy-UIButtons (from `https://github.com/artsy/Artsy-UIButtons.git`)
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - DRKonamiCode
@@ -280,6 +280,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/dblock/ARTiledImageView
   Artsy+UIFonts:
     :git: https://github.com/artsy/Artsy-UIFonts.git
+  Artsy-UIButtons:
+    :git: https://github.com/artsy/Artsy-UIButtons.git
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
   FBSnapshotTestCase:
@@ -330,6 +332,9 @@ CHECKOUT OPTIONS:
   Artsy+UIFonts:
     :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts.git
+  Artsy-UIButtons:
+    :commit: 2ec4f79e8ea5eded80bdd05b8537d54c35e4f55c
+    :git: https://github.com/artsy/Artsy-UIButtons.git
   CocoaLumberjack:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
@@ -375,7 +380,7 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 10a2d71e9ffe1015be43d4e084d13ff4337aab97
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
   Artsy+UILabels: 9b8e8b683488e22633625db9627cd79ab64b610f
-  Artsy-UIButtons: 26e6d1e0d2174773e9cf7693985d27faddd61743
+  Artsy-UIButtons: 3ef4d1afe54f35d9d8c9512f3c2aedf61923a28f
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
