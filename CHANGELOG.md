@@ -1,5 +1,8 @@
 ### 1.1.0-beta.2
 
+- [dev] Updates Flow to 1.0 - orta
+- [dev] Updates React to 0.34 - orta
+- [dev] Turns on "keychain sharing" to fix a keychain bug - orta
 - Adds an initial Gene view - orta
 - Animate inverted button state change - alloy
 - Do not show follow button on artist view until current status is retrieved - alloy
