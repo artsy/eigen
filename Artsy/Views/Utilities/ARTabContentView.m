@@ -138,14 +138,16 @@ static BOOL ARTabViewDirectionRight = YES;
 
 - (void)forceSetCurrentViewIndex:(NSInteger)index animated:(BOOL)animated
 {
+    BOOL isARNavigationController = [self.currentNavigationController isKindOfClass:ARNavigationController.class];
+
     // If selecting search button, toggle search VC
-    if ([self.dataSource searchButtonAtIndex:index]) {
+    if ([self.dataSource searchButtonAtIndex:index] && isARNavigationController) {
         [(ARNavigationController *)self.currentNavigationController toggleSearch];
         return;
     }
 
     // Otherwise, if the search VC is already present, remove it and continue as normal. This part is only necessary if the app is running with a hardware keyboard enabled; the nav bar is covered by the keyboard otherwise.
-    if ([(ARNavigationController *)self.currentNavigationController isShowingSearch]) {
+    if (isARNavigationController && [(ARNavigationController *)self.currentNavigationController isShowingSearch]) {
         [(ARNavigationController *)self.currentNavigationController toggleSearch];
     }
 
