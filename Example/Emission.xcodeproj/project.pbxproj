@@ -15,7 +15,6 @@
 		510DCB361CCA69EC0075E8CB /* EmissionUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB351CCA69EC0075E8CB /* EmissionUITests.m */; };
 		510E94FD1CCA828900BDF098 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 510E94FB1CCA828900BDF098 /* LaunchScreen.xib */; };
 		510E95141CCEB84F00BDF098 /* TestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 510E95131CCEB84F00BDF098 /* TestHelper.m */; };
-		51278F621D93FAD700742B34 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 51278F611D93FAD700742B34 /* assets */; };
 		51F3E9A41CF3B8A4004A2013 /* RotationNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F3E9A31CF3B8A4004A2013 /* RotationNavigationController.m */; };
 		60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B743B61D3EB12600E6B2A3 /* ARStorybookComponentViewController.m */; };
 		A99EF3F9379BB0B67C290F17 /* libPods-EmissionTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7845722F426267DCFE6FD462 /* libPods-EmissionTests.a */; };
@@ -57,7 +56,6 @@
 		510E94FC1CCA828900BDF098 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		510E95131CCEB84F00BDF098 /* TestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestHelper.m; sourceTree = "<group>"; };
 		510E95151CCEC22C00BDF098 /* TestHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestHelper.h; sourceTree = "<group>"; };
-		51278F611D93FAD700742B34 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../Pod/Assets/assets; sourceTree = "<group>"; };
 		51F3E9A21CF3B8A4004A2013 /* RotationNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotationNavigationController.h; sourceTree = "<group>"; };
 		51F3E9A31CF3B8A4004A2013 /* RotationNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotationNavigationController.m; sourceTree = "<group>"; };
 		60204ADD1D9D590900204628 /* Emission.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Emission.entitlements; sourceTree = "<group>"; };
@@ -106,7 +104,6 @@
 			isa = PBXGroup;
 			children = (
 				60204ADD1D9D590900204628 /* Emission.entitlements */,
-				51278F611D93FAD700742B34 /* assets */,
 				510E94FB1CCA828900BDF098 /* LaunchScreen.xib */,
 				510DCB131CCA69EC0075E8CB /* AppDelegate.h */,
 				510DCB141CCA69EC0075E8CB /* AppDelegate.m */,
@@ -344,7 +341,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51278F621D93FAD700742B34 /* assets in Resources */,
 				510E94FD1CCA828900BDF098 /* LaunchScreen.xib in Resources */,
 				510DCB1D1CCA69EC0075E8CB /* Assets.xcassets in Resources */,
 			);
@@ -469,7 +465,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		AAB8D0C4798F3EDFD0FF028B /* [CP] Check Pods Manifest.lock */ = {
@@ -484,7 +480,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C6D22A98E1836EFE03098872 /* 📦 Embed Pods Frameworks */ = {

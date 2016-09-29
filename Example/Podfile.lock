@@ -14,6 +14,7 @@ PODS:
     - Artsy+UIFonts (>= 1.1.0)
     - Extraction (>= 1.2.0)
     - React/Core (= 0.34.1)
+    - React/RCTImage (= 0.34.1)
     - React/RCTNetwork (= 0.34.1)
     - React/RCTText (= 0.34.1)
     - SDWebImage (>= 3.7.2)
@@ -70,7 +71,6 @@ DEPENDENCIES:
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
   - Emission (from `../`)
   - Extraction
-  - React/RCTImage (from `../node_modules/react-native`)
   - React/RCTTest (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - SAMKeychain
@@ -106,7 +106,7 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 10a2d71e9ffe1015be43d4e084d13ff4337aab97
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
   Artsy-UIButtons: 26e6d1e0d2174773e9cf7693985d27faddd61743
-  Emission: 5595025d58fa9bdf36fc3ccbe212c556f4c05b06
+  Emission: 3f7bdd22d6f1e3e978ee05d40b65eb3a161e1c28
   Extraction: fa0b2384907cb1842b07236fc5c2014e26bc0e51
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
@@ -118,6 +118,6 @@ SPEC CHECKSUMS:
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
 
-PODFILE CHECKSUM: ab2b14498bb09c9ba993d5484696be2421070207
+PODFILE CHECKSUM: af04d610a78f4ef6211c4ff54ac79ae9aa8d0c78
 
-COCOAPODS: 1.1.0.rc.2
+COCOAPODS: 1.0.1
