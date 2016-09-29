@@ -12,6 +12,9 @@ install:
 
 before_script:
   - bundle exec danger
+
+after_script:
+  - npm run flow
   - npm run lint
 
 deploy:
