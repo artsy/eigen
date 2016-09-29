@@ -10,3 +10,9 @@ platforms:
     firebase:
       tests:
         unlicensed: skip
+    isarray:
+      tests:
+        deprecated: skip
+    lodash.assign:
+      tests:
+        deprecated: skip
