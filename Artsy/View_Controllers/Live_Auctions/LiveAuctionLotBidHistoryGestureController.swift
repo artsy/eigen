@@ -20,9 +20,9 @@ class LiveAuctionLotBidHistoryGestureController: NSObject {
     /// Change in the bid history state. There is no "opening" state, this updates only when interactions/animations complete.
     private(set) var bidHistoryState: BidHistoryState = .Closed
 
-    private var gestureRecognizer: PanDirectionGestureRecognizer?
+    private var gestureRecognizer: UIGestureRecognizer?
 
-    init(gestureRecognizer: PanDirectionGestureRecognizer, begining: BeginClosure, update: UpdateClosure, completion: CompletionClosure) {
+    init(gestureRecognizer: UIGestureRecognizer, begining: BeginClosure, update: UpdateClosure, completion: CompletionClosure) {
         self.gestureRecognizer = gestureRecognizer
         self.begining = begining
         self.update = update
@@ -39,7 +39,6 @@ class LiveAuctionLotBidHistoryGestureController: NSObject {
         let translation = gestureRecognizer.translationInView(gestureRecognizer.view)
         let velocity = gestureRecognizer.velocityInView(gestureRecognizer.view)
 
-
         switch gestureRecognizer.state {
         case .Began:
             _initialBidHistoryState = bidHistoryState
@@ -50,7 +49,7 @@ class LiveAuctionLotBidHistoryGestureController: NSObject {
             bidHistoryState = .Open
 
         case .Changed:
-            var delta: CGFloat // How far the view has moved from its initial, at rest position
+            var delta: CGFloat // How far the view has moved from its initial, at rest position.
 
             switch _initialBidHistoryState {
             case .Closed: // Opening
