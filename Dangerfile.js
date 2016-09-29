@@ -23,5 +23,5 @@ const sourcePaths = _.filter(git.modified_files, function(path) {
 // Check that any new file has a corresponding tests file
 const untestedFiles = _.difference(sourcePaths, logicalTestPaths)
 if (untestedFiles.length > 0) {
-  warn("The following files do not have tests: " + github.html_link(untestedFiles))
+  warn("The following files do not have tests: " + github.html_link(untestedFiles), false)
 }
