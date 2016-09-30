@@ -4,6 +4,7 @@
 - [dev] Updates Flow to 0.32 - orta
 - [dev] Updates React to 0.34 - orta
 - [dev] Turns on "keychain sharing" to fix a keychain bug in sim - orta
+- GeneVC now shows about information, and trending artists - orta
 
 ### 1.1.0-beta.2
 
