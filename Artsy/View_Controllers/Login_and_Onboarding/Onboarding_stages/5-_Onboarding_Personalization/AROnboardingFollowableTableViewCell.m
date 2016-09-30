@@ -29,7 +29,7 @@
         [self addSubview:self.follow];
         [self addSubview:self.separator];
 
-        [self.thumbnail alignLeadingEdgeWithView:self predicate:@"10"];
+        [self.thumbnail alignLeadingEdgeWithView:self predicate:@"20"];
         self.imageWidthConstraint = [self.thumbnail constrainWidth:@"50"];
         [self.thumbnail constrainHeight:@"50"];
         [self.thumbnail alignCenterYWithView:self predicate:@"0"];
@@ -45,7 +45,7 @@
         self.title.font = [UIFont sansSerifFontWithSize:14.0f];
 
         [self.follow constrainWidth:@"26" height:@"26"];
-        [self.follow alignTrailingEdgeWithView:self predicate:@"-10"];
+        [self.follow alignTrailingEdgeWithView:self predicate:@"-20"];
         [self.follow alignCenterYWithView:self predicate:@"0"];
 
         self.follow.contentMode = UIViewContentModeCenter;
@@ -55,7 +55,7 @@
         self.separator.backgroundColor = [UIColor artsyGrayRegular];
         [self.separator constrainHeight:@"0.5"];
         [self.separator alignBottomEdgeWithView:self predicate:@"-1"];
-        [self.separator alignLeading:@"10" trailing:@"-10" toView:self];
+        [self.separator alignLeading:@"20" trailing:@"-20" toView:self];
     }
 
     return self;

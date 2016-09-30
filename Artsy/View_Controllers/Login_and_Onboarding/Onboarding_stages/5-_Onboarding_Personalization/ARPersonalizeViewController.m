@@ -100,7 +100,7 @@
     [self.view addSubview:self.headerView];
 
     [self.headerView alignTopEdgeWithView:self.view predicate:@"0"];
-    [self.headerView constrainHeight:@"180"];
+    [self.headerView constrainHeight:@"160"];
     [self.headerView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
     [self.headerView alignCenterXWithView:self.view predicate:@"0"];
 
@@ -109,7 +109,7 @@
         case AROnboardingStagePersonalizeArtists:
             [self addSearchTable];
             // progress percentages are made up for now, will be calculated by steps and remaining steps later
-            [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you." withLargeLayout:self.useLargeLayout];
+            [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you" withLargeLayout:self.useLargeLayout];
             self.searchResultsTable.headerPlaceholderText = @"TOP ARTISTS ON ARTSY";
             self.headerView.searchField.searchField.delegate = self;
             [self.headerView.searchField.searchField setPlaceholder:@"Search artist"];
@@ -117,7 +117,7 @@
             break;
         case AROnboardingStagePersonalizeCategories:
             [self addSearchTable];
-            [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you." withLargeLayout:self.useLargeLayout];
+            [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you" withLargeLayout:self.useLargeLayout];
             self.headerView.searchField.searchField.delegate = self;
             self.searchResultsTable.headerPlaceholderText = @"POPULAR CATEGORIES OF ART ON ARTSY";
             [self.headerView.searchField.searchField setPlaceholder:@"Search medium, movement, or style"];
@@ -254,6 +254,9 @@
 - (void)artistFollowed:(Artist *)artist
 {
     if (self.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeSearchResults) {
+        self.headerView.searchField.searchField.text = @"";
+        [self.headerView.searchField endEditing:YES];
+        [self.headerView.searchField.searchField resignFirstResponder];
         self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
         self.searchRequestOperation = [ArtsyAPI getRelatedArtistsForArtist:artist excluding:self.artistsFollowed success:^(NSArray *artists) {
             [self.searchResultsTable updateTableContentsFor:artists
@@ -262,7 +265,7 @@
         } failure:^(NSError *error) {
             [self reportError:error];
         }];
-        
+
     } else {
         // exclude currently displayed artists as well
         NSArray *toExclude = [self.searchResultsTable.displayedResults arrayByAddingObjectsFromArray:self.artistsFollowed];
@@ -280,8 +283,11 @@
 {
     self.followedAtLeastOneCategory = YES;
     [self allowUserToContinue];
-    
+
     if (self.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeSearchResults) {
+        self.headerView.searchField.searchField.text = @"";
+        [self.headerView.searchField endEditing:YES];
+        [self.headerView.searchField.searchField resignFirstResponder];
         self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
         self.searchRequestOperation = [ArtsyAPI getRelatedGenesForGene:category excluding:self.categoriesFollowed success:^(NSArray *genes) {
             [self.searchResultsTable updateTableContentsFor:genes
@@ -290,9 +296,8 @@
         } failure:^(NSError *error) {
             [self reportError:error];
         }];
-        
+
     } else {
-        
         // exclude currently displayed artists as well
         NSArray *toExclude = [self.searchResultsTable.displayedResults arrayByAddingObjectsFromArray:self.categoriesFollowed];
         self.searchRequestOperation = [ArtsyAPI getRelatedGeneForGene:category excluding:toExclude success:^(NSArray *relatedGene) {
