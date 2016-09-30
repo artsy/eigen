@@ -315,6 +315,8 @@ type ArtworkContextAuction {
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   live_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  event_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
@@ -403,6 +405,8 @@ type ArtworkContextSale {
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   live_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  event_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
@@ -721,6 +725,7 @@ type Gene {
   cached: Int
   href: String
   name: String
+  description: String
   image: Image
   artists: [Artist]
   trending_artists(sample: Int): [Artist]
@@ -733,6 +738,7 @@ type GeneItem {
   cached: Int
   href: String
   name: String
+  description: String
   image: Image
   artists: [Artist]
   trending_artists(sample: Int): [Artist]
@@ -868,6 +874,7 @@ type HomePageModuleContextGene {
   cached: Int
   href: String
   name: String
+  description: String
   image: Image
   artists: [Artist]
   trending_artists(sample: Int): [Artist]
@@ -900,6 +907,8 @@ type HomePageModuleContextSale {
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   live_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  event_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
@@ -1132,6 +1141,7 @@ type PartnerShow implements Node {
 
 type PartnerShowCounts {
   artworks(artist_id: String): Int
+  eligible_artworks(format: String, label: String): FormattedNumber
 }
 
 type PartnerShowEventType {
@@ -1298,6 +1308,8 @@ type Sale {
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   live_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  event_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
