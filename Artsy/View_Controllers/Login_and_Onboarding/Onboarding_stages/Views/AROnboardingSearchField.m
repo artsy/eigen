@@ -47,6 +47,8 @@
         [self.searchField alignTrailingEdgeWithView:self predicate:@"-5"];
         [self.searchField constrainHeightToView:self predicate:@"0"];
         [self.searchField alignTopEdgeWithView:self predicate:@"0"];
+        
+        self.searchField.clearButtonMode = UITextFieldViewModeAlways;
     }
 
     return self;
