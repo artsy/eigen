@@ -5,6 +5,7 @@
     "exclude": [
         "node_modules",
         "Pod/Assets",
-        "Example/Build"
+        "Example/Build",
+        "externals/"
     ]
 }
