@@ -72,14 +72,13 @@
     scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
 
     // Work around bug in WKScrollView by setting private ivar directly: http://trac.webkit.org/changeset/188541
-    // Once this has been fixed, we can’t completely disable this workaround, only for those OS versions with the fix.
-    if ([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){9, 0, 0}]) {
+    // This is fixed in iOS 10, but iOS 9 still needs the fix.
+    if ([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){9, 0, 0}] &&
+        ![[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){10, 0, 0}]) {
 #ifndef DEBUG
         @try {
 #endif
             NSString *factorKey = [NSString stringWithFormat:@"%@%@ollDecelerationFactor", @"_pre", @"ferredScr"];
-            NSAssert([[scrollView valueForKey:factorKey] doubleValue] < (UIScrollViewDecelerationRateNormal - 0.001),
-                     @"Expected the private value to not change, maybe this bug has been fixed?");
             [scrollView setValue:@(UIScrollViewDecelerationRateNormal) forKey:factorKey];
 #ifndef DEBUG
         }
