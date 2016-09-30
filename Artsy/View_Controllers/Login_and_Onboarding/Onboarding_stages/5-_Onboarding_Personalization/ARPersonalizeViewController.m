@@ -254,6 +254,8 @@
 - (void)artistFollowed:(Artist *)artist
 {
     if (self.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeSearchResults) {
+        self.headerView.searchField.searchField.text = @"";
+        [self.headerView.searchField endEditing:YES];
         self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
         self.searchRequestOperation = [ArtsyAPI getRelatedArtistsForArtist:artist excluding:self.artistsFollowed success:^(NSArray *artists) {
             [self.searchResultsTable updateTableContentsFor:artists
@@ -282,6 +284,8 @@
     [self allowUserToContinue];
     
     if (self.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeSearchResults) {
+        self.headerView.searchField.searchField.text = @"";
+        [self.headerView.searchField endEditing:YES];
         self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
         self.searchRequestOperation = [ArtsyAPI getRelatedGenesForGene:category excluding:self.categoriesFollowed success:^(NSArray *genes) {
             [self.searchResultsTable updateTableContentsFor:genes
