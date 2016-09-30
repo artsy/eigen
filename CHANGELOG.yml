@@ -5,6 +5,7 @@ upcoming:
     dev:
       infrastructure:
         - Fixes various memory leaks in live. - ash
+        - Removes a workaround for a WKWebView that was fixed in iOS 10 - ash
         - Fixes problems that arose from fixing memory leaks. - ash
         - Admins can choose to use the lastest build of our React code - orta
         - Adds infrastructure for a new Gene View Controller based on Auctions - orta
