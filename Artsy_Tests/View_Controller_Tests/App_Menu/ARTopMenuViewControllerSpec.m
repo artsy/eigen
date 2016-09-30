@@ -130,7 +130,7 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
                 [sut.tabContentView setCurrentViewIndex:otherTab animated:NO];
             });
 
-            it(@"does not animate popping", ^{
+            pending(@"does not animate popping", ^{
                 [[navigationControllerMock expect] popToRootViewControllerAnimated:NO];
                 [topMenuVCMock presentRootViewControllerAtIndex:tab animated:NO];
                 [navigationControllerMock verify];
