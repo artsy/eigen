@@ -6,6 +6,7 @@
 
 @class RACCommand;
 
+
 @interface ARNavigationController : UINavigationController
 
 @property (readonly, nonatomic, strong) UIButton *backButton;
@@ -18,7 +19,10 @@
 - (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated;
 
 - (IBAction)back:(id)sender;
-- (IBAction)search:(id)sender;
+
+- (BOOL)isShowingSearch;
+- (void)showSearch;
+- (void)toggleSearch;
 
 /// Removes the specified viewController from anywhere in the stack.
 - (void)removeViewControllerFromStack:(UIViewController *)viewController;

@@ -18,14 +18,6 @@
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
-static ARNavigationController *
-WebViewNavigationControllerWithPath(NSString *path)
-{
-    NSURL *URL = [NSURL URLWithString:path];
-    ARTopMenuInternalMobileWebViewController *viewController = [[ARTopMenuInternalMobileWebViewController alloc] initWithURL:URL];
-    return [[ARNavigationController alloc] initWithRootViewController:viewController];
-}
-
 
 @interface ARTopMenuNavigationDataSource ()
 
@@ -36,9 +28,7 @@ WebViewNavigationControllerWithPath(NSString *path)
 @property (nonatomic, strong, readonly) ARBrowseViewController *browseViewController;
 
 @property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
-@property (readonly, nonatomic, strong) ARNavigationController *showsNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;
-@property (readonly, nonatomic, strong) ARNavigationController *magazineNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *worksForYouNavigationController;
 
 @end
@@ -68,13 +58,10 @@ WebViewNavigationControllerWithPath(NSString *path)
 
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:_showFeedViewController];
 
-    _showsNavigationController = WebViewNavigationControllerWithPath(@"/shows");
 
     _browseViewController = [[ARBrowseViewController alloc] init];
     _browseViewController.networkModel = [[ARBrowseNetworkModel alloc] init];
     _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:_browseViewController];
-
-    _magazineNavigationController = WebViewNavigationControllerWithPath(@"/articles");
 
     ARWorksForYouReloadingHostViewController *worksForYouHostViewController = [[ARWorksForYouReloadingHostViewController alloc] init];
     _worksForYouNavigationController = [[ARNavigationController alloc] initWithRootViewController:worksForYouHostViewController];
@@ -122,12 +109,8 @@ WebViewNavigationControllerWithPath(NSString *path)
     switch (index) {
         case ARTopTabControllerIndexFeed:
             return self.feedNavigationController;
-        case ARTopTabControllerIndexShows:
-            return self.showsNavigationController;
         case ARTopTabControllerIndexBrowse:
             return self.browseNavigationController;
-        case ARTopTabControllerIndexMagazine:
-            return self.magazineNavigationController;
         case ARTopTabControllerIndexFavorites:
             return self.favoritesNavigationController;
         case ARTopTabControllerIndexNotifications:
@@ -135,6 +118,13 @@ WebViewNavigationControllerWithPath(NSString *path)
     }
 
     return nil;
+}
+
+#pragma mark Search
+
+- (BOOL)searchButtonAtIndex:(NSInteger)index
+{
+    return index == ARTopTabControllerIndexSearch;
 }
 
 #pragma mark ARTabViewDataSource

@@ -137,9 +137,9 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
                 [sut.tabContentView setCurrentViewIndex:otherTab animated:NO];
             });
 
-            it(@"does not animate popping", ^{
+            pending(@"does not animate popping", ^{
                 [[navigationControllerMock expect] popToRootViewControllerAnimated:NO];
-                [topMenuVCMock presentRootViewControllerAtIndex:tab animated:YES];
+                [topMenuVCMock presentRootViewControllerAtIndex:tab animated:NO];
                 [navigationControllerMock verify];
             });
 
@@ -256,9 +256,7 @@ describe(@"navigation", ^{
             NSDictionary *menuToPaths = @{
                 @(ARTopTabControllerIndexFeed): @"/",
                 @(ARTopTabControllerIndexBrowse): @"/browse",
-                @(ARTopTabControllerIndexMagazine): @"/articles",
                 @(ARTopTabControllerIndexFavorites): @"/favorites",
-                @(ARTopTabControllerIndexShows): @"/shows",
                 @(ARTopTabControllerIndexNotifications): @"/works-for-you",
             };
 
