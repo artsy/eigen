@@ -103,10 +103,10 @@ static const CGFloat ARMenuButtonDimension = 50;
 
     BOOL regularHorizontalSizeClass = self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
 
-    if (!regularHorizontalSizeClass) {
-        [buttonContainer alignLeading:@"0" trailing:@"0" toView:self.tabContainer];
-    } else {
+    if (regularHorizontalSizeClass) {
         [buttonContainer alignCenterXWithView:tabContainer predicate:@"0"];
+    } else {
+        [buttonContainer alignLeading:@"0" trailing:@"0" toView:self.tabContainer];
     }
 
     for (ARNavigationTabButton *button in buttons) {
@@ -114,7 +114,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     }
 
     UIView *separator = [[UIView alloc] init];
-    [separator constrainHeight:@"1"];
+    [separator constrainHeight:@"0.5"];
     separator.backgroundColor = [UIColor artsyGrayRegular];
     [tabContainer addSubview:separator];
     [separator alignTopEdgeWithView:tabContainer predicate:@"0"];
