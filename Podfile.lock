@@ -333,7 +333,7 @@ CHECKOUT OPTIONS:
     :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Artsy-UIButtons:
-    :commit: 2ec4f79e8ea5eded80bdd05b8537d54c35e4f55c
+    :commit: c5977f380f512987174805ad1c0ef44618ba2e5a
     :git: https://github.com/artsy/Artsy-UIButtons.git
   CocoaLumberjack:
     :commit: a09dd37888d9f51159c4926d4280794f915d726c
