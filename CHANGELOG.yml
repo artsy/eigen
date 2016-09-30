@@ -33,6 +33,7 @@ releases:
       - Fixes problem where users weren't directed to live auction when it started. - ash
       - Fixes problems going to the current lot of a live auction caused by inaccurate sale artwork position values. - ash
       - Fair search now includes partners - orta
+      - New navigation bar design - sarah
 
   - version: 2.6.3
     details: Bug fixes in Artist profile view

@@ -77,7 +77,7 @@ target 'Artsy' do
   pod 'ObjectiveSugar'
 
   # Artsy Spec repo stuff
-  pod 'Artsy-UIButtons'
+  pod 'Artsy-UIButtons', :git => 'https://github.com/artsy/Artsy-UIButtons.git'
   pod 'Artsy+UIColors'
   pod 'Artsy+UILabels'
   pod 'Extraction'

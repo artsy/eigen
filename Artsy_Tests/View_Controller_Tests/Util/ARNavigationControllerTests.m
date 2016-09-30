@@ -135,13 +135,13 @@ describe(@"search", ^{
     });
 
     it(@"presents the search VC", ^{
-        [navigationController search:nil];
+        [navigationController showSearch];
         [navigationController callDidShowVCDelegateMethod];
         expect(navigationController.topViewController).to.equal(navigationController.searchViewController);
     });
 
     it(@"removes the search VC from the stack after presenting another view controller on top of it", ^{
-        [navigationController search:nil];
+        [navigationController showSearch];
         UIViewController *other = [UIViewController new];
         [navigationController pushViewController:other animated:NO];
         [navigationController callDidShowVCDelegateMethod];
@@ -150,7 +150,7 @@ describe(@"search", ^{
 
     it(@"removes the search view controller from any other stack before showing it", ^{
         ARNavigationController *other = [[ARNavigationController alloc] initWithRootViewController:navigationController.searchViewController];
-        [navigationController search:nil];
+        [navigationController showSearch];
         expect(navigationController.searchViewController.navigationController).to.equal(navigationController);
         expect(other.viewControllers).to.beEmpty();
     });

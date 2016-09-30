@@ -26,7 +26,7 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
-static const CGFloat ARMenuButtonDimension = 46;
+static const CGFloat ARMenuButtonDimension = 50;
 
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
@@ -39,6 +39,7 @@ static const CGFloat ARMenuButtonDimension = 46;
 
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
 @property (readwrite, nonatomic, strong) UIView *tabContainer;
+@property (readwrite, nonatomic, strong) UIView *buttonContainer;
 @end
 
 
@@ -58,48 +59,24 @@ static const CGFloat ARMenuButtonDimension = 46;
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     self.selectedTabIndex = -1;
 
     self.navigationDataSource = _navigationDataSource ?: [[ARTopMenuNavigationDataSource alloc] init];
 
     // TODO: Turn into custom view?
 
-    ARNavigationTabButton *homeButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *showsButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *browseButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *magazineButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *notificationsButton = [[ARNavigationTabButton alloc] init];
-    notificationsButton.tag = ARNavButtonNotificationsTag;
-
-    homeButton.accessibilityLabel = @"Home";
-    [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateNormal];
-    [homeButton setImage:[UIImage imageNamed:@"HomeButton"] forState:UIControlStateSelected];
-    CGFloat buttonImageSize = 20;
-    CGFloat inset = (ARMenuButtonDimension - buttonImageSize) / 2;
-    homeButton.contentEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset);
-
-    [showsButton setTitle:@"SHOWS" forState:UIControlStateNormal];
-    [browseButton setTitle:@"EXPLORE" forState:UIControlStateNormal];
-    [magazineButton setTitle:@"MAG" forState:UIControlStateNormal];
-    [favoritesButton setTitle:@"YOU" forState:UIControlStateNormal];
-
-    notificationsButton.accessibilityLabel = @"Notifications";
-    [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateNormal];
-    [notificationsButton setImage:[UIImage imageNamed:@"NotificationsButton"] forState:UIControlStateSelected];
-    [notificationsButton.imageView constrainWidth:@"12" height:@"14"];
-
-    [magazineButton ar_extendHitTestSizeByWidth:5 andHeight:0];
-    [favoritesButton ar_extendHitTestSizeByWidth:5 andHeight:0];
-    [notificationsButton ar_extendHitTestSizeByWidth:10 andHeight:0];
-
-    NSArray *buttons = @[ homeButton, showsButton, browseButton, magazineButton, favoritesButton, notificationsButton ];
+    NSArray *buttons = [self buttons];
 
     UIView *tabContainer = [[UIView alloc] init];
     self.tabContainer = tabContainer;
-    self.tabContainer.backgroundColor = [UIColor blackColor];
+    self.tabContainer.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:tabContainer];
+
+    UIView *buttonContainer = [[UIView alloc] init];
+    self.buttonContainer = buttonContainer;
+    self.buttonContainer.backgroundColor = [UIColor whiteColor];
+    [self.tabContainer addSubview:buttonContainer];
 
     ARTabContentView *tabContentView = [[ARTabContentView alloc] initWithFrame:CGRectZero
                                                             hostViewController:self
@@ -121,28 +98,42 @@ static const CGFloat ARMenuButtonDimension = 46;
     [tabContainer alignLeading:@"0" trailing:@"0" toView:self.view];
     self.tabBottomConstraint = [tabContainer alignBottomEdgeWithView:self.view predicate:@"0"];
 
+    [buttonContainer constrainHeight:@(ARMenuButtonDimension).stringValue];
+    [buttonContainer alignBottomEdgeWithView:self.tabContainer predicate:@"0"];
+
+    BOOL regularHorizontalSizeClass = self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
+
+    if (regularHorizontalSizeClass) {
+        [buttonContainer alignCenterXWithView:tabContainer predicate:@"0"];
+    } else {
+        [buttonContainer alignLeading:@"0" trailing:@"0" toView:self.tabContainer];
+    }
+
     for (ARNavigationTabButton *button in buttons) {
-        [tabContainer addSubview:button];
+        [buttonContainer addSubview:button];
     }
 
     UIView *separator = [[UIView alloc] init];
-    [separator constrainHeight:@".5"];
-    separator.backgroundColor = [UIColor colorWithWhite:.3 alpha:1];
+    [separator constrainHeight:@"0.5"];
+    separator.backgroundColor = [UIColor artsyGrayRegular];
     [tabContainer addSubview:separator];
     [separator alignTopEdgeWithView:tabContainer predicate:@"0"];
     [separator constrainWidthToView:tabContainer predicate:@"0"];
 
     NSMutableArray *constraintsForButtons = [NSMutableArray array];
     [buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
-        [button constrainTopSpaceToView:separator predicate:@"0"];
-        [button alignBottomEdgeWithView:tabContainer predicate:@"0"];
+        [button alignCenterYWithView:buttonContainer predicate:@"0"];
+        
+        NSString *marginToContainerEdges = regularHorizontalSizeClass ? @"0" : @"20";
+        NSString *marginBetweenButtons = regularHorizontalSizeClass ? @"100" : @"0";
         if (index == 0) {
-            [button alignLeadingEdgeWithView:tabContainer predicate:@"0"];
+            [button alignLeadingEdgeWithView:buttonContainer predicate:marginToContainerEdges];
         } else {
-            [constraintsForButtons addObject:[button constrainLeadingSpaceToView:buttons[index - 1] predicate:@"0"]];
+            [constraintsForButtons addObject:[button constrainLeadingSpaceToView:buttons[index - 1] predicate:marginBetweenButtons]];
         }
-        if (index == buttons.count - 1) {
-            [constraintsForButtons addObject:[tabContainer alignTrailingEdgeWithView:button predicate:@"0"]];
+        
+        if (index == buttons.count - 1 && !regularHorizontalSizeClass) {
+            [buttonContainer alignTrailingEdgeWithView:button predicate:@"20"];
         }
     }];
     self.constraintsForButtons = [constraintsForButtons copy];
@@ -155,14 +146,43 @@ static const CGFloat ARMenuButtonDimension = 46;
     [self registerWithSwitchBoard:ARSwitchBoard.sharedInstance];
 }
 
+- (NSArray *)buttons
+{
+    ARNavigationTabButton *homeButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *browseButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *notificationsButton = [[ARNavigationTabButton alloc] init];
+    ARNavigationTabButton *searchButton = [[ARNavigationTabButton alloc] init];
+    notificationsButton.tag = ARNavButtonNotificationsTag;
+
+    searchButton.accessibilityLabel = @"Search";
+    [searchButton setImage:[[UIImage imageNamed:@"SearchButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    [searchButton setImage:[[UIImage imageNamed:@"SearchButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
+    [searchButton.imageView constrainWidth:@"15" height:@"15"];
+    [searchButton setTintColor:[UIColor blackColor]];
+
+    [homeButton setTitle:@"HOME" forState:UIControlStateNormal];
+    [browseButton setTitle:@"EXPLORE" forState:UIControlStateNormal];
+    [favoritesButton setTitle:@"YOU" forState:UIControlStateNormal];
+
+    notificationsButton.accessibilityLabel = @"Notifications";
+    [notificationsButton setImage:[[UIImage imageNamed:@"NotificationsButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    [notificationsButton setImage:[[UIImage imageNamed:@"NotificationsButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
+    [notificationsButton.imageView constrainWidth:@"12" height:@"14"];
+    [notificationsButton setTintColor:[UIColor blackColor]];
+
+    [favoritesButton ar_extendHitTestSizeByWidth:5 andHeight:0];
+    [notificationsButton ar_extendHitTestSizeByWidth:10 andHeight:0];
+
+    return @[ searchButton, homeButton, browseButton, favoritesButton, notificationsButton ];
+}
+
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
 {
     NSDictionary *menuToPaths = @{
         @(ARTopTabControllerIndexFeed) : @"/",
         @(ARTopTabControllerIndexBrowse) : @"/browse",
-        @(ARTopTabControllerIndexMagazine) : @"/articles",
         @(ARTopTabControllerIndexFavorites) : @"/favorites",
-        @(ARTopTabControllerIndexShows) : @"/shows",
         @(ARTopTabControllerIndexNotifications) : @"/works-for-you",
     };
 
@@ -182,19 +202,24 @@ static const CGFloat ARMenuButtonDimension = 46;
 - (void)viewWillLayoutSubviews
 {
     NSArray *buttons = self.tabContentView.buttons;
-    __block CGFloat buttonsWidth = ARMenuButtonDimension;
+    __block CGFloat buttonsWidth = 0;
     [buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
-        if (index == 0){ return; }
         buttonsWidth += button.intrinsicContentSize.width;
     }];
 
+    if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
+        CGFloat totalMarginWidth = 100 * (buttons.count - 1);
+        CGFloat buttonContainerWidth = buttonsWidth + totalMarginWidth;
+        [self.buttonContainer constrainWidth:[NSString stringWithFormat:@"%f", buttonContainerWidth]];
+        return;
+    }
+
     CGFloat viewWidth = self.view.frame.size.width;
-    CGFloat extraWidth = viewWidth - buttonsWidth;
+    CGFloat extraWidth = viewWidth - buttonsWidth - 40;
     CGFloat eachMargin = floorf(extraWidth / (self.tabContentView.buttons.count - 1));
 
     [self.constraintsForButtons eachWithIndex:^(NSLayoutConstraint *constraint, NSUInteger index) {
         CGFloat margin = eachMargin;
-        if (index == 0 || index == self.constraintsForButtons.count - 1){ margin /= 2; }
         constraint.constant = margin;
     }];
 }
