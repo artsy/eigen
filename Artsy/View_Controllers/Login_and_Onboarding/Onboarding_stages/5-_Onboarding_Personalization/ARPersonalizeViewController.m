@@ -253,34 +253,26 @@
 
 - (void)artistFollowed:(Artist *)artist
 {
-    switch (self.searchResultsTable.contentDisplayMode) {
-        case ARTableViewContentDisplayModeSearchResults: {
-            self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
-            self.searchRequestOperation = [ArtsyAPI getRelatedArtistsForArtist:artist excluding:self.artistsFollowed success:^(NSArray *artists) {
-                [self.searchResultsTable updateTableContentsFor:artists
-                                                replaceContents:ARSearchResultsReplaceAll
-                                                       animated:YES];
-            } failure:^(NSError *error) {
-                [self reportError:error];
-            }];
-
-            break;
-        }
-        case ARTableViewContentDisplayModeRelatedResults: {
-            // exclude currently displayed artists as well
-            NSArray *toExclude = [self.searchResultsTable.displayedResults arrayByAddingObjectsFromArray:self.artistsFollowed];
-            self.searchRequestOperation = [ArtsyAPI getRelatedArtistForArtist:artist excluding:toExclude success:^(NSArray *relatedArtist) {
-                [self.searchResultsTable updateTableContentsFor:relatedArtist
-                                                replaceContents:ARSearchResultsReplaceSingle
-                                                       animated:NO];
-            } failure:^(NSError *error) {
-                [self reportError:error];
-            }];
-
-            break;
-        }
-        default:
-            break;
+    if (self.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeSearchResults) {
+        self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
+        self.searchRequestOperation = [ArtsyAPI getRelatedArtistsForArtist:artist excluding:self.artistsFollowed success:^(NSArray *artists) {
+            [self.searchResultsTable updateTableContentsFor:artists
+                                            replaceContents:ARSearchResultsReplaceAll
+                                                   animated:YES];
+        } failure:^(NSError *error) {
+            [self reportError:error];
+        }];
+        
+    } else {
+        // exclude currently displayed artists as well
+        NSArray *toExclude = [self.searchResultsTable.displayedResults arrayByAddingObjectsFromArray:self.artistsFollowed];
+        self.searchRequestOperation = [ArtsyAPI getRelatedArtistForArtist:artist excluding:toExclude success:^(NSArray *relatedArtist) {
+            [self.searchResultsTable updateTableContentsFor:relatedArtist
+                                            replaceContents:ARSearchResultsReplaceSingle
+                                                   animated:NO];
+        } failure:^(NSError *error) {
+            [self reportError:error];
+        }];
     }
 }
 
@@ -288,35 +280,28 @@
 {
     self.followedAtLeastOneCategory = YES;
     [self allowUserToContinue];
-
-    switch (self.searchResultsTable.contentDisplayMode) {
-        case ARTableViewContentDisplayModeSearchResults: {
-            self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
-            self.searchRequestOperation = [ArtsyAPI getRelatedGenesForGene:category excluding:self.categoriesFollowed success:^(NSArray *genes) {
-                [self.searchResultsTable updateTableContentsFor:genes
-                                                replaceContents:ARSearchResultsReplaceAll
-                                                       animated:YES];
-            } failure:^(NSError *error) {
-                [self reportError:error];
-            }];
-
-            break;
-        }
-        case ARTableViewContentDisplayModeRelatedResults: {
-            // exclude currently displayed artists as well
-            NSArray *toExclude = [self.searchResultsTable.displayedResults arrayByAddingObjectsFromArray:self.categoriesFollowed];
-            self.searchRequestOperation = [ArtsyAPI getRelatedGeneForGene:category excluding:toExclude success:^(NSArray *relatedGene) {
-                [self.searchResultsTable updateTableContentsFor:relatedGene
-                                                replaceContents:ARSearchResultsReplaceSingle
-                                                       animated:NO];
-            } failure:^(NSError *error) {
-                [self reportError:error];
-            }];
-
-            break;
-        }
-        default:
-            break;
+    
+    if (self.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeSearchResults) {
+        self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
+        self.searchRequestOperation = [ArtsyAPI getRelatedGenesForGene:category excluding:self.categoriesFollowed success:^(NSArray *genes) {
+            [self.searchResultsTable updateTableContentsFor:genes
+                                            replaceContents:ARSearchResultsReplaceAll
+                                                   animated:YES];
+        } failure:^(NSError *error) {
+            [self reportError:error];
+        }];
+        
+    } else {
+        
+        // exclude currently displayed artists as well
+        NSArray *toExclude = [self.searchResultsTable.displayedResults arrayByAddingObjectsFromArray:self.categoriesFollowed];
+        self.searchRequestOperation = [ArtsyAPI getRelatedGeneForGene:category excluding:toExclude success:^(NSArray *relatedGene) {
+            [self.searchResultsTable updateTableContentsFor:relatedGene
+                                            replaceContents:ARSearchResultsReplaceSingle
+                                                   animated:NO];
+        } failure:^(NSError *error) {
+            [self reportError:error];
+        }];
     }
 }
 
