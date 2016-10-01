@@ -116,8 +116,8 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.1.0):
     - FBSnapshotTestCase/Core
   - FLKAutoLayout (1.0.0)
-  - Forgeries/Core (0.6.1)
-  - Forgeries/Mocks (0.6.1):
+  - Forgeries/Core (1.0.0)
+  - Forgeries/Mocks (1.0.0):
     - Forgeries/Core
     - OCMock
   - FXBlurView (1.6.1)
@@ -213,7 +213,7 @@ DEPENDENCIES:
   - FBSDKLoginKit (~> 4.9)
   - FBSnapshotTestCase (from `https://github.com/orta/ios-snapshot-test-case.git`)
   - FLKAutoLayout (from `https://github.com/orta/FLKAutoLayout.git`, branch `v1`)
-  - Forgeries/Mocks (from `https://github.com/ashfurrow/Forgeries.git`, branch `application`)
+  - Forgeries/Mocks
   - FXBlurView
   - Interstellar/Core (from `https://github.com/JensRavens/Interstellar.git`, branch `feature/v2`)
   - iRate
@@ -280,9 +280,6 @@ EXTERNAL SOURCES:
   FLKAutoLayout:
     :branch: v1
     :git: https://github.com/orta/FLKAutoLayout.git
-  Forgeries:
-    :branch: application
-    :git: https://github.com/ashfurrow/Forgeries.git
   Interstellar:
     :branch: feature/v2
     :git: https://github.com/JensRavens/Interstellar.git
@@ -332,9 +329,6 @@ CHECKOUT OPTIONS:
   FLKAutoLayout:
     :commit: 4aa27fa1a9aba36d5465e6cd181ba4b78b0691d3
     :git: https://github.com/orta/FLKAutoLayout.git
-  Forgeries:
-    :commit: 49d17e014367b64d8a91dbe10f28f5d59c7aefb3
-    :git: https://github.com/ashfurrow/Forgeries.git
   Interstellar:
     :commit: ea73e21c40255afa5ff77a5a5beaaf949347deb1
     :git: https://github.com/JensRavens/Interstellar.git
@@ -382,7 +376,7 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: 699ff169080e3072de4b9b0faca90bf23dc36deb
   FBSnapshotTestCase: 68c3221ddd3bf5bbe783c1015f8acc12c3768a4d
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
-  Forgeries: f5c991dda5977f42d11fa9313fd1e17bc3edbb27
+  Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
   HockeySDK-Source: 85233ef10090148e5571f7a0a82deb8213b1691e
   Interstellar: 31bbacb2bfc26f369a38ee853311df820dbcb280
@@ -423,6 +417,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: 65bb56b048e1fad7205f78f57d93a5e992671763
+PODFILE CHECKSUM: 9b0c8e5e4ef951021481d65c7e5fc8c3932d84c9
 
 COCOAPODS: 1.0.1

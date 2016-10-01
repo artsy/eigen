@@ -16,6 +16,7 @@ upcoming:
       - Fixes problem where users weren't directed to live auction when it started. - ash
       - Fixes problems going to the current lot of a live auction caused by inaccurate sale artwork position values. - ash
       - Fair search now includes partners - orta
+      - Fixes problem on live where you couldn't see lot info. - ash
 
 releases:
   - version: 2.6.3
