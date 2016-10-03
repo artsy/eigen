@@ -4620,6 +4620,11 @@
         }
       }
     },
+    "react-native-parallax-scroll-view": {
+      "version": "0.19.0",
+      "from": "react-native-parallax-scroll-view@latest",
+      "resolved": "https://registry.npmjs.org/react-native-parallax-scroll-view/-/react-native-parallax-scroll-view-0.19.0.tgz"
+    },
     "react-proxy": {
       "version": "1.1.8",
       "from": "https://registry.npmjs.org/react-proxy/-/react-proxy-1.1.8.tgz",
