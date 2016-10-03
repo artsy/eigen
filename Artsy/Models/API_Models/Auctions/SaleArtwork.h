@@ -12,7 +12,8 @@
 typedef NS_ENUM(NSInteger, ARReserveStatus) {
     ARReserveStatusNoReserve,
     ARReserveStatusReserveNotMet,
-    ARReserveStatusReserveMet
+    ARReserveStatusReserveMet,
+    ARReserveStatusUnknown
 };
 
 NS_ASSUME_NONNULL_BEGIN
