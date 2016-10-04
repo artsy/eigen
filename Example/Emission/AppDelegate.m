@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-#import "RotationNavigationController.h"
+#import "EigenLikeNavigationController.h"
 
 #import <Emission/AREmission.h>
 #import <Emission/ARArtistComponentViewController.h>
@@ -68,7 +68,7 @@ randomBOOL(void)
   tableViewController.tableView.dataSource = self;
   tableViewController.tableView.delegate = self;
 
-  self.navigationController = [[RotationNavigationController alloc] initWithRootViewController:tableViewController];
+  self.navigationController = [[EigenLikeNavigationController alloc] initWithRootViewController:tableViewController];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.window.backgroundColor = [UIColor whiteColor];
@@ -242,7 +242,7 @@ randomBOOL(void)
       return;
     }
     UIViewController *viewController = [self viewControllerForRoute:route];
-    UINavigationController *navigationController = [[RotationNavigationController alloc] initWithRootViewController:viewController];
+    UINavigationController *navigationController = [[EigenLikeNavigationController alloc] initWithRootViewController:viewController];
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                     target:self
                                                                                                     action:@selector(dismissModalViewController)];
