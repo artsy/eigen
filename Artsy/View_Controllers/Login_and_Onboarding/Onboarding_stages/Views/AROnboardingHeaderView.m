@@ -31,7 +31,7 @@
 - (void)setupHeaderViewWithTitle:(NSString *)title withLargeLayout:(BOOL)useLargeLayout
 {
     self.titleLabel.textColor = [UIColor blackColor];
-    self.titleLabel.font = [UIFont serifFontWithSize:useLargeLayout ? 32.0 : 24.0];
+    self.titleLabel.font = [UIFont serifFontWithSize:useLargeLayout ? 40.0 : 30.0];
     self.titleLabel.textAlignment = useLargeLayout ? NSTextAlignmentCenter : NSTextAlignmentLeft;
     self.titleLabel.text = title;
     self.titleLabel.numberOfLines = 0;
@@ -42,17 +42,17 @@
         [self.titleLabel alignCenterXWithView:self predicate:@"0"];
     } else {
         [self.titleLabel constrainWidthToView:self predicate:@"*.8"];
-        [self.titleLabel alignLeadingEdgeWithView:self predicate:@"10"];
+        [self.titleLabel alignLeadingEdgeWithView:self predicate:@"20"];
     }
-    [self.titleLabel alignTopEdgeWithView:self predicate:@"35"];
-    [self.titleLabel constrainHeight:@"80"];
+    [self.titleLabel alignTopEdgeWithView:self predicate:@"30"];
+    [self.titleLabel constrainHeight:@"60"];
 
     [self addSubview:self.searchField];
 
     self.searchHeightConstraint = [self.searchField constrainHeight:@"40"];
     [self.searchField constrainTopSpaceToView:self.titleLabel predicate:@"20"];
-    [self.searchField alignLeadingEdgeWithView:self predicate:@"10"];
-    [self.searchField alignTrailingEdgeWithView:self predicate:@"-10"];
+    [self.searchField alignLeadingEdgeWithView:self predicate:@"20"];
+    [self.searchField alignTrailingEdgeWithView:self predicate:@"-20"];
     self.searchField.tintColor = [UIColor blackColor];
 }
 

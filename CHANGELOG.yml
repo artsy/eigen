@@ -1,6 +1,9 @@
 upcoming:
     version: 3.0.0
     details: New personalised collectors edition.
+    dev:
+      infrastructure:
+        - Removed background fetch related code - alloy
     user_facing:
       - Everybody is now required to sign-in - maxim
       - New on-boarding - maxim
@@ -30,6 +33,7 @@ releases:
       - Fixes problem where users weren't directed to live auction when it started. - ash
       - Fixes problems going to the current lot of a live auction caused by inaccurate sale artwork position values. - ash
       - Fair search now includes partners - orta
+      - New navigation bar design - sarah
 
   - version: 2.6.3
     details: Bug fixes in Artist profile view
@@ -142,7 +146,7 @@ releases:
         - Adds collection view image layout to iPad. - ash
         - Highest bidder status on bid button works. - ash / orta
         - Outbid notice persists. - ash / orta
-        
+
       infra:
         - CocoaPods now is v1. - alloy
         - Pods dependencies are now stored in a submodule https://github.com/artsy/eigen-artefacts. - alloy
@@ -151,7 +155,7 @@ releases:
         - Updates for Xcode 7.3. - ash
         - QuickSilver now supports direct URLs. - ash
         - Allow menu aware view controllers to specify what scrollview should report to the chief. - alloy
-      
+
       gmv:
         - Removed artwork auction results - sarah
         - WorksForYouVC reloads content upon network failure if you leave and then return to its tab - sarah

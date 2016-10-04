@@ -137,8 +137,8 @@
     headerTitle.font = [UIFont serifFontWithSize:15.0f];
 
     [headerView addSubview:headerTitle];
-    [headerTitle alignLeadingEdgeWithView:headerView predicate:@"10"];
-    [headerTitle alignTrailingEdgeWithView:headerView predicate:@"-10"];
+    [headerTitle alignLeadingEdgeWithView:headerView predicate:@"20"];
+    [headerTitle alignTrailingEdgeWithView:headerView predicate:@"-20"];
     [headerTitle constrainHeightToView:headerView predicate:@"0"];
     [headerTitle alignCenterYWithView:headerView predicate:@"0"];
 
@@ -146,7 +146,7 @@
     [headerView addSubview:lineView];
 
     [lineView constrainHeight:@"0.5"];
-    [lineView alignLeading:@"10" trailing:@"-10" toView:headerView];
+    [lineView alignLeading:@"20" trailing:@"-20" toView:headerView];
     [lineView alignBottomEdgeWithView:headerView predicate:@"0"];
 
     return headerView;
