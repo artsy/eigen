@@ -1,6 +1,6 @@
 PODS:
   - AppHub (0.5.1):
-    - React/Core
+    - React
   - Artsy+Authentication/email (1.5.0):
     - ISO8601DateFormatter
     - NSURL+QueryDictionary
@@ -46,6 +46,8 @@ PODS:
   - NSURL+QueryDictionary (1.2.0)
   - ORStackView (2.0.3):
     - FLKAutoLayout
+  - React (0.34.1):
+    - React/Core (= 0.34.1)
   - React/Core (0.34.1)
   - React/RCTImage (0.34.1):
     - React/Core
@@ -66,19 +68,18 @@ PODS:
   - UIView+BooleanAnimations (1.0.2)
 
 DEPENDENCIES:
-  - AppHub (from `https://github.com/orta/apphub.git`)
+  - AppHub
   - Artsy+Authentication/email (from `https://github.com/artsy/Artsy-Authentication.git`, branch `fetch-user-details`)
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
   - Emission (from `../`)
   - Extraction
+  - FLKAutoLayout
   - React/RCTTest (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - SAMKeychain
   - Specta
 
 EXTERNAL SOURCES:
-  AppHub:
-    :git: https://github.com/orta/apphub.git
   Artsy+Authentication:
     :branch: fetch-user-details
     :git: https://github.com/artsy/Artsy-Authentication.git
@@ -90,9 +91,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native"
 
 CHECKOUT OPTIONS:
-  AppHub:
-    :commit: ef744742a47f089fc89887d10b90294e4faf0b6b
-    :git: https://github.com/orta/apphub.git
   Artsy+Authentication:
     :commit: 1b582675598c999726d9edacd3b8559e01cf7c48
     :git: https://github.com/artsy/Artsy-Authentication.git
@@ -101,7 +99,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/artsy/Artsy-UIFonts.git
 
 SPEC CHECKSUMS:
-  AppHub: 03788112dd48c42b60d51321c0ffff4ef15a4432
+  AppHub: f073cd229f87afe1a27200670e1adab24ebda2b8
   Artsy+Authentication: 3bf11ceca61c52e9e31490535bf5798f625406fa
   Artsy+UIColors: 10a2d71e9ffe1015be43d4e084d13ff4337aab97
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
@@ -118,6 +116,6 @@ SPEC CHECKSUMS:
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
 
-PODFILE CHECKSUM: af04d610a78f4ef6211c4ff54ac79ae9aa8d0c78
+PODFILE CHECKSUM: 56cf15bd05566ca5743e3b6533d74be11a618b42
 
 COCOAPODS: 1.0.1

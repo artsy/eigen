@@ -13,8 +13,8 @@ target 'Emission' do
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-OSSUIFonts.git"
   end
 
-  # while: https://github.com/AppHubPlatform/apphub/pull/32
-  pod 'AppHub', :git => "https://github.com/orta/apphub.git"
+  pod 'AppHub'
+  pod 'FLKAutoLayout'
 
   # Example app only
   pod 'SAMKeychain'

@@ -11,7 +11,7 @@ import ArtistHeader from '../lib/components/artist/header'
 import Routes from '../lib/relay/routes'
 import StubContainer from 'react-storybooks-relay-container'
 
-storiesOf('Artist Header')
+storiesOf('Buttons')
   .addDecorator((story) => (
     <View style={{marginLeft: 20, marginRight: 20}}>{story()}</View>
   ))
