@@ -5,6 +5,8 @@
 - [dev] Updates React to 0.34 - orta
 - [dev] Turns on "keychain sharing" to fix a keychain bug in sim - orta
 - GeneVC now shows about information, and trending artists - orta
+- GeneVC now shows artworks for the gene - orta
+
 
 ### 1.1.0-beta.2
 
