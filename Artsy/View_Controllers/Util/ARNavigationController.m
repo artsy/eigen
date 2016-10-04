@@ -130,18 +130,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     [_backButton alignLeadingEdgeWithView:self.view predicate:@"12"];
     _backButton.accessibilityIdentifier = @"Back";
     _backButton.alpha = 0;
-
-    _searchButton = [[ARMenuButton alloc] init];
-    [_searchButton ar_extendHitTestSizeByWidth:10 andHeight:10];
-    [_searchButton setImage:[UIImage imageNamed:@"SearchButtonWhite"] forState:UIControlStateNormal];
-    [_searchButton addTarget:self action:@selector(search:) forControlEvents:UIControlEventTouchUpInside];
-    _searchButton.adjustsImageWhenDisabled = NO;
-
-    [self.view addSubview:_searchButton];
-    [_searchButton constrainTopSpaceToView:_statusBarView predicate:@"12"];
-    [_searchButton alignTrailingEdgeWithView:self.view predicate:@"-12"];
-    _searchButton.accessibilityIdentifier = @"Search";
-    _searchButton.alpha = 1;
 }
 
 #pragma mark - Rotation

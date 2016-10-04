@@ -10,7 +10,6 @@
 @interface ARNavigationController : UINavigationController
 
 @property (readonly, nonatomic, strong) UIButton *backButton;
-@property (readonly, nonatomic, strong) UIButton *searchButton;
 @property (readonly, nonatomic, strong) UIViewController *rootViewController;
 @property (readwrite, nonatomic, assign) BOOL animatesLayoverChanges;
 
