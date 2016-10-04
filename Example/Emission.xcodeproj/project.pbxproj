@@ -19,7 +19,6 @@
 		60A1A77E1DA3A23C005E3357 /* BackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */; };
 		60A1A77F1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77C1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png */; };
 		60A1A7801DA3A23C005E3357 /* BackArrowBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77D1DA3A23C005E3357 /* BackArrowBlack@2x.png */; };
-		60A1A7831DA3A849005E3357 /* ARScrollNavigationChief.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A1A7821DA3A849005E3357 /* ARScrollNavigationChief.m */; };
 		60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B743B61D3EB12600E6B2A3 /* ARStorybookComponentViewController.m */; };
 		A99EF3F9379BB0B67C290F17 /* libPods-EmissionTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7845722F426267DCFE6FD462 /* libPods-EmissionTests.a */; };
 /* End PBXBuildFile section */
@@ -66,8 +65,6 @@
 		60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrow@2x.png"; sourceTree = "<group>"; };
 		60A1A77C1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrow_Highlighted@2x.png"; sourceTree = "<group>"; };
 		60A1A77D1DA3A23C005E3357 /* BackArrowBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrowBlack@2x.png"; sourceTree = "<group>"; };
-		60A1A7811DA3A849005E3357 /* ARScrollNavigationChief.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARScrollNavigationChief.h; sourceTree = "<group>"; };
-		60A1A7821DA3A849005E3357 /* ARScrollNavigationChief.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARScrollNavigationChief.m; sourceTree = "<group>"; };
 		60A1A7841DA3A879005E3357 /* ARMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARMacros.h; sourceTree = "<group>"; };
 		60B743B51D3EB12600E6B2A3 /* ARStorybookComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARStorybookComponentViewController.h; sourceTree = "<group>"; };
 		60B743B61D3EB12600E6B2A3 /* ARStorybookComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARStorybookComponentViewController.m; sourceTree = "<group>"; };
@@ -215,8 +212,6 @@
 				60A1A77A1DA3A230005E3357 /* Resources */,
 				51F3E9A21CF3B8A4004A2013 /* EigenLikeNavigationController.h */,
 				51F3E9A31CF3B8A4004A2013 /* EigenLikeNavigationController.m */,
-				60A1A7811DA3A849005E3357 /* ARScrollNavigationChief.h */,
-				60A1A7821DA3A849005E3357 /* ARScrollNavigationChief.m */,
 			);
 			name = Navigation;
 			sourceTree = "<group>";
@@ -549,7 +544,6 @@
 			files = (
 				60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */,
 				51F3E9A41CF3B8A4004A2013 /* EigenLikeNavigationController.m in Sources */,
-				60A1A7831DA3A849005E3357 /* ARScrollNavigationChief.m in Sources */,
 				510DCB151CCA69EC0075E8CB /* AppDelegate.m in Sources */,
 				510DCB121CCA69EC0075E8CB /* main.m in Sources */,
 			);
