@@ -109,8 +109,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     [super viewDidLoad];
 
     _statusBarView = [[UIView alloc] init];
-    _statusBarView.backgroundColor = UIColor.blackColor;
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
 
     [self.view addSubview:_statusBarView];
 

@@ -104,7 +104,7 @@
     [super viewWillAppear:animated];
 
     if (self.ignoreStatusBar == NO) {
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+        //        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     }
 }
 
