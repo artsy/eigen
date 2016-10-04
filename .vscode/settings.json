@@ -11,13 +11,21 @@
 	"editor.renderWhitespace": true,
     "editor.rulers": [120],
     "editor.tabSize": 2,
-
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true,
+        "Example/build/": true,
+        "Example/DerivedData": true,
+        "Example/Pods/Headers/**": true
+    },
     "search.exclude": {
         "**/node_modules": true,
         "externals/**": true,
         "**/typings/**": true,
-        "Example/DerivedData": true,
-        "Example/Pods/Headers/**": true
+        "Pod/Assets/Emission.*": true,
+        ".vscode/.react/*": true
     },
 
     // Because we use Flow - see https://github.com/flowtype/flow-for-vscode#setup
