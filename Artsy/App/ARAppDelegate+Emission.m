@@ -75,12 +75,12 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
     // we switch out the current emission instance.
     //
     if ([AROptions boolForOption:AROptionsStagingReactEnv]) {
-        [AppHub setLogLevel: AHLogLevelDebug];
+        [AppHub setLogLevel:AHLogLevelDebug];
         [AppHub setApplicationID:@"Z6IwqK52JBXrKLI4kpvJ"];
 
         NSString *emissionHeadVersion = [[NSUserDefaults standardUserDefaults] valueForKey:AREmissionHeadVersionDefault];
         [[AppHub buildManager] setAutomaticPollingEnabled:NO];
-        [[AppHub buildManager] setInstalledAppVersion: emissionHeadVersion];
+        [[AppHub buildManager] setInstalledAppVersion:emissionHeadVersion];
         [[AppHub buildManager] setDebugBuildsEnabled:YES];
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newEmissionBuild) name:AHBuildManagerDidMakeBuildAvailableNotification object:nil];
@@ -106,7 +106,7 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
     NSString *authenticationToken = [[ARUserManager sharedManager] userAuthenticationToken];
     NSParameterAssert(userID);
     NSParameterAssert(authenticationToken);
-    
+
     AREmission *emission = [[AREmission alloc] initWithUserID:userID
                                           authenticationToken:authenticationToken
                                                   packagerURL:packagerURL
@@ -123,13 +123,6 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
         // TODO: Can’t optimistically change the view state before the request, because a RCTResponseSenderBlock may
         //       only be invoked once.
         ArtistSetFollowStatus(artistID, following, block);
-        if (following) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // Ask for push notification permission, if not already
-                ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
-                [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
-            });
-        }
     };
 
     emission.switchBoardModule.presentNavigationViewController = ^(UIViewController *_Nonnull fromViewController,
@@ -150,8 +143,12 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
         NSMutableDictionary *properties = [info mutableCopy];
         [properties removeObjectForKey:@"name"];
         [ARAnalytics event:info[@"name"] withProperties:[properties copy]];
+        
+        if ([info[@"name"] isEqual:@"Follow artist"] && [fromViewController isKindOfClass:[ARArtistComponentViewController class]]) {
+            ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+            [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
+        }
     };
-
 }
 
 @end
