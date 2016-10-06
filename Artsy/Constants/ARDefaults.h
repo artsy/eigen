@@ -28,7 +28,7 @@ extern NSString *const ARPushNotificationsAppleDialogueSeen;
 extern NSString *const ARPushNotificationsAppleDialogueRejected;
 extern NSString *const ARPushNotificationsSettingsPromptSeen;
 extern NSString *const ARPushNotificationFollowArtist;
-
+extern NSString *const ARPushNotificationsDialogueLastSeenDate;
 
 #pragma mark -
 #pragma mark Admin features

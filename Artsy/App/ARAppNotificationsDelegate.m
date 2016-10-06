@@ -32,7 +32,7 @@
         // lets show you a prompt to go to stettings
         [self displayPushNotificationSettingsPrompt];
 
-    } else if (![AROptions boolForOption:ARPushNotificationsAppleDialogueSeen]) {
+    } else if (![AROptions boolForOption:ARPushNotificationsAppleDialogueSeen] && [self shouldPresentPushNotificationAgain]) {
         // As long as you've not seen Apple's dialogue already, we will show you our pre-prompt.
         [self displayPushNotificationLocalRequestPrompt];
     }
@@ -78,7 +78,10 @@
 
 - (void)registerUserDisinterest
 {
-    // this is for analytics to hook into
+    // Well, in that case we'll store today's date
+    // and prompt the user in a week's time, if they perform certain actions (e.g. follow an artist)
+
+    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ARPushNotificationsDialogueLastSeenDate];
 }
 
 - (void)presentSettings
@@ -91,6 +94,26 @@
     return [UIAlertController alertControllerWithTitle:@"Artsy Would Like to Send You Notifications"
                                                message:@"Turn on notifications so you can get important updates about artists you follow"
                                         preferredStyle:UIAlertControllerStyleAlert];
+}
+
+- (BOOL)shouldPresentPushNotificationAgain
+{
+    // we don't want to ask too often
+    // currently, we make sure at least a week has passed by since you last saw the dialogue
+
+    NSDate *lastSeenPushNotification = [[NSUserDefaults standardUserDefaults] objectForKey:ARPushNotificationsDialogueLastSeenDate];
+
+    if (lastSeenPushNotification) {
+        NSDate *currentDate = [NSDate date];
+
+        NSTimeInterval timePassed = [currentDate timeIntervalSinceDate:lastSeenPushNotification];
+        NSTimeInterval weekInSeconds = (60 * 60 * 24 * 7);
+
+        return timePassed >= weekInSeconds;
+    } else {
+        // if you've never seen one before, we'll show you ;)
+        return YES;
+    }
 }
 
 #pragma mark -
