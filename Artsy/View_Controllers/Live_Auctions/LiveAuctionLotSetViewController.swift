@@ -69,8 +69,8 @@ class LiveAuctionLotSetViewController: UIViewController {
     var suppressJumpingToOpenLots = false
 
     func hasChangedLot(lot: LiveAuctionLotViewModelType?) {
-        guard let newLot = lot else { return }
-        guard let newLotIndex = salesPerson.indexForViewModel(newLot) where !suppressJumpingToOpenLots else { return }
+        guard let newLot = lot, newLotIndex = salesPerson.indexForViewModel(newLot) else { return }
+        guard !suppressJumpingToOpenLots else { return }
 
         /// Support jumping directly to the live lot when we load
 
