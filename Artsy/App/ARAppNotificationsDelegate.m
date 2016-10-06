@@ -109,11 +109,7 @@
         NSTimeInterval timePassed = [currentDate timeIntervalSinceDate:lastSeenPushNotification];
         NSTimeInterval weekInSeconds = (60 * 60 * 24 * 7);
 
-        if (timePassed >= weekInSeconds) {
-            return YES;
-        } else {
-            return NO;
-        }
+        return timePassed >= weekInSeconds;
     } else {
         // if you've never seen one before, we'll show you ;)
         return YES;
