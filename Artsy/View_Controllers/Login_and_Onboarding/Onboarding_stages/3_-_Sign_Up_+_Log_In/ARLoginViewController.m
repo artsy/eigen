@@ -77,7 +77,7 @@
 
     self.titleLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:1.4];
     self.titleLabel.text = @"Login to your Artsy account";
-    self.titleLabel.font = [UIFont serifFontWithSize:self.useLargeLayout ? 32.0 : 24.0];
+    self.titleLabel.font = [UIFont serifFontWithSize:self.useLargeLayout ? 40.0 : 30.0];
     self.titleLabel.textAlignment = self.useLargeLayout ? NSTextAlignmentCenter : NSTextAlignmentLeft;
 
     [self.view addSubview:self.titleLabel];
