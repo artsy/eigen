@@ -426,6 +426,7 @@
 		60327DEB198933610075B399 /* ARTopMenuNavigationDataSourceSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DE6198933610075B399 /* ARTopMenuNavigationDataSourceSpec.m */; };
 		60327DEC198933610075B399 /* ARTopMenuViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60327DE7198933610075B399 /* ARTopMenuViewControllerSpec.m */; };
 		603338361CF3572A0085AB5A /* ARUserManager+TestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603338351CF3572A0085AB5A /* ARUserManager+TestExtensions.swift */; };
+		6033D7771DA3EDFA00EAC2F5 /* GeneRefineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6033D7761DA3EDFA00EAC2F5 /* GeneRefineSettings.swift */; };
 		6034EB1D175F68350070478D /* SiteHeroUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 6034EB1C175F68350070478D /* SiteHeroUnit.m */; };
 		6034EB2F1760A9BE0070478D /* ARTopMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6034EB2B1760A9BD0070478D /* ARTopMenuViewController.m */; };
 		6036B5621760DC9100F1DD01 /* ARHeroUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B5611760DC9100F1DD01 /* ARHeroUnitViewController.m */; };
@@ -669,10 +670,8 @@
 		833D53C71C75DFA900D63ADB /* ARWorksForYouNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53C61C75DFA900D63ADB /* ARWorksForYouNetworkModel.m */; };
 		833D53CB1C760B5400D63ADB /* ARWorksForYouNotificationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53CA1C760B5400D63ADB /* ARWorksForYouNotificationItem.m */; };
 		83665E091C84A7B300FA5D77 /* ARWorksForYouNotificationItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83665E081C84A7B300FA5D77 /* ARWorksForYouNotificationItemViewController.m */; };
-		83765A201CC1472D003D548B /* ModernGeneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83765A1F1CC1472D003D548B /* ModernGeneViewController.swift */; };
 		837CEC811C84D77900A7E0E1 /* ARWorksForYouViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC801C84D77900A7E0E1 /* ARWorksForYouViewControllerTests.m */; };
 		837CEC841C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */; };
-		838FC9401CC05C5E006DFEC2 /* GeneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838FC93F1CC05C5E006DFEC2 /* GeneViewModel.swift */; };
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
 		83FF73B41CB87A74002B53FA /* RefinableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B31CB87A74002B53FA /* RefinableType.swift */; };
 		83FF73B91CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B81CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift */; };
@@ -1464,6 +1463,7 @@
 		60327DE6198933610075B399 /* ARTopMenuNavigationDataSourceSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTopMenuNavigationDataSourceSpec.m; sourceTree = "<group>"; };
 		60327DE7198933610075B399 /* ARTopMenuViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTopMenuViewControllerSpec.m; sourceTree = "<group>"; };
 		603338351CF3572A0085AB5A /* ARUserManager+TestExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ARUserManager+TestExtensions.swift"; sourceTree = "<group>"; };
+		6033D7761DA3EDFA00EAC2F5 /* GeneRefineSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GeneRefineSettings.swift; path = Artsy/View_Controllers/Gene/GeneRefineSettings.swift; sourceTree = SOURCE_ROOT; };
 		6034EB1B175F68350070478D /* SiteHeroUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteHeroUnit.h; sourceTree = "<group>"; };
 		6034EB1C175F68350070478D /* SiteHeroUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteHeroUnit.m; sourceTree = "<group>"; };
 		6034EB2A1760A9BD0070478D /* ARTopMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTopMenuViewController.h; sourceTree = "<group>"; };
@@ -1859,11 +1859,9 @@
 		833D53CA1C760B5400D63ADB /* ARWorksForYouNotificationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouNotificationItem.m; sourceTree = "<group>"; };
 		83665E071C84A7B300FA5D77 /* ARWorksForYouNotificationItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWorksForYouNotificationItemViewController.h; sourceTree = "<group>"; };
 		83665E081C84A7B300FA5D77 /* ARWorksForYouNotificationItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouNotificationItemViewController.m; sourceTree = "<group>"; };
-		83765A1F1CC1472D003D548B /* ModernGeneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModernGeneViewController.swift; path = Collection_Views/ModernGeneViewController.swift; sourceTree = "<group>"; };
 		837CEC801C84D77900A7E0E1 /* ARWorksForYouViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouViewControllerTests.m; sourceTree = "<group>"; };
 		837CEC821C876B7C00A7E0E1 /* ArtsyAPI+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Notifications.h"; sourceTree = "<group>"; };
 		837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Notifications.m"; sourceTree = "<group>"; };
-		838FC93F1CC05C5E006DFEC2 /* GeneViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GeneViewModel.swift; path = Collection_Views/GeneViewModel.swift; sourceTree = "<group>"; };
 		83F9D57E1AD6FDE0000BCC77 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		83F9D57F1AD6FDE0000BCC77 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		83FF73B31CB87A74002B53FA /* RefinableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefinableType.swift; path = ../Views/RefinableType.swift; sourceTree = "<group>"; };
@@ -3686,8 +3684,7 @@
 		606E58121D91633C00BAE371 /* Gene */ = {
 			isa = PBXGroup;
 			children = (
-				83765A1F1CC1472D003D548B /* ModernGeneViewController.swift */,
-				838FC93F1CC05C5E006DFEC2 /* GeneViewModel.swift */,
+				6033D7761DA3EDFA00EAC2F5 /* GeneRefineSettings.swift */,
 			);
 			name = Gene;
 			path = ../Views;
@@ -4874,15 +4871,12 @@
 			buildConfigurationList = 49BA7E231655ABE600C06572 /* Build configuration list for PBXNativeTarget "Artsy" */;
 			buildPhases = (
 				3DDFDE0BD89435CF2CCB5242 /* [CP] Check Pods Manifest.lock */,
-				79E285BA175ED99872293B60 /* [CP] Check Pods Manifest.lock */,
 				49BA7DFB1655ABE600C06572 /* Sources */,
 				49BA7DFC1655ABE600C06572 /* Frameworks */,
 				49BA7DFD1655ABE600C06572 /* Resources */,
 				5150685F1BCC176300018352 /* Generate Compilation DB */,
 				D094149C23FE012B198AF725 /* [CP] Embed Pods Frameworks */,
 				4F59D9726E617D9849261C9C /* [CP] Copy Pods Resources */,
-				1D541C62B925F8552F1C0B1B /* 📦 Embed Pods Frameworks */,
-				0C20ADEE6A5C55C90B3195A0 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -5205,36 +5199,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0C20ADEE6A5C55C90B3195A0 /* 📦 Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "📦 Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1D541C62B925F8552F1C0B1B /* 📦 Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "📦 Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		1D55706988CFBE638F84BEE7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5308,21 +5272,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		79E285BA175ED99872293B60 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		86ACFF7D39544693A0185A07 /* [CP] Check Pods Manifest.lock */ = {
@@ -5499,7 +5448,6 @@
 				60D90A0817C2182F0073D5B9 /* ARExternalWebBrowserViewController.m in Sources */,
 				5EC8C6801CA5C5FC00571B21 /* LiveActionStateReconciler.swift in Sources */,
 				E61B703919904D9F00260D29 /* ARTopTapThroughTableView.m in Sources */,
-				838FC9401CC05C5E006DFEC2 /* GeneViewModel.swift in Sources */,
 				499A587B166561E9004B0E2F /* ARFeedConstants.m in Sources */,
 				5E4962441CA1C7E800E77DD5 /* NSAttributedString+Additions.swift in Sources */,
 				CB879D0C180746C900E2D8EC /* AuctionLot.m in Sources */,
@@ -5600,7 +5548,6 @@
 				600EE29E16B3003F002E9F9A /* ARNavigationButton.m in Sources */,
 				5EFF52BE197916C800E2A563 /* ARPendingOperationViewController.m in Sources */,
 				60F242F21CB3AA7300387AA1 /* LiveAuctionBidButton.swift in Sources */,
-				83765A201CC1472D003D548B /* ModernGeneViewController.swift in Sources */,
 				6021F97F17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m in Sources */,
 				3CFB079118EB585B00792024 /* ARTile+ASCII.m in Sources */,
 				3CFB078B18EB417F00792024 /* ARSecureTextFieldWithPlaceholder.m in Sources */,
@@ -5764,6 +5711,7 @@
 				342F90AEE6950A52210D2DC2 /* UILabel+Typography.m in Sources */,
 				5E79FCB11C7612D8003D5D65 /* Int+Metrification.swift in Sources */,
 				510A52971C998CD600310BFC /* ARWorksForYouReloadingHostViewController.m in Sources */,
+				6033D7771DA3EDFA00EAC2F5 /* GeneRefineSettings.swift in Sources */,
 				837CEC841C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m in Sources */,
 				3C6CB60918ABD8D2008DFE3B /* ARPostsViewController.m in Sources */,
 				342F96505F255C0F443B5EAA /* UIViewController+SimpleChildren.m in Sources */,

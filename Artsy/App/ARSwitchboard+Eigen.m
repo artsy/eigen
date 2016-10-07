@@ -128,11 +128,9 @@
     return [self loadGeneWithID:gene.geneID];
 }
 
-
 - (UIViewController *)loadGeneWithID:(NSString *)geneID
 {
-    UIViewController *viewController = [AROptions boolForOption:AROptionsUseModernGeneVC] ? [[ModernGeneViewController alloc] initWithGeneID:geneID] : [[ARGeneViewController alloc] initWithGeneID:geneID];
-    return viewController;
+    return [[ARGeneViewController alloc] initWithGeneID:geneID];
 }
 
 #pragma mark -

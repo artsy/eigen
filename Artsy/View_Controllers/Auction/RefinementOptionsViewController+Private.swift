@@ -23,10 +23,25 @@ extension RefinementOptionsViewController {
         titleLabel.alignTopEdgeWithView(view, predicate: "20")
         titleLabel.alignLeadingEdgeWithView(view, predicate: "20")
 
-        let stackView = self.stackView()
-        view.addSubview(stackView)
-        stackView.alignBottomEdgeWithView(view, predicate: "-20")
-        stackView.alignLeading("0", trailing: "0", toView: view)
+        let spacer = UIView()
+        view.addSubview(spacer)
+        spacer.setContentHuggingPriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
+        spacer.alignTopEdgeWithView(titleLabel, predicate: "20")
+        spacer.constrainHeight(">=0 @1000")
+        spacer.alignLeading("0", trailing: "0", toView: view)
+
+        let tableView = self.createTableView()
+        view.addSubview(tableView)
+        tableView.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow+1, forAxis: .Vertical)
+        tableView.constrainTopSpaceToView(spacer, predicate: "20")
+        tableView.alignLeading("0", trailing: "0", toView: view)
+        self.tableView = tableView
+
+        let controlButtonsWrapper = self.bottomButtons()
+        view.addSubview(controlButtonsWrapper)
+        controlButtonsWrapper.alignLeading("20", trailing: "-20", toView: view)
+        controlButtonsWrapper.constrainTopSpaceToView(tableView, predicate: "20")
+        controlButtonsWrapper.alignBottomEdgeWithView(view, predicate: "-20")
     }
 
     func updatePriceLabels() {
@@ -60,14 +75,9 @@ private extension RefinementOptionsViewController {
         return label
     }
 
-    func stackView() -> ORStackView {
-        let stackView = ORStackView()
-
-        stackView.addSubview(subtitleLabel("Sort"), withTopMargin: "20", sideMargin: "40")
-
-        stackView.addSubview(ARSeparatorView(), withTopMargin: "10", sideMargin: "0")
-
+    func createTableView() -> UITableView {
         tableViewHandler = RefinementOptionsViewControllerTableViewHandler.init(numberOfSections: currentSettings.numberOfSections,
+            titleOfSection: { [unowned self] section in self.currentSettings.titleOfSection(section) },
             numberOfRowsInSection: { [unowned self] section in self.currentSettings.numberOfRowsInSection(section) },
             titleForRowAtIndexPath: { [unowned self] indexPath in self.currentSettings.titleForRowAtIndexPath(indexPath) },
             shouldCheckRowAtIndexPath: { [unowned self] indexPath in self.currentSettings.shouldCheckRowAtIndexPath(indexPath) },
@@ -75,23 +85,43 @@ private extension RefinementOptionsViewController {
             allowsMultipleSelectionClosure: { [unowned self] section in self.currentSettings.allowMultipleSelectionInSection(section) },
             changeSettingsClosure: { [unowned self] indexPath in self.currentSettings = self.currentSettings.refineSettingsWithSelectedIndexPath(indexPath) })
 
+        // A footer view ( either a separator or price range view )
+        let bottomView = priceRangeView() ?? ARSeparatorView()
+        let bottomHeight = bottomView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+
+
         let tableView = UITableView().then {
             $0.registerClass(RefinementOptionsTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-            $0.scrollEnabled = false
             $0.separatorColor = .artsyGrayRegular()
-            $0.separatorInset = UIEdgeInsetsZero
+            $0.separatorInset = UIEdgeInsetsMake(0, 20, 0, 20)
             $0.dataSource = tableViewHandler
             $0.delegate = tableViewHandler
 
-            let tableViewHeight = 44 * currentSettings.numberOfRowsInSection(0) - 1 // -1 to cut off the bottom-most separator that we'll manually add below.
-            $0.constrainHeight("\(tableViewHeight)")
+            let combinedRowCount = (0..<currentSettings.numberOfSections).map(currentSettings.numberOfRowsInSection).reduce(0, combine:+)
+            let combinedTitleCount = Int(TableViewTitleHeight) * currentSettings.numberOfSections
+
+            let tableViewHeight = combinedTitleCount + (44 * combinedRowCount) + 100 + Int(bottomHeight)
+            $0.constrainHeight("\(tableViewHeight)@300")
         }
-        stackView.addSubview(tableView, withTopMargin: "0", sideMargin: "40")
 
-        stackView.addSubview(ARSeparatorView(), withTopMargin: "0", sideMargin: "0")
 
+        // The hacks we have to do to get AL working in tableviews
+        let wrapper = UIView()
+        wrapper.frame = CGRect( x:0, y:0, width: view.bounds.width, height: bottomHeight)
+        wrapper.addSubview(bottomView)
+        bottomView.alignToView(wrapper)
+        tableView.tableFooterView = wrapper
+
+        self.sortTableView = tableView
+        return tableView
+    }
+
+    func priceRangeView() -> ORStackView? {
         // Price section
         if let initialRange = initialSettings.priceRange, maxRange = defaultSettings.priceRange where initialSettings.hasEstimates {
+            let stackView = ORStackView()
+
+            stackView.addSubview(ARSeparatorView(), withTopMargin: "0", sideMargin: "0")
             stackView.addSubview(subtitleLabel("Price"), withTopMargin: "20", sideMargin: "40")
 
             let priceExplainLabel = ARSerifLabel().then {
@@ -152,8 +182,13 @@ private extension RefinementOptionsViewController {
             self.slider = slider
 
             updatePriceLabels()
+            return stackView
         }
 
+        return nil
+    }
+
+    func bottomButtons() -> UIView {
         let applyButton = ARBlackFlatButton().then {
             $0.enabled = false
             $0.setTitle("Apply", forState: .Normal)
@@ -179,17 +214,16 @@ private extension RefinementOptionsViewController {
         applyButton.alignTrailingEdgeWithView(buttonContainer, predicate: "0")
         applyButton.constrainWidthToView(resetButton, predicate: "0")
 
-        stackView.addSubview(buttonContainer, withTopMargin: "20", sideMargin: "40")
-
         self.applyButton = applyButton
         self.resetButton = resetButton
-        self.sortTableView = tableView
 
         updateButtonEnabledStates()
 
-        return stackView
+        return buttonContainer
     }
 }
+
+let TableViewTitleHeight = CGFloat(40)
 
 enum SliderPriorities: String {
     case StayWithinFrame = "475"
@@ -200,6 +234,7 @@ enum SliderPriorities: String {
 class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
     let numberOfSections: Int
     let numberOfRowsInSection: Int -> Int
+    let titleOfSection: Int -> String
     let titleForRowAtIndexPath: NSIndexPath -> String
     let shouldCheckRowAtIndexPath: NSIndexPath -> Bool
     let selectedRowsInSection: Int -> [NSIndexPath]
@@ -207,15 +242,15 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
     let changeSettingsClosure: NSIndexPath -> Void
 
     // closures from currentSettings
-    init(numberOfSections: Int, numberOfRowsInSection: Int -> Int, titleForRowAtIndexPath: NSIndexPath -> String, shouldCheckRowAtIndexPath: NSIndexPath -> Bool, selectedRowsInSection: Int -> [NSIndexPath], allowsMultipleSelectionClosure: Int -> Bool, changeSettingsClosure: NSIndexPath -> Void) {
+    init(numberOfSections: Int, titleOfSection: Int -> String, numberOfRowsInSection: Int -> Int, titleForRowAtIndexPath: NSIndexPath -> String, shouldCheckRowAtIndexPath: NSIndexPath -> Bool, selectedRowsInSection: Int -> [NSIndexPath], allowsMultipleSelectionClosure: Int -> Bool, changeSettingsClosure: NSIndexPath -> Void) {
         self.numberOfSections = numberOfSections
+        self.titleOfSection = titleOfSection
         self.numberOfRowsInSection = numberOfRowsInSection
         self.titleForRowAtIndexPath = titleForRowAtIndexPath
         self.shouldCheckRowAtIndexPath = shouldCheckRowAtIndexPath
         self.selectedRowsInSection = selectedRowsInSection
         self.allowsMultipleSelectionInSection = allowsMultipleSelectionClosure
         self.changeSettingsClosure = changeSettingsClosure
-
         super.init()
     }
 
@@ -223,17 +258,36 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
         return numberOfSections
     }
 
-
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return numberOfRowsInSection(section)
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
-
         cell.textLabel?.text = titleForRowAtIndexPath(indexPath)
-
         return cell
+    }
+
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return TableViewTitleHeight
+    }
+
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let wrapper = UIView()
+        wrapper.backgroundColor = .whiteColor()
+
+        let label = ARSansSerifLabel()
+        label.font = UIFont.sansSerifFontWithSize(12)
+        label.text = titleOfSection(section)
+        wrapper.addSubview(label)
+        label.alignTop("20", leading: "20", toView: wrapper)
+        label.alignBottomEdgeWithView(wrapper, predicate: "-4")
+
+        let separator = ARSeparatorView()
+        wrapper.addSubview(separator)
+        separator.alignBottom("0", trailing: "0", toView: wrapper)
+        separator.alignLeadingEdgeWithView(wrapper, predicate: "0")
+        return wrapper
     }
 
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -270,7 +324,7 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
 class RefinementOptionsTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
-        textLabel?.frame.origin.x = 0
+        textLabel?.frame.origin.x = 20
     }
 }
 

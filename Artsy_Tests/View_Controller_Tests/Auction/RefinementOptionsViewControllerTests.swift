@@ -56,6 +56,14 @@ class RefinementOptionsViewControllerSpec: QuickSpec {
             expect(subject).to( haveValidSnapshot() )
         }
 
+        it("looks good with gene refine settings") {
+            let geneSettings = GeneRefineSettings(sort: .LeastExpensive, medium: "Two", mediums: ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"], priceRange:(min: 500_00, max: 100_000_00))
+
+            let subject = RefinementOptionsViewController(defaultSettings: geneSettings, initialSettings: geneSettings, currencySymbol: "$", userDidCancelClosure: nil, userDidApplyClosure: nil)
+
+            subject.loadViewProgrammatically()
+            expect(subject).to( haveValidSnapshot() )
+        }
     }
 }
 

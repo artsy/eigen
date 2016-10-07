@@ -4,6 +4,7 @@ protocol RefinableType: Equatable {
 
     // table view
     var numberOfSections: Int { get }
+    func titleOfSection(section: Int) -> String
     func numberOfRowsInSection(section: Int) -> Int
     func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String
 
