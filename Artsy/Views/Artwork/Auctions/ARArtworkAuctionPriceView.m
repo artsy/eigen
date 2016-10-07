@@ -39,7 +39,7 @@
 
     if (bidCount && reserveStatus == ARReserveStatusReserveNotMet) {
         return [NSString stringWithFormat:@"(%@ %@, Reserve not met)", @(bidCount), bids];
-    } else if (bidCount && reserveStatus == ARReserveStatusNoReserve) {
+    } else if (bidCount && (reserveStatus == ARReserveStatusNoReserve || reserveStatus == ARReserveStatusUnknown)) {
         return [NSString stringWithFormat:@"(%@ %@)", @(bidCount), bids];
     } else if (bidCount && reserveStatus == ARReserveStatusReserveMet) {
         return [NSString stringWithFormat:@"(%@ %@, Reserve met)", @(bidCount), bids];

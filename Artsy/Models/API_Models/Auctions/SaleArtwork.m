@@ -108,7 +108,8 @@ static NSNumberFormatter *currencyFormatter;
     NSDictionary *types = @{
         @"no_reserve" : @(ARReserveStatusNoReserve),
         @"reserve_not_met" : @(ARReserveStatusReserveNotMet),
-        @"reserve_met" : @(ARReserveStatusReserveMet)
+        @"reserve_met" : @(ARReserveStatusReserveMet),
+        @"reserve_unknown" : @(ARReserveStatusUnknown)
     };
 
     return [MTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {

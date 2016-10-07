@@ -15,9 +15,13 @@ releases:
     dev:
       infrastructure:
         - Fixes various memory leaks in live. - ash
+        - Removes a workaround for a WKWebView that was fixed in iOS 10 - ash
         - Fixes problems that arose from fixing memory leaks. - ash
         - Admins can choose to use the lastest build of our React code - orta
         - Adds infrastructure for a new Gene View Controller based on Auctions - orta
+        - Adds reserve_unknown - ash
+        - Fixes deadlocks on live - ash
+        - Fixes jumping to current lot - ash
     user_facing:
       - Update API to exclude artists and use /me/suggested - maxim
       - Push notification on artist follow added - maxim
@@ -34,6 +38,7 @@ releases:
       - Fixes problems going to the current lot of a live auction caused by inaccurate sale artwork position values. - ash
       - Fair search now includes partners - orta
       - New navigation bar design - sarah
+      - Fixes problem on live where you couldn't see lot info. - ash
 
   - version: 2.6.3
     details: Bug fixes in Artist profile view

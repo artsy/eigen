@@ -18,9 +18,9 @@ class PanDirectionGestureRecognizer: UIPanGestureRecognizer {
 
     let direction: PanDirection
 
-    init(direction: PanDirection, target: AnyObject, action: Selector) {
+    init(direction: PanDirection) {
         self.direction = direction
-        super.init(target: target, action: action)
+        super.init(target: nil, action: nil)
     }
 
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent) {
