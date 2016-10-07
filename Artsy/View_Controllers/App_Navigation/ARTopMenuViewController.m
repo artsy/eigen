@@ -26,6 +26,9 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
+#import <Emission/ARHomeComponentViewController.h>
+#import <React/RCTScrollView.h>
+
 static const CGFloat ARMenuButtonDimension = 50;
 
 
@@ -468,7 +471,16 @@ static const CGFloat ARMenuButtonDimension = 50;
         if (controller.viewControllers.count == 1) {
             UIScrollView *scrollView = nil;
             if (index == ARTopTabControllerIndexFeed) {
-                scrollView = [(ARSimpleShowFeedViewController *)[controller.childViewControllers objectAtIndex:0] tableView];
+                ARHomeComponentViewController *homeComponentVC = [controller.childViewControllers objectAtIndex:0];
+                UIView *rootView = homeComponentVC.view;
+                while (rootView.subviews.firstObject && ![rootView isKindOfClass:RCTScrollView.class]) {
+                    rootView = rootView.subviews.firstObject;
+                    NSLog(@"Root:  %@", rootView);
+                }
+                if ([rootView respondsToSelector:@selector(scrollToOffset:animated:)]) {
+                    [(id)rootView scrollToOffset:CGPointMake(scrollView.contentOffset.x, -scrollView.contentInset.top) animated:YES];
+                }
+
             } else if (index == ARTopTabControllerIndexBrowse) {
                 scrollView = [(ARBrowseViewController *)[controller.childViewControllers objectAtIndex:0] collectionView];
             } else if (index == ARTopTabControllerIndexFavorites) {
