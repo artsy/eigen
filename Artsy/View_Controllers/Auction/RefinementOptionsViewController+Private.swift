@@ -15,6 +15,7 @@ extension RefinementOptionsViewController {
         cancelButton.alignTopEdgeWithView(view, predicate: "10")
         cancelButton.alignTrailingEdgeWithView(view, predicate: "-10")
 
+        // This isn't normally running inside a nav, so needs to create it's own
         let titleLabel = ARSerifLabel().then {
             $0.font = UIFont.serifFontWithSize(20)
             $0.text = "Refine"
@@ -23,13 +24,14 @@ extension RefinementOptionsViewController {
         titleLabel.alignTopEdgeWithView(view, predicate: "20")
         titleLabel.alignLeadingEdgeWithView(view, predicate: "20")
 
-        let spacer = UIView()
+        // An expandable whitespace gobbler, so that the tableview can remain at the bottom
+        let spacer = ARWhitespaceGobbler()
         view.addSubview(spacer)
-        spacer.setContentHuggingPriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
         spacer.alignTopEdgeWithView(titleLabel, predicate: "20")
         spacer.constrainHeight(">=0 @1000")
         spacer.alignLeading("0", trailing: "0", toView: view)
 
+        // Tableview of all the content
         let tableView = self.createTableView()
         view.addSubview(tableView)
         tableView.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow+1, forAxis: .Vertical)
@@ -37,6 +39,7 @@ extension RefinementOptionsViewController {
         tableView.alignLeading("0", trailing: "0", toView: view)
         self.tableView = tableView
 
+        // Accept / Reject changes to a refinement
         let controlButtonsWrapper = self.bottomButtons()
         view.addSubview(controlButtonsWrapper)
         controlButtonsWrapper.alignLeading("20", trailing: "-20", toView: view)
@@ -100,7 +103,13 @@ private extension RefinementOptionsViewController {
             let combinedRowCount = (0..<currentSettings.numberOfSections).map(currentSettings.numberOfRowsInSection).reduce(0, combine:+)
             let combinedTitleCount = Int(TableViewTitleHeight) * currentSettings.numberOfSections
 
-            let tableViewHeight = combinedTitleCount + (44 * combinedRowCount) + 100 + Int(bottomHeight)
+            let tableViewHeight = combinedTitleCount + (44 * combinedRowCount) + Int(bottomHeight)
+
+            // Only allow scrolling for large refine settings
+            if CGFloat(tableViewHeight) < (view.bounds.height - 200) { $0.scrollEnabled = false }
+
+            // Constrain the height so that it becomes bottom aligned, do it weakly so that
+            // it will bend when constrained to it's top constraint saying don't go higher than the title
             $0.constrainHeight("\(tableViewHeight)@300")
         }
 
