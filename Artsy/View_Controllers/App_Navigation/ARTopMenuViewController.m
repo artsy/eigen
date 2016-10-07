@@ -32,6 +32,7 @@
 static const CGFloat ARMenuButtonDimension = 50;
 
 
+
 @interface ARTopMenuViewController () <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) NSArray *constraintsForButtons;
 
@@ -468,34 +469,34 @@ static const CGFloat ARMenuButtonDimension = 50;
     if (index == self.selectedTabIndex) {
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];
 
-        if (controller.viewControllers.count == 1) {
-            UIScrollView *scrollView = nil;
-            if (index == ARTopTabControllerIndexFeed) {
-                ARHomeComponentViewController *homeComponentVC = [controller.childViewControllers objectAtIndex:0];
-                UIView *rootView = homeComponentVC.view;
-                while (rootView.subviews.firstObject && ![rootView isKindOfClass:RCTScrollView.class]) {
-                    rootView = rootView.subviews.firstObject;
-                    NSLog(@"Root:  %@", rootView);
-                }
-                if ([rootView respondsToSelector:@selector(scrollToOffset:animated:)]) {
-                    [(id)rootView scrollToOffset:CGPointMake(scrollView.contentOffset.x, -scrollView.contentInset.top) animated:YES];
-                }
-
-            } else if (index == ARTopTabControllerIndexBrowse) {
-                scrollView = [(ARBrowseViewController *)[controller.childViewControllers objectAtIndex:0] collectionView];
-            } else if (index == ARTopTabControllerIndexFavorites) {
-                scrollView = [(ARFavoritesViewController *)[controller.childViewControllers objectAtIndex:0] collectionView];
-            }
-            [scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x, -scrollView.contentInset.top) animated:YES];
-
-        } else {
+        // If there's multiple VCs jump to the root
+        if (controller.viewControllers.count > 1) {
             [controller popToRootViewControllerAnimated:YES];
+        }
+
+        // Otherwise find the first scrollview and pop to top
+        else if (index == ARTopTabControllerIndexFeed ||
+            index == ARTopTabControllerIndexBrowse ||
+            index == ARTopTabControllerIndexFavorites) {
+
+            UIViewController *currentRootViewController = [controller.childViewControllers first];
+            UIScrollView *rootScrollView = (id)[self firstScrollToTopScrollViewFromRootView:currentRootViewController.view];
+            [rootScrollView setContentOffset:CGPointMake(rootScrollView.contentOffset.x, -rootScrollView.contentInset.top) animated:YES];
         }
 
         return NO;
     }
 
     return YES;
+}
+
+- (NSObject  * _Nullable)firstScrollToTopScrollViewFromRootView:(UIView *)initialView
+{
+    UIView *rootView = initialView;
+    while (rootView.subviews.firstObject && ![rootView isKindOfClass:UIScrollView.class] && [(id)rootView scrollsToTop]) {
+        rootView = rootView.subviews.firstObject;
+    }
+    return ([rootView isKindOfClass:UIScrollView.class] && [(id)rootView scrollsToTop]) ? rootView : nil;
 }
 
 @end

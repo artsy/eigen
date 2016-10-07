@@ -22,7 +22,7 @@ before(^{
     navDataSource = [[ARTopMenuNavigationDataSource alloc] init];
 });
 
-it(@"uses a single feed vc", ^{
+it(@"uses a home feed vc", ^{
     ARNavigationController *navigationController = [navDataSource feedNavigationController];
     UIViewController *rootVC = [[navigationController viewControllers] objectAtIndex:0];
     expect(rootVC).to.beKindOf(ARHomeComponentViewController.class);
