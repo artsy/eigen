@@ -11,7 +11,8 @@ upcoming:
 
 releases:
   - version: 2.6.4
-    details: Auctions Fixes?
+    details: Auctions Fixes
+    date: Oct 6, 2016
     dev:
       infrastructure:
         - Fixes various memory leaks in live. - ash
@@ -42,7 +43,7 @@ releases:
 
   - version: 2.6.3
     details: Bug fixes in Artist profile view
-    date: Not released yet
+    date: Jun 24, 2016
     dev:
       infrastructure:
         - Fixes various memory leaks in live. - ash
