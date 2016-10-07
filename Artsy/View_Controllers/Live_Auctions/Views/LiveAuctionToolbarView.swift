@@ -10,11 +10,6 @@ class LiveAuctionToolbarView: UIView {
     var lotStateObserver: ObserverToken<LotState>?
     var numberOfBidsObserver: ObserverToken<Int>?
 
-    deinit {
-        lotStateObserver?.unsubscribe()
-        numberOfBidsObserver?.unsubscribe()
-    }
-
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         setupViews()
@@ -30,9 +25,19 @@ class LiveAuctionToolbarView: UIView {
 
     func setupViews() {
         lotStateObserver = lotViewModel.lotStateSignal.subscribe { [weak self] lotState in
-            self?.timeSinceLotOpenedTimer?.invalidate()
-            self?.subviews.forEach { $0.removeFromSuperview() }
-            self?.setupUsingState(lotState)
+            guard let sSelf = self else { return }
+            sSelf.timeSinceLotOpenedTimer?.invalidate()
+            sSelf.subviews.forEach { $0.removeFromSuperview() }
+            sSelf.setupUsingState(lotState)
+        }
+    }
+
+    override func willMoveToSuperview(newSuperview: UIView?) {
+        super.willMoveToSuperview(newSuperview)
+
+        if newSuperview == nil {
+            lotStateObserver?.unsubscribe()
+            numberOfBidsObserver?.unsubscribe()
         }
     }
 

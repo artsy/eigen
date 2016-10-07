@@ -54,7 +54,6 @@
     ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] init];
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
 
-
     _browseViewController = [[ARBrowseViewController alloc] init];
     _browseViewController.networkModel = [[ARBrowseNetworkModel alloc] init];
     _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:_browseViewController];

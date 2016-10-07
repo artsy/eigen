@@ -1,6 +1,6 @@
 /// Psh, managers are for Java
 
-#import "ARExternalWebBrowserViewController.h"
+#import <UIKit/UIkit.h>
 
 
 @interface ARScrollNavigationChief : NSObject <UIScrollViewDelegate, UICollectionViewDelegate>

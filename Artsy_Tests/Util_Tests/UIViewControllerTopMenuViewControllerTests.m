@@ -10,7 +10,7 @@ it(@"returns the nil for view controllers that are not in a heirarchy with a ART
 it(@"returns a TopMenuVC for view controllers that are directly in a heirarchy with a ARTopMenuVC", ^{
     UIViewController *viewController = [[UIViewController alloc] init];
 
-    ARTopMenuViewController *topVC = [[ARTopMenuViewController alloc] initWithStubbedNetworking];
+    ARTopMenuViewController *topVC = [[ARTopMenuViewController alloc] initWithStubbedViewControllers];
     [topVC ar_presentWithFrame:CGRectMake(0, 0, 320, 200)];
     [topVC pushViewController:viewController animated:NO];
 
@@ -26,7 +26,7 @@ it(@"returns a TopMenuVC for view controllers that are deeper in a heirarchy wit
     UIViewController *viewControllerTwo = [[UIViewController alloc] init];
     [viewControllerTwo ar_addModernChildViewController:navController];
 
-    ARTopMenuViewController *topVC = [[ARTopMenuViewController alloc] initWithStubbedNetworking];
+    ARTopMenuViewController *topVC = [[ARTopMenuViewController alloc] initWithStubbedViewControllers];
     [topVC ar_presentWithFrame:CGRectMake(0, 0, 320, 200)];
 
     [topVC pushViewController:viewControllerTwo animated:NO];

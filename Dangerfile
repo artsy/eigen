@@ -46,7 +46,7 @@ begin
   fail "Upcoming is an array, it should be an object" if readme_data["upcoming"].is_a? Array
 
   # Tie all releases to a date
-  for release in readme_data["releases"]
+  readme_data["releases"].each do |release|
     fail "Release #{release['version']} does not have a date" unless release["date"]
   end
 
@@ -115,3 +115,6 @@ end
 results_file = File.join(ENV["CIRCLE_TEST_REPORTS"], "/xcode/results.xml")
 junit.parse results_file
 junit.report
+
+
+# Make submodule changes clickable
