@@ -1,1 +1,1 @@
-Going once, going twice, SOLD! Introducing Artsy Live Auctions, a new way to bid in real time in auctions happening around the world. Compete with bidders on the auction room floor of premier auction houses. No need for you to raise your paddle for the auctioneer to see you, simply register, set your max bid, and let Artsy do your bidding for you.
+Lots of bug fixes in this release, especially around live auctions. If you had trouble viewing images or lot info before, things should be fixed now. We've also included higher-resolution images for our iPad Pro users.

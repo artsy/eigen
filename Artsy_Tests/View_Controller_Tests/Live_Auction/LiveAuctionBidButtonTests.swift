@@ -40,6 +40,9 @@ class LiveAuctionBidButtonTests: QuickSpec {
             }
         }
 
+        // This test can intermittently fail, it is one of the few tests that _actively_
+        // use async (it kind of has to), and so it is known issue
+
         it("handles getting outbid with lot state changes before animation completes") {
             let viewModel = Test_BiddingViewModel()
             let subject = LiveAuctionBidButton(viewModel: viewModel)

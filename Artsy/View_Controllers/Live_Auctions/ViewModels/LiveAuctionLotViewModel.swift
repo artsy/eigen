@@ -71,6 +71,7 @@ extension LiveAuctionLotViewModelType {
             let reserveString: String?
 
             switch reserveStatus {
+            case .Unknown: fallthrough
             case .NoReserve: reserveString = nil
             case .ReserveMet: reserveString = "(Reserve met)"
             case .ReserveNotMet: reserveString = "(Reserve not met)"
@@ -267,6 +268,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         }
 
         switch status {
+        case .Unknown: fallthrough
         case .NoReserve:
             return "no reserve"
         case .ReserveMet:

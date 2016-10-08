@@ -26,7 +26,11 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
+#import <Emission/ARHomeComponentViewController.h>
+#import <React/RCTScrollView.h>
+
 static const CGFloat ARMenuButtonDimension = 50;
+
 
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
@@ -465,25 +469,34 @@ static const CGFloat ARMenuButtonDimension = 50;
     if (index == self.selectedTabIndex) {
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];
 
-        if (controller.viewControllers.count == 1) {
-            UIScrollView *scrollView = nil;
-            if (index == ARTopTabControllerIndexFeed) {
-                scrollView = [(ARSimpleShowFeedViewController *)[controller.childViewControllers objectAtIndex:0] tableView];
-            } else if (index == ARTopTabControllerIndexBrowse) {
-                scrollView = [(ARBrowseViewController *)[controller.childViewControllers objectAtIndex:0] collectionView];
-            } else if (index == ARTopTabControllerIndexFavorites) {
-                scrollView = [(ARFavoritesViewController *)[controller.childViewControllers objectAtIndex:0] collectionView];
-            }
-            [scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x, -scrollView.contentInset.top) animated:YES];
-
-        } else {
+        // If there's multiple VCs jump to the root
+        if (controller.viewControllers.count > 1) {
             [controller popToRootViewControllerAnimated:YES];
+        }
+
+        // Otherwise find the first scrollview and pop to top
+        else if (index == ARTopTabControllerIndexFeed ||
+            index == ARTopTabControllerIndexBrowse ||
+            index == ARTopTabControllerIndexFavorites) {
+
+            UIViewController *currentRootViewController = [controller.childViewControllers first];
+            UIScrollView *rootScrollView = (id)[self firstScrollToTopScrollViewFromRootView:currentRootViewController.view];
+            [rootScrollView setContentOffset:CGPointMake(rootScrollView.contentOffset.x, -rootScrollView.contentInset.top) animated:YES];
         }
 
         return NO;
     }
 
     return YES;
+}
+
+- (NSObject  * _Nullable)firstScrollToTopScrollViewFromRootView:(UIView *)initialView
+{
+    UIView *rootView = initialView;
+    while (rootView.subviews.firstObject && ![rootView isKindOfClass:UIScrollView.class] && [(id)rootView scrollsToTop]) {
+        rootView = rootView.subviews.firstObject;
+    }
+    return ([rootView isKindOfClass:UIScrollView.class] && [(id)rootView scrollsToTop]) ? rootView : nil;
 }
 
 @end

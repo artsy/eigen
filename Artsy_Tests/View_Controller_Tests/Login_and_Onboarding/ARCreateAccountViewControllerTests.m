@@ -26,7 +26,7 @@ describe(@"warning view", ^{
         vc = [[ARCreateAccountViewController alloc] init];
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
 
-        topMenuViewController = [[ARTopMenuViewController alloc] initWithStubbedNetworking];
+        topMenuViewController = [[ARTopMenuViewController alloc] initWithStubbedViewControllers];
         [topMenuViewController ar_addModernChildViewController:vc];
 
         id ocPartialTop = [OCMockObject partialMockForObject:topMenuViewController];

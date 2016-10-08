@@ -181,6 +181,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         toggle.imageView?.alignTrailingEdgeWithView(toggle, predicate: "0")
         toggle.imageTopConstraint =  toggle.imageView?.alignTopEdgeWithView(toggle, predicate: "4")
         toggle.setContentHuggingPriority(1000, forAxis: .Horizontal)
+        toggle.setContentCompressionResistancePriority(1000, forAxis: .Horizontal)
 
         // Extend its hit range, as it's like ~20px otherwise
         toggle.ar_extendHitTestSizeByWidth(20, andHeight: 40)

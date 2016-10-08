@@ -5,6 +5,7 @@
 #import "ARSimpleShowFeedViewController.h"
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Artworks.h"
+#import <Emission/ARHomeComponentViewController.h>
 
 @interface ARTopMenuNavigationDataSource (Testing)
 @property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
@@ -21,10 +22,10 @@ before(^{
     navDataSource = [[ARTopMenuNavigationDataSource alloc] init];
 });
 
-it(@"uses a single feed vc", ^{
+it(@"uses a home feed vc", ^{
     ARNavigationController *navigationController = [navDataSource feedNavigationController];
     UIViewController *rootVC = [[navigationController viewControllers] objectAtIndex:0];
-    expect(rootVC).to.beKindOf([ARSimpleShowFeedViewController class]);
+    expect(rootVC).to.beKindOf(ARHomeComponentViewController.class);
 
     ARNavigationController *newNavigationController = [navDataSource feedNavigationController];
     UIViewController *newRootVC = [[newNavigationController viewControllers] objectAtIndex:0];
@@ -36,7 +37,7 @@ it(@"uses a single feed vc", ^{
 it(@"uses a single browse vc", ^{
     ARNavigationController *navigationController = [navDataSource browseNavigationController];
     UIViewController *rootVC = [[navigationController viewControllers] objectAtIndex:0];
-    expect(rootVC).to.beKindOf([ARBrowseViewController class]);
+    expect(rootVC).to.beKindOf(ARBrowseViewController.class);
 
     ARNavigationController *newNavigationController = [navDataSource browseNavigationController];
     UIViewController *newRootVC = [[newNavigationController viewControllers] objectAtIndex:0];

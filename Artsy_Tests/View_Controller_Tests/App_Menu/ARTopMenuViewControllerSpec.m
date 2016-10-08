@@ -31,7 +31,7 @@ __block ARTopMenuViewController *sut;
 __block ARTopMenuNavigationDataSource *dataSource;
 
 dispatch_block_t sharedBefore = ^{
-    sut = [[ARTopMenuViewController alloc] initWithStubbedNetworking];
+    sut = [[ARTopMenuViewController alloc] initWithStubbedViewControllers];
     sut.navigationDataSource = dataSource;
     dataSource.browseViewController.networkModel = [[ARStubbedBrowseNetworkModel alloc] init];
     [sut ar_presentWithFrame:[UIScreen mainScreen].bounds];
@@ -185,7 +185,7 @@ describe(@"presenting modally", ^{
 describe(@"navigation", ^{
    __block NSInteger tabIndex;
    before(^{
-       dataSource = [[ARTopMenuNavigationDataSource alloc] init];
+       dataSource = [[ARStubbedTopMenuNavigationDataSource alloc] init];
        sharedBefore();
    });
 
