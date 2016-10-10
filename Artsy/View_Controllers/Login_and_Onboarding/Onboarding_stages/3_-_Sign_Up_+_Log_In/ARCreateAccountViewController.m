@@ -43,7 +43,7 @@
 
 @property (nonatomic) ARSpinner *loadingSpinner;
 @property (nonatomic, strong) UIView *containerView;
-@property (nonatomic, strong) NSLayoutConstraint *keyboardConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *titleToTextFieldsSpacer;
 @property (nonatomic, strong) ARWarningView *warningView;
 @property (nonatomic, strong) ARTopMenuViewController *topMenuViewController;
 @end
@@ -95,7 +95,7 @@
 
     self.titleLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:1.4];
     self.titleLabel.text = @"Sign up to see our recommendations for you";
-    self.titleLabel.font = [UIFont serifFontWithSize:self.useLargeLayout ? 32.0 : 24.0];
+    self.titleLabel.font = [UIFont serifFontWithSize:self.useLargeLayout ? 40.0 : 30.0];
     self.titleLabel.textAlignment = self.useLargeLayout ? NSTextAlignmentCenter : NSTextAlignmentLeft;
 
     [self.view addSubview:self.titleLabel];
@@ -110,7 +110,7 @@
 
     [self.textFieldsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
     [self.textFieldsView alignCenterXWithView:self.view predicate:@"0"];
-    [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:self.useLargeLayout ? @"120" : @"80"];
+    self.titleToTextFieldsSpacer = [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:self.useLargeLayout ? @"120" : @"80"];
     [self.textFieldsView constrainHeight:@">=162"];
     [self.textFieldsView setupForSignUp];
 
@@ -134,10 +134,11 @@
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
-    self.keyboardConstraint.constant = -keyboardSize.height - ([UIDevice isPad] ? 20 : 10);
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        self.titleToTextFieldsSpacer = [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:self.useLargeLayout ? @"20" : @"80"];
+    }
     [UIView animateIf:YES duration:duration:^{
         [self.view layoutIfNeeded];
     }];
@@ -147,7 +148,7 @@
 {
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
-    self.keyboardConstraint.constant = 0;
+    self.titleToTextFieldsSpacer = [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:self.useLargeLayout ? @"120" : @"80"];
     [UIView animateIf:YES duration:duration:^{
         [self.view layoutIfNeeded];
     }];
