@@ -12,6 +12,7 @@ protocol RefinementOptionsViewControllerDelegate: class {
 // TODO: Move into a navigation
 
 class RefinementOptionsViewController<R: RefinableType>: UIViewController {
+    var tableView: UITableView?
     var minLabel: UILabel?
     var maxLabel: UILabel?
     var slider: MARKRangeSlider?

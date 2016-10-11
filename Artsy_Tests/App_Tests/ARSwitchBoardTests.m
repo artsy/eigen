@@ -328,15 +328,15 @@ describe(@"ARSwitchboard", ^{
             expect(subject).to.beAKindOf(ARGeneViewController.class);
         });
 
-        it(@"routes modern genes when using the dev option", ^{
-            BOOL originalModernGene = [AROptions boolForOption:AROptionsUseModernGeneVC];
-            [AROptions setBool:YES forOption:AROptionsUseModernGeneVC];
-
-            id subject = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/gene/surrealism"] fair:nil];
-            expect(subject).to.beAKindOf(ModernGeneViewController.class);
-
-            [AROptions setBool:originalModernGene forOption:AROptionsUseModernGeneVC];
-        });
+//        it(@"routes modern genes when using the dev option", ^{
+//            BOOL originalModernGene = [AROptions boolForOption:AROptionsUseModernGeneVC];
+//            [AROptions setBool:YES forOption:AROptionsUseModernGeneVC];
+//
+//            id subject = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/gene/surrealism"] fair:nil];
+//            expect(subject).to.beAKindOf(ModernGeneViewController.class);
+//
+//            [AROptions setBool:originalModernGene forOption:AROptionsUseModernGeneVC];
+//        });
 
         it(@"routes auctions", ^{
             switchboard = [[ARSwitchBoard alloc] init];
