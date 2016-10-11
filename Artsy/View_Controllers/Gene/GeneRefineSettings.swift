@@ -1,4 +1,5 @@
 import UIKit
+import SwiftyJSON
 
 enum GeneSortingOrder: String {
     case RecentlyAdded = "Recently Added"
@@ -8,20 +9,115 @@ enum GeneSortingOrder: String {
     static func allValues() -> [GeneSortingOrder] {
         return [RecentlyAdded, LeastExpensive, MostExpensive]
     }
+
+    static func fromID(id: String) -> GeneSortingOrder? {
+        switch id {
+        case "-year":
+            return .RecentlyAdded
+        case "-prices":
+            return .LeastExpensive
+        case "prices":
+            return .MostExpensive
+        default:
+            return nil
+        }
+    }
+
+    func toID() -> String {
+        switch self {
+        case .RecentlyAdded:
+            return "-year"
+        case .LeastExpensive:
+            return "-prices"
+        case .MostExpensive:
+            return "prices"
+        }
+    }
+}
+
+struct Medium {
+    let id: String
+    let name: String
+}
+
+extension Medium: Equatable {}
+
+func == (lhs: Medium, rhs: Medium) -> Bool {
+    return lhs.id == rhs.id
+}
+
+struct Price {
+    let id: String
+    let name: String
+
+    func maxPrice() -> Int {
+        if id == "*-*" {
+            return 0
+        } else if id.hasSuffix("-*") {
+            // max can be represented as "XXX-*"
+            return Int(id.componentsSeparatedByString("-*").first!)!
+        } else if id.containsString("-") {
+            return Int(id.componentsSeparatedByString("-").last!)!
+        }
+        return 0
+    }
+
+    func priceRange() -> PriceRange {
+        return (min:0, max: maxPrice())
+    }
+
+    func representedPriceID() -> String {
+        if maxPrice() == 0 {
+            return "*-*"
+        } else {
+            return "0-\(maxPrice())"
+        }
+    }
+}
+
+
+extension Price: Equatable {}
+
+func == (lhs: Price, rhs: Price) -> Bool {
+    return lhs.id == rhs.id
+}
+
+func > (lhs: Price, rhs: Price) -> Bool {
+    return lhs.maxPrice() > rhs.maxPrice()
 }
 
 struct GeneRefineSettings {
     let sort: GeneSortingOrder
-    let medium: String
-    let mediums: [String]
+    let medium: Medium
+    let mediums: [Medium]
     var priceRange: PriceRange?
 
-    static func refinementFromJSON(data: [String: AnyObject]) -> GeneRefineSettings {
-        return GeneRefineSettings(sort: .RecentlyAdded, medium:"ok", mediums:["ok", "sure"], priceRange: (min:0, max: 50_000))
+    static func refinementFromAggregationJSON(data: [String: AnyObject]) -> GeneRefineSettings? {
+        let json = JSON(data)
+        guard let aggregations = json["aggregations"].array,
+            sort = json["sort"].string, sorting = GeneSortingOrder.fromID(sort),
+            mediumID = json["selectedMedium"].string else { return nil }
+
+        let prices = aggregations.filter({ $0["slice"].stringValue == "PRICE_RANGE" }).first?["counts"].arrayValue.map({ Price(id: $0["id"].stringValue, name: $0["name"].stringValue) })
+
+        let maxPrice = prices?.sort(>).first
+
+        guard let mediumsJSON = aggregations.filter({ $0["slice"].stringValue == "MEDIUM" }).first else { return nil }
+        let mediums = mediumsJSON["counts"].arrayValue.map({ Medium(id: $0["id"].stringValue, name: $0["name"].stringValue) })
+
+        guard let selectedMedium = mediums.first({ $0.id == mediumID }) else { return nil }
+
+        return GeneRefineSettings(sort: sorting, medium: selectedMedium, mediums:mediums, priceRange: maxPrice?.priceRange())
     }
 
     func toJSON() -> [String: AnyObject] {
-        return [:]
+
+        let priceRangeID = (priceRange != nil) ? "\(priceRange?.min)-\(priceRange?.max)" : "*-*"
+        return [
+            "sort": sort.toID(),
+            "selectedPrice": priceRangeID,
+            "medium" : medium.id
+        ]
     }
 }
 
@@ -53,7 +149,7 @@ extension GeneRefineSettings: RefinableType {
         if indexPath.section == SortPosition {
             return GeneSortingOrder.allValues()[indexPath.row].rawValue
         } else {
-            return mediums[indexPath.row]
+            return mediums[indexPath.row].name
         }
     }
 
@@ -65,7 +161,7 @@ extension GeneRefineSettings: RefinableType {
         if indexPath.section == SortPosition {
             return GeneSortingOrder.allValues()[indexPath.row] == sort
         } else {
-            return mediums[indexPath.row] == medium
+            return mediums[indexPath.row].id == medium.id
         }
     }
 
