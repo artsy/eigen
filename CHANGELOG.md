@@ -1,5 +1,6 @@
 ### 1.1.0-beta.3
 
+- Add hero units - alloy
 - Fix missing image asset issue - alloy
 - [dev] Updates Flow to 0.32 - orta
 - [dev] Updates React to 0.34 - orta
