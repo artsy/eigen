@@ -17,28 +17,28 @@ BOOL checkViewControllerHasWarningWithMessage(UIViewController *vc, NSString *ms
 
 SpecBegin(ARCreateAccountViewController);
 
-__block ARCreateAccountViewController *vc;
-__block ARTopMenuViewController *topMenuViewController;
+//__block ARCreateAccountViewController *vc;
+//__block ARTopMenuViewController *topMenuViewController;
 
 describe(@"warning view", ^{
     
-    before(^{
-        vc = [[ARCreateAccountViewController alloc] init];
-        [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
-
-        topMenuViewController = [[ARTopMenuViewController alloc] initWithStubbedViewControllers];
-        [topMenuViewController ar_addModernChildViewController:vc];
-
-        id ocPartialTop = [OCMockObject partialMockForObject:topMenuViewController];
-        vc.topMenuViewController = ocPartialTop;
-        [[[ocPartialTop stub] andReturn:vc] visibleViewController];
-    });
-    
-    it(@"displays a message", ^{
-        [vc showWarning:@"The owls are not what they seem" animated:NO];
-        
-        expect(vc).to.haveValidSnapshot();
-    });
+//    before(^{
+//        vc = [[ARCreateAccountViewController alloc] init];
+//        [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+//
+//        topMenuViewController = [[ARTopMenuViewController alloc] initWithStubbedViewControllers];
+//        [topMenuViewController ar_addModernChildViewController:vc];
+//
+//        id ocPartialTop = [OCMockObject partialMockForObject:topMenuViewController];
+//        vc.topMenuViewController = ocPartialTop;
+//        [[[ocPartialTop stub] andReturn:vc] visibleViewController];
+//    });
+//    
+//    it(@"displays a message", ^{
+//        [vc showWarning:@"The owls are not what they seem" animated:NO];
+//        
+//        expect(vc).to.haveValidSnapshot();
+//    });
 
   //    it(@"displays a warning if password too short", ^{
   //        vc.email.text = @"jory@email.com";
