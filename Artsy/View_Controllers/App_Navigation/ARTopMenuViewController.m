@@ -302,7 +302,7 @@ static const CGFloat ARMenuButtonDimension = 50;
         badgeView = [[JSBadgeView alloc] initWithParentView:parentView alignment:JSBadgeViewAlignmentTopRight];
         badgeView.badgeTextFont = [UIFont sansSerifFontWithSize:10];
         // This is a unique purple color. If it ever needs to be used elsewhere it should be moved to Artsy-UIColors.
-        badgeView.badgeBackgroundColor = [[UIColor alloc] initWithRed:139.0 / 255.0 green:0 blue:255.0 alpha:1];
+        badgeView.badgeBackgroundColor = [UIColor artsyRedRegular];
         objc_setAssociatedObject(button, &kButtonBadgeKey, badgeView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return badgeView;
@@ -450,21 +450,20 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
 {
-    
     // TODO MAXIM : Change this for demo mode
-//    BOOL favoritesInDemoMode = (index == ARTopTabControllerIndexFavorites && ARIsRunningInDemoMode);
-//    BOOL loggedOutBellOrFavorites = (index == ARTopTabControllerIndexFavorites || index == ARTopTabControllerIndexNotifications) && [User isLocalTemporaryUser];
-//    if (!favoritesInDemoMode && loggedOutBellOrFavorites) {
-//        ARTrialContext context = (index == ARTopTabControllerIndexFavorites) ? ARTrialContextShowingFavorites : ARTrialContextNotifications;
-//        [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
-//            if (newUser) {
-//                [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
-//            } else {
-//                [self.tabContentView setCurrentViewIndex:index animated:NO];
-//            }
-//        }];
-//        return NO;
-//    }
+    //    BOOL favoritesInDemoMode = (index == ARTopTabControllerIndexFavorites && ARIsRunningInDemoMode);
+    //    BOOL loggedOutBellOrFavorites = (index == ARTopTabControllerIndexFavorites || index == ARTopTabControllerIndexNotifications) && [User isLocalTemporaryUser];
+    //    if (!favoritesInDemoMode && loggedOutBellOrFavorites) {
+    //        ARTrialContext context = (index == ARTopTabControllerIndexFavorites) ? ARTrialContextShowingFavorites : ARTrialContextNotifications;
+    //        [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
+    //            if (newUser) {
+    //                [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
+    //            } else {
+    //                [self.tabContentView setCurrentViewIndex:index animated:NO];
+    //            }
+    //        }];
+    //        return NO;
+    //    }
 
     if (index == self.selectedTabIndex) {
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];

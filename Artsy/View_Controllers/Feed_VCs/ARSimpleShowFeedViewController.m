@@ -265,11 +265,6 @@ static NSString *ARShowCellIdentifier = @"ARShowCellIdentifier";
     return self.networkStatus.showingOfflineView;
 }
 
-- (BOOL)hidesSearchButton;
-{
-    return self.networkStatus.showingOfflineView;
-}
-
 #pragma mark - ARNetworkErrorAwareViewController
 
 - (BOOL)shouldShowActiveNetworkError

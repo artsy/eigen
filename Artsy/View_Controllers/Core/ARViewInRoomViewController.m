@@ -91,11 +91,6 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     return YES;
 }
 
-- (BOOL)hidesSearchButton;
-{
-    return YES;
-}
-
 #pragma mark - UIViewController
 
 - (void)viewDidAppear:(BOOL)animated
@@ -157,7 +152,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 {
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     BOOL isLandscape = UIInterfaceOrientationIsLandscape(orientation);
-    
+
     if (isLandscape) {
         self.backgroundImageView.image = [UIImage imageNamed:@"ViewInRoom_BaseNoBench"];
         [self setupParallaxVIR];
@@ -177,11 +172,11 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     if (self.artworkImageView) {
         self.artworkImageView.frame = [self.class rectForImageViewWithArtwork:self.artwork withContainerFrame:self.view.bounds];
     }
-   
+
     if (self.dudeImageView) {
         CGFloat dudeCenterXOffset = isLandscape ? -130 : -180;
         CGFloat dudeYOffset = isLandscape ? -10 : -40;
-        
+
         // Current aspect ratio = 3.(1/3)
         CGFloat dudeHeight = isLandscape ? 128 : 187;
         CGFloat dudeWidth = isLandscape ? 39 : 54;
@@ -218,7 +213,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     if (!self.dudeMotion) {
         CGFloat dudeMotionDelta = 5;
         UIInterpolatingMotionEffect *dudeMotion = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
-                                                                                               type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+                                                                                                  type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
         self.dudeMotion = dudeMotion;
         dudeMotion.minimumRelativeValue = @(dudeMotionDelta);
         dudeMotion.maximumRelativeValue = @(-dudeMotionDelta);
@@ -296,7 +291,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
         [self.view addSubview:rightWallView];
 
         UIInterpolatingMotionEffect *rightWallMotion = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x"
-                                                                                                   type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+                                                                                                       type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
         rightWallMotion.minimumRelativeValue = @(-7);
         rightWallMotion.maximumRelativeValue = @(7);
         [rightWallView addMotionEffect:rightWallMotion];
