@@ -492,7 +492,7 @@ static const CGFloat ARMenuButtonDimension = 50;
 - (NSObject  * _Nullable)firstScrollToTopScrollViewFromRootView:(UIView *)initialView
 {
     UIView *rootView = initialView;
-    while (rootView.subviews.firstObject && ![rootView isKindOfClass:UIScrollView.class] && [(id)rootView scrollsToTop]) {
+    while (rootView.subviews.firstObject && (![rootView isKindOfClass:UIScrollView.class] || ![(id)rootView scrollsToTop])) {
         rootView = rootView.subviews.firstObject;
     }
     return ([rootView isKindOfClass:UIScrollView.class] && [(id)rootView scrollsToTop]) ? rootView : nil;
