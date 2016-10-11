@@ -21,11 +21,6 @@ RCT_EXPORT_METHOD(presentModalViewController:(nonnull NSNumber *)reactTag route:
   [self invokeCallback:self.presentModalViewController reactTag:reactTag route:route];
 }
 
-RCT_EXPORT_METHOD(presentSearchViewController:(nonnull NSNumber *)reactTag)
-{
-  [self invokeCallback:self.presentSearchViewController reactTag: reactTag route:nil];
-}
-
 - (dispatch_queue_t)methodQueue;
 {
   return dispatch_get_main_queue();
