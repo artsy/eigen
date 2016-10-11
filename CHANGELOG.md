@@ -1,4 +1,7 @@
 ### 1.1.0-beta.3
+
+- Show refresh control until all Relay requests have finished - alloy
+- Reduce memory usage of home view by using a ListView to remove views not on screen from the hierarchy - alloy
 - Fix text height and truncation for artist cards - maxim
 - Add hero units - alloy
 - Fix missing image asset issue - alloy
