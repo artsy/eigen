@@ -81,7 +81,7 @@ target 'Artsy' do
   pod 'Artsy+UIColors'
   pod 'Artsy+UILabels'
   pod 'Extraction'
-  pod 'Emission', '~> 1.1.0-beta.2'
+  pod 'Emission', '~> 1.1.0-beta.3'
 
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
