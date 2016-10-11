@@ -26,7 +26,6 @@ struct GeneRefineSettings {
 }
 
 private let SortPosition = 0
-private let SortPositionO = 0
 
 extension GeneRefineSettings: RefinableType {
 

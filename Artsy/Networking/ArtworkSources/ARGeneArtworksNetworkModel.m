@@ -31,7 +31,7 @@
     return [self initWithGene:[[Gene alloc] initWithGeneID:geneID]];
 }
 
-- (void)getGene:(void (^)(Gene *viewModel))success
+- (void)getGene:(void (^)(Gene *gene))success
 {
     __weak typeof(self) wself = self;
     [ArtsyAPI getGeneForGeneID:self.gene.geneID success:^(Gene *gene) {

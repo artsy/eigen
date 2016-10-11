@@ -15,7 +15,7 @@ extension RefinementOptionsViewController {
         cancelButton.alignTopEdgeWithView(view, predicate: "10")
         cancelButton.alignTrailingEdgeWithView(view, predicate: "-10")
 
-        // This isn't normally running inside a nav, so needs to create it's own
+        // This isn't normally running inside a nav, so needs to create its own
         let titleLabel = ARSerifLabel().then {
             $0.font = UIFont.serifFontWithSize(20)
             $0.text = "Refine"
@@ -109,7 +109,7 @@ private extension RefinementOptionsViewController {
             if CGFloat(tableViewHeight) < (view.bounds.height - 200) { $0.scrollEnabled = false }
 
             // Constrain the height so that it becomes bottom aligned, do it weakly so that
-            // it will bend when constrained to it's top constraint saying don't go higher than the title
+            // it will bend when constrained to it's top constraint that says "don't go higher than the title"
             $0.constrainHeight("\(tableViewHeight)@300")
         }
 
