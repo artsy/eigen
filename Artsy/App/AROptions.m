@@ -8,6 +8,7 @@ NSString *const AROptionsShowAnalyticsOnScreen = @"AROptionsShowAnalyticsOnScree
 NSString *const AROptionsUseModernGeneVC = @"Use ModernGeneViewController";
 NSString *const AROptionsDisableNativeLiveAuctions = @"Disable native live auctions";
 NSString *const AROptionsStagingReactEnv = @"Use Staging React ENV";
+NSString *const AROptionsDevReactEnv = @"Use Dev React ENV";
 
 
 @implementation AROptions

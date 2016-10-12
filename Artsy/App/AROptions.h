@@ -10,7 +10,7 @@ extern NSString *const AROptionsShowAnalyticsOnScreen;
 extern NSString *const AROptionsUseModernGeneVC;
 extern NSString *const AROptionsDisableNativeLiveAuctions;
 extern NSString *const AROptionsStagingReactEnv;
-
+extern NSString *const AROptionsDevReactEnv;
 
 @interface AROptions : NSObject
 
