@@ -1,3 +1,7 @@
+### Master
+
+- GeneVC scrolls as expected - orta
+
 ### 1.1.0-beta.3
 
 - Show refresh control until all Relay requests have finished - alloy
