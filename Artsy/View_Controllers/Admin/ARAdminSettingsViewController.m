@@ -228,13 +228,16 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     sectionData.headerTitle = @"React Native";
 
     BOOL isStagingReact = [AROptions boolForOption:AROptionsStagingReactEnv];
+    BOOL isDevReact = [AROptions boolForOption:AROptionsDevReactEnv];
+
     if (isStagingReact) {
         [sectionData addCellData:self.appHubMetadata];
         [sectionData addCellData:self.emissionVersionUpdater];
         [sectionData addCellData:self.openEmissionModule];
         [sectionData addCellData:self.appHubBuildChooser];
     }
-    [sectionData addCellData:self.generateReactNative];
+    if (!isDevReact)     { [sectionData addCellData:self.toggleStagingReactNative]; }
+    if (!isStagingReact) { [sectionData addCellData:self.useDevReactNative]; }
     return sectionData;
 }
 
@@ -323,7 +326,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     }];
 }
 
-- (ARCellData *)generateReactNative
+- (ARCellData *)toggleStagingReactNative
 {
     ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
     BOOL isStagingReact = [AROptions boolForOption:AROptionsStagingReactEnv];
@@ -345,6 +348,38 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     };
     return cellData;
 }
+
+- (ARCellData *)useDevReactNative
+{
+    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    BOOL isDevReact = [AROptions boolForOption:AROptionsDevReactEnv];
+
+    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
+        if (isDevReact) {
+            cell.textLabel.text = @"Use bundled/apphub Emission (restarts)";
+        } else {
+            cell.textLabel.text = @"Use local Emission packaging server (restarts)";
+        }
+    };
+    cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
+        [AROptions setBool: !isDevReact forOption:AROptionsDevReactEnv];
+
+        // Bail quick if we're turning it off
+        if (isDevReact) { exit(0); }
+
+        // Warn to see the docs
+        NSString *message = @"See the Emission docs on this, github.com/artsy/Emission/docs/running-emission-in-eigen.md";
+        UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"Note" message:message preferredStyle:UIAlertControllerStyleAlert];
+
+        [controller addAction:[UIAlertAction actionWithTitle:@"Got it" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            [AROptions setBool: !isDevReact forOption:AROptionsDevReactEnv];
+            exit(0);
+        }]];
+        [self presentViewController:controller animated:YES completion:nil];
+    };
+    return cellData;
+}
+
 
 - (ARSectionData *)createLabsSection
 {

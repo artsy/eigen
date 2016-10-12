@@ -90,7 +90,15 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
         }];
     }
 
-    [self setupSharedEmissionWithPackagerURL:nil];
+    // Allow using the local version of Emission
+    if ([AROptions boolForOption:AROptionsDevReactEnv]) {
+        NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
+        [self setupSharedEmissionWithPackagerURL:packagerURL];
+
+    } else {
+        // The normal flow for users
+        [self setupSharedEmissionWithPackagerURL:nil];
+    }
 }
 
 - (void)newEmissionBuild
