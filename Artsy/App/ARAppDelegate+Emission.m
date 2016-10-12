@@ -12,6 +12,7 @@
 #import "ARMenuAwareViewController.h"
 #import "ARAppNotificationsDelegate.h"
 #import "ARDefaults.h"
+#import "ARNavigationController.h"
 
 #import <Aerodramus/Aerodramus.h>
 #import <Emission/AREmission.h>
@@ -145,6 +146,10 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
         [[ARTopMenuViewController sharedController] presentViewController:viewController
                                                                  animated:ARPerformWorkAsynchronously
                                                                completion:nil];
+    };
+
+    emission.switchBoardModule.presentSearchViewController = ^(UIViewController *_Nonnull fromViewController, NSString *_Nonnull route) {
+        [[ARTopMenuViewController sharedController].rootNavigationController showSearch];
     };
 
     emission.eventsModule.eventOccurred = ^(UIViewController *_Nonnull fromViewController, NSDictionary *_Nonnull info) {
