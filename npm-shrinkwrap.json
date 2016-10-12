@@ -4621,9 +4621,9 @@
       }
     },
     "react-native-parallax-scroll-view": {
-      "version": "0.19.0",
-      "from": "react-native-parallax-scroll-view@latest",
-      "resolved": "https://registry.npmjs.org/react-native-parallax-scroll-view/-/react-native-parallax-scroll-view-0.19.0.tgz"
+      "version": "0.18.2",
+      "from": "git+https://github.com/orta/react-native-parallax-scroll-view.git",
+      "resolved": "git+https://github.com/orta/react-native-parallax-scroll-view.git#4e20440f9cd0b6280303b57124c0348c0e63b7c0"
     },
     "react-proxy": {
       "version": "1.1.8",
