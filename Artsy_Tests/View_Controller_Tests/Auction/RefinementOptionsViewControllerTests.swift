@@ -56,14 +56,47 @@ class RefinementOptionsViewControllerSpec: QuickSpec {
             expect(subject).to( haveValidSnapshot() )
         }
 
+        func jsonForStub(name: String) -> [String: AnyObject] {
+            let url = NSBundle(forClass: RefineGeneSettingsTests.self).URLForResource(name, withExtension: "json")
+            let data = NSData(contentsOfURL: url!)
+            return try! NSJSONSerialization.JSONObjectWithData(data!, options: []) as! [String: AnyObject]
+        }
+
+
         it("looks good with gene refine settings") {
-            let geneSettings = GeneRefineSettings(sort: .LeastExpensive, medium: "Two", mediums: ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"], priceRange:(min: 500_00, max: 100_000_00))
+            let json = jsonForStub("gene_refine_example_full")
+
+            guard let geneSettings = GeneRefineSettings.refinementFromAggregationJSON(json) else { return fail() }
 
             let subject = RefinementOptionsViewController(defaultSettings: geneSettings, initialSettings: geneSettings, currencySymbol: "$", userDidCancelClosure: nil, userDidApplyClosure: nil)
 
             subject.loadViewProgrammatically()
             expect(subject).to( haveValidSnapshot() )
         }
+
+        it("looks good with gene refine settings with no price") {
+            let json = jsonForStub("gene_refine_example_short_medium")
+
+            guard let geneSettings = GeneRefineSettings.refinementFromAggregationJSON(json) else { return fail() }
+
+            let subject = RefinementOptionsViewController(defaultSettings: geneSettings, initialSettings: geneSettings, currencySymbol: "$", userDidCancelClosure: nil, userDidApplyClosure: nil)
+
+            subject.loadViewProgrammatically()
+            expect(subject).to( haveValidSnapshot() )
+        }
+
+
+        it("looks good with gene refine settings showing price") {
+            let json = jsonForStub("gene_refine_example_medium_price")
+
+            guard let geneSettings = GeneRefineSettings.refinementFromAggregationJSON(json) else { return fail() }
+
+            let subject = RefinementOptionsViewController(defaultSettings: geneSettings, initialSettings: geneSettings, currencySymbol: "$", userDidCancelClosure: nil, userDidApplyClosure: nil)
+
+            subject.loadViewProgrammatically()
+            expect(subject).to( haveValidSnapshot() )
+        }
+
     }
 }
 

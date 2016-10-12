@@ -1,0 +1,21 @@
+{
+    "sort":"-year",
+    "selectedMedium": "prints",
+    "selectedPrice": "*-*",
+    "aggregations": [
+        {
+          "slice": "PRICE_RANGE",
+          "counts": [
+          ]
+        },
+        {
+          "slice": "MEDIUM",
+          "counts": [
+            {
+              "id": "prints",
+              "name": "Prints"
+            }
+          ]
+        }
+      ]
+}
