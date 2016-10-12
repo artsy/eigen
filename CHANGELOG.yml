@@ -9,6 +9,7 @@ upcoming:
       - New on-boarding - maxim
       - New home view - sarah, maxim, alloy
       - Updated Filter View Controller - orta
+      - Fixes video embedded in articles not playing inline on iOS 10 - alloy
 
 releases:
   - version: 2.6.4
