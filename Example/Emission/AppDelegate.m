@@ -9,6 +9,7 @@
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/ARSwitchBoardModule.h>
 #import <Emission/AREventsModule.h>
+#import <Emission/ARRefineOptionsModule.h>
 
 #import "ARStorybookComponentViewController.h"
 #import <Emission/ARArtistComponentViewController.h>
@@ -72,6 +73,7 @@ randomBOOL(void)
   } else {
     [auth presentAuthenticationPromptOnViewController:rootVC completion:^{
       NSLog(@"Logged in successfully :)");
+      [self setupEmissionWithUserID:[auth userID] accessToken:[auth token] keychainService:service];
     }];
   }
 
@@ -129,6 +131,27 @@ randomBOOL(void)
     });
   };
 
+  emission.APIModule.geneFollowStatusProvider = ^(NSString *geneID, RCTResponseSenderBlock block) {
+    NSNumber *following = @(randomBOOL());
+    NSLog(@"Gene(%@).follow => %@", geneID, following);
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      block(@[[NSNull null], following]);
+    });
+  };
+
+  emission.APIModule.geneFollowStatusAssigner = ^(NSString *geneID, BOOL following, RCTResponseSenderBlock block) {
+    NSLog(@"Gene(%@).follow = %@", geneID, @(following));
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      //      if (randomBOOL()) {
+      block(@[[NSNull null], @(following)]);
+      //      } else {
+      //        NSLog(@"Simulated follow request ‘failed’.");
+      //        block(@[RCTJSErrorFromNSError([NSError errorWithDomain:@"Artsy" code:42 userInfo:nil]), @(!following)]);
+      //      }
+    });
+  };
+
+
   emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
                                                                  NSString * _Nonnull route) {
     if ([fromViewController isKindOfClass:ARStorybookComponentViewController.class]) {
@@ -156,8 +179,12 @@ randomBOOL(void)
   emission.eventsModule.eventOccurred = ^(UIViewController * _Nonnull fromViewController, NSDictionary * _Nonnull info) {
     NSLog(@"[Event] %@ - %@", fromViewController.class, info);
   };
-}
 
+  emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull metadata, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
+    sleep(1);
+    resolve(@{});
+  };
+}
 
 - (UIViewController *)viewControllerForRoute:(NSString *)route;
 {

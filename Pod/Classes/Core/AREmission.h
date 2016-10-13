@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@class AREventsModule, ARSwitchBoardModule, ARTemporaryAPIModule, RCTBridge;
+@class AREventsModule, ARSwitchBoardModule, ARTemporaryAPIModule, ARRefineOptionsModule, RCTBridge;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) AREventsModule *eventsModule;
 @property (nonatomic, strong, readonly) ARSwitchBoardModule *switchBoardModule;
 @property (nonatomic, strong, readonly) ARTemporaryAPIModule *APIModule;
+@property (nonatomic, strong, readonly) ARRefineOptionsModule *refineModule;
 
 + (instancetype)sharedInstance;
 + (void)setSharedInstance:(AREmission *)instance;

@@ -16,9 +16,10 @@
 
 - (instancetype)initWithService:(NSString *)service
 {
-  self = [super init];
-  _service = service;
-  [self updateFromStoredCredentials];
+  if ((self = [super init])) {
+    _service = service;
+    [self updateFromStoredCredentials];
+  };
   return self;
 }
 
