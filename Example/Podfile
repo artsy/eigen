@@ -5,7 +5,8 @@ react_path = '../node_modules/react-native'
 
 target 'Emission' do
   pod 'Emission', :path => '../'
-  pod 'Extraction'
+  pod 'Extraction', :git => "https://github.com/artsy/Extraction",
+                    :branch => "dont-prematurely-stop-animating-on-second-retry"
   pod 'React', :path => react_path, :subspecs => %w(RCTWebSocket)
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"

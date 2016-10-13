@@ -72,7 +72,7 @@ DEPENDENCIES:
   - Artsy+Authentication/email (from `https://github.com/artsy/Artsy-Authentication.git`, branch `fetch-user-details`)
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
   - Emission (from `../`)
-  - Extraction
+  - Extraction (from `https://github.com/artsy/Extraction`, branch `dont-prematurely-stop-animating-on-second-retry`)
   - FLKAutoLayout
   - React/RCTTest (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
@@ -87,6 +87,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Emission:
     :path: ../
+  Extraction:
+    :branch: dont-prematurely-stop-animating-on-second-retry
+    :git: https://github.com/artsy/Extraction
   React:
     :path: ../node_modules/react-native
 
@@ -97,6 +100,9 @@ CHECKOUT OPTIONS:
   Artsy+UIFonts:
     :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts.git
+  Extraction:
+    :commit: c3593becb3e697fdff320989d3e8a3903eb5c9ae
+    :git: https://github.com/artsy/Extraction
 
 SPEC CHECKSUMS:
   AppHub: f073cd229f87afe1a27200670e1adab24ebda2b8
@@ -116,6 +122,6 @@ SPEC CHECKSUMS:
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
 
-PODFILE CHECKSUM: 56cf15bd05566ca5743e3b6533d74be11a618b42
+PODFILE CHECKSUM: c0d739906450602cb69285e20c03d5e0422ab1ad
 
 COCOAPODS: 1.0.1
