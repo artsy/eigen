@@ -37,9 +37,8 @@
       "scale" : "3x"
     },
     {
-      "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "ipad_settings_29@1x.png",
+      "size" : "29x29",
       "scale" : "1x"
     },
     {
@@ -49,9 +48,8 @@
       "scale" : "2x"
     },
     {
-      "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "ipad_settings_29@2x.png",
+      "size" : "40x40",
       "scale" : "1x"
     },
     {
