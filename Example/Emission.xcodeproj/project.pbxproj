@@ -325,6 +325,7 @@
 				921B840AC340AE7E64EC1E6E /* [CP] Check Pods Manifest.lock */,
 				510DCB0A1CCA69EC0075E8CB /* Sources */,
 				510DCB0B1CCA69EC0075E8CB /* Frameworks */,
+				513510561DAFBBB9007223BF /* Compile JS Bundle for Release */,
 				510DCB0C1CCA69EC0075E8CB /* Resources */,
 				18F7340895C5AA6B988B03B6 /* [CP] Embed Pods Frameworks */,
 				DF68872A73AD1E49C33FE5F0 /* [CP] Copy Pods Resources */,
@@ -534,6 +535,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if type -p clang-compilation-database-tool > /dev/null 2>&1; then\nclang-compilation-database-tool collect \"${OBJECT_FILE_DIR_normal}\" > \"${SRCROOT}/compile_commands.json\"\nfi";
+			showEnvVarsInLog = 0;
+		};
+		513510561DAFBBB9007223BF /* Compile JS Bundle for Release */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Compile JS Bundle for Release";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"$CONFIGURATION\" = \"Release\" ]\nthen\n  cd .. && npm run bundle\nfi";
 			showEnvVarsInLog = 0;
 		};
 		7C4B8CA681805AF1029CBA4D /* 📦 Copy Pods Resources */ = {
