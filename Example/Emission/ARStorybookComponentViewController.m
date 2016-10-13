@@ -4,15 +4,7 @@
 
 - (instancetype)init;
 {
-    return [self initWithEmission:nil];
+    return [self initWithEmission:nil moduleName:@"Storybook" initialProperties:nil];
 }
-
-- (instancetype)initWithEmission:(AREmission *)emission;
-{
-    if ((self = [super initWithEmission:emission moduleName:@"Storybook" initialProperties:nil])) {
-    }
-    return self;
-}
-
 
 @end
