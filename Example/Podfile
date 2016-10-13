@@ -5,19 +5,33 @@ react_path = '../node_modules/react-native'
 
 target 'Emission' do
   pod 'Emission', :path => '../'
+
+  # Views being removed from Eigen
   pod 'Extraction'
+
+  # As this runs dev, we need the developer web socket
   pod 'React', :path => react_path, :subspecs => %w(RCTWebSocket)
+
+  # Got to make it look right
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
   else
     pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-OSSUIFonts.git"
   end
 
+  # For easy updating of the JS
   pod 'AppHub'
+
+  # Native UI tweaks
   pod 'FLKAutoLayout'
 
-  # Example app only
+  # This is mostly tableviews, handle them easier, we use this in Eigen/Energy too
+  pod 'ARGenericTableViewController'
+
+  # Storing Credentials
   pod 'SAMKeychain'
+
+  # Authiung with Artsy
   pod 'Artsy+Authentication', :subspecs => %w(email),
                               :git => 'https://github.com/artsy/Artsy-Authentication.git',
                               :branch => 'fetch-user-details'

@@ -1,14 +1,18 @@
 #import "AppDelegate.h"
+#import "ARDefaults.h"
+
 #import "EigenLikeNavigationController.h"
+#import "ARRootViewController.h"
+#import "UnroutedViewController.h"
 
 #import <Emission/AREmission.h>
-#import <Emission/ARArtistComponentViewController.h>
-#import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/ARSwitchBoardModule.h>
 #import <Emission/AREventsModule.h>
 
 #import "ARStorybookComponentViewController.h"
+#import <Emission/ARArtistComponentViewController.h>
+#import <Emission/ARHomeComponentViewController.h>
 
 #import <React/RCTUtils.h>
 #import <TargetConditionals.h>
@@ -23,10 +27,6 @@
 #import <AppHub/AppHub.h>
 #endif
 
-// The slug of the artist to show as the root artist from the component selection list.
-//
-#define ARTIST @"alex-katz"
-
 // Disable this to force using the release JS bundle, note that you should really do so by running a Release build.
 //
 // To do this, hold down the alt key when clicking the run button and select the Release configuration. Remember to
@@ -36,26 +36,13 @@
 #define ENABLE_DEV_MODE
 #endif
 
-// * Disable all of this to use the production env in a Debug build
-// * or just the ENABLE_DEV_MODE check to use staging in a Release build
-//
-#ifdef ENABLE_DEV_MODE
-#define USE_STAGING_ENV
-#endif
-
-#ifdef USE_STAGING_ENV
-#define KEYCHAIN_SERVICE @"Emission-Staging"
-#else
-#define KEYCHAIN_SERVICE @"Emission-Production"
-#endif
-
 static BOOL
 randomBOOL(void)
 {
   return rand() % 2 == 1;
 }
 
-@interface AppDelegate () <UITableViewDataSource, UITableViewDelegate>
+@interface AppDelegate ()
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, strong) UIViewController *authenticationSpinnerController;
 @end
@@ -64,11 +51,8 @@ randomBOOL(void)
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
 {
-  UITableViewController *tableViewController = [UITableViewController new];
-  tableViewController.tableView.dataSource = self;
-  tableViewController.tableView.delegate = self;
-
-  self.navigationController = [[EigenLikeNavigationController alloc] initWithRootViewController:tableViewController];
+  ARRootViewController *rootVC = [ARRootViewController new];
+  self.navigationController = [[EigenLikeNavigationController alloc] initWithRootViewController:rootVC];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.window.backgroundColor = [UIColor whiteColor];
@@ -81,23 +65,26 @@ randomBOOL(void)
   [[AppHub buildManager] setDebugBuildsEnabled:YES];
 #endif
 
-  NSString *userID = [SAMKeychain accountsForService:KEYCHAIN_SERVICE][0][kSAMKeychainAccountKey];
+  BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
+  NSString *service = useStaging? @"Emission-Staging" : @"Emission-Production";
+  
+  NSString *userID = [SAMKeychain accountsForService:service][0][kSAMKeychainAccountKey];
 
   if (userID) {
-    NSString *accessToken = [SAMKeychain passwordForService:KEYCHAIN_SERVICE account:userID];
+    NSString *accessToken = [SAMKeychain passwordForService:service account:userID];
     if (accessToken) {
-      [self setupEmissionWithUserID:userID accessToken:accessToken];
+      [self setupEmissionWithUserID:userID accessToken:accessToken keychainService:service];
       return YES;
     }
   }
 
-  [self setupAuthentication];
+  [self setupAuthenticationForService:service];
   return YES;
 }
 
 #pragma mark - Authentication
 
-- (void)setupAuthentication;
+- (void)setupAuthenticationForService:(NSString *)service;
 {
   if (self.authenticationSpinnerController == nil) {
     ARSpinner *spinner = [ARSpinner new];
@@ -123,13 +110,14 @@ randomBOOL(void)
                                             style:UIAlertActionStyleDefault
                                           handler:^(UIAlertAction *action) {
                                             [self authenticateWithEmail:weakAlert.textFields[0].text
-                                                               password:weakAlert.textFields[1].text];
+                                                               password:weakAlert.textFields[1].text
+                                                        keychainService:service];
                                           }]];
 
   [self.authenticationSpinnerController presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)authenticateWithEmail:(NSString *)email password:(NSString *)password;
+- (void)authenticateWithEmail:(NSString *)email password:(NSString *)password keychainService:(NSString *)service;
 {
   // These are of Eigen OSS: https://github.com/artsy/eigen/blob/0e193d1b/Makefile#L36-L37
   ArtsyAuthentication *auth = [[ArtsyAuthentication alloc] initWithClientID:@"e750db60ac506978fc70"
@@ -141,7 +129,7 @@ randomBOOL(void)
   [auth getWeekLongXAppTrialToken:^(ArtsyToken *token, NSError *error) {
     if (error) {
       NSLog(@"%@", error);
-      [self setupAuthentication];
+      [self setupAuthenticationForService:service];
     } else {
       [auth logInAndFetchUserDetailsWithEmail:email
                                      password:password
@@ -150,7 +138,7 @@ randomBOOL(void)
         dispatch_async(dispatch_get_main_queue(), ^{
           if (error) {
             NSLog(@"%@", error);
-            [self setupAuthentication];
+            [self setupAuthenticationForService:service];
           } else {
             NSString *userID = userDetails[@"_id"];
             NSString *accessToken = token.token;
@@ -158,13 +146,13 @@ randomBOOL(void)
             NSParameterAssert(accessToken);
 
             NSError *error = nil;
-            [SAMKeychain setPassword:accessToken forService:KEYCHAIN_SERVICE account:userID error:&error];
+            [SAMKeychain setPassword:accessToken forService:service account:userID error:&error];
             if (error) {
               NSLog(@"%@", error);
             }
 
             [self.authenticationSpinnerController dismissViewControllerAnimated:YES completion:nil];
-            [self setupEmissionWithUserID:userID accessToken:accessToken];
+            [self setupEmissionWithUserID:userID accessToken:accessToken keychainService:service];
           }
         });
       }];
@@ -174,22 +162,18 @@ randomBOOL(void)
 
 #pragma mark - Emission
 
-- (void)setupEmissionWithUserID:(NSString *)userID accessToken:(NSString *)accessToken;
+- (void)setupEmissionWithUserID:(NSString *)userID accessToken:(NSString *)accessToken keychainService:(NSString *)service;
 {
   AREmission *emission = nil;
 
-#ifdef ENABLE_DEV_MODE
-#ifdef USE_STAGING_ENV
-  BOOL staging = YES;
-#else
-  BOOL staging = NO;
-#endif
+  BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
 
+#ifdef ENABLE_DEV_MODE
   NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
   emission = [[AREmission alloc] initWithUserID:userID
                             authenticationToken:accessToken
                                     packagerURL:packagerURL
-                          useStagingEnvironment:staging];
+                          useStagingEnvironment:useStaging];
 #else
 #ifdef DEPLOY
   AHBuild *build = [[AppHub buildManager] currentBuild];
@@ -262,14 +246,12 @@ randomBOOL(void)
   if ([route hasPrefix:@"/artist/"]) {
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
+
+  } else if ([route isEqualToString:@"/"]) {
+    viewController = [[ARHomeComponentViewController alloc] init];
+
   } else {
-    UILabel *label = [UILabel new];
-    label.text = route;
-    [label sizeToFit];
-    viewController = [UIViewController new];
-    viewController.view.backgroundColor = [UIColor redColor];
-    [viewController.view addSubview:label];
-    label.center = viewController.view.center;
+    viewController = [[UnroutedViewController alloc] initWithRoute:route];
   }
 
   return viewController;
@@ -279,69 +261,6 @@ randomBOOL(void)
 {
   UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
   [navigationController.visibleViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
-}
-
-static NSArray *sharedRoutingMap;
-
-- (NSArray *)routingMap
-{
-    if (!sharedRoutingMap) {
-      sharedRoutingMap = @[
-#ifdef ENABLE_DEV_MODE
-        @{
-          @"name" : @"Storybook",
-          @"router" : ^() {
-            return [[ARStorybookComponentViewController alloc] init];
-          }
-        },
-#endif
-        @{
-           @"name" : @"Home",
-           @"router" : ^() {
-             return [[ARHomeComponentViewController alloc] init];
-           }
-        },
-        @{
-          @"name" : @"Artist",
-          @"router" : ^() {
-            return [[ARArtistComponentViewController alloc] initWithArtistID:ARTIST];
-          }
-        },
-      ];
-    }
-
-    return sharedRoutingMap;
-}
-
-#pragma mark - Example selection tableview
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
-{
-  return self.routingMap.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
-{
-  static NSString *cellIdentifier = @"example cell";
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-  if (cell == nil) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-  }
-
-  NSDictionary *route = self.routingMap[indexPath.row];
-  cell.textLabel.text = route[@"name"];
-  return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
-{
-  NSDictionary *route = self.routingMap[indexPath.row];
-  typedef ARComponentViewController * (^ARRouterMethod)();
-
-  ARRouterMethod routeGenerator = route[@"router"];
-  ARComponentViewController *viewController = routeGenerator();
-  [self.navigationController pushViewController:viewController animated:YES];
 }
 
 @end

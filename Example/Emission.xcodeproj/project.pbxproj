@@ -16,6 +16,15 @@
 		510E94FD1CCA828900BDF098 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 510E94FB1CCA828900BDF098 /* LaunchScreen.xib */; };
 		510E95141CCEB84F00BDF098 /* TestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 510E95131CCEB84F00BDF098 /* TestHelper.m */; };
 		51F3E9A41CF3B8A4004A2013 /* EigenLikeNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F3E9A31CF3B8A4004A2013 /* EigenLikeNavigationController.m */; };
+		6011C23B1DAF5DD900CE54E5 /* ARRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C23A1DAF5DD900CE54E5 /* ARRootViewController.m */; };
+		6011C2451DAF61AF00CE54E5 /* ARAdminTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C23E1DAF61AF00CE54E5 /* ARAdminTableViewCell.m */; };
+		6011C2461DAF61AF00CE54E5 /* ARTickedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2401DAF61AF00CE54E5 /* ARTickedTableViewCell.m */; };
+		6011C2471DAF61AF00CE54E5 /* ARAnimatedTickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2421DAF61AF00CE54E5 /* ARAnimatedTickView.m */; };
+		6011C2481DAF61AF00CE54E5 /* ARGroupedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2441DAF61AF00CE54E5 /* ARGroupedTableViewCell.m */; };
+		6011C24B1DAF63C000CE54E5 /* ARDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C24A1DAF63C000CE54E5 /* ARDefaults.m */; };
+		6011C24E1DAF697B00CE54E5 /* EigenLikeAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C24D1DAF697B00CE54E5 /* EigenLikeAdminViewController.m */; };
+		6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */; };
+		6011C2561DAF835900CE54E5 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6011C2551DAF835900CE54E5 /* logo@2x.png */; };
 		60A1A77E1DA3A23C005E3357 /* BackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */; };
 		60A1A77F1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77C1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png */; };
 		60A1A7801DA3A23C005E3357 /* BackArrowBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77D1DA3A23C005E3357 /* BackArrowBlack@2x.png */; };
@@ -61,6 +70,23 @@
 		510E95151CCEC22C00BDF098 /* TestHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestHelper.h; sourceTree = "<group>"; };
 		51F3E9A21CF3B8A4004A2013 /* EigenLikeNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EigenLikeNavigationController.h; sourceTree = "<group>"; };
 		51F3E9A31CF3B8A4004A2013 /* EigenLikeNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EigenLikeNavigationController.m; sourceTree = "<group>"; };
+		6011C2391DAF5DD900CE54E5 /* ARRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRootViewController.h; sourceTree = "<group>"; };
+		6011C23A1DAF5DD900CE54E5 /* ARRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRootViewController.m; sourceTree = "<group>"; };
+		6011C23D1DAF61AF00CE54E5 /* ARAdminTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAdminTableViewCell.h; sourceTree = "<group>"; };
+		6011C23E1DAF61AF00CE54E5 /* ARAdminTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAdminTableViewCell.m; sourceTree = "<group>"; };
+		6011C23F1DAF61AF00CE54E5 /* ARTickedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTickedTableViewCell.h; sourceTree = "<group>"; };
+		6011C2401DAF61AF00CE54E5 /* ARTickedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTickedTableViewCell.m; sourceTree = "<group>"; };
+		6011C2411DAF61AF00CE54E5 /* ARAnimatedTickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnimatedTickView.h; sourceTree = "<group>"; };
+		6011C2421DAF61AF00CE54E5 /* ARAnimatedTickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnimatedTickView.m; sourceTree = "<group>"; };
+		6011C2431DAF61AF00CE54E5 /* ARGroupedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARGroupedTableViewCell.h; sourceTree = "<group>"; };
+		6011C2441DAF61AF00CE54E5 /* ARGroupedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARGroupedTableViewCell.m; sourceTree = "<group>"; };
+		6011C2491DAF63C000CE54E5 /* ARDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDefaults.h; sourceTree = "<group>"; };
+		6011C24A1DAF63C000CE54E5 /* ARDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaults.m; sourceTree = "<group>"; };
+		6011C24C1DAF697B00CE54E5 /* EigenLikeAdminViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EigenLikeAdminViewController.h; sourceTree = "<group>"; };
+		6011C24D1DAF697B00CE54E5 /* EigenLikeAdminViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EigenLikeAdminViewController.m; sourceTree = "<group>"; };
+		6011C24F1DAF7B6D00CE54E5 /* UnroutedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnroutedViewController.h; sourceTree = "<group>"; };
+		6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnroutedViewController.m; sourceTree = "<group>"; };
+		6011C2551DAF835900CE54E5 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		60204ADD1D9D590900204628 /* Emission.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Emission.entitlements; sourceTree = "<group>"; };
 		60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrow@2x.png"; sourceTree = "<group>"; };
 		60A1A77C1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrow_Highlighted@2x.png"; sourceTree = "<group>"; };
@@ -110,15 +136,12 @@
 		510DCB0F1CCA69EC0075E8CB /* Emission */ = {
 			isa = PBXGroup;
 			children = (
-				60204ADD1D9D590900204628 /* Emission.entitlements */,
-				510E94FB1CCA828900BDF098 /* LaunchScreen.xib */,
-				60A1A7841DA3A879005E3357 /* ARMacros.h */,
-				510DCB131CCA69EC0075E8CB /* AppDelegate.h */,
-				510DCB141CCA69EC0075E8CB /* AppDelegate.m */,
+				60F61A881DAF849700A72101 /* App */,
+				60F61A871DAF848E00A72101 /* View Controllers */,
+				6011C2521DAF7EF600CE54E5 /* Launch */,
+				6011C23C1DAF619700CE54E5 /* Admin Tableview Cells */,
 				60D3D56D1D42532600A15671 /* Navigation */,
 				60D3D56C1D42531200A15671 /* Storybooks */,
-				510DCB1C1CCA69EC0075E8CB /* Assets.xcassets */,
-				510DCB211CCA69EC0075E8CB /* Info.plist */,
 				510DCB101CCA69EC0075E8CB /* Supporting Files */,
 			);
 			path = Emission;
@@ -127,6 +150,9 @@
 		510DCB101CCA69EC0075E8CB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				60204ADD1D9D590900204628 /* Emission.entitlements */,
+				510DCB1C1CCA69EC0075E8CB /* Assets.xcassets */,
+				510DCB211CCA69EC0075E8CB /* Info.plist */,
 				510DCB111CCA69EC0075E8CB /* main.m */,
 			);
 			name = "Supporting Files";
@@ -150,6 +176,32 @@
 				510DCB371CCA69ED0075E8CB /* Info.plist */,
 			);
 			path = EmissionUITests;
+			sourceTree = "<group>";
+		};
+		6011C23C1DAF619700CE54E5 /* Admin Tableview Cells */ = {
+			isa = PBXGroup;
+			children = (
+				6011C23D1DAF61AF00CE54E5 /* ARAdminTableViewCell.h */,
+				6011C23E1DAF61AF00CE54E5 /* ARAdminTableViewCell.m */,
+				6011C23F1DAF61AF00CE54E5 /* ARTickedTableViewCell.h */,
+				6011C2401DAF61AF00CE54E5 /* ARTickedTableViewCell.m */,
+				6011C2411DAF61AF00CE54E5 /* ARAnimatedTickView.h */,
+				6011C2421DAF61AF00CE54E5 /* ARAnimatedTickView.m */,
+				6011C2431DAF61AF00CE54E5 /* ARGroupedTableViewCell.h */,
+				6011C2441DAF61AF00CE54E5 /* ARGroupedTableViewCell.m */,
+				6011C24C1DAF697B00CE54E5 /* EigenLikeAdminViewController.h */,
+				6011C24D1DAF697B00CE54E5 /* EigenLikeAdminViewController.m */,
+			);
+			name = "Admin Tableview Cells";
+			sourceTree = "<group>";
+		};
+		6011C2521DAF7EF600CE54E5 /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				6011C2551DAF835900CE54E5 /* logo@2x.png */,
+				510E94FB1CCA828900BDF098 /* LaunchScreen.xib */,
+			);
+			name = Launch;
 			sourceTree = "<group>";
 		};
 		607FACC71AFB9204008FA782 = {
@@ -214,6 +266,29 @@
 				51F3E9A31CF3B8A4004A2013 /* EigenLikeNavigationController.m */,
 			);
 			name = Navigation;
+			sourceTree = "<group>";
+		};
+		60F61A871DAF848E00A72101 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				6011C2391DAF5DD900CE54E5 /* ARRootViewController.h */,
+				6011C23A1DAF5DD900CE54E5 /* ARRootViewController.m */,
+				6011C24F1DAF7B6D00CE54E5 /* UnroutedViewController.h */,
+				6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		60F61A881DAF849700A72101 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				60A1A7841DA3A879005E3357 /* ARMacros.h */,
+				6011C2491DAF63C000CE54E5 /* ARDefaults.h */,
+				6011C24A1DAF63C000CE54E5 /* ARDefaults.m */,
+				510DCB131CCA69EC0075E8CB /* AppDelegate.h */,
+				510DCB141CCA69EC0075E8CB /* AppDelegate.m */,
+			);
+			name = App;
 			sourceTree = "<group>";
 		};
 		A8456AA0E39F581C091B5C1D /* Frameworks */ = {
@@ -361,6 +436,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				510E94FD1CCA828900BDF098 /* LaunchScreen.xib in Resources */,
+				6011C2561DAF835900CE54E5 /* logo@2x.png in Resources */,
 				60A1A77F1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png in Resources */,
 				60A1A7801DA3A23C005E3357 /* BackArrowBlack@2x.png in Resources */,
 				510DCB1D1CCA69EC0075E8CB /* Assets.xcassets in Resources */,
@@ -542,10 +618,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */,
+				6011C2451DAF61AF00CE54E5 /* ARAdminTableViewCell.m in Sources */,
 				60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */,
 				51F3E9A41CF3B8A4004A2013 /* EigenLikeNavigationController.m in Sources */,
+				6011C2461DAF61AF00CE54E5 /* ARTickedTableViewCell.m in Sources */,
+				6011C2471DAF61AF00CE54E5 /* ARAnimatedTickView.m in Sources */,
 				510DCB151CCA69EC0075E8CB /* AppDelegate.m in Sources */,
+				6011C24B1DAF63C000CE54E5 /* ARDefaults.m in Sources */,
+				6011C2481DAF61AF00CE54E5 /* ARGroupedTableViewCell.m in Sources */,
 				510DCB121CCA69EC0075E8CB /* main.m in Sources */,
+				6011C24E1DAF697B00CE54E5 /* EigenLikeAdminViewController.m in Sources */,
+				6011C23B1DAF5DD900CE54E5 /* ARRootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
