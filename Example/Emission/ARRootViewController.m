@@ -1,5 +1,4 @@
 #import "ARRootViewController.h"
-#import "ARGroupedTableViewCell.h"
 #import "ARAnimatedTickView.h"
 #import "ARTickedTableViewCell.h"
 #import "ARAdminTableViewCell.h"
@@ -129,7 +128,7 @@
 - (ARCellData *)generateStagingSwitch
 {
   BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
-  NSString *title = [NSString stringWithFormat:@"Switch to %@ (Logs out)", useStaging ? @"Production" : @"Staging"];
+  NSString *title = [NSString stringWithFormat:@"Switch to %@ (Resets)", useStaging ? @"Production" : @"Staging"];
 
   ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
   [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
@@ -137,7 +136,7 @@
   }];
 
   [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-    [self showAlertViewWithTitle:@"Confirm Logout" message:@"Switching servers requires logout. App will exit. Please re-open to log back in." actionTitle:@"Continue" actionHandler:^{
+    [self showAlertViewWithTitle:@"Confirm Switch" message:@"Switching servers may log you out. App will exit. Please re-open to log back in." actionTitle:@"Continue" actionHandler:^{
 
       [[NSUserDefaults standardUserDefaults] setBool:!useStaging forKey:ARUseStagingDefault];
       [[NSUserDefaults standardUserDefaults] synchronize];

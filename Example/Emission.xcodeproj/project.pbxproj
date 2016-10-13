@@ -20,7 +20,6 @@
 		6011C2451DAF61AF00CE54E5 /* ARAdminTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C23E1DAF61AF00CE54E5 /* ARAdminTableViewCell.m */; };
 		6011C2461DAF61AF00CE54E5 /* ARTickedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2401DAF61AF00CE54E5 /* ARTickedTableViewCell.m */; };
 		6011C2471DAF61AF00CE54E5 /* ARAnimatedTickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2421DAF61AF00CE54E5 /* ARAnimatedTickView.m */; };
-		6011C2481DAF61AF00CE54E5 /* ARGroupedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2441DAF61AF00CE54E5 /* ARGroupedTableViewCell.m */; };
 		6011C24B1DAF63C000CE54E5 /* ARDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C24A1DAF63C000CE54E5 /* ARDefaults.m */; };
 		6011C24E1DAF697B00CE54E5 /* EigenLikeAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C24D1DAF697B00CE54E5 /* EigenLikeAdminViewController.m */; };
 		6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */; };
@@ -78,8 +77,6 @@
 		6011C2401DAF61AF00CE54E5 /* ARTickedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTickedTableViewCell.m; sourceTree = "<group>"; };
 		6011C2411DAF61AF00CE54E5 /* ARAnimatedTickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnimatedTickView.h; sourceTree = "<group>"; };
 		6011C2421DAF61AF00CE54E5 /* ARAnimatedTickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnimatedTickView.m; sourceTree = "<group>"; };
-		6011C2431DAF61AF00CE54E5 /* ARGroupedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARGroupedTableViewCell.h; sourceTree = "<group>"; };
-		6011C2441DAF61AF00CE54E5 /* ARGroupedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARGroupedTableViewCell.m; sourceTree = "<group>"; };
 		6011C2491DAF63C000CE54E5 /* ARDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDefaults.h; sourceTree = "<group>"; };
 		6011C24A1DAF63C000CE54E5 /* ARDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaults.m; sourceTree = "<group>"; };
 		6011C24C1DAF697B00CE54E5 /* EigenLikeAdminViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EigenLikeAdminViewController.h; sourceTree = "<group>"; };
@@ -187,8 +184,6 @@
 				6011C2401DAF61AF00CE54E5 /* ARTickedTableViewCell.m */,
 				6011C2411DAF61AF00CE54E5 /* ARAnimatedTickView.h */,
 				6011C2421DAF61AF00CE54E5 /* ARAnimatedTickView.m */,
-				6011C2431DAF61AF00CE54E5 /* ARGroupedTableViewCell.h */,
-				6011C2441DAF61AF00CE54E5 /* ARGroupedTableViewCell.m */,
 				6011C24C1DAF697B00CE54E5 /* EigenLikeAdminViewController.h */,
 				6011C24D1DAF697B00CE54E5 /* EigenLikeAdminViewController.m */,
 			);
@@ -626,7 +621,6 @@
 				6011C2471DAF61AF00CE54E5 /* ARAnimatedTickView.m in Sources */,
 				510DCB151CCA69EC0075E8CB /* AppDelegate.m in Sources */,
 				6011C24B1DAF63C000CE54E5 /* ARDefaults.m in Sources */,
-				6011C2481DAF61AF00CE54E5 /* ARGroupedTableViewCell.m in Sources */,
 				510DCB121CCA69EC0075E8CB /* main.m in Sources */,
 				6011C24E1DAF697B00CE54E5 /* EigenLikeAdminViewController.m in Sources */,
 				6011C23B1DAF5DD900CE54E5 /* ARRootViewController.m in Sources */,

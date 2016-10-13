@@ -29,7 +29,9 @@
 
 - (void)loadFailureViewDidRequestRetry:(ARLoadFailureView *)loadFailureView;
 {
-  self.onRetry(nil);
+  // The ARLoadFailureView shouldn’t register any taps during animation, but let’s just be extra
+  // cautious, because `onRetry` should be `nil` as long as Relay is retrying.
+  if (self.onRetry) self.onRetry(nil);
 }
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps;

@@ -36,7 +36,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
   UILabel *label = [UILabel new];
   label.font = [UIFont sansSerifFontWithSize:14];
   label.text = title.uppercaseString;
-  label.frame = CGRectMake(20, 4, 400, 20);
+  label.frame = CGRectMake(15, 4, 400, 20);
 
   [wrapper addSubview:label];
 
