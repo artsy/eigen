@@ -16,12 +16,7 @@
 
 #import <React/RCTUtils.h>
 #import <TargetConditionals.h>
-
-#import <Artsy+Authentication/ArtsyAuthentication.h>
-#import <Artsy+Authentication/ArtsyAuthenticationRouter.h>
-#import <Artsy+Authentication/ArtsyToken.h>
-#import <Extraction/ARSpinner.h>
-#import <SAMKeychain/SAMKeychain.h>
+#import "AuthenticationManager.h"
 
 #ifdef DEPLOY
 #import <AppHub/AppHub.h>
@@ -44,7 +39,6 @@ randomBOOL(void)
 
 @interface AppDelegate ()
 @property (nonatomic, strong) UINavigationController *navigationController;
-@property (nonatomic, strong) UIViewController *authenticationSpinnerController;
 @end
 
 @implementation AppDelegate
@@ -67,98 +61,23 @@ randomBOOL(void)
 
   BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
   NSString *service = useStaging? @"Emission-Staging" : @"Emission-Production";
-  
-  NSString *userID = [SAMKeychain accountsForService:service][0][kSAMKeychainAccountKey];
 
-  if (userID) {
-    NSString *accessToken = [SAMKeychain passwordForService:service account:userID];
+  AuthenticationManager *auth = [[AuthenticationManager alloc] initWithService:service];
+
+  if ([auth isAuthenticated]) {
+    NSString *accessToken = [auth token];
     if (accessToken) {
-      [self setupEmissionWithUserID:userID accessToken:accessToken keychainService:service];
-      return YES;
+      [self setupEmissionWithUserID:[auth userID] accessToken:accessToken keychainService:service];
     }
+  } else {
+    [auth presentAuthenticationPromptOnViewController:rootVC completion:^{
+      NSLog(@"Logged in successfully :)");
+    }];
   }
 
-  [self setupAuthenticationForService:service];
   return YES;
 }
 
-#pragma mark - Authentication
-
-- (void)setupAuthenticationForService:(NSString *)service;
-{
-  if (self.authenticationSpinnerController == nil) {
-    ARSpinner *spinner = [ARSpinner new];
-    [spinner startAnimating];
-    self.authenticationSpinnerController = [UIViewController new];
-    self.authenticationSpinnerController.view = spinner;
-    [self.navigationController presentViewController:self.authenticationSpinnerController animated:NO completion:nil];
-  }
-
-  UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Authentication"
-                                                                 message:@"Enter your Artsy credentials"
-                                                          preferredStyle:UIAlertControllerStyleAlert];
-  [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-    textField.placeholder = @"Email";
-  }];
-  [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-    textField.placeholder = @"Password";
-    textField.secureTextEntry = YES;
-  }];
-
-  __weak UIAlertController *weakAlert = alert;
-  [alert addAction:[UIAlertAction actionWithTitle:@"OK"
-                                            style:UIAlertActionStyleDefault
-                                          handler:^(UIAlertAction *action) {
-                                            [self authenticateWithEmail:weakAlert.textFields[0].text
-                                                               password:weakAlert.textFields[1].text
-                                                        keychainService:service];
-                                          }]];
-
-  [self.authenticationSpinnerController presentViewController:alert animated:YES completion:nil];
-}
-
-- (void)authenticateWithEmail:(NSString *)email password:(NSString *)password keychainService:(NSString *)service;
-{
-  // These are of Eigen OSS: https://github.com/artsy/eigen/blob/0e193d1b/Makefile#L36-L37
-  ArtsyAuthentication *auth = [[ArtsyAuthentication alloc] initWithClientID:@"e750db60ac506978fc70"
-                                                               clientSecret:@"3a33d2085cbd1176153f99781bbce7c6"];
-#ifdef USE_STAGING_ENV
-  auth.router.staging = YES;
-#endif
-
-  [auth getWeekLongXAppTrialToken:^(ArtsyToken *token, NSError *error) {
-    if (error) {
-      NSLog(@"%@", error);
-      [self setupAuthenticationForService:service];
-    } else {
-      [auth logInAndFetchUserDetailsWithEmail:email
-                                     password:password
-                                   completion:^(ArtsyToken *token, NSDictionary *userDetails, NSError *error) {
-        (void)auth; // keep a strong reference for as long as needed
-        dispatch_async(dispatch_get_main_queue(), ^{
-          if (error) {
-            NSLog(@"%@", error);
-            [self setupAuthenticationForService:service];
-          } else {
-            NSString *userID = userDetails[@"_id"];
-            NSString *accessToken = token.token;
-            NSParameterAssert(userID);
-            NSParameterAssert(accessToken);
-
-            NSError *error = nil;
-            [SAMKeychain setPassword:accessToken forService:service account:userID error:&error];
-            if (error) {
-              NSLog(@"%@", error);
-            }
-
-            [self.authenticationSpinnerController dismissViewControllerAnimated:YES completion:nil];
-            [self setupEmissionWithUserID:userID accessToken:accessToken keychainService:service];
-          }
-        });
-      }];
-    }
-  }];
-}
 
 #pragma mark - Emission
 
@@ -185,9 +104,10 @@ randomBOOL(void)
     NSBundle *emissionBundle = [NSBundle bundleForClass:AREmission.class];
     jsCodeLocation = [emissionBundle URLForResource:@"Emission" withExtension:@"js"];
   }
-  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken packagerURL:jsCodeLocation useStagingEnvironment:NO];
+  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken packagerURL:jsCodeLocation useStagingEnvironment:useStaging];
 #endif
   [AREmission setSharedInstance:emission];
+
 
 
   emission.APIModule.artistFollowStatusProvider = ^(NSString *artistID, RCTResponseSenderBlock block) {
