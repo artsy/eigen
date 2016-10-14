@@ -1,6 +1,8 @@
-### Master
+### 1.1.0-beta.4
 
 - GeneVC scrolls as expected, and can request data from Eigen - orta
+- Fix crash that would occur when tapping the ‘failed to load’ view retry button a second time - alloy
+- Make tapping the search bar open the search VC - sarah
 
 ### 1.1.0-beta.3
 
