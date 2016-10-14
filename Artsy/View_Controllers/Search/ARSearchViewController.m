@@ -15,6 +15,7 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <AFNetworking/AFNetworking.h>
 
+
 @interface ARSearchViewController () <UITextFieldDelegate, UITableViewDelegate>
 @property (readonly, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (readonly, nonatomic) UITableView *resultsView;
@@ -43,30 +44,31 @@
 
     UIView *searchBoxView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:searchBoxView];
-    [searchBoxView constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"24"];
+    [searchBoxView constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"50"];
     [searchBoxView alignLeading:@"10" trailing:@"-10" toView:self.view];
     [searchBoxView constrainHeight:@(self.fontSize).stringValue];
     _searchBoxView = searchBoxView;
 
     // search icon
     UIImageView *searchIcon = [[UIImageView alloc] init];
-    searchIcon.image = [UIImage imageNamed:self.searchIconImageName ?: @"SearchIcon_LightGrey"];
+    searchIcon.image = [[UIImage imageNamed:self.searchIconImageName ?: @"SearchButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     searchIcon.contentMode = UIViewContentModeScaleAspectFit;
+    searchIcon.tintColor = [UIColor whiteColor];
     [searchBoxView addSubview:searchIcon];
     _searchIcon = searchIcon;
 
-    [searchIcon alignLeadingEdgeWithView:searchBoxView predicate:@"10"];
+    [searchIcon alignLeadingEdgeWithView:searchBoxView predicate:@"30"];
     [searchIcon alignAttribute:NSLayoutAttributeWidth toAttribute:NSLayoutAttributeHeight ofView:searchIcon predicate:@"0"];
 
     // input text field
     UITextField *textField = [[UITextField alloc] initWithFrame:CGRectZero];
     [searchBoxView addSubview:textField];
-    [textField constrainLeadingSpaceToView:searchIcon predicate:@"4"];
+    [textField constrainLeadingSpaceToView:searchIcon predicate:@"10"];
 
     textField.textColor = [UIColor whiteColor];
     textField.font = [UIFont serifFontWithSize:self.fontSize];
     textField.tintColor = [UIColor whiteColor];
-    textField.keyboardAppearance = UIKeyboardAppearanceDark;
+    textField.keyboardAppearance = UIKeyboardAppearanceLight;
     textField.opaque = NO;
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.returnKeyType = UIReturnKeySearch;
@@ -81,8 +83,14 @@
     [closeButton constrainLeadingSpaceToView:textField predicate:@"14"];
     [closeButton alignTrailingEdgeWithView:searchBoxView predicate:@"0"];
 
-    [closeButton setTitle:@"CLOSE" forState:UIControlStateNormal];
-    closeButton.titleLabel.font = [UIFont sansSerifFontWithSize:[UIDevice isPad] ? 13 : 12];
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@"CLOSE" attributes:@{
+        NSKernAttributeName : @1,
+        NSFontAttributeName : [UIFont sansSerifFontWithSize:[UIDevice isPad] ? 13 : 10],
+        NSForegroundColorAttributeName : [UIColor whiteColor],
+    }];
+
+    [closeButton setAttributedTitle:attributedString forState:UIControlStateNormal];
+
     [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     closeButton.contentEdgeInsets = [UIDevice isPad] ? UIEdgeInsetsMake(0, 10, 0, 10) : UIEdgeInsetsMake(0, 0, 0, 0);
     [closeButton addTarget:self action:@selector(closeSearch:) forControlEvents:UIControlEventTouchUpInside];
@@ -231,7 +239,7 @@
 
 - (void)fetchSearchResults:(NSString *)text replace:(BOOL)replaceResults
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     _searchRequest = [self searchWithQuery:text success:^(NSArray *results) {
         __strong typeof (wself) sself = wself;
         [sself addResults:results replace:replaceResults];
@@ -297,7 +305,7 @@
 
 - (void)removeResultsViewAnimated:(BOOL)animated
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     [UIView animateIf:animated duration:0.15:^{
         __strong typeof (wself) sself = wself;
