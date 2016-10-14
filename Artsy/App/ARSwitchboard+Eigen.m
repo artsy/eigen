@@ -16,6 +16,9 @@
 #import "ARMutableLinkViewController.h"
 
 #import <Emission/ARArtistComponentViewController.h>
+// Move to ARGeneViewComponentController when it is out
+#import <Emission/ARComponentViewController.h>
+
 #import "ARArtistViewController.h"
 // TODO This does not use the new React based VC yet.
 #import "ARFairArtistViewController.h"
@@ -130,6 +133,9 @@
 
 - (UIViewController *)loadGeneWithID:(NSString *)geneID
 {
+    if ([AROptions boolForOption:AROptionsUseModernGeneVC]) {
+        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Gene" initialProperties:@{ @"geneID": geneID }];
+    }
     return [[ARGeneViewController alloc] initWithGeneID:geneID];
 }
 
