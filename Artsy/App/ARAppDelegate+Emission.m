@@ -141,10 +141,14 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
 
     emission.switchBoardModule.presentModalViewController = ^(UIViewController *_Nonnull fromViewController,
                                                               NSString *_Nonnull route) {
-        UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];
-        [[ARTopMenuViewController sharedController] presentViewController:viewController
-                                                                 animated:ARPerformWorkAsynchronously
-                                                               completion:nil];
+        if ([route isEqualToString:@"/search"]) {
+            [[ARTopMenuViewController sharedController].rootNavigationController toggleSearch];
+        } else {
+            UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];
+            [[ARTopMenuViewController sharedController] presentViewController:viewController
+                                                                     animated:ARPerformWorkAsynchronously
+                                                                   completion:nil];
+        }
     };
 
     emission.eventsModule.eventOccurred = ^(UIViewController *_Nonnull fromViewController, NSDictionary *_Nonnull info) {

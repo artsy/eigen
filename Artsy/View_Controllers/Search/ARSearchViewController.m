@@ -44,7 +44,7 @@
 
     UIView *searchBoxView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:searchBoxView];
-    [searchBoxView constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"50"];
+    [searchBoxView constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"70"];
     [searchBoxView alignLeading:@"10" trailing:@"-10" toView:self.view];
     [searchBoxView constrainHeight:@(self.fontSize).stringValue];
     _searchBoxView = searchBoxView;

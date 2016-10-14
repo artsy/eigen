@@ -498,7 +498,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
         self.searchViewController = [ARAppSearchViewController sharedSearchViewController];
     }
 
-    [[ARTopMenuViewController sharedController] hideToolbar:YES animated:YES];
     UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
     [navigationController pushViewController:self.searchViewController
                                     animated:ARPerformWorkAsynchronously];
