@@ -6,10 +6,6 @@ react_path = '../node_modules/react-native'
 target 'Emission' do
   pod 'Emission', :path => '../'
 
-  # Views being removed from Eigen
-  pod 'Extraction', :git => "https://github.com/artsy/Extraction",
-                    :branch => "dont-prematurely-stop-animating-on-second-retry"
-
   # As this runs dev, we need the developer web socket
   pod 'React', :path => react_path, :subspecs => %w(RCTWebSocket)
 

@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
 
   # Artsy pods
   s.dependency 'Artsy+UIFonts', '>= 1.1.0'
-  s.dependency 'Extraction', '>= 1.2.0'
+  s.dependency 'Extraction', '>= 1.2.1'
 
   # 3rd-party pods
   s.dependency 'SDWebImage', '>= 3.7.2'
