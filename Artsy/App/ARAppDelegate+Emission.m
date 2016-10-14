@@ -152,10 +152,6 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
         }
     };
 
-    emission.switchBoardModule.presentSearchViewController = ^(UIViewController *_Nonnull fromViewController, NSString *_Nonnull route) {
-        [[ARTopMenuViewController sharedController].rootNavigationController showSearch];
-    };
-
     emission.eventsModule.eventOccurred = ^(UIViewController *_Nonnull fromViewController, NSDictionary *_Nonnull info) {
         NSMutableDictionary *properties = [info mutableCopy];
         [properties removeObjectForKey:@"name"];
