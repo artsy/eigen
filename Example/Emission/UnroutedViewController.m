@@ -10,8 +10,9 @@
 
 - (instancetype)initWithRoute:(NSString *)title
 {
-  self = [super init];
-  self.route = title;
+  if ((self = [super init])) {
+    self.route = title;
+  }
   return  self;
 }
 

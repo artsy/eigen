@@ -84,8 +84,7 @@
 
 - (ARCellData *)jumpToRandomArtist
 {
-  NSDictionary *metadata = [[NSBundle mainBundle] infoDictionary];
-  NSString *sourceRoot = [metadata objectForKey:@"SourceRoot"];
+  NSString *sourceRoot = [NSProcessInfo processInfo].environment[@"SRCROOT"];
   NSString *artistListFromExample = @"../externals/metaphysics/schema/artist/maps/artist_title_slugs.js";
   NSString *slugsPath = [sourceRoot stringByAppendingPathComponent:artistListFromExample];
 

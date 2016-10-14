@@ -1,6 +1,6 @@
 ### Master
 
-- GeneVC scrolls as expected - orta
+- GeneVC scrolls as expected, and can request data from Eigen - orta
 
 ### 1.1.0-beta.3
 
