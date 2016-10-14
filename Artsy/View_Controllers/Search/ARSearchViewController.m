@@ -377,7 +377,7 @@
         [self stopSearching];
 
         [self.view addSubview:tableView];
-        [tableView alignToView:self.contentView];
+        [tableView alignTop:@"10" leading:@"10" bottom:@"0" trailing:@"10" toView:self.contentView];
         _resultsView = tableView;
         [self.view layoutIfNeeded];
     }
