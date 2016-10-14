@@ -11,36 +11,36 @@ PODS:
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
     - UIView+BooleanAnimations
-  - Emission (1.1.0-beta.3):
+  - Emission (1.1.0-beta.4):
     - Artsy+UIFonts (>= 1.1.0)
-    - Extraction (>= 1.2.0)
+    - Extraction (>= 1.2.1)
     - React/Core (= 0.34.1)
     - React/RCTImage (= 0.34.1)
     - React/RCTNetwork (= 0.34.1)
     - React/RCTText (= 0.34.1)
     - SDWebImage (>= 3.7.2)
-  - Extraction (1.2.0):
-    - Extraction/ARAnimationContinuation (= 1.2.0)
-    - Extraction/ARLoadFailureView (= 1.2.0)
-    - Extraction/ARSpinner (= 1.2.0)
-    - Extraction/ARSwitchView (= 1.2.0)
-    - Extraction/UILabel+Typography (= 1.2.0)
-    - Extraction/UIView+ARSpinner (= 1.2.0)
-  - Extraction/ARAnimationContinuation (1.2.0)
-  - Extraction/ARLoadFailureView (1.2.0):
+  - Extraction (1.2.1):
+    - Extraction/ARAnimationContinuation (= 1.2.1)
+    - Extraction/ARLoadFailureView (= 1.2.1)
+    - Extraction/ARSpinner (= 1.2.1)
+    - Extraction/ARSwitchView (= 1.2.1)
+    - Extraction/UILabel+Typography (= 1.2.1)
+    - Extraction/UIView+ARSpinner (= 1.2.1)
+  - Extraction/ARAnimationContinuation (1.2.1)
+  - Extraction/ARLoadFailureView (1.2.1):
     - Artsy-UIButtons
     - Extraction/UILabel+Typography
     - ORStackView (< 3)
-  - Extraction/ARSpinner (1.2.0):
+  - Extraction/ARSpinner (1.2.1):
     - Extraction/UIView+ARSpinner
     - UIView+BooleanAnimations
-  - Extraction/ARSwitchView (1.2.0):
+  - Extraction/ARSwitchView (1.2.1):
     - Artsy+UIColors
     - Artsy+UIFonts (>= 1.1.0)
     - FLKAutoLayout
     - UIView+BooleanAnimations
-  - Extraction/UILabel+Typography (1.2.0)
-  - Extraction/UIView+ARSpinner (1.2.0):
+  - Extraction/UILabel+Typography (1.2.1)
+  - Extraction/UIView+ARSpinner (1.2.1):
     - Extraction/ARAnimationContinuation
   - FLKAutoLayout (1.0.0)
   - ISO8601DateFormatter (0.8)
@@ -74,7 +74,6 @@ DEPENDENCIES:
   - Artsy+Authentication/email (from `https://github.com/artsy/Artsy-Authentication.git`, branch `fetch-user-details`)
   - Artsy+UIFonts (from `https://github.com/artsy/Artsy-UIFonts.git`)
   - Emission (from `../`)
-  - Extraction (from `https://github.com/artsy/Extraction`, branch `dont-prematurely-stop-animating-on-second-retry`)
   - FLKAutoLayout
   - React/RCTTest (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
@@ -88,12 +87,9 @@ EXTERNAL SOURCES:
   Artsy+UIFonts:
     :git: https://github.com/artsy/Artsy-UIFonts.git
   Emission:
-    :path: "../"
-  Extraction:
-    :branch: dont-prematurely-stop-animating-on-second-retry
-    :git: https://github.com/artsy/Extraction
+    :path: ../
   React:
-    :path: "../node_modules/react-native"
+    :path: ../node_modules/react-native
 
 CHECKOUT OPTIONS:
   Artsy+Authentication:
@@ -102,9 +98,6 @@ CHECKOUT OPTIONS:
   Artsy+UIFonts:
     :commit: 6295cce382764bbca9f2b3e972f71eb2b4d32d57
     :git: https://github.com/artsy/Artsy-UIFonts.git
-  Extraction:
-    :commit: c3593becb3e697fdff320989d3e8a3903eb5c9ae
-    :git: https://github.com/artsy/Extraction
 
 SPEC CHECKSUMS:
   AppHub: f073cd229f87afe1a27200670e1adab24ebda2b8
@@ -113,8 +106,8 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 10a2d71e9ffe1015be43d4e084d13ff4337aab97
   Artsy+UIFonts: 108bfe625c45008ebb15c4c62003882dd345c4b8
   Artsy-UIButtons: 26e6d1e0d2174773e9cf7693985d27faddd61743
-  Emission: 114150358dd25253e63b77ba07859c6ed2ee49d3
-  Extraction: fa0b2384907cb1842b07236fc5c2014e26bc0e51
+  Emission: 40a6834a2fd3579b5d8af3550ff4af455bebb572
+  Extraction: e1b194982c2cdea996512a9c03a72a5410991282
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
@@ -125,6 +118,6 @@ SPEC CHECKSUMS:
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
 
-PODFILE CHECKSUM: 5db4c2b81507047895dd78294c396949727ace2e
+PODFILE CHECKSUM: c499c5d7dab8a7918be9ae194e1d81ea1a325fee
 
 COCOAPODS: 1.0.1
