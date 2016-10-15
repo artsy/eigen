@@ -2,6 +2,7 @@
 
 #import "ARUserManager.h"
 #import "Artist.h"
+#import "Gene.h"
 #import "ArtsyAPI+Following.h"
 #import "ARDispatchManager.h"
 #import "ARNetworkErrorManager.h"
@@ -19,6 +20,7 @@
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/ARSwitchBoardModule.h>
 #import <Emission/AREventsModule.h>
+#import <Emission/ARRefineOptionsModule.h>
 #import <Emission/ARArtistComponentViewController.h>
 
 #import <React/RCTUtils.h>
@@ -27,43 +29,18 @@
 #import <AppHub/AppHub.h>
 
 static void
-ArtistFollowRequestSuccess(RCTResponseSenderBlock block, BOOL following)
+FollowRequestSuccess(RCTResponseSenderBlock block, BOOL following)
 {
     block(@[ [NSNull null], @(following) ]);
 }
 
 static void
-ArtistFollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *error)
+FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *error)
 {
     ar_dispatch_main_queue(^{
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to follow artist."];
     });
     block(@[ RCTJSErrorFromNSError(error), @(following) ]);
-}
-
-static void
-ArtistGetFollowStatus(NSString *artistID, RCTResponseSenderBlock block)
-{
-    [ArtsyAPI checkFavoriteStatusForArtist:[[Artist alloc] initWithArtistID:artistID]
-        success:^(BOOL following) {
-            ArtistFollowRequestSuccess(block, following);
-        }
-        failure:^(NSError *error) {
-            ArtistFollowRequestFailure(block, NO, error);
-        }];
-}
-
-static void
-ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock block)
-{
-    [ArtsyAPI setFavoriteStatus:following
-        forArtist:[[Artist alloc] initWithArtistID:artistID]
-        success:^(id response) {
-            ArtistFollowRequestSuccess(block, following);
-        }
-        failure:^(NSError *error) {
-            ArtistFollowRequestFailure(block, !following, error);
-        }];
 }
 
 
@@ -122,17 +99,57 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
                                         useStagingEnvironment:[AROptions boolForOption:ARUseStagingDefault]];
     [AREmission setSharedInstance:emission];
 
+#pragma mark - Native Module: Follow status
+
     emission.APIModule.artistFollowStatusProvider = ^(NSString *artistID, RCTResponseSenderBlock block) {
-        // Leave the view state ‘unselected’ if there’s no signed-in user.
-        if ([[ARUserManager sharedManager] currentUser] != nil) {
-            ArtistGetFollowStatus(artistID, block);
-        }
+        [ArtsyAPI checkFavoriteStatusForArtist:[[Artist alloc] initWithArtistID:artistID]
+                                       success:^(BOOL following) {
+                                         FollowRequestSuccess(block, following);
+                                       }
+                                       failure:^(NSError *error) {
+                                         FollowRequestFailure(block, NO, error);
+                                       }];
     };
     emission.APIModule.artistFollowStatusAssigner = ^(NSString *artistID, BOOL following, RCTResponseSenderBlock block) {
-        // TODO: Can’t optimistically change the view state before the request, because a RCTResponseSenderBlock may
-        //       only be invoked once.
-        ArtistSetFollowStatus(artistID, following, block);
+        [ArtsyAPI setFavoriteStatus:following
+                          forArtist:[[Artist alloc] initWithArtistID:artistID]
+                            success:^(id response) {
+                                FollowRequestSuccess(block, following);
+                            }
+                            failure:^(NSError *error) {
+                                FollowRequestFailure(block, !following, error);
+                            }];
     };
+
+    emission.APIModule.geneFollowStatusProvider = ^(NSString *geneID, RCTResponseSenderBlock block) {
+        [ArtsyAPI checkFavoriteStatusForGene:[[Gene alloc] initWithGeneID:geneID]
+                                     success:^(BOOL following) {
+                                         FollowRequestSuccess(block, following);
+                                     }
+                                     failure:^(NSError *error) {
+                                         FollowRequestFailure(block, NO, error);
+                                     }];
+    };
+    
+    emission.APIModule.geneFollowStatusAssigner = ^(NSString *geneID, BOOL following, RCTResponseSenderBlock block) {
+        [ArtsyAPI setFavoriteStatus:following
+                            forGene:[[Gene alloc] initWithGeneID:geneID]
+                            success:^(id response) {
+                                FollowRequestSuccess(block, following);
+                            }
+                            failure:^(NSError *error) {
+                                FollowRequestFailure(block, !following, error);
+                            }];
+    };
+
+#pragma mark - Native Module: Refine filter
+
+    emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull metadata, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
+        // TODO
+        resolve(@{});
+    };
+
+#pragma mark - Native Module: SwitchBoard
 
     emission.switchBoardModule.presentNavigationViewController = ^(UIViewController *_Nonnull fromViewController,
                                                                    NSString *_Nonnull route) {
@@ -151,6 +168,8 @@ ArtistSetFollowStatus(NSString *artistID, BOOL following, RCTResponseSenderBlock
                                                                    completion:nil];
         }
     };
+
+#pragma mark - Native Module: Events/Analytics
 
     emission.eventsModule.eventOccurred = ^(UIViewController *_Nonnull fromViewController, NSDictionary *_Nonnull info) {
         NSMutableDictionary *properties = [info mutableCopy];
