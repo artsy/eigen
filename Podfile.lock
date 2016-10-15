@@ -78,7 +78,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DRKonamiCode (1.1.0)
   - EDColor (1.0.0)
-  - Emission (1.1.0-beta.4):
+  - Emission (1.1.0-beta.5):
     - Artsy+UIFonts (>= 1.1.0)
     - Extraction (>= 1.2.1)
     - React/Core (= 0.34.1)
@@ -216,7 +216,7 @@ DEPENDENCIES:
   - DHCShakeNotifier
   - DRKonamiCode
   - EDColor
-  - Emission (~> 1.1.0-beta.4)
+  - Emission (~> 1.1.0-beta.5)
   - Expecta
   - Expecta+Snapshots
   - Extraction
@@ -384,7 +384,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 40a6834a2fd3579b5d8af3550ff4af455bebb572
+  Emission: 9745f8b2a9a40ce4ed7e02b8b5c9f6500525e44f
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: e1b194982c2cdea996512a9c03a72a5410991282
@@ -433,6 +433,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: 1559695376f0fc633d042deadec5f8c1af90b096
+PODFILE CHECKSUM: 59e837dc3591224493c147e6936e2ca701bce44c
 
 COCOAPODS: 1.0.1
