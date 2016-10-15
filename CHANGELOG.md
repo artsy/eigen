@@ -1,3 +1,8 @@
+### 1.1.0-beta.5
+
+- Fix use of outdated artist follow API that lead to a crash - alloy
+- Make banners 300 points tall on iPad - alloy
+
 ### 1.1.0-beta.4
 
 - GeneVC scrolls as expected, and can request data from Eigen - orta
