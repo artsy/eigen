@@ -122,7 +122,8 @@ This means you use `cmd+r` to start up emission in a iOS simulator. It's the sam
     { "key": "ctrl+cmd+right",     "command": "workbench.action.navigateForward" },
     { "key": "cmd+e",              "command": "editor.action.addSelectionToNextFindMatch"},
     { "key": "cmd+t",              "command": "workbench.action.quickOpen" },
-    { "key": "cmd+r",              "command": "workbench.action.debug.start" },
+    { "key": "cmd+r",              "command": "workbench.action.debug.start", "when": "!inDebugMode" },
+    { "key": "cmd+r",              "command": "workbench.action.debug.restart", "when": "inDebugMode" },
     { "key": "cmd+shift+.",        "command": "workbench.action.debug.stop" },
     { "key": "cmd+shift+[",        "command": "workbench.action.previousEditor" },
     { "key": "cmd+shift+]",        "command": "workbench.action.nextEditor" },
@@ -136,3 +137,4 @@ This means you use `cmd+r` to start up emission in a iOS simulator. It's the sam
     { "key": "cmd+0",                 "command": "workbench.action.toggleSidebarVisibility" },
 ]
 ```
+
