@@ -70,7 +70,7 @@
         ar_keypath(Artwork.new, saleMessage) : @"sale_message",
         ar_keypath(Artwork.new, sold) : @"sold",
         ar_keypath(Artwork.new, isPriceHidden) : @"price_hidden",
-        ar_keypath(Artwork.new, publishedAt) : @"published_changed_at"
+        ar_keypath(Artwork.new, publishedAt) : @"published_at"
     };
 }
 
