@@ -8,9 +8,9 @@
 // See https://github.com/artsy/eigen/blob/master/Artsy/View_Controllers/Admin/ARAdminSettingsViewController.m
 // for examples of how to work with this.
 
-#import <Emission/ARComponentViewController.h>
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
+#import <Emission/ARGeneComponentViewController.h>
 #import "ARStorybookComponentViewController.h"
 
 @implementation ARRootViewController
@@ -50,6 +50,7 @@
   [sectionData addCellData:self.jumpToRandomArtist];
   [sectionData addCellData:self.jumpToHomepage];
   [sectionData addCellData:self.jumpToGene];
+  [sectionData addCellData:self.jumpToRefinedGene];
 
   return sectionData;
 }
@@ -118,8 +119,16 @@
 - (ARCellData *)jumpToGene
 {
   return [self tappableCellDataWithTitle:@"Gene" selection: ^{
-    NSDictionary *props = @{ @"geneID": @"contemporary-pop" };
-    id viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Gene" initialProperties:props];
+    id viewController = [[ARGeneComponentViewController alloc] initWithGeneID:@"contemporary-pop"];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+- (ARCellData *)jumpToRefinedGene
+{
+  // From: https://github.com/artsy/metaphysics/blob/master/schema/home/add_generic_genes.js
+  return [self tappableCellDataWithTitle:@"Gene Refined" selection: ^{
+    id viewController = [[ARGeneComponentViewController alloc] initWithGeneID:@"emerging-art" refineSettings:@{ @"medium": @"painting", @"price_range": @"50.00-10000.00" }];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
