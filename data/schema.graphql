@@ -1,12 +1,23 @@
+schema {
+  query: RootQueryType
+}
+
+# One item in an aggregation
 type AggregationCount {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
   name: String
   count: Int
 }
 
 type Article implements Node {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
   cached: Int
   title: String
@@ -26,11 +37,18 @@ enum ArticleSorts {
 }
 
 type Artist implements Node {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   href: String
+
+  # Use this attribute to sort by when sorting a collection of Artists
   sortable_id: String
   name: String
   initials(length: Int = 3): String
@@ -38,36 +56,93 @@ type Artist implements Node {
   years: String
   is_public: Boolean
   is_consignable: Boolean
-  public: Boolean
-  consignable: Boolean
+  public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  consignable: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   is_display_auction_link: Boolean
-  display_auction_link: Boolean
+  display_auction_link: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   has_metadata: Boolean
   hometown: String
   location: String
   nationality: String
   birthday: String
   deathday: String
+
+  # A string of the form "Nationality, Birthday"
   formatted_nationality_and_birthday: String
+
+  # The Artist biography article written by Artsy
   biography: Article
   alternate_names: [String]
   meta: ArtistMeta
-  blurb(format: Format): String
+  blurb(format: Format): String @deprecated(reason: "Use biography_blurb which includes a gallery-submitted fallback.")
   biography_blurb(format: Format): ArtistBlurb
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
-  artworks(size: Int, page: Int, sort: ArtworkSorts, published: Boolean = true, filter: [ArtistArtworksFilters], exclude: [String]): [Artwork]
+  artworks(
+    # The number of Artworks to return
+    size: Int
+    page: Int
+    sort: ArtworkSorts
+    published: Boolean = true
+    filter: [ArtistArtworksFilters]
+    exclude: [String]
+  ): [Artwork]
+
+  # A string showing the total number of works and those for sale
   formatted_artworks_count: String
   image: Image
-  artists(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
-  contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
+  artists(
+    # The number of Artists to return
+    size: Int
+    exclude_artists_without_artworks: Boolean = true
+  ): [Artist]
+  contemporary(
+    # The number of Artists to return
+    size: Int
+    exclude_artists_without_artworks: Boolean = true
+  ): [Artist]
   carousel: ArtistCarousel
   statuses: ArtistStatuses
-  exhibition_highlights(size: Int = 5): [PartnerShow]
-  partner_shows(at_a_fair: Boolean, active: Boolean, status: String, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
-  partner_artists(size: Int): [PartnerArtist]
-  sales(live: Boolean, is_auction: Boolean, size: Int, sort: SaleSorts): [Sale]
+  exhibition_highlights(
+    # The number of Shows to return
+    size: Int = 5
+  ): [Show]
+  partner_shows(
+    at_a_fair: Boolean
+    active: Boolean
+    status: String
+
+    # The number of PartnerShows to return
+    size: Int
+    solo_show: Boolean
+    top_tier: Boolean
+    sort: PartnerShowSorts
+  ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
+  shows(
+    at_a_fair: Boolean
+    active: Boolean
+    status: String
+
+    # The number of Shows to return
+    size: Int
+    solo_show: Boolean
+    top_tier: Boolean
+    is_reference: Boolean
+    sort: PartnerShowSorts
+  ): [Show]
+  partner_artists(
+    # The number of PartnerArtists to return
+    size: Int
+  ): [PartnerArtist]
+  sales(
+    live: Boolean
+    is_auction: Boolean
+
+    # The number of Sales to return
+    size: Int
+    sort: SaleSorts
+  ): [Sale]
   articles(sort: ArticleSorts, limit: Int): [Article]
 }
 
@@ -86,20 +161,51 @@ type ArtistCarousel {
 }
 
 type ArtistCounts {
-  artworks(format: String, label: String): FormattedNumber
-  follows(format: String, label: String): FormattedNumber
-  for_sale_artworks(format: String, label: String): FormattedNumber
-  partner_shows(format: String, label: String): FormattedNumber
-  related_artists(format: String, label: String): FormattedNumber
-  articles(format: String, label: String): FormattedNumber
+  artworks(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  follows(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  for_sale_artworks(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  partner_shows(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  related_artists(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  articles(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
 }
 
 type ArtistItem implements Node {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   href: String
+
+  # Use this attribute to sort by when sorting a collection of Artists
   sortable_id: String
   name: String
   initials(length: Int = 3): String
@@ -107,36 +213,93 @@ type ArtistItem implements Node {
   years: String
   is_public: Boolean
   is_consignable: Boolean
-  public: Boolean
-  consignable: Boolean
+  public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  consignable: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   is_display_auction_link: Boolean
-  display_auction_link: Boolean
+  display_auction_link: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   has_metadata: Boolean
   hometown: String
   location: String
   nationality: String
   birthday: String
   deathday: String
+
+  # A string of the form "Nationality, Birthday"
   formatted_nationality_and_birthday: String
+
+  # The Artist biography article written by Artsy
   biography: Article
   alternate_names: [String]
   meta: ArtistMeta
-  blurb(format: Format): String
+  blurb(format: Format): String @deprecated(reason: "Use biography_blurb which includes a gallery-submitted fallback.")
   biography_blurb(format: Format): ArtistBlurb
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
-  artworks(size: Int, page: Int, sort: ArtworkSorts, published: Boolean = true, filter: [ArtistArtworksFilters], exclude: [String]): [Artwork]
+  artworks(
+    # The number of Artworks to return
+    size: Int
+    page: Int
+    sort: ArtworkSorts
+    published: Boolean = true
+    filter: [ArtistArtworksFilters]
+    exclude: [String]
+  ): [Artwork]
+
+  # A string showing the total number of works and those for sale
   formatted_artworks_count: String
   image: Image
-  artists(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
-  contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
+  artists(
+    # The number of Artists to return
+    size: Int
+    exclude_artists_without_artworks: Boolean = true
+  ): [Artist]
+  contemporary(
+    # The number of Artists to return
+    size: Int
+    exclude_artists_without_artworks: Boolean = true
+  ): [Artist]
   carousel: ArtistCarousel
   statuses: ArtistStatuses
-  exhibition_highlights(size: Int = 5): [PartnerShow]
-  partner_shows(at_a_fair: Boolean, active: Boolean, status: String, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
-  partner_artists(size: Int): [PartnerArtist]
-  sales(live: Boolean, is_auction: Boolean, size: Int, sort: SaleSorts): [Sale]
+  exhibition_highlights(
+    # The number of Shows to return
+    size: Int = 5
+  ): [Show]
+  partner_shows(
+    at_a_fair: Boolean
+    active: Boolean
+    status: String
+
+    # The number of PartnerShows to return
+    size: Int
+    solo_show: Boolean
+    top_tier: Boolean
+    sort: PartnerShowSorts
+  ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
+  shows(
+    at_a_fair: Boolean
+    active: Boolean
+    status: String
+
+    # The number of Shows to return
+    size: Int
+    solo_show: Boolean
+    top_tier: Boolean
+    is_reference: Boolean
+    sort: PartnerShowSorts
+  ): [Show]
+  partner_artists(
+    # The number of PartnerArtists to return
+    size: Int
+  ): [PartnerArtist]
+  sales(
+    live: Boolean
+    is_auction: Boolean
+
+    # The number of Sales to return
+    size: Int
+    sort: SaleSorts
+  ): [Sale]
   articles(sort: ArticleSorts, limit: Int): [Article]
 }
 
@@ -146,11 +309,18 @@ type ArtistMeta {
 }
 
 type ArtistSearchEntity implements Node {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   href: String
+
+  # Use this attribute to sort by when sorting a collection of Artists
   sortable_id: String
   name: String
   initials(length: Int = 3): String
@@ -158,36 +328,93 @@ type ArtistSearchEntity implements Node {
   years: String
   is_public: Boolean
   is_consignable: Boolean
-  public: Boolean
-  consignable: Boolean
+  public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  consignable: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   is_display_auction_link: Boolean
-  display_auction_link: Boolean
+  display_auction_link: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   has_metadata: Boolean
   hometown: String
   location: String
   nationality: String
   birthday: String
   deathday: String
+
+  # A string of the form "Nationality, Birthday"
   formatted_nationality_and_birthday: String
+
+  # The Artist biography article written by Artsy
   biography: Article
   alternate_names: [String]
   meta: ArtistMeta
-  blurb(format: Format): String
+  blurb(format: Format): String @deprecated(reason: "Use biography_blurb which includes a gallery-submitted fallback.")
   biography_blurb(format: Format): ArtistBlurb
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
-  artworks(size: Int, page: Int, sort: ArtworkSorts, published: Boolean = true, filter: [ArtistArtworksFilters], exclude: [String]): [Artwork]
+  artworks(
+    # The number of Artworks to return
+    size: Int
+    page: Int
+    sort: ArtworkSorts
+    published: Boolean = true
+    filter: [ArtistArtworksFilters]
+    exclude: [String]
+  ): [Artwork]
+
+  # A string showing the total number of works and those for sale
   formatted_artworks_count: String
   image: Image
-  artists(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
-  contemporary(size: Int, exclude_artists_without_artworks: Boolean = true): [Artist]
+  artists(
+    # The number of Artists to return
+    size: Int
+    exclude_artists_without_artworks: Boolean = true
+  ): [Artist]
+  contemporary(
+    # The number of Artists to return
+    size: Int
+    exclude_artists_without_artworks: Boolean = true
+  ): [Artist]
   carousel: ArtistCarousel
   statuses: ArtistStatuses
-  exhibition_highlights(size: Int = 5): [PartnerShow]
-  partner_shows(at_a_fair: Boolean, active: Boolean, status: String, size: Int, solo_show: Boolean, top_tier: Boolean, sort: PartnerShowSorts): [PartnerShow]
-  partner_artists(size: Int): [PartnerArtist]
-  sales(live: Boolean, is_auction: Boolean, size: Int, sort: SaleSorts): [Sale]
+  exhibition_highlights(
+    # The number of Shows to return
+    size: Int = 5
+  ): [Show]
+  partner_shows(
+    at_a_fair: Boolean
+    active: Boolean
+    status: String
+
+    # The number of PartnerShows to return
+    size: Int
+    solo_show: Boolean
+    top_tier: Boolean
+    sort: PartnerShowSorts
+  ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
+  shows(
+    at_a_fair: Boolean
+    active: Boolean
+    status: String
+
+    # The number of Shows to return
+    size: Int
+    solo_show: Boolean
+    top_tier: Boolean
+    is_reference: Boolean
+    sort: PartnerShowSorts
+  ): [Show]
+  partner_artists(
+    # The number of PartnerArtists to return
+    size: Int
+  ): [PartnerArtist]
+  sales(
+    live: Boolean
+    is_auction: Boolean
+
+    # The number of Sales to return
+    size: Int
+    sort: SaleSorts
+  ): [Sale]
   articles(sort: ArticleSorts, limit: Int): [Article]
 }
 
@@ -209,8 +436,13 @@ type ArtistStatuses {
 }
 
 type Artwork implements Node {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   to_s: String
@@ -222,36 +454,65 @@ type Artwork implements Node {
   image_rights: String
   website: String
   collecting_institution: String
-  partner(shallow: Boolean): Partner
+  partner(
+    # Use whatever is in the original response instead of making a request
+    shallow: Boolean
+  ): Partner
+
+  # Returns an HTML string representing the embedded content (video)
   embed(width: Int = 853, height: Int = 450, autoplay: Boolean = false): String
-  can_share_image: Boolean
+  can_share_image: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   is_embeddable_video: Boolean
   is_shareable: Boolean
   is_hangable: Boolean
+
+  # Do we want to encourage inquiries on this work?
   is_inquireable: Boolean
-  is_contactable: Boolean
+
+  # Are we able to display a contact form on artwork pages?
+  is_contactable: Boolean @deprecated(reason: "Prefer to use is_inquireable")
+
+  # Is this artwork part of an auction?
   is_in_auction: Boolean
+
+  # Is this artwork part of a current show
   is_in_show: Boolean
   is_for_sale: Boolean
+
+  # Is this artwork part of an auction that is currently running?
   is_biddable: Boolean
   is_unique: Boolean
   is_sold: Boolean
-  is_ecommerce: Boolean
+  is_ecommerce: Boolean @deprecated(reason: "Should not be used to determine anything UI-level")
+
+  # Whether work can be purchased through e-commerce
   is_acquireable: Boolean
+
+  # When in an auction, can the work be bought before any bids are placed
   is_buy_nowable: Boolean
   is_comparable_with_auction_results: Boolean
   is_downloadable: Boolean
   is_price_hidden: Boolean
   availability: String
   sale_message: String
-  artist(shallow: Boolean): Artist
+  artist(
+    # Use whatever is in the original response instead of making a request
+    shallow: Boolean
+  ): Artist
   contact_label: String
   cultural_maker: String
-  artists(shallow: Boolean): [Artist]
+  artists(
+    # Use whatever is in the original response instead of making a request
+    shallow: Boolean
+  ): [Artist]
   dimensions: dimensions
   image: Image
   images(size: Int): [Image]
+
+  # Returns the associated Fair/Sale/PartnerShow
   context: ArtworkContext
+
+  # Returns the highlighted shows and articles
   highlights: [Highlighted]
   articles(size: Int): [Article]
   shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): [PartnerShow]
@@ -294,8 +555,13 @@ enum ArtworkAggregation {
 union ArtworkContext = ArtworkContextAuction | ArtworkContextSale | ArtworkContextFair | ArtworkContextPartnerShow
 
 type ArtworkContextAuction {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   name: String
@@ -309,7 +575,7 @@ type ArtworkContextAuction {
   is_live_open: Boolean
   is_closed: Boolean
   is_with_buyers_premium: Boolean
-  auction_state: String
+  auction_state: String @deprecated(reason: "Favor `status` for consistency with other models")
   status: String
   registration_ends_at(format: String, timezone: String, convert_to_utc: Boolean): String
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
@@ -319,17 +585,33 @@ type ArtworkContextAuction {
   event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
-  artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
+  artworks(
+    page: Int = 1
+    size: Int = 25
+    all: Boolean = false
+
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+  ): [Artwork]
   cover_image: Image
   sale_artwork(id: String!): SaleArtwork
   profile: Profile
+
+  # A bid increment policy that explains minimum bids in ranges.
   bid_increments: [BidIncrement]
+
+  # Auction's buyer's premium policy.
   buyers_premium: [BuyersPremium]
 }
 
 type ArtworkContextFair {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   banner_size: String
@@ -341,51 +623,91 @@ type ArtworkContextFair {
   href: String
   image: Image
   location: Location
+
+  # Are we currently in the fair's active period?
   is_active: Boolean
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   name: String
   tagline: String
-  published: Boolean
+  published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   is_published: Boolean
   organizer: organizer
 }
 
 type ArtworkContextPartnerShow implements Node {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   href: String
   kind: String
+
+  # The exhibition title
   name: String
   description: String
   type: String
-  displayable: Boolean
+  displayable: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+
+  # Gravity doesn’t expose the `active` flag. Temporarily re-state its logic.
   is_active: Boolean
   is_displayable: Boolean
   is_fair_booth: Boolean
   press_release(format: Format): String
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+
+  # A formatted description of the start to end dates
   exhibition_period: String
   artists: [Artist]
   partner: Partner
   fair: Fair
   location: Location
   status: String
-  status_update(max_days: Int): String
+
+  # A formatted update on upcoming status changes
+  status_update(
+    # Before this many days no update will be generated
+    max_days: Int
+  ): String
   events: [PartnerShowEventType]
   counts: PartnerShowCounts
-  artworks(size: Int = 25, published: Boolean = true, page: Int = 1, all: Boolean, for_sale: Boolean, exclude: [String]): [Artwork]
+  artworks(
+    # Number of artworks to return
+    size: Int = 25
+    published: Boolean = true
+    page: Int = 1
+    all: Boolean
+    for_sale: Boolean
+
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+  ): [Artwork]
   meta_image: Image
   cover_image: Image
-  images(size: Int, default: Boolean, page: Int): [Image]
+  images(
+    # Number of images to return
+    size: Int
+
+    # Pass true/false to include cover or not
+    default: Boolean
+    page: Int
+  ): [Image]
 }
 
 type ArtworkContextSale {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   name: String
@@ -399,7 +721,7 @@ type ArtworkContextSale {
   is_live_open: Boolean
   is_closed: Boolean
   is_with_buyers_premium: Boolean
-  auction_state: String
+  auction_state: String @deprecated(reason: "Favor `status` for consistency with other models")
   status: String
   registration_ends_at(format: String, timezone: String, convert_to_utc: Boolean): String
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
@@ -409,16 +731,30 @@ type ArtworkContextSale {
   event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
-  artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
+  artworks(
+    page: Int = 1
+    size: Int = 25
+    all: Boolean = false
+
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+  ): [Artwork]
   cover_image: Image
   sale_artwork(id: String!): SaleArtwork
   profile: Profile
+
+  # A bid increment policy that explains minimum bids in ranges.
   bid_increments: [BidIncrement]
+
+  # Auction's buyer's premium policy.
   buyers_premium: [BuyersPremium]
 }
 
 type ArtworkLayer {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
   type: String
   name: String
@@ -433,14 +769,20 @@ type ArtworkMeta {
   image: String
 }
 
+# The results for one of the requested aggregations
 type ArtworksAggregationResults {
   slice: ArtworkAggregation
   counts: [AggregationCount]
 }
 
 type ArtworkSearchEntity implements Node {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   to_s: String
@@ -452,36 +794,65 @@ type ArtworkSearchEntity implements Node {
   image_rights: String
   website: String
   collecting_institution: String
-  partner(shallow: Boolean): Partner
+  partner(
+    # Use whatever is in the original response instead of making a request
+    shallow: Boolean
+  ): Partner
+
+  # Returns an HTML string representing the embedded content (video)
   embed(width: Int = 853, height: Int = 450, autoplay: Boolean = false): String
-  can_share_image: Boolean
+  can_share_image: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   is_embeddable_video: Boolean
   is_shareable: Boolean
   is_hangable: Boolean
+
+  # Do we want to encourage inquiries on this work?
   is_inquireable: Boolean
-  is_contactable: Boolean
+
+  # Are we able to display a contact form on artwork pages?
+  is_contactable: Boolean @deprecated(reason: "Prefer to use is_inquireable")
+
+  # Is this artwork part of an auction?
   is_in_auction: Boolean
+
+  # Is this artwork part of a current show
   is_in_show: Boolean
   is_for_sale: Boolean
+
+  # Is this artwork part of an auction that is currently running?
   is_biddable: Boolean
   is_unique: Boolean
   is_sold: Boolean
-  is_ecommerce: Boolean
+  is_ecommerce: Boolean @deprecated(reason: "Should not be used to determine anything UI-level")
+
+  # Whether work can be purchased through e-commerce
   is_acquireable: Boolean
+
+  # When in an auction, can the work be bought before any bids are placed
   is_buy_nowable: Boolean
   is_comparable_with_auction_results: Boolean
   is_downloadable: Boolean
   is_price_hidden: Boolean
   availability: String
   sale_message: String
-  artist(shallow: Boolean): Artist
+  artist(
+    # Use whatever is in the original response instead of making a request
+    shallow: Boolean
+  ): Artist
   contact_label: String
   cultural_maker: String
-  artists(shallow: Boolean): [Artist]
+  artists(
+    # Use whatever is in the original response instead of making a request
+    shallow: Boolean
+  ): [Artist]
   dimensions: dimensions
   image: Image
   images(size: Int): [Image]
+
+  # Returns the associated Fair/Sale/PartnerShow
   context: ArtworkContext
+
+  # Returns the highlighted shows and articles
   highlights: [Highlighted]
   articles(size: Int): [Article]
   shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): [PartnerShow]
@@ -522,15 +893,21 @@ enum ArtworkSorts {
 }
 
 type Author {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
   name: String
   profile_handle: String
-  href: String
+  href: String @deprecated(reason: "Profiles have been removed and thus author hrefs don't exist anymore.")
 }
 
 type Bidder {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
   created_at(format: String, timezone: String, convert_to_utc: Boolean): String
   pin: String
@@ -539,7 +916,10 @@ type Bidder {
 }
 
 type BidderPosition {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
   created_at(format: String, timezone: String, convert_to_utc: Boolean): String
   updated_at(format: String, timezone: String, convert_to_utc: Boolean): String
@@ -552,22 +932,48 @@ type BidderPosition {
   suggested_next_bid: BidderPositionSuggestedNextBid
   sale_artwork: SaleArtwork
   highest_bid: HighestBid
-  display_max_bid_amount_dollars: String
-  display_suggested_next_bid_dollars: String
-  max_bid_amount_cents: Int
-  suggested_next_bid_cents: Int
+  display_max_bid_amount_dollars: String @deprecated(reason: "Favor `max_bid`")
+  display_suggested_next_bid_dollars: String @deprecated(reason: "Favor `suggested_next_bid`")
+  max_bid_amount_cents: Int @deprecated(reason: "Favor `max_bid`")
+  suggested_next_bid_cents: Int @deprecated(reason: "Favor `suggested_next_bid`")
 }
 
 type BidderPositionMaxBid {
+  # An amount of money expressed in cents.
   cents: Int
+
+  # A pre-formatted price.
   display: String
-  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+
+  # A formatted price with various currency formatting options.
+  amount(
+    symbol: String
+    thousand: String = ","
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+  ): String
 }
 
 type BidderPositionSuggestedNextBid {
+  # An amount of money expressed in cents.
   cents: Int
+
+  # A pre-formatted price.
   display: String
-  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+
+  # A formatted price with various currency formatting options.
+  amount(
+    symbol: String
+    thousand: String = ","
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+  ): String
 }
 
 type BidIncrement {
@@ -577,7 +983,16 @@ type BidIncrement {
 }
 
 type BuyersPremium {
-  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+  # A formatted price with various currency formatting options.
+  amount(
+    symbol: String
+    thousand: String = ","
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+  ): String
   cents: Int
   percent: Float
 }
@@ -628,7 +1043,10 @@ type dimensions {
 }
 
 type EditionSet {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
   dimensions: dimensions
   edition_of: String
@@ -645,9 +1063,24 @@ enum EventStatus {
   upcoming
 }
 
-type Fair {
+type ExternalPartner {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+  name: String
+  city: String
+}
+
+type Fair {
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   banner_size: String
@@ -659,12 +1092,14 @@ type Fair {
   href: String
   image: Image
   location: Location
+
+  # Are we currently in the fair's active period?
   is_active: Boolean
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   name: String
   tagline: String
-  published: Boolean
+  published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   is_published: Boolean
   organizer: organizer
 }
@@ -679,6 +1114,7 @@ enum FairSorts {
 }
 
 type FeaturedLinkItem {
+  # Attempt to get the ID of the entity of the FeaturedLink
   id: String
   title: String
   initials(length: Int = 3): String
@@ -688,10 +1124,15 @@ type FeaturedLinkItem {
 }
 
 type FilterArtworks {
+  # Artwork results.
   hits: [Artwork]
   total: Int
   followed_artists_total: Int
+
+  # Returns a list of merchandisable artists sorted by merch score.
   merchandisable_artists: [Artist]
+
+  # Returns aggregation counts for the given filter query.
   aggregations: [ArtworksAggregationResults]
 }
 
@@ -716,13 +1157,23 @@ enum Format {
   markdown
 }
 
+# The `FormattedNumber` type represents a number that can optionally be returnedas
+# a formatted String. It does not try to coerce the type.
 scalar FormattedNumber
 
 type Gene {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
+
+  # Artworks Elastic Search results
+  filtered_artworks(aggregation_partner_cities: [String], aggregations: [ArtworkAggregation], artist_id: String, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], include_artworks_by_followed_artists: Boolean, for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, periods: [String], major_periods: [String], partner_id: ID, partner_cities: [String], price_range: String, page: Int, size: Int, sort: String): FilterArtworks
   href: String
   name: String
   description: String
@@ -732,10 +1183,18 @@ type Gene {
 }
 
 type GeneItem {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
+
+  # Artworks Elastic Search results
+  filtered_artworks(aggregation_partner_cities: [String], aggregations: [ArtworkAggregation], artist_id: String, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], include_artworks_by_followed_artists: Boolean, for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, periods: [String], major_periods: [String], partner_id: ID, partner_cities: [String], price_range: String, page: Int, size: Int, sort: String): FilterArtworks
   href: String
   name: String
   description: String
@@ -745,22 +1204,38 @@ type GeneItem {
 }
 
 type HighestBid {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
   created_at(format: String, timezone: String, convert_to_utc: Boolean): String
   number: Int
   is_cancelled: Boolean
-  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+
+  # A formatted price with various currency formatting options.
+  amount(
+    symbol: String
+    thousand: String = ","
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+  ): String
   cents: Int
   display: String
-  amount_cents: Int
-  display_amount_dollars: String
+  amount_cents: Int @deprecated(reason: "Favor `cents`")
+  display_amount_dollars: String @deprecated(reason: "Favor `display`")
 }
 
 union Highlighted = HighlightedShow | HighlightedArticle
 
 type HighlightedArticle implements Node {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
   cached: Int
   title: String
@@ -775,61 +1250,133 @@ type HighlightedArticle implements Node {
 }
 
 type HighlightedShow implements Node {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   href: String
   kind: String
+
+  # The exhibition title
   name: String
   description: String
   type: String
-  displayable: Boolean
+  displayable: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+
+  # Gravity doesn’t expose the `active` flag. Temporarily re-state its logic.
   is_active: Boolean
   is_displayable: Boolean
   is_fair_booth: Boolean
   press_release(format: Format): String
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+
+  # A formatted description of the start to end dates
   exhibition_period: String
   artists: [Artist]
   partner: Partner
   fair: Fair
   location: Location
   status: String
-  status_update(max_days: Int): String
+
+  # A formatted update on upcoming status changes
+  status_update(
+    # Before this many days no update will be generated
+    max_days: Int
+  ): String
   events: [PartnerShowEventType]
   counts: PartnerShowCounts
-  artworks(size: Int = 25, published: Boolean = true, page: Int = 1, all: Boolean, for_sale: Boolean, exclude: [String]): [Artwork]
+  artworks(
+    # Number of artworks to return
+    size: Int = 25
+    published: Boolean = true
+    page: Int = 1
+    all: Boolean
+    for_sale: Boolean
+
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+  ): [Artwork]
   meta_image: Image
   cover_image: Image
-  images(size: Int, default: Boolean, page: Int): [Image]
+  images(
+    # Number of images to return
+    size: Int
+
+    # Pass true/false to include cover or not
+    default: Boolean
+    page: Int
+  ): [Image]
 }
 
 type HomePage {
-  artwork_module(key: String, id: String, generic_gene_id: String, followed_artist_id: String, related_artist_id: String): HomePageArtworkModule
-  artwork_modules(max_rails: Int = 8): [HomePageArtworkModule]
-  artist_module(key: HomePageArtistModuleTypes): HomePageArtistModule
+  # Single artwork module to show on the home screen
+  artwork_module(
+    # Module key
+    key: String
+
+    # ID of generic gene rail to target
+    id: String
+
+    # ID of generic gene rail to target
+    generic_gene_id: String
+
+    # ID of followed artist to target for related artist rails
+    followed_artist_id: String
+
+    # ID of related artist to target for related artist rails
+    related_artist_id: String
+  ): HomePageArtworkModule
+
+  # Artwork modules to show on the home screen
+  artwork_modules(
+    # Maximum number of modules to return
+    max_rails: Int = 8
+  ): [HomePageArtworkModule]
+
+  # Single artist module to show on the home screen.
+  artist_module(
+    # Module identifier.
+    key: HomePageArtistModuleTypes
+  ): HomePageArtistModule
+
+  # Artist modules to show on the home screen
   artist_modules: [HomePageArtistModule]
+
+  # A list of enabled hero units to show on the requested platform
   hero_units(platform: HomePageHeroUnitPlatform!): [HomePageHeroUnit]
 }
 
 type HomePageArtistModule implements Node {
+  # A globally unique ID.
   __id: ID!
+
+  # Module identifier.
   key: String
   results: [Artist]
 }
 
 enum HomePageArtistModuleTypes {
+  # Artists recommended for the specific user.
   SUGGESTED
+
+  # The trending artists.
   TRENDING
+
+  # The most searched for artists.
   POPULAR
 }
 
 type HomePageArtworkModule implements Node {
+  # A globally unique ID.
   __id: ID!
   key: String
-  display: String
+  display: String @deprecated(reason: "Favor `is_`-prefixed Booleans (*and* this should be a Boolean)")
   is_displayable: Boolean
   params: HomePageModulesParams
   context: HomePageModuleContext
@@ -838,13 +1385,20 @@ type HomePageArtworkModule implements Node {
 }
 
 type HomePageHeroUnit {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   heading: String
   href: String
   title: String
+
+  # The image to show, on desktop this defaults to the wide version.
   background_image_url(version: HomePageHeroUnitImageVersion): String
 }
 
@@ -862,8 +1416,13 @@ enum HomePageHeroUnitPlatform {
 union HomePageModuleContext = HomePageModuleContextFair | HomePageModuleContextSale | HomePageModuleContextGene | HomePageModuleContextTrending | HomePageModuleContextFollowArtists | HomePageModuleContextRelatedArtist
 
 type HomePageModuleContextFair {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   banner_size: String
@@ -875,12 +1434,14 @@ type HomePageModuleContextFair {
   href: String
   image: Image
   location: Location
+
+  # Are we currently in the fair's active period?
   is_active: Boolean
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   name: String
   tagline: String
-  published: Boolean
+  published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   is_published: Boolean
   organizer: organizer
 }
@@ -891,10 +1452,18 @@ type HomePageModuleContextFollowArtists {
 }
 
 type HomePageModuleContextGene {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
+
+  # Artworks Elastic Search results
+  filtered_artworks(aggregation_partner_cities: [String], aggregations: [ArtworkAggregation], artist_id: String, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], include_artworks_by_followed_artists: Boolean, for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, periods: [String], major_periods: [String], partner_id: ID, partner_cities: [String], price_range: String, page: Int, size: Int, sort: String): FilterArtworks
   href: String
   name: String
   description: String
@@ -909,8 +1478,13 @@ type HomePageModuleContextRelatedArtist {
 }
 
 type HomePageModuleContextSale {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   name: String
@@ -924,7 +1498,7 @@ type HomePageModuleContextSale {
   is_live_open: Boolean
   is_closed: Boolean
   is_with_buyers_premium: Boolean
-  auction_state: String
+  auction_state: String @deprecated(reason: "Favor `status` for consistency with other models")
   status: String
   registration_ends_at(format: String, timezone: String, convert_to_utc: Boolean): String
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
@@ -934,11 +1508,22 @@ type HomePageModuleContextSale {
   event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
-  artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
+  artworks(
+    page: Int = 1
+    size: Int = 25
+    all: Boolean = false
+
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+  ): [Artwork]
   cover_image: Image
   sale_artwork(id: String!): SaleArtwork
   profile: Profile
+
+  # A bid increment policy that explains minimum bids in ranges.
   bid_increments: [BidIncrement]
+
+  # Auction's buyer's premium policy.
   buyers_premium: [BuyersPremium]
 }
 
@@ -956,6 +1541,7 @@ type HomePageModulesParams {
 }
 
 type Image {
+  # A type-specific ID.
   id: String
   href: String
   title: String
@@ -972,13 +1558,18 @@ type Image {
   resized(width: Int, height: Int, version: [String]): ResizedImageUrl
   deep_zoom: DeepZoom
   is_zoomable: Boolean
+
+  # Value to use when `padding-bottom` for fluid image placeholders
   placeholder: String
 }
 
 union Item = ArtistItem | FeaturedLinkItem | GeneItem
 
 type Location {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
   cached: Int
   city: String
@@ -996,27 +1587,107 @@ type Location {
 type LotStanding {
   bidder: Bidder
   sale_artwork: SaleArtwork
+
+  # You are winning and reserve is met
   is_highest_bidder: Boolean
+
+  # You are the leading bidder without regard to reserve
+  is_leading_bidder: Boolean
+
+  # Your bid if it is currently winning
   active_bid: BidderPosition
+
+  # Your most recent bid—which is not necessarily winning (may be higher or lower)
   most_recent_bid: BidderPosition
 }
 
 type Me {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
   type: String
   created_at(format: String, timezone: String, convert_to_utc: Boolean): String
   email: String
   name: String
   paddle_number: String
-  bidders(sale_id: String): [Bidder]
+
+  # A list of the current user’s bidder registrations
+  bidders(
+    # The slug or ID of a Sale
+    sale_id: String
+  ): [Bidder]
+
+  # The current user's status relating to bids on artworks
   bidder_status(sale_id: String!, artwork_id: String!): LotStanding
-  bidder_positions(current: Boolean, artwork_id: String, sale_id: String): [BidderPosition]
+
+  # A list of the current user's bidder positions
+  bidder_positions(
+    # Only the most recent bidder positions per artwork.
+    current: Boolean
+
+    # Only the bidder positions on a specific artwork
+    artwork_id: String
+
+    # Only the bidder positions for a specific auction
+    sale_id: String
+  ): [BidderPosition]
+
+  # The current user's status relating to bids on artworks
   lot_standing(sale_id: String!, artwork_id: String!): LotStanding
-  lot_standings(live: Boolean, active_positions: Boolean, artwork_id: String, sale_id: String): [LotStanding]
-  sale_registrations(size: Int, is_auction: Boolean = true, published: Boolean = true, live: Boolean = true, sort: SaleSorts): [SaleRegistration]
+
+  # A list of the current user's auction standings for given lots
+  lot_standings(
+    # Only the lot standings for currently open or closed auctions.
+    live: Boolean
+
+    # Only includes lots on which you have a leading bidder position.
+    active_positions: Boolean
+
+    # Only the lot standings on a specific artwork
+    artwork_id: String
+
+    # Only the lot standings for a specific auction
+    sale_id: String
+  ): [LotStanding]
+  sale_registrations(
+    size: Int
+
+    # Limit by auction.
+    is_auction: Boolean = true
+
+    # Limit by published status.
+    published: Boolean = true
+
+    # Limit by live status.
+    live: Boolean = true
+    sort: SaleSorts
+  ): [SaleRegistration]
+
+  # A list of the current user’s artist follows
   follow_artists(size: Int, page: Int): FollowArtists
-  suggested_artists(artist_id: String, exclude_artists_without_forsale_artworks: Boolean, exclude_artists_without_artworks: Boolean, exclude_followed_artists: Boolean, size: Int, page: Int): [Artist]
+
+  # A list of the current user’s suggested artists, based on a single artist
+  suggested_artists(
+    # The slug or ID of an artist
+    artist_id: String
+
+    # Exclude artists without for sale works
+    exclude_artists_without_forsale_artworks: Boolean
+
+    # Exclude artists without any artworks
+    exclude_artists_without_artworks: Boolean
+
+    # Exclude artists the user already follows
+    exclude_followed_artists: Boolean
+
+    # Amount of artists to return
+    size: Int
+
+    # Pagination, need I say more?
+    page: Int
+  ): [Artist]
 }
 
 input Near {
@@ -1025,12 +1696,17 @@ input Near {
   max_distance: Float
 }
 
+# An object with a Globally Unique ID
 interface Node {
+  # The ID of the object.
   __id: ID!
 }
 
 type OrderedSet {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
   cached: Int
   key: String
@@ -1045,8 +1721,13 @@ type organizer {
 }
 
 type Partner implements Node {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   name: String
@@ -1068,7 +1749,10 @@ type Partner implements Node {
 }
 
 type PartnerArtist {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
   counts: PartnerArtistCounts
   is_display_on_partner_profile: Boolean
@@ -1081,17 +1765,57 @@ type PartnerArtist {
 }
 
 type PartnerArtistCounts {
-  artworks(format: String, label: String): FormattedNumber
-  for_sale_artworks(format: String, label: String): FormattedNumber
+  artworks(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  for_sale_artworks(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
 }
 
 type PartnerCategory {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
   cached: Int
   name: String
   category_type: CategoryType
-  partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], term: String): [Partner]
+  partners(
+    size: Int
+    page: Int
+
+    # Coordinates to find partners closest to
+    near: String
+
+    # Indicates tier 1/2 for gallery, 1 for institution
+    eligible_for_primary_bucket: Boolean
+
+    # Indicates tier 3/4 for gallery, 2 for institution
+    eligible_for_secondary_bucket: Boolean
+
+    # Indicates an active subscription
+    eligible_for_listing: Boolean
+    eligible_for_carousel: Boolean
+    has_full_profile: Boolean
+    default_profile_public: Boolean
+    sort: PartnersSortType
+
+    #
+    #         Only return partners of the specified partner categories.
+    #         Accepts list of slugs.
+    #       
+    partner_categories: [String]
+    type: [PartnerClassification]
+
+    # term used for searching Partners
+    term: String
+  ): [Partner]
 }
 
 enum PartnerClassification {
@@ -1106,17 +1830,61 @@ enum PartnerClassification {
 }
 
 type PartnerCounts {
-  artworks(format: String, label: String): FormattedNumber
-  artists(format: String, label: String): FormattedNumber
-  partner_artists(format: String, label: String): FormattedNumber
-  eligible_artworks(format: String, label: String): FormattedNumber
-  published_for_sale_artworks(format: String, label: String): FormattedNumber
-  published_not_for_sale_artworks(format: String, label: String): FormattedNumber
-  shows(format: String, label: String): FormattedNumber
-  displayable_shows(format: String, label: String): FormattedNumber
-  current_displayable_shows(format: String, label: String): FormattedNumber
-  artist_documents(format: String, label: String): FormattedNumber
-  partner_show_documents(format: String, label: String): FormattedNumber
+  artworks(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  artists(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  partner_artists(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  eligible_artworks(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  published_for_sale_artworks(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  published_not_for_sale_artworks(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  shows(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  displayable_shows(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  current_displayable_shows(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  artist_documents(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  partner_show_documents(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
 }
 
 enum PartnersAggregation {
@@ -1125,46 +1893,87 @@ enum PartnersAggregation {
   TOTAL
 }
 
+# The results for one of the requested aggregations
 type PartnersAggregationResults {
   slice: PartnersAggregation
   counts: [AggregationCount]
 }
 
 type PartnerShow implements Node {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   href: String
   kind: String
+
+  # The exhibition title
   name: String
   description: String
   type: String
-  displayable: Boolean
+  displayable: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+
+  # Gravity doesn’t expose the `active` flag. Temporarily re-state its logic.
   is_active: Boolean
   is_displayable: Boolean
   is_fair_booth: Boolean
   press_release(format: Format): String
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+
+  # A formatted description of the start to end dates
   exhibition_period: String
   artists: [Artist]
   partner: Partner
   fair: Fair
   location: Location
   status: String
-  status_update(max_days: Int): String
+
+  # A formatted update on upcoming status changes
+  status_update(
+    # Before this many days no update will be generated
+    max_days: Int
+  ): String
   events: [PartnerShowEventType]
   counts: PartnerShowCounts
-  artworks(size: Int = 25, published: Boolean = true, page: Int = 1, all: Boolean, for_sale: Boolean, exclude: [String]): [Artwork]
+  artworks(
+    # Number of artworks to return
+    size: Int = 25
+    published: Boolean = true
+    page: Int = 1
+    all: Boolean
+    for_sale: Boolean
+
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+  ): [Artwork]
   meta_image: Image
   cover_image: Image
-  images(size: Int, default: Boolean, page: Int): [Image]
+  images(
+    # Number of images to return
+    size: Int
+
+    # Pass true/false to include cover or not
+    default: Boolean
+    page: Int
+  ): [Image]
 }
 
 type PartnerShowCounts {
-  artworks(artist_id: String): Int
-  eligible_artworks(format: String, label: String): FormattedNumber
+  artworks(
+    # The slug or ID of an artist in the show.
+    artist_id: String
+  ): Int
+  eligible_artworks(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
 }
 
 type PartnerShowEventType {
@@ -1176,35 +1985,68 @@ type PartnerShowEventType {
 }
 
 type PartnerShowSearchEntity implements Node {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   href: String
   kind: String
+
+  # The exhibition title
   name: String
   description: String
   type: String
-  displayable: Boolean
+  displayable: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+
+  # Gravity doesn’t expose the `active` flag. Temporarily re-state its logic.
   is_active: Boolean
   is_displayable: Boolean
   is_fair_booth: Boolean
   press_release(format: Format): String
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
   end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+
+  # A formatted description of the start to end dates
   exhibition_period: String
   artists: [Artist]
   partner: Partner
   fair: Fair
   location: Location
   status: String
-  status_update(max_days: Int): String
+
+  # A formatted update on upcoming status changes
+  status_update(
+    # Before this many days no update will be generated
+    max_days: Int
+  ): String
   events: [PartnerShowEventType]
   counts: PartnerShowCounts
-  artworks(size: Int = 25, published: Boolean = true, page: Int = 1, all: Boolean, for_sale: Boolean, exclude: [String]): [Artwork]
+  artworks(
+    # Number of artworks to return
+    size: Int = 25
+    published: Boolean = true
+    page: Int = 1
+    all: Boolean
+    for_sale: Boolean
+
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+  ): [Artwork]
   meta_image: Image
   cover_image: Image
-  images(size: Int, default: Boolean, page: Int): [Image]
+  images(
+    # Number of images to return
+    size: Int
+
+    # Pass true/false to include cover or not
+    default: Boolean
+    page: Int
+  ): [Image]
 }
 
 enum PartnerShowSorts {
@@ -1231,9 +2073,16 @@ enum PartnersSortType {
   RANDOM_SCORE_DESC
 }
 
+union PartnerTypes = Partner | ExternalPartner
+
 type Profile {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   name: String
@@ -1247,12 +2096,21 @@ type Profile {
 }
 
 type ProfileCounts {
-  follows(format: String, label: String): FormattedNumber
+  follows(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
 }
 
 type ProfileSearchEntity {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   name: String
@@ -1278,40 +2136,244 @@ enum Role {
 }
 
 type RootQueryType {
-  node(__id: ID!): Node
+  # Fetches an object given its Globally Unique ID
+  node(
+    # The ID of the object
+    __id: ID!
+  ): Node
   status: Status
-  article(id: String!): Article
+
+  # An Article
+  article(
+    # The ID of the Article
+    id: String!
+  ): Article
+
+  # A list of Articles
   articles(show_id: String, sort: ArticleSorts, published: Boolean = true): [Article]
-  artwork(id: String!): Artwork
+
+  # An Artwork
+  artwork(
+    # The slug or ID of the Artwork
+    id: String!
+  ): Artwork
+
+  # A list of Artworks
   artworks(ids: [String]): [Artwork]
-  artist(id: String!): Artist
+
+  # An Artist
+  artist(
+    # The slug or ID of the Artist
+    id: String!
+  ): Artist
+
+  # A list of Artists
   artists(size: Int, sort: ArtistSorts): [Artist]
-  fair(id: String!): Fair
+
+  # An External Partner not on the platform
+  external_partner(
+    # The ID of the Partner
+    id: String!
+  ): ExternalPartner
+
+  # A Fair
+  fair(
+    # The slug or ID of the Fair
+    id: String!
+  ): Fair
+
+  # A list of Fairs
   fairs(size: Int, page: Int, sort: FairSorts, status: EventStatus, fair_organizer_id: String, near: Near, has_full_feature: Boolean, has_homepage_section: Boolean, has_listing: Boolean): [Fair]
-  gene(id: String!): Gene
+  gene(
+    # The slug or ID of the Gene
+    id: String!
+  ): Gene
+
+  # Home screen content
   home_page: HomePage
-  profile(id: String!): Profile
-  ordered_sets(key: String!, public: Boolean = true): [OrderedSet]
-  partner(id: String!): Partner
-  partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], term: String): [Partner]
-  filter_partners(size: Int, page: Int, near: String, eligible_for_primary_bucket: Boolean, eligible_for_secondary_bucket: Boolean, eligible_for_listing: Boolean, eligible_for_carousel: Boolean, has_full_profile: Boolean, default_profile_public: Boolean, sort: PartnersSortType, partner_categories: [String], type: [PartnerClassification], term: String, aggregations: [PartnersAggregation]!): FilterPartners
+
+  # A Profile
+  profile(
+    # The slug or ID of the Profile
+    id: String!
+  ): Profile
+
+  # A collection of OrderedSets
+  ordered_sets(
+    # Key to the OrderedSet or group of OrderedSets
+    key: String!
+    public: Boolean = true
+  ): [OrderedSet]
+
+  # A Partner
+  partner(
+    # The slug or ID of the Partner
+    id: String!
+  ): Partner
+
+  # A list of Partners
+  partners(
+    size: Int
+    page: Int
+
+    # Coordinates to find partners closest to
+    near: String
+
+    # Indicates tier 1/2 for gallery, 1 for institution
+    eligible_for_primary_bucket: Boolean
+
+    # Indicates tier 3/4 for gallery, 2 for institution
+    eligible_for_secondary_bucket: Boolean
+
+    # Indicates an active subscription
+    eligible_for_listing: Boolean
+    eligible_for_carousel: Boolean
+    has_full_profile: Boolean
+    default_profile_public: Boolean
+    sort: PartnersSortType
+
+    #
+    #         Only return partners of the specified partner categories.
+    #         Accepts list of slugs.
+    #       
+    partner_categories: [String]
+    type: [PartnerClassification]
+
+    # term used for searching Partners
+    term: String
+  ): [Partner]
+
+  # Partners Elastic Search results
+  filter_partners(
+    size: Int
+    page: Int
+
+    # Coordinates to find partners closest to
+    near: String
+
+    # Indicates tier 1/2 for gallery, 1 for institution
+    eligible_for_primary_bucket: Boolean
+
+    # Indicates tier 3/4 for gallery, 2 for institution
+    eligible_for_secondary_bucket: Boolean
+
+    # Indicates an active subscription
+    eligible_for_listing: Boolean
+    eligible_for_carousel: Boolean
+    has_full_profile: Boolean
+    default_profile_public: Boolean
+    sort: PartnersSortType
+
+    #
+    #         Only return partners of the specified partner categories.
+    #         Accepts list of slugs.
+    #       
+    partner_categories: [String]
+    type: [PartnerClassification]
+
+    # term used for searching Partners
+    term: String
+    aggregations: [PartnersAggregation]!
+  ): FilterPartners
+
+  # Artworks Elastic Search results
   filter_artworks(aggregation_partner_cities: [String], aggregations: [ArtworkAggregation], artist_id: String, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], include_artworks_by_followed_artists: Boolean, for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, periods: [String], major_periods: [String], partner_id: ID, partner_cities: [String], price_range: String, page: Int, size: Int, sort: String): FilterArtworks
-  partner_category(id: String!): PartnerCategory
-  partner_categories(size: Int, category_type: CategoryType, internal: Boolean = false): [PartnerCategory]
-  partner_show(id: String!): PartnerShow
+
+  # A PartnerCategory
+  partner_category(
+    # The slug or ID of the PartnerCategory
+    id: String!
+  ): PartnerCategory
+
+  # A list of PartnerCategories
+  partner_categories(
+    size: Int
+    category_type: CategoryType
+
+    # Filter by whether category is internal
+    internal: Boolean = false
+  ): [PartnerCategory]
+
+  # A Partner Show
+  partner_show(
+    # The slug or ID of the PartnerShow
+    id: String!
+  ): PartnerShow
+
+  # A list of PartnerShows
   partner_shows(size: Int, sort: PartnerShowSorts, status: EventStatus, fair_id: String, partner_id: String, near: Near, displayable: Boolean = true, featured: Boolean, at_a_fair: Boolean): [PartnerShow]
-  sale(id: String!): Sale
-  sales(size: Int, is_auction: Boolean = true, published: Boolean = true, live: Boolean = true, sort: SaleSorts): [Sale]
-  sale_artwork(id: String!): SaleArtwork
-  search(term: String!): Search
-  trending_artists(method: String = "fetch", name: TrendingMetrics!, size: Int = 40, double_time_period: Boolean = false): TrendingArtists
+
+  # A Sale
+  sale(
+    # The slug or ID of the Sale
+    id: String!
+  ): Sale
+
+  # A list of Sales
+  sales(
+    size: Int
+
+    # Limit by auction.
+    is_auction: Boolean = true
+
+    # Limit by published status.
+    published: Boolean = true
+
+    # Limit by live status.
+    live: Boolean = true
+    sort: SaleSorts
+  ): [Sale]
+
+  # A Sale Artwork
+  sale_artwork(
+    # The slug or ID of the SaleArtwork
+    id: String!
+  ): SaleArtwork
+
+  # A Search
+  search(
+    # Your search term
+    term: String!
+  ): Search
+
+  # A Show
+  show(
+    # The slug or ID of the Show
+    id: String!
+  ): Show
+
+  # Trending artists
+  trending_artists(
+    # Trending method
+    method: String = "fetch"
+
+    # Trending metric name
+    name: TrendingMetrics!
+
+    # Number of results to return
+    size: Int = 40
+
+    # Fetch the top artists for each metric within double the base time period
+    double_time_period: Boolean = false
+  ): TrendingArtists
   me: Me
-  causality_jwt(sale_id: String!, role: Role): String
+
+  # Creates, and authorizes, a JWT custom for Causality
+  causality_jwt(
+    # The id of the auction to participate in
+    sale_id: String!
+    role: Role
+  ): String
 }
 
 type Sale {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   name: String
@@ -1325,7 +2387,7 @@ type Sale {
   is_live_open: Boolean
   is_closed: Boolean
   is_with_buyers_premium: Boolean
-  auction_state: String
+  auction_state: String @deprecated(reason: "Favor `status` for consistency with other models")
   status: String
   registration_ends_at(format: String, timezone: String, convert_to_utc: Boolean): String
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
@@ -1335,28 +2397,50 @@ type Sale {
   event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
-  artworks(page: Int = 1, size: Int = 25, all: Boolean = false, exclude: [String]): [Artwork]
+  artworks(
+    page: Int = 1
+    size: Int = 25
+    all: Boolean = false
+
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+  ): [Artwork]
   cover_image: Image
   sale_artwork(id: String!): SaleArtwork
   profile: Profile
+
+  # A bid increment policy that explains minimum bids in ranges.
   bid_increments: [BidIncrement]
+
+  # Auction's buyer's premium policy.
   buyers_premium: [BuyersPremium]
 }
 
 type SaleArtwork {
+  # A globally unique ID.
   __id: ID!
+
+  # A type-specific ID.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
   sale_id: String
   sale: Sale
   position: Int
   lot_number: String
+
+  # Currency abbreviation (e.g. "USD")
   currency: String
+
+  # Currency symbol (e.g. "$")
   symbol: String
   reserve_status: String
   is_with_reserve: Boolean
   is_bid_on: Boolean
+
+  # Can bids be placed on the artwork?
   is_biddable: Boolean
   reserve_message: String
   reserve: SaleArtworkReserve
@@ -1369,62 +2453,154 @@ type SaleArtwork {
   artwork: Artwork
   estimate: String
   counts: SaleArtworkCounts
-  low_estimate_cents: Int
-  high_estimate_cents: Int
-  opening_bid_cents: Int
-  minimum_next_bid_cents: Int
-  bidder_positions_count: Int
+  low_estimate_cents: Int @deprecated(reason: "Favor `low_estimate`")
+  high_estimate_cents: Int @deprecated(reason: "Favor `high_estimate")
+  opening_bid_cents: Int @deprecated(reason: "Favor `opening_bid`")
+  minimum_next_bid_cents: Int @deprecated(reason: "Favor `minimum_next_bid`")
+  bidder_positions_count: Int @deprecated(reason: "Favor `counts.bidder_positions`")
   bid_increments: [Int]
 }
 
 type SaleArtworkCounts {
-  bidder_positions(format: String, label: String): FormattedNumber
+  bidder_positions(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
 }
 
 type SaleArtworkCurrentBid {
+  # An amount of money expressed in cents.
   cents: Int
+
+  # A pre-formatted price.
   display: String
-  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+
+  # A formatted price with various currency formatting options.
+  amount(
+    symbol: String
+    thousand: String = ","
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+  ): String
 }
 
 type SaleArtworkHighestBid {
   id: ID
   created_at(format: String, timezone: String, convert_to_utc: Boolean): String
   is_cancelled: Boolean
-  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+
+  # A formatted price with various currency formatting options.
+  amount(
+    symbol: String
+    thousand: String = ","
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+  ): String
   cents: Int
   display: String
-  amount_cents: Int
+  amount_cents: Int @deprecated(reason: "Favor `cents`")
 }
 
 type SaleArtworkHighEstimate {
+  # An amount of money expressed in cents.
   cents: Int
+
+  # A pre-formatted price.
   display: String
-  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+
+  # A formatted price with various currency formatting options.
+  amount(
+    symbol: String
+    thousand: String = ","
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+  ): String
 }
 
 type SaleArtworkLowEstimate {
+  # An amount of money expressed in cents.
   cents: Int
+
+  # A pre-formatted price.
   display: String
-  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+
+  # A formatted price with various currency formatting options.
+  amount(
+    symbol: String
+    thousand: String = ","
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+  ): String
 }
 
 type SaleArtworkMinimumNextBid {
+  # An amount of money expressed in cents.
   cents: Int
+
+  # A pre-formatted price.
   display: String
-  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+
+  # A formatted price with various currency formatting options.
+  amount(
+    symbol: String
+    thousand: String = ","
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+  ): String
 }
 
 type SaleArtworkOpeningBid {
+  # An amount of money expressed in cents.
   cents: Int
+
+  # A pre-formatted price.
   display: String
-  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+
+  # A formatted price with various currency formatting options.
+  amount(
+    symbol: String
+    thousand: String = ","
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+  ): String
 }
 
 type SaleArtworkReserve {
+  # An amount of money expressed in cents.
   cents: Int
+
+  # A pre-formatted price.
   display: String
-  amount(symbol: String, thousand: String = ",", decimal: String = ".", format: String = "%s%v", precision: Int = 0): String
+
+  # A formatted price with various currency formatting options.
+  amount(
+    symbol: String
+    thousand: String = ","
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+  ): String
 }
 
 type SaleRegistration {
@@ -1466,11 +2642,93 @@ type SearchResult {
   entity: SearchEntity
 }
 
+type Show implements Node {
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+
+  # A type-specific Gravity Mongo Document ID.
+  _id: String!
+  cached: Int
+  href: String
+  kind: String
+
+  # The exhibition title
+  name: String
+  description: String
+  type: String
+  displayable: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
+
+  # Gravity doesn’t expose the `active` flag. Temporarily re-state its logic.
+  is_active: Boolean
+  is_displayable: Boolean
+  is_fair_booth: Boolean
+  press_release(format: Format): String
+  start_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+
+  # A formatted description of the start to end dates
+  exhibition_period: String
+  artists: [Artist]
+  artists_without_artworks: [Artist]
+  partner: PartnerTypes
+  fair: Fair
+  location: Location
+  city: String
+  status: String
+
+  # A formatted update on upcoming status changes
+  status_update(
+    # Before this many days no update will be generated
+    max_days: Int
+  ): String
+  events: [PartnerShowEventType]
+  counts: ShowCounts
+  artworks(
+    # Number of artworks to return
+    size: Int = 25
+    published: Boolean = true
+    page: Int = 1
+    all: Boolean
+    for_sale: Boolean
+
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+  ): [Artwork]
+  meta_image: Image
+  cover_image: Image
+  images(
+    # Number of images to return
+    size: Int
+
+    # Pass true/false to include cover or not
+    default: Boolean
+    page: Int
+  ): [Image]
+}
+
+type ShowCounts {
+  artworks(
+    # The slug or ID of an artist in the show.
+    artist_id: String
+  ): Int
+  eligible_artworks(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+}
+
 type Status {
   gravity: StatusGravity
+
+  # Metaphysics ping
   ping: Boolean
 }
 
+# Gravity ping
 type StatusGravity {
   ping: Boolean
 }
@@ -1480,10 +2738,21 @@ type TrendingArtists {
 }
 
 enum TrendingMetrics {
+  # Base time period: 2 weeks
   ARTIST_FOLLOW
+
+  # Base time period: 1 month
   ARTIST_INQUIRY
+
+  # Base time period: 2 weeks
   ARTIST_SEARCH
+
+  # Base time period: 1 month
   ARTIST_SAVE
+
+  # Number of artworks in fairs. Base time period: 12 weeks.
   ARTIST_FAIR
+
+  # Cumulative price achieved at auction. Base time period: 12 weeks
   ARTIST_AUCTION_LOT
 }
