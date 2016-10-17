@@ -63,6 +63,7 @@ extern NSString *const ARRelatedArtistsURL;
 extern NSString *const ARRelatedGeneURLFormat;
 extern NSString *const ARPopularArtistsURL;
 extern NSString *const ARNotificationsURL;
+extern NSString *const ARWorksByArtistsYouFollowURL;
 
 extern NSString *const ARGeneArtworksURL;
 extern NSString *const ARGeneInformationURLFormat;
