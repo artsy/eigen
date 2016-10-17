@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSIndexPath *selectedRowToReplace;
 @property (nonatomic, strong, readwrite) NSMutableArray *searchResults;
 @property (nonatomic, strong) UILabel *noResultsLabel;
+@property (nonatomic, assign) BOOL loadedInitialResults;
 
 @end
 
@@ -28,6 +29,7 @@
     self = [super init];
     if (self) {
         _searchResults = [NSMutableArray array];
+        _loadedInitialResults = NO;
     }
 
     return self;
@@ -55,6 +57,8 @@
                replaceContents:(ARSearchResultsReplaceContents)replaceStyle
                       animated:(BOOL)animated
 {
+    self.loadedInitialResults = YES;
+
     switch (replaceStyle) {
         case ARSearchResultsReplaceSingle:
             if (searchResults[0]) {
@@ -100,7 +104,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.searchResults.count == 0) {
-        self.noResultsLabel.hidden = NO;
+        BOOL resultsNotYetLoaded = (self.loadedInitialResults == NO);
+        self.noResultsLabel.hidden = resultsNotYetLoaded;
     } else {
         self.noResultsLabel.hidden = YES;
     }
