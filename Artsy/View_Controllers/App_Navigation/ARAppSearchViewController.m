@@ -17,6 +17,7 @@
 #import "ARTopMenuViewController.h"
 #import "UIViewController+TopMenuViewController.h"
 #import "AROptions.h"
+#import "ARFonts.h"
 
 #import <Emission/ARArtistComponentViewController.h>
 #import <FXBlurView/FXBlurView.h>
@@ -65,8 +66,8 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
     self.textField.clipsToBounds = NO;
     [clearButton ar_extendHitTestSizeByWidth:6 andHeight:16];
     [clearButton alignTrailingEdgeWithView:self.textField predicate:@"0"];
-    [clearButton constrainHeightToView:self.textField predicate:@"0"];
-    [clearButton alignCenterYWithView:self.textField predicate:@"-2"];
+    [clearButton constrainHeightToView:self.textField predicate:@"-2"];
+    [clearButton alignCenterYWithView:self.textField predicate:@"0"];
     [clearButton alignAttribute:NSLayoutAttributeWidth toAttribute:NSLayoutAttributeHeight ofView:clearButton predicate:@"0"];
     [clearButton addTarget:self action:@selector(clearTapped:) forControlEvents:UIControlEventTouchUpInside];
     clearButton.hidden = YES;
@@ -78,12 +79,14 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
     // a bottom border
     UIView *bottomBorder = [[UIView alloc] init];
     bottomBorder.backgroundColor = [UIColor whiteColor];
+    bottomBorder.opaque = NO;
+    bottomBorder.layer.opacity = 0.2f;
     [self.view addSubview:bottomBorder];
     _bottomBorder = bottomBorder;
     [bottomBorder constrainHeight:@"1"];
     [bottomBorder alignLeadingEdgeWithView:self.searchIcon predicate:@"-2"];
     [bottomBorder alignTrailingEdgeWithView:self.textField predicate:@"2"];
-    [bottomBorder constrainTopSpaceToView:self.searchBoxView predicate:@"2"];
+    [bottomBorder constrainTopSpaceToView:self.searchBoxView predicate:@"14"];
 }
 
 - (void)clearTapped:(id)sender

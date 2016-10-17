@@ -78,9 +78,9 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DRKonamiCode (1.1.0)
   - EDColor (1.0.0)
-  - Emission (1.1.0-beta.3):
+  - Emission (1.1.0-beta.5):
     - Artsy+UIFonts (>= 1.1.0)
-    - Extraction (>= 1.2.0)
+    - Extraction (>= 1.2.1)
     - React/Core (= 0.34.1)
     - React/RCTImage (= 0.34.1)
     - React/RCTNetwork (= 0.34.1)
@@ -91,28 +91,28 @@ PODS:
     - Expecta (~> 1.0)
     - FBSnapshotTestCase/Core (~> 2.0)
     - Specta (~> 1.0)
-  - Extraction (1.2.0):
-    - Extraction/ARAnimationContinuation (= 1.2.0)
-    - Extraction/ARLoadFailureView (= 1.2.0)
-    - Extraction/ARSpinner (= 1.2.0)
-    - Extraction/ARSwitchView (= 1.2.0)
-    - Extraction/UILabel+Typography (= 1.2.0)
-    - Extraction/UIView+ARSpinner (= 1.2.0)
-  - Extraction/ARAnimationContinuation (1.2.0)
-  - Extraction/ARLoadFailureView (1.2.0):
+  - Extraction (1.2.1):
+    - Extraction/ARAnimationContinuation (= 1.2.1)
+    - Extraction/ARLoadFailureView (= 1.2.1)
+    - Extraction/ARSpinner (= 1.2.1)
+    - Extraction/ARSwitchView (= 1.2.1)
+    - Extraction/UILabel+Typography (= 1.2.1)
+    - Extraction/UIView+ARSpinner (= 1.2.1)
+  - Extraction/ARAnimationContinuation (1.2.1)
+  - Extraction/ARLoadFailureView (1.2.1):
     - Artsy-UIButtons
     - Extraction/UILabel+Typography
     - ORStackView (< 3)
-  - Extraction/ARSpinner (1.2.0):
+  - Extraction/ARSpinner (1.2.1):
     - Extraction/UIView+ARSpinner
     - UIView+BooleanAnimations
-  - Extraction/ARSwitchView (1.2.0):
+  - Extraction/ARSwitchView (1.2.1):
     - Artsy+UIColors
     - Artsy+UIFonts (>= 1.1.0)
     - FLKAutoLayout
     - UIView+BooleanAnimations
-  - Extraction/UILabel+Typography (1.2.0)
-  - Extraction/UIView+ARSpinner (1.2.0):
+  - Extraction/UILabel+Typography (1.2.1)
+  - Extraction/UIView+ARSpinner (1.2.1):
     - Extraction/ARAnimationContinuation
   - FBSDKCoreKit (4.10.1):
     - Bolts (~> 1.5)
@@ -216,7 +216,7 @@ DEPENDENCIES:
   - DHCShakeNotifier
   - DRKonamiCode
   - EDColor
-  - Emission (~> 1.1.0-beta.3)
+  - Emission (~> 1.1.0-beta.5)
   - Expecta
   - Expecta+Snapshots
   - Extraction
@@ -384,10 +384,10 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 114150358dd25253e63b77ba07859c6ed2ee49d3
+  Emission: 9745f8b2a9a40ce4ed7e02b8b5c9f6500525e44f
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
-  Extraction: fa0b2384907cb1842b07236fc5c2014e26bc0e51
+  Extraction: e1b194982c2cdea996512a9c03a72a5410991282
   FBSDKCoreKit: d2aaed5e9ab7d8d6301c533376a1fbff1cf3deb5
   FBSDKLoginKit: 699ff169080e3072de4b9b0faca90bf23dc36deb
   FBSnapshotTestCase: 68c3221ddd3bf5bbe783c1015f8acc12c3768a4d
@@ -433,6 +433,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: 66f82dbc25fb5db863feaffe5b6d048648cff8ab
+PODFILE CHECKSUM: 59e837dc3591224493c147e6936e2ca701bce44c
 
 COCOAPODS: 1.0.1
