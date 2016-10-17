@@ -511,17 +511,14 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newArtworksForYouRequestWithID:(NSString *)userID page:(NSInteger)page
 {
-    //    NSDictionary *params = @{
-    //        @"since" : @30,
-    //        @"page" : @(page),
-    //        @"sort" : @"published_at",
-    //        @"type" : @"ArtworkPublished",
-    //        @"for_sale" : @YES,
-    //        @"user_id" : userID ?: @"",
-    //    };
-
-    //    return [self requestWithMethod:@"GET" path:ARNotificationsURL parameters:params];
-    return [self requestWithMethod:@"GET" path:ARWorksByArtistsYouFollowURL parameters:nil];
+    NSDictionary *params = @{
+        @"since" : @30,
+        @"page" : @(page),
+        @"sort" : @"-published_at",
+        @"type" : @"ArtworkPublished",
+        @"for_sale" : @YES,
+    };
+    return [self requestWithMethod:@"GET" path:ARWorksByArtistsYouFollowURL parameters:params];
 }
 
 + (NSURLRequest *)createBidderPositionsForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID maxBidAmountCents:(NSInteger)maxBidAmountCents
