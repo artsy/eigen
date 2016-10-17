@@ -7,6 +7,7 @@ upcoming:
     user_facing:
       - Everybody is now required to sign-in - maxim
       - New on-boarding - maxim
+      - Fixed problem with blank gene images during onboarding - ash
       - New home view - sarah, maxim, alloy
       - Updated Filter View Controller - orta
       - Fixes video embedded in articles not playing inline on iOS 10 - alloy

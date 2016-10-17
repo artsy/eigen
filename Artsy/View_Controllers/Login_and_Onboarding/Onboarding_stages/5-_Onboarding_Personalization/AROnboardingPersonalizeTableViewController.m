@@ -6,6 +6,7 @@
 #import "Gene.h"
 #import "ARFollowable.h"
 #import "UIImageView+AsyncImageLoading.h"
+#import "AROnboardingPersonalizationGeneImageStateReconciler.h"
 
 #import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -14,6 +15,7 @@
 @interface AROnboardingPersonalizeTableViewController ()
 
 @property (nonatomic, assign) BOOL shouldAnimate;
+@property (nonatomic, strong) AROnboardingPersonalizationGeneImageStateReconciler *geneImageReconciler;
 @property (nonatomic, strong) NSIndexPath *selectedRowToReplace;
 @property (nonatomic, strong, readwrite) NSMutableArray *searchResults;
 @property (nonatomic, strong) UILabel *noResultsLabel;
@@ -27,6 +29,7 @@
 {
     self = [super init];
     if (self) {
+        _geneImageReconciler = [AROnboardingPersonalizationGeneImageStateReconciler new];
         _searchResults = [NSMutableArray array];
     }
 
@@ -63,9 +66,11 @@
                 [self.searchResults removeObjectAtIndex:self.tableView.indexPathForSelectedRow.row];
             }
             self.selectedRowToReplace = self.tableView.indexPathForSelectedRow;
+            [self.geneImageReconciler addReplacedGene:self.selectedRowToReplace];
 
             break;
         case ARSearchResultsReplaceAll:
+            [self.geneImageReconciler reset];
             self.searchResults = searchResults.mutableCopy;
             break;
         default:
@@ -219,7 +224,13 @@
     } else if ([result isKindOfClass:[Gene class]]) {
         Gene *gene = (Gene *)result;
         cell.title.text = gene.name;
-        NSURL *geneImageURL = self.contentDisplayMode == ARTableViewContentDisplayModePlaceholder ? gene.onboardingImageURL : gene.smallImageURL;
+
+        NSURL *geneImageURL;
+        if (self.contentDisplayMode == ARTableViewContentDisplayModePlaceholder) {
+            geneImageURL = [self.geneImageReconciler imageURLForGene:gene atIndexPath:indexPath];
+        } else {
+            geneImageURL = gene.smallImageURL;
+        }
         [cell.thumbnail ar_setImageWithURL:geneImageURL];
     }
     cell.thumbnail.backgroundColor = [UIColor purpleColor];
