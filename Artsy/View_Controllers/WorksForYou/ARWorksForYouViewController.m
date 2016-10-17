@@ -119,7 +119,7 @@ static int ARLoadingIndicatorView = 1;
     [emptyStateView addSubview:self.emptyStateSeparator withTopMargin:@"0" sideMargin:@"40"];
 
     UILabel *mainEmptyStateLabel = [[ARSerifLabel alloc] init];
-    mainEmptyStateLabel.text = @"Works by Artists You Follow";
+    mainEmptyStateLabel.text = @"You're not following any artists yet";
     mainEmptyStateLabel.textAlignment = NSTextAlignmentCenter;
     mainEmptyStateLabel.font = [UIFont serifFontWithSize:20];
     [emptyStateView addSubview:mainEmptyStateLabel withTopMargin:@"30" sideMargin:@"0"];
@@ -127,7 +127,7 @@ static int ARLoadingIndicatorView = 1;
     UILabel *secondaryEmptyStateLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:5];
     secondaryEmptyStateLabel.font = [UIFont serifFontWithSize:16];
     secondaryEmptyStateLabel.textAlignment = NSTextAlignmentCenter;
-    secondaryEmptyStateLabel.text = @"Get updates about new works that become available";
+    secondaryEmptyStateLabel.text = @"Follow artists to get updates about new works that become available";
     secondaryEmptyStateLabel.textColor = [UIColor artsyGraySemibold];
     secondaryEmptyStateLabel.numberOfLines = 2;
     [emptyStateView addSubview:secondaryEmptyStateLabel withTopMargin:@"10" sideMargin:@"30"];
