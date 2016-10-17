@@ -16,7 +16,7 @@ SpecBegin(ARWorksForYouReloadingHostViewController);
 __block ARWorksForYouReloadingHostViewController *hostViewController;
 
 beforeEach(^{
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/notifications" withResponse:@{}];
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/follow/artists/artworks" withResponse:@{}];
 
     ARStubbedWorksForYouNetworkModel *networkModel = [ARStubbedWorksForYouNetworkModel new];
     [networkModel stubNotificationItemWithNumberOfArtworks:2];
