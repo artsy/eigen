@@ -321,6 +321,8 @@
 		5E6A16931C98A914004DB29B /* LiveAuctionStateManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6A16921C98A914004DB29B /* LiveAuctionStateManagerSpec.swift */; };
 		5E6BA6E91C56B5D700B942C1 /* CircularCancelButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6BA6E71C56B5D700B942C1 /* CircularCancelButton@2x.png */; };
 		5E6BA6EA1C56B5D700B942C1 /* CircularCancelButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6BA6E81C56B5D700B942C1 /* CircularCancelButton.png */; };
+		5E6CBB011DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E6CBB001DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m */; };
+		5E6CBB031DB54BC000988CDF /* AROnboardingPersonalizationGeneImageStateReconcilerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E6CBB021DB54BC000988CDF /* AROnboardingPersonalizationGeneImageStateReconcilerTests.m */; };
 		5E71AFC7195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E71AFC6195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m */; };
 		5E73C93A1C6933FA00496C7C /* AuctionTitleViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E73C9391C6933FA00496C7C /* AuctionTitleViewTests.swift */; };
 		5E7598061D9D92F60084AAEC /* LiveAuctionLotBidHistoryGestureControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7598041D9D92F20084AAEC /* LiveAuctionLotBidHistoryGestureControllerTests.swift */; };
@@ -1309,6 +1311,9 @@
 		5E6A16921C98A914004DB29B /* LiveAuctionStateManagerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionStateManagerSpec.swift; path = ../../Artsy/View_Controllers/Live_Auctions/LiveAuctionStateManagerSpec.swift; sourceTree = "<group>"; };
 		5E6BA6E71C56B5D700B942C1 /* CircularCancelButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CircularCancelButton@2x.png"; sourceTree = "<group>"; };
 		5E6BA6E81C56B5D700B942C1 /* CircularCancelButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CircularCancelButton.png; sourceTree = "<group>"; };
+		5E6CBAFF1DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingPersonalizationGeneImageStateReconciler.h; sourceTree = "<group>"; };
+		5E6CBB001DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingPersonalizationGeneImageStateReconciler.m; sourceTree = "<group>"; };
+		5E6CBB021DB54BC000988CDF /* AROnboardingPersonalizationGeneImageStateReconcilerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingPersonalizationGeneImageStateReconcilerTests.m; sourceTree = "<group>"; };
 		5E71AF231912826B008B1426 /* ARPersonalizeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARPersonalizeViewController.h; sourceTree = "<group>"; };
 		5E71AFC6195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairGuideContainerViewControllerTests.m; sourceTree = "<group>"; };
 		5E73C9391C6933FA00496C7C /* AuctionTitleViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionTitleViewTests.swift; path = Auctions/AuctionTitleViewTests.swift; sourceTree = "<group>"; };
@@ -2697,6 +2702,7 @@
 				3CB97D8E1887099E008C44FE /* ARLoginViewControllerTests.m */,
 				3CF144B718E9E00400B1A764 /* ARSignUpSplashViewControllerTests.m */,
 				60D7FB721AC35F5600F5043A /* ARPersonalizeWebViewControllerTests.m */,
+				5E6CBB021DB54BC000988CDF /* AROnboardingPersonalizationGeneImageStateReconcilerTests.m */,
 			);
 			name = "Login and Onboarding";
 			path = Login_and_Onboarding;
@@ -3280,6 +3286,8 @@
 				1CC9EB961CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m */,
 				CB206F6F17C3FA8F00A4FDC4 /* ARPriceRangeViewController.h */,
 				CB206F7017C3FA8F00A4FDC4 /* ARPriceRangeViewController.m */,
+				5E6CBAFF1DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.h */,
+				5E6CBB001DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m */,
 			);
 			name = "Onboarding Personalization";
 			path = "5-_Onboarding_Personalization";
@@ -5670,6 +5678,7 @@
 				607E2E8717C8E87E00396120 /* ARArtworkPreviewImageView.m in Sources */,
 				E61446AC195A1CDC00BFB7C3 /* ARArtistFavoritesNetworkModel.m in Sources */,
 				3C6CB61018ABFB8D008DFE3B /* ARRelatedArtistsViewController.m in Sources */,
+				5E6CBB011DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m in Sources */,
 				3C35CC7B189FF05E00E3D8DE /* OrderedSet.m in Sources */,
 				5E5B841F1C52DEC40005CBC7 /* AuctionOrdering.swift in Sources */,
 				60903CC4175CE21A002AB800 /* AROptions.m in Sources */,
@@ -5975,6 +5984,7 @@
 				3CBB03A8192BA94C00689F89 /* ARFairArtistViewControllerTests.m in Sources */,
 				3CF144B618E4802400B1A764 /* ARSystemTimeTests.m in Sources */,
 				60D7FB731AC35F5600F5043A /* ARPersonalizeWebViewControllerTests.m in Sources */,
+				5E6CBB031DB54BC000988CDF /* AROnboardingPersonalizationGeneImageStateReconcilerTests.m in Sources */,
 				5E7598061D9D92F60084AAEC /* LiveAuctionLotBidHistoryGestureControllerTests.swift in Sources */,
 				E6F111A018A2A7CB00D33C3E /* ARBrowseFeaturedLinksCollectionViewControllerTests.m in Sources */,
 				3C7A7FA718C6EDAB00E8D336 /* ArtworkTests.m in Sources */,
