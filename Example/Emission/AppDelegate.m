@@ -195,9 +195,14 @@ randomBOOL(void)
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
 
-  } else if ([route hasPrefix:@"/gene/"]) {
-    NSString *geneID = [[route componentsSeparatedByString:@"/"] lastObject];
-    viewController = [[ARGeneComponentViewController alloc] initWithGeneID:geneID];
+  } else if ([route hasPrefix:@"/gene/"] || [route hasPrefix:@"gene/"]) {
+    NSString *geneID = [[[[route componentsSeparatedByString:@"/"] lastObject] componentsSeparatedByString:@"?"] firstObject];
+    NSURLComponents *components = [NSURLComponents componentsWithString:route];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    for ( NSURLQueryItem *item in components.queryItems) {
+      params[item.name] = item.value;
+    }
+    viewController = [[ARGeneComponentViewController alloc] initWithGeneID:geneID refineSettings:params];
 
   } else if ([route isEqualToString:@"/"]) {
     viewController = [[ARHomeComponentViewController alloc] init];
