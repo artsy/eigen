@@ -10,7 +10,6 @@
     ARArtworkInfoViewController,
     ARAuctionArtworkResultsViewController,
     ARFairMapViewController,
-    ARGeneViewController,
     ARUserSettingsViewController,
     ARAuctionWebViewController,
     ARFairGuideContainerViewController,
@@ -58,8 +57,9 @@
 - (UIViewController *)loadProfileWithID:(NSString *)profileID;
 
 /// Load a Gene
-- (ARGeneViewController *)loadGene:(Gene *)gene;
-- (ARGeneViewController *)loadGeneWithID:(NSString *)geneID;
+- (UIViewController *)loadGene:(Gene *)gene;
+- (UIViewController *)loadGeneWithID:(NSString *)geneID;
+- (UIViewController *)loadGeneWithID:(NSString *)geneID refineParams:(NSDictionary *)params;
 
 /// Load a fair booth
 - (ARShowViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair;
