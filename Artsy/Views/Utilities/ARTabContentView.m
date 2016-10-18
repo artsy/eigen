@@ -2,6 +2,7 @@
 
 #import "ARDispatchManager.h"
 #import "ARNavigationController.h"
+#import "UIView+HitTestExpansion.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -63,6 +64,7 @@ static BOOL ARTabViewDirectionRight = YES;
     [self.buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
         button.enabled = [self.dataSource tabContentView:self canPresentViewControllerAtIndex:index];
         [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [button ar_extendHitTestSizeByWidth:10 andHeight:20];
     }];
 }
 
