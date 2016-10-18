@@ -52,6 +52,10 @@
     }
 
     ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] init];
+
+    // Necessary to ensure UIKit doesn't automagically throw off our top margins
+    homeVC.automaticallyAdjustsScrollViewInsets = NO;
+
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
 
     _browseViewController = [[ARBrowseViewController alloc] init];

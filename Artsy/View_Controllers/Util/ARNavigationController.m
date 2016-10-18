@@ -15,6 +15,7 @@
 #import "ARTopMenuViewController.h"
 #import "ARScrollNavigationChief.h"
 
+
 #import "ARMacros.h"
 #import "UIDevice-Hardware.h"
 
@@ -24,12 +25,15 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <MultiDelegate/AIMultiDelegate.h>
+#import <Emission/ARHomeComponentViewController.h>
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
 static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationControllerMenuAwareScrollViewContext;
 
 @protocol ARMenuAwareViewController;
+
+@class ARHomeComponentViewController;
 
 
 @interface ARNavigationController () <UINavigationControllerDelegate, UIGestureRecognizerDelegate>
@@ -179,6 +183,17 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    // If it's the Home view, the background of the status bar should be slightly transparent
+    BOOL isHomeVC = [viewController isKindOfClass:ARHomeComponentViewController.class];
+    BOOL isSearch = [viewController isKindOfClass:ARAppSearchViewController.class];
+
+    if (!isSearch) {
+        self.statusBarView.backgroundColor = isHomeVC ? UIColor.whiteColor : UIColor.blackColor;
+        NSInteger statusBarStyle = isHomeVC ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
+        [[UIApplication sharedApplication] setStatusBarStyle:statusBarStyle animated:animated];
+    }
+
+
     // If it is a non-interactive transition, we fade the buttons in or out
     // ourselves. Otherwise, we'll leave it to the interactive transition.
     if (self.interactiveTransitionHandler == nil) {
@@ -304,16 +319,13 @@ ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
 - (void)showStatusBar:(BOOL)visible animated:(BOOL)animated
 {
     if (animated) {
-        [[UIApplication sharedApplication] setStatusBarHidden:!visible withAnimation:UIStatusBarAnimationSlide];
+        [[UIApplication sharedApplication] setStatusBarHidden:!visible withAnimation:UIStatusBarAnimationFade];
     } else {
         [[UIApplication sharedApplication] setStatusBarHidden:!visible withAnimation:UIStatusBarAnimationNone];
     }
 
-    [UIView animateIf:animated duration:ARAnimationDuration:^{
-        self.statusBarVerticalConstraint.constant = visible ? 20 : 0;
-
-        if (animated) [self.view layoutIfNeeded];
-    }];
+    self.statusBarVerticalConstraint.constant = visible ? 20 : 0;
+    [self.view layoutIfNeeded];
 }
 
 - (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated
@@ -348,6 +360,9 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 
 - (BOOL)shouldShowStatusBarBackgroundForViewController:(UIViewController *)viewController
 {
+    if ([viewController isKindOfClass:ARAppSearchViewController.class]) {
+        return NO;
+    }
     return !ShouldHideItem(viewController, @selector(hidesStatusBarBackground), NULL);
 }
 
