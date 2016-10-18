@@ -4,6 +4,7 @@ upcoming:
     dev:
       infrastructure:
         - Removed background fetch related code - alloy
+        - Fixed problem with "no results" label glashing during onboarding - ash
     user_facing:
       - Everybody is now required to sign-in - maxim
       - New on-boarding - maxim
