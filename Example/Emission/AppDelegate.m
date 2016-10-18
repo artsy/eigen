@@ -14,6 +14,7 @@
 #import "ARStorybookComponentViewController.h"
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
+#import <Emission/ARGeneComponentViewController.h>
 
 #import <React/RCTUtils.h>
 #import <TargetConditionals.h>
@@ -193,6 +194,10 @@ randomBOOL(void)
   if ([route hasPrefix:@"/artist/"]) {
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
+
+  } else if ([route hasPrefix:@"/gene/"]) {
+    NSString *geneID = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARGeneComponentViewController alloc] initWithGeneID:geneID];
 
   } else if ([route isEqualToString:@"/"]) {
     viewController = [[ARHomeComponentViewController alloc] init];
