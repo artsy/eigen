@@ -4,7 +4,8 @@
 
 - (instancetype)initWithGeneID:(NSString *)geneID;
 {
-    return [self initWithGeneID:geneID refineSettings:@{} emission:nil];
+    // Use the metaphysics defaults for a nil refineSetting
+    return [self initWithGeneID:geneID refineSettings:@{ @"medium": @"*", @"price_range": @"*-*" } emission:nil];
 }
 
 - (instancetype)initWithGeneID:(NSString *)geneID refineSettings:(nonnull NSDictionary *)settings;
