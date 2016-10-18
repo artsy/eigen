@@ -1,3 +1,7 @@
+### Master
+
+- Fix crash that would occur for artworks that have no artists - alloy
+
 ### 1.1.0-beta.5
 
 - Fix use of outdated artist follow API that lead to a crash - alloy
