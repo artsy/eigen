@@ -33,7 +33,7 @@ Amend Eigen's Podfile to
   pod 'React', :subspecs => %w(RCTWebSocket)
 ```
 
-Then run `bundle exec pod update Emission React/Core` to update them.
+Then run `bundle exec pod update Emission Extraction React/Core --no-repo-update` to update them.
 
 Your local Emission should be usable inside Eigen.
 
