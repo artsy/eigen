@@ -2,6 +2,7 @@
 
 #import "ArtsyAPI+Search.h"
 #import "ARFonts.h"
+#import "ARTopMenuViewController.h"
 #import "ARSearchViewController+Private.h"
 #import "Fair.h"
 #import "Partner.h"
@@ -58,6 +59,12 @@
     [self.view alignTopEdgeWithView:searchBox predicate:@"-10"];
 
     [searchBox alignCenterYWithView:self.searchBoxView predicate:@"0"];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+
+    [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:NO animated:YES];
 }
 
 - (void)fetchSearchResults:(NSString *)text replace:(BOOL)replaceResults
@@ -128,11 +135,16 @@
 - (void)closeSearch:(id)sender
 {
     [super closeSearch:sender];
+    [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:YES animated:YES];
     if ([self.delegate respondsToSelector:@selector(cancelledSearch:)]) {
         [self.delegate cancelledSearch:self];
     } else {
         [self clearSearchAnimated:YES];
     }
+}
+
+- (ARSearchViewControllerStylingMode)searchPresentationMode {
+    return ARSearchViewControllerStylingModeFair;
 }
 
 @end
