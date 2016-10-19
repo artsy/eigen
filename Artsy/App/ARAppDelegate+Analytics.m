@@ -889,7 +889,7 @@
                                 Gene *gene = params.firstObject;
                                 NSString *sourceScreen = @"";
                                 if (controller.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModePlaceholder) {
-                                    sourceScreen = @"onboarding top artists";
+                                    sourceScreen = @"onboarding top categories";
                                 } else if (controller.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeSearchResults) {
                                     sourceScreen = @"onboarding search";
                                 } else if (controller.searchResultsTable.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults) {
