@@ -290,8 +290,11 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)setupRatingTool
 {
-    [iRate sharedInstance].promptForNewVersionIfUserRated = NO;
-    [iRate sharedInstance].verboseLogging = NO;
+    BOOL isLoggedIn = [[ARUserManager sharedManager] hasExistingAccount];
+    if (isLoggedIn) {
+        [iRate sharedInstance].promptForNewVersionIfUserRated = NO;
+        [iRate sharedInstance].verboseLogging = NO;
+    }
 }
 
 - (BOOL)application:(UIApplication *)application
