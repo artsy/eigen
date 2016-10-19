@@ -189,6 +189,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
     if (!isSearch) {
         self.statusBarView.backgroundColor = isHomeVC ? UIColor.whiteColor : UIColor.blackColor;
+        self.statusBarView.layer.opacity = 0.98;
         NSInteger statusBarStyle = isHomeVC ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
         [[UIApplication sharedApplication] setStatusBarStyle:statusBarStyle animated:animated];
     }
@@ -330,9 +331,9 @@ ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
 
 - (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated
 {
-    [UIView animateIf:animated duration:ARAnimationDuration:^{
-        self.statusBarView.alpha = visible ? 1 : 0;
-    }];
+    //    [UIView animateIf:animated duration:ARAnimationDuration:^{
+    //        self.statusBarView.alpha = visible ? 1 : 0;
+    //    }];
 }
 
 static BOOL
@@ -360,9 +361,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 
 - (BOOL)shouldShowStatusBarBackgroundForViewController:(UIViewController *)viewController
 {
-    if ([viewController isKindOfClass:ARAppSearchViewController.class]) {
-        return NO;
-    }
     return !ShouldHideItem(viewController, @selector(hidesStatusBarBackground), NULL);
 }
 
