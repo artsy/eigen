@@ -29,7 +29,7 @@
 /////////////////
 
 
-@interface ARBrowseViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface ARBrowseViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, ARMenuAwareViewController>
 @property (nonatomic, strong, readonly) NSArray *menuLinks;
 @end
 
@@ -45,6 +45,11 @@
     [self.collectionView registerClass:[ARBrowseViewCell class] forCellWithReuseIdentifier:[ARBrowseViewCell reuseID]];
 
     [super viewDidLoad];
+}
+
+- (UIScrollView *)menuAwareScrollView
+{
+    return self.collectionView;
 }
 
 - (void)viewDidAppear:(BOOL)animated
