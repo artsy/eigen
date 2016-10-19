@@ -13,6 +13,7 @@
                            moduleName:@"Artist"
                     initialProperties:@{ @"artistID": artistID }])) {
     _artistID = artistID;
+    self.automaticallyAdjustsScrollViewInsets = NO;
   }
   return self;
 }
