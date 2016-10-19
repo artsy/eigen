@@ -189,7 +189,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
     if (!isSearch) {
         self.statusBarView.backgroundColor = isHomeVC ? UIColor.whiteColor : UIColor.blackColor;
-        self.statusBarView.layer.opacity = 0.98;
+        self.statusBarView.alpha = isHomeVC ? 0.98 : 1;
         NSInteger statusBarStyle = isHomeVC ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
         [[UIApplication sharedApplication] setStatusBarStyle:statusBarStyle animated:animated];
     }
@@ -331,9 +331,10 @@ ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
 
 - (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated
 {
-    //    [UIView animateIf:animated duration:ARAnimationDuration:^{
-    //        self.statusBarView.alpha = visible ? 1 : 0;
-    //    }];
+    // Commenting this out for now; will be part of flashing animation fix
+    //        [UIView animateIf:animated duration:ARAnimationDuration:^{
+    //            self.statusBarView.alpha = visible ? 1 : 0;
+    //        }];
 }
 
 static BOOL

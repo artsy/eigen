@@ -5,27 +5,31 @@
 @import Artsy_UIFonts;
 @import Artsy_UIColors;
 
+
 @implementation ARSearchViewControllerStyling
 
-- (NSString *)topLayoutConstraintForStyleMode:(ARSearchViewControllerStylingMode)styleMode {
+- (NSString *)topLayoutConstraintForStyleMode:(ARSearchViewControllerStylingMode)styleMode
+{
     switch (styleMode) {
         case ARSearchViewControllerStylingModeMainScreen:
-            return @"70";
+            return @"47";
         case ARSearchViewControllerStylingModeFair:
             return @"24";
     }
 }
 
-- (NSString *)searchIconLeadingConstraintForStyleMode:(ARSearchViewControllerStylingMode)styleMode {
+- (NSString *)searchIconLeadingConstraintForStyleMode:(ARSearchViewControllerStylingMode)styleMode
+{
     switch (styleMode) {
         case ARSearchViewControllerStylingModeMainScreen:
-            return @"30";
+            return @"26";
         case ARSearchViewControllerStylingModeFair:
             return @"10";
     }
 }
 
-- (UIColor *)searchIconTintColorForStyleMode:(ARSearchViewControllerStylingMode)styleMode {
+- (UIColor *)searchIconTintColorForStyleMode:(ARSearchViewControllerStylingMode)styleMode
+{
     switch (styleMode) {
         case ARSearchViewControllerStylingModeMainScreen:
             return [UIColor whiteColor];
@@ -34,7 +38,8 @@
     }
 }
 
-- (NSAttributedString *)closeButtonAttribtedTextForStyleMode:(ARSearchViewControllerStylingMode)styleMode {
+- (NSAttributedString *)closeButtonAttribtedTextForStyleMode:(ARSearchViewControllerStylingMode)styleMode
+{
     UIColor *textColor;
 
     switch (styleMode) {
@@ -53,7 +58,8 @@
     }];
 }
 
-- (void)constrainTableView:(UITableView *)tableView toContentView:(UIView *)contentView forStyleMode:(ARSearchViewControllerStylingMode)styleMode {
+- (void)constrainTableView:(UITableView *)tableView toContentView:(UIView *)contentView forStyleMode:(ARSearchViewControllerStylingMode)styleMode
+{
     switch (styleMode) {
         case ARSearchViewControllerStylingModeMainScreen:
             [tableView alignTop:@"10" leading:@"10" bottom:@"0" trailing:@"10" toView:contentView];
