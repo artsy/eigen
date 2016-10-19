@@ -20,12 +20,16 @@
         // This is done to intercept React Native re-setting the background color on ARSwitchView directly.
         _switchView = [ARSwitchView new];
         [self addSubview:_switchView];
-        [_switchView alignToView:self];
-        
         _switchView.delegate = self;
         
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    _switchView.frame = self.bounds;
 }
 
 - (void)setTitles:(NSArray *)titles;
