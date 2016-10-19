@@ -5,10 +5,11 @@ typedef NS_ENUM(NSInteger, ARSearchViewControllerStylingMode) {
     ARSearchViewControllerStylingModeFair
 };
 
+
 @interface ARSearchViewControllerStyling : NSObject
 
 - (NSString *)topLayoutConstraintForStyleMode:(ARSearchViewControllerStylingMode)styleMode;
-- (NSString *)searchIconLeadingConstraintForStyleMode:(ARSearchViewControllerStylingMode)styleMode;
+- (NSString *)searchIconLeadingConstraintForStyleMode:(ARSearchViewControllerStylingMode)styleMode sizeClass:(UIUserInterfaceSizeClass)sizeClass;
 - (UIColor *)searchIconTintColorForStyleMode:(ARSearchViewControllerStylingMode)styleMode;
 - (NSAttributedString *)closeButtonAttribtedTextForStyleMode:(ARSearchViewControllerStylingMode)styleMode;
 - (void)constrainTableView:(UITableView *)tableView toContentView:(UIView *)contentView forStyleMode:(ARSearchViewControllerStylingMode)styleMode;
