@@ -118,7 +118,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     }
 
     UIView *separator = [[UIView alloc] init];
-    [separator constrainHeight:@"0.5"];
+    [separator constrainHeight:@"1"];
     separator.backgroundColor = [UIColor artsyGrayRegular];
     [tabContainer addSubview:separator];
     [separator alignTopEdgeWithView:tabContainer predicate:@"0"];
