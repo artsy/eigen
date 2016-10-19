@@ -47,7 +47,7 @@
     UIView *searchBoxView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:searchBoxView];
     [searchBoxView constrainTopSpaceToView:self.flk_topLayoutGuide
-        predicate:[self.styling topLayoutConstraintForStyleMode:self.searchPresentationMode]];
+                                 predicate:[self.styling topLayoutConstraintForStyleMode:self.searchPresentationMode]];
     [searchBoxView alignLeading:@"10" trailing:@"-10" toView:self.view];
     [searchBoxView constrainHeight:@(self.fontSize).stringValue];
     _searchBoxView = searchBoxView;
@@ -61,7 +61,7 @@
     _searchIcon = searchIcon;
 
     [searchIcon alignLeadingEdgeWithView:searchBoxView
-        predicate:[self.styling searchIconLeadingConstraintForStyleMode:self.searchPresentationMode]];
+                               predicate:[self.styling searchIconLeadingConstraintForStyleMode:self.searchPresentationMode sizeClass:self.traitCollection.horizontalSizeClass]];
     [searchIcon alignAttribute:NSLayoutAttributeWidth toAttribute:NSLayoutAttributeHeight ofView:searchIcon predicate:@"0"];
 
     // input text field
@@ -88,7 +88,7 @@
     [closeButton alignTrailingEdgeWithView:searchBoxView predicate:@"0"];
 
     [closeButton setAttributedTitle:[self.styling closeButtonAttribtedTextForStyleMode:self.searchPresentationMode]
-        forState:UIControlStateNormal];
+                           forState:UIControlStateNormal];
 
     [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     closeButton.contentEdgeInsets = [UIDevice isPad] ? UIEdgeInsetsMake(0, 10, 0, 10) : UIEdgeInsetsMake(0, 0, 0, 0);
@@ -325,7 +325,8 @@
     [self stopSearching];
 }
 
-- (ARSearchViewControllerStylingMode)searchPresentationMode {
+- (ARSearchViewControllerStylingMode)searchPresentationMode
+{
     return ARSearchViewControllerStylingModeMainScreen;
 }
 

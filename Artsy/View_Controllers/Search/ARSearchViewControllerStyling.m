@@ -18,11 +18,13 @@
     }
 }
 
-- (NSString *)searchIconLeadingConstraintForStyleMode:(ARSearchViewControllerStylingMode)styleMode
+- (NSString *)searchIconLeadingConstraintForStyleMode:(ARSearchViewControllerStylingMode)styleMode sizeClass:(UIUserInterfaceSizeClass)sizeClass
 {
+    NSString *mainScreenConstant = (sizeClass == UIUserInterfaceSizeClassRegular) ? @"51" : @"26";
+
     switch (styleMode) {
         case ARSearchViewControllerStylingModeMainScreen:
-            return @"26";
+            return mainScreenConstant;
         case ARSearchViewControllerStylingModeFair:
             return @"10";
     }
