@@ -136,6 +136,11 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
 
     __weak typeof(self) wself = self;
 
+    [self.routes addRoute:@"/artist/:slug/auction-results" priority:0 handler:JLRouteParams {
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"/artist/%@/auction-results", parameters[@"slug"]]];
+        return [[ARInternalMobileWebViewController alloc] initWithURL:url];
+    }];
+
     [self registerEchoRouteForKey:@"ARArtistRoute" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         return [sself loadArtistWithID:parameters[@"id"]];
