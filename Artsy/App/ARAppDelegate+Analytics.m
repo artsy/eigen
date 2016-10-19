@@ -26,7 +26,6 @@
 #import "Profile.h"
 #import "ARFairMapAnnotation.h"
 #import "ARAnalyticsVisualizer.h"
-#import "ARAnalyticsPapertrail.h"
 #import "ARAppNotificationsDelegate.h"
 
 // View Controllers
