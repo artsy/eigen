@@ -416,11 +416,6 @@
 #pragma mark -
 #pragma mark Navigation Delegate
 
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    NSString *viewIdentifier = [NSString humanReadableStringFromClass:[viewController class]];
-    if (viewIdentifier) [ARAnalytics pageView:viewIdentifier];
-}
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                   animationControllerForOperation:(UINavigationControllerOperation)operation
