@@ -85,7 +85,7 @@ NSString *const ARAnalyticsArtistUnfollow = @"Follow artist";
 NSString *const ARAnalyticsArtistTappedForSale = @"artist tapped for sale";
 
 NSString *const ARAnalyticsGeneView = @"gene view";
-NSString *const ARAnalyticsGeneFollow = @"gene favorite";
+NSString *const ARAnalyticsGeneFollow = @"Follow category";
 
 NSString *const ARAnalyticsShowMenu = @"user opened menu";
 NSString *const ARAnalyticsMenuTappedHome = @"user menu tapped home";
