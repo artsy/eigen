@@ -113,7 +113,7 @@
             self.searchResultsTable.headerPlaceholderText = @"TOP ARTISTS ON ARTSY";
             self.headerView.searchField.searchField.delegate = self;
             [self.headerView.searchField.searchField setPlaceholder:@"Search artist"];
-            [self populateTrendingArtists];
+            [self populateTrendingArtistsAnimated:NO];
             break;
         case AROnboardingStagePersonalizeCategories:
             [self addSearchTable];
@@ -122,7 +122,7 @@
             self.searchResultsTable.headerPlaceholderText = @"POPULAR CATEGORIES OF ART ON ARTSY";
             [self.headerView.searchField.searchField setPlaceholder:@"Search medium, movement, or style"];
             [self.onboardingNavigationItems disableNextStep];
-            [self populateTrendingCategories];
+            [self populateTrendingCategoriesAnimated:NO];
             break;
         case AROnboardingStagePersonalizeBudget:
             [self addBudgetTable];
@@ -219,7 +219,7 @@
 #pragma mark -
 #pragma mark Network
 
-- (void)populateTrendingArtists
+- (void)populateTrendingArtistsAnimated:(BOOL)animated
 {
     [self.searchRequestOperation cancel];
 
@@ -229,13 +229,13 @@
     self.searchRequestOperation = [ArtsyAPI getPopularArtistsWithSuccess:^(NSArray *artists) {
         [self.searchResultsTable updateTableContentsFor:artists
                                         replaceContents:ARSearchResultsReplaceAll
-                                               animated:NO];
+                                               animated:animated];
     } failure:^(NSError *error) {
         [self reportError:error];
     }];
 }
 
-- (void)populateTrendingCategories
+- (void)populateTrendingCategoriesAnimated:(BOOL)animated
 {
     [self.searchRequestOperation cancel];
 
@@ -245,7 +245,7 @@
     self.searchRequestOperation = [ArtsyAPI getPopularGenesWithSuccess:^(NSArray *genes) {
         [self.searchResultsTable updateTableContentsFor:genes
                                         replaceContents:ARSearchResultsReplaceAll
-                                               animated:NO];
+                                               animated:animated];
     } failure:^(NSError *error) {
         [self reportError:error];
     }];
@@ -259,9 +259,15 @@
         [self.headerView.searchField.searchField resignFirstResponder];
         self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
         self.searchRequestOperation = [ArtsyAPI getRelatedArtistsForArtist:artist excluding:self.artistsFollowed success:^(NSArray *artists) {
-            [self.searchResultsTable updateTableContentsFor:artists
-                                            replaceContents:ARSearchResultsReplaceAll
-                                                   animated:YES];
+            if (artists.count > 0) {
+                [self.searchResultsTable updateTableContentsFor:artists
+                                                replaceContents:ARSearchResultsReplaceAll
+                                                       animated:YES];
+            } else {
+                // show default list
+                [self populateTrendingArtistsAnimated:YES];
+            }
+
         } failure:^(NSError *error) {
             [self reportError:error];
         }];
@@ -290,9 +296,15 @@
         [self.headerView.searchField.searchField resignFirstResponder];
         self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeRelatedResults;
         self.searchRequestOperation = [ArtsyAPI getRelatedGenesForGene:category excluding:self.categoriesFollowed success:^(NSArray *genes) {
-            [self.searchResultsTable updateTableContentsFor:genes
-                                            replaceContents:ARSearchResultsReplaceAll
-                                                   animated:YES];
+            if (genes.count > 0) {
+                [self.searchResultsTable updateTableContentsFor:genes
+                                                replaceContents:ARSearchResultsReplaceAll
+                                                       animated:YES];
+            } else {
+                // show default list
+                [self populateTrendingCategoriesAnimated:YES];
+            }
+
         } failure:^(NSError *error) {
             [self reportError:error];
         }];
