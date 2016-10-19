@@ -24,6 +24,7 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <MultiDelegate/AIMultiDelegate.h>
+#import <Emission/ARHomeComponentViewController.h>
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
@@ -179,12 +180,14 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    BOOL isHome = [viewController isKindOfClass:ARHomeComponentViewController.class];
+
     // If it is a non-interactive transition, we fade the buttons in or out
     // ourselves. Otherwise, we'll leave it to the interactive transition.
     if (self.interactiveTransitionHandler == nil) {
         [self showBackButton:[self shouldShowBackButtonForViewController:viewController] animated:animated];
         [self showStatusBar:!viewController.prefersStatusBarHidden animated:animated];
-        [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:animated];
+        [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:animated isHome:isHome];
 
         BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
         [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:animated];
@@ -201,8 +204,10 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
         self.observedViewController = nil;
     }
 
+    BOOL isHome = [viewController isKindOfClass:ARHomeComponentViewController.class];
+
     [self showBackButton:[self shouldShowBackButtonForViewController:viewController] animated:NO];
-    [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:NO];
+    [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:NO isHome:isHome];
 
     BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
     [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:NO];
@@ -316,10 +321,15 @@ ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
     }];
 }
 
-- (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated
+- (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated isHome:(BOOL)isHome
 {
+    CGFloat visibleAlpha = isHome ? 0.98 : 1;
+    UIStatusBarStyle statusBarStyle = isHome ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
+    [[UIApplication sharedApplication] setStatusBarStyle:statusBarStyle];
+
     [UIView animateIf:animated duration:ARAnimationDuration:^{
-        self.statusBarView.alpha = visible ? 1 : 0;
+        self.statusBarView.backgroundColor = isHome ? UIColor.whiteColor : UIColor.blackColor;
+        self.statusBarView.alpha = visible ? visibleAlpha : 0;
     }];
 }
 
