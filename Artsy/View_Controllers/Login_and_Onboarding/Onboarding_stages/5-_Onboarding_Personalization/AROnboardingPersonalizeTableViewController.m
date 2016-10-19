@@ -167,7 +167,9 @@
 {
     // We only show custom animation in the case of the related suggestions after clicking a row
     // This animation has suggestions content coming in from the bottom
-    if (self.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults && self.shouldAnimate) {
+    if ((self.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults ||
+         self.contentDisplayMode == ARTableViewContentDisplayModePlaceholder) &&
+        self.shouldAnimate) {
         // State to animate to
         CGRect originalFrame = cell.frame;
 
