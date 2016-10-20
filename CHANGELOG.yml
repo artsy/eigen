@@ -4,11 +4,9 @@ upcoming:
     dev:
       infrastructure:
         - Removed background fetch related code - alloy
-        - Fixed problem with "no results" label glashing during onboarding - ash
     user_facing:
       - Everybody is now required to sign-in - maxim
       - New on-boarding - maxim
-      - Fixed problem with blank gene images during onboarding - ash
       - New home view - sarah, maxim, alloy
       - Updated Filter View Controller - orta
       - New Gene View Controller - orta
