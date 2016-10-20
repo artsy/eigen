@@ -13,7 +13,7 @@ NSString *const ARTwitterCallbackPath = @"artsy://twitter-callback";
 
 NSString *const ARAuthHeader = @"X-Access-Token";
 NSString *const ARXappHeader = @"X-Xapp-Token";
-NSString *const AREigenTrialUserIDHeader = @"X-Eigen-Trial-ID";
+NSString *const AREigenLocalTemporaryUserIDHeader = @"X-Eigen-Trial-ID";
 
 NSString *const ARTotalHeader = @"X-Total-Count";
 
@@ -50,7 +50,9 @@ NSString *const ARRelatedShowsURL = @"/api/v1/related/shows";
 NSString *const ARArtistArtworksURLFormat = @"/api/v1/artist/%@/artworks";
 NSString *const ARArtistInformationURLFormat = @"/api/v1/artist/%@";
 
-NSString *const ARRelatedArtistsURL = @"/api/v1/related/artists";
+NSString *const ARRelatedArtistsURL = @"/api/v1/me/suggested/artists";
+NSString *const ARRelatedGeneURLFormat = @"/api/v1/gene/%@/similar";
+NSString *const ARPopularArtistsURL = @"/api/v1/artists/popular";
 NSString *const ARSampleArtistsURL = @"/api/v1/artists/sample";
 
 NSString *const ARFollowArtistURL = @"/api/v1/me/follow/artist";
@@ -79,6 +81,7 @@ NSString *const ARShowsURL = @"/api/v1/shows";
 
 NSString *const ARNewSearchURL = @"/api/v1/match";
 NSString *const ARNewArtistSearchURL = @"/api/v1/match/artists";
+NSString *const ARNewGeneSearchURL = @"/api/v1/match/genes";
 
 NSString *const ARSiteHeroUnitsURL = @"/api/v1/site_hero_units";
 
@@ -93,6 +96,7 @@ NSString *const AROrderedSetsURL = @"/api/v1/sets";
 NSString *const AROrderedSetItemsURLFormat = @"/api/v1/set/%@/items";
 
 NSString *const ARSuggestedHomepageArtworks = @"/api/v1/me/suggested/artworks/homepage";
+NSString *const ARWorksByArtistsYouFollowURL = @"/api/v1/me/follow/artists/artworks";
 NSString *const ARNotificationsURL = @"/api/v1/me/notifications";
 
 NSString *const ARSiteFeaturesURL = @"/api/v1/site_features/";

@@ -29,15 +29,21 @@ extern NSString *const ARAnalyticsFreshInstall;
 
 extern NSString *const ARAnalyticsSlideshowStarted;
 
-extern NSString *const ARAnalyticsOnboardingStarted;
-extern NSString *const ARAnalyticsOnboardingStartedCollectorLevel;
-extern NSString *const ARAnalyticsOnboardingCompletedCollectorLevel;
-extern NSString *const ARAnalyticsOnboardingStartedPersonalize;
-extern NSString *const ARAnalyticsOnboardingSkippedPersonalize;
-extern NSString *const ARAnalyticsOnboardingCompletedPersonalize;
-extern NSString *const ARAnalyticsOnboardingStartedPriceRange;
-extern NSString *const ARAnalyticsOnboardingCompletedPriceRange;
-extern NSString *const ARAnalyticsOnboardingCompleted;
+extern NSString *const ARAnalyticsOnboardingGetStarted;
+extern NSString *const ARAnalyticsOnboardingTappedSearch;
+extern NSString *const ARAnalyticsOnboardingBudgetSelected;
+extern NSString *const ARAnalyticsOnboardingLogin;
+extern NSString *const ARAnalyticsOnboardingLoginStarted;
+extern NSString *const ARAnalyticsOnboardingLoginSuccess;
+extern NSString *const ARAnalyticsOnboardingLoginFailed;
+extern NSString *const ARAnalyticsOnboardingSignupStarted;
+extern NSString *const ARAnalyticsOnboardingSignupSuccess;
+extern NSString *const ARAnalyticsOnboardingSignupFailed;
+
+// Push notifications
+
+extern NSString *const ARAnalyticsPushNotificationLocal;
+extern NSString *const ARAnalyticsPushNotificationApple;
 
 // These are used whenever there is a button to tap
 // for sign in, or create account
@@ -70,9 +76,7 @@ extern NSString *const ARAnalyticsStartedSpecialistInquiry;
 extern NSString *const ARAnalyticsSubmittedInquiry;
 extern NSString *const ARAnalyticsInquiryError;
 
-// Trial
 
-extern NSString *const ARAnalyticsShowTrialSplash;
 extern NSString *const ARAnalyticsTappedHeroUnit;
 extern NSString *const ARAnalyticsTappedMainNavigationItem;
 

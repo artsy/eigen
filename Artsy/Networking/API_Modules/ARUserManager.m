@@ -13,7 +13,6 @@
 
 #import "NSKeyedUnarchiver+ErrorLogging.h"
 #import "ARAnalyticsConstants.h"
-#import "ARCollectorStatusViewController.h"
 #import "ARKeychainable.h"
 #import "ARSystemTime.h"
 #import "ARLogger.h"
@@ -26,9 +25,9 @@
 
 NSString *const ARUserSessionStartedNotification = @"ARUserSessionStarted";
 
-NSString *ARTrialUserNameKey = @"ARTrialUserName";
-NSString *ARTrialUserEmailKey = @"ARTrialUserEmail";
-NSString *ARTrialUserUUID = @"ARTrialUserUUID";
+NSString *ARLocalTemporaryUserNameKey = @"ARLocalTemporaryUserName";
+NSString *ARLocalTemporaryUserEmailKey = @"ARLocalTemporaryUserEmail";
+NSString *ARLocalTemporaryUserUUID = @"ARLocalTemporaryUserUUID";
 
 static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
@@ -61,15 +60,10 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 {
     User *user = [User currentUser];
 
-    if (user) {
-        NSString *collectorLevel = [ARCollectorStatusViewController stringFromCollectorLevel:user.collectorLevel];
-        [ARAnalytics setUserProperty:@"collector_level" toValue:collectorLevel];
-    }
-
-    [ARAnalytics setUserProperty:@"is_trial_user" toValue:@(user == nil)];
+    [ARAnalytics setUserProperty:@"is_temporary_user" toValue:@(user == nil)];
 
     [ARAnalytics identifyUserWithID:user.userID
-                        anonymousID:self.sharedManager.trialUserUUID
+                        anonymousID:self.sharedManager.localTemporaryUserUUID
                     andEmailAddress:user.email];
 }
 
@@ -113,7 +107,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
 - (BOOL)hasExistingAccount
 {
-    return (self.currentUser && [self hasValidAuthenticationToken]) || [self hasValidXAppToken];
+    return (self.currentUser && [self hasValidAuthenticationToken]);
 }
 
 - (BOOL)hasValidAuthenticationToken
@@ -597,47 +591,47 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 #pragma mark -
 #pragma mark Trial User
 
-- (void)setTrialUserName:(NSString *)trialUserName
+- (void)setLocalTemporaryUserName:(NSString *)localTemporaryUserName
 {
-    if (trialUserName) {
-        [self.keychain setKeychainStringForKey:ARTrialUserNameKey value:trialUserName];
+    if (localTemporaryUserName) {
+        [self.keychain setKeychainStringForKey:ARLocalTemporaryUserNameKey value:localTemporaryUserName];
     } else {
-        [self.keychain removeKeychainStringForKey:ARTrialUserNameKey];
+        [self.keychain removeKeychainStringForKey:ARLocalTemporaryUserNameKey];
     }
 }
 
-- (void)setTrialUserEmail:(NSString *)trialUserEmail
+- (void)setLocalTemporaryUserEmail:(NSString *)localTemporaryUserEmail
 {
-    if (trialUserEmail) {
-        [self.keychain setKeychainStringForKey:ARTrialUserEmailKey value:trialUserEmail];
+    if (localTemporaryUserEmail) {
+        [self.keychain setKeychainStringForKey:ARLocalTemporaryUserEmailKey value:localTemporaryUserEmail];
     } else {
-        [self.keychain removeKeychainStringForKey:ARTrialUserEmailKey];
+        [self.keychain removeKeychainStringForKey:ARLocalTemporaryUserEmailKey];
     }
 }
 
-- (NSString *)trialUserName
+- (NSString *)localTemporaryUserName
 {
-    return [self.keychain keychainStringForKey:ARTrialUserNameKey];
+    return [self.keychain keychainStringForKey:ARLocalTemporaryUserNameKey];
 }
 
-- (NSString *)trialUserEmail
+- (NSString *)localTemporaryUserEmail
 {
-    return [self.keychain keychainStringForKey:ARTrialUserEmailKey];
+    return [self.keychain keychainStringForKey:ARLocalTemporaryUserEmailKey];
 }
 
-- (NSString *)trialUserUUID
+- (NSString *)localTemporaryUserUUID
 {
-    NSString *uuid = [self.keychain keychainStringForKey:ARTrialUserUUID];
+    NSString *uuid = [self.keychain keychainStringForKey:ARLocalTemporaryUserUUID];
     if (!uuid) {
         uuid = [[NSUUID UUID] UUIDString];
-        [self.keychain setKeychainStringForKey:ARTrialUserUUID value:uuid];
+        [self.keychain setKeychainStringForKey:ARLocalTemporaryUserUUID value:uuid];
     }
     return uuid;
 }
 
-- (void)resetTrialUserUUID
+- (void)resetLocalTemporaryUserUUID
 {
-    [self.keychain removeKeychainStringForKey:ARTrialUserUUID];
+    [self.keychain removeKeychainStringForKey:ARLocalTemporaryUserUUID];
 }
 
 #pragma mark - Shared Web Credentials

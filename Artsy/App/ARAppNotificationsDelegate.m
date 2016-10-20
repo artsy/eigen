@@ -11,28 +11,131 @@
 #import "ARTopMenuViewController.h"
 #import "ARWorksForYouReloadingHostViewController.h"
 #import "ARLogger.h"
+#import "ARDefaults.h"
+#import "AROptions.h"
 
 #import <ARAnalytics/ARAnalytics.h>
 
 
 @implementation ARAppNotificationsDelegate
 
-+ (void)load
+#pragma mark -
+#pragma mark Local Push Notification Alerts
+
+- (void)registerForDeviceNotificationsWithContext:(ARAppNotificationsRequestContext)requestContext
 {
-    [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[self alloc] init];
+    self.requestContext = requestContext;
+
+    if (![AROptions boolForOption:ARPushNotificationsSettingsPromptSeen] &&
+        [AROptions boolForOption:ARPushNotificationsAppleDialogueRejected]) {
+        // if you've rejected Apple's push notification and you've not seen our prompt to send you to settings
+        // lets show you a prompt to go to stettings
+        [self displayPushNotificationSettingsPrompt];
+
+    } else if (![AROptions boolForOption:ARPushNotificationsAppleDialogueSeen] && [self shouldPresentPushNotificationAgain]) {
+        // As long as you've not seen Apple's dialogue already, we will show you our pre-prompt.
+        [self displayPushNotificationLocalRequestPrompt];
+    }
 }
 
-- (void)registerForDeviceNotifications
+- (void)displayPushNotificationLocalRequestPrompt
+{
+    UIAlertController *alert = [self pushNotificationPromptAlertController];
+
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {
+                                                              [self registerUserInterest];
+                                                          }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Don't Allow" style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction *action) {
+                                                              [self registerUserDisinterest];
+                                                         }];
+    [alert addAction:cancelAction];
+    [alert addAction:confirmAction];
+
+    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+}
+
+
+- (void)displayPushNotificationSettingsPrompt
+{
+    UIAlertController *alert = [self pushNotificationPromptAlertController];
+
+    UIAlertAction *settingsAction = [UIAlertAction actionWithTitle:@"Go to Settings" style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction *action) {
+                                                              [self presentSettings];
+                                                           }];
+    [alert addAction:settingsAction];
+    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+
+    [AROptions setBool:YES forOption:ARPushNotificationsSettingsPromptSeen];
+}
+
+- (void)registerUserInterest
+{
+    [self registerForDeviceNotificationsWithApple];
+}
+
+- (void)registerUserDisinterest
+{
+    // Well, in that case we'll store today's date
+    // and prompt the user in a week's time, if they perform certain actions (e.g. follow an artist)
+
+    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ARPushNotificationsDialogueLastSeenDate];
+}
+
+- (void)presentSettings
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+}
+
+- (UIAlertController *)pushNotificationPromptAlertController
+{
+    return [UIAlertController alertControllerWithTitle:@"Artsy Would Like to Send You Notifications"
+                                               message:@"Turn on notifications so you can get important updates about artists you follow"
+                                        preferredStyle:UIAlertControllerStyleAlert];
+}
+
+- (BOOL)shouldPresentPushNotificationAgain
+{
+    // we don't want to ask too often
+    // currently, we make sure at least a week has passed by since you last saw the dialogue
+
+    NSDate *lastSeenPushNotification = [[NSUserDefaults standardUserDefaults] objectForKey:ARPushNotificationsDialogueLastSeenDate];
+
+    if (lastSeenPushNotification) {
+        NSDate *currentDate = [NSDate date];
+
+        NSTimeInterval timePassed = [currentDate timeIntervalSinceDate:lastSeenPushNotification];
+        NSTimeInterval weekInSeconds = (60 * 60 * 24 * 7);
+
+        return timePassed >= weekInSeconds;
+    } else {
+        // if you've never seen one before, we'll show you ;)
+        return YES;
+    }
+}
+
+#pragma mark -
+#pragma mark Push Notification Register
+
+- (void)registerForDeviceNotificationsWithApple
 {
     ARActionLog(@"Registering with Apple for remote notifications.");
     UIUserNotificationType allTypes = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
     UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:allTypes categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     [[UIApplication sharedApplication] registerForRemoteNotifications];
+
+    [AROptions setBool:YES forOption:ARPushNotificationsAppleDialogueSeen];
 }
+
+#pragma mark -
+#pragma mark Push Notification Delegate
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
+    [AROptions setBool:YES forOption:ARPushNotificationsAppleDialogueRejected];
 #if (TARGET_IPHONE_SIMULATOR == 0)
     ARErrorLog(@"Error registering for remote notifications: %@", error.localizedDescription);
 #endif

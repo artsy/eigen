@@ -95,7 +95,12 @@
 + (NSURLRequest *)newFollowArtistRequest:(Artist *)artist;
 + (NSURLRequest *)newUnfollowArtistRequest:(Artist *)artist;
 
-+ (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist;
++ (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude;
++ (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude;
++ (NSURLRequest *)newGeneRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude;
++ (NSURLRequest *)newGenesRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude;
++ (NSURLRequest *)newArtistsPopularRequest;
++ (NSURLRequest *)newGenesPopularRequest;
 + (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID;
 + (NSURLRequest *)newShowsRequestForArtistID:(NSString *)artistID inFairID:(NSString *)fairID;
 
@@ -128,7 +133,8 @@
 
 + (NSURLRequest *)newSearchRequestWithQuery:(NSString *)query;
 + (NSURLRequest *)newSearchRequestWithFairID:(NSString *)fairID andQuery:(NSString *)query;
-+ (NSURLRequest *)newArtistSearchRequestWithQuery:(NSString *)query;
++ (NSURLRequest *)newArtistSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)artistsToExclude;
++ (NSURLRequest *)newGeneSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)genesToExclude;
 
 + (NSURLRequest *)directImageRequestForModel:(Class)model andSlug:(NSString *)slug;
 

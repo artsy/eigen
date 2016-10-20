@@ -22,7 +22,6 @@
 #import "ARTheme.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARNetworkErrorManager.h"
-#import "ARTrialController.h"
 #import "ARScrollNavigationChief.h"
 
 #import "UIViewController+ARUserActivity.h"
@@ -339,13 +338,6 @@ typedef NS_ENUM(NSInteger, ARArtistArtworksDisplayMode) {
 
 - (void)toggleFollowingArtist:(ARHeartButton *)sender
 {
-    if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtist success:^(BOOL newUser) {
-            [self toggleFollowingArtist:sender];
-        }];
-        return;
-    }
-
     BOOL hearted = !sender.hearted;
     [sender setHearted:hearted animated:ARPerformWorkAsynchronously];
 

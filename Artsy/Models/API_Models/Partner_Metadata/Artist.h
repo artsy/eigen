@@ -11,6 +11,7 @@
 @interface Artist : MTLModel <MTLJSONSerializing, ARFollowable, ARShareableObject, ARHasImageURLs, ARSpotlightMetadataProvider>
 
 @property (readonly, nonatomic, copy) NSString *artistID;
+@property (readonly, nonatomic, copy) NSString *uuid;
 @property (readonly, nonatomic, copy) NSString *sortableID;
 @property (readonly, nonatomic, copy) NSString *name;
 @property (readonly, nonatomic, copy) NSString *years;

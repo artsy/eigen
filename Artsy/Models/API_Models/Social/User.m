@@ -15,7 +15,7 @@
     return [[ARUserManager sharedManager] currentUser];
 }
 
-+ (BOOL)isTrialUser
++ (BOOL)isLocalTemporaryUser
 {
     ARUserManager *userManager = [ARUserManager sharedManager];
     return userManager.currentUser == nil;

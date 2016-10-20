@@ -12,7 +12,7 @@ static OCMockObject *ARPartialScreenMock;
 
 @implementation ARTestContext
 
-+ (void)useDevice:(enum ARDeviceType)device :(void (^)(void))block
++ (void)useDevice:(enum ARDeviceType)device:(void (^)(void))block
 {
     [self stubDevice:device];
     block();
@@ -83,7 +83,7 @@ static OCMockObject *ARPartialScreenMock;
 static OCMockObject *dateMock;
 static OCMockObject *dateSystemMock;
 
-+ (void)freezeTime:(NSDate *)now closure:(void(^)(void))closure
++ (void)freezeTime:(NSDate *)now closure:(void (^)(void))closure
 {
     dateMock = [self freezeTime:now];
     dateSystemMock = [self freezeSystemTime:now];

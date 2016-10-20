@@ -1,73 +1,82 @@
 #import "AROnboardingSearchField.h"
+#import "UIColor+ArtsyColors.h"
 
-#import "ARFonts.h"
+#import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 #define CLEAR_BUTTON_TAG 0xbada55
 
 
 @interface AROnboardingSearchField ()
 @property (nonatomic, assign) BOOL swizzledClear;
+@property (nonatomic, strong) UIImageView *searchIcon;
+
 @end
 
 
 @implementation AROnboardingSearchField
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)init
 {
-    self = [super initWithFrame:frame];
-    if (!self) return nil;
+    self = [super init];
+    if (self) {
+        self.backgroundColor = [UIColor artsyGrayLight];
 
-    self.backgroundColor = [UIColor clearColor];
-    self.font = [UIFont serifFontWithSize:20];
+        _searchField = [[UITextField alloc] init];
+        self.searchField.font = [UIFont serifFontWithSize:18];
+        self.searchField.textColor = [UIColor blackColor];
+        self.searchField.backgroundColor = [UIColor clearColor];
+        self.searchField.autocorrectionType = UITextAutocorrectionTypeNo;
 
-    self.textColor = [UIColor artsyGrayRegular];
-    CALayer *baseline = [CALayer layer];
-    baseline.backgroundColor = [UIColor artsyGraySemibold].CGColor;
-    baseline.frame = CGRectMake(0, CGRectGetHeight(self.frame) - 1, CGRectGetWidth(self.bounds), 1);
+        self.layer.borderColor = [UIColor artsyGrayMedium].CGColor;
+        self.layer.borderWidth = 0.5f;
+        self.layer.masksToBounds = YES;
 
-    self.clipsToBounds = NO;
-    [self.layer addSublayer:baseline];
+        [self addSubview:self.searchField];
 
-    self.clearButtonMode = UITextFieldViewModeWhileEditing;
+        self.searchIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SearchButton"]];
+        self.searchIcon.contentMode = UIViewContentModeCenter;
+        [self addSubview:self.searchIcon];
+
+        [self.searchIcon alignTopEdgeWithView:self predicate:@"5"];
+        [self.searchIcon alignLeadingEdgeWithView:self predicate:@"5"];
+        [self.searchIcon alignBottomEdgeWithView:self predicate:@"-5"];
+        [self.searchIcon constrainWidth:@"20"];
+
+        [self.searchField constrainLeadingSpaceToView:self.searchIcon predicate:@"10"];
+        [self.searchField alignTrailingEdgeWithView:self predicate:@"-5"];
+        [self.searchField constrainHeightToView:self predicate:@"0"];
+        [self.searchField alignTopEdgeWithView:self predicate:@"0"];
+
+        self.searchField.clearButtonMode = UITextFieldViewModeAlways;
+        self.searchField.returnKeyType = UIReturnKeySearch;
+    }
 
     return self;
 }
 
 - (void)setPlaceholder:(NSString *)placeholder
 {
-    self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyGraySemibold]}];
+    self.searchField.attributedPlaceholder = [[NSAttributedString alloc]
+        initWithString:placeholder
+            attributes:@{
+                NSFontAttributeName : [UIFont serifFontWithSize:18],
+                NSForegroundColorAttributeName : [UIColor artsyGrayMedium]
+            }];
 }
 
-- (void)addSubview:(UIView *)view
+- (void)searchStarted
 {
-    [super addSubview:view];
-
-    if (!self.swizzledClear && [view class] == [UIButton class]) {
-        UIView *subview = (UIView *)view.subviews.firstObject;
-        if ([subview class] == [UIImageView class]) {
-            [self swizzleClearButton:(UIButton *)view];
-        }
-    }
+    [UIView animateWithDuration:0.2 animations:^{
+        self.backgroundColor = [UIColor whiteColor];
+    }];
 }
 
-- (void)layoutSubviews
+- (void)searchEnded
 {
-    [super layoutSubviews];
-    UIButton *button = (UIButton *)[self viewWithTag:CLEAR_BUTTON_TAG];
-    if (button) {
-        button.center = CGPointMake(button.center.x, button.center.y - 3);
-    }
+    [UIView animateWithDuration:0.2 animations:^{
+        self.backgroundColor = [UIColor artsyGrayLight];
+    }];
 }
 
-- (void)swizzleClearButton:(UIButton *)button
-{
-    UIImageView *imageView = (UIImageView *)button.subviews.firstObject;
-    UIImage *image = [imageView image];
-    UIImage *templated = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [button setImage:templated forState:UIControlStateNormal];
-    [button setImage:templated forState:UIControlStateHighlighted];
-    [button setTintColor:[UIColor whiteColor]];
-    self.swizzledClear = YES;
-    button.tag = CLEAR_BUTTON_TAG;
-}
 @end

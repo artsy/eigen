@@ -15,6 +15,10 @@ extension AuctionRefineSettings: RefinableType {
         return 1
     }
 
+    func titleOfSection(section: Int) -> String {
+        return "Sort"
+    }
+
     func numberOfRowsInSection(section: Int) -> Int {
         return AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel).count
     }

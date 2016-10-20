@@ -16,6 +16,8 @@
 #import "ARMutableLinkViewController.h"
 
 #import <Emission/ARArtistComponentViewController.h>
+#import <Emission/ARGeneComponentViewController.h>
+
 #import "ARArtistViewController.h"
 // TODO This does not use the new React based VC yet.
 #import "ARFairArtistViewController.h"
@@ -128,11 +130,19 @@
     return [self loadGeneWithID:gene.geneID];
 }
 
-
 - (UIViewController *)loadGeneWithID:(NSString *)geneID
 {
-    UIViewController *viewController = [AROptions boolForOption:AROptionsUseModernGeneVC] ? [[ModernGeneViewController alloc] initWithGeneID:geneID] : [[ARGeneViewController alloc] initWithGeneID:geneID];
-    return viewController;
+    return [self loadGeneWithID:geneID refineParams:@{}];
+}
+
+- (UIViewController *)loadGeneWithID:(NSString *)geneID refineParams:(NSDictionary *)params
+{
+    BOOL blacklistUsingReactGenes = self.echo.features[@"DisableReactGenes"] != nil;
+    if (blacklistUsingReactGenes) {
+        return [[ARGeneViewController alloc] initWithGeneID:geneID];
+    }
+
+    return [[ARGeneComponentViewController alloc] initWithGeneID:geneID refineSettings:params];
 }
 
 #pragma mark -

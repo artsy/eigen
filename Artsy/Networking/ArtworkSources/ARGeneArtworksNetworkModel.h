@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "Gene.h"
 
-@class AREmbeddedModelsViewController, Gene, GeneViewModel;
+@class AREmbeddedModelsViewController, Gene;
 
 
 @interface ARGeneArtworksNetworkModel : NSObject
@@ -9,7 +9,7 @@
 - (id)initWithGene:(Gene *)gene;
 - (id)initWithGeneID:(NSString *)geneID;
 
-- (void)getGene:(void (^)(GeneViewModel *viewModel))success;
+- (void)getGene:(void (^)(Gene *gene))success;
 
 - (void)getNextArtworkPage:(void (^)(NSArray *artworks))success;
 

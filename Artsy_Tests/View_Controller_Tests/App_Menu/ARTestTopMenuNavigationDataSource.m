@@ -25,3 +25,14 @@
 }
 
 @end
+
+
+
+@implementation ARStubbedTopMenuNavigationDataSource
+
+- (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index
+{
+    return [[ARNavigationController alloc] initWithRootViewController:[[UIViewController alloc] init]];
+}
+
+@end

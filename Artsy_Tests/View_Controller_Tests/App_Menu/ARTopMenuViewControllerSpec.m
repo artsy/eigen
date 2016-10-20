@@ -5,7 +5,6 @@
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARFairViewController.h"
 #import "ARUserManager+Stubs.h"
-#import "ARTrialController.h"
 #import "AROnboardingViewController.h"
 #import "ARStubbedBrowseNetworkModel.h"
 #import "ARBrowseViewController.h"
@@ -20,12 +19,6 @@
 
 @end
 
-
-@interface ARTrialController (Testing)
-- (void)presentTrialWithContext:(enum ARTrialContext)context success:(void (^)(BOOL newUser))success;
-@end
-
-
 @interface ARTopMenuViewController (ExposedForTesting) <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
 - (JSBadgeView *)badgeForButtonAtIndex:(NSInteger)index createIfNecessary:(BOOL)createIfNecessary;
@@ -38,7 +31,7 @@ __block ARTopMenuViewController *sut;
 __block ARTopMenuNavigationDataSource *dataSource;
 
 dispatch_block_t sharedBefore = ^{
-    sut = [[ARTopMenuViewController alloc] initWithStubbedNetworking];
+    sut = [[ARTopMenuViewController alloc] initWithStubbedViewControllers];
     sut.navigationDataSource = dataSource;
     dataSource.browseViewController.networkModel = [[ARStubbedBrowseNetworkModel alloc] init];
     [sut ar_presentWithFrame:[UIScreen mainScreen].bounds];
@@ -137,9 +130,9 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
                 [sut.tabContentView setCurrentViewIndex:otherTab animated:NO];
             });
 
-            it(@"does not animate popping", ^{
+            pending(@"does not animate popping", ^{
                 [[navigationControllerMock expect] popToRootViewControllerAnimated:NO];
-                [topMenuVCMock presentRootViewControllerAtIndex:tab animated:YES];
+                [topMenuVCMock presentRootViewControllerAtIndex:tab animated:NO];
                 [navigationControllerMock verify];
             });
 
@@ -192,7 +185,7 @@ describe(@"presenting modally", ^{
 describe(@"navigation", ^{
    __block NSInteger tabIndex;
    before(^{
-       dataSource = [[ARTopMenuNavigationDataSource alloc] init];
+       dataSource = [[ARStubbedTopMenuNavigationDataSource alloc] init];
        sharedBefore();
    });
 
@@ -210,27 +203,6 @@ describe(@"navigation", ^{
    describe(@"favorites", ^{
        before(^{
            tabIndex = ARTopTabControllerIndexFavorites;
-       });
-
-       describe(@"logged out", ^{
-           __block id userMock;
-           before(^{
-               userMock = [OCMockObject niceMockForClass:[User class]];
-               [[[userMock stub] andReturnValue:@(YES)] isTrialUser];
-           });
-
-           after(^{
-               [userMock stopMocking];
-           });
-
-           it(@"is not selectable", ^{
-               expect([sut tabContentView:sut.tabContentView shouldChangeToIndex:tabIndex]).to.beFalsy();
-           });
-
-           it(@"invokes signup popover", ^{
-               id mock = [OCMockObject niceMockForClass:[ARTrialController class]];
-               [[mock expect] presentTrialWithContext:0 success:[OCMArg any]];
-           });
        });
 
        describe(@"logged in", ^{
@@ -256,9 +228,7 @@ describe(@"navigation", ^{
             NSDictionary *menuToPaths = @{
                 @(ARTopTabControllerIndexFeed): @"/",
                 @(ARTopTabControllerIndexBrowse): @"/browse",
-                @(ARTopTabControllerIndexMagazine): @"/articles",
                 @(ARTopTabControllerIndexFavorites): @"/favorites",
-                @(ARTopTabControllerIndexShows): @"/shows",
                 @(ARTopTabControllerIndexNotifications): @"/works-for-you",
             };
 

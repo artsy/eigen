@@ -71,7 +71,7 @@ static NSInteger ARTiledZoomMinLevel = 11;
     if (self.imageVersions) {
         URL = [self _imageURLWithFormatName:formatName];
         if (URL == nil) {
-            NSArray *allVersions = @[@"medium", @"tall", @"large", @"larger"];
+            NSArray *allVersions = @[ @"medium", @"tall", @"large", @"larger" ];
             NSInteger index = [allVersions indexOfObject:formatName];
             if (index != NSNotFound) {
                 // First try to use the next available higher resolution version.

@@ -74,7 +74,7 @@
 
 #import "ARSwitchBoard.h"
 #import "ARSwitchBoard+Eigen.h"
-#import "ARTrialController.h"
+
 #import "ARTopMenuViewController.h"
 
 #import "MTLModel+JSON.h"
@@ -95,3 +95,5 @@
 
 #import "ORStackView+ArtsyViews.h"
 #import <CommonCrypto/CommonHMAC.h>
+
+#import "ARExternalWebBrowserViewController.h"

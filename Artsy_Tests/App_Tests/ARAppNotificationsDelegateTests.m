@@ -35,7 +35,7 @@ describe(@"receiveRemoteNotification", ^{
 
     beforeEach(^{
         app = [UIApplication sharedApplication];
-        delegate = (ARAppNotificationsDelegate *)[JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate;
+        delegate = [[ARAppNotificationsDelegate alloc] init];
 
         mockAnalytics = [OCMockObject mockForClass:[ARAnalytics class]];
         mockTopMenuVC = [OCMockObject mockForClass:ARTopMenuViewController.class];

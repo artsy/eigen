@@ -1,4 +1,5 @@
 #import "ARExpectaExtensions.h"
+@import Forgeries;
 
 void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber, const char *fileName, BOOL record, BOOL async, NSString *name, id (^block)())
 {
@@ -25,8 +26,12 @@ void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber,
 
     it(@" as iphone", ^{
         [ARTestContext stubDevice:ARDeviceTypePhone5];
+
         @try {
             id sut = block();
+            if ([sut respondsToSelector:@selector(stubHorizontalSizeClass:)]) {
+                [sut stubHorizontalSizeClass:UIUserInterfaceSizeClassCompact];
+            }
             snapshot(sut, @" as iphone");
         }
         @catch (NSException *exception) {
@@ -41,6 +46,9 @@ void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber,
         [ARTestContext stubDevice:ARDeviceTypePad];
         @try {
             id sut = block();
+            if ([sut respondsToSelector:@selector(stubHorizontalSizeClass:)]) {
+                [sut stubHorizontalSizeClass:UIUserInterfaceSizeClassRegular];
+            }
             snapshot(sut, @" as ipad");
         }
         @catch (NSException *exception) {

@@ -27,7 +27,7 @@
 
         [alert addAction:[UIAlertAction actionWithTitle:@"Great, continue." style:UIAlertActionStyleCancel handler:nil]];
 
-        // Sometimes the TopVC is being presented, e.g. for onboarding/ showing trial login, or the alerts
+        // Sometimes the TopVC is being presented, e.g. for onboarding/ showing login, or the alerts
         UIViewController *topVC = [ARTopMenuViewController sharedController];
         topVC = topVC.presentedViewController ?: topVC;
         [topVC presentViewController:alert animated:YES completion:nil];

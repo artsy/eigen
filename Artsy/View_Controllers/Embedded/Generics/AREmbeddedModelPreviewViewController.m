@@ -7,7 +7,6 @@
 #import "FeaturedLink.h"
 #import "User.h"
 #import "ARNetworkErrorManager.h"
-#import "ARTrialController.h"
 
 #import "UIImageView+AsyncImageLoading.h"
 
@@ -96,10 +95,6 @@
         [self tappedShare];
     }];
 
-    if ([User isTrialUser]) {
-        return @[ shareAction ];
-    }
-
     NSString *favoriteText = @"Favorite";
     UIPreviewActionStyle favoriteActionStyle = UIPreviewActionStyleDefault;
     if (artwork.heartStatus == ARHeartStatusYes) {
@@ -143,13 +138,6 @@
 
 - (void)tappedFavorite
 {
-    if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtwork success:^(BOOL newUser) {
-            [self tappedFavorite];
-        }];
-        return;
-    }
-
     if ([self.object isKindOfClass:Artwork.class]) {
         Artwork *artwork = (Artwork *)self.object;
         BOOL isHearted = artwork.heartStatus == ARHeartStatusYes ? YES : NO;
@@ -161,13 +149,6 @@
 
 - (void)tappedFollow
 {
-    if ([User isTrialUser]) {
-        [ARTrialController presentTrialWithContext:ARTrialContextFavoriteArtwork success:^(BOOL newUser) {
-            [self tappedFollow];
-        }];
-        return;
-    }
-
     if ([self.object isKindOfClass:Artwork.class]) {
         Artwork *artwork = (Artwork *)self.object;
         [artwork.artist setFollowState:!artwork.artist.followed success:nil failure:^(NSError *error) {

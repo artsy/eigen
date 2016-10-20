@@ -67,16 +67,10 @@
     [super viewDidLoad];
 }
 
-- (void)setupUI
+- (void)viewWillAppear:(BOOL)animated
 {
-    self.navBar = [[AROnboardingNavBarView alloc] init];
-    self.navBar.title.text = @"Almost Done…";
-    [self.navBar.back addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
-    [self.navBar.forward setTitle:@"JOIN" forState:UIControlStateNormal];
-    [self.view addSubview:self.navBar];
+    [super viewWillAppear:animated];
 
-    UITapGestureRecognizer *keyboardCancelTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
-    [self.view addGestureRecognizer:keyboardCancelTap];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -87,6 +81,38 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textChanged:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UITextFieldTextDidChangeNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+}
+
+- (void)setupUI
+{
+    self.navBar = [[AROnboardingNavBarView alloc] init];
+    self.navBar.title.text = @"Almost Done…";
+    [self.navBar.back addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navBar.forward setTitle:@"JOIN" forState:UIControlStateNormal];
+    [self.navBar.forward setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.view addSubview:self.navBar];
+
+    UITapGestureRecognizer *keyboardCancelTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
+    [self.view addGestureRecognizer:keyboardCancelTap];
 
     self.containerView = [[UIView alloc] init];
     [self.view addSubview:self.containerView];
@@ -101,7 +127,6 @@
     self.nameField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     self.nameField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.nameField.returnKeyType = UIReturnKeyNext;
-    self.nameField.keyboardAppearance = UIKeyboardAppearanceDark;
 
     if (self.name) {
         self.nameField.text = self.name;
@@ -113,7 +138,6 @@
     self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.emailField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.emailField.returnKeyType = UIReturnKeyNext;
-    self.emailField.keyboardAppearance = UIKeyboardAppearanceDark;
 
     if (self.email) {
         self.emailField.text = self.email;
@@ -146,8 +170,6 @@
 
     [self.navBar.forward setEnabled:[self canSubmit] animated:NO];
     [self.navBar.forward addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -381,13 +403,6 @@
     } else {
         [self.delegate dismissOnboardingWithVoidAnimation:YES];
     }
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UITextFieldTextDidChangeNotification
-                                                  object:nil];
 }
 
 #pragma mark - UITextField notifications

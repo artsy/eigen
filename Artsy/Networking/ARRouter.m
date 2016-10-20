@@ -151,13 +151,13 @@ static NSString *hostFromString(NSString *string)
         [ARRouter setAuthToken:token];
 
     } else {
-        ARActionLog(@"Found trial XApp token in keychain");
+        ARActionLog(@"Found temporary local user XApp token in keychain");
         NSString *xapp = [UICKeyChainStore stringForKey:ARXAppTokenKeychainKey];
         [ARRouter setXappToken:xapp];
     }
 
-    if ([User isTrialUser]) {
-        [self setHTTPHeader:AREigenTrialUserIDHeader value:user.trialUserUUID];
+    if ([User isLocalTemporaryUser]) {
+        [self setHTTPHeader:AREigenLocalTemporaryUserIDHeader value:user.localTemporaryUserUUID];
     }
 }
 
@@ -229,7 +229,7 @@ static NSString *hostFromString(NSString *string)
     if (![ARRouter isInternalURL:url]) {
         [request setValue:nil forHTTPHeaderField:ARAuthHeader];
         [request setValue:nil forHTTPHeaderField:ARXappHeader];
-        [request setValue:nil forHTTPHeaderField:AREigenTrialUserIDHeader];
+        [request setValue:nil forHTTPHeaderField:AREigenLocalTemporaryUserIDHeader];
     }
 
     return request;
@@ -514,13 +514,11 @@ static NSString *hostFromString(NSString *string)
     NSDictionary *params = @{
         @"since" : @30,
         @"page" : @(page),
-        @"sort" : @"published_at",
+        @"sort" : @"-published_at",
         @"type" : @"ArtworkPublished",
         @"for_sale" : @YES,
-        @"user_id" : userID ?: @"",
     };
-
-    return [self requestWithMethod:@"GET" path:ARNotificationsURL parameters:params];
+    return [self requestWithMethod:@"GET" path:ARWorksByArtistsYouFollowURL parameters:params];
 }
 
 + (NSURLRequest *)createBidderPositionsForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID maxBidAmountCents:(NSInteger)maxBidAmountCents
@@ -665,10 +663,56 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARFollowArtistsURL parameters:@{ @"fair_id" : fair.fairID }];
 }
 
-+ (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist
++ (NSURLRequest *)newArtistRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude
 {
-    NSDictionary *params = @{ @"artist" : @[ artist.artistID ] };
+    NSArray *artistIDsToExclude = [artistsToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"artist_id" : artist.artistID,
+                              @"size" : @1,
+                              @"exclude_artist_ids" : artistIDsToExclude };
+
     return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
+}
+
++ (NSURLRequest *)newArtistsRelatedToArtistRequest:(Artist *)artist excluding:(NSArray *)artistsToExclude
+{
+    NSArray *artistIDsToExclude = [artistsToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"artist_id" : artist.artistID,
+                              @"exclude_artist_ids" : artistIDsToExclude };
+    return [self requestWithMethod:@"GET" path:ARRelatedArtistsURL parameters:params];
+}
+
++ (NSURLRequest *)newGeneRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude
+{
+    NSArray *geneIDsToExclude = [genesToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"size" : @1,
+                              @"exclude_gene_ids" : geneIDsToExclude };
+    return [self requestWithMethod:@"GET" path:NSStringWithFormat(ARRelatedGeneURLFormat, gene.geneID) parameters:params];
+}
+
++ (NSURLRequest *)newGenesRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude
+{
+    NSArray *geneIDsToExclude = [genesToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"exclude_gene_ids" : geneIDsToExclude };
+
+    return [self requestWithMethod:@"GET" path:NSStringWithFormat(ARRelatedGeneURLFormat, gene.geneID) parameters:params];
+}
+
++ (NSURLRequest *)newArtistsPopularRequest
+{
+    return [self requestWithMethod:@"GET" path:ARPopularArtistsURL parameters:nil];
+}
+
++ (NSURLRequest *)newGenesPopularRequest
+
+{
+    // we get hard coded categories from this json file that force uses also
+    NSString *stringURL = @"https://s3.amazonaws.com/eigen-production/json/eigen_categories.json";
+
+    return [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:stringURL]];
 }
 
 + (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID
@@ -781,9 +825,24 @@ static NSString *hostFromString(NSString *string)
                                                                             @"fair_id" : fairID }];
 }
 
-+ (NSURLRequest *)newArtistSearchRequestWithQuery:(NSString *)query
++ (NSURLRequest *)newArtistSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)artistsToExclude
 {
-    return [self requestWithMethod:@"GET" path:ARNewArtistSearchURL parameters:@{ @"term" : query }];
+    NSArray *artistIDsToExclude = [artistsToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"term" : query,
+                              @"exclude_ids" : artistIDsToExclude };
+
+    return [self requestWithMethod:@"GET" path:ARNewArtistSearchURL parameters:params];
+}
+
++ (NSURLRequest *)newGeneSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)genesToExclude
+{
+    NSArray *geneIDsToExclude = [genesToExclude valueForKey:@"uuid"];
+
+    NSDictionary *params = @{ @"term" : query,
+                              @"exclude_ids" : geneIDsToExclude };
+
+    return [self requestWithMethod:@"GET" path:ARNewGeneSearchURL parameters:params];
 }
 
 + (NSURLRequest *)directImageRequestForModel:(Class)model andSlug:(NSString *)slug
@@ -909,12 +968,12 @@ static NSString *hostFromString(NSString *string)
         }
     }];
 
-    if ([User isTrialUser]) {
+    if ([User isLocalTemporaryUser]) {
         NSParameterAssert(name);
         NSParameterAssert(email);
         [params setValue:name forKey:@"name"];
         [params setValue:email forKey:@"email"];
-        [params setValue:[ARUserManager sharedManager].trialUserUUID forKey:@"session_id"];
+        [params setValue:[ARUserManager sharedManager].localTemporaryUserUUID forKey:@"session_id"];
     } else {
         NSParameterAssert(!name);
         NSParameterAssert(!email);

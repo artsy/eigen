@@ -17,13 +17,13 @@ extern NSString *const ARUserSessionStartedNotification;
 - (User *)currentUser;
 - (void)storeUserData;
 
-@property (nonatomic, strong) NSString *trialUserName;
-@property (nonatomic, strong) NSString *trialUserEmail;
-@property (nonatomic, strong, readonly) NSString *trialUserUUID;
+@property (nonatomic, strong) NSString *localTemporaryUserName;
+@property (nonatomic, strong) NSString *localTemporaryUserEmail;
+@property (nonatomic, strong, readonly) NSString *localTemporaryUserUUID;
 
 @property (nonatomic, strong) NSString *userAuthenticationToken;
 
-- (void)resetTrialUserUUID;
+- (void)resetLocalTemporaryUserUUID;
 
 - (BOOL)hasExistingAccount;
 - (BOOL)hasValidAuthenticationToken;

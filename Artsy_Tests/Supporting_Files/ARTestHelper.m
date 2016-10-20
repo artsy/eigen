@@ -8,6 +8,7 @@
 #import <iRate/iRate.h>
 #import <SDWebImage/SDWebImageManager.h>
 #import "ARFonts.h"
+#import <Emission/AREmission.h>
 
 
 @implementation ARTestHelper
@@ -55,6 +56,13 @@
     // Ensure that the image cache is just set up for testing
     SDImageCache *imageCache = [[SDImageCache alloc] initWithNamespace:@"Testing" diskCacheDirectory:NSTemporaryDirectory()];
     [[SDWebImageManager sharedManager] setValue:imageCache forKey:@"_imageCache"];
+
+    // Sets up AREmission manually
+    AREmission *emission = [[AREmission alloc] initWithUserID:@""
+                                          authenticationToken:@""
+                                                  packagerURL:nil
+                                        useStagingEnvironment:[AROptions boolForOption:ARUseStagingDefault]];
+    [AREmission setSharedInstance:emission];
 
     // Needed for "usesDrawRect" based Nimble-Snapshots testing
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

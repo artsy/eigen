@@ -111,11 +111,19 @@
 
 - (void)searchBarReturnPressed:(ARQuicksilverSearchBar *)searchBar;
 {
-    NSIndexPath *path = [NSIndexPath indexPathForRow:self.selectedIndex inSection:0];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
-    [cell setBackgroundColor:[UIColor grayColor]];
+    if ([searchBar.text hasPrefix:@"http"]) {
+        [searchBar endEditing:YES];
+        id controller = [ARSwitchBoard.sharedInstance loadURL:[NSURL URLWithString:searchBar.text]];
+        [self addObjectToRecents:searchBar.text];
+        [ARTopMenuViewController.sharedController pushViewController:controller animated:YES];
 
-    [self tableView:self.tableView didSelectRowAtIndexPath:path];
+    } else {
+        NSIndexPath *path = [NSIndexPath indexPathForRow:self.selectedIndex inSection:0];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
+        [cell setBackgroundColor:[UIColor grayColor]];
+
+        [self tableView:self.tableView didSelectRowAtIndexPath:path];
+    }
 }
 
 - (void)searchBarEscapePressed:(ARQuicksilverSearchBar *)searchBar

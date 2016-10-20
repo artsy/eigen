@@ -50,7 +50,7 @@ describe(@"getArtworks", ^{
 
 describe(@"success", ^{
     beforeEach(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/notifications" withResponse:@[[Artwork stubbedArtworkJSON], [Artwork stubbedArtworkJSON]]];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/follow/artists/artworks" withResponse:@[[Artwork stubbedArtworkJSON], [Artwork stubbedArtworkJSON]]];
     });
     
     it(@"increments currentPage", ^{
@@ -65,7 +65,7 @@ describe(@"success", ^{
     });
     
     it(@"sets allDownloaded if artworks count is 0", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/notifications" withResponse:@[]];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/follow/artists/artworks" withResponse:@[]];
         [networkModel getWorksForYou:^(NSArray<ARWorksForYouNotificationItem *> *items) {} failure:nil];
         expect(networkModel.allDownloaded).will.beTruthy();
     });
@@ -74,7 +74,7 @@ describe(@"success", ^{
 describe(@"handling failures", ^{
     beforeEach(^{
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return [request.URL.path isEqualToString:@"/api/v1/me/notifications"];
+            return [request.URL.path isEqualToString:@"/api/v1/me/follow/artists/artworks"];
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
             return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:404 userInfo:nil]];
         }];

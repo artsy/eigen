@@ -24,12 +24,14 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <MultiDelegate/AIMultiDelegate.h>
+#import <Emission/ARHomeComponentViewController.h>
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
 static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationControllerMenuAwareScrollViewContext;
 
 @protocol ARMenuAwareViewController;
+
 
 @interface ARNavigationController () <UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
@@ -129,18 +131,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     [_backButton alignLeadingEdgeWithView:self.view predicate:@"12"];
     _backButton.accessibilityIdentifier = @"Back";
     _backButton.alpha = 0;
-
-    _searchButton = [[ARMenuButton alloc] init];
-    [_searchButton ar_extendHitTestSizeByWidth:10 andHeight:10];
-    [_searchButton setImage:[UIImage imageNamed:@"SearchButton"] forState:UIControlStateNormal];
-    [_searchButton addTarget:self action:@selector(search:) forControlEvents:UIControlEventTouchUpInside];
-    _searchButton.adjustsImageWhenDisabled = NO;
-
-    [self.view addSubview:_searchButton];
-    [_searchButton constrainTopSpaceToView:_statusBarView predicate:@"12"];
-    [_searchButton alignTrailingEdgeWithView:self.view predicate:@"-12"];
-    _searchButton.accessibilityIdentifier = @"Search";
-    _searchButton.alpha = 1;
 }
 
 #pragma mark - Rotation
@@ -190,13 +180,14 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    BOOL isHome = [viewController isKindOfClass:ARHomeComponentViewController.class];
+
     // If it is a non-interactive transition, we fade the buttons in or out
     // ourselves. Otherwise, we'll leave it to the interactive transition.
     if (self.interactiveTransitionHandler == nil) {
         [self showBackButton:[self shouldShowBackButtonForViewController:viewController] animated:animated];
-        [self showSearchButton:[self shouldShowSearchButtonForViewController:viewController] animated:animated];
         [self showStatusBar:!viewController.prefersStatusBarHidden animated:animated];
-        [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:animated];
+        [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:animated isHome:isHome];
 
         BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
         [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:animated];
@@ -213,9 +204,10 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
         self.observedViewController = nil;
     }
 
+    BOOL isHome = [viewController isKindOfClass:ARHomeComponentViewController.class];
+
     [self showBackButton:[self shouldShowBackButtonForViewController:viewController] animated:NO];
-    [self showSearchButton:[self shouldShowSearchButtonForViewController:viewController] animated:NO];
-    [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:NO];
+    [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:NO isHome:isHome];
 
     BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
     [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:NO];
@@ -285,7 +277,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     UIScrollView *scrollView = viewController.menuAwareScrollView;
     if (scrollView && scrollView.delegate && ![scrollView.delegate respondsToSelector:@selector(addDelegate:)]) {
         id<UIScrollViewDelegate> delegate = scrollView.delegate;
-        AIMultiDelegate *multiDelegate = [[AIMultiDelegate alloc] initWithDelegates:@[delegate, [ARScrollNavigationChief chief]]];
+        AIMultiDelegate *multiDelegate = [[AIMultiDelegate alloc] initWithDelegates:@[ delegate, [ARScrollNavigationChief chief] ]];
         scrollView.delegate = (id<UIScrollViewDelegate>)multiDelegate;
 
         // Store the multi-delegate on the scrollview so that its lifetime is tied to it.
@@ -314,11 +306,6 @@ ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
     ChangeButtonVisibility(self.backButton, visible, animated);
 }
 
-- (void)showSearchButton:(BOOL)visible animated:(BOOL)animated
-{
-    ChangeButtonVisibility(self.searchButton, visible, animated);
-}
-
 - (void)showStatusBar:(BOOL)visible animated:(BOOL)animated
 {
     if (animated) {
@@ -334,10 +321,15 @@ ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
     }];
 }
 
-- (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated
+- (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated isHome:(BOOL)isHome
 {
+    CGFloat visibleAlpha = isHome ? 0.98 : 1;
+    UIStatusBarStyle statusBarStyle = isHome ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
+    [[UIApplication sharedApplication] setStatusBarStyle:statusBarStyle];
+
     [UIView animateIf:animated duration:ARAnimationDuration:^{
-        self.statusBarView.alpha = visible ? 1 : 0;
+        self.statusBarView.backgroundColor = isHome ? UIColor.whiteColor : UIColor.blackColor;
+        self.statusBarView.alpha = visible ? visibleAlpha : 0;
     }];
 }
 
@@ -362,11 +354,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 - (BOOL)shouldShowBackButtonForViewController:(UIViewController *)viewController
 {
     return !ShouldHideItem(viewController, @selector(hidesBackButton), @selector(hidesNavigationButtons), NULL) && self.viewControllers.count > 1;
-}
-
-- (BOOL)shouldShowSearchButtonForViewController:(UIViewController *)viewController
-{
-    return !ShouldHideItem(viewController, @selector(hidesSearchButton), @selector(hidesNavigationButtons), NULL);
 }
 
 - (BOOL)shouldShowStatusBarBackgroundForViewController:(UIViewController *)viewController
@@ -450,7 +437,7 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
             }
         }
     }];
-    
+
     if ([vc respondsToSelector:@selector(menuAwareScrollView)]) {
         if (observe) {
             [vc addObserver:self forKeyPath:@"menuAwareScrollView" options:0 context:ARNavigationControllerMenuAwareScrollViewContext];
@@ -467,7 +454,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
         UIViewController<ARMenuAwareViewController> *vc = object;
 
         [self showBackButton:[self shouldShowBackButtonForViewController:vc] animated:YES];
-        [self showSearchButton:[self shouldShowSearchButtonForViewController:vc] animated:YES];
 
         if ([vc respondsToSelector:@selector(hidesToolbarMenu)]) {
             [[ARTopMenuViewController sharedController] hideToolbar:vc.hidesToolbarMenu animated:YES];
@@ -478,12 +464,10 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
         ARScrollNavigationChief *chief = object;
 
         [self showBackButton:[self shouldShowBackButtonForViewController:self.topViewController] && chief.allowsMenuButtons animated:YES];
-        [self showSearchButton:[self shouldShowSearchButtonForViewController:self.topViewController] && chief.allowsMenuButtons animated:YES];
-
     } else if (context == ARNavigationControllerMenuAwareScrollViewContext) {
         UIViewController<ARMenuAwareViewController> *vc = object;
         [self makeScrollViewReportToTheChief:vc];
-        
+
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -503,24 +487,35 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     }
 }
 
-- (IBAction)search:(id)sender;
+- (void)toggleSearch
 {
-    // Attempt to fix problem of crash https://rink.hockeyapp.net/manage/apps/37029/app_versions/41/crash_reasons/46749845?type=overview
-    // If you rapidly press the search/close buttons, you will get a crash pushing the same VC twice
-    self.searchButton.enabled = NO;
+    if (self.isShowingSearch) {
+        [self closeSearch];
+        return;
+    }
 
+    [self showSearch];
+}
+
+- (BOOL)isShowingSearch
+{
+    return self.ar_innermostTopViewController.navigationController.topViewController == self.searchViewController;
+}
+
+- (void)showSearch
+{
     if (self.searchViewController == nil) {
         self.searchViewController = [ARAppSearchViewController sharedSearchViewController];
     }
-    UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
 
-    [CATransaction begin];
+    UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
     [navigationController pushViewController:self.searchViewController
                                     animated:ARPerformWorkAsynchronously];
-    [CATransaction setCompletionBlock:^{
-        self.searchButton.enabled = YES;
-    }];
-    [CATransaction commit];
+}
+
+- (void)closeSearch
+{
+    [self.searchViewController closeSearch:self];
 }
 
 @end

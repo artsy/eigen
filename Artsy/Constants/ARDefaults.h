@@ -22,6 +22,15 @@ extern NSString *const AROnboardingSkipPriceRangeDefault;
 extern NSString *const AROnboardingPromptThresholdDefault;
 
 #pragma mark -
+#pragma mark push notifications
+
+extern NSString *const ARPushNotificationsAppleDialogueSeen;
+extern NSString *const ARPushNotificationsAppleDialogueRejected;
+extern NSString *const ARPushNotificationsSettingsPromptSeen;
+extern NSString *const ARPushNotificationFollowArtist;
+extern NSString *const ARPushNotificationsDialogueLastSeenDate;
+
+#pragma mark -
 #pragma mark Admin features
 
 extern NSString *const AREmissionHeadVersionDefault;

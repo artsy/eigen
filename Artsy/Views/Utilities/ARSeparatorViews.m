@@ -14,6 +14,9 @@
     }
     self.backgroundColor = [UIColor artsyGrayRegular];
     [self constrainHeight:@"1"];
+
+    self.accessibilityElementsHidden = YES;
+
     return self;
 }
 

@@ -4,6 +4,7 @@
 #import "ARSpotlight.h"
 #import "User.h"
 #import "Gene.h"
+#import <UIKit/UIScreen.h>
 
 
 @interface Gene () {
@@ -20,6 +21,7 @@
 {
     return @{
         @"geneID" : @"id",
+        @"uuid" : @"_id",
         @"name" : @"name",
         @"geneDescription" : @"description",
         @"artistCount" : @"counts.artists",
@@ -45,6 +47,15 @@
     return [NSURL URLWithString:[self.urlFormatString stringByReplacingOccurrencesOfString:@":version" withString:@"thumb"]];
 }
 
+- (NSURL *)onboardingImageURL
+{
+    NSInteger heightAndWidth = 50 * [[UIScreen mainScreen] scale];
+    NSString *geminiStringURL = @"https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=%ld&height=%ld&quality=85&src=%@";
+    NSString *completeURL = [NSString stringWithFormat:geminiStringURL, heightAndWidth, heightAndWidth, self.urlFormatString];
+
+    return [NSURL URLWithString:completeURL];
+}
+
 - (instancetype)initWithGeneID:(NSString *)geneID
 {
     self = [super init];
@@ -59,7 +70,7 @@
 
 - (void)updateGene:(void (^)(void))success
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ArtsyAPI getGeneForGeneID:self.geneID success:^(id gene) {
         __strong typeof (wself) sself = wself;
         [sself mergeValuesForKeysFromModel:gene];
@@ -91,7 +102,7 @@
 
 - (void)setFollowState:(BOOL)state success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ArtsyAPI setFavoriteStatus:state forGene:self success:^(id response) {
         __strong typeof (wself) sself = wself;
         sself.followed = state;
@@ -110,12 +121,7 @@
 
 - (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure
 {
-    if ([User isTrialUser]) {
-        success(ARHeartStatusNo);
-        return;
-    }
-
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [ArtsyAPI checkFavoriteStatusForGene:self success:^(BOOL result) {
         __strong typeof (wself) sself = wself;
         sself.followed = result;

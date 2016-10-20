@@ -1,12 +1,11 @@
 #import "ARTabContentView.h"
 
-@class ARSimpleShowFeedViewController, ARNavigationController;
+@class ARHomeComponentViewController, ARNavigationController;
 
 typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
+    ARTopTabControllerIndexSearch,
     ARTopTabControllerIndexFeed,
-    ARTopTabControllerIndexShows,
     ARTopTabControllerIndexBrowse,
-    ARTopTabControllerIndexMagazine,
     ARTopTabControllerIndexFavorites,
     ARTopTabControllerIndexNotifications,
     // This should not really be used. It should always be the last and is meant only to have a count of total number
@@ -22,11 +21,8 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
 
 @interface ARTopMenuNavigationDataSource : NSObject <ARTabViewDataSource>
 
-@property (readwrite, nonatomic, strong) ARSimpleShowFeedViewController *showFeedViewController;
-
-- (void)prefetchBrowse;
-- (void)prefetchHeroUnits;
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
 - (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
+- (BOOL)searchButtonAtIndex:(NSInteger)index;
 
 @end

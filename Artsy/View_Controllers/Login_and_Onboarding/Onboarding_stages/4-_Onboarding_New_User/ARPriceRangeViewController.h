@@ -2,7 +2,15 @@
 @class AROnboardingViewController;
 
 
-@interface ARPriceRangeViewController : UIViewController
-@property (nonatomic, weak) AROnboardingViewController *delegate;
+@protocol ARPersonalizeContainer <NSObject>
+@required
+- (void)budgetSelected;
+@end
+
+
+@interface ARPriceRangeViewController : UITableViewController
+
+@property (nonatomic, weak) id<ARPersonalizeContainer> delegate;
+@property (nonatomic, strong, readonly) NSNumber *rangeValue;
 
 @end

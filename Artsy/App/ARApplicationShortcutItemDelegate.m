@@ -5,7 +5,7 @@
 #import "ARNavigationController.h"
 #import "ARFavoritesViewController.h"
 #import "User.h"
-#import "ARTrialController.h"
+
 
 @implementation ARApplicationShortcutItemDelegate
 
@@ -35,25 +35,26 @@
 - (void)openSearch
 {
     ARNavigationController *rootNavigationController = [[ARTopMenuViewController sharedController] rootNavigationController];
-    [rootNavigationController search:self];
+    [rootNavigationController showSearch];
 }
 
 - (void)openFavorites
 {
     ARNavigationController *rootNavigationController = [[ARTopMenuViewController sharedController] rootNavigationController];
 
-    if (!ARIsRunningInDemoMode && [User isTrialUser]) {
-        ARTrialContext context = ARTrialContextShowingFavorites;
-        [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
-            if (newUser) {
-                [[ARTopMenuViewController sharedController].tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
-                
-            } else {
-                [rootNavigationController pushViewController:[[ARFavoritesViewController alloc] init] animated:NO];
-            }
-        }];
-        return;
-    }
+    // TODO MAXIM: add new demo mode here
+//    if (!ARIsRunningInDemoMode && [User isLocalTemporaryUser]) {
+//        ARTrialContext context = ARTrialContextShowingFavorites;
+//        [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
+//            if (newUser) {
+//                [[ARTopMenuViewController sharedController].tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
+//                
+//            } else {
+//                [rootNavigationController pushViewController:[[ARFavoritesViewController alloc] init] animated:NO];
+//            }
+//        }];
+//        return;
+//    }
 
     [rootNavigationController pushViewController:[[ARFavoritesViewController alloc] init] animated:NO];
 }

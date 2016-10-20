@@ -35,17 +35,19 @@ NSString *const ARAnalyticsInquiryError = @"Inquiry error";
 
 NSString *const ARAnalyticsSlideshowStarted = @"Slideshow started";
 
-NSString *const ARAnalyticsOnboardingStarted = @"user started onboarding";
-NSString *const ARAnalyticsOnboardingStartedCollectorLevel = @"user started collector level";
-NSString *const ARAnalyticsOnboardingCompletedCollectorLevel = @"user completed collector level";
-NSString *const ARAnalyticsOnboardingStartedPersonalize = @"user started personalize";
-NSString *const ARAnalyticsOnboardingSkippedPersonalize = @"user skipped personalize";
-NSString *const ARAnalyticsOnboardingCompletedPersonalize = @"user completed personalize";
-NSString *const ARAnalyticsOnboardingStartedPriceRange = @"user started price range";
-NSString *const ARAnalyticsOnboardingCompletedPriceRange = @"user completed price range";
-NSString *const ARAnalyticsOnboardingCompleted = @"user completed onboarding";
+NSString *const ARAnalyticsOnboardingGetStarted = @"Tapped get started";
+NSString *const ARAnalyticsOnboardingTappedSearch = @"Tapped onboarding search";
+NSString *const ARAnalyticsOnboardingBudgetSelected = @"Budget selected";
+NSString *const ARAnalyticsOnboardingLogin = @"Tapped log in on start screen";
+NSString *const ARAnalyticsOnboardingLoginStarted = @"Tapped log in on log in screen";
+NSString *const ARAnalyticsOnboardingLoginSuccess = @"Successfully logged in";
+NSString *const ARAnalyticsOnboardingLoginFailed = @"Log in failed";
+NSString *const ARAnalyticsOnboardingSignupStarted = @"Tapped sign up";
+NSString *const ARAnalyticsOnboardingSignupSuccess = @"Created account";
+NSString *const ARAnalyticsOnboardingSignupFailed = @"Sign up failed";
 
-NSString *const ARAnalyticsShowTrialSplash = @"user trial splash presented";
+NSString *const ARAnalyticsPushNotificationLocal = @"Artsy notification prompt response";
+NSString *const ARAnalyticsPushNotificationApple = @"Apple notification prompt response";
 
 NSString *const ARAnalyticsTappedHeroUnit = @"Tapped banner";
 NSString *const ARAnalyticsTappedMainNavigationItem = @"view main navigation item";
@@ -83,7 +85,7 @@ NSString *const ARAnalyticsArtistUnfollow = @"Follow artist";
 NSString *const ARAnalyticsArtistTappedForSale = @"artist tapped for sale";
 
 NSString *const ARAnalyticsGeneView = @"gene view";
-NSString *const ARAnalyticsGeneFollow = @"gene favorite";
+NSString *const ARAnalyticsGeneFollow = @"Follow category";
 
 NSString *const ARAnalyticsShowMenu = @"user opened menu";
 NSString *const ARAnalyticsMenuTappedHome = @"user menu tapped home";

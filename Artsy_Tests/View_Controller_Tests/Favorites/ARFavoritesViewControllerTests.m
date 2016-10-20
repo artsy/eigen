@@ -10,6 +10,7 @@
 #import "ARGeneFavoritesNetworkModel.h"
 #import "ARSwitchBoard.h"
 #import "ARSwitchboard+Eigen.h"
+#import "ARStubbedFavoritesNetworkModel.h"
 
 
 @interface ARFavoritesViewController ()
@@ -17,7 +18,7 @@
 - (void)updateView;
 @property (nonatomic, strong, readonly) AREmbeddedModelsViewController *embeddedItemsVC;
 @property (nonatomic, strong, readonly) ARArtworkMasonryModule *artworksModule;
-@property (nonatomic, strong, readonly) ARArtworkFavoritesNetworkModel *artworkFavoritesNetworkModel;
+@property (nonatomic, strong, readwrite) ARArtworkFavoritesNetworkModel *artworkFavoritesNetworkModel;
 @property (nonatomic, strong, readonly) ARFavoriteItemModule *artistsModule;
 @property (nonatomic, strong, readonly) ARArtistFavoritesNetworkModel *artistFavoritesNetworkModel;
 @property (nonatomic, strong, readonly) ARFavoriteItemModule *genesModule;
@@ -92,11 +93,15 @@ describe(@"artworks", ^{
 
     itHasSnapshotsForDevicesWithName(@"with no artworks", ^{
         sharedBefore();
+        
+        ARStubbedFavoritesNetworkModel *stubbedNetworkModel = [[ARStubbedFavoritesNetworkModel alloc] initWithFavoritesStack:@[]];
 
-        id networkModelMock = [OCMockObject niceMockForClass:[ARArtworkFavoritesNetworkModel class]];
-        [[[networkModelMock stub] andReturnValue:OCMOCK_VALUE(YES)] allDownloaded];
-        [[[mock stub] andReturn:networkModelMock] artworkFavoritesNetworkModel];
-
+        // We're force loading the view before setting the stubbed network model
+        [favoritesVC beginAppearanceTransition:YES animated:NO];
+        [favoritesVC endAppearanceTransition];
+        
+        favoritesVC.activeNetworkModel = stubbedNetworkModel;
+        
         return favoritesVC;
     });
 

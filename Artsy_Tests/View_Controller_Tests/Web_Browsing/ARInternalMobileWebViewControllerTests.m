@@ -3,7 +3,6 @@
 #import "ARUserManager+Stubs.h"
 #import "ARUserManager.h"
 #import "ARNetworkConstants.h"
-#import "ARTrialController.h"
 #import "ARSwitchBoard.h"
 #import "ARSwitchboard+Eigen.h"
 #import "ARInternalShareValidator.h"
@@ -149,37 +148,6 @@ describe(@"authenticated", ^{
         NSURLRequest *request = [controller requestWithURL:controller.currentURL];
         expect([request valueForHTTPHeaderField:ARAuthHeader]).to.beNil();
     });
-
-    describe(@"shouldStartLoadWithRequest:navigationType", ^{
-        __block ARInternalMobileWebViewController *controller;
-        
-        beforeEach(^{
-            controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@""]];
-        });
-        
-        it(@"doesn't show the website's trial login/signup view on a request to log_in", ^{
-
-            NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"https://m.artsy.net/log_in"]];
-            id mockUser = [OCMockObject mockForClass:[User class]];
-            [[[mockUser stub] andReturnValue:OCMOCK_VALUE(NO)] isTrialUser];
-
-            id mock = [OCMockObject partialMockForObject:[ARTrialController instance]];
-            [[mock reject] presentTrialWithContext:ARTrialContextNotTrial success:[OCMArg any]];
-
-            id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
-            [[switchboardMock reject] loadURL:[OCMArg any] fair:[OCMArg any]];
-
-            id action = StubNavActionForRequest(request, WKNavigationTypeOther);
-            expect([controller shouldLoadNavigationAction:action]).to.equal(WKNavigationActionPolicyCancel);
-
-            [mock verify];
-            [switchboardMock verify];
-
-            [mockUser stopMocking];
-            [switchboardMock stopMocking];
-            [mock stopMocking];
-        });
-    });
 });
 
 describe(@"unauthenticated", ^{
@@ -232,50 +200,6 @@ describe(@"unauthenticated", ^{
 
             id action = StubNavActionForRequest(request, WKNavigationTypeLinkActivated);
             expect([controller shouldLoadNavigationAction:action]).to.equal(WKNavigationActionPolicyCancel);
-        });
-
-        it(@"shows a trial login/signup view on a request to log_in", ^{
-            NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"http://m.artsy.net/log_in"]];
-            id mockUser = [OCMockObject mockForClass:[User class]];
-            [[[mockUser stub] andReturnValue:OCMOCK_VALUE(YES)] isTrialUser];
-
-            id mock = [OCMockObject partialMockForObject:[ARTrialController instance]];
-            [[mock expect] presentTrialWithContext:ARTrialContextNotTrial success:[OCMArg any]];
-
-            id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
-            [[switchboardMock reject] loadURL:[OCMArg any] fair:[OCMArg any]];
-
-            id action = StubNavActionForRequest(request, WKNavigationTypeOther);
-            expect([controller shouldLoadNavigationAction:action]).to.equal(WKNavigationActionPolicyCancel);
-
-            [mock verify];
-            [switchboardMock verify];
-
-            [mockUser stopMocking];
-            [switchboardMock stopMocking];
-            [mock stopMocking];
-        });
-
-        it(@"shows a trial login/signup view on a request to sign_up", ^{
-            NSURLRequest *request = [controller requestWithURL:[NSURL URLWithString:@"http://m.artsy.net/sign_up"]];
-            id mockUser = [OCMockObject mockForClass:[User class]];
-            [[[mockUser stub] andReturnValue:OCMOCK_VALUE(YES)] isTrialUser];
-
-            id mock = [OCMockObject partialMockForObject:[ARTrialController instance]];
-            [[mock expect] presentTrialWithContext:ARTrialContextNotTrial success:[OCMArg any]];
-
-            id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
-            [[switchboardMock reject] loadURL:[OCMArg any] fair:[OCMArg any]];
-
-            id action = StubNavActionForRequest(request, WKNavigationTypeOther);
-            expect([controller shouldLoadNavigationAction:action]).to.beFalsy();
-
-            [mock verify];
-            [switchboardMock verify];
-
-            [mockUser stopMocking];
-            [switchboardMock stopMocking];
-            [mock stopMocking];
         });
     });
 });

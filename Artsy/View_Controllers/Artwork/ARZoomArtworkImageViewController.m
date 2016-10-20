@@ -4,6 +4,7 @@
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
+
 @interface ARZoomArtworkImageViewController () <ARZoomViewDelegate>
 
 @property (nonatomic, assign) BOOL popped;
@@ -30,11 +31,6 @@
 - (BOOL)hidesBackButton
 {
     return NO;
-}
-
-- (BOOL)hidesSearchButton
-{
-    return YES;
 }
 
 - (BOOL)hidesToolbarMenu

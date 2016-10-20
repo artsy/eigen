@@ -13,7 +13,7 @@ extern NSString *const ARTwitterCallbackPath;
 
 extern NSString *const ARAuthHeader;
 extern NSString *const ARXappHeader;
-extern NSString *const AREigenTrialUserIDHeader;
+extern NSString *const AREigenLocalTemporaryUserIDHeader;
 
 extern NSString *const ARTotalHeader;
 
@@ -60,7 +60,10 @@ extern NSString *const ARFollowProfilesURL;
 extern NSString *const ARFollowingProfileURLFormat;
 
 extern NSString *const ARRelatedArtistsURL;
+extern NSString *const ARRelatedGeneURLFormat;
+extern NSString *const ARPopularArtistsURL;
 extern NSString *const ARNotificationsURL;
+extern NSString *const ARWorksByArtistsYouFollowURL;
 
 extern NSString *const ARGeneArtworksURL;
 extern NSString *const ARGeneInformationURLFormat;
@@ -74,6 +77,7 @@ extern NSString *const ARProfileInformationURLFormat;
 
 extern NSString *const ARNewSearchURL;
 extern NSString *const ARNewArtistSearchURL;
+extern NSString *const ARNewGeneSearchURL;
 
 extern NSString *const ARShowFeedURL;
 extern NSString *const ARShowArtworksURLFormat;

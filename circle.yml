@@ -27,7 +27,8 @@ machine:
 
 dependencies:
   override:
-    - if [ ! -d "Pods" ]; then git submodule update --init; fi; 
+    - if [ ! -d "Pods" ]; then git submodule update --init; fi;
+    - mkdir -p ~/.cocoapods/repos && cd ~/.cocoapods/repos && curl -LO https://github.com/CocoaPods/Specs/releases/download/20161019/master-spec-repo-2016-10-19.bz2 && tar -jxvf master-spec-repo-2016-10-19.bz2
     - bundle install --path=vendor/bundle --jobs=4 --retry=3 --without development
     - bundle exec pod install --verbose
 
