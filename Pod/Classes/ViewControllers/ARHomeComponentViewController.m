@@ -4,12 +4,23 @@
 
 - (instancetype)init;
 {
-    return [self initWithEmission:nil];
+  return [self initWithEmission:nil];
 }
 
 - (instancetype)initWithEmission:(AREmission *)emission;
 {
-    return [super initWithEmission:emission moduleName:@"Home" initialProperties:nil];
+  return [super initWithEmission:emission moduleName:@"Home" initialProperties:nil];
+}
+
+- (NSLayoutConstraint *)topLayoutConstraintWithRootView:(UIView *)rootView;
+{
+  return [NSLayoutConstraint constraintWithItem:rootView
+                                      attribute:NSLayoutAttributeTop
+                                      relatedBy:NSLayoutRelationEqual
+                                         toItem:self.view
+                                      attribute:NSLayoutAttributeTop
+                                     multiplier:1
+                                       constant:0];
 }
 
 @end

@@ -1,5 +1,9 @@
 ### Master
 
+- Only align home view to top of screen, otherwise default to bottom status bar - alloy
+
+### 1.1.0
+
 - Fix layout in Artist Shows component on iPad - sarah
 - Order home page rails as per design - alloy
 - Include all followed genes on home page (actually limited to 100) - alloy
