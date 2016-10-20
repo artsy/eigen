@@ -181,7 +181,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
 
     [self registerEchoRouteForKey:@"ARGeneRoute" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
-        return [sself loadGeneWithID:parameters[@"id"]];
+        return [sself loadGeneWithID:parameters[@"id"] refineParams:parameters];
     }];
 
     [self registerEchoRouteForKey:@"ARShowRoute" handler:JLRouteParams {

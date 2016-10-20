@@ -328,15 +328,16 @@ describe(@"ARSwitchboard", ^{
             expect(subject).to.beAKindOf(ARGeneViewController.class);
         });
 
-        it(@"routes modern genes when using the dev option", ^{
-            BOOL originalModernGene = [AROptions boolForOption:AROptionsUseModernGeneVC];
-            [AROptions setBool:YES forOption:AROptionsUseModernGeneVC];
+        it(@"does not route to react gene when echo has a feature called 'DisableReactGenes'", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            [switchboard updateRoutes];
+            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+            echo.features = @{ @"DisableReactGenes" : [[Feature alloc] initWithName:@"" state:@1] };
+            switchboard.echo = echo;
 
-            id subject = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/gene/surrealism"] fair:nil];
+            id subject = [switchboard loadPath:@"/gene/mygene"];
             NSString *classString = NSStringFromClass([subject class]);
-
-            expect(classString).to.contain(@"ARComponentViewController");
-            [AROptions setBool:originalModernGene forOption:AROptionsUseModernGeneVC];
+            expect(classString).to.contain(@"ARGeneViewController");
         });
 
         it(@"routes auctions", ^{
