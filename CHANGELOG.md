@@ -1,6 +1,7 @@
 ### Master
 
 - Fix crash that would occur for artworks that have no artists - alloy
+- Added an auction results button to some artist pages - orta
 
 ### 1.1.0-beta.5
 

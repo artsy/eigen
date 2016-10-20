@@ -12,6 +12,15 @@
       "internalDebuggerPort": 9090,
       "sourceMaps": true,
       "outDir": "${workspaceRoot}/.vscode/.react"
+    },
+    {
+      "name": "Attach to running packager/app",
+      "program": "${workspaceRoot}/.vscode/launchReactNative.js",
+      "type": "reactnative",
+      "request": "attach",
+      "internalDebuggerPort": 9090,
+      "sourceMaps": true,
+      "outDir": "${workspaceRoot}/.vscode/.react"
     }
   ]
 }
