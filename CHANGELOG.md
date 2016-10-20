@@ -1,5 +1,6 @@
 ### Master
 
+- Fix layout in Artist Shows component on iPad - sarah
 - Fix crash that would occur for artworks that have no artists - alloy
 - Added an auction results button to some artist pages - orta
 
