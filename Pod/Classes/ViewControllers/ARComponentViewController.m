@@ -26,6 +26,7 @@
 - (void)viewDidLoad;
 {
   [super viewDidLoad];
+  self.automaticallyAdjustsScrollViewInsets = NO;
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:self.emission.bridge
                                                    moduleName:self.moduleName

@@ -9,10 +9,7 @@
 
 - (instancetype)initWithEmission:(AREmission *)emission;
 {
-    if ((self = [super initWithEmission:emission moduleName:@"Home" initialProperties:nil])) {
-        self.automaticallyAdjustsScrollViewInsets = NO;
-    }
-    return self;
+    return [super initWithEmission:emission moduleName:@"Home" initialProperties:nil];
 }
 
 @end
