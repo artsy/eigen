@@ -1008,7 +1008,7 @@
                 },
                 {
                   "name": "medium",
-                  "description": null,
+                  "description": "A string from the list of allocations, or * to denote all mediums",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -5471,7 +5471,7 @@
             },
             {
               "name": "is_display_auction_link",
-              "description": null,
+              "description": "Only specific Artists should show a link to auction results.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -14800,7 +14800,7 @@
                 },
                 {
                   "name": "medium",
-                  "description": null,
+                  "description": "A string from the list of allocations, or * to denote all mediums",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -15362,13 +15362,37 @@
               "args": [
                 {
                   "name": "max_rails",
-                  "description": "Maximum number of modules to return",
+                  "description": "Maximum number of modules to return, disable limit with a negative number",
                   "type": {
                     "kind": "SCALAR",
                     "name": "Int",
                     "ofType": null
                   },
                   "defaultValue": "8"
+                },
+                {
+                  "name": "max_followed_gene_rails",
+                  "description": "Maximum number of followed genes to return, disable with a negative number",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": "1"
+                },
+                {
+                  "name": "order",
+                  "description": "The preferred order of modules, defaults to order returned by Gravity",
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "HomePageArtworkModuleTypes",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
                 }
               ],
               "type": {
@@ -16936,7 +16960,7 @@
                 },
                 {
                   "name": "medium",
-                  "description": null,
+                  "description": "A string from the list of allocations, or * to denote all mediums",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -17274,6 +17298,77 @@
           "inputFields": null,
           "interfaces": [],
           "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "HomePageArtworkModuleTypes",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "ACTIVE_BIDS",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FOLLOWED_ARTISTS",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FOLLOWED_GALLERIES",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SAVED_WORKS",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "RECOMMENDED_WORKS",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LIVE_AUCTIONS",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CURRENT_FAIRS",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "RELATED_ARTISTS",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FOLLOWED_GENES",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "GENERIC_GENES",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
           "possibleTypes": null
         },
         {
@@ -17891,7 +17986,7 @@
             },
             {
               "name": "is_display_auction_link",
-              "description": null,
+              "description": "Only specific Artists should show a link to auction results.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -18971,7 +19066,7 @@
                 },
                 {
                   "name": "medium",
-                  "description": null,
+                  "description": "A string from the list of allocations, or * to denote all mediums",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -20060,7 +20155,7 @@
             },
             {
               "name": "is_display_auction_link",
-              "description": null,
+              "description": "Only specific Artists should show a link to auction results.",
               "args": [],
               "type": {
                 "kind": "SCALAR",

@@ -1,6 +1,8 @@
 ### Master
 
 - Fix layout in Artist Shows component on iPad - sarah
+- Order home page rails as per design - alloy
+- Include all followed genes on home page (actually limited to 100) - alloy
 - Fix crash that would occur for artworks that have no artists - alloy
 - Added an auction results button to some artist pages - orta
 
