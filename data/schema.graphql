@@ -58,6 +58,8 @@ type Artist implements Node {
   is_consignable: Boolean
   public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   consignable: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+
+  # Only specific Artists should show a link to auction results.
   is_display_auction_link: Boolean
   display_auction_link: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   has_metadata: Boolean
@@ -215,6 +217,8 @@ type ArtistItem implements Node {
   is_consignable: Boolean
   public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   consignable: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+
+  # Only specific Artists should show a link to auction results.
   is_display_auction_link: Boolean
   display_auction_link: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   has_metadata: Boolean
@@ -330,6 +334,8 @@ type ArtistSearchEntity implements Node {
   is_consignable: Boolean
   public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   consignable: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+
+  # Only specific Artists should show a link to auction results.
   is_display_auction_link: Boolean
   display_auction_link: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   has_metadata: Boolean
@@ -1173,7 +1179,32 @@ type Gene {
   cached: Int
 
   # Artworks Elastic Search results
-  filtered_artworks(aggregation_partner_cities: [String], aggregations: [ArtworkAggregation], artist_id: String, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], include_artworks_by_followed_artists: Boolean, for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, periods: [String], major_periods: [String], partner_id: ID, partner_cities: [String], price_range: String, page: Int, size: Int, sort: String): FilterArtworks
+  filtered_artworks(
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    size: Int
+    sort: String
+  ): FilterArtworks
   href: String
   name: String
   description: String
@@ -1194,7 +1225,32 @@ type GeneItem {
   cached: Int
 
   # Artworks Elastic Search results
-  filtered_artworks(aggregation_partner_cities: [String], aggregations: [ArtworkAggregation], artist_id: String, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], include_artworks_by_followed_artists: Boolean, for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, periods: [String], major_periods: [String], partner_id: ID, partner_cities: [String], price_range: String, page: Int, size: Int, sort: String): FilterArtworks
+  filtered_artworks(
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    size: Int
+    sort: String
+  ): FilterArtworks
   href: String
   name: String
   description: String
@@ -1335,8 +1391,14 @@ type HomePage {
 
   # Artwork modules to show on the home screen
   artwork_modules(
-    # Maximum number of modules to return
+    # Maximum number of modules to return, disable limit with a negative number
     max_rails: Int = 8
+
+    # Maximum number of followed genes to return, disable with a negative number
+    max_followed_gene_rails: Int = 1
+
+    # The preferred order of modules, defaults to order returned by Gravity
+    order: [HomePageArtworkModuleTypes]
   ): [HomePageArtworkModule]
 
   # Single artist module to show on the home screen.
@@ -1382,6 +1444,19 @@ type HomePageArtworkModule implements Node {
   context: HomePageModuleContext
   title: String
   results: [Artwork]
+}
+
+enum HomePageArtworkModuleTypes {
+  ACTIVE_BIDS
+  FOLLOWED_ARTISTS
+  FOLLOWED_GALLERIES
+  SAVED_WORKS
+  RECOMMENDED_WORKS
+  LIVE_AUCTIONS
+  CURRENT_FAIRS
+  RELATED_ARTISTS
+  FOLLOWED_GENES
+  GENERIC_GENES
 }
 
 type HomePageHeroUnit {
@@ -1463,7 +1538,32 @@ type HomePageModuleContextGene {
   cached: Int
 
   # Artworks Elastic Search results
-  filtered_artworks(aggregation_partner_cities: [String], aggregations: [ArtworkAggregation], artist_id: String, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], include_artworks_by_followed_artists: Boolean, for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, periods: [String], major_periods: [String], partner_id: ID, partner_cities: [String], price_range: String, page: Int, size: Int, sort: String): FilterArtworks
+  filtered_artworks(
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    size: Int
+    sort: String
+  ): FilterArtworks
   href: String
   name: String
   description: String
@@ -2277,7 +2377,32 @@ type RootQueryType {
   ): FilterPartners
 
   # Artworks Elastic Search results
-  filter_artworks(aggregation_partner_cities: [String], aggregations: [ArtworkAggregation], artist_id: String, color: String, dimension_range: String, extra_aggregation_gene_ids: [String], include_artworks_by_followed_artists: Boolean, for_sale: Boolean, gene_id: String, gene_ids: [String], height: String, width: String, medium: String, period: String, periods: [String], major_periods: [String], partner_id: ID, partner_cities: [String], price_range: String, page: Int, size: Int, sort: String): FilterArtworks
+  filter_artworks(
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    size: Int
+    sort: String
+  ): FilterArtworks
 
   # A PartnerCategory
   partner_category(
