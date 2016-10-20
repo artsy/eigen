@@ -10,7 +10,7 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
 
     override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
-        (rootViewController as? ARExternalWebBrowserViewController)?.ignoreStatusBar = true
+//        (rootViewController as? ARExternalWebBrowserViewController)?.ignoreStatusBar = true
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -71,6 +71,5 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
 
     func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
         viewController.automaticallyAdjustsScrollViewInsets = false
-        (viewController as? ARExternalWebBrowserViewController)?.ignoreStatusBar = true
     }
 }

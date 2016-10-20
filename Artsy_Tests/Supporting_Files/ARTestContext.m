@@ -6,7 +6,7 @@ static OCMockObject *ARPartialScreenMock;
 
 
 @interface UIScreen (Prvate)
-- (CGRect)_applicationFrameForInterfaceOrientation:(long long)arg1 usingStatusbarHeight:(double)arg2 ignoreStatusBar:(BOOL)ignore;
+- (CGRect)_applicationFrameForInterfaceOrientation:(long long)arg1 usingStatusbarHeight:(double)arg2;
 @end
 
 
@@ -51,7 +51,7 @@ static OCMockObject *ARPartialScreenMock;
     NSValue *phoneSize = [NSValue valueWithCGRect:(CGRect)CGRectMake(0, 0, size.width, size.height)];
 
     [[[ARPartialScreenMock stub] andReturnValue:phoneSize] bounds];
-    [[[[ARPartialScreenMock stub] andReturnValue:phoneSize] ignoringNonObjectArgs] _applicationFrameForInterfaceOrientation:0 usingStatusbarHeight:0 ignoreStatusBar:NO];
+    [[[[ARPartialScreenMock stub] andReturnValue:phoneSize] ignoringNonObjectArgs] _applicationFrameForInterfaceOrientation:0 usingStatusbarHeight:0];
 }
 
 + (void)stopStubbing
