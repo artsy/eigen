@@ -36,13 +36,7 @@
 
   rootView.translatesAutoresizingMaskIntoConstraints = NO;
   [self.view addConstraints:@[
-    [NSLayoutConstraint constraintWithItem:rootView
-                                 attribute:NSLayoutAttributeTop
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:self.view
-                                 attribute:NSLayoutAttributeTop
-                                multiplier:1
-                                  constant:0],
+    [self topLayoutConstraintWithRootView:rootView],
     [NSLayoutConstraint constraintWithItem:rootView
                                  attribute:NSLayoutAttributeLeading
                                  relatedBy:NSLayoutRelationEqual
@@ -67,14 +61,25 @@
   ]];
 }
 
+- (NSLayoutConstraint *)topLayoutConstraintWithRootView:(UIView *)rootView;
+{
+  return [NSLayoutConstraint constraintWithItem:rootView
+                                      attribute:NSLayoutAttributeTop
+                                      relatedBy:NSLayoutRelationEqual
+                                         toItem:self.topLayoutGuide
+                                      attribute:NSLayoutAttributeBottom
+                                     multiplier:1
+                                       constant:0];
+}
+
 - (BOOL)shouldAutorotate;
 {
-    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+  return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations;
 {
-    return self.shouldAutorotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
+  return self.shouldAutorotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
 @end
