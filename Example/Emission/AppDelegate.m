@@ -183,7 +183,7 @@ randomBOOL(void)
 
   emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull metadata, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
     sleep(1);
-    resolve(@{});
+    resolve(@{ @"sort": @"-year", @"medium": @"jewelry", @"selectedPrice": @"0-50000" });
   };
 }
 
