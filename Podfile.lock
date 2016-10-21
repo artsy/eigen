@@ -249,6 +249,7 @@ DEPENDENCIES:
   - ORKeyboardReactingApplication
   - ORStackView (= 2.0.3)
   - Quick
+  - React/Core (from `https://github.com/alloy/react-native.git`, branch `0.34.1-with-scrollview-fix`)
   - ReactiveCocoa
   - SDWebImage (>= 3.7.2)
   - Specta
@@ -304,6 +305,9 @@ EXTERNAL SOURCES:
     :path: Pods/CocoaPodsKeys
   NAMapKit:
     :git: https://github.com/neilang/NAMapKit
+  React:
+    :branch: 0.34.1-with-scrollview-fix
+    :git: https://github.com/alloy/react-native.git
   SSFadingScrollView:
     :branch: add-axial-support
     :git: https://github.com/alloy/SSFadingScrollView.git
@@ -357,6 +361,9 @@ CHECKOUT OPTIONS:
   NAMapKit:
     :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
     :git: https://github.com/neilang/NAMapKit
+  React:
+    :commit: 73fa7b42b1a1384d9661fca4ddffd85a10ad94dc
+    :git: https://github.com/alloy/react-native.git
   SSFadingScrollView:
     :commit: 3920e3582e46c9fe23b0d1200e28614ebd66d801
     :git: https://github.com/alloy/SSFadingScrollView.git
@@ -433,6 +440,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: d3cfd284ae1906131f967f9568a028aea38aa3ef
+PODFILE CHECKSUM: 2e4f7a7c6f4a66c461bdf246b980eda0614927d0
 
 COCOAPODS: 1.0.1
