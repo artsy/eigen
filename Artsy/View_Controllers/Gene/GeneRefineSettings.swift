@@ -1,6 +1,25 @@
 import UIKit
 import SwiftyJSON
 
+/// As the Refine setting uses a lot of Swift-specific features,
+/// we need something to coordinate between the rest of our app
+/// and the refine setting VC.
+
+class RefineSwiftCoordinator : NSObject {
+    static func showRefineSettingForGeneSettings(viewController: UIViewController, data: [String: AnyObject], completion: (newRefineSettings: [String: AnyObject]?) -> ()) {
+        guard let settings = GeneRefineSettings.refinementFromAggregationJSON(data) else { return completion(newRefineSettings: nil) }
+
+        let optionsVC = RefinementOptionsViewController(defaultSettings: settings, initialSettings: settings, currencySymbol: "$", userDidCancelClosure: { (optionsVC) in
+                viewController.dismissViewControllerAnimated(true, completion: nil)
+                completion(newRefineSettings: nil)
+            }) { (newSettings) in
+                viewController.dismissViewControllerAnimated(true, completion: nil)
+                completion(newRefineSettings: newSettings.toJSON())
+        }
+        viewController.presentViewController(optionsVC, animated: true, completion: nil)
+    }
+}
+
 enum GeneSortingOrder: String {
     case RecentlyAdded = "Recently Added"
     case LeastExpensive = "Least Expensive"
@@ -88,7 +107,7 @@ func > (lhs: Price, rhs: Price) -> Bool {
 
 struct GeneRefineSettings {
     let sort: GeneSortingOrder
-    let medium: Medium
+    let medium: Medium?
     let mediums: [Medium]
     var priceRange: PriceRange?
 
@@ -105,18 +124,17 @@ struct GeneRefineSettings {
         guard let mediumsJSON = aggregations.filter({ $0["slice"].stringValue == "MEDIUM" }).first else { return nil }
         let mediums = mediumsJSON["counts"].arrayValue.map({ Medium(id: $0["id"].stringValue, name: $0["name"].stringValue) })
 
-        guard let selectedMedium = mediums.first({ $0.id == mediumID }) else { return nil }
-
+        let selectedMedium = mediums.first({ $0.id == mediumID })
         return GeneRefineSettings(sort: sorting, medium: selectedMedium, mediums:mediums, priceRange: maxPrice?.priceRange())
     }
 
     func toJSON() -> [String: AnyObject] {
-
-        let priceRangeID = (priceRange != nil) ? "\(priceRange?.min)-\(priceRange?.max)" : "*-*"
+        let priceRangeID = (priceRange != nil) ? "\(priceRange!.min)-\(priceRange!.max)" : "*-*"
+        let mediumID = (medium != nil) ? medium!.id : "*"
         return [
             "sort": sort.toID(),
             "selectedPrice": priceRangeID,
-            "medium" : medium.id
+            "medium" : mediumID
         ]
     }
 }
@@ -161,7 +179,7 @@ extension GeneRefineSettings: RefinableType {
         if indexPath.section == SortPosition {
             return GeneSortingOrder.allValues()[indexPath.row] == sort
         } else {
-            return mediums[indexPath.row].id == medium.id
+            return (medium != nil) && mediums[indexPath.row].id == medium!.id
         }
     }
 
@@ -202,6 +220,7 @@ extension GeneRefineSettings: RefinableType {
     }
 
     func indexPathOfSelectedMedium() -> NSIndexPath? {
+        guard let medium = medium else { return nil }
         if let i = mediums.indexOf(medium) {
             return NSIndexPath.init(forItem: i, inSection: 1)
         }
