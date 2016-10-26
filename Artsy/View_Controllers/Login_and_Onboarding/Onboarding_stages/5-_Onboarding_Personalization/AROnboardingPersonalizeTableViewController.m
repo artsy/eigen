@@ -64,7 +64,7 @@
 
     switch (replaceStyle) {
         case ARSearchResultsReplaceSingle:
-            if (searchResults[0]) {
+            if (searchResults) {
                 [self.searchResults replaceObjectAtIndex:self.tableView.indexPathForSelectedRow.row withObject:searchResults[0]];
             } else {
                 [self.searchResults removeObjectAtIndex:self.tableView.indexPathForSelectedRow.row];
