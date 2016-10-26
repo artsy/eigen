@@ -110,6 +110,8 @@
     self.textFieldsView.emailField.delegate = self;
     self.textFieldsView.passwordField.delegate = self;
 
+    [self.buttonsView.emailActionButton setEnabled:NO animated:NO];
+
     [self.buttonsView.emailActionButton addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView.forgotPasswordButton addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView.facebookActionButton addTarget:self action:@selector(fb:) forControlEvents:UIControlEventTouchUpInside];
@@ -150,9 +152,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self.textFieldsView.emailField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    [self.textFieldsView.passwordField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-
     [super viewWillAppear:animated];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -250,7 +249,7 @@
 - (void)keyboardWillShow:(NSNotification *)notification
 {
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
+
     if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
         self.titleToTextFieldsSpacer = [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:self.useLargeLayout ? @"20" : @"60"];
     }
@@ -262,7 +261,7 @@
 - (void)keyboardWillHide:(NSNotification *)notification
 {
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
+
     self.titleToTextFieldsSpacer = [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:self.useLargeLayout ? @"120" : @"60"];
     [UIView animateIf:YES duration:duration:^{
         [self.view layoutIfNeeded];
