@@ -174,7 +174,7 @@ static BOOL ARTabViewDirectionRight = YES;
     _currentViewIndex = index;
 
     // Ensure there is only one scrollview that has `scrollsToTop`
-    if (isARNavigationController && [oldViewController.topViewController conformsToProtocol:@protocol(ARMenuAwareViewController)]) {
+    if (isARNavigationController && [oldViewController.topViewController conformsToProtocol:@protocol(ARMenuAwareViewController)] && [oldViewController.topViewController respondsToSelector:@selector(menuAwareScrollView)]) {
         [(id)oldViewController.topViewController menuAwareScrollView].scrollsToTop = NO;
     }
 
@@ -213,7 +213,7 @@ static BOOL ARTabViewDirectionRight = YES;
             [self.currentNavigationController endAppearanceTransition];
 
             // Ensure there is only one scrollview that has `scrollsToTop`
-            if (isARNavigationController && [self.currentNavigationController.topViewController conformsToProtocol:@protocol(ARMenuAwareViewController)]) {
+            if (isARNavigationController && [self.currentNavigationController.topViewController conformsToProtocol:@protocol(ARMenuAwareViewController)] && [self.currentNavigationController.topViewController respondsToSelector:@selector(menuAwareScrollView)]) {
                 [(id)self.currentNavigationController.topViewController menuAwareScrollView].scrollsToTop = YES;
             }
 
