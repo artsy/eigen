@@ -4,6 +4,7 @@ upcoming:
     dev:
       infrastructure:
     user_facing:
+      - Fixes an intermittent crash on the live interface - ash
 
 
 releases:
