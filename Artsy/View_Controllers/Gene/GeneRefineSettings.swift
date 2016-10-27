@@ -6,10 +6,11 @@ import SwiftyJSON
 /// and the refine setting VC.
 
 class RefineSwiftCoordinator : NSObject {
-    static func showRefineSettingForGeneSettings(viewController: UIViewController, data: [String: AnyObject], completion: (newRefineSettings: [String: AnyObject]?) -> ()) {
-        guard let settings = GeneRefineSettings.refinementFromAggregationJSON(data) else { return completion(newRefineSettings: nil) }
+    static func showRefineSettingForGeneSettings(viewController: UIViewController, initial: [String: AnyObject], current: [String: AnyObject], completion: (newRefineSettings: [String: AnyObject]?) -> ()) {
+        guard let currentSettings = GeneRefineSettings.refinementFromAggregationJSON(initial) else { return completion(newRefineSettings: nil) }
+        guard let initialSettings = GeneRefineSettings.refinementFromAggregationJSON(current) else { return completion(newRefineSettings: nil) }
 
-        let optionsVC = RefinementOptionsViewController(defaultSettings: settings, initialSettings: settings, currencySymbol: "$", userDidCancelClosure: { (optionsVC) in
+        let optionsVC = RefinementOptionsViewController(defaultSettings: currentSettings, initialSettings: initialSettings, currencySymbol: "$", userDidCancelClosure: { (optionsVC) in
                 viewController.dismissViewControllerAnimated(true, completion: nil)
                 completion(newRefineSettings: nil)
             }) { (newSettings) in
@@ -33,9 +34,9 @@ enum GeneSortingOrder: String {
         switch id {
         case "-year":
             return .RecentlyAdded
-        case "-prices":
-            return .LeastExpensive
         case "prices":
+            return .LeastExpensive
+        case "-prices":
             return .MostExpensive
         default:
             return nil
@@ -47,9 +48,9 @@ enum GeneSortingOrder: String {
         case .RecentlyAdded:
             return "-year"
         case .LeastExpensive:
-            return "-prices"
-        case .MostExpensive:
             return "prices"
+        case .MostExpensive:
+            return "-prices"
         }
     }
 }
@@ -57,6 +58,7 @@ enum GeneSortingOrder: String {
 struct Medium {
     let id: String
     let name: String
+    let count: Int
 }
 
 extension Medium: Equatable {}
@@ -122,10 +124,12 @@ struct GeneRefineSettings {
         let maxPrice = prices?.sort(>).first
 
         guard let mediumsJSON = aggregations.filter({ $0["slice"].stringValue == "MEDIUM" }).first else { return nil }
-        let mediums = mediumsJSON["counts"].arrayValue.map({ Medium(id: $0["id"].stringValue, name: $0["name"].stringValue) })
+        let mediums = mediumsJSON["counts"].arrayValue.map({ Medium(id: $0["id"].stringValue, name: $0["name"].stringValue, count: $0["count"].intValue) })
 
-        let selectedMedium = mediums.first({ $0.id == mediumID })
-        return GeneRefineSettings(sort: sorting, medium: selectedMedium, mediums:mediums, priceRange: maxPrice?.priceRange())
+        let allowedMediums = mediums.filter { $0.count > 0 }
+        let selectedMedium = allowedMediums.first({ $0.id == mediumID })
+
+        return GeneRefineSettings(sort: sorting, medium: selectedMedium, mediums:allowedMediums, priceRange: maxPrice?.priceRange())
     }
 
     func toJSON() -> [String: AnyObject] {

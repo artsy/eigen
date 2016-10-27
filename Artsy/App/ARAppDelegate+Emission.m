@@ -145,8 +145,8 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 #pragma mark - Native Module: Refine filter
 
-    emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull metadata, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
-        [RefineSwiftCoordinator showRefineSettingForGeneSettings:controller data:metadata completion:^(NSDictionary<NSString *,id> * _Nullable newRefineSettings) {
+    emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull initial, NSDictionary *_Nonnull current, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
+        [RefineSwiftCoordinator showRefineSettingForGeneSettings:controller initial:initial current:current completion:^(NSDictionary<NSString *,id> * _Nullable newRefineSettings) {
             if (newRefineSettings) {
                 resolve(newRefineSettings);
             } else {
