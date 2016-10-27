@@ -220,7 +220,7 @@ context(@"with a map", ^{
         }]).willNot.beNil();
     });
     
-    xit(@"search view looks correct", ^{
+    it(@"search view looks correct", ^{
         [fairVC searchFieldButtonWasPressed:nil];
         [fairVC.searchVC beginAppearanceTransition:YES animated:NO];
         [fairVC.searchVC endAppearanceTransition];

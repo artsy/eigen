@@ -1,4 +1,5 @@
 #import "ARSearchResultsDataSource.h"
+#import "ARSearchViewControllerStyling.h"
 
 typedef NS_ENUM(NSInteger, ARMenuState) {
     ARMenuStateCollapsed,
@@ -42,5 +43,7 @@ typedef NS_ENUM(NSInteger, ARMenuState) {
 
 - (void)addResults:(NSArray *)results replace:(BOOL)replaceResults;
 - (void)selectedResult:(SearchResult *)result ofType:(NSString *)type fromQuery:(NSString *)query;
+
+- (ARSearchViewControllerStylingMode)searchPresentationMode;
 
 @end

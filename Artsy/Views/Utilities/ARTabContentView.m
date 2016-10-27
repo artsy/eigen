@@ -2,6 +2,8 @@
 
 #import "ARDispatchManager.h"
 #import "ARNavigationController.h"
+#import "UIView+HitTestExpansion.h"
+#import "ARMenuAwareViewController.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -63,6 +65,7 @@ static BOOL ARTabViewDirectionRight = YES;
     [self.buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
         button.enabled = [self.dataSource tabContentView:self canPresentViewControllerAtIndex:index];
         [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [button ar_extendHitTestSizeByWidth:10 andHeight:20];
     }];
 }
 
@@ -141,7 +144,7 @@ static BOOL ARTabViewDirectionRight = YES;
     BOOL isARNavigationController = [self.currentNavigationController isKindOfClass:ARNavigationController.class];
 
     // If selecting search button, toggle search VC
-    if ([self.dataSource searchButtonAtIndex:index] && isARNavigationController) {
+    if (isARNavigationController && [self.dataSource searchButtonAtIndex:index]) {
         [(ARNavigationController *)self.currentNavigationController toggleSearch];
         return;
     }
@@ -166,9 +169,14 @@ static BOOL ARTabViewDirectionRight = YES;
     nextViewInitialFrame.origin.x = direction * CGRectGetWidth(self.superview.bounds);
     oldViewEndFrame.origin.x = -direction * CGRectGetWidth(self.superview.bounds);
 
-    __block UIViewController *oldViewController = self.currentNavigationController;
+    __block UINavigationController *oldViewController = self.currentNavigationController;
     _previousViewIndex = self.currentViewIndex;
     _currentViewIndex = index;
+
+    // Ensure there is only one scrollview that has `scrollsToTop`
+    if (isARNavigationController && [oldViewController.topViewController conformsToProtocol:@protocol(ARMenuAwareViewController)]) {
+        [(id)oldViewController.topViewController menuAwareScrollView].scrollsToTop = NO;
+    }
 
     // Get the next View Controller, add to self
     _currentNavigationController = [self navigationControllerForIndex:index];
@@ -203,6 +211,11 @@ static BOOL ARTabViewDirectionRight = YES;
             [self.currentNavigationController beginAppearanceTransition:YES animated:NO];
             [self addSubview:self.currentNavigationController.view];
             [self.currentNavigationController endAppearanceTransition];
+
+            // Ensure there is only one scrollview that has `scrollsToTop`
+            if (isARNavigationController && [self.currentNavigationController.topViewController conformsToProtocol:@protocol(ARMenuAwareViewController)]) {
+                [(id)self.currentNavigationController.topViewController menuAwareScrollView].scrollsToTop = YES;
+            }
 
             animationBlock();
             completionBlock(YES);

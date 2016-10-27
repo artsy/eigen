@@ -64,7 +64,7 @@
 
     switch (replaceStyle) {
         case ARSearchResultsReplaceSingle:
-            if (searchResults[0]) {
+            if (searchResults) {
                 [self.searchResults replaceObjectAtIndex:self.tableView.indexPathForSelectedRow.row withObject:searchResults[0]];
             } else {
                 [self.searchResults removeObjectAtIndex:self.tableView.indexPathForSelectedRow.row];
@@ -167,7 +167,9 @@
 {
     // We only show custom animation in the case of the related suggestions after clicking a row
     // This animation has suggestions content coming in from the bottom
-    if (self.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults && self.shouldAnimate) {
+    if ((self.contentDisplayMode == ARTableViewContentDisplayModeRelatedResults ||
+         self.contentDisplayMode == ARTableViewContentDisplayModePlaceholder) &&
+        self.shouldAnimate) {
         // State to animate to
         CGRect originalFrame = cell.frame;
 

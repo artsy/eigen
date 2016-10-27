@@ -36,6 +36,8 @@
 @property (nonatomic, strong) ARLoginFieldsView *textFieldsView;
 @property (nonatomic, strong) ARLoginButtonsView *buttonsView;
 @property (nonatomic, strong) ARSerifLineHeightLabel *titleLabel;
+@property (nonatomic, strong) NSLayoutConstraint *titleToTextFieldsSpacer;
+
 
 @property (nonatomic, strong) UIButton *back;
 @property (nonatomic, strong) UIButton *testBotButton;
@@ -92,7 +94,8 @@
 
     [self.textFieldsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
     [self.textFieldsView alignCenterXWithView:self.view predicate:@"0"];
-    [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:self.useLargeLayout ? @"120" : @"60"];
+    self.titleToTextFieldsSpacer = [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:self.useLargeLayout ? @"120" : @"60"];
+
     [self.textFieldsView constrainHeight:@">=108"];
     [self.textFieldsView setupForLogin];
 
@@ -106,6 +109,8 @@
 
     self.textFieldsView.emailField.delegate = self;
     self.textFieldsView.passwordField.delegate = self;
+
+    [self.buttonsView.emailActionButton setEnabled:NO animated:NO];
 
     [self.buttonsView.emailActionButton addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView.forgotPasswordButton addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
@@ -147,9 +152,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self.textFieldsView.emailField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    [self.textFieldsView.passwordField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-
     [super viewWillAppear:animated];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -243,12 +245,14 @@
     [self.view endEditing:YES];
 }
 
+
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
-    self.keyboardConstraint.constant = -keyboardSize.height - ([UIDevice isPad] ? 20 : 10);
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        self.titleToTextFieldsSpacer = [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:self.useLargeLayout ? @"20" : @"60"];
+    }
     [UIView animateIf:YES duration:duration:^{
         [self.view layoutIfNeeded];
     }];
@@ -258,11 +262,12 @@
 {
     CGFloat duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
-    self.keyboardConstraint.constant = 0;
+    self.titleToTextFieldsSpacer = [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:self.useLargeLayout ? @"120" : @"60"];
     [UIView animateIf:YES duration:duration:^{
         [self.view layoutIfNeeded];
     }];
 }
+
 
 #pragma mark -
 #pragma mark Networking

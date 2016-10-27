@@ -21,6 +21,7 @@
 @property (readonly, nonatomic) UITableView *resultsView;
 @property (readonly, nonatomic) UIView *contentView;
 @property (readonly, nonatomic) AFHTTPRequestOperation *searchRequest;
+@property (readonly, nonatomic) ARSearchViewControllerStyling *styling;
 @end
 
 
@@ -34,6 +35,7 @@
     _searchDataSource = [[ARSearchResultsDataSource alloc] init];
     _fontSize = 16;
     _noResultsInfoLabelText = @"No results found.";
+    _styling = [ARSearchViewControllerStyling new];
 
     return self;
 }
@@ -44,7 +46,8 @@
 
     UIView *searchBoxView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:searchBoxView];
-    [searchBoxView constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"70"];
+    [searchBoxView constrainTopSpaceToView:self.flk_topLayoutGuide
+                                 predicate:[self.styling topLayoutConstraintForStyleMode:self.searchPresentationMode]];
     [searchBoxView alignLeading:@"10" trailing:@"-10" toView:self.view];
     [searchBoxView constrainHeight:@(self.fontSize).stringValue];
     _searchBoxView = searchBoxView;
@@ -53,11 +56,12 @@
     UIImageView *searchIcon = [[UIImageView alloc] init];
     searchIcon.image = [[UIImage imageNamed:self.searchIconImageName ?: @"SearchButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     searchIcon.contentMode = UIViewContentModeScaleAspectFit;
-    searchIcon.tintColor = [UIColor whiteColor];
+    searchIcon.tintColor = [self.styling searchIconTintColorForStyleMode:self.searchPresentationMode];
     [searchBoxView addSubview:searchIcon];
     _searchIcon = searchIcon;
 
-    [searchIcon alignLeadingEdgeWithView:searchBoxView predicate:@"30"];
+    [searchIcon alignLeadingEdgeWithView:searchBoxView
+                               predicate:[self.styling searchIconLeadingConstraintForStyleMode:self.searchPresentationMode sizeClass:self.traitCollection.horizontalSizeClass]];
     [searchIcon alignAttribute:NSLayoutAttributeWidth toAttribute:NSLayoutAttributeHeight ofView:searchIcon predicate:@"0"];
 
     // input text field
@@ -83,13 +87,8 @@
     [closeButton constrainLeadingSpaceToView:textField predicate:@"14"];
     [closeButton alignTrailingEdgeWithView:searchBoxView predicate:@"0"];
 
-    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@"CLOSE" attributes:@{
-        NSKernAttributeName : @1,
-        NSFontAttributeName : [UIFont sansSerifFontWithSize:[UIDevice isPad] ? 13 : 10],
-        NSForegroundColorAttributeName : [UIColor whiteColor],
-    }];
-
-    [closeButton setAttributedTitle:attributedString forState:UIControlStateNormal];
+    [closeButton setAttributedTitle:[self.styling closeButtonAttribtedTextForStyleMode:self.searchPresentationMode]
+                           forState:UIControlStateNormal];
 
     [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     closeButton.contentEdgeInsets = [UIDevice isPad] ? UIEdgeInsetsMake(0, 10, 0, 10) : UIEdgeInsetsMake(0, 0, 0, 0);
@@ -326,6 +325,11 @@
     [self stopSearching];
 }
 
+- (ARSearchViewControllerStylingMode)searchPresentationMode
+{
+    return ARSearchViewControllerStylingModeMainScreen;
+}
+
 #pragma mark - Info Label
 
 - (void)showInfoLabel:(BOOL)show animated:(BOOL)animated
@@ -377,7 +381,7 @@
         [self stopSearching];
 
         [self.view addSubview:tableView];
-        [tableView alignTop:@"10" leading:@"10" bottom:@"0" trailing:@"10" toView:self.contentView];
+        [self.styling constrainTableView:tableView toContentView:self.contentView forStyleMode:self.searchPresentationMode];
         _resultsView = tableView;
         [self.view layoutIfNeeded];
     }

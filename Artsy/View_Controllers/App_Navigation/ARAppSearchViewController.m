@@ -86,7 +86,7 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
     [bottomBorder constrainHeight:@"1"];
     [bottomBorder alignLeadingEdgeWithView:self.searchIcon predicate:@"-2"];
     [bottomBorder alignTrailingEdgeWithView:self.textField predicate:@"2"];
-    [bottomBorder constrainTopSpaceToView:self.searchBoxView predicate:@"14"];
+    [bottomBorder constrainTopSpaceToView:self.searchBoxView predicate:@"16"];
 }
 
 - (void)clearTapped:(id)sender
