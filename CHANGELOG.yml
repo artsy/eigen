@@ -4,6 +4,7 @@ upcoming:
     dev:
       infrastructure:
     user_facing:
+      - Refine existing queries on the Gene Page - orta
 
 
 releases:
