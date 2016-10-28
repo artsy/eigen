@@ -4,6 +4,7 @@
 
 ### 1.1.1
 
+- Artist VC uses one show component for medium & large lists - sarah
 - Only align home view to top of screen, otherwise default to bottom status bar - alloy
 
 ### 1.1.0
