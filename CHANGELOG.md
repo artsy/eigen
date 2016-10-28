@@ -1,11 +1,11 @@
 ### 1.1.2
 
+- Artist VC uses one show component for medium & large lists - sarah
 - Ensure the artwork rail expand button is not clipped too early - alloy
 - Use a larger font size in hero units on iPad - alloy
 
 ### 1.1.1
 
-- Artist VC uses one show component for medium & large lists - sarah
 - Only align home view to top of screen, otherwise default to bottom status bar - alloy
 
 ### 1.1.0
