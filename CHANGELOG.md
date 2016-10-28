@@ -1,3 +1,7 @@
+### 1.1.2
+
+- Ensure the artwork rail expand button is not clipped too early - alloy
+
 ### 1.1.1
 
 - Only align home view to top of screen, otherwise default to bottom status bar - alloy
