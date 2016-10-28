@@ -1,3 +1,7 @@
+### 1.1.3
+
+- Remove the refine button from the gene view, for now, as it doesn’t work right yet - alloy
+
 ### 1.1.2
 
 - Artist VC uses one show component for medium & large lists - sarah
