@@ -71,12 +71,9 @@
     }];
 
     [super viewWillAppear:animated];
-}
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
+    // Put this in viewWillAppear instead of viewDidLoad because of tests and view lifecycle issues
+    // TODO: perhaps move back when traitcollections and tests have been fixed
     [self showBackgroundViews];
     [self setupControls];
 }
@@ -103,7 +100,7 @@
 
 - (void)loggedInWithSharedCredentials
 {
-    // This is a dummy method for ARAppDelegate+Analytics to hook into.
+    // This is also a method for ARAppDelegate+Analytics to hook into.
     [self showControls];
 }
 
