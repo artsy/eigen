@@ -181,7 +181,7 @@ randomBOOL(void)
     NSLog(@"[Event] %@ - %@", fromViewController.class, info);
   };
 
-  emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull metadata, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
+  emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull initial, NSDictionary *_Nonnull current, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
     sleep(1);
     resolve(@{ @"sort": @"-year", @"medium": @"design", @"selectedPrice": @"0-50000" });
   };
