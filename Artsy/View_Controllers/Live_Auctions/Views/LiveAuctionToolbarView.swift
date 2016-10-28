@@ -65,18 +65,19 @@ class LiveAuctionToolbarView: UIView {
                 ["bidders": attributify(String(lotViewModel.numberOfBids))]
             ]
 
-            numberOfBidsClosure = { [unowned self] label in
+            numberOfBidsClosure = { [weak self] label in
+                guard let `self` = self else { return }
                 guard self.numberOfBidsObserver == nil else { return }
 
                 self.numberOfBidsObserver = self.lotViewModel
                     .newEventsSignal
-                    .map { [unowned self] _ in self.lotViewModel.numberOfBids }
-                    .subscribe { numberOfBids in
-                        label.attributedText = self.attributify(String(numberOfBids))
+                    .map { [weak self] _ in self?.lotViewModel.numberOfBids ?? 0 }
+                    .subscribe { [weak self] numberOfBids in
+                        label.attributedText = self?.attributify(String(numberOfBids)) ?? NSAttributedString()
                 }
             }
 
-            clockClosure = { [unowned self] label in
+            clockClosure = { label in
                 self.formatter.dateFormat = "mm:ss"
                 self.timeSinceLotOpenedLabel = label
                 self.timeSinceLotOpenedTimer = NSTimer.scheduledTimerWithTimeInterval(0.9, target: self, selector: #selector(self.updateTimerLabel), userInfo: nil, repeats: true)
