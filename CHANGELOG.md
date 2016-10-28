@@ -1,6 +1,7 @@
 ### 1.1.2
 
 - Ensure the artwork rail expand button is not clipped too early - alloy
+- Use a larger font size in hero units on iPad - alloy
 
 ### 1.1.1
 
