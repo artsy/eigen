@@ -5,6 +5,7 @@ upcoming:
       infrastructure:
     user_facing:
       - Fixes an intermittent crash on the live interface - ash
+      - Attempts to fix a crash that would occur by sending a message to a search VC that it doesn’t implement - alloy
 
 
 releases:
