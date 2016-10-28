@@ -66,12 +66,11 @@
         case ARSearchResultsReplaceSingle:
             if (searchResults) {
                 [self.searchResults replaceObjectAtIndex:self.tableView.indexPathForSelectedRow.row withObject:searchResults[0]];
+                self.selectedRowToReplace = self.tableView.indexPathForSelectedRow;
+                [self.geneImageReconciler addReplacedGene:self.selectedRowToReplace];
             } else {
                 [self.searchResults removeObjectAtIndex:self.tableView.indexPathForSelectedRow.row];
             }
-            self.selectedRowToReplace = self.tableView.indexPathForSelectedRow;
-            [self.geneImageReconciler addReplacedGene:self.selectedRowToReplace];
-
             break;
         case ARSearchResultsReplaceAll:
             [self.geneImageReconciler reset];
