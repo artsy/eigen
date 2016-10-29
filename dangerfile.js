@@ -1,13 +1,13 @@
+/* @flow */
+
 import { danger, fail } from 'danger'
-fail("OK")
+var _ = require('lodash')
 
-var _ = require('underscore')
 // CHANGELOG check
-const hasAppChanges = _.filter(danger.git.modified_files, function(path) {
-  return _.includes(path, 'lib/')
-}).length > 0
+const hasAppChanges = danger.git.modified_files.first((path) => { _.includes(path, 'lib/') }) !== null
+const changelogChanges = _.includes(danger.git.modified_files, 'CHANGELOG.md')
 
-if (hasAppChanges && _.includes(danger.git.modified_files, 'CHANGELOG.md') === false) {
+if (hasAppChanges && !changelogChanges) {
   fail('No CHANGELOG added.')
 }
 
