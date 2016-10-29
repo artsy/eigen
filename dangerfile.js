@@ -1,6 +1,7 @@
-var _ = require('underscore')
 import { danger, fail } from 'danger'
+fail("OK")
 
+var _ = require('underscore')
 // CHANGELOG check
 const hasAppChanges = _.filter(danger.git.modified_files, function(path) {
   return _.includes(path, 'lib/')
