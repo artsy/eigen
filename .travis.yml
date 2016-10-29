@@ -2,20 +2,13 @@ language: node_js
 node_js:
   - "6.1"
 
-before_install:
-  - rvm install 2.2
-  - rvm use 2.2 --fuzzy
-
 install:
-  - bundle install
   - npm install
-
-before_script:
-  - bundle exec danger
 
 after_script:
   - npm run flow
   - npm run lint
+  - npm run danger
 
 deploy:
   provider: script
