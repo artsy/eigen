@@ -69,7 +69,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
         it("shows a socket disconnect screen when socket fails") {
             setupViewControllerForPhone(true)
 
-            fakeSalesPerson.socketConnectionSignal.update(false)
+            fakeSalesPerson.store.dispatch(ChangeSocketIsConnectedAction(isConnected: false))
 
             expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
         }
@@ -77,9 +77,9 @@ class LiveAuctionViewControllerTests: QuickSpec {
         it("shows a removes disconnected screen when socket reconnects") {
             setupViewControllerForPhone(true)
 
-            fakeSalesPerson.socketConnectionSignal.update(false)
+            fakeSalesPerson.store.dispatch(ChangeSocketIsConnectedAction(isConnected: false))
             // Adds everything synchronously, which is the test above
-            fakeSalesPerson.socketConnectionSignal.update(true)
+            fakeSalesPerson.store.dispatch(ChangeSocketIsConnectedAction(isConnected: true))
 
             expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
         }
@@ -89,7 +89,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
         it("shows an operator disconnect screen when operator disconnects") {
             setupViewControllerForPhone(true)
 
-            fakeSalesPerson.operatorConnectedSignal.update(false)
+            fakeSalesPerson.store.dispatch(ChangeOperatorIsConnectedAction(operatorIsConnected: false))
 
             expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
         }
@@ -97,9 +97,9 @@ class LiveAuctionViewControllerTests: QuickSpec {
         it("shows an operator disconnected screen when operator reconnects") {
             setupViewControllerForPhone(true)
 
-            fakeSalesPerson.operatorConnectedSignal.update(false)
+            fakeSalesPerson.store.dispatch(ChangeOperatorIsConnectedAction(operatorIsConnected: false))
             // Adds everything synchronously, which is the test above
-            fakeSalesPerson.operatorConnectedSignal.update(true)
+            fakeSalesPerson.store.dispatch(ChangeOperatorIsConnectedAction(operatorIsConnected: true))
 
             expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
         }
