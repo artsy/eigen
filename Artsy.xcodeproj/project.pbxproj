@@ -330,6 +330,8 @@
 		5E75B85D1DC7B7810030A23A /* LiveAuctionRootReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E75B85C1DC7B7810030A23A /* LiveAuctionRootReducer.swift */; };
 		5E75B85F1DC7B7ED0030A23A /* OperatorIsConnected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E75B85E1DC7B7ED0030A23A /* OperatorIsConnected.swift */; };
 		5E75B8611DC7BA150030A23A /* SocketIsConnected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E75B8601DC7BA150030A23A /* SocketIsConnected.swift */; };
+		5E75B8641DC7BD0B0030A23A /* ChangeSocketIsConnected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E75B8631DC7BD0B0030A23A /* ChangeSocketIsConnected.swift */; };
+		5E75B8661DC7BD480030A23A /* ChangeOperatorIsConnected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E75B8651DC7BD480030A23A /* ChangeOperatorIsConnected.swift */; };
 		5E79FCB11C7612D8003D5D65 /* Int+Metrification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB01C7612D8003D5D65 /* Int+Metrification.swift */; };
 		5E79FCB41C761E1A003D5D65 /* ARSaleArtworkItemMasonryModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB31C761E1A003D5D65 /* ARSaleArtworkItemMasonryModule.m */; };
 		5E79FCB71C761E49003D5D65 /* ARSaleArtworkMasonryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB61C761E49003D5D65 /* ARSaleArtworkMasonryCollectionViewCell.m */; };
@@ -1325,6 +1327,8 @@
 		5E75B85C1DC7B7810030A23A /* LiveAuctionRootReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionRootReducer.swift; path = Live_Auctions/LiveAuctionRootReducer.swift; sourceTree = "<group>"; };
 		5E75B85E1DC7B7ED0030A23A /* OperatorIsConnected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperatorIsConnected.swift; path = Live_Auctions/OperatorIsConnected.swift; sourceTree = "<group>"; };
 		5E75B8601DC7BA150030A23A /* SocketIsConnected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketIsConnected.swift; path = Live_Auctions/SocketIsConnected.swift; sourceTree = "<group>"; };
+		5E75B8631DC7BD0B0030A23A /* ChangeSocketIsConnected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChangeSocketIsConnected.swift; path = Live_Auctions/ChangeSocketIsConnected.swift; sourceTree = "<group>"; };
+		5E75B8651DC7BD480030A23A /* ChangeOperatorIsConnected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeOperatorIsConnected.swift; sourceTree = "<group>"; };
 		5E79FCB01C7612D8003D5D65 /* Int+Metrification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Metrification.swift"; sourceTree = "<group>"; };
 		5E79FCB21C761E1A003D5D65 /* ARSaleArtworkItemMasonryModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARSaleArtworkItemMasonryModule.h; path = Sale_Artworks/ARSaleArtworkItemMasonryModule.h; sourceTree = "<group>"; };
 		5E79FCB31C761E1A003D5D65 /* ARSaleArtworkItemMasonryModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARSaleArtworkItemMasonryModule.m; path = Sale_Artworks/ARSaleArtworkItemMasonryModule.m; sourceTree = "<group>"; };
@@ -3145,6 +3149,15 @@
 			name = ReSwift;
 			sourceTree = "<group>";
 		};
+		5E75B8621DC7BCA10030A23A /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				5E75B8631DC7BD0B0030A23A /* ChangeSocketIsConnected.swift */,
+				5E75B8651DC7BD480030A23A /* ChangeOperatorIsConnected.swift */,
+			);
+			name = Actions;
+			sourceTree = "<group>";
+		};
 		5EA7BC2A1C60024D009C52C9 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -3411,6 +3424,7 @@
 			isa = PBXGroup;
 			children = (
 				5E75B8591DC7B56D0030A23A /* ReSwift */,
+				5E75B8621DC7BCA10030A23A /* Actions */,
 				5E75B8581DC7B5650030A23A /* Reducers */,
 				6021A4D91CEB6761007760C6 /* Storyboards */,
 				60ED31231C8F76550071DD89 /* View Models */,
@@ -5501,6 +5515,7 @@
 				60B6F13E16638815007C9587 /* Artwork.m in Sources */,
 				49473F3617C1907F004BF082 /* ARCreateAccountViewController.m in Sources */,
 				5E1DDF191CE22C0700DFEE2A /* SimpleProgressView.swift in Sources */,
+				5E75B8661DC7BD480030A23A /* ChangeOperatorIsConnected.swift in Sources */,
 				6029E9F51993D726002D42C3 /* ARAppSearchViewController.m in Sources */,
 				49473F3917C192AE004BF082 /* ARTextFieldWithPlaceholder.m in Sources */,
 				D39E874F1AB0F97A006B5BE9 /* ARBrowseNetworkModel.m in Sources */,
@@ -5695,6 +5710,7 @@
 				5102616F1BBE8324002AB8BB /* ARAuctionWebViewController.m in Sources */,
 				5EBD44E01D07325300C60F9F /* UITableViewController+Animations.swift in Sources */,
 				49A76D0817592C96001D4B81 /* SearchResult.m in Sources */,
+				5E75B8641DC7BD0B0030A23A /* ChangeSocketIsConnected.swift in Sources */,
 				513483551AADD0A10062E624 /* PSPDFKitImproveRecursiveDescription.m in Sources */,
 				1C717EC51CB439F7002CCF2D /* AROnboardingNavigationItemsView.m in Sources */,
 				5E1DDF1D1CE24FBF00DFEE2A /* LiveAuctionBiddingViewModel.swift in Sources */,
