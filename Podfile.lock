@@ -176,6 +176,7 @@ PODS:
   - ReactiveCocoa/no-arc (2.3)
   - ReactiveCocoa/UI (2.3):
     - ReactiveCocoa/Core
+  - ReSwift (2.1.0)
   - RSSwizzle (0.1.0)
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
@@ -251,6 +252,7 @@ DEPENDENCIES:
   - Quick
   - React/Core (from `https://github.com/alloy/react-native.git`, branch `0.34.1-with-scrollview-fix`)
   - ReactiveCocoa
+  - ReSwift
   - SDWebImage (>= 3.7.2)
   - Specta
   - SSFadingScrollView (from `https://github.com/alloy/SSFadingScrollView.git`, branch `add-axial-support`)
@@ -427,6 +429,7 @@ SPEC CHECKSUMS:
   Quick: 18d057bc66451eedd5d1c8dc99ba2a5db6e60226
   React: fc15d22bec0ec10fe15c12749fbefdac37ddc541
   ReactiveCocoa: 81ee2fb7df2dfc6bd52b5d70473662195e20ca7d
+  ReSwift: c13b76cb963c5ab2a137c9c6e74823cef4b81588
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
@@ -440,6 +443,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: 0621e0f057a86fba5bd66da99a10e82146e742cd
+PODFILE CHECKSUM: b82937d555da1f79d014c196a27f20228823b011
 
 COCOAPODS: 1.0.1

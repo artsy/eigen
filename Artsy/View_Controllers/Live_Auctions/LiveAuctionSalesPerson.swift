@@ -1,5 +1,6 @@
 import Foundation
 import Interstellar
+import ReSwift
 
 /// Something to pretend to either be a network model or whatever
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
@@ -28,7 +29,7 @@ protocol LiveAuctionsSalesPersonType: class {
 
     // When we connect/disconnect true/false is sent down
     var socketConnectionSignal: Observable<Bool> { get }
-    var operatorConnectedSignal: Observable<Bool> { get }
+    var store: Store<LiveAuctionState> { get }
 
     /// Lets a client hook in to listen to all events
     /// shoud not be used outside of developer tools.
@@ -42,6 +43,8 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
 
     let sale: LiveSale
     let lots: [LiveAuctionLotViewModel]
+
+    let store = Store<LiveAuctionState>(reducer: LiveAuctionRootReducer(), state: nil)
 
     let dataReadyForInitialDisplay = Observable<Void>()
     let auctionViewModel: LiveAuctionViewModelType

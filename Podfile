@@ -113,6 +113,7 @@ target 'Artsy' do
   pod 'Interstellar/Core', git: 'https://github.com/JensRavens/Interstellar.git', commit: 'efa777b'
   pod 'Starscream'
   pod 'SwiftyJSON'
+  pod 'ReSwift'
 
   # Used in Live Auctions to hold user-state
   pod 'JWTDecode'
