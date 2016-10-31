@@ -3,7 +3,7 @@ upcoming:
     details: Patch fix for 3.0.0 release.
     dev:
       infrastructure:
-        - Integ
+        - Integrates ReSwift into LAI interface for state management - ash
     user_facing:
       - Fixes an intermittent crash on the live interface - ash
       - Attempts to fix a crash that would occur by sending a message to a search VC that it doesn’t implement - alloy
