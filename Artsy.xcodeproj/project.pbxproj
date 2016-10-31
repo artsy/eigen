@@ -332,6 +332,8 @@
 		5E75B8611DC7BA150030A23A /* SocketIsConnected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E75B8601DC7BA150030A23A /* SocketIsConnected.swift */; };
 		5E75B8641DC7BD0B0030A23A /* ChangeSocketIsConnected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E75B8631DC7BD0B0030A23A /* ChangeSocketIsConnected.swift */; };
 		5E75B8661DC7BD480030A23A /* ChangeOperatorIsConnected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E75B8651DC7BD480030A23A /* ChangeOperatorIsConnected.swift */; };
+		5E75B8681DC7C4450030A23A /* InitialStateLoaded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E75B8671DC7C4450030A23A /* InitialStateLoaded.swift */; };
+		5E75B86A1DC7C46F0030A23A /* IsInitialStateLoaded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E75B8691DC7C46F0030A23A /* IsInitialStateLoaded.swift */; };
 		5E79FCB11C7612D8003D5D65 /* Int+Metrification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB01C7612D8003D5D65 /* Int+Metrification.swift */; };
 		5E79FCB41C761E1A003D5D65 /* ARSaleArtworkItemMasonryModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB31C761E1A003D5D65 /* ARSaleArtworkItemMasonryModule.m */; };
 		5E79FCB71C761E49003D5D65 /* ARSaleArtworkMasonryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E79FCB61C761E49003D5D65 /* ARSaleArtworkMasonryCollectionViewCell.m */; };
@@ -1329,6 +1331,8 @@
 		5E75B8601DC7BA150030A23A /* SocketIsConnected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketIsConnected.swift; path = Live_Auctions/SocketIsConnected.swift; sourceTree = "<group>"; };
 		5E75B8631DC7BD0B0030A23A /* ChangeSocketIsConnected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChangeSocketIsConnected.swift; path = Live_Auctions/ChangeSocketIsConnected.swift; sourceTree = "<group>"; };
 		5E75B8651DC7BD480030A23A /* ChangeOperatorIsConnected.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeOperatorIsConnected.swift; sourceTree = "<group>"; };
+		5E75B8671DC7C4450030A23A /* InitialStateLoaded.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialStateLoaded.swift; path = Live_Auctions/InitialStateLoaded.swift; sourceTree = "<group>"; };
+		5E75B8691DC7C46F0030A23A /* IsInitialStateLoaded.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IsInitialStateLoaded.swift; path = Live_Auctions/IsInitialStateLoaded.swift; sourceTree = "<group>"; };
 		5E79FCB01C7612D8003D5D65 /* Int+Metrification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Metrification.swift"; sourceTree = "<group>"; };
 		5E79FCB21C761E1A003D5D65 /* ARSaleArtworkItemMasonryModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARSaleArtworkItemMasonryModule.h; path = Sale_Artworks/ARSaleArtworkItemMasonryModule.h; sourceTree = "<group>"; };
 		5E79FCB31C761E1A003D5D65 /* ARSaleArtworkItemMasonryModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARSaleArtworkItemMasonryModule.m; path = Sale_Artworks/ARSaleArtworkItemMasonryModule.m; sourceTree = "<group>"; };
@@ -3136,6 +3140,7 @@
 			children = (
 				5E75B85E1DC7B7ED0030A23A /* OperatorIsConnected.swift */,
 				5E75B8601DC7BA150030A23A /* SocketIsConnected.swift */,
+				5E75B8691DC7C46F0030A23A /* IsInitialStateLoaded.swift */,
 			);
 			name = Reducers;
 			sourceTree = "<group>";
@@ -3154,6 +3159,7 @@
 			children = (
 				5E75B8631DC7BD0B0030A23A /* ChangeSocketIsConnected.swift */,
 				5E75B8651DC7BD480030A23A /* ChangeOperatorIsConnected.swift */,
+				5E75B8671DC7C4450030A23A /* InitialStateLoaded.swift */,
 			);
 			name = Actions;
 			sourceTree = "<group>";
@@ -5565,6 +5571,7 @@
 				60431FB818042A1E000118D7 /* ARAppNotificationsDelegate.m in Sources */,
 				D3A9C23D1AF15FF00018A12E /* ARFairNetworkModel.m in Sources */,
 				5E75B85B1DC7B5A60030A23A /* LiveAuctionState.swift in Sources */,
+				5E75B86A1DC7C46F0030A23A /* IsInitialStateLoaded.swift in Sources */,
 				5E0AEB7819B9EA43009F34DE /* ARShowNetworkModel.m in Sources */,
 				E616B2481911664900D1CBC6 /* ARArtworkView.m in Sources */,
 				60647C791A95095800A45247 /* ARFairPopupViewController.m in Sources */,
@@ -5681,6 +5688,7 @@
 				60D8E63B18D256BB0040BEFD /* ARDemoSplashViewController.m in Sources */,
 				3C48E2101965AC640077A80B /* ARCustomEigenLabels.m in Sources */,
 				60AEC84716E0FB4D00514CB5 /* ARArtworkThumbnailMetadataView.m in Sources */,
+				5E75B8681DC7C4450030A23A /* InitialStateLoaded.swift in Sources */,
 				5E75B85F1DC7B7ED0030A23A /* OperatorIsConnected.swift in Sources */,
 				60F9B0931D83314F00DBAC8C /* ARAdminLoadReactComponentViewController.m in Sources */,
 				3C205ACD1908041700B3C2B4 /* ARSearchResultsDataSource.m in Sources */,

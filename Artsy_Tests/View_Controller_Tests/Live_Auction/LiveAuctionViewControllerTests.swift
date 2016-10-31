@@ -22,6 +22,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
             auctionViewModel = Test_LiveAuctionViewModel()
             fakeSalesPerson = stub_auctionSalesPerson(auctionViewModel)
+            fakeSalesPerson.store.dispatch(InitialStateLoadedAction())
         }
 
         func setupViewControllerForPhone(singleLayout: Bool) {

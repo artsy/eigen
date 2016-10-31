@@ -23,7 +23,7 @@ class LiveAuctionStateManager: NSObject {
 
     let sale: LiveSale
     let bidderCredentials: BiddingCredentials
-    let initialStateLoadedSignal = Observable<Void>(options: .Once)
+    let store: Store<LiveAuctionState>
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateReconciler: LiveAuctionStateReconcilerType
@@ -39,6 +39,7 @@ class LiveAuctionStateManager: NSObject {
          stateReconcilerCreator: StateReconcilerCreator = LiveAuctionStateManager.defaultStateReconcilerCreator()) {
 
         self.sale = sale
+        self.store = store
         self.bidderCredentials = bidderCredentials
         self.socketCommunicator = socketCommunicatorCreator(host: host, causalitySaleID: sale.causalitySaleID, jwt: jwt, store: store)
         self.stateReconciler = stateReconcilerCreator(saleArtworks: saleArtworks)
@@ -47,7 +48,7 @@ class LiveAuctionStateManager: NSObject {
 
         socketCommunicator.updatedAuctionState.subscribe { [weak self] state in
             self?.stateReconciler.updateState(state)
-            self?.initialStateLoadedSignal.update()
+            self?.store.dispatch(InitialStateLoadedAction())
         }
 
         socketCommunicator.lotUpdateBroadcasts.subscribe { [weak self] broadcast in

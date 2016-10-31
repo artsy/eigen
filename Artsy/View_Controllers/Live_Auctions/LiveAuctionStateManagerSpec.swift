@@ -21,7 +21,8 @@ class LiveAuctionStateManagerSpec: QuickSpec {
 
             let store = testStore(LiveAuctionState(
                 operatorIsConnected: true,
-                socketIsConnected: true
+                socketIsConnected: true,
+                isInitialStateLoaded: true
             ))
             sale = testLiveSale()
 

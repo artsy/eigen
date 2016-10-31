@@ -18,7 +18,8 @@ class LiveAuctionSocketCommunicatorSpec: QuickSpec {
             socket = Test_Socket()
             store = testStore(LiveAuctionState(
                 operatorIsConnected: true,
-                socketIsConnected: true
+                socketIsConnected: true,
+                isInitialStateLoaded: true
             ))
         }
 

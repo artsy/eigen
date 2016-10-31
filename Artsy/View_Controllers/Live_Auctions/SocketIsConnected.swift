@@ -5,6 +5,6 @@ func socketIsConnected(state: Bool?, action: Action) -> Bool {
     switch action {
     case let action as ChangeSocketIsConnectedAction:
         return action.isConnected
-    default: return true
+    default: return state ?? true
     }
 }

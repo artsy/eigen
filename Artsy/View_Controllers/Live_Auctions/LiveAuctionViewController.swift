@@ -243,12 +243,6 @@ extension PrivateFunctions: StoreSubscriber {
 
             viewControllers = [lotListNav, lotsSetNavigationController]
         }
-
-        salesPerson.initialStateLoadedSignal.subscribe { [weak self] _ in
-            self?.waitingForInitialLoad = false
-            self?.loadingView?.removeFromSuperview()
-            self?.loadingView = nil
-        }
     }
 
     class func salesPerson(sale: LiveSale, jwt: JWT, biddingCredentials: BiddingCredentials) -> LiveAuctionsSalesPersonType {
@@ -257,6 +251,11 @@ extension PrivateFunctions: StoreSubscriber {
 
     func newState(state: LiveAuctionState) {
         self.showSocketDisconnectedOverlay(state.operatorIsConnected && state.socketIsConnected)
+        if state.isInitialStateLoaded {
+            waitingForInitialLoad = false
+            loadingView?.removeFromSuperview()
+            loadingView = nil
+        }
     }
 }
 
