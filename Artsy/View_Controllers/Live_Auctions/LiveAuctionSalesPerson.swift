@@ -27,8 +27,6 @@ protocol LiveAuctionsSalesPersonType: class {
     func bidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
     func leaveMaxBidOnLot(lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
 
-    // When we connect/disconnect true/false is sent down
-    var socketConnectionSignal: Observable<Bool> { get }
     var store: Store<LiveAuctionState> { get }
 
     /// Lets a client hook in to listen to all events
@@ -38,7 +36,7 @@ protocol LiveAuctionsSalesPersonType: class {
 
 class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
 
-    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderCredentials: BiddingCredentials) -> LiveAuctionStateManager
+    typealias StateManagerCreator = (host: String, sale: LiveSale, saleArtworks: [LiveAuctionLotViewModel], jwt: JWT, bidderCredentials: BiddingCredentials, store: Store<LiveAuctionState>) -> LiveAuctionStateManager
     typealias AuctionViewModelCreator = (sale: LiveSale, currentLotSignal: Observable<LiveAuctionLotViewModelType?>, biddingCredentials: BiddingCredentials) -> LiveAuctionViewModelType
 
     let sale: LiveSale
@@ -48,10 +46,6 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
 
     let dataReadyForInitialDisplay = Observable<Void>()
     let auctionViewModel: LiveAuctionViewModelType
-
-    var socketConnectionSignal: Observable<Bool> {
-        return stateManager.socketConnectionSignal
-    }
 
     private let stateManager: LiveAuctionStateManager
     private let bidderCredentials: BiddingCredentials
@@ -76,7 +70,7 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
         let useBidderServer = (jwt.role == .Bidder)
         let host = useBidderServer ? ARRouter.baseBidderCausalitySocketURLString() : ARRouter.baseObserverCausalitySocketURLString()
 
-        self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderCredentials: biddingCredentials)
+        self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderCredentials: biddingCredentials, store: store)
         self.auctionViewModel = auctionViewModelCreator(sale: sale, currentLotSignal: stateManager.currentLotSignal, biddingCredentials: biddingCredentials)
     }
 
@@ -124,10 +118,6 @@ extension ComputedProperties {
 
     var debugAllEventsSignal: Observable<LotEventJSON> {
         return stateManager.debugAllEventsSignal
-    }
-
-    var operatorConnectedSignal: Observable<Bool> {
-        return stateManager.operatorConnectedSignal
     }
 }
 
@@ -179,14 +169,14 @@ private typealias ClassMethods = LiveAuctionsSalesPerson
 extension ClassMethods {
 
     class func defaultStateManagerCreator() -> StateManagerCreator {
-        return { host, sale, saleArtworks, jwt, bidderCredentials in
-            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderCredentials: bidderCredentials)
+        return { host, sale, saleArtworks, jwt, bidderCredentials, store in
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderCredentials: bidderCredentials, store: store)
         }
     }
 
     class func stubbedStateManagerCreator() -> StateManagerCreator {
-        return { host, sale, saleArtworks, jwt, bidderCredentials in
-            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderCredentials: bidderCredentials, socketCommunicatorCreator: LiveAuctionStateManager.stubbedSocketCommunicatorCreator())
+        return { host, sale, saleArtworks, jwt, bidderCredentials, store in
+            LiveAuctionStateManager(host: host, sale: sale, saleArtworks: saleArtworks, jwt: jwt, bidderCredentials: bidderCredentials, store: store, socketCommunicatorCreator: LiveAuctionStateManager.stubbedSocketCommunicatorCreator())
         }
     }
 

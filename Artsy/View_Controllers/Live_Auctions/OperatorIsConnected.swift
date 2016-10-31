@@ -6,6 +6,6 @@ func operatorIsConnected(state: Bool?, action: Action) -> Bool {
     case let action as ChangeOperatorIsConnectedAction:
         return action.operatorIsConnected
     default:
-        return false
+        return true  // Defaulting to true in case the value isn't specified, we don't want to obstruct the user.
     }
 }

@@ -1,6 +1,7 @@
 import Foundation
 import Interstellar
 import SwiftyJSON
+import ReSwift
 
 /*
 Independent of sockets:
@@ -17,40 +18,35 @@ Based on socket events:
 */
 
 class LiveAuctionStateManager: NSObject {
-    typealias SocketCommunicatorCreator = (host: String, causalitySaleID: String, jwt: JWT) -> LiveAuctionSocketCommunicatorType
+    typealias SocketCommunicatorCreator = (host: String, causalitySaleID: String, jwt: JWT, store: Store<LiveAuctionState>) -> LiveAuctionSocketCommunicatorType
     typealias StateReconcilerCreator = (saleArtworks: [LiveAuctionLotViewModel]) -> LiveAuctionStateReconcilerType
 
     let sale: LiveSale
     let bidderCredentials: BiddingCredentials
-    let operatorConnectedSignal = Observable<Bool>()
     let initialStateLoadedSignal = Observable<Void>(options: .Once)
 
     private let socketCommunicator: LiveAuctionSocketCommunicatorType
     private let stateReconciler: LiveAuctionStateReconcilerType
     private var biddingStates = [String: LiveAuctionBiddingViewModelType]()
 
-    var socketConnectionSignal: Observable<Bool> {
-        return socketCommunicator.socketConnectionSignal
-    }
-
     init(host: String,
          sale: LiveSale,
          saleArtworks: [LiveAuctionLotViewModel],
          jwt: JWT,
          bidderCredentials: BiddingCredentials,
+         store: Store<LiveAuctionState>,
          socketCommunicatorCreator: SocketCommunicatorCreator = LiveAuctionStateManager.defaultSocketCommunicatorCreator(),
          stateReconcilerCreator: StateReconcilerCreator = LiveAuctionStateManager.defaultStateReconcilerCreator()) {
 
         self.sale = sale
         self.bidderCredentials = bidderCredentials
-        self.socketCommunicator = socketCommunicatorCreator(host: host, causalitySaleID: sale.causalitySaleID, jwt: jwt)
+        self.socketCommunicator = socketCommunicatorCreator(host: host, causalitySaleID: sale.causalitySaleID, jwt: jwt, store: store)
         self.stateReconciler = stateReconcilerCreator(saleArtworks: saleArtworks)
 
         super.init()
 
         socketCommunicator.updatedAuctionState.subscribe { [weak self] state in
             self?.stateReconciler.updateState(state)
-            self?.handleOperatorConnectedState(state)
             self?.initialStateLoadedSignal.update()
         }
 
@@ -73,8 +69,6 @@ class LiveAuctionStateManager: NSObject {
             let confirmed = LiveAuctionBiddingProgressState.BidAcknowledged
             biddingViewModel?.bidPendingSignal.update(confirmed)
         }
-
-        socketCommunicator.operatorConnectedSignal.subscribe(applyWeakly(self, LiveAuctionStateManager.handleOperatorConnectedState))
     }
 }
 
@@ -116,26 +110,16 @@ extension ComputedProperties {
     }
 }
 
-private typealias PrivateFunctions = LiveAuctionStateManager
-private extension PrivateFunctions {
-    func handleOperatorConnectedState(state: AnyObject) {
-        let json = JSON(state)
-        let operatorConnected = json["operatorConnected"].bool ?? true // Defaulting to true in case the value isn't specified, we don't want to obstruct the user.
-        self.operatorConnectedSignal.update(operatorConnected)
-    }
-}
-
-
 private typealias DefaultCreators = LiveAuctionStateManager
 extension DefaultCreators {
     class func defaultSocketCommunicatorCreator() -> SocketCommunicatorCreator {
-        return { host, causalitySaleID, jwt in
-            return LiveAuctionSocketCommunicator(host: host, causalitySaleID: causalitySaleID, jwt: jwt)
+        return { host, causalitySaleID, jwt, store in
+            return LiveAuctionSocketCommunicator(host: host, causalitySaleID: causalitySaleID, jwt: jwt, store: store)
         }
     }
 
     class func stubbedSocketCommunicatorCreator() -> SocketCommunicatorCreator {
-        return { host, causalitySaleID, jwt in
+        return { host, causalitySaleID, jwt, store in
             return Stubbed_SocketCommunicator(state: loadJSON("live_auctions_socket"))
         }
     }
@@ -152,8 +136,6 @@ private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let lotUpdateBroadcasts = Observable<AnyObject>()
     let currentLotUpdate = Observable<AnyObject>()
     let postEventResponses = Observable<AnyObject>()
-    let socketConnectionSignal = Observable<Bool>(true) // We're conencted by default.
-    let operatorConnectedSignal = Observable<AnyObject>()
 
     init (state: AnyObject) {
         updatedAuctionState = Observable(state)

@@ -1,8 +1,13 @@
 import Quick
 import Nimble
 import Interstellar
+import ReSwift
 @testable
 import Artsy
+
+func testStore(state: LiveAuctionState? = nil) -> Store<LiveAuctionState> {
+    return Store<LiveAuctionState>(reducer: LiveAuctionRootReducer(), state: state)
+}
 
 class LiveAuctionStateManagerSpec: QuickSpec {
     override func spec() {
@@ -14,10 +19,14 @@ class LiveAuctionStateManagerSpec: QuickSpec {
             OHHTTPStubs.stubJSONResponseForHost("metaphysics*.artsy.net", withResponse: [:])
             // Not sure why ^ is needed, might be worth looking
 
+            let store = testStore(LiveAuctionState(
+                operatorIsConnected: true,
+                socketIsConnected: true
+            ))
             sale = testLiveSale()
 
             let creds = BiddingCredentials(bidders: [], paddleNumber: "")
-            subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: stubbedJWT, bidderCredentials: creds, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
+            subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: stubbedJWT, bidderCredentials: creds, store: store, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
         }
 
         it("sets its saleID and bidders upon initialization") {
@@ -56,7 +65,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
 
 
 func test_socketCommunicatorCreator() -> LiveAuctionStateManager.SocketCommunicatorCreator {
-    return { host, saleID, jwt in
+    return { host, saleID, jwt, store in
         return Test_SocketCommunicator(host: host, causalitySaleID: saleID, jwt: jwt)
     }
 }
@@ -87,8 +96,6 @@ class Test_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let lotUpdateBroadcasts = Observable<AnyObject>()
     let currentLotUpdate = Observable<AnyObject>()
     let postEventResponses = Observable<AnyObject>()
-    let socketConnectionSignal = Observable<Bool>()
-    let operatorConnectedSignal = Observable<AnyObject>()
     func bidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {}
     func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {}
 }
