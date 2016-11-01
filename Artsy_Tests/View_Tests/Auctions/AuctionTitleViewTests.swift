@@ -78,6 +78,6 @@ class AuctionTitleViewSpec: QuickSpec {
 }
 
 class Test_AuctionTitleViewDelegate: AuctionTitleViewDelegate {
-    @objc func userDidPressInfo(titleView: AuctionTitleView) { }
-    @objc func userDidPressRegister(titleView: AuctionTitleView) { }
+    @objc func userDidPressInfo(_ titleView: AuctionTitleView) { }
+    @objc func userDidPressRegister(_ titleView: AuctionTitleView) { }
 }

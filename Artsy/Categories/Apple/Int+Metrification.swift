@@ -1,31 +1,31 @@
 import Foundation
 
 private struct Formatter {
-    private static var formatters = [String: NSNumberFormatter]()
+    fileprivate static var formatters = [String: NumberFormatter]()
 
-    private static func createFormatter(currencySymbol: String) -> NSNumberFormatter {
-        let newFormatter = NSNumberFormatter()
-        newFormatter.locale = NSLocale.currentLocale()
+    fileprivate static func createFormatter(_ currencySymbol: String) -> NumberFormatter {
+        let newFormatter = NumberFormatter()
+        newFormatter.locale = Locale.current
         // TODO: We should ideally be DIing this too.
         // newFormatter.currencyCode = "USD"
         newFormatter.currencySymbol = currencySymbol
-        newFormatter.numberStyle = .CurrencyStyle
+        newFormatter.numberStyle = .currency
         newFormatter.maximumFractionDigits = 0
         newFormatter.alwaysShowsDecimalSeparator = false
         return newFormatter
     }
 
-    static func formatCents(number: NSNumber, currencySymbol: String) -> String! {
-        let formatter: NSNumberFormatter
+    static func formatCents(_ number: NSNumber, currencySymbol: String) -> String! {
+        let formatter: NumberFormatter
         switch formatters[currencySymbol] {
-        case .None:
+        case .none:
             formatter = createFormatter(currencySymbol)
             formatters[currencySymbol] = formatter
-        case .Some(let existingFormatter):
+        case .some(let existingFormatter):
             formatter = existingFormatter
         }
 
-        return formatter.stringFromNumber(NSDecimalNumber(mantissa: number.unsignedLongLongValue, exponent: -2, isNegative: false))
+        return formatter.string(from: NSDecimalNumber(mantissa: number.uint64Value, exponent: -2, isNegative: false))
     }
 }
 
@@ -35,7 +35,7 @@ protocol Centable {
 
 extension Int : Centable {
     var number: NSNumber {
-        return self
+        return NSNumber(self)
     }
 }
 
@@ -45,26 +45,26 @@ extension Int : Centable {
 
 extension UInt64 : Centable {
     var number: NSNumber {
-        return NSNumber(unsignedLongLong: self)
+        return NSNumber(value: self as UInt64)
     }
 }
 
 extension Centable {
 
     /// Turns a thousand dollars' worth of cents (like 1_000_00) into "$1k", etc.
-    func metricSuffixify(currencySymbol: String) -> String {
+    func metricSuffixify(_ currencySymbol: String) -> String {
         let number = self.number
-        guard number.intValue > 1000_00 else { return Formatter.formatCents(number, currencySymbol: currencySymbol) }
-        return SaleArtwork.dollarsFromCents(removeKSignificantDigits().number, currencySymbol: currencySymbol) + "k"
+        guard number.int32Value > 1000_00 else { return Formatter.formatCents(number, currencySymbol: currencySymbol) }
+        return SaleArtwork.dollars(fromCents: removeKSignificantDigits().number, currencySymbol: currencySymbol) + "k"
     }
 
-    func roundCentsToNearestThousandAndFormat(currencySymbol: String) -> String {
+    func roundCentsToNearestThousandAndFormat(_ currencySymbol: String) -> String {
         let number = self.number
-        guard number.intValue > 1000_00 else { return Formatter.formatCents(number, currencySymbol: currencySymbol) }
+        guard number.int32Value > 1000_00 else { return Formatter.formatCents(number, currencySymbol: currencySymbol) }
         return Formatter.formatCents(roundCentsToNearestThousand().number, currencySymbol: currencySymbol)
     }
 
-    func convertToDollarString(currencySymbol: String) -> String {
+    func convertToDollarString(_ currencySymbol: String) -> String {
         return Formatter.formatCents(number, currencySymbol: currencySymbol)
     }
 
@@ -73,7 +73,7 @@ extension Centable {
     // Numbers less than a thousand dollars are returned as-is.
     func roundCentsToNearestThousand() -> UInt64 {
         let number = self.number
-        guard number.intValue > 1000_00 else { return number.unsignedLongLongValue }
+        guard number.int32Value > 1000_00 else { return number.uint64Value }
         // dollarsFromCents will round something like 1500_00 up to $2000, but we want to round _down_.
         // So we divide by 1000_00 to turn us into dollars k momentarily, then back into cents to remove their significant digits.
         let dollarsK = UInt64(floor(Float(self.number) / Float(1000_00)))
@@ -82,7 +82,7 @@ extension Centable {
     }
 
     // Removes three significant digits from number.
-    private func removeKSignificantDigits() -> UInt64 {
+    fileprivate func removeKSignificantDigits() -> UInt64 {
         return roundCentsToNearestThousand() / 1000
     }
 }

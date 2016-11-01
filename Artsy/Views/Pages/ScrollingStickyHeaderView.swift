@@ -14,8 +14,8 @@ class ScrollingStickyHeaderView: UIView {
     let subtitleLabel: UILabel
     let subtitleScrollView: SSFadingScrollView
 
-    private let topSeparator: ARSeparatorView
-    private let bottomSeparator: ARSeparatorView
+    fileprivate let topSeparator: ARSeparatorView
+    fileprivate let bottomSeparator: ARSeparatorView
 
     var stickyHeaderHeight: NSLayoutConstraint!
 
@@ -39,7 +39,7 @@ class ScrollingStickyHeaderView: UIView {
         super.init(frame: CGRect.zero)
 
         stickyHeaderHeight = constrainHeight("60")
-        backgroundColor = .whiteColor()
+        backgroundColor = .white
 
         button.then {
             self.addSubview($0)
@@ -89,15 +89,15 @@ class ScrollingStickyHeaderView: UIView {
         }
     }
 
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        let margin: CGFloat = traitCollection.horizontalSizeClass == .Compact ? 20 : 40
+        let margin: CGFloat = traitCollection.horizontalSizeClass == .compact ? 20 : 40
         trailingConstraints?.constant = -margin
         leadingConstraints?.constant = margin
     }
 
-    func toggleAttatched(atTop: Bool, animated: Bool) {
+    func toggleAttatched(_ atTop: Bool, animated: Bool) {
         UIView.animateIf(animated, duration: 0.2) {
             self.titleLabel.alpha = atTop ? 1 : 0
             self.topSeparator.alpha = atTop ? 1 : 0

@@ -14,16 +14,16 @@ extension PrivateFunctions {
             contentView.addSubview(separator)
             separator.alignLeading("0", trailing: "0", toView: self)
         }
-        topSeparator.alignTopEdgeWithView(contentView, predicate: "0")
+        topSeparator.alignTopEdge(withView: contentView, predicate: "0")
         // By placing the bottomSeparator 1pt below our bottom edge (outside our bounds), it is hidden from
         // view if the cell beneath us is the current lot.
-        bottomSeparator.alignBottomEdgeWithView(contentView, predicate: "1")
+        bottomSeparator.alignBottomEdge(withView: contentView, predicate: "1")
 
         // Add and arrange lotImageView.
         contentView.addSubview(lotImageView)
         lotImageView.constrainWidth("60", height: "60")
         lotImageView.alignTop("10", bottom: "-10", toView: contentView)
-        lotImageView.alignLeadingEdgeWithView(contentView, predicate: "20")
+        lotImageView.alignLeadingEdge(withView: contentView, predicate: "20")
 
         // Now add, arrange, and configure the labelContainerView
         contentView.addSubview(labelContainerView)
@@ -35,45 +35,45 @@ extension PrivateFunctions {
 
         // We need to stack them a bit funny, because the currentAskingPriceLabel may be removed from the hierarchy later
         // So the layout needs to work with or without it.
-        lotNumberLabel.alignTopEdgeWithView(labelContainerView, predicate: "0")
-        artistsNamesLabel.alignAttribute(.Top, toAttribute: .Bottom, ofView: lotNumberLabel, predicate: "5")
-        artistsNamesLabel.alignBottomEdgeWithView(labelContainerView, predicate: "<= 0")
-        artistsNamesLabel.constrainBottomSpaceToView(currentAskingPriceLabel, predicate: "-2")
-        currentAskingPriceLabel.alignBottomEdgeWithView(labelContainerView, predicate: "0")
+        lotNumberLabel.alignTopEdge(withView: labelContainerView, predicate: "0")
+        artistsNamesLabel.alignAttribute(.top, to: .bottom, ofView: lotNumberLabel, predicate: "5")
+        artistsNamesLabel.alignBottomEdge(withView: labelContainerView, predicate: "<= 0")
+        artistsNamesLabel.constrainBottomSpace(toView: currentAskingPriceLabel, predicate: "-2")
+        currentAskingPriceLabel.alignBottomEdge(withView: labelContainerView, predicate: "0")
 
         // Positions the label container.
-        labelContainerView.constrainLeadingSpaceToView(lotImageView, predicate: "10")
-        labelContainerView.alignTrailingEdgeWithView(contentView, predicate: "<= -10")
+        labelContainerView.constrainLeadingSpace(toView: lotImageView, predicate: "10")
+        labelContainerView.alignTrailingEdge(withView: contentView, predicate: "<= -10")
         labelContainerView.constrainHeight("<= 60")
-        labelContainerView.alignCenterYWithView(lotImageView, predicate: "0")
+        labelContainerView.alignCenterY(withView: lotImageView, predicate: "0")
 
         contentView.addSubview(closedLabel)
-        closedLabel.alignTrailingEdgeWithView(contentView, predicate: "-20")
-        closedLabel.alignCenterYWithView(lotImageView, predicate: "0")
-        closedLabel.constrainLeadingSpaceToView(labelContainerView, predicate: ">= 10")
+        closedLabel.alignTrailingEdge(withView: contentView, predicate: "-20")
+        closedLabel.alignCenterY(withView: lotImageView, predicate: "0")
+        closedLabel.constrainLeadingSpace(toView: labelContainerView, predicate: ">= 10")
 
         // Hammer image view.
         contentView.addSubview(hammerImageView)
-        hammerImageView.alignCenterYWithView(contentView, predicate: "0")
-        hammerImageView.alignTrailingEdgeWithView(contentView, predicate: "-10")
-        hammerImageView.constrainLeadingSpaceToView(labelContainerView, predicate: ">= 10")
+        hammerImageView.alignCenterY(withView: contentView, predicate: "0")
+        hammerImageView.alignTrailingEdge(withView: contentView, predicate: "-10")
+        hammerImageView.constrainLeadingSpace(toView: labelContainerView, predicate: ">= 10")
     }
 
-    func setLotState(lotState: LotState) {
+    func setLotState(_ lotState: LotState) {
         resetViewHierarchy()
 
         let contentViewAlpha: CGFloat
         let currentLot: Bool
 
         switch lotState {
-        case .ClosedLot:
+        case .closedLot:
             contentViewAlpha = 0.5
             currentLot = false
-        case .LiveLot:
+        case .liveLot:
             contentViewAlpha = 1
             currentLot = true
             closedLabel.removeFromSuperview()
-        case .UpcomingLot:
+        case .upcomingLot:
             contentViewAlpha = 1
             currentLot = false
             closedLabel.removeFromSuperview()
@@ -84,13 +84,13 @@ extension PrivateFunctions {
         if currentLot {
             selectedBackgroundView = nil
 
-            [topSeparator, bottomSeparator].forEach { $0.hidden = true }
+            [topSeparator, bottomSeparator].forEach { $0.isHidden = true }
 
-            labelColor = .whiteColor()
+            labelColor = .white
 
             // Artists' names are restricted to one line.
             artistsNamesLabel.numberOfLines = 1
-            artistsNamesLabel.lineBreakMode = .ByTruncatingTail
+            artistsNamesLabel.lineBreakMode = .byTruncatingTail
 
             backgroundColor = .artsyPurpleRegular()
         } else {
@@ -100,16 +100,16 @@ extension PrivateFunctions {
             currentAskingPriceLabel.removeFromSuperview()
             hammerImageView.removeFromSuperview()
 
-            topSeparator.hidden = isNotTopCell
-            bottomSeparator.hidden = false
+            topSeparator.isHidden = isNotTopCell
+            bottomSeparator.isHidden = false
 
-            labelColor = .blackColor()
+            labelColor = .black
 
             // Artists' names are allowed to expand.
             artistsNamesLabel.numberOfLines = 0
-            artistsNamesLabel.lineBreakMode = .ByWordWrapping
+            artistsNamesLabel.lineBreakMode = .byWordWrapping
 
-            backgroundColor = .clearColor()
+            backgroundColor = .clear
         }
 
         [lotImageView, labelContainerView].forEach { $0.alpha = contentViewAlpha }

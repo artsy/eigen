@@ -89,8 +89,8 @@ class Test_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let postEventResponses = Observable<AnyObject>()
     let socketConnectionSignal = Observable<Bool>()
     let operatorConnectedSignal = Observable<AnyObject>()
-    func bidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {}
-    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {}
+    func bidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {}
+    func leaveMaxBidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {}
 }
 
 var mostRecentStateReconciler: Test_StateRecociler?
@@ -106,19 +106,19 @@ class Test_StateRecociler: LiveAuctionStateReconcilerType {
         mostRecentStateReconciler = self
     }
 
-    func updateState(state: AnyObject) {
+    func updateState(_ state: AnyObject) {
         mostRecentState = state
     }
 
-    func processNewEvents(event: AnyObject) {
+    func processNewEvents(_ event: AnyObject) {
         mostRecentEvent = event
     }
 
-    func processLotEventBroadcast(broadcast: AnyObject) {
+    func processLotEventBroadcast(_ broadcast: AnyObject) {
         mostRecentEventBroadcast = broadcast
     }
 
-    func processCurrentLotUpdate(update: AnyObject) {
+    func processCurrentLotUpdate(_ update: AnyObject) {
         mostRecentCurrentLotUpdate = update
     }
 

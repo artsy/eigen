@@ -24,7 +24,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
             fakeSalesPerson = stub_auctionSalesPerson(auctionViewModel)
         }
 
-        func setupViewControllerForPhone(singleLayout: Bool) {
+        func setupViewControllerForPhone(_ singleLayout: Bool) {
 
             subject = LiveAuctionViewController(saleSlugOrID: "sale-id")
 

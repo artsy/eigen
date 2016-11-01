@@ -126,7 +126,7 @@ class Test_AuctionSaleNetworkModel: AuctionSaleNetworkModelType {
         self.result = result
     }
 
-    func fetchSale(saleID: String) -> Observable<Result<Sale>> {
+    func fetchSale(_ saleID: String) -> Observable<Result<Sale>> {
         called = true
         return Observable(result)
     }
@@ -140,14 +140,14 @@ class Test_AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType 
         self.result = result
     }
 
-    func fetchSaleArtworks(saleID: String) -> Observable<Result<[SaleArtwork]>> {
+    func fetchSaleArtworks(_ saleID: String) -> Observable<Result<[SaleArtwork]>> {
         called = true
         return Observable(result)
     }
 }
 
-enum TestError: ErrorType {
-    case Testing
+enum TestError: Error {
+    case testing
 }
 
 class Test_AuctionBiddersNetworkModel: AuctionBiddersNetworkModelType {
@@ -162,7 +162,7 @@ class Test_AuctionBiddersNetworkModel: AuctionBiddersNetworkModelType {
         self.result = result
     }
 
-    func fetchBiddersForSale(saleID: String) -> Observable<Result<[Bidder]>> {
+    func fetchBiddersForSale(_ saleID: String) -> Observable<Result<[Bidder]>> {
         called = true
         return Observable(result)
     }

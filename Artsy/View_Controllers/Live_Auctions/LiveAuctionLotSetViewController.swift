@@ -12,19 +12,19 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     let auctionDataSource = LiveAuctionSaleLotsDataSource()
     let progressBar = SimpleProgressView()
-    let pageController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [:])
+    let pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [:])
     let lotImageCollectionView: UICollectionView
     let lotImageCollectionViewDataSource: LiveAuctionLotCollectionViewDataSource
     let lotCollectionViewLayout: LiveAuctionLotCollectionViewLayoutType
 
-    private var hasBeenSetup = false
-    private var firstAppearance = true
-    private var pageViewScrollView: UIScrollView?
-    private var progressBarBottomConstraintAtRestConstant: CGFloat = -165
-    private var collectionViewBottomConstraint: CGFloat = -288
-    private var progressBarBottomConstraint: NSLayoutConstraint?
-    private let saleNetworkModel = AuctionSaleNetworkModel()
-    private let biddersNetworkModel = AuctionBiddersNetworkModel()
+    fileprivate var hasBeenSetup = false
+    fileprivate var firstAppearance = true
+    fileprivate var pageViewScrollView: UIScrollView?
+    fileprivate var progressBarBottomConstraintAtRestConstant: CGFloat = -165
+    fileprivate var collectionViewBottomConstraint: CGFloat = -288
+    fileprivate var progressBarBottomConstraint: NSLayoutConstraint?
+    fileprivate let saleNetworkModel = AuctionSaleNetworkModel()
+    fileprivate let biddersNetworkModel = AuctionBiddersNetworkModel()
 
     init(salesPerson: LiveAuctionsSalesPersonType, traitCollection: UITraitCollection) {
         self.salesPerson = salesPerson
@@ -36,10 +36,10 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         let adjustConstraintsForLargeScreens: Bool
 
-        if traitCollection .horizontalSizeClass != .Regular {
-            let screenWidthIsLarge = UIScreen.mainScreen().applicationFrame.width > 320
-            let size: LiveAuctionFancyLotCollectionViewLayout.Size = screenWidthIsLarge ? .Normal : .Compact
-            adjustConstraintsForLargeScreens = (size == .Normal)
+        if traitCollection .horizontalSizeClass != .regular {
+            let screenWidthIsLarge = UIScreen.main.applicationFrame.width > 320
+            let size: LiveAuctionFancyLotCollectionViewLayout.Size = screenWidthIsLarge ? .normal : .compact
+            adjustConstraintsForLargeScreens = (size == .normal)
 
             let layout = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource, size: size)
             collectionViewLayout = layout
@@ -68,8 +68,8 @@ class LiveAuctionLotSetViewController: UIViewController {
     var hasJumpedToOpenLotAtLaunch = false
     var suppressJumpingToOpenLots = false
 
-    func hasChangedLot(lot: LiveAuctionLotViewModelType?) {
-        guard let newLot = lot, newLotIndex = salesPerson.indexForViewModel(newLot) else { return }
+    func hasChangedLot(_ lot: LiveAuctionLotViewModelType?) {
+        guard let newLot = lot, let newLotIndex = salesPerson.indexForViewModel(newLot) else { return }
         guard !suppressJumpingToOpenLots else { return }
 
         /// Support jumping directly to the live lot when we load
@@ -87,17 +87,17 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         if focusedLotIndex == newLotIndex - 1 {
             ar_dispatch_after(1) {
-                guard let focusedLotAfterDelayIndex = self.salesPerson.currentFocusedLotIndex.peek() where focusedLotAfterDelayIndex == focusedLotIndex else { return }
+                guard let focusedLotAfterDelayIndex = self.salesPerson.currentFocusedLotIndex.peek(), focusedLotAfterDelayIndex == focusedLotIndex else { return }
 
                 guard let currentLotVC = self.auctionDataSource.liveAuctionPreviewViewControllerForIndex(newLotIndex) else { return }
-                self.pageController.setViewControllers([currentLotVC], direction: .Forward, animated: true) { _ in
+                self.pageController.setViewControllers([currentLotVC], direction: .forward, animated: true) { _ in
                     self.pageViewController(self.pageController, didFinishAnimating: true, previousViewControllers: [], transitionCompleted: true)
                 }
             }
         }
     }
 
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         updateTitle()
@@ -111,7 +111,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         super.viewDidLoad()
 
         // Our view setup.
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
 
         // Lot collection view setup.
         view.addSubview(lotImageCollectionView)
@@ -122,12 +122,12 @@ class LiveAuctionLotSetViewController: UIViewController {
         pageController.delegate = self
 
         let pageControllerView = pageController.view
-        pageControllerView.alignToView(view)
+        pageControllerView?.align(toView: view)
 
         // This is a bit of a shame, we need to also make.
         // sure the scrollview resizes on orientation changes.
         if let scrollView = pageController.view.subviews.flatMap({ $0 as? UIScrollView }).first {
-            scrollView.alignToView(pageControllerView)
+            scrollView.align(toView: pageControllerView)
             scrollView.delegate = self
         }
 
@@ -135,7 +135,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         view.addSubview(progressBar)
         progressBar.constrainHeight("4")
         progressBar.alignLeading("0", trailing: "0", toView: view)
-        progressBarBottomConstraint = progressBar.alignBottomEdgeWithView(view, predicate: "\(progressBarBottomConstraintAtRestConstant)")
+        progressBarBottomConstraint = progressBar.alignBottomEdge(withView: view, predicate: "\(progressBarBottomConstraintAtRestConstant)")
 
         salesPerson.currentFocusedLotIndex.subscribe { [weak self] _ in
             self?.lotImageCollectionView.reloadData()
@@ -145,7 +145,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         setupWithInitialData()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // TODO: handle changing trait collections, need to re-set the collection view layout.
         setupToolbar()
@@ -167,47 +167,47 @@ class LiveAuctionLotSetViewController: UIViewController {
         }
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         // Disable page view scrolling on iPad.
-        pageViewScrollView?.scrollEnabled = (view.window?.traitCollection.horizontalSizeClass == .Compact)
+        pageViewScrollView?.isScrollEnabled = (view.window?.traitCollection.horizontalSizeClass == .compact)
     }
 
     func updateTitle() {
         // On iPhone, show the sale name, since we're taking up the full screen.
         // Otherwise, on iPad, show nothing (sale name is shown in the lot list).
-        if traitCollection.horizontalSizeClass == .Compact {
+        if traitCollection.horizontalSizeClass == .compact {
             title = salesPerson.liveSaleName
         }
     }
 
     func setupToolbar() {
         let close = ARSerifToolbarButtonItem(image: UIImage(named: "serif_modal_close"))
-        close.accessibilityLabel = "Exit Live Bidding"
-        close.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.dismissModal), forControlEvents: .TouchUpInside)
+        close?.accessibilityLabel = "Exit Live Bidding"
+        close?.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.dismissModal), for: .touchUpInside)
 
         let info = ARSerifToolbarButtonItem(image: UIImage(asset: .Info_icon) )
-        info.accessibilityLabel = "More Information"
-        info.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.moreInfo), forControlEvents: .TouchUpInside)
-        info.enabled = false
+        info?.accessibilityLabel = "More Information"
+        info?.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.moreInfo), for: .touchUpInside)
+        info?.isEnabled = false
         saleNetworkModel.fetchSale(salesPerson.liveSaleID)
             .merge(biddersNetworkModel.fetchBiddersForSale(salesPerson.liveSaleID))
             .subscribe { _ in info.enabled = true }
 
         let lots = ARSerifToolbarButtonItem(image: UIImage(asset: .Lots_icon))
-        lots.accessibilityLabel = "Show all Lots"
-        lots.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.showLots), forControlEvents: .TouchUpInside)
+        lots?.accessibilityLabel = "Show all Lots"
+        lots?.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.showLots), for: .touchUpInside)
 
-        let phone = traitCollection.userInterfaceIdiom == .Phone
-        let items: [UIBarButtonItem] = phone ? [close, lots, info] : [close, info]
+        let phone = traitCollection.userInterfaceIdiom == .phone
+        let items: [UIBarButtonItem] = phone ? [close, lots, info] : [close, info] as! [UIBarButtonItem]
 
         navigationItem.rightBarButtonItems = items
     }
 
     func dismissModal() {
         guard let presentor = splitViewController?.presentingViewController else { return }
-        presentor.dismissViewControllerAnimated(true, completion: nil)
+        presentor.dismiss(animated: true, completion: nil)
     }
 
     func moreInfo() {
@@ -218,7 +218,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         let saleInfoVC = AuctionInformationViewController(saleViewModel: saleVM)
         saleInfoVC.titleViewDelegate = self
         let nav = ARSerifNavigationViewController(rootViewController: saleInfoVC)
-        self.navigationController?.presentViewController(nav, animated: true, completion: nil)
+        self.navigationController?.present(nav, animated: true, completion: nil)
     }
 
     func showLots() {
@@ -241,7 +241,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         pageController.dataSource = auctionDataSource
 
         guard let startVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(0) else { return }
-        pageController.setViewControllers([startVC], direction: .Forward, animated: false, completion: nil)
+        pageController.setViewControllers([startVC], direction: .forward, animated: false, completion: nil)
 
         pageViewScrollView = pageController.view.subviews.flatMap({ $0 as? UIScrollView }).first
 
@@ -263,12 +263,12 @@ class LiveAuctionLotSetViewController: UIViewController {
         salesPerson.currentLotSignal.subscribe(applyWeakly(self, LiveAuctionLotSetViewController.hasChangedLot))
     }
 
-    func jumpToLotAtIndex(index: Int) {
+    func jumpToLotAtIndex(_ index: Int) {
         guard let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index) else { return }
 
         salesPerson.currentFocusedLotIndex.update(index)
         lotImageCollectionView.reloadData()
-        pageController.setViewControllers([currentLotVC], direction: .Forward, animated: false, completion: nil)
+        pageController.setViewControllers([currentLotVC], direction: .forward, animated: false, completion: nil)
     }
 
     func jumpToLiveLot() {
@@ -281,35 +281,35 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     func nextLot() {
         guard let current = pageController.childViewControllers.first else { return }
-        guard let nextLotVC = auctionDataSource.pageViewController(pageController, viewControllerAfterViewController: current) else { return }
-        pageController.setViewControllers([nextLotVC], direction: .Forward, animated: true, completion: nil)    }
+        guard let nextLotVC = auctionDataSource.pageViewController(pageController, viewControllerAfter: current) else { return }
+        pageController.setViewControllers([nextLotVC], direction: .forward, animated: true, completion: nil)    }
 
     func previousLot() {
         guard let current = pageController.childViewControllers.first else { return }
-        guard let previousLotVC = auctionDataSource.pageViewController(pageController, viewControllerBeforeViewController: current) else { return }
-        pageController.setViewControllers([previousLotVC], direction: .Reverse, animated: true, completion: nil)
+        guard let previousLotVC = auctionDataSource.pageViewController(pageController, viewControllerBefore: current) else { return }
+        pageController.setViewControllers([previousLotVC], direction: .reverse, animated: true, completion: nil)
     }
 }
 
 private typealias LotListDelegate = LiveAuctionLotSetViewController
 extension LotListDelegate: LiveAuctionLotListViewControllerDelegate {
 
-    func didSelectLotAtIndex(index: Int, forLotListViewController lotListViewController: LiveAuctionLotListViewController) {
+    func didSelectLotAtIndex(_ index: Int, forLotListViewController lotListViewController: LiveAuctionLotListViewController) {
         jumpToLotAtIndex(index)
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
 }
 
 extension LiveAuctionLotSetViewController: AuctionTitleViewDelegate {
-    func userDidPressInfo(titleView: AuctionTitleView) {
+    func userDidPressInfo(_ titleView: AuctionTitleView) {
         // NO-OP, button for this cannot be seen in this context
     }
 
-    func userDidPressRegister(titleView: AuctionTitleView) {
+    func userDidPressRegister(_ titleView: AuctionTitleView) {
         let registrationPath = "/auction-registration/\(self.salesPerson.liveSaleID)"
         let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
-        self.presentViewController(viewController, animated: true) {}
+        self.present(viewController, animated: true) {}
     }
 }
 
@@ -322,17 +322,17 @@ extension HostScrollViewDelegate: UIScrollViewDelegate {
     // The SalesPerson needs to update the currentFocuedLotIndex to match a change in the page view controller's internal layout.
 
     // When the user scrolls.
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
     }
 
     // When we scroll programmatically with/out animation.
-    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
     }
 
     // When the user has released their finger and the scroll view is sliding to a gentle stop.
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
     }
 
@@ -340,7 +340,7 @@ extension HostScrollViewDelegate: UIScrollViewDelegate {
 
 private typealias PageViewDelegate = LiveAuctionLotSetViewController
 extension PageViewDelegate: UIPageViewControllerDelegate, LiveAuctionSaleLotsDataSourceScrollableDelgate {
-    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard let viewController = pageViewController.viewControllers?.first as? LiveAuctionLotViewController else { return }
 
         // The completed parameter specifies if the user has completed the swipe from one page to the next. We want to
@@ -351,7 +351,7 @@ extension PageViewDelegate: UIPageViewControllerDelegate, LiveAuctionSaleLotsDat
         }
     }
 
-    func registerForScrollingState(viewController: LiveAuctionLotViewController) {
+    func registerForScrollingState(_ viewController: LiveAuctionLotViewController) {
         viewController.bidHistoryState.subscribe { [weak self] state in
             self?.pageViewScrollView?.scrollEnabled = (state == .Closed && self?.view.traitCollection.horizontalSizeClass == .Compact)
             return

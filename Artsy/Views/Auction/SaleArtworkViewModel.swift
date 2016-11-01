@@ -1,7 +1,7 @@
 import Foundation
 
 @objc class SaleArtworkViewModel: NSObject {
-    private let saleArtwork: SaleArtwork
+    fileprivate let saleArtwork: SaleArtwork
 
     init(saleArtwork: SaleArtwork) {
         self.saleArtwork = saleArtwork
@@ -10,7 +10,7 @@ import Foundation
 
 private typealias PublicComputedProperties = SaleArtworkViewModel
 extension PublicComputedProperties {
-    var thumbnailURL: NSURL? {
+    var thumbnailURL: URL? {
         return saleArtwork.artwork.defaultImage.urlForThumbnailImage()
     }
 
@@ -38,8 +38,8 @@ extension PublicComputedProperties {
         return saleArtwork.artwork.artworkID
     }
 
-    func currentOrStartingBidWithNumberOfBids(includeNumberOfBids: Bool) -> String {
-        if saleArtwork.auctionState.contains(.Ended) {
+    func currentOrStartingBidWithNumberOfBids(_ includeNumberOfBids: Bool) -> String {
+        if saleArtwork.auctionState.contains(.ended) {
             return ""
         }
 

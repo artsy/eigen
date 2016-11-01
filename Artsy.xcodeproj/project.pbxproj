@@ -4989,6 +4989,7 @@
 				TargetAttributes = {
 					49BA7DFE1655ABE600C06572 = {
 						DevelopmentTeam = 23KMWZ572J;
+						LastSwiftMigration = 0810;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -5023,6 +5024,7 @@
 						CreatedOnToolsVersion = 6.2;
 					};
 					B3ECE8251819D1E6009F5C5B = {
+						LastSwiftMigration = 0810;
 						TestTargetID = 49BA7DFE1655ABE600C06572;
 					};
 				};
@@ -5260,7 +5262,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		4F59D9726E617D9849261C9C /* [CP] Copy Pods Resources */ = {
@@ -5365,7 +5367,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		FB48B9401545DA58C51BB112 /* 📦 Embed Pods Frameworks */ = {
@@ -6154,6 +6156,7 @@
 				SPRINGBOARD_DISPLAY_NAME = "Δrtsy";
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WARNING_CFLAGS = "-Wobjc-missing-super-calls";
 				WRAPPER_EXTENSION = app;
@@ -6472,6 +6475,7 @@
 				SDKROOT = iphoneos;
 				SPRINGBOARD_DISPLAY_NAME = Artsy;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WARNING_CFLAGS = "-Wobjc-missing-super-calls";
 				WRAPPER_EXTENSION = app;
@@ -6509,6 +6513,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy_Tests/Supporting_Files/Artsy-Tests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -6585,6 +6590,7 @@
 				SDKROOT = iphoneos;
 				SPRINGBOARD_DISPLAY_NAME = Artsy;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WARNING_CFLAGS = "-Wobjc-missing-super-calls";
 				WRAPPER_EXTENSION = app;
@@ -6619,6 +6625,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy_Tests/Supporting_Files/Artsy-Tests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -6655,6 +6662,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy_Tests/Supporting_Files/Artsy-Tests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = xctest;

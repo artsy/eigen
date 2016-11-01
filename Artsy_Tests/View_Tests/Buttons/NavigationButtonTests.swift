@@ -17,7 +17,7 @@ class NavigationButtonTests: QuickSpec {
             expect(subject.descriptionDictionary[ARNavigationButtonPropertiesKey] as? NSDictionary) == ["key": "value"] as NSDictionary
         }
 
-        typealias CallbackBlock = @convention (block) UIButton -> Void
+        typealias CallbackBlock = @convention (block) (UIButton) -> Void
 
         it("maps handler correctly") {
             var called = false

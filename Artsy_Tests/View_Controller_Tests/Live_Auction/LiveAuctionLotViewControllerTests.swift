@@ -113,8 +113,8 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
 }
 
 class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
-    var startDate = NSDate().dateByAddingTimeInterval(-3600)
-    var liveAuctionStartDate = NSDate().dateByAddingTimeInterval(-3600)
+    var startDate = Date().addingTimeInterval(-3600)
+    var liveAuctionStartDate = Date().addingTimeInterval(-3600)
     var lotCount = 3
     var saleAvailabilitySignal: Observable<SaleAvailabilityState> = Observable()
     var currentLotSignal = Observable<LiveAuctionLotViewModelType?>(Test_LiveAuctionLotViewModel(lotID: "active-lot"))
@@ -122,7 +122,7 @@ class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
 
 
     var distance: Int?
-    func distanceFromCurrentLot(lot: LiveAuctionLotViewModelType) -> Int? {
+    func distanceFromCurrentLot(_ lot: LiveAuctionLotViewModelType) -> Int? {
         return distance
     }
 }
@@ -138,8 +138,8 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var lotID = "lot-id"
     var lotPremium = "Lot Premium"
     var lotArtworkCreationDate: String? = "1985"
-    var urlForThumbnail = NSURL(string: "http://example.com/")!
-    var urlForProfile = NSURL(string: "http://example.com/")!
+    var urlForThumbnail = URL(string: "http://example.com/")!
+    var urlForProfile = URL(string: "http://example.com/")!
     var reserveStatusString = "is testing reserve"
     var numberOfDerivedEvents = 1
     var lotIndex = "2"
@@ -149,7 +149,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var currencySymbol = "$"
     var imageAspectRatio: CGFloat = 1
     var liveAuctionLotID = "lotID"
-    var dateLotOpened: NSDate?
+    var dateLotOpened: Date?
     var userIsHighestBidder: Bool = false
     var userIsBeingSoldTo: Bool = false
     var userIsWinning: Bool = false
@@ -157,7 +157,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     // Whether or not (all) events returned from this test VM should be cancelled.
     var cancelEvents = false
 
-    func derivedEventAtPresentationIndex(index: Int) -> LiveAuctionEventViewModel {
+    func derivedEventAtPresentationIndex(_ index: Int) -> LiveAuctionEventViewModel {
         let event = LiveAuctionEventViewModel(event: LiveEvent(JSON: liveEventJSON), currencySymbol: "$")
         event.confirm()
         event.bidStatus = .Bid(isMine: false, isTop: false)
@@ -166,7 +166,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     }
 
     var lotStateSignal: Observable<LotState> = Observable(LotState.UpcomingLot(isHighestBidder: false))
-    func computedLotStateSignal(auctionViewModel: LiveAuctionViewModelType) -> Observable<LotState> {
+    func computedLotStateSignal(_ auctionViewModel: LiveAuctionViewModelType) -> Observable<LotState> {
         return lotStateSignal
     }
 
@@ -189,4 +189,4 @@ let liveEventJSON = [
     "createdAt": "2016-04-28T20:41:05.240Z",
     "type": "FirstPriceBidPlaced",
     "bidder": ["type":"ArtsyBidder", "bidderId": "LmnBN-aFci" ]
-]
+] as [String : Any]

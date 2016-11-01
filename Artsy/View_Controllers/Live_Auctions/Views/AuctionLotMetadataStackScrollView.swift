@@ -8,7 +8,7 @@ import FLKAutoLayout
 
 class AuctionLotMetadataStackScrollView: ORStackScrollView {
     let aboveFoldStack = TextStack()
-    private let toggle = AuctionLotMetadataStackScrollView.toggleSizeButton()
+    fileprivate let toggle = AuctionLotMetadataStackScrollView.toggleSizeButton()
 
     var showAdditionalInformation: (() -> ())?
     var hideAdditionalInformation: (() -> ())?
@@ -36,23 +36,23 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         // Want to make the wrapper hold the stack on the left
         aboveFoldStackWrapper.addSubview(aboveFoldStack)
         aboveFoldStack.alignTop("0", leading: "0", toView: aboveFoldStackWrapper)
-        aboveFoldStack.alignBottomEdgeWithView(aboveFoldStackWrapper, predicate: "0")
+        aboveFoldStack.alignBottomEdge(withView: aboveFoldStackWrapper, predicate: "0")
 
         // Then the button on the right
         aboveFoldStackWrapper.addSubview(toggle)
-        toggle.alignTopEdgeWithView(aboveFoldStackWrapper, predicate: "0")
-        toggle.alignTrailingEdgeWithView(aboveFoldStackWrapper, predicate: "0")
+        toggle.alignTopEdge(withView: aboveFoldStackWrapper, predicate: "0")
+        toggle.alignTrailingEdge(withView: aboveFoldStackWrapper, predicate: "0")
 
-        toggle.addTarget(self, action: #selector(toggleTapped), forControlEvents: .TouchUpInside)
+        toggle.addTarget(self, action: #selector(toggleTapped), for: .touchUpInside)
 
         // Then glue them together with 20px margin
-        aboveFoldStack.constrainTrailingSpaceToView(toggle, predicate: "0")
+        aboveFoldStack.constrainTrailingSpace(toView: toggle, predicate: "0")
 
         // Add the above the fold stack, to the stack
         stackView.addSubview(aboveFoldStackWrapper, withTopMargin: "0", sideMargin: sideMargin)
 
         // set a constraint to force it to be in small mode first
-        aboveFoldHeightConstraint = constrainHeightToView(aboveFoldStackWrapper, predicate: "0")
+        aboveFoldHeightConstraint = constrainHeight(toView: aboveFoldStackWrapper, predicate: "0")
 
         // ----- Below the fold 👇 ----- //
 
@@ -66,13 +66,13 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
 
         let separatorMargin = String(Int(sideMargin) ?? 0 + 40)
 
-        if let artworkdescription = viewModel.lotArtworkDescription where artworkdescription.isEmpty == false {
+        if let artworkdescription = viewModel.lotArtworkDescription, artworkdescription.isEmpty == false {
             stack.addSmallLineBreak(separatorMargin)
             stack.addSmallHeading("Description", sideMargin: sideMargin)
             stack.addBodyMarkdown(artworkdescription, sideMargin: sideMargin)
         }
 
-        if let blurb = viewModel.lotArtistBlurb where blurb.isEmpty == false {
+        if let blurb = viewModel.lotArtistBlurb, blurb.isEmpty == false {
             stack.addThickLineBreak(separatorMargin)
             stack.addBigHeading("About the Artist", sideMargin: sideMargin)
             stack.addBodyMarkdown(blurb, sideMargin: sideMargin)
@@ -100,42 +100,42 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
             }
         }
 
-        scrollEnabled = false
+        isScrollEnabled = false
 
         let views = stack.subviews + aboveFoldStack.subviews
-        for label in views.filter({ $0.isKindOfClass(UILabel.self) || $0.isKindOfClass(UITextView.self) }) {
-            label.backgroundColor = .clearColor()
+        for label in views.filter({ $0.isKind(of: UILabel.self) || $0.isKind(of: UITextView.self) }) {
+            label.backgroundColor = .clear
         }
     }
 
-    @objc private func toggleTapped(button: UIButton) {
-        if aboveFoldHeightConstraint.active {
+    @objc fileprivate func toggleTapped(_ button: UIButton) {
+        if aboveFoldHeightConstraint.isActive {
             showAdditionalInformation?()
         } else {
             hideAdditionalInformation?()
         }
     }
 
-    func setShowInfoButtonEnabled(enabled: Bool, animated: Bool = true) {
+    func setShowInfoButtonEnabled(_ enabled: Bool, animated: Bool = true) {
         if animated {
-            UIView.transitionWithView(toggle, duration: ARAnimationQuickDuration, options: [.TransitionCrossDissolve], animations: {
-                self.toggle.enabled = enabled
+            UIView.transition(with: toggle, duration: ARAnimationQuickDuration, options: [.transitionCrossDissolve], animations: {
+                self.toggle.isEnabled = enabled
             }, completion: nil)
         } else {
-            toggle.enabled = enabled
+            toggle.isEnabled = enabled
         }
     }
 
-    func showFullMetadata(animated: Bool) {
-        scrollEnabled = true
+    func showFullMetadata(_ animated: Bool) {
+        isScrollEnabled = true
 
-        toggle.setTitle("HIDE INFO", forState: .Normal)
-        toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleDown), forState: .Normal)
+        toggle.setTitle("HIDE INFO", for: UIControlState())
+        toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleDown), for: UIControlState())
 
         toggle.titleEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         toggle.imageTopConstraint?.constant = 15
 
-        aboveFoldHeightConstraint.active = false
+        aboveFoldHeightConstraint.isActive = false
 
         UIView.animateSpringIf(animated, duration: ARAnimationDuration, delay: 0, damping: 0.9, velocity: 3.5, {
             self.superview?.layoutIfNeeded()
@@ -144,16 +144,16 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         }
     }
 
-    func hideFullMetadata(animated: Bool) {
-        scrollEnabled = false
+    func hideFullMetadata(_ animated: Bool) {
+        isScrollEnabled = false
 
-        toggle.setTitle("LOT INFO", forState: .Normal)
-        toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleUp), forState: .Normal)
+        toggle.setTitle("LOT INFO", for: UIControlState())
+        toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleUp), for: UIControlState())
 
-        toggle.titleEdgeInsets = UIEdgeInsetsZero
+        toggle.titleEdgeInsets = UIEdgeInsets.zero
         toggle.imageTopConstraint?.constant = 4
 
-        aboveFoldHeightConstraint.active = true
+        aboveFoldHeightConstraint.isActive = true
 
         UIView.animateSpringIf(animated, duration: ARAnimationDuration, delay: 0, damping: 0.9, velocity: 3.5) {
             self.contentOffset = CGPoint.zero
@@ -162,34 +162,34 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
     }
 
     /// A small class just to simplify changing the height constraint for the image view
-    private class AuctionPushButton: UIButton {
+    fileprivate class AuctionPushButton: UIButton {
         var imageTopConstraint: NSLayoutConstraint?
     }
 
-    private class func toggleSizeButton() -> AuctionPushButton {
-        let toggle = AuctionPushButton(type: .Custom)
+    fileprivate class func toggleSizeButton() -> AuctionPushButton {
+        let toggle = AuctionPushButton(type: .custom)
 
         // Adjusts where the text will be placed
         toggle.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 30, right: 17)
-        toggle.titleLabel?.font = .sansSerifFontWithSize(12)
-        toggle.setTitle("LOT INFO", forState: .Normal)
-        toggle.setTitleColor(.blackColor(), forState: .Normal)
-        toggle.setTitleColor(.artsyGrayMedium(), forState: .Disabled)
+        toggle.titleLabel?.font = .sansSerifFont(withSize: 12)
+        toggle.setTitle("LOT INFO", for: UIControlState())
+        toggle.setTitleColor(.black, for: UIControlState())
+        toggle.setTitleColor(.artsyGrayMedium(), for: .disabled)
 
         // Constrain the image to the left edge
-        toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleUp), forState: .Normal)
-        toggle.imageView?.alignTrailingEdgeWithView(toggle, predicate: "0")
-        toggle.imageTopConstraint =  toggle.imageView?.alignTopEdgeWithView(toggle, predicate: "4")
-        toggle.setContentHuggingPriority(1000, forAxis: .Horizontal)
-        toggle.setContentCompressionResistancePriority(1000, forAxis: .Horizontal)
+        toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleUp), for: UIControlState())
+        toggle.imageView?.alignTrailingEdge(withView: toggle, predicate: "0")
+        toggle.imageTopConstraint =  toggle.imageView?.alignTopEdge(withView: toggle, predicate: "4")
+        toggle.setContentHuggingPriority(1000, for: .horizontal)
+        toggle.setContentCompressionResistancePriority(1000, for: .horizontal)
 
         // Extend its hit range, as it's like ~20px otherwise
-        toggle.ar_extendHitTestSizeByWidth(20, andHeight: 40)
+        toggle.ar_extendHitTestSize(byWidth: 20, andHeight: 40)
         return toggle
     }
 
-    override func intrinsicContentSize() -> CGSize {
-        return aboveFoldStack.intrinsicContentSize()
+    override var intrinsicContentSize : CGSize {
+        return aboveFoldStack.intrinsicContentSize
     }
 
     override init(frame: CGRect) {

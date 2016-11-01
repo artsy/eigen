@@ -133,11 +133,11 @@ class SaleViewModelTests: QuickSpec {
     }
 }
 
-func testSaleWithDates(start: NSDate, end: NSDate) -> Sale {
+func testSaleWithDates(_ start: NSDate, end: NSDate) -> Sale {
     return try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": start, "endDate": end], error: Void())
 }
 
-func testLiveSaleWithStart(start: NSDate, end: NSDate) -> LiveSale {
+func testLiveSaleWithStart(_ start: NSDate, end: NSDate) -> LiveSale {
     return try! LiveSale(dictionary: ["name": "The 🎉 Sale", "causalitySaleID": "some-random-string-of-nc72bjzj7", "startDate": start, "endDate": end, "saleArtworks": []], error: Void())
 }
 
@@ -145,7 +145,7 @@ func testLiveSale() -> LiveSale {
     return try! LiveSale(dictionary: ["name": "The 🎉 Sale", "causalitySaleID": "some-random-string-of-nc72bjzj7", "saleArtworks": []], error: Void())
 }
 
-func testSaleArtworkEstimateAt(lowEstimate: Int?) -> SaleArtwork {
+func testSaleArtworkEstimateAt(_ lowEstimate: Int?) -> SaleArtwork {
     return try! SaleArtwork(dictionary: [
         "saleArtworkID" : "sale-artwrrrrrk",
         "lowEstimateCents" : lowEstimate ?? NSNull(),

@@ -5,10 +5,10 @@ import Nimble
 import Artsy
 
 class RefineGeneSettingsTests: QuickSpec {
-    func jsonForStub(name: String) -> [String: AnyObject] {
-        let url = NSBundle(forClass: RefineGeneSettingsTests.self).URLForResource(name, withExtension: "json")
-        let data = NSData(contentsOfURL: url!)
-        return try! NSJSONSerialization.JSONObjectWithData(data!, options: []) as! [String: AnyObject]
+    func jsonForStub(_ name: String) -> [String: AnyObject] {
+        let url = Bundle(for: RefineGeneSettingsTests.self).url(forResource: name, withExtension: "json")
+        let data = try? Data(contentsOf: url!)
+        return try! JSONSerialization.jsonObject(with: data!, options: []) as! [String: AnyObject]
     }
 
     override func spec() {

@@ -12,8 +12,8 @@ extension RefinementOptionsViewController {
     func setupViews() {
         let cancelButton = self.cancelButton()
         view.addSubview(cancelButton)
-        cancelButton.alignTopEdgeWithView(view, predicate: "10")
-        cancelButton.alignTrailingEdgeWithView(view, predicate: "-10")
+        cancelButton.alignTopEdge(withView: view, predicate: "10")
+        cancelButton.alignTrailingEdge(withView: view, predicate: "-10")
 
         // This isn't normally running inside a nav, so needs to create its own
         let titleLabel = ARSerifLabel().then {
@@ -34,8 +34,8 @@ extension RefinementOptionsViewController {
         // Tableview of all the content
         let tableView = self.createTableView()
         view.addSubview(tableView)
-        tableView.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow+1, forAxis: .Vertical)
-        tableView.constrainTopSpaceToView(spacer, predicate: "20")
+        tableView.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow+1, for: .vertical)
+        tableView.constrainTopSpace(toView: spacer, predicate: "20")
         tableView.alignLeading("0", trailing: "0", toView: view)
         self.tableView = tableView
 
@@ -43,8 +43,8 @@ extension RefinementOptionsViewController {
         let controlButtonsWrapper = self.bottomButtons()
         view.addSubview(controlButtonsWrapper)
         controlButtonsWrapper.alignLeading("20", trailing: "-20", toView: view)
-        controlButtonsWrapper.constrainTopSpaceToView(tableView, predicate: "20")
-        controlButtonsWrapper.alignBottomEdgeWithView(view, predicate: "-20")
+        controlButtonsWrapper.constrainTopSpace(toView: tableView, predicate: "20")
+        controlButtonsWrapper.alignBottomEdge(withView: view, predicate: "-20")
     }
 
     func updatePriceLabels() {
@@ -57,8 +57,8 @@ extension RefinementOptionsViewController {
         let settingsDifferFromDefault = currentSettings != defaultSettings
         let settingsDifferFromInitial = currentSettings != initialSettings
 
-        applyButton?.enabled = settingsDifferFromInitial
-        resetButton?.enabled = settingsDifferFromDefault
+        applyButton?.isEnabled = settingsDifferFromInitial
+        resetButton?.isEnabled = settingsDifferFromDefault
     }
 }
 
@@ -66,14 +66,14 @@ extension RefinementOptionsViewController {
 private extension RefinementOptionsViewController {
 
     func cancelButton() -> UIButton {
-        let cancelButton = UIButton.circularButton(.Cancel)
-        cancelButton.addTarget(self, action: #selector(RefinementOptionsViewController.userDidCancel), forControlEvents: .TouchUpInside)
+        let cancelButton = UIButton.circularButton(.cancel)
+        cancelButton.addTarget(self, action: #selector(RefinementOptionsViewController.userDidCancel), for: .touchUpInside)
         return cancelButton
     }
 
-    func subtitleLabel(text: String) -> UILabel {
+    func subtitleLabel(_ text: String) -> UILabel {
         let label = ARSansSerifLabel()
-        label.font = UIFont.sansSerifFontWithSize(12)
+        label.font = UIFont.sansSerifFont(withSize: 12)
         label.text = text
         return label
     }
@@ -90,7 +90,7 @@ private extension RefinementOptionsViewController {
 
         // A footer view ( either a separator or price range view )
         let bottomView = priceRangeView() ?? ARSeparatorView()
-        let bottomHeight = bottomView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+        let bottomHeight = bottomView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
 
 
         let tableView = UITableView().then {
@@ -118,7 +118,7 @@ private extension RefinementOptionsViewController {
         let wrapper = UIView()
         wrapper.frame = CGRect( x:0, y:0, width: view.bounds.width, height: bottomHeight)
         wrapper.addSubview(bottomView)
-        bottomView.alignToView(wrapper)
+        bottomView.align(toView: wrapper)
         tableView.tableFooterView = wrapper
 
         self.sortTableView = tableView
@@ -127,7 +127,7 @@ private extension RefinementOptionsViewController {
 
     func priceRangeView() -> ORStackView? {
         // Price section
-        if let initialRange = initialSettings.priceRange, maxRange = defaultSettings.priceRange where initialSettings.hasEstimates {
+        if let initialRange = initialSettings.priceRange, let maxRange = defaultSettings.priceRange, initialSettings.hasEstimates {
             let stackView = ORStackView()
 
             stackView.addSubview(ARSeparatorView(), withTopMargin: "0", sideMargin: "0")
@@ -242,16 +242,16 @@ enum SliderPriorities: String {
 
 class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
     let numberOfSections: Int
-    let numberOfRowsInSection: Int -> Int
-    let titleOfSection: Int -> String
-    let titleForRowAtIndexPath: NSIndexPath -> String
-    let shouldCheckRowAtIndexPath: NSIndexPath -> Bool
-    let selectedRowsInSection: Int -> [NSIndexPath]
-    let allowsMultipleSelectionInSection: Int -> Bool
-    let changeSettingsClosure: NSIndexPath -> Void
+    let numberOfRowsInSection: (Int) -> Int
+    let titleOfSection: (Int) -> String
+    let titleForRowAtIndexPath: (IndexPath) -> String
+    let shouldCheckRowAtIndexPath: (IndexPath) -> Bool
+    let selectedRowsInSection: (Int) -> [IndexPath]
+    let allowsMultipleSelectionInSection: (Int) -> Bool
+    let changeSettingsClosure: (IndexPath) -> Void
 
     // closures from currentSettings
-    init(numberOfSections: Int, titleOfSection: Int -> String, numberOfRowsInSection: Int -> Int, titleForRowAtIndexPath: NSIndexPath -> String, shouldCheckRowAtIndexPath: NSIndexPath -> Bool, selectedRowsInSection: Int -> [NSIndexPath], allowsMultipleSelectionClosure: Int -> Bool, changeSettingsClosure: NSIndexPath -> Void) {
+    init(numberOfSections: Int, titleOfSection: @escaping (Int) -> String, numberOfRowsInSection: @escaping (Int) -> Int, titleForRowAtIndexPath: @escaping (IndexPath) -> String, shouldCheckRowAtIndexPath: @escaping (IndexPath) -> Bool, selectedRowsInSection: @escaping (Int) -> [IndexPath], allowsMultipleSelectionClosure: @escaping (Int) -> Bool, changeSettingsClosure: @escaping (IndexPath) -> Void) {
         self.numberOfSections = numberOfSections
         self.titleOfSection = titleOfSection
         self.numberOfRowsInSection = numberOfRowsInSection
@@ -263,51 +263,51 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
         super.init()
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return numberOfSections
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return numberOfRowsInSection(section)
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         cell.textLabel?.text = titleForRowAtIndexPath(indexPath)
         return cell
     }
 
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return TableViewTitleHeight
     }
 
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let wrapper = UIView()
-        wrapper.backgroundColor = .whiteColor()
+        wrapper.backgroundColor = .white
 
         let label = ARSansSerifLabel()
-        label.font = UIFont.sansSerifFontWithSize(12)
+        label.font = UIFont.sansSerifFont(withSize: 12)
         label.text = titleOfSection(section)
         wrapper.addSubview(label)
         label.alignTop("20", leading: "20", toView: wrapper)
-        label.alignBottomEdgeWithView(wrapper, predicate: "-4")
+        label.alignBottomEdge(withView: wrapper, predicate: "-4")
 
         let separator = ARSeparatorView()
         wrapper.addSubview(separator)
         separator.alignBottom("0", trailing: "0", toView: wrapper)
-        separator.alignLeadingEdgeWithView(wrapper, predicate: "0")
+        separator.alignLeadingEdge(withView: wrapper, predicate: "0")
         return wrapper
     }
 
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        cell.layoutMargins = UIEdgeInsetsZero
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.layoutMargins = UIEdgeInsets.zero
         cell.preservesSuperviewLayoutMargins = false
-        cell.textLabel?.font = UIFont.serifFontWithSize(16)
+        cell.textLabel?.font = UIFont.serifFont(withSize: 16)
         cell.checked = shouldCheckRowAtIndexPath(indexPath)
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
 
         let oldCheckedCellIndices = selectedRowsInSection(indexPath.section)
 
@@ -316,7 +316,7 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
         } else {
             // Un-check formerly selected cell.
             if let oldCheckedCellIndex = oldCheckedCellIndices.first {
-                let formerlySelected = tableView.cellForRowAtIndexPath(oldCheckedCellIndex)
+                let formerlySelected = tableView.cellForRow(at: oldCheckedCellIndex)
                 formerlySelected?.checked = false
             }
 
@@ -324,7 +324,7 @@ class RefinementOptionsViewControllerTableViewHandler: NSObject, UITableViewData
             changeSettingsClosure(indexPath)
 
             // Check newly selected cell.
-            let selectedCell = tableView.cellForRowAtIndexPath(indexPath)
+            let selectedCell = tableView.cellForRow(at: indexPath)
             selectedCell?.checked = true
         }
     }

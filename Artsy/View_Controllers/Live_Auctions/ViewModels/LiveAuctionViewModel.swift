@@ -4,20 +4,20 @@ import Interstellar
 /// Represents the whole auction, all the live biz, timings, watchers
 
 protocol LiveAuctionViewModelType: class {
-    var startDate: NSDate { get }
+    var startDate: Date { get }
     var lotCount: Int { get }
 
     var saleAvailabilitySignal: Observable<SaleAvailabilityState> { get }
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
     var auctionState: ARAuctionState { get }
 
-    func distanceFromCurrentLot(lot: LiveAuctionLotViewModelType) -> Int?
+    func distanceFromCurrentLot(_ lot: LiveAuctionLotViewModelType) -> Int?
 }
 
 class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
 
-    private var sale: LiveSale
-    private var lastUpdatedSaleAvailability: SaleAvailabilityState
+    fileprivate var sale: LiveSale
+    fileprivate var lastUpdatedSaleAvailability: SaleAvailabilityState
 
     let saleAvailabilitySignal = Observable<SaleAvailabilityState>()
     let currentLotSignal: Observable<LiveAuctionLotViewModelType?>
@@ -33,7 +33,7 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
         self.biddingCredentials = biddingCredentials
     }
 
-    var startDate: NSDate {
+    var startDate: Date {
         return sale.startDate
     }
 
@@ -47,15 +47,15 @@ class LiveAuctionViewModel: NSObject, LiveAuctionViewModelType {
 
     /// A distance relative to the current lot, -x being that it precedded the current
     /// 0 being it is current and a positive number meaning it upcoming.
-    func distanceFromCurrentLot(lot: LiveAuctionLotViewModelType) -> Int? {
+    func distanceFromCurrentLot(_ lot: LiveAuctionLotViewModelType) -> Int? {
         guard let _lastUpdatedCurrentLot = currentLotSignal.peek() else { return nil }
         guard let lastUpdatedCurrentLot = _lastUpdatedCurrentLot else { return nil }
 
         let lotIDs = sale.saleArtworks.map { $0.liveAuctionLotID }
 
         let currentIndex = lotIDs.indexOf(lastUpdatedCurrentLot.lotID)
-        let lotIndex = lotIDs.indexOf(lot.liveAuctionLotID)
-        guard let current = currentIndex, lot = lotIndex else { return nil }
+        let lotIndex = lotIDs.index(of: lot.liveAuctionLotID)
+        guard let current = currentIndex, let lot = lotIndex else { return nil }
 
         return (current - lot) * -1
     }

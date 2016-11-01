@@ -8,7 +8,7 @@ import MARKRangeSlider
 
 class RefinementOptionsViewControllerSpec: QuickSpec {
     override func spec() {
-        let openSale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": NSDate.distantPast(), "endDate": NSDate.distantFuture() ], error: Void())
+        let openSale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": Date.distantPast(), "endDate": Date.distantFuture() ], error: Void())
 
         let openSaleViewModel = SaleViewModel(sale: openSale, saleArtworks: [], bidders: [])
 
@@ -56,10 +56,10 @@ class RefinementOptionsViewControllerSpec: QuickSpec {
             expect(subject).to( haveValidSnapshot() )
         }
 
-        func jsonForStub(name: String) -> [String: AnyObject] {
-            let url = NSBundle(forClass: RefineGeneSettingsTests.self).URLForResource(name, withExtension: "json")
-            let data = NSData(contentsOfURL: url!)
-            return try! NSJSONSerialization.JSONObjectWithData(data!, options: []) as! [String: AnyObject]
+        func jsonForStub(_ name: String) -> [String: AnyObject] {
+            let url = Bundle(for: RefineGeneSettingsTests.self).url(forResource: name, withExtension: "json")
+            let data = try? Data(contentsOf: url!)
+            return try! JSONSerialization.jsonObject(with: data!, options: []) as! [String: AnyObject]
         }
 
 
@@ -105,8 +105,8 @@ extension UIViewController {
         return findViewOfClass(view, type: MARKRangeSlider.self) as? MARKRangeSlider
     }
 
-    private func findViewOfClass(view: UIView, type: AnyClass) -> UIView? {
-        let lookup = view.subviews.filter { $0.isKindOfClass(type) }.first
+    fileprivate func findViewOfClass(_ view: UIView, type: AnyClass) -> UIView? {
+        let lookup = view.subviews.filter { $0.isKind(of: type) }.first
 
         if lookup != nil { return lookup }
 

@@ -14,41 +14,41 @@ class LiveBidProgressOverlayView: UIView {
         biddingProgressSignal.subscribe(biddingProgressUpdated)
     }
 
-    private func biddingProgressUpdated(state: LiveAuctionBiddingProgressState) {
+    fileprivate func biddingProgressUpdated(_ state: LiveAuctionBiddingProgressState) {
 
         let purple = UIColor.artsyPurpleRegular()
         let green = UIColor.artsyGreenRegular()
         let red = UIColor.artsyRedRegular()
 
         switch state {
-        case .Biddable, .UserRegistrationRequired, .UserRegistrationClosed, .UserRegistrationPending: break
-        case .LotSold:
-            setupProgressUI("Sold", subtitle:"The Lot has finished", textColor: red, image: .LiveAuctionOutbidWarningIcon)
+        case .biddable, .userRegistrationRequired, .userRegistrationClosed, .userRegistrationPending: break
+        case .lotSold:
+            setupProgressUI("Sold", subtitle:"The Lot has finished", textColor: red!, image: .LiveAuctionOutbidWarningIcon)
 
-        case .BidOutbid:
-            setupProgressUI("", textColor: red, image: .LiveAuctionOutbidWarningIcon)
+        case .bidOutbid:
+            setupProgressUI("", textColor: red!, image: .LiveAuctionOutbidWarningIcon)
 
-        case .LotWaitingToOpen:
+        case .lotWaitingToOpen:
             // Hrm, is this a possible state for it to get to?
-            setupProgressUI("Lot waiting to Open", textColor: purple, image: .LiveAuctionSpinner)
+            setupProgressUI("Lot waiting to Open", textColor: purple!, image: .LiveAuctionSpinner)
 
-        case .BiddingInProgress:
-            setupProgressUI("Placing Bid", textColor: purple, image: .LiveAuctionSpinner, spinImage: true)
+        case .biddingInProgress:
+            setupProgressUI("Placing Bid", textColor: purple!, image: .LiveAuctionSpinner, spinImage: true)
 
-        case .BidAcknowledged:
+        case .bidAcknowledged:
             // TODO: this needs to keep track of the previous bidding state
-            setupProgressUI("Bid Placed", textColor: green, image: .LiveAuctionMaxBidIcon)
+            setupProgressUI("Bid Placed", textColor: green!, image: .LiveAuctionMaxBidIcon)
 
-        case .BidNetworkFail:
-            setupProgressUI("Connection Issues", subtitle: "Please check your signal strength", textColor: red, image: .LiveAuctionOutbidWarningIcon)
+        case .bidNetworkFail:
+            setupProgressUI("Connection Issues", subtitle: "Please check your signal strength", textColor: red!, image: .LiveAuctionOutbidWarningIcon)
 
-        case .BidBecameMaxBidder:
-            setupProgressUI("", textColor: green, image: .LiveAuctionMaxBidIcon)
+        case .bidBecameMaxBidder:
+            setupProgressUI("", textColor: green!, image: .LiveAuctionMaxBidIcon)
         }
     }
 
-    private func setupProgressUI(title: String, subtitle: String = "", textColor: UIColor, image: UIImage.Asset, spinImage: Bool = false) {
-        bidProgressTitleLabel.text = title.uppercaseString
+    fileprivate func setupProgressUI(_ title: String, subtitle: String = "", textColor: UIColor, image: UIImage.Asset, spinImage: Bool = false) {
+        bidProgressTitleLabel.text = title.uppercased()
         bidProgressSubtitleLabel.text = subtitle
         bidProgressTitleLabel.textColor = textColor
         bidProgressSubtitleLabel.textColor = textColor

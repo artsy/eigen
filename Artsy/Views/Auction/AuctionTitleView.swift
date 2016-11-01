@@ -5,8 +5,8 @@ import Artsy_UIFonts
 import FLKAutoLayout
 
 @objc protocol AuctionTitleViewDelegate: class {
-    func userDidPressInfo(titleView: AuctionTitleView)
-    func userDidPressRegister(titleView: AuctionTitleView)
+    func userDidPressInfo(_ titleView: AuctionTitleView)
+    func userDidPressRegister(_ titleView: AuctionTitleView)
 }
 
 class AuctionTitleView: UIView {
@@ -40,7 +40,7 @@ class AuctionTitleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         setupViews()
@@ -75,9 +75,9 @@ private extension AuctionTitleView {
         addSubview(bottomView)
 
         // Stack them on top of eachother and constrain top/bottom edges
-        titleView.alignTopEdgeWithView(self, predicate: "0")
-        bottomView.alignAttribute(.Top, toAttribute: .Bottom, ofView: titleView, predicate: "10")
-        bottomView.alignAttribute(.Bottom, toAttribute: .Bottom, ofView: self, predicate: "-10")
+        titleView.alignTopEdge(withView: self, predicate: "0")
+        bottomView.alignAttribute(.top, to: .bottom, ofView: titleView, predicate: "10")
+        bottomView.alignAttribute(.bottom, to: .bottom, ofView: self, predicate: "-10")
 
         // Make them each full-width
         titleView.alignLeading("0", trailing: "0", toView: self)
@@ -86,7 +86,7 @@ private extension AuctionTitleView {
 
     func titleView() -> UIView {
         let container = UIView()
-        let regularSize = traitCollection.horizontalSizeClass == .Regular
+        let regularSize = traitCollection.horizontalSizeClass == .regular
 
         let titleLabel = ARSerifLabel().then {
             $0.text = self.viewModel.displayName
@@ -107,15 +107,15 @@ private extension AuctionTitleView {
         }
 
         if showAdditionalInformation {
-            let infoButton = UIButton.circularButton(.Info)
-            infoButton.addTarget(self, action: #selector(AuctionTitleView.userDidPressInfo), forControlEvents: .TouchUpInside)
+            let infoButton = UIButton.circularButton(.info)
+            infoButton.addTarget(self, action: #selector(AuctionTitleView.userDidPressInfo), for: .touchUpInside)
             container.addSubview(infoButton)
 
             // Vertically align both label and button
             infoButton.alignCenterYWithView(titleLabel, predicate: "0")
 
             // Info button always on right edge
-            infoButton.alignTrailingEdgeWithView(container, predicate: "0")
+            infoButton.alignTrailingEdge(withView: container, predicate: "0")
             infoButton.alignTop("0", bottom: "0", toView: container)
 
             // Ensure button doesn't overlap with title
@@ -139,7 +139,7 @@ private extension AuctionTitleView {
         // We're assuming a missing registration status means that the user isn't registered. We'll let our delegate handle the interaction for that.
         // For registered users, we display the "Approved to bid"
         // For all other cases (not logged in / not registered), we show the "Register" button, which shows an apporpriate CTA.
-        if viewModel.auctionState.contains(.UserIsRegistered) {
+        if viewModel.auctionState.contains(.userIsRegistered) {
             let registeredToBidLabel = ARSerifLabel().then {
                 $0.text = "Approved to Bid"
                 $0.font = UIFont.serifFontWithSize(16)
@@ -193,7 +193,7 @@ private extension AuctionTitleView {
             let leftRule = ARSeparatorView()
             container.addSubview(leftRule)
 
-            leftRule.alignLeadingEdgeWithView(container, predicate: "0")
+            leftRule.alignLeadingEdge(withView: container, predicate: "0")
             leftRule.constrainTrailingSpaceToView(registerButton, predicate: "-16")
             leftRule.alignCenterYWithView(registerButton, predicate: "0")
 
@@ -201,7 +201,7 @@ private extension AuctionTitleView {
             container.addSubview(rightRule)
 
             rightRule.constrainLeadingSpaceToView(registerButton, predicate: "16")
-            rightRule.alignTrailingEdgeWithView(container, predicate: "0")
+            rightRule.alignTrailingEdge(withView: container, predicate: "0")
             rightRule.alignCenterYWithView(registerButton, predicate: "0")
         }
 

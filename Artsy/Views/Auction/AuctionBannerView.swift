@@ -6,7 +6,7 @@ import SDWebImage
 class AuctionBannerView: UIView {
     let viewModel: SaleViewModel
 
-    private var countdownView: ARCountdownView?
+    fileprivate var countdownView: ARCountdownView?
 
     init(viewModel: SaleViewModel) {
         self.viewModel = viewModel
@@ -17,8 +17,8 @@ class AuctionBannerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func willMoveToSuperview(newSuperview: UIView?) {
-        super.willMoveToSuperview(newSuperview)
+    override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
 
         // Countdown view only counts down when we have a superview.
         if let _ = newSuperview {
@@ -28,7 +28,7 @@ class AuctionBannerView: UIView {
         }
     }
 
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         // Remove all subviews and call setupViews() again to start from scratch.
@@ -38,7 +38,7 @@ class AuctionBannerView: UIView {
 }
 
 extension AuctionBannerView {
-    private func setupViews() {
+    fileprivate func setupViews() {
 
         // Note: These are in order as they'll be in the view hierarchy (ie: first in the list is at the back)
         let backgroundImageView = UIImageView().then {
@@ -53,19 +53,19 @@ extension AuctionBannerView {
 
         // Background + darkening view always cover self totally.
         backgroundImageView.alignToView(self)
-        darkeningView.alignToView(self)
+        darkeningView.align(toView: self)
 
         if viewModel.saleIsClosed {
             let closedLabel = ARSansSerifHeaderLabel()
             closedLabel.text = "Auction Closed"
-            closedLabel.textColor = .whiteColor()
-            closedLabel.backgroundColor = .clearColor()
+            closedLabel.textColor = .white
+            closedLabel.backgroundColor = .clear
             darkeningView.addSubview(closedLabel)
-            closedLabel.constrainWidthToView(self, predicate: "0@0")
-            closedLabel.alignCenterWithView(darkeningView)
+            closedLabel.constrainWidth(toView: self, predicate: "0@0")
+            closedLabel.alignCenter(withView: darkeningView)
 
         } else {
-            let countdownView = ARCountdownView(color: .whiteColor()).then {
+            let countdownView = ARCountdownView(color: .white).then {
                 let model = self.viewModel
 
                 switch model.saleAvailability {
@@ -98,31 +98,31 @@ extension AuctionBannerView {
         constrainHeight("200")
 
         // Device-specific layout for logo & countdown views.
-        if traitCollection.horizontalSizeClass == .Regular {
+        if traitCollection.horizontalSizeClass == .regular {
             // Bottom lefthand corner with 40pt margin.
-            logoImageView.alignLeadingEdgeWithView(self, predicate: "40")
-            logoImageView.alignBottomEdgeWithView(self, predicate: "-40")
+            logoImageView.alignLeadingEdge(withView: self, predicate: "40")
+            logoImageView.alignBottomEdge(withView: self, predicate: "-40")
 
 
             // Bottom righthand corner with 40pt margin.
-            countdownView?.alignTrailingEdgeWithView(self, predicate: "-40")
-            countdownView?.alignBottomEdgeWithView(self, predicate: "-40")
+            countdownView?.alignTrailingEdge(withView: self, predicate: "-40")
+            countdownView?.alignBottomEdge(withView: self, predicate: "-40")
         } else {
 
-            logoImageView.alignTopEdgeWithView(self, predicate: "30")
-            countdownView?.constrainTopSpaceToView(logoImageView, predicate: "7")
-            countdownView?.alignBottomEdgeWithView(self, predicate: "-30")
+            logoImageView.alignTopEdge(withView: self, predicate: "30")
+            countdownView?.constrainTopSpace(toView: logoImageView, predicate: "7")
+            countdownView?.alignBottomEdge(withView: self, predicate: "-30")
 
             // The background will stretch us to be larger (based on its image height), so we want to prevent that.
             backgroundImageView.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
 
-            logoImageView.alignCenterXWithView(self, predicate: "0")
-            countdownView?.alignCenterXWithView(self, predicate: "0")
+            logoImageView.alignCenterX(withView: self, predicate: "0")
+            countdownView?.alignCenterX(withView: self, predicate: "0")
         }
 
         // Start any necessary image downloads.
         backgroundImageView.sd_setImageWithURL(viewModel.backgroundImageURL)
-        logoImageView.sd_setImageWithURL(viewModel.profileImageURL) { [weak logoImageView] (image, _, _, _) in
+        logoImageView.sd_setImage(with: viewModel.profileImageURL) { [weak logoImageView] (image, _, _, _) in
             guard let image = image else { return }
             // This keeps the image view constrained to the image's aspect ratio, which allows us to 'left align' this on iPad.
             let aspectRatio = image.size.width / image.size.height
@@ -132,7 +132,7 @@ extension AuctionBannerView {
 }
 
 private class DarkeningView: UIView {
-    private override func didMoveToSuperview() {
+    fileprivate override func didMoveToSuperview() {
         super.didMoveToSuperview()
 
         backgroundColor = UIColor(white: 0, alpha: 0.3)

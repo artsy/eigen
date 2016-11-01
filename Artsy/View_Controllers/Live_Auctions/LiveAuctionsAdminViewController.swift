@@ -24,16 +24,16 @@ class LiveAuctionsAdminViewController: UIViewController {
 
         let text = UITextView()
         text.font = UIFont(name: "Menlo-Regular", size: 14)
-        text.editable = false
+        text.isEditable = false
 
         view.addSubview(text)
-        text.alignToView(view)
+        text.align(toView: view)
         textView = text
 
         let image = UIImage(named: "navigation_more_arrow_vertical@2x")
         let button = ARSerifToolbarButtonItem(image: image)
-        button.button.addTarget(self, action: #selector(scrolltoBottom), forControlEvents: .TouchUpInside)
-        self.navigationItem.rightBarButtonItems = [button]
+        button?.button.addTarget(self, action: #selector(scrolltoBottom), for: .touchUpInside)
+        self.navigationItem.rightBarButtonItems = [button!]
 
         salesPerson.debugAllEventsSignal.subscribe { events in
             self.rawEvents.appendContentsOf(events.reverse())
@@ -50,9 +50,9 @@ class LiveAuctionsAdminViewController: UIViewController {
         var texts = [String]()
 
         switch salesPerson.auctionViewModel.auctionState {
-        case ARAuctionState.UserPendingRegistration:
+        case ARAuctionState.userPendingRegistration:
             texts.append("Bidder Status: Registration pending")
-        case ARAuctionState.UserIsRegistered:
+        case ARAuctionState.userIsRegistered:
             texts.append("Bidder Status: Registered for sale")
         default:
             texts.append("Bidder Status: Not registered for sale")
@@ -64,6 +64,6 @@ class LiveAuctionsAdminViewController: UIViewController {
         }
 
         guard let textView = textView else { return }
-        textView.text = texts.joinWithSeparator("\n")
+        textView.text = texts.joined(separator: "\n")
     }
 }

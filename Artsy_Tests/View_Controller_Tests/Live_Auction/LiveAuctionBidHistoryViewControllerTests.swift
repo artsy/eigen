@@ -9,7 +9,7 @@ import Artsy
 
 class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
 
-    func setupCellWithEvent(event: LiveEvent) -> LiveAuctionHistoryCell {
+    func setupCellWithEvent(_ event: LiveEvent) -> LiveAuctionHistoryCell {
         let lot = LiveAuctionLot(JSON: ["id": "", "symbol": "$" ])
         let creds = BiddingCredentials(bidders: [], paddleNumber: "123213")
 
@@ -225,7 +225,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
     }
 }
 
-func bid(amount: Int, bidder: [String: AnyObject]) -> LiveEvent {
+func bid(_ amount: Int, bidder: [String: AnyObject]) -> LiveEvent {
     return LiveEvent(JSON: [
         "type" : "FirstPriceBidPlaced",
         "eventId" : NSUUID().UUIDString,
@@ -235,7 +235,7 @@ func bid(amount: Int, bidder: [String: AnyObject]) -> LiveEvent {
         ])
 }
 
-func confirm(event: LiveEvent, lotID: String) -> LiveEvent {
+func confirm(_ event: LiveEvent, lotID: String) -> LiveEvent {
     return LiveEvent(JSON: [
         "amountCents": Int(event.amountCents),
         "createdAt": "2016-06-05T20:14:15.070Z",

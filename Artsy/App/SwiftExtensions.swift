@@ -1,21 +1,21 @@
 /// Given a closure T -> Void, returns a function that takes a T and invokes the closure.
 /// Useful for performing operations with curried functions.
 /// Ex: [a, b, c,].forEach(apply(self.function)) will call self.function with a, b, then c as parameters.
-func apply<T>(closure: T -> Void) -> (T -> Void) {
+func apply<T>(_ closure: @escaping (T) -> Void) -> ((T) -> Void) {
     return { instance in
         closure(instance)
     }
 }
 
 // Applies an instance method to the instance with an unowned reference.
-func applyUnowned<Type: AnyObject, Parameters, ReturnValue>(instance: Type, _ function: (Type -> Parameters -> ReturnValue)) -> (Parameters -> ReturnValue) {
+func applyUnowned<Type: AnyObject, Parameters, ReturnValue>(_ instance: Type, _ function: @escaping ((Type) -> (Parameters) -> ReturnValue)) -> ((Parameters) -> ReturnValue) {
     return { [unowned instance] parameters -> ReturnValue in
         return function(instance)(parameters)
     }
 }
 
 // Applies an instance method to the instance with a weak reference. If the instance is nil, the function is not invoked.
-func applyWeakly<Type: AnyObject, Parameters>(instance: Type, _ function: (Type -> Parameters -> Void)) -> (Parameters -> Void) {
+func applyWeakly<Type: AnyObject, Parameters>(_ instance: Type, _ function: @escaping ((Type) -> (Parameters) -> Void)) -> ((Parameters) -> Void) {
     return { [weak instance] parameters in
         guard let instance = instance else { return }
         function(instance)(parameters)
@@ -33,7 +33,7 @@ func +<K, V>(lhs: Dictionary<K, V>, rhs: Dictionary<K, V>) -> Dictionary<K, V> {
 }
 
 extension CGFloat {
-    mutating func capAtMax(max: CGFloat?, min: CGFloat?) {
+    mutating func capAtMax(_ max: CGFloat?, min: CGFloat?) {
         if let min = min {
             self = Swift.max(self, min)
         }
@@ -43,26 +43,26 @@ extension CGFloat {
     }
 }
 
-extension CollectionType {
+extension Collection {
     var isNotEmpty: Bool {
         return isEmpty == false
     }
 }
 
 extension Array {
-    mutating func remove(@noescape closure: (Element -> Bool)) -> Element? {
-        return enumerate().reduce(nil) { (memo, e) in
-            return memo ?? (closure(e.element) ? removeAtIndex(e.index) : nil)
+    mutating func remove(_ closure: @escaping ((Element) -> Bool)) -> Element? {
+        return enumerated().reduce(nil) { (memo, e) in
+            return memo ?? (closure(e.element) ? self.remove(at: e.index) : nil)
         }
     }
 
-    func first(@noescape closure: (Element -> Bool)) -> Element? {
+    func first(_ closure: ((Element) -> Bool)) -> Element? {
         return reduce(nil) { (memo, element) in
             return memo ?? (closure(element) ? element : nil)
         }
     }
 
-    func last(@noescape closure: (Element -> Bool)) -> Element? {
-        return reverse().first(closure)
+    func last(_ closure: ((Element) -> Bool)) -> Element? {
+        return reversed().first(closure)
     }
 }

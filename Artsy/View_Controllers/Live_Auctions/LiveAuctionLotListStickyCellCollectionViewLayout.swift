@@ -1,12 +1,12 @@
 import UIKit
 
 class LiveAuctionLotListStickyCellCollectionViewLayout: UICollectionViewFlowLayout {
-    private var currentIndex: Int?
+    fileprivate var currentIndex: Int?
 
     override init() {
         super.init()
 
-        self.scrollDirection = .Vertical
+        self.scrollDirection = .vertical
         self.minimumInteritemSpacing = 0
         self.minimumLineSpacing = 0
         self.sectionInset = UIEdgeInsets(top: 1, left: 0, bottom: 40, right: 0)
@@ -23,7 +23,7 @@ class LiveAuctionLotListStickyCellCollectionViewLayout: UICollectionViewFlowLayo
 private typealias PublicFunctions = LiveAuctionLotListStickyCellCollectionViewLayout
 extension PublicFunctions {
 
-    func setActiveIndex(index: Int?) {
+    func setActiveIndex(_ index: Int?) {
         currentIndex = index
         invalidateLayout()
         collectionView?.reloadData()
@@ -34,7 +34,7 @@ extension PublicFunctions {
 private typealias PrivateFunctions = LiveAuctionLotListStickyCellCollectionViewLayout
 extension PrivateFunctions {
 
-    func setActiveAttributes(attributes: UICollectionViewLayoutAttributes) {
+    func setActiveAttributes(_ attributes: UICollectionViewLayoutAttributes) {
         guard let collectionView = collectionView else { return }
 
         let contentOffset = collectionView.contentOffset.y
@@ -55,17 +55,17 @@ extension PrivateFunctions {
 private typealias Overrides = LiveAuctionLotListStickyCellCollectionViewLayout
 extension Overrides {
 
-    override func prepareLayout() {
-        super.prepareLayout()
+    override func prepare() {
+        super.prepare()
 
-        let width = collectionViewContentSize().width
+        let width = collectionViewContentSize.width
         let height = LotListCollectionViewCell.Height
 
         itemSize = CGSize(width: width, height: height)
     }
 
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        guard let superAttributesArray = super.layoutAttributesForElementsInRect(rect) else { return nil }
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        guard let superAttributesArray = super.layoutAttributesForElements(in: rect) else { return nil }
         guard superAttributesArray.isNotEmpty else { return [] }
 
         var attributesArray = superAttributesArray.flatMap { $0 }
@@ -73,8 +73,8 @@ extension Overrides {
         // Guarantee any selected cell is presented, regardless of the rect.
         if let currentIndex = currentIndex {
             if (attributesArray.map { $0.indexPath.item }).contains(currentIndex) == false {
-                let indexPath = NSIndexPath(forItem: currentIndex, inSection: 0)
-                if let stickyAttributes = layoutAttributesForItemAtIndexPath(indexPath) {
+                let indexPath = IndexPath(item: currentIndex, section: 0)
+                if let stickyAttributes = layoutAttributesForItem(at: indexPath) {
                     attributesArray += [stickyAttributes]
                 }
             }
@@ -87,8 +87,8 @@ extension Overrides {
         return attributesArray
     }
 
-    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        guard let attributes = super.layoutAttributesForItemAtIndexPath(indexPath)?.copy() as? UICollectionViewLayoutAttributes else { return nil }
+    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        guard let attributes = super.layoutAttributesForItem(at: indexPath)?.copy() as? UICollectionViewLayoutAttributes else { return nil }
 
         if attributes.indexPath.item == currentIndex {
             setActiveAttributes(attributes)
@@ -97,7 +97,7 @@ extension Overrides {
         return attributes
     }
 
-    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return true
     }
 }

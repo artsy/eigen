@@ -18,13 +18,13 @@ let qualifiedBidder = try! Bidder(dictionary: ["qualifiedForBidding": true, "sal
 var dateMock: AnyObject?
 var systemDateMock: AnyObject?
 
-func freezeTime(now: NSDate = NSDate(), work: () -> ()) {
+func freezeTime(_ now: Date = Date(), work: () -> ()) {
     freezeTime(now)
     work()
     unfreezeTime()
 }
 
-func freezeTime(now: NSDate = NSDate()) {
+func freezeTime(_ now: Date = Date()) {
     dateMock = ARTestContext.freezeTime(now)
     systemDateMock = ARTestContext.freezeSystemTime(now)
 }
@@ -442,7 +442,7 @@ class Test_AuctionNetworkModel: AuctionNetworkModelType {
     }
 }
 
-func test_saleArtworkWithLotNumber(lotNumber: Int, artistName: String, bidCount: Int, highestBidCents: Int) -> SaleArtwork {
+func test_saleArtworkWithLotNumber(_ lotNumber: Int, artistName: String, bidCount: Int, highestBidCents: Int) -> SaleArtwork {
 
     let artistJSON: NSDictionary = [
         "id": "artist_id",

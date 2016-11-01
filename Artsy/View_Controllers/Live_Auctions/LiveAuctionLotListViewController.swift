@@ -3,7 +3,7 @@ import Interstellar
 
 
 protocol LiveAuctionLotListViewControllerDelegate: class {
-    func didSelectLotAtIndex(index: Int, forLotListViewController lotListViewController: LiveAuctionLotListViewController)
+    func didSelectLotAtIndex(_ index: Int, forLotListViewController lotListViewController: LiveAuctionLotListViewController)
 }
 
 class LiveAuctionLotListViewController: UICollectionViewController {
@@ -17,15 +17,15 @@ class LiveAuctionLotListViewController: UICollectionViewController {
     var selectedIndex: Int? = 0 {
         didSet {
             if let selectedIndex = selectedIndex {
-                let path = NSIndexPath(forRow: selectedIndex, inSection: 0)
-                collectionView?.selectItemAtIndexPath(path, animated: false, scrollPosition: .None)
+                let path = IndexPath(row: selectedIndex, section: 0)
+                collectionView?.selectItem(at: path, animated: false, scrollPosition: UICollectionViewScrollPosition())
             }
         }
     }
 
     weak var delegate: LiveAuctionLotListViewControllerDelegate?
 
-    private var currentLotSignalObserver: ObserverToken<LiveAuctionLotViewModelType?>!
+    fileprivate var currentLotSignalObserver: ObserverToken<LiveAuctionLotViewModelType?>!
 
     init(salesPerson: LiveAuctionsSalesPersonType, currentLotSignal: Observable<LiveAuctionLotViewModelType?>, auctionViewModel: LiveAuctionViewModelType) {
         self.salesPerson = salesPerson
@@ -65,14 +65,14 @@ class LiveAuctionLotListViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        collectionView?.backgroundColor = .whiteColor()
-        collectionView?.registerClass(LotListCollectionViewCell.self, forCellWithReuseIdentifier: LotListCollectionViewCell.CellIdentifier)
+        collectionView?.backgroundColor = .white
+        collectionView?.register(LotListCollectionViewCell.self, forCellWithReuseIdentifier: LotListCollectionViewCell.CellIdentifier)
 
         let navController = (navigationController as? ARSerifNavigationViewController)
 
         // On iPhone, show "lots" since we're taking up the full screen.
         // Otherwise, on iPad, show the sale name (since users can see the lot list and the live interface).
-        let isCompact = (UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact)
+        let isCompact = (UIScreen.main.traitCollection.horizontalSizeClass == .compact)
         if isCompact {
             title = "Lots"
             navController?.hideCloseButton = false
@@ -86,26 +86,26 @@ class LiveAuctionLotListViewController: UICollectionViewController {
         }
     }
 
-    func setupAdminTools(isCompact: Bool, navController: ARSerifNavigationViewController?) {
+    func setupAdminTools(_ isCompact: Bool, navController: ARSerifNavigationViewController?) {
 
         navController?.hideCloseButton = false
 
         let image = UIImage(named: "MapAnnotation_Artsy")
         let button = ARSerifToolbarButtonItem(image: image)
-        button.button.addTarget(self, action: #selector(showAdminMenu), forControlEvents: .TouchUpInside)
+        button?.button.addTarget(self, action: #selector(showAdminMenu), for: .touchUpInside)
 
         if isCompact {
-            self.navigationItem.rightBarButtonItems = [button, button]
+            self.navigationItem.rightBarButtonItems = [button!, button!]
         } else {
-            self.navigationItem.rightBarButtonItems = [button]
+            self.navigationItem.rightBarButtonItems = [button!]
         }
     }
 
-    func closeLotModal(button: UIButton) {
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    func closeLotModal(_ button: UIButton) {
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 
-    func showAdminMenu(button: UIButton) {
+    func showAdminMenu(_ button: UIButton) {
         let adminVC = LiveAuctionsAdminViewController(salesPerson: salesPerson)
         self.navigationController?.pushViewController(adminVC, animated: true)
     }
@@ -115,30 +115,30 @@ class LiveAuctionLotListViewController: UICollectionViewController {
         currentLotStateSubscription = nil
     }
 
-    func lotAtIndexPath(indexPath: NSIndexPath) -> LiveAuctionLotViewModelType {
+    func lotAtIndexPath(_ indexPath: IndexPath) -> LiveAuctionLotViewModelType {
         return salesPerson.lotViewModelForIndex(indexPath.item)
     }
 }
 
 private typealias CollectionView = LiveAuctionLotListViewController
 extension CollectionView {
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return salesPerson.lotCount
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(LotListCollectionViewCell.CellIdentifier, forIndexPath: indexPath)
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LotListCollectionViewCell.CellIdentifier, for: indexPath)
 
         let viewModel = lotAtIndexPath(indexPath)
         (cell as? LotListCollectionViewCell)?.configureForViewModel(viewModel, indexPath: indexPath)
 
-        cell.selected = (indexPath.row == selectedIndex)
+        cell.isSelected = (indexPath.row == selectedIndex)
         return cell
     }
 
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let oldSelectedIndex = selectedIndex {
-            collectionView.deselectItemAtIndexPath(NSIndexPath(forRow: oldSelectedIndex, inSection: 0), animated: true)
+            collectionView.deselectItem(at: IndexPath(row: oldSelectedIndex, section: 0), animated: true)
         }
 
         selectedIndex = indexPath.row

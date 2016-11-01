@@ -6,11 +6,11 @@ extension NSAttributedString {
     func makeBoldOccurencesSansSerifSemiBold() -> NSAttributedString {
         let copy = NSMutableAttributedString(attributedString: self)
 
-        enumerateAttributesInRange(NSRange(location: 0, length: length), options: []) { (attrs, range, _) in
+        enumerateAttributes(in: NSRange(location: 0, length: length), options: []) { (attrs, range, _) in
             guard let font = attrs[NSFontAttributeName] as? UIFont else { return }
 
             if font.isBold {
-                copy.setAttributes([NSFontAttributeName: UIFont.serifSemiBoldFontWithSize(font.pointSize)], range: range)
+                copy.setAttributes([NSFontAttributeName: UIFont.serifSemiBoldFont(withSize: font.pointSize)], range: range)
             }
         }
 
@@ -20,6 +20,6 @@ extension NSAttributedString {
 
 extension UIFont {
     var isBold: Bool {
-        return fontDescriptor().symbolicTraits.contains(.TraitBold)
+        return fontDescriptor.symbolicTraits.contains(.traitBold)
     }
 }

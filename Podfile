@@ -110,7 +110,7 @@ target 'Artsy' do
 
   # Swift pods 🎉
   pod 'Then'
-  pod 'Interstellar/Core', git: 'https://github.com/JensRavens/Interstellar.git', commit: 'efa777b'
+  pod 'Interstellar/Core', git: 'https://github.com/JensRavens/Interstellar.git', branch: 'feature/v2'
   pod 'Starscream'
   pod 'SwiftyJSON'
 

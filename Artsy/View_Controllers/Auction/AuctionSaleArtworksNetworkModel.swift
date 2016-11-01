@@ -2,7 +2,7 @@ import Foundation
 import Interstellar
 
 protocol AuctionSaleArtworksNetworkModelType {
-    func fetchSaleArtworks(saleID: String) -> Observable<Result<[SaleArtwork]>>
+    func fetchSaleArtworks(_ saleID: String) -> Observable<Result<[SaleArtwork]>>
 }
 
 /// Network model responsible for fetching the SaleArtworks from the API.
@@ -10,7 +10,7 @@ class AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType {
 
     var saleArtworks: [SaleArtwork]?
 
-    func fetchSaleArtworks(saleID: String) -> Observable<Result<[SaleArtwork]>> {
+    func fetchSaleArtworks(_ saleID: String) -> Observable<Result<[SaleArtwork]>> {
 
         let observable = Observable<Result<[SaleArtwork]>>()
 
@@ -35,7 +35,7 @@ class AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType {
 private let pageSize = 100
 
 /// Recursively calls itself with page+1 until the count of the returned array is < pageSize.
-private func fetchPage(page: Int, forSaleID saleID: String, alreadyFetched: [SaleArtwork], callback: Result<[SaleArtwork]> -> Void) {
+private func fetchPage(_ page: Int, forSaleID saleID: String, alreadyFetched: [SaleArtwork], callback: (Result<[SaleArtwork]>) -> Void) {
     ArtsyAPI.getSaleArtworksWithSale(saleID,
         page: page,
         pageSize: pageSize,
