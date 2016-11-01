@@ -11,13 +11,13 @@ class LiveAuctionLotViewController: UIViewController {
 
     let lotViewModel: LiveAuctionLotViewModelType
     let salesPerson: LiveAuctionsSalesPersonType
-    let bidHistoryState = Observable<BidHistoryState>(.Closed)
+    let bidHistoryState = Observable<BidHistoryState>(.closed)
 
     fileprivate weak var bidHistoryViewController: LiveAuctionBidHistoryViewController?
     fileprivate let biddingViewModel: LiveAuctionBiddingViewModelType
     fileprivate var imageBottomConstraint: NSLayoutConstraint?
     fileprivate weak var lotMetadataStack: AuctionLotMetadataStackScrollView?
-    fileprivate var saleAvailabilityObserver: ObserverToken?
+    fileprivate var saleAvailabilityObserver: ObserverToken<SaleAvailabilityState>?
     fileprivate var bidHistoryGestureController: LiveAuctionLotBidHistoryGestureController?
     fileprivate var lotHistoryHeightConstraint: NSLayoutConstraint?
     fileprivate var alignMetadataToTopConstraint: NSLayoutConstraint?
