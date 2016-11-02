@@ -64,7 +64,7 @@ class LiveAuctionViewController: UISplitViewController {
             loadingView = LiveAuctionLoadingView().then {
                 $0.operation = applyWeakly(self, LiveAuctionViewController.dismissLiveAuctionsModal)
                 view.addSubview($0)
-                $0.alignToView(view)
+                $0.align(toView: view)
             }
         }
     }
@@ -220,7 +220,7 @@ extension LiveAuctionViewController: AROfflineViewDelegate {
     }
 }
 
-private typealias PrivateFunctions = LiveAuctionViewController
+fileprivate typealias PrivateFunctions = LiveAuctionViewController
 extension PrivateFunctions {
 
     func setupWithSale(_ sale: LiveSale, jwt: JWT, bidderCredentials: BiddingCredentials) {

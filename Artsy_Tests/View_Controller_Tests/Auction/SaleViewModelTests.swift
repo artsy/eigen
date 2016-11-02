@@ -100,7 +100,7 @@ class SaleViewModelTests: QuickSpec {
 
 
         it("deals with auctions that are active and live is upcoming") {
-            let soon = NSDate().dateByAddingTimeInterval(1650.9)
+            let soon = NSDate().addingTimeInterval(1650.9)
 
             let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast(), "endDate": NSDate.distantFuture(), "liveAuctionStartDate": soon ], error: Void())
 
@@ -110,7 +110,7 @@ class SaleViewModelTests: QuickSpec {
         }
 
         it("lets user know the live auction is happening") {
-            let before = NSDate().dateByAddingTimeInterval(-1650.9)
+            let before = NSDate().addingTimeInterval(-1650.9)
 
             let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast(), "endDate": NSDate.distantFuture(), "liveAuctionStartDate": before], error: Void())
 
@@ -121,8 +121,8 @@ class SaleViewModelTests: QuickSpec {
         }
 
         it("lets doesn't direct the user to the live interface for completed sales.") {
-            let before = NSDate().dateByAddingTimeInterval(-1650.9)
-            let end = NSDate().dateByAddingTimeInterval(-100)
+            let before = NSDate().addingTimeInterval(-1650.9)
+            let end = NSDate().addingTimeInterval(-100)
 
             let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast(), "endDate": end, "liveAuctionStartDate": before], error: Void())
 

@@ -37,7 +37,7 @@ class LiveAuctionFancyLotCollectionViewLayoutTests: QuickSpec {
             collectionView.backgroundColor = .whiteColor()
             container = UIView(frame: frame).then {
                 $0.addSubview(collectionView)
-                collectionView.alignToView($0)
+                collectionView.align(toView: $0)
             }
 
             collectionView.scrollRectToVisible(rect, animated: false)
@@ -57,7 +57,7 @@ class LiveAuctionFancyLotCollectionViewLayoutTests: QuickSpec {
 
                 container = UIView(frame: frame).then {
                     $0.addSubview(collectionView)
-                    collectionView.alignToView($0)
+                    collectionView.align(toView: $0)
                 }
 
                 collectionView.scrollRectToVisible(rect, animated: false)

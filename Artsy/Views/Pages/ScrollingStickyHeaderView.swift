@@ -24,9 +24,9 @@ class ScrollingStickyHeaderView: UIView {
 
     init() {
         button = ARWhiteFlatButton().then {
-            $0.titleLabel?.font = UIFont.sansSerifFontWithSize(12)
-            $0.setBorderColor(.artsyGrayRegular(), forState: .Normal)
-            $0.setBorderColor(UIColor.artsyGrayRegular().colorWithAlphaComponent(0.5), forState: .Disabled)
+            $0.titleLabel?.font = UIFont.sansSerifFont(withSize: 12)
+            $0.setBorderColor(.artsyGrayRegular(), for: .normal)
+            $0.setBorderColor(UIColor.artsyGrayRegular().withAlphaComponent(0.5), for: .disabled)
             $0.layer.borderWidth = 1
         }
 
@@ -43,49 +43,49 @@ class ScrollingStickyHeaderView: UIView {
 
         button.then {
             self.addSubview($0)
-            self.trailingConstraints = $0.alignTrailingEdgeWithView(self, predicate: "-20")
-            $0.alignBottomEdgeWithView(self, predicate: "-13")
+            self.trailingConstraints = $0.alignTrailingEdge(withView: self, predicate: "-20")
+            $0.alignBottomEdge(withView: self, predicate: "-13")
             $0.constrainHeight("30")
-            $0.ar_extendHitTestSizeByWidth(0, andHeight: 10)
+            $0.ar_extendHitTestSize(byWidth: 0, andHeight: 10)
             $0.constrainWidth("60")
         }
 
         titleLabel.then {
-            $0.textAlignment = .Center
-            $0.font = UIFont.sansSerifFontWithSize(14)
+            $0.textAlignment = .center
+            $0.font = UIFont.sansSerifFont(withSize: 14)
             self.addSubview($0)
-            $0.alignTopEdgeWithView(self, predicate: "4")
-            $0.alignCenterXWithView(self, predicate: "0")
-            $0.constrainWidthToView(self, predicate: "-128")
+            $0.alignTopEdge(withView: self, predicate: "4")
+            $0.alignCenterX(withView: self, predicate: "0")
+            $0.constrainWidth(toView: self, predicate: "-128")
             $0.constrainHeight("60")
         }
 
         subtitleScrollView.then {
-            $0.fadeAxis = .Horizontal
+            $0.fadeAxis = .horizontal
             $0.showsHorizontalScrollIndicator = false
             self.addSubview($0)
             $0.alignTop("0", bottom: "0", toView: self)
-            leadingConstraints = $0.alignLeadingEdgeWithView(self, predicate: "20")
-            $0.constrainTrailingSpaceToView(button, predicate: "-10")
+            leadingConstraints = $0.alignLeadingEdge(withView: self, predicate: "20")
+            $0.constrainTrailingSpace(toView: button, predicate: "-10")
         }
 
         subtitleLabel.then {
             subtitleScrollView.addSubview($0)
             $0.alignLeading("0", trailing: "0", toView: subtitleScrollView)
-            $0.alignBaselineWithView(button, predicate: "0")
+            $0.alignBaseline(withView: button, predicate: "0")
             $0.numberOfLines = 1
         }
 
         topSeparator.then {
             self.addSubview($0)
             $0.alignBottom("-55", trailing: "0", toView: self)
-            $0.constrainWidthToView(self, predicate: "0")
+            $0.constrainWidth(toView: self, predicate: "0")
 
         }
         bottomSeparator.then {
             self.addSubview($0)
             $0.alignBottom("0", trailing: "0", toView: self)
-            $0.constrainWidthToView(self, predicate: "0")
+            $0.constrainWidth(toView: self, predicate: "0")
         }
     }
 

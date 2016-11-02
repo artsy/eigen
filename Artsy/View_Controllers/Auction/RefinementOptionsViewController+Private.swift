@@ -17,17 +17,17 @@ extension RefinementOptionsViewController {
 
         // This isn't normally running inside a nav, so needs to create its own
         let titleLabel = ARSerifLabel().then {
-            $0.font = UIFont.serifFontWithSize(20)
+            $0.font = UIFont.serifFont(withSize: 20)
             $0.text = "Refine"
         }
         view.addSubview(titleLabel)
-        titleLabel.alignTopEdgeWithView(view, predicate: "20")
-        titleLabel.alignLeadingEdgeWithView(view, predicate: "20")
+        titleLabel.alignTopEdge(withView: view, predicate: "20")
+        titleLabel.alignLeadingEdge(withView: view, predicate: "20")
 
         // An expandable whitespace gobbler, so that the tableview can remain at the bottom
         let spacer = ARWhitespaceGobbler()
         view.addSubview(spacer)
-        spacer.alignTopEdgeWithView(titleLabel, predicate: "20")
+        spacer.alignTopEdge(withView: titleLabel, predicate: "20")
         spacer.constrainHeight(">=0 @1000")
         spacer.alignLeading("0", trailing: "0", toView: view)
 
@@ -94,19 +94,19 @@ private extension RefinementOptionsViewController {
 
 
         let tableView = UITableView().then {
-            $0.registerClass(RefinementOptionsTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+            $0.register(RefinementOptionsTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
             $0.separatorColor = .artsyGrayRegular()
             $0.separatorInset = UIEdgeInsetsMake(0, 20, 0, 20)
             $0.dataSource = tableViewHandler
             $0.delegate = tableViewHandler
 
-            let combinedRowCount = (0..<currentSettings.numberOfSections).map(currentSettings.numberOfRowsInSection).reduce(0, combine:+)
+            let combinedRowCount = (0..<currentSettings.numberOfSections).map(currentSettings.numberOfRowsInSection).reduce(0, +)
             let combinedTitleCount = Int(TableViewTitleHeight) * currentSettings.numberOfSections
 
             let tableViewHeight = combinedTitleCount + (44 * combinedRowCount) + Int(bottomHeight)
 
             // Only allow scrolling for large refine settings
-            if CGFloat(tableViewHeight) < (view.bounds.height - 200) { $0.scrollEnabled = false }
+            if CGFloat(tableViewHeight) < (view.bounds.height - 200) { $0.isScrollEnabled = false }
 
             // Constrain the height so that it becomes bottom aligned, do it weakly so that
             // it will bend when constrained to it's top constraint that says "don't go higher than the title"
@@ -134,7 +134,7 @@ private extension RefinementOptionsViewController {
             stackView.addSubview(subtitleLabel("Price"), withTopMargin: "20", sideMargin: "40")
 
             let priceExplainLabel = ARSerifLabel().then {
-                $0.font = UIFont.serifItalicFontWithSize(15)
+                $0.font = UIFont.serifItalicFont(withSize: 15)
                 $0.text = "Based on the low estimates of the works"
             }
             stackView.addSubview(priceExplainLabel, withTopMargin: "10", sideMargin: "40")
@@ -150,7 +150,7 @@ private extension RefinementOptionsViewController {
                 $0.trackImage = UIImage(named: "Track")
                 $0.rightThumbImage = UIImage(named: "Thumb")
                 $0.leftThumbImage = $0.rightThumbImage
-                $0.addTarget(self, action: #selector(RefinementOptionsViewController.sliderValueDidChange(_:)), forControlEvents: .ValueChanged)
+                $0.addTarget(self, action: #selector(RefinementOptionsViewController.sliderValueDidChange(_:)), for: .valueChanged)
 
                 $0.setMinValue(CGFloat(maxRange.min), maxValue: CGFloat(maxRange.max))
                 $0.setLeftValue(CGFloat(initialRange.min), rightValue: CGFloat(initialRange.max))
@@ -162,29 +162,29 @@ private extension RefinementOptionsViewController {
 
             // Max/min labels
             let minLabel = ARItalicsSerifLabel().then {
-                $0.font = UIFont.serifFontWithSize(15)
+                $0.font = UIFont.serifFont(withSize: 15)
                 return
             }
             labelContainer.addSubview(minLabel)
 
-            minLabel.alignCenterYWithView(labelContainer, predicate: "0") // Center vertically in container.
+            minLabel.alignCenterY(withView: labelContainer, predicate: "0") // Center vertically in container.
             let labelPriority = SliderPriorities.StayCenteredOverThumb.rawValue
-            minLabel.alignCenterXWithView(slider.leftThumbView, predicate: "0@\(labelPriority)")
+            minLabel.alignCenterX(withView: slider.leftThumbView, predicate: "0@\(labelPriority)")
 
-            minLabel.alignAttribute(.Leading, toAttribute: .Leading, ofView: labelContainer, predicate: ">= 0@\(SliderPriorities.StayWithinFrame.rawValue)")
+            minLabel.alignAttribute(.leading, to: .leading, ofView: labelContainer, predicate: ">= 0@\(SliderPriorities.StayWithinFrame.rawValue)")
 
             let maxLabel = ARItalicsSerifLabel().then {
-                $0.font = UIFont.serifFontWithSize(15)
+                $0.font = UIFont.serifFont(withSize: 15)
                 return
             }
             labelContainer.addSubview(maxLabel)
 
-            maxLabel.alignCenterYWithView(labelContainer, predicate: "0") // Center vertically in container.
-            maxLabel.alignCenterXWithView(slider.rightThumbView, predicate: "0@\(SliderPriorities.StayCenteredOverThumb.rawValue)")
-            maxLabel.alignAttribute(.Trailing, toAttribute: .Trailing, ofView: labelContainer, predicate: "<= 0@\(SliderPriorities.StayWithinFrame.rawValue)")
+            maxLabel.alignCenterY(withView: labelContainer, predicate: "0") // Center vertically in container.
+            maxLabel.alignCenterX(withView: slider.rightThumbView, predicate: "0@\(SliderPriorities.StayCenteredOverThumb.rawValue)")
+            maxLabel.alignAttribute(.trailing, to: .trailing, ofView: labelContainer, predicate: "<= 0@\(SliderPriorities.StayWithinFrame.rawValue)")
 
             // Make sure they don't touch! Shouldn't be necessary since they'll be 10% appart, but this is "just in case" make sure the labels never overlap.
-            minLabel.constrainTrailingSpaceToView(maxLabel, predicate: "<= -10@\(SliderPriorities.DoNotOverlap.rawValue)")
+            minLabel.constrainTrailingSpace(toView: maxLabel, predicate: "<= -10@\(SliderPriorities.DoNotOverlap.rawValue)")
 
             self.minLabel = minLabel
             self.maxLabel = maxLabel
@@ -199,29 +199,29 @@ private extension RefinementOptionsViewController {
 
     func bottomButtons() -> UIView {
         let applyButton = ARBlackFlatButton().then {
-            $0.enabled = false
-            $0.setTitle("Apply", forState: .Normal)
-            $0.addTarget(self, action: #selector(RefinementOptionsViewController.userDidPressApply), forControlEvents: .TouchUpInside)
+            $0.isEnabled = false
+            $0.setTitle("Apply", for: .normal)
+            $0.addTarget(self, action: #selector(RefinementOptionsViewController.userDidPressApply), for: .touchUpInside)
         }
 
         let resetButton = ARWhiteFlatButton().then {
-            $0.enabled = false
-            $0.setTitle("Reset", forState: .Normal)
-            $0.setBorderColor(.artsyGrayRegular(), forState: .Normal)
-            $0.setBorderColor(UIColor.artsyGrayRegular().colorWithAlphaComponent(0.5), forState: .Disabled)
+            $0.isEnabled = false
+            $0.setTitle("Reset", for: .normal)
+            $0.setBorderColor(.artsyGrayRegular(), for: .normal)
+            $0.setBorderColor(UIColor.artsyGrayRegular().withAlphaComponent(0.5), for: .disabled)
             $0.layer.borderWidth = 1
-            $0.addTarget(self, action: #selector(RefinementOptionsViewController.userDidPressReset), forControlEvents: .TouchUpInside)
+            $0.addTarget(self, action: #selector(RefinementOptionsViewController.userDidPressReset), for: .touchUpInside)
         }
 
         let buttonContainer = UIView()
         buttonContainer.addSubview(resetButton)
         buttonContainer.addSubview(applyButton)
 
-        UIView.alignTopAndBottomEdgesOfViews([resetButton, applyButton, buttonContainer])
-        resetButton.alignLeadingEdgeWithView(buttonContainer, predicate: "0")
-        resetButton.constrainTrailingSpaceToView(applyButton, predicate: "-20")
-        applyButton.alignTrailingEdgeWithView(buttonContainer, predicate: "0")
-        applyButton.constrainWidthToView(resetButton, predicate: "0")
+        UIView.alignTopAndBottomEdges(of: [resetButton, applyButton, buttonContainer])
+        resetButton.alignLeadingEdge(withView: buttonContainer, predicate: "0")
+        resetButton.constrainTrailingSpace(toView: applyButton, predicate: "-20")
+        applyButton.alignTrailingEdge(withView: buttonContainer, predicate: "0")
+        applyButton.constrainWidth(toView: resetButton, predicate: "0")
 
         self.applyButton = applyButton
         self.resetButton = resetButton

@@ -18,7 +18,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
         var fakeSalesPerson: Stub_LiveAuctionsSalesPerson!
 
         beforeEach {
-            OHHTTPStubs.stubJSONResponseAtPath("/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[:])
+            OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[:])
 
             auctionViewModel = Test_LiveAuctionViewModel()
             fakeSalesPerson = stub_auctionSalesPerson(auctionViewModel)

@@ -20,7 +20,7 @@ class AuctionSaleNetworkModel: AuctionSaleNetworkModelType {
                 observable.update(.Success(sale))
             },
             failure: { error in
-                observable.update(.Error(error as ErrorType))
+                observable.update(.Error(error as Error))
             })
 
         return observable

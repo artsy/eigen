@@ -40,14 +40,14 @@ class AuctionViewControllerTests: QuickSpec {
         var saleViewModel: Test_SaleViewModel!
         var dateMock: OCMockObject!
 
-        sharedExamples("auctions view controller registration status") { (context: SharedExampleContext) in
+        sharedExamples("auctions view controller registration status") { (context: @escaping SharedExampleContext) in
             var horizontalSizeClass: UIUserInterfaceSizeClass!
             var device: ARDeviceType!
 
             beforeEach {
                 let now = NSDate()
-                let endTime = now.dateByAddingTimeInterval(3600.9) // 0.9 is to cover the possibility a clock tick happens between this line and the next.
-                dateMock = ARTestContext.freezeTime(now)
+                let endTime = now.addingTimeInterval(3600.9) // 0.9 is to cover the possibility a clock tick happens between this line and the next.
+                dateMock = ARTestContext.freezeTime(now as Date!)
 
                 sale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "The 🎉 Sale", "endDate": endTime], error: Void())
                 saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
@@ -77,13 +77,13 @@ class AuctionViewControllerTests: QuickSpec {
                 let networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
                 subject.networkModel = networkModel
 
-                ARTestContext.useDevice(device) {
+                ARTestContext.use(device) {
                     // Must load view within context of device, since the iPad-specific layout will cause a throw exception on iPhone.
                     subject.stubHorizontalSizeClass(horizontalSizeClass)
                     subject.loadViewProgrammatically()
 
                     saleViewModel.stubbedAuctionState.insert(.UserIsRegistered)
-                    NSNotificationCenter.defaultCenter().postNotificationName(ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
+                    NotificationCenter.defaultCenter().postNotificationName(ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
 
                     expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                 }
@@ -130,7 +130,7 @@ class AuctionViewControllerTests: QuickSpec {
                 subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, bidders: [qualifiedBidder])
 
                 // Need to use the device when stubbing to use proper screen size.
-                ARTestContext.useDevice(device) {
+                ARTestContext.use(device) {
                     subject.stubHorizontalSizeClass(horizontalSizeClass)
                     subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                     subject.refineSettings = subject.defaultRefineSettings().refineSettingsWithSelectedIndexPath(NSIndexPath.init(forRow: 1, inSection: 0))
@@ -146,7 +146,7 @@ class AuctionViewControllerTests: QuickSpec {
                 subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, bidders: [qualifiedBidder])
 
                 // Need to use the device when stubbing to use proper screen size.
-                ARTestContext.useDevice(device) {
+                ARTestContext.use(device) {
                     subject.stubHorizontalSizeClass(horizontalSizeClass)
                     subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                     subject.refineSettings = subject.defaultRefineSettings().refineSettingsWithPriceRange((min: 1000, max: 1000_000))
@@ -162,7 +162,7 @@ class AuctionViewControllerTests: QuickSpec {
                 subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, bidders: [qualifiedBidder])
 
                 // Need to use the device when stubbing to use proper screen size.
-                ARTestContext.useDevice(device) {
+                ARTestContext.use(device) {
                     subject.stubHorizontalSizeClass(horizontalSizeClass)
                     subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                     subject.refineSettings = subject.defaultRefineSettings().refineSettingsWithSelectedIndexPath(NSIndexPath(forRow: 1, inSection: 0)).refineSettingsWithPriceRange((min: 1000_000, max: 1000_000_000_000))
@@ -191,7 +191,7 @@ class AuctionViewControllerTests: QuickSpec {
 
                 it("looks good with a changed number of refined lots") {
                     // Need to use the device when stubbing to use proper screen size.
-                    ARTestContext.useDevice(device) {
+                    ARTestContext.use(device) {
                         subject.stubHorizontalSizeClass(horizontalSizeClass)
                         subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                         subject.refineSettings = subject.defaultRefineSettings().refineSettingsWithPriceRange((min: 2_000_00, max: 3_000_00)) // Outside the sale artworks' estimates.
@@ -201,7 +201,7 @@ class AuctionViewControllerTests: QuickSpec {
 
                 it("sorts by lot number") {
                     // Need to use the device when stubbing to use proper screen size.
-                    ARTestContext.useDevice(device) {
+                    ARTestContext.use(device) {
                         subject.stubHorizontalSizeClass(horizontalSizeClass)
                         subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                         subject.refineSettings = subject.defaultRefineSettings().refineSettingsWithSelectedIndexPath(NSIndexPath.init(forRow: 0, inSection: 0))
@@ -211,7 +211,7 @@ class AuctionViewControllerTests: QuickSpec {
 
                 it("sorts by artist name") {
                     // Need to use the device when stubbing to use proper screen size.
-                    ARTestContext.useDevice(device) {
+                    ARTestContext.use(device) {
                         subject.stubHorizontalSizeClass(horizontalSizeClass)
                         subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                         subject.refineSettings = subject.defaultRefineSettings().refineSettingsWithSelectedIndexPath(NSIndexPath.init(forRow: 1, inSection: 0))
@@ -221,7 +221,7 @@ class AuctionViewControllerTests: QuickSpec {
 
                 it("sorts by most bids") {
                     // Need to use the device when stubbing to use proper screen size.
-                    ARTestContext.useDevice(device) {
+                    ARTestContext.use(device) {
                         subject.stubHorizontalSizeClass(horizontalSizeClass)
                         subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                         subject.refineSettings = subject.defaultRefineSettings().refineSettingsWithSelectedIndexPath(NSIndexPath.init(forRow: 3, inSection: 0))
@@ -231,7 +231,7 @@ class AuctionViewControllerTests: QuickSpec {
 
                 it("sorts by least bids") {
                     // Need to use the device when stubbing to use proper screen size.
-                    ARTestContext.useDevice(device) {
+                    ARTestContext.use(device) {
                         subject.stubHorizontalSizeClass(horizontalSizeClass)
                         subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                         subject.refineSettings = subject.defaultRefineSettings().refineSettingsWithSelectedIndexPath(NSIndexPath.init(forRow: 2, inSection: 0))
@@ -241,7 +241,7 @@ class AuctionViewControllerTests: QuickSpec {
 
                 it("sorts by highest bid") {
                     // Need to use the device when stubbing to use proper screen size.
-                    ARTestContext.useDevice(device) {
+                    ARTestContext.use(device) {
                         subject.stubHorizontalSizeClass(horizontalSizeClass)
                         subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                         subject.refineSettings = subject.defaultRefineSettings().refineSettingsWithSelectedIndexPath(NSIndexPath.init(forRow: 4, inSection: 0))
@@ -251,7 +251,7 @@ class AuctionViewControllerTests: QuickSpec {
 
                 it("sorts by lowest bid") {
                     // Need to use the device when stubbing to use proper screen size.
-                    ARTestContext.useDevice(device) {
+                    ARTestContext.use(device) {
                         subject.stubHorizontalSizeClass(horizontalSizeClass)
                         subject.loadViewProgrammatically() // We need to load the view so it has a view model before calling defaultRefineSettings()
                         subject.refineSettings = subject.defaultRefineSettings().refineSettingsWithSelectedIndexPath(NSIndexPath.init(forRow: 5, inSection: 0))
@@ -264,19 +264,19 @@ class AuctionViewControllerTests: QuickSpec {
 
         describe("regular horizontal size class ") {
             itBehavesLike("auctions view controller registration status") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.Regular.rawValue, "device": ARDeviceType.Pad.rawValue] as NSDictionary
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.regular.rawValue, "device": ARDeviceType.pad.rawValue] as NSDictionary
             }
         }
 
         describe("compact horizontal size class") {
             itBehavesLike("auctions view controller registration status") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.Compact.rawValue, "device": ARDeviceType.Phone6.rawValue] as NSDictionary
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.compact.rawValue, "device": ARDeviceType.phone6.rawValue] as NSDictionary
             }
         }
 
 
         it("handles showing information for upcoming auctions with no sale artworks") {
-            let exact_now = ISO8601DateFormatter().dateFromString("2025-11-24T10:00:00+00:00")!
+            let exact_now = ISO8601DateFormatter().date(from: "2025-11-24T10:00:00+00:00")!
             let start = exact_now.dateByAddingTimeInterval(3600.9)
             let end = exact_now.dateByAddingTimeInterval(3700.9)
 
@@ -296,7 +296,7 @@ class AuctionViewControllerTests: QuickSpec {
         }
 
         it("handles showing information for upcoming auctions with long names with no sale artworks") {
-            let exact_now = ISO8601DateFormatter().dateFromString("2025-11-24T10:00:00+00:00")!
+            let exact_now = ISO8601DateFormatter().date(from: "2025-11-24T10:00:00+00:00")!
             let start = exact_now.dateByAddingTimeInterval(3600.9)
             let end = exact_now.dateByAddingTimeInterval(3700.9)
 
@@ -316,7 +316,7 @@ class AuctionViewControllerTests: QuickSpec {
         }
 
         it("looking correct when an auction is closed") {
-            let exact_now_past = ISO8601DateFormatter().dateFromString("2015-11-24T10:00:00+00:00")!
+            let exact_now_past = ISO8601DateFormatter().date(from: "2015-11-24T10:00:00+00:00")!
             let start = exact_now_past.dateByAddingTimeInterval(3600.9)
             let end = exact_now_past.dateByAddingTimeInterval(3700.9)
 
@@ -334,7 +334,7 @@ class AuctionViewControllerTests: QuickSpec {
         }
 
         it("uses the correct settings when auction is closed") {
-            let exact_now_past = ISO8601DateFormatter().dateFromString("2015-11-24T10:00:00+00:00")!
+            let exact_now_past = ISO8601DateFormatter().date(from: "2015-11-24T10:00:00+00:00")!
             let start = exact_now_past.dateByAddingTimeInterval(3600.9)
             let end = exact_now_past.dateByAddingTimeInterval(3700.9)
 
@@ -353,7 +353,7 @@ class AuctionViewControllerTests: QuickSpec {
         }
 
         it("uses the correct settings when auction is open") {
-            let exact_now = ISO8601DateFormatter().dateFromString("2025-11-24T10:00:00+00:00")!
+            let exact_now = ISO8601DateFormatter().date(from: "2025-11-24T10:00:00+00:00")!
             let start = exact_now.dateByAddingTimeInterval(3600.9)
             let end = exact_now.dateByAddingTimeInterval(3700.9)
 
@@ -374,7 +374,7 @@ class AuctionViewControllerTests: QuickSpec {
         }
 
         it("shows a message about an upcoming live auction") {
-            let exact_now = ISO8601DateFormatter().dateFromString("2025-11-24T10:00:00+00:00")!
+            let exact_now = ISO8601DateFormatter().date(from: "2025-11-24T10:00:00+00:00")!
             let start = exact_now.dateByAddingTimeInterval(-3600.9)
             let liveStart = exact_now.dateByAddingTimeInterval(1650.9)
             let end = exact_now.dateByAddingTimeInterval(3700.9)
@@ -396,10 +396,10 @@ class AuctionViewControllerTests: QuickSpec {
 
         it("wraps auction name correctly") {
             let now = NSDate()
-            let start = now.dateByAddingTimeInterval(-3600.9)
-            let end = now.dateByAddingTimeInterval(3600.9) // 0.9 is to cover the possibility a clock tick happens between this line and the next.
+            let start = now.addingTimeInterval(-3600.9)
+            let end = now.addingTimeInterval(3600.9) // 0.9 is to cover the possibility a clock tick happens between this line and the next.
 
-            freezeTime(now) {
+            freezeTime(now as Date) {
                 sale = try! Sale(dictionary: [
                     "saleID": "the-testing-sale",
                     "name": "Ash Furrow Auctions: Nerds Collect Art",

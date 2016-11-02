@@ -11,7 +11,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
         let stubbedJWT = StubbedCredentials.Registered.jwt
 
         beforeEach {
-            OHHTTPStubs.stubJSONResponseForHost("metaphysics*.artsy.net", withResponse: [:])
+            OHHTTPStubs.stubJSONResponse(forHost: "metaphysics*.artsy.net", withResponse: [:])
             // Not sure why ^ is needed, might be worth looking
 
             sale = testLiveSale()
@@ -33,21 +33,21 @@ class LiveAuctionStateManagerSpec: QuickSpec {
 
         it("invokes the state reconciler when new snapshot data avaialble") {
             let state = ["hi there!"]
-            mostRecentSocketCommunicator?.updatedAuctionState.update(state)
+            mostRecentSocketCommunicator?.updatedAuctionState.update(state as AnyObject)
 
             expect(mostRecentStateReconciler?.mostRecentState as? [String]) == state
         }
 
         it("invokes current lot updates") {
             let currentLot = ["hi there!"]
-            mostRecentSocketCommunicator?.currentLotUpdate.update(currentLot)
+            mostRecentSocketCommunicator?.currentLotUpdate.update(currentLot as AnyObject)
 
             expect(mostRecentStateReconciler?.mostRecentCurrentLotUpdate as? [String]) == currentLot
         }
 
         it("invokes lot event updates") {
             let lotEvent = ["hi there!"]
-            mostRecentSocketCommunicator?.lotUpdateBroadcasts.update(lotEvent)
+            mostRecentSocketCommunicator?.lotUpdateBroadcasts.update(lotEvent as AnyObject)
 
             expect(mostRecentStateReconciler?.mostRecentEventBroadcast as? [String]) == lotEvent
         }

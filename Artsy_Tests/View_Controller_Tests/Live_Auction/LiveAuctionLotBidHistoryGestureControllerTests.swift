@@ -38,7 +38,7 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
         it("disables the gesture recognizer when disabled itself") {
             subject.enabled = false
 
-            expect(gestureRecognizer.enabled) == false
+            expect(gestureRecognizer.isEnabled) == false
         }
 
         it("enables the gesture recognizer when enabled itself") {
@@ -46,7 +46,7 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
 
             subject.enabled = true
 
-            expect(gestureRecognizer.enabled) == true
+            expect(gestureRecognizer.isEnabled) == true
         }
 
         describe("opening") {
@@ -55,7 +55,7 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                 beginning = { initialState in
                     receivedInitialState = initialState
                 }
-                gestureRecognizer.testing_state = .Began
+                gestureRecognizer.testing_state = .began
 
                 gestureRecognizer.invoke()
 
@@ -63,7 +63,7 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
             }
 
             it("sets its state to open during the opening") {
-                gestureRecognizer.testing_state = .Began
+                gestureRecognizer.testing_state = .began
 
                 gestureRecognizer.invoke()
 
@@ -76,7 +76,7 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                     receivedDelta = delta
                 }
                 gestureRecognizer.testing_translation = CGPoint(x: 0, y: -5)
-                gestureRecognizer.testing_state = .Changed
+                gestureRecognizer.testing_state = .changed
 
                 gestureRecognizer.invoke()
 
@@ -89,7 +89,7 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                     receivedTargetState = targetState
                 }
                 gestureRecognizer.testing_velocity = CGPoint(x: 0, y: 5)
-                gestureRecognizer.testing_state = .Ended
+                gestureRecognizer.testing_state = .ended
 
                 gestureRecognizer.invoke()
 
@@ -102,7 +102,7 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                     receivedTargetState = targetState
                 }
                 gestureRecognizer.testing_velocity = CGPoint(x: 0, y: -5)
-                gestureRecognizer.testing_state = .Ended
+                gestureRecognizer.testing_state = .ended
 
                 gestureRecognizer.invoke()
 
@@ -113,7 +113,7 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                 gestureRecognizer.state = .Began
                 gestureRecognizer.invoke()
 
-                gestureRecognizer.testing_state = .Ended
+                gestureRecognizer.testing_state = .ended
                 gestureRecognizer.testing_velocity = CGPoint(x: 0, y: -5)
                 gestureRecognizer.invoke()
 
@@ -124,10 +124,10 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
         describe("closing") {
             beforeEach {
                 // "Open" the controller.
-                gestureRecognizer.testing_state = .Began
+                gestureRecognizer.testing_state = .began
                 gestureRecognizer.invoke()
                 gestureRecognizer.testing_velocity = CGPoint(x: 0, y: -5)
-                gestureRecognizer.testing_state = .Ended
+                gestureRecognizer.testing_state = .ended
                 gestureRecognizer.invoke()
             }
 
@@ -136,7 +136,7 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                 beginning = { initialState in
                     receivedInitialState = initialState
                 }
-                gestureRecognizer.testing_state = .Began
+                gestureRecognizer.testing_state = .began
 
                 gestureRecognizer.invoke()
 
@@ -149,7 +149,7 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                     receivedTargetState = targetState
                 }
                 gestureRecognizer.testing_velocity = CGPoint(x: 0, y: -5)
-                gestureRecognizer.testing_state = .Ended
+                gestureRecognizer.testing_state = .ended
 
                 gestureRecognizer.invoke()
 
@@ -162,7 +162,7 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                     receivedTargetState = targetState
                 }
                 gestureRecognizer.testing_velocity = CGPoint(x: 0, y: 5)
-                gestureRecognizer.testing_state = .Ended
+                gestureRecognizer.testing_state = .ended
 
                 gestureRecognizer.invoke()
 

@@ -21,7 +21,7 @@ class LiveAuctionLotCollectionViewDataSource: NSObject {
 
     func beginThumnailPrecache() {
         let thumnailURLs = (1..<salesPerson.lotCount).map { return salesPerson.lotViewModelForIndex($0).urlForThumbnail }
-        imagePrefetcher.prefetchURLs(thumnailURLs)
+        imagePrefetcher?.prefetchURLs(thumnailURLs)
     }
 
     fileprivate func offsetForIndex(_ index: Int) -> Int {

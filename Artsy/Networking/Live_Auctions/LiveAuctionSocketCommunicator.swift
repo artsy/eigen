@@ -128,22 +128,22 @@ private extension SocketSetup {
         switch socketEventType {
 
         case "InitialFullSaleState":
-            updatedAuctionState.update(json)
+            updatedAuctionState.update(json as AnyObject)
 
         case "LotUpdateBroadcast":
-            lotUpdateBroadcasts.update(json)
+            lotUpdateBroadcasts.update(json as AnyObject)
 
         case "OperationFailedEvent": break
             // TODO: Handle op failure
 
         case "OperatorConnectedBroadcast":
-            operatorConnectedSignal.update(json)
+            operatorConnectedSignal.update(json as AnyObject)
 
         case "CommandSuccessful", "CommandFailed", "PostEventResponse":
-            postEventResponses.update(json)
+            postEventResponses.update(json as AnyObject)
 
         case "SaleLotChangeBroadcast":
-            currentLotUpdate.update(json)
+            currentLotUpdate.update(json as AnyObject)
 
         case "SaleNotFound": break
             // TODO: Handle this (?)

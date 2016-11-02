@@ -10,8 +10,8 @@ import Artsy
 
 class AuctionInformationViewControllerSpec: QuickSpec {
     override func spec() {
-        let start = ISO8601DateFormatter().date(from: "2016-02-18T10:00:00+00:00")!
-        let end = ISO8601DateFormatter().date(from: "2025-02-18T23:59:00+00:00")!
+        let start = ISO8601DateFormatter.ISO8601DateFormatter().date(from: "2016-02-18T10:00:00+00:00")!
+        let end = ISO8601DateFormatter.ISO8601DateFormatter().date(from: "2025-02-18T23:59:00+00:00")!
         let description = "On Thursday, November 12, Swiss Institute will host their Annual Benefit Dinner & Auction–the most important fundraising event of the year–with proceeds going directly towards supporting their innovative exhibitions and programs. Since 1986, Swiss Institute has been dedicated to promoting forward-thinking and experimental art."
         let sale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": start, "endDate": end ], error: Void())
         let saleViewModel = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])

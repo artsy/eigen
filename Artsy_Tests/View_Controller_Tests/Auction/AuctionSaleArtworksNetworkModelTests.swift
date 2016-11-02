@@ -20,7 +20,7 @@ class AuctionSaleArtworksNetworkModelSpec: QuickSpec {
         }
 
         it("returns fetches the sale artworks") {
-            OHHTTPStubs.stubJSONResponseAtPath("/api/v1/sale/\(saleID)/sale_artworks", withResponse: saleArtworksJSON)
+            OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/\(saleID)/sale_artworks", withResponse: saleArtworksJSON)
 
             var saleArtworks: [SaleArtwork]?
             waitUntil { done in
@@ -34,7 +34,7 @@ class AuctionSaleArtworksNetworkModelSpec: QuickSpec {
         }
 
         it("caches the fetched sale artworks") {
-            OHHTTPStubs.stubJSONResponseAtPath("/api/v1/sale/\(saleID)/sale_artworks", withResponse: saleArtworksJSON)
+            OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/\(saleID)/sale_artworks", withResponse: saleArtworksJSON)
 
             waitUntil { done in
                 subject.fetchSaleArtworks(saleID).subscribe { result in

@@ -162,9 +162,9 @@ extension AuctionViewController {
 
         stickyHeader = ScrollingStickyHeaderView().then {
             $0.toggleAttatched(false, animated:false)
-            $0.button.setTitle("Refine", forState: .Normal)
+            $0.button.setTitle("Refine", for: .normal)
             $0.titleLabel.text = saleViewModel.displayName
-            $0.button.addTarget(self, action: #selector(AuctionViewController.showRefineTapped), forControlEvents: .TouchUpInside)
+            $0.button.addTarget(self, action: #selector(AuctionViewController.showRefineTapped), for: .touchUpInside)
         }
 
         saleArtworksViewController.stickyHeaderView = stickyHeader
@@ -252,7 +252,7 @@ extension AuctionViewController {
     }
 }
 
-private typealias NotificationCenterObservers = AuctionViewController
+fileprivate typealias NotificationCenterObservers = AuctionViewController
 extension NotificationCenterObservers {
     func registrationUpdated(_ notification: Notification) {
         networkModel.fetchBidders().next { [weak self] bidders in
@@ -262,7 +262,7 @@ extension NotificationCenterObservers {
     }
 }
 
-private typealias TitleCallbacks = AuctionViewController
+fileprivate typealias TitleCallbacks = AuctionViewController
 extension TitleCallbacks: AuctionTitleViewDelegate {
     func userDidPressInfo(_ titleView: AuctionTitleView) {
         let auctionInforVC = AuctionInformationViewController(saleViewModel: saleViewModel)
@@ -286,7 +286,7 @@ extension TitleCallbacks: AuctionTitleViewDelegate {
     }
 }
 
-private typealias EmbeddedModelCallbacks = AuctionViewController
+fileprivate typealias EmbeddedModelCallbacks = AuctionViewController
 extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
     func embeddedModelsViewController(_ controller: AREmbeddedModelsViewController!, didTapItemAt index: UInt) {
         let artworks = saleArtworksViewController.items.map { Artwork(artworkID: $0.artworkID) }

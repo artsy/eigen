@@ -66,7 +66,7 @@ class LiveAuctionStateManager: NSObject {
 
             let json = JSON(response)
             let bidUUID = json["key"].stringValue
-            let biddingViewModel = self?.biddingStates.removeValueForKey(bidUUID)
+            let biddingViewModel = self?.biddingStates.removeValue(forKey: bidUUID)
 //            So far this event isn't needed anywhere, but keeping for prosperities sake
 //            let eventJSON = json["event"].dictionaryObject
 //            let liveEvent = LiveEvent(JSON: eventJSON)

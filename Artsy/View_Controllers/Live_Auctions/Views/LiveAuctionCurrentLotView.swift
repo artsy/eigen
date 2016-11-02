@@ -16,16 +16,16 @@ class LiveAuctionCurrentLotView: UIButton {
         backgroundColor = .artsyPurpleRegular()
 
         let liveLotLabel = ARSansSerifLabel()
-        liveLotLabel.font = .sansSerifFontWithSize(12)
+        liveLotLabel.font = .sansSerifFont(withSize: 12)
         liveLotLabel.text = "Live Lot"
 
         let artistNameLabel = UILabel()
-        artistNameLabel.font = .serifSemiBoldFontWithSize(16)
+        artistNameLabel.font = .serifSemiBoldFont(withSize: 16)
 
         let biddingPriceLabel = ARSansSerifLabel()
-        biddingPriceLabel.font = .sansSerifFontWithSize(16)
-        biddingPriceLabel.textAlignment = .Right
-        biddingPriceLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, forAxis: .Horizontal)
+        biddingPriceLabel.font = .sansSerifFont(withSize: 16)
+        biddingPriceLabel.textAlignment = .right
+        biddingPriceLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, for: .horizontal)
 
         let hammerView = UIImageView(image: UIImage(asset: .Lot_bidder_hammer_white))
         let thumbnailView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
@@ -40,33 +40,33 @@ class LiveAuctionCurrentLotView: UIButton {
 
         // Left Side
 
-        thumbnailView.alignLeadingEdgeWithView(self, predicate: "10")
+        thumbnailView.alignLeadingEdge(withView: self, predicate: "10")
         thumbnailView.constrainWidth("38", height: "38")
-        thumbnailView.alignCenterYWithView(self, predicate: "0")
+        thumbnailView.alignCenterY(withView: self, predicate: "0")
 
-        liveLotLabel.constrainLeadingSpaceToView(thumbnailView, predicate: "10")
-        liveLotLabel.alignTopEdgeWithView(self, predicate: "10")
-        liveLotLabel.constrainTrailingSpaceToView(biddingPriceLabel, predicate: "-10")
+        liveLotLabel.constrainLeadingSpace(toView: thumbnailView, predicate: "10")
+        liveLotLabel.alignTopEdge(withView: self, predicate: "10")
+        liveLotLabel.constrainTrailingSpace(toView: biddingPriceLabel, predicate: "-10")
 
-        artistNameLabel.constrainLeadingSpaceToView(thumbnailView, predicate: "10")
-        artistNameLabel.alignBottomEdgeWithView(self, predicate: "-10")
-        artistNameLabel.constrainTrailingSpaceToView(biddingPriceLabel, predicate: "-10")
+        artistNameLabel.constrainLeadingSpace(toView: thumbnailView, predicate: "10")
+        artistNameLabel.alignBottomEdge(withView: self, predicate: "-10")
+        artistNameLabel.constrainTrailingSpace(toView: biddingPriceLabel, predicate: "-10")
 
         // Right side
 
-        hammerView.alignTrailingEdgeWithView(self, predicate: "-10")
+        hammerView.alignTrailingEdge(withView: self, predicate: "-10")
         hammerView.constrainWidth("32", height: "32")
-        hammerView.alignCenterYWithView(self, predicate: "0")
+        hammerView.alignCenterY(withView: self, predicate: "0")
 
-        biddingPriceLabel.alignAttribute(.Trailing, toAttribute: .Leading, ofView: hammerView, predicate: "-12")
-        biddingPriceLabel.alignCenterYWithView(self, predicate: "0")
+        biddingPriceLabel.alignAttribute(.trailing, to: .leading, ofView: hammerView, predicate: "-12")
+        biddingPriceLabel.alignCenterY(withView: self, predicate: "0")
 
         viewModel.subscribe { [weak artistNameLabel, weak biddingPriceLabel, weak thumbnailView, weak self] vm in
             guard let vm = vm else { return }
 
             artistNameLabel?.text = vm.lotArtist
             biddingPriceLabel?.text = self?.salesPerson.currentLotValueString(vm) ?? ""
-            thumbnailView?.ar_setImageWithURL(vm.urlForThumbnail)
+            thumbnailView?.ar_setImage(with: vm.urlForThumbnail)
         }
     }
 

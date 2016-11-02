@@ -62,7 +62,7 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
     init(sale: LiveSale,
          jwt: JWT,
          biddingCredentials: BiddingCredentials,
-         defaults: UserDefaults = NSUserDefaults.standardUserDefaults(),
+         defaults: UserDefaults = UserDefaults.standard,
          stateManagerCreator: StateManagerCreator = LiveAuctionsSalesPerson.defaultStateManagerCreator(),
          auctionViewModelCreator: AuctionViewModelCreator = LiveAuctionsSalesPerson.defaultAuctionViewModelCreator()) {
 
@@ -74,7 +74,7 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
         let host = useBidderServer ? ARRouter.baseBidderCausalitySocketURLString() : ARRouter.baseObserverCausalitySocketURLString()
 
         self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderCredentials: biddingCredentials)
-        self.auctionViewModel = auctionViewModelCreator(sale: sale, currentLotSignal: stateManager.currentLotSignal, biddingCredentials: biddingCredentials)
+        self.auctionViewModel = auctionViewModelCreator(sale, stateManager.currentLotSignal, biddingCredentials)
     }
 
     lazy var bidIncrements: [BidIncrementStrategy] = { [weak self] in

@@ -13,7 +13,7 @@ class AuctionSaleNetworkModelSpec: QuickSpec {
         let saleJSON: NSDictionary = ["id": saleID]
 
         it("returns fetches the sale") {
-            OHHTTPStubs.stubJSONResponseAtPath("/api/v1/sale/\(saleID)", withResponse: saleJSON)
+            OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/\(saleID)", withResponse: saleJSON)
 
             let subject = AuctionSaleNetworkModel()
 
@@ -29,7 +29,7 @@ class AuctionSaleNetworkModelSpec: QuickSpec {
         }
 
         it("caches the fetched sale") {
-            OHHTTPStubs.stubJSONResponseAtPath("/api/v1/sale/\(saleID)", withResponse: saleJSON)
+            OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/\(saleID)", withResponse: saleJSON)
 
             let subject = AuctionSaleNetworkModel()
 

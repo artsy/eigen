@@ -12,13 +12,13 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
         var subject: LiveAuctionPlaceMaxBidViewController!
 
         beforeEach {
-            OHHTTPStubs.stubJSONResponseForHost("metaphysics*.artsy.net", withResponse: [:])
+            OHHTTPStubs.stubJSONResponse(forHost: "metaphysics*.artsy.net", withResponse: [:])
         }
 
         it("looks right on phones") {
-            let devices: [ARDeviceType] = [.Phone4, .Phone6]
+            let devices: [ARDeviceType] = [.phone4, .phone6]
             for device in devices {
-                ARTestContext.useDevice(device) {
+                ARTestContext.use(device) {
                     subject = StoryboardScene.LiveAuctions.instantiateBid()
 
                     let fakeSalesPerson = stub_auctionSalesPerson()

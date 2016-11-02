@@ -57,7 +57,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         }
 
         lotImageCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout).then {
-            $0.registerClass(LiveAuctionLotCollectionViewDataSource.CellClass, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
+            $0.register(LiveAuctionLotCollectionViewDataSource.CellClass, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
             $0.dataSource = dataSource
             $0.backgroundColor = .whiteColor()
         }
@@ -193,7 +193,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         info?.isEnabled = false
         saleNetworkModel.fetchSale(salesPerson.liveSaleID)
             .merge(biddersNetworkModel.fetchBiddersForSale(salesPerson.liveSaleID))
-            .subscribe { _ in info.enabled = true }
+            .subscribe { _ in info?.isEnabled = true }
 
         let lots = ARSerifToolbarButtonItem(image: UIImage(asset: .Lots_icon))
         lots?.accessibilityLabel = "Show all Lots"
@@ -227,7 +227,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         lotListController.selectedIndex = salesPerson.currentFocusedLotIndex.peek()
 
         let navController = ARSerifNavigationViewController(rootViewController: lotListController)
-        presentViewController(navController, animated: true, completion: nil)
+        present(navController, animated: true, completion: nil)
     }
 
     func setupWithInitialData() {

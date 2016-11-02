@@ -90,20 +90,20 @@ private extension AuctionTitleView {
 
         let titleLabel = ARSerifLabel().then {
             $0.text = self.viewModel.displayName
-            $0.font = UIFont.serifFontWithSize(regularSize ? 30 : 20)
+            $0.font = UIFont.serifFont(withSize: regularSize ? 30 : 20)
         }
         container.addSubview(titleLabel)
 
         if fullWidth {
             titleLabel.alignTop("0", bottom: "0", toView: container)
-            titleLabel.alignLeadingEdgeWithView(container, predicate: "0")
+            titleLabel.alignLeadingEdge(withView: container, predicate: "0")
 
             // If we're showing the info button, we'll anchor trailing space to that later, but if not, we need to anchor to the container.
             if showAdditionalInformation == false {
-                titleLabel.alignTrailingEdgeWithView(container, predicate: "0")
+                titleLabel.alignTrailingEdge(withView: container, predicate: "0")
             }
         } else {
-            titleLabel.alignCenterXWithView(container, predicate: "0")
+            titleLabel.alignCenterX(withView: container, predicate: "0")
         }
 
         if showAdditionalInformation {
@@ -112,15 +112,15 @@ private extension AuctionTitleView {
             container.addSubview(infoButton)
 
             // Vertically align both label and button
-            infoButton.alignCenterYWithView(titleLabel, predicate: "0")
+            infoButton.alignCenterY(withView: titleLabel, predicate: "0")
 
             // Info button always on right edge
             infoButton.alignTrailingEdge(withView: container, predicate: "0")
             infoButton.alignTop("0", bottom: "0", toView: container)
 
             // Ensure button doesn't overlap with title
-            titleLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Horizontal)
-            infoButton.constrainLeadingSpaceToView(titleLabel, predicate: ">= \(regularSize ? 20 : 30)@400")
+            titleLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
+            infoButton.constrainLeadingSpace(toView: titleLabel, predicate: ">= \(regularSize ? 20 : 30)@400")
         } else {
             container.alignTop("0", bottom: "0", toView: titleLabel)
         }
@@ -142,14 +142,14 @@ private extension AuctionTitleView {
         if viewModel.auctionState.contains(.userIsRegistered) {
             let registeredToBidLabel = ARSerifLabel().then {
                 $0.text = "Approved to Bid"
-                $0.font = UIFont.serifFontWithSize(16)
-                $0.textAlignment = fullWidth ? .Left : .Center
+                $0.font = UIFont.serifFont(withSize: 16)
+                $0.textAlignment = fullWidth ? .left : .center
 
                 $0.textColor = .auctionGreen()
             }
             container.addSubview(registeredToBidLabel)
 
-            registeredToBidLabel.alignToView(container)
+            registeredToBidLabel.align(toView: container)
         } else {
             let registerView = self.registerView()
             container.addSubview(registerView)
@@ -165,27 +165,27 @@ private extension AuctionTitleView {
         let container = UIView()
 
         let registerButton = ARBidButton().then {
-            $0.setTitle("Register to Bid", forState: .Normal)
-            $0.addTarget(self, action: #selector(AuctionTitleView.userDidPressRegister), forControlEvents: .TouchUpInside)
+            $0.setTitle("Register to Bid", for: .normal)
+            $0.addTarget(self, action: #selector(AuctionTitleView.userDidPressRegister), for: .touchUpInside)
             $0.setAuctionState(viewModel.auctionState, animated: false)
         }
         container.addSubview(registerButton)
 
         let registrationLabel = ARSerifLabel().then {
             $0.text = "Registration required to bid"
-            $0.font = UIFont.serifFontWithSize(16)
+            $0.font = UIFont.serifFont(withSize: 16)
             $0.textColor = .artsyGraySemibold()
         }
         container.addSubview(registrationLabel)
 
         // Centre both horizontally
-        registerButton.alignCenterXWithView(container, predicate: "0")
-        registrationLabel.alignCenterXWithView(container, predicate: "0")
+        registerButton.alignCenterX(withView: container, predicate: "0")
+        registrationLabel.alignCenterX(withView: container, predicate: "0")
 
         // Stack the register button on top of the label, and constrain them to the container.
-        registerButton.alignTopEdgeWithView(container, predicate: "0")
-        registrationLabel.constrainTopSpaceToView(registerButton, predicate: "10")
-        registrationLabel.alignBottomEdgeWithView(container, predicate: "0")
+        registerButton.alignTopEdge(withView: container, predicate: "0")
+        registrationLabel.constrainTopSpace(toView: registerButton, predicate: "10")
+        registrationLabel.alignBottomEdge(withView: container, predicate: "0")
 
         if fullWidth {
             registerButton.alignLeading("0", trailing: "0", toView: container)
@@ -194,15 +194,15 @@ private extension AuctionTitleView {
             container.addSubview(leftRule)
 
             leftRule.alignLeadingEdge(withView: container, predicate: "0")
-            leftRule.constrainTrailingSpaceToView(registerButton, predicate: "-16")
-            leftRule.alignCenterYWithView(registerButton, predicate: "0")
+            leftRule.constrainTrailingSpace(toView: registerButton, predicate: "-16")
+            leftRule.alignCenterY(withView: registerButton, predicate: "0")
 
             let rightRule = ARSeparatorView()
             container.addSubview(rightRule)
 
-            rightRule.constrainLeadingSpaceToView(registerButton, predicate: "16")
+            rightRule.constrainLeadingSpace(toView: registerButton, predicate: "16")
             rightRule.alignTrailingEdge(withView: container, predicate: "0")
-            rightRule.alignCenterYWithView(registerButton, predicate: "0")
+            rightRule.alignCenterY(withView: registerButton, predicate: "0")
         }
 
         return container

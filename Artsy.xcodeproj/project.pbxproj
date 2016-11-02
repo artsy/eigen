@@ -4989,7 +4989,7 @@
 				TargetAttributes = {
 					49BA7DFE1655ABE600C06572 = {
 						DevelopmentTeam = 23KMWZ572J;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -5024,7 +5024,7 @@
 						CreatedOnToolsVersion = 6.2;
 					};
 					B3ECE8251819D1E6009F5C5B = {
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0800;
 						TestTargetID = 49BA7DFE1655ABE600C06572;
 					};
 				};

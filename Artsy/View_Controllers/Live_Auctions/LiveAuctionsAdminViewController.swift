@@ -36,7 +36,7 @@ class LiveAuctionsAdminViewController: UIViewController {
         self.navigationItem.rightBarButtonItems = [button!]
 
         salesPerson.debugAllEventsSignal.subscribe { events in
-            self.rawEvents.appendContentsOf(events.reverse())
+            self.rawEvents.append(contentsOf: events.reversed())
             self.reloadData()
         }
     }

@@ -135,7 +135,7 @@ private extension PrivateFunctions {
     /// position (to be the next next or previous previous cells, since they're not in the collection view yet).
     func modifiedLayoutAttributesCopy(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         guard var copy = layoutAttributes.copy() as? UICollectionViewLayoutAttributes else { return layoutAttributes }
-        switch layoutAttributes.indexPath.item {
+        switch (layoutAttributes.indexPath as NSIndexPath).item {
         case 0 where ratioDragged > 0.5:
             applyFancyLayoutToAttributes(&copy, position: .nextOverflow)
         case 0:

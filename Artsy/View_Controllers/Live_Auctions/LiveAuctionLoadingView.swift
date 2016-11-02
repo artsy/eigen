@@ -23,24 +23,24 @@ class LiveAuctionLoadingView: UIView {
 
         spinningImageView.then {
             $0.image = UIImage(asset: .LiveAuctionSpinner)
-            $0.contentMode = .ScaleAspectFit
+            $0.contentMode = .scaleAspectFit
 
             containerView.addSubview($0)
             $0.alignLeading("0", trailing: "0", toView: containerView)
-            $0.alignTopEdgeWithView(containerView, predicate: "0")
+            $0.alignTopEdge(withView: containerView, predicate: "0")
         }
 
         let label = ARSansSerifLabel().then {
             $0.textColor = UIColor.artsyPurpleRegular()
             $0.text = "Entering the auction room"
-            $0.font = $0.font.fontWithSize(12)
+            $0.font = $0.font.withSize(12)
 
             containerView.addSubview($0)
             $0.alignLeading("0", trailing: "0", toView: containerView)
-            $0.alignBottomEdgeWithView(containerView, predicate: "0")
+            $0.alignBottomEdge(withView: containerView, predicate: "0")
         }
 
-        label.constrainTopSpaceToView(spinningImageView, predicate: "20")
+        label.constrainTopSpace(toView: spinningImageView, predicate: "20")
 
         addSubview(containerView)
         containerView.alignCenter(withView: self)

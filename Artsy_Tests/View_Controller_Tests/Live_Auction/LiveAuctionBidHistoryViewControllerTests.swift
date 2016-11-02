@@ -164,7 +164,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             // e12  Confirmed
 
             let myBidderID = "123456"
-            let lotID = NSUUID().UUIDString
+            let lotID = NSUUID().uuidString
 
             let lot = LiveAuctionLot(JSON: ["id": lotID])
             let creds = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: myBidderID)
@@ -202,7 +202,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             // Online bid should show at the top
 
             let myBidderID = "123456"
-            let lotID = NSUUID().UUIDString
+            let lotID = NSUUID().uuidString
 
             let lot = LiveAuctionLot(JSON: ["id": lotID])
             let creds = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: myBidderID)

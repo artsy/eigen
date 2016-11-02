@@ -42,7 +42,7 @@ extension AuctionBannerView {
 
         // Note: These are in order as they'll be in the view hierarchy (ie: first in the list is at the back)
         let backgroundImageView = UIImageView().then {
-            $0.contentMode = .ScaleAspectFill
+            $0.contentMode = .scaleAspectFill
             $0.clipsToBounds = true
         }
         let darkeningView = DarkeningView()
@@ -52,7 +52,7 @@ extension AuctionBannerView {
         [backgroundImageView, darkeningView, logoImageView].forEach(apply(addSubview))
 
         // Background + darkening view always cover self totally.
-        backgroundImageView.alignToView(self)
+        backgroundImageView.align(toView: self)
         darkeningView.align(toView: self)
 
         if viewModel.saleIsClosed {
@@ -114,14 +114,14 @@ extension AuctionBannerView {
             countdownView?.alignBottomEdge(withView: self, predicate: "-30")
 
             // The background will stretch us to be larger (based on its image height), so we want to prevent that.
-            backgroundImageView.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
+            backgroundImageView.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .vertical)
 
             logoImageView.alignCenterX(withView: self, predicate: "0")
             countdownView?.alignCenterX(withView: self, predicate: "0")
         }
 
         // Start any necessary image downloads.
-        backgroundImageView.sd_setImageWithURL(viewModel.backgroundImageURL)
+        backgroundImageView.sd_setImage(with: viewModel.backgroundImageURL)
         logoImageView.sd_setImage(with: viewModel.profileImageURL) { [weak logoImageView] (image, _, _, _) in
             guard let image = image else { return }
             // This keeps the image view constrained to the image's aspect ratio, which allows us to 'left align' this on iPad.

@@ -20,12 +20,12 @@ class LiveAuctionLotListStickyCellCollectionViewLayoutTests: QuickSpec {
             subject = LiveAuctionLotListStickyCellCollectionViewLayout()
             subject.setActiveIndex(0)
             collectionView = UICollectionView(frame: frame, collectionViewLayout: subject)
-            collectionView.registerClass(Test_CollectionViewCell.self, forCellWithReuseIdentifier: Test_CollectionViewDataSource.CellIdentifier)
+            collectionView.register(Test_CollectionViewCell.self, forCellWithReuseIdentifier: Test_CollectionViewDataSource.CellIdentifier)
             dataSource = Test_CollectionViewDataSource()
             collectionView.dataSource = dataSource
             container = UIView(frame: frame).then {
                 $0.addSubview(collectionView)
-                collectionView.alignToView($0)
+                collectionView.align(toView: $0)
             }
         }
 
