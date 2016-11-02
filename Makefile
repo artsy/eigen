@@ -3,7 +3,7 @@ SCHEME = Artsy
 CONFIGURATION = Beta
 APP_PLIST = Artsy/App_Resources/Artsy-Info.plist
 PLIST_BUDDY = /usr/libexec/PlistBuddy
-DEVICE_HOST = platform='iOS Simulator',OS='9.3',name='iPhone 6'
+DEVICE_HOST = platform='iOS Simulator',OS='10.0',name='iPhone 6'
 
 GIT_COMMIT_REV = $(shell git log -n1 --format='%h')
 GIT_COMMIT_SHA = $(shell git log -n1 --format='%H')
