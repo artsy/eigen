@@ -1,6 +1,6 @@
 machine:
   xcode:
-    version: "7.3.1"
+    version: "8.0.0"
   environment:
     # Public - Yay
     UPLOAD_IOS_SNAPSHOT_BUCKET_NAME: eigen-ci
