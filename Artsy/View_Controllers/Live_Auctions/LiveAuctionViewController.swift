@@ -71,14 +71,14 @@ class LiveAuctionViewController: UISplitViewController {
 
     func connectToNetwork() {
         staticDataFetcher.fetchStaticData().subscribe { [weak self] result in
-            self?.ar_removeIndeterminateLoadingIndicatorAnimated(Bool(ARPerformWorkAsynchronously))
+            self?.ar_removeIndeterminateLoadingIndicator(animated: ARPerformWorkAsynchronously.boolValue)
 
             switch result {
-            case .Success(let (sale, jwt, bidderCredentials)):
+            case .success(let (sale, jwt, bidderCredentials)):
                 self?.sale = sale
                 self?.setupWithSale(sale, jwt: jwt, bidderCredentials: bidderCredentials)
 
-            case .Error(let error):
+            case .error(let error):
                 print("Error pulling down sale data for \(self?.saleSlugOrID)")
                 print("Error: \(error)")
                 self?.showOfflineView()
@@ -293,7 +293,7 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
         let stubbedJWT = JWT(jwtString: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWN0aW9ucyIsInJvbGUiOiJvYnNlcnZlciIsInVzZXJJZCI6bnVsbCwic2FsZUlkIjoiNTRjN2U4ZmE3MjYxNjkyYjVhY2QwNjAwIiwiYmlkZGVySWQiOm51bGwsImlhdCI6MTQ2NTIzNDI2NDI2N30.2q3bh1E897walHdSXIocGKElbxOhCGmCCsL8Bf-UWNA")!
         let s = (sale: sale, jwt: stubbedJWT, bidderCredentials: bidderCredentials)
-        signal.update(Result.Success(s))
+        signal.update(Result.success(s))
 
         return signal
     }

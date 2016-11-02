@@ -41,7 +41,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        let tinyScreen = view.bounds.height ?? 0 == 420
+        let tinyScreen = view.bounds.height == 420
         if tinyScreen {
             setYourMaxBidLabel.font = UIFont.serifFont(withSize: 16)
         }
@@ -129,7 +129,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
 
             let score: LiveAuctionBiddingProgressState =  maxBidder ? .bidBecameMaxBidder : .bidOutbid
             bidProgressOverlayView.biddingProgressSignal.update(score)
-            bidButtonViewModel.progressSignal.update(.Active(biddingState: score))
+            bidButtonViewModel.progressSignal.update(.active(biddingState: score))
 
             ar_dispatch_after(2) {
                 // maxBidder case handled independently, below.
@@ -143,8 +143,8 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
     }
 
     fileprivate func showHighestBidderStatusAndDismiss() {
-        bidProgressOverlayView.biddingProgressSignal.update(.BidBecameMaxBidder)
-        bidButtonViewModel.progressSignal.update(.Active(biddingState: .BidBecameMaxBidder))
+        bidProgressOverlayView.biddingProgressSignal.update(.bidBecameMaxBidder)
+        bidButtonViewModel.progressSignal.update(.active(biddingState: .bidBecameMaxBidder))
         shouldShowBiddingOverlay(true, maxBidder: true)
 
         let exitButton = self.navigationItem.rightBarButtonItem?.customView as? UIButton

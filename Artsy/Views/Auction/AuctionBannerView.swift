@@ -69,11 +69,11 @@ extension AuctionBannerView {
                 let model = self.viewModel
 
                 switch model.saleAvailability {
-                case .NotYetOpen:
+                case .notYetOpen:
                     $0.targetDate = model.startDate
                     $0.heading = "Opening In"
 
-                case .Active(let liveAuctionStartDate):
+                case .active(let liveAuctionStartDate):
                     if let liveStartDate = liveAuctionStartDate {
                         $0.targetDate = liveStartDate
                         $0.heading = "Starting Live Bidding In"

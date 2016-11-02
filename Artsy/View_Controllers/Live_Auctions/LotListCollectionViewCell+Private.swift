@@ -126,21 +126,21 @@ extension ClassFunctions {
         return ARSansSerifLabel().then {
             $0.font = UIFont.sansSerifFont(withSize: 12)
             $0.numberOfLines = 1
-            $0.backgroundColor = .clearColor()
+            $0.backgroundColor = .clear
         }
     }
 
     class func _artistNamesLabel() -> UILabel {
         return ARSerifLabel().then {
             $0.font = UIFont.serifFont(withSize: 14)
-            $0.backgroundColor = .clearColor()
+            $0.backgroundColor = .clear
         }
     }
 
     class func _currentAskingPriceLabel() -> UILabel {
         return ARSansSerifLabel().then {
             $0.font = UIFont.sansSerifFont(withSize: 16)
-            $0.backgroundColor = .clearColor()
+            $0.backgroundColor = .clear
         }
     }
 
@@ -153,7 +153,7 @@ extension ClassFunctions {
     class func _closedLabel() -> UILabel {
         return ARSansSerifLabel().then {
             $0.font = UIFont.sansSerifFont(withSize: 12)
-            $0.backgroundColor = .clearColor()
+            $0.backgroundColor = .clear
             $0.textColor = .artsyRedRegular()
             $0.text = "CLOSED"
         }

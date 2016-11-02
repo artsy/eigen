@@ -70,10 +70,10 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
         self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0, bidderCredentials: biddingCredentials) }
         self.bidderCredentials = biddingCredentials
 
-        let useBidderServer = (jwt.role == .Bidder)
-        let host = useBidderServer ? ARRouter.baseBidderCausalitySocketURLString() : ARRouter.baseObserverCausalitySocketURLString()
+        let useBidderServer = (jwt.role == .bidder)
+        let host = (useBidderServer ? ARRouter.baseBidderCausalitySocketURLString() : ARRouter.baseObserverCausalitySocketURLString())!
 
-        self.stateManager = stateManagerCreator(host: host, sale: sale, saleArtworks: self.lots, jwt: jwt, bidderCredentials: biddingCredentials)
+        self.stateManager = stateManagerCreator(host, sale, self.lots, jwt, biddingCredentials)
         self.auctionViewModel = auctionViewModelCreator(sale, stateManager.currentLotSignal, biddingCredentials)
     }
 

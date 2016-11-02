@@ -15,10 +15,10 @@ class AuctionBiddersNetworkModel: AuctionBiddersNetworkModelType {
         let observable = Observable<Result<[Bidder]>>()
 
         // Based on the saleID signal, fetch the sale registration status.
-        ArtsyAPI.getCurrentUserBiddersForSale(saleID,
+        ArtsyAPI.getCurrentUserBidders(forSale: saleID,
             success: { [weak self] bidders in
                 self?.bidders = bidders
-                observable.update(.Success(bidders))
+                observable.update(.success(bidders))
             }, failure: { error in
                 observable.update(.error(error as Error))
             })

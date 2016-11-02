@@ -342,6 +342,7 @@
 		5E9A78231906BA3D00734E1B /* OCMArg+ClassChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E9A78221906BA3D00734E1B /* OCMArg+ClassChecker.m */; };
 		5EA012891CAC3B0C009D9AFE /* LiveAuctionLotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA012881CAC3B0C009D9AFE /* LiveAuctionLotViewController.swift */; };
 		5EA0128B1CAC3B55009D9AFE /* LiveAuctionBidHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA0128A1CAC3B55009D9AFE /* LiveAuctionBidHistoryViewController.swift */; };
+		5EA0E74C1DCA3DD200CE9203 /* Interstellar+Artsy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA0E74B1DCA3DD200CE9203 /* Interstellar+Artsy.swift */; };
 		5EA250631C4EDBE7001E4950 /* ARCountdownViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA250621C4EDBE7001E4950 /* ARCountdownViewTests.m */; };
 		5EA250661C4EE95B001E4950 /* NSArray+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA250651C4EE95B001E4950 /* NSArray+Additions.m */; };
 		5EA7BC291C600144009C52C9 /* AuctionSaleNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA7BC281C600144009C52C9 /* AuctionSaleNetworkModel.swift */; };
@@ -1337,6 +1338,7 @@
 		5E9A78221906BA3D00734E1B /* OCMArg+ClassChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OCMArg+ClassChecker.m"; sourceTree = "<group>"; };
 		5EA012881CAC3B0C009D9AFE /* LiveAuctionLotViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotViewController.swift; path = Live_Auctions/LiveAuctionLotViewController.swift; sourceTree = "<group>"; };
 		5EA0128A1CAC3B55009D9AFE /* LiveAuctionBidHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionBidHistoryViewController.swift; path = Live_Auctions/LiveAuctionBidHistoryViewController.swift; sourceTree = "<group>"; };
+		5EA0E74B1DCA3DD200CE9203 /* Interstellar+Artsy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Interstellar+Artsy.swift"; sourceTree = "<group>"; };
 		5EA250621C4EDBE7001E4950 /* ARCountdownViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCountdownViewTests.m; sourceTree = "<group>"; };
 		5EA250641C4EE95B001E4950 /* NSArray+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Additions.h"; sourceTree = "<group>"; };
 		5EA250651C4EE95B001E4950 /* NSArray+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Additions.m"; sourceTree = "<group>"; };
@@ -2140,6 +2142,7 @@
 			isa = PBXGroup;
 			children = (
 				5ED9EC011C458E9500C979A6 /* SwiftExtensions.swift */,
+				5EA0E74B1DCA3DD200CE9203 /* Interstellar+Artsy.swift */,
 				5E26AF7F1CE66A7E00C67B7C /* Stringify.swift */,
 				342F9F32AB53EF2503473315 /* ORStackView+ArtsyViews.m */,
 				342F96AD6F2466A26A3152F8 /* ORStackView+ArtsyViews.h */,
@@ -5464,6 +5467,7 @@
 				60B79B89182C54CE00945FFF /* ARQuicksilverSearchBar.m in Sources */,
 				60C2CBEF1CC11433009B30CA /* LiveAuctionToolbarView.swift in Sources */,
 				5EF8407E1CECDFFD006248D7 /* LiveAuctionLotCollectionViewLayoutAttributes.swift in Sources */,
+				5EA0E74C1DCA3DD200CE9203 /* Interstellar+Artsy.swift in Sources */,
 				49EC62181778AF100020D648 /* PartnerShow.m in Sources */,
 				5168A76E1B46A70500FFBCBF /* ARFilteredStackTrace.m in Sources */,
 				60863E441D0B48B00053B51C /* ARMutableLinkViewController.m in Sources */,

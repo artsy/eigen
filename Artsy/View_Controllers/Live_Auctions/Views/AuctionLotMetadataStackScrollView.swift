@@ -84,14 +84,14 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         viewModel.currentBidSignal.subscribe { newCurrentBid in
             guard let state = viewModel.lotStateSignal.peek() else { return currentBid.text = "" }
             switch state {
-            case .LiveLot, .UpcomingLot:
+            case .liveLot, .upcomingLot:
                 if let reserve = newCurrentBid.reserve {
                     currentBid.text = "\(newCurrentBid.bid) \(reserve)"
                     currentBid.makeSubstringFaint(reserve)
                 } else {
                     currentBid.text = newCurrentBid.bid
             }
-            case .ClosedLot:
+            case .closedLot:
                 if viewModel.isBeingSold && viewModel.userIsBeingSoldTo {
                     currentBid.text = "Sold to you for: \(salesPerson.currentLotValueString(viewModel))"
                 } else {

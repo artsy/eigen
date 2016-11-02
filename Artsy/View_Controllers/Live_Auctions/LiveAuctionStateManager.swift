@@ -70,7 +70,7 @@ class LiveAuctionStateManager: NSObject {
 //            So far this event isn't needed anywhere, but keeping for prosperities sake
 //            let eventJSON = json["event"].dictionaryObject
 //            let liveEvent = LiveEvent(JSON: eventJSON)
-            let confirmed = LiveAuctionBiddingProgressState.BidAcknowledged
+            let confirmed = LiveAuctionBiddingProgressState.bidAcknowledged
             biddingViewModel?.bidPendingSignal.update(confirmed)
         }
 
@@ -86,7 +86,7 @@ extension PublicFunctions {
             return print("Tried to bid without a bidder ID on account")
         }
 
-        biddingViewModel.bidPendingSignal.update(.BiddingInProgress)
+        biddingViewModel.bidPendingSignal.update(.biddingInProgress)
 
         let bidID = UUID().uuidString
         biddingStates[bidID] = biddingViewModel
@@ -98,7 +98,7 @@ extension PublicFunctions {
             return print("Tried to leave a max bid without a bidder ID on account")
         }
 
-        biddingViewModel.bidPendingSignal.update(.BiddingInProgress)
+        biddingViewModel.bidPendingSignal.update(.biddingInProgress)
         let bidID = UUID().uuidString
         biddingStates[bidID] = biddingViewModel
         socketCommunicator.leaveMaxBidOnLot(lotID, amountCents: amountCents, bidderCredentials: bidderCredentials, bidUUID: bidID)

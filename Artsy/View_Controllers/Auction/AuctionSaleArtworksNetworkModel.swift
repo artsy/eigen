@@ -18,11 +18,11 @@ class AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType {
         /// This serves as a trampoline for the actual recursive call.
         fetchPage(1, forSaleID: saleID, alreadyFetched: []) { [weak self] result in
             switch result {
-            case .Success(let saleArtworks):
+            case .success(let saleArtworks):
                 self?.saleArtworks = saleArtworks
-                observable.update(.Success(saleArtworks))
-            case .Error(let error):
-                observable.update(.Error(error))
+                observable.update(.success(saleArtworks))
+            case .error(let error):
+                observable.update(.error(error))
             }
         }
 
@@ -36,7 +36,7 @@ private let pageSize = 100
 
 /// Recursively calls itself with page+1 until the count of the returned array is < pageSize.
 private func fetchPage(_ page: Int, forSaleID saleID: String, alreadyFetched: [SaleArtwork], callback: @escaping (Result<[SaleArtwork]>) -> Void) {
-    ArtsyAPI.getSaleArtworksWithSale(saleID,
+    ArtsyAPI.getSaleArtworks(withSale: saleID,
         page: page,
         pageSize: pageSize,
         success: { saleArtworks in
@@ -44,7 +44,7 @@ private func fetchPage(_ page: Int, forSaleID saleID: String, alreadyFetched: [S
 
             if saleArtworks.count < pageSize {
                 // We have reached the end of the sale artworks, stop recursing.
-                callback(.Success(totalFetchedSoFar))
+                callback(.success(totalFetchedSoFar))
             } else {
                 // There are still more sale artworks, so recurse.
                 let nextPage = page + 1
@@ -52,7 +52,7 @@ private func fetchPage(_ page: Int, forSaleID saleID: String, alreadyFetched: [S
             }
         },
         failure: { error in
-            callback(.Error(error as Error))
+            callback(.error(error as Error))
         }
     )
 }

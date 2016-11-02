@@ -47,7 +47,7 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
         closeButton.setBorderColor(.artsyGrayRegular(), for: UIControlState(), animated: false)
         closeButton.setBackgroundColor(.white, for: UIControlState(), animated: false)
         closeButton.setImage(UIImage(named:"serif_modal_close"), for: UIControlState())
-        closeButton.addTarget(self, action: #selector(dismiss), for: .touchUpInside)
+        closeButton.addTarget(self, action: #selector(dismissMe), for: .touchUpInside)
 
         view.addSubview(closeButton)
         closeButton.alignTrailingEdge(withView: view, predicate: "-20")
@@ -65,7 +65,7 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
         return traitDependentAutorotateSupport
     }
 
-    func dismiss() {
+    func dismissMe() {
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
 

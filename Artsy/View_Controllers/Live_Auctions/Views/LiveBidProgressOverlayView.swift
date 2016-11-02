@@ -55,7 +55,7 @@ class LiveBidProgressOverlayView: UIView {
         bidProgressImageView.image = UIImage(asset: image)
 
         // Only spin in prod
-        let animate = spinImage && ARPerformWorkAsynchronously
+        let animate = spinImage && ARPerformWorkAsynchronously.boolValue
         if animate {
             bidProgressImageView.ar_startSpinningIndefinitely()
         } else {

@@ -68,20 +68,20 @@ class LiveAuctionBidButton: ARFlatButton {
     func tappedBidButton() {
         guard let state = viewModel.progressSignal.peek() else { return }
         switch state {
-        case .Active(let bidState):
+        case .active(let bidState):
             switch bidState {
 
-            case .UserRegistrationRequired:
+            case .userRegistrationRequired:
                 delegate?.bidButtonRequestedRegisterToBid?(self)
-            case .Biddable:
+            case .biddable:
                 delegate?.bidButtonRequestedBid?(self)
 
             default: break
             }
 
-        case .InActive(let lotState):
+        case .inActive(let lotState):
             switch lotState {
-            case .UpcomingLot:
+            case .upcomingLot:
                 delegate?.bidButtonRequestedSubmittingMaxBid?(self)
 
             default: break
@@ -129,7 +129,7 @@ class LiveAuctionBidButton: ARFlatButton {
     }
 
     fileprivate func setupUI(_ title: String, background: UIColor = .black, border: UIColor? = nil, textColor: UIColor = UIColor.white, applySpinAnimation: Bool = false) {
-        .disabled.forEach { state in
+        [UIControlState.normal, .disabled].forEach { state in
             setTitle(title.uppercased(), for: state)
             setTitleColor(textColor, for: state)
 
@@ -179,7 +179,7 @@ class LiveAuctionBidButton: ARFlatButton {
                 handleBiddable(buttonState, formattedPrice: formattedPrice)
 
             case .biddingInProgress:
-                setupUI("", background: purple!, applySpinAnimation: Bool(ARPerformWorkAsynchronously))
+                setupUI("", background: purple!, applySpinAnimation: ARPerformWorkAsynchronously.boolValue)
 
             case .bidBecameMaxBidder, .bidAcknowledged:
                 // If the bid has been acknowledged, we'll bee the max bidder until the next Biddable state, even if that's directly following this one.
@@ -227,7 +227,7 @@ class LiveAuctionBidButton: ARFlatButton {
 
             _outbidAnimationIsInProgress = true
             isEnabled = false
-            UIView.animateIf(Bool(ARPerformWorkAsynchronously), duration: ARAnimationQuickDuration, {
+            UIView.animateIf(ARPerformWorkAsynchronously.boolValue, duration: ARAnimationQuickDuration, {
                     self.setupWithState(.active(biddingState: .bidOutbid))
                 }, completion: { _ in
                     // Note: we're not using ar_dispatch_after because if the completion and dispatch_after blocks are run synchronously, we'll get a stack overflow 😬

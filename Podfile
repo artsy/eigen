@@ -125,7 +125,7 @@ target 'Artsy' do
 
       # Temporary, should be removed post CP 1.0
       # https://github.com/facebook/ios-snapshot-test-case/pull/141
-      pod 'FBSnapshotTestCase', git: 'https://github.com/orta/ios-snapshot-test-case.git'
+      pod 'FBSnapshotTestCase'
       pod 'Expecta+Snapshots'
       pod 'OHHTTPStubs'
       pod 'XCTest+OHHTTPStubSuiteCleanUp'

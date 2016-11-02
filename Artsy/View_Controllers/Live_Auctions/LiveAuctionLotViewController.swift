@@ -197,7 +197,7 @@ class LiveAuctionLotViewController: UIViewController {
             let hideBidHistory: Bool
 
             switch self?.salesPerson.auctionViewModel.currentLotSignal.peek() {
-            case .Some(let .Some(lot)):
+            case .some(let .some(lot)):
                 let myLotID = self?.lotViewModel.lotID
                 hideCurrentLotCTA = (lot.lotID == myLotID)
                 hideBidHistory = !hideCurrentLotCTA
@@ -213,7 +213,7 @@ class LiveAuctionLotViewController: UIViewController {
             self?.bidHistoryViewController?.tableView.isScrollEnabled = hideBidHistory
             self?.bidHistoryGestureController?.enabled = !hideBidHistory
 
-            if hideBidHistory && self?.bidHistoryGestureController?.bidHistoryState == .Open {
+            if hideBidHistory && self?.bidHistoryGestureController?.bidHistoryState == .open {
                 UIView.animate(withDuration: ARAnimationQuickDuration, animations: {
                     self?.shrinkBidHistory()
                 }, completion: { _ in

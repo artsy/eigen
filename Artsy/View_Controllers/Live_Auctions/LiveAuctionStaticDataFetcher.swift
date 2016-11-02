@@ -92,7 +92,6 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
                 signal.update(.success((sale: sale, jwt: jwt, bidderCredentials: bidderCredentials)))
 
             }, failure: { error in
-                guard let error = error else { return }
                 signal.update(.error(error as Swift.Error))
             })
 

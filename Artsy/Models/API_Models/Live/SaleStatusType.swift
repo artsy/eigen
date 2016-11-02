@@ -31,7 +31,7 @@ extension SaleStatusType {
             guard let liveDate = liveAuctionStartDate else { return .active(liveAuctionDate:nil) }
             return .active(liveAuctionDate: liveDate)
         }
-        if startDate.laterDate(Date()) == startDate { return .notYetOpen }
+        if (startDate as NSDate).laterDate(Date()) == startDate { return .notYetOpen }
         return .closed
     }
 }

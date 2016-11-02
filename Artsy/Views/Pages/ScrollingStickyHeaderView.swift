@@ -41,7 +41,7 @@ class ScrollingStickyHeaderView: UIView {
         stickyHeaderHeight = constrainHeight("60")
         backgroundColor = .white
 
-        button.then {
+        _ = button.then {
             self.addSubview($0)
             self.trailingConstraints = $0.alignTrailingEdge(withView: self, predicate: "-20")
             $0.alignBottomEdge(withView: self, predicate: "-13")
@@ -50,7 +50,7 @@ class ScrollingStickyHeaderView: UIView {
             $0.constrainWidth("60")
         }
 
-        titleLabel.then {
+        _ = titleLabel.then {
             $0.textAlignment = .center
             $0.font = UIFont.sansSerifFont(withSize: 14)
             self.addSubview($0)
@@ -60,7 +60,7 @@ class ScrollingStickyHeaderView: UIView {
             $0.constrainHeight("60")
         }
 
-        subtitleScrollView.then {
+        _ = subtitleScrollView.then {
             $0.fadeAxis = .horizontal
             $0.showsHorizontalScrollIndicator = false
             self.addSubview($0)
@@ -69,20 +69,20 @@ class ScrollingStickyHeaderView: UIView {
             $0.constrainTrailingSpace(toView: button, predicate: "-10")
         }
 
-        subtitleLabel.then {
+        _ = subtitleLabel.then {
             subtitleScrollView.addSubview($0)
             $0.alignLeading("0", trailing: "0", toView: subtitleScrollView)
             $0.alignBaseline(withView: button, predicate: "0")
             $0.numberOfLines = 1
         }
 
-        topSeparator.then {
+        _ = topSeparator.then {
             self.addSubview($0)
             $0.alignBottom("-55", trailing: "0", toView: self)
             $0.constrainWidth(toView: self, predicate: "0")
 
         }
-        bottomSeparator.then {
+        _ = bottomSeparator.then {
             self.addSubview($0)
             $0.alignBottom("0", trailing: "0", toView: self)
             $0.constrainWidth(toView: self, predicate: "0")
@@ -98,11 +98,12 @@ class ScrollingStickyHeaderView: UIView {
     }
 
     func toggleAttatched(_ atTop: Bool, animated: Bool) {
-        UIView.animateIf(animated, duration: 0.2) {
+
+        UIView.animateIf(ARPerformWorkAsynchronously.boolValue, duration: 0.2, {
             self.titleLabel.alpha = atTop ? 1 : 0
             self.topSeparator.alpha = atTop ? 1 : 0
             self.bottomSeparator.alpha = atTop ? 1 : 0
-        }
+        }, completion: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {

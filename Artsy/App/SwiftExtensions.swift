@@ -50,9 +50,12 @@ extension Collection {
 }
 
 extension Array {
-    mutating func remove(_ closure: ((Element) -> Bool)) -> Element? {
-        return self.reduce(nil, { (memo, e) -> Result in
-            return memo ?? (closure(e.element) ? self.remove(at: e.index) : nil)
+    mutating func remove(matching closure: @escaping ((Element) -> Bool)) -> Element? {
+        return enumerated().reduce(nil, { (memo, e) -> Element? in
+            guard let memo = memo else {
+                return (closure(e.element) ? self.remove(at: e.offset) : nil)
+            }
+            return memo
         })
     }
 

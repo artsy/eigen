@@ -173,7 +173,7 @@ extension PublicFunctions {
                 "amountCents": NSNumber(value: amountCents as UInt64),
                 "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID, "paddleNumber": paddleNumber]
             ]
-        ])
+        ] as NSDictionary)
     }
 
     func leaveMaxBidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
@@ -188,7 +188,7 @@ extension PublicFunctions {
                 "amountCents": NSNumber(value: amountCents as UInt64),
                 "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID, "paddleNumber": paddleNumber]
             ]
-        ])
+        ] as NSDictionary)
     }
 
     func writeJSON(_ json: NSObject) {

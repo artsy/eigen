@@ -268,12 +268,12 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         }
 
         switch status {
-        case .Unknown: fallthrough
-        case .NoReserve:
+        case .unknown: fallthrough
+        case .noReserve:
             return "no reserve"
-        case .ReserveMet:
+        case .reserveMet:
             return "reserve met"
-        case .ReserveNotMet:
+        case .reserveNotMet:
             return "reserve not yet met"
         }
     }
@@ -320,7 +320,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         updateExistingEventsWithLotState()
 
         var allUserFacingEvents = fullEventList.filter { $0.isUserFacing }
-        if let winningBidEvent = allUserFacingEvents.remove({ $0.eventID == winningBidEventID }) {
+        if let winningBidEvent = allUserFacingEvents.remove(matching: { event in
+            guard let winningBidEventID = self.winningBidEventID else { return false }
+            return event.eventID == winningBidEventID
+        }) {
             derivedEvents = allUserFacingEvents + [winningBidEvent]
         } else {
             derivedEvents = allUserFacingEvents

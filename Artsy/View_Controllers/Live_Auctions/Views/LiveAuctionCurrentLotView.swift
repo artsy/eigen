@@ -33,7 +33,7 @@ class LiveAuctionCurrentLotView: UIButton {
         [liveLotLabel, artistNameLabel, biddingPriceLabel, thumbnailView, hammerView].forEach { addSubview($0) }
         [liveLotLabel, artistNameLabel, biddingPriceLabel].forEach {
             $0.backgroundColor = backgroundColor
-            $0.textColor = .whiteColor()
+            $0.textColor = .white
         }
 
         constrainHeight("54")

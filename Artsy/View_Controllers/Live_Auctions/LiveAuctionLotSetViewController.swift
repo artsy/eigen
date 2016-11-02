@@ -59,7 +59,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         lotImageCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout).then {
             $0.register(LiveAuctionLotCollectionViewDataSource.CellClass, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
             $0.dataSource = dataSource
-            $0.backgroundColor = .whiteColor()
+            $0.backgroundColor = .white
         }
 
         super.init(nibName: nil, bundle: nil)
@@ -183,24 +183,24 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func setupToolbar() {
-        let close = ARSerifToolbarButtonItem(image: UIImage(named: "serif_modal_close"))
-        close?.accessibilityLabel = "Exit Live Bidding"
-        close?.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.dismissModal), for: .touchUpInside)
+        let close = ARSerifToolbarButtonItem(image: UIImage(named: "serif_modal_close"))!
+        close.accessibilityLabel = "Exit Live Bidding"
+        close.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.dismissModal), for: .touchUpInside)
 
-        let info = ARSerifToolbarButtonItem(image: UIImage(asset: .Info_icon) )
-        info?.accessibilityLabel = "More Information"
-        info?.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.moreInfo), for: .touchUpInside)
-        info?.isEnabled = false
+        let info = ARSerifToolbarButtonItem(image: UIImage(asset: .Info_icon))!
+        info.accessibilityLabel = "More Information"
+        info.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.moreInfo), for: .touchUpInside)
+        info.isEnabled = false
         saleNetworkModel.fetchSale(salesPerson.liveSaleID)
             .merge(biddersNetworkModel.fetchBiddersForSale(salesPerson.liveSaleID))
-            .subscribe { _ in info?.isEnabled = true }
+            .subscribe { _ in info.isEnabled = true }
 
-        let lots = ARSerifToolbarButtonItem(image: UIImage(asset: .Lots_icon))
-        lots?.accessibilityLabel = "Show all Lots"
-        lots?.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.showLots), for: .touchUpInside)
+        let lots = ARSerifToolbarButtonItem(image: UIImage(asset: .Lots_icon))!
+        lots.accessibilityLabel = "Show all Lots"
+        lots.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.showLots), for: .touchUpInside)
 
         let phone = traitCollection.userInterfaceIdiom == .phone
-        let items: [UIBarButtonItem] = phone ? [close, lots, info] : [close, info] as! [UIBarButtonItem]
+        let items: [UIBarButtonItem] = phone ? [close, lots, info] : [close, info]
 
         navigationItem.rightBarButtonItems = items
     }
@@ -250,7 +250,7 @@ class LiveAuctionLotSetViewController: UIViewController {
             .merge(salesPerson.auctionViewModel.saleAvailabilitySignal)
             .subscribe { [weak self] (currentLot, saleAvailability) in
                 guard let currentLot = currentLot else {
-                    self?.progressBar.progress = saleAvailability == .Closed ? 1 : 0
+                    self?.progressBar.progress = saleAvailability == .closed ? 1 : 0
                     return
                 }
 
@@ -273,7 +273,7 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     func jumpToLiveLot() {
         // currentLotSignal might have a nil, and peek() returns a wrapped optional, so we need to double-unwrap.
-        guard case let .Some(.Some(currentLot)) = salesPerson.currentLotSignal.peek() else { return }
+        guard case let .some(.some(currentLot)) = salesPerson.currentLotSignal.peek() else { return }
         guard let liveLotIndex = salesPerson.indexForViewModel(currentLot) else { return }
 
         jumpToLotAtIndex(liveLotIndex)
@@ -353,7 +353,7 @@ extension PageViewDelegate: UIPageViewControllerDelegate, LiveAuctionSaleLotsDat
 
     func registerForScrollingState(_ viewController: LiveAuctionLotViewController) {
         viewController.bidHistoryState.subscribe { [weak self] state in
-            self?.pageViewScrollView?.scrollEnabled = (state == .Closed && self?.view.traitCollection.horizontalSizeClass == .Compact)
+            self?.pageViewScrollView?.isScrollEnabled = (state == .closed && self?.view.traitCollection.horizontalSizeClass == .compact)
             return
         }
 

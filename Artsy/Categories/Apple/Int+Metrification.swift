@@ -35,7 +35,7 @@ protocol Centable {
 
 extension Int : Centable {
     var number: NSNumber {
-        return NSNumber(self)
+        return NSNumber(integerLiteral: self)
     }
 }
 
