@@ -17,17 +17,11 @@ class NavigationButtonTests: QuickSpec {
             expect(subject.descriptionDictionary[ARNavigationButtonPropertiesKey] as? NSDictionary) == ["key": "value"] as NSDictionary
         }
 
-        typealias CallbackBlock = @convention (block) (UIButton) -> Void
+        it("maps handler correctly") {
+            let subject = NavigationButton(buttonClass: UIButton.self, properties: ["key": "value"], handler: { _ in })
+            let handler = subject.descriptionDictionary[ARNavigationButtonHandlerKey]
 
-        // TODO: Un-pending this from Swift 3 conversion.
-        pending("maps handler correctly") {
-            var called = false
-
-            let subject = NavigationButton(buttonClass: UIButton.self, properties: ["key": "value"], handler: { _ in called = true })
-            let handler = unsafeBitCast(subject.descriptionDictionary[ARNavigationButtonHandlerKey], to: CallbackBlock.self)
-            handler(UIButton())
-
-            expect(called) == true
+            expect(handler).toNot( beNil () )
         }
     }
 }
