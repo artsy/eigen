@@ -126,7 +126,8 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         // This is a bit of a shame, we need to also make.
         // sure the scrollview resizes on orientation changes.
-        if let scrollView = pageController.view.subviews.flatMap({ $0 as? UIScrollView }).first {
+        if let pageControllerView = pageControllerView,
+           let scrollView = pageController.view.subviews.flatMap({ $0 as? UIScrollView }).first {
             scrollView.align(toView: pageControllerView)
             scrollView.delegate = self
         }
