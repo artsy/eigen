@@ -33,7 +33,6 @@ func unfreezeTime() {
     systemDateMock?.stopMocking()
 }
 
-@available(iOS 10.0, *)
 class AuctionViewControllerTests: QuickSpec {
     override func spec() {
         var sale: Sale!
@@ -276,7 +275,7 @@ class AuctionViewControllerTests: QuickSpec {
 
 
         it("handles showing information for upcoming auctions with no sale artworks") {
-            let exact_now = ISO8601DateFormatter().date(from: "2025-11-24T10:00:00+00:00")!
+            let exact_now = ARStandardDateFormatter.shared().date(from: "2025-11-24T10:00:00+00:00")!
             let start = exact_now.addingTimeInterval(3600.9)
             let end = exact_now.addingTimeInterval(3700.9)
 
@@ -296,7 +295,7 @@ class AuctionViewControllerTests: QuickSpec {
         }
 
         it("handles showing information for upcoming auctions with long names with no sale artworks") {
-            let exact_now = ISO8601DateFormatter().date(from: "2025-11-24T10:00:00+00:00")!
+            let exact_now = ARStandardDateFormatter.shared().date(from: "2025-11-24T10:00:00+00:00")!
             let start = exact_now.addingTimeInterval(3600.9)
             let end = exact_now.addingTimeInterval(3700.9)
 
@@ -316,7 +315,7 @@ class AuctionViewControllerTests: QuickSpec {
         }
 
         it("looking correct when an auction is closed") {
-            let exact_now_past = ISO8601DateFormatter().date(from: "2015-11-24T10:00:00+00:00")!
+            let exact_now_past = ARStandardDateFormatter.shared().date(from: "2015-11-24T10:00:00+00:00")!
             let start = exact_now_past.addingTimeInterval(3600.9)
             let end = exact_now_past.addingTimeInterval(3700.9)
 
@@ -334,7 +333,7 @@ class AuctionViewControllerTests: QuickSpec {
         }
 
         it("uses the correct settings when auction is closed") {
-            let exact_now_past = ISO8601DateFormatter().date(from: "2015-11-24T10:00:00+00:00")!
+            let exact_now_past = ARStandardDateFormatter.shared().date(from: "2015-11-24T10:00:00+00:00")!
             let start = exact_now_past.addingTimeInterval(3600.9)
             let end = exact_now_past.addingTimeInterval(3700.9)
 
@@ -353,7 +352,7 @@ class AuctionViewControllerTests: QuickSpec {
         }
 
         it("uses the correct settings when auction is open") {
-            let exact_now = ISO8601DateFormatter().date(from: "2025-11-24T10:00:00+00:00")!
+            let exact_now = ARStandardDateFormatter.shared().date(from: "2025-11-24T10:00:00+00:00")!
             let start = exact_now.addingTimeInterval(3600.9)
             let end = exact_now.addingTimeInterval(3700.9)
 
@@ -374,7 +373,7 @@ class AuctionViewControllerTests: QuickSpec {
         }
 
         it("shows a message about an upcoming live auction") {
-            let exact_now = ISO8601DateFormatter().date(from: "2025-11-24T10:00:00+00:00")!
+            let exact_now = ARStandardDateFormatter.shared().date(from: "2025-11-24T10:00:00+00:00")!
             let start = exact_now.addingTimeInterval(-3600.9)
             let liveStart = exact_now.addingTimeInterval(1650.9)
             let end = exact_now.addingTimeInterval(3700.9)
