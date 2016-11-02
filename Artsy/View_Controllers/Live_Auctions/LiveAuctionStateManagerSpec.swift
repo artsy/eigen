@@ -8,7 +8,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
     override func spec() {
         var subject: LiveAuctionStateManager!
         var sale: LiveSale!
-        let stubbedJWT = StubbedCredentials.Registered.jwt
+        let stubbedJWT = StubbedCredentials.registered.jwt
 
         beforeEach {
             OHHTTPStubs.stubJSONResponse(forHost: "metaphysics*.artsy.net", withResponse: [:])

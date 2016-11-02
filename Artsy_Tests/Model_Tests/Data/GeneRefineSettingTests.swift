@@ -34,7 +34,7 @@ class RefineGeneSettingsTests: QuickSpec {
             expect(gene.medium.id) == "prints"
             expect(gene.sort).to( equal(GeneSortingOrder.RecentlyAdded) )
             expect(gene.mediums.map({ $0.id })) == ["prints"]
-            expect(gene.priceRange).to(beFalsy())
+            expect(gene.priceRange).to(beNil())
         }
     }
 }

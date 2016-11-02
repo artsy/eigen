@@ -4,7 +4,7 @@ import Artsy
 
 func stub_auctionSale() -> LiveSale {
     let stateFetcher = Stubbed_StaticDataFetcher()
-    return stateFetcher.fetchStaticData().peekValue()!.sale
+    return stateFetcher.fetchStaticData().peek()!.sale
 }
 
 func stub_auctionSalesPerson(_ auctionViewModel: LiveAuctionViewModelType? = nil, creds: BiddingCredentials = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: "123456")) -> Stub_LiveAuctionsSalesPerson {
@@ -16,7 +16,7 @@ func stub_auctionSalesPerson(_ auctionViewModel: LiveAuctionViewModelType? = nil
     } else {
         auctionViewModelCreator = LiveAuctionsSalesPerson.defaultAuctionViewModelCreator()
     }
-    return Stub_LiveAuctionsSalesPerson(sale: sale, jwt: StubbedCredentials.Registered.jwt, biddingCredentials: creds, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator(), auctionViewModelCreator: auctionViewModelCreator)
+    return Stub_LiveAuctionsSalesPerson(sale: sale, jwt: StubbedCredentials.registered.jwt, biddingCredentials: creds, stateManagerCreator: LiveAuctionsSalesPerson.stubbedStateManagerCreator(), auctionViewModelCreator: auctionViewModelCreator)
 }
 
 

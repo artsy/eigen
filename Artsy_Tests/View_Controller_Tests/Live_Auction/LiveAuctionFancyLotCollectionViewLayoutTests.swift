@@ -30,11 +30,11 @@ class LiveAuctionFancyLotCollectionViewLayoutTests: QuickSpec {
         it("looks good compact") {
             salesPerson = stub_auctionSalesPerson()
             dataSource = LiveAuctionLotCollectionViewDataSource(salesPerson: salesPerson)
-            subject = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource, size: .Compact)
+            subject = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource, size: .compact)
             collectionView = UICollectionView(frame: frame, collectionViewLayout: subject)
-            collectionView.registerClass(LiveAuctionLotImageCollectionViewCell.self, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
+            collectionView.register(LiveAuctionLotImageCollectionViewCell.self, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
             collectionView.dataSource = dataSource
-            collectionView.backgroundColor = .whiteColor()
+            collectionView.backgroundColor = .white
             container = UIView(frame: frame).then {
                 $0.addSubview(collectionView)
                 collectionView.align(toView: $0)
@@ -49,11 +49,11 @@ class LiveAuctionFancyLotCollectionViewLayoutTests: QuickSpec {
             beforeEach {
                 salesPerson = stub_auctionSalesPerson()
                 dataSource = LiveAuctionLotCollectionViewDataSource(salesPerson: salesPerson)
-                subject = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource, size: .Normal)
+                subject = LiveAuctionFancyLotCollectionViewLayout(delegate: dataSource, size: .normal)
                 collectionView = UICollectionView(frame: frame, collectionViewLayout: subject)
-                collectionView.registerClass(LiveAuctionLotImageCollectionViewCell.self, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
+                collectionView.register(LiveAuctionLotImageCollectionViewCell.self, forCellWithReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier)
                 collectionView.dataSource = dataSource
-                collectionView.backgroundColor = .whiteColor()
+                collectionView.backgroundColor = .white
 
                 container = UIView(frame: frame).then {
                     $0.addSubview(collectionView)

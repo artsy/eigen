@@ -25,7 +25,7 @@ class AuctionSaleArtworksNetworkModelSpec: QuickSpec {
             var saleArtworks: [SaleArtwork]?
             waitUntil { done in
                 subject.fetchSaleArtworks(saleID).subscribe { result in
-                    if case .Success(let a) = result { saleArtworks = a }
+                    if case .success(let a) = result { saleArtworks = a }
                     done()
                 }
             }
@@ -47,21 +47,21 @@ class AuctionSaleArtworksNetworkModelSpec: QuickSpec {
 
         it("loads the second page, if necessary") {
             var callNumber = 0
-            OHHTTPStubs.stubRequestsPassingTest({ request in
-                    return request.URL?.path?.containsString("/api/v1/sale/\(saleID)/sale_artworks") ?? false
+            OHHTTPStubs.stubRequests(passingTest: { request in
+                    return request?.url?.path.contains("/api/v1/sale/\(saleID)/sale_artworks") ?? false
                 },
                 withStubResponse: { _ in
                     defer { callNumber += 1 }
 
                     // Returns 100 sale artworks the first invocation, then returns none subsequently.
                     if callNumber == 0 {
-                        let allPages: NSArray = Array(0..<100).map { _ -> NSDictionary in
+                        let allPages = Array(0..<100).map { _ -> NSDictionary in
                             return ["id": saleArtworkID]
-                        }
+                        } as NSArray
 
-                        return OHHTTPStubsResponse(JSONObject: allPages, statusCode: 200, headers: nil)
+                        return OHHTTPStubsResponse(jsonObject: allPages, statusCode: 200, headers: nil)
                     } else {
-                        return OHHTTPStubsResponse(JSONObject: saleArtworksJSON, statusCode: 200, headers: nil)
+                        return OHHTTPStubsResponse(jsonObject: saleArtworksJSON, statusCode: 200, headers: nil)
                     }
                 })
 

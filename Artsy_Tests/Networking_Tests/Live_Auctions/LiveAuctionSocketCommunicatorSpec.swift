@@ -9,7 +9,7 @@ var socket: Test_Socket!
 class LiveAuctionSocketCommunicatorSpec: QuickSpec {
     override func spec() {
         let host = "squiggly host"
-        let jwt = StubbedCredentials.Registered.jwt
+        let jwt = StubbedCredentials.registered.jwt
 
 
         let saleID = "honest ed's bargain basement"

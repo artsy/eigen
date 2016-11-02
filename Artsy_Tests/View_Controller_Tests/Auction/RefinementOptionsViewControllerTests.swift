@@ -8,7 +8,7 @@ import MARKRangeSlider
 
 class RefinementOptionsViewControllerSpec: QuickSpec {
     override func spec() {
-        let openSale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": Date.distantPast(), "endDate": Date.distantFuture() ], error: Void())
+        let openSale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": Date.distantPast, "endDate": Date.distantFuture ], error: Void())
 
         let openSaleViewModel = SaleViewModel(sale: openSale, saleArtworks: [], bidders: [])
 
@@ -35,7 +35,7 @@ class RefinementOptionsViewControllerSpec: QuickSpec {
             // Simulate a change to the settings
             let slider = subject.findSlider()
             slider?.setLeftValue(CGFloat(differentSettings.priceRange!.min), rightValue: CGFloat(differentSettings.priceRange!.max))
-            slider?.sendActionsForControlEvents(.ValueChanged)
+            slider?.sendActions(for: .valueChanged)
 
             expect(subject).to( haveValidSnapshot() )
         }

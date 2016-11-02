@@ -24,7 +24,7 @@ class AuctionBiddersNetworkModelSpec: QuickSpec {
             var bidders: [Bidder]?
             waitUntil { done in
                 subject.fetchBiddersForSale("whatever").subscribe { result in
-                    if case .Success(let r) = result {
+                    if case .success(let r) = result {
                         bidders = r
                     }
                     done()
@@ -41,7 +41,7 @@ class AuctionBiddersNetworkModelSpec: QuickSpec {
             var receivedBidders: [Bidder]?
             waitUntil { done in
                 subject.fetchBiddersForSale("whatever").subscribe { result in
-                    if case .Success(let r) = result {
+                    if case .success(let r) = result {
                         receivedBidders = r
                     }
                     done()

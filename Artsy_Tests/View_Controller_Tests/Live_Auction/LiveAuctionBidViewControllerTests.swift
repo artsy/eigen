@@ -71,7 +71,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
             subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM, salesPerson:  stub_auctionSalesPerson())
             subject.loadViewProgrammatically()
 
-            subject.biddingProgressSignal.update(.BiddingInProgress)
+            subject.biddingProgressSignal.update(.biddingInProgress)
 
             expect(subject.bidProgressOverlayView.superview) != nil
 
@@ -82,15 +82,15 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
         describe("networking") {
 
             let examples: [String: [LiveAuctionBiddingProgressState]] = [
-                "in progress": [.BiddingInProgress],
-                "is max bidder": [.BidBecameMaxBidder],
-                "not max bidder": [.BidOutbid],
-                "network issues": [.BidNetworkFail],
-                "waiting": [.LotWaitingToOpen],
-                "sold": [.LotSold],
+                "in progress": [.biddingInProgress],
+                "is max bidder": [.bidBecameMaxBidder],
+                "not max bidder": [.bidOutbid],
+                "network issues": [.bidNetworkFail],
+                "waiting": [.lotWaitingToOpen],
+                "sold": [.lotSold],
             ]
 
-            for (_, tuple) in examples.enumerate() {
+            for (_, tuple) in examples.enumerated() {
 
                 it("has valid snapshot \(tuple.0)") {
                     subject = StoryboardScene.LiveAuctions.instantiateBid()

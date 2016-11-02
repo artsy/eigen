@@ -23,7 +23,7 @@ class NavigationButtonTests: QuickSpec {
             var called = false
 
             let subject = NavigationButton(buttonClass: UIButton.self, properties: ["key": "value"], handler: { _ in called = true })
-            let handler = unsafeBitCast(subject.descriptionDictionary[ARNavigationButtonHandlerKey], CallbackBlock.self)
+            let handler = unsafeBitCast(subject.descriptionDictionary[ARNavigationButtonHandlerKey], to: CallbackBlock.self)
             handler(UIButton())
 
             expect(called) == true

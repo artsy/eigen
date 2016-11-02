@@ -18,9 +18,9 @@ class AuctionNetworkModelSpec: QuickSpec {
         var bidderNetworkModel: Test_AuctionBiddersNetworkModel!
 
         beforeEach {
-            saleNetworkModel = Test_AuctionSaleNetworkModel(result: .Success(sale))
-            saleArtworksNetworkModel = Test_AuctionSaleArtworksNetworkModel(result: Result.Success(saleArtworks))
-            bidderNetworkModel = Test_AuctionBiddersNetworkModel(result: .Success([]))
+            saleNetworkModel = Test_AuctionSaleNetworkModel(result: .success(sale))
+            saleArtworksNetworkModel = Test_AuctionSaleArtworksNetworkModel(result: Result.success(saleArtworks))
+            bidderNetworkModel = Test_AuctionBiddersNetworkModel(result: .success([]))
 
             subject = AuctionNetworkModel(saleID: saleID)
             subject.saleNetworkModel = saleNetworkModel
@@ -34,13 +34,13 @@ class AuctionNetworkModelSpec: QuickSpec {
 
         describe("registrationStatus") {
             it("works when bidders fetch errors") {
-                bidderNetworkModel.result = .Error(TestError.Testing)
+                bidderNetworkModel.result = .error(TestError.testing)
                 expect(subject.bidders).to( beEmpty() )
             }
 
             it("works when bidders fetch returns bidders") {
-                let bidder = Bidder()
-                bidderNetworkModel.result = .Success([bidder])
+                let bidder = Bidder()!
+                bidderNetworkModel.result = .success([bidder])
                 expect(subject.bidders).to( haveCount(1) )
             }
 

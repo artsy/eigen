@@ -13,9 +13,9 @@ class BiddingIncrementSpecs: QuickSpec {
 
         describe("actual increments") {
             let subject: [BidIncrementStrategy] = [
-                BidIncrementStrategy(JSON: ["from": 0, "amount": 25]),
-                BidIncrementStrategy(JSON: ["from": 100, "amount": 50]),
-                BidIncrementStrategy(JSON: ["from": 1_000, "amount": 500])
+                BidIncrementStrategy(json: ["from": 0, "amount": 25]),
+                BidIncrementStrategy(json: ["from": 100, "amount": 50]),
+                BidIncrementStrategy(json: ["from": 1_000, "amount": 500])
             ]
 
             it("works with the smallest increment") {
@@ -38,9 +38,9 @@ class BiddingIncrementSpecs: QuickSpec {
 
         describe("out of order increments") {
             let subject: [BidIncrementStrategy] = [
-                BidIncrementStrategy(JSON: ["from": 0, "amount": 25]),
-                BidIncrementStrategy(JSON: ["from": 1_000, "amount": 500]),
-                BidIncrementStrategy(JSON: ["from": 100, "amount": 50])
+                BidIncrementStrategy(json: ["from": 0, "amount": 25]),
+                BidIncrementStrategy(json: ["from": 1_000, "amount": 500]),
+                BidIncrementStrategy(json: ["from": 100, "amount": 50])
             ]
 
             // It is the salesperson's job to sort these.
