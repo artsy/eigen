@@ -71,10 +71,10 @@ extension LiveAuctionLotViewModelType {
             let reserveString: String?
 
             switch reserveStatus {
-            case .Unknown: fallthrough
-            case .NoReserve: reserveString = nil
-            case .ReserveMet: reserveString = "(Reserve met)"
-            case .ReserveNotMet: reserveString = "(Reserve not met)"
+            case .unknown: fallthrough
+            case .noReserve: reserveString = nil
+            case .reserveMet: reserveString = "(Reserve met)"
+            case .reserveNotMet: reserveString = "(Reserve not met)"
             }
 
             return (
@@ -120,13 +120,13 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
         lotStateSignal = biddingStatusSignal.map { (biddingStatus, passed, isHighestBidder) -> LotState in
             switch biddingStatus {
-            case .Upcoming: fallthrough // Case that sale is not yet open
-            case .Open:                 // Case that lot is open to leave max bids
-                return .UpcomingLot(isHighestBidder: isHighestBidder)
-            case .OnBlock:              // Currently on the block
-                return .LiveLot
-            case .Complete:             // Closed
-                return .ClosedLot(wasPassed: passed)
+            case .upcoming: fallthrough // Case that sale is not yet open
+            case .open:                 // Case that lot is open to leave max bids
+                return .upcomingLot(isHighestBidder: isHighestBidder)
+            case .onBlock:              // Currently on the block
+                return .liveLot
+            case .complete:             // Closed
+                return .closedLot(wasPassed: passed)
             }
         }
     }
@@ -169,7 +169,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var imageAspectRatio: CGFloat {
-        return model.imageAspectRatio() ?? 1
+        return model.imageAspectRatio()
     }
 
     var lotName: String {

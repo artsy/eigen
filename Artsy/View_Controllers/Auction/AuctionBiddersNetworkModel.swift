@@ -20,7 +20,7 @@ class AuctionBiddersNetworkModel: AuctionBiddersNetworkModelType {
                 self?.bidders = bidders
                 observable.update(.Success(bidders))
             }, failure: { error in
-                observable.update(.Error(error as ErrorType))
+                observable.update(.error(error as Error))
             })
 
         return observable

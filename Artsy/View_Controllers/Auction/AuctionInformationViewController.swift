@@ -13,7 +13,7 @@ struct AuctionInformation {
 
         let markdownSignal = Observable<MarkdownString>()
         func downloadContent() {
-            ArtsyAPI.getPageContentForSlug(slug) {
+            ArtsyAPI.getPageContent(forSlug: slug) {
                 self.markdownSignal.update($0)
             }
         }
@@ -127,6 +127,7 @@ class AuctionInformationViewController: UIViewController {
         stackView?.add(buttonsViewController, toParent: self, withTopMargin: "20", sideMargin: "40")
     }
 
+    @discardableResult
     func showFAQ(_ animated: Bool) -> FAQViewController {
         let controller = FAQViewController(entries: FAQEntries)
         navigationController?.pushViewController(controller, animated: animated)
@@ -238,7 +239,7 @@ extension AuctionInformationViewController {
                 let previouslyExpandedEntryView = self.currentlyExpandedEntryView
                 self.currentlyExpandedEntryView = viewToExpand
 
-                UIView.animateIf(Bool(ARPerformWorkAsynchronously), duration: 0.25) {
+                UIView.animateIf(ARPerformWorkAsynchronously.boolValue, duration: 0.25) {
                     // Do it in this order, otherwise we’d get unsatisfiable constraints.
                     self.currentlyExpandedEntryView?.expand()
                     previouslyExpandedEntryView?.collapse()

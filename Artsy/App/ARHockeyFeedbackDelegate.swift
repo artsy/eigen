@@ -42,7 +42,7 @@ class ARHockeyFeedbackDelegate: NSObject {
         fetch.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
 
         let results = PHAsset.fetchAssets(with: .image, options: fetch)
-        guard let result = results.lastObject as? PHAsset else {
+        guard let result = results.lastObject else {
             self.showFeedback()
             return
         }
