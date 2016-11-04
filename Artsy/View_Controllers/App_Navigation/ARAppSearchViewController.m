@@ -114,7 +114,7 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
         NSString *path = NSStringWithFormat(@"/artist/%@", result.modelID);
         controller = [[ARSwitchBoard sharedInstance] loadPath:path];
     } else if (result.model == [Gene class]) {
-        controller = [[ARSwitchBoard sharedInstance] loadGeneWithID:result.modelID];
+        controller = [[ARGeneViewController alloc] initWithGeneID:result.modelID];
     } else if (result.model == [Profile class]) {
         controller = [ARSwitchBoard.sharedInstance loadProfileWithID:result.modelID];
     } else if (result.model == [SiteFeature class]) {
