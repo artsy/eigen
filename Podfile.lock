@@ -220,8 +220,8 @@ DEPENDENCIES:
   - Expecta
   - Expecta+Snapshots
   - Extraction
-  - FBSDKCoreKit (~> 4.9)
-  - FBSDKLoginKit (~> 4.9)
+  - FBSDKCoreKit
+  - FBSDKLoginKit
   - FBSnapshotTestCase (from `https://github.com/orta/ios-snapshot-test-case.git`)
   - FLKAutoLayout (from `https://github.com/orta/FLKAutoLayout.git`, branch `v1`)
   - Forgeries/Mocks
@@ -440,6 +440,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: 0621e0f057a86fba5bd66da99a10e82146e742cd
+PODFILE CHECKSUM: aa03f30bcf45bd1bc2032f2be033b6d47eb81ab5
 
 COCOAPODS: 1.0.1

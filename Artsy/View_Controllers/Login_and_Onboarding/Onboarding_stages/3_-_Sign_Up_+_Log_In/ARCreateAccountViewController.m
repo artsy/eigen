@@ -1,5 +1,6 @@
 #import "ARCreateAccountViewController.h"
 
+#import "ARLogger.h"
 #import "ARAppConstants.h"
 #import "AROnboardingViewController.h"
 #import "AROnboardingNavBarView.h"
@@ -29,10 +30,13 @@
 #import <EDColor/EDColor.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 //sigh
 #define EMAIL_TAG 111
 #define SOCIAL_TAG 222
+#define ERROR_TAG 333
 
 
 @interface ARCreateAccountViewController () <UITextFieldDelegate, UIAlertViewDelegate>
@@ -128,6 +132,7 @@
 
     [self.buttonsView.emailActionButton addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView.facebookActionButton addTarget:self action:@selector(fb:) forControlEvents:UIControlEventTouchUpInside];
+    
 
     [self.buttonsView.emailActionButton setEnabled:[self canSubmit] animated:YES];
 }
@@ -349,8 +354,132 @@
 
 - (void)fb:(id)sender
 {
-    [self.delegate signUpWithFacebook];
+    FBSDKLoginManager *fbLoginManager = [[FBSDKLoginManager alloc] init];
+    
+    __weak typeof(self) wself = self;
+    
+    [fbLoginManager
+     logInWithReadPermissions: @[@"public_profile", @"email"]
+     fromViewController:self
+     handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+         
+         
+         // did we get a FB token?
+         if ([FBSDKAccessToken currentAccessToken].tokenString) {
+             // lets get the user's email
+             [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me?fields=name,id,email" parameters:nil]
+              startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+                  
+                  // if no error, let's set up the account
+                  if (!error) {
+                      NSLog(@"fetched user:%@", result);
+                      
+                      // FB info goes into our ARUserManager
+                      [[ARUserManager sharedManager] createUserViaFacebookWithToken:[FBSDKAccessToken currentAccessToken].tokenString
+                                                                              email:result[@"email"]
+                                                                               name:result[@"name"]
+                                                                            success:^(User *user) {
+                                                                                
+                                                                                __strong typeof (wself) sself = wself;
+                                                                                NSLog(@"success");
+                                                                                
+                                                                                // we've created a user, now let's log them in
+                                                                                [sself loginWithFacebookCredential:
+                                                                                 [FBSDKAccessToken currentAccessToken].tokenString];
+                                                                            }
+                       
+                       
+                                                                            failure:^(NSError *error, id JSON) {
+                                                                                
+                                                                                // let's see what went wrong
+                                                                                __strong typeof (wself) sself = wself;
+                                                                                if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
+                                                                                    if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
+                                                                                        // This is an existing account. Let's log them in.
+                                                                                        [sself loginWithFacebookCredential:
+                                                                                         [FBSDKAccessToken currentAccessToken].tokenString];
+                                                                                        return;
+                                                                                        
+                                                                                        // there's already a user with this email
+                                                                                        // let's ask them to login in with their email
+                                                                                    } else if ([JSON[@"error"] isEqualToString:@"User Already Exists"]
+                                                                                               || [JSON[@"error"] isEqualToString:@"User Already Invited"]) {
+                                                                                        NSString *source = [self existingAccountSource:JSON];
+                                                                                        [sself accountExists:source];
+                                                                                        return;
+                                                                                    }
+                                                                                }
+                                                                                
+                                                                                // something else went wrong
+                                                                                
+                                                                                ARErrorLog(@"Couldn't link Facebook account. Error: %@. The server said: %@", error.localizedDescription, JSON);
+                                                                                
+                                                                                NSString *errorMessage = [NSString stringWithFormat:@"Server replied saying '%@'.", JSON[@"error"] ?: JSON[@"message"] ?: error.localizedDescription];
+                                                                                
+                                                                                // we'll display an alert view
+                                                                                __weak typeof (self) wself = self;
+                                                                                [sself showErrorAlertWithMessage:errorMessage];
+                                                                                
+                                                                                }];
+                  }
+              }];
+         } else {
+             // there was an error on facebook's side
+             // not sure what error message to show here - previously we had none as far as I know
+         }
+     }];
 }
+
+- (void)loginWithFacebookCredential: (NSString *)token
+{
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
+    __weak typeof(self) wself = self;
+    
+    [[ARUserManager sharedManager] loginWithFacebookToken:token successWithCredentials:nil
+                                                  gotUser:^(User *currentUser) {
+                                                      __strong typeof (wself) sself = wself;
+                                                      [sself loginCompleted];
+                                                  }  authenticationFailure:^(NSError *error) {
+                                                      __strong typeof (wself) sself = wself;
+                                                      [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                                      [sself showErrorAlertWithMessage:@"Authentication failed."];
+                                    } networkFailure:^(NSError *error) {
+                                               __strong typeof (wself) sself = wself;
+                                               [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                               [sself showErrorAlertWithMessage:@"Sign up failed."];
+                                    }];
+}
+
+- (void)loginCompleted
+{
+    [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+    
+    if ([ARUserManager didCreateAccountThisSession]) {
+        [self.delegate didSignUpAndLogin];
+    } else {
+        [self.delegate dismissOnboardingWithVoidAnimation:YES];
+    }
+}
+
+- (void)showErrorAlertWithMessage:(NSString *)errorMessage
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error Creating\na New Artsy Account" message:errorMessage delegate:self cancelButtonTitle:@"Close" otherButtonTitles:nil];
+    alert.tag = ERROR_TAG;
+    [alert show];
+}
+
+
+- (void)fbError
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t get Facebook credentials"
+                                                    message:@"Couldn’t get Facebook credentials. Please link a Facebook account in the settings app. If you continue having trouble, please email Artsy support at support@artsy.net"
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+
 
 #pragma mark -
 #pragma mark UITextField
@@ -389,8 +518,10 @@
     NSString *email = nil;
     if (alertView.tag == EMAIL_TAG) {
         email = self.textFieldsView.emailField.text;
+        [self.delegate logInWithEmail:email];
+    } else if (alertView.tag == ERROR_TAG) {
+        [self setFormEnabled:YES];
     }
-    [self.delegate logInWithEmail:email];
 }
 
 #pragma mark - DI

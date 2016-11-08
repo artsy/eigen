@@ -92,8 +92,8 @@ target 'Artsy' do
   end
 
   # Facebook
-  pod 'FBSDKCoreKit', '~> 4.9'
-  pod 'FBSDKLoginKit', '~> 4.9'
+  pod 'FBSDKCoreKit'
+  pod 'FBSDKLoginKit'
 
   # Analytics
   pod 'Analytics'

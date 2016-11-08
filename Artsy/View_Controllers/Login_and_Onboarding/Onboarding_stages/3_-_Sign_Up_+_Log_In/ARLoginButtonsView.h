@@ -2,7 +2,6 @@
 
 @class ARBlackFlatButton, ARClearFlatButton;
 
-
 @interface ARLoginButtonsView : UIView
 
 @property (nonatomic, strong, readonly) ARBlackFlatButton *emailActionButton;

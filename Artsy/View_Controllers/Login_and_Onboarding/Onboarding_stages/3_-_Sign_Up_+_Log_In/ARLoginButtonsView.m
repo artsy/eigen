@@ -6,7 +6,6 @@
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
-
 @interface ARLoginButtonsView ()
 
 @property (nonatomic, strong) UIView *separatorLine;
