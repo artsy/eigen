@@ -15,7 +15,6 @@
 #import "ARPersonalizeViewController.h"
 #import "ARAuthProviders.h"
 #import "UIViewController+FullScreenLoading.h"
-#import "AROnboardingMoreInfoViewController.h"
 #import "ARPersonalizeWebViewController.h"
 #import "ARParallaxEffect.h"
 #import "NSString+StringCase.h"
