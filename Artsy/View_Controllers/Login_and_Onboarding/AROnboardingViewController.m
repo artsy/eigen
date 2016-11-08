@@ -32,7 +32,6 @@
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
-
 @interface AROnboardingViewController () <UINavigationControllerDelegate>
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
 @property (nonatomic) UIImageView *backgroundView;
@@ -355,25 +354,6 @@
     [self pushViewController:webViewController animated:YES];
 }
 
-- (void)signUpWithFacebook
-{
-    __weak typeof(self) wself = self;
-    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-    [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
-        __strong typeof (wself) sself = wself;
-        [sself fbSuccessWithToken:token email:email name:name];
-
-    } failure:^(NSError *error) {
-        __strong typeof (wself) sself = wself;
-
-        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-
-        NSString * reason = error.userInfo[@"com.facebook.sdk:ErrorLoginFailedReason"];
-        if (![reason isEqualToString:@"com.facebook.sdk:UserLoginCancelled"]) {
-            [sself fbError];
-        }
-    }];
-}
 
 - (void)fbSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
 {
