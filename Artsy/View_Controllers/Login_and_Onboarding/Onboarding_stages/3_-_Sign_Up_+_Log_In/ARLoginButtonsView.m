@@ -5,7 +5,8 @@
 #import "UIFont+ArtsyFonts.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 @interface ARLoginButtonsView ()
 
@@ -22,7 +23,7 @@
     self = [super init];
     if (self) {
         _emailActionButton = [[ARBlackFlatButton alloc] init];
-        _facebookActionButton = [[ARBlackFlatButton alloc] init];
+        _facebookActionButton = [[FBSDKLoginButton alloc] init];
         _twitterActionButton = [[ARBlackFlatButton alloc] init];
         _forgotPasswordButton = [[ARClearFlatButton alloc] init];
         _separatorLine = [[UIView alloc] init];
@@ -75,8 +76,8 @@
     [self.separatorLabel alignCenterXWithView:self predicate:@"0"];
     [self.separatorLabel alignCenterYWithView:self.separatorLine predicate:@"0"];
 
-    [self.facebookActionButton setTitle:@"CONNECT WITH FACEBOOK" forState:UIControlStateNormal];
-    [self.facebookActionButton setBackgroundColor:[UIColor colorWithRed:60.0 / 225.0 green:89.0 / 225.0 blue:155.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+//    [self.facebookActionButton setTitle:@"CONNECT WITH FACEBOOK" forState:UIControlStateNormal];
+//    [self.facebookActionButton setBackgroundColor:[UIColor colorWithRed:60.0 / 225.0 green:89.0 / 225.0 blue:155.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
 
     [self addSubview:self.facebookActionButton];
 

@@ -244,39 +244,7 @@
     __weak typeof(self) wself = self;
     [self setFormEnabled:NO];
     if (self.provider == ARAuthProviderFacebook) {
-        [[ARUserManager sharedManager] createUserViaFacebookWithToken:self.token
-            email:self.emailField.text
-            name:self.nameField.text
-            success:^(User *user) {
-            __strong typeof (wself) sself = wself;
-            [sself loginWithFacebookCredential];
-            }
-            failure:^(NSError *error, id JSON) {
-            __strong typeof (wself) sself = wself;
-            if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
-                if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
-                    ARErrorLog(@"Facebook account already linked");
-                    [sself userAlreadyExistsForLoginType:AROnboardingMoreInfoViewControllerLoginTypeFacebook];
-                    return;
-
-                // there's already a user with this email
-                } else if ([JSON[@"error"] isEqualToString:@"User Already Exists"]
-                           || [JSON[@"error"] isEqualToString:@"User Already Invited"]) {
-                    NSString *source = [self existingAccountSource:JSON];
-                    [sself accountExists:source];
-                    return;
-                }
-            }
-
-            ARErrorLog(@"Couldn't link Facebook account. Error: %@. The server said: %@", error.localizedDescription, JSON);
-            NSString *errorString = [NSString stringWithFormat:@"Server replied saying '%@'.", JSON[@"error"] ?: JSON[@"message"] ?: error.localizedDescription];
-           __weak typeof (self) wself = self;
-            [UIAlertView showWithTitle:@"Error Creating\na New Artsy Account" message:errorString cancelButtonTitle:@"Close" otherButtonTitles:nil tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                __strong typeof (wself) sself = wself;
-                [sself setFormEnabled:YES];
-            }];
-            }];
-    } else {
+            } else {
         [[ARUserManager sharedManager] createUserViaTwitterWithToken:self.token
             secret:self.secret
             email:self.emailField.text
@@ -357,36 +325,14 @@
         }];
 }
 
-- (void)loginWithFacebookCredential
-{
-    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-    __weak typeof(self) wself = self;
 
-    [[ARUserManager sharedManager] loginWithFacebookToken:self.token successWithCredentials:nil
-        gotUser:^(User *currentUser) {
-          __strong typeof (wself) sself = wself;
-          [sself loginCompletedForLoginType:AROnboardingMoreInfoViewControllerLoginTypeFacebook];
-        }
-        authenticationFailure:^(NSError *error) {
-          __strong typeof (wself) sself = wself;
-          [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-          //TODO: handle me
-
-        }
-        networkFailure:^(NSError *error) {
-          __strong typeof (wself) sself = wself;
-          [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-          [sself setFormEnabled:YES];
-          [ARNetworkErrorManager presentActiveError:error withMessage:@"Sign up failed."];
-        }];
-}
 
 - (void)userAlreadyExistsForLoginType:(AROnboardingMoreInfoViewControllerLoginType)loginType
 {
     //let's go ahead and log them in
     switch (loginType) {
         case AROnboardingMoreInfoViewControllerLoginTypeFacebook:
-            [self loginWithFacebookCredential];
+//            [self loginWithFacebookCredential];
             break;
         case AROnboardingMoreInfoViewControllerLoginTypeTwitter:
             [self loginWithTwitterCredential];
