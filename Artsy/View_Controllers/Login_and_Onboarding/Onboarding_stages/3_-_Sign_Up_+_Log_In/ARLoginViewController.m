@@ -27,6 +27,8 @@
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <ORStackView/ORStackView.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 #define SPINNER_TAG 0x555
 
@@ -335,36 +337,48 @@
 {
     [self hideKeyboard];
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-
+    
+    FBSDKLoginManager *fbLoginManager = [[FBSDKLoginManager alloc] init];
+    
     __weak typeof(self) wself = self;
-    [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
-        [[ARUserManager sharedManager] loginWithFacebookToken:token
-           successWithCredentials:nil gotUser:^(User *currentUser) {
-               __strong typeof (wself) sself = wself;
-                [sself loggedInWithType:ARLoginViewControllerLoginTypeFacebook user:currentUser];
-           } authenticationFailure:^(NSError *error) {
-               __strong typeof (wself) sself = wself;
-
-               [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-
-               NSString * reason = error.userInfo[@"com.facebook.sdk:ErrorLoginFailedReason"];
-               if (![reason isEqualToString:@"com.facebook.sdk:UserLoginCancelled"]) {
-                   [sself fbError];
-               } else if ([error.userInfo[@"AFNetworkingOperationFailingURLResponseErrorKey"] statusCode] == 401) {
-                   // This case handles a 401 from Artsy's server, which means the Facebook account is not associated with a user.
-                   [sself fbNoUser];
-               }
-
-           } networkFailure:^(NSError *error) {
-               __strong typeof (wself) sself = wself;
-               [sself failedToLoginToFacebook:error];
-           }];
-    } failure:^(NSError *error) {
-        __strong typeof (wself) sself = wself;
-
-        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-        [sself fbError];
-    }];
+    
+    [fbLoginManager
+     logInWithReadPermissions: @[@"public_profile", @"email"]
+     fromViewController:self
+     handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+         
+         // did we get a FB token?
+         if ([FBSDKAccessToken currentAccessToken].tokenString) {
+             
+             // let's log them in
+             [[ARUserManager sharedManager] loginWithFacebookToken:[FBSDKAccessToken currentAccessToken].tokenString
+                                            successWithCredentials:nil gotUser:^(User *currentUser) {
+                                                __strong typeof (wself) sself = wself;
+                                                [sself loggedInWithType:ARLoginViewControllerLoginTypeFacebook user:currentUser];
+                                            } authenticationFailure:^(NSError *error) {
+                                                __strong typeof (wself) sself = wself;
+                                                
+                                                [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                                
+                                                NSString * reason = error.userInfo[@"com.facebook.sdk:ErrorLoginFailedReason"];
+                                                if (![reason isEqualToString:@"com.facebook.sdk:UserLoginCancelled"]) {
+                                                    [sself fbError];
+                                                } else if ([error.userInfo[@"AFNetworkingOperationFailingURLResponseErrorKey"] statusCode] == 401) {
+                                                    // This case handles a 401 from Artsy's server, which means the Facebook account is not associated with a user.
+                                                    [sself fbNoUser];
+                                                }
+                                                
+                                            } networkFailure:^(NSError *error) {
+                                                __strong typeof (wself) sself = wself;
+                                                [sself fbError];
+                                            }];
+                   } else {
+                       __strong typeof (wself) sself = wself;
+                       
+                       [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                       [sself fbError];
+                   }
+     }];
 }
 
 - (void)failedToLoginToFacebook:(NSError *)error;
