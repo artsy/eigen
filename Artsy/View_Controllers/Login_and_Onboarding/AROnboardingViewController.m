@@ -15,7 +15,6 @@
 #import "ARPersonalizeViewController.h"
 #import "ARAuthProviders.h"
 #import "UIViewController+FullScreenLoading.h"
-#import "AROnboardingMoreInfoViewController.h"
 #import "ARPersonalizeWebViewController.h"
 #import "ARParallaxEffect.h"
 #import "NSString+StringCase.h"
@@ -352,35 +351,6 @@
 {
     AROnboardingWebViewController *webViewController = [[AROnboardingWebViewController alloc] initWithMobileArtsyPath:@"privacy"];
     [self pushViewController:webViewController animated:YES];
-}
-
-
-- (void)fbSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
-{
-    AROnboardingMoreInfoViewController *more = [[AROnboardingMoreInfoViewController alloc] initForFacebookWithToken:token email:email name:name];
-    more.delegate = self;
-    [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-    [self pushViewController:more animated:YES];
-}
-
-- (void)fbError
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t get Facebook credentials"
-                                                    message:@"Couldn’t get Facebook credentials. Please link a Facebook account in the settings app. If you continue having trouble, please email Artsy support at support@artsy.net"
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
-}
-
-- (void)twitterError
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t get Twitter credentials"
-                                                    message:@"Couldn’t get Twitter credentials. Please link a Twitter account in the settings app. If you continue having trouble, please email Artsy support at support@artsy.net"
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
 }
 
 - (void)logInWithEmail:(NSString *)email

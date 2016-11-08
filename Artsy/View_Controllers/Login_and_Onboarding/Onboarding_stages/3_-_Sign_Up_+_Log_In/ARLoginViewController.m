@@ -114,7 +114,7 @@
 
     [self.buttonsView.emailActionButton addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView.forgotPasswordButton addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.buttonsView.facebookActionButton addTarget:self action:@selector(fb:) forControlEvents:UIControlEventTouchUpInside];
+    [self.buttonsView.facebookActionButton addTarget:self action:@selector(fb:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView.twitterActionButton addTarget:self action:@selector(twitter:) forControlEvents:UIControlEventTouchUpInside];
 }
 
