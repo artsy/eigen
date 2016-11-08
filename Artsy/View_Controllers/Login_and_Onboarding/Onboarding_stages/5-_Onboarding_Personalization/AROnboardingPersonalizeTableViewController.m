@@ -61,14 +61,13 @@
                       animated:(BOOL)animated
 {
     self.loadedInitialResults = YES;
-
     switch (replaceStyle) {
         case ARSearchResultsReplaceSingle:
-            if (searchResults) {
+            if (searchResults.count) {
                 [self.searchResults replaceObjectAtIndex:self.tableView.indexPathForSelectedRow.row withObject:searchResults[0]];
                 self.selectedRowToReplace = self.tableView.indexPathForSelectedRow;
                 [self.geneImageReconciler addReplacedGene:self.selectedRowToReplace];
-            } else {
+            } else if (self.searchResults.count) {
                 [self.searchResults removeObjectAtIndex:self.tableView.indexPathForSelectedRow.row];
             }
             break;
