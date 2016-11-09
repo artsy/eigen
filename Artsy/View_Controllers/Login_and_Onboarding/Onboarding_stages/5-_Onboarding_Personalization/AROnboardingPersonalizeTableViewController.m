@@ -66,7 +66,9 @@
             if (searchResults.count) {
                 [self.searchResults replaceObjectAtIndex:self.tableView.indexPathForSelectedRow.row withObject:searchResults[0]];
                 self.selectedRowToReplace = self.tableView.indexPathForSelectedRow;
-                [self.geneImageReconciler addReplacedGene:self.selectedRowToReplace];
+                if (self.selectedRowToReplace) {
+                    [self.geneImageReconciler addReplacedGene:self.selectedRowToReplace];
+                }
             } else if (self.searchResults.count) {
                 [self.searchResults removeObjectAtIndex:self.tableView.indexPathForSelectedRow.row];
             }
