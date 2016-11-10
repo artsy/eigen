@@ -195,8 +195,8 @@
             cell.alpha = 0.7;
         } completion:^(BOOL finished) {
             cell.alpha = 1.0;
+            self.selectedRowToReplace = nil;
         }];
-        self.selectedRowToReplace = nil;
     }
 }
 
