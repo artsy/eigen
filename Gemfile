@@ -4,6 +4,8 @@ gem 'cocoapods', '>= 1.0.0'
 gem 'cocoapods-keys'
 gem 'cocoapods-check'
 
+gem 'xcode-install'
+
 group :development do
   gem 'lowdown'
   # Depends on older xcodeproj gem that is incompatible with current CocoaPods.

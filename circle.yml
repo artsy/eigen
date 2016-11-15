@@ -33,6 +33,7 @@ dependencies:
     - bundle install --path=vendor/bundle --jobs=4 --retry=3 --without development
     - bundle exec pod repo update
     - bundle exec pod install --verbose
+    - xcversion simulators --install='iOS 9.3'
 
 test:
   pre:
