@@ -7,8 +7,6 @@ import OHHTTPStubs
 @testable
 import Artsy
 
-let window = UIWindow()
-
 class AuctionInformationViewControllerSpec: QuickSpec {
     override func spec() {
         let start = ARStandardDateFormatter.shared().date(from: "2016-02-18T10:00:00+00:00")!
@@ -21,11 +19,6 @@ class AuctionInformationViewControllerSpec: QuickSpec {
 
         var navigationController: ARSerifNavigationViewController!
         var informationController: AuctionInformationViewController!
-
-        beforeSuite {
-            // Required for all snapshot test cases, otherwise it blows up: https://github.com/facebook/ios-snapshot-test-case/blob/fbb2d277cda66350487a88e318cd5a3457738ddd/FBSnapshotTestCase/Categories/UIApplication%2BStrictKeyWindow.m#L18-L23
-            window.makeKeyAndVisible()
-        }
 
         beforeEach {
             informationController = AuctionInformationViewController(saleViewModel: saleViewModel)
