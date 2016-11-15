@@ -70,6 +70,12 @@
                                                object:nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.textFieldsView.nameField becomeFirstResponder];
+}
+
 - (void)viewDidLoad
 {
     UITapGestureRecognizer *keyboardCancelTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
@@ -94,7 +100,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
 
     self.titleLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:1.4];
-    self.titleLabel.text = @"Sign up to see our recommendations for you";
+    self.titleLabel.text = @"Set up your Artsy account";
     self.titleLabel.font = [UIFont serifFontWithSize:self.useLargeLayout ? 40.0 : 30.0];
     self.titleLabel.textAlignment = self.useLargeLayout ? NSTextAlignmentCenter : NSTextAlignmentLeft;
 
@@ -103,14 +109,14 @@
     [self.titleLabel constrainWidthToView:self.view predicate:@"*.9"];
     [self.titleLabel alignCenterXWithView:self.view predicate:@"0"];
     [self.titleLabel alignTopEdgeWithView:self.view predicate:@"20"];
-    [self.titleLabel constrainHeight:@"80"];
+    [self.titleLabel constrainHeight:@"60"];
 
     self.textFieldsView = [[ARLoginFieldsView alloc] init];
     [self.view addSubview:self.textFieldsView];
 
     [self.textFieldsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
     [self.textFieldsView alignCenterXWithView:self.view predicate:@"0"];
-    self.titleToTextFieldsSpacer = [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:self.useLargeLayout ? @"120" : @"80"];
+    self.titleToTextFieldsSpacer = [self.textFieldsView constrainTopSpaceToView:self.titleLabel predicate:self.useLargeLayout ? @"120" : @"20"];
     [self.textFieldsView constrainHeight:@">=162"];
     [self.textFieldsView setupForSignUp];
 
@@ -125,11 +131,14 @@
     self.textFieldsView.nameField.delegate = self;
     self.textFieldsView.emailField.delegate = self;
     self.textFieldsView.passwordField.delegate = self;
+    
+    [self.buttonsView.emailActionButton setTitle:@"Complete" forState:UIControlStateNormal];
 
     [self.buttonsView.emailActionButton addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView.facebookActionButton addTarget:self action:@selector(fb:) forControlEvents:UIControlEventTouchUpInside];
 
     [self.buttonsView.emailActionButton setEnabled:[self canSubmit] animated:YES];
+    
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -358,6 +367,20 @@
 - (void)textChanged:(NSNotification *)n
 {
     [self.buttonsView.emailActionButton setEnabled:[self canSubmit] animated:YES];
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:textField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyGrayMedium]}];
+    
+    ((ARTextFieldWithPlaceholder *)textField).baseline.backgroundColor = [UIColor blackColor].CGColor;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:textField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyGraySemibold]}];
+    
+    ((ARTextFieldWithPlaceholder *)textField).baseline.backgroundColor = [UIColor artsyGrayRegular].CGColor;
 }
 
 #pragma mark - delegate
