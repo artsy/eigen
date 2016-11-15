@@ -4,7 +4,7 @@ gem 'cocoapods', '>= 1.0.0'
 gem 'cocoapods-keys'
 gem 'cocoapods-check'
 
-gem 'xcode-install'
+gem 'xcode-install', git: 'https://github.com/KrauseFx/xcode-install.git', branch: 'master'
 
 group :development do
   gem 'lowdown'

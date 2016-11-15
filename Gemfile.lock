@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/KrauseFx/xcode-install.git
+  revision: b919933294f4d7f40b940026026a45415c91dd8b
+  branch: master
+  specs:
+    xcode-install (2.0.9)
+      claide (>= 0.9.1, < 1.1.0)
+      spaceship (>= 0.25.1, < 1.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -186,9 +195,6 @@ GEM
       unf_ext
     unf_ext (0.0.7.2)
     unicode-display_width (1.1.1)
-    xcode-install (2.0.9)
-      claide (>= 0.9.1, < 1.1.0)
-      spaceship (>= 0.25.1, < 1.0.0)
     xcodeproj (1.4.0)
       CFPropertyList (~> 2.3.3)
       activesupport (>= 3)
@@ -210,7 +216,7 @@ DEPENDENCIES
   lowdown
   nokogiri (>= 1.6.7)
   second_curtain
-  xcode-install
+  xcode-install!
   xcpretty
 
 BUNDLED WITH
