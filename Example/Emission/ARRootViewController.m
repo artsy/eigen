@@ -119,7 +119,7 @@
 - (ARCellData *)jumpToGene
 {
   return [self tappableCellDataWithTitle:@"Gene" selection: ^{
-    id viewController = [[ARGeneComponentViewController alloc] initWithGeneID:@"contemporary-pop"];
+    id viewController = [[ARGeneComponentViewController alloc] initWithGeneID:@"website"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
