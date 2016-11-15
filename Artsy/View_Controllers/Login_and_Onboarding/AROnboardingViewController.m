@@ -15,7 +15,6 @@
 #import "ARPersonalizeViewController.h"
 #import "ARAuthProviders.h"
 #import "UIViewController+FullScreenLoading.h"
-#import "AROnboardingMoreInfoViewController.h"
 #import "ARPersonalizeWebViewController.h"
 #import "ARParallaxEffect.h"
 #import "NSString+StringCase.h"
@@ -306,11 +305,6 @@
     [self updateProgress:0.95];
 }
 
-- (void)didSignUpAndLogin
-{
-    [self dismissOnboardingWithVoidAnimation:YES];
-}
-
 - (void)applyPersonalizationToUser
 {
     NSString *stringRange = [NSString stringWithFormat:@"%@", @(self.budgetRange)];
@@ -377,10 +371,8 @@
 
 - (void)fbSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
 {
-    AROnboardingMoreInfoViewController *more = [[AROnboardingMoreInfoViewController alloc] initForFacebookWithToken:token email:email name:name];
-    more.delegate = self;
     [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-    [self pushViewController:more animated:YES];
+    [self dismissOnboardingWithVoidAnimation:YES];
 }
 
 - (void)fbError
