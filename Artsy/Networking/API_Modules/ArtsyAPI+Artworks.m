@@ -62,7 +62,7 @@
 + (void)getAuctionArtworkWithSale:(NSString *)saleID artwork:(NSString *)artworkID success:(void (^)(id auctionArtwork))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *saleArtworkRequest = [ARRouter saleArtworkRequestForSaleID:saleID artworkID:artworkID];
-    NSURLRequest *biddersRequest = [ARRouter biddersRequest];
+    NSURLRequest *biddersRequest = [ARRouter biddersRequestForSale:saleID];
     NSURLRequest *bidderPositionRequest = [ARRouter bidderPositionsRequestForSaleID:saleID artworkID:artworkID];
 
     [self getRequests:@[ saleArtworkRequest, biddersRequest, bidderPositionRequest ] success:^(NSArray *operations) {
