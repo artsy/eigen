@@ -7,7 +7,6 @@
 
 @interface ARTextFieldWithPlaceholder ()
 @property (nonatomic, assign) BOOL swizzledClear;
-@property (nonatomic, strong) CALayer *baseline;
 @end
 
 
