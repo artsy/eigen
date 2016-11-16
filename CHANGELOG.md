@@ -1,3 +1,7 @@
+### 1.1.4
+
+- Fixes bug in GeneVC where fetching was starting on page 2
+
 ### 1.1.3
 
 - Remove the refine button from the gene view, for now, as it doesn’t work right yet - alloy
