@@ -9,6 +9,7 @@ upcoming:
       - Fixes tableview crasher in onboarding - sarah + maxim
       - Fixes email retrieval from Facebook SDK and removes email confirmation screen - maxim
       - Fixes crasher in onboarding tableview when no selection was made - alloy
+      - Fixes performance issues on the live auctions lot list - ash
 
 
 releases:
