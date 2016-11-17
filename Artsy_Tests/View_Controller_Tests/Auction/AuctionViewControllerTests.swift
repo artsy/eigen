@@ -39,6 +39,10 @@ class AuctionViewControllerTests: QuickSpec {
         var saleViewModel: Test_SaleViewModel!
         var dateMock: OCMockObject!
 
+        beforeEach {
+            UIApplication.shared.delegate?.window??.becomeKey()
+        }
+
         sharedExamples("auctions view controller registration status") { (context: @escaping SharedExampleContext) in
             var horizontalSizeClass: UIUserInterfaceSizeClass!
             var device: ARDeviceType!

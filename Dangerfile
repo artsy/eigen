@@ -111,10 +111,10 @@ if outliers.any?
   markdown(([headings] + warnings).join)
 end
 
-# Give inline test fail reports
-results_file = File.join(ENV["CIRCLE_TEST_REPORTS"], "/xcode/results.xml")
-junit.parse results_file
-junit.report
+# # Give inline test fail reports
+# results_file = File.join(ENV["CIRCLE_TEST_REPORTS"], "/xcode/results.xml")
+# junit.parse results_file
+# junit.report
 
 
 # Make submodule changes clickable

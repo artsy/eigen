@@ -9,6 +9,7 @@ import Artsy
 
 class AuctionInformationViewControllerSpec: QuickSpec {
     override func spec() {
+
         let start = ARStandardDateFormatter.shared().date(from: "2016-02-18T10:00:00+00:00")!
         let end = ARStandardDateFormatter.shared().date(from: "2025-02-18T23:59:00+00:00")!
         let description = "On Thursday, November 12, Swiss Institute will host their Annual Benefit Dinner & Auction–the most important fundraising event of the year–with proceeds going directly towards supporting their innovative exhibitions and programs. Since 1986, Swiss Institute has been dedicated to promoting forward-thinking and experimental art."
