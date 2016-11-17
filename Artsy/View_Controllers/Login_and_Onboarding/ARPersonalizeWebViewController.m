@@ -57,16 +57,6 @@
     }
 }
 
-- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
-{
-    [self exitOnboarding];
-}
-
-- (void)exitOnboarding
-{
-    [self.personalizeDelegate didSignUpAndLogin];
-}
-
 - (void)showLoading
 {
     [self.spinner fadeInAnimated:YES];

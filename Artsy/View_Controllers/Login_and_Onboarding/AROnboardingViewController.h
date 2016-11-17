@@ -17,7 +17,6 @@
 @end
 
 @protocol ARLoginSignupDelegate <NSObject>
-- (void)didSignUpAndLogin;
 - (void)dismissOnboardingWithVoidAnimation:(BOOL)animated;
 @end
 
