@@ -217,7 +217,7 @@
     [[ARUserManager sharedManager] createUserWithName:self.textFieldsView.nameField.text email:username password:password success:^(User *user) {
         __strong typeof (wself) sself = wself;
         [sself loginWithUserCredentialsWithSuccess:^{
-            [sself.delegate didSignUpAndLogin];
+            [sself.delegate dismissOnboardingWithVoidAnimation:YES];
         }];
     } failure:^(NSError *error, id JSON) {
         __strong typeof (wself) sself = wself;
