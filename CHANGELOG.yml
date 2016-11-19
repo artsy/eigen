@@ -10,10 +10,10 @@ upcoming:
       - Fixes email retrieval from Facebook SDK and removes email confirmation screen - maxim
       - Fixes crasher in onboarding tableview when no selection was made - alloy
       - Fixes performance issues on the live auctions lot list - ash
-
       - Fixes bug in GeneVC where fetching was starting on page 2 - sarah
       - Update home view artworks rails order - maxim
-      - Fix artist link to auction results - alloy
+      - Fixes artist link to auction results - alloy
+      - Ensures artists in context of a gallery are shown in the new artist view - sarah + alloy
 
 releases:
   - version: 3.0.1
