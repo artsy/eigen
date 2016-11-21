@@ -14,6 +14,7 @@ upcoming:
       - Update home view artworks rails order - maxim
       - Fixes artist link to auction results - alloy
       - Ensures artists in context of a gallery are shown in the new artist view - sarah + alloy
+      - More accurate "auction begins" data in auction info VC - ash
 
 releases:
   - version: 3.0.1
