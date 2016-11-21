@@ -61,14 +61,15 @@
                       animated:(BOOL)animated
 {
     self.loadedInitialResults = YES;
-
     switch (replaceStyle) {
         case ARSearchResultsReplaceSingle:
-            if (searchResults) {
+            if (searchResults.count) {
                 [self.searchResults replaceObjectAtIndex:self.tableView.indexPathForSelectedRow.row withObject:searchResults[0]];
                 self.selectedRowToReplace = self.tableView.indexPathForSelectedRow;
-                [self.geneImageReconciler addReplacedGene:self.selectedRowToReplace];
-            } else {
+                if (self.selectedRowToReplace) {
+                    [self.geneImageReconciler addReplacedGene:self.selectedRowToReplace];
+                }
+            } else if (self.searchResults.count) {
                 [self.searchResults removeObjectAtIndex:self.tableView.indexPathForSelectedRow.row];
             }
             break;
@@ -194,8 +195,8 @@
             cell.alpha = 0.7;
         } completion:^(BOOL finished) {
             cell.alpha = 1.0;
+            self.selectedRowToReplace = nil;
         }];
-        self.selectedRowToReplace = nil;
     }
 }
 
