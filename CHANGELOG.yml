@@ -4,6 +4,7 @@ upcoming:
     dev:
       infrastructure:
     user_facing:
+      - Fixes auction countdown timer on iPad - ash
       - Fixes problem where users could not bid on sales if they were registered for too many sales - ash
       - Fixes gene routing bug where search routed to old gene VC instead of RN one - sarah
       - Fixes tableview crasher in onboarding - sarah + maxim
