@@ -15,19 +15,21 @@ Want to know more about Emission? Read the [mobile](http://artsy.github.io/blog/
 
 ### Installation
 
-1. Install Node.js and type checking tool: `$ brew install node flow`
+1. Install [Node.js][node] and our type checking tool [Flow][flow], and [Yarn][yarn]: `$ brew install node flow`
 2. Install file watcher used by React Native:
    * `$ brew install pcre`
    * `$ brew link pcre`
    * `$ brew install watchman --HEAD`
-3. Install NPM modules: `$ npm install`
+3. Install NPM modules: `$ yarn install`
 4. Install Pods: `$ cd Example && pod install`
+
+Why Yarn? See [our JS glossary for Yarn][glossary-yarn],
 
 ### Development
 
 ### Using VS Code as an IDE
 
-There is a full document covering [our setup here](docs/vscode.md).
+There is a comprehensive document covering [our setup here](docs/vscode.md).
 
 ### Vanilla Commands
 
@@ -120,3 +122,7 @@ On the other hand, our JS is deployed from master to our dev build on Testflight
 
 [React Native]: http://facebook.github.io/react-native/
 [Eigen]: https://github.com/artsy/eigen
+[yarn]: https://yarnpkg.com
+[flow]: http://flowtype.org
+[node]: http://nodejs.org
+[glossary-yarn]: http://artsy.github.io/blog/2016/11/14/JS-Glossary/#yarn
