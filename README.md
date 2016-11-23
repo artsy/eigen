@@ -15,7 +15,7 @@ Want to know more about Emission? Read the [mobile](http://artsy.github.io/blog/
 
 ### Installation
 
-1. Install [Node.js][node] and our type checking tool [Flow][flow], and [Yarn][yarn]: `$ brew install node flow`
+1. Install [Node.js][node], and [Yarn][yarn]: `$ brew install node yarn`
 2. Install file watcher used by React Native:
    * `$ brew install pcre`
    * `$ brew link pcre`
