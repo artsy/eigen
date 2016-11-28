@@ -7,7 +7,6 @@ import { storiesOf } from '@kadira/react-native-storybook'
 import StubContainer from 'react-storybooks-relay-container'
 
 import ArtistArticles from '../lib/components/artist/articles'
-import Routes from '../lib/relay/routes'
 
 storiesOf('Artist Articles')
   .addDecorator((story) => (
