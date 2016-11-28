@@ -33,6 +33,7 @@
 		1CC9EBA41CC76CDD00A74E3C /* followButtonChecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC9EB9E1CC76CDD00A74E3C /* followButtonChecked.png */; };
 		1CC9EBA51CC76CDD00A74E3C /* followButtonChecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC9EB9F1CC76CDD00A74E3C /* followButtonChecked@2x.png */; };
 		1CC9EBA61CC76CDD00A74E3C /* followButtonChecked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CC9EBA01CC76CDD00A74E3C /* followButtonChecked@3x.png */; };
+		1CD90D591DECBDF400FBD6C2 /* ARAppAnalyticsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CD90D581DECBDF400FBD6C2 /* ARAppAnalyticsSpec.m */; };
 		1CF709B31CB803AA00C00FF4 /* AROnboardingHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF709B21CB803AA00C00FF4 /* AROnboardingHeaderView.m */; };
 		342F902302C1CF0FD342AB93 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97C153D8524B132D0927 /* NSDate+Util.m */; };
 		342F9061CC93426E7F8579A2 /* ARFeedImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */; };
@@ -835,6 +836,7 @@
 		1CC9EB9E1CC76CDD00A74E3C /* followButtonChecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = followButtonChecked.png; sourceTree = "<group>"; };
 		1CC9EB9F1CC76CDD00A74E3C /* followButtonChecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "followButtonChecked@2x.png"; sourceTree = "<group>"; };
 		1CC9EBA01CC76CDD00A74E3C /* followButtonChecked@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "followButtonChecked@3x.png"; sourceTree = "<group>"; };
+		1CD90D581DECBDF400FBD6C2 /* ARAppAnalyticsSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARAppAnalyticsSpec.m; path = Analytics_Tests/ARAppAnalyticsSpec.m; sourceTree = "<group>"; };
 		1CF709B11CB803AA00C00FF4 /* AROnboardingHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingHeaderView.h; sourceTree = "<group>"; };
 		1CF709B21CB803AA00C00FF4 /* AROnboardingHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingHeaderView.m; sourceTree = "<group>"; };
 		29773A6F17B9749800FC89B3 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
@@ -4477,6 +4479,7 @@
 		60E738721C64AC7C00AC381B /* Analytics Tests */ = {
 			isa = PBXGroup;
 			children = (
+				1CD90D581DECBDF400FBD6C2 /* ARAppAnalyticsSpec.m */,
 			);
 			name = "Analytics Tests";
 			sourceTree = "<group>";
@@ -5785,6 +5788,7 @@
 				3CF144A918E4607900B1A764 /* SystemTimeTests.m in Sources */,
 				E649708918D7762F009DB0C4 /* ARImageItemProviderTests.m in Sources */,
 				E61E772619A5477300C55E14 /* ARExpectaExtensions.m in Sources */,
+				1CD90D591DECBDF400FBD6C2 /* ARAppAnalyticsSpec.m in Sources */,
 				3CB9A20D18F303B20056C72B /* ARArtworkActionsViewTests.m in Sources */,
 				60C2CBED1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m in Sources */,
 				3C4877B3192A745400F40062 /* ARFairMapAnnotationCallOutViewTests.m in Sources */,
