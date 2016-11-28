@@ -1,6 +1,5 @@
 #import "ARArtworkSetViewController.h"
 #import "ARArtistViewController.h"
-#import "ARSimpleShowFeedViewController.h"
 #import "ARAdminSettingsViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARExternalWebBrowserViewController.h"
