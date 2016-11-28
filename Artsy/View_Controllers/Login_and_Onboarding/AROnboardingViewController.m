@@ -36,7 +36,6 @@
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
 @property (nonatomic) UIImageView *backgroundView;
 @property (nonatomic) UIScreenEdgePanGestureRecognizer *screenSwipeGesture;
-@property (nonatomic) NSArray *genesForPersonalize;
 @property (nonatomic, strong, readwrite) NSMutableSet *followedItemsDuringOnboarding;
 @property (nonatomic, assign, readwrite) NSInteger budgetRange;
 @property (nonatomic, strong, readwrite) UIView *progressBar;
@@ -80,17 +79,6 @@
     self.screenSwipeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(edgeSwiped:)];
     self.screenSwipeGesture.edges = UIRectEdgeLeft;
     [self.view addGestureRecognizer:self.screenSwipeGesture];
-
-    __weak typeof(self) wself = self;
-
-    [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-        [ArtsyAPI getPersonalizeGenesWithSuccess:^(NSArray *genes) {
-            __strong typeof (wself) sself = wself;
-            sself.genesForPersonalize = genes;
-        } failure:^(NSError *error) {
-            ARErrorLog(@"Couldn't get personalize genes. Error: %@", error.localizedDescription);
-        }];
-    }];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didBecomeActive)
@@ -225,7 +213,7 @@
 - (void)presentPersonalizationQuestionnaires
 {
     self.state = AROnboardingStagePersonalizeArtists;
-    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
     [self updateProgress:0.25];
@@ -234,7 +222,7 @@
 - (void)presentPersonalizeCategories
 {
     self.state = AROnboardingStagePersonalizeCategories;
-    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
     [self updateProgress:0.5];
@@ -243,7 +231,7 @@
 - (void)presentPersonalizeBudget
 {
     self.state = AROnboardingStagePersonalizeBudget;
-    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initWithGenes:self.genesForPersonalize forStage:self.state];
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
     [self updateProgress:0.75];
