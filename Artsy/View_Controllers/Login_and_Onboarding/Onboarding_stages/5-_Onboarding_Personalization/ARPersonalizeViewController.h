@@ -5,7 +5,7 @@
 
 @interface ARPersonalizeViewController : UIViewController
 
-- (instancetype)initWithGenes:(NSArray *)genes forStage:(AROnboardingStage)stage;
+- (instancetype)initForStage:(AROnboardingStage)stage;
 @property (nonatomic, weak) id<AROnboardingStepsDelegate> delegate;
 
 @property (nonatomic, assign, readonly) AROnboardingStage state;

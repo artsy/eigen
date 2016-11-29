@@ -41,7 +41,7 @@
 
 @implementation ARPersonalizeViewController
 
-- (instancetype)initWithGenes:(NSArray *)genes forStage:(AROnboardingStage)stage
+- (instancetype)initForStage:(AROnboardingStage)stage
 {
     self = [super init];
     if (self) {
