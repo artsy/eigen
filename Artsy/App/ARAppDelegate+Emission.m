@@ -144,9 +144,9 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 #pragma mark - Native Module: Refine filter
 
-    emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull metadata, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
-        // TODO
-        resolve(@{});
+    emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull initial, NSDictionary *_Nonnull current, UIViewController *_Nonnull controller, _Nonnull RCTPromiseResolveBlock resolve, _Nonnull RCTPromiseRejectBlock reject) {
+      // TODO
+      resolve(@{});
     };
 
 #pragma mark - Native Module: SwitchBoard

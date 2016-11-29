@@ -84,7 +84,7 @@ class LiveAuctionBidViewModel: NSObject {
             let nextBid = salesPerson.bidIncrements.minimumNextBidCentsIncrement(bidIncrements[i])
             bidIncrements += [nextBid]
             i += 1
-        } while bidIncrements[i] < (3 * max(lotVM.askingPrice, lotVM.highEstimateCents))
+        } while bidIncrements[i] < (3 * max(lotVM.askingPrice, lotVM.highEstimateCents ?? 0))
     }
 
     var availableIncrements: Int {

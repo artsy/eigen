@@ -44,6 +44,8 @@ class LiveAuctionLotListViewController: UICollectionViewController {
                 return sSelf.stickyCollectionViewLayout.setActiveIndex(nil)
             }
 
+            sSelf.unsubscribeCurrentLotState()
+
             // A lot can be the _current_ lot without being _opened_ yet. We check the current lot state to make sure that the activeIndex of the layout corresponds to the lotState that the cells are using to render themselves.
             sSelf.currentLotStateSubscription = lot.lotStateSignal.subscribe { lotState in
                 let activeIndex: Int? = (lotState == .liveLot ? sSelf.salesPerson.indexForViewModel(lot) : nil)
@@ -58,7 +60,6 @@ class LiveAuctionLotListViewController: UICollectionViewController {
     }
 
     deinit {
-        currentLotStateSubscription?.unsubscribe()
         unsubscribeCurrentLotState()
     }
 
