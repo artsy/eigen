@@ -3,6 +3,7 @@ upcoming:
     details: Second patch fix for 3.0.0 release.
     dev:
       infrastructure:
+        - Integrates ReSwift into LAI interface for state management - ash
     user_facing:
       - Fixes auction countdown timer on iPad - ash
       - Fixes problem where users could not bid on sales if they were registered for too many sales - ash

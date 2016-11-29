@@ -5,6 +5,7 @@ import UICKeyChainStore
 import SwiftyJSON
 import FXBlurView
 import ORStackView
+import ReSwift
 
 class LiveAuctionViewController: UISplitViewController {
     let saleSlugOrID: String
@@ -24,7 +25,7 @@ class LiveAuctionViewController: UISplitViewController {
     var lotListController: LiveAuctionLotListViewController!
     var loadingView: LiveAuctionLoadingView?
 
-    var overlaySubscription: ObserverToken<Bool>?
+    var subscribedStore: Store<LiveAuctionState>?
 
     var sale: LiveSale?
 
@@ -169,7 +170,7 @@ class LiveAuctionViewController: UISplitViewController {
     }
 
     func dismissLiveAuctionsModal() {
-        overlaySubscription?.unsubscribe()
+        subscribedStore?.unsubscribe(self)
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -221,16 +222,12 @@ extension LiveAuctionViewController: AROfflineViewDelegate {
 }
 
 private typealias PrivateFunctions = LiveAuctionViewController
-extension PrivateFunctions {
+extension PrivateFunctions: StoreSubscriber {
 
     func setupWithSale(sale: LiveSale, jwt: JWT, bidderCredentials: BiddingCredentials) {
         let salesPerson = self.salesPersonCreator(sale, jwt, bidderCredentials)
-
-        overlaySubscription?.unsubscribe()
-        overlaySubscription = salesPerson.socketConnectionSignal
-            .merge(salesPerson.operatorConnectedSignal)
-            .map { return $0.0 && $0.1 } // We are connected iff the socket is connected and the operator is connected.
-            .subscribe(showSocketDisconnectedOverlay)
+        subscribedStore = salesPerson.store
+        salesPerson.store.subscribe(self)
 
         lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson, traitCollection: view.traitCollection)
         lotSetController.suppressJumpingToOpenLots = suppressJumpingToOpenLots
@@ -246,16 +243,19 @@ extension PrivateFunctions {
 
             viewControllers = [lotListNav, lotsSetNavigationController]
         }
-
-        salesPerson.initialStateLoadedSignal.subscribe { [weak self] _ in
-            self?.waitingForInitialLoad = false
-            self?.loadingView?.removeFromSuperview()
-            self?.loadingView = nil
-        }
     }
 
     class func salesPerson(sale: LiveSale, jwt: JWT, biddingCredentials: BiddingCredentials) -> LiveAuctionsSalesPersonType {
         return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, biddingCredentials: biddingCredentials)
+    }
+
+    func newState(state: LiveAuctionState) {
+        self.showSocketDisconnectedOverlay(state.operatorIsConnected && state.socketIsConnected)
+        if state.isInitialStateLoaded {
+            waitingForInitialLoad = false
+            loadingView?.removeFromSuperview()
+            loadingView = nil
+        }
     }
 }
 

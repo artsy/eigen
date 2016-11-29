@@ -1,6 +1,8 @@
 import Foundation
 import Interstellar
 import Starscream
+import ReSwift
+import SwiftyJSON
 
 protocol SocketType: class {
     var onText: ((String) -> Void)? { get set }
@@ -19,8 +21,6 @@ protocol LiveAuctionSocketCommunicatorType {
     var lotUpdateBroadcasts: Observable<AnyObject> { get }
     var currentLotUpdate: Observable<AnyObject> { get }
     var postEventResponses: Observable<AnyObject> { get }
-    var socketConnectionSignal: Observable<Bool> { get }
-    var operatorConnectedSignal: Observable<AnyObject> { get }
 
     func bidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String)
     func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String)
@@ -36,20 +36,20 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     let lotUpdateBroadcasts = Observable<AnyObject>()
     let currentLotUpdate = Observable<AnyObject>()
     let postEventResponses = Observable<AnyObject>()
-    let socketConnectionSignal = Observable<Bool>()
-    let operatorConnectedSignal = Observable<AnyObject>()
+    let store: Store<LiveAuctionState>
 
     let jwt: JWT
 
-    convenience init(host: String, causalitySaleID: String, jwt: JWT) {
-        self.init(host: host, causalitySaleID: causalitySaleID, jwt: jwt, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator())
+    convenience init(host: String, causalitySaleID: String, jwt: JWT, store: Store<LiveAuctionState>) {
+        self.init(host: host, causalitySaleID: causalitySaleID, jwt: jwt, socketCreator: LiveAuctionSocketCommunicator.defaultSocketCreator(), store: store)
     }
 
-    init(host: String, causalitySaleID: String, jwt: JWT, socketCreator: SocketCreator) {
+    init(host: String, causalitySaleID: String, jwt: JWT, socketCreator: SocketCreator, store: Store<LiveAuctionState>) {
 
         socket = socketCreator(host: host, saleID: causalitySaleID)
         self.causalitySaleID = causalitySaleID
         self.jwt = jwt
+        self.store = store
 
         super.init()
 
@@ -95,12 +95,12 @@ private extension SocketSetup {
     func socketConnected() {
         print ("Socket connected")
         socket.writeString("{\"type\":\"Authorize\",\"jwt\":\"\(jwt.string)\"}")
-        socketConnectionSignal.update(true)
+        store.dispatch(ChangeSocketIsConnectedAction(isConnected: true))
     }
 
     func socketDisconnected(error: NSError?) {
         print ("Socket disconnected: \(error)")
-        socketConnectionSignal.update(false)
+        store.dispatch(ChangeSocketIsConnectedAction(isConnected: false))
 
         // Give it half a second to re-connect
         ar_dispatch_after(0.5) {
@@ -137,7 +137,9 @@ private extension SocketSetup {
             // TODO: Handle op failure
 
         case "OperatorConnectedBroadcast":
-            operatorConnectedSignal.update(json)
+            let json = JSON(json)
+            let operatorConnected = json["operatorConnected"].bool ?? true
+            store.dispatch(ChangeOperatorIsConnectedAction(operatorIsConnected: operatorConnected))
 
         case "CommandSuccessful", "CommandFailed", "PostEventResponse":
             postEventResponses.update(json)
