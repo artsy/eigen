@@ -47,7 +47,6 @@ PODS:
   - ARAnalytics/Segmentio (3.9.0):
     - Analytics (>= 3)
     - ARAnalytics/CoreIOS
-  - ARASCIISwizzle (1.1.0)
   - ARCollectionViewMasonryLayout (2.1.2)
   - ARGenericTableViewController (1.0.2)
   - ARTiledImageView (1.2.0):
@@ -76,7 +75,6 @@ PODS:
   - CocoaLumberjack/Extensions (2.0.1):
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
-  - DRKonamiCode (1.1.0)
   - EDColor (1.0.0)
   - Emission (1.1.4):
     - Artsy+UIFonts (>= 1.1.0)
@@ -206,7 +204,6 @@ DEPENDENCIES:
   - ARAnalytics/DSL (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
   - ARAnalytics/HockeyApp (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
   - ARAnalytics/Segmentio (from `https://github.com/orta/ARAnalytics.git`, commit `6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e`)
-  - ARASCIISwizzle
   - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`, branch `modern`)
   - ARGenericTableViewController (from `https://github.com/orta/ARGenericTableViewController.git`)
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`)
@@ -216,7 +213,6 @@ DEPENDENCIES:
   - Artsy-UIButtons (from `https://github.com/artsy/Artsy-UIButtons.git`)
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
-  - DRKonamiCode
   - EDColor
   - Emission
   - Expecta
@@ -375,7 +371,6 @@ SPEC CHECKSUMS:
   Analytics: b342fb4f43fa4f97ca6f4358b44d3295217ba294
   AppHub: 03788112dd48c42b60d51321c0ffff4ef15a4432
   ARAnalytics: 96e23ba7f54298f4914de9e1ac999db7a15f3fdd
-  ARASCIISwizzle: 4800c50a918bdc06f6304020e348ef8c15c554ee
   ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
@@ -386,7 +381,6 @@ SPEC CHECKSUMS:
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
-  DRKonamiCode: 94439de24e8264b4f553c775f055e964675af4b6
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
   Emission: 431e878a0daf1f7dbf2ab9685268c934cd95bea5
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
@@ -437,6 +431,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: 1c6b64da547812091b47ef864e3638329362059e
+PODFILE CHECKSUM: 4cc57883e01d296ccd45d96921db41ec7465dd14
 
 COCOAPODS: 1.1.1

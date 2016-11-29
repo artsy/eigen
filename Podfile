@@ -104,10 +104,6 @@ target 'Artsy' do
   pod 'ORKeyboardReactingApplication'
   pod 'VCRURLConnection'
 
-  # Easter Eggs
-  pod 'ARASCIISwizzle'
-  pod 'DRKonamiCode'
-
   # Swift pods 🎉
   pod 'Then'
   pod 'Interstellar/Core', git: 'https://github.com/ashfurrow/Interstellar.git', branch: 'observable-unsubscribe'
