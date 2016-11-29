@@ -242,7 +242,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var highEstimateCents: UInt64? {
-        return model.highEstimateCents?.unsignedLongLongValue
+        return model.highEstimateCents?.uint64Value
     }
 
     var eventIDs: [String] {

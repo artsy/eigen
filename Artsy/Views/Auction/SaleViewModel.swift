@@ -56,7 +56,7 @@ extension SaleViewModel {
     }
 
     var liveAuctionStartDate: NSDate? {
-        return sale.liveAuctionStartDate
+        return sale.liveAuctionStartDate as NSDate?
     }
 
     var isRunningALiveAuction: Bool {
