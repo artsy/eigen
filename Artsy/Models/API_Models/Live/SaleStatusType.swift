@@ -1,25 +1,25 @@
 import Foundation
 
 enum SaleAvailabilityState {
-    case NotYetOpen
-    case Active(liveAuctionDate: NSDate?)
-    case Closed
+    case notYetOpen
+    case active(liveAuctionDate: Date?)
+    case closed
 }
 
 extension SaleAvailabilityState: Equatable {}
 
 func == (lhs: SaleAvailabilityState, rhs: SaleAvailabilityState) -> Bool {
     switch (lhs, rhs) {
-    case (.NotYetOpen, .NotYetOpen): return true
-    case (.Closed, .Closed): return true
-    case (.Active(let x), .Active(let y)) where x == y: return true
+    case (.notYetOpen, .notYetOpen): return true
+    case (.closed, .closed): return true
+    case (.active(let x), .active(let y)) where x == y: return true
     default: return false
     }
 }
 
 protocol SaleStatusType {
-    var startDate: NSDate! { get }
-    var liveAuctionStartDate: NSDate! { get }
+    var startDate: Date! { get }
+    var liveAuctionStartDate: Date! { get }
 
     func isCurrentlyActive() -> Bool
 }
@@ -28,11 +28,11 @@ extension SaleStatusType {
 
     var saleAvailability: SaleAvailabilityState {
         if isCurrentlyActive() {
-            guard let liveDate = liveAuctionStartDate else { return .Active(liveAuctionDate:nil) }
-            return .Active(liveAuctionDate: liveDate)
+            guard let liveDate = liveAuctionStartDate else { return .active(liveAuctionDate:nil) }
+            return .active(liveAuctionDate: liveDate)
         }
-        if startDate.laterDate(NSDate()) == startDate { return .NotYetOpen }
-        return .Closed
+        if (startDate as NSDate).laterDate(Date()) == startDate { return .notYetOpen }
+        return .closed
     }
 }
 

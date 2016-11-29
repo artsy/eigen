@@ -10,18 +10,18 @@ import Artsy
 class LiveAuctionLotSetViewControllerSpec: QuickSpec {
     override func spec() {
 
-        sharedExamples("live auctions lot set") { (context: SharedExampleContext) in
+        sharedExamples("live auctions lot set") { (context: @escaping SharedExampleContext) in
             var horizontalSizeClass: UIUserInterfaceSizeClass!
             var device: ARDeviceType!
 
             beforeEach {
                 horizontalSizeClass = UIUserInterfaceSizeClass(rawValue: context()["horizontalSizeClass"] as! Int)
                 device = ARDeviceType(rawValue: context()["device"] as! Int)
-                OHHTTPStubs.stubJSONResponseAtPath("/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[:])
+                OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[:])
             }
 
             it("looks good by default") {
-                ARTestContext.useDevice(device) {
+                ARTestContext.use(device) {
                     let fakeSalesPerson = stub_auctionSalesPerson(Test_LiveAuctionViewModel())
                     let subject = LiveAuctionLotSetViewController(salesPerson: fakeSalesPerson, traitCollection: UITraitCollection.init(horizontalSizeClass: horizontalSizeClass))
                     subject.suppressJumpingToOpenLots = true
@@ -34,19 +34,19 @@ class LiveAuctionLotSetViewControllerSpec: QuickSpec {
 
         describe("regular horizontal size class ") {
             itBehavesLike("live auctions lot set") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.Regular.rawValue, "device": ARDeviceType.Pad.rawValue] as NSDictionary
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.regular.rawValue, "device": ARDeviceType.pad.rawValue] as NSDictionary
             }
         }
 
         describe("compact horizontal size class") {
             itBehavesLike("live auctions lot set") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.Compact.rawValue, "device": ARDeviceType.Phone6.rawValue] as NSDictionary
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.compact.rawValue, "device": ARDeviceType.phone6.rawValue] as NSDictionary
             }
         }
 
         describe("really compact horizontal size class") {
             itBehavesLike("live auctions lot set") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.Compact.rawValue, "device": ARDeviceType.Phone4.rawValue] as NSDictionary
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.compact.rawValue, "device": ARDeviceType.phone4.rawValue] as NSDictionary
             }
         }
     }

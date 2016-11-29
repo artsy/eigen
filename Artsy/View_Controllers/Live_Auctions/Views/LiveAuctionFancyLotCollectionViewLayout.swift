@@ -9,27 +9,27 @@ import UIKit
 class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout, LiveAuctionLotCollectionViewLayoutType {
 
     enum Size {
-        case Normal, Compact
+        case normal, compact
     }
 
     unowned let delegate: LiveAuctionLotCollectionViewDelegateLayout
 
-    private let visiblePrevNextSliceSize: CGFloat
-    private let maxCurrentWidth: CGFloat
-    private let maxCurrentHeight: CGFloat
-    private let maxOffscreenWidth: CGFloat
-    private let maxOffscrenHeight: CGFloat
+    fileprivate let visiblePrevNextSliceSize: CGFloat
+    fileprivate let maxCurrentWidth: CGFloat
+    fileprivate let maxCurrentHeight: CGFloat
+    fileprivate let maxOffscreenWidth: CGFloat
+    fileprivate let maxOffscrenHeight: CGFloat
 
     init(delegate: LiveAuctionLotCollectionViewDelegateLayout, size: Size) {
         self.delegate = delegate
         switch size {
-        case .Normal:
+        case .normal:
             self.visiblePrevNextSliceSize = 20
             maxCurrentWidth = 300
             maxCurrentHeight = 260
             maxOffscreenWidth = 200
             maxOffscrenHeight = 160
-        case .Compact:
+        case .compact:
             self.visiblePrevNextSliceSize = 0
             maxCurrentWidth = 280
             maxCurrentHeight = 150
@@ -40,7 +40,7 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
         super.init()
 
         itemSize = CGSize(width: maxCurrentWidth, height: maxCurrentHeight)
-        scrollDirection = .Horizontal
+        scrollDirection = .horizontal
         minimumLineSpacing = 0
     }
 
@@ -56,28 +56,28 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
         }
     }
 
-    override func prepareLayout() {
-        super.prepareLayout()
+    override func prepare() {
+        super.prepare()
 
         let width = collectionView?.frame.size.width ?? 0
         itemSize = CGSize(width: width, height: maxCurrentHeight)
     }
 
     /// We invalidate on every bounds change (every scroll).
-    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return true
     }
 
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         // Regardless of the rect, we always return the three layout attributes
-        return [0, 1, 2].flatMap { layoutAttributesForItemAtIndexPath(NSIndexPath(forItem: $0, inSection: 0)) }
+        return [0, 1, 2].flatMap { layoutAttributesForItem(at: IndexPath(item: $0, section: 0)) }
     }
 
-    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        return super.layoutAttributesForItemAtIndexPath(indexPath).flatMap { modifiedLayoutAttributesCopy($0) }
+    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        return super.layoutAttributesForItem(at: indexPath).flatMap { modifiedLayoutAttributesCopy($0) }
     }
 
-    class override func layoutAttributesClass() -> AnyClass {
+    class override var layoutAttributesClass : AnyClass {
         return LiveAuctionLotCollectionViewLayoutAttributes.self
     }
 }
@@ -85,18 +85,18 @@ class LiveAuctionFancyLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
 
 /// Indicates scrolling direction (towards the Next or Previous lots, respectively).
 private enum ScrollDirection {
-    case Next, Previous
+    case next, previous
 }
 
 private enum CellPosition: Int {
-    case PreviousUnderflow = -1
-    case Previous = 0
-    case Current = 1
-    case Next = 2
-    case NextOverflow = 3
+    case previousUnderflow = -1
+    case previous = 0
+    case current = 1
+    case next = 2
+    case nextOverflow = 3
 
     var isUnderOverflow: Bool {
-        return [.NextOverflow, .PreviousUnderflow].contains(self)
+        return [.nextOverflow, .previousUnderflow].contains(self)
     }
 }
 
@@ -128,24 +128,24 @@ private extension PrivateFunctions {
     }
 
     /// Computed variable for the direction the user is dragging.
-    var userScrollDirection: ScrollDirection { return ratioDragged > 0 ? .Next : .Previous }
+    var userScrollDirection: ScrollDirection { return ratioDragged > 0 ? .next : .previous }
 
     /// Main entry for this extension. Applies layout attributes depending on the indexPath's item that is passed in.
     /// If the user has scrolled more than half way in either direction, the cell is placed in an overflow or underflow
     /// position (to be the next next or previous previous cells, since they're not in the collection view yet).
-    func modifiedLayoutAttributesCopy(layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+    func modifiedLayoutAttributesCopy(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         guard var copy = layoutAttributes.copy() as? UICollectionViewLayoutAttributes else { return layoutAttributes }
-        switch layoutAttributes.indexPath.item {
+        switch (layoutAttributes.indexPath as NSIndexPath).item {
         case 0 where ratioDragged > 0.5:
-            applyFancyLayoutToAttributes(&copy, position: .NextOverflow)
+            applyFancyLayoutToAttributes(&copy, position: .nextOverflow)
         case 0:
-            applyFancyLayoutToAttributes(&copy, position: .Previous)
+            applyFancyLayoutToAttributes(&copy, position: .previous)
         case 1:
-            applyFancyLayoutToAttributes(&copy, position: .Current)
+            applyFancyLayoutToAttributes(&copy, position: .current)
         case 2 where ratioDragged < -0.5:
-            applyFancyLayoutToAttributes(&copy, position: .PreviousUnderflow)
+            applyFancyLayoutToAttributes(&copy, position: .previousUnderflow)
         case 2:
-            applyFancyLayoutToAttributes(&copy, position: .Next)
+            applyFancyLayoutToAttributes(&copy, position: .next)
         default: break
         }
 
@@ -153,12 +153,12 @@ private extension PrivateFunctions {
     }
 
     /// Interpolates linearly from two float values based on the _absolute value_ of the ratio parameter.
-    func interpolateFrom(a: CGFloat, to b: CGFloat, ratio: CGFloat) -> CGFloat {
+    func interpolateFrom(_ a: CGFloat, to b: CGFloat, ratio: CGFloat) -> CGFloat {
         return a + abs(ratio) * (b - a)
     }
 
     /// Calculates and applies fancy layout to a set of attributes, given a specified position.
-    func applyFancyLayoutToAttributes(inout layoutAttributes: UICollectionViewLayoutAttributes, position: CellPosition) {
+    func applyFancyLayoutToAttributes(_ layoutAttributes: inout UICollectionViewLayoutAttributes, position: CellPosition) {
         let index: RelativeIndex = position.rawValue
 
         // Grab/set information from the delegate.
@@ -184,7 +184,7 @@ private extension PrivateFunctions {
     /// It relies solely on the position and desired aspect ratio of the cell, and not on any
     /// calculated state from the collection view.
     /// Note: This function would be a good candidate to cache values if scrolling performance is an issue.
-    func layoutMetricsForPosition(position: CellPosition, aspectRatio: CGFloat) -> LayoutMetrics {
+    func layoutMetricsForPosition(_ position: CellPosition, aspectRatio: CGFloat) -> LayoutMetrics {
         let restingWidth: CGFloat
         let restingHeight: CGFloat
         let targetHeight: CGFloat
@@ -196,7 +196,7 @@ private extension PrivateFunctions {
         // (Note: "Normal" layout values are given in comments for readability.)
 
         if aspectRatio > (maxCurrentWidth / maxCurrentHeight) {
-            if position == .Current {
+            if position == .current {
                 restingWidth = maxCurrentWidth  //300
                 targetWidth = maxOffscreenWidth //200
             } else if position.isUnderOverflow {
@@ -210,7 +210,7 @@ private extension PrivateFunctions {
             restingHeight = restingWidth / aspectRatio
             targetHeight = targetWidth / aspectRatio
         } else {
-            if position == .Current {
+            if position == .current {
                 restingHeight = maxCurrentHeight//300
                 targetHeight = maxOffscrenHeight//200
             } else if position.isUnderOverflow {
@@ -229,16 +229,16 @@ private extension PrivateFunctions {
     }
 
     /// Given computed target and at-rest metrics, and a desired position, this function calculates target and at-rest centerX values.
-    func centersForPosition(position: CellPosition, metrics: LayoutMetrics) -> CenterXPositions {
+    func centersForPosition(_ position: CellPosition, metrics: LayoutMetrics) -> CenterXPositions {
         let restingCenterX: CGFloat
         let targetCenterX: CGFloat
 
         // Note that metrics in here need to be offset by the width of the collection view, since index 1 is the "current" lot.
         switch position {
         // Current is easy, the at-rest center is the middle of the collection view and the target depends on scroll direction
-        case .Current:
+        case .current:
             restingCenterX = (collectionView?.frame.midX ?? 0) + collectionViewWidth
-            if userScrollDirection == .Next {
+            if userScrollDirection == .next {
                 let targetRightEdge = visiblePrevNextSliceSize
                 let computedLeftEdge = targetRightEdge - metrics.targetWidth
                 targetCenterX = (targetRightEdge + computedLeftEdge) / 2 + collectionViewWidth * 2
@@ -250,30 +250,30 @@ private extension PrivateFunctions {
         // Next is trickier, our resting centerX is to the right of the screen with a bit visible.
         // Our target centerX depends on our scroll direction, and on if we are overflowing, in which case our rest and target
         // centerX values are the same.
-        case .Next: fallthrough
-        case .NextOverflow:
+        case .next: fallthrough
+        case .nextOverflow:
             // isUnderOverflow used here to account for pushing the center off another collection view's width.
             let targetLeftEdge = (position.isUnderOverflow ? 3 : 2) * collectionViewWidth - visiblePrevNextSliceSize
             let computedRightEdge = targetLeftEdge + metrics.restingWidth
 
             restingCenterX = (targetLeftEdge + computedRightEdge) / 2
 
-            if position.isUnderOverflow || userScrollDirection == .Previous {
+            if position.isUnderOverflow || userScrollDirection == .previous {
                 targetCenterX = restingCenterX
             } else {
                 targetCenterX = (collectionView?.frame.midX ?? 0) + collectionViewWidth * 2
             }
         // Previous is like next, but in reverse. The resting centerX is just off the left side of the screen, and the target
         // centerX depends on the scroll direction and on if we are underflowing.
-        case .Previous: fallthrough
-        case .PreviousUnderflow:
+        case .previous: fallthrough
+        case .previousUnderflow:
             // isUnderOverflow used here to account for pushing the center off another collection view's width.
             let targetRightEdge = visiblePrevNextSliceSize - CGFloat(position.isUnderOverflow ? collectionViewWidth : 0) + collectionViewWidth
             let computedLeftEdge = targetRightEdge - metrics.restingWidth
 
             restingCenterX = (targetRightEdge + computedLeftEdge) / 2
 
-            if position.isUnderOverflow || userScrollDirection == .Next {
+            if position.isUnderOverflow || userScrollDirection == .next {
                 targetCenterX = restingCenterX
             } else {
                 targetCenterX = collectionView?.frame.midX ?? 0
@@ -285,13 +285,13 @@ private extension PrivateFunctions {
 
     /// Applies the instance's repulsionConstant to the metrics, returning new metrics.
     /// Only affects the current item.
-    func applyRepulsionToMetrics(metrics: LayoutMetrics, atPosition position: CellPosition, aspectRatio: CGFloat) -> LayoutMetrics {
+    func applyRepulsionToMetrics(_ metrics: LayoutMetrics, atPosition position: CellPosition, aspectRatio: CGFloat) -> LayoutMetrics {
         let isWide = aspectRatio > (maxCurrentWidth / maxCurrentHeight)
         switch position {
-        case .Current where isWide:
+        case .current where isWide:
             // Modify height
             return (restingWidth: metrics.restingWidth, restingHeight: metrics.restingHeight - (repulsionConstant / aspectRatio), targetWidth: metrics.targetWidth, targetHeight: metrics.targetHeight - (repulsionConstant / aspectRatio))
-        case .Current: // isWide == false
+        case .current: // isWide == false
             // Modify width
             return (restingWidth: metrics.restingWidth - (repulsionConstant * aspectRatio), restingHeight: metrics.restingHeight, targetWidth: metrics.targetWidth - (repulsionConstant * aspectRatio), targetHeight: metrics.targetHeight)
         default: return metrics
@@ -300,7 +300,7 @@ private extension PrivateFunctions {
 
     /// Applies the instance's repulsionConstant to the center X positions, returning new positions.
     /// Only affects next/previous items.
-    func applyRepulsionToCenters(centers: CenterXPositions, atPosition position: CellPosition) -> CenterXPositions {
+    func applyRepulsionToCenters(_ centers: CenterXPositions, atPosition position: CellPosition) -> CenterXPositions {
         // TODO: There's a problem with next/previous cells dis/appearing without animation if they're in/visible at the beginning or end of animation.
         // This hack keeps them "close enough" to visible most of the time to work, but a better solution would be to implement initialLayoutAttributesForAppearingItemAtIndexPath and finalLayoutAttributesForDisappearingItemAtIndexPath
 
@@ -309,13 +309,13 @@ private extension PrivateFunctions {
         let scaleDownConstant: CGFloat = 4
         let diff = min(repulsionConstant/scaleDownConstant, visiblePrevNextSliceSize)
         switch position {
-        case .Current:
+        case .current:
             return centers
-        case .Next: fallthrough
-        case .NextOverflow:
+        case .next: fallthrough
+        case .nextOverflow:
             return (restingCenterX: centers.restingCenterX + diff, targetCenterX: centers.targetCenterX + diff)
-        case .Previous: fallthrough
-        case .PreviousUnderflow:
+        case .previous: fallthrough
+        case .previousUnderflow:
             return (restingCenterX: centers.restingCenterX - diff, targetCenterX: centers.targetCenterX - diff)
         }
     }

@@ -2,8 +2,8 @@ import Foundation
 import Artsy_UILabels
 
 class SaleViewModel: NSObject {
-    private let sale: Sale
-    private let saleArtworks: [SaleArtwork]
+    fileprivate let sale: Sale
+    fileprivate let saleArtworks: [SaleArtwork]
 
     var bidders: [Bidder]
 
@@ -18,7 +18,7 @@ extension SaleViewModel {
 
     var saleIsClosed: Bool {
         switch saleAvailability {
-        case .Closed: return true
+        case .closed: return true
         default: return false
         }
     }
@@ -27,15 +27,15 @@ extension SaleViewModel {
         return sale.auctionStateWithBidders(bidders)
     }
 
-    var backgroundImageURL: NSURL? {
+    var backgroundImageURL: URL? {
         guard let bannerURL = sale.bannerImageURLString() else { return nil }
-        return NSURL(string: bannerURL)
+        return URL(string: bannerURL)
     }
 
-    var profileImageURL: NSURL? {
+    var profileImageURL: URL? {
         guard let profile = sale.profile else { return nil }
         guard let avatarURL = profile.avatarURLString() else { return nil }
-        return NSURL(string: avatarURL)
+        return URL(string: avatarURL)
     }
 
     var saleAvailability: SaleAvailabilityState {
@@ -49,14 +49,14 @@ extension SaleViewModel {
     // This is used by analytics
     var saleAvailabilityString: String {
         switch saleAvailability {
-        case .Active: return "active"
-        case .Closed: return "closed"
-        case .NotYetOpen: return "preview"
+        case .active: return "active"
+        case .closed: return "closed"
+        case .notYetOpen: return "preview"
         }
     }
 
     var liveAuctionStartDate: NSDate? {
-        return sale.liveAuctionStartDate
+        return sale.liveAuctionStartDate as NSDate?
     }
 
     var isRunningALiveAuction: Bool {
@@ -67,27 +67,27 @@ extension SaleViewModel {
         return sale.shouldShowLiveInterface()
     }
 
-    var timeToLiveStart: NSTimeInterval? {
-        guard let liveStartDate = sale.liveAuctionStartDate where shouldShowLiveInterface else { return nil }
+    var timeToLiveStart: TimeInterval? {
+        guard let liveStartDate = sale.liveAuctionStartDate, shouldShowLiveInterface else { return nil }
 
         let now = ARSystemTime.date()
-        return liveStartDate.timeIntervalSinceDate(now)
+        return liveStartDate.timeIntervalSince(now!)
     }
 
     var saleID: NSString {
-        return sale.saleID
+        return sale.saleID as NSString
     }
 
-    var startDate: NSDate {
+    var startDate: Date {
         return sale.startDate
     }
 
-    var closingDate: NSDate {
+    var closingDate: Date {
         return sale.endDate
     }
 
     var isUpcomingAndHasNoLots: Bool {
-        return saleAvailability == .NotYetOpen && numberOfLots == 0
+        return saleAvailability == .notYetOpen && numberOfLots == 0
     }
 
     var numberOfLots: Int {
@@ -111,7 +111,7 @@ extension SaleViewModel {
         return (min: self.smallestLowEstimate, max: self.largestLowEstimate)
     }
 
-    func refinedSaleArtworks(refineSettings: AuctionRefineSettings) -> [SaleArtworkViewModel] {
+    func refinedSaleArtworks(_ refineSettings: AuctionRefineSettings) -> [SaleArtworkViewModel] {
         return refineSettings.ordering.sortSaleArtworks(saleArtworks)
             .filter(SaleArtwork.includedInRefineSettings(refineSettings))
             .map { saleArtwork in
@@ -119,7 +119,7 @@ extension SaleViewModel {
         }
     }
 
-    func subtitleForRefineSettings(refineSettings: AuctionRefineSettings, defaultRefineSettings: AuctionRefineSettings) -> String {
+    func subtitleForRefineSettings(_ refineSettings: AuctionRefineSettings, defaultRefineSettings: AuctionRefineSettings) -> String {
         let numberOfLots = refinedSaleArtworks(refineSettings).count
         var subtitle = "\(numberOfLots) Lots"
 
@@ -130,7 +130,7 @@ extension SaleViewModel {
         }
 
         if let priceRange = refineSettings.priceRange,
-            defaultPriceRange = defaultRefineSettings.priceRange where
+            let defaultPriceRange = defaultRefineSettings.priceRange,
             priceRange.min != defaultPriceRange.min ||
             priceRange.max != defaultPriceRange.max {
             subtitle += formattedStringForPriceRange(priceRange)
@@ -139,7 +139,7 @@ extension SaleViewModel {
         return subtitle
     }
 
-    func formattedStringForPriceRange(range: PriceRange) -> String {
+    func formattedStringForPriceRange(_ range: PriceRange) -> String {
         let min = range.min.roundCentsToNearestThousandAndFormat(currencySymbol)
         let max = range.max.roundCentsToNearestThousandAndFormat(currencySymbol)
         return "・\(min)–\(max)"
@@ -150,7 +150,7 @@ extension SaleViewModel {
 /// Allows us to support spotlight indexing
 
 extension SaleViewModel {
-    func registerSaleAsActiveActivity(viewController: UIViewController?) {
+    func registerSaleAsActiveActivity(_ viewController: UIViewController?) {
         viewController?.userActivity = ARUserActivity(forEntity: sale)
         viewController?.userActivity?.becomeCurrent()
     }
@@ -179,11 +179,11 @@ extension Sale: SaleAuctionStatusType { }
 private extension SaleViewModel {
 
     var smallestLowEstimate: Int {
-        return lowEstimates.reduce(Int.max, combine: min)
+        return lowEstimates.reduce(Int.max, min)
     }
 
     var largestLowEstimate: Int {
-        return lowEstimates.reduce(Int.min, combine: max)
+        return lowEstimates.reduce(Int.min, max)
     }
 
     var lowEstimates: [Int] {
@@ -194,7 +194,7 @@ private extension SaleViewModel {
 }
 
 private extension SaleArtwork {
-    class func includedInRefineSettings(refineSettings: AuctionRefineSettings) -> SaleArtwork -> Bool {
+    class func includedInRefineSettings(_ refineSettings: AuctionRefineSettings) -> (SaleArtwork) -> Bool {
         return { saleArtwork in
             // Includes iff the sale artwork's low estimate is within the range, inclusive.
             let (min, max) = (refineSettings.priceRange?.min ?? 0, refineSettings.priceRange?.max ?? 0)

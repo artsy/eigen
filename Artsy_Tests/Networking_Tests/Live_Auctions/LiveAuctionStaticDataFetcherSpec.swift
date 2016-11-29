@@ -10,7 +10,7 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
 
         let saleID = "the-id"
 
-        let jwt = StubbedCredentials.NotRegistered.jwt.string
+        let jwt = StubbedCredentials.notRegistered.jwt.string
         let bidderID = "000000"
         let paddleNumber = "1234"
         let stateJSON: NSDictionary = ["data": ["sale": ["id": "the-id"], "causality_jwt": jwt, "me": ["paddle_number": paddleNumber, "bidders": [["id": bidderID]]]]]
@@ -18,7 +18,7 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
         var subject: LiveAuctionStaticDataFetcher!
 
         beforeEach {
-            OHHTTPStubs.stubJSONResponseForHost("metaphysics*.artsy.net", withResponse: stateJSON)
+            OHHTTPStubs.stubJSONResponse(forHost: "metaphysics*.artsy.net", withResponse: stateJSON)
             subject = LiveAuctionStaticDataFetcher(saleSlugOrID: saleID)
         }
 
@@ -34,19 +34,19 @@ class LiveAuctionStaticDataFetcherSpec: QuickSpec {
             }
 
             it("fetches the static data") {
-                expect(receivedState.peekValue()?.sale.liveSaleID) == saleID
+                expect(receivedState.peek()?.sale.liveSaleID) == saleID
             }
 
             it("fetches a jwt") {
-                expect(receivedState.peekValue()?.jwt.string) == jwt
+                expect(receivedState.peek()?.jwt.string) == jwt
             }
 
             it("fetches a bidderId") {
-                expect(receivedState.peekValue()?.bidderCredentials.bidderID) == bidderID
+                expect(receivedState.peek()?.bidderCredentials.bidderID) == bidderID
             }
 
             it("fetches a paddleNumber") {
-                expect(receivedState.peekValue()?.bidderCredentials.paddleNumber) == paddleNumber
+                expect(receivedState.peek()?.bidderCredentials.paddleNumber) == paddleNumber
             }
 
         }

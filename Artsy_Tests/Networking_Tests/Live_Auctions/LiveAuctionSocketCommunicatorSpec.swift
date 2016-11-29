@@ -9,7 +9,7 @@ var socket: Test_Socket!
 class LiveAuctionSocketCommunicatorSpec: QuickSpec {
     override func spec() {
         let host = "squiggly host"
-        let jwt = StubbedCredentials.Registered.jwt
+        let jwt = StubbedCredentials.registered.jwt
 
 
         let saleID = "honest ed's bargain basement"
@@ -82,15 +82,15 @@ class Test_Socket: SocketType {
     var onDisconnect: ((NSError?) -> Void)?
 
     var writes = [String]()
-    var datas = [NSData]()
+    var datas = [Data]()
     var connected = false
     var host = ""
 
     init() { }
 
 
-    func writeString(str: String) { writes += [str] }
-    func writeData(data: NSData) { datas += [data] }
+    func writeString(_ str: String) { writes += [str] }
+    func writeData(_ data: Data) { datas += [data] }
 
     func writePing() { }
     func connect() { connected = true }

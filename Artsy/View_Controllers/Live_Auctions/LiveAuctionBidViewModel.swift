@@ -1,33 +1,57 @@
 import Foundation
 import Interstellar
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 enum LiveAuctionBiddingProgressState {
-    case UserRegistrationRequired
-    case UserRegistrationPending
-    case UserRegistrationClosed
-    case Biddable(askingPrice: UInt64, currencySymbol: String)
-    case BiddingInProgress
-    case BidAcknowledged
-    case BidBecameMaxBidder
-    case BidOutbid
-    case BidNetworkFail
-    case LotWaitingToOpen
-    case LotSold
+    case userRegistrationRequired
+    case userRegistrationPending
+    case userRegistrationClosed
+    case biddable(askingPrice: UInt64, currencySymbol: String)
+    case biddingInProgress
+    case bidAcknowledged
+    case bidBecameMaxBidder
+    case bidOutbid
+    case bidNetworkFail
+    case lotWaitingToOpen
+    case lotSold
 }
 
 func == (lhs: LiveAuctionBiddingProgressState, rhs: LiveAuctionBiddingProgressState) -> Bool {
     switch (lhs, rhs) {
-    case (.UserRegistrationRequired, .UserRegistrationRequired): return true
-    case (.UserRegistrationPending, .UserRegistrationPending): return true
-    case (.UserRegistrationClosed, .UserRegistrationClosed): return true
-    case (.Biddable(let lhsState), .Biddable(let rhsState)) where lhsState.askingPrice == rhsState.askingPrice && lhsState.currencySymbol == rhsState.currencySymbol: return true
-    case (.BiddingInProgress, .BiddingInProgress): return true
-    case (.BidBecameMaxBidder, .BidBecameMaxBidder): return true
-    case (.BidAcknowledged, .BidAcknowledged): return true
-    case (.BidNetworkFail, .BidNetworkFail): return true
-    case (.LotWaitingToOpen, .LotWaitingToOpen): return true
-    case (.LotSold, .LotSold): return true
-    case (.BidOutbid, .BidOutbid): return true
+    case (.userRegistrationRequired, .userRegistrationRequired): return true
+    case (.userRegistrationPending, .userRegistrationPending): return true
+    case (.userRegistrationClosed, .userRegistrationClosed): return true
+    case (.biddable(let lhsState), .biddable(let rhsState)) where lhsState.askingPrice == rhsState.askingPrice && lhsState.currencySymbol == rhsState.currencySymbol: return true
+    case (.biddingInProgress, .biddingInProgress): return true
+    case (.bidBecameMaxBidder, .bidBecameMaxBidder): return true
+    case (.bidAcknowledged, .bidAcknowledged): return true
+    case (.bidNetworkFail, .bidNetworkFail): return true
+    case (.lotWaitingToOpen, .lotWaitingToOpen): return true
+    case (.lotSold, .lotSold): return true
+    case (.bidOutbid, .bidOutbid): return true
 
     default: return false
     }
@@ -42,7 +66,7 @@ class LiveAuctionBidViewModel: NSObject {
 
     // For a stepper UI, a better data structure would be a doubly-linked list.
     // But we're switching to a UI that will be best with an array: https://github.com/artsy/eigen/issues/1579
-    private var bidIncrements: [UInt64] = []
+    fileprivate var bidIncrements: [UInt64] = []
 
     init(lotVM: LiveAuctionLotViewModelType, salesPerson: LiveAuctionsSalesPersonType) {
         self.lotViewModel = lotVM
@@ -67,11 +91,11 @@ class LiveAuctionBidViewModel: NSObject {
         return bidIncrements.count
     }
 
-    func bidIncrementValueAtIndex(index: Int) -> UInt64 {
+    func bidIncrementValueAtIndex(_ index: Int) -> UInt64 {
         return bidIncrements[index]
     }
 
-    func bidIncrementStringAtIndex(index: Int) -> String {
+    func bidIncrementStringAtIndex(_ index: Int) -> String {
         let value = bidIncrements[index]
         return value.convertToDollarString(lotViewModel.currencySymbol)
     }
@@ -103,11 +127,11 @@ class LiveAuctionBidViewModel: NSObject {
         return currentBid > bidIncrements.first
     }
 
-    func nextBidCents(bid: UInt64) -> UInt64 {
+    func nextBidCents(_ bid: UInt64) -> UInt64 {
         return bidIncrements.first { $0 > bid } ?? bid
     }
 
-    func previousBidCents(bid: UInt64) -> UInt64 {
+    func previousBidCents(_ bid: UInt64) -> UInt64 {
         return bidIncrements.last { $0 < bid } ?? bid
     }
 }
@@ -121,18 +145,18 @@ public protocol BidIncrementStrategyType: Comparable {
 extension BidIncrementStrategy: BidIncrementStrategyType { }
 
 public func < <T: BidIncrementStrategyType>(lhs: T, rhs: T) -> Bool {
-    return lhs.from.unsignedLongLongValue < rhs.from.unsignedLongLongValue
+    return lhs.from.uint64Value < rhs.from.uint64Value
 }
 
 public func ==<T: BidIncrementStrategyType>(lhs: T, rhs: T) -> Bool {
-    return lhs.from.unsignedLongLongValue == rhs.from.unsignedLongLongValue
+    return lhs.from.uint64Value == rhs.from.uint64Value
 }
 
 extension Array where Element: BidIncrementStrategyType {
-    func minimumNextBidCentsIncrement(bid: UInt64) -> UInt64 {
-        let matchingIncrement = self.reduce(nil, combine: { (memo, e) -> Element? in
+    func minimumNextBidCentsIncrement(_ bid: UInt64) -> UInt64 {
+        let matchingIncrement = self.reduce(nil, { (memo, e) -> Element? in
             // We want to find the first increment whose from exceed bid, and return memo (the increment before it).
-            if e.from.unsignedLongLongValue > bid {
+            if e.from.uint64Value > bid {
                 return memo
             } else {
                 // If we haven't surpassed the bid yet, return the next "previous value"
@@ -140,6 +164,6 @@ extension Array where Element: BidIncrementStrategyType {
             }
         }) ?? last // If we exhausted the list, use the last, largest element.
 
-        return bid + (matchingIncrement?.amount.unsignedLongLongValue ?? bid) // Default to satisfy compiler, or an empty strategy from the API (unlikely)
+        return bid + (matchingIncrement?.amount.uint64Value ?? bid) // Default to satisfy compiler, or an empty strategy from the API (unlikely)
     }
 }

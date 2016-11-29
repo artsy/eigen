@@ -1,14 +1,14 @@
 import UIKit
 
 enum BidHistoryState {
-    case Closed, Open
+    case closed, open
 }
 
 class LiveAuctionLotBidHistoryGestureController: NSObject {
 
-    typealias UpdateClosure = (delta: CGFloat) -> Void
-    typealias CompletionClosure = (targetState: BidHistoryState) -> Void
-    typealias BeginClosure = (originalState: BidHistoryState) -> Void
+    typealias UpdateClosure = (_ delta: CGFloat) -> Void
+    typealias CompletionClosure = (_ targetState: BidHistoryState) -> Void
+    typealias BeginClosure = (_ originalState: BidHistoryState) -> Void
 
     let begining: BeginClosure
     let update: UpdateClosure
@@ -18,11 +18,11 @@ class LiveAuctionLotBidHistoryGestureController: NSObject {
     var openedPosition: CGFloat = 0
 
     /// Change in the bid history state. There is no "opening" state, this updates only when interactions/animations complete.
-    private(set) var bidHistoryState: BidHistoryState = .Closed
+    fileprivate(set) var bidHistoryState: BidHistoryState = .closed
 
-    private var gestureRecognizer: UIGestureRecognizer?
+    fileprivate var gestureRecognizer: UIGestureRecognizer?
 
-    init(gestureRecognizer: UIGestureRecognizer, begining: BeginClosure, update: UpdateClosure, completion: CompletionClosure) {
+    init(gestureRecognizer: UIGestureRecognizer, begining: @escaping BeginClosure, update: @escaping UpdateClosure, completion: @escaping CompletionClosure) {
         self.gestureRecognizer = gestureRecognizer
         self.begining = begining
         self.update = update
@@ -33,57 +33,57 @@ class LiveAuctionLotBidHistoryGestureController: NSObject {
         gestureRecognizer.addTarget(self, action: #selector(userDidDragToolbar))
     }
 
-    private var _initialBidHistoryState: BidHistoryState = .Closed
+    fileprivate var _initialBidHistoryState: BidHistoryState = .closed
 
-    func userDidDragToolbar(gestureRecognizer: UIPanGestureRecognizer) {
-        let translation = gestureRecognizer.translationInView(gestureRecognizer.view)
-        let velocity = gestureRecognizer.velocityInView(gestureRecognizer.view)
+    func userDidDragToolbar(_ gestureRecognizer: UIPanGestureRecognizer) {
+        let translation = gestureRecognizer.translation(in: gestureRecognizer.view)
+        let velocity = gestureRecognizer.velocity(in: gestureRecognizer.view)
 
         switch gestureRecognizer.state {
-        case .Began:
+        case .began:
             _initialBidHistoryState = bidHistoryState
 
-            self.begining(originalState: _initialBidHistoryState)
+            self.begining(_initialBidHistoryState)
 
             // We'll be "open" for now, which is really shorthand for "opening", which will be set appropriately when the recognizer ends.
-            bidHistoryState = .Open
+            bidHistoryState = .open
 
-        case .Changed:
+        case .changed:
             var delta: CGFloat // How far the view has moved from its initial, at rest position.
 
             switch _initialBidHistoryState {
-            case .Closed: // Opening
+            case .closed: // Opening
                 delta = translation.y
-            case .Open:   // Closing
+            case .open:   // Closing
                 delta = openedPosition - closedPosition + translation.y
             }
 
             delta.capAtMax(0, min: openedPosition - closedPosition)
 
-            self.update(delta: delta)
+            self.update(delta)
 
-        case .Ended:
+        case .ended:
             // Depending on the direction of the velocity, close or open the lot history.
-            let targetState: BidHistoryState = velocity.y >= 0 ? .Closed : .Open
+            let targetState: BidHistoryState = velocity.y >= 0 ? .closed : .open
 
-            self.completion(targetState: targetState)
+            self.completion(targetState)
             bidHistoryState = targetState
         default: break
         }
     }
 
     func forceCloseBidHistory() {
-        bidHistoryState = .Closed
+        bidHistoryState = .closed
     }
 }
 
 extension LiveAuctionLotBidHistoryGestureController {
     var enabled: Bool {
         set {
-            self.gestureRecognizer?.enabled = newValue
+            self.gestureRecognizer?.isEnabled = newValue
         }
         get {
-            return self.gestureRecognizer?.enabled ?? false
+            return self.gestureRecognizer?.isEnabled ?? false
         }
     }
 }

@@ -3,13 +3,13 @@ import Artsy_UIColors
 
 extension UILabel {
 
-    func makeSubstringFaint(substring: String) {
+    func makeSubstringFaint(_ substring: String) {
         guard let
             attributedText = self.attributedText?.mutableCopy() as? NSMutableAttributedString,
-            text: NSString = self.text
+            let text: NSString = self.text as NSString?
             else { return }
 
-        let range = text.rangeOfString(substring)
+        let range = text.range(of: substring)
         if range.location != NSNotFound {
             attributedText.setAttributes([NSForegroundColorAttributeName: UIColor.artsyGraySemibold()], range: range)
         }

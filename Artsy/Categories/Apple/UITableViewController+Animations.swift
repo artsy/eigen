@@ -2,6 +2,6 @@ import UIKit
 
 extension UITableViewController {
     var appDependentRowAnimationStyle: UITableViewRowAnimation {
-        return ARPerformWorkAsynchronously ? .Automatic : .None
+        return ARPerformWorkAsynchronously.boolValue ? .automatic : .none
     }
 }

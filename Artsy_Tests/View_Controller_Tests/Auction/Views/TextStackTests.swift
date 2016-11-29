@@ -13,7 +13,7 @@ class TextStackTests: QuickSpec {
 
             let subject = TextStack()
             subject.constrainWidth("280")
-            subject.backgroundColor = .whiteColor()
+            subject.backgroundColor = .white
 
             subject.addBigHeading("Biggest Heading")
             subject.addThickLineBreak()

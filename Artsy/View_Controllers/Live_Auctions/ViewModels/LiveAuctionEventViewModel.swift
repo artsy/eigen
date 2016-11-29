@@ -1,8 +1,8 @@
 import Foundation
 
 enum BidEventBidStatus {
-    case Bid(isMine: Bool, isTop: Bool)
-    case PendingBid(isMine: Bool)
+    case bid(isMine: Bool, isTop: Bool)
+    case pendingBid(isMine: Bool)
 }
 
 protocol LiveAuctionEventViewModelType {
@@ -20,7 +20,7 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
     }
 
     var isBid: Bool {
-        return event.eventType() == .Bid
+        return event.eventType() == .bid
     }
 
     var confirmed: Bool {
@@ -28,7 +28,7 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
     }
 
     var isBidConfirmation: Bool {
-        return event.eventType() == .BidComposite
+        return event.eventType() == .bidComposite
     }
 
     var bidConfirmationEventID: String? {
@@ -45,11 +45,11 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
     }
 
     var isLotOpening: Bool {
-        return event.eventType() == .LotOpen
+        return event.eventType() == .lotOpen
     }
 
     var isUndo: Bool {
-        return event.eventType() == .Undo
+        return event.eventType() == .undo
     }
 
     var undoLiveEventID: String? {
@@ -59,18 +59,18 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
 
     var isUserFacing: Bool {
         switch event.eventType() {
-        case .Unknown, .BidComposite, .Undo:
+        case .unknown, .bidComposite, .undo:
             return false
         default:
             return true
         }
     }
 
-    var dateEventCreated: NSDate {
-        return ARStandardDateFormatter.sharedFormatter().dateFromString(event.createdAtString)
+    var dateEventCreated: Date {
+        return ARStandardDateFormatter.shared().date(from: event.createdAtString)
     }
 
-    func hasBidderID(bidderID: String) -> Bool {
+    func hasBidderID(_ bidderID: String) -> Bool {
         guard let bidder = event.bidder else { return false }
         return bidder.bidderID == bidderID
     }
@@ -85,7 +85,7 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
         return event.amountCents
     }
 
-    func hasAmountCents(amount: UInt64 ) -> Bool {
+    func hasAmountCents(_ amount: UInt64 ) -> Bool {
         return event.amountCents == amount
     }
 
@@ -97,90 +97,90 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
         event.confirmed = true
     }
 
-    private func colorForBidStatus(status: BidEventBidStatus) -> UIColor {
+    fileprivate func colorForBidStatus(_ status: BidEventBidStatus) -> UIColor {
         switch status {
-        case .Bid(let isMine, let isTop):
+        case .bid(let isMine, let isTop):
             var color: UIColor
             if isMine && isTop {
                 color = .artsyGreenRegular()
             } else if isMine && !isTop {
                 color = red()
             } else {
-                color = .blackColor()
+                color = .black
             }
 
             // Override color when cancelled
             color = event.cancelled ? .artsyGrayMedium() : color
             return color
 
-        case .PendingBid:
+        case .pendingBid:
             return .artsyGrayMedium()
         }
     }
 
     var eventTitle: NSAttributedString {
         switch event.eventType() {
-        case .Bid:
+        case .bid:
             guard
                 let event = event as? LiveEventBid,
-                let status = bidStatus else { return attributify("ERROR", .redColor()) }
+                let status = bidStatus else { return attributify("ERROR", .red) }
 
             switch status {
-            case .Bid(let isMine, _):
+            case .bid(let isMine, _):
                 let display = isMine ? "Your Bid" : event.displayString()
                 let color = colorForBidStatus(status)
-                return attributify(display.uppercaseString, color, strike: event.cancelled)
+                return attributify(display.uppercased(), color, strike: event.cancelled)
 
-            case .PendingBid(let isMine):
+            case .pendingBid(let isMine):
                 let display = isMine ? "Your Bid" : event.displayString()
-                return attributify(display.uppercaseString, .artsyGrayMedium(), strike: event.cancelled)
+                return attributify(display.uppercased(), .artsyGrayMedium(), strike: event.cancelled)
             }
 
-        case .Closed: return  attributify("CLOSED", .blackColor(), strike: event.cancelled)
-        case .Warning: return attributify("WARNING", yellow(), strike: event.cancelled)
-        case .FinalCall: return attributify("FINAL CALL", orange(), strike: event.cancelled)
+        case .closed: return  attributify("CLOSED", .black, strike: event.cancelled)
+        case .warning: return attributify("WARNING", yellow(), strike: event.cancelled)
+        case .finalCall: return attributify("FINAL CALL", orange(), strike: event.cancelled)
         // TODO: "LOT [number] OPEN FOR BIDDING
-        case .LotOpen:
-            guard let event = event as? LiveEventLotOpen else { return attributify("", .blackColor())  }
+        case .lotOpen:
+            guard let event = event as? LiveEventLotOpen else { return attributify("", .black)  }
             return attributify("LOT OPEN FOR BIDDING", purple(), strike: event.cancelled)
 
         /// Ideal world, none of these would happen
-        case .Unknown: return NSAttributedString()
-        case .BidComposite: return NSAttributedString()
-        case .Undo: return NSAttributedString()
+        case .unknown: return NSAttributedString()
+        case .bidComposite: return NSAttributedString()
+        case .undo: return NSAttributedString()
         }
     }
 
     var eventSubtitle: NSAttributedString {
         switch event.eventType() {
-        case .Bid:
+        case .bid:
             guard
                 let event = event as? LiveEventBid,
-                let status = bidStatus else { return attributify("ERROR", .redColor()) }
+                let status = bidStatus else { return attributify("ERROR", .red) }
 
             let color = colorForBidStatus(status)
             let formattedPrice = event.amountCents.convertToDollarString(currencySymbol)
             return attributify(formattedPrice, color, strike: event.cancelled)
 
-        case .Closed: return NSAttributedString()
-        case .Warning: return attributifyImage("live_auction_bid_warning_yellow")
-        case .FinalCall: return attributifyImage("live_auction_bid_warning_orange")
-        case .LotOpen: return attributifyImage("live_auction_bid_hammer")
+        case .closed: return NSAttributedString()
+        case .warning: return attributifyImage("live_auction_bid_warning_yellow")
+        case .finalCall: return attributifyImage("live_auction_bid_warning_orange")
+        case .lotOpen: return attributifyImage("live_auction_bid_hammer")
 
         /// Ideal world, none of these would happen
-        case .Unknown: return NSAttributedString()
-        case .BidComposite: return NSAttributedString()
-        case .Undo: return NSAttributedString()
+        case .unknown: return NSAttributedString()
+        case .bidComposite: return NSAttributedString()
+        case .undo: return NSAttributedString()
         }
     }
 
-    func attributify(string: String, _ color: UIColor, strike: Bool = false) -> NSAttributedString {
+    func attributify(_ string: String, _ color: UIColor, strike: Bool = false) -> NSAttributedString {
         var attributes: [String:AnyObject] = [NSForegroundColorAttributeName : color]
-        if strike { attributes[NSStrikethroughStyleAttributeName] = NSUnderlineStyle.StyleSingle.rawValue }
+        if strike { attributes[NSStrikethroughStyleAttributeName] = NSUnderlineStyle.styleSingle.rawValue as AnyObject? }
         return NSAttributedString(string: string, attributes:attributes)
     }
 
-    func attributifyImage(name: String) -> NSAttributedString {
+    func attributifyImage(_ name: String) -> NSAttributedString {
         let textAttachment = NSTextAttachment()
         textAttachment.image = UIImage(named: name)
         return NSAttributedString(attachment: textAttachment)

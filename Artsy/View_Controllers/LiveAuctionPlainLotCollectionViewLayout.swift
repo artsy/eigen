@@ -9,7 +9,7 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
 
         super.init()
 
-        scrollDirection = .Horizontal
+        scrollDirection = .horizontal
         minimumLineSpacing = 0
     }
 
@@ -23,42 +23,42 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
         }
     }
 
-    private var maxHeight: CGFloat {
+    fileprivate var maxHeight: CGFloat {
         guard let height = collectionView?.bounds.height else { return 0 }
         return height - 40
     }
 
-    class override func layoutAttributesClass() -> AnyClass {
+    class override var layoutAttributesClass : AnyClass {
         return LiveAuctionLotCollectionViewLayoutAttributes.self
     }
 
 
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         // Regardless of the rect, we always return the one layout attributes
-        return [layoutAttributesForItemAtIndexPath(NSIndexPath(forItem: 1, inSection: 0))].flatMap { $0 }
+        return [layoutAttributesForItem(at: IndexPath(item: 1, section: 0))].flatMap { $0 }
     }
 
-    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        return super.layoutAttributesForItemAtIndexPath(indexPath).flatMap { modifiedLayoutAttributesCopy($0) }
+    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        return super.layoutAttributesForItem(at: indexPath).flatMap { modifiedLayoutAttributesCopy($0) }
     }
 
-    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return true
     }
 
-    override func prepareLayout() {
-        super.prepareLayout()
+    override func prepare() {
+        super.prepare()
 
         let width = collectionView?.frame.size.width ?? 0
         itemSize = CGSize(width: width, height: maxHeight)
     }
 
-    func modifiedLayoutAttributesCopy(layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+    func modifiedLayoutAttributesCopy(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         guard let copy = layoutAttributes.copy() as? LiveAuctionLotCollectionViewLayoutAttributes else { return layoutAttributes }
 
         copy.size.width -= 80 // For side margins, done upfront so we can rely on copy.size for the remainder of the function.
 
-        let index: RelativeIndex = copy.indexPath.item
+        let index: RelativeIndex = (copy.indexPath as NSIndexPath).item
         let aspectRatio = delegate.aspectRatioForIndex(index)
         let isWide = (aspectRatio > itemSize.width / maxHeight)
 

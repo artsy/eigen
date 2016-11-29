@@ -26,7 +26,7 @@ class LiveAuctionBiddingViewModelTests: QuickSpec {
                 }
             }
 
-            lotViewModel.lotStateSignal.update(.LiveLot)
+            lotViewModel.lotStateSignal.update(.liveLot)
 
             expect(progressSignalInvocations) == 1
         }
