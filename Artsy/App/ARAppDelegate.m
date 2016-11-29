@@ -6,8 +6,6 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Adjust/Adjust.h>
 
-#import "ARAppWatchCommunicator.h"
-
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
 
