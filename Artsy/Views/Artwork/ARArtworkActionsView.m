@@ -386,7 +386,7 @@ return [navigationButtons copy];
 {
     ARCountdownView *countdownView = [[ARCountdownView alloc] init];
     countdownView.delegate = self;
-    [self addSubview:countdownView withTopMargin:@"8" sideMargin:@"120"];
+    [self addSubview:countdownView withTopMargin:@"8" sideMargin:@"30"];
     self.countdownView = countdownView;
     [self updateCountdownView];
 }

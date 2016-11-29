@@ -21,11 +21,11 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
             gestureRecognizer = ForgeryPanGestureRecognizer()
             subject = LiveAuctionLotBidHistoryGestureController(gestureRecognizer: gestureRecognizer,
                 begining: { originalState in
-                    beginning?(originalState: originalState)
+                    beginning?(originalState)
                 }, update: { delta in
-                    update?(delta: delta)
+                    update?(delta)
                 }, completion: { targetState in
-                    completion?(targetState: targetState)
+                    completion?(targetState)
             })
             subject.openedPosition = 10
             subject.closedPosition = 20
@@ -38,7 +38,7 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
         it("disables the gesture recognizer when disabled itself") {
             subject.enabled = false
 
-            expect(gestureRecognizer.enabled) == false
+            expect(gestureRecognizer.isEnabled) == false
         }
 
         it("enables the gesture recognizer when enabled itself") {
@@ -46,7 +46,7 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
 
             subject.enabled = true
 
-            expect(gestureRecognizer.enabled) == true
+            expect(gestureRecognizer.isEnabled) == true
         }
 
         describe("opening") {
@@ -55,19 +55,19 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                 beginning = { initialState in
                     receivedInitialState = initialState
                 }
-                gestureRecognizer.testing_state = .Began
+                gestureRecognizer.testing_state = .began
 
                 gestureRecognizer.invoke()
 
-                expect(receivedInitialState) == .Closed
+                expect(receivedInitialState) == .closed
             }
 
             it("sets its state to open during the opening") {
-                gestureRecognizer.testing_state = .Began
+                gestureRecognizer.testing_state = .began
 
                 gestureRecognizer.invoke()
 
-                expect(subject.bidHistoryState == .Open) == true
+                expect(subject.bidHistoryState == .open) == true
             }
 
             it("updates with delta") {
@@ -76,7 +76,7 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                     receivedDelta = delta
                 }
                 gestureRecognizer.testing_translation = CGPoint(x: 0, y: -5)
-                gestureRecognizer.testing_state = .Changed
+                gestureRecognizer.testing_state = .changed
 
                 gestureRecognizer.invoke()
 
@@ -89,11 +89,11 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                     receivedTargetState = targetState
                 }
                 gestureRecognizer.testing_velocity = CGPoint(x: 0, y: 5)
-                gestureRecognizer.testing_state = .Ended
+                gestureRecognizer.testing_state = .ended
 
                 gestureRecognizer.invoke()
 
-                expect(receivedTargetState) == .Closed
+                expect(receivedTargetState) == .closed
             }
 
             it("calls ending closure to complete") {
@@ -102,32 +102,32 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                     receivedTargetState = targetState
                 }
                 gestureRecognizer.testing_velocity = CGPoint(x: 0, y: -5)
-                gestureRecognizer.testing_state = .Ended
+                gestureRecognizer.testing_state = .ended
 
                 gestureRecognizer.invoke()
 
-                expect(receivedTargetState) == .Open
+                expect(receivedTargetState) == .open
             }
 
             it("updates its state once opened") {
-                gestureRecognizer.state = .Began
+                gestureRecognizer.state = .began
                 gestureRecognizer.invoke()
 
-                gestureRecognizer.testing_state = .Ended
+                gestureRecognizer.testing_state = .ended
                 gestureRecognizer.testing_velocity = CGPoint(x: 0, y: -5)
                 gestureRecognizer.invoke()
 
-                expect(subject.bidHistoryState == .Open) == true
+                expect(subject.bidHistoryState == .open) == true
             }
         }
 
         describe("closing") {
             beforeEach {
                 // "Open" the controller.
-                gestureRecognizer.testing_state = .Began
+                gestureRecognizer.testing_state = .began
                 gestureRecognizer.invoke()
                 gestureRecognizer.testing_velocity = CGPoint(x: 0, y: -5)
-                gestureRecognizer.testing_state = .Ended
+                gestureRecognizer.testing_state = .ended
                 gestureRecognizer.invoke()
             }
 
@@ -136,11 +136,11 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                 beginning = { initialState in
                     receivedInitialState = initialState
                 }
-                gestureRecognizer.testing_state = .Began
+                gestureRecognizer.testing_state = .began
 
                 gestureRecognizer.invoke()
 
-                expect(receivedInitialState) == .Open
+                expect(receivedInitialState) == .open
             }
 
             it("calls ending closure to cancel") {
@@ -149,11 +149,11 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                     receivedTargetState = targetState
                 }
                 gestureRecognizer.testing_velocity = CGPoint(x: 0, y: -5)
-                gestureRecognizer.testing_state = .Ended
+                gestureRecognizer.testing_state = .ended
 
                 gestureRecognizer.invoke()
 
-                expect(receivedTargetState) == .Open
+                expect(receivedTargetState) == .open
             }
 
             it("calls ending closure to complete") {
@@ -162,11 +162,11 @@ class LiveAuctionLotBidHistoryGestureControllerTests: QuickSpec {
                     receivedTargetState = targetState
                 }
                 gestureRecognizer.testing_velocity = CGPoint(x: 0, y: 5)
-                gestureRecognizer.testing_state = .Ended
+                gestureRecognizer.testing_state = .ended
 
                 gestureRecognizer.invoke()
 
-                expect(receivedTargetState) == .Closed
+                expect(receivedTargetState) == .closed
             }
         }
     }

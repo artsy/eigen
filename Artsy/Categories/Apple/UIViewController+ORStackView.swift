@@ -7,13 +7,13 @@ extension UIViewController {
     func setupTaggedStackView() -> ORStackScrollView {
         // Build, configure the stack view.
         let stackScrollView = ORStackScrollView(stackViewClass: ORTagBasedAutoStackView.self)
-        stackScrollView.stackView.backgroundColor = .whiteColor()
-        stackScrollView.delegate = ARScrollNavigationChief.getChief()
+        stackScrollView?.stackView.backgroundColor = .white
+        stackScrollView?.delegate = ARScrollNavigationChief.getChief()
 
         // Set it as our view and perform any other customization.
         self.view = stackScrollView
-        self.view.backgroundColor = .blackColor()
+        self.view.backgroundColor = .black
 
-        return stackScrollView
+        return stackScrollView!
     }
 }

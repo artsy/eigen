@@ -14,44 +14,44 @@ enum AuctionOrderingSwitchValue: String {
     case HighestCurrentBid = "Highest Bid"
     case LowestCurrentBid = "Lowest Bid"
 
-    func sortSaleArtworks<T: AuctionOrderable>(saleArtworks: [T]) -> [T] {
+    func sortSaleArtworks<T: AuctionOrderable>(_ saleArtworks: [T]) -> [T] {
         switch self {
-        case LotNumber:
+        case .LotNumber:
             return saleArtworks
         case .ArtistAlphabetical:
-            return saleArtworks.sort(alphabeticalSort)
-        case LeastBids:
-            return saleArtworks.sort(leastBidsSort)
-        case MostBids:
-            return saleArtworks.sort(mostBidsSort)
-        case HighestCurrentBid:
-            return saleArtworks.sort(highestCurrentBidSort)
-        case LowestCurrentBid:
-            return saleArtworks.sort(lowestCurrentBidSort)
+            return saleArtworks.sorted(by: alphabeticalSort)
+        case .LeastBids:
+            return saleArtworks.sorted(by: leastBidsSort)
+        case .MostBids:
+            return saleArtworks.sorted(by: mostBidsSort)
+        case .HighestCurrentBid:
+            return saleArtworks.sorted(by: highestCurrentBidSort)
+        case .LowestCurrentBid:
+            return saleArtworks.sorted(by: lowestCurrentBidSort)
         }
     }
 
     enum LayoutType {
-        case Grid, List
+        case grid, list
     }
 }
 
 extension AuctionOrderingSwitchValue {
     var layoutType: LayoutType {
         switch self {
-        case LotNumber: return .Grid
-        default: return .List
+        case .LotNumber: return .grid
+        default: return .list
         }
     }
 
-    static func fromIntWithViewModel(value: Int, saleViewModel: SaleViewModel) -> AuctionOrderingSwitchValue {
+    static func fromIntWithViewModel(_ value: Int, saleViewModel: SaleViewModel) -> AuctionOrderingSwitchValue {
         guard value < allSwitchValuesWithViewModel(saleViewModel).count else { return .LotNumber } // Lot number is a safe default
         return allSwitchValuesWithViewModel(saleViewModel)[value]
     }
 
-    static func allSwitchValuesWithViewModel(saleViewModel: SaleViewModel) -> [AuctionOrderingSwitchValue] {
+    static func allSwitchValuesWithViewModel(_ saleViewModel: SaleViewModel) -> [AuctionOrderingSwitchValue] {
         switch saleViewModel.saleAvailability {
-        case .Closed:
+        case .closed:
             return [LotNumber, ArtistAlphabetical]
         default:
             return [LotNumber, ArtistAlphabetical, LeastBids, MostBids, HighestCurrentBid, LowestCurrentBid]
@@ -59,22 +59,22 @@ extension AuctionOrderingSwitchValue {
     }
 }
 
-func leastBidsSort(lhs: AuctionOrderable, _ rhs: AuctionOrderable) -> Bool {
+func leastBidsSort(_ lhs: AuctionOrderable, _ rhs: AuctionOrderable) -> Bool {
     return lhs.bids < rhs.bids
 }
 
-func mostBidsSort(lhs: AuctionOrderable, _ rhs: AuctionOrderable) -> Bool {
+func mostBidsSort(_ lhs: AuctionOrderable, _ rhs: AuctionOrderable) -> Bool {
     return !leastBidsSort(lhs, rhs)
 }
 
-func lowestCurrentBidSort(lhs: AuctionOrderable, _ rhs: AuctionOrderable) -> Bool {
+func lowestCurrentBidSort(_ lhs: AuctionOrderable, _ rhs: AuctionOrderable) -> Bool {
     return lhs.currentBid < rhs.currentBid
 }
 
-func highestCurrentBidSort(lhs: AuctionOrderable, _ rhs: AuctionOrderable) -> Bool {
+func highestCurrentBidSort(_ lhs: AuctionOrderable, _ rhs: AuctionOrderable) -> Bool {
     return !lowestCurrentBidSort(lhs, rhs)
 }
 
-func alphabeticalSort(lhs: AuctionOrderable, _ rhs: AuctionOrderable) -> Bool {
-    return lhs.artistSortableID.caseInsensitiveCompare(rhs.artistSortableID) == .OrderedAscending
+func alphabeticalSort(_ lhs: AuctionOrderable, _ rhs: AuctionOrderable) -> Bool {
+    return lhs.artistSortableID.caseInsensitiveCompare(rhs.artistSortableID) == .orderedAscending
 }

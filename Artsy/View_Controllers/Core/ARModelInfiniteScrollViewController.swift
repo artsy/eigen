@@ -31,7 +31,7 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
         }
     }
 
-    private var modelViewController: AREmbeddedModelsViewController!
+    fileprivate var modelViewController: AREmbeddedModelsViewController!
 
     override func viewDidLoad() {
         let controller = defaultScrollingViewController()
@@ -57,16 +57,16 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
     }
 
     lazy var moduleLayout: ARArtworkMasonryModule = {
-        return ARArtworkMasonryModule(layout: self.layout(), andStyle: .ArtworkOnly)
+        return ARArtworkMasonryModule(layout: self.layout(), andStyle: .artworkOnly)
     }()
 
     // TODO: Add a flexible column size?
 
     func layout() -> ARArtworkMasonryLayout {
         switch self.traitCollection.horizontalSizeClass {
-        case .Compact: return .Layout2Column
-        case .Regular: return .Layout3Column
-        case .Unspecified: return .Layout2Column
+        case .compact: return .layout2Column
+        case .regular: return .layout3Column
+        case .unspecified: return .layout2Column
         }
     }
 
@@ -78,7 +78,7 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
     var spotlightEntity: ARSpotlightMetadataProvider?
 
     // Lets someone come back to this VC and the activity is re-triggered
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         // Deal with rotations that could have happened in the background
@@ -90,7 +90,7 @@ class ARModelInfiniteScrollViewController: UIViewController, UIScrollViewDelegat
     }
 
     // Activity is done when this VC has left
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.userActivity?.invalidate()
     }
@@ -132,7 +132,7 @@ extension PublicComputedProperties {
 
     var items: [AnyObject] {
         get {
-            return modelViewController.items
+            return modelViewController.items as [AnyObject]
         }
 
         set {

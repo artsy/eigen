@@ -15,27 +15,27 @@ extension AuctionRefineSettings: RefinableType {
         return 1
     }
 
-    func titleOfSection(section: Int) -> String {
+    func titleOfSection(_ section: Int) -> String {
         return "Sort"
     }
 
-    func numberOfRowsInSection(section: Int) -> Int {
+    func numberOfRowsInSection(_ section: Int) -> Int {
         return AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel).count
     }
 
-    func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String {
+    func titleForRowAtIndexPath(_ indexPath: IndexPath) -> String {
         return AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel)[indexPath.row].rawValue
     }
 
-    func allowMultipleSelectionInSection(section: Int) -> Bool {
+    func allowMultipleSelectionInSection(_ section: Int) -> Bool {
         return false
     }
 
-    func shouldCheckRowAtIndexPath(indexPath: NSIndexPath) -> Bool {
+    func shouldCheckRowAtIndexPath(_ indexPath: IndexPath) -> Bool {
         return ordering == AuctionOrderingSwitchValue.fromIntWithViewModel(indexPath.row, saleViewModel: saleViewModel)
     }
 
-    func selectedRowsInSection(section: Int) -> [NSIndexPath] {
+    func selectedRowsInSection(_ section: Int) -> [IndexPath] {
         guard let indexPath = indexPathOfSelectedOrdering() else { return [] }
         return [indexPath]
     }
@@ -44,18 +44,18 @@ extension AuctionRefineSettings: RefinableType {
         return nil
     }
 
-    func refineSettingsWithPriceRange(range: PriceRange) -> AuctionRefineSettings {
+    func refineSettingsWithPriceRange(_ range: PriceRange) -> AuctionRefineSettings {
         return AuctionRefineSettings(ordering: self.ordering, priceRange: range, saleViewModel: saleViewModel)
     }
 
-    func refineSettingsWithSelectedIndexPath(indexPath: NSIndexPath) -> AuctionRefineSettings {
+    func refineSettingsWithSelectedIndexPath(_ indexPath: IndexPath) -> AuctionRefineSettings {
         let ordering = AuctionOrderingSwitchValue.fromIntWithViewModel(indexPath.row, saleViewModel: saleViewModel)
         return AuctionRefineSettings(ordering: ordering, priceRange: priceRange, saleViewModel: saleViewModel)
     }
 
-    func indexPathOfSelectedOrdering() -> NSIndexPath? {
-        if let i = AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel).indexOf(ordering) {
-            return NSIndexPath.init(forItem: i, inSection: 0)
+    func indexPathOfSelectedOrdering() -> IndexPath? {
+        if let i = AuctionOrderingSwitchValue.allSwitchValuesWithViewModel(saleViewModel).index(of: ordering) {
+            return IndexPath.init(item: i, section: 0)
         }
         return nil
     }
@@ -66,7 +66,7 @@ extension AuctionRefineSettings: Equatable {}
 func == (lhs: AuctionRefineSettings, rhs: AuctionRefineSettings) -> Bool {
     guard lhs.ordering == rhs.ordering else { return false }
 
-    if let lhsRange = lhs.priceRange, rhsRange = rhs.priceRange {
+    if let lhsRange = lhs.priceRange, let rhsRange = rhs.priceRange {
         guard lhsRange.min == rhsRange.min else { return false }
         guard lhsRange.max == rhsRange.max else { return false }
     }

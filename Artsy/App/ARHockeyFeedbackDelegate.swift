@@ -6,9 +6,9 @@ import ARAnalytics
 class ARHockeyFeedbackDelegate: NSObject {
 
     func listenForScreenshots() {
-        let mainQueue = NSOperationQueue.mainQueue()
-        let notifications = NSNotificationCenter.defaultCenter()
-        notifications.addObserverForName(UIApplicationUserDidTakeScreenshotNotification, object: nil, queue: mainQueue) { notification in
+        let mainQueue = OperationQueue.main
+        let notifications = NotificationCenter.default
+        notifications.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil, queue: mainQueue) { notification in
             // When I looked at how Hockey did this, I found that they would delay by a second
             // presumably it can take a second to have the image saved in the asset store before
             // we can pull it out again. We might be able to get away with 0.5.
@@ -16,40 +16,40 @@ class ARHockeyFeedbackDelegate: NSObject {
         }
     }
 
-    func showFeedback(image: UIImage? = nil) {
-        let hockeyProvider = ARAnalytics.providerInstanceOfClass(HockeyAppProvider.self)
+    func showFeedback(_ image: UIImage? = nil) {
+        let hockeyProvider = ARAnalytics.providerInstance(of: HockeyAppProvider.self)
         var analyticsLog: BITHockeyAttachment?
 
-        let processID = NSProcessInfo.processInfo().processIdentifier
-        if let messages = hockeyProvider.messagesForProcessID(UInt(processID)) as? [String] {
-            let message = messages.joinWithSeparator("\n")
-            let data = message.dataUsingEncoding(NSUTF8StringEncoding)
+        let processID = ProcessInfo.processInfo.processIdentifier
+        if let messages = hockeyProvider?.messages(forProcessID: UInt(processID)) as? [String] {
+            let message = messages.joined(separator: "\n")
+            let data = message.data(using: String.Encoding.utf8)
             analyticsLog = BITHockeyAttachment(filename: "analytics_log.txt", hockeyAttachmentData: data, contentType: "text")
         }
 
-        let user = User.currentUser()
-        let initialMessage = "From: \(user != nil ? user.name : "Onboarding user")\n\n"
+        let user = User.current()
+        let initialMessage = "From: \(user != nil ? user?.name : "Onboarding user")\n\n"
         
         // Create an array of optionals, then flatmap them to be only real values
-        let items = ([initialMessage, image, analyticsLog] as [AnyObject?]).flatMap { $0 }
+        let items = ([initialMessage as Optional<AnyObject>, image, analyticsLog] as [AnyObject?]).flatMap { $0 }
 
-        let vc = BITHockeyManager.sharedHockeyManager().feedbackManager
-        vc.showFeedbackComposeViewWithPreparedItems(items)
+        let vc = BITHockeyManager.shared().feedbackManager
+        vc?.showFeedbackComposeView(withPreparedItems: items)
     }
 
     func showFeedbackWithRecentScreenshot() {
         let fetch = PHFetchOptions()
         fetch.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
 
-        let results = PHAsset.fetchAssetsWithMediaType(.Image, options: fetch)
-        guard let result = results.lastObject as? PHAsset else {
+        let results = PHAsset.fetchAssets(with: .image, options: fetch)
+        guard let result = results.lastObject else {
             self.showFeedback()
             return
         }
 
         let options = PHImageRequestOptions()
-        options.synchronous = true
-        PHImageManager.defaultManager().requestImageForAsset(result, targetSize: UIScreen.mainScreen().bounds.size, contentMode: .AspectFit, options: options) { image, info in
+        options.isSynchronous = true
+        PHImageManager.default().requestImage(for: result, targetSize: UIScreen.main.bounds.size, contentMode: .aspectFit, options: options) { image, info in
             self.showFeedback(image)
         }
     }

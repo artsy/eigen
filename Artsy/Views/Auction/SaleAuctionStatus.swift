@@ -1,44 +1,44 @@
 import Foundation
 
 protocol SaleAuctionStatusType {
-    var startDate: NSDate! { get }
-    var endDate: NSDate! { get }
-    var registrationEndsAtDate: NSDate! { get }
+    var startDate: Date! { get }
+    var endDate: Date! { get }
+    var registrationEndsAtDate: Date! { get }
 
-    func auctionStateWithBidders(bidders: [Bidder]) -> ARAuctionState
+    func auctionStateWithBidders(_ bidders: [Bidder]) -> ARAuctionState
 }
 
 extension SaleAuctionStatusType {
-    func auctionStateWithBidders(bidders: [Bidder]) -> ARAuctionState {
-        var state: ARAuctionState = [.Default]
+    func auctionStateWithBidders(_ bidders: [Bidder]) -> ARAuctionState {
+        var state: ARAuctionState = ARAuctionState()
         let now = ARSystemTime.date()
 
         // These have a habit of being nil, so let's be _extra_ careful.
-        let hasStarted = (startDate != nil && startDate.compare(now) == .OrderedAscending)
-        let hasFinished = (endDate != nil && endDate.compare(now) == .OrderedAscending)
-        let notYetStarted = (startDate != nil && startDate.compare(now) == .OrderedDescending)
-        let registrationClosed = (registrationEndsAtDate != nil && registrationEndsAtDate.compare(now) == .OrderedAscending)
+        let hasStarted = (startDate != nil && startDate.compare(now!) == .orderedAscending)
+        let hasFinished = (endDate != nil && endDate.compare(now!) == .orderedAscending)
+        let notYetStarted = (startDate != nil && startDate.compare(now!) == .orderedDescending)
+        let registrationClosed = (registrationEndsAtDate != nil && registrationEndsAtDate.compare(now!) == .orderedAscending)
 
         if notYetStarted {
-            state.insert(.ShowingPreview)
+            state.insert(.showingPreview)
         }
 
         if hasStarted && !hasFinished {
-            state.insert(.Started)
+            state.insert(.started)
         }
 
         if hasFinished {
-            state.insert(.Ended)
+            state.insert(.ended)
         }
 
         if let bidder = bidders.bestBidder {
             if bidder.saleRequiresBidderApproval && !bidder.qualifiedForBidding {
-                state.insert(.UserPendingRegistration)
+                state.insert(.userPendingRegistration)
             } else {
-                state.insert(.UserIsRegistered)
+                state.insert(.userIsRegistered)
             }
         } else if registrationClosed {
-            state.insert(.UserRegistrationClosed)
+            state.insert(.userRegistrationClosed)
         }
 
         return state

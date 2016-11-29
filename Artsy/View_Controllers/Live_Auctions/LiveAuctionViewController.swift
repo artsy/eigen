@@ -10,7 +10,7 @@ class LiveAuctionViewController: UISplitViewController {
     let saleSlugOrID: String
 
     lazy var useSingleLayout: Bool = { [weak self] in
-        return self?.traitCollection.horizontalSizeClass == .Compact
+        return self?.traitCollection.horizontalSizeClass == .compact
     }()
 
     lazy var staticDataFetcher: LiveAuctionStaticDataFetcherType = { [weak self] in
@@ -28,8 +28,8 @@ class LiveAuctionViewController: UISplitViewController {
 
     var sale: LiveSale?
 
-    private var statusMaintainer = ARSerifStatusMaintainer()
-    lazy var app = UIApplication.sharedApplication()
+    fileprivate var statusMaintainer = ARSerifStatusMaintainer()
+    lazy var app = UIApplication.shared
     var suppressJumpingToOpenLots = false
 
     init(saleSlugOrID: String) {
@@ -43,42 +43,42 @@ class LiveAuctionViewController: UISplitViewController {
         viewControllers = [UIViewController()]
 
         // Find out when we've updated registration status
-        NSNotificationCenter.defaultCenter()
-            .addObserver(self, selector: #selector(userHasChangedRegistrationStatus), name: ARAuctionArtworkRegistrationUpdatedNotification, object: nil)
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(userHasChangedRegistrationStatus), name: NSNotification.Name.ARAuctionArtworkRegistrationUpdated, object: nil)
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if delegate != nil { return }
 
-        preferredDisplayMode = .AllVisible
+        preferredDisplayMode = .allVisible
         preferredPrimaryColumnWidthFraction = 0.4
         delegate = self
 
         statusMaintainer.viewWillAppear(animated, app: app)
         connectToNetwork()
 
-        app.idleTimerDisabled = true
+        app.isIdleTimerDisabled = true
 
         if waitingForInitialLoad {
             loadingView = LiveAuctionLoadingView().then {
                 $0.operation = applyWeakly(self, LiveAuctionViewController.dismissLiveAuctionsModal)
                 view.addSubview($0)
-                $0.alignToView(view)
+                $0.align(toView: view)
             }
         }
     }
 
     func connectToNetwork() {
         staticDataFetcher.fetchStaticData().subscribe { [weak self] result in
-            self?.ar_removeIndeterminateLoadingIndicatorAnimated(Bool(ARPerformWorkAsynchronously))
+            self?.ar_removeIndeterminateLoadingIndicator(animated: ARPerformWorkAsynchronously.boolValue)
 
             switch result {
-            case .Success(let (sale, jwt, bidderCredentials)):
+            case .success(let (sale, jwt, bidderCredentials)):
                 self?.sale = sale
                 self?.setupWithSale(sale, jwt: jwt, bidderCredentials: bidderCredentials)
 
-            case .Error(let error):
+            case .error(let error):
                 print("Error pulling down sale data for \(self?.saleSlugOrID)")
                 print("Error: \(error)")
                 self?.showOfflineView()
@@ -96,7 +96,7 @@ class LiveAuctionViewController: UISplitViewController {
     var waitingForInitialLoad = true
 
     /// param is hide because it recieves a "connected" signal
-    func showSocketDisconnectedOverlay(hide: Bool) {
+    func showSocketDisconnectedOverlay(_ hide: Bool) {
         if hide { actuallyShowDisconnectedOverlay(false) }
         let show = !hide
         showSocketDisconnectWarning = show
@@ -114,13 +114,13 @@ class LiveAuctionViewController: UISplitViewController {
         }
     }
 
-    func actuallyShowDisconnectedOverlay(show: Bool) {
+    func actuallyShowDisconnectedOverlay(_ show: Bool) {
         if !show {
             ar_removeBlurredOverlayWithTitle()
         } else {
             let title = NSLocalizedString("Artsy has lost contact with the auction house.", comment: "Live websocket disconnect title")
             let subtitle = NSLocalizedString("Attempting to reconnect now", comment: "Live websocket disconnect subtitle")
-            let menuButton = BlurredStatusOverlayViewCloseButtonState.Show(target: self, selector: #selector(dismissLiveAuctionsModal))
+            let menuButton = BlurredStatusOverlayViewCloseButtonState.show(target: self, selector: #selector(dismissLiveAuctionsModal))
             ar_presentBlurredOverlayWithTitle(title, subtitle: subtitle, buttonState:menuButton)
         }
     }
@@ -143,21 +143,21 @@ class LiveAuctionViewController: UISplitViewController {
 
         offlineView.delegate = self
         view.addSubview(offlineView)
-        offlineView.alignToView(view)
+        offlineView.align(toView: view)
 
         // As we're not showing a ARSerifNav
         // we don't have a back button yet, so add one
 
         let dimension = 40
         let closeButton = ARMenuButton()
-        closeButton.setBorderColor(.artsyGrayRegular(), forState: .Normal, animated: false)
-        closeButton.setBackgroundColor(.whiteColor(), forState: .Normal, animated: false)
-        closeButton.setImage(UIImage(named:"serif_modal_close"), forState: .Normal)
-        closeButton.addTarget(self, action: #selector(dismissLiveAuctionsModal), forControlEvents: .TouchUpInside)
+        closeButton.setBorderColor(.artsyGrayRegular(), for: UIControlState(), animated: false)
+        closeButton.setBackgroundColor(.white, for: UIControlState(), animated: false)
+        closeButton.setImage(UIImage(named:"serif_modal_close"), for: UIControlState())
+        closeButton.addTarget(self, action: #selector(dismissLiveAuctionsModal), for: .touchUpInside)
 
         offlineView.addSubview(closeButton)
-        closeButton.alignTrailingEdgeWithView(offlineView, predicate: "-20")
-        closeButton.alignTopEdgeWithView(offlineView, predicate: "20")
+        closeButton.alignTrailingEdge(withView: offlineView, predicate: "-20")
+        closeButton.alignTopEdge(withView: offlineView, predicate: "20")
         closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
     }
 
@@ -170,14 +170,14 @@ class LiveAuctionViewController: UISplitViewController {
 
     func dismissLiveAuctionsModal() {
         overlaySubscription?.unsubscribe()
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         statusMaintainer.viewWillDisappear(animated, app: app)
-        app.idleTimerDisabled = false
+        app.isIdleTimerDisabled = false
 
         // Hrm, yes, so this seems to be a weird side effect of UISplitVC
         // in that it won't pass the view transition funcs down to it's children
@@ -187,12 +187,12 @@ class LiveAuctionViewController: UISplitViewController {
 
         // This crashes on iOS 10
         if #available(iOS 10, *) {} else {
-            guard let internalPopover = valueForKey("_hidden" + "PopoverController") as? UIPopoverController else { return }
-            internalPopover.dismissPopoverAnimated(false)
+            guard let internalPopover = value(forKey: "_hidden" + "PopoverController") as? UIPopoverController else { return }
+            internalPopover.dismiss(animated: false)
         }
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
         viewControllers.forEach { vc in
@@ -204,26 +204,26 @@ class LiveAuctionViewController: UISplitViewController {
         return nil
     }
 
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate : Bool {
         return traitDependentAutorotateSupport
     }
 
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return traitDependentSupportedInterfaceOrientations
     }
 }
 
 extension LiveAuctionViewController: AROfflineViewDelegate {
     // Give networking a second shot when offline
-    func offlineViewDidRequestRefresh(offlineView: AROfflineView!) {
+    func offlineViewDidRequestRefresh(_ offlineView: AROfflineView!) {
         connectToNetwork()
     }
 }
 
-private typealias PrivateFunctions = LiveAuctionViewController
+fileprivate typealias PrivateFunctions = LiveAuctionViewController
 extension PrivateFunctions {
 
-    func setupWithSale(sale: LiveSale, jwt: JWT, bidderCredentials: BiddingCredentials) {
+    func setupWithSale(_ sale: LiveSale, jwt: JWT, bidderCredentials: BiddingCredentials) {
         let salesPerson = self.salesPersonCreator(sale, jwt, bidderCredentials)
 
         overlaySubscription?.unsubscribe()
@@ -254,19 +254,19 @@ extension PrivateFunctions {
         }
     }
 
-    class func salesPerson(sale: LiveSale, jwt: JWT, biddingCredentials: BiddingCredentials) -> LiveAuctionsSalesPersonType {
+    class func salesPerson(_ sale: LiveSale, jwt: JWT, biddingCredentials: BiddingCredentials) -> LiveAuctionsSalesPersonType {
         return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, biddingCredentials: biddingCredentials)
     }
 }
 
 extension LiveAuctionViewController: UISplitViewControllerDelegate {
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         return true
     }
 }
 
 extension LiveAuctionViewController: LiveAuctionLotListViewControllerDelegate {
-    func didSelectLotAtIndex(index: Int, forLotListViewController lotListViewController: LiveAuctionLotListViewController) {
+    func didSelectLotAtIndex(_ index: Int, forLotListViewController lotListViewController: LiveAuctionLotListViewController) {
         lotSetController.jumpToLotAtIndex(index)
     }
 }
@@ -293,16 +293,16 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
         let stubbedJWT = JWT(jwtString: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWN0aW9ucyIsInJvbGUiOiJvYnNlcnZlciIsInVzZXJJZCI6bnVsbCwic2FsZUlkIjoiNTRjN2U4ZmE3MjYxNjkyYjVhY2QwNjAwIiwiYmlkZGVySWQiOm51bGwsImlhdCI6MTQ2NTIzNDI2NDI2N30.2q3bh1E897walHdSXIocGKElbxOhCGmCCsL8Bf-UWNA")!
         let s = (sale: sale, jwt: stubbedJWT, bidderCredentials: bidderCredentials)
-        signal.update(Result.Success(s))
+        signal.update(Result.success(s))
 
         return signal
     }
 }
 
-func loadJSON(filename: String) -> AnyObject! {
-    let jsonPath = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
-    let jsonData = NSData(contentsOfFile: jsonPath!)!
-    let json = try? NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments)
+func loadJSON(_ filename: String) -> AnyObject! {
+    let jsonPath = Bundle.main.path(forResource: filename, ofType: "json")
+    let jsonData = try! Data(contentsOf: URL(fileURLWithPath: jsonPath!))
+    let json = try? JSONSerialization.jsonObject(with: jsonData, options: .allowFragments)
 
-    return json
+    return json as AnyObject!
     }

@@ -3,15 +3,15 @@ import Artsy_UIButtons
 import FLKAutoLayout
 
 @objc enum CircularButtonType: NSInteger {
-    case Cancel
-    case Info
+    case cancel
+    case info
 
     var image: UIImage! {
         let imageName: String
 
         switch self {
-        case .Cancel: imageName = "CircularCancelButton"
-        case .Info: imageName = "CircularInfoButton"
+        case .cancel: imageName = "CircularCancelButton"
+        case .info: imageName = "CircularInfoButton"
         }
 
         return UIImage(named: imageName)
@@ -20,11 +20,11 @@ import FLKAutoLayout
 
 extension UIButton {
     /// Returns one of a set of circular buttons used throughout the app.
-    static func circularButton(type: CircularButtonType) -> UIButton {
-        let button = UIButton(type: .Custom)
-        button.setImage(type.image, forState: .Normal)
-        button.imageView?.contentMode = .ScaleAspectFit
-        button.ar_extendHitTestSizeByWidth(4, andHeight: 4) // To expand to required 44pt hit area (images are 40x40).
+    static func circularButton(_ type: CircularButtonType) -> UIButton {
+        let button = UIButton(type: .custom)
+        button.setImage(type.image, for: UIControlState())
+        button.imageView?.contentMode = .scaleAspectFit
+        button.ar_extendHitTestSize(byWidth: 4, andHeight: 4) // To expand to required 44pt hit area (images are 40x40).
         return button
     }
 }

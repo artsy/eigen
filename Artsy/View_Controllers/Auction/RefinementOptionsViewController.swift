@@ -5,8 +5,8 @@ import ARAnalytics
 protocol RefinementOptionsViewControllerDelegate: class {
     associatedtype R: RefinableType
 
-    func userDidCancel(controller: RefinementOptionsViewController<R>)
-    func userDidApply(settings: R, controller: RefinementOptionsViewController<R>)
+    func userDidCancel(_ controller: RefinementOptionsViewController<R>)
+    func userDidApply(_ settings: R, controller: RefinementOptionsViewController<R>)
 }
 
 // TODO: Move into a navigation
@@ -18,8 +18,8 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
     var slider: MARKRangeSlider?
     var applyButton: UIButton?
     var resetButton: UIButton?
-    var userDidCancelClosure: (RefinementOptionsViewController -> Void)?
-    var userDidApplyClosure: (R -> Void)?
+    var userDidCancelClosure: ((RefinementOptionsViewController) -> Void)?
+    var userDidApplyClosure: ((R) -> Void)?
 
     // this is semantically "private" to guarantee it doesn't outlive this instance of RefinementOptionsViewController
     var tableViewHandler: RefinementOptionsViewControllerTableViewHandler?
@@ -41,7 +41,7 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
 
     var changeStatusBar = false
 
-    init(defaultSettings: R, initialSettings: R, currencySymbol: String, userDidCancelClosure: (RefinementOptionsViewController -> Void)?, userDidApplyClosure: (R -> Void)?) {
+    init(defaultSettings: R, initialSettings: R, currencySymbol: String, userDidCancelClosure: ((RefinementOptionsViewController) -> Void)?, userDidApplyClosure: ((R) -> Void)?) {
         self.defaultSettings = defaultSettings
         self.initialSettings = initialSettings
         self.currentSettings = initialSettings
@@ -52,7 +52,7 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    func sliderValueDidChange(slider: MARKRangeSlider) {
+    func sliderValueDidChange(_ slider: MARKRangeSlider) {
         let range = (min: Int(slider.leftValue), max: Int(slider.rightValue))
         currentSettings = currentSettings.refineSettingsWithPriceRange(range)
     }
@@ -87,50 +87,50 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
 
         setupViews()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // Removes our rounded corners
-        presentationController?.presentedView()?.layer.cornerRadius = 0
+        presentationController?.presentedView?.layer.cornerRadius = 0
 
         if changeStatusBar {
-            UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: animated ? .Slide : .None)
+            UIApplication.shared.setStatusBarHidden(true, with: animated ? .slide : .none)
         }
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         viewDidAppearAnalyticsOption?.sendAsPageView()
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         if changeStatusBar {
-            UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: animated ? .Slide : .None)
+            UIApplication.shared.setStatusBarHidden(false, with: animated ? .slide : .none)
         }
     }
 
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return traitDependentSupportedInterfaceOrientations
     }
 
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate : Bool {
         return traitDependentAutorotateSupport
     }
 }
 
 class RefinementAnalyticsOption: NSObject {
     let name: String
-    let properties: [NSObject: AnyObject]
+    let properties: [AnyHashable: Any]
 
-    init(name: String, properties: [NSObject: AnyObject]) {
+    init(name: String, properties: [AnyHashable: Any]) {
         self.name = name
         self.properties = properties
 

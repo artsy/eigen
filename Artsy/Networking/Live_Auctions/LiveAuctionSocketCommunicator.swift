@@ -7,7 +7,7 @@ protocol SocketType: class {
     var onConnect: ((Void) -> Void)? { get set }
     var onDisconnect: ((NSError?) -> Void)? { get set }
 
-    func writeString(str: String)
+    func writeString(_ str: String)
     func writePing()
 
     func connect()
@@ -22,15 +22,15 @@ protocol LiveAuctionSocketCommunicatorType {
     var socketConnectionSignal: Observable<Bool> { get }
     var operatorConnectedSignal: Observable<AnyObject> { get }
 
-    func bidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String)
-    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String)
+    func bidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String)
+    func leaveMaxBidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String)
 }
 
 class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType {
-    typealias SocketCreator = (host: String, saleID: String) -> SocketType
-    private let socket: SocketType
-    private let causalitySaleID: String
-    private var timer: NSTimer? // Heartbeat to keep socket connection alive.
+    typealias SocketCreator = (_ host: String, _ saleID: String) -> SocketType
+    fileprivate let socket: SocketType
+    fileprivate let causalitySaleID: String
+    fileprivate var timer: Timer? // Heartbeat to keep socket connection alive.
 
     let updatedAuctionState = Observable<AnyObject>()
     let lotUpdateBroadcasts = Observable<AnyObject>()
@@ -47,7 +47,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
 
     init(host: String, causalitySaleID: String, jwt: JWT, socketCreator: SocketCreator) {
 
-        socket = socketCreator(host: host, saleID: causalitySaleID)
+        socket = socketCreator(host, causalitySaleID)
         self.causalitySaleID = causalitySaleID
         self.jwt = jwt
 
@@ -64,7 +64,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
 
     class func defaultSocketCreator() -> SocketCreator {
         return { host, saleID in
-            let url = NSURL(string: "\(host)/socket?saleId=\(saleID)")
+            let url = URL(string: "\(host)/socket?saleId=\(saleID)")
             let websocket = WebSocket(url: url!) // swiftlint:disable:this force_unwrapping
             websocket.origin = nil
             return websocket
@@ -78,14 +78,14 @@ private extension SocketSetup {
     // Small class for breaking the reference cycle between the communicator and the timer.
     class TimerCaller {
         let callback: () -> Void
-        init (callback: () -> Void) { self.callback = callback }
+        init (callback: @escaping () -> Void) { self.callback = callback }
         @objc func invoke() { callback() }
     }
 
     /// Connects to, then authenticates against, the socket. Listens for sale events once authenticated.
     func setupSocket() {
         let caller = TimerCaller(callback: applyUnowned(self, LiveAuctionSocketCommunicator.pingSocket)) // Only allowed because we invalidate the timer in deinit
-        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: caller, selector: #selector(TimerCaller.invoke), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: caller, selector: #selector(TimerCaller.invoke), userInfo: nil, repeats: true)
         socket.onText = applyUnowned(self, LiveAuctionSocketCommunicator.receivedText)
         socket.onConnect = applyUnowned(self, LiveAuctionSocketCommunicator.socketConnected)
         socket.onDisconnect = applyUnowned(self, LiveAuctionSocketCommunicator.socketDisconnected)
@@ -98,7 +98,7 @@ private extension SocketSetup {
         socketConnectionSignal.update(true)
     }
 
-    func socketDisconnected(error: NSError?) {
+    func socketDisconnected(_ error: NSError?) {
         print ("Socket disconnected: \(error)")
         socketConnectionSignal.update(false)
 
@@ -112,11 +112,11 @@ private extension SocketSetup {
         socket.writePing()
     }
 
-    func receivedText(text: String) {
+    func receivedText(_ text: String) {
         guard let
-            data = text.dataUsingEncoding(NSUTF8StringEncoding),
-            _json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
-            json = _json as? [String: AnyObject] else {
+            data = text.data(using: String.Encoding.utf8),
+            let _json = try? JSONSerialization.jsonObject(with: data, options: []),
+            let json = _json as? [String: AnyObject] else {
             // TODO: Handle error
             return
         }
@@ -128,22 +128,22 @@ private extension SocketSetup {
         switch socketEventType {
 
         case "InitialFullSaleState":
-            updatedAuctionState.update(json)
+            updatedAuctionState.update(json as AnyObject)
 
         case "LotUpdateBroadcast":
-            lotUpdateBroadcasts.update(json)
+            lotUpdateBroadcasts.update(json as AnyObject)
 
         case "OperationFailedEvent": break
             // TODO: Handle op failure
 
         case "OperatorConnectedBroadcast":
-            operatorConnectedSignal.update(json)
+            operatorConnectedSignal.update(json as AnyObject)
 
         case "CommandSuccessful", "CommandFailed", "PostEventResponse":
-            postEventResponses.update(json)
+            postEventResponses.update(json as AnyObject)
 
         case "SaleLotChangeBroadcast":
-            currentLotUpdate.update(json)
+            currentLotUpdate.update(json as AnyObject)
 
         case "SaleNotFound": break
             // TODO: Handle this (?)
@@ -162,22 +162,22 @@ private extension SocketSetup {
 
 private typealias PublicFunctions = LiveAuctionSocketCommunicator
 extension PublicFunctions {
-    func bidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
-        guard let bidderID = bidderCredentials.bidderID, paddleNumber = bidderCredentials.paddleNumber else { return }
+    func bidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
+        guard let bidderID = bidderCredentials.bidderID, let paddleNumber = bidderCredentials.paddleNumber else { return }
         writeJSON([
             "key": bidUUID,
             "type": "PostEvent",
             "event": [
                 "type": "FirstPriceBidPlaced",
                 "lotId": lotID,
-                "amountCents": NSNumber(unsignedLongLong: amountCents),
+                "amountCents": NSNumber(value: amountCents as UInt64),
                 "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID, "paddleNumber": paddleNumber]
             ]
-        ])
+        ] as NSDictionary)
     }
 
-    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
-        guard let bidderID = bidderCredentials.bidderID, paddleNumber = bidderCredentials.paddleNumber else { return }
+    func leaveMaxBidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
+        guard let bidderID = bidderCredentials.bidderID, let paddleNumber = bidderCredentials.paddleNumber else { return }
 
         writeJSON([
             "key": bidUUID,
@@ -185,13 +185,13 @@ extension PublicFunctions {
             "event": [
                 "type": "SecondPriceBidPlaced",
                 "lotId": lotID,
-                "amountCents": NSNumber(unsignedLongLong: amountCents),
+                "amountCents": NSNumber(value: amountCents as UInt64),
                 "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID, "paddleNumber": paddleNumber]
             ]
-        ])
+        ] as NSDictionary)
     }
 
-    func writeJSON(json: NSObject) {
+    func writeJSON(_ json: NSObject) {
         do {
             print(try json.stringify())
             socket.writeString(try json.stringify())
