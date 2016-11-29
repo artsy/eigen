@@ -84,32 +84,36 @@ if test_log.match(unstubbed_regex)
   warn(output)
 end
 
-# We want to understand how much Swift is slowing our compilation cycles by, so look at the top 1000 Swift symbols from the build log 
-most_expensive_swift_table = `cat #{build_file} | egrep '\.[0-9]ms' | sort -t "." -k 1 -n | tail -1000 | sort -t "." -k 1 -n -r`
 
-# each line looks like "29.2ms  /Users/distiller/eigen/Artsy/View_Controllers/Live_Auctions/LiveAuctionLotViewController.swift:50:19    @objc override func viewDidLoad()"
-# Looks for outliers based on http://stackoverflow.com/questions/5892408/inferential-statistics-in-ruby/5892661#5892661
-time_values = most_expensive_swift_table.lines.map { |line| line.split.first.to_i }.reject { |value| value == 0 }
+# IMO, this is a nice idea, but we're getting no value
+# from it now that we're doing more react-native.
 
-require_relative "config/enumerable_stats"
-outliers = time_values.outliers(3)
+# # We want to understand how much Swift is slowing our compilation cycles by, so look at the top 1000 Swift symbols from the build log 
+# most_expensive_swift_table = `cat #{build_file} | egrep '\.[0-9]ms' | sort -t "." -k 1 -n | tail -1000 | sort -t "." -k 1 -n -r`
 
-# Take any build timeing outliers, and convert them into a useful markdown table.  
-if outliers.any?
-  warn("Detected some Swift building time outliers")
+# # each line looks like "29.2ms  /Users/distiller/eigen/Artsy/View_Controllers/Live_Auctions/LiveAuctionLotViewController.swift:50:19    @objc override func viewDidLoad()"
+# # Looks for outliers based on http://stackoverflow.com/questions/5892408/inferential-statistics-in-ruby/5892661#5892661
+# time_values = most_expensive_swift_table.lines.map { |line| line.split.first.to_i }.reject { |value| value == 0 }
 
-  current_branch = env.request_source.pr_json["head"]["ref"]
-  headings = "Time | Class | Function |\n| --- | ----- | ----- |"
-  warnings = most_expensive_swift_table.lines[0...outliers.count].map do |line|
-    time, location, function_name = line.split "\t"
-    github_loc = location.gsub("/Users/distiller/eigen", "/artsy/eigen/tree/#{current_branch}")
-    github_loc_code = github_loc.split(":")[0...-1].join("#L")
-    name = File.basename(location).split(":").first
-    "#{time} | [#{name}](#{github_loc_code}) | #{function_name}"
-  end
+# require_relative "config/enumerable_stats"
+# outliers = time_values.outliers(3)
 
-  markdown(([headings] + warnings).join)
-end
+# # Take any build timing outliers, and convert them into a useful markdown table.
+# if outliers.any?
+#   warn("Detected some Swift building time outliers")
+
+#   current_branch = env.request_source.pr_json["head"]["ref"]
+#   headings = "Time | Class | Function |\n| --- | ----- | ----- |"
+#   warnings = most_expensive_swift_table.lines[0...outliers.count].map do |line|
+#     time, location, function_name = line.split "\t"
+#     github_loc = location.gsub("/Users/distiller/eigen", "/artsy/eigen/tree/#{current_branch}")
+#     github_loc_code = github_loc.split(":")[0...-1].join("#L")
+#     name = File.basename(location).split(":").first
+#     "#{time} | [#{name}](#{github_loc_code}) | #{function_name}"
+#   end
+
+#   markdown(([headings] + warnings).join)
+# end
 
 # # Give inline test fail reports
 # results_file = File.join(ENV["CIRCLE_TEST_REPORTS"], "/xcode/results.xml")
