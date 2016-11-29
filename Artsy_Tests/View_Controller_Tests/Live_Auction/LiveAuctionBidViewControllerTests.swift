@@ -10,7 +10,7 @@ import Artsy
 class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
     override func spec() {
         var subject: LiveAuctionPlaceMaxBidViewController!
-        
+
         // Ensure there is a key window for all of the tests
         var window: UIWindow?
         beforeSuite {
