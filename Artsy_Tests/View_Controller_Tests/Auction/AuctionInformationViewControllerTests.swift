@@ -21,6 +21,13 @@ class AuctionInformationViewControllerSpec: QuickSpec {
         var navigationController: ARSerifNavigationViewController!
         var informationController: AuctionInformationViewController!
 
+        // Ensure there is a key window for all of the tests
+        var window: UIWindow?
+        beforeSuite {
+            window = UIWindow()
+            window?.makeKeyAndVisible()
+        }
+
         beforeEach {
             informationController = AuctionInformationViewController(saleViewModel: saleViewModel)
             navigationController = ARSerifNavigationViewController(rootViewController: informationController)
@@ -33,9 +40,6 @@ class AuctionInformationViewControllerSpec: QuickSpec {
         ["iPhone": ARDeviceType.phone6.rawValue, "iPad": ARDeviceType.pad.rawValue].forEach { (deviceName, deviceType) in
             it("has a root view that shows information about the auction and looks good on \(deviceName)") {
                 ARTestContext.use(ARDeviceType(rawValue: deviceType)!) {
-                    let window = UIWindow()
-                    window.becomeKey()
-
                     expect(navigationController).to( haveValidSnapshot(usesDrawRect: true) )
                 }
             }

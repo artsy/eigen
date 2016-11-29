@@ -39,8 +39,11 @@ class AuctionViewControllerTests: QuickSpec {
         var saleViewModel: Test_SaleViewModel!
         var dateMock: OCMockObject!
 
-        beforeEach {
-            UIApplication.shared.delegate?.window??.becomeKey()
+        // Ensure there is a key window for all of the tests
+        var window: UIWindow?
+        beforeSuite {
+            window = UIWindow()
+            window?.makeKeyAndVisible()
         }
 
         sharedExamples("auctions view controller registration status") { (context: @escaping SharedExampleContext) in

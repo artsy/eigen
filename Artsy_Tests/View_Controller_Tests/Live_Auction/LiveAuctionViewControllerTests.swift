@@ -9,13 +9,18 @@ import Forgeries
 import Artsy
 
 class LiveAuctionViewControllerTests: QuickSpec {
-
-
     override func spec() {
         var subject: LiveAuctionViewController!
 
         var auctionViewModel: Test_LiveAuctionViewModel!
         var fakeSalesPerson: Stub_LiveAuctionsSalesPerson!
+        
+        // Ensure there is a key window for all of the tests
+        var window: UIWindow?
+        beforeSuite {
+            window = UIWindow()
+            window?.makeKeyAndVisible()
+        }
 
         beforeEach {
             OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[:])
