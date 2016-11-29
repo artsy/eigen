@@ -56,7 +56,6 @@
 #import "ARBrowseViewController.h"
 #import "ARSearchViewController.h"
 #import "ARNavigationController.h"
-#import "ARHeroUnitViewController.h"
 #import <Emission/ARArtistComponentViewController.h>
 
 // Views
@@ -930,20 +929,6 @@
                                 return @{
                                     @"via_rotation" : @(controller.popOnRotation),
                                     @"artwork" : controller.artwork.artworkID ?: @""
-                                };
-                            },
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARSiteHeroUnitViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedHeroUnit,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedUnit:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARSiteHeroUnitViewController *vc, NSArray *_){
-                                return @{
-                                    @"destination" : vc.heroUnit.link ?: @""
                                 };
                             },
                         }
