@@ -16,10 +16,12 @@ class LiveAuctionLotSetViewController: UIViewController {
     let lotImageCollectionView: UICollectionView
     let lotImageCollectionViewDataSource: LiveAuctionLotCollectionViewDataSource
     let lotCollectionViewLayout: LiveAuctionLotCollectionViewLayoutType
+    var currentLotView: LiveAuctionCurrentLotView!
 
     fileprivate var hasBeenSetup = false
     fileprivate var firstAppearance = true
     fileprivate var pageViewScrollView: UIScrollView?
+    fileprivate var saleAvailabilityObserver: ObserverToken<SaleAvailabilityState>?
     fileprivate var progressBarBottomConstraintAtRestConstant: CGFloat = -165
     fileprivate var collectionViewBottomConstraint: CGFloat = -288
     fileprivate var progressBarBottomConstraint: NSLayoutConstraint?
@@ -36,8 +38,8 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         let adjustConstraintsForLargeScreens: Bool
 
-        if traitCollection .horizontalSizeClass != .regular {
-            let screenWidthIsLarge = UIScreen.main.applicationFrame.width > 320
+        if traitCollection.horizontalSizeClass != .regular {
+            let screenWidthIsLarge = UIScreen.main.bounds.width > 320
             let size: LiveAuctionFancyLotCollectionViewLayout.Size = screenWidthIsLarge ? .normal : .compact
             adjustConstraintsForLargeScreens = (size == .normal)
 
@@ -65,8 +67,14 @@ class LiveAuctionLotSetViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
+    deinit {
+        saleAvailabilityObserver?.unsubscribe()
+    }
+
     var hasJumpedToOpenLotAtLaunch = false
     var suppressJumpingToOpenLots = false
+
+    var biddingProgressObesrver: ObserverToken<LiveAuctionBidButtonState>?
 
     func hasChangedLot(_ lot: LiveAuctionLotViewModelType?) {
         guard let newLot = lot, let newLotIndex = salesPerson.indexForViewModel(newLot) else { return }
@@ -138,9 +146,25 @@ class LiveAuctionLotSetViewController: UIViewController {
         progressBar.alignLeading("0", trailing: "0", toView: view)
         progressBarBottomConstraint = progressBar.alignBottomEdge(withView: view, predicate: "\(progressBarBottomConstraintAtRestConstant)")
 
+        // Setup for "current lot" purple view at the bottom of the view.
+        currentLotView = LiveAuctionCurrentLotView(viewModel: salesPerson.auctionViewModel.currentLotSignal, salesPerson: salesPerson)
+        currentLotView.addTarget(nil, action: #selector(LiveAuctionLotSetViewController.jumpToLiveLot), for: .touchUpInside)
+        view.addSubview(currentLotView)
+        currentLotView.alignBottom("-5", trailing: "-5", toView: view)
+        currentLotView.alignLeadingEdge(withView: view, predicate: "5")
+        currentLotView.isHidden = true
+
         salesPerson.currentFocusedLotIndex.subscribe { [weak self] _ in
             self?.lotImageCollectionView.reloadData()
         }
+
+        // TODO: is this required? A closed sale would imply all lots are closed, and the currentLotView would be hidden in the above subscription ^
+        saleAvailabilityObserver = salesPerson.auctionViewModel.saleAvailabilitySignal.subscribe { [weak currentLotView] saleAvailability in
+            if saleAvailability == .closed {
+                currentLotView?.removeFromSuperview()
+            }
+        }
+
 
         // Final setup for our (now constructed) view hierarchy.
         setupWithInitialData()
@@ -209,6 +233,10 @@ class LiveAuctionLotSetViewController: UIViewController {
     func dismissModal() {
         guard let presentor = splitViewController?.presentingViewController else { return }
         presentor.dismiss(animated: true, completion: nil)
+    }
+
+    func setCurrentLotCTA(visible: Bool) {
+        currentLotView.isHidden = !visible
     }
 
     func moreInfo() {
@@ -349,6 +377,21 @@ extension PageViewDelegate: UIPageViewControllerDelegate, LiveAuctionSaleLotsDat
         if completed {
             print("Updating current focused index to:", viewController.index)
             salesPerson.currentFocusedLotIndex.update(viewController.index)
+        }
+
+        let myLotID = viewController.lotViewModel.lotID
+
+        biddingProgressObesrver?.unsubscribe()
+        viewController.biddingViewModel.progressSignal.subscribe { [weak self] state in
+            let isCTAVisible: Bool
+            switch self?.salesPerson.auctionViewModel.currentLotSignal.peek() {
+            case .some(let .some(lot)):
+                isCTAVisible = (lot.lotID != myLotID)
+            default: // a nil anywhere
+                isCTAVisible = false
+            }
+
+            self?.setCurrentLotCTA(visible: isCTAVisible)
         }
     }
 
