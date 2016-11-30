@@ -5,6 +5,8 @@ upcoming:
       infrastructure:
         - Updates to Swift 3 / Xcode 8 - ash/orta
         - Remove extra xapp fetching and old home feed - maxim
+    user_facing:
+      - "Jump to current lot" CTA only visible once in the LAI interface, instead of once per lot - ash
 
 releases:
   - version: 3.0.2
