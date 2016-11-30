@@ -13,7 +13,7 @@ class AuctionLotMetadataStackScrollViewTests: QuickSpec {
             let testVM = Test_LiveAuctionLotViewModel()
             let subject = AuctionLotMetadataStackScrollView(viewModel: testVM, salesPerson: stub_auctionSalesPerson(), sideMargin: "20")
 
-            subject.backgroundColor = .whiteColor()
+            subject.backgroundColor = .white
             subject.constrainWidth("280")
             subject.layoutIfNeeded()
 
@@ -35,9 +35,9 @@ class AuctionLotMetadataStackScrollViewTests: QuickSpec {
             let subject = AuctionLotMetadataStackScrollView(viewModel: testVM, salesPerson: stub_auctionSalesPerson(), sideMargin: "20")
 
             wrapper.addSubview(subject)
-            subject.alignToView(wrapper)
+            subject.align(toView: wrapper)
 
-            subject.backgroundColor = .whiteColor()
+            subject.backgroundColor = .white
             subject.showFullMetadata(false)
 
             expect(wrapper) == snapshot()

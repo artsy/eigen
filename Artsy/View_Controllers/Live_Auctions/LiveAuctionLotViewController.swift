@@ -11,16 +11,16 @@ class LiveAuctionLotViewController: UIViewController {
 
     let lotViewModel: LiveAuctionLotViewModelType
     let salesPerson: LiveAuctionsSalesPersonType
-    let bidHistoryState = Observable<BidHistoryState>(.Closed)
+    let bidHistoryState = Observable<BidHistoryState>(.closed)
 
-    private weak var bidHistoryViewController: LiveAuctionBidHistoryViewController?
-    private let biddingViewModel: LiveAuctionBiddingViewModelType
-    private var imageBottomConstraint: NSLayoutConstraint?
-    private weak var lotMetadataStack: AuctionLotMetadataStackScrollView?
-    private var saleAvailabilityObserver: ObserverToken<SaleAvailabilityState>?
-    private var bidHistoryGestureController: LiveAuctionLotBidHistoryGestureController?
-    private var lotHistoryHeightConstraint: NSLayoutConstraint?
-    private var alignMetadataToTopConstraint: NSLayoutConstraint?
+    fileprivate weak var bidHistoryViewController: LiveAuctionBidHistoryViewController?
+    fileprivate let biddingViewModel: LiveAuctionBiddingViewModelType
+    fileprivate var imageBottomConstraint: NSLayoutConstraint?
+    fileprivate weak var lotMetadataStack: AuctionLotMetadataStackScrollView?
+    fileprivate var saleAvailabilityObserver: ObserverToken<SaleAvailabilityState>?
+    fileprivate var bidHistoryGestureController: LiveAuctionLotBidHistoryGestureController?
+    fileprivate var lotHistoryHeightConstraint: NSLayoutConstraint?
+    fileprivate var alignMetadataToTopConstraint: NSLayoutConstraint?
 
     /// Changes in the bid history frame.origin.y from its original, at rest position.
     let bidHistoryDelta = Observable<(delta: CGFloat, animating: Bool)>((delta: 0, animating: false))
@@ -56,7 +56,7 @@ class LiveAuctionLotViewController: UIViewController {
 
         let sideMargin: String
 
-        if traitCollection.horizontalSizeClass == .Regular {
+        if traitCollection.horizontalSizeClass == .regular {
             sideMargin = "80"
         } else {
             sideMargin = "40"
@@ -69,23 +69,23 @@ class LiveAuctionLotViewController: UIViewController {
         let lotMetadataStack = AuctionLotMetadataStackScrollView(viewModel: lotViewModel, salesPerson: salesPerson, sideMargin: sideMargin)
         self.lotMetadataStack = lotMetadataStack
         view.addSubview(lotMetadataStack)
-        lotMetadataStack.constrainWidthToView(view, predicate: "0")
-        lotMetadataStack.alignCenterXWithView(view, predicate: "0")
+        lotMetadataStack.constrainWidth(toView: view, predicate: "0")
+        lotMetadataStack.alignCenterX(withView: view, predicate: "0")
 
         /// This is a constraint that says "stick to the top of the lot view."
         /// We use it for both showing lot info and for expanding the bid history.
-        alignMetadataToTopConstraint = lotMetadataStack.alignTopEdgeWithView(view, predicate: "0")
-        alignMetadataToTopConstraint?.active = false
+        alignMetadataToTopConstraint = lotMetadataStack.alignTopEdge(withView: view, predicate: "0")
+        alignMetadataToTopConstraint?.isActive = false
 
 
         // Metadata stack setup
         metadataStack.bottomMarginHeight = 0
         view.addSubview(metadataStack)
-        metadataStack.alignBottomEdgeWithView(view, predicate: "0")
-        metadataStack.constrainWidthToView(view, predicate: "0")
-        metadataStack.alignCenterXWithView(view, predicate: "0")
+        metadataStack.alignBottomEdge(withView: view, predicate: "0")
+        metadataStack.constrainWidth(toView: view, predicate: "0")
+        metadataStack.alignCenterX(withView: view, predicate: "0")
 
-        lotMetadataStack.constrainBottomSpaceToView(metadataStack, predicate: "0")
+        lotMetadataStack.constrainBottomSpace(toView: metadataStack, predicate: "0")
 
         // Info toolbar setup
         let infoToolbar = LiveAuctionToolbarView()
@@ -97,23 +97,23 @@ class LiveAuctionLotViewController: UIViewController {
 
         /// Toggles the top constraint, and tells the stack to re-layout
         lotMetadataStack.showAdditionalInformation = { [weak lotMetadataStack, weak alignMetadataToTopConstraint, weak metadataStack, weak infoToolbar] in
-            alignMetadataToTopConstraint?.active = true
+            alignMetadataToTopConstraint?.isActive = true
             alignMetadataToTopConstraint?.constant = 0 // Stick to the _very_ top of our view.
-            metadataStack?.updateTopMargin("10", forView: infoToolbar)
+            metadataStack?.updateTopMargin("10", for: infoToolbar)
             lotMetadataStack?.showFullMetadata(true)
         }
 
         lotMetadataStack.hideAdditionalInformation = { [weak lotMetadataStack, weak alignMetadataToTopConstraint, weak metadataStack, weak infoToolbar] in
-            alignMetadataToTopConstraint?.active = false
-            metadataStack?.updateTopMargin("28", forView: infoToolbar)
+            alignMetadataToTopConstraint?.isActive = false
+            metadataStack?.updateTopMargin("28", for: infoToolbar)
             lotMetadataStack?.hideFullMetadata(true)
         }
 
-        let pan = PanDirectionGestureRecognizer(direction: .Vertical)
+        let pan = PanDirectionGestureRecognizer(direction: .vertical)
         view.addGestureRecognizer(pan)
         bidHistoryGestureController = LiveAuctionLotBidHistoryGestureController(gestureRecognizer: pan,
             begining: { [weak self] originalState in
-                if originalState == .Closed {
+                if originalState == .closed {
                     // We're opening.
                     // Close the lot metadata, in case its open.
                     self?.lotMetadataStack?.hideAdditionalInformation?()
@@ -121,8 +121,8 @@ class LiveAuctionLotViewController: UIViewController {
 
                     // Set up our constraint to take over from lotHistoryHeightConstraint. One of them needs to be active at all times.
                     self?.alignMetadataToTopConstraint?.constant = self?.atRestMetadataPosition ?? 0
-                    self?.alignMetadataToTopConstraint?.active = true
-                    self?.lotHistoryHeightConstraint?.active = false
+                    self?.alignMetadataToTopConstraint?.isActive = true
+                    self?.lotHistoryHeightConstraint?.isActive = false
                 }
             },
             update: { [weak self] delta in
@@ -136,26 +136,26 @@ class LiveAuctionLotViewController: UIViewController {
                 self?.alignMetadataToTopConstraint?.constant = distanceFromTop
             },
             completion: { [weak self] targetState in
-                self?.bidHistoryViewController?.tableView.scrollEnabled = (targetState == .Open)
+                self?.bidHistoryViewController?.tableView.isScrollEnabled = (targetState == .open)
 
-                UIView.animateWithDuration(ARAnimationDuration, animations: {
-                    if targetState == .Open {
+                UIView.animate(withDuration: ARAnimationDuration, animations: {
+                    if targetState == .open {
                         self?.alignMetadataToTopConstraint?.constant = self?.openedMetadataPosition ?? 0 // Reset this to stick to the top
-                        self?.alignMetadataToTopConstraint?.active = true
-                        self?.lotHistoryHeightConstraint?.active = false
+                        self?.alignMetadataToTopConstraint?.isActive = true
+                        self?.lotHistoryHeightConstraint?.isActive = false
                     } else {
-                        self?.alignMetadataToTopConstraint?.active = false
-                        self?.lotHistoryHeightConstraint?.active = true
+                        self?.alignMetadataToTopConstraint?.isActive = false
+                        self?.lotHistoryHeightConstraint?.isActive = true
                     }
 
-                    let delta = (targetState == .Open ? -(self?.openedMetadataPosition ?? 0) : 0)
+                    let delta = (targetState == .open ? -(self?.openedMetadataPosition ?? 0) : 0)
                     self?.bidHistoryDelta.update((delta: delta, animating: true))
 
                     self?.view.layoutIfNeeded()
                     }, completion: { _ in
                         // Update our parent once the animation is complete, so it can change disable enabledness, etc.
                         self?.bidHistoryState.update(targetState)
-                        self?.lotMetadataStack?.setShowInfoButtonEnabled(targetState == .Closed)
+                        self?.lotMetadataStack?.setShowInfoButtonEnabled(targetState == .closed)
                 })
         })
 
@@ -164,30 +164,30 @@ class LiveAuctionLotViewController: UIViewController {
 
         // Bid button setup.
         let bidButton = LiveAuctionBidButton(viewModel: biddingViewModel)
-        bidButton.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
+        bidButton.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .vertical)
         bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "0", sideMargin: sideMargin)
 
         // Bid history setup.
         let historyViewController = LiveAuctionBidHistoryViewController(lotViewModel: lotViewModel)
         bidHistoryViewController = historyViewController
-        metadataStack.addViewController(historyViewController, toParent: self, withTopMargin: "10", sideMargin: sideMargin)
+        metadataStack.add(historyViewController, toParent: self, withTopMargin: "10", sideMargin: sideMargin)
 
-        let screenWidthIsLarge = UIScreen.mainScreen().applicationFrame.width > 320
+        let screenWidthIsLarge = UIScreen.main.applicationFrame.width > 320
         lotHistoryHeightConstraint = historyViewController.view.constrainHeight(screenWidthIsLarge ? "110" : "70")
 
         // Setup for "current lot" purple view at the bottom of the view.
         let currentLotView = LiveAuctionCurrentLotView(viewModel: salesPerson.auctionViewModel.currentLotSignal, salesPerson: salesPerson)
-        currentLotView.addTarget(nil, action: #selector(LiveAuctionLotSetViewController.jumpToLiveLot), forControlEvents: .TouchUpInside)
+        currentLotView.addTarget(nil, action: #selector(LiveAuctionLotSetViewController.jumpToLiveLot), for: .touchUpInside)
         view.addSubview(currentLotView)
         currentLotView.alignBottom("-5", trailing: "-5", toView: view)
-        currentLotView.alignLeadingEdgeWithView(view, predicate: "5")
-        currentLotView.hidden = true
+        currentLotView.alignLeadingEdge(withView: view, predicate: "5")
+        currentLotView.isHidden = true
 
         // Finally, align the background view.
         backgroundView.alignLeading("0", trailing: "0", toView: view)
-        backgroundView.alignBottomEdgeWithView(view, predicate: "0")
-        backgroundView.alignTopEdgeWithView(lotMetadataStack, predicate: "0")
+        backgroundView.alignBottomEdge(withView: view, predicate: "0")
+        backgroundView.alignTopEdge(withView: lotMetadataStack, predicate: "0")
 
 
         // Subscribe to updates from our bidding view model, telling us what state the lot's bid status is in.
@@ -197,7 +197,7 @@ class LiveAuctionLotViewController: UIViewController {
             let hideBidHistory: Bool
 
             switch self?.salesPerson.auctionViewModel.currentLotSignal.peek() {
-            case .Some(let .Some(lot)):
+            case .some(let .some(lot)):
                 let myLotID = self?.lotViewModel.lotID
                 hideCurrentLotCTA = (lot.lotID == myLotID)
                 hideBidHistory = !hideCurrentLotCTA
@@ -207,14 +207,14 @@ class LiveAuctionLotViewController: UIViewController {
                 hideBidHistory = true
             }
 
-            currentLotView?.hidden = hideCurrentLotCTA
+            currentLotView?.isHidden = hideCurrentLotCTA
 
-            self?.bidHistoryViewController?.view.hidden = hideBidHistory
-            self?.bidHistoryViewController?.tableView.scrollEnabled = hideBidHistory
+            self?.bidHistoryViewController?.view.isHidden = hideBidHistory
+            self?.bidHistoryViewController?.tableView.isScrollEnabled = hideBidHistory
             self?.bidHistoryGestureController?.enabled = !hideBidHistory
 
-            if hideBidHistory && self?.bidHistoryGestureController?.bidHistoryState == .Open {
-                UIView.animateWithDuration(ARAnimationQuickDuration, animations: {
+            if hideBidHistory && self?.bidHistoryGestureController?.bidHistoryState == .open {
+                UIView.animate(withDuration: ARAnimationQuickDuration, animations: {
                     self?.shrinkBidHistory()
                 }, completion: { _ in
                     self?.shrinkBidHistoryCompleted()
@@ -227,7 +227,7 @@ class LiveAuctionLotViewController: UIViewController {
 
         // TODO: is this required? A closed sale would imply all lots are closed, and the currentLotView would be hidden in the above subscription ^
         saleAvailabilityObserver = salesPerson.auctionViewModel.saleAvailabilitySignal.subscribe { [weak currentLotView] saleAvailability in
-            if saleAvailability == .Closed {
+            if saleAvailability == .closed {
                 currentLotView?.removeFromSuperview()
             }
         }
@@ -248,41 +248,41 @@ class LiveAuctionLotViewController: UIViewController {
     }
 
     // This is strictly iPad support, trait collections on iPhone won't chage as we don't support rotation.
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
 
         // This closes the bid history, typically on rotation. We animate alongside the rotation animation for a smooooth user experience.
-        coordinator.animateAlongsideTransition({ context in
+        coordinator.animate(alongsideTransition: { context in
             self.shrinkBidHistory()
         }, completion: { _ in
             self.shrinkBidHistoryCompleted()
         })
     }
 
-    private func shrinkBidHistory() {
+    fileprivate func shrinkBidHistory() {
         alignMetadataToTopConstraint?.constant = openedMetadataPosition ?? 0 // Reset this to stick to the top, we'll set its active status below.
-        alignMetadataToTopConstraint?.active = false
-        lotHistoryHeightConstraint?.active = true
+        alignMetadataToTopConstraint?.isActive = false
+        lotHistoryHeightConstraint?.isActive = true
 
         bidHistoryDelta.update((delta: 0, animating: true))
     }
 
-    private func shrinkBidHistoryCompleted() {
+    fileprivate func shrinkBidHistoryCompleted() {
         bidHistoryGestureController?.forceCloseBidHistory()
         lotMetadataStack?.setShowInfoButtonEnabled(true)
         atRestMetadataPosition = nil
         view.setNeedsLayout() // Triggers a re-set of atRestMetadataPosition
     }
 
-    private var atRestMetadataPosition: CGFloat? {
+    fileprivate var atRestMetadataPosition: CGFloat? {
         didSet {
             bidHistoryGestureController?.closedPosition = atRestMetadataPosition ?? 0
             bidHistoryGestureController?.openedPosition = openedMetadataPosition ?? 0
         }
     }
-    private var openedMetadataPosition: CGFloat? {
+    fileprivate var openedMetadataPosition: CGFloat? {
         switch atRestMetadataPosition {
-        case .Some(let atRestMetadataPosition): return atRestMetadataPosition / 2
+        case .some(let atRestMetadataPosition): return atRestMetadataPosition / 2
         case nil: return nil
         }
     }
@@ -290,24 +290,24 @@ class LiveAuctionLotViewController: UIViewController {
 
 extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
 
-    func bidButtonRequestedBid(button: LiveAuctionBidButton) {
+    func bidButtonRequestedBid(_ button: LiveAuctionBidButton) {
         salesPerson.bidOnLot(lotViewModel, amountCents: salesPerson.currentLotValue(lotViewModel), biddingViewModel: biddingViewModel)
     }
 
-    func bidButtonRequestedRegisterToBid(button: LiveAuctionBidButton) {
+    func bidButtonRequestedRegisterToBid(_ button: LiveAuctionBidButton) {
         let registrationPath = "/auction-registration/\(self.salesPerson.liveSaleID)"
         let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
         let serifNav = SerifModalWebNavigationController(rootViewController: viewController)
-        self.navigationController?.presentViewController(serifNav, animated: true) {}
+        self.navigationController?.present(serifNav, animated: true) {}
     }
 
-    func bidButtonRequestedSubmittingMaxBid(button: LiveAuctionBidButton) {
+    func bidButtonRequestedSubmittingMaxBid(_ button: LiveAuctionBidButton) {
         let bidVC = StoryboardScene.LiveAuctions.instantiateBid()
         bidVC.bidViewModel = LiveAuctionBidViewModel(lotVM: lotViewModel, salesPerson: salesPerson)
 
         let nav = ARSerifNavigationViewController(rootViewController: bidVC)
-        guard let pageVC = parentViewController else { return }
-        guard let auctionVC = pageVC.parentViewController else { return }
-        auctionVC.presentViewController(nav, animated: true) { button.enabled = true }
+        guard let pageVC = parent else { return }
+        guard let auctionVC = pageVC.parent else { return }
+        auctionVC.present(nav, animated: true) { button.isEnabled = true }
     }
 }

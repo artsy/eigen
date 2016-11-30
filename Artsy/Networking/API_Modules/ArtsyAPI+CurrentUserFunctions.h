@@ -2,6 +2,7 @@
 
 @class User, Bidder;
 
+NS_ASSUME_NONNULL_BEGIN
 
 @interface ArtsyAPI (CurrentUserFunctions)
 
@@ -12,3 +13,5 @@
 + (void)getCurrentUserBiddersForSale:(NSString *)saleID success:(void (^)(NSArray<Bidder *> *))success failure:(void (^)(NSError *error))failure;
 
 @end
+
+NS_ASSUME_NONNULL_END

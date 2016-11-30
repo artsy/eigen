@@ -4,22 +4,22 @@ protocol RefinableType: Equatable {
 
     // table view
     var numberOfSections: Int { get }
-    func titleOfSection(section: Int) -> String
-    func numberOfRowsInSection(section: Int) -> Int
-    func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String
+    func titleOfSection(_ section: Int) -> String
+    func numberOfRowsInSection(_ section: Int) -> Int
+    func titleForRowAtIndexPath(_ indexPath: IndexPath) -> String
 
     // selection
-    func allowMultipleSelectionInSection(section: Int) -> Bool
-    func shouldCheckRowAtIndexPath(indexPath: NSIndexPath) -> Bool
-    func selectedRowsInSection(section: Int) -> [NSIndexPath]
+    func allowMultipleSelectionInSection(_ section: Int) -> Bool
+    func shouldCheckRowAtIndexPath(_ indexPath: IndexPath) -> Bool
+    func selectedRowsInSection(_ section: Int) -> [IndexPath]
 
     // price slider
     var priceRange: PriceRange? { get }
     var priceRangePrompt: String? { get }
 
     // new settings
-    func refineSettingsWithSelectedIndexPath(indexPath: NSIndexPath) -> Self
-    func refineSettingsWithPriceRange(range: PriceRange) -> Self
+    func refineSettingsWithSelectedIndexPath(_ indexPath: IndexPath) -> Self
+    func refineSettingsWithPriceRange(_ range: PriceRange) -> Self
 
     var hasEstimates: Bool { get }
 }

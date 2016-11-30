@@ -78,41 +78,41 @@ class SaleViewModelTests: QuickSpec {
         }
 
         it("deals with auctions that have not started ") {
-            let sale = testSaleWithDates(NSDate.distantFuture(), end: NSDate.distantFuture())
+            let sale = testSaleWithDates(NSDate.distantFuture as NSDate, end: NSDate.distantFuture as NSDate)
             let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
-            expect(subject.saleAvailability).to( equal(  SaleAvailabilityState.NotYetOpen ) )
+            expect(subject.saleAvailability).to( equal(  SaleAvailabilityState.notYetOpen ) )
         }
 
         it("deals with auctions that have finished ") {
-            let sale = testSaleWithDates(NSDate.distantPast(), end: NSDate.distantPast())
+            let sale = testSaleWithDates(NSDate.distantPast as NSDate, end: NSDate.distantPast as NSDate)
             let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
-            expect(subject.saleAvailability).to( equal( SaleAvailabilityState.Closed ) )
+            expect(subject.saleAvailability).to( equal( SaleAvailabilityState.closed ) )
         }
 
         it("deals with auctions that are active ") {
-            let sale = testSaleWithDates(NSDate.distantPast(), end: NSDate.distantFuture())
+            let sale = testSaleWithDates(NSDate.distantPast as NSDate, end: NSDate.distantFuture as NSDate)
             let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
-            expect(subject.saleAvailability).to( equal( SaleAvailabilityState.Active(liveAuctionDate: nil) ) )
+            expect(subject.saleAvailability).to( equal( SaleAvailabilityState.active(liveAuctionDate: nil) ) )
         }
 
 
         it("deals with auctions that are active and live is upcoming") {
-            let soon = NSDate().dateByAddingTimeInterval(1650.9)
+            let soon = NSDate().addingTimeInterval(1650.9)
 
-            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast(), "endDate": NSDate.distantFuture(), "liveAuctionStartDate": soon ], error: Void())
+            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast, "endDate": NSDate.distantFuture, "liveAuctionStartDate": soon ], error: Void())
 
             let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
-            expect(subject.saleAvailability).to( equal( SaleAvailabilityState.Active(liveAuctionDate: soon) ) )
+            expect(subject.saleAvailability).to( equal( SaleAvailabilityState.active(liveAuctionDate: soon as Date) ) )
         }
 
         it("lets user know the live auction is happening") {
-            let before = NSDate().dateByAddingTimeInterval(-1650.9)
+            let before = NSDate().addingTimeInterval(-1650.9)
 
-            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast(), "endDate": NSDate.distantFuture(), "liveAuctionStartDate": before], error: Void())
+            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast, "endDate": NSDate.distantFuture, "liveAuctionStartDate": before], error: Void())
 
             let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
@@ -121,10 +121,10 @@ class SaleViewModelTests: QuickSpec {
         }
 
         it("lets doesn't direct the user to the live interface for completed sales.") {
-            let before = NSDate().dateByAddingTimeInterval(-1650.9)
-            let end = NSDate().dateByAddingTimeInterval(-100)
+            let before = NSDate().addingTimeInterval(-1650.9)
+            let end = NSDate().addingTimeInterval(-100)
 
-            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast(), "endDate": end, "liveAuctionStartDate": before], error: Void())
+            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast, "endDate": end, "liveAuctionStartDate": before], error: Void())
 
             let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
@@ -133,11 +133,11 @@ class SaleViewModelTests: QuickSpec {
     }
 }
 
-func testSaleWithDates(start: NSDate, end: NSDate) -> Sale {
+func testSaleWithDates(_ start: NSDate, end: NSDate) -> Sale {
     return try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": start, "endDate": end], error: Void())
 }
 
-func testLiveSaleWithStart(start: NSDate, end: NSDate) -> LiveSale {
+func testLiveSaleWithStart(_ start: NSDate, end: NSDate) -> LiveSale {
     return try! LiveSale(dictionary: ["name": "The 🎉 Sale", "causalitySaleID": "some-random-string-of-nc72bjzj7", "startDate": start, "endDate": end, "saleArtworks": []], error: Void())
 }
 
@@ -145,10 +145,12 @@ func testLiveSale() -> LiveSale {
     return try! LiveSale(dictionary: ["name": "The 🎉 Sale", "causalitySaleID": "some-random-string-of-nc72bjzj7", "saleArtworks": []], error: Void())
 }
 
-func testSaleArtworkEstimateAt(lowEstimate: Int?) -> SaleArtwork {
-    return try! SaleArtwork(dictionary: [
+func testSaleArtworkEstimateAt(_ lowEstimate: Int?) -> SaleArtwork {
+    let lowEstimateCents: Any = (lowEstimate ?? NSNull())
+    let dictionary = [
         "saleArtworkID" : "sale-artwrrrrrk",
-        "lowEstimateCents" : lowEstimate ?? NSNull(),
+        "lowEstimateCents" : lowEstimateCents,
         "artwork" : [:]
-        ], error: Void())
+        ]
+    return try! SaleArtwork(dictionary: dictionary, error: Void())
 }

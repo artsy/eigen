@@ -9,17 +9,17 @@ import Artsy
 
 class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
 
-    func setupCellWithEvent(event: LiveEvent) -> LiveAuctionHistoryCell {
-        let lot = LiveAuctionLot(JSON: ["id": "", "symbol": "$" ])
+    func setupCellWithEvent(_ event: LiveEvent) -> LiveAuctionHistoryCell {
+        let lot = LiveAuctionLot(json: ["id": "", "symbol": "$" ])
         let creds = BiddingCredentials(bidders: [], paddleNumber: "123213")
 
-        let lotVM = LiveAuctionLotViewModel(lot: lot, bidderCredentials: creds)
+        let lotVM = LiveAuctionLotViewModel(lot: lot!, bidderCredentials: creds)
         lotVM.addEvents([event])
 
         let eventVM = lotVM.eventWithID(event.eventID)
         eventVM?.confirm()
 
-        let subject = LiveAuctionHistoryCell(style: .Value1, reuseIdentifier: "")
+        let subject = LiveAuctionHistoryCell(style: .value1, reuseIdentifier: "")
         subject.frame = CGRect(x: 0, y: 0, width: 320, height: 50)
 
         subject.updateWithEventViewModel(eventVM!)
@@ -77,51 +77,51 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             var subject: LiveAuctionHistoryCell!
 
             it("looks right for open") {
-                let event = LiveEvent(JSON: ["type" : "BiddingOpened", "id" : "OK"])
+                let event = LiveEvent(json: ["type" : "BiddingOpened", "id" : "OK"])
 
-                subject = self.setupCellWithEvent(event)
+                subject = self.setupCellWithEvent(event!)
                 expect(subject) == snapshot()
             }
 
             it("looks right for closed") {
-                let event = LiveEvent(JSON: ["type" : "BiddingClosed", "id" : "OK"])
+                let event = LiveEvent(json: ["type" : "BiddingClosed", "id" : "OK"])
 
-                subject = self.setupCellWithEvent(event)
+                subject = self.setupCellWithEvent(event!)
                 expect(subject) == snapshot()
             }
 
             it("looks right for closed state") {
-                let event = LiveEvent(JSON: ["type" : "BiddingClosed", "id" : "OK", "cancelled" : true])
+                let event = LiveEvent(json: ["type" : "BiddingClosed", "id" : "OK", "cancelled" : true])
 
-                subject = self.setupCellWithEvent(event)
+                subject = self.setupCellWithEvent(event!)
                 expect(subject) == snapshot()
             }
 
             it("looks right for bid") {
-                let event = LiveEvent(JSON: [
+                let event = LiveEvent(json: [
                     "type" : "FirstPriceBidPlaced",
                     "id" : "ok",
                     "amountCents" : 555_000,
                     "bidder" : ["type": "ArtsyBidder", "bidderId": "LmnBN-aEci"]
                 ])
-                subject = self.setupCellWithEvent(event)
+                subject = self.setupCellWithEvent(event!)
                 expect(subject) == snapshot()
             }
 
             it("looks right for floor bid") {
-                let event = LiveEvent(JSON: [
+                let event = LiveEvent(json: [
                     "type" : "FirstPriceBidPlaced",
                     "id" : "ok",
                     "amountCents" : 555_000,
                     "bidder" : ["type": "OfflineBidder"]
                     ])
 
-                subject = self.setupCellWithEvent(event)
+                subject = self.setupCellWithEvent(event!)
                 expect(subject) == snapshot()
             }
 
             it("looks right for a cancelled floor bid") {
-                let event = LiveEvent(JSON: [
+                let event = LiveEvent(json: [
                     "type" : "FirstPriceBidPlaced",
                     "id" : "ok",
                     "cancelled" : true,
@@ -129,21 +129,21 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
                     "bidder" : ["type": "OfflineBidder"]
                     ])
 
-                subject = self.setupCellWithEvent(event)
+                subject = self.setupCellWithEvent(event!)
                 expect(subject) == snapshot()
             }
 
             it("looks right for final call") {
-                let event = LiveEvent(JSON: ["type" : "FinalCall", "id" : "ok"])
+                let event = LiveEvent(json: ["type" : "FinalCall", "id" : "ok"])
 
-                subject = self.setupCellWithEvent(event)
+                subject = self.setupCellWithEvent(event!)
                 expect(subject) == snapshot()
             }
 
             it("looks right for fair warning") {
-                let event = LiveEvent(JSON: ["type" : "FairWarning", "id" : "ok"])
+                let event = LiveEvent(json: ["type" : "FairWarning", "id" : "ok"])
 
-                subject = self.setupCellWithEvent(event)
+                subject = self.setupCellWithEvent(event!)
                 expect(subject) == snapshot()
             }
         }
@@ -164,23 +164,23 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             // e12  Confirmed
 
             let myBidderID = "123456"
-            let lotID = NSUUID().UUIDString
+            let lotID = NSUUID().uuidString
 
-            let lot = LiveAuctionLot(JSON: ["id": lotID])
+            let lot = LiveAuctionLot(json: ["id": lotID])
             let creds = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: myBidderID)
-            let lotVM = LiveAuctionLotViewModel(lot: lot, bidderCredentials: creds)
+            let lotVM = LiveAuctionLotViewModel(lot: lot!, bidderCredentials: creds)
 
-            let e1 = LiveEvent(JSON: ["type" : "BiddingOpened", "id" : lotID])
-            let e2 = bid(10000, bidder: ["type" : "OfflineBidder"])
-            let e3 = bid(15000, bidder: ["type": "ArtsyBidder", "bidderId": "23653"])
+            let e1 = LiveEvent(json: ["type" : "BiddingOpened", "id" : lotID])
+            let e2 = bid(10000, bidder: ["type" : "OfflineBidder" as AnyObject])
+            let e3 = bid(15000, bidder: ["type": "ArtsyBidder" as AnyObject, "bidderId": "23653" as AnyObject])
             let e4 = confirm(e3, lotID: lotID)
-            let e5 = bid(20000, bidder: ["type": "ArtsyBidder", "bidderId": myBidderID])
+            let e5 = bid(20000, bidder: ["type": "ArtsyBidder" as AnyObject, "bidderId": myBidderID as AnyObject])
             let e6 = confirm(e5, lotID: lotID)
-            let e7 = bid(25000, bidder: ["type": "ArtsyBidder", "bidderId": "23653"])
+            let e7 = bid(25000, bidder: ["type": "ArtsyBidder" as AnyObject, "bidderId": "23653" as AnyObject])
             let e8 = confirm(e7, lotID: lotID)
-            let e9 = bid(30000, bidder: ["type" : "OfflineBidder"])
-            let e10 = bid(35000, bidder: ["type" : "OfflineBidder"])
-            let e11 = bid(40000, bidder: ["type": "ArtsyBidder", "bidderId": myBidderID])
+            let e9 = bid(30000, bidder: ["type" : "OfflineBidder" as AnyObject])
+            let e10 = bid(35000, bidder: ["type" : "OfflineBidder" as AnyObject])
+            let e11 = bid(40000, bidder: ["type": "ArtsyBidder" as AnyObject, "bidderId": myBidderID as AnyObject])
             let e12 = confirm(e11, lotID: lotID)
 
             let subject = LiveAuctionBidHistoryViewController(lotViewModel: lotVM)
@@ -202,17 +202,17 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             // Online bid should show at the top
 
             let myBidderID = "123456"
-            let lotID = NSUUID().UUIDString
+            let lotID = NSUUID().uuidString
 
-            let lot = LiveAuctionLot(JSON: ["id": lotID])
+            let lot = LiveAuctionLot(json: ["id": lotID])
             let creds = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: myBidderID)
-            let lotVM = LiveAuctionLotViewModel(lot: lot, bidderCredentials: creds)
+            let lotVM = LiveAuctionLotViewModel(lot: lot!, bidderCredentials: creds)
 
-            let e1 = LiveEvent(JSON: ["type" : "BiddingOpened", "id" : lotID])
-            let e2 = bid(10000, bidder: ["type" : "OfflineBidder"])
-            let e3 = bid(15000, bidder: ["type": "ArtsyBidder", "bidderId": "23653"])
+            let e1 = LiveEvent(json: ["type" : "BiddingOpened", "id" : lotID])
+            let e2 = bid(10000, bidder: ["type" : "OfflineBidder" as AnyObject])
+            let e3 = bid(15000, bidder: ["type": "ArtsyBidder" as AnyObject, "bidderId": "23653" as AnyObject])
             let e4 = confirm(e3, lotID: lotID)
-            let e5 = bid(14000, bidder: ["type": "OfflineBidder"])
+            let e5 = bid(14000, bidder: ["type": "OfflineBidder" as AnyObject])
 
             let subject = LiveAuctionBidHistoryViewController(lotViewModel: lotVM)
             let events = [e1, e2, e3, e4, e5]
@@ -225,22 +225,22 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
     }
 }
 
-func bid(amount: Int, bidder: [String: AnyObject]) -> LiveEvent {
-    return LiveEvent(JSON: [
+func bid(_ amount: Int, bidder: [String: AnyObject]) -> LiveEvent {
+    return LiveEvent(json: [
         "type" : "FirstPriceBidPlaced",
-        "eventId" : NSUUID().UUIDString,
+        "eventId" : NSUUID().uuidString,
         "cancelled" : false,
         "amountCents" : amount * 100,
         "bidder" : bidder
         ])
 }
 
-func confirm(event: LiveEvent, lotID: String) -> LiveEvent {
-    return LiveEvent(JSON: [
+func confirm(_ event: LiveEvent, lotID: String) -> LiveEvent {
+    return LiveEvent(json: [
         "amountCents": Int(event.amountCents),
         "createdAt": "2016-06-05T20:14:15.070Z",
         "event": ["eventId": event.eventID],
-        "lotId": NSUUID().UUIDString,
+        "lotId": NSUUID().uuidString,
         "type": "CompositeOnlineBidConfirmed"
         ])
 }

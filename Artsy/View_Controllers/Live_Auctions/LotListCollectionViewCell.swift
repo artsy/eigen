@@ -20,9 +20,9 @@ class LotListCollectionViewCell: UICollectionViewCell {
     let bottomSeparator = ARSeparatorView()
     var isNotTopCell = true
 
-    private var userInterfaceNeedsSetup = true
-    private var lotStateSubscription: ObserverToken<LotState>?
-    private var askingPriceSubscription: ObserverToken<UInt64>?
+    fileprivate var userInterfaceNeedsSetup = true
+    fileprivate var lotStateSubscription: ObserverToken<LotState>?
+    fileprivate var askingPriceSubscription: ObserverToken<UInt64>?
 
     deinit {
         lotStateSubscription?.unsubscribe()
@@ -46,15 +46,15 @@ extension Overrides {
 
 private typealias PublicFunctions = LotListCollectionViewCell
 extension PublicFunctions {
-    func configureForViewModel(viewModel: LiveAuctionLotViewModelType, indexPath: NSIndexPath) {
+    func configureForViewModel(_ viewModel: LiveAuctionLotViewModelType, indexPath: IndexPath) {
 
         let currencySymbol = viewModel.currencySymbol
 
         if userInterfaceNeedsSetup {
             userInterfaceNeedsSetup = false
             contentView.translatesAutoresizingMaskIntoConstraints = false
-            contentView.alignToView(self)
-            lotImageView.contentMode = .ScaleAspectFill
+            contentView.align(toView: self)
+            lotImageView.contentMode = .scaleAspectFill
             lotImageView.clipsToBounds = true
         }
 
@@ -73,7 +73,7 @@ extension PublicFunctions {
                 return
             }
 
-        lotImageView.ar_setImageWithURL(viewModel.urlForThumbnail)
+        lotImageView.ar_setImage(with: viewModel.urlForThumbnail as URL!)
         lotNumberLabel.text = viewModel.formattedLotIndexDisplayString
         artistsNamesLabel.text = viewModel.lotArtist
     }

@@ -9,7 +9,7 @@
 
 /// Imports for the VC/Views
 
-#import "ARHeroUnitViewController.h"
+#import "ARArtistViewController.h"
 
 /// ZZ to make it go last, thanks to XCTest implmentation details
 SpecBegin(ZZAppAnalytics);
@@ -32,18 +32,22 @@ beforeEach(^{
     [[ARAnalytics currentProviders].copy each:^(id provider) {
         [ARAnalytics removeProvider:provider];
     }];
-
+    
     [ARAnalytics setupProvider:analytics];
 });
 
+// This is an example test
+
 describe(@"ARSiteHeroUnitView", ^{
     it(@"triggers when tapped", ^{
-
-        ARSiteHeroUnitViewController *controller = [[ARSiteHeroUnitViewController alloc] initWithHeroUnit:[SiteHeroUnit modelWithJSON:@{ @"link":@"/day-2-remember"}] andIndex:0];
-        [controller tappedUnit:nil];
-
-        expect(analytics.lastEventName).to.equal(ARAnalyticsTappedHeroUnit);
-        expect(analytics.lastEventProperties).to.equal(@{ @"destination" : @"/day-2-remember"});
+        
+// *** We don't use this view controller anymore, but use this as a guide to add any other events ***
+        
+//        ARSiteHeroUnitViewController *controller = [[ARSiteHeroUnitViewController alloc] initWithHeroUnit:[SiteHeroUnit modelWithJSON:@{ @"link":@"/day-2-remember"}] andIndex:0];
+//        [controller tappedUnit:nil];
+//        
+//        expect(analytics.lastEventName).to.equal(ARAnalyticsTappedHeroUnit);
+//        expect(analytics.lastEventProperties).to.equal(@{ @"destination" : @"/day-2-remember"});
     });
 
 });

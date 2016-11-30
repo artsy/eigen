@@ -30,7 +30,7 @@ enum GeneSortingOrder: String {
         return [RecentlyAdded, LeastExpensive, MostExpensive]
     }
 
-    static func fromID(id: String) -> GeneSortingOrder? {
+    static func fromID(_ id: String) -> GeneSortingOrder? {
         switch id {
         case "-year":
             return .RecentlyAdded
@@ -76,9 +76,9 @@ struct Price {
             return 0
         } else if id.hasSuffix("-*") {
             // max can be represented as "XXX-*"
-            return Int(id.componentsSeparatedByString("-*").first!)!
-        } else if id.containsString("-") {
-            return Int(id.componentsSeparatedByString("-").last!)!
+            return Int(id.components(separatedBy: "-*").first!)!
+        } else if id.contains("-") {
+            return Int(id.components(separatedBy: "-").last!)!
         }
         return 0
     }
@@ -113,15 +113,15 @@ struct GeneRefineSettings {
     let mediums: [Medium]
     var priceRange: PriceRange?
 
-    static func refinementFromAggregationJSON(data: [String: AnyObject]) -> GeneRefineSettings? {
+    static func refinementFromAggregationJSON(_ data: [String: AnyObject]) -> GeneRefineSettings? {
         let json = JSON(data)
         guard let aggregations = json["aggregations"].array,
-            sort = json["sort"].string, sorting = GeneSortingOrder.fromID(sort),
-            mediumID = json["selectedMedium"].string else { return nil }
+            let sort = json["sort"].string, let sorting = GeneSortingOrder.fromID(sort),
+            let mediumID = json["selectedMedium"].string else { return nil }
 
         let prices = aggregations.filter({ $0["slice"].stringValue == "PRICE_RANGE" }).first?["counts"].arrayValue.map({ Price(id: $0["id"].stringValue, name: $0["name"].stringValue) })
 
-        let maxPrice = prices?.sort(>).first
+        let maxPrice = prices?.sorted(by: >).first
 
         guard let mediumsJSON = aggregations.filter({ $0["slice"].stringValue == "MEDIUM" }).first else { return nil }
         let mediums = mediumsJSON["counts"].arrayValue.map({ Medium(id: $0["id"].stringValue, name: $0["name"].stringValue, count: $0["count"].intValue) })
@@ -151,7 +151,7 @@ extension GeneRefineSettings: RefinableType {
         return 2
     }
 
-    func numberOfRowsInSection(section: Int) -> Int {
+    func numberOfRowsInSection(_ section: Int) -> Int {
         if section == SortPosition {
             return GeneSortingOrder.allValues().count
         } else {
@@ -159,7 +159,7 @@ extension GeneRefineSettings: RefinableType {
         }
     }
 
-    func titleOfSection(section: Int) -> String {
+    func titleOfSection(_ section: Int) -> String {
         if section == SortPosition {
             return "Sort"
         } else {
@@ -167,7 +167,7 @@ extension GeneRefineSettings: RefinableType {
         }
     }
 
-    func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String {
+    func titleForRowAtIndexPath(_ indexPath: IndexPath) -> String {
         if indexPath.section == SortPosition {
             return GeneSortingOrder.allValues()[indexPath.row].rawValue
         } else {
@@ -175,11 +175,11 @@ extension GeneRefineSettings: RefinableType {
         }
     }
 
-    func allowMultipleSelectionInSection(section: Int) -> Bool {
+    func allowMultipleSelectionInSection(_ section: Int) -> Bool {
         return false
     }
 
-    func shouldCheckRowAtIndexPath(indexPath: NSIndexPath) -> Bool {
+    func shouldCheckRowAtIndexPath(_ indexPath: IndexPath) -> Bool {
         if indexPath.section == SortPosition {
             return GeneSortingOrder.allValues()[indexPath.row] == sort
         } else {
@@ -187,7 +187,7 @@ extension GeneRefineSettings: RefinableType {
         }
     }
 
-    func selectedRowsInSection(section: Int) -> [NSIndexPath] {
+    func selectedRowsInSection(_ section: Int) -> [IndexPath] {
         if section == SortPosition {
             guard let indexPath = indexPathOfSelectedOrder() else { return [] }
             return [indexPath]
@@ -201,11 +201,11 @@ extension GeneRefineSettings: RefinableType {
         return nil
     }
 
-    func refineSettingsWithPriceRange(range: PriceRange) -> GeneRefineSettings {
+    func refineSettingsWithPriceRange(_ range: PriceRange) -> GeneRefineSettings {
         return GeneRefineSettings(sort: sort, medium: medium, mediums: mediums, priceRange: range)
     }
 
-    func refineSettingsWithSelectedIndexPath(indexPath: NSIndexPath) -> GeneRefineSettings {
+    func refineSettingsWithSelectedIndexPath(_ indexPath: IndexPath) -> GeneRefineSettings {
         if indexPath.section == SortPosition {
             let newSort = GeneSortingOrder.allValues()[indexPath.row]
             return GeneRefineSettings(sort: newSort, medium: medium, mediums: mediums, priceRange: priceRange)
@@ -216,17 +216,16 @@ extension GeneRefineSettings: RefinableType {
         }
     }
 
-    func indexPathOfSelectedOrder() -> NSIndexPath? {
-        if let i = GeneSortingOrder.allValues().indexOf(sort) {
-            return NSIndexPath.init(forItem: i, inSection: 0)
+    func indexPathOfSelectedOrder() -> IndexPath? {
+        if let i = GeneSortingOrder.allValues().index(of: sort) {
+            return IndexPath.init(item: i, section: 0)
         }
         return nil
     }
 
-    func indexPathOfSelectedMedium() -> NSIndexPath? {
-        guard let medium = medium else { return nil }
-        if let i = mediums.indexOf(medium) {
-            return NSIndexPath.init(forItem: i, inSection: 1)
+    func indexPathOfSelectedMedium() -> IndexPath? {
+        if let i = mediums.index(of: medium) {
+            return IndexPath.init(item: i, section: 1)
         }
         return nil
     }
@@ -238,7 +237,7 @@ func == (lhs: GeneRefineSettings, rhs: GeneRefineSettings) -> Bool {
     guard lhs.sort == rhs.sort else { return false }
     guard lhs.medium == rhs.medium else { return false }
 
-    if let lhsRange = lhs.priceRange, rhsRange = rhs.priceRange {
+    if let lhsRange = lhs.priceRange, let rhsRange = rhs.priceRange {
         guard lhsRange.min == rhsRange.min else { return false }
         guard lhsRange.max == rhsRange.max else { return false }
     }

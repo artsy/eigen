@@ -2,28 +2,28 @@ import UIKit
 import FLKAutoLayout
 
 class LiveAuctionLotImageCollectionViewCell: UICollectionViewCell {
-    private var userInterfaceNeedsSetup = true
-    private let lotImageView = UIImageView()
-    private var lastUpdatedIndex: Int?
+    fileprivate var userInterfaceNeedsSetup = true
+    fileprivate let lotImageView = UIImageView()
+    fileprivate var lastUpdatedIndex: Int?
 
     override func prepareForReuse() {
         lastUpdatedIndex = nil
     }
 
-    override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
-        super.applyLayoutAttributes(layoutAttributes)
+    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+        super.apply(layoutAttributes)
 
         // Continue only if we successfully cast the attributes, and if we extract a non-nil URL.
         guard let
             castLayoutAttributes = layoutAttributes as? LiveAuctionLotCollectionViewLayoutAttributes,
-            url = castLayoutAttributes.url
+            let url = castLayoutAttributes.url
             else { return }
 
         // To avoid superfluously re-setting the URL on the image view, check that we actually need to update it.
-        if lastUpdatedIndex != layoutAttributes.indexPath.item {
-            lastUpdatedIndex = layoutAttributes.indexPath.item
+        if lastUpdatedIndex != (layoutAttributes.indexPath as NSIndexPath).item {
+            lastUpdatedIndex = (layoutAttributes.indexPath as NSIndexPath).item
 
-            lotImageView.ar_setImageWithURL(url)
+            lotImageView.ar_setImage(with: url as URL!)
         }
     }
 }
@@ -31,24 +31,24 @@ class LiveAuctionLotImageCollectionViewCell: UICollectionViewCell {
 private typealias PublicFunctions = LiveAuctionLotImageCollectionViewCell
 extension PublicFunctions {
 
-    func configureForLot(lot: LiveAuctionLotViewModelType, atIndex index: Int) {
+    func configureForLot(_ lot: LiveAuctionLotViewModelType, atIndex index: Int) {
         if userInterfaceNeedsSetup {
             userInterfaceNeedsSetup = false
 
             // Set up our content view.
             contentView.translatesAutoresizingMaskIntoConstraints = false
-            contentView.alignToView(self)
+            contentView.align(toView: self)
 
             // Set up our image view.
             contentView.addSubview(lotImageView)
-            lotImageView.alignToView(contentView)
-            lotImageView.contentMode = .ScaleAspectFit
+            lotImageView.align(toView: contentView)
+            lotImageView.contentMode = .scaleAspectFit
         }
 
         guard index != lastUpdatedIndex else { return }
         lastUpdatedIndex = index
 
-        lotImageView.ar_setImageWithURL(lot.urlForThumbnail)
+        lotImageView.ar_setImage(with: lot.urlForThumbnail as URL!)
     }
 
 }

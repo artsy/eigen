@@ -11,14 +11,21 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
     override func spec() {
         var subject: LiveAuctionPlaceMaxBidViewController!
 
+        // Ensure there is a key window for all of the tests
+        var window: UIWindow?
+        beforeSuite {
+            window = UIWindow()
+            window?.makeKeyAndVisible()
+        }
+
         beforeEach {
-            OHHTTPStubs.stubJSONResponseForHost("metaphysics*.artsy.net", withResponse: [:])
+            OHHTTPStubs.stubJSONResponse(forHost: "metaphysics*.artsy.net", withResponse: [:])
         }
 
         it("looks right on phones") {
-            let devices: [ARDeviceType] = [.Phone4, .Phone6]
+            let devices: [ARDeviceType] = [.phone4, .phone6]
             for device in devices {
-                ARTestContext.useDevice(device) {
+                ARTestContext.use(device) {
                     subject = StoryboardScene.LiveAuctions.instantiateBid()
 
                     let fakeSalesPerson = stub_auctionSalesPerson()
@@ -71,7 +78,7 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
             subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM, salesPerson:  stub_auctionSalesPerson())
             subject.loadViewProgrammatically()
 
-            subject.biddingProgressSignal.update(.BiddingInProgress)
+            subject.biddingProgressSignal.update(.biddingInProgress)
 
             expect(subject.bidProgressOverlayView.superview) != nil
 
@@ -82,15 +89,15 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
         describe("networking") {
 
             let examples: [String: [LiveAuctionBiddingProgressState]] = [
-                "in progress": [.BiddingInProgress],
-                "is max bidder": [.BidBecameMaxBidder],
-                "not max bidder": [.BidOutbid],
-                "network issues": [.BidNetworkFail],
-                "waiting": [.LotWaitingToOpen],
-                "sold": [.LotSold],
+                "in progress": [.biddingInProgress],
+                "is max bidder": [.bidBecameMaxBidder],
+                "not max bidder": [.bidOutbid],
+                "network issues": [.bidNetworkFail],
+                "waiting": [.lotWaitingToOpen],
+                "sold": [.lotSold],
             ]
 
-            for (_, tuple) in examples.enumerate() {
+            for (_, tuple) in examples.enumerated() {
 
                 it("has valid snapshot \(tuple.0)") {
                     subject = StoryboardScene.LiveAuctions.instantiateBid()

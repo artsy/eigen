@@ -44,7 +44,7 @@ class AuctionTitleViewSpec: QuickSpec {
             }
 
             it("looks good with a registered registration status") {
-                viewModel.stubbedAuctionState.insert(.UserIsRegistered)
+                viewModel.stubbedAuctionState.insert(.userIsRegistered)
                 let subject = AuctionTitleView(viewModel: viewModel, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: true)
                 subject.bounds.size.width = 400
                 subject.constrainWidth("400")
@@ -53,7 +53,7 @@ class AuctionTitleViewSpec: QuickSpec {
             }
 
             it("looks good without a info button") {
-                viewModel.stubbedAuctionState.insert(.UserIsRegistered)
+                viewModel.stubbedAuctionState.insert(.userIsRegistered)
                 let subject = AuctionTitleView(viewModel: viewModel, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: false)
                 subject.bounds.size.width = 400
 
@@ -78,6 +78,6 @@ class AuctionTitleViewSpec: QuickSpec {
 }
 
 class Test_AuctionTitleViewDelegate: AuctionTitleViewDelegate {
-    @objc func userDidPressInfo(titleView: AuctionTitleView) { }
-    @objc func userDidPressRegister(titleView: AuctionTitleView) { }
+    @objc func userDidPressInfo(_ titleView: AuctionTitleView) { }
+    @objc func userDidPressRegister(_ titleView: AuctionTitleView) { }
 }

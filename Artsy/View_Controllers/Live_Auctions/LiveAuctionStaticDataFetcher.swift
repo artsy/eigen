@@ -4,8 +4,8 @@ import SwiftyJSON
 import JWTDecode
 
 enum CausalityRole {
-    case Bidder
-    case Observer
+    case bidder
+    case observer
 }
 
 class JWT {
@@ -14,7 +14,7 @@ class JWT {
 
     init?(jwtString: String) {
 
-        guard let jwt = try? decode(jwtString) else { return nil }
+        guard let jwt = try? decode(jwt: jwtString) else { return nil }
 
         rawData = JSON(jwt.body)
         string = jwtString
@@ -27,10 +27,10 @@ class JWT {
     var role: CausalityRole {
         switch rawData["role"].stringValue {
         case "bidder":
-            return .Bidder
+            return .bidder
         // Fallback for unknown roles
         default:
-            return .Observer
+            return .observer
         }
     }
 }
@@ -61,9 +61,9 @@ protocol LiveAuctionStaticDataFetcherType {
 }
 
 class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
-    enum Error: ErrorType {
-        case JSONParsing
-        case NoJWTCredentials
+    enum Error: Swift.Error {
+        case jsonParsing
+        case noJWTCredentials
     }
 
     let saleSlugOrID: String
@@ -74,25 +74,25 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
     func fetchStaticData() -> Observable<StaticSaleResult> {
         let signal = Observable<StaticSaleResult>()
-        let loggedIn = User.currentUser() != nil
+        let loggedIn = User.current() != nil
         let role: String? = loggedIn ? "participant" : nil
-        ArtsyAPI.getLiveSaleStaticDataWithSaleID(saleSlugOrID, role:role,
+        ArtsyAPI.getLiveSaleStaticData(withSaleID: saleSlugOrID, role:role,
             success: { data in
                 let json = JSON(data)
                 guard let sale = self.parseSale(json) else {
-                    return signal.update(.Error(Error.JSONParsing))
+                    return signal.update(.error(Error.jsonParsing))
                 }
 
                 guard
                     let jwt = self.parseJWT(json) else {
-                    return signal.update(.Error(Error.NoJWTCredentials))
+                    return signal.update(.error(Error.noJWTCredentials))
                 }
 
                 let bidderCredentials = self.parseBidderCredentials(json)
-                signal.update(.Success((sale: sale, jwt: jwt, bidderCredentials: bidderCredentials)))
+                signal.update(.success((sale: sale, jwt: jwt, bidderCredentials: bidderCredentials)))
 
             }, failure: { error in
-                signal.update(.Error(error as ErrorType))
+                signal.update(.error(error as Swift.Error))
             })
 
         return signal
@@ -101,19 +101,19 @@ class LiveAuctionStaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
 extension LiveAuctionStaticDataFetcherType {
 
-    func parseSale(json: JSON) -> LiveSale? {
+    func parseSale(_ json: JSON) -> LiveSale? {
         guard let saleJSON = json["data"]["sale"].dictionaryObject else { return nil }
-        return LiveSale(JSON: saleJSON)
+        return LiveSale(json: saleJSON)
     }
 
-    func parseJWT(json: JSON) -> JWT? {
+    func parseJWT(_ json: JSON) -> JWT? {
         return JWT(jwtString: json["data"]["causality_jwt"].stringValue)
     }
 
-    func parseBidderCredentials(json: JSON) -> BiddingCredentials {
+    func parseBidderCredentials(_ json: JSON) -> BiddingCredentials {
         let paddleNumber = json["data"]["me"]["paddle_number"].string
         let bidders = json["data"]["me"]["bidders"].arrayValue.flatMap { bidder in
-            return Bidder(JSON: bidder.dictionaryObject)
+            return Bidder(json: bidder.dictionaryObject)
         }
         return BiddingCredentials(bidders: bidders, paddleNumber: paddleNumber)
     }

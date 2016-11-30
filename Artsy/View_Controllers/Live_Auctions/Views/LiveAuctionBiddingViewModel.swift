@@ -2,8 +2,8 @@ import Foundation
 import Interstellar
 
 enum BidProgressStatus {
-    case Started
-    case Completed(success: Bool, event: LiveEvent, error: ErrorType?)
+    case started
+    case completed(success: Bool, event: LiveEvent, error: Error?)
 }
 
 protocol LiveAuctionBiddingViewModelType {
@@ -15,16 +15,16 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     let progressSignal: Observable<LiveAuctionBidButtonState>
     let bidPendingSignal = Observable<LiveAuctionBiddingProgressState>()
 
-    private let _lotStateSubscription: ObserverToken<LotState>
-    private let _askingPriceSubscription: ObserverToken<UInt64>
-    private let _currentLotSubscription: ObserverToken<LiveAuctionLotViewModelType?>
-    private let _newLotEventsSubscription: ObserverToken<[LiveAuctionEventViewModel]>
+    fileprivate let _lotStateSubscription: ObserverToken<LotState>
+    fileprivate let _askingPriceSubscription: ObserverToken<UInt64>
+    fileprivate let _currentLotSubscription: ObserverToken<LiveAuctionLotViewModelType?>
+    fileprivate let _newLotEventsSubscription: ObserverToken<[LiveAuctionEventViewModel]>
 
     // Copies of observables that will be deallocated when we are.
-    private let _lotState = Observable<LotState>()
-    private let _askingPrice = Observable<UInt64>()
-    private let _currentLot = Observable<LiveAuctionLotViewModelType?>()
-    private let _newLotEventsSignal = Observable<[LiveAuctionEventViewModel]>([LiveAuctionEventViewModel(event: LiveEvent(), currencySymbol: "")])
+    fileprivate let _lotState = Observable<LotState>()
+    fileprivate let _askingPrice = Observable<UInt64>()
+    fileprivate let _currentLot = Observable<LiveAuctionLotViewModelType?>()
+    fileprivate let _newLotEventsSignal = Observable<[LiveAuctionEventViewModel]>([LiveAuctionEventViewModel(event: LiveEvent(), currencySymbol: "")])
     // _newLotEventSignal is different; every lot has a state asking price, and there's a default nil current lot. But not every lot has an event yet,
     // so we need to "prime" the _newLotEventSignal with a dummy lot event (the values from _newLotEventSignal are completely ignored anyway).
 
@@ -55,54 +55,54 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
     }
 
     // This is extracted into its own method because it's messy. It's curried to have access to the lotID.
-    class func stateToBidButtonState(currencySymbol: String, lotID: String, auctionViewModel: LiveAuctionViewModelType)
-                -> (state: (lotState: LotState, askingPrice: UInt64, currentLot: LiveAuctionLotViewModelType?))
+    class func stateToBidButtonState(_ currencySymbol: String, lotID: String, auctionViewModel: LiveAuctionViewModelType)
+                -> (_ state: (lotState: LotState, askingPrice: UInt64, currentLot: LiveAuctionLotViewModelType?))
                 -> LiveAuctionBidButtonState {
 
         return { state in
-            let userIsRegistered = auctionViewModel.auctionState.contains(.UserIsRegistered)
-            let userRegistrationPending = auctionViewModel.auctionState.contains(.UserPendingRegistration)
-            let registrationIsClosed = auctionViewModel.auctionState.contains(.UserRegistrationClosed)
+            let userIsRegistered = auctionViewModel.auctionState.contains(.userIsRegistered)
+            let userRegistrationPending = auctionViewModel.auctionState.contains(.userPendingRegistration)
+            let registrationIsClosed = auctionViewModel.auctionState.contains(.userRegistrationClosed)
 
             // This switch represents a priority of what states matter more than others.
             // For example: a closed lot is always shown as closed, regardless of bidder registration.
             // And if a registration is pending, we show that, etc.
             switch state.lotState {
-            case .ClosedLot:
-                return .InActive(lotState: state.lotState)
+            case .closedLot:
+                return .inActive(lotState: state.lotState)
 
             case _ where !userIsRegistered && registrationIsClosed:
-                return .Active(biddingState: LiveAuctionBiddingProgressState.UserRegistrationClosed)
+                return .active(biddingState: LiveAuctionBiddingProgressState.userRegistrationClosed)
 
             case _ where userRegistrationPending:
-                return .Active(biddingState: LiveAuctionBiddingProgressState.UserRegistrationPending)
+                return .active(biddingState: LiveAuctionBiddingProgressState.userRegistrationPending)
 
             case _ where !userIsRegistered:
-                return .Active(biddingState: LiveAuctionBiddingProgressState.UserRegistrationRequired)
+                return .active(biddingState: LiveAuctionBiddingProgressState.userRegistrationRequired)
 
-            case .UpcomingLot:
+            case .upcomingLot:
                 if lotID == state.currentLot?.lotID {
-                    return .Active(biddingState: .LotWaitingToOpen)
+                    return .active(biddingState: .lotWaitingToOpen)
                 } else {
-                    return .InActive(lotState: state.lotState)
+                    return .inActive(lotState: state.lotState)
                 }
 
-            case .LiveLot:
+            case .liveLot:
                 let biddingState: LiveAuctionBiddingProgressState
 
                 let isSellingToMe = state.currentLot?.userIsBeingSoldTo ?? false
 
                 if isSellingToMe {
-                    biddingState = .BidBecameMaxBidder
+                    biddingState = .bidBecameMaxBidder
                 } else {
-                    biddingState = .Biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol)
+                    biddingState = .biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol)
                 }
 
-                return .Active(biddingState: biddingState)
+                return .active(biddingState: biddingState)
             default:
                 // The Swift compiler is not yet smart enough to know that this _is_ an exhaustive swift statement.
                 // So we need a default to satisfy the compiler, even though it's impossible to reach.
-                return .InActive(lotState: state.lotState)
+                return .inActive(lotState: state.lotState)
             }
         }
     }

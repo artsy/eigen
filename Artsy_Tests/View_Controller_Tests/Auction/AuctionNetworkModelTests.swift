@@ -18,9 +18,9 @@ class AuctionNetworkModelSpec: QuickSpec {
         var bidderNetworkModel: Test_AuctionBiddersNetworkModel!
 
         beforeEach {
-            saleNetworkModel = Test_AuctionSaleNetworkModel(result: .Success(sale))
-            saleArtworksNetworkModel = Test_AuctionSaleArtworksNetworkModel(result: Result.Success(saleArtworks))
-            bidderNetworkModel = Test_AuctionBiddersNetworkModel(result: .Success([]))
+            saleNetworkModel = Test_AuctionSaleNetworkModel(result: .success(sale))
+            saleArtworksNetworkModel = Test_AuctionSaleArtworksNetworkModel(result: Result.success(saleArtworks))
+            bidderNetworkModel = Test_AuctionBiddersNetworkModel(result: .success([]))
 
             subject = AuctionNetworkModel(saleID: saleID)
             subject.saleNetworkModel = saleNetworkModel
@@ -34,13 +34,13 @@ class AuctionNetworkModelSpec: QuickSpec {
 
         describe("registrationStatus") {
             it("works when bidders fetch errors") {
-                bidderNetworkModel.result = .Error(TestError.Testing)
+                bidderNetworkModel.result = .error(TestError.testing)
                 expect(subject.bidders).to( beEmpty() )
             }
 
             it("works when bidders fetch returns bidders") {
-                let bidder = Bidder()
-                bidderNetworkModel.result = .Success([bidder])
+                let bidder = Bidder()!
+                bidderNetworkModel.result = .success([bidder])
                 expect(subject.bidders).to( haveCount(1) )
             }
 
@@ -126,7 +126,7 @@ class Test_AuctionSaleNetworkModel: AuctionSaleNetworkModelType {
         self.result = result
     }
 
-    func fetchSale(saleID: String) -> Observable<Result<Sale>> {
+    func fetchSale(_ saleID: String) -> Observable<Result<Sale>> {
         called = true
         return Observable(result)
     }
@@ -140,14 +140,14 @@ class Test_AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType 
         self.result = result
     }
 
-    func fetchSaleArtworks(saleID: String) -> Observable<Result<[SaleArtwork]>> {
+    func fetchSaleArtworks(_ saleID: String) -> Observable<Result<[SaleArtwork]>> {
         called = true
         return Observable(result)
     }
 }
 
-enum TestError: ErrorType {
-    case Testing
+enum TestError: Error {
+    case testing
 }
 
 class Test_AuctionBiddersNetworkModel: AuctionBiddersNetworkModelType {
@@ -162,7 +162,7 @@ class Test_AuctionBiddersNetworkModel: AuctionBiddersNetworkModelType {
         self.result = result
     }
 
-    func fetchBiddersForSale(saleID: String) -> Observable<Result<[Bidder]>> {
+    func fetchBiddersForSale(_ saleID: String) -> Observable<Result<[Bidder]>> {
         called = true
         return Observable(result)
     }

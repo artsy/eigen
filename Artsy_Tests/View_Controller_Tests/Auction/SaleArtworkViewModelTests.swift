@@ -27,7 +27,7 @@ class SaleArtworkViewModelTests: QuickSpec {
                 "title": "roly poly",
                 "images": imagesJSON,
             ]
-            let saleArtwork = SaleArtwork(JSON:
+            let saleArtwork = SaleArtwork(json:
                 [
                     "id": "sale",
                     "artwork": artworkJSON,
@@ -38,7 +38,7 @@ class SaleArtworkViewModelTests: QuickSpec {
                 ]
             )
 
-            subject = SaleArtworkViewModel(saleArtwork: saleArtwork)
+            subject = SaleArtworkViewModel(saleArtwork: saleArtwork!)
         }
 
         it("returns thumnail url") {

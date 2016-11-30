@@ -6,7 +6,7 @@ import Artsy
 class LiveSalesPersonSpecs: QuickSpec {
     override func spec() {
         it("sorts the bid increments take from the sale") {
-            let sale = try! LiveSale(JSON: [
+            let sale = try! LiveSale(json: [
                 "name": "The 🎉 Sale",
                 "_id": "some-random-string-of-nc72bjzj7",
                 "sale_artworks": [],
@@ -15,9 +15,9 @@ class LiveSalesPersonSpecs: QuickSpec {
                     ["from": 0, "amount": 25] // Intentional out of order.
                 ]], error: Void())
 
-            let subject = LiveAuctionsSalesPerson(sale: sale, jwt: StubbedCredentials.Registered.jwt, biddingCredentials: BiddingCredentials(bidders: [], paddleNumber: nil))
+            let subject = LiveAuctionsSalesPerson(sale: sale, jwt: StubbedCredentials.registered.jwt, biddingCredentials: BiddingCredentials(bidders: [], paddleNumber: nil))
 
-            expect(subject.bidIncrements) == subject.bidIncrements.sort()
+            expect(subject.bidIncrements) == subject.bidIncrements.sorted()
         }
     }
 }

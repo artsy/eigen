@@ -7,7 +7,6 @@
 
 #import "UIDevice-Hardware.h"
 
-#import <ARASCIISwizzle/UIImageView+ASCII.h>
 #import <ARAnalytics/ARAnalytics.h>
 
 static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
@@ -134,10 +133,6 @@ static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage
 {
-    if (UIImageView.ascii) {
-        return;
-    }
-
     _backgroundView.image = backgroundImage;
     _backgroundImage = backgroundImage;
 }

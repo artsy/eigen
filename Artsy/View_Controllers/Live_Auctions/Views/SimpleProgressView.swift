@@ -24,14 +24,14 @@ class SimpleProgressView: UIView {
         }
     }
 
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         let bg = UIBezierPath(rect: bounds)
         backgroundColor?.set()
         bg.fill()
 
         let progressRect = CGRect(x: 0, y: 0, width: Int(bounds.width * progress), height: Int(bounds.height))
         let fg = UIBezierPath(rect: progressRect)
-        highlightColor.set()
+        highlightColor?.set()
         fg.fill()
     }
 }

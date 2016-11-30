@@ -1,8 +1,15 @@
 upcoming:
-    version: 3.0.2
-    details: Second patch fix for 3.0.0 release.
+    version: 3.1.0
+    details: Scope not known yet
     dev:
       infrastructure:
+        - Updates to Swift 3 / Xcode 8 - ash/orta
+        - Remove extra xapp fetching and old home feed - maxim
+
+releases:
+  - version: 3.0.2
+    details: Second patch fix for 3.0.0 release.
+    date: Nov 19, 2016
     user_facing:
       - Refine existing queries on the Gene Page - orta
 
@@ -20,7 +27,6 @@ upcoming:
       - Ensures artists in context of a gallery are shown in the new artist view - sarah + alloy
       - More accurate "auction begins" data in auction info VC - ash
 
-releases:
   - version: 3.0.1
     details: Patch fix for 3.0.0 release.
     date: Nov 2, 2016
