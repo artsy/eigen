@@ -85,6 +85,7 @@ class AuctionInformationViewController: UIViewController {
         let auctionDescriptionView = ARTextView()
         auctionDescriptionView.useSemiBold = true
         auctionDescriptionView.setMarkdownString(saleViewModel.saleDescription)
+        auctionDescriptionView.viewControllerDelegate = self
         stackView?.addSubview(auctionDescriptionView, withTopMargin: "10", sideMargin: "40")
 
         let auctionBeginsHeaderLabel = UILabel()
@@ -195,6 +196,14 @@ private typealias MailCompositionCallbacks = AuctionInformationViewController
 extension MailCompositionCallbacks: MFMailComposeViewControllerDelegate {
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension AuctionInformationViewController: ARTextViewDelegate {
+    func textView(_ textView: ARTextView!, shouldOpen viewController: UIViewController!) {
+        self.dismiss(animated: true, completion: {
+            ARTopMenuViewController.shared().push(viewController)
+        })
     }
 }
 
