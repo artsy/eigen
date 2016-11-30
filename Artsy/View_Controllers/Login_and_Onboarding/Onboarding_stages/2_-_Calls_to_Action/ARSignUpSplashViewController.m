@@ -71,6 +71,11 @@
     }];
 
     [super viewWillAppear:animated];
+
+    // Put this in viewWillAppear instead of viewDidLoad because of tests and view lifecycle issues
+    // TODO: perhaps move back when traitcollections and tests have been fixed
+    [self showBackgroundViews];
+    [self setupControls];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -81,6 +86,7 @@
                 [UIView animateWithDuration:ARAnimationDuration animations:^{
                     [self.spinnerView removeFromSuperview];
                     self.spinnerView = nil;
+                    [self showControls];
                 }];
             } else {
                 [self loggedInWithSharedCredentials];
@@ -92,21 +98,10 @@
     [super viewDidAppear:animated];
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-    [super traitCollectionDidChange:previousTraitCollection];
-
-    for (UIView *subview in self.view.subviews) {
-        [subview removeFromSuperview];
-    }
-    [self showBackgroundViews];
-    [self showControls];
-}
-
-
 - (void)loggedInWithSharedCredentials
 {
-    // This is a dummy method for ARAppDelegate+Analytics to hook into.
+    // This is also a method for ARAppDelegate+Analytics to hook into.
+    [self showControls];
 }
 
 - (void)showBackgroundViews
@@ -137,7 +132,7 @@
     self.imageView.images = images;
 }
 
-- (void)showControls;
+- (void)setupControls;
 {
     self.textViewController = [self viewControllerForIndex:0];
     [self addChildViewController:self.textViewController];
@@ -175,7 +170,26 @@
     [label alignCenterXWithView:self.view predicate:@"0"];
     [label constrainTopSpaceToView:self.logInButton predicate:@"10"];
     [label alignBottomEdgeWithView:self.view predicate:self.useLargeLayout ? @"-60" : @"-20"];
+
+    [self hideControls];
 }
+
+- (void)hideControls
+{
+    self.textViewController.view.layer.opacity = 0;
+    self.logInButton.layer.opacity = 0;
+    self.getStartedButton.layer.opacity = 0;
+}
+
+- (void)showControls
+{
+    [UIView animateIf:YES duration:2.3 delay:0.3 options:UIViewAnimationOptionCurveEaseInOut:^{
+        self.textViewController.view.layer.opacity = 1;
+        self.logInButton.layer.opacity = 1;
+        self.getStartedButton.layer.opacity = 1;
+    } completion:nil];
+}
+
 
 #pragma Property overrides
 

@@ -58,7 +58,7 @@
           failure(error);
 
         } else {
-            FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:nil];
+            FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me?fields=name,id,email" parameters:nil];
             [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, NSDictionary *user, NSError *error) {
                 if (!error) {
                     

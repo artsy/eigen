@@ -64,7 +64,7 @@
     [self.separatorLine constrainHeight:@"1"];
     [self.separatorLine constrainWidthToView:self predicate:@"0"];
     [self.separatorLine alignCenterXWithView:self predicate:@"0"];
-    [self.separatorLine constrainTopSpaceToView:self.emailActionButton predicate:@"50"];
+    [self.separatorLine constrainTopSpaceToView:self.emailActionButton predicate:@"30"];
 
     self.separatorLabel.text = @"OR";
     self.separatorLabel.backgroundColor = [UIColor whiteColor];
@@ -83,7 +83,7 @@
     [self.facebookActionButton constrainWidthToView:self predicate:@"0"];
     [self.facebookActionButton constrainHeight:@"40"];
     [self.facebookActionButton alignCenterXWithView:self predicate:@"0"];
-    [self.facebookActionButton constrainTopSpaceToView:self.separatorLine predicate:@"50"];
+    [self.facebookActionButton constrainTopSpaceToView:self.separatorLine predicate:@"30"];
 }
 
 - (void)addTwitterButton

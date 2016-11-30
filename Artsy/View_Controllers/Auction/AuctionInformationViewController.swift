@@ -89,7 +89,6 @@ class AuctionInformationViewController: UIViewController {
 
         let auctionBeginsHeaderLabel = UILabel()
         auctionBeginsHeaderLabel.font = UIFont.sansSerifFontWithSize(12)
-        auctionBeginsHeaderLabel.text = "AUCTION BEGINS"
         stackView.addSubview(auctionBeginsHeaderLabel, withTopMargin: "0", sideMargin: "40")
 
         let auctionBeginsLabel = UILabel()
@@ -97,8 +96,15 @@ class AuctionInformationViewController: UIViewController {
         let formatter = NSDateFormatter()
         formatter.dateStyle = .MediumStyle
         formatter.timeStyle = .LongStyle
-        auctionBeginsLabel.text = formatter.stringFromDate(saleViewModel.startDate)
         stackView.addSubview(auctionBeginsLabel, withTopMargin: "10", sideMargin: "40")
+
+        if let liveAuctionStartDate = saleViewModel.liveAuctionStartDate {
+            auctionBeginsHeaderLabel.text = "LIVE BIDDING BEGINS"
+            auctionBeginsLabel.text = formatter.stringFromDate(liveAuctionStartDate)
+        } else {
+            auctionBeginsHeaderLabel.text = "AUCTION BEGINS"
+            auctionBeginsLabel.text = formatter.stringFromDate(saleViewModel.startDate)
+        }
 
         let faqButtonDescription = NavigationButton(
             buttonClass: ARNavigationButton.self,

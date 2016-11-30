@@ -45,7 +45,6 @@
 #import "AROnboardingPersonalizeTableViewController.h"
 #import "ARPriceRangeViewController.h"
 #import "ARViewInRoomViewController.h"
-#import "AROnboardingMoreInfoViewController.h"
 #import "ARArtistViewController.h"
 #import "ARFairViewController.h"
 #import "ARFairSearchViewController.h"

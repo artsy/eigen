@@ -325,7 +325,8 @@ describe(@"ARSwitchboard", ^{
 
         it(@"routes genes", ^{
             id subject = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/gene/surrealism"] fair:nil];
-            expect(subject).to.beAKindOf(ARGeneViewController.class);
+            NSString *classString = NSStringFromClass([subject class]);
+            expect(classString).to.contain(@"ARGeneComponent");
         });
 
         it(@"does not route to react gene when echo has a feature called 'DisableReactGenes'", ^{

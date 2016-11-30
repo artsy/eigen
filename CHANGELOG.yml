@@ -1,13 +1,35 @@
 upcoming:
-    version: 3.0.1
-    details: Patch fix for 3.0.0 release.
+    version: 3.0.2
+    details: Second patch fix for 3.0.0 release.
     dev:
       infrastructure:
     user_facing:
       - Refine existing queries on the Gene Page - orta
 
+      - Fixes auction countdown timer on iPad - ash
+      - Fixes problem where users could not bid on sales if they were registered for too many sales - ash
+      - Fixes gene routing bug where search routed to old gene VC instead of RN one - sarah
+      - Fixes tableview crasher in onboarding - sarah + maxim
+      - Fixes email retrieval from Facebook SDK and removes email confirmation screen - maxim
+      - Fixes crasher in onboarding tableview when no selection was made - alloy
+      - Fixes performance issues on the live auctions lot list - ash
+      - Fixes bug in GeneVC where fetching was starting on page 2 - sarah
+      - Update home view artworks rails order - maxim
+      - Fix for live sale artworks with missing high estimates - ash
+      - Fixes artist link to auction results - alloy
+      - Ensures artists in context of a gallery are shown in the new artist view - sarah + alloy
+      - More accurate "auction begins" data in auction info VC - ash
 
 releases:
+  - version: 3.0.1
+    details: Patch fix for 3.0.0 release.
+    date: Nov 2, 2016
+    dev:
+    infrastructure:
+    user_facing:
+    - Fixes an intermittent crash on the live interface - ash
+    - Attempts to fix a crash that would occur by sending a message to a search VC that it doesn’t implement - alloy
+
   - version: 3.0.0
     details: New personalised collectors edition.
     date: Oct 21, 2016
