@@ -2,7 +2,7 @@ import Starscream
 
 extension WebSocket: SocketType {
     func writeString(_ str: String) {
-        writeString(str)
+        write(string: str)
     }
 
     func disconnect() {
