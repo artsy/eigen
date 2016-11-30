@@ -182,7 +182,7 @@ PODS:
   - SDWebImage/Core (3.7.3)
   - Specta (1.0.5)
   - SSFadingScrollView (1.1.0)
-  - Starscream (2.0.1)
+  - Starscream (2.0.2)
   - SwiftyJSON (3.1.1)
   - Then (2.1.0)
   - UIAlertView+Blocks (0.8)
@@ -422,7 +422,7 @@ SPEC CHECKSUMS:
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   SSFadingScrollView: a2f142312afad23585e354a41a6ed337045e1aa3
-  Starscream: ce7a202d95615bd4113bc5a0f1932f1db8c808a4
+  Starscream: 6c135a34e0a6e60cedaa0b30db67a4c05cf7cd38
   SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
   Then: 8496793c8fcac95482b943909b440724c7d8d82c
   UIAlertView+Blocks: 6b408d63507287b22c6e631a2b25ca26f96fb609

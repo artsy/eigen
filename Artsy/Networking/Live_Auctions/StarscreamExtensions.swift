@@ -1,8 +1,8 @@
 import Starscream
 
 extension WebSocket: SocketType {
-    func writeString(_ str: String) {
-        write(string: str)
+    func write(string: String) {
+        write(string: string, completion: nil)
     }
 
     func disconnect() {
@@ -11,9 +11,5 @@ extension WebSocket: SocketType {
 
     func writePing() {
         write(data: "2".data(using: String.Encoding.utf8)!) // swiftlint:disable:this force_unwrapping
-    }
-
-    func writeData(_ data: NSData) {
-        write(data: data as Data)
     }
 }
