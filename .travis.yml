@@ -1,9 +1,12 @@
+cache: yarn
+
 language: node_js
 node_js:
   - "6.1"
 
 install:
-  - npm install
+  - npm install -g yarn
+  - yarn install
 
 after_script:
   - npm run flow
@@ -15,3 +18,8 @@ deploy:
   script: scripts/deploy_apphub.sh
   on:
     branch: master
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
