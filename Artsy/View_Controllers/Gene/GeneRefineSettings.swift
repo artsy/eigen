@@ -6,18 +6,20 @@ import SwiftyJSON
 /// and the refine setting VC.
 
 class RefineSwiftCoordinator : NSObject {
-    static func showRefineSettingForGeneSettings(viewController: UIViewController, initial: [String: AnyObject], current: [String: AnyObject], completion: (newRefineSettings: [String: AnyObject]?) -> ()) {
-        guard let currentSettings = GeneRefineSettings.refinementFromAggregationJSON(initial) else { return completion(newRefineSettings: nil) }
-        guard let initialSettings = GeneRefineSettings.refinementFromAggregationJSON(current) else { return completion(newRefineSettings: nil) }
+    static func showRefineSettingForGeneSettings(viewController: UIViewController, initial: [String: AnyObject], current: [String: AnyObject], completion: @escaping (_ newRefineSettings: [String: AnyObject]?) -> ()) {
+        guard let currentSettings = GeneRefineSettings.refinementFromAggregationJSON(initial) else { return completion(nil) }
+        guard let initialSettings = GeneRefineSettings.refinementFromAggregationJSON(current) else { return completion(nil) }
 
         let optionsVC = RefinementOptionsViewController(defaultSettings: currentSettings, initialSettings: initialSettings, currencySymbol: "$", userDidCancelClosure: { (optionsVC) in
-                viewController.dismissViewControllerAnimated(true, completion: nil)
-                completion(newRefineSettings: nil)
+            completion(nil)
+                viewController.dismiss(animated: true, completion: nil)
+
             }) { (newSettings) in
-                viewController.dismissViewControllerAnimated(true, completion: nil)
-                completion(newRefineSettings: newSettings.toJSON())
+                                completion(newSettings.toJSON())
+                viewController.dismiss(animated: true, completion: nil)
+
         }
-        viewController.presentViewController(optionsVC, animated: true, completion: nil)
+        viewController.present(optionsVC, animated: true, completion: nil)
     }
 }
 
@@ -136,9 +138,9 @@ struct GeneRefineSettings {
         let priceRangeID = (priceRange != nil) ? "\(priceRange!.min)-\(priceRange!.max)" : "*-*"
         let mediumID = (medium != nil) ? medium!.id : "*"
         return [
-            "sort": sort.toID(),
-            "selectedPrice": priceRangeID,
-            "medium" : mediumID
+            "sort": sort.toID() as AnyObject,
+            "selectedPrice": priceRangeID  as AnyObject,
+            "medium" : mediumID as AnyObject
         ]
     }
 }
@@ -224,6 +226,7 @@ extension GeneRefineSettings: RefinableType {
     }
 
     func indexPathOfSelectedMedium() -> IndexPath? {
+        guard let medium = medium else { return nil }
         if let i = mediums.index(of: medium) {
             return IndexPath.init(item: i, section: 1)
         }
