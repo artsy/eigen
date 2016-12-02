@@ -81,7 +81,7 @@
 {
     [super viewDidAppear:animated];
 
-    if (!_movedToFacebook) {
+    if (!self.movedToFacebook) {
         [self.textFieldsView.nameField becomeFirstResponder];
     }
 }
@@ -371,7 +371,7 @@
 {
     __weak typeof(self) wself = self;
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-    _movedToFacebook = YES;
+    self.movedToFacebook = YES;
     [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
         __strong typeof (wself) sself = wself;
         [sself fbSuccessWithToken:token email:email name:name];
