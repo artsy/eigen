@@ -1,21 +1,10 @@
 upcoming:
-    version: 3.1.0
-    details: Scope not known yet
-    dev:
-      infrastructure:
-        - Updates to Swift 3 / Xcode 8 - ash/orta
-        - Removes the Apple Watch app - orta
-        - Remove extra xapp fetching and old home feed - maxim
-    user_facing:
-      - Fixes issue where links in auction descriptions would lead nowhere when tapped - ash
-
-releases:
-  - version: 3.0.2
-    details: Hot fix for 3.0.2 release.
-    date: Dec 02, 2016
+    version: 3.0.3
+    details: Hot fix for 3.0.2 release. 
     user_facing:
       - Fixes Facebook signup crash - maxim 
-      
+
+releases:
   - version: 3.0.2
     details: Second patch fix for 3.0.0 release.
     date: Nov 19, 2016
