@@ -349,40 +349,10 @@
     [self pushViewController:webViewController animated:YES];
 }
 
-- (void)signUpWithFacebook
+
+- (void)finishAccountCreation
 {
-    __weak typeof(self) wself = self;
-    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-    [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
-        __strong typeof (wself) sself = wself;
-        [sself fbSuccessWithToken:token email:email name:name];
-
-    } failure:^(NSError *error) {
-        __strong typeof (wself) sself = wself;
-
-        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-
-        NSString * reason = error.userInfo[@"com.facebook.sdk:ErrorLoginFailedReason"];
-        if (![reason isEqualToString:@"com.facebook.sdk:UserLoginCancelled"]) {
-            [sself fbError];
-        }
-    }];
-}
-
-- (void)fbSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
-{
-    [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
     [self dismissOnboardingWithVoidAnimation:YES];
-}
-
-- (void)fbError
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t get Facebook credentials"
-                                                    message:@"Couldn’t get Facebook credentials. Please link a Facebook account in the settings app. If you continue having trouble, please email Artsy support at support@artsy.net"
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
 }
 
 - (void)twitterError

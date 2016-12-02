@@ -12,7 +12,9 @@
 #import "UIView+HitTestExpansion.h"
 #import "ARCustomEigenLabels.h"
 #import "ARNetworkErrorManager.h"
+#import "ARAuthProviders.h"
 #import "ARTopMenuViewController.h"
+#import "ARLogger.h"
 
 #import "ARLoginFieldsView.h"
 #import "ARLoginButtonsView.h"
@@ -33,6 +35,7 @@
 //sigh
 #define EMAIL_TAG 111
 #define SOCIAL_TAG 222
+#define ERROR_TAG 333
 
 
 @interface ARCreateAccountViewController () <UITextFieldDelegate, UIAlertViewDelegate>
@@ -46,6 +49,10 @@
 @property (nonatomic, strong) NSLayoutConstraint *titleToTextFieldsSpacer;
 @property (nonatomic, strong) ARWarningView *warningView;
 @property (nonatomic, strong) ARTopMenuViewController *topMenuViewController;
+
+// To stop the keyboard from appearing when brought back
+// viewDidAppear gets called after the successful FB login, without a viewWillDisappear
+@property (nonatomic, assign) BOOL movedToFacebook;
 @end
 
 
@@ -73,7 +80,10 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.textFieldsView.nameField becomeFirstResponder];
+
+    if (!_movedToFacebook) {
+        [self.textFieldsView.nameField becomeFirstResponder];
+    }
 }
 
 - (void)viewDidLoad
@@ -87,6 +97,7 @@
     spinner.spinnerColor = [UIColor whiteColor];
     self.loadingSpinner = spinner;
     [self.view addSubview:spinner];
+
     [super viewDidLoad];
 }
 
@@ -131,14 +142,13 @@
     self.textFieldsView.nameField.delegate = self;
     self.textFieldsView.emailField.delegate = self;
     self.textFieldsView.passwordField.delegate = self;
-    
+
     [self.buttonsView.emailActionButton setTitle:@"Complete" forState:UIControlStateNormal];
 
     [self.buttonsView.emailActionButton addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonsView.facebookActionButton addTarget:self action:@selector(fb:) forControlEvents:UIControlEventTouchUpInside];
 
     [self.buttonsView.emailActionButton setEnabled:[self canSubmit] animated:YES];
-    
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -342,6 +352,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     if (self.warningView) [self removeWarning:animated];
+    [self hideKeyboard];
 
     [super viewWillDisappear:animated];
 
@@ -358,7 +369,102 @@
 
 - (void)fb:(id)sender
 {
-    [self.delegate signUpWithFacebook];
+    __weak typeof(self) wself = self;
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
+    _movedToFacebook = YES;
+    [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
+        __strong typeof (wself) sself = wself;
+        [sself fbSuccessWithToken:token email:email name:name];
+
+    } failure:^(NSError *error) {
+        __strong typeof (wself) sself = wself;
+        
+        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+        
+        NSString * reason = error.userInfo[@"com.facebook.sdk:ErrorLoginFailedReason"];
+        if (![reason isEqualToString:@"com.facebook.sdk:UserLoginCancelled"]) {
+            [sself fbError];
+        }
+    }];
+}
+
+- (void)fbSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
+{
+    __weak typeof(self) wself = self;
+    [[ARUserManager sharedManager] createUserViaFacebookWithToken:token
+        email:email
+        name:name
+        success:^(User *user) {
+                                                              __strong typeof (wself) sself = wself;
+                                                              // we've created a user, now let's log them in
+                                                              [sself loginWithFacebookCredentialToken:token];
+        }
+        failure:^(NSError *error, id JSON) {
+                                                              __strong typeof (wself) sself = wself;
+                                                              if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
+                                                                  if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
+                                                                      // this facebook account is already an artsy account
+                                                                      // let's log them in
+                                                                      [sself loginWithFacebookCredentialToken:token];
+                                                                      return;
+                                                                  } else if ([JSON[@"error"] isEqualToString:@"User Already Exists"]
+                                                                             || [JSON[@"error"] isEqualToString:@"User Already Invited"]) {
+                                                                      // there's already a user with this email
+                                                                      NSString *source = [self existingAccountSource:JSON];
+                                                                      [sself accountExists:source];
+                                                                      return;
+                                                                  }
+                                                              }
+                                                              
+                                                              // something else went wrong
+                                                              ARErrorLog(@"Couldn't link Facebook account. Error: %@. The server said: %@", error.localizedDescription, JSON);
+                                                              
+                                                              NSString *errorMessage = [NSString stringWithFormat:@"Server replied saying '%@'.", JSON[@"error"] ?: JSON[@"message"] ?: error.localizedDescription];
+                                                              
+                                                              // we'll display an alert view
+                                                              [sself showErrorAlertWithMessage:errorMessage];
+        }];
+}
+
+- (void)loginWithFacebookCredentialToken:(NSString *)token
+{
+    __weak typeof(self) wself = self;
+    [[ARUserManager sharedManager] loginWithFacebookToken:token
+        successWithCredentials:nil
+        gotUser:^(User *currentUser) {
+                                                      __strong typeof (wself) sself = wself;
+                                                      // we've logged them in, let's wrap up
+                                                      [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                                      [sself.delegate finishAccountCreation];
+        }
+        authenticationFailure:^(NSError *error) {
+                                        // TODO: handle this
+                                        __strong typeof (wself) sself = wself;
+                                        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+        }
+        networkFailure:^(NSError *error) {
+                                               // TODO: handle this
+                                               __strong typeof (wself) sself = wself;
+                                               [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+        }];
+}
+
+- (void)showErrorAlertWithMessage:(NSString *)errorMessage
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error Creating\na New Artsy Account" message:errorMessage delegate:self cancelButtonTitle:@"Close" otherButtonTitles:nil];
+    alert.tag = ERROR_TAG;
+    [alert show];
+}
+
+
+- (void)fbError
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t get Facebook credentials"
+                                                    message:@"Couldn’t get Facebook credentials. Please link a Facebook account in the settings app. If you continue having trouble, please email Artsy support at support@artsy.net"
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark -
@@ -372,14 +478,14 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:textField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyGrayMedium]}];
-    
+
     ((ARTextFieldWithPlaceholder *)textField).baseline.backgroundColor = [UIColor blackColor].CGColor;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:textField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyGraySemibold]}];
-    
+
     ((ARTextFieldWithPlaceholder *)textField).baseline.backgroundColor = [UIColor artsyGrayRegular].CGColor;
 }
 
@@ -412,8 +518,10 @@
     NSString *email = nil;
     if (alertView.tag == EMAIL_TAG) {
         email = self.textFieldsView.emailField.text;
+        [self.delegate logInWithEmail:email];
+    } else if (alertView.tag == ERROR_TAG) {
+        [self setFormEnabled:YES];
     }
-    [self.delegate logInWithEmail:email];
 }
 
 #pragma mark - DI
