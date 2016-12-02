@@ -17,6 +17,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     let lotImageCollectionViewDataSource: LiveAuctionLotCollectionViewDataSource
     let lotCollectionViewLayout: LiveAuctionLotCollectionViewLayoutType
     var currentLotView: LiveAuctionCurrentLotView!
+    var jumpToCurrentLotCTABottomConstraint: NSLayoutConstraint!
 
     fileprivate var hasBeenSetup = false
     fileprivate var firstAppearance = true
@@ -73,8 +74,6 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     var hasJumpedToOpenLotAtLaunch = false
     var suppressJumpingToOpenLots = false
-
-    var biddingProgressObesrver: ObserverToken<LiveAuctionBidButtonState>?
 
     func hasChangedLot(_ lot: LiveAuctionLotViewModelType?) {
         guard let newLot = lot, let newLotIndex = salesPerson.indexForViewModel(newLot) else { return }
@@ -150,9 +149,9 @@ class LiveAuctionLotSetViewController: UIViewController {
         currentLotView = LiveAuctionCurrentLotView(viewModel: salesPerson.auctionViewModel.currentLotSignal, salesPerson: salesPerson)
         currentLotView.addTarget(nil, action: #selector(LiveAuctionLotSetViewController.jumpToLiveLot), for: .touchUpInside)
         view.addSubview(currentLotView)
-        currentLotView.alignBottom("-5", trailing: "-5", toView: view)
+        jumpToCurrentLotCTABottomConstraint = currentLotView.alignBottomEdge(withView: view, predicate: "-5")
         currentLotView.alignLeadingEdge(withView: view, predicate: "5")
-        currentLotView.isHidden = true
+        currentLotView.alignTrailingEdge(withView: view, predicate: "-5")
 
         salesPerson.currentFocusedLotIndex.subscribe { [weak self] _ in
             self?.lotImageCollectionView.reloadData()
@@ -334,6 +333,10 @@ extension LiveAuctionLotSetViewController: AuctionTitleViewDelegate {
     }
 }
 
+func lerp(from a: CGFloat, to b: CGFloat, by factor: CGFloat) -> CGFloat {
+    return ((1-factor) * a) + (factor * b)
+}
+
 private typealias HostScrollViewDelegate = LiveAuctionLotSetViewController
 extension HostScrollViewDelegate: UIScrollViewDelegate {
 
@@ -345,6 +348,48 @@ extension HostScrollViewDelegate: UIScrollViewDelegate {
     // When the user scrolls.
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
+
+        let originLot = salesPerson.lotViewModelRelativeToShowingIndex(0)
+        guard case .some(.some(let currentLot)) = salesPerson.currentLotSignal.peek() else { return }
+
+        let atRestOffset = scrollView.contentSize.width / 3
+        let offset = scrollView.contentOffset.x
+
+        let targetLot: LiveAuctionLotViewModelType
+        let factor: CGFloat
+        if offset > atRestOffset {
+            // Scrolling to the right, target is next lot.
+            targetLot = salesPerson.lotViewModelRelativeToShowingIndex(1)
+            factor = 1 - (offset - atRestOffset) / atRestOffset
+        } else  if offset < atRestOffset {
+            // Scrolling to the left, target is previous lot.
+            targetLot = salesPerson.lotViewModelRelativeToShowingIndex(-1)
+            factor = offset / atRestOffset
+        } else {
+            // Here to satisfy the compiler.
+            targetLot = originLot
+            factor = 1
+        }
+//        print("factor: \(factor)\t\toffset: \(offset)")
+
+        /*
+         If the origin is current, interpolate from how far we've scrolled _towards_ the target
+         If the target is current, interpolate from how far we've scrolled _away from_ the target
+         If neither origin nor target sale artwork are current, fully display
+        */
+        let z: CGFloat
+        switch currentLot.lotID {
+        case originLot.lotID:
+            z = lerp(from: 1, to: 0, by: factor)
+        case targetLot.lotID:
+            z = lerp(from: 0, to: 1, by: factor)
+        default:
+            z = 1
+        }
+//        print("factor: ", factor, "z: ", z)
+        print("factor: \(factor)\t\toffset: \(offset)\t\tz:\(z)")
+
+        jumpToCurrentLotCTABottomConstraint.constant = lerp(from: 100, to: -5, by: z)
     }
 
     // When we scroll programmatically with/out animation.
@@ -371,20 +416,6 @@ extension PageViewDelegate: UIPageViewControllerDelegate, LiveAuctionSaleLotsDat
             salesPerson.currentFocusedLotIndex.update(viewController.index)
         }
 
-        let myLotID = viewController.lotViewModel.lotID
-
-        biddingProgressObesrver?.unsubscribe()
-        viewController.biddingViewModel.progressSignal.subscribe { [weak self] state in
-            let isCTAVisible: Bool
-            switch self?.salesPerson.auctionViewModel.currentLotSignal.peek() {
-            case .some(let .some(lot)):
-                isCTAVisible = (lot.lotID != myLotID)
-            default: // a nil anywhere
-                isCTAVisible = false
-            }
-
-            self?.setCurrentLotCTA(visible: isCTAVisible)
-        }
     }
 
     func registerForScrollingState(_ viewController: LiveAuctionLotViewController) {
