@@ -535,56 +535,8 @@
 		609A82FB17A1147800AFDF13 /* ARNavigationTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 609A82FA17A1147800AFDF13 /* ARNavigationTransition.m */; };
 		609B3C091761F80C00953CB2 /* ARSiteHeroUnitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 609B3C081761F80C00953CB2 /* ARSiteHeroUnitView.m */; };
 		609E394F1CA01FBC0035C6FC /* LiveAuctionsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6019A9071C7E76EF00E292FA /* LiveAuctionsAssets.xcassets */; };
-		609F97CC1AC0F26A0079FE21 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 609F97CB1AC0F26A0079FE21 /* Images.xcassets */; };
-		609F97D01AC0F26A0079FE21 /* Artsy WatchKit App.app in Resources */ = {isa = PBXBuildFile; fileRef = 609F97CF1AC0F26A0079FE21 /* Artsy WatchKit App.app */; };
-		609F97D81AC0F26A0079FE21 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 609F97D61AC0F26A0079FE21 /* Interface.storyboard */; };
-		609F97DA1AC0F26A0079FE21 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 609F97D91AC0F26A0079FE21 /* Images.xcassets */; };
-		609F97F41AC0F2EF0079FE21 /* ARWatchLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97EB1AC0F2EF0079FE21 /* ARWatchLoadingViewController.m */; };
-		609F97F51AC0F2EF0079FE21 /* ARWatchOpeningInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97ED1AC0F2EF0079FE21 /* ARWatchOpeningInterfaceController.m */; };
-		609F97F61AC0F2EF0079FE21 /* ARWatchNoResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97EF1AC0F2EF0079FE21 /* ARWatchNoResultsViewController.m */; };
-		609F97F71AC0F2EF0079FE21 /* ARWatchMenuActionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97F11AC0F2EF0079FE21 /* ARWatchMenuActionController.m */; };
-		609F97F81AC0F2EF0079FE21 /* ARWatchAsyncTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97F31AC0F2EF0079FE21 /* ARWatchAsyncTableViewController.m */; };
-		609F97FC1AC0F3190079FE21 /* WatchMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97FB1AC0F3190079FE21 /* WatchMessage.m */; };
-		609F98061AC0F3450079FE21 /* WatchBiddingDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97FF1AC0F3450079FE21 /* WatchBiddingDetails.m */; };
-		609F98071AC0F3450079FE21 /* NotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98011AC0F3450079FE21 /* NotificationController.m */; };
-		609F98081AC0F3450079FE21 /* ARWatchBidViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98031AC0F3450079FE21 /* ARWatchBidViewController.m */; };
-		609F98091AC0F3450079FE21 /* ARWatchBidPlacingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98051AC0F3450079FE21 /* ARWatchBidPlacingViewController.m */; };
-		609F980F1AC0F3960079FE21 /* ARWatchArtworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F980C1AC0F3960079FE21 /* ARWatchArtworkViewController.m */; };
-		609F98101AC0F3960079FE21 /* ARWatchArtworkSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F980E1AC0F3960079FE21 /* ARWatchArtworkSetViewController.m */; };
-		609F98161AC0F3BF0079FE21 /* ARWatchShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98131AC0F3BF0079FE21 /* ARWatchShowViewController.m */; };
-		609F98171AC0F3BF0079FE21 /* ARWatchShowSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98151AC0F3BF0079FE21 /* ARWatchShowSetViewController.m */; };
-		609F98191AC0F3D60079FE21 /* Artsy_WatchKit_Extension.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 609F98181AC0F3D60079FE21 /* Artsy_WatchKit_Extension.entitlements */; };
-		609F981B1AC0F3DF0079FE21 /* PushNotificationPayload.json in Resources */ = {isa = PBXBuildFile; fileRef = 609F981A1AC0F3DF0079FE21 /* PushNotificationPayload.json */; };
-		609F98231AC0F4400079FE21 /* AGaramondPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 609F981D1AC0F4400079FE21 /* AGaramondPro-Bold.otf */; };
-		609F98241AC0F4400079FE21 /* AGaramondPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 609F981D1AC0F4400079FE21 /* AGaramondPro-Bold.otf */; };
-		609F98251AC0F4400079FE21 /* AGaramondPro-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 609F981E1AC0F4400079FE21 /* AGaramondPro-BoldItalic.otf */; };
-		609F98261AC0F4400079FE21 /* AGaramondPro-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 609F981E1AC0F4400079FE21 /* AGaramondPro-BoldItalic.otf */; };
-		609F98271AC0F4400079FE21 /* AGaramondPro-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 609F981F1AC0F4400079FE21 /* AGaramondPro-Italic.otf */; };
-		609F98281AC0F4400079FE21 /* AGaramondPro-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 609F981F1AC0F4400079FE21 /* AGaramondPro-Italic.otf */; };
-		609F98291AC0F4400079FE21 /* AGaramondPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 609F98201AC0F4400079FE21 /* AGaramondPro-Regular.otf */; };
-		609F982A1AC0F4400079FE21 /* AGaramondPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 609F98201AC0F4400079FE21 /* AGaramondPro-Regular.otf */; };
-		609F982B1AC0F4400079FE21 /* AGaramondPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 609F98211AC0F4400079FE21 /* AGaramondPro-Semibold.otf */; };
-		609F982C1AC0F4400079FE21 /* AGaramondPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 609F98211AC0F4400079FE21 /* AGaramondPro-Semibold.otf */; };
-		609F982D1AC0F4400079FE21 /* ITC_Avant_Garde_Gothic__Demi.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 609F98221AC0F4400079FE21 /* ITC_Avant_Garde_Gothic__Demi.ttf */; };
-		609F982E1AC0F4400079FE21 /* ITC_Avant_Garde_Gothic__Demi.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 609F98221AC0F4400079FE21 /* ITC_Avant_Garde_Gothic__Demi.ttf */; };
-		609F98321AC0F46A0079FE21 /* UIFont+ArtsyFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98311AC0F46A0079FE21 /* UIFont+ArtsyFonts.m */; };
-		609F98361AC0F4980079FE21 /* UICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98351AC0F4980079FE21 /* UICKeyChainStore.m */; };
-		609F98391AC0F4A90079FE21 /* NSArray+ObjectiveSugar.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98381AC0F4A90079FE21 /* NSArray+ObjectiveSugar.m */; };
-		609F98451AC0F4D90079FE21 /* WKInterfaceImage+Async.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F983C1AC0F4D90079FE21 /* WKInterfaceImage+Async.m */; };
-		609F98461AC0F4D90079FE21 /* WatchArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F983E1AC0F4D90079FE21 /* WatchArtwork.m */; };
-		609F98481AC0F4D90079FE21 /* WatchShow.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98421AC0F4D90079FE21 /* WatchShow.m */; };
-		609F984A1AC0F4E60079FE21 /* WatchArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F983E1AC0F4D90079FE21 /* WatchArtwork.m */; };
-		609F984B1AC0F4EB0079FE21 /* WatchShow.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98421AC0F4D90079FE21 /* WatchShow.m */; };
-		609F984C1AC0F5090079FE21 /* WatchShow+ArtsyModels.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98441AC0F4D90079FE21 /* WatchShow+ArtsyModels.m */; };
-		609F984D1AC0F50D0079FE21 /* WatchArtwork+ArtsyModels.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98401AC0F4D90079FE21 /* WatchArtwork+ArtsyModels.m */; };
-		609F98551AC0F5B90079FE21 /* ARAppWatchCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98501AC0F5B90079FE21 /* ARAppWatchCommunicator.m */; };
-		609F98561AC0F5B90079FE21 /* ARWatchBidNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98521AC0F5B90079FE21 /* ARWatchBidNetworkModel.m */; };
-		609F98571AC0F5B90079FE21 /* ArtsyWatchAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F98541AC0F5B90079FE21 /* ArtsyWatchAPI.m */; };
-		609F98591AC0F6AE0079FE21 /* ARDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B2F611657D1500046956C /* ARDefaults.m */; };
 		609F985C1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F985B1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.m */; };
 		609F985F1AC1054D0079FE21 /* PartnerShowCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F985E1AC1054D0079FE21 /* PartnerShowCoordinates.m */; };
-		609F98601AC105F30079FE21 /* WatchMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97FB1AC0F3190079FE21 /* WatchMessage.m */; };
-		609F98611AC106030079FE21 /* WatchBiddingDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F97FF1AC0F3450079FE21 /* WatchBiddingDetails.m */; };
 		60A0AD4A1797FD2E00E976B7 /* ARThemedFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A0AD491797FD2E00E976B7 /* ARThemedFactory.m */; };
 		60A0EA011C510975002754A8 /* ArtsyEcho.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A0EA001C510975002754A8 /* ArtsyEcho.swift */; };
 		60A0EA031C511C31002754A8 /* Echo.json in Resources */ = {isa = PBXBuildFile; fileRef = 60A0EA021C511C31002754A8 /* Echo.json */; };
@@ -783,13 +735,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		609F97D11AC0F26A0079FE21 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 609F97CE1AC0F26A0079FE21;
-			remoteInfo = "Artsy WatchKit App";
-		};
 		B3ECE8341819D1E7009F5C5B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
@@ -1636,73 +1581,6 @@
 		609A82FA17A1147800AFDF13 /* ARNavigationTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTransition.m; sourceTree = "<group>"; };
 		609B3C071761F80C00953CB2 /* ARSiteHeroUnitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSiteHeroUnitView.h; sourceTree = "<group>"; };
 		609B3C081761F80C00953CB2 /* ARSiteHeroUnitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSiteHeroUnitView.m; sourceTree = "<group>"; };
-		609F97BD1AC0F2690079FE21 /* Artsy WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Artsy WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		609F97C01AC0F2690079FE21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		609F97C11AC0F2690079FE21 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
-		609F97CB1AC0F26A0079FE21 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		609F97CF1AC0F26A0079FE21 /* Artsy WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Artsy WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		609F97D51AC0F26A0079FE21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		609F97D71AC0F26A0079FE21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
-		609F97D91AC0F26A0079FE21 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		609F97EA1AC0F2EF0079FE21 /* ARWatchLoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWatchLoadingViewController.h; sourceTree = "<group>"; };
-		609F97EB1AC0F2EF0079FE21 /* ARWatchLoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWatchLoadingViewController.m; sourceTree = "<group>"; };
-		609F97EC1AC0F2EF0079FE21 /* ARWatchOpeningInterfaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWatchOpeningInterfaceController.h; sourceTree = "<group>"; };
-		609F97ED1AC0F2EF0079FE21 /* ARWatchOpeningInterfaceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWatchOpeningInterfaceController.m; sourceTree = "<group>"; };
-		609F97EE1AC0F2EF0079FE21 /* ARWatchNoResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWatchNoResultsViewController.h; sourceTree = "<group>"; };
-		609F97EF1AC0F2EF0079FE21 /* ARWatchNoResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWatchNoResultsViewController.m; sourceTree = "<group>"; };
-		609F97F01AC0F2EF0079FE21 /* ARWatchMenuActionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWatchMenuActionController.h; sourceTree = "<group>"; };
-		609F97F11AC0F2EF0079FE21 /* ARWatchMenuActionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWatchMenuActionController.m; sourceTree = "<group>"; };
-		609F97F21AC0F2EF0079FE21 /* ARWatchAsyncTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWatchAsyncTableViewController.h; sourceTree = "<group>"; };
-		609F97F31AC0F2EF0079FE21 /* ARWatchAsyncTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWatchAsyncTableViewController.m; sourceTree = "<group>"; };
-		609F97FA1AC0F3190079FE21 /* WatchMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchMessage.h; sourceTree = "<group>"; };
-		609F97FB1AC0F3190079FE21 /* WatchMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchMessage.m; sourceTree = "<group>"; };
-		609F97FE1AC0F3450079FE21 /* WatchBiddingDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchBiddingDetails.h; sourceTree = "<group>"; };
-		609F97FF1AC0F3450079FE21 /* WatchBiddingDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchBiddingDetails.m; sourceTree = "<group>"; };
-		609F98001AC0F3450079FE21 /* NotificationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationController.h; sourceTree = "<group>"; };
-		609F98011AC0F3450079FE21 /* NotificationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationController.m; sourceTree = "<group>"; };
-		609F98021AC0F3450079FE21 /* ARWatchBidViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWatchBidViewController.h; sourceTree = "<group>"; };
-		609F98031AC0F3450079FE21 /* ARWatchBidViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWatchBidViewController.m; sourceTree = "<group>"; };
-		609F98041AC0F3450079FE21 /* ARWatchBidPlacingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWatchBidPlacingViewController.h; sourceTree = "<group>"; };
-		609F98051AC0F3450079FE21 /* ARWatchBidPlacingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWatchBidPlacingViewController.m; sourceTree = "<group>"; };
-		609F980B1AC0F3960079FE21 /* ARWatchArtworkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWatchArtworkViewController.h; sourceTree = "<group>"; };
-		609F980C1AC0F3960079FE21 /* ARWatchArtworkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWatchArtworkViewController.m; sourceTree = "<group>"; };
-		609F980D1AC0F3960079FE21 /* ARWatchArtworkSetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWatchArtworkSetViewController.h; sourceTree = "<group>"; };
-		609F980E1AC0F3960079FE21 /* ARWatchArtworkSetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWatchArtworkSetViewController.m; sourceTree = "<group>"; };
-		609F98121AC0F3BF0079FE21 /* ARWatchShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWatchShowViewController.h; sourceTree = "<group>"; };
-		609F98131AC0F3BF0079FE21 /* ARWatchShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWatchShowViewController.m; sourceTree = "<group>"; };
-		609F98141AC0F3BF0079FE21 /* ARWatchShowSetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWatchShowSetViewController.h; sourceTree = "<group>"; };
-		609F98151AC0F3BF0079FE21 /* ARWatchShowSetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWatchShowSetViewController.m; sourceTree = "<group>"; };
-		609F98181AC0F3D60079FE21 /* Artsy_WatchKit_Extension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Artsy_WatchKit_Extension.entitlements; sourceTree = "<group>"; };
-		609F981A1AC0F3DF0079FE21 /* PushNotificationPayload.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PushNotificationPayload.json; sourceTree = "<group>"; };
-		609F981D1AC0F4400079FE21 /* AGaramondPro-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AGaramondPro-Bold.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/AGaramondPro-Bold.otf"; sourceTree = SOURCE_ROOT; };
-		609F981E1AC0F4400079FE21 /* AGaramondPro-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AGaramondPro-BoldItalic.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/AGaramondPro-BoldItalic.otf"; sourceTree = SOURCE_ROOT; };
-		609F981F1AC0F4400079FE21 /* AGaramondPro-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AGaramondPro-Italic.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/AGaramondPro-Italic.otf"; sourceTree = SOURCE_ROOT; };
-		609F98201AC0F4400079FE21 /* AGaramondPro-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AGaramondPro-Regular.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/AGaramondPro-Regular.otf"; sourceTree = SOURCE_ROOT; };
-		609F98211AC0F4400079FE21 /* AGaramondPro-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AGaramondPro-Semibold.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/AGaramondPro-Semibold.otf"; sourceTree = SOURCE_ROOT; };
-		609F98221AC0F4400079FE21 /* ITC_Avant_Garde_Gothic__Demi.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = ITC_Avant_Garde_Gothic__Demi.ttf; path = "Pods/Artsy+UIFonts/Pod/Assets/ITC_Avant_Garde_Gothic__Demi.ttf"; sourceTree = SOURCE_ROOT; };
-		609F98301AC0F46A0079FE21 /* UIFont+ArtsyFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIFont+ArtsyFonts.h"; path = "Pods/Artsy+UIFonts/Pod/Classes/UIFont+ArtsyFonts.h"; sourceTree = SOURCE_ROOT; };
-		609F98311AC0F46A0079FE21 /* UIFont+ArtsyFonts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIFont+ArtsyFonts.m"; path = "Pods/Artsy+UIFonts/Pod/Classes/UIFont+ArtsyFonts.m"; sourceTree = SOURCE_ROOT; };
-		609F98341AC0F4980079FE21 /* UICKeyChainStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UICKeyChainStore.h; path = Pods/UICKeyChainStore/Lib/UICKeyChainStore.h; sourceTree = SOURCE_ROOT; };
-		609F98351AC0F4980079FE21 /* UICKeyChainStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UICKeyChainStore.m; path = Pods/UICKeyChainStore/Lib/UICKeyChainStore.m; sourceTree = SOURCE_ROOT; };
-		609F98371AC0F4A90079FE21 /* NSArray+ObjectiveSugar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+ObjectiveSugar.h"; path = "Pods/ObjectiveSugar/Classes/NSArray+ObjectiveSugar.h"; sourceTree = SOURCE_ROOT; };
-		609F98381AC0F4A90079FE21 /* NSArray+ObjectiveSugar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+ObjectiveSugar.m"; path = "Pods/ObjectiveSugar/Classes/NSArray+ObjectiveSugar.m"; sourceTree = SOURCE_ROOT; };
-		609F983B1AC0F4D90079FE21 /* WKInterfaceImage+Async.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WKInterfaceImage+Async.h"; sourceTree = "<group>"; };
-		609F983C1AC0F4D90079FE21 /* WKInterfaceImage+Async.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WKInterfaceImage+Async.m"; sourceTree = "<group>"; };
-		609F983D1AC0F4D90079FE21 /* WatchArtwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchArtwork.h; sourceTree = "<group>"; };
-		609F983E1AC0F4D90079FE21 /* WatchArtwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchArtwork.m; sourceTree = "<group>"; };
-		609F983F1AC0F4D90079FE21 /* WatchArtwork+ArtsyModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WatchArtwork+ArtsyModels.h"; sourceTree = "<group>"; };
-		609F98401AC0F4D90079FE21 /* WatchArtwork+ArtsyModels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WatchArtwork+ArtsyModels.m"; sourceTree = "<group>"; };
-		609F98411AC0F4D90079FE21 /* WatchShow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchShow.h; sourceTree = "<group>"; };
-		609F98421AC0F4D90079FE21 /* WatchShow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchShow.m; sourceTree = "<group>"; };
-		609F98431AC0F4D90079FE21 /* WatchShow+ArtsyModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WatchShow+ArtsyModels.h"; sourceTree = "<group>"; };
-		609F98441AC0F4D90079FE21 /* WatchShow+ArtsyModels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WatchShow+ArtsyModels.m"; sourceTree = "<group>"; };
-		609F984F1AC0F5B90079FE21 /* ARAppWatchCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppWatchCommunicator.h; sourceTree = "<group>"; };
-		609F98501AC0F5B90079FE21 /* ARAppWatchCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppWatchCommunicator.m; sourceTree = "<group>"; };
-		609F98511AC0F5B90079FE21 /* ARWatchBidNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWatchBidNetworkModel.h; sourceTree = "<group>"; };
-		609F98521AC0F5B90079FE21 /* ARWatchBidNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWatchBidNetworkModel.m; sourceTree = "<group>"; };
-		609F98531AC0F5B90079FE21 /* ArtsyWatchAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyWatchAPI.h; sourceTree = "<group>"; };
-		609F98541AC0F5B90079FE21 /* ArtsyWatchAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtsyWatchAPI.m; sourceTree = "<group>"; };
-		609F98581AC0F63E0079FE21 /* ArtsyWatchPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArtsyWatchPrefix.pch; sourceTree = "<group>"; };
 		609F985A1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARDefaults+SiteFeatures.h"; sourceTree = "<group>"; };
 		609F985B1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARDefaults+SiteFeatures.m"; sourceTree = "<group>"; };
 		609F985D1AC1054D0079FE21 /* PartnerShowCoordinates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartnerShowCoordinates.h; sourceTree = "<group>"; };
@@ -2021,13 +1899,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		26E7EABAEDEB92FA9C68864B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		49BA7DFC1655ABE600C06572 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2037,13 +1908,6 @@
 				60935A461A69CFEE00129CE1 /* WebKit.framework in Frameworks */,
 				60935A441A69CFE700129CE1 /* MobileCoreServices.framework in Frameworks */,
 				7091E01A0E49F283EF9BF395 /* Pods_Artsy.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		609F97BA1AC0F2690079FE21 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2833,7 +2697,6 @@
 				60A0E9FB1C51070F002754A8 /* Analytics */,
 				60A0E9FA1C5106EB002754A8 /* App UIActivities + Search */,
 				60A0E9F91C5106CC002754A8 /* App Delegate Responsibilities */,
-				609F984E1AC0F5950079FE21 /* Watch */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -2864,8 +2727,6 @@
 				60FFE3D5188E916C0012B485 /* Documentation */,
 				49BA7E091655ABE600C06572 /* Artsy */,
 				B3ECE82B1819D1E6009F5C5B /* Artsy Tests */,
-				609F97BE1AC0F2690079FE21 /* Artsy WatchKit Extension */,
-				609F97D31AC0F26A0079FE21 /* Artsy WatchKit App */,
 				49BA7E021655ABE600C06572 /* Frameworks */,
 				49BA7E001655ABE600C06572 /* Products */,
 				33C6886033769A61A3E99B18 /* Pods */,
@@ -2877,8 +2738,6 @@
 			children = (
 				49BA7DFF1655ABE600C06572 /* Artsy.app */,
 				B3ECE8261819D1E6009F5C5B /* Artsy Tests.xctest */,
-				609F97BD1AC0F2690079FE21 /* Artsy WatchKit Extension.appex */,
-				609F97CF1AC0F26A0079FE21 /* Artsy WatchKit App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4034,178 +3893,6 @@
 			path = Contact;
 			sourceTree = "<group>";
 		};
-		609F97BE1AC0F2690079FE21 /* Artsy WatchKit Extension */ = {
-			isa = PBXGroup;
-			children = (
-				609F983A1AC0F4BA0079FE21 /* Watch_Models */,
-				609F981C1AC0F4150079FE21 /* Vendored from CP */,
-				609F98111AC0F3A80079FE21 /* Showing_Shows */,
-				609F980A1AC0F3800079FE21 /* Showing_Artworks */,
-				609F97FD1AC0F31D0079FE21 /* Outbid Notification */,
-				609F97F91AC0F2FE0079FE21 /* Communication */,
-				609F97E91AC0F2D00079FE21 /* App */,
-				609F97BF1AC0F2690079FE21 /* Supporting Files */,
-			);
-			name = "Artsy WatchKit Extension";
-			path = Artsy_WatchKit_Extension;
-			sourceTree = "<group>";
-		};
-		609F97BF1AC0F2690079FE21 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				609F97CB1AC0F26A0079FE21 /* Images.xcassets */,
-				609F981A1AC0F3DF0079FE21 /* PushNotificationPayload.json */,
-				609F98181AC0F3D60079FE21 /* Artsy_WatchKit_Extension.entitlements */,
-				609F97C01AC0F2690079FE21 /* Info.plist */,
-				609F97C11AC0F2690079FE21 /* PushNotificationPayload.apns */,
-				609F98581AC0F63E0079FE21 /* ArtsyWatchPrefix.pch */,
-			);
-			name = "Supporting Files";
-			path = Supporting_Files;
-			sourceTree = "<group>";
-		};
-		609F97D31AC0F26A0079FE21 /* Artsy WatchKit App */ = {
-			isa = PBXGroup;
-			children = (
-				609F97D61AC0F26A0079FE21 /* Interface.storyboard */,
-				609F97D91AC0F26A0079FE21 /* Images.xcassets */,
-				609F97D41AC0F26A0079FE21 /* Supporting Files */,
-			);
-			name = "Artsy WatchKit App";
-			path = Artsy_WatchKit_App;
-			sourceTree = "<group>";
-		};
-		609F97D41AC0F26A0079FE21 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				609F97D51AC0F26A0079FE21 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			path = Supporting_Files;
-			sourceTree = "<group>";
-		};
-		609F97E91AC0F2D00079FE21 /* App */ = {
-			isa = PBXGroup;
-			children = (
-				609F97EA1AC0F2EF0079FE21 /* ARWatchLoadingViewController.h */,
-				609F97EB1AC0F2EF0079FE21 /* ARWatchLoadingViewController.m */,
-				609F97EC1AC0F2EF0079FE21 /* ARWatchOpeningInterfaceController.h */,
-				609F97ED1AC0F2EF0079FE21 /* ARWatchOpeningInterfaceController.m */,
-				609F97EE1AC0F2EF0079FE21 /* ARWatchNoResultsViewController.h */,
-				609F97EF1AC0F2EF0079FE21 /* ARWatchNoResultsViewController.m */,
-				609F97F01AC0F2EF0079FE21 /* ARWatchMenuActionController.h */,
-				609F97F11AC0F2EF0079FE21 /* ARWatchMenuActionController.m */,
-				609F97F21AC0F2EF0079FE21 /* ARWatchAsyncTableViewController.h */,
-				609F97F31AC0F2EF0079FE21 /* ARWatchAsyncTableViewController.m */,
-			);
-			path = App;
-			sourceTree = "<group>";
-		};
-		609F97F91AC0F2FE0079FE21 /* Communication */ = {
-			isa = PBXGroup;
-			children = (
-				609F97FA1AC0F3190079FE21 /* WatchMessage.h */,
-				609F97FB1AC0F3190079FE21 /* WatchMessage.m */,
-			);
-			path = Communication;
-			sourceTree = "<group>";
-		};
-		609F97FD1AC0F31D0079FE21 /* Outbid Notification */ = {
-			isa = PBXGroup;
-			children = (
-				609F97FE1AC0F3450079FE21 /* WatchBiddingDetails.h */,
-				609F97FF1AC0F3450079FE21 /* WatchBiddingDetails.m */,
-				609F98001AC0F3450079FE21 /* NotificationController.h */,
-				609F98011AC0F3450079FE21 /* NotificationController.m */,
-				609F98021AC0F3450079FE21 /* ARWatchBidViewController.h */,
-				609F98031AC0F3450079FE21 /* ARWatchBidViewController.m */,
-				609F98041AC0F3450079FE21 /* ARWatchBidPlacingViewController.h */,
-				609F98051AC0F3450079FE21 /* ARWatchBidPlacingViewController.m */,
-			);
-			name = "Outbid Notification";
-			path = Outbid_Notification;
-			sourceTree = "<group>";
-		};
-		609F980A1AC0F3800079FE21 /* Showing_Artworks */ = {
-			isa = PBXGroup;
-			children = (
-				609F980B1AC0F3960079FE21 /* ARWatchArtworkViewController.h */,
-				609F980C1AC0F3960079FE21 /* ARWatchArtworkViewController.m */,
-				609F980D1AC0F3960079FE21 /* ARWatchArtworkSetViewController.h */,
-				609F980E1AC0F3960079FE21 /* ARWatchArtworkSetViewController.m */,
-			);
-			path = Showing_Artworks;
-			sourceTree = "<group>";
-		};
-		609F98111AC0F3A80079FE21 /* Showing_Shows */ = {
-			isa = PBXGroup;
-			children = (
-				609F98121AC0F3BF0079FE21 /* ARWatchShowViewController.h */,
-				609F98131AC0F3BF0079FE21 /* ARWatchShowViewController.m */,
-				609F98141AC0F3BF0079FE21 /* ARWatchShowSetViewController.h */,
-				609F98151AC0F3BF0079FE21 /* ARWatchShowSetViewController.m */,
-			);
-			path = Showing_Shows;
-			sourceTree = "<group>";
-		};
-		609F981C1AC0F4150079FE21 /* Vendored from CP */ = {
-			isa = PBXGroup;
-			children = (
-				609F98341AC0F4980079FE21 /* UICKeyChainStore.h */,
-				609F98371AC0F4A90079FE21 /* NSArray+ObjectiveSugar.h */,
-				609F98381AC0F4A90079FE21 /* NSArray+ObjectiveSugar.m */,
-				609F98351AC0F4980079FE21 /* UICKeyChainStore.m */,
-				609F98301AC0F46A0079FE21 /* UIFont+ArtsyFonts.h */,
-				609F98311AC0F46A0079FE21 /* UIFont+ArtsyFonts.m */,
-				609F982F1AC0F4470079FE21 /* Fonts */,
-			);
-			name = "Vendored from CP";
-			path = Vendored_from_CP;
-			sourceTree = "<group>";
-		};
-		609F982F1AC0F4470079FE21 /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				609F981D1AC0F4400079FE21 /* AGaramondPro-Bold.otf */,
-				609F981E1AC0F4400079FE21 /* AGaramondPro-BoldItalic.otf */,
-				609F981F1AC0F4400079FE21 /* AGaramondPro-Italic.otf */,
-				609F98201AC0F4400079FE21 /* AGaramondPro-Regular.otf */,
-				609F98211AC0F4400079FE21 /* AGaramondPro-Semibold.otf */,
-				609F98221AC0F4400079FE21 /* ITC_Avant_Garde_Gothic__Demi.ttf */,
-			);
-			path = Fonts;
-			sourceTree = "<group>";
-		};
-		609F983A1AC0F4BA0079FE21 /* Watch_Models */ = {
-			isa = PBXGroup;
-			children = (
-				609F983B1AC0F4D90079FE21 /* WKInterfaceImage+Async.h */,
-				609F983C1AC0F4D90079FE21 /* WKInterfaceImage+Async.m */,
-				609F983D1AC0F4D90079FE21 /* WatchArtwork.h */,
-				609F983E1AC0F4D90079FE21 /* WatchArtwork.m */,
-				609F983F1AC0F4D90079FE21 /* WatchArtwork+ArtsyModels.h */,
-				609F98401AC0F4D90079FE21 /* WatchArtwork+ArtsyModels.m */,
-				609F98411AC0F4D90079FE21 /* WatchShow.h */,
-				609F98421AC0F4D90079FE21 /* WatchShow.m */,
-				609F98431AC0F4D90079FE21 /* WatchShow+ArtsyModels.h */,
-				609F98441AC0F4D90079FE21 /* WatchShow+ArtsyModels.m */,
-			);
-			path = Watch_Models;
-			sourceTree = "<group>";
-		};
-		609F984E1AC0F5950079FE21 /* Watch */ = {
-			isa = PBXGroup;
-			children = (
-				609F984F1AC0F5B90079FE21 /* ARAppWatchCommunicator.h */,
-				609F98501AC0F5B90079FE21 /* ARAppWatchCommunicator.m */,
-				609F98511AC0F5B90079FE21 /* ARWatchBidNetworkModel.h */,
-				609F98521AC0F5B90079FE21 /* ARWatchBidNetworkModel.m */,
-				609F98531AC0F5B90079FE21 /* ArtsyWatchAPI.h */,
-				609F98541AC0F5B90079FE21 /* ArtsyWatchAPI.m */,
-			);
-			path = Watch;
-			sourceTree = "<group>";
-		};
 		60A0E9F91C5106CC002754A8 /* App Delegate Responsibilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -4860,40 +4547,6 @@
 			productReference = 49BA7DFF1655ABE600C06572 /* Artsy.app */;
 			productType = "com.apple.product-type.application";
 		};
-		609F97BC1AC0F2690079FE21 /* Artsy WatchKit Extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 609F97E71AC0F26A0079FE21 /* Build configuration list for PBXNativeTarget "Artsy WatchKit Extension" */;
-			buildPhases = (
-				609F97B91AC0F2690079FE21 /* Sources */,
-				609F97BA1AC0F2690079FE21 /* Frameworks */,
-				609F97BB1AC0F2690079FE21 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				609F97D21AC0F26A0079FE21 /* PBXTargetDependency */,
-			);
-			name = "Artsy WatchKit Extension";
-			productName = "Artsy WatchKit Extension";
-			productReference = 609F97BD1AC0F2690079FE21 /* Artsy WatchKit Extension.appex */;
-			productType = "com.apple.product-type.watchkit-extension";
-		};
-		609F97CE1AC0F26A0079FE21 /* Artsy WatchKit App */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 609F97E61AC0F26A0079FE21 /* Build configuration list for PBXNativeTarget "Artsy WatchKit App" */;
-			buildPhases = (
-				609F97CD1AC0F26A0079FE21 /* Resources */,
-				26E7EABAEDEB92FA9C68864B /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Artsy WatchKit App";
-			productName = "Artsy WatchKit App";
-			productReference = 609F97CF1AC0F26A0079FE21 /* Artsy WatchKit App.app */;
-			productType = "com.apple.product-type.application.watchapp";
-		};
 		B3ECE8251819D1E6009F5C5B /* Artsy Tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B3ECE8361819D1E7009F5C5B /* Build configuration list for PBXNativeTarget "Artsy Tests" */;
@@ -4951,21 +4604,6 @@
 							};
 						};
 					};
-					609F97BC1AC0F2690079FE21 = {
-						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 23KMWZ572J;
-						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
-								enabled = 0;
-							};
-							com.apple.Keychain = {
-								enabled = 1;
-							};
-						};
-					};
-					609F97CE1AC0F26A0079FE21 = {
-						CreatedOnToolsVersion = 6.2;
-					};
 					B3ECE8251819D1E6009F5C5B = {
 						LastSwiftMigration = 0800;
 						TestTargetID = 49BA7DFE1655ABE600C06572;
@@ -4987,8 +4625,6 @@
 			targets = (
 				49BA7DFE1655ABE600C06572 /* Artsy */,
 				B3ECE8251819D1E6009F5C5B /* Artsy Tests */,
-				609F97BC1AC0F2690079FE21 /* Artsy WatchKit Extension */,
-				609F97CE1AC0F26A0079FE21 /* Artsy WatchKit App */,
 			);
 		};
 /* End PBXProject section */
@@ -5118,38 +4754,6 @@
 				E6FFEAAF19C7925600A0D7DE /* onboard_1@2x~ipad.jpg in Resources */,
 				E65BB5231A408A29004C4DB4 /* TextfieldClearButton.png in Resources */,
 				66A43C681CE470C400FFD6ED /* Hash@2x.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		609F97BB1AC0F2690079FE21 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				609F97D01AC0F26A0079FE21 /* Artsy WatchKit App.app in Resources */,
-				609F98291AC0F4400079FE21 /* AGaramondPro-Regular.otf in Resources */,
-				609F98251AC0F4400079FE21 /* AGaramondPro-BoldItalic.otf in Resources */,
-				609F981B1AC0F3DF0079FE21 /* PushNotificationPayload.json in Resources */,
-				609F982B1AC0F4400079FE21 /* AGaramondPro-Semibold.otf in Resources */,
-				609F98191AC0F3D60079FE21 /* Artsy_WatchKit_Extension.entitlements in Resources */,
-				609F98271AC0F4400079FE21 /* AGaramondPro-Italic.otf in Resources */,
-				609F97CC1AC0F26A0079FE21 /* Images.xcassets in Resources */,
-				609F982D1AC0F4400079FE21 /* ITC_Avant_Garde_Gothic__Demi.ttf in Resources */,
-				609F98231AC0F4400079FE21 /* AGaramondPro-Bold.otf in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		609F97CD1AC0F26A0079FE21 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				609F97D81AC0F26A0079FE21 /* Interface.storyboard in Resources */,
-				609F98281AC0F4400079FE21 /* AGaramondPro-Italic.otf in Resources */,
-				609F982E1AC0F4400079FE21 /* ITC_Avant_Garde_Gothic__Demi.ttf in Resources */,
-				609F98261AC0F4400079FE21 /* AGaramondPro-BoldItalic.otf in Resources */,
-				609F982A1AC0F4400079FE21 /* AGaramondPro-Regular.otf in Resources */,
-				609F982C1AC0F4400079FE21 /* AGaramondPro-Semibold.otf in Resources */,
-				609F98241AC0F4400079FE21 /* AGaramondPro-Bold.otf in Resources */,
-				609F97DA1AC0F26A0079FE21 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5352,11 +4956,9 @@
 				608B2F621657D1500046956C /* ARDefaults.m in Sources */,
 				600415C917C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m in Sources */,
 				3CF144A718E45F6C00B1A764 /* SystemTime.m in Sources */,
-				609F98561AC0F5B90079FE21 /* ARWatchBidNetworkModel.m in Sources */,
 				608B2F6F1657D1D10046956C /* User.m in Sources */,
 				5EC929891C5FEAD10015133E /* UIViewController+Traits.swift in Sources */,
 				60D83DEE189EE679001672E9 /* ARFairGuideViewController.m in Sources */,
-				609F98601AC105F30079FE21 /* WatchMessage.m in Sources */,
 				60B617D31815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m in Sources */,
 				606E3F951BF3CA5600D3055E /* ARTimelineNetworkModel.m in Sources */,
 				516CDA6C1BB56611001C02B2 /* UIViewController+ARUserActivity.m in Sources */,
@@ -5519,7 +5121,6 @@
 				5EA7BC3A1C612454009C52C9 /* AuctionSaleArtworksNetworkModel.swift in Sources */,
 				5E79FCBA1C768108003D5D65 /* ARNvagiationButton+Swift.swift in Sources */,
 				6038B78A1C2856BA00359F3B /* ARSwitchboard+Eigen.m in Sources */,
-				609F984D1AC0F50D0079FE21 /* WatchArtwork+ArtsyModels.m in Sources */,
 				60F63AB71C58E86400DCFF2A /* ARHockeyFeedbackDelegate.swift in Sources */,
 				600EE29E16B3003F002E9F9A /* ARNavigationButton.m in Sources */,
 				5EFF52BE197916C800E2A563 /* ARPendingOperationViewController.m in Sources */,
@@ -5543,7 +5144,6 @@
 				60EFA6F516CAA8180094AD7C /* ArtsyAPI+Feed.m in Sources */,
 				3C35CC80189FF20D00E3D8DE /* ArtsyAPI+OrderedSets.m in Sources */,
 				5E8585F71CF61E8F00B2B487 /* PanDirectionGestureRecognizer.swift in Sources */,
-				609F984A1AC0F4E60079FE21 /* WatchArtwork.m in Sources */,
 				516CDA691BB55B54001C02B2 /* UIViewController+WithLoadedData.m in Sources */,
 				5EFF52BA1976CA6C00E2A563 /* ARSearchFieldButton.m in Sources */,
 				60FAEF43179843080031C88B /* ARFavoritesViewController.m in Sources */,
@@ -5556,7 +5156,6 @@
 				60D83DE8189EAB82001672E9 /* ARFairShowMapper.m in Sources */,
 				607E2E8A17C9121500396120 /* ARZoomImageTransition.m in Sources */,
 				6016C198178C2C33008EC8E7 /* ARArtworkMasonryModule.m in Sources */,
-				609F98551AC0F5B90079FE21 /* ARAppWatchCommunicator.m in Sources */,
 				5EAD265A1D09E038003826C9 /* SaleAuctionStatus.swift in Sources */,
 				60F1C51817C0F3DE000938F7 /* ArtsyAPI+Browse.m in Sources */,
 				5E3816F81CBED2E100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift in Sources */,
@@ -5599,7 +5198,6 @@
 				60438F8A1782F8CC00C1B63B /* ArtsyAPI+Search.m in Sources */,
 				5152C65E1B50428A0018D4E4 /* ARAppSearchTransition.m in Sources */,
 				3C990C8818CF8E9000BF4C44 /* ARFairMapAnnotation.m in Sources */,
-				609F98571AC0F5B90079FE21 /* ArtsyWatchAPI.m in Sources */,
 				064330E5170F526300FF6C41 /* ARArtistViewController.m in Sources */,
 				5102616F1BBE8324002AB8BB /* ARAuctionWebViewController.m in Sources */,
 				5EBD44E01D07325300C60F9F /* UITableViewController+Animations.swift in Sources */,
@@ -5649,7 +5247,6 @@
 				60A0AD4A1797FD2E00E976B7 /* ARThemedFactory.m in Sources */,
 				5E0DD14B1C9764420037F9E4 /* LiveAuctionStateManager.swift in Sources */,
 				B316E2F7181713110086CCDB /* Bidder.m in Sources */,
-				609F984C1AC0F5090079FE21 /* WatchShow+ArtsyModels.m in Sources */,
 				6036B5651760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m in Sources */,
 				60ED31271C8F76AB0071DD89 /* LiveAuctionEventViewModel.swift in Sources */,
 				83FF73B41CB87A74002B53FA /* RefinableType.swift in Sources */,
@@ -5657,7 +5254,6 @@
 				6099F90A17904F9B0004EF04 /* ARModelCollectionViewModule.m in Sources */,
 				602C09BA1B5E5CE6003681D3 /* AFHTTPRequestOperation+JSON.m in Sources */,
 				5E5F495E1D00BC7700E7CD6E /* LiveAuctionLotCollectionViewLayoutType.swift in Sources */,
-				609F98611AC106030079FE21 /* WatchBiddingDetails.m in Sources */,
 				5EBD44E21D074A7300C60F9F /* UILabel+Styling.swift in Sources */,
 				609B3C091761F80C00953CB2 /* ARSiteHeroUnitView.m in Sources */,
 				6021D1B81CB7C6F800C475C1 /* TextStack.swift in Sources */,
@@ -5747,40 +5343,11 @@
 				5E088DAE1C58072B00C448D7 /* RefinementOptionsViewController+Private.swift in Sources */,
 				342F996B2CF23951168534AD /* Follow.m in Sources */,
 				342F9308EE5B3487AE62276D /* ARShowViewController.m in Sources */,
-				609F984B1AC0F4EB0079FE21 /* WatchShow.m in Sources */,
 				342F953528DFA7BCEAC0552A /* ArtsyAPI+Shows.m in Sources */,
 				342F9C00DD759E6DEA845426 /* ARImagePageViewController.m in Sources */,
 				5E284609194A2E58007274AB /* ARFairGuideContainerViewController.m in Sources */,
 				342F9CF7231DFEF359B2D829 /* ARFollowableButton.m in Sources */,
 				342F9654C7AF4AEF8C21BC11 /* ARActionButtonsView.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		609F97B91AC0F2690079FE21 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				609F98161AC0F3BF0079FE21 /* ARWatchShowViewController.m in Sources */,
-				609F97F71AC0F2EF0079FE21 /* ARWatchMenuActionController.m in Sources */,
-				609F97F81AC0F2EF0079FE21 /* ARWatchAsyncTableViewController.m in Sources */,
-				609F97F61AC0F2EF0079FE21 /* ARWatchNoResultsViewController.m in Sources */,
-				609F97F41AC0F2EF0079FE21 /* ARWatchLoadingViewController.m in Sources */,
-				609F98591AC0F6AE0079FE21 /* ARDefaults.m in Sources */,
-				609F97F51AC0F2EF0079FE21 /* ARWatchOpeningInterfaceController.m in Sources */,
-				609F98451AC0F4D90079FE21 /* WKInterfaceImage+Async.m in Sources */,
-				609F98081AC0F3450079FE21 /* ARWatchBidViewController.m in Sources */,
-				609F98361AC0F4980079FE21 /* UICKeyChainStore.m in Sources */,
-				609F98461AC0F4D90079FE21 /* WatchArtwork.m in Sources */,
-				609F98481AC0F4D90079FE21 /* WatchShow.m in Sources */,
-				609F98321AC0F46A0079FE21 /* UIFont+ArtsyFonts.m in Sources */,
-				609F98091AC0F3450079FE21 /* ARWatchBidPlacingViewController.m in Sources */,
-				609F98391AC0F4A90079FE21 /* NSArray+ObjectiveSugar.m in Sources */,
-				609F980F1AC0F3960079FE21 /* ARWatchArtworkViewController.m in Sources */,
-				609F98061AC0F3450079FE21 /* WatchBiddingDetails.m in Sources */,
-				609F98171AC0F3BF0079FE21 /* ARWatchShowSetViewController.m in Sources */,
-				609F98101AC0F3960079FE21 /* ARWatchArtworkSetViewController.m in Sources */,
-				609F98071AC0F3450079FE21 /* NotificationController.m in Sources */,
-				609F97FC1AC0F3190079FE21 /* WatchMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5967,11 +5534,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		609F97D21AC0F26A0079FE21 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 609F97CE1AC0F26A0079FE21 /* Artsy WatchKit App */;
-			targetProxy = 609F97D11AC0F26A0079FE21 /* PBXContainerItemProxy */;
-		};
 		B3ECE8351819D1E7009F5C5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 49BA7DFE1655ABE600C06572 /* Artsy */;
@@ -5986,15 +5548,6 @@
 				49BA7E0D1655ABE600C06572 /* en */,
 			);
 			name = InfoPlist.strings;
-			path = .;
-			sourceTree = "<group>";
-		};
-		609F97D61AC0F26A0079FE21 /* Interface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				609F97D71AC0F26A0079FE21 /* Base */,
-			);
-			name = Interface.storyboard;
 			path = .;
 			sourceTree = "<group>";
 		};
@@ -6098,248 +5651,6 @@
 			};
 			name = Debug;
 		};
-		609F97DE1AC0F26A0079FE21 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_ENTITLEMENTS = "Artsy WatchKit Extension/Artsy WatchKit Extension.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
-				GCC_PREFIX_HEADER = "Artsy WatchKit Extension/Supporting Files/ArtsyWatchPrefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = "Artsy WatchKit Extension/Supporting Files/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Artsy/Classes/Utils";
-			};
-			name = Debug;
-		};
-		609F97E01AC0F26A0079FE21 /* Store */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "Artsy WatchKit Extension/Artsy WatchKit Extension.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
-				GCC_PREFIX_HEADER = "Artsy WatchKit Extension/Supporting Files/ArtsyWatchPrefix.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Artsy WatchKit Extension/Supporting Files/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Artsy/Classes/Utils";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Store;
-		};
-		609F97E11AC0F26A0079FE21 /* Demo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "Artsy WatchKit Extension/Artsy WatchKit Extension.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
-				GCC_PREFIX_HEADER = "Artsy WatchKit Extension/Supporting Files/ArtsyWatchPrefix.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Artsy WatchKit Extension/Supporting Files/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Artsy/Classes/Utils";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Demo;
-		};
-		609F97E21AC0F26A0079FE21 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				IBSC_MODULE = Artsy_WatchKit_Extension;
-				INFOPLIST_FILE = "Artsy WatchKit App/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
-			};
-			name = Debug;
-		};
-		609F97E41AC0F26A0079FE21 /* Store */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IBSC_MODULE = Artsy_WatchKit_Extension;
-				INFOPLIST_FILE = "Artsy WatchKit App/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Store;
-		};
-		609F97E51AC0F26A0079FE21 /* Demo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IBSC_MODULE = Artsy_WatchKit_Extension;
-				INFOPLIST_FILE = "Artsy WatchKit App/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Demo;
-		};
 		60AF3D0218D33C80008F3CC0 /* Demo */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6421,7 +5732,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CBBFF96B8BCEDF87FB66F4D1 /* Pods-Artsy Tests.demo.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -6442,7 +5752,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources\"";
+				HEADER_SEARCH_PATHS = (
+					"\"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources\"",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6555,7 +5868,10 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				HEADER_SEARCH_PATHS = "\"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources\"";
+				HEADER_SEARCH_PATHS = (
+					"\"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources\"",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6572,7 +5888,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 64CEDF29A84E7D83134CEE4E /* Pods-Artsy Tests.store.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -6593,7 +5908,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources\"";
+				HEADER_SEARCH_PATHS = (
+					"\"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources\"",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6626,26 +5944,6 @@
 				49BA7E241655ABE600C06572 /* Debug */,
 				B34D39FF17DFD99600308CAB /* Store */,
 				60AF3D0318D33C80008F3CC0 /* Demo */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		609F97E61AC0F26A0079FE21 /* Build configuration list for PBXNativeTarget "Artsy WatchKit App" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				609F97E21AC0F26A0079FE21 /* Debug */,
-				609F97E41AC0F26A0079FE21 /* Store */,
-				609F97E51AC0F26A0079FE21 /* Demo */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		609F97E71AC0F26A0079FE21 /* Build configuration list for PBXNativeTarget "Artsy WatchKit Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				609F97DE1AC0F26A0079FE21 /* Debug */,
-				609F97E01AC0F26A0079FE21 /* Store */,
-				609F97E11AC0F26A0079FE21 /* Demo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
