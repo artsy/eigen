@@ -228,10 +228,6 @@ class LiveAuctionLotSetViewController: UIViewController {
         presentor.dismiss(animated: true, completion: nil)
     }
 
-    func setCurrentLotCTA(visible: Bool) {
-        currentLotView.isHidden = !visible
-    }
-
     func moreInfo() {
         guard let sale = saleNetworkModel.sale else { return }
 
@@ -373,7 +369,6 @@ extension PageViewDelegate: UIPageViewControllerDelegate, LiveAuctionSaleLotsDat
             print("Updating current focused index to:", viewController.index)
             salesPerson.currentFocusedLotIndex.update(viewController.index)
         }
-
     }
 
     func registerForScrollingState(_ viewController: LiveAuctionLotViewController) {
