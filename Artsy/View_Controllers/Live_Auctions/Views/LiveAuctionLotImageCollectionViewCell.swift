@@ -20,8 +20,8 @@ class LiveAuctionLotImageCollectionViewCell: UICollectionViewCell {
             else { return }
 
         // To avoid superfluously re-setting the URL on the image view, check that we actually need to update it.
-        if lastUpdatedIndex != (layoutAttributes.indexPath as NSIndexPath).item {
-            lastUpdatedIndex = (layoutAttributes.indexPath as NSIndexPath).item
+        if lastUpdatedIndex != (layoutAttributes.indexPath as IndexPath).item {
+            lastUpdatedIndex = (layoutAttributes.indexPath as IndexPath).item
 
             lotImageView.ar_setImage(with: url as URL!)
         }

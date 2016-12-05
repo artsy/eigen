@@ -58,7 +58,7 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
 
         copy.size.width -= 80 // For side margins, done upfront so we can rely on copy.size for the remainder of the function.
 
-        let index: RelativeIndex = (copy.indexPath as NSIndexPath).item
+        let index: RelativeIndex = (copy.indexPath as IndexPath).item
         let aspectRatio = delegate.aspectRatioForIndex(index)
         let isWide = (aspectRatio > itemSize.width / maxHeight)
 

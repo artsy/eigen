@@ -6,11 +6,11 @@ import SwiftyJSON
 /// and the refine setting VC.
 
 class RefineSwiftCoordinator : NSObject {
-    static func showRefineSettingForGeneSettings(viewController: UIViewController, initial: [String: AnyObject], current: [String: AnyObject], completion: @escaping (_ newRefineSettings: [String: AnyObject]?) -> ()) {
-        guard let currentSettings = GeneRefineSettings.refinementFromAggregationJSON(initial) else { return completion(nil) }
-        guard let initialSettings = GeneRefineSettings.refinementFromAggregationJSON(current) else { return completion(nil) }
+    static func showRefineSettingForGeneSettings(_ viewController: UIViewController, initial: [String: AnyObject], current: [String: AnyObject], completion: @escaping (_ newRefineSettings: [String: AnyObject]?) -> ()) {
+        guard let initialSettings = GeneRefineSettings.refinementFromAggregationJSON(initial, initial:true) else { return completion(nil) }
+        guard let currentSettings = GeneRefineSettings.refinementFromAggregationJSON(current, initial:false) else { return completion(nil) }
 
-        let optionsVC = RefinementOptionsViewController(defaultSettings: currentSettings, initialSettings: initialSettings, currencySymbol: "$", userDidCancelClosure: { (optionsVC) in
+        let optionsVC = RefinementOptionsViewController(defaultSettings: initialSettings, initialSettings: currentSettings, currencySymbol: "$", userDidCancelClosure: { (optionsVC) in
             completion(nil)
                 viewController.dismiss(animated: true, completion: nil)
 
@@ -71,11 +71,11 @@ func == (lhs: Medium, rhs: Medium) -> Bool {
 
 struct Price {
     let id: String
-    let name: String
 
+    /// Generates a cents based price for the Refine settings
     func maxPrice() -> Int {
         if id == "*-*" {
-            return 0
+            return 50_000
         } else if id.hasSuffix("-*") {
             // max can be represented as "XXX-*"
             return Int(id.components(separatedBy: "-*").first!)!
@@ -85,16 +85,22 @@ struct Price {
         return 0
     }
 
-    func priceRange() -> PriceRange {
-        return (min:0, max: maxPrice())
+    // Min Price
+    func minPrice() -> Int {
+        if id == "*-*" {
+            return 0
+        } else if id.contains("-") {
+            return Int(id.components(separatedBy: "-").first!)!
+        }
+        return 0
     }
 
-    func representedPriceID() -> String {
-        if maxPrice() == 0 {
-            return "*-*"
-        } else {
-            return "0-\(maxPrice())"
-        }
+    func centsPriceRange() -> PriceRange {
+        return (min:minPrice() * 100, max: maxPrice() * 100)
+    }
+
+    func dollarsPriceRange() -> PriceRange {
+        return (min:minPrice(), max: maxPrice())
     }
 }
 
@@ -115,15 +121,21 @@ struct GeneRefineSettings {
     let mediums: [Medium]
     var priceRange: PriceRange?
 
-    static func refinementFromAggregationJSON(_ data: [String: AnyObject]) -> GeneRefineSettings? {
+    static func refinementFromAggregationJSON(_ data: [String: AnyObject], initial: Bool) -> GeneRefineSettings? {
         let json = JSON(data)
         guard let aggregations = json["aggregations"].array,
             let sort = json["sort"].string, let sorting = GeneSortingOrder.fromID(sort),
             let mediumID = json["selectedMedium"].string else { return nil }
 
-        let prices = aggregations.filter({ $0["slice"].stringValue == "PRICE_RANGE" }).first?["counts"].arrayValue.map({ Price(id: $0["id"].stringValue, name: $0["name"].stringValue) })
-
-        let maxPrice = prices?.sorted(by: >).first
+        let price: Price?
+        if (initial) {
+            // Initial is _always_ a 0-Max of all allocations
+            let prices = aggregations.filter({ $0["slice"].stringValue == "PRICE_RANGE" }).first?["counts"].arrayValue.map({ Price(id: $0["id"].stringValue) })
+            guard let maxPrice = prices?.sorted(by: >).first else { return nil }
+            price = Price(id: "0-\(maxPrice.maxPrice())")
+        } else {
+            price = Price(id: json["selectedPrice"].string ?? "*-*")
+        }
 
         guard let mediumsJSON = aggregations.filter({ $0["slice"].stringValue == "MEDIUM" }).first else { return nil }
         let mediums = mediumsJSON["counts"].arrayValue.map({ Medium(id: $0["id"].stringValue, name: $0["name"].stringValue, count: $0["count"].intValue) })
@@ -131,11 +143,22 @@ struct GeneRefineSettings {
         let allowedMediums = mediums.filter { $0.count > 0 }
         let selectedMedium = allowedMediums.first({ $0.id == mediumID })
 
-        return GeneRefineSettings(sort: sorting, medium: selectedMedium, mediums:allowedMediums, priceRange: maxPrice?.priceRange())
+        return GeneRefineSettings(sort: sorting, medium: selectedMedium, mediums:allowedMediums, priceRange: price?.centsPriceRange())
+    }
+
+    func emissionPriceRange(_ priceRange: PriceRange) -> String {
+        var dollarsMax = Double(priceRange.max / 100)
+        let dollarsMin = priceRange.min / 100
+        // If it's a large number, round it down to be 
+        // consistent with what we show in the user interface
+        if dollarsMax > 1000 {
+            dollarsMax = floor(dollarsMax / 1000) * 1000
+        }
+        return "\(dollarsMin)-\(Int(dollarsMax))"
     }
 
     func toJSON() -> [String: AnyObject] {
-        let priceRangeID = (priceRange != nil) ? "\(priceRange!.min)-\(priceRange!.max)" : "*-*"
+        let priceRangeID = (priceRange != nil) ? emissionPriceRange(priceRange!) : "*-*"
         let mediumID = (medium != nil) ? medium!.id : "*"
         return [
             "sort": sort.toID() as AnyObject,
