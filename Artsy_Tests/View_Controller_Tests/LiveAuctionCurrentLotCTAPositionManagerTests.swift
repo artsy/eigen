@@ -23,7 +23,7 @@ class LiveAuctionCurrentLotCTAPositionManagerTest: QuickSpec {
         let currentLotIndex = 1
         let halfwayShowing: CGFloat = 47.5
         let hidden: CGFloat = 100
-        let showing: CGFloat = 5
+        let showing: CGFloat = -5
 
         describe("jumping directly to a lot") {
             it("works when jumping to the current lot") {

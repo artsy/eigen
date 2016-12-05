@@ -1,5 +1,9 @@
 import UIKit
 
+/// This class manages the position of the current lot call-to-action, based on a scrolling
+/// scroll view and jumping directly to lots.
+/// Bit of a leaky abstraction, using the CTA view as a supplementary view in the collection view of 
+/// lot images would be better but won't work unfortunately.
 class LiveAuctionCurrentLotCTAPositionManager: NSObject {
     let salesPerson: LiveAuctionsSalesPersonType
     let bottomPositionConstraint: NSLayoutConstraint
@@ -7,7 +11,7 @@ class LiveAuctionCurrentLotCTAPositionManager: NSObject {
     fileprivate var currentLot: LiveAuctionLotViewModelType?
 
     fileprivate let hiddenConstraintConstant: CGFloat = 100
-    fileprivate let visibleConstraintConstant: CGFloat = 5
+    fileprivate let visibleConstraintConstant: CGFloat = -5
 
     init(salesPerson: LiveAuctionsSalesPersonType, bottomPositionConstraint: NSLayoutConstraint) {
         self.salesPerson = salesPerson
@@ -35,6 +39,10 @@ extension PublicFunctions {
         let atRestOffset = scrollView.contentSize.width / 3
         let offset = scrollView.contentOffset.x
 
+        /*
+         First determine if we're scrolling left or right, also determine the factor by
+         which we have already scrolled in that direction.
+         */
         let targetLot: LiveAuctionLotViewModelType
         let factor: CGFloat
         if offset > atRestOffset {
@@ -56,17 +64,17 @@ extension PublicFunctions {
          If the target is current, interpolate from how far we've scrolled _away from_ the target
          If neither origin nor target sale artwork are current, fully display
          */
-        let z: CGFloat
         switch currentLot.lotID {
         case originLot.lotID:
-            z = lerp(from: 1, to: 0, by: factor)
+            // Moving away from current lot.
+            bottomPositionConstraint.constant = lerp(from: visibleConstraintConstant, to: hiddenConstraintConstant, by: factor)
         case targetLot.lotID:
-            z = lerp(from: 0, to: 1, by: factor)
+            // Moving towards current lot.
+            bottomPositionConstraint.constant = lerp(from: hiddenConstraintConstant, to: visibleConstraintConstant, by: factor)
         default:
-            z = 1
+            // Neither origin nor target is the current lot.
+            bottomPositionConstraint.constant = visibleConstraintConstant
         }
-
-        bottomPositionConstraint.constant = lerp(from: hiddenConstraintConstant, to: -visibleConstraintConstant, by: z)
     }
 }
 
