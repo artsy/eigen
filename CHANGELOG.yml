@@ -5,6 +5,11 @@ upcoming:
       infrastructure:
         - Updates to Swift 3 / Xcode 8 - ash/orta
         - Remove extra xapp fetching and old home feed - maxim
+    user_facing:
+      - Fixes an intermittent crash on the live interface - ash
+      - Attempts to fix a crash that would occur by sending a message to a search VC that it doesn’t implement - alloy
+      - Refine existing queries on the Gene Page - orta
+
 
 releases:
   - version: 3.0.2

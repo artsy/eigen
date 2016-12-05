@@ -17,7 +17,7 @@ class RefineGeneSettingsTests: QuickSpec {
             let json = self.jsonForStub("gene_refine_example_full")
             guard let gene = GeneRefineSettings.refinementFromAggregationJSON(json ) else { return fail() }
 
-            expect(gene.medium.id) == "photography"
+            expect(gene.medium?.id) == "photography"
             expect(gene.sort).to( equal(GeneSortingOrder.LeastExpensive) )
             expect(gene.mediums.map({ $0.id })) == ["prints", "painting", "work-on-paper", "photography", "sculpture", "design", "drawing", "installation", "film-slash-video", "performance-art", "jewelry"]
             expect(gene.priceRange?.min) == 0
@@ -31,7 +31,7 @@ class RefineGeneSettingsTests: QuickSpec {
             let json = self.jsonForStub("gene_refine_example_short_medium")
             guard let gene = GeneRefineSettings.refinementFromAggregationJSON(json ) else { return fail() }
 
-            expect(gene.medium.id) == "prints"
+            expect(gene.medium?.id) == "prints"
             expect(gene.sort).to( equal(GeneSortingOrder.RecentlyAdded) )
             expect(gene.mediums.map({ $0.id })) == ["prints"]
             expect(gene.priceRange).to(beNil())
