@@ -76,6 +76,14 @@ static NSString *CellIdentifier = @"Cell";
     return nil;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    if (section == NumberOfSections - 1) {
+        return [NSString stringWithFormat:@"Last upated %@", self.echo.lastUpdatedDate];
+    }
+    return nil;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
