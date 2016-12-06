@@ -34,7 +34,11 @@ extension PublicFunctions {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let originLot = salesPerson.lotViewModelRelativeToShowingIndex(0)
-        guard let currentLot = self.currentLot else { return }
+        guard let currentLot = self.currentLot else {
+            // If there is no current lot, hide the current lot CTA.
+            bottomPositionConstraint.constant = hiddenConstraintConstant
+            return
+        }
 
         let atRestOffset = scrollView.contentSize.width / 3
         let offset = scrollView.contentOffset.x
@@ -82,7 +86,11 @@ private typealias PrivateFunctions = LiveAuctionCurrentLotCTAPositionManager
 fileprivate extension PrivateFunctions {
     func didJump(to focusedLotIndex: Int) {
         let focusedLot = salesPerson.lotViewModelForIndex(focusedLotIndex)
-        guard let currentLot = self.currentLot else { return }
+        guard let currentLot = self.currentLot else {
+            // If there is no current lot, hide the current lot CTA.
+            bottomPositionConstraint.constant = hiddenConstraintConstant
+            return
+        }
 
         if currentLot.lotID == focusedLot.lotID {
             bottomPositionConstraint.constant = hiddenConstraintConstant
@@ -92,7 +100,7 @@ fileprivate extension PrivateFunctions {
     }
 }
 
-// Provides a linear interpolation between a and b based on factor. Grabed from Wikipedia.
+// Provides a linear interpolation between a and b based on factor. Grabbed from Wikipedia.
 fileprivate func lerp(from a: CGFloat, to b: CGFloat, by factor: CGFloat) -> CGFloat {
     return ((1-factor) * a) + (factor * b)
 }
