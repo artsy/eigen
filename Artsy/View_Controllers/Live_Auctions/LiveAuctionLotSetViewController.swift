@@ -16,10 +16,13 @@ class LiveAuctionLotSetViewController: UIViewController {
     let lotImageCollectionView: UICollectionView
     let lotImageCollectionViewDataSource: LiveAuctionLotCollectionViewDataSource
     let lotCollectionViewLayout: LiveAuctionLotCollectionViewLayoutType
+    var currentLotView: LiveAuctionCurrentLotView!
+    var currentLotCTAPositionManager: LiveAuctionCurrentLotCTAPositionManager!
 
     fileprivate var hasBeenSetup = false
     fileprivate var firstAppearance = true
     fileprivate var pageViewScrollView: UIScrollView?
+    fileprivate var saleAvailabilityObserver: ObserverToken<SaleAvailabilityState>?
     fileprivate var progressBarBottomConstraintAtRestConstant: CGFloat = -165
     fileprivate var collectionViewBottomConstraint: CGFloat = -288
     fileprivate var progressBarBottomConstraint: NSLayoutConstraint?
@@ -36,8 +39,8 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         let adjustConstraintsForLargeScreens: Bool
 
-        if traitCollection .horizontalSizeClass != .regular {
-            let screenWidthIsLarge = UIScreen.main.applicationFrame.width > 320
+        if traitCollection.horizontalSizeClass != .regular {
+            let screenWidthIsLarge = UIScreen.main.bounds.width > 320
             let size: LiveAuctionFancyLotCollectionViewLayout.Size = screenWidthIsLarge ? .normal : .compact
             adjustConstraintsForLargeScreens = (size == .normal)
 
@@ -63,6 +66,10 @@ class LiveAuctionLotSetViewController: UIViewController {
         }
 
         super.init(nibName: nil, bundle: nil)
+    }
+
+    deinit {
+        saleAvailabilityObserver?.unsubscribe()
     }
 
     var hasJumpedToOpenLotAtLaunch = false
@@ -137,6 +144,16 @@ class LiveAuctionLotSetViewController: UIViewController {
         progressBar.constrainHeight("4")
         progressBar.alignLeading("0", trailing: "0", toView: view)
         progressBarBottomConstraint = progressBar.alignBottomEdge(withView: view, predicate: "\(progressBarBottomConstraintAtRestConstant)")
+
+        // Setup for "current lot" purple view at the bottom of the view.
+        currentLotView = LiveAuctionCurrentLotView(viewModel: salesPerson.auctionViewModel.currentLotSignal, salesPerson: salesPerson)
+        currentLotView.addTarget(nil, action: #selector(LiveAuctionLotSetViewController.jumpToLiveLot), for: .touchUpInside)
+        view.addSubview(currentLotView)
+        let jumpToCurrentLotCTABottomConstraint = currentLotView.alignBottomEdge(withView: view, predicate: "-5")
+        currentLotView.alignLeadingEdge(withView: view, predicate: "5")
+        currentLotView.alignTrailingEdge(withView: view, predicate: "-5")
+
+        currentLotCTAPositionManager = LiveAuctionCurrentLotCTAPositionManager(salesPerson: salesPerson, bottomPositionConstraint: jumpToCurrentLotCTABottomConstraint)
 
         salesPerson.currentFocusedLotIndex.subscribe { [weak self] _ in
             self?.lotImageCollectionView.reloadData()
@@ -325,6 +342,8 @@ extension HostScrollViewDelegate: UIScrollViewDelegate {
     // When the user scrolls.
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         lotImageCollectionView.setContentOffset(scrollView.contentOffset, animated: false)
+
+        currentLotCTAPositionManager.scrollViewDidScroll(scrollView)
     }
 
     // When we scroll programmatically with/out animation.

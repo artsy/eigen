@@ -89,8 +89,7 @@ class Test_Socket: SocketType {
     init() { }
 
 
-    func writeString(_ str: String) { writes += [str] }
-    func writeData(_ data: Data) { datas += [data] }
+    func write(string: String) { writes += [string] }
 
     func writePing() { }
     func connect() { connected = true }

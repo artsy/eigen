@@ -7,7 +7,7 @@ protocol SocketType: class {
     var onConnect: ((Void) -> Void)? { get set }
     var onDisconnect: ((NSError?) -> Void)? { get set }
 
-    func writeString(_ str: String)
+    func write(string: String)
     func writePing()
 
     func connect()
@@ -93,18 +93,18 @@ private extension SocketSetup {
     }
 
     func socketConnected() {
-        print ("Socket connected")
-        socket.writeString("{\"type\":\"Authorize\",\"jwt\":\"\(jwt.string)\"}")
+        print("Socket connected")
+        socket.write(string: "{\"type\":\"Authorize\",\"jwt\":\"\(jwt.string)\"}")
         socketConnectionSignal.update(true)
     }
 
     func socketDisconnected(_ error: NSError?) {
-        print ("Socket disconnected: \(error)")
+        print("Socket disconnected: \(error)")
         socketConnectionSignal.update(false)
 
         // Give it half a second to re-connect
-        ar_dispatch_after(0.5) {
-            self.socket.connect()
+        ar_dispatch_after(0.5) { [weak self] in
+            self?.socket.connect()
         }
     }
 
@@ -194,7 +194,7 @@ extension PublicFunctions {
     func writeJSON(_ json: NSObject) {
         do {
             print(try json.stringify())
-            socket.writeString(try json.stringify())
+            socket.write(string: try json.stringify())
         } catch {
             print("Error creating JSON string of socket event")
             return print(error)
