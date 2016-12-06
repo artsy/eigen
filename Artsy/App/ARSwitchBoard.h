@@ -20,6 +20,7 @@
 @class ARFairMapViewController;
 @class ARGeneViewController;
 @class ARUserSettingsViewController;
+@class Aerodramus;
 
 /**
  The Switchboard is the internal API for loading different native views
@@ -60,6 +61,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Shows the View Controller in Eigen
 - (void)presentViewController:(UIViewController *)controller;
+
+@property (nonatomic, readonly, strong) Aerodramus *echo;
 
 @end
 
