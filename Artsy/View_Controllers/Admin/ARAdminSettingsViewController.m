@@ -4,6 +4,7 @@
 
 #import "ARAdminSettingsViewController.h"
 #import "ARQuicksilverViewController.h"
+#import "AREchoContentsViewController.h"
 #import "ARInternalMobileWebViewController.h"
 
 #import "ARDefaults.h"
@@ -58,6 +59,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
         [self generateQuicksilver],
         [self generateShowAllLiveAuctions],
         [self generateOnScreenAnalytics],
+        [self generateEchoContents],
     ]];
 
 #if !TARGET_IPHONE_SIMULATOR
@@ -206,6 +208,17 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
     return crashCellData;
 }
 
+- (ARCellData *)generateEchoContents
+{
+    ARCellData *echoContentsData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    [echoContentsData setCellConfigurationBlock:^(UITableViewCell *cell) {
+        cell.textLabel.text = @"View Echo Configuration";
+    }];
+    [echoContentsData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+        [self.navigationController pushViewController:[[AREchoContentsViewController alloc] init] animated:YES];
+    }];
+    return echoContentsData;
+}
 
 #if !TARGET_IPHONE_SIMULATOR
 - (ARCellData *)generateNotificationTokenPasteboardCopy;
@@ -236,8 +249,12 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
         [sectionData addCellData:self.openEmissionModule];
         [sectionData addCellData:self.appHubBuildChooser];
     }
-    if (!isDevReact)     { [sectionData addCellData:self.toggleStagingReactNative]; }
-    if (!isStagingReact) { [sectionData addCellData:self.useDevReactNative]; }
+    if (!isDevReact) {
+        [sectionData addCellData:self.toggleStagingReactNative];
+    }
+    if (!isStagingReact) {
+        [sectionData addCellData:self.useDevReactNative];
+    }
     return sectionData;
 }
 

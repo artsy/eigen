@@ -300,6 +300,7 @@
 		5E3816FA1CBEDDF900477B17 /* LotListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3816F91CBEDDF900477B17 /* LotListCollectionViewCell.swift */; };
 		5E3816FF1CC1570A00477B17 /* LiveAuctionLotListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3816FE1CC1570A00477B17 /* LiveAuctionLotListViewControllerTests.swift */; };
 		5E3817011CC1572100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3817001CC1572100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayoutTests.swift */; };
+		5E407DF71DF7390B00999533 /* AREchoContentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E407DF61DF7390B00999533 /* AREchoContentsViewController.m */; };
 		5E4386181D0764ED0034E671 /* SerifModalWebNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4386171D0764ED0034E671 /* SerifModalWebNavigationController.swift */; };
 		5E47F34E1C3ECAA600EC0751 /* AuctionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */; };
 		5E47F3541C44358600EC0751 /* AuctionBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F3531C44358600EC0751 /* AuctionBannerView.swift */; };
@@ -1219,6 +1220,8 @@
 		5E3816F91CBEDDF900477B17 /* LotListCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LotListCollectionViewCell.swift; path = Live_Auctions/LotListCollectionViewCell.swift; sourceTree = "<group>"; };
 		5E3816FE1CC1570A00477B17 /* LiveAuctionLotListViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotListViewControllerTests.swift; path = Live_Auction/LiveAuctionLotListViewControllerTests.swift; sourceTree = "<group>"; };
 		5E3817001CC1572100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayoutTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotListStickyCellCollectionViewLayoutTests.swift; path = Live_Auction/LiveAuctionLotListStickyCellCollectionViewLayoutTests.swift; sourceTree = "<group>"; };
+		5E407DF51DF7390B00999533 /* AREchoContentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREchoContentsViewController.h; sourceTree = "<group>"; };
+		5E407DF61DF7390B00999533 /* AREchoContentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREchoContentsViewController.m; sourceTree = "<group>"; };
 		5E4386171D0764ED0034E671 /* SerifModalWebNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerifModalWebNavigationController.swift; sourceTree = "<group>"; };
 		5E47F34C1C3ECAA500EC0751 /* Artsy-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Artsy-Bridging-Header.h"; path = "../Resources/Artsy-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E47F34D1C3ECAA600EC0751 /* AuctionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionViewController.swift; path = Auction/AuctionViewController.swift; sourceTree = "<group>"; };
@@ -3808,6 +3811,8 @@
 			children = (
 				60903CC9175CE766002AB800 /* ARAdminSettingsViewController.h */,
 				60903CCA175CE766002AB800 /* ARAdminSettingsViewController.m */,
+				5E407DF51DF7390B00999533 /* AREchoContentsViewController.h */,
+				5E407DF61DF7390B00999533 /* AREchoContentsViewController.m */,
 				60F9B08D1D83255800DBAC8C /* ARAdminNetworkModel.h */,
 				60F9B08E1D83255800DBAC8C /* ARAdminNetworkModel.m */,
 				60F9B0901D83314F00DBAC8C /* ARAdminLoadReactComponentViewController.h */,
@@ -5023,6 +5028,7 @@
 				49473F3917C192AE004BF082 /* ARTextFieldWithPlaceholder.m in Sources */,
 				D39E874F1AB0F97A006B5BE9 /* ARBrowseNetworkModel.m in Sources */,
 				60B6E5981C88BEF3003B1D46 /* LiveSale.m in Sources */,
+				5E407DF71DF7390B00999533 /* AREchoContentsViewController.m in Sources */,
 				60647C671A8BB9AE00A45247 /* BuyersPremium.m in Sources */,
 				3CCCC8A51899B6F9008015DD /* FairOrganizer.m in Sources */,
 				60D90A0817C2182F0073D5B9 /* ARExternalWebBrowserViewController.m in Sources */,
