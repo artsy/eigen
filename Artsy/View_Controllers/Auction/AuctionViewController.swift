@@ -161,7 +161,7 @@ extension AuctionViewController {
         self.titleView = titleView
 
         stickyHeader = ScrollingStickyHeaderView().then {
-            $0.toggleAttatched(false, animated:false)
+            $0.toggleAttatched(false, animated: false)
             $0.button.setTitle("Refine", for: .normal)
             $0.titleLabel.text = saleViewModel.displayName
             $0.button.addTarget(self, action: #selector(AuctionViewController.showRefineTapped), for: .touchUpInside)
