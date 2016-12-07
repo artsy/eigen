@@ -10,6 +10,7 @@ upcoming:
     user_facing:
       - Jump to current lot CTA only visible once in the LAI interface, instead of once per lot - ash
       - Fixes issue where links in auction descriptions would lead nowhere when tapped - ash
+      - Fixes a strange text-flashing issue on auction views - ash
 
 releases:
   - version: 3.0.2
