@@ -88,6 +88,7 @@ static ARAppDelegate *_sharedInstance = nil;
 {
     if (ARIsRunningInDemoMode ||
         [[[NSProcessInfo processInfo] environment][@"TEST_SCENARIO"] isEqual:@"ONBOARDING"]) {
+        [[ARUserManager sharedManager] disableSharedWebCredentials];
         [ARUserManager clearUserData];
     }
 
