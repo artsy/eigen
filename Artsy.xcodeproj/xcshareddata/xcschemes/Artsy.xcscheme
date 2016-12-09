@@ -46,6 +46,16 @@
                </Test>
             </SkippedTests>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1C40C19B1DF8B1B7003F454F"
+               BuildableName = "ArtsyRecordedTests.xctest"
+               BlueprintName = "ArtsyRecordedTests"
+               ReferencedContainer = "container:Artsy.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

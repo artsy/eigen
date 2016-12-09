@@ -20,6 +20,7 @@
 		1C029B021CCF7FE700808503 /* ARLoginFieldsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */; };
 		1C029B051CD130A400808503 /* ARLoginButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B041CD130A400808503 /* ARLoginButtonsView.m */; };
 		1C02A20A1CADA80D008B4F6C /* full_logo_white_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C02A2091CADA80D008B4F6C /* full_logo_white_medium@2x.png */; };
+		1C40C19F1DF8B1B7003F454F /* ArtsyRecordedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C40C19E1DF8B1B7003F454F /* ArtsyRecordedTests.m */; };
 		1C5AAEB11CD7D42E00515B73 /* BackArrowBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB01CD7D42E00515B73 /* BackArrowBlack@2x.png */; };
 		1C5AAEB51CD87D9B00515B73 /* SearchButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB21CD87D9B00515B73 /* SearchButton.png */; };
 		1C5AAEB61CD87D9B00515B73 /* SearchButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB31CD87D9B00515B73 /* SearchButton@2x.png */; };
@@ -736,6 +737,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1C40C1A11DF8B1B7003F454F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 49BA7DFE1655ABE600C06572;
+			remoteInfo = Artsy;
+		};
 		B3ECE8341819D1E7009F5C5B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
@@ -769,6 +777,9 @@
 		1C029B031CD130A400808503 /* ARLoginButtonsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARLoginButtonsView.h; path = "../3_-_Sign_Up_+_Log_In/ARLoginButtonsView.h"; sourceTree = "<group>"; };
 		1C029B041CD130A400808503 /* ARLoginButtonsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARLoginButtonsView.m; path = "../3_-_Sign_Up_+_Log_In/ARLoginButtonsView.m"; sourceTree = "<group>"; };
 		1C02A2091CADA80D008B4F6C /* full_logo_white_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_white_medium@2x.png"; sourceTree = "<group>"; };
+		1C40C19C1DF8B1B7003F454F /* ArtsyRecordedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArtsyRecordedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C40C19E1DF8B1B7003F454F /* ArtsyRecordedTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArtsyRecordedTests.m; sourceTree = "<group>"; };
+		1C40C1A01DF8B1B7003F454F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1C5AAEB01CD7D42E00515B73 /* BackArrowBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrowBlack@2x.png"; sourceTree = "<group>"; };
 		1C5AAEB21CD87D9B00515B73 /* SearchButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SearchButton.png; sourceTree = "<group>"; };
 		1C5AAEB31CD87D9B00515B73 /* SearchButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchButton@2x.png"; sourceTree = "<group>"; };
@@ -1902,6 +1913,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1C40C1991DF8B1B7003F454F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49BA7DFC1655ABE600C06572 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1964,6 +1982,15 @@
 				60E738701C64AB8B00AC381B /* ARStubbedAnalyticsProvider.m */,
 			);
 			path = Stubs;
+			sourceTree = "<group>";
+		};
+		1C40C19D1DF8B1B7003F454F /* ArtsyRecordedTests */ = {
+			isa = PBXGroup;
+			children = (
+				1C40C19E1DF8B1B7003F454F /* ArtsyRecordedTests.m */,
+				1C40C1A01DF8B1B7003F454F /* Info.plist */,
+			);
+			path = ArtsyRecordedTests;
 			sourceTree = "<group>";
 		};
 		33C6886033769A61A3E99B18 /* Pods */ = {
@@ -2730,6 +2757,7 @@
 				60FFE3D5188E916C0012B485 /* Documentation */,
 				49BA7E091655ABE600C06572 /* Artsy */,
 				B3ECE82B1819D1E6009F5C5B /* Artsy Tests */,
+				1C40C19D1DF8B1B7003F454F /* ArtsyRecordedTests */,
 				49BA7E021655ABE600C06572 /* Frameworks */,
 				49BA7E001655ABE600C06572 /* Products */,
 				33C6886033769A61A3E99B18 /* Pods */,
@@ -2741,6 +2769,7 @@
 			children = (
 				49BA7DFF1655ABE600C06572 /* Artsy.app */,
 				B3ECE8261819D1E6009F5C5B /* Artsy Tests.xctest */,
+				1C40C19C1DF8B1B7003F454F /* ArtsyRecordedTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4531,6 +4560,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1C40C19B1DF8B1B7003F454F /* ArtsyRecordedTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1C40C1A61DF8B1B7003F454F /* Build configuration list for PBXNativeTarget "ArtsyRecordedTests" */;
+			buildPhases = (
+				1C40C1981DF8B1B7003F454F /* Sources */,
+				1C40C1991DF8B1B7003F454F /* Frameworks */,
+				1C40C19A1DF8B1B7003F454F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1C40C1A21DF8B1B7003F454F /* PBXTargetDependency */,
+			);
+			name = ArtsyRecordedTests;
+			productName = ArtsyRecordedTests;
+			productReference = 1C40C19C1DF8B1B7003F454F /* ArtsyRecordedTests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		49BA7DFE1655ABE600C06572 /* Artsy */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49BA7E231655ABE600C06572 /* Build configuration list for PBXNativeTarget "Artsy" */;
@@ -4587,6 +4634,12 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = Artsy;
 				TargetAttributes = {
+					1C40C19B1DF8B1B7003F454F = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = 23KMWZ572J;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 49BA7DFE1655ABE600C06572;
+					};
 					49BA7DFE1655ABE600C06572 = {
 						DevelopmentTeam = 23KMWZ572J;
 						LastSwiftMigration = 0800;
@@ -4630,11 +4683,19 @@
 			targets = (
 				49BA7DFE1655ABE600C06572 /* Artsy */,
 				B3ECE8251819D1E6009F5C5B /* Artsy Tests */,
+				1C40C19B1DF8B1B7003F454F /* ArtsyRecordedTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1C40C19A1DF8B1B7003F454F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49BA7DFD1655ABE600C06572 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4940,6 +5001,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1C40C1981DF8B1B7003F454F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C40C19F1DF8B1B7003F454F /* ArtsyRecordedTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49BA7DFB1655ABE600C06572 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5540,6 +5609,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1C40C1A21DF8B1B7003F454F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 49BA7DFE1655ABE600C06572 /* Artsy */;
+			targetProxy = 1C40C1A11DF8B1B7003F454F /* PBXContainerItemProxy */;
+		};
 		B3ECE8351819D1E7009F5C5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 49BA7DFE1655ABE600C06572 /* Artsy */;
@@ -5569,6 +5643,140 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1C40C1A31DF8B1B7003F454F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = ArtsyRecordedTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = artsy.ArtsyRecordedTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Artsy;
+			};
+			name = Debug;
+		};
+		1C40C1A41DF8B1B7003F454F /* Store */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = ArtsyRecordedTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = artsy.ArtsyRecordedTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_TARGET_NAME = Artsy;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Store;
+		};
+		1C40C1A51DF8B1B7003F454F /* Demo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = ArtsyRecordedTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = artsy.ArtsyRecordedTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_TARGET_NAME = Artsy;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Demo;
+		};
 		49BA7E211655ABE600C06572 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5934,6 +6142,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1C40C1A61DF8B1B7003F454F /* Build configuration list for PBXNativeTarget "ArtsyRecordedTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C40C1A31DF8B1B7003F454F /* Debug */,
+				1C40C1A41DF8B1B7003F454F /* Store */,
+				1C40C1A51DF8B1B7003F454F /* Demo */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		49BA7DF91655ABE600C06572 /* Build configuration list for PBXProject "Artsy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

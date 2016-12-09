@@ -86,7 +86,8 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if (ARIsRunningInDemoMode) {
+    if (ARIsRunningInDemoMode ||
+        [[[NSProcessInfo processInfo] environment][@"TEST_SCENARIO"] isEqual:@"ONBOARDING"]) {
         [ARUserManager clearUserData];
     }
 
@@ -137,7 +138,6 @@ static ARAppDelegate *_sharedInstance = nil;
         [self performSelector:@selector(finishDemoSplash) withObject:nil afterDelay:1];
 
     } else if (shouldShowOnboarding) {
-        
         // In case the user has not signed-in yet, this will register as an anonymous device on the Artsy API.
         // This way we can use the Artsy API for onboarding searches and suggestsions
         // From there onwards, once the user account is created, technically everything should be done with user authentication.
@@ -145,19 +145,19 @@ static ARAppDelegate *_sharedInstance = nil;
             // Sync clock with server
             [ARSystemTime sync];
         }];
-        
+
         [self showOnboarding];
 
     } else {
         // Default logged in setup path
         [self startupApp];
-        
+
         if ([User currentUser]) {
             [ARSpotlight indexAllUsersFavorites];
         };
     }
     [self.window makeKeyAndVisible];
-    
+
     NSDictionary *remoteNotification = self.initialLaunchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotification) {
         // The app was not running, so considering it to be in the UIApplicationStateInactive state.
