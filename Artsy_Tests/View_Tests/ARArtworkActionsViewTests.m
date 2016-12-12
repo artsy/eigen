@@ -147,6 +147,43 @@ it(@"does not display contact when artwork is in auction", ^{
     expect(view).to.haveValidSnapshotNamed(@"forSaleAtAuction");
 });
 
+describe(@"frozen time", ^{
+    __block id timeStub;
+
+    beforeEach(^{
+        timeStub = [ARTestContext freezeTime];
+
+        // Now that time is frozen we can stop preventing the countdown from counting down.
+        [mockView stopMocking];
+    });
+
+    afterEach(^{
+        [timeStub stopMocking];
+    });
+
+    it(@"uses live_start_at for the countdown for an upcoming live auction", ^{
+        view.artwork = [Artwork modelWithJSON:@{
+            @"id" : @"artwork-id",
+            @"title" : @"Artwork Title",
+            @"availability" : @"for sale"
+        }];
+        view.saleArtwork = [SaleArtwork modelWithJSON:@{
+            @"high_estimate_cents" : @20000,
+            @"low_estimate_cents" : @10000,
+        }];
+        view.saleArtwork.auction = [Sale modelWithDictionary:@{
+            @"startDate" : [[NSDate date] dateByAddingTimeInterval:-3600],
+            @"liveAuctionStartDate" : [[NSDate date] dateByAddingTimeInterval:3600],
+            @"endDate" : [[NSDate date] dateByAddingTimeInterval:4000]
+        } error:nil];
+        [view updateUI];
+        [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+        [view snapshotViewAfterScreenUpdates:YES];
+
+        expect(view).to.haveValidSnapshot();
+    });
+});
+
 it(@"displays both bid and buy when artwork is in auction and is acquireable", ^{
     view.artwork = [Artwork modelWithJSON:@{
         @"id" : @"artwork-id",
