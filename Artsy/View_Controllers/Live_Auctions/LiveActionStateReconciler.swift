@@ -175,7 +175,7 @@ private extension PrivateFunctions {
 private extension LiveSale {
     func needsUpdateToInstanceFromSale(_ otherSale: LiveSale) -> Bool {
         guard self.startDate == otherSale.startDate else { return true }
-        guard self.endDate == otherSale.endDate else { return true }
+        guard self.saleState == otherSale.saleState else { return true }
         return false
     }
 }
