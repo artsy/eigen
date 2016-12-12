@@ -31,11 +31,6 @@
     return [ARStandardDateFormatter sharedFormatter].stringTransformer;
 }
 
-+ (NSValueTransformer *)endDateJSONTransformer
-{
-    return [ARStandardDateFormatter sharedFormatter].stringTransformer;
-}
-
 + (NSValueTransformer *)registrationEndsAtDateJSONTransformer
 {
     return [ARStandardDateFormatter sharedFormatter].stringTransformer;
@@ -51,12 +46,12 @@
     return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[BidIncrementStrategy class]];
 }
 
-+ (NSValueTransformer *)stateJSONTransformer
++ (NSValueTransformer *)saleStateJSONTransformer
 {
     return [ARTwoWayDictionaryTransformer reversibleTransformerWithDictionary:@{
-        @"preview": @(SaleStatePreview),
-        @"open": @(SaleStateOpen),
-        @"closed": @(SaleStateClosed),
+        @"preview" : @(SaleStatePreview),
+        @"open" : @(SaleStateOpen),
+        @"closed" : @(SaleStateClosed),
     }];
 }
 

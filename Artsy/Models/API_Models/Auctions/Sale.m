@@ -67,12 +67,12 @@
     return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:Bid.class];
 }
 
-+ (NSValueTransformer *)stateJSONTransformer
++ (NSValueTransformer *)saleStateJSONTransformer
 {
     return [ARTwoWayDictionaryTransformer reversibleTransformerWithDictionary:@{
-        @"preview": @(SaleStatePreview),
-        @"open": @(SaleStateOpen),
-        @"closed": @(SaleStateClosed),
+        @"preview" : @(SaleStatePreview),
+        @"open" : @(SaleStateOpen),
+        @"closed" : @(SaleStateClosed),
     }];
 }
 
