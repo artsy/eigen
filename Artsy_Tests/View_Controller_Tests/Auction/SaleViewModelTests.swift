@@ -124,7 +124,7 @@ class SaleViewModelTests: QuickSpec {
             let before = NSDate().addingTimeInterval(-1650.9)
             let end = NSDate().addingTimeInterval(-100)
 
-            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast, "endDate": end, "liveAuctionStartDate": before], error: Void())
+            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast, "endDate": end, "liveAuctionStartDate": before, "saleState": SaleStateClosed], error: Void())
 
             let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 

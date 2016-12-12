@@ -122,7 +122,7 @@ it(@"displays only the live button when live auction is running", ^{
     view.saleArtwork.auction = [Sale modelWithJSON:@{
         @"start_at" : @"1-12-30 00:00:00",
         @"live_start_at" : @"1-12-30 00:00:00",
-        @"end_at" : @"4001-01-01 00:00:00"
+        @"auction_state" : @"open"
     }];
     [view updateUI];
     [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];

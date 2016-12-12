@@ -80,7 +80,7 @@
 {
     NSDate *now = [ARSystemTime date];
     BOOL hasStarted = [self.liveAuctionStartDate compare:now] == NSOrderedAscending;
-    BOOL hasEnded = [self.endDate compare:now] == NSOrderedAscending;
+    BOOL hasEnded = self.saleState == SaleStateClosed;
     return self.liveAuctionStartDate && hasStarted && !hasEnded;
 }
 
