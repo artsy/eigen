@@ -12,6 +12,7 @@ upcoming:
       - Jump to current lot CTA only visible once in the LAI interface, instead of once per lot - ash
       - Fixes issue where links in auction descriptions would lead nowhere when tapped - ash
       - Countdowns to live auctions show the time until live bidding opens, instead of when the sale ends - ash
+      - Fixes a strange text-flashing issue on auction views - ash
 
 releases:
   - version: 3.0.2
