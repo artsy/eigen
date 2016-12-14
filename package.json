@@ -21,12 +21,7 @@
     "testing": "jest --watch"
   },
   "jest": {
-    "preset": "jest-react-native",
-    "testPathIgnorePatterns": [
-      "\\.snap$",
-      "/node_modules/"
-    ],
-    "testRegex": ".*-test\\.js"
+    "preset": "jest-react-native"
   },
   "repository": {
     "type": "git",
