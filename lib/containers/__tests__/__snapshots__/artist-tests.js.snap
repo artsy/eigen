@@ -1,0 +1,132 @@
+exports[`layout works as expected with no tabs 1`] = `
+<ScrollView
+  automaticallyAdjustContentInsets={false}
+  scrollsToTop={true}>
+  <View
+    style={
+      Object {
+        "paddingLeft": 20,
+        "paddingRight": 20,
+      }
+    }>
+    <Header
+      artist={
+        Object {
+          "counts": Object {
+            "articles": 0,
+            "artworks": 0,
+            "partner_shows": 0,
+          },
+          "has_metadata": false,
+        }
+      } />
+    <View
+      style={
+        Object {
+          "paddingTop": 30,
+        }
+      } />
+  </View>
+</ScrollView>
+`;
+
+exports[`layout works as expected with one tab 1`] = `
+<ScrollView
+  automaticallyAdjustContentInsets={false}
+  scrollsToTop={true}>
+  <View
+    style={
+      Object {
+        "paddingLeft": 20,
+        "paddingRight": 20,
+      }
+    }>
+    <Header
+      artist={
+        Object {
+          "counts": Object {
+            "articles": 0,
+            "artworks": 0,
+            "partner_shows": 0,
+          },
+          "has_metadata": true,
+        }
+      } />
+    <View
+      style={
+        Object {
+          "paddingTop": 30,
+        }
+      }>
+      <About
+        artist={
+          Object {
+            "counts": Object {
+              "articles": 0,
+              "artworks": 0,
+              "partner_shows": 0,
+            },
+            "has_metadata": true,
+          }
+        } />
+    </View>
+  </View>
+</ScrollView>
+`;
+
+exports[`layout works as expected with three tabs 1`] = `
+<ScrollView
+  automaticallyAdjustContentInsets={false}
+  scrollsToTop={true}>
+  <View
+    style={
+      Object {
+        "paddingLeft": 20,
+        "paddingRight": 20,
+      }
+    }>
+    <Header
+      artist={
+        Object {
+          "counts": Object {
+            "artworks": 2,
+            "partner_shows": 1,
+          },
+          "has_metadata": true,
+        }
+      } />
+    <View>
+      <ARSwitchView
+        onSelectionChange={[Function]}
+        selectedIndex={1}
+        style={
+          Object {
+            "alignSelf": null,
+            "marginBottom": 30,
+            "marginTop": 30,
+            "width": null,
+          }
+        }
+        titles={
+          Array [
+            "ABOUT",
+            "WORKS",
+            "SHOWS",
+          ]
+        } />
+      <View>
+        <Artworks
+          artist={
+            Object {
+              "counts": Object {
+                "artworks": 2,
+                "partner_shows": 1,
+              },
+              "has_metadata": true,
+            }
+          } />
+      </View>
+    </View>
+  </View>
+</ScrollView>
+`;
