@@ -18,6 +18,7 @@
       "id": "los-angeles-modern-auctions-march-2015",
       "start_at": "2016-05-02T10:00:00+00:00",
       "end_at": "2016-05-02T23:59:00+00:00",
+      "auction_state": "preview",
       "name": "Los Angeles Modern Auctions - March 2015",
       "is_with_buyers_premium": true,
       "description": "",
