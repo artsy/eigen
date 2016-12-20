@@ -3,6 +3,7 @@
 - Fixes bug in GeneVC where fetching was starting on page 2 - sarah
 - Update home view artworks rails order - maxim
 - Fix artist link to auction results - alloy
+- Update artworks grid to show multiple artist names when available - mzikherman
 
 ### 1.1.3
 
