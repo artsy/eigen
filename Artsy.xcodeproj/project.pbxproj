@@ -25,6 +25,7 @@
 		1C5AAEB51CD87D9B00515B73 /* SearchButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB21CD87D9B00515B73 /* SearchButton.png */; };
 		1C5AAEB61CD87D9B00515B73 /* SearchButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB31CD87D9B00515B73 /* SearchButton@2x.png */; };
 		1C5AAEB71CD87D9B00515B73 /* SearchButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB41CD87D9B00515B73 /* SearchButton@3x.png */; };
+		1C6C00CE1E1BC597000B2C52 /* ARAppDelegate+TestScenarios.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C6C00CD1E1BC597000B2C52 /* ARAppDelegate+TestScenarios.m */; };
 		1C717EC51CB439F7002CCF2D /* AROnboardingNavigationItemsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C717EC41CB439F7002CCF2D /* AROnboardingNavigationItemsView.m */; };
 		1CC9EB971CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9EB961CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m */; };
 		1CC9EB9A1CC12B5400A74E3C /* AROnboardingFollowableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9EB991CC12B5400A74E3C /* AROnboardingFollowableTableViewCell.m */; };
@@ -784,6 +785,8 @@
 		1C5AAEB21CD87D9B00515B73 /* SearchButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SearchButton.png; sourceTree = "<group>"; };
 		1C5AAEB31CD87D9B00515B73 /* SearchButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchButton@2x.png"; sourceTree = "<group>"; };
 		1C5AAEB41CD87D9B00515B73 /* SearchButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchButton@3x.png"; sourceTree = "<group>"; };
+		1C6C00CC1E1BC597000B2C52 /* ARAppDelegate+TestScenarios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+TestScenarios.h"; sourceTree = "<group>"; };
+		1C6C00CD1E1BC597000B2C52 /* ARAppDelegate+TestScenarios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+TestScenarios.m"; sourceTree = "<group>"; };
 		1C717EC31CB439F7002CCF2D /* AROnboardingNavigationItemsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingNavigationItemsView.h; sourceTree = "<group>"; };
 		1C717EC41CB439F7002CCF2D /* AROnboardingNavigationItemsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingNavigationItemsView.m; sourceTree = "<group>"; };
 		1CC9EB951CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingPersonalizeTableViewController.h; sourceTree = "<group>"; };
@@ -3984,6 +3987,8 @@
 				607BF5AA1C2413810034B519 /* ARAppStatus.m */,
 				51F2C5F21CEE8A7700B881BE /* ARAppDelegate+Emission.h */,
 				51F2C5F31CEE8A7700B881BE /* ARAppDelegate+Emission.m */,
+				1C6C00CC1E1BC597000B2C52 /* ARAppDelegate+TestScenarios.h */,
+				1C6C00CD1E1BC597000B2C52 /* ARAppDelegate+TestScenarios.m */,
 				516C82991D9581D50087B786 /* assets */,
 			);
 			name = Setup;
@@ -5031,6 +5036,7 @@
 				600415C917C4ECE2003C7974 /* ArtsyAPI+RelatedModels.m in Sources */,
 				3CF144A718E45F6C00B1A764 /* SystemTime.m in Sources */,
 				608B2F6F1657D1D10046956C /* User.m in Sources */,
+				1C6C00CE1E1BC597000B2C52 /* ARAppDelegate+TestScenarios.m in Sources */,
 				5EC929891C5FEAD10015133E /* UIViewController+Traits.swift in Sources */,
 				60D83DEE189EE679001672E9 /* ARFairGuideViewController.m in Sources */,
 				60B617D31815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m in Sources */,
@@ -6150,6 +6156,7 @@
 				1C40C1A51DF8B1B7003F454F /* Demo */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 		49BA7DF91655ABE600C06572 /* Build configuration list for PBXProject "Artsy" */ = {
 			isa = XCConfigurationList;

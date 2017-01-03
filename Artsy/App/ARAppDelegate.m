@@ -12,6 +12,7 @@
 #import "ARAppDelegate.h"
 #import "ARAppDelegate+Analytics.h"
 #import "ARAppDelegate+Emission.h"
+#import "ARAppDelegate+TestScenarios.h"
 #import "ARAppNotificationsDelegate.h"
 #import "ARAppConstants.h"
 #import "ARFonts.h"
@@ -87,9 +88,8 @@ static ARAppDelegate *_sharedInstance = nil;
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     if (ARIsRunningInDemoMode ||
-        [[[NSProcessInfo processInfo] environment][@"TEST_SCENARIO"] isEqual:@"ONBOARDING"]) {
-        [[ARUserManager sharedManager] disableSharedWebCredentials];
-        [ARUserManager clearUserData];
+        [[NSProcessInfo processInfo] environment][@"TEST_SCENARIO"]) {
+        [self setupIntegrationTests];
     }
 
     [ARDefaults setup];
