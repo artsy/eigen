@@ -117,7 +117,7 @@
 
     NSMutableArray *buttonsWhoseMarginCanChange = [NSMutableArray array];
 
-    if ([self shouldShowLiveAuctionControls]) {
+    if ([self liveAuctionIsOngoing]) {
         ARBlackFlatButton *openLiveSale = [[ARBlackFlatButton alloc] init];
         [openLiveSale setTitle:@"Enter Live Auction" forState:UIControlStateNormal];
         [openLiveSale addTarget:self action:@selector(tappedLiveSaleButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -357,10 +357,10 @@ return [navigationButtons copy];
 - (BOOL)showAuctionControls
 {
     // We don't want to show regular auction controls and live auction ones at the same time, and live takes precedence.
-    return (self.saleArtwork != nil) && !self.artwork.sold.boolValue && ![self shouldShowLiveAuctionControls];
+    return (self.saleArtwork != nil) && !self.artwork.sold.boolValue && ![self liveAuctionIsOngoing];
 }
 
-- (BOOL)shouldShowLiveAuctionControls
+- (BOOL)liveAuctionIsOngoing
 {
     return (self.saleArtwork != nil) && self.saleArtwork.auction.shouldShowLiveInterface;
 }
@@ -396,6 +396,7 @@ return [navigationButtons copy];
     NSDate *now = [ARSystemTime date];
 
     NSDate *startDate = self.saleArtwork.auction.startDate;
+    NSDate *liveStartDate = self.saleArtwork.auction.liveAuctionStartDate;
     NSDate *endDate = self.saleArtwork.auction.endDate;
 
     self.bidButton.auctionState = self.saleArtwork.auctionState;
@@ -406,6 +407,10 @@ return [navigationButtons copy];
         [self removeSubview:self.bidderStatusLabel];
         [self removeSubview:self.auctionPriceView];
 
+    } else if ([now compare:liveStartDate] == NSOrderedAscending) {
+        self.countdownView.heading = @"Live Bidding Opens";
+        self.countdownView.targetDate = liveStartDate;
+        [self.countdownView startTimer];
     } else if ([now compare:startDate] == NSOrderedAscending) {
         self.countdownView.heading = @"Auction Opens";
         self.countdownView.targetDate = startDate;

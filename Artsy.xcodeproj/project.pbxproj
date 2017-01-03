@@ -358,6 +358,7 @@
 		5EB33E74197EBDE200706EB1 /* ARParallaxHeaderViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB33E73197EBDE200706EB1 /* ARParallaxHeaderViewControllerTests.m */; };
 		5EB33E77197EBFEB00706EB1 /* wide.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5EB33E75197EBFEB00706EB1 /* wide.jpg */; };
 		5EB33E78197EBFEB00706EB1 /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EB33E76197EBFEB00706EB1 /* square.png */; };
+		5EBA3E831DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBA3E821DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.m */; };
 		5EBD44E01D07325300C60F9F /* UITableViewController+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBD44DF1D07325300C60F9F /* UITableViewController+Animations.swift */; };
 		5EBD44E21D074A7300C60F9F /* UILabel+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBD44E11D074A7300C60F9F /* UILabel+Styling.swift */; };
 		5EBDC94E19792C3A0082C514 /* ARNavigationControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBDC94D19792C3A0082C514 /* ARNavigationControllerTests.m */; };
@@ -1302,6 +1303,8 @@
 		5EB33E73197EBDE200706EB1 /* ARParallaxHeaderViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARParallaxHeaderViewControllerTests.m; sourceTree = "<group>"; };
 		5EB33E75197EBFEB00706EB1 /* wide.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wide.jpg; sourceTree = "<group>"; };
 		5EB33E76197EBFEB00706EB1 /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
+		5EBA3E811DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTwoWayDictionaryTransformer.h; sourceTree = "<group>"; };
+		5EBA3E821DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTwoWayDictionaryTransformer.m; sourceTree = "<group>"; };
 		5EBD44DF1D07325300C60F9F /* UITableViewController+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewController+Animations.swift"; sourceTree = "<group>"; };
 		5EBD44E11D074A7300C60F9F /* UILabel+Styling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Styling.swift"; sourceTree = "<group>"; };
 		5EBDC94D19792C3A0082C514 /* ARNavigationControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationControllerTests.m; sourceTree = "<group>"; };
@@ -2049,6 +2052,8 @@
 				342F90BFE6268BEBC0E7BB2E /* ARValueTransformer.m */,
 				342F94A8E1109ABC367CB751 /* ARStandardDateFormatter.h */,
 				342F9F3E8A0C15DD0DB437D1 /* ARStandardDateFormatter.m */,
+				5EBA3E811DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.h */,
+				5EBA3E821DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.m */,
 				342F96255EEC90B05A4FF213 /* ARFeedImageLoader.h */,
 				342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */,
 				342F9B088114B9396356A2FC /* ARSplitStackView.h */,
@@ -5081,6 +5086,7 @@
 				60863E471D0B49AE0053B51C /* ArtsyAPI+HEAD.m in Sources */,
 				54B7477518A397170050E6C7 /* ARTopMenuViewController+DeveloperExtras.m in Sources */,
 				5EA7BC3F1C612577009C52C9 /* AuctionNetworkModel.swift in Sources */,
+				5EBA3E831DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.m in Sources */,
 				1CC9EB971CC0EDBE00A74E3C /* AROnboardingPersonalizeTableViewController.m in Sources */,
 				60647C751A94F71600A45247 /* AREndOfLineInternalMobileWebViewController.m in Sources */,
 				60B6F0F21662AADF007C9587 /* ARAppConstants.m in Sources */,
