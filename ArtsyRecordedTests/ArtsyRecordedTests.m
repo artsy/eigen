@@ -83,6 +83,7 @@
     XCUIElement *searchArtistTextField = app.textFields[@"Search artist"];
     [searchArtistTextField tap];
     [searchArtistTextField typeText:@"Damien Hirst"];
+    [app.buttons[@"Search"] tap];
 
     XCUIElementQuery *tablesQuery = app.tables;
     [tablesQuery.staticTexts[@"DAMIEN HIRST"] tap];
@@ -94,6 +95,8 @@
     XCUIElement *searchMediumMovementOrStyleTextField = app.textFields[@"Search medium, movement, or style"];
     [searchMediumMovementOrStyleTextField tap];
     [searchMediumMovementOrStyleTextField typeText:@"minimalism"];
+    [app.buttons[@"Search"] tap];
+
     [tablesQuery.staticTexts[@"MINIMALISM"] tap];
     [tablesQuery.staticTexts[@"MINIMALISM AND CONTEMPORARY MINIMALIST"] tap];
 }
@@ -156,6 +159,5 @@
     [collectionViewsQuery.buttons[@"ARTISTS"] tap];
     [[[collectionViewsQuery.cells.otherElements containingType:XCUIElementTypeStaticText identifier:@"BANKSY"] childrenMatchingType:XCUIElementTypeImage].element tap];
 }
-
 
 @end
