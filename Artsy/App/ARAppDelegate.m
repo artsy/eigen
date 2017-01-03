@@ -87,8 +87,12 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if (ARIsRunningInDemoMode ||
-        [[NSProcessInfo processInfo] environment][@"TEST_SCENARIO"]) {
+    if (ARIsRunningInDemoMode) {
+        [[ARUserManager sharedManager] disableSharedWebCredentials];
+        [ARUserManager clearUserData];
+    }
+
+    if ([[NSProcessInfo processInfo] environment][@"TEST_SCENARIO"]) {
         [self setupIntegrationTests];
     }
 
