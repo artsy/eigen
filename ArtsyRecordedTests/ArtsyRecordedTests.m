@@ -75,7 +75,14 @@
     [app.buttons[@"GET STARTED"] tap];
 
     XCUIElement *searchArtistTextField = app.textFields[@"Search artist"];
+
+    [self expectationForPredicate:[NSPredicate predicateWithFormat:@"exists == 1"]
+              evaluatedWithObject:searchArtistTextField
+                          handler:nil];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
+
     XCTAssert(searchArtistTextField.exists);
+
     [searchArtistTextField tap];
     [searchArtistTextField typeText:@"Damien Hirst"];
     [app.buttons[@"Search"] tap];
@@ -104,6 +111,12 @@
 
 
     XCUIElement *table = app.tables.element;
+
+    [self expectationForPredicate:[NSPredicate predicateWithFormat:@"exists == 1"]
+              evaluatedWithObject:table
+                          handler:nil];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
+
     XCTAssert(table.exists);
     [table.staticTexts[@"PABLO PICASSO"] tap];
     [table.staticTexts[@"BANKSY"] tap];
