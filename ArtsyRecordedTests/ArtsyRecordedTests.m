@@ -112,6 +112,10 @@
 
     XCUIElement *table = app.tables.element;
 
+    NSLog(@"%@", app.description);
+    NSLog(@"-----------");
+    NSLog(@"%@", app.debugDescription);
+
     [self expectationForPredicate:[NSPredicate predicateWithFormat:@"exists == 1"]
               evaluatedWithObject:table
                           handler:nil];
