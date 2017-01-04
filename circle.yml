@@ -39,6 +39,8 @@ test:
     - sleep 15
   override:
     - make test
+    - sleep 15
+    - make uitest
     - bundle exec danger --verbose
   post:
     - make deploy_if_beta_branch

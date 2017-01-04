@@ -1,11 +1,3 @@
-//
-//  ArtsyRecordedTests.m
-//  ArtsyRecordedTests
-//
-//  Created by Maxim Cramer on 07/12/2016.
-//  Copyright © 2016 Artsy. All rights reserved.
-//
-
 #import <XCTest/XCTest.h>
 
 
