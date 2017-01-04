@@ -75,6 +75,7 @@
     [app.buttons[@"GET STARTED"] tap];
 
     XCUIElement *searchArtistTextField = app.textFields[@"Search artist"];
+    XCTAssert(searchArtistTextField.exists);
     [searchArtistTextField tap];
     [searchArtistTextField typeText:@"Damien Hirst"];
     [app.buttons[@"Search"] tap];
