@@ -39,8 +39,9 @@
 
     XCTAssert(followLabel);
 
-    XCUIElementQuery *tablesQuery = app.tables;
-    [tablesQuery.staticTexts[@"PHOTOGRAPHY"] tap];
+    XCUIElement *table = app.tables.element;
+    XCTAssert(table.exists);
+    [table.staticTexts[@"PHOTOGRAPHY"] tap];
 
     XCTAssert(nextButton.isEnabled);
 }
@@ -52,17 +53,18 @@
     [app.buttons[@"GET STARTED"] tap];
 
     // Select at least 4 artists to skip categories
-    XCUIElementQuery *tablesQuery = app.tables;
-    [tablesQuery.staticTexts[@"PABLO PICASSO"] tap];
-    [tablesQuery.staticTexts[@"BANKSY"] tap];
-    [tablesQuery.staticTexts[@"ANDY WARHOL"] tap];
-    [tablesQuery.staticTexts[@"JEAN-MICHEL BASQUIAT"] tap];
+    XCUIElement *table = app.tables.element;
+    XCTAssert(table.exists);
+    [table.staticTexts[@"PABLO PICASSO"] tap];
+    [table.staticTexts[@"BANKSY"] tap];
+    [table.staticTexts[@"ANDY WARHOL"] tap];
+    [table.staticTexts[@"JEAN-MICHEL BASQUIAT"] tap];
 
     XCUIElement *nextButton = app.buttons[@"NEXT"];
     [nextButton tap];
 
     // One should land on the budget screen next, rather than cateogries
-    [tablesQuery.staticTexts[@"UNDER $5,000"] tap];
+    [table.staticTexts[@"UNDER $5,000"] tap];
     [nextButton tap];
 }
 
@@ -77,9 +79,10 @@
     [searchArtistTextField typeText:@"Damien Hirst"];
     [app.buttons[@"Search"] tap];
 
-    XCUIElementQuery *tablesQuery = app.tables;
-    [tablesQuery.staticTexts[@"DAMIEN HIRST"] tap];
-    [tablesQuery.staticTexts[@"GAVIN TURK"] tap];
+    XCUIElement *table = app.tables.element;
+    XCTAssert(table.exists);
+    [table.staticTexts[@"DAMIEN HIRST"] tap];
+    [table.staticTexts[@"GAVIN TURK"] tap];
 
     XCUIElement *nextButton = app.buttons[@"NEXT"];
     [nextButton tap];
@@ -89,8 +92,8 @@
     [searchMediumMovementOrStyleTextField typeText:@"minimalism"];
     [app.buttons[@"Search"] tap];
 
-    [tablesQuery.staticTexts[@"MINIMALISM"] tap];
-    [tablesQuery.staticTexts[@"MINIMALISM AND CONTEMPORARY MINIMALIST"] tap];
+    [table.staticTexts[@"MINIMALISM"] tap];
+    [table.staticTexts[@"MINIMALISM AND CONTEMPORARY MINIMALIST"] tap];
 }
 - (void)testOnboarding_SignupPushNotificationsAndFollows
 {
@@ -99,15 +102,16 @@
     [app.buttons[@"GET STARTED"] tap];
 
 
-    XCUIElementQuery *tablesQuery = app.tables;
-    [tablesQuery.staticTexts[@"PABLO PICASSO"] tap];
-    [tablesQuery.staticTexts[@"BANKSY"] tap];
+    XCUIElement *table = app.tables.element;
+    XCTAssert(table.exists);
+    [table.staticTexts[@"PABLO PICASSO"] tap];
+    [table.staticTexts[@"BANKSY"] tap];
 
     XCUIElement *nextButton = app.buttons[@"NEXT"];
     [nextButton tap];
-    [tablesQuery.staticTexts[@"PHOTOGRAPHY"] tap];
+    [table.staticTexts[@"PHOTOGRAPHY"] tap];
     [nextButton tap];
-    [tablesQuery.staticTexts[@"UNDER $50,000"] tap];
+    [table.staticTexts[@"UNDER $50,000"] tap];
     [nextButton tap];
 
     // Signup
