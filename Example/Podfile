@@ -11,9 +11,9 @@ target 'Emission' do
 
   # Got to make it look right
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
-    pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
+    pod 'Artsy+UIFonts'
   else
-    pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-OSSUIFonts.git"
+    pod 'Artsy+UIFonts'
   end
 
   # For easy updating of the JS
