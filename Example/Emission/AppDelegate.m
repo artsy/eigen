@@ -205,7 +205,7 @@ randomBOOL(void)
     viewController = [[ARGeneComponentViewController alloc] initWithGeneID:geneID refineSettings:params];
 
   } else if ([route isEqualToString:@"/"]) {
-    viewController = [[ARHomeComponentViewController alloc] init];
+    viewController = [[ARHomeComponentViewController alloc] initWithEmission:nil];
 
   } else {
     viewController = [[UnroutedViewController alloc] initWithRoute:route];

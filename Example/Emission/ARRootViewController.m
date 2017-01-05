@@ -111,7 +111,7 @@
 - (ARCellData *)jumpToHomepage
 {
   return [self tappableCellDataWithTitle:@"Homepage" selection: ^{
-    id viewController = [ARHomeComponentViewController new];
+    id viewController = [[ARHomeComponentViewController alloc] initWithEmission:nil];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
