@@ -8,10 +8,11 @@ install:
   - npm install -g yarn
   - yarn install
 
-after_script:
-  - npm run flow
-  - npm run lint
-  - npm run danger
+script:
+  - yarn test
+  - yarn run flow -- check
+  - yarn run lint
+  - yarn run danger
 
 deploy:
   provider: script
