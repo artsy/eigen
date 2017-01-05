@@ -3,7 +3,7 @@
 import { danger, fail } from 'danger'
 
 // CHANGELOG check
-const modifiedAppFiles = danger.git.modified_files.select(path => path.includes('lib/'))
+const modifiedAppFiles = danger.git.modified_files.filter(path => path.includes('lib/'))
 const changelogChanges = danger.git.modified_files.includes('CHANGELOG.md')
 
 if (modifiedAppFiles.length > 0 && !changelogChanges) {
