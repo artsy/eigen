@@ -1,9 +1,9 @@
-exports[`test renders 1`] = `
+exports[`layout renders as expected 1`] = `
 <ScrollView
   automaticallyAdjustContentInsets={false}
   dataSource={
     ListViewDataSource {
-      "items": 2,
+      "items": 6,
     }
   }
   initialListSize={10}
@@ -75,5 +75,33 @@ exports[`test renders 1`] = `
   </TouchableWithoutFeedback>
   <View
     onLayout={[Function]} />
+  <ArtworkRail
+    rail={
+      Object {
+        "title": "Title",
+        "type": "artwork",
+      }
+    } />
+  <ArtworkRail
+    rail={
+      Object {
+        "title": "Title",
+        "type": "artwork",
+      }
+    } />
+  <ArtistRail
+    rail={
+      Object {
+        "title": "Title",
+        "type": "artist",
+      }
+    } />
+  <ArtworkRail
+    rail={
+      Object {
+        "title": "Title",
+        "type": "artwork",
+      }
+    } />
 </ScrollView>
 `;
