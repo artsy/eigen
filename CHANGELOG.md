@@ -6,6 +6,7 @@
 
 ### 1.1.4
 
+- Added test coverage to Home container - sarah
 - Fixes bug in GeneVC where fetching was starting on page 2 - sarah
 - Update home view artworks rails order - maxim
 - Fix artist link to auction results - alloy
