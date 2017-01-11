@@ -3,6 +3,7 @@
 - Add your contributions below:
 
 - Gave ESLint, Flow and Danger the ability to fail the build - orta
+- Gene Refine button is enabled - orta
 
 ### 1.1.4
 
