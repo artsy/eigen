@@ -69,15 +69,19 @@ type Artist implements Node {
   birthday: String
   deathday: String
 
-  # A string of the form "Nationality, Birthday"
+  # A string of the form "Nationality, Birthday (or Birthday-Deathday)"
   formatted_nationality_and_birthday: String
 
   # The Artist biography article written by Artsy
   biography: Article
   alternate_names: [String]
   meta: ArtistMeta
-  blurb(format: Format): String @deprecated(reason: "Use biography_blurb which includes a gallery-submitted fallback.")
-  biography_blurb(format: Format): ArtistBlurb
+  blurb(format: Format): String
+  biography_blurb(
+    # If true, will return featured bio over Artsy one.
+    partner_bio: Boolean = false
+    format: Format
+  ): ArtistBlurb
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
@@ -106,6 +110,8 @@ type Artist implements Node {
   ): [Artist]
   carousel: ArtistCarousel
   statuses: ArtistStatuses
+
+  # Custom-sorted list of shows for an artist, in order of significance.
   exhibition_highlights(
     # The number of Shows to return
     size: Int = 5
@@ -119,6 +125,8 @@ type Artist implements Node {
     size: Int
     solo_show: Boolean
     top_tier: Boolean
+    is_reference: Boolean
+    visible_to_public: Boolean
     sort: PartnerShowSorts
   ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
   shows(
@@ -126,11 +134,12 @@ type Artist implements Node {
     active: Boolean
     status: String
 
-    # The number of Shows to return
+    # The number of PartnerShows to return
     size: Int
     solo_show: Boolean
     top_tier: Boolean
     is_reference: Boolean
+    visible_to_public: Boolean
     sort: PartnerShowSorts
   ): [Show]
   partner_artists(
@@ -156,6 +165,9 @@ enum ArtistArtworksFilters {
 type ArtistBlurb {
   text: String
   credit: String
+
+  # The partner id of the partner who submitted the featured bio.
+  partner_id: String
 }
 
 type ArtistCarousel {
@@ -228,15 +240,19 @@ type ArtistItem implements Node {
   birthday: String
   deathday: String
 
-  # A string of the form "Nationality, Birthday"
+  # A string of the form "Nationality, Birthday (or Birthday-Deathday)"
   formatted_nationality_and_birthday: String
 
   # The Artist biography article written by Artsy
   biography: Article
   alternate_names: [String]
   meta: ArtistMeta
-  blurb(format: Format): String @deprecated(reason: "Use biography_blurb which includes a gallery-submitted fallback.")
-  biography_blurb(format: Format): ArtistBlurb
+  blurb(format: Format): String
+  biography_blurb(
+    # If true, will return featured bio over Artsy one.
+    partner_bio: Boolean = false
+    format: Format
+  ): ArtistBlurb
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
@@ -265,6 +281,8 @@ type ArtistItem implements Node {
   ): [Artist]
   carousel: ArtistCarousel
   statuses: ArtistStatuses
+
+  # Custom-sorted list of shows for an artist, in order of significance.
   exhibition_highlights(
     # The number of Shows to return
     size: Int = 5
@@ -278,6 +296,8 @@ type ArtistItem implements Node {
     size: Int
     solo_show: Boolean
     top_tier: Boolean
+    is_reference: Boolean
+    visible_to_public: Boolean
     sort: PartnerShowSorts
   ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
   shows(
@@ -285,11 +305,12 @@ type ArtistItem implements Node {
     active: Boolean
     status: String
 
-    # The number of Shows to return
+    # The number of PartnerShows to return
     size: Int
     solo_show: Boolean
     top_tier: Boolean
     is_reference: Boolean
+    visible_to_public: Boolean
     sort: PartnerShowSorts
   ): [Show]
   partner_artists(
@@ -345,15 +366,19 @@ type ArtistSearchEntity implements Node {
   birthday: String
   deathday: String
 
-  # A string of the form "Nationality, Birthday"
+  # A string of the form "Nationality, Birthday (or Birthday-Deathday)"
   formatted_nationality_and_birthday: String
 
   # The Artist biography article written by Artsy
   biography: Article
   alternate_names: [String]
   meta: ArtistMeta
-  blurb(format: Format): String @deprecated(reason: "Use biography_blurb which includes a gallery-submitted fallback.")
-  biography_blurb(format: Format): ArtistBlurb
+  blurb(format: Format): String
+  biography_blurb(
+    # If true, will return featured bio over Artsy one.
+    partner_bio: Boolean = false
+    format: Format
+  ): ArtistBlurb
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
@@ -382,6 +407,8 @@ type ArtistSearchEntity implements Node {
   ): [Artist]
   carousel: ArtistCarousel
   statuses: ArtistStatuses
+
+  # Custom-sorted list of shows for an artist, in order of significance.
   exhibition_highlights(
     # The number of Shows to return
     size: Int = 5
@@ -395,6 +422,8 @@ type ArtistSearchEntity implements Node {
     size: Int
     solo_show: Boolean
     top_tier: Boolean
+    is_reference: Boolean
+    visible_to_public: Boolean
     sort: PartnerShowSorts
   ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
   shows(
@@ -402,11 +431,12 @@ type ArtistSearchEntity implements Node {
     active: Boolean
     status: String
 
-    # The number of Shows to return
+    # The number of PartnerShows to return
     size: Int
     solo_show: Boolean
     top_tier: Boolean
     is_reference: Boolean
+    visible_to_public: Boolean
     sort: PartnerShowSorts
   ): [Show]
   partner_artists(
@@ -472,6 +502,9 @@ type Artwork implements Node {
   is_shareable: Boolean
   is_hangable: Boolean
 
+  # True for inquireable artworks that have an exact price.
+  is_purchasable: Boolean
+
   # Do we want to encourage inquiries on this work?
   is_inquireable: Boolean
 
@@ -499,18 +532,21 @@ type Artwork implements Node {
   is_comparable_with_auction_results: Boolean
   is_downloadable: Boolean
   is_price_hidden: Boolean
+  is_price_range: Boolean
   availability: String
   sale_message: String
   artist(
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
   ): Artist
+  price: String
   contact_label: String
   cultural_maker: String
   artists(
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
   ): [Artist]
+  artist_names: String
   dimensions: dimensions
   image: Image
   images(size: Int): [Image]
@@ -812,6 +848,9 @@ type ArtworkSearchEntity implements Node {
   is_shareable: Boolean
   is_hangable: Boolean
 
+  # True for inquireable artworks that have an exact price.
+  is_purchasable: Boolean
+
   # Do we want to encourage inquiries on this work?
   is_inquireable: Boolean
 
@@ -839,18 +878,21 @@ type ArtworkSearchEntity implements Node {
   is_comparable_with_auction_results: Boolean
   is_downloadable: Boolean
   is_price_hidden: Boolean
+  is_price_range: Boolean
   availability: String
   sale_message: String
   artist(
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
   ): Artist
+  price: String
   contact_label: String
   cultural_maker: String
   artists(
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
   ): [Artist]
+  artist_names: String
   dimensions: dimensions
   image: Image
   images(size: Int): [Image]
@@ -946,7 +988,7 @@ type BidderPosition {
 
 type BidderPositionMaxBid {
   # An amount of money expressed in cents.
-  cents: Int
+  cents: Float
 
   # A pre-formatted price.
   display: String
@@ -965,7 +1007,7 @@ type BidderPositionMaxBid {
 
 type BidderPositionSuggestedNextBid {
   # An amount of money expressed in cents.
-  cents: Int
+  cents: Float
 
   # A pre-formatted price.
   display: String
@@ -1167,7 +1209,7 @@ enum Format {
 # a formatted String. It does not try to coerce the type.
 scalar FormattedNumber
 
-type Gene {
+type Gene implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -1213,7 +1255,7 @@ type Gene {
   trending_artists(sample: Int): [Artist]
 }
 
-type GeneItem {
+type GeneItem implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -1454,6 +1496,7 @@ enum HomePageArtworkModuleTypes {
   RECOMMENDED_WORKS
   LIVE_AUCTIONS
   CURRENT_FAIRS
+  FOLLOWED_ARTIST
   RELATED_ARTISTS
   FOLLOWED_GENES
   GENERIC_GENES
@@ -1488,7 +1531,7 @@ enum HomePageHeroUnitPlatform {
   MARTSY
 }
 
-union HomePageModuleContext = HomePageModuleContextFair | HomePageModuleContextSale | HomePageModuleContextGene | HomePageModuleContextTrending | HomePageModuleContextFollowArtists | HomePageModuleContextRelatedArtist
+union HomePageModuleContext = HomePageModuleContextFair | HomePageModuleContextSale | HomePageModuleContextGene | HomePageModuleContextTrending | HomePageModuleContextFollowArtists | HomePageModuleContextRelatedArtist | HomePageModuleContextFollowedArtist
 
 type HomePageModuleContextFair {
   # A globally unique ID.
@@ -1526,7 +1569,11 @@ type HomePageModuleContextFollowArtists {
   counts: FollowArtistCounts
 }
 
-type HomePageModuleContextGene {
+type HomePageModuleContextFollowedArtist {
+  artist: Artist
+}
+
+type HomePageModuleContextGene implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -2596,7 +2643,7 @@ type SaleArtworkCounts {
 
 type SaleArtworkCurrentBid {
   # An amount of money expressed in cents.
-  cents: Int
+  cents: Float
 
   # A pre-formatted price.
   display: String
@@ -2635,7 +2682,7 @@ type SaleArtworkHighestBid {
 
 type SaleArtworkHighEstimate {
   # An amount of money expressed in cents.
-  cents: Int
+  cents: Float
 
   # A pre-formatted price.
   display: String
@@ -2654,7 +2701,7 @@ type SaleArtworkHighEstimate {
 
 type SaleArtworkLowEstimate {
   # An amount of money expressed in cents.
-  cents: Int
+  cents: Float
 
   # A pre-formatted price.
   display: String
@@ -2673,7 +2720,7 @@ type SaleArtworkLowEstimate {
 
 type SaleArtworkMinimumNextBid {
   # An amount of money expressed in cents.
-  cents: Int
+  cents: Float
 
   # A pre-formatted price.
   display: String
@@ -2692,7 +2739,7 @@ type SaleArtworkMinimumNextBid {
 
 type SaleArtworkOpeningBid {
   # An amount of money expressed in cents.
-  cents: Int
+  cents: Float
 
   # A pre-formatted price.
   display: String
@@ -2711,7 +2758,7 @@ type SaleArtworkOpeningBid {
 
 type SaleArtworkReserve {
   # An amount of money expressed in cents.
-  cents: Int
+  cents: Float
 
   # A pre-formatted price.
   display: String
@@ -2747,6 +2794,8 @@ enum SaleSorts {
   START_AT_DESC
   ELIGIBLE_SALE_ARTWORKS_COUNT_ASC
   ELIGIBLE_SALE_ARTWORKS_COUNT_DESC
+  TIMELY_AT_NAME_ASC
+  TIMELY_AT_NAME_DESC
 }
 
 type Search {
@@ -2790,6 +2839,7 @@ type Show implements Node {
   is_active: Boolean
   is_displayable: Boolean
   is_fair_booth: Boolean
+  is_reference: Boolean
   press_release(format: Format): String
   start_at(format: String, timezone: String, convert_to_utc: Boolean): String
   end_at(format: String, timezone: String, convert_to_utc: Boolean): String

@@ -1,6 +1,12 @@
-# Reactions ⟶ Emissions
+# Reactions ⇒ Emissions
 
-[React Native] Components used by [Eigen].
+Emission is a collection of [React Native] Components which are consumed by [Eigen]. A writeup on how & why we made a lot of the repo decisions is on our [blog here].
+
+Inside here you will find:
+
+* An example app for building and running Emission's components with an Eigen-like API.
+* An NPM module that relies on React Native and manages the components.
+* A Podspec that wraps it all together for easy external usage in Eigen.
 
 ### Meta
 
@@ -21,7 +27,8 @@ Want to know more about Emission? Read the [mobile](http://artsy.github.io/blog/
    * `$ brew link pcre`
    * `$ brew install watchman --HEAD`
 3. Install NPM modules: `$ yarn install`
-4. Install Pods: `$ cd Example && pod install`
+4. Install CocoaPods: `$ gem install cocoapods`
+5. Install Pods: `$ cd Example && ARTSY_STAFF_MEMBER=true pod install`
 
 Why Yarn? See [our JS glossary for Yarn][glossary-yarn],
 
@@ -126,3 +133,4 @@ On the other hand, our JS is deployed from master to our dev build on Testflight
 [flow]: http://flowtype.org
 [node]: http://nodejs.org
 [glossary-yarn]: http://artsy.github.io/blog/2016/11/14/JS-Glossary/#yarn
+[blog here]: http://artsy.github.io/blog/2016/08/24/On-Emission/

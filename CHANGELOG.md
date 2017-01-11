@@ -1,8 +1,16 @@
+### Master
+
+- Add your contributions below:
+
+- Gave ESLint, Flow and Danger the ability to fail the build - orta
+
 ### 1.1.4
 
+- Added test coverage to Home container - sarah
 - Fixes bug in GeneVC where fetching was starting on page 2 - sarah
 - Update home view artworks rails order - maxim
 - Fix artist link to auction results - alloy
+- Update artworks grid to show multiple artist names when available - mzikherman
 
 ### 1.1.3
 

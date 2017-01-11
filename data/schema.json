@@ -1705,7 +1705,17 @@
             },
             {
               "kind": "OBJECT",
+              "name": "Gene",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
               "name": "HomePageArtworkModule",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "HomePageModuleContextGene",
               "ofType": null
             },
             {
@@ -1716,6 +1726,11 @@
             {
               "kind": "OBJECT",
               "name": "ArtistItem",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "GeneItem",
               "ofType": null
             },
             {
@@ -3013,6 +3028,18 @@
               "deprecationReason": null
             },
             {
+              "name": "is_purchasable",
+              "description": "True for inquireable artworks that have an exact price.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "is_inquireable",
               "description": "Do we want to encourage inquiries on this work?",
               "args": [],
@@ -3181,6 +3208,18 @@
               "deprecationReason": null
             },
             {
+              "name": "is_price_range",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "availability",
               "description": null,
               "args": [],
@@ -3222,6 +3261,18 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "Artist",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "price",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -3274,6 +3325,18 @@
                   "name": "Artist",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "artist_names",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -5567,7 +5630,7 @@
             },
             {
               "name": "formatted_nationality_and_birthday",
-              "description": "A string of the form \"Nationality, Birthday\"",
+              "description": "A string of the form \"Nationality, Birthday (or Birthday-Deathday)\"",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -5637,13 +5700,23 @@
                 "name": "String",
                 "ofType": null
               },
-              "isDeprecated": true,
-              "deprecationReason": "Use biography_blurb which includes a gallery-submitted fallback."
+              "isDeprecated": false,
+              "deprecationReason": null
             },
             {
               "name": "biography_blurb",
               "description": null,
               "args": [
+                {
+                  "name": "partner_bio",
+                  "description": "If true, will return featured bio over Artsy one.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "false"
+                },
                 {
                   "name": "format",
                   "description": null,
@@ -5908,7 +5981,7 @@
             },
             {
               "name": "exhibition_highlights",
-              "description": null,
+              "description": "Custom-sorted list of shows for an artist, in order of significance.",
               "args": [
                 {
                   "name": "size",
@@ -5998,6 +6071,26 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "is_reference",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "visible_to_public",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "sort",
                   "description": null,
                   "type": {
@@ -6056,7 +6149,7 @@
                 },
                 {
                   "name": "size",
-                  "description": "The number of Shows to return",
+                  "description": "The number of PartnerShows to return",
                   "type": {
                     "kind": "SCALAR",
                     "name": "Int",
@@ -6086,6 +6179,16 @@
                 },
                 {
                   "name": "is_reference",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "visible_to_public",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
@@ -6305,6 +6408,18 @@
             {
               "name": "credit",
               "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "partner_id",
+              "description": "The partner id of the partner who submitted the featured bio.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -6932,6 +7047,18 @@
             },
             {
               "name": "is_fair_booth",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "is_reference",
               "description": null,
               "args": [],
               "type": {
@@ -8574,6 +8701,18 @@
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "TIMELY_AT_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TIMELY_AT_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "possibleTypes": null
@@ -9676,7 +9815,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "Float",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -9774,7 +9913,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "Float",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -9872,7 +10011,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "Float",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -9970,7 +10109,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "Float",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -10068,7 +10207,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "Float",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -10166,7 +10305,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "Float",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -15012,7 +15151,13 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [],
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
           "enumValues": null,
           "possibleTypes": null
         },
@@ -15724,6 +15869,11 @@
             {
               "kind": "OBJECT",
               "name": "HomePageModuleContextRelatedArtist",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "HomePageModuleContextFollowedArtist",
               "ofType": null
             }
           ]
@@ -17172,7 +17322,13 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [],
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
           "enumValues": null,
           "possibleTypes": null
         },
@@ -17301,6 +17457,29 @@
           "possibleTypes": null
         },
         {
+          "kind": "OBJECT",
+          "name": "HomePageModuleContextFollowedArtist",
+          "description": null,
+          "fields": [
+            {
+              "name": "artist",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Artist",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
           "kind": "ENUM",
           "name": "HomePageArtworkModuleTypes",
           "description": null,
@@ -17346,6 +17525,12 @@
             },
             {
               "name": "CURRENT_FAIRS",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FOLLOWED_ARTIST",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -18082,7 +18267,7 @@
             },
             {
               "name": "formatted_nationality_and_birthday",
-              "description": "A string of the form \"Nationality, Birthday\"",
+              "description": "A string of the form \"Nationality, Birthday (or Birthday-Deathday)\"",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -18152,13 +18337,23 @@
                 "name": "String",
                 "ofType": null
               },
-              "isDeprecated": true,
-              "deprecationReason": "Use biography_blurb which includes a gallery-submitted fallback."
+              "isDeprecated": false,
+              "deprecationReason": null
             },
             {
               "name": "biography_blurb",
               "description": null,
               "args": [
+                {
+                  "name": "partner_bio",
+                  "description": "If true, will return featured bio over Artsy one.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "false"
+                },
                 {
                   "name": "format",
                   "description": null,
@@ -18423,7 +18618,7 @@
             },
             {
               "name": "exhibition_highlights",
-              "description": null,
+              "description": "Custom-sorted list of shows for an artist, in order of significance.",
               "args": [
                 {
                   "name": "size",
@@ -18513,6 +18708,26 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "is_reference",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "visible_to_public",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "sort",
                   "description": null,
                   "type": {
@@ -18571,7 +18786,7 @@
                 },
                 {
                   "name": "size",
-                  "description": "The number of Shows to return",
+                  "description": "The number of PartnerShows to return",
                   "type": {
                     "kind": "SCALAR",
                     "name": "Int",
@@ -18601,6 +18816,16 @@
                 },
                 {
                   "name": "is_reference",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "visible_to_public",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
@@ -19278,7 +19503,13 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [],
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
           "enumValues": null,
           "possibleTypes": null
         },
@@ -20251,7 +20482,7 @@
             },
             {
               "name": "formatted_nationality_and_birthday",
-              "description": "A string of the form \"Nationality, Birthday\"",
+              "description": "A string of the form \"Nationality, Birthday (or Birthday-Deathday)\"",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -20321,13 +20552,23 @@
                 "name": "String",
                 "ofType": null
               },
-              "isDeprecated": true,
-              "deprecationReason": "Use biography_blurb which includes a gallery-submitted fallback."
+              "isDeprecated": false,
+              "deprecationReason": null
             },
             {
               "name": "biography_blurb",
               "description": null,
               "args": [
+                {
+                  "name": "partner_bio",
+                  "description": "If true, will return featured bio over Artsy one.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "false"
+                },
                 {
                   "name": "format",
                   "description": null,
@@ -20592,7 +20833,7 @@
             },
             {
               "name": "exhibition_highlights",
-              "description": null,
+              "description": "Custom-sorted list of shows for an artist, in order of significance.",
               "args": [
                 {
                   "name": "size",
@@ -20682,6 +20923,26 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "is_reference",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "visible_to_public",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "sort",
                   "description": null,
                   "type": {
@@ -20740,7 +21001,7 @@
                 },
                 {
                   "name": "size",
-                  "description": "The number of Shows to return",
+                  "description": "The number of PartnerShows to return",
                   "type": {
                     "kind": "SCALAR",
                     "name": "Int",
@@ -20770,6 +21031,16 @@
                 },
                 {
                   "name": "is_reference",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "visible_to_public",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
@@ -21222,6 +21493,18 @@
               "deprecationReason": null
             },
             {
+              "name": "is_purchasable",
+              "description": "True for inquireable artworks that have an exact price.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "is_inquireable",
               "description": "Do we want to encourage inquiries on this work?",
               "args": [],
@@ -21390,6 +21673,18 @@
               "deprecationReason": null
             },
             {
+              "name": "is_price_range",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "availability",
               "description": null,
               "args": [],
@@ -21431,6 +21726,18 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "Artist",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "price",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -21483,6 +21790,18 @@
                   "name": "Artist",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "artist_names",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -23945,7 +24264,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "Float",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -24043,7 +24362,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "Float",
                 "ofType": null
               },
               "isDeprecated": false,
