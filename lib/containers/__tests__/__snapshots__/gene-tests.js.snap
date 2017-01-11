@@ -199,6 +199,7 @@ exports[`test looks like expected 1`] = `
                 Object {
                   "fontStyle": "italic",
                   "marginTop": 4,
+                  "maxWidth": 245,
                 },
                 Object {
                   "fontFamily": "AGaramondPro-Regular",
