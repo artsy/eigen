@@ -1,8 +1,4 @@
 upcoming:
-    version: 3.0.3
-    details: Hot fix for 3.0.2 release. 
-    user_facing:
-      - Fixes Facebook signup crash - maxim 
     version: 3.1.0
     details: Scope not known yet
     dev:
@@ -19,6 +15,11 @@ upcoming:
       - Fixes a strange text-flashing issue on auction views - ash
 
 releases:
+  - version: 3.0.3
+    details: Hot fix for 3.0.2 release. 
+    date: Dec 02, 2016
+    user_facing:
+      - Fixes Facebook signup crash - maxim 
   - version: 3.0.2
     details: Second patch fix for 3.0.0 release.
     date: Nov 19, 2016
