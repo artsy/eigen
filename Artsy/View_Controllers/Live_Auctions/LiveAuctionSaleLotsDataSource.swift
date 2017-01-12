@@ -1,14 +1,14 @@
 import UIKit
 
 protocol LiveAuctionSaleLotsDataSourceScrollableDelgate: class {
-    func registerForScrollingState(viewController: LiveAuctionLotViewController)
+    func registerForScrollingState(_ viewController: LiveAuctionLotViewController)
 }
 
 class LiveAuctionSaleLotsDataSource: NSObject, UIPageViewControllerDataSource {
     var salesPerson: LiveAuctionsSalesPersonType!
     weak var scrollingDelegate: LiveAuctionSaleLotsDataSourceScrollableDelgate?
 
-    func liveAuctionPreviewViewControllerForIndex(index: Int) -> LiveAuctionLotViewController? {
+    func liveAuctionPreviewViewControllerForIndex(_ index: Int) -> LiveAuctionLotViewController? {
         guard 0..<salesPerson.lotCount ~= index else { return nil }
         let lotViewModel = salesPerson.lotViewModelForIndex(index)
 
@@ -23,7 +23,7 @@ class LiveAuctionSaleLotsDataSource: NSObject, UIPageViewControllerDataSource {
         return auctionVC
     }
 
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         if salesPerson.lotCount == 1 { return nil }
 
         guard let viewController = viewController as? LiveAuctionLotViewController else { return nil }
@@ -32,7 +32,7 @@ class LiveAuctionSaleLotsDataSource: NSObject, UIPageViewControllerDataSource {
         return liveAuctionPreviewViewControllerForIndex(newIndex)
     }
 
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         if salesPerson.lotCount == 1 { return nil }
 
         guard let viewController = viewController as? LiveAuctionLotViewController else { return nil }

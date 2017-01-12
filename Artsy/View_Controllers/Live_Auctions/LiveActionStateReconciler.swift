@@ -25,9 +25,9 @@ State update includes:
 typealias LotEventJSON = [[String: AnyObject]]
 
 protocol LiveAuctionStateReconcilerType {
-    func updateState(state: AnyObject)
-    func processLotEventBroadcast(broadcast: AnyObject)
-    func processCurrentLotUpdate(update: AnyObject)
+    func updateState(_ state: AnyObject)
+    func processLotEventBroadcast(_ broadcast: AnyObject)
+    func processCurrentLotUpdate(_ update: AnyObject)
 
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
     var debugAllEventsSignal: Observable<LotEventJSON> { get }
@@ -36,24 +36,24 @@ protocol LiveAuctionStateReconcilerType {
 class LiveAuctionStateReconciler: NSObject {
     typealias LotID = String
 
-    private let saleArtworks: [LiveAuctionLotViewModel]
+    fileprivate let saleArtworks: [LiveAuctionLotViewModel]
 
     init(saleArtworks: [LiveAuctionLotViewModel]) {
         self.saleArtworks = saleArtworks
         super.init()
     }
 
-    private let _currentLotSignal = Observable<LiveAuctionLotViewModel?>(nil)
-    private let _debugAllEventsSignal = Observable<LotEventJSON>(options: [])
+    fileprivate let _currentLotSignal = Observable<LiveAuctionLotViewModel?>(nil)
+    fileprivate let _debugAllEventsSignal = Observable<LotEventJSON>(options: [])
 
-    private var _currentLotID: String?
+    fileprivate var _currentLotID: String?
 }
 
 
 private typealias PublicFunctions = LiveAuctionStateReconciler
 extension PublicFunctions: LiveAuctionStateReconcilerType {
 
-    func updateState(state: AnyObject) {
+    func updateState(_ state: AnyObject) {
         // TODO: how to handle changes to start/end times? Necessary at all?
 
         guard let fullLotStateById = state["fullLotStateById"] as? [String: [String: AnyObject]] else { return }
@@ -74,22 +74,22 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
         updateCurrentLotWithIDIfNecessary(currentLotID)
     }
 
-    func processLotEventBroadcast(broadcast: AnyObject) {
+    func processLotEventBroadcast(_ broadcast: AnyObject) {
 
         guard let
             json = broadcast as? [String: AnyObject],
-            events = json["events"] as? [String: [String: AnyObject]],
-            lotID = events.values.first?["lotId"] as? String,
-            lot = saleArtworks.filter({ $0.lotID == lotID }).first,
-            derivedLotState = json["derivedLotState"] as? [String: AnyObject],
-            fullEventOrder = json["fullEventOrder"] as? [String] else { return }
+            let events = json["events"] as? [String: [String: AnyObject]],
+            let lotID = events.values.first?["lotId"] as? String,
+            let lot = saleArtworks.filter({ $0.lotID == lotID }).first,
+            let derivedLotState = json["derivedLotState"] as? [String: AnyObject],
+            let fullEventOrder = json["fullEventOrder"] as? [String] else { return }
 
         updateUserSpecificLotState(lot, derivedState: derivedLotState)
         updateLotWithEvents(lot, lotEvents: Array(events.values), fullEventOrder: fullEventOrder)
         updateLotDerivedState(lot, derivedState: derivedLotState)
     }
 
-    func processCurrentLotUpdate(update: AnyObject) {
+    func processCurrentLotUpdate(_ update: AnyObject) {
         let currentLotID = update["lotId"] as? String
         updateCurrentLotWithIDIfNecessary(currentLotID)
     }
@@ -107,7 +107,7 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
 private typealias PrivateFunctions = LiveAuctionStateReconciler
 private extension PrivateFunctions {
 
-    func updateUserSpecificLotState(lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
+    func updateUserSpecificLotState(_ lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
 
         let winningBidEventID = derivedState["winningBidEventId"] as? String
         lot.updateWinningBidEventID(winningBidEventID)
@@ -117,7 +117,7 @@ private extension PrivateFunctions {
         lot.updateSellingToBidder(bidderID)
     }
 
-    func updateLotDerivedState(lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
+    func updateLotDerivedState(_ lot: LiveAuctionLotViewModel, derivedState: [String: AnyObject]) {
 
         if let reserveStatusString = derivedState["reserveStatus"] as? String {
             lot.updateReserveStatus(reserveStatusString)
@@ -140,13 +140,13 @@ private extension PrivateFunctions {
         }
     }
 
-    func updateLotWithEvents(lot: LiveAuctionLotViewModel, lotEvents: [[String: AnyObject]], fullEventOrder: [String]? = nil) {
+    func updateLotWithEvents(_ lot: LiveAuctionLotViewModel, lotEvents: [[String: AnyObject]], fullEventOrder: [String]? = nil) {
         // TODO: fullEventOrder, if specified, yields the _exact_ history and order of events. We need to remove any local events not present in fullEventOrder in case they were undo'd by the operator.
 
         let existingEventIds = Set(lot.eventIDs)
         let newEvents = lotEvents.filter { existingEventIds.contains($0["eventId"] as? String ?? "") == false }
 
-        if ARDeveloperOptions.keyExists("log_live_events") {
+        if ARDeveloperOptions.keyExists("log_live_events" as NSCopying!) {
             for event in newEvents {
                 print("Event: \(event)\n\n")
             }
@@ -154,11 +154,11 @@ private extension PrivateFunctions {
         _debugAllEventsSignal.update(newEvents)
 
         // TODO: is this a good idea? This will remove events we don't know yet
-        let events = newEvents.flatMap { LiveEvent(JSON: $0) }
+        let events = newEvents.flatMap { LiveEvent(json: $0) }
         lot.addEvents(events)
     }
 
-    func updateCurrentLotWithIDIfNecessary(newCurrentLotID: LotID?) {
+    func updateCurrentLotWithIDIfNecessary(_ newCurrentLotID: LotID?) {
         guard let newCurrentLotID = newCurrentLotID else {
             return _currentLotSignal.update(nil)
         }
@@ -173,9 +173,9 @@ private extension PrivateFunctions {
 
 
 private extension LiveSale {
-    func needsUpdateToInstanceFromSale(otherSale: LiveSale) -> Bool {
+    func needsUpdateToInstanceFromSale(_ otherSale: LiveSale) -> Bool {
         guard self.startDate == otherSale.startDate else { return true }
-        guard self.endDate == otherSale.endDate else { return true }
+        guard self.saleState == otherSale.saleState else { return true }
         return false
     }
 }

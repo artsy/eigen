@@ -42,10 +42,10 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                 guard let `self` = self else { return Observable() }
 
                 switch bidders {
-                case .Success(let bidders):
+                case .success(let bidders):
                     return self.createViewModel(bidders)
-                case .Error(let error):
-                    return Observable(.Error(error))
+                case .error(let error):
+                    return Observable(.error(error))
                 }
             }.next { saleViewModel in
                 // Store the SaleViewModel
@@ -53,7 +53,7 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
             }
     }
 
-    func createViewModel(bidders: [Bidder]) -> Observable<Result<SaleViewModel>> {
+    func createViewModel(_ bidders: [Bidder]) -> Observable<Result<SaleViewModel>> {
         let signal = Observable(saleID)
 
         let fetchSale = signal.flatMap(saleNetworkModel.fetchSale)
@@ -65,18 +65,18 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                 // Tuple has the Sale and [SaleArtwork] from previous network requests.
                 // We need to extract them from their respective Result containers. If either failed, we pass along that failure.
                 switch tuple {
-                case (.Success(let sale), .Success(let saleArtworks)):
+                case (.success(let sale), .success(let saleArtworks)):
                     saleArtworks.forEach { $0.auction = sale }
-                    return .Success(SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: bidders))
+                    return .success(SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: bidders))
 
-                case (.Error(let error), .Error):
-                    return .Error(error) // Need to pick one error, might as well go with the first.
+                case (.error(let error), .error):
+                    return .error(error) // Need to pick one error, might as well go with the first.
 
-                case (.Error(let error), .Success):
-                    return .Error(error)
+                case (.error(let error), .success):
+                    return .error(error)
 
-                case (.Success, .Error(let error)):
-                    return .Error(error)
+                case (.success, .error(let error)):
+                    return .error(error)
                 }
 
         }

@@ -1,7 +1,7 @@
 import UIKit
 
 struct NavigationButton {
-    typealias HandlerClosure = UIButton -> Void
+    typealias HandlerClosure = @convention (block) (UIButton) -> Void
 
     let buttonClass: UIButton.Type
     let properties: [String: String]
@@ -22,6 +22,6 @@ extension ARNavigationButtonsViewController {
     }
 }
 
-private func toBlock(closure: @convention (block) UIButton -> Void) -> AnyObject {
-    return unsafeBitCast(closure, AnyObject.self)
+private func toBlock(_ closure: @escaping NavigationButton.HandlerClosure) -> Any {
+    return unsafeBitCast(closure, to: AnyObject.self)
 }

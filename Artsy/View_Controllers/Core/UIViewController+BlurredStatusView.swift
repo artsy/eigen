@@ -4,11 +4,11 @@ import Artsy_UIButtons
 import ORStackView
 
 private var statusViewAssociatedKey: Int = 0
-private var statusViewPreviousStatusBarStyle: UIStatusBarStyle = .Default
+private var statusViewPreviousStatusBarStyle: UIStatusBarStyle = .default
 
 enum BlurredStatusOverlayViewCloseButtonState {
-    case Hide
-    case Show(target: NSObject, selector: Selector)
+    case hide
+    case show(target: NSObject, selector: Selector)
 }
 
 extension UIViewController {
@@ -22,7 +22,7 @@ extension UIViewController {
         }
     }
 
-    func ar_presentBlurredOverlayWithTitle(title: String, subtitle: String, buttonState: BlurredStatusOverlayViewCloseButtonState = .Hide) {
+    func ar_presentBlurredOverlayWithTitle(_ title: String, subtitle: String, buttonState: BlurredStatusOverlayViewCloseButtonState = .hide) {
 
         if blurredStatusOverlayView != nil { return }
 
@@ -31,11 +31,11 @@ extension UIViewController {
         ar_dispatch_async {
 
             UIGraphicsBeginImageContext(self.view.bounds.size)
-            self.view.drawViewHierarchyInRect(self.view.bounds, afterScreenUpdates:false)
+            self.view.drawHierarchy(in: self.view.bounds, afterScreenUpdates:false)
             let viewImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
 
-            let blurredImage = viewImage.blurredImageWithRadius(12, iterations: 2, tintColor: UIColor.blackColor())
+            let blurredImage = viewImage?.blurredImage(withRadius: 12, iterations: 2, tintColor: UIColor.black)
 
             ar_dispatch_main_queue {
                 // Create an imageview of the blurred view, for the view's background
@@ -45,37 +45,37 @@ extension UIViewController {
 
                 imageView.image = blurredImage
                 self.view.addSubview(imageView)
-                imageView.alignToView(self.view)
+                imageView.align(toView: self.view)
 
                 // We want it tinted black, but applying a black tint doesn't really
                 // do too much in the blur image, so apply a transparent black overlay
                 let darkOverlay = UIView(frame: imageView.bounds)
                 darkOverlay.backgroundColor = UIColor(white: 0, alpha: 0.75)
                 imageView.addSubview(darkOverlay)
-                darkOverlay.alignToView(imageView)
+                darkOverlay.align(toView: imageView)
 
                 // As the BG will be dark, we need to set the status bar to be white
                 // this should not affect the presentation, so if it's not showing,
                 // it's not going to show it.
-                let app = UIApplication.sharedApplication()
+                let app = UIApplication.shared
                 statusViewPreviousStatusBarStyle = app.statusBarStyle
-                app.setStatusBarStyle(.LightContent, animated: true)
+                app.setStatusBarStyle(.lightContent, animated: true)
 
                 // Optional X button in the top trailing edge
-                if case .Show(let target, let selector) = buttonState {
+                if case .show(let target, let selector) = buttonState {
                     let dimension = 40
                     let closeButton = ARMenuButton()
-                    closeButton.setBorderColor(.whiteColor(), forState: .Normal, animated: false)
-                    closeButton.setBackgroundColor(.clearColor(), forState: .Normal, animated: false)
-                    let cross = UIImage(named:"serif_modal_close")?.imageWithRenderingMode(.AlwaysTemplate)
-                    closeButton.setImage(cross, forState: .Normal)
+                    closeButton.setBorderColor(.white, for: UIControlState(), animated: false)
+                    closeButton.setBackgroundColor(.clear, for: UIControlState(), animated: false)
+                    let cross = UIImage(named:"serif_modal_close")?.withRenderingMode(.alwaysTemplate)
+                    closeButton.setImage(cross, for: UIControlState())
                     closeButton.alpha = 0.5
-                    closeButton.tintColor = .whiteColor()
-                    closeButton.addTarget(target, action: selector, forControlEvents: .TouchUpInside)
+                    closeButton.tintColor = .white
+                    closeButton.addTarget(target, action: selector, for: .touchUpInside)
 
                     imageView.addSubview(closeButton)
-                    closeButton.alignTrailingEdgeWithView(imageView, predicate: "-20")
-                    closeButton.alignTopEdgeWithView(imageView, predicate: "20")
+                    closeButton.alignTrailingEdge(withView: imageView, predicate: "-20")
+                    closeButton.alignTopEdge(withView: imageView, predicate: "20")
                     closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
                 }
 
@@ -83,14 +83,14 @@ extension UIViewController {
                 textStack.addSerifPageTitle(title, subtitle: subtitle)
                 textStack.subviews.forEach {
                     guard let label = $0 as? UILabel else { return }
-                    label.textColor = .whiteColor()
-                    label.backgroundColor = .clearColor()
+                    label.textColor = .white
+                    label.backgroundColor = .clear
                 }
 
                 // Vertically center the text stack
                 imageView.addSubview(textStack)
-                textStack.constrainWidthToView(imageView, predicate: "-40")
-                textStack.alignCenterWithView(imageView)
+                textStack.constrainWidth(toView: imageView, predicate: "-40")
+                textStack.alignCenter(withView: imageView)
             }
         }
     }
@@ -100,7 +100,7 @@ extension UIViewController {
         blurredStatusOverlayView.removeFromSuperview()
         self.blurredStatusOverlayView = nil
 
-        UIApplication.sharedApplication().statusBarStyle = statusViewPreviousStatusBarStyle
+        UIApplication.shared.statusBarStyle = statusViewPreviousStatusBarStyle
     }
 
 }

@@ -12,23 +12,23 @@ class LiveAuctionBidButtonTests: QuickSpec {
     override func spec() {
 
         let examples: [String: [LiveAuctionBidButtonState]] = [
-            "registration required": [.Active(biddingState: .UserRegistrationRequired)],
-            "registration pending": [.Active(biddingState: .UserRegistrationPending)],
-            "registration closed": [.Active(biddingState: .UserRegistrationClosed)],
-            "biddable": [.Active(biddingState: .Biddable(askingPrice: 45_000_00, currencySymbol: "$"))],
-            "in progress": [.Active(biddingState: .BiddingInProgress )],
-            "failed": [.Active(biddingState: .BidNetworkFail)],
-            "max bidder": [.Active(biddingState: .BidBecameMaxBidder)],
-            "not max bidder": [.Active(biddingState: .BidBecameMaxBidder), .Active(biddingState: .Biddable(askingPrice: 1000, currencySymbol: ""))],
-            "waiting": [.Active(biddingState: .LotWaitingToOpen)],
-            "sold": [.Active(biddingState: .LotSold)],
-            "closed": [.InActive(lotState: .ClosedLot(wasPassed: false))],
-            "passed": [.InActive(lotState: .ClosedLot(wasPassed: true))],
-            "upcoming": [.InActive(lotState: .UpcomingLot(isHighestBidder: false))],
-            "highest bidder": [.InActive(lotState: .UpcomingLot(isHighestBidder: true))],
+            "registration required": [.active(biddingState: .userRegistrationRequired)],
+            "registration pending": [.active(biddingState: .userRegistrationPending)],
+            "registration closed": [.active(biddingState: .userRegistrationClosed)],
+            "biddable": [.active(biddingState: .biddable(askingPrice: 45_000_00, currencySymbol: "$"))],
+            "in progress": [.active(biddingState: .biddingInProgress )],
+            "failed": [.active(biddingState: .bidNetworkFail)],
+            "max bidder": [.active(biddingState: .bidBecameMaxBidder)],
+            "not max bidder": [.active(biddingState: .bidBecameMaxBidder), .active(biddingState: .biddable(askingPrice: 1000, currencySymbol: ""))],
+            "waiting": [.active(biddingState: .lotWaitingToOpen)],
+            "sold": [.active(biddingState: .lotSold)],
+            "closed": [.inActive(lotState: .closedLot(wasPassed: false))],
+            "passed": [.inActive(lotState: .closedLot(wasPassed: true))],
+            "upcoming": [.inActive(lotState: .upcomingLot(isHighestBidder: false))],
+            "highest bidder": [.inActive(lotState: .upcomingLot(isHighestBidder: true))],
         ]
 
-        for (_, tuple) in examples.enumerate() {
+        for (_, tuple) in examples.enumerated() {
 
             it("has valid snapshot \(tuple.0)") {
                 let viewModel = Test_BiddingViewModel()
@@ -50,9 +50,9 @@ class LiveAuctionBidButtonTests: QuickSpec {
 
             waitUntil { done in
                 subject.outbidNoticeAnimationComplete = done
-                viewModel.progressSignal.update(.Active(biddingState: .BidBecameMaxBidder))
-                viewModel.progressSignal.update(.Active(biddingState: .Biddable(askingPrice: 1000, currencySymbol: "")))
-                viewModel.progressSignal.update(.InActive(lotState: .ClosedLot(wasPassed: false)))
+                viewModel.progressSignal.update(.active(biddingState: .bidBecameMaxBidder))
+                viewModel.progressSignal.update(.active(biddingState: .biddable(askingPrice: 1000, currencySymbol: "")))
+                viewModel.progressSignal.update(.inActive(lotState: .closedLot(wasPassed: false)))
             }
 
             subject.frame = CGRect(x:0, y:0, width:260, height: 60)

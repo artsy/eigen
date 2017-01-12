@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'cocoapods', '>= 1.0.0'
+gem 'cocoapods', '>= 1.1.0'
 gem 'cocoapods-keys'
 gem 'cocoapods-check'
 
@@ -15,5 +15,5 @@ group :test do
   gem 'second_curtain'
   gem 'nokogiri', '>= 1.6.7'
   gem 'danger'
-  gem 'danger-junit'
+  # gem 'danger-junit'
 end

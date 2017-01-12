@@ -9,22 +9,27 @@ import Forgeries
 import Artsy
 
 class LiveAuctionViewControllerTests: QuickSpec {
-
-
     override func spec() {
         var subject: LiveAuctionViewController!
 
         var auctionViewModel: Test_LiveAuctionViewModel!
         var fakeSalesPerson: Stub_LiveAuctionsSalesPerson!
+        
+        // Ensure there is a key window for all of the tests
+        var window: UIWindow?
+        beforeSuite {
+            window = UIWindow()
+            window?.makeKeyAndVisible()
+        }
 
         beforeEach {
-            OHHTTPStubs.stubJSONResponseAtPath("/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[:])
+            OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[:])
 
             auctionViewModel = Test_LiveAuctionViewModel()
             fakeSalesPerson = stub_auctionSalesPerson(auctionViewModel)
         }
 
-        func setupViewControllerForPhone(singleLayout: Bool) {
+        func setupViewControllerForPhone(_ singleLayout: Bool) {
 
             subject = LiveAuctionViewController(saleSlugOrID: "sale-id")
 
@@ -44,7 +49,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
         it("handles splitting in an iPad") {
             setupViewControllerForPhone(false)
-            subject.stubHorizontalSizeClass(.Regular)
+            subject.stubHorizontalSizeClass(.regular)
             subject.view.frame = CGRect(x: 0, y: 0, width: 1024, height: 768)
 
             expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
@@ -60,7 +65,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
             subject.view.frame = CGRect(x: 0, y: 0, width: 320, height: 480)
             subject.endAppearanceTransition()
 
-            let result: StaticSaleResult = Result.Error(LiveAuctionStaticDataFetcher.Error.JSONParsing)
+            let result: StaticSaleResult = Result.error(LiveAuctionStaticDataFetcher.Error.jsonParsing)
             fakeStatic.fakeObserver.update(result)
 
             expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))

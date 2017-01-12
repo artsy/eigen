@@ -17,17 +17,17 @@ Based on socket events:
 */
 
 class LiveAuctionStateManager: NSObject {
-    typealias SocketCommunicatorCreator = (host: String, causalitySaleID: String, jwt: JWT) -> LiveAuctionSocketCommunicatorType
-    typealias StateReconcilerCreator = (saleArtworks: [LiveAuctionLotViewModel]) -> LiveAuctionStateReconcilerType
+    typealias SocketCommunicatorCreator = (_ host: String, _ causalitySaleID: String, _ jwt: JWT) -> LiveAuctionSocketCommunicatorType
+    typealias StateReconcilerCreator = (_ saleArtworks: [LiveAuctionLotViewModel]) -> LiveAuctionStateReconcilerType
 
     let sale: LiveSale
     let bidderCredentials: BiddingCredentials
     let operatorConnectedSignal = Observable<Bool>()
     let initialStateLoadedSignal = Observable<Void>(options: .Once)
 
-    private let socketCommunicator: LiveAuctionSocketCommunicatorType
-    private let stateReconciler: LiveAuctionStateReconcilerType
-    private var biddingStates = [String: LiveAuctionBiddingViewModelType]()
+    fileprivate let socketCommunicator: LiveAuctionSocketCommunicatorType
+    fileprivate let stateReconciler: LiveAuctionStateReconcilerType
+    fileprivate var biddingStates = [String: LiveAuctionBiddingViewModelType]()
 
     var socketConnectionSignal: Observable<Bool> {
         return socketCommunicator.socketConnectionSignal
@@ -43,8 +43,8 @@ class LiveAuctionStateManager: NSObject {
 
         self.sale = sale
         self.bidderCredentials = bidderCredentials
-        self.socketCommunicator = socketCommunicatorCreator(host: host, causalitySaleID: sale.causalitySaleID, jwt: jwt)
-        self.stateReconciler = stateReconcilerCreator(saleArtworks: saleArtworks)
+        self.socketCommunicator = socketCommunicatorCreator(host, sale.causalitySaleID, jwt)
+        self.stateReconciler = stateReconcilerCreator(saleArtworks)
 
         super.init()
 
@@ -66,11 +66,11 @@ class LiveAuctionStateManager: NSObject {
 
             let json = JSON(response)
             let bidUUID = json["key"].stringValue
-            let biddingViewModel = self?.biddingStates.removeValueForKey(bidUUID)
+            let biddingViewModel = self?.biddingStates.removeValue(forKey: bidUUID)
 //            So far this event isn't needed anywhere, but keeping for prosperities sake
 //            let eventJSON = json["event"].dictionaryObject
 //            let liveEvent = LiveEvent(JSON: eventJSON)
-            let confirmed = LiveAuctionBiddingProgressState.BidAcknowledged
+            let confirmed = LiveAuctionBiddingProgressState.bidAcknowledged
             biddingViewModel?.bidPendingSignal.update(confirmed)
         }
 
@@ -81,25 +81,25 @@ class LiveAuctionStateManager: NSObject {
 private typealias PublicFunctions = LiveAuctionStateManager
 extension PublicFunctions {
 
-    func bidOnLot(lotID: String, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
+    func bidOnLot(_ lotID: String, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
         if !bidderCredentials.canBid {
             return print("Tried to bid without a bidder ID on account")
         }
 
-        biddingViewModel.bidPendingSignal.update(.BiddingInProgress)
+        biddingViewModel.bidPendingSignal.update(.biddingInProgress)
 
-        let bidID = NSUUID().UUIDString
+        let bidID = UUID().uuidString
         biddingStates[bidID] = biddingViewModel
         socketCommunicator.bidOnLot(lotID, amountCents: amountCents, bidderCredentials: bidderCredentials, bidUUID: bidID)
     }
 
-    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
+    func leaveMaxBidOnLot(_ lotID: String, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType) {
         if !bidderCredentials.canBid {
             return print("Tried to leave a max bid without a bidder ID on account")
         }
 
-        biddingViewModel.bidPendingSignal.update(.BiddingInProgress)
-        let bidID = NSUUID().UUIDString
+        biddingViewModel.bidPendingSignal.update(.biddingInProgress)
+        let bidID = UUID().uuidString
         biddingStates[bidID] = biddingViewModel
         socketCommunicator.leaveMaxBidOnLot(lotID, amountCents: amountCents, bidderCredentials: bidderCredentials, bidUUID: bidID)
     }
@@ -118,7 +118,7 @@ extension ComputedProperties {
 
 private typealias PrivateFunctions = LiveAuctionStateManager
 private extension PrivateFunctions {
-    func handleOperatorConnectedState(state: AnyObject) {
+    func handleOperatorConnectedState(_ state: AnyObject) {
         let json = JSON(state)
         let operatorConnected = json["operatorConnected"].bool ?? true // Defaulting to true in case the value isn't specified, we don't want to obstruct the user.
         self.operatorConnectedSignal.update(operatorConnected)
@@ -159,11 +159,11 @@ private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
         updatedAuctionState = Observable(state)
     }
 
-    func bidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
+    func bidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
 
     }
 
-    func leaveMaxBidOnLot(lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
+    func leaveMaxBidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
 
     }
 

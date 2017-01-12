@@ -8,7 +8,7 @@ class LiveAuctionLotCollectionViewDataSource: NSObject {
     static let CellClass = LiveAuctionLotImageCollectionViewCell.self
 
     let salesPerson: LiveAuctionsSalesPersonType
-    let imagePrefetcher = SDWebImagePrefetcher.sharedImagePrefetcher()
+    let imagePrefetcher = SDWebImagePrefetcher.shared()
 
     init(salesPerson: LiveAuctionsSalesPersonType) {
         self.salesPerson = salesPerson
@@ -21,10 +21,10 @@ class LiveAuctionLotCollectionViewDataSource: NSObject {
 
     func beginThumnailPrecache() {
         let thumnailURLs = (1..<salesPerson.lotCount).map { return salesPerson.lotViewModelForIndex($0).urlForThumbnail }
-        imagePrefetcher.prefetchURLs(thumnailURLs)
+        imagePrefetcher?.prefetchURLs(thumnailURLs)
     }
 
-    private func offsetForIndex(index: Int) -> Int {
+    fileprivate func offsetForIndex(_ index: Int) -> Int {
         return index - 1
     }
 }
@@ -32,14 +32,14 @@ class LiveAuctionLotCollectionViewDataSource: NSObject {
 private typealias CollectionViewDataSource = LiveAuctionLotCollectionViewDataSource
 extension CollectionViewDataSource: UICollectionViewDataSource {
 
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // We always have three, for: previous, current, and next. We rely on the UIPageViewControllerDelegate callbacks
         // in the SalesPerson to update our collection view's content offset and the corresponding currentFocusedLotIndex.
         return 3
     }
 
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let _cell = collectionView.dequeueReusableCellWithReuseIdentifier(LiveAuctionLotCollectionViewDataSource.CellIdentifier, forIndexPath: indexPath)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let _cell = collectionView.dequeueReusableCell(withReuseIdentifier: LiveAuctionLotCollectionViewDataSource.CellIdentifier, for: indexPath)
         guard let cell = _cell as? LiveAuctionLotImageCollectionViewCell else { return _cell }
 
         let lot = salesPerson.lotViewModelRelativeToShowingIndex(offsetForIndex(indexPath.item))
@@ -54,12 +54,12 @@ extension CollectionViewDataSource: UICollectionViewDataSource {
 private typealias FancyLayoutDelegate = LiveAuctionLotCollectionViewDataSource
 extension FancyLayoutDelegate: LiveAuctionLotCollectionViewDelegateLayout {
 
-    func aspectRatioForIndex(index: RelativeIndex) -> CGFloat {
+    func aspectRatioForIndex(_ index: RelativeIndex) -> CGFloat {
         let lot = salesPerson.lotViewModelRelativeToShowingIndex(offsetForIndex(index))
         return lot.imageAspectRatio
     }
 
-    func thumbnailURLForIndex(index: RelativeIndex) -> NSURL {
+    func thumbnailURLForIndex(_ index: RelativeIndex) -> URL {
         let lot = salesPerson.lotViewModelRelativeToShowingIndex(offsetForIndex(index))
         return lot.urlForThumbnail
     }

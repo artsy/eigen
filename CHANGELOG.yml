@@ -3,6 +3,20 @@ upcoming:
     details: Hot fix for 3.0.2 release. 
     user_facing:
       - Fixes Facebook signup crash - maxim 
+    version: 3.1.0
+    details: Scope not known yet
+    dev:
+      infrastructure:
+        - Updates to Swift 3 / Xcode 8 - ash/orta
+        - Removes the Apple Watch app - orta
+        - Remove extra xapp fetching and old home feed - maxim
+        - Adds ability to view echo configuration used by app - ash
+        - Moves live sales away from using end_at gravity field - ash
+    user_facing:
+      - Jump to current lot CTA only visible once in the LAI interface, instead of once per lot - ash
+      - Fixes issue where links in auction descriptions would lead nowhere when tapped - ash
+      - Countdowns to live auctions show the time until live bidding opens, instead of when the sale ends - ash
+      - Fixes a strange text-flashing issue on auction views - ash
 
 releases:
   - version: 3.0.2

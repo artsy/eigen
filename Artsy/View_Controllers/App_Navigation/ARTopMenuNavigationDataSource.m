@@ -5,12 +5,9 @@
 #import <Emission/AREmission.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import "ARFavoritesViewController.h"
-#import "ARHeroUnitsNetworkModel.h"
-#import "ARHeroUnitViewController.h"
 #import "ARTopMenuInternalMobileWebViewController.h"
 #import "ARFeedSubclasses.h"
 #import "FeaturedLink.h"
-#import "SiteHeroUnit.h"
 #import "ARNavigationController.h"
 #import "ARWorksForYouReloadingHostViewController.h"
 #import "AROptions.h"

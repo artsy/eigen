@@ -3,6 +3,7 @@
 @class Sale, SaleArtwork;
 @class AFHTTPRequestOperation;
 
+NS_ASSUME_NONNULL_BEGIN
 
 @interface ArtsyAPI (Sales)
 
@@ -25,8 +26,10 @@
                         failure:(void (^)(NSError *error))failure;
 
 + (void)getLiveSaleStaticDataWithSaleID:(NSString *)saleID
-                                   role:(NSString *)role
+                                   role:(NSString * __nullable)role
                                 success:(void (^)(id state))success
                                 failure:(void (^)(NSError *error))failure;
 
 @end
+
+NS_ASSUME_NONNULL_END

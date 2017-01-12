@@ -2,7 +2,6 @@
 #import "ARNavigationController.h"
 #import "ARBrowseViewController.h"
 #import "ARFavoritesViewController.h"
-#import "ARSimpleShowFeedViewController.h"
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Artworks.h"
 #import <Emission/ARHomeComponentViewController.h>

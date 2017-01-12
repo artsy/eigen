@@ -5,7 +5,7 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
 
     let statusMaintainer = ARSerifStatusMaintainer()
     lazy var sharedApplication: UIApplication = {
-        return UIApplication.sharedApplication()
+        return UIApplication.shared
     }()
 
     override init(rootViewController: UIViewController) {
@@ -17,11 +17,11 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
         fatalError("init(coder:) has not been implemented")
     }
 
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         statusMaintainer.viewWillAppear(animated, app: sharedApplication)
@@ -30,46 +30,46 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
         view.superview?.layer.cornerRadius = 0
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         statusMaintainer.viewWillDisappear(animated, app: sharedApplication)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
 
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
         setNavigationBarHidden(true, animated: false)
 
         let dimension = 40
         let closeButton = ARMenuButton()
-        closeButton.setBorderColor(.artsyGrayRegular(), forState: .Normal, animated: false)
-        closeButton.setBackgroundColor(.whiteColor(), forState: .Normal, animated: false)
-        closeButton.setImage(UIImage(named:"serif_modal_close"), forState: .Normal)
-        closeButton.addTarget(self, action: #selector(dismiss), forControlEvents: .TouchUpInside)
+        closeButton.setBorderColor(.artsyGrayRegular(), for: UIControlState(), animated: false)
+        closeButton.setBackgroundColor(.white, for: UIControlState(), animated: false)
+        closeButton.setImage(UIImage(named:"serif_modal_close"), for: UIControlState())
+        closeButton.addTarget(self, action: #selector(dismissMe), for: .touchUpInside)
 
         view.addSubview(closeButton)
-        closeButton.alignTrailingEdgeWithView(view, predicate: "-20")
-        closeButton.alignTopEdgeWithView(view, predicate: "20")
+        closeButton.alignTrailingEdge(withView: view, predicate: "-20")
+        closeButton.alignTopEdge(withView: view, predicate: "20")
         closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
 
         self.delegate = self
     }
 
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return traitDependentSupportedInterfaceOrientations
     }
 
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate : Bool {
         return traitDependentAutorotateSupport
     }
 
-    func dismiss() {
-        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    func dismissMe() {
+        presentingViewController?.dismiss(animated: true, completion: nil)
     }
 
-    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         viewController.automaticallyAdjustsScrollViewInsets = false
         (viewController as? ARExternalWebBrowserViewController)?.ignoreStatusBar = true
     }

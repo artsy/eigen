@@ -86,9 +86,9 @@ target 'Artsy' do
   pod 'React/Core', :git => 'https://github.com/alloy/react-native.git', :branch => '0.34.1-with-scrollview-fix'
 
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
-    pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
+    pod 'Artsy+UIFonts'
   else
-    pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-OSSUIFonts.git"
+    pod 'Artsy+OSSUIFonts'
   end
 
   # Facebook
@@ -104,13 +104,9 @@ target 'Artsy' do
   pod 'ORKeyboardReactingApplication'
   pod 'VCRURLConnection'
 
-  # Easter Eggs
-  pod 'ARASCIISwizzle'
-  pod 'DRKonamiCode'
-
   # Swift pods 🎉
   pod 'Then'
-  pod 'Interstellar/Core', git: 'https://github.com/JensRavens/Interstellar.git', commit: 'efa777b'
+  pod 'Interstellar/Core', git: 'https://github.com/ashfurrow/Interstellar.git', branch: 'observable-unsubscribe'
   pod 'Starscream'
   pod 'SwiftyJSON'
 
@@ -125,7 +121,7 @@ target 'Artsy' do
 
       # Temporary, should be removed post CP 1.0
       # https://github.com/facebook/ios-snapshot-test-case/pull/141
-      pod 'FBSnapshotTestCase', git: 'https://github.com/orta/ios-snapshot-test-case.git'
+      pod 'FBSnapshotTestCase'
       pod 'Expecta+Snapshots'
       pod 'OHHTTPStubs'
       pod 'XCTest+OHHTTPStubSuiteCleanUp'

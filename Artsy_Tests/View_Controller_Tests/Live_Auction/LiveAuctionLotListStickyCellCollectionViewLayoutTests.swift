@@ -20,12 +20,12 @@ class LiveAuctionLotListStickyCellCollectionViewLayoutTests: QuickSpec {
             subject = LiveAuctionLotListStickyCellCollectionViewLayout()
             subject.setActiveIndex(0)
             collectionView = UICollectionView(frame: frame, collectionViewLayout: subject)
-            collectionView.registerClass(Test_CollectionViewCell.self, forCellWithReuseIdentifier: Test_CollectionViewDataSource.CellIdentifier)
+            collectionView.register(Test_CollectionViewCell.self, forCellWithReuseIdentifier: Test_CollectionViewDataSource.CellIdentifier)
             dataSource = Test_CollectionViewDataSource()
             collectionView.dataSource = dataSource
             container = UIView(frame: frame).then {
                 $0.addSubview(collectionView)
-                collectionView.alignToView($0)
+                collectionView.align(toView: $0)
             }
         }
 
@@ -58,17 +58,17 @@ class Test_CollectionViewDataSource: NSObject, UICollectionViewDataSource {
         super.init()
     }
 
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return numberOfItems
     }
 
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Test_CollectionViewDataSource.CellIdentifier, forIndexPath: indexPath) as! Test_CollectionViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Test_CollectionViewDataSource.CellIdentifier, for: indexPath) as! Test_CollectionViewCell
 
         if indexPath.item == index {
-            cell.backgroundColor = .redColor()
+            cell.backgroundColor = .red
         } else {
-            cell.backgroundColor = .grayColor()
+            cell.backgroundColor = .gray
         }
 
         cell.label.text = "\(indexPath.item)"
@@ -84,7 +84,7 @@ class Test_CollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
 
         contentView.addSubview(label)
-        label.alignToView(contentView)
+        label.align(toView: contentView)
     }
 
     required init?(coder aDecoder: NSCoder) {

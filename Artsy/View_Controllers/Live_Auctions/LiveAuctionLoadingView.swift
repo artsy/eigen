@@ -17,44 +17,44 @@ class LiveAuctionLoadingView: UIView {
     var spinningImageView = UIImageView()
 
     func commonSetup() {
-        backgroundColor = .whiteColor()
+        backgroundColor = .white
 
         let containerView = UIView()
 
         spinningImageView.then {
             $0.image = UIImage(asset: .LiveAuctionSpinner)
-            $0.contentMode = .ScaleAspectFit
+            $0.contentMode = .scaleAspectFit
 
             containerView.addSubview($0)
             $0.alignLeading("0", trailing: "0", toView: containerView)
-            $0.alignTopEdgeWithView(containerView, predicate: "0")
+            $0.alignTopEdge(withView: containerView, predicate: "0")
         }
 
         let label = ARSansSerifLabel().then {
             $0.textColor = UIColor.artsyPurpleRegular()
             $0.text = "Entering the auction room"
-            $0.font = $0.font.fontWithSize(12)
+            $0.font = $0.font.withSize(12)
 
             containerView.addSubview($0)
             $0.alignLeading("0", trailing: "0", toView: containerView)
-            $0.alignBottomEdgeWithView(containerView, predicate: "0")
+            $0.alignBottomEdge(withView: containerView, predicate: "0")
         }
 
-        label.constrainTopSpaceToView(spinningImageView, predicate: "20")
+        label.constrainTopSpace(toView: spinningImageView, predicate: "20")
 
         addSubview(containerView)
-        containerView.alignCenterWithView(self)
+        containerView.alignCenter(withView: self)
 
         let dimension = 40
         let closeButton = ARMenuButton()
-        closeButton.setBorderColor(.artsyGrayRegular(), forState: .Normal, animated: false)
-        closeButton.setBackgroundColor(.whiteColor(), forState: .Normal, animated: false)
-        closeButton.setImage(UIImage(named:"serif_modal_close"), forState: .Normal)
-        closeButton.addTarget(self, action: #selector(performOperation), forControlEvents: .TouchUpInside)
+        closeButton.setBorderColor(.artsyGrayRegular(), for: UIControlState(), animated: false)
+        closeButton.setBackgroundColor(.white, for: UIControlState(), animated: false)
+        closeButton.setImage(UIImage(named:"serif_modal_close"), for: UIControlState())
+        closeButton.addTarget(self, action: #selector(performOperation), for: .touchUpInside)
 
         addSubview(closeButton)
-        closeButton.alignTrailingEdgeWithView(self, predicate: "-20")
-        closeButton.alignTopEdgeWithView(self, predicate: "31")
+        closeButton.alignTrailingEdge(withView: self, predicate: "-20")
+        closeButton.alignTopEdge(withView: self, predicate: "31")
         closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
     }
 
@@ -63,7 +63,7 @@ class LiveAuctionLoadingView: UIView {
 
         // Set animation based on getting added to a superview (superview is nil when moving off of it).
         // And only spin in production.
-        if let _ = superview where ARPerformWorkAsynchronously {
+        if let _ = superview, ARPerformWorkAsynchronously.boolValue {
             spinningImageView.ar_startSpinningIndefinitely()
         } else {
             spinningImageView.ar_stopSpinningInstantly(true)
