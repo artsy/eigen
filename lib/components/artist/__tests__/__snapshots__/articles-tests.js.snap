@@ -1,0 +1,146 @@
+exports[`test renders properly 1`] = `
+<View>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "fontSize": 20,
+          "marginBottom": 12,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }>
+    Featured Articles
+  </Text>
+  <ScrollView
+    horizontal={true}
+    scrollsToTop={false}
+    showsHorizontalScrollIndicator={false}
+    style={
+      Object {
+        "marginBottom": 40,
+        "overflow": "visible",
+      }
+    }>
+    <View
+      style={
+        Object {
+          "width": 320,
+        }
+      }>
+      <TouchableWithoutFeedback
+        onPress={[Function]}>
+        <View
+          style={
+            Object {
+              "width": 300,
+            }
+          }>
+          <AROpaqueImageView
+            imageURL="artsy.net/image-url"
+            style={
+              Object {
+                "height": 175,
+                "width": 300,
+              }
+            } />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={5}
+            style={
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "marginTop": 10,
+                "width": 275,
+              }
+            }>
+            Something Happened
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "color": "grey",
+                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontSize": 10,
+                "marginTop": 5,
+                "textAlign": "left",
+              }
+            }>
+            JOHN BERGER
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+    <View
+      style={
+        Object {
+          "width": 320,
+        }
+      }>
+      <TouchableWithoutFeedback
+        onPress={[Function]}>
+        <View
+          style={
+            Object {
+              "width": 300,
+            }
+          }>
+          <AROpaqueImageView
+            imageURL="artsy.net/image-url"
+            style={
+              Object {
+                "height": 175,
+                "width": 300,
+              }
+            } />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={5}
+            style={
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "marginTop": 10,
+                "width": 275,
+              }
+            }>
+            Something Happened
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "color": "grey",
+                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontSize": 10,
+                "marginTop": 5,
+                "textAlign": "left",
+              }
+            }>
+            JOHN BERGER
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+  </ScrollView>
+</View>
+`;

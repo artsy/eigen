@@ -1,0 +1,73 @@
+exports[`test renders properly 1`] = `
+<View
+  style={
+    Object {
+      "marginLeft": 0,
+      "marginRight": 0,
+    }
+  }>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    style={
+      Array [
+        Object {
+          "fontSize": 12,
+        },
+        Object {
+          "marginBottom": 20,
+        },
+        Object {
+          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+        },
+      ]
+    }>
+    BIOGRAPHY
+  </Text>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    numberOfLines={0}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "fontSize": 16,
+          "lineHeight": 20,
+          "marginBottom": 20,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }>
+    Once lived in a room with a live coyote for several days to protest the Vietnam War
+  </Text>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    numberOfLines={0}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "fontSize": 16,
+          "lineHeight": 20,
+          "marginBottom": 40,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }>
+    Born 1922, Germany
+  </Text>
+</View>
+`;
