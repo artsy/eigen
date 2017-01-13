@@ -109,6 +109,18 @@ lane :setup_for_app_store do
   destination = profile_path + "/" + app_name + ".mobileprovision"
   profile = Dir.glob(signing_root + "/profiles/" + app_name + "/*").first
 
+  update_project_codesigning(
+    path: 'Artsy.xcodeproj',
+    use_automatic_signing: false
+  )
+
+  update_project_provisioning(
+    xcodeproj: 'Artsy.xcodeproj',
+    profile: "fastlane/#{profile}",
+    target_filter: 'Artsy',
+    build_configuration: 'Store'
+  )
+
   # Ensure folder exists
   unless File.directory?(profile_path)
     FileUtils.mkdir_p(profile_path)
