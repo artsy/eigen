@@ -121,6 +121,11 @@ lane :setup_for_app_store do
     build_configuration: 'Store'
   )
 
+  update_project_team(
+    path: "Artsy.xcodeproj",
+    teamid: "23KMWZ572J"
+  )
+
   # Ensure folder exists
   unless File.directory?(profile_path)
     FileUtils.mkdir_p(profile_path)
