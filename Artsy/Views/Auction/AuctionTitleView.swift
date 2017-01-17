@@ -14,6 +14,7 @@ class AuctionTitleView: UIView {
 
     let viewModel: SaleViewModel
     let showAdditionalInformation: Bool
+    let titleTextAlignment: NSTextAlignment
 
     func updateRegistrationStatus() {
         // Based on new registration status, we'll reconstruct our whole hierarchy from scratch to reflect the new status.
@@ -23,11 +24,12 @@ class AuctionTitleView: UIView {
     var registrationButton: UIButton!
     var fullWidth: Bool
 
-    init(viewModel: SaleViewModel, delegate: AuctionTitleViewDelegate?, fullWidth: Bool, showAdditionalInformation: Bool) {
+    init(viewModel: SaleViewModel, delegate: AuctionTitleViewDelegate?, fullWidth: Bool, showAdditionalInformation: Bool, titleTextAlignment: NSTextAlignment) {
         self.viewModel = viewModel
         self.delegate = delegate
         self.fullWidth = fullWidth
         self.showAdditionalInformation = showAdditionalInformation
+        self.titleTextAlignment = titleTextAlignment
 
         super.init(frame: CGRect.zero)
 
@@ -91,6 +93,7 @@ private extension AuctionTitleView {
         let titleLabel = ARSerifLabel().then {
             $0.text = self.viewModel.displayName
             $0.font = UIFont.serifFont(withSize: regularSize ? 30 : 20)
+            $0.textAlignment = titleTextAlignment
         }
         container.addSubview(titleLabel)
 

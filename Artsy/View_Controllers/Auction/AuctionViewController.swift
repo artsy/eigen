@@ -152,10 +152,16 @@ extension AuctionViewController {
         bannerView.tag = ViewTags.banner.rawValue
         headerStack.addSubview(bannerView, withTopMargin: "0", sideMargin: "0")
 
-        let compactSize = traitCollection.horizontalSizeClass == .compact
-        let topSpacing = compactSize ? 20 : 30
-        let sideSpacing = compactSize ? 40 : 80
-        let titleView = AuctionTitleView(viewModel: saleViewModel, delegate: self, fullWidth: compactSize, showAdditionalInformation: true)
+        let isCompactSize = traitCollection.horizontalSizeClass == .compact
+        let topSpacing = isCompactSize ? 20 : 30
+        let sideSpacing = isCompactSize ? 40 : 80
+        let titleView = AuctionTitleView(
+            viewModel: saleViewModel,
+            delegate: self,
+            fullWidth: isCompactSize,
+            showAdditionalInformation: true,
+            titleTextAlignment: isCompactSize ? .left : .center
+        )
         titleView.tag = ViewTags.title.rawValue
         headerStack.addSubview(titleView, withTopMargin: "\(topSpacing)", sideMargin: "\(sideSpacing)")
         self.titleView = titleView
