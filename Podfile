@@ -9,7 +9,7 @@ inhibit_all_warnings!
 #       the continuous build server.
 
 plugin 'cocoapods-keys', {
-    :project => "Artsy",
+    :project => "sdasdasdasdassdsad",
     :target => "Artsy",
     :keys => [
         "ArtsyAPIClientSecret",
@@ -77,19 +77,15 @@ target 'Artsy' do
   pod 'ObjectiveSugar'
 
   # Artsy Spec repo stuff
+  pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-OSSUIFonts.git", :branch => "v3"
   pod 'Artsy-UIButtons', :git => 'https://github.com/artsy/Artsy-UIButtons.git'
-  pod 'Artsy+UIColors'
-  pod 'Artsy+UILabels'
-  pod 'Extraction'
+  pod 'Artsy+UIColors' 
+  pod 'Artsy+UILabels', :git => 'https://github.com/artsy/Artsy-UILabels.git',  :branch => "32"
+  pod 'Extraction', :git => 'https://github.com/artsy/Extraction.git',  :branch => "122"
 
   pod 'Emission'
   pod 'React/Core', :git => 'https://github.com/alloy/react-native.git', :branch => '0.34.1-with-scrollview-fix'
 
-  if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
-    pod 'Artsy+UIFonts'
-  else
-    pod 'Artsy+OSSUIFonts'
-  end
 
   # Facebook
   pod 'FBSDKCoreKit', '~> 4.9'
