@@ -1,54 +1,3 @@
-exports[`test renders correctly 1`] = `
-<View>
-  <View>
-    <View
-      style={
-        Object {
-          "marginLeft": 0,
-          "marginRight": 0,
-        }
-      }>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-        numberOfLines={0}
-        style={
-          Array [
-            Object {
-              "fontSize": 17,
-            },
-            Object {
-              "fontSize": 16,
-              "lineHeight": 20,
-              "marginBottom": 20,
-            },
-            Object {
-              "fontFamily": "AGaramondPro-Regular",
-            },
-          ]
-        }>
-        This is some example text
-      </Text>
-    </View>
-    <View
-      style={
-        Array [
-          Object {
-            "backgroundColor": "#e5e5e5",
-            "height": 1,
-            "marginLeft": -20,
-            "marginRight": -20,
-          },
-          Object {
-            "marginBottom": 20,
-          },
-        ]
-      } />
-  </View>
-</View>
-`;
-
 exports[`test shows trending artists correctly 1`] = `
 <View>
   <View>
@@ -79,7 +28,12 @@ exports[`test shows trending artists correctly 1`] = `
             },
           ]
         }>
-        This is some example text
+        Deep time refers to the concept of an expansive time that stretches far beyond human history to
+                          include the approximately 4.5 billion-year geological history of Earth and the estimated 13.8
+                          billion-year history of the universe. In art, deep time could be explored in works that deal with the
+                          long-term processes of geological formation and the cosmos. Such concerns are important, for example,
+                          to Hiroshi Sugimoto’s waterscapes and Darren Almond’s landscapes, both of
+                          which use long-exposure photography to capture a sense of expanded time.
       </Text>
     </View>
     <View
@@ -147,7 +101,7 @@ exports[`test shows trending artists correctly 1`] = `
             }
           }>
           <ImageView
-            imageURL=""
+            imageURL="cloudfront.net/some-url"
             style={
               Object {
                 "height": 1,
@@ -166,7 +120,7 @@ exports[`test shows trending artists correctly 1`] = `
                 "textAlign": "left",
               }
             }>
-            ARTIST NAME
+            LITA ALBUQUERQUE
           </Text>
           <Text
             accessible={true}
@@ -180,7 +134,55 @@ exports[`test shows trending artists correctly 1`] = `
                 "marginTop": 5,
               }
             }>
-            6 works for sale
+            36 works, 30 for sale
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback
+        onPress={[Function]}>
+        <View
+          style={
+            Object {
+              "margin": 5,
+              "paddingBottom": 20,
+              "width": 1,
+            }
+          }>
+          <ImageView
+            imageURL="cloudfront.net/some-url"
+            style={
+              Object {
+                "height": 1,
+                "width": 1,
+              }
+            } />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontSize": 12,
+                "marginTop": 10,
+                "textAlign": "left",
+              }
+            }>
+            DOUG ARGUE
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "color": "#666666",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "marginTop": 5,
+              }
+            }>
+            31 works, 24 for sale
           </Text>
         </View>
       </TouchableWithoutFeedback>

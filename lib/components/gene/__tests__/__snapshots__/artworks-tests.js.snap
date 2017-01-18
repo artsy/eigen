@@ -1,0 +1,7 @@
+exports[`test renders properly 1`] = `
+<ArtworksGrid
+  artworks={Array []}
+  queryArtworksKeypath="gene.filtered_artworks.hits"
+  queryForPage={undefined}
+  queryState={undefined} />
+`;

@@ -6,6 +6,7 @@
 
 ### 1.1.4
 
+- Added test coverage for gene components - sarah
 - Added test coverage to buttons - sarah
 - Added test coverage to artwork grids - sarah
 - Added test coverage to all containers and Artist components - sarah
