@@ -1,4 +1,4 @@
-achine:
+machine:
   xcode:
     version: "8.1"
   environment:
