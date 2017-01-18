@@ -345,7 +345,7 @@ return [navigationButtons copy];
 // Show if artwork is for sale and inquireable, but not acquireable and not in an auction
 - (BOOL)showContactButton
 {
-    return self.artwork.forSale.boolValue && self.artwork.inquireable.boolValue && !self.artwork.acquireable.boolValue && ![self showAuctionControls];
+    return self.artwork.forSale.boolValue && self.artwork.inquireable.boolValue && !self.artwork.acquireable.boolValue && !([self showAuctionControls] || [self liveAuctionIsOngoing]);
 }
 
 // Show if acquireable
