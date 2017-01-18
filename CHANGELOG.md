@@ -3,6 +3,7 @@
 - Add your contributions below:
 
 - Gave ESLint, Flow and Danger the ability to fail the build - orta
+- Fix extra blankspace in Artist Card when data is missing - luc
 
 ### 1.1.4
 
