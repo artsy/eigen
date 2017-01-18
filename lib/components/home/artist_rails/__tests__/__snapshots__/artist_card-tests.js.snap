@@ -1,0 +1,150 @@
+exports[`test renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "height": 310,
+      "width": 236,
+    }
+  }>
+  <TouchableWithoutFeedback
+    onPress={[Function]}>
+    <View
+      style={
+        Object {
+          "borderColor": "#F3F3F3",
+          "borderWidth": 1,
+          "height": 280,
+          "marginLeft": 16,
+          "shadowColor": "#000000",
+          "shadowOffset": Object {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.08,
+          "shadowRadius": 6,
+          "width": 220,
+        }
+      }>
+      <AROpaqueImageView
+        imageURL={undefined}
+        style={
+          Object {
+            "height": 148,
+            "marginLeft": 12,
+            "marginTop": 12,
+            "width": 196,
+          }
+        } />
+      <View
+        style={
+          Object {
+            "marginLeft": 12,
+            "marginTop": 12,
+          }
+        }>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "fontFamily": "Avant Garde Gothic ITCW01Dm",
+              "fontSize": 12,
+              "height": 17,
+              "marginRight": 12,
+              "textAlign": "left",
+            }
+          }>
+          JUAN GRIS
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#000000",
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "height": 17,
+              "marginRight": 12,
+            }
+          }>
+          Spanish, 1887–1927
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "color": "#000000",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "height": 17,
+                "marginRight": 12,
+              },
+              Object {
+                "color": "#666666",
+              },
+            ]
+          }>
+          14 works, 3 for sale
+        </Text>
+      </View>
+      <View
+        style={
+          Object {
+            "bottom": 15,
+            "height": 30,
+            "marginLeft": 12,
+            "marginTop": 12,
+            "position": "absolute",
+            "width": 196,
+          }
+        }>
+        <TouchableHighlight
+          activeOpacity={1}
+          disabled={false}
+          onPress={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(0, 0, 0, 1)",
+              "flex": 1,
+              "justifyContent": "center",
+            }
+          }
+          underlayColor="#6e1fff">
+          <View>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "color": "white",
+                    "opacity": 1,
+                  },
+                  Object {
+                    "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                  },
+                ]
+              }>
+              FOLLOW
+            </Text>
+          </View>
+        </TouchableHighlight>
+      </View>
+    </View>
+  </TouchableWithoutFeedback>
+</View>
+`;
