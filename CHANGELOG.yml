@@ -14,6 +14,7 @@ upcoming:
       - Countdowns to live auctions show the time until live bidding opens, instead of when the sale ends - ash
       - Fixes a strange text-flashing issue on auction views - ash
       - Fixes a bug when facebook users login without an associated email - maxim
+      - Fixes a problem where users were shown both the "Contact Gallery" and "Enter Live Auction" buttons instead of just the auction one - ash
 
 releases:
   - version: 3.0.3
