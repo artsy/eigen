@@ -391,39 +391,49 @@
 - (void)fbSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
 {
     __weak typeof(self) wself = self;
-    [[ARUserManager sharedManager] createUserViaFacebookWithToken:token
-        email:email
-        name:name
-        success:^(User *user) {
-                                                              __strong typeof (wself) sself = wself;
-                                                              // we've created a user, now let's log them in
-                                                              [sself loginWithFacebookCredentialToken:token];
-        }
-        failure:^(NSError *error, id JSON) {
-                                                              __strong typeof (wself) sself = wself;
-                                                              if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
-                                                                  if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
-                                                                      // this facebook account is already an artsy account
-                                                                      // let's log them in
-                                                                      [sself loginWithFacebookCredentialToken:token];
-                                                                      return;
-                                                                  } else if ([JSON[@"error"] isEqualToString:@"User Already Exists"]
-                                                                             || [JSON[@"error"] isEqualToString:@"User Already Invited"]) {
-                                                                      // there's already a user with this email
-                                                                      NSString *source = [self existingAccountSource:JSON];
-                                                                      [sself accountExists:source];
-                                                                      return;
+    if (email || ![email isEqualToString:@""]) {
+        [[ARUserManager sharedManager] createUserViaFacebookWithToken:token
+            email:email
+            name:name
+            success:^(User *user) {
+                                                                  __strong typeof (wself) sself = wself;
+                                                                  // we've created a user, now let's log them in
+                                                                  [sself loginWithFacebookCredentialToken:token];
+            }
+            failure:^(NSError *error, id JSON) {
+                                                                  __strong typeof (wself) sself = wself;
+                                                                  if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
+                                                                      if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
+                                                                          // this facebook account is already an artsy account
+                                                                          // let's log them in
+                                                                          [sself loginWithFacebookCredentialToken:token];
+                                                                          return;
+                                                                      } else if ([JSON[@"error"] isEqualToString:@"User Already Exists"]
+                                                                                 || [JSON[@"error"] isEqualToString:@"User Already Invited"]) {
+                                                                          // there's already a user with this email
+                                                                          NSString *source = [self existingAccountSource:JSON];
+                                                                          [sself accountExists:source];
+                                                                          return;
+                                                                      }
                                                                   }
-                                                              }
-                                                              
-                                                              // something else went wrong
-                                                              ARErrorLog(@"Couldn't link Facebook account. Error: %@. The server said: %@", error.localizedDescription, JSON);
-                                                              
-                                                              NSString *errorMessage = [NSString stringWithFormat:@"Server replied saying '%@'.", JSON[@"error"] ?: JSON[@"message"] ?: error.localizedDescription];
-                                                              
-                                                              // we'll display an alert view
-                                                              [sself showErrorAlertWithMessage:errorMessage];
-        }];
+                                                                  
+                                                                  // something else went wrong
+                                                                  ARErrorLog(@"Couldn't link Facebook account. Error: %@. The server said: %@", error.localizedDescription, JSON);
+                                                                  
+                                                                  NSString *errorMessage = [NSString stringWithFormat:@"Server replied saying '%@'.", JSON[@"error"] ?: JSON[@"message"] ?: error.localizedDescription];
+                                                                  
+                                                                  // we'll display an alert view
+                                                                  [sself showErrorAlertWithMessage:errorMessage];
+            }];
+
+    } else {
+        // provide popup warning asking the user to use a Facebook account with email
+        [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t create your account" message:@"Please use a Facebook account that has an email address" delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        alert.tag = ERROR_TAG;
+        [alert show];
+    }
 }
 
 - (void)loginWithFacebookCredentialToken:(NSString *)token
