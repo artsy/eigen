@@ -13,6 +13,7 @@ upcoming:
       - Fixes issue where links in auction descriptions would lead nowhere when tapped - ash
       - Countdowns to live auctions show the time until live bidding opens, instead of when the sale ends - ash
       - Fixes a strange text-flashing issue on auction views - ash
+      - Fixes appearance of name field in login vc - maxim
 
 releases:
   - version: 3.0.3
