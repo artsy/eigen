@@ -93,7 +93,7 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
             }
             case .closedLot:
                 if viewModel.isBeingSold && viewModel.userIsBeingSoldTo {
-                    currentBid.text = "Sold to you for: \(salesPerson.currentLotValueString(viewModel))"
+                    currentBid.text = "Sold for: \(salesPerson.currentLotValueString(viewModel))"
                 } else {
                     currentBid.text = ""
                 }
