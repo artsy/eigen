@@ -10,6 +10,7 @@ upcoming:
         - Moves live sales away from using end_at gravity field - ash
         - Adds integration tests - maxim
     user_facing:
+      - Fixes bug in push animation of ArtworkVC - sarah
       - Jump to current lot CTA only visible once in the LAI interface, instead of once per lot - ash
       - Fixes issue where links in auction descriptions would lead nowhere when tapped - ash
       - Countdowns to live auctions show the time until live bidding opens, instead of when the sale ends - ash
