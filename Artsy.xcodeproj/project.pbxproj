@@ -747,7 +747,7 @@
 			proxyType = 1;
 			remoteGlobalIDString = 49BA7DFE1655ABE600C06572;
 			remoteInfo = Artsy;
-	};
+		};
 		606C64AF1E32A59400FD13E3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
@@ -1971,6 +1971,13 @@
 				60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */,
 				B3ECE8291819D1E6009F5C5B /* Foundation.framework in Frameworks */,
 				4881E97329170F61D18D906E /* Pods_Artsy_Tests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D86A8FF862A6AF8EB5CF1722 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4653,6 +4660,7 @@
 			buildConfigurationList = 606C64B51E32A59400FD13E3 /* Build configuration list for PBXNativeTarget "Artsy Stickers" */;
 			buildPhases = (
 				606C64A81E32A59400FD13E3 /* Resources */,
+				D86A8FF862A6AF8EB5CF1722 /* Frameworks */,
 			);
 			buildRules = (
 			);
