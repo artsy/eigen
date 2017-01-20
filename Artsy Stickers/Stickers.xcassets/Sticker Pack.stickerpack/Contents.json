@@ -1,0 +1,53 @@
+{
+  "stickers" : [
+    {
+      "filename" : "Adam from Creation of Adam.sticker"
+    },
+    {
+      "filename" : "God from Creation of Adam.sticker"
+    },
+    {
+      "filename" : "Girl with a Pearl Earring.sticker"
+    },
+    {
+      "filename" : "Angel from The Holy Family.sticker"
+    },
+    {
+      "filename" : "Chair from La chambre de Van Gogh à Arles.sticker"
+    },
+    {
+      "filename" : "Fruit Bowl from Still Life with Milk Jug and Fruit.sticker"
+    },
+    {
+      "filename" : "Jesus from Ecce Homo.sticker"
+    },
+    {
+      "filename" : "Miniature Skeleton.sticker"
+    },
+    {
+      "filename" : "Rattle in the Shape of a Recumbent Lion.sticker"
+    },
+    {
+      "filename" : "Raven from Saint Mary Salome and Her Family.sticker"
+    },
+    {
+      "filename" : "Seated Buddha in the Attitude of Preaching.sticker"
+    },
+    {
+      "filename" : "The Vexed Man.sticker"
+    },
+    {
+      "filename" : "Wheatstack from Wheatstacks, Snow Effect, Morning .sticker"
+    },
+    {
+      "filename" : "Woman from L'Esperence.sticker"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  },
+  "properties" : {
+    "grid-size" : "regular"
+  }
+}
