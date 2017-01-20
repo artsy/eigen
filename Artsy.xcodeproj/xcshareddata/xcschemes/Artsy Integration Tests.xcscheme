@@ -10,13 +10,27 @@
             buildForTesting = "YES"
             buildForRunning = "YES"
             buildForProfiling = "YES"
-            buildForArchiving = "YES"
+            buildForArchiving = "NO"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "49BA7DFE1655ABE600C06572"
                BuildableName = "Artsy.app"
                BlueprintName = "Artsy"
+               ReferencedContainer = "container:Artsy.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B3ECE8251819D1E6009F5C5B"
+               BuildableName = "Artsy Tests.xctest"
+               BlueprintName = "Artsy Tests"
                ReferencedContainer = "container:Artsy.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -30,24 +44,6 @@
       <Testables>
          <TestableReference
             skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B3ECE8251819D1E6009F5C5B"
-               BuildableName = "Artsy Tests.xctest"
-               BlueprintName = "Artsy Tests"
-               ReferencedContainer = "container:Artsy.xcodeproj">
-            </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "ARFavoritesViewControllerSpec/with_artists">
-               </Test>
-               <Test
-                  Identifier = "ARFavoritesViewControllerSpec/with_no_artists">
-               </Test>
-            </SkippedTests>
-         </TestableReference>
-         <TestableReference
-            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1C40C19B1DF8B1B7003F454F"

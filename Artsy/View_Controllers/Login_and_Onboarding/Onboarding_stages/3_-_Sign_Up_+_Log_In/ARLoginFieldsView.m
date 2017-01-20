@@ -31,6 +31,7 @@
     [self commonSetup];
     [self.nameField removeConstraint:self.nameFieldHeightConstraint];
     [self.nameField constrainHeight:@"0"];
+    self.nameField.hidden = YES;
     self.passwordField.returnKeyType = UIReturnKeyDone;
 }
 
