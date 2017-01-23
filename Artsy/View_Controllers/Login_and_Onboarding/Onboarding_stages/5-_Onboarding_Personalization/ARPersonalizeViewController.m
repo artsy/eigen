@@ -31,6 +31,8 @@
 @property (nonatomic, strong, readwrite) AROnboardingPersonalizeTableViewController *searchResultsTable;
 @property (nonatomic, strong, readwrite) ARPriceRangeViewController *budgetTable;
 @property (nonatomic, assign, readwrite) BOOL followedAtLeastOneCategory;
+@property (nonatomic, strong) NSLayoutConstraint *navigationItemsBottomConstraint;
+
 
 @property (nonatomic, strong, readwrite) NSMutableArray *artistsFollowed;
 @property (nonatomic, strong, readwrite) NSMutableArray *categoriesFollowed;
@@ -66,6 +68,15 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchEnded:)
                                                  name:UITextFieldTextDidEndEditingNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -74,6 +85,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidBeginEditingNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidEndEditingNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
 
@@ -90,7 +103,7 @@
     [self.view addSubview:self.onboardingNavigationItems];
 
     [self.onboardingNavigationItems constrainWidthToView:self.view predicate:@"0"];
-    [self.onboardingNavigationItems alignBottomEdgeWithView:self.view predicate:@"0"];
+    self.navigationItemsBottomConstraint = [self.onboardingNavigationItems alignBottomEdgeWithView:self.view predicate:@"0"];
     [self.onboardingNavigationItems alignLeadingEdgeWithView:self.view predicate:@"0"];
 
     [self.onboardingNavigationItems.next addTarget:self action:@selector(nextTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -109,7 +122,7 @@
         case AROnboardingStagePersonalizeEmail:
 //            [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Enter your email address" withLargeLayout:self.useLargeLayout];
-            [self.headerView hideSearchBar];
+//            [self.headerView hideSearchBar];
             break;
         case AROnboardingStagePersonalizePassword:
 //            [self.onboardingNavigationItems disableNextStep];
@@ -180,6 +193,29 @@
         [self.budgetTable.view constrainBottomSpaceToView:self.onboardingNavigationItems predicate:@"0"];
     }
 }
+
+#pragma mark -
+#pragma mark Keyboard Accessory Animation
+
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    [self.view layoutIfNeeded];
+
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    self.navigationItemsBottomConstraint.constant = -keyboardSize.height;
+    
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         [self.view layoutIfNeeded];
+                     }];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    self.navigationItemsBottomConstraint.constant = 0;
+}
+
 
 #pragma mark -
 #pragma mark Search Field
