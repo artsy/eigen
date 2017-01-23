@@ -4,6 +4,7 @@
 
 - Gave ESLint, Flow and Danger the ability to fail the build - orta
 - Fix extra blankspace in Artist Card when data is missing - luc
+- Gene titles wrap so they don't get covered by back button - luc
 
 ### 1.1.4
 

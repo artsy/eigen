@@ -1,34 +1,38 @@
 exports[`test renders properly 1`] = `
-<View
-  style={
-    Object {
-      "paddingTop": 20,
-    }
-  }>
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
+<View>
+  <View
     style={
-      Array [
-        Object {
-          "fontSize": 12,
-        },
+      Object {
+        "alignItems": "center",
+        "height": 36,
+        "justifyContent": "center",
+        "marginTop": 15,
+        "paddingLeft": 40,
+        "paddingRight": 40,
+      }
+    }>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      numberOfLines={2}
+      style={
         Array [
           Object {
-            "textAlign": "center",
+            "fontSize": 12,
           },
           Object {
             "fontSize": 14,
+            "textAlign": "center",
           },
-        ],
-        Object {
-          "fontFamily": "Avant Garde Gothic ITCW01Dm",
-        },
-      ]
-    }>
-    DEEP TIME
-  </Text>
+          Object {
+            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+          },
+        ]
+      }>
+      DEEP TIME
+    </Text>
+  </View>
   <View
     style={
       Object {
