@@ -63,7 +63,7 @@
             break;
 
         case ARInitialOnboardingStateInApp:
-            _state = AROnboardingStageSignUp;
+            _state = AROnboardingStagePersonalizeEmail;
     }
     return self;
 }
@@ -207,7 +207,34 @@
     [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
         self.backgroundView.alpha = 0;
     }];
-    [self presentPersonalizationQuestionnaires];
+    [self presentPersonalizationEmail];
+}
+
+- (void)presentPersonalizationEmail
+{
+    self.state = AROnboardingStagePersonalizeEmail;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
+    personalize.delegate = self;
+    [self pushViewController:personalize animated:YES];
+    [self updateProgress:0.20];
+}
+
+- (void)presentPersonalizationPassword
+{
+    self.state = AROnboardingStagePersonalizePassword;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
+    personalize.delegate = self;
+    [self pushViewController:personalize animated:YES];
+    [self updateProgress:0.40];
+}
+
+- (void)presentPersonalizationName
+{
+    self.state = AROnboardingStagePersonalizeName;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
+    personalize.delegate = self;
+    [self pushViewController:personalize animated:YES];
+    [self updateProgress:0.60];
 }
 
 - (void)presentPersonalizationQuestionnaires
@@ -216,7 +243,7 @@
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
-    [self updateProgress:0.25];
+    [self updateProgress:0.75];
 }
 
 - (void)presentPersonalizeCategories
@@ -225,7 +252,7 @@
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
-    [self updateProgress:0.5];
+    [self updateProgress:0.85];
 }
 
 - (void)presentPersonalizeBudget
@@ -234,7 +261,22 @@
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
-    [self updateProgress:0.75];
+    [self updateProgress:0.95];
+}
+
+- (void)personalizeEmailDone
+{
+    [self presentPersonalizationPassword];
+}
+
+- (void)personalizePasswordDone
+{
+    [self presentPersonalizationName];
+}
+
+- (void)personalizeNameDone
+{
+    [self presentPersonalizationQuestionnaires];
 }
 
 - (void)personalizeArtistsDone
@@ -286,11 +328,11 @@
 
 - (void)signUp
 {
-    ARCreateAccountViewController *createVC = [[ARCreateAccountViewController alloc] init];
-    createVC.delegate = self;
-    [self pushViewController:createVC animated:YES];
-    self.state = AROnboardingStageSignUp;
-    [self updateProgress:0.95];
+//    ARCreateAccountViewController *createVC = [[ARCreateAccountViewController alloc] init];
+//    createVC.delegate = self;
+//    [self pushViewController:createVC animated:YES];
+//    self.state = AROnboardingStageSignUp;
+//    [self updateProgress:0.95];
 }
 
 - (void)applyPersonalizationToUser
@@ -355,12 +397,12 @@
 
 - (void)logInWithEmail:(NSString *)email
 {
-    ARLoginViewController *loginViewController = [[ARLoginViewController alloc] initWithEmail:email];
-    //        ARCreateAccountViewController *loginViewController = [[ARCreateAccountViewController alloc] init];
-    loginViewController.delegate = self;
-
-    [self pushViewController:loginViewController animated:YES];
-    self.state = AROnboardingStageLogin;
+//    ARLoginViewController *loginViewController = [[ARLoginViewController alloc] initWithEmail:email];
+//    //        ARCreateAccountViewController *loginViewController = [[ARCreateAccountViewController alloc] init];
+//    loginViewController.delegate = self;
+//
+//    [self pushViewController:loginViewController animated:YES];
+//    self.state = AROnboardingStageLogin;
 }
 
 #pragma mark -

@@ -106,6 +106,21 @@
 
 
     switch (self.state) {
+        case AROnboardingStagePersonalizeEmail:
+            [self.onboardingNavigationItems disableNextStep];
+            [self.headerView setupHeaderViewWithTitle:@"Enter your email address" withLargeLayout:self.useLargeLayout];
+            [self.headerView hideSearchBar];
+            break;
+        case AROnboardingStagePersonalizePassword:
+            [self.onboardingNavigationItems disableNextStep];
+            [self.headerView setupHeaderViewWithTitle:@"Create a password" withLargeLayout:self.useLargeLayout];
+            [self.headerView hideSearchBar];
+            break;
+        case AROnboardingStagePersonalizeName:
+            [self.onboardingNavigationItems disableNextStep];
+            [self.headerView setupHeaderViewWithTitle:@"Enter your full name" withLargeLayout:self.useLargeLayout];
+            [self.headerView hideSearchBar];
+            break;
         case AROnboardingStagePersonalizeArtists:
             [self addSearchTable];
             // progress percentages are made up for now, will be calculated by steps and remaining steps later
@@ -347,6 +362,15 @@
 - (void)nextTapped:(id)sender
 {
     switch (self.state) {
+        case AROnboardingStagePersonalizeEmail:
+            [self.delegate personalizeEmailDone];
+            break;
+        case AROnboardingStagePersonalizePassword:
+            [self.delegate personalizePasswordDone];
+            break;
+        case AROnboardingStagePersonalizeName:
+            [self.delegate personalizeNameDone];
+            break;
         case AROnboardingStagePersonalizeArtists:
             [self.delegate personalizeArtistsDone];
             break;
