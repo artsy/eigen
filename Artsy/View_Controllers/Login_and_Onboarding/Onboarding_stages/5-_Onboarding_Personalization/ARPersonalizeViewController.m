@@ -107,17 +107,18 @@
 
     switch (self.state) {
         case AROnboardingStagePersonalizeEmail:
-            [self.onboardingNavigationItems disableNextStep];
+//            [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Enter your email address" withLargeLayout:self.useLargeLayout];
             [self.headerView hideSearchBar];
             break;
         case AROnboardingStagePersonalizePassword:
-            [self.onboardingNavigationItems disableNextStep];
+//            [self.onboardingNavigationItems disableNextStep];
+            [self.onboardingNavigationItems addBackButton];
             [self.headerView setupHeaderViewWithTitle:@"Create a password" withLargeLayout:self.useLargeLayout];
             [self.headerView hideSearchBar];
             break;
         case AROnboardingStagePersonalizeName:
-            [self.onboardingNavigationItems disableNextStep];
+//            [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Enter your full name" withLargeLayout:self.useLargeLayout];
             [self.headerView hideSearchBar];
             break;

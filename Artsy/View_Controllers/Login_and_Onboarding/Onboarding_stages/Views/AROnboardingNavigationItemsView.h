@@ -11,6 +11,9 @@
 - (void)hideWarning;
 - (void)disableNextStep;
 - (void)enableNextStep;
+- (void)defaultNextStep;
+- (void)addBackButton;
+- (void)hideBackButton;
 
 
 @end
