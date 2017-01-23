@@ -133,10 +133,12 @@ On the other hand, our JS is deployed from master to our dev build on Testflight
   - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
   - http://blog.krawaller.se/posts/a-react-app-demonstrating-css3-flexbox/
 
-* React Native Storybooks
+* React Native Storybooks:
   - https://github.com/kadirahq/react-native-storybook
   - https://github.com/kadirahq/react-storybook
 
+* React Native Debugger:
+  - https://github.com/jhen0409/react-native-debugger
 
 [React Native]: http://facebook.github.io/react-native/
 [Eigen]: https://github.com/artsy/eigen
