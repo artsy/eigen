@@ -74,7 +74,6 @@
     "jest": "^18.1.0",
     "jest-cli": "^17.0.3",
     "jest-react-native": "^17.0.3",
-    "react-native-debugger-open": "^0.3.2",
     "react-storybooks-relay-container": "^1.0.0",
     "react-test-renderer": "^15.3.0"
   },
