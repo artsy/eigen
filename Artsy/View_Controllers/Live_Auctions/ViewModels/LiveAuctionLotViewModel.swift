@@ -41,6 +41,7 @@ protocol LiveAuctionLotViewModelType: class {
     var urlForThumbnail: URL { get }
     var urlForProfile: URL { get }
     var askingPrice: UInt64 { get }
+    var winningBidPrice: UInt64? { get }
     var currencySymbol: String { get }
     var numberOfBids: Int { get }
     var imageAspectRatio: CGFloat { get }
@@ -150,6 +151,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     var lotNumber: String {
         return String(model.lotNumber)
+    }
+
+    var winningBidPrice: UInt64? {
+        return self.winningBidEvent?.bidAmountCents
     }
 
     var askingPrice: UInt64 {

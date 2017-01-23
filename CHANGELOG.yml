@@ -17,6 +17,7 @@ upcoming:
       - Fixes appearance of name field in login vc - maxim
       - Fixes a bug when facebook users login without an associated email - maxim
       - Fixes a problem where users were shown both the "Contact Gallery" and "Enter Live Auction" buttons instead of just the auction one - ash
+      - Fixes a messaging issue around winning bids in live auctions - ash
       - Adds a sticker pack with some public domain works - kana/owen
 
 releases:
