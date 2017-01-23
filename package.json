@@ -19,7 +19,7 @@
     "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && npm install && npm run dump-schema -- ../../data && rm -rf node_modules",
     "test": "jest",
     "testing": "jest --watch",
-    "postinstall": "rndebugger-open"
+    "rndebugger": "REACT_DEBUGGER=\"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\" npm start"
   },
   "jest": {
     "preset": "jest-react-native",

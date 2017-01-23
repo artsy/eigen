@@ -34,6 +34,8 @@ Why Yarn? See [our JS glossary for Yarn][glossary-yarn],
 
 ### Development
 
+
+
 ### Using VS Code as an IDE
 
 There is a comprehensive document covering [our setup here](docs/vscode.md).
@@ -46,6 +48,15 @@ There is a comprehensive document covering [our setup here](docs/vscode.md).
    * Start the React Storybooks environment.
 
 2. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
+
+
+### Debugging
+
+You can use React Native debugger which is a standalone app to inspect views as well as the standard chrome debugging tools.
+
+1. Install [RN debugger](https://github.com/jhen0409/react-native-debugger): `$ brew update && brew cask install react-native-debugger`.
+2. You can now use `$ npm run rndebugger` instead of `$ npm start` to configure the React Native packager to use RNdebugger.
+
 
 ### Updating Dependencies
 
