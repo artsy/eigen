@@ -3,9 +3,11 @@
 - Add your contributions below:
 
 - Gave ESLint, Flow and Danger the ability to fail the build - orta
+- Fix extra blankspace in Artist Card when data is missing - luc
 
 ### 1.1.4
 
+- Added test coverage for gene components - sarah
 - Added test coverage to buttons - sarah
 - Added test coverage to artwork grids - sarah
 - Added test coverage to all containers and Artist components - sarah
