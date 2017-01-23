@@ -152,23 +152,23 @@
     [self.getStartedButton alignCenterXWithView:self.view predicate:@"0"];
     [self.getStartedButton constrainWidth:self.useLargeLayout ? @"340" : @"300"];
 
-    self.logInButton = [[ARClearFlatButton alloc] init];
-    [self.view addSubview:self.logInButton];
-    [self.logInButton setTitle:@"LOG IN" forState:UIControlStateNormal];
-    [self.logInButton addTarget:self action:@selector(logIn:) forControlEvents:UIControlEventTouchUpInside];
-    [self.logInButton constrainTopSpaceToView:self.getStartedButton predicate:@"12"];
-    [self.logInButton alignCenterXWithView:self.view predicate:@"0"];
-    [self.logInButton constrainWidth:self.useLargeLayout ? @"340" : @"300"];
-
-    [self.logInButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-    [self.logInButton setBackgroundColor:[UIColor blackColor] forState:UIControlStateHighlighted];
-    [self.logInButton setBorderColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+//    self.logInButton = [[ARClearFlatButton alloc] init];
+//    [self.view addSubview:self.logInButton];
+//    [self.logInButton setTitle:@"LOG IN" forState:UIControlStateNormal];
+//    [self.logInButton addTarget:self action:@selector(logIn:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.logInButton constrainTopSpaceToView:self.getStartedButton predicate:@"12"];
+//    [self.logInButton alignCenterXWithView:self.view predicate:@"0"];
+//    [self.logInButton constrainWidth:self.useLargeLayout ? @"340" : @"300"];
+//
+//    [self.logInButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+//    [self.logInButton setBackgroundColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+//    [self.logInButton setBorderColor:[UIColor blackColor] forState:UIControlStateHighlighted];
 
     ARTermsAndConditionsView *label = [[ARTermsAndConditionsView alloc] init];
     [label constrainWidth:@"280"];
     [self.view addSubview:label];
     [label alignCenterXWithView:self.view predicate:@"0"];
-    [label constrainTopSpaceToView:self.logInButton predicate:@"10"];
+    [label constrainTopSpaceToView:self.getStartedButton predicate:@"70"];
     [label alignBottomEdgeWithView:self.view predicate:self.useLargeLayout ? @"-60" : @"-20"];
 
     [self hideControls];
