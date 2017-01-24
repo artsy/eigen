@@ -1,7 +1,7 @@
 PODS:
-  - Adjust (4.5.0):
-    - Adjust/Core (= 4.5.0)
-  - Adjust/Core (4.5.0)
+  - Adjust (4.11.0):
+    - Adjust/Core (= 4.11.0)
+  - Adjust/Core (4.11.0)
   - Aerodramus (0.1.0):
     - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
@@ -357,7 +357,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/alloy/SSFadingScrollView.git
 
 SPEC CHECKSUMS:
-  Adjust: 297176446c127f1232b9591b2b37cdc4796850b8
+  Adjust: 87b3f066ea103f1dabfaa8e428a75b992bf7712e
   Aerodramus: e6cd0bcbd5419aa7e666afbfc9d6e62fd77d7645
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
