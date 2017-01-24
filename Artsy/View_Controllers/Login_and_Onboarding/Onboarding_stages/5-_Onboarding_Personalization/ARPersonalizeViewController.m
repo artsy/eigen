@@ -6,6 +6,7 @@
 #import "AROnboardingPersonalizeTableViewController.h"
 #import "AROnboardingNavigationItemsView.h"
 #import "AROnboardingHeaderView.h"
+#import "ARLoginFieldsView.h"
 #import "ARPriceRangeViewController.h"
 #import "Gene.h"
 #import "ARLogger.h"
@@ -28,6 +29,7 @@
 @property (nonatomic, strong, readwrite) UIView *searchView;
 @property (nonatomic, strong, readwrite) AROnboardingHeaderView *headerView;
 @property (nonatomic, strong, readwrite) AROnboardingNavigationItemsView *onboardingNavigationItems;
+@property (nonatomic, strong, readwrite) ARLoginFieldsView *onboardingTextFields;
 @property (nonatomic, strong, readwrite) AROnboardingPersonalizeTableViewController *searchResultsTable;
 @property (nonatomic, strong, readwrite) ARPriceRangeViewController *budgetTable;
 @property (nonatomic, assign, readwrite) BOOL followedAtLeastOneCategory;
@@ -117,28 +119,34 @@
     [self.headerView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
     [self.headerView alignCenterXWithView:self.view predicate:@"0"];
 
-
     switch (self.state) {
         case AROnboardingStagePersonalizeEmail:
 //            [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Enter your email address" withLargeLayout:self.useLargeLayout];
-//            [self.headerView hideSearchBar];
+            [self.headerView addHelpText:@"If you don't have an Artsy account yet we'll get one set up"
+                         withLargeLayout:self.useLargeLayout];
+            [self addTextFields];
+            [self.onboardingTextFields setupForEmail];
             break;
         case AROnboardingStagePersonalizePassword:
 //            [self.onboardingNavigationItems disableNextStep];
-            [self.onboardingNavigationItems addBackButton];
             [self.headerView setupHeaderViewWithTitle:@"Create a password" withLargeLayout:self.useLargeLayout];
-            [self.headerView hideSearchBar];
+            [self.headerView addHelpText:@"Must be 7 characters or longer" withLargeLayout:self.useLargeLayout];
+            [self addTextFields];
+            [self.onboardingTextFields setupForPassword];
             break;
         case AROnboardingStagePersonalizeName:
 //            [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Enter your full name" withLargeLayout:self.useLargeLayout];
-            [self.headerView hideSearchBar];
+            [self.headerView addHelpText:@"Galleries and auction houss you contact will identify you by your full name" withLargeLayout:self.useLargeLayout];
+            [self addTextFields];
+            [self.onboardingTextFields setupForName];
             break;
         case AROnboardingStagePersonalizeArtists:
             [self addSearchTable];
             // progress percentages are made up for now, will be calculated by steps and remaining steps later
             [self.headerView setupHeaderViewWithTitle:@"Follow artists that most interest you" withLargeLayout:self.useLargeLayout];
+            [self.headerView showSearchBar];
             self.searchResultsTable.headerPlaceholderText = @"TOP ARTISTS ON ARTSY";
             self.headerView.searchField.searchField.delegate = self;
             [self.headerView.searchField.searchField setPlaceholder:@"Search artist"];
@@ -146,7 +154,9 @@
             break;
         case AROnboardingStagePersonalizeCategories:
             [self addSearchTable];
+            [self.onboardingNavigationItems addBackButton];
             [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you" withLargeLayout:self.useLargeLayout];
+            [self.headerView showSearchBar];
             self.headerView.searchField.searchField.delegate = self;
             self.searchResultsTable.headerPlaceholderText = @"POPULAR CATEGORIES OF ART ON ARTSY";
             [self.headerView.searchField.searchField setPlaceholder:@"Search medium, movement, or style"];
@@ -157,11 +167,21 @@
             [self addBudgetTable];
             [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Do you have a budget in mind?" withLargeLayout:self.useLargeLayout];
-            [self.headerView hideSearchBar];
             break;
         default:
             break;
     }
+}
+
+- (void)addTextFields
+{
+    self.onboardingTextFields = [[ARLoginFieldsView alloc] init];
+    [self.view addSubview:self.onboardingTextFields];
+    
+    [self.onboardingTextFields constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
+    [self.onboardingTextFields alignCenterXWithView:self.view predicate:@"0"];
+    [self.onboardingTextFields constrainTopSpaceToView:self.headerView predicate:@"5"];
+    [self.onboardingTextFields constrainHeight:@"100"];
 }
 
 - (void)addSearchTable

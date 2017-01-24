@@ -11,5 +11,8 @@
 
 - (void)setupForLogin;
 - (void)setupForSignUp;
+- (void)setupForEmail;
+- (void)setupForPassword;
+- (void)setupForName;
 
 @end

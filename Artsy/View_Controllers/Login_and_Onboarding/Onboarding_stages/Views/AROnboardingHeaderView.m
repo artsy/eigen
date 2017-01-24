@@ -2,6 +2,8 @@
 #import "UIColor+ArtsyColors.h"
 
 #import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
+#import <Artsy_UILabels/Artsy+UILabels.h>
+
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
@@ -9,7 +11,7 @@
 
 
 @property (nonatomic, strong) UILabel *titleLabel;
-
+@property (nonatomic, strong) ARSerifLineHeightLabel *helpTextLabel;
 @property (nonatomic, strong) NSLayoutConstraint *searchHeightConstraint;
 
 @end
@@ -22,6 +24,7 @@
     self = [super init];
     if (self) {
         _titleLabel = [[UILabel alloc] init];
+        _helpTextLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:3];
         _searchField = [[AROnboardingSearchField alloc] init];
     }
 
@@ -47,18 +50,39 @@
     [self.titleLabel alignTopEdgeWithView:self predicate:@"30"];
     [self.titleLabel constrainHeight:@"60"];
 
-    [self addSubview:self.searchField];
 
+}
+
+- (void)addHelpText:(NSString *)helpText withLargeLayout:(BOOL)useLargeLayout
+{
+    self.helpTextLabel.textColor = [UIColor artsyGraySemibold];
+    self.helpTextLabel.font = [UIFont serifFontWithSize:useLargeLayout ? 28.0 : 20.0];
+    self.helpTextLabel.textAlignment = useLargeLayout ? NSTextAlignmentCenter : NSTextAlignmentLeft;
+    self.helpTextLabel.text = helpText;
+    self.helpTextLabel.numberOfLines = 0;
+    [self addSubview:self.helpTextLabel];
+    
+    if (useLargeLayout) {
+        [self.helpTextLabel constrainWidth:@"800"];
+        [self.helpTextLabel alignCenterXWithView:self predicate:@"0"];
+    } else {
+        [self.helpTextLabel constrainWidthToView:self predicate:@"*.8"];
+        [self.helpTextLabel alignLeadingEdgeWithView:self predicate:@"20"];
+    }
+    [self.helpTextLabel constrainTopSpaceToView:self.titleLabel predicate:@"0"];
+    [self.helpTextLabel constrainHeight:@"50"];
+
+}
+
+- (void)showSearchBar
+{
+    [self addSubview:self.searchField];
+    
     self.searchHeightConstraint = [self.searchField constrainHeight:@"40"];
     [self.searchField constrainTopSpaceToView:self.titleLabel predicate:@"20"];
     [self.searchField alignLeadingEdgeWithView:self predicate:@"20"];
     [self.searchField alignTrailingEdgeWithView:self predicate:@"-20"];
     self.searchField.tintColor = [UIColor blackColor];
-}
-
-- (void)hideSearchBar
-{
-    self.searchHeightConstraint.constant = 0;
 }
 
 @end
