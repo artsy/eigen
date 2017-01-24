@@ -20,6 +20,20 @@
                ReferencedContainer = "container:Artsy.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "606C64A91E32A59400FD13E3"
+               BuildableName = "Artsy Stickers.appex"
+               BlueprintName = "Artsy Stickers"
+               ReferencedContainer = "container:Artsy.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

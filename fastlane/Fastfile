@@ -93,7 +93,6 @@ end
 ## this does it in a pretty reasonable amount of code.
 
 lane :setup_for_app_store do
-  app_name = "eigen"
   signing_root = "signing"
 
   `git clone https://github.com/artsy/mobile_code_signing.git #{signing_root}`
@@ -104,39 +103,45 @@ lane :setup_for_app_store do
   # Install the iOS distribution certificate, -A
   system "security import #{signing_root}/ios_distribution.cer  -k ~/Library/Keychains/login.keychain -A"
 
-  # Move our provisioning profile in
-  profile_path = File.expand_path("~") + "/Library/MobileDevice/Provisioning Profiles/"
-  destination = profile_path + "/" + app_name + ".mobileprovision"
-  profile = Dir.glob(signing_root + "/profiles/" + app_name + "/*").first
-
+  # First do project-wide configuration.
+  update_project_team(
+    path: "Artsy.xcodeproj",
+    teamid: "23KMWZ572J"
+  )
   update_project_codesigning(
     path: 'Artsy.xcodeproj',
     use_automatic_signing: false
   )
 
-  update_project_provisioning(
-    xcodeproj: 'Artsy.xcodeproj',
-    profile: "fastlane/#{profile}",
-    target_filter: 'Artsy',
-    build_configuration: 'Store'
-  )
+  # Then follow up with target-specific configuration.
+  [["eigen", "Artsy"], ["eigen-stickers", "Artsy Stickers"]].each do |app_details|
+    app_name = app_details[0]
+    app_target = app_details[1]
 
-  update_project_team(
-    path: "Artsy.xcodeproj",
-    teamid: "23KMWZ572J"
-  )
+    # Move our provisioning profile in
+    profile_path = File.expand_path("~") + "/Library/MobileDevice/Provisioning Profiles/"
+    destination = profile_path + "/" + app_name + ".mobileprovision"
+    profile = Dir.glob(signing_root + "/profiles/" + app_name + "/*").first
 
-  # Ensure folder exists
-  unless File.directory?(profile_path)
-    FileUtils.mkdir_p(profile_path)
+    update_project_provisioning(
+      xcodeproj: 'Artsy.xcodeproj',
+      profile: "fastlane/#{profile}",
+      target_filter: app_target,
+      build_configuration: 'Store'
+    )
+
+    # Ensure folder exists
+    unless File.directory?(profile_path)
+      FileUtils.mkdir_p(profile_path)
+    end
+
+    # Migrate it in
+    FileUtils.copy profile, destination
+    puts "Installed Profile for #{app_target}."
   end
 
-  # Migrate it in
-  FileUtils.copy profile, destination
-  puts "Installed Profile"
-
   # Install the key
-  key = Dir.glob(signing_root + "/keys/" + app_name + "/*").first
+  key = Dir.glob(signing_root + "/keys/eigen/*").first
   system "security import #{key} -k ~/Library/Keychains/login.keychain -P #{ENV['MATCH_PASSWORD']}  -A "
 
   # prints out the codesigning identities
