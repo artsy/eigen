@@ -66,7 +66,7 @@
         [self.helpTextLabel constrainWidth:@"800"];
         [self.helpTextLabel alignCenterXWithView:self predicate:@"0"];
     } else {
-        [self.helpTextLabel constrainWidthToView:self predicate:@"*.8"];
+        [self.helpTextLabel constrainWidthToView:self predicate:@"*.9"];
         [self.helpTextLabel alignLeadingEdgeWithView:self predicate:@"20"];
     }
     [self.helpTextLabel constrainTopSpaceToView:self.titleLabel predicate:@"0"];

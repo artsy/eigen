@@ -7,6 +7,8 @@
 #import "AROnboardingNavigationItemsView.h"
 #import "AROnboardingHeaderView.h"
 #import "ARLoginFieldsView.h"
+#import "ARTextFieldWithPlaceholder.h"
+#import "ARSecureTextFieldWithPlaceholder.h"
 #import "ARPriceRangeViewController.h"
 #import "Gene.h"
 #import "ARLogger.h"
@@ -60,14 +62,14 @@
 {
     [super viewWillAppear:animated];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTextChanged:)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:)
                                                  name:UITextFieldTextDidChangeNotification
                                                object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchStarted:)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textBeganEditing:)
                                                  name:UITextFieldTextDidBeginEditingNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchEnded:)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textEndedEditing:)
                                                  name:UITextFieldTextDidEndEditingNotification
                                                object:nil];
     
@@ -121,26 +123,29 @@
 
     switch (self.state) {
         case AROnboardingStagePersonalizeEmail:
-//            [self.onboardingNavigationItems disableNextStep];
+            [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Enter your email address" withLargeLayout:self.useLargeLayout];
             [self.headerView addHelpText:@"If you don't have an Artsy account yet we'll get one set up"
                          withLargeLayout:self.useLargeLayout];
             [self addTextFields];
             [self.onboardingTextFields setupForEmail];
+            self.onboardingTextFields.emailField.delegate = self;
             break;
         case AROnboardingStagePersonalizePassword:
-//            [self.onboardingNavigationItems disableNextStep];
+            [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Create a password" withLargeLayout:self.useLargeLayout];
             [self.headerView addHelpText:@"Must be 7 characters or longer" withLargeLayout:self.useLargeLayout];
             [self addTextFields];
             [self.onboardingTextFields setupForPassword];
+            self.onboardingTextFields.passwordField.delegate = self;
             break;
         case AROnboardingStagePersonalizeName:
-//            [self.onboardingNavigationItems disableNextStep];
+            [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Enter your full name" withLargeLayout:self.useLargeLayout];
-            [self.headerView addHelpText:@"Galleries and auction houss you contact will identify you by your full name" withLargeLayout:self.useLargeLayout];
+            [self.headerView addHelpText:@"Galleries and auction houses you contact will identify you by your full name" withLargeLayout:self.useLargeLayout];
             [self addTextFields];
             [self.onboardingTextFields setupForName];
+            self.onboardingTextFields.nameField.delegate = self;
             break;
         case AROnboardingStagePersonalizeArtists:
             [self addSearchTable];
@@ -165,6 +170,7 @@
             break;
         case AROnboardingStagePersonalizeBudget:
             [self addBudgetTable];
+            [self.onboardingNavigationItems addBackButton];
             [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Do you have a budget in mind?" withLargeLayout:self.useLargeLayout];
             break;
@@ -236,11 +242,114 @@
     self.navigationItemsBottomConstraint.constant = 0;
 }
 
+#pragma mark -
+#pragma mark Text Field Delegate
+
+- (void)textChanged:(NSNotification *)notification
+{
+    
+    switch (self.state) {
+        case AROnboardingStagePersonalizeEmail:
+            [self emailTextChanged];
+            break;
+        case AROnboardingStagePersonalizePassword:
+            [self passwordTextChanged];
+            break;
+        case AROnboardingStagePersonalizeName:
+            [self nameTextChanged];
+            break;
+        case AROnboardingStagePersonalizeArtists:
+            [self searchTextChanged];
+            break;
+        case AROnboardingStagePersonalizeCategories:
+            [self searchTextChanged];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)textBeganEditing:(NSNotification *)notification
+{
+    
+    switch (self.state) {
+        case AROnboardingStagePersonalizeArtists:
+            [self searchStarted];
+            break;
+        case AROnboardingStagePersonalizeCategories:
+            [self searchStarted];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)textEndedEditing:(NSNotification *)notification
+{
+    
+    switch (self.state) {
+        case AROnboardingStagePersonalizeArtists:
+            [self searchEnded];
+            break;
+        case AROnboardingStagePersonalizeCategories:
+            [self searchEnded];
+            break;
+        default:
+            break;
+    }
+}
+
+
+#pragma mark -
+#pragma mark Account Creation
+
+- (void)emailTextChanged
+{
+    NSString *email = self.onboardingTextFields.emailField.text;
+    
+    if ([self validEmail:email]) {
+        [self.onboardingNavigationItems enableNextStep];
+    }
+}
+
+- (void)passwordTextChanged
+{
+    NSString *password = self.onboardingTextFields.passwordField.text;
+    
+    if ([self validPassword:password]) {
+        [self.onboardingNavigationItems enableNextStep];
+    }
+}
+
+- (void)nameTextChanged
+{
+    if (self.onboardingTextFields.nameField.text.length > 0) {
+        [self.onboardingNavigationItems enableNextStep];
+    }
+}
+
+- (BOOL)validEmail:(NSString *)email
+{
+    if ([email containsString:@"@"]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (BOOL)validPassword:(NSString *)password
+{
+    if (password.length < 7) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
 
 #pragma mark -
 #pragma mark Search Field
 
-- (void)searchTextChanged:(NSNotification *)notification
+- (void)searchTextChanged
 {
     BOOL searchBarIsEmpty = [self.headerView.searchField.searchField.text isEqualToString:@""];
     self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModeSearchResults;
@@ -278,12 +387,12 @@
     return YES;
 }
 
-- (void)searchStarted:(NSNotification *)notification
+- (void)searchStarted
 {
     [self.headerView.searchField searchStarted];
 }
 
-- (void)searchEnded:(NSNotification *)notification
+- (void)searchEnded
 {
     [self.headerView.searchField searchEnded];
 }
