@@ -1,6 +1,14 @@
 upcoming:
-    version: 3.1.0
+    version: 3.1.1
     details: Scope not known yet
+    dev:
+      infrastructure:
+        - Report user’s anonymous ID to Adjust for campaign to install tracking - alloy
+    user_facing:
+
+releases:
+  - version: 3.1.0
+    details: Sticker pack and various fixes.
     dev:
       infrastructure:
         - Updates to Swift 3 / Xcode 8 - ash/orta
