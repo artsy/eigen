@@ -43,7 +43,7 @@ class LiveAuctionCurrentLotCTAPositionManagerTest: QuickSpec {
         describe("scrolling to a lot") {
             it("works when scrolling left to the current lot") {
                 scrollView.contentOffset = CGPoint(x: 50, y: 0)
-                subject.updateFocusedLotIndex(to: currentLotIndex + 1)
+                salesPerson.currentFocusedLotIndex.update(currentLotIndex + 1)
 
                 subject.scrollViewDidScroll(scrollView)
 
@@ -52,7 +52,7 @@ class LiveAuctionCurrentLotCTAPositionManagerTest: QuickSpec {
 
             it("works when scrolling right to the current lot") {
                 scrollView.contentOffset = CGPoint(x: 150, y: 0)
-                subject.updateFocusedLotIndex(to: currentLotIndex - 1)
+                salesPerson.currentFocusedLotIndex.update(currentLotIndex - 1)
 
                 subject.scrollViewDidScroll(scrollView)
 
@@ -61,7 +61,7 @@ class LiveAuctionCurrentLotCTAPositionManagerTest: QuickSpec {
 
             it("works when scrolling left away from the current lot") {
                 scrollView.contentOffset = CGPoint(x: 50, y: 0)
-                subject.updateFocusedLotIndex(to: currentLotIndex)
+                salesPerson.currentFocusedLotIndex.update( currentLotIndex)
 
                 subject.scrollViewDidScroll(scrollView)
 
@@ -70,7 +70,7 @@ class LiveAuctionCurrentLotCTAPositionManagerTest: QuickSpec {
 
             it("works when scrolling right away from the current lot") {
                 scrollView.contentOffset = CGPoint(x: 150, y: 0)
-                subject.updateFocusedLotIndex(to: currentLotIndex)
+                salesPerson.currentFocusedLotIndex.update( currentLotIndex)
 
                 subject.scrollViewDidScroll(scrollView)
 
@@ -78,13 +78,14 @@ class LiveAuctionCurrentLotCTAPositionManagerTest: QuickSpec {
             }
 
             it("does nothing during a jump") {
-                scrollView.contentOffset = CGPoint(x: 150, y: 0)
-                subject.updateFocusedLotIndex(to: 0)
+                salesPerson.currentFocusedLotIndex.update(0)
+                subject.updateFocusedLotIndex(to: 0) // Sets to showing
                 subject.didStartJump(to: Test_LiveAuctionLotViewModel())
 
+                scrollView.contentOffset = CGPoint(x: 150, y: 0) // This should normally trigger something
                 subject.scrollViewDidScroll(scrollView)
 
-                expect(subject.bottomPositionConstraint.constant) == hidden
+                expect(subject.bottomPositionConstraint.constant) == showing
             }
         }
     }
