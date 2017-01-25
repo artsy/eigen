@@ -10,6 +10,7 @@ upcoming:
 releases:
   - version: 3.1.0
     details: Sticker pack and various fixes.
+    date: Jan 24, 2017
     dev:
       infrastructure:
         - Updates to Swift 3 / Xcode 8 - ash/orta
