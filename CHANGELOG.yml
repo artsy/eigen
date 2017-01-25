@@ -5,6 +5,7 @@ upcoming:
       infrastructure:
         - Report user’s anonymous ID to Adjust for campaign to install tracking - alloy
     user_facing:
+      - Fixes a problem where auction users were being directed to general inquiries email address instead of specialists - ash
 
 releases:
   - version: 3.1.0
