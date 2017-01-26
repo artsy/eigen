@@ -481,6 +481,7 @@
                                                               success:^(User *user) {
                                                                   __strong typeof (wself) sself = wself;
                                                                   // we've created a user, now let's log them in
+                                                                  sself.state = AROnboardingStagePersonalizeName; // at stage of having all their details
                                                                   [sself loginWithFacebookCredentialToken:token];
                                                               }
                                                               failure:^(NSError *error, id JSON) {
@@ -523,7 +524,11 @@
                                                       __strong typeof (wself) sself = wself;
                                                       // we've logged them in, let's wrap up
                                                       [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-                                                      [sself finishAccountCreation];
+                                                      if (sself.state == AROnboardingStagePersonalizeEmail) {
+                                                          [sself finishAccountCreation];
+                                                      } else if (sself.state == AROnboardingStagePersonalizeName) {
+                                                          [sself presentPersonalizationQuestionnaires];
+                                                      }
                                                   }
                                     authenticationFailure:^(NSError *error) {
                                         // TODO: handle this
