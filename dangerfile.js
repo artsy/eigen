@@ -1,6 +1,6 @@
 /* @flow */
 
-// Removed import
+import { danger, fail, warn } from 'danger'
 import { includes } from 'lodash'
 
 // CHANGELOG check
