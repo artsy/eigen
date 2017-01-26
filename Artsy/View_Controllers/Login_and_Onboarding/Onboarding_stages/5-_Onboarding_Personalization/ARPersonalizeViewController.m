@@ -263,6 +263,9 @@
         case AROnboardingStagePersonalizePassword:
             [self passwordTextChanged];
             break;
+        case AROnboardingStagePersonalizeLogin:
+            [self passwordTextChanged];
+            break;
         case AROnboardingStagePersonalizeName:
             [self nameTextChanged];
             break;

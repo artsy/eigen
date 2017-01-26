@@ -291,11 +291,7 @@
 - (void)personalizeEmailDone:(NSString *)email
 {
     self.email = email;
-    if ([self accountExistsForEmail:email]) {
-        [self presentPersonalizationPassword]; // presentLoginPassword
-    } else {
-        [self presentPersonalizationPassword];
-    }
+    [self accountExistsForEmail:email];
 }
 
 - (void)personalizePasswordDone:(NSString *)password
@@ -364,9 +360,21 @@
 #pragma mark -
 #pragma mark Signup
 
-- (BOOL)accountExistsForEmail:(NSString *)email
+- (void)accountExistsForEmail:(NSString *)email
 {
-    return NO;
+    __weak typeof(self) wself = self;
+    NSURLRequest *request = [ARRouter checkExistingUserWithEmail:email];
+    AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        __strong typeof (wself) sself = wself;
+        if (JSON[@"id"]) {
+            [sself presentPersonalizationLogin];
+        }
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        __strong typeof (wself) sself = wself;
+        [sself presentPersonalizationPassword];
+    }];
+        
+  [op start];
 }
 
 - (void)createUserWithName:(NSString *)name email:(NSString *)email password:(NSString *)password

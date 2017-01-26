@@ -367,6 +367,11 @@ static NSString *hostFromString(NSString *string)
 #pragma mark -
 #pragma mark User
 
++ (NSURLRequest *)checkExistingUserWithEmail:(NSString *)email
+{
+    return [self requestWithMethod:@"GET" path:ARCreateUserURL parameters:@{ @"email" : email }];
+}
+
 + (NSURLRequest *)newUserInfoRequest
 {
     return [self requestWithMethod:@"GET" path:ARMyInfoURL parameters:nil];
