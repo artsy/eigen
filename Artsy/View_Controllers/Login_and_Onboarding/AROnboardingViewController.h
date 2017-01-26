@@ -16,7 +16,6 @@
 - (void)backTapped;
 - (void)followableItemFollowed:(id<ARFollowable>)item;
 - (void)splashDone:(ARSignUpSplashViewController *)sender;
-- (void)splashDoneWithLogin:(ARSignUpSplashViewController *)sender;
 - (void)slideshowDone;
 - (void)setPriceRangeDone:(NSInteger)range;
 @end

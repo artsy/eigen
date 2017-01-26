@@ -224,7 +224,7 @@
 
 - (void)logIn:(id)sender
 {
-    [self.delegate splashDoneWithLogin:self];
+    [self.delegate splashDone:self];
 }
 
 - (void)enableForm

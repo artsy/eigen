@@ -12,6 +12,7 @@
 
 - (void)setupForLogin;
 - (void)setupForSignUp;
-- (void)setupForNewOnboarding;
+- (void)setupForNewLogin;
+- (void)setupForFacebook;
 
 @end
