@@ -9,6 +9,7 @@
 #import "ARLoginFieldsView.h"
 #import "ARTextFieldWithPlaceholder.h"
 #import "ARSecureTextFieldWithPlaceholder.h"
+#import "ARLoginButtonsView.h"
 #import "ARPriceRangeViewController.h"
 #import "Gene.h"
 #import "ARLogger.h"
@@ -32,6 +33,7 @@
 @property (nonatomic, strong, readwrite) AROnboardingHeaderView *headerView;
 @property (nonatomic, strong, readwrite) AROnboardingNavigationItemsView *onboardingNavigationItems;
 @property (nonatomic, strong, readwrite) ARLoginFieldsView *onboardingTextFields;
+@property (nonatomic, strong) ARLoginButtonsView *onboardingButtonsView;
 @property (nonatomic, strong, readwrite) AROnboardingPersonalizeTableViewController *searchResultsTable;
 @property (nonatomic, strong, readwrite) ARPriceRangeViewController *budgetTable;
 @property (nonatomic, assign, readwrite) BOOL followedAtLeastOneCategory;
@@ -130,6 +132,7 @@
             [self addTextFields];
             [self.onboardingTextFields setupForEmail];
             self.onboardingTextFields.emailField.delegate = self;
+            [self addFacebookButton];
             break;
         case AROnboardingStagePersonalizePassword:
             [self.onboardingNavigationItems disableNextStep];
@@ -196,6 +199,23 @@
     [self.onboardingTextFields alignCenterXWithView:self.view predicate:@"0"];
     [self.onboardingTextFields constrainTopSpaceToView:self.headerView predicate:@"5"];
     [self.onboardingTextFields constrainHeight:@"100"];
+}
+
+- (void)addFacebookButton
+{
+    self.onboardingButtonsView = [[ARLoginButtonsView alloc] init];
+    [self.view addSubview:self.onboardingButtonsView];
+    
+    [self.onboardingButtonsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
+    [self.onboardingButtonsView alignCenterXWithView:self.view predicate:@"0"];
+    [self.onboardingButtonsView constrainHeight:@"30"];
+    [self.onboardingButtonsView constrainTopSpaceToView:self.onboardingTextFields predicate:@"40"];
+    [self.onboardingButtonsView setupForNewOnboarding];
+    
+    [self.onboardingButtonsView.facebookActionButton addTarget:self
+                                                        action:@selector(facebookTapped:)
+                                              forControlEvents:UIControlEventTouchUpInside];
+
 }
 
 - (void)addSearchTable
@@ -577,6 +597,11 @@
 - (void)backTapped:(id)sender
 {
     [self.delegate backTapped];
+}
+
+- (void)facebookTapped:(id)sender
+{
+    [self.delegate personaliseFacebookTapped];
 }
 
 - (void)followableItemClicked:(id<ARFollowable>)item

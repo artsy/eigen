@@ -12,5 +12,6 @@
 
 - (void)setupForLogin;
 - (void)setupForSignUp;
+- (void)setupForNewOnboarding;
 
 @end

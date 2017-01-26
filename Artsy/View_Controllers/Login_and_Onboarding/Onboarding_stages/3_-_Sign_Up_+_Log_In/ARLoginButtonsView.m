@@ -32,6 +32,21 @@
     return self;
 }
 
+- (void)setupForNewOnboarding
+{
+    [self.facebookActionButton setTitle:@"CONNECT WITH FACEBOOK" forState:UIControlStateNormal];
+    [self.facebookActionButton setTitleColor:[UIColor colorWithRed:60.0 / 225.0 green:89.0 / 225.0 blue:155.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [self.facebookActionButton setBackgroundColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    [self addSubview:self.facebookActionButton];
+    
+    [self.facebookActionButton constrainWidthToView:self predicate:@"0"];
+    [self.facebookActionButton constrainHeight:@"40"];
+    [self.facebookActionButton alignCenterXWithView:self predicate:@"0"];
+    [self.facebookActionButton alignTopEdgeWithView:self predicate:@"0"];
+   
+}
+
 - (void)setupForLogin
 {
     [self commonSetup];
