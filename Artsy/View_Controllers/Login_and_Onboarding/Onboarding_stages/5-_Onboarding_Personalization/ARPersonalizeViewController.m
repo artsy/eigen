@@ -96,8 +96,14 @@
 }
 
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+//- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+//{
+//    [self showViews];
+//}
+
+- (void)viewDidLoad
 {
+    [super viewDidLoad];
     [self showViews];
 }
 
@@ -132,6 +138,7 @@
             [self addTextFields];
             [self.onboardingTextFields setupForEmail];
             self.onboardingTextFields.emailField.delegate = self;
+            [self.onboardingTextFields.emailField becomeFirstResponder];
             [self addFacebookButton];
             break;
         case AROnboardingStagePersonalizePassword:
@@ -140,6 +147,7 @@
             [self.headerView addHelpText:@"Must be 7 characters or longer" withLargeLayout:self.useLargeLayout];
             [self addTextFields];
             [self.onboardingTextFields setupForPassword];
+            [self.onboardingTextFields.passwordField becomeFirstResponder];
             self.onboardingTextFields.passwordField.delegate = self;
             break;
         case AROnboardingStagePersonalizeLogin:
@@ -148,6 +156,7 @@
             [self.headerView addHelpText:@"Enter your password to log in" withLargeLayout:self.useLargeLayout];
             [self addTextFields];
             [self.onboardingTextFields setupForPassword];
+            [self.onboardingTextFields.passwordField becomeFirstResponder];
             self.onboardingTextFields.passwordField.delegate = self;
             break;
         case AROnboardingStagePersonalizeName:
@@ -156,6 +165,7 @@
             [self.headerView addHelpText:@"Galleries and auction houses you contact will identify you by your full name" withLargeLayout:self.useLargeLayout];
             [self addTextFields];
             [self.onboardingTextFields setupForName];
+            [self.onboardingTextFields.nameField becomeFirstResponder];
             self.onboardingTextFields.nameField.delegate = self;
             break;
         case AROnboardingStagePersonalizeArtists:
@@ -254,15 +264,15 @@
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    [self.view layoutIfNeeded];
+//    [self.view layoutIfNeeded];
 
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     self.navigationItemsBottomConstraint.constant = -keyboardSize.height;
     
-    [UIView animateWithDuration:0.5
-                     animations:^{
-                         [self.view layoutIfNeeded];
-                     }];
+//    [UIView animateWithDuration:0.5
+//                     animations:^{
+//                         [self.view layoutIfNeeded];
+//                     }];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
@@ -558,6 +568,7 @@
 
 - (void)nextTapped:(id)sender
 {
+    [self.onboardingTextFields resignFirstResponder];
     switch (self.state) {
         case AROnboardingStagePersonalizeEmail:
             [self.delegate personalizeEmailDone:self.onboardingTextFields.emailField.text];
