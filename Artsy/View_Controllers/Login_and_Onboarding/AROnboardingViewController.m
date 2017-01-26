@@ -31,6 +31,11 @@
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
+// Temporary imports
+#import "ARRouter.h"
+#import "AFHTTPRequestOperation+JSON.h"
+
+
 
 @interface AROnboardingViewController () <UINavigationControllerDelegate>
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
@@ -40,6 +45,8 @@
 @property (nonatomic, assign, readwrite) NSInteger budgetRange;
 @property (nonatomic, strong, readwrite) UIView *progressBar;
 @property (nonatomic, strong, readwrite) UIView *progressBackgroundBar;
+@property (nonatomic, strong, readwrite) NSString *email;
+@property (nonatomic, strong, readwrite) NSString *password;
 
 @end
 
@@ -153,11 +160,6 @@
 #pragma mark -
 #pragma mark Signup splash
 
-- (void)splashDoneWithLogin:(ARSignUpSplashViewController *)sender
-{
-    [self logInWithEmail:nil];
-}
-
 - (void)splashDone:(ARSignUpSplashViewController *)sender
 {
     [self presentOnboarding];
@@ -199,6 +201,19 @@
     }];
 }
 
+- (void)showTermsAndConditions
+{
+    AROnboardingWebViewController *webViewController = [[AROnboardingWebViewController alloc] initWithMobileArtsyPath:@"terms"];
+    [self pushViewController:webViewController animated:YES];
+}
+
+- (void)showPrivacyPolicy
+{
+    AROnboardingWebViewController *webViewController = [[AROnboardingWebViewController alloc] initWithMobileArtsyPath:@"privacy"];
+    [self pushViewController:webViewController animated:YES];
+}
+
+
 #pragma mark -
 #pragma mark Personalize level
 
@@ -217,6 +232,15 @@
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
     [self updateProgress:0.20];
+}
+
+- (void)presentPersonalizationLogin
+{
+    self.state = AROnboardingStagePersonalizeLogin;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
+    personalize.delegate = self;
+    [self pushViewController:personalize animated:YES];
+    [self updateProgress:0.90];
 }
 
 - (void)presentPersonalizationPassword
@@ -264,19 +288,32 @@
     [self updateProgress:0.95];
 }
 
-- (void)personalizeEmailDone
+- (void)personalizeEmailDone:(NSString *)email
 {
-    [self presentPersonalizationPassword];
+    self.email = email;
+    if ([self accountExistsForEmail:email]) {
+        [self presentPersonalizationPassword]; // presentLoginPassword
+    } else {
+        [self presentPersonalizationPassword];
+    }
 }
 
-- (void)personalizePasswordDone
+- (void)personalizePasswordDone:(NSString *)password
 {
+    self.password = password;
     [self presentPersonalizationName];
 }
 
-- (void)personalizeNameDone
+- (void)personalizeLoginWithPasswordDone:(NSString *)password
 {
-    [self presentPersonalizationQuestionnaires];
+    [self loginUserWithEmail:self.email password:password withSuccess:^{
+        [self dismissOnboardingWithVoidAnimation:YES];
+    }];
+}
+
+- (void)personalizeNameDone:(NSString *)name
+{
+    [self createUserWithName:name email:self.email password:self.password];
 }
 
 - (void)personalizeArtistsDone
@@ -297,7 +334,8 @@
 
 - (void)personalizeBudgetDone
 {
-    [self signUp];
+    [self applyPersonalizationToUser];
+    [self finishAccountCreation];
 }
 
 - (void)backTapped
@@ -326,13 +364,41 @@
 #pragma mark -
 #pragma mark Signup
 
-- (void)signUp
+- (BOOL)accountExistsForEmail:(NSString *)email
 {
-//    ARCreateAccountViewController *createVC = [[ARCreateAccountViewController alloc] init];
-//    createVC.delegate = self;
-//    [self pushViewController:createVC animated:YES];
-//    self.state = AROnboardingStageSignUp;
-//    [self updateProgress:0.95];
+    return NO;
+}
+
+- (void)createUserWithName:(NSString *)name email:(NSString *)email password:(NSString *)password
+{
+    __weak typeof(self) wself = self;
+    [[ARUserManager sharedManager] createUserWithName:name email:email password:password success:^(User *user) {
+        __strong typeof (wself) sself = wself;
+        [sself loginUserWithEmail:email password:password withSuccess:^{
+            [sself presentPersonalizationQuestionnaires];
+        }];
+    } failure:^(NSError *error, id JSON) {
+//        __strong typeof (wself) sself = wself;
+//        [sself showWarningCouldNotCreateAccount];
+
+    }];
+
+}
+
+- (void)loginUserWithEmail:(NSString *)email password:(NSString *)password withSuccess:(void (^)())success
+{
+//    __weak typeof(self) wself = self;
+    [[ARUserManager sharedManager] loginWithUsername:email
+                                            password:password
+                              successWithCredentials:nil
+                                             gotUser:^(User *currentUser) { success();
+                                             }
+                               authenticationFailure:^(NSError *error) {
+//                                   "Couldn’t Log In" message:@"Please check your email and password."
+                               }
+                                      networkFailure:^(NSError *error) {
+//                                          "Sign up failed."];
+                                      }];
 }
 
 - (void)applyPersonalizationToUser
@@ -367,43 +433,13 @@
     [[ARAppDelegate sharedInstance] finishOnboarding:self animated:createdAccount];
 }
 
-- (void)showTermsAndConditions
-{
-    AROnboardingWebViewController *webViewController = [[AROnboardingWebViewController alloc] initWithMobileArtsyPath:@"terms"];
-    [self pushViewController:webViewController animated:YES];
-}
-
-- (void)showPrivacyPolicy
-{
-    AROnboardingWebViewController *webViewController = [[AROnboardingWebViewController alloc] initWithMobileArtsyPath:@"privacy"];
-    [self pushViewController:webViewController animated:YES];
-}
-
 
 - (void)finishAccountCreation
 {
     [self dismissOnboardingWithVoidAnimation:YES];
 }
 
-- (void)twitterError
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t get Twitter credentials"
-                                                    message:@"Couldn’t get Twitter credentials. Please link a Twitter account in the settings app. If you continue having trouble, please email Artsy support at support@artsy.net"
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
-}
 
-- (void)logInWithEmail:(NSString *)email
-{
-//    ARLoginViewController *loginViewController = [[ARLoginViewController alloc] initWithEmail:email];
-//    //        ARCreateAccountViewController *loginViewController = [[ARCreateAccountViewController alloc] init];
-//    loginViewController.delegate = self;
-//
-//    [self pushViewController:loginViewController animated:YES];
-//    self.state = AROnboardingStageLogin;
-}
 
 #pragma mark -
 #pragma mark Navigation Delegate

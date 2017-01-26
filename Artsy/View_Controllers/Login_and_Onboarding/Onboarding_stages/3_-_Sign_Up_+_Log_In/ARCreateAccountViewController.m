@@ -528,7 +528,7 @@
     NSString *email = nil;
     if (alertView.tag == EMAIL_TAG) {
         email = self.textFieldsView.emailField.text;
-        [self.delegate logInWithEmail:email];
+//        [self.delegate logInWithEmail:email];
     } else if (alertView.tag == ERROR_TAG) {
         [self setFormEnabled:YES];
     }

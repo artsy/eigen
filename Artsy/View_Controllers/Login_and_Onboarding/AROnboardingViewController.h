@@ -5,9 +5,10 @@
 @protocol ARFollowable;
 
 @protocol AROnboardingStepsDelegate <NSObject>
-- (void)personalizeEmailDone;
-- (void)personalizePasswordDone;
-- (void)personalizeNameDone;
+- (void)personalizeEmailDone:(NSString *)email;
+- (void)personalizePasswordDone:(NSString *)password;
+- (void)personalizeLoginWithPasswordDone:(NSString *)password;
+- (void)personalizeNameDone:(NSString *)name;
 - (void)personalizeArtistsDone;
 - (void)personalizeCategoriesDone;
 - (void)personalizeBudgetDone;
@@ -33,6 +34,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     AROnboardingStageStart,
     AROnboardingStagePersonalizeEmail,
     AROnboardingStagePersonalizePassword,
+    AROnboardingStagePersonalizeLogin,
     AROnboardingStagePersonalizeName,
     AROnboardingStagePersonalizeArtists,
     AROnboardingStagePersonalizeCategories,
@@ -50,8 +52,8 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 @property (nonatomic, assign, readonly) ARInitialOnboardingState initialState;
 
 - (void)finishAccountCreation;
-- (void)signUp;
-- (void)logInWithEmail:(NSString *)email;
+//- (void)signUp;
+//- (void)logInWithEmail:(NSString *)email;
 - (void)showTermsAndConditions;
 - (void)showPrivacyPolicy;
 

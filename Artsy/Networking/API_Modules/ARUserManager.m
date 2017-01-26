@@ -157,7 +157,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
                          gotUser:gotUser
            authenticationFailure:authenticationFailure
                   networkFailure:networkFailure
-        saveSharedWebCredentials:YES];
+        saveSharedWebCredentials:NO]; // Maxim TODO: this is a quick hack for onboarding prototype. Change if merging to master!
 }
 
 - (void)loginWithUsername:(NSString *)username

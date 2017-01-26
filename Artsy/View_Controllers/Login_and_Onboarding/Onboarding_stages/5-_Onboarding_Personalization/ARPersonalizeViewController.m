@@ -139,6 +139,14 @@
             [self.onboardingTextFields setupForPassword];
             self.onboardingTextFields.passwordField.delegate = self;
             break;
+        case AROnboardingStagePersonalizeLogin:
+            [self.onboardingNavigationItems disableNextStep];
+            [self.headerView setupHeaderViewWithTitle:@"Log in" withLargeLayout:self.useLargeLayout];
+            [self.headerView addHelpText:@"Enter your password to log in" withLargeLayout:self.useLargeLayout];
+            [self addTextFields];
+            [self.onboardingTextFields setupForPassword];
+            self.onboardingTextFields.passwordField.delegate = self;
+            break;
         case AROnboardingStagePersonalizeName:
             [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Enter your full name" withLargeLayout:self.useLargeLayout];
@@ -529,13 +537,16 @@
 {
     switch (self.state) {
         case AROnboardingStagePersonalizeEmail:
-            [self.delegate personalizeEmailDone];
+            [self.delegate personalizeEmailDone:self.onboardingTextFields.emailField.text];
             break;
         case AROnboardingStagePersonalizePassword:
-            [self.delegate personalizePasswordDone];
+            [self.delegate personalizePasswordDone:self.onboardingTextFields.passwordField.text];
+            break;
+        case AROnboardingStagePersonalizeLogin:
+            [self.delegate personalizeLoginWithPasswordDone:self.onboardingTextFields.passwordField.text];
             break;
         case AROnboardingStagePersonalizeName:
-            [self.delegate personalizeNameDone];
+            [self.delegate personalizeNameDone:self.onboardingTextFields.nameField.text];
             break;
         case AROnboardingStagePersonalizeArtists:
             [self.delegate personalizeArtistsDone];
