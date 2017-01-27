@@ -51,7 +51,7 @@
   "dependencies": {
     "lodash": "3.10.1",
     "react": "15.4.1",
-    "react-native": "0.40.0",
+    "react-native": "alloy/react-native#podspec",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
     "react-relay": "https://github.com/alloy/relay/releases/download/v0.9.3/react-relay-0.9.3.tgz",
     "remove-markdown": "0.1.0"

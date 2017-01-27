@@ -23,7 +23,8 @@ Pod::Spec.new do |s|
 
   # 3rd-party pods
   s.dependency 'SDWebImage', '>= 3.7.2'
-  react_native_version = npm_package['dependencies']['react-native'].sub('^', '~>')
+  s.dependency 'Yoga', '~> 1.0'
+  react_native_version = '1000.0.0' #npm_package['dependencies']['react-native'].sub('^', '~>')
   s.dependency 'React/Core', react_native_version
   s.dependency 'React/RCTText', react_native_version
   s.dependency 'React/RCTImage', react_native_version
