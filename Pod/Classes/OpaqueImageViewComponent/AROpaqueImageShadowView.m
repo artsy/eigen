@@ -1,14 +1,15 @@
 #import "AROpaqueImageShadowView.h"
 
 #import <React/RCTUtils.h>
+#import <Yoga/Yoga.h>
 
 @implementation AROpaqueImageShadowView
 
-static CSSSize
-RCTMeasure(void *context, float width, CSSMeasureMode widthMode, float height, CSSMeasureMode heightMode)
+static YGSize
+RCTMeasure(void *context, float width, YGMeasureMode widthMode, float height, YGMeasureMode heightMode)
 {
   AROpaqueImageShadowView *shadowImage = (__bridge AROpaqueImageShadowView *)context;
-  CSSSize result;
+  YGSize result;
   if (!isnan(width)) {
     result.width = RCTCeilPixelValue(width);
     result.height = RCTCeilPixelValue(width / shadowImage.aspectRatio);
@@ -23,8 +24,8 @@ RCTMeasure(void *context, float width, CSSMeasureMode widthMode, float height, C
 - (instancetype)init;
 {
   if ((self = [super init])) {
-    _aspectRatio = 1;
-      CSSNodeSetMeasureFunc(self.cssNode, RCTMeasure);
+    self.aspectRatio = 1;
+    YGNodeSetMeasureFunc(self.cssNode, RCTMeasure);
   }
   return self;
 }
