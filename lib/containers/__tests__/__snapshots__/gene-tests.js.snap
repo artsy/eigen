@@ -198,7 +198,7 @@ exports[`test looks like expected 1`] = `
                 },
                 Object {
                   "fontStyle": "italic",
-                  "marginTop": 4,
+                  "marginTop": 2,
                   "maxWidth": 245,
                 },
                 Object {
@@ -318,7 +318,7 @@ exports[`test looks like expected 1`] = `
             Object {
               "selectedMedium": "painting",
               "selectedPriceRange": "*-100000",
-              "sort": "-year",
+              "sort": "-partner_updated_at",
             }
           }
           resolveQuery={[Function]} />
