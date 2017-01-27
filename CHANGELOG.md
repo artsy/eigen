@@ -4,9 +4,15 @@
 
 - Gave ESLint, Flow and Danger the ability to fail the build - orta
 - Gene Refine button is enabled - orta
+- Fix extra blankspace in Artist Card when data is missing - luc
+- Gene titles wrap so they don't get covered by back button - luc
 
 ### 1.1.4
 
+- Added test coverage for gene components - sarah
+- Added test coverage to buttons - sarah
+- Added test coverage to artwork grids - sarah
+- Added test coverage to all containers and Artist components - sarah
 - Added test coverage to Home container - sarah
 - Fixes bug in GeneVC where fetching was starting on page 2 - sarah
 - Update home view artworks rails order - maxim

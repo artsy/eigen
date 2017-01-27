@@ -34,6 +34,8 @@ Why Yarn? See [our JS glossary for Yarn][glossary-yarn],
 
 ### Development
 
+
+
 ### Using VS Code as an IDE
 
 There is a comprehensive document covering [our setup here](docs/vscode.md).
@@ -46,6 +48,16 @@ There is a comprehensive document covering [our setup here](docs/vscode.md).
    * Start the React Storybooks environment.
 
 2. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
+
+
+### Debugging
+
+You can use React Native debugger which is a standalone app to inspect views as well as the standard chrome debugging tools.
+
+1. Install [RN debugger](https://github.com/jhen0409/react-native-debugger): `$ brew update && brew cask install react-native-debugger`.
+2. You can now use `$ npm run rndebugger` instead of `$ npm start` to configure the React Native packager to use RNdebugger.
+
+![screen shot 2017-01-23 at 1 00 01 pm](https://cloud.githubusercontent.com/assets/296775/22220775/09bb10ec-e17e-11e6-8801-3b0ccbdbaa84.png)
 
 ### Updating Dependencies
 
@@ -122,10 +134,12 @@ On the other hand, our JS is deployed from master to our dev build on Testflight
   - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
   - http://blog.krawaller.se/posts/a-react-app-demonstrating-css3-flexbox/
 
-* React Native Storybooks
+* React Native Storybooks:
   - https://github.com/kadirahq/react-native-storybook
   - https://github.com/kadirahq/react-storybook
 
+* React Native Debugger:
+  - https://github.com/jhen0409/react-native-debugger
 
 [React Native]: http://facebook.github.io/react-native/
 [Eigen]: https://github.com/artsy/eigen

@@ -1,0 +1,182 @@
+exports[`test renders properly 1`] = `
+<View
+  style={
+    Object {
+      "marginBottom": 40,
+    }
+  }>
+  <View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Array [
+          Object {
+            "fontSize": 17,
+          },
+          Object {
+            "marginBottom": 20,
+          },
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+          },
+        ]
+      }>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "fontSize": 20,
+            },
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }>
+        Works for Sale
+      </Text>
+       
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Array [
+              Object {
+                "fontSize": 20,
+              },
+              Object {
+                "color": "#666666",
+              },
+            ],
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }>
+        (
+        2
+        )
+      </Text>
+    </Text>
+    <ArtworksGrid
+      artworks={undefined}
+      onComplete={[Function]}
+      queryArtworksKeypath="artist.artworks"
+      queryForPage={[Function]}
+      queryState={
+        Object {
+          "availability": "IS_FOR_SALE",
+        }
+      } />
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#e5e5e5",
+          "height": 1,
+          "marginLeft": -20,
+          "marginRight": -20,
+        },
+        Object {
+          "marginBottom": 20,
+          "marginTop": 40,
+        },
+      ]
+    } />
+  <View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Array [
+          Object {
+            "fontSize": 17,
+          },
+          Object {
+            "marginBottom": 20,
+          },
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+          },
+        ]
+      }>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "fontSize": 20,
+            },
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }>
+        Other Works
+      </Text>
+       
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Array [
+              Object {
+                "fontSize": 20,
+              },
+              Object {
+                "color": "#666666",
+              },
+            ],
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }>
+        (
+        3
+        )
+      </Text>
+    </Text>
+    <ArtworksGrid
+      artworks={undefined}
+      onComplete={null}
+      queryArtworksKeypath="artist.artworks"
+      queryForPage={[Function]}
+      queryState={
+        Object {
+          "availability": "IS_NOT_FOR_SALE",
+        }
+      } />
+  </View>
+</View>
+`;

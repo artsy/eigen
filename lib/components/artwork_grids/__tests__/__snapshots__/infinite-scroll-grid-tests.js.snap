@@ -1,0 +1,438 @@
+exports[`test renders properly 1`] = `
+<ScrollView
+  accessibilityLabel="Artworks ScrollView"
+  onLayout={[Function]}
+  onScroll={[Function]}
+  scrollEventThrottle={50}
+  scrollsToTop={false}>
+  <View
+    accessibilityLabel="Artworks Content View"
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }>
+    <View
+      accessibilityLabel="Section 0"
+      style={
+        Array [
+          Object {
+            "flex": 1,
+            "flexDirection": "column",
+          },
+          Object {
+            "marginRight": 20,
+            "width": 374,
+          },
+        ]
+      }>
+      <TouchableWithoutFeedback
+        onPress={[Function]}>
+        <View>
+          <AROpaqueImageView
+            aspectRatio={1.27}
+            imageURL="artsy.net/image-url"
+            style={
+              Object {
+                "marginBottom": 10,
+              }
+            } />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Array [
+                  Object {
+                    "color": "#666666",
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "fontWeight": "bold",
+                  },
+                ],
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            Jenny Holzer
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Object {
+                  "color": "#666666",
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "fontSize": 17,
+                  },
+                  Array [
+                    Object {
+                      "color": "#666666",
+                      "fontSize": 12,
+                    },
+                    Object {
+                      "fontStyle": "italic",
+                    },
+                  ],
+                  Object {
+                    "fontFamily": "AGaramondPro-Regular",
+                  },
+                ]
+              }>
+              TALKING POLITICS
+            </Text>
+            , 2008
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Object {
+                  "color": "#666666",
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            Kukje Gallery
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Object {
+                  "color": "#666666",
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            Not for sale
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
+      <View
+        accessibilityLabel="Spacer View"
+        style={
+          Object {
+            "height": 20,
+          }
+        } />
+      <TouchableWithoutFeedback
+        onPress={[Function]}>
+        <View>
+          <AROpaqueImageView
+            aspectRatio={1.27}
+            imageURL="artsy.net/image-url"
+            style={
+              Object {
+                "marginBottom": 10,
+              }
+            } />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Array [
+                  Object {
+                    "color": "#666666",
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "fontWeight": "bold",
+                  },
+                ],
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            Jenny Holzer
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Object {
+                  "color": "#666666",
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "fontSize": 17,
+                  },
+                  Array [
+                    Object {
+                      "color": "#666666",
+                      "fontSize": 12,
+                    },
+                    Object {
+                      "fontStyle": "italic",
+                    },
+                  ],
+                  Object {
+                    "fontFamily": "AGaramondPro-Regular",
+                  },
+                ]
+              }>
+              TALKING POLITICS
+            </Text>
+            , 2008
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Object {
+                  "color": "#666666",
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            Kukje Gallery
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Object {
+                  "color": "#666666",
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            Not for sale
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+    <View
+      accessibilityLabel="Section 1"
+      style={
+        Array [
+          Object {
+            "flex": 1,
+            "flexDirection": "column",
+          },
+          Object {
+            "marginRight": 0,
+            "width": 374,
+          },
+        ]
+      }>
+      <TouchableWithoutFeedback
+        onPress={[Function]}>
+        <View>
+          <AROpaqueImageView
+            aspectRatio={1.27}
+            imageURL="artsy.net/image-url"
+            style={
+              Object {
+                "marginBottom": 10,
+              }
+            } />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Array [
+                  Object {
+                    "color": "#666666",
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "fontWeight": "bold",
+                  },
+                ],
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            Jenny Holzer
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Object {
+                  "color": "#666666",
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "fontSize": 17,
+                  },
+                  Array [
+                    Object {
+                      "color": "#666666",
+                      "fontSize": 12,
+                    },
+                    Object {
+                      "fontStyle": "italic",
+                    },
+                  ],
+                  Object {
+                    "fontFamily": "AGaramondPro-Regular",
+                  },
+                ]
+              }>
+              TALKING POLITICS
+            </Text>
+            , 2008
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Object {
+                  "color": "#666666",
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            Kukje Gallery
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Object {
+                  "color": "#666666",
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            Not for sale
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+  </View>
+</ScrollView>
+`;
