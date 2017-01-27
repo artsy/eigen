@@ -48,6 +48,14 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 expect(subject) == snapshot()
             }
 
+            it("looks good for won lots") {
+                lotViewModel.isBeingSold = true
+                lotViewModel.userIsBeingSoldTo = true
+                lotViewModel.winningBidPrice = 6000_00
+                lotViewModel.lotStateSignal.update(.closedLot(wasPassed: false))
+                expect(subject) == snapshot()
+            }
+
             it("looks good for passed lots") {
                 lotViewModel.lotStateSignal.update(.closedLot(wasPassed: true))
                 expect(subject) == snapshot()
@@ -154,6 +162,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var userIsBeingSoldTo: Bool = false
     var userIsWinning: Bool = false
     var isBeingSold: Bool = false
+    var winningBidPrice: UInt64? = nil
     // Whether or not (all) events returned from this test VM should be cancelled.
     var cancelEvents = false
 

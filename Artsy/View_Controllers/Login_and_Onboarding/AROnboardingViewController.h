@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
 @property (nonatomic, assign, readonly) ARInitialOnboardingState initialState;
 
-- (void)signUpWithFacebook;
+- (void)finishAccountCreation;
 - (void)signUp;
 - (void)logInWithEmail:(NSString *)email;
 - (void)showTermsAndConditions;

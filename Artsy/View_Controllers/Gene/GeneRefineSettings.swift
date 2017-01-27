@@ -24,18 +24,18 @@ class RefineSwiftCoordinator : NSObject {
 }
 
 enum GeneSortingOrder: String {
-    case RecentlyAdded = "Recently Added"
+    case RecentlyUpdated = "Recently Updated"
     case LeastExpensive = "Least Expensive"
     case MostExpensive = "Most Expensive"
 
     static func allValues() -> [GeneSortingOrder] {
-        return [RecentlyAdded, LeastExpensive, MostExpensive]
+        return [RecentlyUpdated, LeastExpensive, MostExpensive]
     }
 
     static func fromID(_ id: String) -> GeneSortingOrder? {
         switch id {
-        case "-year":
-            return .RecentlyAdded
+        case "-partner_updated_at":
+            return .RecentlyUpdated
         case "prices":
             return .LeastExpensive
         case "-prices":
@@ -47,8 +47,8 @@ enum GeneSortingOrder: String {
 
     func toID() -> String {
         switch self {
-        case .RecentlyAdded:
-            return "-year"
+        case .RecentlyUpdated:
+            return "-partner_updated_at"
         case .LeastExpensive:
             return "prices"
         case .MostExpensive:
@@ -75,7 +75,8 @@ struct Price {
     /// Generates a cents based price for the Refine settings
     func maxPrice() -> Int {
         if id == "*-*" {
-            return 50_000
+            // There will always be a from star to star
+            return 0
         } else if id.hasSuffix("-*") {
             // max can be represented as "XXX-*"
             return Int(id.components(separatedBy: "-*").first!)!
@@ -89,7 +90,7 @@ struct Price {
     func minPrice() -> Int {
         if id == "*-*" {
             return 0
-        } else if id.contains("-") {
+        } else if !id.hasPrefix("*-") && id.contains("-") {
             return Int(id.components(separatedBy: "-").first!)!
         }
         return 0
@@ -125,7 +126,9 @@ struct GeneRefineSettings {
         let json = JSON(data)
         guard let aggregations = json["aggregations"].array,
             let sort = json["sort"].string, let sorting = GeneSortingOrder.fromID(sort),
-            let mediumID = json["selectedMedium"].string else { return nil }
+            let mediumID = json["selectedMedium"].string else {
+                return nil
+        }
 
         let price: Price?
         if (initial) {
@@ -141,9 +144,11 @@ struct GeneRefineSettings {
         let mediums = mediumsJSON["counts"].arrayValue.map({ Medium(id: $0["id"].stringValue, name: $0["name"].stringValue, count: $0["count"].intValue) })
 
         let allowedMediums = mediums.filter { $0.count > 0 }
-        let selectedMedium = allowedMediums.first({ $0.id == mediumID })
+        let allMedium = Medium(id: "*", name: "All Mediums", count: 1)
+        let allMediums = [allMedium] + allowedMediums
+        let selectedMedium = allMediums.first({ $0.id == mediumID })
 
-        return GeneRefineSettings(sort: sorting, medium: selectedMedium, mediums:allowedMediums, priceRange: price?.centsPriceRange())
+        return GeneRefineSettings(sort: sorting, medium: selectedMedium, mediums:allMediums, priceRange: price?.centsPriceRange())
     }
 
     func emissionPriceRange(_ priceRange: PriceRange) -> String {

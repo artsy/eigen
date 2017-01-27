@@ -86,9 +86,9 @@ target 'Artsy' do
   pod 'React/Core', :git => 'https://github.com/alloy/react-native.git', :branch => '0.34.1-with-scrollview-fix'
 
   if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
-    pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-UIFonts.git"
+    pod 'Artsy+UIFonts'
   else
-    pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-OSSUIFonts.git"
+    pod 'Artsy+OSSUIFonts'
   end
 
   # Facebook

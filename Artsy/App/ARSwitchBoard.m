@@ -56,7 +56,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
 @interface ARSwitchBoard ()
 
 @property (nonatomic, strong) JLRoutes *routes;
-@property (nonatomic, strong) Aerodramus *echo;
+@property (nonatomic, readwrite, strong) Aerodramus *echo;
 @property (nonatomic, strong) NSArray<ARSwitchBoardDomain *> *domains;
 
 @end

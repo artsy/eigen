@@ -6,6 +6,7 @@
 #import "PostImage.h"
 #import "Profile.h"
 
+#import "ARTwoWayDictionaryTransformer.h"
 
 @implementation ARPostFeedItem
 
@@ -55,16 +56,10 @@
 
 + (NSValueTransformer *)typeJSONTransformer
 {
-    NSDictionary *types = @{
+    return [ARTwoWayDictionaryTransformer reversibleTransformerWithDictionary:@{
         @"singlecolumn" : @(ARPostTypeSingleColumn),
         @"twocolumn" : @(ARPostTypeTwoColumn),
         @"textonly" : @(ARPostTypeTextOnly)
-    };
-
-    return [MTLValueTransformer reversibleTransformerWithForwardBlock:^(NSString *str) {
-        return types[str];
-    } reverseBlock:^(NSNumber *type) {
-        return [types allKeysForObject:type].lastObject;
     }];
 }
 

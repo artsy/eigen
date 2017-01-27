@@ -79,12 +79,19 @@ class AuctionInformationViewController: UIViewController {
             partnerNameThumbnail.constrainHeight("50")
         }
 
-        let auctionTitleView = AuctionTitleView(viewModel: saleViewModel, delegate: titleViewDelegate, fullWidth: true, showAdditionalInformation: false)
+        let auctionTitleView = AuctionTitleView(
+            viewModel: saleViewModel,
+            delegate: titleViewDelegate,
+            fullWidth: true,
+            showAdditionalInformation: false,
+            titleTextAlignment: .left
+        )
         stackView?.addSubview(auctionTitleView, withTopMargin: "20", sideMargin: "40")
 
         let auctionDescriptionView = ARTextView()
         auctionDescriptionView.useSemiBold = true
         auctionDescriptionView.setMarkdownString(saleViewModel.saleDescription)
+        auctionDescriptionView.viewControllerDelegate = self
         stackView?.addSubview(auctionDescriptionView, withTopMargin: "10", sideMargin: "40")
 
         let auctionBeginsHeaderLabel = UILabel()
@@ -153,11 +160,11 @@ class AuctionInformationViewController: UIViewController {
         if MFMailComposeViewController.canSendMail() {
             let controller = MFMailComposeViewController()
             controller.mailComposeDelegate = self
-            controller.setToRecipients(["inquiries@artsy.net"])
+            controller.setToRecipients(["specialist@artsy.net"])
             controller.setSubject("Questions about “\(saleViewModel.displayName)”")
             self.present(controller, animated: animated, completion: nil)
         } else {
-            let alert = UIAlertController(title: "No email set up on your device", message: "You can email inquiries@artsy.net to get answers to your questions", preferredStyle: .alert)
+            let alert = UIAlertController(title: "No email set up on your device", message: "You can email specialist@artsy.net to get answers to your questions", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Back", style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
@@ -195,6 +202,14 @@ private typealias MailCompositionCallbacks = AuctionInformationViewController
 extension MailCompositionCallbacks: MFMailComposeViewControllerDelegate {
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension AuctionInformationViewController: ARTextViewDelegate {
+    func textView(_ textView: ARTextView!, shouldOpen viewController: UIViewController!) {
+        self.dismiss(animated: true, completion: {
+            ARTopMenuViewController.shared().push(viewController)
+        })
     }
 }
 

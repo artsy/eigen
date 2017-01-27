@@ -45,8 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *currency;
 @property (nonatomic, copy, readonly) NSString *currencySymbol;
 
-@property (nonatomic, assign, readonly) NSNumber *_Nullable lowEstimateCents;
-@property (nonatomic, assign, readonly) NSNumber *_Nullable highEstimateCents;
+@property (nonatomic, strong, readonly, nullable) NSNumber *lowEstimateCents;
+@property (nonatomic, strong, readonly, nullable) NSNumber *highEstimateCents;
 @property (nonatomic, copy, readonly) NSString *_Nullable estimate;
 @property (nonatomic, assign, readonly) UInt64 askingPriceCents;
 

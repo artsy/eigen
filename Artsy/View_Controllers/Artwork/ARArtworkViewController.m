@@ -17,6 +17,7 @@
 
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 
+
 @interface ARArtworkViewController () <UIScrollViewDelegate, ARArtworkRelatedArtworksViewParentViewController, ARArtworkBlurbViewDelegate, ARPostsViewControllerDelegate>
 
 @property (nonatomic, strong) ARArtworkView *view;
@@ -83,7 +84,7 @@
         [self ar_removeIndeterminateLoadingIndicatorAnimated:ARPerformWorkAsynchronously];
     }
 
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     void (^completion)(void) = ^{
         __strong typeof (wself) sself = wself;
@@ -147,7 +148,7 @@
 
 - (void)getRelatedPosts
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.artwork getRelatedPosts:^(NSArray *posts) {
         __strong typeof (wself) sself = wself;
         [sself updateWithRelatedPosts:posts];
@@ -266,18 +267,8 @@
 
 - (void)relatedArtworksView:(ARArtworkRelatedArtworksView *)view didAddSection:(UIView *)section;
 {
-    section.alpha = 0;
-    [UIView animateTwoStepIf:ARPerformWorkAsynchronously
-        duration:ARAnimationDuration *
-        2:^{
-            [self.view.stackView setNeedsLayout];
-            [self.view.stackView layoutIfNeeded];
-        }
-        midway:^{
-            section.alpha = 1;
-            [self.view flashScrollIndicators];
-        }
-        completion:nil];
+    [self.view.stackView setNeedsLayout];
+    [self.view.stackView layoutIfNeeded];
 }
 
 @end

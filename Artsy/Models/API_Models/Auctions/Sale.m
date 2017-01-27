@@ -7,6 +7,7 @@
 #import "ARSystemTime.h"
 #import "Profile.h"
 #import "Bid.h"
+#import "ARTwoWayDictionaryTransformer.h"
 
 @import ObjectiveSugar;
 
@@ -27,6 +28,7 @@
         ar_keypath(Sale.new, isAuction) : @"is_auction",
         ar_keypath(Sale.new, startDate) : @"start_at",
         ar_keypath(Sale.new, endDate) : @"end_at",
+        ar_keypath(Sale.new, saleState) : @"auction_state",
         ar_keypath(Sale.new, liveAuctionStartDate) : @"live_start_at",
         ar_keypath(Sale.new, registrationEndsAtDate) : @"registration_ends_at",
         ar_keypath(Sale.new, buyersPremium) : @"buyers_premium",
@@ -65,11 +67,20 @@
     return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:Bid.class];
 }
 
++ (NSValueTransformer *)saleStateJSONTransformer
+{
+    return [ARTwoWayDictionaryTransformer reversibleTransformerWithDictionary:@{
+        @"preview" : @(SaleStatePreview),
+        @"open" : @(SaleStateOpen),
+        @"closed" : @(SaleStateClosed),
+    }];
+}
+
 - (BOOL)shouldShowLiveInterface
 {
     NSDate *now = [ARSystemTime date];
     BOOL hasStarted = [self.liveAuctionStartDate compare:now] == NSOrderedAscending;
-    BOOL hasEnded = [self.endDate compare:now] == NSOrderedAscending;
+    BOOL hasEnded = self.saleState == SaleStateClosed;
     return self.liveAuctionStartDate && hasStarted && !hasEnded;
 }
 

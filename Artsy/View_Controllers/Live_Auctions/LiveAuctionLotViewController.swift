@@ -12,12 +12,11 @@ class LiveAuctionLotViewController: UIViewController {
     let lotViewModel: LiveAuctionLotViewModelType
     let salesPerson: LiveAuctionsSalesPersonType
     let bidHistoryState = Observable<BidHistoryState>(.closed)
+    let biddingViewModel: LiveAuctionBiddingViewModelType
 
     fileprivate weak var bidHistoryViewController: LiveAuctionBidHistoryViewController?
-    fileprivate let biddingViewModel: LiveAuctionBiddingViewModelType
     fileprivate var imageBottomConstraint: NSLayoutConstraint?
     fileprivate weak var lotMetadataStack: AuctionLotMetadataStackScrollView?
-    fileprivate var saleAvailabilityObserver: ObserverToken<SaleAvailabilityState>?
     fileprivate var bidHistoryGestureController: LiveAuctionLotBidHistoryGestureController?
     fileprivate var lotHistoryHeightConstraint: NSLayoutConstraint?
     fileprivate var alignMetadataToTopConstraint: NSLayoutConstraint?
@@ -38,10 +37,6 @@ class LiveAuctionLotViewController: UIViewController {
 
     required init?(coder aDecoder: NSCoder) {
         return nil
-    }
-
-    deinit {
-        saleAvailabilityObserver?.unsubscribe()
     }
 
     override func viewDidLoad() {
@@ -159,9 +154,6 @@ class LiveAuctionLotViewController: UIViewController {
                 })
         })
 
-
-
-
         // Bid button setup.
         let bidButton = LiveAuctionBidButton(viewModel: biddingViewModel)
         bidButton.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .vertical)
@@ -173,16 +165,8 @@ class LiveAuctionLotViewController: UIViewController {
         bidHistoryViewController = historyViewController
         metadataStack.add(historyViewController, toParent: self, withTopMargin: "10", sideMargin: sideMargin)
 
-        let screenWidthIsLarge = UIScreen.main.applicationFrame.width > 320
+        let screenWidthIsLarge = UIScreen.main.bounds.width > 320
         lotHistoryHeightConstraint = historyViewController.view.constrainHeight(screenWidthIsLarge ? "110" : "70")
-
-        // Setup for "current lot" purple view at the bottom of the view.
-        let currentLotView = LiveAuctionCurrentLotView(viewModel: salesPerson.auctionViewModel.currentLotSignal, salesPerson: salesPerson)
-        currentLotView.addTarget(nil, action: #selector(LiveAuctionLotSetViewController.jumpToLiveLot), for: .touchUpInside)
-        view.addSubview(currentLotView)
-        currentLotView.alignBottom("-5", trailing: "-5", toView: view)
-        currentLotView.alignLeadingEdge(withView: view, predicate: "5")
-        currentLotView.isHidden = true
 
         // Finally, align the background view.
         backgroundView.alignLeading("0", trailing: "0", toView: view)
@@ -191,23 +175,16 @@ class LiveAuctionLotViewController: UIViewController {
 
 
         // Subscribe to updates from our bidding view model, telling us what state the lot's bid status is in.
-        biddingViewModel.progressSignal.subscribe { [weak currentLotView, weak self] bidState in
-
-            let hideCurrentLotCTA: Bool
+        biddingViewModel.progressSignal.subscribe { [weak self] bidState in
             let hideBidHistory: Bool
 
             switch self?.salesPerson.auctionViewModel.currentLotSignal.peek() {
             case .some(let .some(lot)):
                 let myLotID = self?.lotViewModel.lotID
-                hideCurrentLotCTA = (lot.lotID == myLotID)
-                hideBidHistory = !hideCurrentLotCTA
-
+                hideBidHistory = (lot.lotID != myLotID)
             default: // a nil anywhere
-                hideCurrentLotCTA = true
                 hideBidHistory = true
             }
-
-            currentLotView?.isHidden = hideCurrentLotCTA
 
             self?.bidHistoryViewController?.view.isHidden = hideBidHistory
             self?.bidHistoryViewController?.tableView.isScrollEnabled = hideBidHistory
@@ -223,13 +200,6 @@ class LiveAuctionLotViewController: UIViewController {
 
             // We need to align the bottom of the lot image to the lot metadata
             self?.lotMetadataStack?.layoutIfNeeded()
-        }
-
-        // TODO: is this required? A closed sale would imply all lots are closed, and the currentLotView would be hidden in the above subscription ^
-        saleAvailabilityObserver = salesPerson.auctionViewModel.saleAvailabilitySignal.subscribe { [weak currentLotView] saleAvailability in
-            if saleAvailability == .closed {
-                currentLotView?.removeFromSuperview()
-            }
         }
 
         infoToolbar.lotViewModel = lotViewModel

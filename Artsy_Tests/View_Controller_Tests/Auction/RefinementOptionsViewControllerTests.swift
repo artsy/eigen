@@ -75,7 +75,7 @@ class RefinementOptionsViewControllerSpec: QuickSpec {
         }
 
         it("looks good with gene refine settings with no price") {
-            let json = jsonForStub("gene_refine_example_short_medium")
+            let json = jsonForStub("gene_refine_example_short_no_prize_medium")
 
             guard let geneSettings = GeneRefineSettings.refinementFromAggregationJSON(json, initial: false) else { return fail() }
 

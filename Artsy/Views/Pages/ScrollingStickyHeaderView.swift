@@ -99,7 +99,7 @@ class ScrollingStickyHeaderView: UIView {
 
     func toggleAttatched(_ atTop: Bool, animated: Bool) {
 
-        UIView.animateIf(ARPerformWorkAsynchronously.boolValue, duration: 0.2, {
+        UIView.animateIf(ARPerformWorkAsynchronously.boolValue && animated, duration: 0.2, {
             self.titleLabel.alpha = atTop ? 1 : 0
             self.topSeparator.alpha = atTop ? 1 : 0
             self.bottomSeparator.alpha = atTop ? 1 : 0

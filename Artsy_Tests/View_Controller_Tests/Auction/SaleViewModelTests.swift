@@ -102,7 +102,7 @@ class SaleViewModelTests: QuickSpec {
         it("deals with auctions that are active and live is upcoming") {
             let soon = NSDate().addingTimeInterval(1650.9)
 
-            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast, "endDate": NSDate.distantFuture, "liveAuctionStartDate": soon ], error: Void())
+            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast, "endDate": NSDate.distantFuture, "liveAuctionStartDate": soon, "saleState": NSNumber(value: SaleStatePreview.rawValue)], error: Void())
 
             let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
@@ -112,7 +112,7 @@ class SaleViewModelTests: QuickSpec {
         it("lets user know the live auction is happening") {
             let before = NSDate().addingTimeInterval(-1650.9)
 
-            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast, "endDate": NSDate.distantFuture, "liveAuctionStartDate": before], error: Void())
+            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast, "endDate": NSDate.distantFuture, "liveAuctionStartDate": before, "saleState": NSNumber(value: SaleStateOpen.rawValue)], error: Void())
 
             let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 
@@ -124,7 +124,7 @@ class SaleViewModelTests: QuickSpec {
             let before = NSDate().addingTimeInterval(-1650.9)
             let end = NSDate().addingTimeInterval(-100)
 
-            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast, "endDate": end, "liveAuctionStartDate": before], error: Void())
+            let sale = try! Sale(dictionary: ["name": "The 🎉 Sale", "startDate": NSDate.distantPast, "endDate": end, "liveAuctionStartDate": before, "saleState": NSNumber(value: SaleStateClosed.rawValue)], error: Void())
 
             let subject = SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
 

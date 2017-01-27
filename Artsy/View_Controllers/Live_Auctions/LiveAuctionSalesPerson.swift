@@ -22,6 +22,7 @@ protocol LiveAuctionsSalesPersonType: class {
     func lotViewModelRelativeToShowingIndex(_ offset: Int) -> LiveAuctionLotViewModelType
     func currentLotValue(_ lot: LiveAuctionLotViewModelType) -> UInt64
     func currentLotValueString(_ lot: LiveAuctionLotViewModelType) -> String
+    func winningLotValueString(_ lot: LiveAuctionLotViewModelType) -> String?
 
     func bidOnLot(_ lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
     func leaveMaxBidOnLot(_ lot: LiveAuctionLotViewModelType, amountCents: UInt64, biddingViewModel: LiveAuctionBiddingViewModelType)
@@ -89,6 +90,12 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
 
     func currentLotValueString(_ lot: LiveAuctionLotViewModelType) -> String {
         return currentLotValue(lot).convertToDollarString(lot.currencySymbol)
+    }
+
+    func winningLotValueString(_ lot: LiveAuctionLotViewModelType) -> String? {
+        guard let winningBidPrice = lot.winningBidPrice else { return nil }
+
+        return winningBidPrice.convertToDollarString(lot.currencySymbol)
     }
 }
 

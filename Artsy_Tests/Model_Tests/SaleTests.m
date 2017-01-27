@@ -29,7 +29,8 @@ describe(@"live auction", ^{
         Sale *sale = [Sale modelWithJSON:@{
             @"start_at" : @"1-12-30 00:00:00",
             @"live_start_at" : @"4000-12-30 00:00:00",
-            @"end_at" : @"4001-01-01 00:00:00"
+            @"end_at" : @"4001-01-01 00:00:00",
+            @"auction_state" : @"preview"
         }];
 
         expect([sale shouldShowLiveInterface]).to.beFalsy();
@@ -39,7 +40,8 @@ describe(@"live auction", ^{
         Sale *sale = [Sale modelWithJSON:@{
             @"start_at" : @"1-12-30 00:00:00",
             @"live_start_at" : @"1-12-30 00:00:00",
-            @"end_at" : @"4001-01-01 00:00:00"
+            @"end_at" : @"4001-01-01 00:00:00",
+            @"auction_state" : @"open"
         }];
 
         expect([sale shouldShowLiveInterface]).to.beTruthy();
@@ -49,7 +51,8 @@ describe(@"live auction", ^{
         Sale *sale = [Sale modelWithJSON:@{
             @"start_at" : @"1-12-30 00:00:00",
             @"live_start_at" : @"1-12-30 00:00:00",
-            @"end_at" : @"2-01-01 00:00:00"
+            @"end_at" : @"2-01-01 00:00:00",
+            @"auction_state" : @"closed"
         }];
 
         expect([sale shouldShowLiveInterface]).to.beFalsy();

@@ -18,5 +18,7 @@
 	<array>
 		<string>$(AppIdentifierPrefix)$(CFBundleIdentifier).keychain-group</string>
 	</array>
+	<key>aps-environment</key>
+	<string>production</string>
 </dict>
 </plist>

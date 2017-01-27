@@ -2,7 +2,7 @@ import Foundation
 
 protocol SaleAuctionStatusType {
     var startDate: Date! { get }
-    var endDate: Date! { get }
+    var saleState: SaleState { get }
     var registrationEndsAtDate: Date! { get }
 
     func auctionStateWithBidders(_ bidders: [Bidder]) -> ARAuctionState
@@ -15,7 +15,7 @@ extension SaleAuctionStatusType {
 
         // These have a habit of being nil, so let's be _extra_ careful.
         let hasStarted = (startDate != nil && startDate.compare(now!) == .orderedAscending)
-        let hasFinished = (endDate != nil && endDate.compare(now!) == .orderedAscending)
+        let hasFinished = (saleState == SaleStateClosed)
         let notYetStarted = (startDate != nil && startDate.compare(now!) == .orderedDescending)
         let registrationClosed = (registrationEndsAtDate != nil && registrationEndsAtDate.compare(now!) == .orderedAscending)
 

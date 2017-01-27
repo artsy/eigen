@@ -4,12 +4,18 @@
 @class BuyersPremium, Profile;
 @class AFHTTPRequestOperation;
 
+typedef enum: NSUInteger {
+    SaleStatePreview,
+    SaleStateOpen,
+    SaleStateClosed,
+} SaleState;
 
 @interface Sale : MTLModel <MTLJSONSerializing, ARSpotlightMetadataProvider>
 
 @property (nonatomic, copy, readonly) NSString *name;
 @property (nonatomic, copy, readonly) NSString *saleID;
 @property (nonatomic, copy, readonly) NSString *saleDescription;
+@property (nonatomic, assign, readonly) SaleState saleState;
 
 @property (nonatomic, strong, readonly) NSDate *liveAuctionStartDate;
 @property (nonatomic, strong, readonly) NSDate *startDate;

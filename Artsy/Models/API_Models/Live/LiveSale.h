@@ -1,9 +1,9 @@
 #import <Mantle/Mantle.h>
 
+#import "Sale.h"
 #import "ARAppConstants.h"
 
 @class LiveAuctionLot, BidIncrementStrategy;
-
 
 @interface LiveSale : MTLModel <MTLJSONSerializing>
 
@@ -16,7 +16,7 @@
 @property (nonatomic, copy, readonly) NSArray<BidIncrementStrategy *> *bidIncrementStrategy;
 
 @property (nonatomic, strong, readonly) NSDate *startDate;
-@property (nonatomic, strong, readonly) NSDate *endDate;
+@property (nonatomic, assign, readonly) SaleState saleState;
 @property (nonatomic, strong, readonly) NSDate *liveAuctionStartDate;
 @property (nonatomic, strong, readonly) NSDate *registrationEndsAtDate;
 

@@ -1,6 +1,0 @@
-#ifndef Artsy_ArtsyWatch_pch
-#define Artsy_ArtsyWatch_pch
-
-#import <Foundation/Foundation.h>
-
-#endif
