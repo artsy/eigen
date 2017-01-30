@@ -1,5 +1,3 @@
-/* @flow */
-
 import { danger, fail, warn } from 'danger'
 import { includes } from 'lodash'
 
@@ -26,7 +24,7 @@ if (packageChanged && !lockfileChanged) {
 
 const someoneAssigned = danger.github.pr.assignee
 if (someoneAssigned === null) {
-  fail('Please assign someone to merge this PR, and optionally include people who should review.');
+  fail('Please assign someone to merge this PR, and optionally include people who should review.')
 }
 
 // Danger JS doesn't support warn yet.

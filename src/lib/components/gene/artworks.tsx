@@ -1,0 +1,26 @@
+import React from 'react'
+
+import ArtworksGrid from '../artwork_grids/infinite_scroll_grid'
+
+class Artworks extends React.Component {
+  static propTypes: Object = {
+    gene: React.PropTypes.shape({
+      id: React.PropTypes.string,
+    }),
+    medium: React.PropTypes.string,
+    queryState: React.PropTypes.object,
+    queryForPage: React.PropTypes.func,
+  }
+
+  render() {
+   return (
+      <ArtworksGrid
+        artworks={[]}
+        queryState={this.props.queryState}
+        queryForPage={this.props.resolveQuery}
+        queryArtworksKeypath="gene.filtered_artworks.hits" />
+      )
+  }
+}
+
+export default Artworks

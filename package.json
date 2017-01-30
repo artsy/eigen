@@ -12,14 +12,15 @@
     "lint": "eslint ./lib ./test",
     "fixlint": "eslint ./lib ./test --fix",
     "start": "npm run clean-example && concurrently --kill-others 'npm run start-packager' 'npm run storybook'",
-    "start-packager": "cd node_modules/react-native && npm start -- --reset-cache",
+    "start-packager": "node node_modules/react-native/local-cli/cli.js start --config rn-cli.config.js",
     "storybook": "storybook start -p 9001",
     "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
     "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && npm run dump-schema -- ../../data && rm -rf node_modules",
     "test": "jest",
     "testing": "jest --watch",
-    "rndebugger": "REACT_DEBUGGER=\"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\" npm start"
+    "rndebugger": "REACT_DEBUGGER=\"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\" npm start",
+    "ios": "react-native run-ios"
   },
   "jest": {
     "preset": "jest-react-native",
@@ -54,7 +55,8 @@
     "react-native": "0.42.0-rc.3",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
     "react-relay": "https://github.com/alloy/relay/releases/download/v0.9.3/react-relay-0.9.3.tgz",
-    "remove-markdown": "0.1.0"
+    "remove-markdown": "0.1.0",
+    "typescript": "^2.1.5"
   },
   "devDependencies": {
     "@kadira/react-native-storybook": "^1.12.6",
@@ -75,7 +77,8 @@
     "jest-cli": "^17.0.3",
     "jest-react-native": "^17.0.3",
     "react-storybooks-relay-container": "^1.0.0",
-    "react-test-renderer": "^15.3.0"
+    "react-test-renderer": "^15.3.0",
+    "tslint": "^4.4.2"
   },
   "peerDependencies": {
     "babel-relay-plugin": "^0.9.0"

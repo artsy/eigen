@@ -1,11 +1,24 @@
 {
     "compilerOptions": {
-        "allowJs": true
+        "jsx": "react",
+        "target": "ESNext",
+        "module": "es2015",
+        "rootDir": "src",
+        "outDir": "build",
+        "allowJs": true,
+        "sourceMap": true
     },
+    "include": [
+        "typings/index.d.ts",
+        "src/lib/**/*.ts",
+        "src/lib/**/*.tsx"
+    ],
     "exclude": [
         "node_modules",
         "Pod/Assets",
         "Example/Build",
-        "externals/"
+        "externals",
+        "build",
+        "index.ios.js"
     ]
 }
