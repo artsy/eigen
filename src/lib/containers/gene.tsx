@@ -1,7 +1,7 @@
-import Relay from 'react-relay'
-import React from 'react'
+import * as Relay from 'react-relay'
+import * as React from 'react'
 import { View, Dimensions, StyleSheet } from 'react-native'
-import _ from 'lodash'
+import * as _ from 'lodash'
 
 import ParallaxScrollView from 'react-native-parallax-scroll-view'
 
@@ -17,7 +17,6 @@ import {
 } from '../components/artwork_grids/infinite_scroll_grid'
 
 import SwitchView from '../components/switch_view'
-import type SwitchEvent from '../components/events'
 
 import Refine from '../native_modules/refine_callback'
 import colors from '../../data/colors'
@@ -31,6 +30,20 @@ const TABS = {
 
 /** The title of the gene when scrolled, with margins */
 const HeaderHeight = 64
+
+interface Props extends React.Props<Gene> {
+  medium: string
+  price_range: string
+  gene: any
+}
+
+interface State {
+  selectedTabIndex?: number
+  showingStickyHeader?: boolean
+  sort?: string
+  selectedMedium?: string
+  selectedPriceRange?: string
+}
 
   /**
    *  There are 3 different major views inside this componentDidUpdate
@@ -56,17 +69,7 @@ const HeaderHeight = 64
    *     the `stickyHeaderIndices` is always at the right index.
    *
    */
-
-class Gene extends React.Component {
-
-  state: {
-    selectedTabIndex: number,
-    showingStickyHeader: boolean,
-    sort: string,
-    selectedMedium: string,
-    selectedPriceRange: string
-  };
-
+class Gene extends React.Component<Props, State> {
   componentWillMount() {
     this.state = {
       selectedTabIndex: 0,
@@ -130,7 +133,7 @@ class Gene extends React.Component {
     return (
       <View style={[{ backgroundColor:'white', paddingLeft: this.commonPadding, paddingRight: this.commonPadding }, styles.header] }>
           <Header gene={this.props.gene} shortForm={false} />
-          <SwitchView style={{ marginTop:30 }}
+          <SwitchView style={{ marginTop: 30 }}
             titles={this.availableTabs()}
             selectedIndex={this.state.selectedTabIndex}
             onSelectionChange={this.switchSelectionDidChange} />
@@ -147,7 +150,7 @@ class Gene extends React.Component {
   }
 
   /**  No sticky header if you're in the about section */
-  stickyHeaderHeight(): ?number {
+  stickyHeaderHeight(): number {
     if (!this.showingArtworksSection) { return null }
     return HeaderHeight
   }
@@ -208,7 +211,7 @@ class Gene extends React.Component {
     const maxLabelWidth = Dimensions.get('window').width - (this.commonPadding * 2) - refineButtonWidth - 10
 
     return (<View style={{ backgroundColor: 'white'}}>
-        <Separator style={{marginTop:topMargin, backgroundColor:separatorColor}} />
+        <Separator style={{marginTop: topMargin, backgroundColor: separatorColor}} />
         <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 26, marginTop:12, marginBottom:12, paddingLeft: this.commonPadding, paddingRight: this.commonPadding }} >
           <SerifText style={{ fontStyle: 'italic', marginTop: 2, maxWidth: maxLabelWidth }}>{ this.artworkQuerySummaryString() }</SerifText>
           <WhiteButton text="REFINE" style={{ height: 26, width: refineButtonWidth, }} onPress={this.refineTapped}/>

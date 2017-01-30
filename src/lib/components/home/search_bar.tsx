@@ -12,7 +12,7 @@ export default class SearchBar extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View style={styles.container}>
-          <Image style={styles.searchIcon} source={require('../../../images/SearchButton.png')}/>
+          <Image style={styles.searchIcon} source={require('../../../../images/SearchButton.png')}/>
           <Text style={styles.text}>Search for artists and artworks...</Text>
         </View>
       </TouchableWithoutFeedback>

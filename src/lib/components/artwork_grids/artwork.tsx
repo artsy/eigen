@@ -60,7 +60,7 @@ class Artwork extends React.Component {
     if (artwork.is_in_auction) {
       return (
         <View style={{flexDirection: 'row'}}>
-          <Image style={{ marginRight: 4 }} source={require('../../../images/paddle.png')} />
+          <Image style={{ marginRight: 4 }} source={require('../../../../images/paddle.png')} />
           <SerifText style={styles.text}>Bid now</SerifText>
         </View>
       )

@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { Animated, StyleSheet, TouchableHighlight, View } from 'react-native'
 
 import Headline from '../text/headline'
@@ -9,7 +9,20 @@ const AnimationDuration = 250
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableHighlight)
 const AnimatedHeadline = Animated.createAnimatedComponent(Headline)
 
-export default class InvertedButton extends React.Component {
+interface Props extends React.Props<InvertedButton> {
+  text: string
+  selected: boolean
+  inProgress: boolean
+  onPress: any
+  onSelectionAnimationFinished: any
+}
+
+interface State {
+    textOpacity: Animated.Value
+    backgroundColor: Animated.Value
+}
+
+export default class InvertedButton extends React.Component<Props, State> {
   state: {
     textOpacity: Animated.Value,
     backgroundColor: Animated.Value
@@ -41,7 +54,7 @@ export default class InvertedButton extends React.Component {
   render() {
     const backgroundColor = this.state.backgroundColor.interpolate({
       inputRange: [0, 1],
-      outputRange: (['black', colors['purple-regular']]: string[])
+      outputRange: (['black', colors['purple-regular']])
     })
     const styling = {
       underlayColor: (this.props.selected ? 'black' : colors['purple-regular']),
@@ -59,14 +72,6 @@ export default class InvertedButton extends React.Component {
       </AnimatedTouchable>
     )
   }
-}
-
-InvertedButton.propTypes = {
-  text: React.PropTypes.string,
-  selected: React.PropTypes.bool,
-  inProgress: React.PropTypes.bool,
-  onPress: React.PropTypes.func,
-  onSelectionAnimationFinished: React.PropTypes.func,
 }
 
 const styles = StyleSheet.create({

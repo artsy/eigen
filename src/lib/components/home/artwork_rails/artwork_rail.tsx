@@ -157,7 +157,7 @@ class ArtworkRail extends React.Component {
     if (this.expandable() && !this.state.expanded) {
       return (
         <TouchableHighlight style={styles.expansionButton} onPress={this.expand} underlayColor={'white'}>
-            <Image style={{height: 8, width: 15, alignSelf: 'center', resizeMode: 'center'}} source={require('../../../../images/chevron.png')} />
+            <Image style={{height: 8, width: 15, alignSelf: 'center', resizeMode: 'center'}} source={require('../../../../../images/chevron.png')} />
         </TouchableHighlight>
       )
     }

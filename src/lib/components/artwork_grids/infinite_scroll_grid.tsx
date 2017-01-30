@@ -6,13 +6,13 @@
 //    - leting the artwork component do a layout pass and calculate its own height based on the column width.
 // 4. Update height of grid to encompass all items.
 
-import Relay from 'react-relay'
-import React from 'react'
+import * as Relay from 'react-relay'
+import * as React from 'react'
 import { Dimensions, View, ScrollView, StyleSheet } from 'react-native'
-import type { LayoutEvent } from '../../system/events'
 
 import Artwork from './artwork'
 import Spinner from '../spinner'
+import { LayoutEvent } from '../../system/events'
 
 const PageSize = 10
 const PageEndThreshold = 1000
@@ -26,7 +26,7 @@ const PageEndThreshold = 1000
  *   - the calculation currently only takes into account the size of the image, not if e.g. the sale message is present
  */
 
-type Props = {
+interface Props {
   /** The direction for the grid, currently only 'column' is supported . */
   sectionDirection: string;
 
@@ -67,15 +67,14 @@ type Props = {
   onComplete?: () => void;
 }
 
-class InfiniteScrollArtworksGrid extends React.Component {
-  _sentEndForContentLength: null | number;
-  props: Props
+interface State {
+  sectionDimension: number
+  completed: boolean
+  fetchingNextPage: boolean
+}
 
-  state: {
-    sectionDimension: number,
-    completed: boolean,
-    fetchingNextPage: boolean,
-  }
+class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
+  _sentEndForContentLength: null | number
 
   static defaultProps = {
     sectionDirection: 'column',
@@ -115,7 +114,7 @@ class InfiniteScrollArtworksGrid extends React.Component {
   }
 
   /** A simplified version of the Relay debugging logs for infinite scrolls */
-  debugLog(query: string, response: ?any, error: ?any) {
+  debugLog(query: string, response?: any, error?: any) {
     if (__DEV__ && global.originalXMLHttpRequest !== undefined) {
       var groupName = 'Infinite scroll request'
       console.groupCollapsed(groupName, 'color:' + (response ? 'black' : 'red') + ';')

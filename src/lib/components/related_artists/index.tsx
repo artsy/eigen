@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native'
 
 import SerifText from '../text/serif'
 import RelatedArtist from './related_artist'
-import type { LayoutEvent } from '../../system/events'
+import { LayoutEvent } from '../../system/events'
 
 class RelatedArtists extends React.Component {
   state: {

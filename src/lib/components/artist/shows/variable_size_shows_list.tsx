@@ -1,7 +1,7 @@
 import Relay from 'react-relay'
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import type { LayoutEvent } from '../../../system/events'
+import { LayoutEvent } from '../../../system/events'
 
 import Show from './show'
 

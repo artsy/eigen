@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import {
   processColor,
   requireNativeComponent,
@@ -8,20 +8,20 @@ import {
 } from 'react-native'
 
 import colors from '../../data/colors'
-import type { LayoutEvent } from '../system/events'
+import { LayoutEvent } from '../system/events'
 
 const GeminiHost = 'd7hftxdivxxvm.cloudfront.net'
 const ImageQuality = 85
 
-type Props = {
+interface Props {
   /** The URL from where to fetch the image. */
-  imageURL: ?string;
+  imageURL?: string
 
   /** The background colour for the image view */
-  placeholderBackgroundColor: ?string;
+  placeholderBackgroundColor?: ColorPropType
 
   /** Any additional styling for the imageview */
-  style?: any;
+  style?: any
 
   /**
   * An aspect ratio created with: width / height.
@@ -31,22 +31,19 @@ type Props = {
   * - The imageURL will be modified so that it resizes the image to the exact size at which the view has been laid out,
   *   thus never fetching more data than absolutely necessary.
   */
-  aspectRatio?: ?number;
+  aspectRatio?: number
 
   /** A callback that is called once the image is loaded. */
-  onLoad?: () => void;
+  onLoad?: () => void
 }
 
-type State = {
-  aspectRatio: ?number;
-  width?: number;
-  height?: number;
+interface State {
+  aspectRatio: number
+  width?: number
+  height?: number
 }
 
-export default class OpaqueImageView extends React.Component {
-  state: State
-  props: Props
-
+export default class OpaqueImageView extends React.Component<Props, State> {
   static defaultProps: {
     placeholderBackgroundColor: string
   }
@@ -119,7 +116,6 @@ OpaqueImageView.defaultProps = {
   placeholderBackgroundColor: colors['gray-regular'],
 }
 
-
 OpaqueImageView.propTypes = {
   /**
    * The URL from where to fetch the image.
@@ -143,6 +139,5 @@ OpaqueImageView.propTypes = {
 
   placeholderBackgroundColor: ColorPropType,
 }
-
 
 const NativeOpaqueImageView = requireNativeComponent('AROpaqueImageView', OpaqueImageView)

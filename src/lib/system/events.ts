@@ -1,4 +1,4 @@
-export type LayoutEvent = {
+export interface LayoutEvent {
   nativeEvent: {
     layout: {
       x: number;

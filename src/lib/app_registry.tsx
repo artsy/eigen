@@ -1,14 +1,14 @@
-import { Component } from 'react'
+import * as React from 'react'
 import { AppRegistry } from 'react-native'
 import * as Relay from 'react-relay'
 import * as _ from 'lodash'
 
 import Spinner from './components/spinner'
 import LoadFailureView from './components/load_failure_view'
-import Containers from './containers'
+import Containers from './containers/index'
 import Routes from './relay/routes'
 
-class RootContainer extends Component<{}, {}> {
+class RootContainer extends React.Component<{}, {}> {
   state: { retrying: boolean }
   component: RootContainer
   route: Relay.Route

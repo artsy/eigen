@@ -10,7 +10,6 @@ import Shows from '../components/artist/shows'
 import Artworks from '../components/artist/artworks'
 
 import TabView from '../components/tab_view'
-import type TabSelectionEvent from '../components/events'
 
 const isPad = Dimensions.get('window').width > 700
 
@@ -35,7 +34,7 @@ class Artist extends React.Component {
     }
   }
 
-  tabSelectionDidChange = (event: TabSelectionEvent) => {
+  tabSelectionDidChange = (event: any) => {
     this.setState({ selectedTabIndex: event.nativeEvent.selectedIndex })
   }
 

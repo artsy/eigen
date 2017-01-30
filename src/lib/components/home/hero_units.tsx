@@ -9,7 +9,7 @@ import Headline from '../text/headline'
 import OpaqueImageView from '../opaque_image_view'
 import SwitchBoard from '../../native_modules/switch_board'
 
-import type { LayoutEvent } from '../../system/events'
+import { LayoutEvent } from '../../system/events'
 
 class HeroUnits extends React.Component {
   state: {

@@ -1,7 +1,15 @@
-import React from 'react'
+import * as React from 'react'
 import { ColorPropType, processColor, requireNativeComponent, View, StyleSheet } from 'react-native'
 
-export default class Spinner extends React.Component {
+interface Props extends React.Props<Spinner> {
+
+}
+
+interface State {
+
+}
+
+export default class Spinner extends React.Component<Props, State> {
   render() {
     return (
       <View style={[this.props.style, styles.container]}>
