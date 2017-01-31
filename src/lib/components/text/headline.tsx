@@ -1,19 +1,15 @@
-import React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import * as React from 'react'
+import { StyleSheet, Text, TextProperties } from 'react-native'
 
-export default class Headline extends React.Component {
+export default class Headline extends React.Component<TextProperties, any> {
   render() {
+    const content = (this.props.children || '') as string
     return (
       <Text {...this.props} style={[styles.default, this.props.style, styles.required]} >
-        {this.props.children.toUpperCase()}
+        {content.toUpperCase()}
       </Text>
     )
   }
-}
-
-Headline.propTypes = {
-  children: React.PropTypes.string,
-  style: Text.propTypes.style,
 }
 
 const styles = StyleSheet.create({

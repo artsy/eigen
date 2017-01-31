@@ -1,15 +1,15 @@
 import * as React from 'react'
-import { ColorPropType, processColor, requireNativeComponent, View, StyleSheet } from 'react-native'
+import { ColorPropType, processColor, requireNativeComponent, View, StyleSheet, ViewProperties } from 'react-native'
 
-interface Props extends React.Props<Spinner> {
-
+interface SpinnerProps extends ViewProperties {
+  spinnerColor: string
 }
 
-interface State {
+export default class Spinner extends React.Component<SpinnerProps, any> {
+  static propTypes = {
+    spinnerColor: ColorPropType
+  }
 
-}
-
-export default class Spinner extends React.Component<Props, State> {
   render() {
     return (
       <View style={[this.props.style, styles.container]}>
@@ -30,9 +30,4 @@ const styles = StyleSheet.create({
   }
 })
 
-// Only needed so React doesn’t complain about ARSpinner not havig any propTypes.
-Spinner.propTypes = {
-  spinnerColor: ColorPropType,
-}
-
-const NativeSpinner = requireNativeComponent('ARSpinner', Spinner)
+const NativeSpinner: React.ComponentClass<any> = requireNativeComponent('ARSpinner', Spinner)

@@ -9,25 +9,20 @@ const AnimationDuration = 250
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableHighlight)
 const AnimatedHeadline = Animated.createAnimatedComponent(Headline)
 
-interface Props extends React.Props<InvertedButton> {
+interface InvertedButtonProps extends React.Props<InvertedButton> {
   text: string
-  selected: boolean
-  inProgress: boolean
-  onPress: any
-  onSelectionAnimationFinished: any
+  selected?: boolean
+  inProgress?: boolean
+  onPress: React.TouchEventHandler<InvertedButton>
+  onSelectionAnimationFinished?: Animated.EndCallback
 }
 
-interface State {
+interface InvertedButtonState {
     textOpacity: Animated.Value
     backgroundColor: Animated.Value
 }
 
-export default class InvertedButton extends React.Component<Props, State> {
-  state: {
-    textOpacity: Animated.Value,
-    backgroundColor: Animated.Value
-  }
-
+export default class InvertedButton extends React.Component<InvertedButtonProps, InvertedButtonState> {
   constructor(props: any) {
     super(props)
     this.state = {
@@ -60,7 +55,7 @@ export default class InvertedButton extends React.Component<Props, State> {
       underlayColor: (this.props.selected ? 'black' : colors['purple-regular']),
       style: [styles.button, { backgroundColor }],
     }
-    let content = null
+    let content: JSX.Element = null
     if (this.props.inProgress) {
       content = <Spinner spinnerColor="white" style={{ backgroundColor: 'transparent' }} />
     } else {

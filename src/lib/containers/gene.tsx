@@ -1,6 +1,6 @@
 import * as Relay from 'react-relay'
 import * as React from 'react'
-import { View, Dimensions, StyleSheet } from 'react-native'
+import { View, Dimensions, StyleSheet, ViewProperties, TouchEvent } from 'react-native'
 import * as _ from 'lodash'
 
 import ParallaxScrollView from 'react-native-parallax-scroll-view'
@@ -31,14 +31,15 @@ const TABS = {
 /** The title of the gene when scrolled, with margins */
 const HeaderHeight = 64
 
-interface Props extends React.Props<Gene> {
+interface Props extends ViewProperties {
   medium: string
   price_range: string
   gene: any
+  relay: Relay.RelayProp
 }
 
 interface State {
-  selectedTabIndex?: number
+  selectedTabIndex: number
   showingStickyHeader?: boolean
   sort?: string
   selectedMedium?: string
@@ -81,7 +82,7 @@ class Gene extends React.Component<Props, State> {
     }
   }
 
-  switchSelectionDidChange = (event: SwitchEvent) => {
+  switchSelectionDidChange = (event: TouchEvent<SwitchView>) => {
     this.setState({ selectedTabIndex: event.nativeEvent.selectedIndex })
   }
 
@@ -150,8 +151,10 @@ class Gene extends React.Component<Props, State> {
   }
 
   /**  No sticky header if you're in the about section */
-  stickyHeaderHeight(): number {
-    if (!this.showingArtworksSection) { return null }
+  stickyHeaderHeight(): number | null {
+    if (!this.showingArtworksSection) {
+      return null
+    }
     return HeaderHeight
   }
 
@@ -220,7 +223,7 @@ class Gene extends React.Component<Props, State> {
       </View>)
   }
 
-  render() {
+  render(): JSX.Element {
     const stickyTopMargin = this.state.showingStickyHeader ?  0 : -HeaderHeight
 
     return (

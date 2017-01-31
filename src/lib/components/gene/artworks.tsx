@@ -1,8 +1,8 @@
-import React from 'react'
+import * as React from 'react'
 
 import ArtworksGrid from '../artwork_grids/infinite_scroll_grid'
 
-class Artworks extends React.Component {
+class Artworks extends React.Component<any, any> {
   static propTypes: Object = {
     gene: React.PropTypes.shape({
       id: React.PropTypes.string,

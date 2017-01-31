@@ -1,11 +1,11 @@
-import React from 'react'
-import { StyleSheet, View, Dimensions } from 'react-native'
+import * as React from 'react'
+import { StyleSheet, View, Dimensions, ViewProperties } from 'react-native'
 
 import colors from '../../data/colors'
 
 const negativeMargin = Dimensions.get('window').width > 700 ? -40 : -20
 
-export default class Separator extends React.Component {
+export default class Separator extends React.Component<ViewProperties, {}> {
   render() {
     return (<View style={[styles.separator, this.props.style]} />)
   }

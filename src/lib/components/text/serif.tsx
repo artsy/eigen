@@ -1,11 +1,7 @@
 import * as React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet, Text, TextProperties } from 'react-native'
 
-interface SerifProps extends React.Props<Serif> {
-
-}
-
-export default class Serif extends React.Component<{}, {}> {
+export default class Serif extends React.Component<TextProperties, any> {
   render() {
     const { children, style, ...props } = this.props
     return (
@@ -14,10 +10,6 @@ export default class Serif extends React.Component<{}, {}> {
       </Text>
     )
   }
-}
-
-Serif.propTypes = {
-  ...Text.propTypes,
 }
 
 const styles = StyleSheet.create({

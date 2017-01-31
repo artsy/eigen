@@ -6,12 +6,13 @@
         "rootDir": "src",
         "outDir": "build",
         "allowJs": true,
-        "sourceMap": true
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "strictNullChecks": true
     },
     "include": [
-        "typings/index.d.ts",
-        "src/lib/**/*.ts",
-        "src/lib/**/*.tsx"
+        "src/**/*.ts",
+        "src/**/*.tsx"
     ],
     "exclude": [
         "node_modules",
@@ -20,5 +21,6 @@
         "externals",
         "build",
         "index.ios.js"
-    ]
+    ],
+    "compileOnSave": true
 }

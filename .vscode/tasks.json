@@ -1,14 +1,32 @@
 {
   "version": "0.1.0",
-  "command": "npm",
+  "command": "sh",
+  "args": ["-c"],
   "isShellCommand": true,
-  "showOutput": "always",
+  "showOutput": "silent",
   "suppressTaskName": true,
   "tasks": [
     {
       "taskName": "Start Packager and Storybook Server",
       "isBuildCommand": true,
-      "args": ["start"]
+      "args": ["npm start"]
+    },
+    {
+      "taskName": "Start Typescript Compiler",
+      "isBuildCommand": true,
+      "args": ["tsc"],
+      "problemMatcher": [
+        "$tsc"
+      ]
+    },
+    {
+      "taskName": "Start Typescript Compiler (in watch mode)",
+      "isBuildCommand": true,
+      "args": ["tsc --watch"],
+      "isWatching": true,
+      "problemMatcher": [
+        "$tsc-watch"
+      ]
     }
-  ]
+ ]
 }

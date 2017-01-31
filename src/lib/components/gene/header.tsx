@@ -1,24 +1,26 @@
-import React from 'react'
-import Relay from 'react-relay'
-import { NativeModules, StyleSheet, View, Dimensions } from 'react-native'
+import * as React from 'react'
+import * as Relay from 'react-relay'
+import { NativeModules, StyleSheet, View, Dimensions, ViewProperties } from 'react-native'
 
 import Events from '../../native_modules/events'
 
 import InvertedButton from '../buttons/inverted_button'
 import Headline from '../text/headline'
 
-class Header extends React.Component {
-  state: {
-    following: ?boolean,
+interface HeaderProps extends ViewProperties {
+  gene: {
+    _id: string
+    id: string
+    name: string
   }
+  shortForm: boolean
+}
 
-  static propTypes: Object = {
-    gene: React.PropTypes.shape({
-      name: React.PropTypes.string,
-    }),
-    shortForm: React.PropTypes.bool
-  }
+interface HeaderState {
+  following: boolean | null
+}
 
+class Header extends React.Component<HeaderProps, HeaderState> {
   constructor(props) {
     super(props)
     this.state = { following: null }
@@ -92,11 +94,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 40,
     paddingRight: 40,
-  },
+  } as React.ViewStyle,
   headline: {
     textAlign: 'center',
     fontSize: isPad ? 20 : 14
-  },
+  } as React.TextStyle,
   followButton: {
     height: 40,
     marginTop: 30,

@@ -62,7 +62,7 @@ class GenericArtworksGrid extends React.Component {
 
       if (artwork.image) {
         let lowestRatioSum = Number.MAX_VALUE
-        let sectionIndex: ?number = null
+        let sectionIndex: number = null
 
         for (let j = 0; j < sectionRatioSums.length; j++) {
           const ratioSum = sectionRatioSums[j]
