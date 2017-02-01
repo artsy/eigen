@@ -1,20 +1,36 @@
-import Relay from 'react-relay'
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import { View, Text, StyleSheet, ViewProperties } from 'react-native'
 
 import colors from '../../../../data/colors'
 import SerifText from '../../text/serif'
 
-class Metadata extends React.Component {
+interface Props extends ViewProperties {
+  show: {
+    name: string
+    kind: string
+    exhibition_period: string
+    location?: {
+      city: string
+    }
+    status_update?: string
+    status: string
+    partner?: {
+      name: string
+    }
+  }
+}
+
+class Metadata extends React.Component<Props, {}> {
 
   render() {
     return (
       <View style={styles.container}>
         { this.props.show.partner ? <Text style={styles.sansSerifText}>{this.props.show.partner.name.toUpperCase()}</Text> : null }
-        <Text style={styles.sansSerifText}>{this.showTypeString(this.props.show)}</Text>
+        <Text style={styles.sansSerifText}>{this.showTypeString()}</Text>
         <SerifText style={styles.serifText}>{this.props.show.name}</SerifText>
         { this.dateAndLocationString() }
-        { this.statusText(this.props.show) }
+        { this.statusText() }
       </View>
     )
   }
@@ -26,7 +42,7 @@ class Metadata extends React.Component {
 
   dateAndLocationString() {
     const exhibition_period = this.props.show.exhibition_period
-    const city = this.props.show.location ? this.props.show.location.city : null
+    const city = this.props.show.location && this.props.show.location.city
 
     if (city || exhibition_period) {
       const string = city ? (city.trim() + ', ' + exhibition_period) : exhibition_period
@@ -48,18 +64,18 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'flex-start',
     marginTop: 10,
-  },
+  } as React.ViewStyle,
   serifText: {
     margin: 2,
     marginLeft: 0,
-  },
+  } as React.ViewStyle,
   sansSerifText: {
     fontSize: 12,
     textAlign: 'left',
     margin: 2,
     marginLeft: 0,
     fontFamily: 'Avant Garde Gothic ITCW01Dm',
-  },
+  } as React.ViewStyle,
 })
 
 export default Relay.createContainer(Metadata, {

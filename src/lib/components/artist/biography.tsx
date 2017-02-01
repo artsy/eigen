@@ -1,6 +1,6 @@
-import Relay from 'react-relay'
-import React from 'react'
-import { View, StyleSheet, Dimensions } from 'react-native'
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import { View, StyleSheet, Dimensions, ViewProperties } from 'react-native'
 
 import removeMarkdown from 'remove-markdown'
 
@@ -9,7 +9,11 @@ import SerifText from '../text/serif'
 
 const sideMargin = Dimensions.get('window').width > 700 ? 50 : 0
 
-class Biography extends React.Component {
+interface Props extends ViewProperties {
+  artist: any
+}
+
+class Biography extends React.Component<Props, {}> {
   static propTypes = {
     artist: React.PropTypes.shape({
       bio: React.PropTypes.string,

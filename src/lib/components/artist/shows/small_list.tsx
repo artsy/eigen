@@ -1,16 +1,20 @@
-import Relay from 'react-relay'
-import React from 'react'
-import { View, StyleSheet, ListView } from 'react-native'
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import { View, StyleSheet, ListView, ViewProperties, ListViewDataSource } from 'react-native'
 
 import Show from './show'
 
 import colors from '../../../../data/colors'
 
-class SmallList extends React.Component {
-  state: {
-    dataSource: ListView.DataSource,
-  };
+interface Props extends ViewProperties {
+  shows: any[]
+}
 
+interface State {
+  dataSource: ListViewDataSource,
+}
+
+class SmallList extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
@@ -27,15 +31,15 @@ class SmallList extends React.Component {
         dataSource={this.state.dataSource}
         renderRow={this.renderShow}
         scrollsToTop={false}
-        renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
+        renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>}
       />
     )
   }
 
-  renderShow = (show) => {
+  renderShow = (show: any) => {
     return (
       <Show show={show} styles={showStyles} />
-    )
+    ) as React.ReactElement<{}>
   }
 }
 

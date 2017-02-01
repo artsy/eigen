@@ -1,7 +1,7 @@
-import Relay from 'react-relay'
-import React from 'react'
+import * as Relay from 'react-relay'
+import * as React from 'react'
 
-import { View, StyleSheet, Dimensions } from 'react-native'
+import { View, StyleSheet, Dimensions, ViewProperties } from 'react-native'
 
 import Biography from './biography'
 import Articles from './articles'
@@ -9,7 +9,11 @@ import RelatedArtists from '../related_artists'
 import Separator from '../separator'
 import NavButton from '../buttons/navigation_button'
 
-class About extends React.Component {
+interface Props extends ViewProperties {
+  artist: any
+}
+
+class About extends React.Component<Props, {}> {
   render() {
     return (
       <View>

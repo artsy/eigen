@@ -1,11 +1,16 @@
-import Relay from 'react-relay'
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import { View, StyleSheet, ViewProperties } from 'react-native'
 import { LayoutEvent } from '../../../system/events'
 
 import Show from './show'
 
-class ShowsList extends React.Component {
+interface Props extends ViewProperties {
+  showSize: 'medium' | 'large'
+  shows: any[]
+}
+
+class ShowsList extends React.Component<Props,{}> {
   state: {
     width: number,
     height: number,
@@ -13,16 +18,6 @@ class ShowsList extends React.Component {
 
   constructor(props) {
     super(props)
-
-    // The 'showSize' must exist and should be a value this component accommodates
-    if (__DEV__) {
-      const possibleShowSizes = [ 'medium', 'large' ]
-      const providedShowSize = this.props.showSize
-      if (!providedShowSize || possibleShowSizes.indexOf(providedShowSize) < 0) {
-        console.error('[ShowsList] Invalid prop `showSize` of value `' + providedShowSize +
-                          '` supplied; expected one of [' + possibleShowSizes.toString() + ']')
-      }
-    }
 
     this.state = {
       width: 1,
@@ -90,7 +85,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginLeft: -10,
     marginRight: -10,
-  }
+  } as React.ViewStyle
 })
 
 export default Relay.createContainer(ShowsList,{

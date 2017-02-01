@@ -1,12 +1,26 @@
-import Relay from 'react-relay'
-import React from 'react'
-import { View, TouchableWithoutFeedback } from 'react-native'
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import { View, TouchableWithoutFeedback, ViewProperties } from 'react-native'
 
 import OpaqueImageView from '../../opaque_image_view'
 import ShowMetadata from './metadata'
 import SwitchBoard from '../../../native_modules/switch_board'
 
-class Show extends React.Component {
+interface Props extends ViewProperties {
+  show: {
+    href: string
+    cover_image: {
+      url: string
+    }
+  }
+  styles?: {
+    container?: any
+    image?: any
+    metadata?: any
+  }
+}
+
+class Show extends React.Component<Props, {}> {
   handleTap() {
     SwitchBoard.presentNavigationViewController(this, this.props.show.href)
   }
@@ -20,9 +34,9 @@ class Show extends React.Component {
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)} >
-        <View style={styles.container}>
-          <OpaqueImageView imageURL={imageURL} style={styles.image} />
-          <ShowMetadata show={show} style={styles.metadata} />
+        <View style={styles && styles.container}>
+          <OpaqueImageView imageURL={imageURL} style={styles && styles.image} />
+          <ShowMetadata show={show} style={styles && styles.metadata} />
         </View>
       </TouchableWithoutFeedback>
     )

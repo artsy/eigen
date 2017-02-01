@@ -1,6 +1,6 @@
-import Relay from 'react-relay'
-import React from 'react'
-import { ScrollView, View, Dimensions, StyleSheet } from 'react-native'
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import { ScrollView, View, Dimensions, StyleSheet, ViewProperties } from 'react-native'
 
 import Events from '../native_modules/events'
 
@@ -19,8 +19,11 @@ const TABS = {
   SHOWS: 'SHOWS'
 }
 
-class Artist extends React.Component {
+interface Props extends ViewProperties {
+  artist: any
+}
 
+class Artist extends React.Component<Props, {}> {
   state: {
     selectedTabIndex: number,
   };
@@ -39,7 +42,7 @@ class Artist extends React.Component {
   }
 
   availableTabs = () => {
-    const tabs = []
+    const tabs: string[] = []
     const artist = this.props.artist
     const displayAboutSection = artist.has_metadata || artist.counts.articles > 0 || artist.counts.related_artists > 0
 
@@ -81,7 +84,10 @@ class Artist extends React.Component {
 
   renderTabView() {
     return (
-      <TabView titles={this.availableTabs()} selectedIndex={this.state.selectedTabIndex} onSelectionChange={this.tabSelectionDidChange} style={styles.tabView}>
+      <TabView titles={this.availableTabs()}
+               selectedIndex={this.state.selectedTabIndex}
+               onSelectionChange={this.tabSelectionDidChange}
+               style={styles.tabView}>
         { this.renderSelectedTab() }
       </TabView>
     )
@@ -113,7 +119,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 30,
     alignSelf: isPad ? 'center' : null,
-  }
+  } as React.ViewStyle
 })
 
 export default Relay.createContainer(Artist, {

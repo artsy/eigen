@@ -1,6 +1,6 @@
-import Relay from 'react-relay'
-import React from 'react'
-import { View, StyleSheet, Dimensions } from 'react-native'
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import { View, StyleSheet, Dimensions, ViewProperties } from 'react-native'
 
 import SerifText from '../../text/serif'
 import Separator from '../../separator'
@@ -9,7 +9,15 @@ import SmallShowsList from './small_list'
 
 const windowDimensions = Dimensions.get('window')
 
-class Shows extends React.Component {
+interface Props extends ViewProperties {
+  artist: {
+    past_shows: any[]
+    current_shows: any[]
+    upcoming_shows: any[]
+  }
+}
+
+class Shows extends React.Component<Props, {}> {
   render() {
     return (
       <View style={styles.container}>
@@ -53,12 +61,12 @@ class Shows extends React.Component {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'flex-start',
-  },
+  } as React.ViewStyle,
   title: {
     fontSize: 20,
     textAlign: 'left',
     marginLeft: 0
-  },
+  } as React.ViewStyle,
 })
 
 const pastShowsFragment = windowDimensions.width > 700 ? VariableSizeShowsList.getFragment('shows') : SmallShowsList.getFragment('shows')

@@ -4,7 +4,7 @@ import { NativeModules, StyleSheet, View, Dimensions } from 'react-native'
 
 import Events from '../../native_modules/events'
 
-import colors from '../../../../data/colors'
+import colors from '../../../data/colors'
 import InvertedButton from '../buttons/inverted_button'
 import Headline from '../text/headline'
 import SerifText from '../text/serif'
@@ -12,10 +12,16 @@ import SerifText from '../text/serif'
 const isPad = Dimensions.get('window').width > 700
 
 interface HeaderProps extends React.Props<Header> {
+  artist: any,
 }
 
-class Header extends React.Component<HeaderProps, {}> {
-  static propTypes: Object = {
+interface State {
+  following: boolean,
+  followersCount: number,
+}
+
+class Header extends React.Component<HeaderProps, State> {
+  static propTypes = {
     artist: React.PropTypes.shape({
       name: React.PropTypes.string,
       nationality: React.PropTypes.string,
@@ -28,7 +34,7 @@ class Header extends React.Component<HeaderProps, {}> {
 
   constructor(props) {
     super(props)
-    this.state = { following: null, followersCount: props.artist.counts.follows }
+    this.state = { following: false, followersCount: props.artist.counts.follows }
   }
 
   componentDidMount() {
@@ -133,7 +139,7 @@ class Header extends React.Component<HeaderProps, {}> {
 const styles = StyleSheet.create({
   base: {
     textAlign: 'center',
-  },
+  } as React.ViewStyle,
   headline: {
     fontSize: 14,
   },
@@ -147,7 +153,7 @@ const styles = StyleSheet.create({
     alignSelf: isPad ? 'center' : null,
     marginLeft: 0,
     marginRight: 0,
-  }
+  } as React.ViewStyle
 })
 
 export default Relay.createContainer(Header, {
