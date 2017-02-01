@@ -50,7 +50,7 @@ export default Relay.createContainer(About, {
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   gene: {
     trending_artists: Array<boolean | number | string | null> | null,
   },

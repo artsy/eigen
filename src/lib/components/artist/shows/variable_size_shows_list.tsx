@@ -99,7 +99,7 @@ export default Relay.createContainer(ShowsList,{
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   shows: Array<{
     __id: string,
   } | null> | null,

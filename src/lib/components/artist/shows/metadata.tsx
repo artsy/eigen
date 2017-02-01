@@ -98,7 +98,7 @@ export default Relay.createContainer(Metadata, {
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   show: {
     kind: string | null,
     name: string | null,

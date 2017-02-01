@@ -123,7 +123,7 @@ export default Relay.createContainer(Artworks, {
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   artist: {
     counts: {
       artworks: boolean | number | string | null,

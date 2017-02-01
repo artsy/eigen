@@ -173,7 +173,7 @@ export default Relay.createContainer(Header, {
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   artist: {
     _id: string,
     id: string,

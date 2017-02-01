@@ -85,3 +85,16 @@ export default Relay.createContainer(Article, {
     `,
   }
 })
+
+interface RelayProps {
+  article: {
+    thumbnail_title: string | null,
+    href: string | null,
+    author: {
+      name: string | null,
+    } | null,
+    thumbnail_image: {
+      url: string | null,
+    } | null,
+  },
+}

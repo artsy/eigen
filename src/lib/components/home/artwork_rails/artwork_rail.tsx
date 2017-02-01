@@ -263,7 +263,7 @@ export default Relay.createContainer(ArtworkRail, {
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   rail: {
     key: string | null,
     params: {

@@ -77,7 +77,7 @@ export default Relay.createContainer(RelatedArtist, {
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   artist: {
     href: string | null,
     name: string | null,

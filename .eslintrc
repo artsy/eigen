@@ -10,6 +10,10 @@
     "jest": true
   },
 
+  "ignore": [
+    "build/**/*.js"
+  ],
+
   "plugins": [
     "react",
     "flow-vars",

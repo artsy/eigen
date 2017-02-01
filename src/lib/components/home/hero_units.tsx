@@ -95,7 +95,7 @@ export default Relay.createContainer(HeroUnits, {
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   hero_units: Array<{
     __id: string,
     href: string | null,

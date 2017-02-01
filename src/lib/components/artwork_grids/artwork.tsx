@@ -129,7 +129,7 @@ export default Relay.createContainer(Artwork, {
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   artwork: {
     title: string | null,
     date: string | null,

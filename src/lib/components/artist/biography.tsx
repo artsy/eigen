@@ -69,7 +69,7 @@ export default Relay.createContainer(Biography, {
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   artist: {
     bio: string | null,
     blurb: string | null,

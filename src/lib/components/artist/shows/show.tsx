@@ -57,7 +57,7 @@ export default Relay.createContainer(Show, {
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   show: {
     href: string | null,
     cover_image: {

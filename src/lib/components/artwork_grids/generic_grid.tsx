@@ -152,7 +152,7 @@ const GenericArtworksGridContainer = Relay.createContainer(GenericArtworksGrid, 
 
 export default GenericArtworksGridContainer
 
-interface IRelayProps {
+interface RelayProps {
   artworks: Array<{
     __id: string,
     image: {

@@ -111,7 +111,7 @@ export default Relay.createContainer(RelatedArtists, {
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   artists: Array<{
     __id: string,
   } | null> | null,

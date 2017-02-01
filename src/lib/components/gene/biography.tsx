@@ -57,7 +57,7 @@ export default Relay.createContainer(Biography, {
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   gene: {
     description: string | null,
   },

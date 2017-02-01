@@ -220,7 +220,7 @@ ArtistCardContainer.artistQuery = `
 
 export default ArtistCardContainer
 
-interface IRelayProps {
+interface RelayProps {
   artist: {
     id: string,
     _id: string,

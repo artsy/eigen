@@ -221,7 +221,7 @@ function suggestedArtistQuery(artist_id: string): string {
   `
 }
 
-interface IRelayProps {
+interface RelayProps {
   rail: {
     __id: string,
     key: string | null,

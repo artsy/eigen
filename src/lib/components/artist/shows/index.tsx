@@ -89,7 +89,7 @@ export default Relay.createContainer(Shows, {
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   artist: {
     current_shows: Array<boolean | number | string | null> | null,
     upcoming_shows: Array<boolean | number | string | null> | null,

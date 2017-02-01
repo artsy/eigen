@@ -48,7 +48,7 @@ export default Relay.createContainer(Articles, {
   }
 })
 
-interface IRelayProps {
+interface RelayProps {
   articles: Array<{
     __id: string,
   } | null> | null,
