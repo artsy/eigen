@@ -9,21 +9,21 @@ inhibit_all_warnings!
 #       the continuous build server.
 
 plugin 'cocoapods-keys', {
-    :project => "sdasdasdasdassdsad",
-    :target => "Artsy",
-    :keys => [
-        "ArtsyAPIClientSecret",
-        "ArtsyAPIClientKey",
-        "ArtsyFacebookAppID",
-        "ArtsyTwitterKey",
-        "ArtsyTwitterSecret",
-        "ArtsyTwitterStagingKey",
-        "ArtsyTwitterStagingSecret",
-        "SegmentProductionWriteKey",
-        "SegmentDevWriteKey",
-        "AdjustProductionAppToken",
-        "ArtsyEchoProductionToken",
-    ]
+  :project => "Artsy",
+  :target => "Artsy",
+  :keys => [
+    "ArtsyAPIClientSecret",
+    "ArtsyAPIClientKey",
+    "ArtsyFacebookAppID",
+    "ArtsyTwitterKey",
+    "ArtsyTwitterSecret",
+    "ArtsyTwitterStagingKey",
+    "ArtsyTwitterStagingSecret",
+    "SegmentProductionWriteKey",
+    "SegmentDevWriteKey",
+    "AdjustProductionAppToken",
+    "ArtsyEchoProductionToken",
+  ]
 }
 
 target 'Artsy' do
@@ -113,23 +113,23 @@ target 'Artsy' do
   pod 'AppHub', :git => 'https://github.com/orta/apphub.git', :branch => "build_list"
 
   target 'Artsy Tests' do
-      inherit! :search_paths
+    inherit! :search_paths
 
-      # Temporary, should be removed post CP 1.0
-      # https://github.com/facebook/ios-snapshot-test-case/pull/141
-      pod 'FBSnapshotTestCase'
-      pod 'Expecta+Snapshots'
-      pod 'OHHTTPStubs'
-      pod 'XCTest+OHHTTPStubSuiteCleanUp'
-      pod 'Specta'
-      pod 'Expecta'
-      pod 'OCMock'
-      pod 'Forgeries/Mocks'
+    # Temporary, should be removed post CP 1.0
+    # https://github.com/facebook/ios-snapshot-test-case/pull/141
+    pod 'FBSnapshotTestCase'
+    pod 'Expecta+Snapshots'
+    pod 'OHHTTPStubs'
+    pod 'XCTest+OHHTTPStubSuiteCleanUp'
+    pod 'Specta'
+    pod 'Expecta'
+    pod 'OCMock'
+    pod 'Forgeries/Mocks'
 
-      # Swift pods 🎉
-      pod 'Quick'
-      pod 'Nimble'
-      pod 'Nimble-Snapshots'
+    # Swift pods 🎉
+    pod 'Quick'
+    pod 'Nimble'
+    pod 'Nimble-Snapshots'
   end
 end
 
