@@ -4,6 +4,7 @@ upcoming:
     dev:
       infrastructure:
         - Report user’s anonymous ID to Adjust for campaign to install tracking - alloy
+        - Font Pod changes which should allow OSS contributors to run our Apps again - orta
     user_facing:
       - Fixes a problem where auction users were being directed to general inquiries email address instead of specialists - ash
 
