@@ -1,7 +1,9 @@
 WORKSPACE = Artsy.xcworkspace
 SCHEME = Artsy
+SCHEME_INTEGRATION_TESTS = 'Artsy Integration Tests'
 CONFIGURATION = Beta
 APP_PLIST = Artsy/App_Resources/Artsy-Info.plist
+STICKER_PLIST = Artsy\ Stickers/Info.plist
 PLIST_BUDDY = /usr/libexec/PlistBuddy
 DEVICE_HOST = platform='iOS Simulator',OS='9.0',name='iPhone 6'
 
@@ -22,6 +24,7 @@ BRANCH = $(shell echo host=github.com | git credential fill | sed -E 'N; s/.*use
 SWIFT_BUILD_FLAGS = OTHER_SWIFT_FLAGS="-Xfrontend -debug-time-function-bodies"
 ## Lets us use circle caching for build artifacts
 DERIVED_DATA = -derivedDataPath derived_data
+RESULT_BUNDLE = -resultBundlePath derived_data/result_bundle
 
 .PHONY: all build ci test oss pr artsy
 
@@ -77,6 +80,10 @@ build:
 test:
 	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME) -configuration Debug test -sdk iphonesimulator -destination $(DEVICE_HOST) $(DERIVED_DATA) | bundle exec second_curtain 2>&1 | tee $(CIRCLE_ARTIFACTS)/xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output $(CIRCLE_TEST_REPORTS)/xcode/results.xml
 
+# This is currently not being called from our CI yaml file [!]
+uitest:
+	set -o pipefail && xcodebuild -workspace $(WORKSPACE) -scheme $(SCHEME_INTEGRATION_TESTS) -configuration Debug test -sdk iphonesimulator -destination $(DEVICE_HOST) $(DERIVED_DATA) $(RESULT_BUNDLE)| bundle exec second_curtain 2>&1 | tee $(CIRCLE_ARTIFACTS)/xcode_test_raw.log  | bundle exec xcpretty -c --test --report junit --output $(CIRCLE_TEST_REPORTS)/xcode/results.xml
+
 ### CI
 
 ci: CONFIGURATION = Debug
@@ -93,7 +100,8 @@ deploy:
 update_bundle_version:
 	@printf 'What is the new human-readable release version? '; \
 		read HUMAN_VERSION; \
-		$(PLIST_BUDDY) -c "Set CFBundleShortVersionString $$HUMAN_VERSION" $(APP_PLIST)
+		$(PLIST_BUDDY) -c "Set CFBundleShortVersionString $$HUMAN_VERSION" $(APP_PLIST); \
+		$(PLIST_BUDDY) -c "Set CFBundleShortVersionString $$HUMAN_VERSION" $(STICKER_PLIST)
 
 stamp_date:
 	config/stamp --input Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-60@2x.png --output Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-60@2x.png --text "$(DATE_MONTH)"
@@ -105,6 +113,7 @@ stamp_date:
 
 change_version_to_date:
 	$(PLIST_BUDDY) -c "Set CFBundleVersion $(DATE_VERSION)" $(APP_PLIST)
+	$(PLIST_BUDDY) -c "Set CFBundleVersion $(DATE_VERSION)" $(STICKER_PLIST)
 
 set_git_properties:
 	$(PLIST_BUDDY) -c "Set GITCommitRev $(GIT_COMMIT_REV)" $(APP_PLIST)
