@@ -26,7 +26,8 @@
     "preset": "jest-react-native",
     "testPathIgnorePatterns": [
       "\\.snap$",
-      "/node_modules/"
+      "/node_modules/",
+      "/src/"
     ]
   },
   "repository": {
@@ -60,6 +61,7 @@
   },
   "devDependencies": {
     "@kadira/react-native-storybook": "^1.12.6",
+    "@types/jest": "^18.1.1",
     "@types/node": "^7.0.4",
     "@types/react-native": "^0.37.11",
     "@types/react-relay": "^0.9.10",

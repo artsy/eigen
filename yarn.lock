@@ -58,6 +58,10 @@
     react-modal "^1.2.1"
     redux "^3.5.2"
 
+"@types/jest@^18.1.1":
+  version "18.1.1"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-18.1.1.tgz#6f63488c64726900885ab9cd5697bb7fa1b416cc"
+
 "@types/node@^7.0.4":
   version "7.0.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.4.tgz#9aabc135979ded383325749f508894c662948c8b"
