@@ -108,3 +108,14 @@ export default Relay.createContainer(Artworks, {
     `,
   }
 })
+
+interface IRelayProps {
+  artist: {
+    counts: {
+      artworks: boolean | number | string | null,
+      for_sale_artworks: boolean | number | string | null,
+    } | null,
+    for_sale_artworks: Array<boolean | number | string | null> | null,
+    not_for_sale_artworks: Array<boolean | number | string | null> | null,
+  },
+}

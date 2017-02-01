@@ -7,12 +7,7 @@ import Events from '../../native_modules/events'
 import InvertedButton from '../buttons/inverted_button'
 import Headline from '../text/headline'
 
-interface HeaderProps extends ViewProperties {
-  gene: {
-    _id: string
-    id: string
-    name: string
-  }
+interface HeaderProps extends ViewProperties, RelayProps {
   shortForm: boolean
 }
 
@@ -116,3 +111,11 @@ export default Relay.createContainer(Header, {
     `,
   }
 })
+
+interface RelayProps {
+  gene: {
+    _id: string,
+    id: string,
+    name: string | null,
+  },
+}

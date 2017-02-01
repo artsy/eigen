@@ -71,3 +71,9 @@ export default Relay.createContainer(SmallList, {
     `,
   }
 })
+
+interface IRelayProps {
+  shows: Array<{
+
+  } | null> | null,
+}

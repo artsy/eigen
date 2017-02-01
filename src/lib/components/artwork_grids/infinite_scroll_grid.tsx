@@ -26,7 +26,7 @@ const PageEndThreshold = 1000
  *   - the calculation currently only takes into account the size of the image, not if e.g. the sale message is present
  */
 
-interface Props {
+interface Props extends RelayProps {
   /** The direction for the grid, currently only 'column' is supported . */
   sectionDirection: string;
 
@@ -115,6 +115,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
 
   /** A simplified version of the Relay debugging logs for infinite scrolls */
   debugLog(query: string, response?: any, error?: any) {
+
     if (__DEV__ && global.originalXMLHttpRequest !== undefined) {
       var groupName = 'Infinite scroll request'
       console.groupCollapsed(groupName, 'color:' + (response ? 'black' : 'red') + ';')
@@ -141,11 +142,10 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   }
 
   sectionedArtworks() {
-    const sectionedArtworks = []
-    const sectionRatioSums = []
+    const sectionedArtworks: any[][] = []
+    const sectionRatioSums: number[] = []
     const queryKey = this.props.queryKey
     const artworks = this.props[queryKey].artworks ? this.props[queryKey].artworks.edges : []
-
 
     for (let i = 0; i < this.props.sectionCount; i++) {
       sectionedArtworks.push([])
@@ -160,7 +160,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
       if (artwork.image) {
         // Find section with lowest *inverted* aspect ratio sum, which is the shortest column.
         let lowestRatioSum = Number.MAX_VALUE // Start higher, so we always find a
-        let sectionIndex: ?number = null
+        let sectionIndex: number | null = null
         for (let j = 0; j < sectionRatioSums.length; j++) {
           const ratioSum = sectionRatioSums[j]
           if (ratioSum < lowestRatioSum) {
@@ -192,9 +192,9 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     const queryKey = this.props.queryKey
     const artworks = this.props[queryKey].artworks ? this.props[queryKey].artworks.edges : []
     const sectionedArtworks = this.sectionedArtworks()
-    const sections = []
+    const sections: JSX.Element[] = []
     for (let i = 0; i < this.props.sectionCount; i++) {
-      const artworkComponents = []
+      const artworkComponents: JSX.Element[] = []
       for (let j = 0; j < sectionedArtworks[i].length; j++) {
         const artwork = sectionedArtworks[i][j]
         artworkComponents.push(
@@ -259,7 +259,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-  },
+  } as React.ViewStyle,
   section: {
     flex: 1,
     flexDirection: 'column',
@@ -295,6 +295,23 @@ export default Relay.createContainer(InfiniteScrollArtworksGrid, {
   },
 })
 
+// interface IRelayProps {
+//   gene: {
+//     artworks_connection: {
+//       pageInfo: {
+//         hasNextPage: boolean,
+//       },
+//       edges: Array<{
+//         node: {
+//           image: {
+//             id: string | null,
+//           } | null,
+//         } | null,
+//       }>,
+//     } | null,
+//   },
+// }
+
 const GeneInfiniteScrollContainer = Relay.createContainer(InfiniteScrollArtworksGrid, {
   initialVariables: {
     totalSize: PageSize,
@@ -324,3 +341,20 @@ const GeneInfiniteScrollContainer = Relay.createContainer(InfiniteScrollArtworks
 })
 
 export { GeneInfiniteScrollContainer }
+
+// interface IRelayProps {
+//   gene: {
+//     artworks_connection: {
+//       pageInfo: {
+//         hasNextPage: boolean,
+//       },
+//       edges: Array<{
+//         node: {
+//           image: {
+//             id: string | null,
+//           } | null,
+//         } | null,
+//       }>,
+//     } | null,
+//   },
+// }

@@ -220,3 +220,14 @@ function suggestedArtistQuery(artist_id: string): string {
     }
   `
 }
+
+interface IRelayProps {
+  rail: {
+    __id: string,
+    key: string | null,
+    results: Array<{
+      _id: string,
+      __id: string,
+    } | null> | null,
+  },
+}

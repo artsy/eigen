@@ -262,3 +262,15 @@ export default Relay.createContainer(ArtworkRail, {
     `,
   }
 })
+
+interface IRelayProps {
+  rail: {
+    key: string | null,
+    params: {
+      medium: string | null,
+      price_range: string | null,
+    } | null,
+    context: Array<boolean | number | string | null> | null,
+    results: Array<boolean | number | string | null> | null,
+  },
+}

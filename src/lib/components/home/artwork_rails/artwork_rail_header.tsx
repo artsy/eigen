@@ -140,3 +140,11 @@ export default Relay.createContainer(ArtworkRailHeader, {
     `,
   }
 })
+
+interface IRelayProps {
+  rail: {
+    title: string | null,
+    key: string | null,
+    context: Array<boolean | number | string | null> | null,
+  },
+}

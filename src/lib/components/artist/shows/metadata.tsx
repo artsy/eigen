@@ -81,3 +81,19 @@ export default Relay.createContainer(Metadata, {
     `
   }
 })
+
+interface IRelayProps {
+  show: {
+    kind: string | null,
+    name: string | null,
+    exhibition_period: string | null,
+    status_update: string | null,
+    status: string | null,
+    partner: {
+      name: string | null,
+    } | null,
+    location: {
+      city: string | null,
+    } | null,
+  },
+}

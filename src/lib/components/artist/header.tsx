@@ -166,3 +166,16 @@ export default Relay.createContainer(Header, {
     `,
   }
 })
+
+interface IRelayProps {
+  artist: {
+    _id: string,
+    id: string,
+    name: string | null,
+    nationality: string | null,
+    birthday: string | null,
+    counts: {
+      follows: boolean | number | string | null,
+    } | null,
+  },
+}

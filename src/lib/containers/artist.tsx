@@ -137,3 +137,17 @@ export default Relay.createContainer(Artist, {
     `,
   }
 })
+
+interface RelayProps {
+  artist: {
+    _id: string,
+    id: string,
+    has_metadata: boolean | null,
+    counts: {
+      artworks: boolean | number | string | null,
+      partner_shows: boolean | number | string | null,
+      related_artists: boolean | number | string | null,
+      articles: boolean | number | string | null,
+    } | null,
+  },
+}

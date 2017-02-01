@@ -219,3 +219,17 @@ ArtistCardContainer.artistQuery = `
 `
 
 export default ArtistCardContainer
+
+interface IRelayProps {
+  artist: {
+    id: string,
+    _id: string,
+    href: string | null,
+    name: string | null,
+    formatted_artworks_count: string | null,
+    formatted_nationality_and_birthday: string | null,
+    image: {
+      url: string | null,
+    } | null,
+  },
+}
