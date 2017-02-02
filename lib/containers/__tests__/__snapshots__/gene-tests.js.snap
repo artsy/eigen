@@ -198,15 +198,55 @@ exports[`test looks like expected 1`] = `
                 },
                 Object {
                   "fontStyle": "italic",
-                  "marginTop": 4,
+                  "marginTop": 2,
+                  "maxWidth": 245,
                 },
                 Object {
                   "fontFamily": "AGaramondPro-Regular",
                 },
               ]
             }>
-            12 works ・ 
+            12 works ・ Painting ・ Below $100,000
           </Text>
+          <TouchableHighlight
+            activeOpacity={1}
+            onPress={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "rgba(255, 255, 255, 1)",
+                "borderColor": "#e5e5e5",
+                "borderWidth": 1,
+                "height": 26,
+                "justifyContent": "center",
+                "width": 80,
+              }
+            }
+            underlayColor="#6e1fff">
+            <View>
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "fontSize": 12,
+                    },
+                    Object {
+                      "color": "black",
+                      "fontFamily": "AGaramondPro-Regular",
+                      "opacity": 1,
+                    },
+                    Object {
+                      "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                    },
+                  ]
+                }>
+                REFINE
+              </Text>
+            </View>
+          </TouchableHighlight>
         </View>
         <View
           style={
@@ -276,9 +316,9 @@ exports[`test looks like expected 1`] = `
           }
           queryState={
             Object {
-              "selectedMedium": undefined,
-              "selectedPriceRange": undefined,
-              "sort": "-year",
+              "selectedMedium": "painting",
+              "selectedPriceRange": "*-100000",
+              "sort": "-partner_updated_at",
             }
           }
           resolveQuery={[Function]} />

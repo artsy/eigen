@@ -42,7 +42,7 @@ There is a comprehensive document covering [our setup here](docs/vscode.md).
 
 ### Vanilla Commands
 
-1. Run `$ npm start` from the top directory, which will:
+1. Run `$ yarn start` from the top directory, which will:
    * Clean the example app’s Xcode build dir.
    * Start the example app’s React Native packager.
    * Start the React Storybooks environment.
@@ -55,16 +55,16 @@ There is a comprehensive document covering [our setup here](docs/vscode.md).
 You can use React Native debugger which is a standalone app to inspect views as well as the standard chrome debugging tools.
 
 1. Install [RN debugger](https://github.com/jhen0409/react-native-debugger): `$ brew update && brew cask install react-native-debugger`.
-2. You can now use `$ npm run rndebugger` instead of `$ npm start` to configure the React Native packager to use RNdebugger.
+2. You can now use `$ yarn run rndebugger` instead of `$ yarn start` to configure the React Native packager to use RNdebugger.
 
 ![screen shot 2017-01-23 at 1 00 01 pm](https://cloud.githubusercontent.com/assets/296775/22220775/09bb10ec-e17e-11e6-8801-3b0ccbdbaa84.png)
 
 ### Updating Dependencies
 
 1. We vendor some data from other repositories that you will sometimes need to update. You can either update all of them
-   with `$ npm run sync-externals` or individually:
-   * The GraphQL schema of metaphysics that Relay uses to generate queries from: `$ npm run sync-schema`
-   * The colors defined in Artsy’s style-guide: `$ npm run sync-colors`
+   with `$ yarn run sync-externals` or individually:
+   * The GraphQL schema of metaphysics that Relay uses to generate queries from: `$ yarn run sync-schema`
+   * The colors defined in Artsy’s style-guide: `$ yarn run sync-colors`
 
 ### Using Relay
 
