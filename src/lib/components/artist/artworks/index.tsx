@@ -22,14 +22,16 @@ interface Props extends ViewProperties {
   relay: any
 }
 
-class Artworks extends React.Component<Props, {}> {
-  state: {
-    completedForSaleWorks: boolean
-  }
+interface State {
+  completedForSaleWorks: boolean
+}
 
+class Artworks extends React.Component<Props, State> {
   constructor(props) {
     super(props)
-    this.state = { completedForSaleWorks: false }
+    this.state = {
+      completedForSaleWorks: false
+    }
   }
 
   render() {

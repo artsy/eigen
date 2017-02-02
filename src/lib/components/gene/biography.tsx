@@ -1,20 +1,12 @@
-import Relay from 'react-relay'
-import React from 'react'
-import { View, StyleSheet, Dimensions } from 'react-native'
-
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import { View, StyleSheet, Dimensions, ViewProperties } from 'react-native'
 import removeMarkdown from 'remove-markdown'
-
 import SerifText from '../text/serif'
 
 const sideMargin = Dimensions.get('window').width > 700 ? 50 : 0
 
-class Biography extends React.Component {
-  static propTypes = {
-    gene: React.PropTypes.shape({
-      description: React.PropTypes.string,
-    }),
-  };
-
+class Biography extends React.Component<RelayProps, any> {
   render() {
     const gene = this.props.gene
     if (!gene.description) {

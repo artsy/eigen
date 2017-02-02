@@ -1,5 +1,5 @@
-import Relay from 'react-relay'
-import React from 'react'
+import * as Relay from 'react-relay'
+import * as React from 'react'
 import { View, StyleSheet } from 'react-native'
 
 import Biography from './biography'
@@ -7,7 +7,7 @@ import Biography from './biography'
 import RelatedArtists from '../related_artists'
 import Separator from '../separator'
 
-class About extends React.Component {
+class About extends React.Component<RelayProps, any> {
   render() {
     return (
       <View>
@@ -27,7 +27,9 @@ class About extends React.Component {
   }
 
   relatedArtists() {
-    return this.props.gene.trending_artists.length ? <RelatedArtists artists={this.props.gene.trending_artists}/> : null
+    return (this.props.gene.trending_artists || []).length
+      ? <RelatedArtists artists={this.props.gene.trending_artists}/>
+      : null
   }
 }
 

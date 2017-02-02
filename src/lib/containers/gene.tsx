@@ -119,8 +119,7 @@ class Gene extends React.Component<Props, State> {
   }
 
   get commonPadding(): number {
-    const windowDimensions = Dimensions.get('window')
-    return windowDimensions.width > 700 ? 40 : 20
+    return isPad ? 40 : 20
   }
 
   get showingArtworksSection(): boolean {
@@ -291,7 +290,16 @@ const styles = StyleSheet.create({
   header: {
     width: isPad ? 330 : null,
     alignSelf: isPad ? 'center' : null,
-  }
+  },
+  stickyHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: 26,
+    marginTop: 12,
+    marginBottom: 12,
+    paddingLeft: isPad ? 40 : 20,
+    paddingRight: isPad ? 40 : 20
+  } as React.ViewStyle
 })
 
 export default Relay.createContainer(Gene, {

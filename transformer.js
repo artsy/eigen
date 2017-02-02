@@ -1,18 +1,31 @@
-const ts = require("typescript");
-const originalTransform = require('./node_modules/react-native/packager/transformer');
+'use strict'
+let path = require('path')
+let ts = require('typescript')
+let tsConfig = require('./tsconfig.json')
+let rnTransform = require('react-native/packager/transformer').transform
 
-const json5 = require('json5');
-const {readFileSync} = require("fs")
+function transform(data, callback) {
+	// Do custom transformations
+	let result = data.sourceCode
+	if (path.extname(data.filename) == '.tsx' || path.extname(data.filename) == '.ts') {
+		try {
+			result = ts.transpileModule(result, {compilerOptions: tsConfig.compilerOptions})
+			result = result.outputText
+		} catch(e) {
+			callback(e)
+			return
+		}
+	}
 
-const compilerOptions = json5.parse(readFileSync("tsconfig.json").toString())
+	// Pass the transformed source to the original react native transformer
 
-module.exports = function (data, callback) {
-
-  // Skip TS transpile for React Native et-al
-  const shouldTranspile = data.sourceCode.includes(".tsx") || data.sourceCode.includes(".ts")
-  if (shouldTranspile) {
-    const transpiled = ts.transpileModule(data.sourceCode, { compilerOptions: compilerOptions.compilerOptions, moduleName: "asda" });
-    data.sourceCode = transpiled.outputText
-  }
-  originalTransform(data, callback)
+	try {
+		result = rnTransform(result, data.filename, data.options)
+	} catch(e) {
+		callback(e)
+		return
+	}
+	callback(null, result)
 }
+
+module.exports = transform

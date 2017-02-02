@@ -1,9 +1,6 @@
-// @flow
-'use strict'
-
-import React from 'react'
-import Relay from 'react-relay'
-import { ScrollView, View, TouchableHighlight } from 'react-native'
+import * as React from 'react'
+import * as Relay from 'react-relay'
+import { ScrollView, View, TouchableHighlight, ViewProperties } from 'react-native'
 
 import Headline from '../text/headline'
 import OpaqueImageView from '../opaque_image_view'
@@ -11,21 +8,24 @@ import SwitchBoard from '../../native_modules/switch_board'
 
 import { LayoutEvent } from '../../system/events'
 
-class HeroUnits extends React.Component {
-  state: {
-    width: ?number,
-    height: ?number,
-    margin: ?number,
-    fontSize: number
-  }
+interface Props extends ViewProperties, RelayProps {
+}
 
+interface State {
+  width?: number
+  height?: number
+  margin?: number
+  fontSize?: number
+}
+
+class HeroUnits extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
       width: null,
       height: null,
       margin: null,
-      fontSize: 0,
+      fontSize: 0
     }
   }
 
@@ -69,7 +69,7 @@ class HeroUnits extends React.Component {
                     horizontal={true}
                     pagingEnabled={true}
                     showsHorizontalScrollIndicator={false}>
-          {this.props.hero_units.map(hero_unit => this.renderHeroUnit(hero_unit, margin, imageWidth, height))}
+          {(this.props.hero_units || []).map(hero_unit => this.renderHeroUnit(hero_unit, margin, imageWidth, height))}
         </ScrollView>
       )
     }

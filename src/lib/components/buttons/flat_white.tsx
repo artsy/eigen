@@ -1,5 +1,5 @@
-import React from 'react'
-import { Animated, StyleSheet, TouchableHighlight, View } from 'react-native'
+import * as React from 'react'
+import { Animated, StyleSheet, TouchableHighlight, View, ViewProperties } from 'react-native'
 
 import Headline from '../text/headline'
 import colors from '../../../data/colors'
@@ -8,7 +8,19 @@ const AnimationDuration = 250
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableHighlight)
 const AnimatedHeadline = Animated.createAnimatedComponent(Headline)
 
-export default class WhiteButton extends React.Component {
+interface Props extends ViewProperties {
+  text: string
+  selected: boolean
+  onPress?: React.TouchEventHandler<WhiteButton>
+  onSelectionAnimationFinished?: Animated.EndCallback
+}
+
+interface State {
+  textOpacity: Animated.Value
+  backgroundColor: Animated.Value
+}
+
+export default class WhiteButton extends React.Component<Props, State> {
   state: {
     textOpacity: Animated.Value,
     backgroundColor: Animated.Value
@@ -37,10 +49,10 @@ export default class WhiteButton extends React.Component {
     }
   }
 
-  render() {
+  render(): JSX.Element {
     const backgroundColor = this.state.backgroundColor.interpolate({
       inputRange: [0, 1],
-      outputRange: (['white', 'black']: string[])
+      outputRange: ['white', 'black']
     })
     const styling = {
       underlayColor: (this.props.selected ? 'black' : colors['purple-regular']),
@@ -54,12 +66,6 @@ export default class WhiteButton extends React.Component {
       </AnimatedTouchable>
     )
   }
-}
-
-WhiteButton.propTypes = {
-  text: React.PropTypes.string,
-  selected: React.PropTypes.bool,
-  onPress: React.PropTypes.func,
 }
 
 const styles = StyleSheet.create({
