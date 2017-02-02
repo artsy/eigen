@@ -14,12 +14,12 @@ PODS:
   - Emission (1.2.1):
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
-    - React/Core (= 1000.0.0)
-    - React/RCTImage (= 1000.0.0)
-    - React/RCTNetwork (= 1000.0.0)
-    - React/RCTText (= 1000.0.0)
+    - React/Core (= 0.42.0-rc.2)
+    - React/RCTImage (= 0.42.0-rc.2)
+    - React/RCTNetwork (= 0.42.0-rc.2)
+    - React/RCTText (= 0.42.0-rc.2)
     - SDWebImage (>= 3.7.2)
-    - Yoga (~> 1.0)
+    - Yoga (= 0.42.0-rc.2.React)
   - Extraction (1.2.3):
     - Extraction/ARAnimationContinuation (= 1.2.3)
     - Extraction/ARLoadFailureView (= 1.2.3)
@@ -48,24 +48,24 @@ PODS:
   - NSURL+QueryDictionary (1.2.0)
   - ORStackView (2.0.3):
     - FLKAutoLayout
-  - React (1000.0.0):
-    - React/Core (= 1000.0.0)
-  - React/Core (1000.0.0):
+  - React (0.42.0-rc.2):
+    - React/Core (= 0.42.0-rc.2)
+  - React/Core (0.42.0-rc.2):
     - React/cxxreact
-    - Yoga
-  - React/cxxreact (1000.0.0):
+    - Yoga (= 0.42.0-rc.2.React)
+  - React/cxxreact (0.42.0-rc.2):
     - React/jschelpers
-  - React/jschelpers (1000.0.0)
-  - React/RCTImage (1000.0.0):
+  - React/jschelpers (0.42.0-rc.2)
+  - React/RCTImage (0.42.0-rc.2):
     - React/Core
     - React/RCTNetwork
-  - React/RCTNetwork (1000.0.0):
+  - React/RCTNetwork (0.42.0-rc.2):
     - React/Core
-  - React/RCTTest (1000.0.0):
+  - React/RCTTest (0.42.0-rc.2):
     - React/Core
-  - React/RCTText (1000.0.0):
+  - React/RCTText (0.42.0-rc.2):
     - React/Core
-  - React/RCTWebSocket (1000.0.0):
+  - React/RCTWebSocket (0.42.0-rc.2):
     - React/Core
   - SAMKeychain (1.5.0)
   - SDWebImage (3.7.5):
@@ -73,7 +73,7 @@ PODS:
   - SDWebImage/Core (3.7.5)
   - Specta (1.0.5)
   - UIView+BooleanAnimations (1.0.2)
-  - Yoga (1.0.0)
+  - Yoga (0.42.0-rc.2.React)
 
 DEPENDENCIES:
   - AppHub
@@ -86,6 +86,7 @@ DEPENDENCIES:
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - SAMKeychain
   - Specta
+  - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 EXTERNAL SOURCES:
   Artsy+Authentication:
@@ -95,6 +96,8 @@ EXTERNAL SOURCES:
     :path: "../"
   React:
     :path: "../node_modules/react-native"
+  Yoga:
+    :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
   Artsy+Authentication:
@@ -108,19 +111,19 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   Artsy+UIFonts: eb25b56a47550acd70b536f9084cdb34b4f42c3b
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
-  Emission: d07421be5015ec82e1fa434f56c1be41a6bd9b7f
+  Emission: dc1435ca428e2bc548cff32817693b14030faeb4
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
-  React: 4f1e70e7ab5d69e5e033c9cb157f72f2d597d78b
+  React: d1360f7223a79ceace525d92cfc858fe5df4e6b2
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
-  Yoga: e85333384a06d90639ad1824c9a669515284e5f4
+  Yoga: 4c4169082d61ed807719b24019a230d5ee74d36e
 
-PODFILE CHECKSUM: aa9ab051e4c86c872b01a6668c5090a1fdaceacb
+PODFILE CHECKSUM: 990bd33b5f7498ce22f8913c5c5d09ff6f1ce39e
 
 COCOAPODS: 1.2.0
