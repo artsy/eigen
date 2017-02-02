@@ -1,11 +1,24 @@
-import Relay from 'react-relay'
-import React from 'react'
-import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native'
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import { StyleSheet, View, Text, TouchableWithoutFeedback, ViewProperties } from 'react-native'
 
 import ImageView from '../../opaque_image_view'
 import SwitchBoard from '../../../native_modules/switch_board'
 
-class Article extends React.Component {
+interface Props extends ViewProperties {
+  article: {
+    href: string
+    author: {
+      name
+    }
+    thumbnail_image: {
+      url
+    }
+    thumbnail_title: string
+  }
+}
+
+class Article extends React.Component<Props, {}> {
   handleTap() {
     SwitchBoard.presentNavigationViewController(this, this.props.article.href)
   }
@@ -47,7 +60,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontFamily: 'Avant Garde Gothic ITCW01Dm',
     color: 'grey',
-  },
+  } as React.ViewStyle,
   serifText: {
     fontFamily: 'AGaramondPro-Regular',
     fontSize: 16,

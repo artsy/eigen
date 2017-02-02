@@ -1,11 +1,15 @@
-import Relay from 'react-relay'
-import React from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import { ScrollView, StyleSheet, View, ViewProperties } from 'react-native'
 
 import SerifText from '../../text/serif'
 import Article from './article'
 
-class Articles extends React.Component {
+interface Props extends ViewProperties {
+  articles: any[]
+}
+
+class Articles extends React.Component<Props, {}> {
   render() {
     const articles = this.props.articles
     return (
