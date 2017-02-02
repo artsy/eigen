@@ -4,6 +4,7 @@
 #import "Artwork.h"
 #import "ARRouter.h"
 #import "Gene.h"
+#import "Fair.h"
 #import "PartnerShow.h"
 #import "Profile.h"
 #import "SiteFeature.h"
@@ -33,7 +34,7 @@ static NSDictionary *classMap;
         @"artist" : [Artist class],
         @"profile" : [Profile class],
         @"feature" : [SiteFeature class],
-
+        @"fair" : [Fair class],
         // This is _NOT_ from the API, but comes from ARFairSearchVC
         @"partnershow" : [PartnerShow class]
 
