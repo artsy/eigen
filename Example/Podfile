@@ -1,6 +1,7 @@
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
+platform :ios, '9.0'
 react_path = '../node_modules/react-native'
 
 target 'Emission' do
@@ -10,11 +11,7 @@ target 'Emission' do
   pod 'React', :path => react_path, :subspecs => %w(RCTWebSocket)
 
   # Got to make it look right
-  if ENV['ARTSY_STAFF_MEMBER'] != nil || ENV['CI'] != nil
-    pod 'Artsy+UIFonts'
-  else
-    pod 'Artsy+UIFonts'
-  end
+  pod 'Artsy+UIFonts'
 
   # For easy updating of the JS
   pod 'AppHub'
