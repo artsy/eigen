@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.resources      = 'Pod/Assets/{Emission.js,assets}'
 
   # Artsy pods
-  s.dependency 'Artsy+UIFonts', '>= 1.1.0'
+  s.dependency 'Artsy+UIFonts', '>= 3.0.0'
   s.dependency 'Extraction', '>= 1.2.1'
 
   # 3rd-party pods
