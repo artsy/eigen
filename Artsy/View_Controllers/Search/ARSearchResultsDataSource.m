@@ -34,7 +34,7 @@
 
     cell.textLabel.textColor = self.textColor ?: [UIColor whiteColor];
     
-    [cell.imageView setImageWithURL:[NSURL URLWithString:result.imageURL]];
+    [cell.imageView setImageWithURL:[NSURL URLWithString:result.imageURL] placeholderImage:self.placeholderImage ];
 
     return cell;
 }

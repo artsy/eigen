@@ -77,6 +77,7 @@
 + (void)stubImageResponseAtPath:(NSString *)path withTestImageFile:(NSString *)imageName
 {
     [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+        if (!request.URL) return NO;
         NSURLComponents *requestComponents = [NSURLComponents componentsWithURL:request.URL resolvingAgainstBaseURL:NO];
         return [requestComponents.path isEqualToString:path];
 
