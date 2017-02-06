@@ -43,4 +43,8 @@ This will set you up on our staging server, you will have a running version of t
 
 ### Thanks
 
-**Copyright**: 2012-2016, Artsy. Thanks to all [our contributors](/docs/thanks.md).
+Thanks to all [our contributors](/docs/thanks.md).
+
+## License
+
+MIT License. See [LICENSE](LICENSE).
