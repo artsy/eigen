@@ -2,8 +2,8 @@ exports[`test renders properly 1`] = `
 <View
   style={
     Object {
-      "marginLeft": 0,
-      "marginRight": 0,
+      "marginLeft": 50,
+      "marginRight": 50,
     }
   }>
   <Text

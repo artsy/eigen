@@ -1,4 +1,4 @@
-import renderer from 'react-test-renderer'
+import * as renderer from 'react-test-renderer'
 
 /** Renders a React Component with specified layout using onLayout callback */
 export const renderWithLayout = (component: any, layout: { width?: number, height?: number }) => {

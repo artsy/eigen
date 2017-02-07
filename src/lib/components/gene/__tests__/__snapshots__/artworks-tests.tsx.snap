@@ -1,0 +1,18 @@
+exports[`test renders properly 1`] = `
+<RCTScrollView
+  accessibilityLabel="Artworks ScrollView"
+  onLayout={[Function]}
+  onScroll={[Function]}
+  scrollEventThrottle={50}
+  scrollsToTop={false}>
+  <View>
+    <View
+      accessibilityLabel="Artworks Content View"
+      style={
+        Object {
+          "flexDirection": "row",
+        }
+      } />
+  </View>
+</RCTScrollView>
+`;

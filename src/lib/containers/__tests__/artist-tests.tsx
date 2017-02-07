@@ -1,20 +1,17 @@
-// @flow
-
-'use strict'
 import 'react-native'
-import React from 'react'
-import renderer from 'react-test-renderer'
+import * as React from 'react'
+import * as renderer from 'react-test-renderer'
 
 import Artist from '../artist'
 
-jest.mock('../../components/artist/shows', () => 'Shows')
-jest.mock('../../components/artist/artworks', () => 'Artworks')
-jest.mock('../../components/artist/header.js', () => 'Header')
-jest.mock('../../components/artist/about.js', () => 'About')
+jest.mock('../../components/artist/shows/index.tsx', () => 'Shows')
+jest.mock('../../components/artist/artworks/index.tsx', () => 'Artworks')
+jest.mock('../../components/artist/header/index.tsx', () => 'Header')
+jest.mock('../../components/artist/about/index.tsx', () => 'About')
 
-jest.mock('../../components/spinner.js', () => 'ARSpinner')
-jest.mock('../../components/opaque_image_view.js', () => 'AROpaqueImageView')
-jest.mock('../../components/switch_view.js', () => 'ARSwitchView')
+jest.mock('../../components/spinner.tsx', () => 'ARSpinner')
+jest.mock('../../components/opaque_image_view.tsx', () => 'AROpaqueImageView')
+jest.mock('../../components/switch_view.tsx', () => 'ARSwitchView')
 
 describe('availableTabs', () => {
   it('returns nothing if artist has no metadata, shows, or works', () => {

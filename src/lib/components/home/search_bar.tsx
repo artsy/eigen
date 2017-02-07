@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { View, StyleSheet, Text, Image, Dimensions, TouchableWithoutFeedback } from 'react-native'
 
 import colors from '../../../data/colors'
@@ -7,7 +7,7 @@ import Switchboard from '../../native_modules/switch_board'
 const sideMargin = Dimensions.get('window').width > 700 ? 40 : 20
 const leftInnerMargin = Dimensions.get('window').width > 700 ? 20 : 15
 
-export default class SearchBar extends React.Component {
+export default class SearchBar extends React.Component<any, any> {
   render() {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
@@ -35,17 +35,17 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center',
     flexDirection: 'row',
-  },
+  } as React.ViewStyle,
   text: {
     fontFamily: 'AGaramondPro-Regular',
     fontSize: 16,
     marginTop: 5
-  },
+  } as React.ViewStyle,
   searchIcon: {
     marginLeft: leftInnerMargin,
     marginRight: 10,
     height: 16,
     width: 16
-  }
+  } as React.ViewStyle
 })
 

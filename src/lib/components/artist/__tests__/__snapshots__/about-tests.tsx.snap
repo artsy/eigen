@@ -1,0 +1,109 @@
+exports[`test renders properly 1`] = `
+<View>
+  <View>
+    <View
+      style={
+        Array [
+          Object {
+            "marginBottom": 20,
+            "marginLeft": 20,
+            "marginRight": 20,
+          },
+          Object {
+            "marginLeft": 50,
+            "marginRight": 50,
+          },
+        ]
+      }>
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hitSlop={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={Object {}}
+        testID={undefined}>
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#e5e5e5",
+                "height": 1,
+                "marginLeft": -40,
+                "marginRight": -40,
+              },
+              Object {
+                "marginLeft": 0,
+                "marginRight": 0,
+              },
+            ]
+          } />
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+            }
+          }>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "marginBottom": 14,
+                "marginTop": 14,
+              }
+            }>
+            AUCTION RESULTS
+          </Text>
+          <Image
+            source={1}
+            style={
+              Object {
+                "alignSelf": "center",
+              }
+            } />
+        </View>
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#e5e5e5",
+                "height": 1,
+                "marginLeft": -40,
+                "marginRight": -40,
+              },
+              Object {
+                "marginLeft": 0,
+                "marginRight": 0,
+              },
+            ]
+          } />
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#e5e5e5",
+            "height": 1,
+            "marginLeft": -40,
+            "marginRight": -40,
+          },
+          Object {
+            "marginBottom": 20,
+          },
+        ]
+      } />
+  </View>
+</View>
+`;

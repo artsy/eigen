@@ -1,14 +1,12 @@
-// @flow
-
 import 'react-native'
-import React from 'react'
-import renderer from 'react-test-renderer'
+import * as React from 'react'
+import * as renderer from 'react-test-renderer'
 
 import ArtistCard from '../artist_card'
 
-jest.mock('../../../spinner.js', () => 'ARSpinner')
-jest.mock('../../../opaque_image_view.js', () => 'AROpaqueImageView')
-jest.mock('../../../switch_view.js', () => 'ARSwitchView')
+jest.mock('../../../spinner.tsx', () => 'ARSpinner')
+jest.mock('../../../opaque_image_view.tsx', () => 'AROpaqueImageView')
+jest.mock('../../../switch_view.tsx', () => 'ARSwitchView')
 
 it('renders correctly', () => {
   const tree = renderer.create(<ArtistCard artist={artistProps().artist} />).toJSON()

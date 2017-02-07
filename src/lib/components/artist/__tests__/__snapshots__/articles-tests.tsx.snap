@@ -21,7 +21,7 @@ exports[`test renders properly 1`] = `
     }>
     Featured Articles
   </Text>
-  <ScrollView
+  <RCTScrollView
     horizontal={true}
     scrollsToTop={false}
     showsHorizontalScrollIndicator={false}
@@ -31,27 +31,45 @@ exports[`test renders properly 1`] = `
         "overflow": "visible",
       }
     }>
-    <View
-      style={
-        Object {
-          "width": 320,
-        }
-      }>
-      <TouchableWithoutFeedback
-        onPress={[Function]}>
+    <View>
+      <View
+        style={
+          Object {
+            "width": 320,
+          }
+        }>
         <View
+          accessibilityComponentType={undefined}
+          accessibilityLabel={undefined}
+          accessibilityTraits={undefined}
+          accessible={true}
+          hitSlop={undefined}
+          onLayout={undefined}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Object {
               "width": 300,
             }
-          }>
+          }
+          testID={undefined}>
           <AROpaqueImageView
-            imageURL="artsy.net/image-url"
+            aspectRatio={undefined}
+            imageURL={null}
+            onLayout={[Function]}
+            placeholderBackgroundColor={4293256677}
             style={
-              Object {
-                "height": 175,
-                "width": 300,
-              }
+              Array [
+                Object {
+                  "height": 175,
+                  "width": 300,
+                },
+                null,
+              ]
             } />
           <Text
             accessible={true}
@@ -84,29 +102,45 @@ exports[`test renders properly 1`] = `
             JOHN BERGER
           </Text>
         </View>
-      </TouchableWithoutFeedback>
-    </View>
-    <View
-      style={
-        Object {
-          "width": 320,
-        }
-      }>
-      <TouchableWithoutFeedback
-        onPress={[Function]}>
+      </View>
+      <View
+        style={
+          Object {
+            "width": 320,
+          }
+        }>
         <View
+          accessibilityComponentType={undefined}
+          accessibilityLabel={undefined}
+          accessibilityTraits={undefined}
+          accessible={true}
+          hitSlop={undefined}
+          onLayout={undefined}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Object {
               "width": 300,
             }
-          }>
+          }
+          testID={undefined}>
           <AROpaqueImageView
-            imageURL="artsy.net/image-url"
+            aspectRatio={undefined}
+            imageURL={null}
+            onLayout={[Function]}
+            placeholderBackgroundColor={4293256677}
             style={
-              Object {
-                "height": 175,
-                "width": 300,
-              }
+              Array [
+                Object {
+                  "height": 175,
+                  "width": 300,
+                },
+                null,
+              ]
             } />
           <Text
             accessible={true}
@@ -139,8 +173,8 @@ exports[`test renders properly 1`] = `
             JOHN BERGER
           </Text>
         </View>
-      </TouchableWithoutFeedback>
+      </View>
     </View>
-  </ScrollView>
+  </RCTScrollView>
 </View>
 `;

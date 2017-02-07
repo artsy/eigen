@@ -1,0 +1,424 @@
+exports[`test renders properly 1`] = `
+<View
+  onLayout={[Function]}>
+  <View
+    accessibilityLabel="Artworks Content View"
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }>
+    <View
+      accessibilityLabel="Section 0"
+      style={
+        Array [
+          Object {
+            "flexDirection": "column",
+          },
+          Object {
+            "marginRight": 20,
+            "width": 242.66666666666666,
+          },
+        ]
+      }>
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hitSlop={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={undefined}
+        testID={undefined}>
+        <AROpaqueImageView
+          aspectRatio={2.18}
+          imageURL={null}
+          onLayout={[Function]}
+          placeholderBackgroundColor={4293256677}
+          style={
+            Array [
+              Object {
+                "marginBottom": 10,
+              },
+              null,
+            ]
+          } />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "fontSize": 17,
+              },
+              Array [
+                Object {
+                  "color": "#666666",
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontWeight": "bold",
+                },
+              ],
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+              },
+            ]
+          }>
+          Guerrilla Girls
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "fontSize": 17,
+              },
+              Object {
+                "color": "#666666",
+                "fontSize": 12,
+              },
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+              },
+            ]
+          }>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Array [
+                  Object {
+                    "color": "#666666",
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "fontStyle": "italic",
+                  },
+                ],
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM
+          </Text>
+          , 2012
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "fontSize": 17,
+              },
+              Object {
+                "color": "#666666",
+                "fontSize": 12,
+              },
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+              },
+            ]
+          }>
+          Whitechapel Gallery
+        </Text>
+      </View>
+    </View>
+    <View
+      accessibilityLabel="Section 1"
+      style={
+        Array [
+          Object {
+            "flexDirection": "column",
+          },
+          Object {
+            "marginRight": 20,
+            "width": 242.66666666666666,
+          },
+        ]
+      }>
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hitSlop={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={undefined}
+        testID={undefined}>
+        <AROpaqueImageView
+          aspectRatio={2.18}
+          imageURL={null}
+          onLayout={[Function]}
+          placeholderBackgroundColor={4293256677}
+          style={
+            Array [
+              Object {
+                "marginBottom": 10,
+              },
+              null,
+            ]
+          } />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "fontSize": 17,
+              },
+              Array [
+                Object {
+                  "color": "#666666",
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontWeight": "bold",
+                },
+              ],
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+              },
+            ]
+          }>
+          Guerrilla Girls
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "fontSize": 17,
+              },
+              Object {
+                "color": "#666666",
+                "fontSize": 12,
+              },
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+              },
+            ]
+          }>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Array [
+                  Object {
+                    "color": "#666666",
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "fontStyle": "italic",
+                  },
+                ],
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM
+          </Text>
+          , 2012
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "fontSize": 17,
+              },
+              Object {
+                "color": "#666666",
+                "fontSize": 12,
+              },
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+              },
+            ]
+          }>
+          Whitechapel Gallery
+        </Text>
+      </View>
+    </View>
+    <View
+      accessibilityLabel="Section 2"
+      style={
+        Array [
+          Object {
+            "flexDirection": "column",
+          },
+          Object {
+            "marginRight": 0,
+            "width": 242.66666666666666,
+          },
+        ]
+      }>
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hitSlop={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={undefined}
+        testID={undefined}>
+        <AROpaqueImageView
+          aspectRatio={2.18}
+          imageURL={null}
+          onLayout={[Function]}
+          placeholderBackgroundColor={4293256677}
+          style={
+            Array [
+              Object {
+                "marginBottom": 10,
+              },
+              null,
+            ]
+          } />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "fontSize": 17,
+              },
+              Array [
+                Object {
+                  "color": "#666666",
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontWeight": "bold",
+                },
+              ],
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+              },
+            ]
+          }>
+          Guerrilla Girls
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "fontSize": 17,
+              },
+              Object {
+                "color": "#666666",
+                "fontSize": 12,
+              },
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+              },
+            ]
+          }>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "fontSize": 17,
+                },
+                Array [
+                  Object {
+                    "color": "#666666",
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "fontStyle": "italic",
+                  },
+                ],
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }>
+            DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM
+          </Text>
+          , 2012
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "fontSize": 17,
+              },
+              Object {
+                "color": "#666666",
+                "fontSize": 12,
+              },
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+              },
+            ]
+          }>
+          Whitechapel Gallery
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

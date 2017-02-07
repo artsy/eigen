@@ -9,11 +9,7 @@ interface Props extends ViewProperties {
   selectedIndex: number
 }
 
-export default class TabView extends React.Component<Props, {}> {
-  static propTypes = {
-    ...SwitchView.propTypes
-  }
-
+export default class TabView extends React.Component<Props, any> {
   render() {
     const { children, ...props } = this.props
     return (

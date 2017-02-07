@@ -22,7 +22,7 @@ exports[`test renders properly 1`] = `
             "fontSize": 12,
           },
           Object {
-            "fontSize": 14,
+            "fontSize": 20,
             "textAlign": "center",
           },
           Object {
@@ -40,19 +40,36 @@ exports[`test renders properly 1`] = `
         "marginTop": 30,
       }
     }>
-    <TouchableHighlight
-      activeOpacity={1}
-      disabled={undefined}
-      onPress={[Function]}
+    <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      hasTVPreferredFocus={undefined}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "alignItems": "center",
-          "backgroundColor": "rgba(0, 0, 0, 1)",
-          "flex": 1,
-          "justifyContent": "center",
-        }
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+          },
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "rgba(0, 0, 0, 1)",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+        ]
       }
-      underlayColor="#6e1fff">
+      testID={undefined}
+      tvParallaxProperties={undefined}>
       <View>
         <Text
           accessible={true}
@@ -75,7 +92,7 @@ exports[`test renders properly 1`] = `
           
         </Text>
       </View>
-    </TouchableHighlight>
+    </View>
   </View>
 </View>
 `;

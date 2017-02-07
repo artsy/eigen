@@ -10,12 +10,12 @@ interface Props extends ViewProperties {
   shows: any[]
 }
 
-class ShowsList extends React.Component<Props,{}> {
-  state: {
-    width: number,
-    height: number,
-  }
+interface State {
+    width: number
+    height: number
+}
 
+class ShowsList extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 
@@ -46,7 +46,7 @@ class ShowsList extends React.Component<Props,{}> {
     return 1
   }
 
-  onLayout= (event: LayoutEvent) => {
+  onLayout = (event: LayoutEvent) => {
     const layout = event.nativeEvent.layout
     this.setState(this.imageDimensions(layout))
   }
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   } as React.ViewStyle
 })
 
-export default Relay.createContainer(ShowsList,{
+export default Relay.createContainer(ShowsList, {
   fragments: {
     shows: () => Relay.QL`
       fragment on PartnerShow @relay(plural: true) {

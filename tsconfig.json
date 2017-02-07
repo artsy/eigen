@@ -1,14 +1,14 @@
 {
     "compilerOptions": {
         "jsx": "react",
-        "target": "ESNext",
-        "module": "es2015",
+        "target": "es6",
+        "module": "commonjs",
         "rootDir": "src",
         "outDir": "build",
         "allowJs": true,
         "sourceMap": true,
         "moduleResolution": "node",
-        "strictNullChecks": true
+        "strictNullChecks": false
     },
     "include": [
         "typings/index.d.ts",
@@ -21,7 +21,8 @@
         "Example/Build",
         "externals",
         "build",
-        "index.ios.js"
+        "index.ios.js",
+        "**/__mocks__"
     ],
     "compileOnSave": true
 }

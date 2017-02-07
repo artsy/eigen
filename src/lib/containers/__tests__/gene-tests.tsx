@@ -1,9 +1,6 @@
-// @flow
-
-'use strict'
 import 'react-native'
-import React from 'react'
-import renderer from 'react-test-renderer'
+import * as React from 'react'
+import * as renderer from 'react-test-renderer'
 
 var refineCallbackPromise = () => Promise.resolve()
 jest.mock('../../native_modules/refine_callback.js', () => { return { triggerRefine: () => refineCallbackPromise() }})
@@ -97,18 +94,21 @@ describe('state', () => {
 })
 
 describe('handling price ranges', () => {
+  let gene = null
+  beforeAll(() => {
+    gene = new Gene(props)
+  })
+
   it('is empty when *-*', () => {
-    const gene = new Gene()
+    console.log(gene.render())
     expect(gene.priceRangeToHumanReadableString('*-*')).toEqual('')
   })
 
   it('looks right when there is only a min value', () => {
-    const gene = new Gene()
     expect(gene.priceRangeToHumanReadableString('50.00-*')).toEqual('Above $50')
   })
 
   it('looks right when there is only a max value', () => {
-    const gene = new Gene()
     expect(gene.priceRangeToHumanReadableString('*-100.00')).toEqual('Below $100')
   })
 

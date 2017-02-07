@@ -73,18 +73,22 @@ exports[`test renders properly 1`] = `
         )
       </Text>
     </Text>
-    <ArtworksGrid
-      artist={
-        Object {
-          "counts": Object {
-            "artworks": 5,
-            "for_sale_artworks": 2,
-          },
-        }
-      }
-      filter="IS_FOR_SALE"
-      onComplete={[Function]}
-      queryKey="artist" />
+    <RCTScrollView
+      accessibilityLabel="Artworks ScrollView"
+      onLayout={[Function]}
+      onScroll={[Function]}
+      scrollEventThrottle={50}
+      scrollsToTop={false}>
+      <View>
+        <View
+          accessibilityLabel="Artworks Content View"
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          } />
+      </View>
+    </RCTScrollView>
   </View>
   <View
     style={
@@ -92,8 +96,8 @@ exports[`test renders properly 1`] = `
         Object {
           "backgroundColor": "#e5e5e5",
           "height": 1,
-          "marginLeft": -20,
-          "marginRight": -20,
+          "marginLeft": -40,
+          "marginRight": -40,
         },
         Object {
           "marginBottom": 20,
@@ -169,18 +173,22 @@ exports[`test renders properly 1`] = `
         )
       </Text>
     </Text>
-    <ArtworksGrid
-      artist={
-        Object {
-          "counts": Object {
-            "artworks": 5,
-            "for_sale_artworks": 2,
-          },
-        }
-      }
-      filter="IS_NOT_FOR_SALE"
-      onComplete={null}
-      queryKey="artist" />
+    <RCTScrollView
+      accessibilityLabel="Artworks ScrollView"
+      onLayout={[Function]}
+      onScroll={[Function]}
+      scrollEventThrottle={50}
+      scrollsToTop={false}>
+      <View>
+        <View
+          accessibilityLabel="Artworks Content View"
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          } />
+      </View>
+    </RCTScrollView>
   </View>
 </View>
 `;

@@ -71,7 +71,9 @@ interface State {
    *
    */
 class Gene extends React.Component<Props, State> {
-  componentWillMount() {
+  constructor(props) {
+    super(props)
+
     this.state = {
       selectedTabIndex: 0,
       showingStickyHeader: true,
@@ -81,6 +83,13 @@ class Gene extends React.Component<Props, State> {
       selectedPriceRange: this.props.price_range,
     }
   }
+
+  componentDidUpdate() {
+    this.setState({
+      selectedMedium: this.props.medium,
+      selectedPriceRange: this.props.price_range
+    })
+}
 
   switchSelectionDidChange = (event: TouchEvent<SwitchView>) => {
     this.setState({ selectedTabIndex: event.nativeEvent.selectedIndex })

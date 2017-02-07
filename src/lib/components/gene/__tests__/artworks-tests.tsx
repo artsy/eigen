@@ -1,12 +1,13 @@
 import 'react-native'
 
 import * as React from 'react'
-import renderer from 'react-test-renderer'
+import * as renderer from 'react-test-renderer'
 
 import Artworks from '../artworks'
 
 // Ideally this should not be mocked, but the metaphysics mock doesn't propagate to it and it won't render otherwise
-jest.mock('../../artwork_grids/infinite_scroll_grid.js', () => 'ArtworksGrid')
+jest.mock('../../artwork_grids/infinite_scroll_grid.tsx', () => 'ArtworksGrid')
+jest.mock('../../../metaphysics.ts')
 
 it('renders properly', () => {
   const props = {

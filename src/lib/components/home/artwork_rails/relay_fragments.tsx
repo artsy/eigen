@@ -1,6 +1,6 @@
 'use strict'
 
-import Relay from 'react-relay'
+import * as Relay from 'react-relay'
 
 function relatedArtistFragment() {
   return (

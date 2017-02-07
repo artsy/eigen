@@ -1,7 +1,7 @@
 import * as Relay from 'react-relay'
 import * as React from 'react'
 import { View, StyleSheet, Dimensions, ViewProperties } from 'react-native'
-import removeMarkdown from 'remove-markdown'
+import * as removeMarkdown from 'remove-markdown'
 import SerifText from '../text/serif'
 
 const sideMargin = Dimensions.get('window').width > 700 ? 50 : 0

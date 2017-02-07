@@ -14,7 +14,7 @@
     {
       "taskName": "Start Typescript Compiler",
       "isBuildCommand": true,
-      "args": ["tsc"],
+      "args": ["node_modules/.bin/tsc"],
       "problemMatcher": [
         "$tsc"
       ]
@@ -22,7 +22,7 @@
     {
       "taskName": "Start Typescript Compiler (in watch mode)",
       "isBuildCommand": true,
-      "args": ["tsc --watch"],
+      "args": ["node_modules/.bin/tsc --watch"],
       "isWatching": true,
       "problemMatcher": [
         "$tsc-watch"

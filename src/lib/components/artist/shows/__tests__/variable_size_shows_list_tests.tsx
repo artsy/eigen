@@ -1,16 +1,16 @@
 import 'react-native'
 
-import React from 'react'
-import renderer from 'react-test-renderer'
+import * as React from 'react'
+import * as renderer from 'react-test-renderer'
 
 import ShowsList from '../variable_size_shows_list'
-jest.mock('../../../opaque_image_view.js', () => 'AROpaqueImageView')
+jest.mock('../../../opaque_image_view.tsx', () => 'AROpaqueImageView')
 
 it('renders properly', () => {
   const show1 = showProps()
   var show2 = showProps()
   show2.partner.name = 'A Very Nice Gallery'
-  show2.location = 'London'
+  show2.location.city = 'London'
 
   const shows = [ show1, show2 ]
   const list = renderer.create(<ShowsList shows={shows} showSize={'medium'} />).toJSON()

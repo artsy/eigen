@@ -21,7 +21,7 @@ interface Props extends ViewProperties {
   }
 }
 
-class Metadata extends React.Component<Props, {}> {
+class Metadata extends React.Component<Props, any> {
 
   render() {
     return (

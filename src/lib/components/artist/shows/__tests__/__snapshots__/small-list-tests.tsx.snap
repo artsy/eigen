@@ -1,48 +1,53 @@
 exports[`test renders properly 1`] = `
-<ScrollView
+<RCTScrollView
   dataSource={
     ListViewDataSource {
       "items": 2,
     }
   }
   enableEmptySections={true}
-  initialListSize={10}
-  onContentSizeChange={[Function]}
-  onEndReachedThreshold={1000}
-  onKeyboardDidHide={undefined}
-  onKeyboardDidShow={undefined}
-  onKeyboardWillHide={undefined}
-  onKeyboardWillShow={undefined}
-  onLayout={[Function]}
-  onScroll={[Function]}
-  pageSize={1}
-  removeClippedSubviews={true}
   renderRow={[Function]}
+  renderScrollComponent={[Function]}
   renderSeparator={[Function]}
-  scrollEventThrottle={50}
-  scrollRenderAheadDistance={1000}
-  scrollsToTop={false}
-  stickyHeaderIndices={Array []}>
-  <TouchableWithoutFeedback
-    onPress={[Function]}>
+  scrollsToTop={false}>
+  <View>
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      hitSlop={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
           "alignItems": "center",
           "flexDirection": "row",
           "marginTop": -8,
         }
-      }>
+      }
+      testID={undefined}>
       <AROpaqueImageView
-        imageURL="artsy.net/image-url"
+        aspectRatio={undefined}
+        imageURL={null}
+        onLayout={[Function]}
+        placeholderBackgroundColor={4293256677}
         style={
-          Object {
-            "height": 75,
-            "marginBottom": 20,
-            "marginRight": 15,
-            "marginTop": 20,
-            "width": 75,
-          }
+          Array [
+            Object {
+              "height": 75,
+              "marginBottom": 20,
+              "marginRight": 15,
+              "marginTop": 20,
+              "width": 75,
+            },
+            null,
+          ]
         } />
       <View
         style={
@@ -150,34 +155,43 @@ exports[`test renders properly 1`] = `
         </Text>
       </View>
     </View>
-  </TouchableWithoutFeedback>
-  <View
-    style={
-      Object {
-        "backgroundColor": "#e5e5e5",
-        "height": 1,
-      }
-    } />
-  <TouchableWithoutFeedback
-    onPress={[Function]}>
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      hitSlop={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
           "alignItems": "center",
           "flexDirection": "row",
           "marginTop": -8,
         }
-      }>
+      }
+      testID={undefined}>
       <AROpaqueImageView
-        imageURL="artsy.net/image-url"
+        aspectRatio={undefined}
+        imageURL={null}
+        onLayout={[Function]}
+        placeholderBackgroundColor={4293256677}
         style={
-          Object {
-            "height": 75,
-            "marginBottom": 20,
-            "marginRight": 15,
-            "marginTop": 20,
-            "width": 75,
-          }
+          Array [
+            Object {
+              "height": 75,
+              "marginBottom": 20,
+              "marginRight": 15,
+              "marginTop": 20,
+              "width": 75,
+            },
+            null,
+          ]
         } />
       <View
         style={
@@ -285,13 +299,6 @@ exports[`test renders properly 1`] = `
         </Text>
       </View>
     </View>
-  </TouchableWithoutFeedback>
-  <View
-    style={
-      Object {
-        "backgroundColor": "#e5e5e5",
-        "height": 1,
-      }
-    } />
-</ScrollView>
+  </View>
+</RCTScrollView>
 `;

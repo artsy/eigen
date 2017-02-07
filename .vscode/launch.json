@@ -2,6 +2,26 @@
   "version": "0.2.0",
   "configurations": [
     {
+        "name": "Debug Tests",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceRoot}/node_modules/.bin/jest",
+        "stopOnEntry": true,
+        "args": ["--runInBand"],
+        "cwd": "${workspaceRoot}",
+        "preLaunchTask": null,
+        "runtimeExecutable": null,
+        "runtimeArgs": [
+            "--nolazy"
+        ],
+        "env": {
+            "NODE_ENV": "development"
+        },
+        "externalConsole": false,
+        "sourceMaps": true,
+        "outDir": null
+    },
+    {
       "name": "Debug iOS",
       "program": "${workspaceRoot}/.vscode/launchReactNative.js",
       "type": "reactnative",

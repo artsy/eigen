@@ -1,0 +1,73 @@
+exports[`test renders properly 1`] = `
+<View
+  style={
+    Object {
+      "width": 320,
+    }
+  }>
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hitSlop={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "width": 300,
+      }
+    }
+    testID={undefined}>
+    <AROpaqueImageView
+      aspectRatio={undefined}
+      imageURL={null}
+      onLayout={[Function]}
+      placeholderBackgroundColor={4293256677}
+      style={
+        Array [
+          Object {
+            "height": 175,
+            "width": 300,
+          },
+          null,
+        ]
+      } />
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      numberOfLines={5}
+      style={
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+          "fontSize": 16,
+          "marginTop": 10,
+          "width": 275,
+        }
+      }>
+      Something Happened
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Object {
+          "color": "grey",
+          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+          "fontSize": 10,
+          "marginTop": 5,
+          "textAlign": "left",
+        }
+      }>
+      JOHN BERGER
+    </Text>
+  </View>
+</View>
+`;

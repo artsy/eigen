@@ -1,6 +1,6 @@
-import Relay from 'react-relay'
-import React from 'react'
-import { Animated, Easing, ScrollView, StyleSheet, View } from 'react-native'
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import { Animated, Easing, ScrollView, StyleSheet, View, ViewProperties } from 'react-native'
 
 import metaphysics from '../../../metaphysics'
 
@@ -18,12 +18,15 @@ const Animation = {
   easing: Easing.out(Easing.cubic),
 }
 
-class ArtistRail extends React.Component {
-  state: {
-    artists: any[],
-    loadFailed: boolean
-  }
+interface Props extends ViewProperties, RelayProps {
+}
 
+interface State {
+    artists: any[]
+    loadFailed: boolean
+}
+
+class ArtistRail extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
@@ -33,11 +36,13 @@ class ArtistRail extends React.Component {
   }
 
   componentDidMount() {
-    this.props.relay.setVariables({ fetchContent: true }, readyState => {
-      if (readyState.error) {
-        this.setState({ loadFailed: true })
-      }
-    })
+    if (this.props.relay) {
+      this.props.relay.setVariables({ fetchContent: true }, readyState => {
+        if (readyState.error) {
+          this.setState({ loadFailed: true })
+        }
+      })
+    }
   }
 
   componentWillReceiveProps(nextProps) {

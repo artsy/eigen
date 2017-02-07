@@ -1,8 +1,7 @@
-import Relay from 'react-relay'
-import React from 'react'
+import * as Relay from 'react-relay'
+import * as React from 'react'
 
-// $FlowFixMe: Flow isn't seeing the ListViewDataSource
-import { ListView, ListViewDataSource, ScrollView, RefreshControl } from 'react-native'
+import { ListView, ListViewDataSource, ScrollView, RefreshControl, ViewProperties } from 'react-native'
 
 import HeroUnits from '../components/home/hero_units'
 import ArtworkRail from '../components/home/artwork_rails/artwork_rail'
@@ -14,13 +13,16 @@ type DataSourceRow = {
   data: any,
 }
 
-class Home extends React.Component {
-  state: {
-    modules: any[],
-    isRefreshing: boolean,
-    dataSource: ListViewDataSource,
-  }
+interface Props extends ViewProperties {
+}
 
+interface State {
+  modules: any[]
+  isRefreshing: boolean
+  dataSource: ListViewDataSource
+}
+
+class Home extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 

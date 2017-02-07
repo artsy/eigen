@@ -17,7 +17,7 @@ interface Props extends ViewProperties {
   }
 }
 
-class Shows extends React.Component<Props, {}> {
+class Shows extends React.Component<Props, any> {
   render() {
     return (
       <View style={styles.container}>

@@ -1,4 +1,4 @@
-import Relay from 'react-relay'
+import * as Relay from 'react-relay'
 
 class Artist extends Relay.Route {
   static queries = {

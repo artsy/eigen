@@ -1,0 +1,184 @@
+exports[`test renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "height": 310,
+      "width": 236,
+    }
+  }>
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hitSlop={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "borderColor": "#F3F3F3",
+        "borderWidth": 1,
+        "height": 280,
+        "marginLeft": 16,
+        "shadowColor": "#000000",
+        "shadowOffset": Object {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.08,
+        "shadowRadius": 6,
+        "width": 220,
+      }
+    }
+    testID={undefined}>
+    <AROpaqueImageView
+      aspectRatio={undefined}
+      imageURL={null}
+      onLayout={[Function]}
+      style={
+        Array [
+          Object {
+            "height": 148,
+            "marginLeft": 12,
+            "marginTop": 12,
+            "width": 196,
+          },
+          Object {
+            "backgroundColor": "#e5e5e5",
+          },
+        ]
+      } />
+    <View
+      style={
+        Object {
+          "marginLeft": 12,
+          "marginTop": 12,
+        }
+      }>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Object {
+            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontSize": 12,
+            "height": 17,
+            "marginRight": 12,
+            "textAlign": "left",
+          }
+        }>
+        JUAN GRIS
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Object {
+            "color": "#000000",
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 16,
+            "height": 17,
+            "marginRight": 12,
+          }
+        }>
+        Spanish, 1887–1927
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "color": "#000000",
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "height": 17,
+              "marginRight": 12,
+            },
+            Object {
+              "color": "#666666",
+            },
+          ]
+        }>
+        14 works, 3 for sale
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "bottom": 15,
+          "height": 30,
+          "marginLeft": 12,
+          "marginTop": 12,
+          "position": "absolute",
+          "width": 196,
+        }
+      }>
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+            },
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(0, 0, 0, 1)",
+              "flex": 1,
+              "justifyContent": "center",
+            },
+          ]
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}>
+        <View>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "color": "white",
+                  "opacity": 1,
+                },
+                Object {
+                  "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                },
+              ]
+            }>
+            FOLLOW
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

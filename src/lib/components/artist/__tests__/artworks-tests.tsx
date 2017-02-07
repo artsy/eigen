@@ -1,10 +1,11 @@
 import 'react-native'
 
-import React from 'react'
-import renderer from 'react-test-renderer'
+import * as React from 'react'
+import * as renderer from 'react-test-renderer'
 
 import Artworks from '../artworks'
-jest.mock('../../artwork_grids/infinite_scroll_grid.js', () => 'ArtworksGrid')
+jest.mock('../../../metaphysics.ts')
+jest.mock('../../artwork_grids/infinite_scroll_grid.tsx', () => 'ArtworksGrid')
 
 it('renders properly', () => {
   const artist = {

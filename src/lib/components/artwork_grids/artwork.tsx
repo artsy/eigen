@@ -1,5 +1,5 @@
-import Relay from 'react-relay'
-import React from 'react'
+import * as Relay from 'react-relay'
+import * as React from 'react'
 import { Image, View, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { map } from 'lodash'
 
@@ -8,7 +8,7 @@ import SerifText from '../text/serif'
 import colors from '../../../data/colors'
 import SwitchBoard from '../../native_modules/switch_board'
 
-class Artwork extends React.Component {
+class Artwork extends React.Component<RelayProps, any> {
   handleTap() {
     SwitchBoard.presentNavigationViewController(this, this.props.artwork.href)
   }
@@ -68,25 +68,6 @@ class Artwork extends React.Component {
       return artwork.sale_message && <SerifText style={styles.text}>{artwork.sale_message}</SerifText>
     }
    }
-}
-
-Artwork.propTypes = {
-  artwork: React.PropTypes.shape({
-    title: React.PropTypes.string,
-    sale_message: React.PropTypes.string,
-    image: React.PropTypes.shape({
-      url: React.PropTypes.string,
-      aspect_ratio: React.PropTypes.number,
-    }),
-    artists: React.PropTypes.arrayOf(
-      React.PropTypes.shape({
-        name: React.PropTypes.string,
-      }),
-    ),
-    partner: React.PropTypes.shape({
-      name: React.PropTypes.string,
-    }),
-  }),
 }
 
 const styles = StyleSheet.create({

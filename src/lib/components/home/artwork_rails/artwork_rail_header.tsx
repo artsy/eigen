@@ -1,6 +1,6 @@
-import Relay from 'react-relay'
-import React from 'react'
-import { StyleSheet, Dimensions, View, Text, TouchableWithoutFeedback, NativeModules } from 'react-native'
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import { StyleSheet, Dimensions, View, Text, TouchableWithoutFeedback, NativeModules, ViewProperties } from 'react-native'
 const { ARTemporaryAPIModule } = NativeModules
 
 import Events from '../../../native_modules/events'
@@ -22,11 +22,15 @@ const additionalContentRails = [
   'generic_gene',
 ]
 
-class ArtworkRailHeader extends React.Component {
-  state: {
-    following: boolean
-  };
+interface Props extends ViewProperties, RelayProps {
+  handleViewAll: () => void
+}
 
+interface State {
+  following: boolean
+}
+
+class ArtworkRailHeader extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = { following: props.rail.key === 'followed_artist' }

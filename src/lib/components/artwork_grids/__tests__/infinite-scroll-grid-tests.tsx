@@ -1,13 +1,13 @@
 import 'react-native'
 
-import React from 'react'
+import * as React from 'react'
 import { renderWithLayout } from '../../../tests/render_with_layout'
 
 import InfiniteScrollArtworksGrid from '../infinite_scroll_grid'
 
-jest.mock('../../../metaphysics.js', () => 'Metaphysics')
-jest.mock('../../opaque_image_view.js', () => 'AROpaqueImageView')
-jest.mock('../../spinner.js', () => 'ARSpinner')
+jest.mock('../../../metaphysics.ts')
+jest.mock('../../opaque_image_view.tsx', () => 'AROpaqueImageView')
+jest.mock('../../spinner.tsx', () => 'ARSpinner')
 
 it('renders properly', () => {
   const artist = {

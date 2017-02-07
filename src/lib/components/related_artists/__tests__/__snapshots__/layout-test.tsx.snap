@@ -1,0 +1,122 @@
+exports[`test lays out correctly 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    Object {
+      "flexDirection": "column",
+    }
+  }>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "fontSize": 20,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }>
+    Related Artists
+  </Text>
+  <View
+    style={
+      Object {
+        "alignItems": "flex-start",
+        "flexDirection": "row",
+        "flexWrap": "wrap",
+        "justifyContent": "space-around",
+        "marginLeft": -10,
+        "marginRight": -10,
+        "marginTop": 12,
+      }
+    }>
+    <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      hitSlop={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "margin": 5,
+          "paddingBottom": 20,
+          "width": 242,
+        }
+      }
+      testID={undefined}>
+      <AROpaqueImageView
+        aspectRatio={undefined}
+        imageURL={null}
+        onLayout={[Function]}
+        style={
+          Array [
+            Object {
+              "height": 161,
+              "width": 242,
+            },
+            Object {
+              "backgroundColor": "#e5e5e5",
+            },
+          ]
+        } />
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Object {
+            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontSize": 12,
+            "marginTop": 10,
+            "textAlign": "left",
+          }
+        }>
+        SARAH SCOTT
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Object {
+            "color": "#666666",
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 16,
+            "marginTop": 5,
+          }
+        }>
+        4 works, 2 for sale
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "height": 161,
+          "width": 242,
+        }
+      } />
+    <View
+      style={
+        Object {
+          "height": 161,
+          "width": 242,
+        }
+      } />
+  </View>
+</View>
+`;

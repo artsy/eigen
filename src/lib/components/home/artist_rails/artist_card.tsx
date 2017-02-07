@@ -1,6 +1,6 @@
-import Relay from 'react-relay'
-import React from 'react'
-import { StyleSheet, View, Text, TouchableWithoutFeedback, NativeModules } from 'react-native'
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import { StyleSheet, View, Text, TouchableWithoutFeedback, NativeModules, ViewProperties } from 'react-native'
 const { ARTemporaryAPIModule } = NativeModules
 
 import colors from '../../../../data/colors'
@@ -9,13 +9,17 @@ import SwitchBoard from '../../../native_modules/switch_board'
 import InvertedButton from '../../buttons/inverted_button'
 import Events from '../../../native_modules/events'
 
-class ArtistCard extends React.Component {
-  state: {
-    processingChange: boolean,
-    following: ?boolean,
-    followStatusChanged: ?boolean
-  }
+interface Props extends ViewProperties, RelayProps {
+  onFollow?: (any) => void
+}
 
+interface State {
+    processingChange: boolean
+    following?: boolean
+    followStatusChanged?: boolean
+}
+
+class ArtistCard extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
@@ -116,13 +120,6 @@ class ArtistCard extends React.Component {
       </View>
     )
   }
-}
-
-ArtistCard.propTypes = {
-  /**
-   * A callback that is called once the artist is followed.
-   */
-  onFollow: React.PropTypes.func,
 }
 
 const styles = StyleSheet.create({

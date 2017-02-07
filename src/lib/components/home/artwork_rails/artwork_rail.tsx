@@ -1,7 +1,7 @@
-import Relay from 'react-relay'
-import React from 'react'
-import _ from 'lodash'
-import { View, StyleSheet, TouchableHighlight, LayoutAnimation, Text, Image, Dimensions } from 'react-native'
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import * as _ from 'lodash'
+import { View, StyleSheet, TouchableHighlight, LayoutAnimation, Text, Image, Dimensions, ViewProperties } from 'react-native'
 
 import Spinner from '../../spinner'
 import Grid from '../../artwork_grids/generic_grid'
@@ -23,13 +23,15 @@ const additionalContentRails = [
   'followed_artist',
 ]
 
-class ArtworkRail extends React.Component {
-  state: {
-    expanded: boolean,
-    gridHeight: number,
-    loadFailed: boolean
-  }
+interface Props extends ViewProperties, RelayProps {}
 
+interface State {
+  expanded: boolean
+  gridHeight: number
+  loadFailed: boolean
+}
+
+class ArtworkRail extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 
@@ -41,11 +43,13 @@ class ArtworkRail extends React.Component {
   }
 
   componentDidMount() {
-    this.props.relay.setVariables({ fetchContent: true }, readyState => {
-      if (readyState.error) {
-        this.setState({ loadFailed: true })
-      }
-    })
+    if (this.props.relay) {
+      this.props.relay.setVariables({ fetchContent: true }, readyState => {
+        if (readyState.error) {
+          this.setState({ loadFailed: true })
+        }
+      })
+    }
   }
 
   expand = () => {
@@ -185,7 +189,7 @@ class ArtworkRail extends React.Component {
 
     const sideMargin = isPad ? 40 : 20
     const style: any = { marginLeft: sideMargin, marginRight: sideMargin }
-    if (!this.props.relay.variables.fetchContent) {
+    if (!(this.props.relay && this.props.relay.variables.fetchContent)) {
       // if there's no content, set minHeight to prevent spinners from all the rails showing
       style.minHeight = 400
     }
@@ -264,6 +268,7 @@ export default Relay.createContainer(ArtworkRail, {
 })
 
 interface RelayProps {
+  relay?: any
   rail: {
     key: string | null,
     params: {

@@ -1,12 +1,12 @@
-import Relay from 'react-relay'
-import React from 'react'
+import * as Relay from 'react-relay'
+import * as React from 'react'
 import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native'
 
 import colors from '../../../data/colors'
 import ImageView from '../opaque_image_view'
 import SwitchBoard from '../../native_modules/switch_board'
 
-class RelatedArtist extends React.Component {
+class RelatedArtist extends React.Component<any, any> {
   handleTap() {
     SwitchBoard.presentNavigationViewController(this, this.props.artist.href)
   }

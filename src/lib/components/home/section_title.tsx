@@ -1,7 +1,10 @@
-import React from 'react'
+import * as React from 'react'
 import { StyleSheet, Text } from 'react-native'
 
-class SectionTitle extends React.Component {
+export default class SectionTitle extends React.Component<any, any> {
+  static propTypes = {
+    ...Text.propTypes
+  }
 
   render() {
     const { children, ...props } = this.props
@@ -13,10 +16,6 @@ class SectionTitle extends React.Component {
   }
 }
 
-SectionTitle.propTypes = {
-  ...Text.propTypes,
-}
-
 const styles = StyleSheet.create({
   headerText: {
     fontFamily: 'AGaramondPro-Regular',
@@ -24,5 +23,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   }
 })
-
-module.exports = SectionTitle

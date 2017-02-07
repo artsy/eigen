@@ -5,8 +5,8 @@ exports[`test looks like expected 1`] = `
       Object {
         "backgroundColor": "#e5e5e5",
         "height": 1,
-        "marginLeft": -20,
-        "marginRight": -20,
+        "marginLeft": -40,
+        "marginRight": -40,
       },
       undefined,
     ]

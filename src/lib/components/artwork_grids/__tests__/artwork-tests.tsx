@@ -1,10 +1,10 @@
 import 'react-native'
 
-import React from 'react'
-import renderer from 'react-test-renderer'
+import * as React from 'react'
+import * as renderer from 'react-test-renderer'
 
 import Artwork from '../artwork'
-jest.mock('../../opaque_image_view.js', () => 'AROpaqueImageView')
+jest.mock('../../opaque_image_view.tsx', () => 'AROpaqueImageView')
 
 it('renders properly', () => {
   const artworkProps = {

@@ -1,17 +1,20 @@
-import Relay from 'react-relay'
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import * as Relay from 'react-relay'
+import * as React from 'react'
+import { StyleSheet, View, ViewProperties } from 'react-native'
 
 import SerifText from '../text/serif'
 import RelatedArtist from './related_artist'
 import { LayoutEvent } from '../../system/events'
 
-class RelatedArtists extends React.Component {
-  state: {
-    columns: number,
-    imageSize: Object
+interface State {
+  columns: number
+  imageSize: {
+    width: number
+    height: number
   }
+}
 
+class RelatedArtists extends React.Component<ViewProperties, State> {
   constructor(props) {
     super(props)
     this.state = {
@@ -21,8 +24,6 @@ class RelatedArtists extends React.Component {
           height: 1,
         },
     }
-
-
   }
 
   layoutState(currentLayout) : Object {
