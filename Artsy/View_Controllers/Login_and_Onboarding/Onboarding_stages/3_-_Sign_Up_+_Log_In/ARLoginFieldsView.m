@@ -33,13 +33,13 @@
     [self.nameField removeConstraint:self.nameFieldHeightConstraint];
     [self.nameField constrainHeight:@"0"];
     self.nameField.hidden = YES;
-    self.passwordField.returnKeyType = UIReturnKeyDone;
+    self.passwordField.returnKeyType = UIReturnKeyNext;
 }
 
 - (void)setupForSignUp
 {
     [self commonSetup];
-    self.passwordField.returnKeyType = UIReturnKeyJoin;
+    self.passwordField.returnKeyType = UIReturnKeyNext;
 }
 
 - (void)setupForEmail
@@ -116,13 +116,13 @@
     self.nameField.baseline.backgroundColor = [UIColor blackColor].CGColor;
     
     self.nameField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-    self.nameField.returnKeyType = UIReturnKeyDone;
+    self.nameField.returnKeyType = UIReturnKeyNext;
 
     self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
     self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.emailField.returnKeyType = UIReturnKeyDone;
+    self.emailField.returnKeyType = UIReturnKeyNext;
     
-    self.passwordField.returnKeyType = UIReturnKeyDone;
+    self.passwordField.returnKeyType = UIReturnKeyNext;
     self.passwordField.secureTextEntry = YES;
 }
 

@@ -352,9 +352,24 @@
     }
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    switch (self.state) {
+        case AROnboardingStagePersonalizeEmail:
+        case AROnboardingStagePersonalizePassword:
+        case AROnboardingStagePersonalizeLogin:
+        case AROnboardingStagePersonalizeName:
+            [self nextTapped:nil];
+            break;
+        default:
+            break;
+    }
+    
+    return YES;
+}
+
 - (void)textEndedEditing:(NSNotification *)notification
 {
-    
     switch (self.state) {
         case AROnboardingStagePersonalizeArtists:
             [self searchEnded];
@@ -447,11 +462,6 @@
         default:
             break;
     }
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    return YES;
 }
 
 - (void)searchStarted

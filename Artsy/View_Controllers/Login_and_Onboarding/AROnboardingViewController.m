@@ -95,8 +95,10 @@
     
     
     self.tempTextField = [[UITextField alloc] initWithFrame:CGRectMake(-500, 0, 0, 0)];
-    [self.view addSubview:self.tempTextField];
+    self.tempTextField.returnKeyType = UIReturnKeyNext;
     self.tempTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    [self.view addSubview:self.tempTextField];
+    
 }
 
 - (void)dealloc
