@@ -468,10 +468,12 @@
 {
     [self.searchRequestOperation cancel];
 
+    [self.searchResultsTable showLoadingSpinner];
 
     self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModePlaceholder;
 
     self.searchRequestOperation = [ArtsyAPI getPopularArtistsWithSuccess:^(NSArray *artists) {
+        [self.searchResultsTable removeLoadingSpinner];
         [self.searchResultsTable updateTableContentsFor:artists
                                         replaceContents:ARSearchResultsReplaceAll
                                                animated:animated];
@@ -483,11 +485,13 @@
 - (void)populateTrendingCategoriesAnimated:(BOOL)animated
 {
     [self.searchRequestOperation cancel];
+    [self.searchResultsTable showLoadingSpinner];
 
     self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModePlaceholder;
 
 
     self.searchRequestOperation = [ArtsyAPI getPopularGenesWithSuccess:^(NSArray *genes) {
+        [self.searchResultsTable removeLoadingSpinner];
         [self.searchResultsTable updateTableContentsFor:genes
                                         replaceContents:ARSearchResultsReplaceAll
                                                animated:animated];

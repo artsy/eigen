@@ -8,6 +8,7 @@
 #import "UIImageView+AsyncImageLoading.h"
 #import "AROnboardingPersonalizationGeneImageStateReconciler.h"
 
+#import <Extraction/ARSpinner.h>
 #import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
@@ -20,6 +21,7 @@
 @property (nonatomic, strong, readwrite) NSMutableArray *searchResults;
 @property (nonatomic, strong) UILabel *noResultsLabel;
 @property (nonatomic, assign) BOOL loadedInitialResults;
+@property (nonatomic, strong) ARSpinner *spinner;
 
 @end
 
@@ -54,6 +56,24 @@
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     [self setupEmptyResultsLabel];
+}
+
+- (void)showLoadingSpinner
+{
+    ARSpinner *spinner = [[ARSpinner alloc] init];
+    [self.view addSubview:spinner];
+
+    [spinner constrainWidth:@"44" height:@"44"];
+    [spinner alignCenterWithView:self.view];
+    spinner.spinnerColor = [UIColor blackColor];
+    self.spinner = spinner;
+    [self.spinner startAnimating];
+}
+
+- (void)removeLoadingSpinner
+{
+    [self.spinner stopAnimating];
+    self.spinner.hidden = YES;
 }
 
 - (void)updateTableContentsFor:(NSArray *)searchResults
