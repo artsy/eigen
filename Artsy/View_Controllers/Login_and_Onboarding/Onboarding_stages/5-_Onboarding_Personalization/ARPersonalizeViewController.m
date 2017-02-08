@@ -78,10 +78,6 @@
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -91,7 +87,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidBeginEditingNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidEndEditingNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
 
@@ -294,17 +290,10 @@
 }
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    self.navigationItemsBottomConstraint.constant = -keyboardSize.height;
-}
-
-- (void)keyboardDidShow:(NSNotification *)notification
-{
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    self.navigationItemsBottomConstraint.constant = 0;
+    if (self.state == AROnboardingStagePersonalizeEmail) {
+        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+        self.navigationItemsBottomConstraint.constant = -keyboardSize.height;
+    }
 }
 
 #pragma mark -
