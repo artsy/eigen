@@ -187,7 +187,6 @@
             break;
         case AROnboardingStagePersonalizeCategories:
             [self addSearchTable];
-            [self.onboardingNavigationItems addBackButton];
             [self.headerView setupHeaderViewWithTitle:@"Follow categories of art that most interest you" withLargeLayout:self.useLargeLayout];
             [self.headerView showSearchBar];
             self.headerView.searchField.searchField.delegate = self;
@@ -198,7 +197,6 @@
             break;
         case AROnboardingStagePersonalizeBudget:
             [self addBudgetTable];
-            [self.onboardingNavigationItems addBackButton];
             [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Do you have a budget in mind?" withLargeLayout:self.useLargeLayout];
             break;
