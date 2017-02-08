@@ -225,6 +225,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "sale_id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "sort",
                   "description": null,
                   "type": {
@@ -233,6 +243,16 @@
                     "ofType": null
                   },
                   "defaultValue": null
+                },
+                {
+                  "name": "page",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": "1"
                 }
               ],
               "type": {
@@ -909,6 +929,20 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "artist_ids",
+                  "description": null,
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "color",
                   "description": null,
                   "type": {
@@ -1089,6 +1123,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "estimate_range",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "page",
                   "description": null,
                   "type": {
@@ -1114,6 +1158,16 @@
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "sale_id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -1568,6 +1622,18 @@
               "deprecationReason": null
             },
             {
+              "name": "viewer",
+              "description": "A wildcard used to support complex root queries in Relay",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Viewer",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "me",
               "description": null,
               "args": [],
@@ -1905,7 +1971,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -1948,7 +2014,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -2890,6 +2956,18 @@
               "deprecationReason": null
             },
             {
+              "name": "image_title",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "website",
               "description": null,
               "args": [],
@@ -3064,6 +3142,18 @@
               "deprecationReason": "Prefer to use is_inquireable"
             },
             {
+              "name": "contact_message",
+              "description": "Pre-filled inquiry text",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "is_in_auction",
               "description": "Is this artwork part of an auction?",
               "args": [],
@@ -3221,6 +3311,30 @@
             },
             {
               "name": "availability",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "is_on_hold",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "is_not_for_sale",
               "description": null,
               "args": [],
               "type": {
@@ -4320,8 +4434,8 @@
                 "name": "String",
                 "ofType": null
               },
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "Prefer artwork contact_message to handle availability-based prompts."
             },
             {
               "name": "counts",
@@ -4590,59 +4704,119 @@
             {
               "name": "created_at_asc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "created_at_desc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "end_at_asc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "end_at_desc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "start_at_asc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "start_at_desc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "name_asc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "name_desc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "publish_at_asc",
+              "description": null,
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
+            },
+            {
+              "name": "publish_at_desc",
+              "description": null,
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
+            },
+            {
+              "name": "CREATED_AT_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "publish_at_desc",
+              "name": "CREATED_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "END_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "END_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "START_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "START_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PUBLISH_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PUBLISH_AT_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -4661,23 +4835,47 @@
             {
               "name": "current",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "running",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "closed",
+              "description": null,
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
+            },
+            {
+              "name": "upcoming",
+              "description": null,
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
+            },
+            {
+              "name": "CURRENT",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "upcoming",
+              "name": "RUNNING",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CLOSED",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "UPCOMING",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -4946,7 +5144,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -4989,7 +5187,50 @@
                 },
                 {
                   "name": "timezone",
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "convert_to_utc",
                   "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "created_at",
+              "description": null,
+              "args": [
+                {
+                  "name": "format",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "timezone",
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -5330,8 +5571,8 @@
             {
               "name": "markdown",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "deprecated"
             }
           ],
           "possibleTypes": null
@@ -5767,6 +6008,93 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "ArtistCounts",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "artworks_connection",
+              "description": null,
+              "args": [
+                {
+                  "name": "sort",
+                  "description": null,
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "ArtworkSorts",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "filter",
+                  "description": null,
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "ArtistArtworksFilters",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "published",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "true"
+                },
+                {
+                  "name": "after",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "first",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "before",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "last",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ArtworkConnection",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -6655,71 +6983,143 @@
             {
               "name": "title_asc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "title_desc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "created_at_asc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "created_at_desc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "deleted_at_asc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "deleted_at_desc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "iconicity_desc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "merchandisability_desc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "published_at_asc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "published_at_desc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "partner_updated_at_desc",
+              "description": null,
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
+            },
+            {
+              "name": "availability_desc",
+              "description": null,
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
+            },
+            {
+              "name": "TITLE_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "availability_desc",
+              "name": "TITLE_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CREATED_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CREATED_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "DELETED_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "DELETED_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ICONICITY_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MERCHANDISABILITY_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PUBLISHED_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PUBLISHED_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PARTNER_UPDATED_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "AVAILABILITY_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -6748,6 +7148,155 @@
               "deprecationReason": null
             }
           ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "ArtworkConnection",
+          "description": "A connection to a list of items.",
+          "fields": [
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PageInfo",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "edges",
+              "description": "A list of edges.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "ArtworkEdge",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "PageInfo",
+          "description": "Information about pagination in a connection.",
+          "fields": [
+            {
+              "name": "hasNextPage",
+              "description": "When paginating forwards, are there more items?",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "hasPreviousPage",
+              "description": "When paginating backwards, are there more items?",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "startCursor",
+              "description": "When paginating backwards, the cursor to continue.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "endCursor",
+              "description": "When paginating forwards, the cursor to continue.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "ArtworkEdge",
+          "description": "An edge in a connection.",
+          "fields": [
+            {
+              "name": "node",
+              "description": "The item at the end of the edge",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Artwork",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "cursor",
+              "description": "A cursor for use in pagination",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
           "possibleTypes": null
         },
         {
@@ -7108,7 +7657,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -7151,7 +7700,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -7786,7 +8335,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -7829,7 +8378,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -8263,7 +8812,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -8306,7 +8855,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -8954,7 +9503,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -8997,7 +9546,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -9040,7 +9589,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -9083,7 +9632,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -9126,7 +9675,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -9169,7 +9718,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -9717,6 +10266,18 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "SaleArtworkCounts",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "estimate_cents",
+              "description": "Singular estimate field, if specified",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -10425,7 +10986,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -11502,7 +12063,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -11545,7 +12106,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -11588,7 +12149,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -11631,7 +12192,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -11674,7 +12235,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -11717,7 +12278,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -12190,7 +12751,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -12233,7 +12794,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -12276,7 +12837,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -12319,7 +12880,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -12362,7 +12923,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -12405,7 +12966,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -12842,7 +13403,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -12885,7 +13446,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -13190,7 +13751,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -13233,7 +13794,50 @@
                 },
                 {
                   "name": "timezone",
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "convert_to_utc",
                   "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "created_at",
+              "description": null,
+              "args": [
+                {
+                  "name": "format",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "timezone",
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -13784,7 +14388,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -13827,7 +14431,50 @@
                 },
                 {
                   "name": "timezone",
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "convert_to_utc",
                   "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "created_at",
+              "description": null,
+              "args": [
+                {
+                  "name": "format",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "timezone",
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -14222,7 +14869,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -14265,7 +14912,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -14667,17 +15314,35 @@
             {
               "name": "sortable_id_asc",
               "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
             },
             {
               "name": "sortable_id_desc",
+              "description": null,
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
+            },
+            {
+              "name": "trending_desc",
+              "description": null,
+              "isDeprecated": true,
+              "deprecationReason": "use capital enums"
+            },
+            {
+              "name": "SORTABLE_ID_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "trending_desc",
+              "name": "SORTABLE_ID_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "TRENDING_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -14836,6 +15501,20 @@
                     "kind": "SCALAR",
                     "name": "String",
                     "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "artist_ids",
+                  "description": null,
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
                   },
                   "defaultValue": null
                 },
@@ -15020,6 +15699,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "estimate_range",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "page",
                   "description": null,
                   "type": {
@@ -15045,6 +15734,16 @@
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "sale_id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -15230,6 +15929,12 @@
               "deprecationReason": null
             },
             {
+              "name": "ARTIST",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "FOLLOWED_ARTISTS",
               "description": null,
               "isDeprecated": false,
@@ -15274,8 +15979,8 @@
                 "name": "Int",
                 "ofType": null
               },
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "Favor `counts.total`"
             },
             {
               "name": "followed_artists_total",
@@ -15284,6 +15989,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": true,
+              "deprecationReason": "Favor `favor counts.followed_artists`"
+            },
+            {
+              "name": "counts",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "FilterArtworksCounts",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -15317,6 +16034,83 @@
                   "name": "ArtworksAggregationResults",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "FilterArtworksCounts",
+          "description": null,
+          "fields": [
+            {
+              "name": "total",
+              "description": null,
+              "args": [
+                {
+                  "name": "format",
+                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "label",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "FormattedNumber",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "followed_artists",
+              "description": null,
+              "args": [
+                {
+                  "name": "format",
+                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "label",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "FormattedNumber",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -16079,7 +16873,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -16122,7 +16916,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -16452,7 +17246,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -16495,7 +17289,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -16538,7 +17332,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -16581,7 +17375,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -16624,7 +17418,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -16667,7 +17461,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -17011,6 +17805,20 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "artist_ids",
+                  "description": null,
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "color",
                   "description": null,
                   "type": {
@@ -17191,6 +17999,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "estimate_range",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "page",
                   "description": null,
                   "type": {
@@ -17216,6 +18034,16 @@
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "sale_id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -17741,6 +18569,18 @@
               "deprecationReason": null
             },
             {
+              "name": "mode",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "ENUM",
+                "name": "HomePageHeroUnitMode",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "heading",
               "description": null,
               "args": [],
@@ -17766,6 +18606,65 @@
             },
             {
               "name": "title",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "title_image_url",
+              "description": null,
+              "args": [
+                {
+                  "name": "retina",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "subtitle",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "link_text",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "credit_line",
               "description": null,
               "args": [],
               "type": {
@@ -17803,6 +18702,53 @@
           "inputFields": null,
           "interfaces": [],
           "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "HomePageHeroUnitMode",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "LEFT_DARK",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LEFT_LIGHT",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CENTERED_DARK",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CENTERED_LIGHT",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "RIGHT_DARK",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "RIGHT_LIGHT",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
           "possibleTypes": null
         },
         {
@@ -18404,6 +19350,93 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "ArtistCounts",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "artworks_connection",
+              "description": null,
+              "args": [
+                {
+                  "name": "sort",
+                  "description": null,
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "ArtworkSorts",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "filter",
+                  "description": null,
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "ArtistArtworksFilters",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "published",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "true"
+                },
+                {
+                  "name": "after",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "first",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "before",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "last",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ArtworkConnection",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -19192,6 +20225,20 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "artist_ids",
+                  "description": null,
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "color",
                   "description": null,
                   "type": {
@@ -19372,6 +20419,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "estimate_range",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "page",
                   "description": null,
                   "type": {
@@ -19397,6 +20454,16 @@
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "sale_id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -20625,6 +21692,93 @@
               "deprecationReason": null
             },
             {
+              "name": "artworks_connection",
+              "description": null,
+              "args": [
+                {
+                  "name": "sort",
+                  "description": null,
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "ArtworkSorts",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "filter",
+                  "description": null,
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "ArtistArtworksFilters",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "published",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "true"
+                },
+                {
+                  "name": "after",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "first",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "before",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "last",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ArtworkConnection",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "artworks",
               "description": null,
               "args": [
@@ -21355,6 +22509,18 @@
               "deprecationReason": null
             },
             {
+              "name": "image_title",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "website",
               "description": null,
               "args": [],
@@ -21529,6 +22695,18 @@
               "deprecationReason": "Prefer to use is_inquireable"
             },
             {
+              "name": "contact_message",
+              "description": "Pre-filled inquiry text",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "is_in_auction",
               "description": "Is this artwork part of an auction?",
               "args": [],
@@ -21686,6 +22864,30 @@
             },
             {
               "name": "availability",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "is_on_hold",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "is_not_for_sale",
               "description": null,
               "args": [],
               "type": {
@@ -22773,7 +23975,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -22816,7 +24018,50 @@
                 },
                 {
                   "name": "timezone",
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "convert_to_utc",
                   "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "created_at",
+              "description": null,
+              "args": [
+                {
+                  "name": "format",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "timezone",
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -23210,6 +24455,183 @@
         },
         {
           "kind": "OBJECT",
+          "name": "Viewer",
+          "description": "A wildcard used to support complex root queries in Relay",
+          "fields": [
+            {
+              "name": "causality_jwt",
+              "description": "Creates, and authorizes, a JWT custom for Causality",
+              "args": [
+                {
+                  "name": "sale_id",
+                  "description": "The id of the auction to participate in",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "role",
+                  "description": "",
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "Role",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "me",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Me",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "sale",
+              "description": "A Sale",
+              "args": [
+                {
+                  "name": "id",
+                  "description": "The slug or ID of the Sale",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Sale",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "sales",
+              "description": "A list of Sales",
+              "args": [
+                {
+                  "name": "size",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "is_auction",
+                  "description": "Limit by auction.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "true"
+                },
+                {
+                  "name": "published",
+                  "description": "Limit by published status.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "true"
+                },
+                {
+                  "name": "live",
+                  "description": "Limit by live status.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "true"
+                },
+                {
+                  "name": "sort",
+                  "description": null,
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "SaleSorts",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Sale",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "Role",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "PARTICIPANT",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "OPERATOR",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "Me",
           "description": null,
           "fields": [
@@ -23273,7 +24695,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -23785,7 +25207,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -23990,7 +25412,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -24033,7 +25455,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -24076,7 +25498,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -24502,7 +25924,7 @@
                 },
                 {
                   "name": "timezone",
-                  "description": null,
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -24754,29 +26176,6 @@
           "inputFields": null,
           "interfaces": [],
           "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "ENUM",
-          "name": "Role",
-          "description": null,
-          "fields": null,
-          "inputFields": null,
-          "interfaces": null,
-          "enumValues": [
-            {
-              "name": "PARTICIPANT",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "OPERATOR",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
           "possibleTypes": null
         },
         {

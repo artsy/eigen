@@ -72,7 +72,7 @@ DEPENDENCIES:
   - AppHub
   - ARGenericTableViewController
   - Artsy+Authentication/email (from `https://github.com/artsy/Artsy-Authentication.git`, branch `fetch-user-details`)
-  - Artsy+UIFonts
+  - Artsy+UIFonts (from `https://github.com/artsy/Artsy-OSSUIFonts.git`, branch `always_artsy`)
   - Emission (from `../`)
   - FLKAutoLayout
   - React/RCTTest (from `../node_modules/react-native`)
@@ -84,6 +84,9 @@ EXTERNAL SOURCES:
   Artsy+Authentication:
     :branch: fetch-user-details
     :git: https://github.com/artsy/Artsy-Authentication.git
+  Artsy+UIFonts:
+    :branch: always_artsy
+    :git: https://github.com/artsy/Artsy-OSSUIFonts.git
   Emission:
     :path: "../"
   React:
@@ -93,13 +96,16 @@ CHECKOUT OPTIONS:
   Artsy+Authentication:
     :commit: 1b582675598c999726d9edacd3b8559e01cf7c48
     :git: https://github.com/artsy/Artsy-Authentication.git
+  Artsy+UIFonts:
+    :commit: 5ffd22342f4d455b04a776b316bf576b3661582e
+    :git: https://github.com/artsy/Artsy-OSSUIFonts.git
 
 SPEC CHECKSUMS:
   AppHub: f073cd229f87afe1a27200670e1adab24ebda2b8
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   Artsy+Authentication: 3bf11ceca61c52e9e31490535bf5798f625406fa
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  Artsy+UIFonts: eb25b56a47550acd70b536f9084cdb34b4f42c3b
+  Artsy+UIFonts: a1553fb732caca7ce69f53b8c4be2a954cd4a867
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
   Emission: 77a088d2cc404bcd29c3a933524891b34d81e325
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
@@ -113,6 +119,6 @@ SPEC CHECKSUMS:
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
 
-PODFILE CHECKSUM: 88096f9b97059b91ee255adf8ae3df2da1cc0d20
+PODFILE CHECKSUM: 1a890076d43d0ceb1bf6f535101f44e45a7db431
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0

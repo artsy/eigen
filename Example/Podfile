@@ -11,7 +11,7 @@ target 'Emission' do
   pod 'React', :path => react_path, :subspecs => %w(RCTWebSocket)
 
   # Got to make it look right
-  pod 'Artsy+UIFonts'
+  pod 'Artsy+UIFonts', git:  'https://github.com/artsy/Artsy-OSSUIFonts.git', branch: 'always_artsy'
 
   # For easy updating of the JS
   pod 'AppHub'

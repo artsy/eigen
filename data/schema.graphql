@@ -21,8 +21,20 @@ type Article implements Node {
   id: String!
   cached: Int
   title: String
-  published_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  updated_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  published_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  updated_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
   thumbnail_title: String
   thumbnail_teaser: String
   author: Author
@@ -85,6 +97,7 @@ type Artist implements Node {
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
+  artworks_connection(sort: ArtworkSorts, filter: [ArtistArtworksFilters], published: Boolean = true, after: String, first: Int, before: String, last: Int): ArtworkConnection
   artworks(
     # The number of Artworks to return
     size: Int
@@ -256,6 +269,7 @@ type ArtistItem implements Node {
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
+  artworks_connection(sort: ArtworkSorts, filter: [ArtistArtworksFilters], published: Boolean = true, after: String, first: Int, before: String, last: Int): ArtworkConnection
   artworks(
     # The number of Artworks to return
     size: Int
@@ -382,6 +396,7 @@ type ArtistSearchEntity implements Node {
   is_shareable: Boolean
   bio: String
   counts: ArtistCounts
+  artworks_connection(sort: ArtworkSorts, filter: [ArtistArtworksFilters], published: Boolean = true, after: String, first: Int, before: String, last: Int): ArtworkConnection
   artworks(
     # The number of Artworks to return
     size: Int
@@ -455,9 +470,12 @@ type ArtistSearchEntity implements Node {
 }
 
 enum ArtistSorts {
-  sortable_id_asc
-  sortable_id_desc
-  trending_desc
+  sortable_id_asc @deprecated(reason: "use capital enums")
+  sortable_id_desc @deprecated(reason: "use capital enums")
+  trending_desc @deprecated(reason: "use capital enums")
+  SORTABLE_ID_ASC
+  SORTABLE_ID_DESC
+  TRENDING_DESC
 }
 
 type ArtistStatuses {
@@ -488,6 +506,7 @@ type Artwork implements Node {
   medium: String
   date: String
   image_rights: String
+  image_title: String
   website: String
   collecting_institution: String
   partner(
@@ -510,6 +529,9 @@ type Artwork implements Node {
 
   # Are we able to display a contact form on artwork pages?
   is_contactable: Boolean @deprecated(reason: "Prefer to use is_inquireable")
+
+  # Pre-filled inquiry text
+  contact_message: String
 
   # Is this artwork part of an auction?
   is_in_auction: Boolean
@@ -534,6 +556,8 @@ type Artwork implements Node {
   is_price_hidden: Boolean
   is_price_range: Boolean
   availability: String
+  is_on_hold: String
+  is_not_for_sale: String
   sale_message: String
   artist(
     # Use whatever is in the original response instead of making a request
@@ -590,8 +614,18 @@ enum ArtworkAggregation {
   GALLERY
   INSTITUTION
   TOTAL
+  ARTIST
   FOLLOWED_ARTISTS
   MERCHANDISABLE_ARTISTS
+}
+
+# A connection to a list of items.
+type ArtworkConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ArtworkEdge]
 }
 
 union ArtworkContext = ArtworkContextAuction | ArtworkContextSale | ArtworkContextFair | ArtworkContextPartnerShow
@@ -619,12 +653,48 @@ type ArtworkContextAuction {
   is_with_buyers_premium: Boolean
   auction_state: String @deprecated(reason: "Favor `status` for consistency with other models")
   status: String
-  registration_ends_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  end_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  live_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  event_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  registration_ends_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  live_start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  event_start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  event_end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   artworks(
@@ -668,8 +738,20 @@ type ArtworkContextFair {
 
   # Are we currently in the fair's active period?
   is_active: Boolean
-  start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
   name: String
   tagline: String
   published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
@@ -701,8 +783,27 @@ type ArtworkContextPartnerShow implements Node {
   is_displayable: Boolean
   is_fair_booth: Boolean
   press_release(format: Format): String
-  start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  created_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
 
   # A formatted description of the start to end dates
   exhibition_period: String
@@ -765,12 +866,48 @@ type ArtworkContextSale {
   is_with_buyers_premium: Boolean
   auction_state: String @deprecated(reason: "Favor `status` for consistency with other models")
   status: String
-  registration_ends_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  end_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  live_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  event_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  registration_ends_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  live_start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  event_start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  event_end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   artworks(
@@ -790,6 +927,15 @@ type ArtworkContextSale {
 
   # Auction's buyer's premium policy.
   buyers_premium: [BuyersPremium]
+}
+
+# An edge in a connection.
+type ArtworkEdge {
+  # The item at the end of the edge
+  node: Artwork
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 type ArtworkLayer {
@@ -834,6 +980,7 @@ type ArtworkSearchEntity implements Node {
   medium: String
   date: String
   image_rights: String
+  image_title: String
   website: String
   collecting_institution: String
   partner(
@@ -856,6 +1003,9 @@ type ArtworkSearchEntity implements Node {
 
   # Are we able to display a contact form on artwork pages?
   is_contactable: Boolean @deprecated(reason: "Prefer to use is_inquireable")
+
+  # Pre-filled inquiry text
+  contact_message: String
 
   # Is this artwork part of an auction?
   is_in_auction: Boolean
@@ -880,6 +1030,8 @@ type ArtworkSearchEntity implements Node {
   is_price_hidden: Boolean
   is_price_range: Boolean
   availability: String
+  is_on_hold: String
+  is_not_for_sale: String
   sale_message: String
   artist(
     # Use whatever is in the original response instead of making a request
@@ -926,18 +1078,30 @@ type ArtworkSearchEntity implements Node {
 }
 
 enum ArtworkSorts {
-  title_asc
-  title_desc
-  created_at_asc
-  created_at_desc
-  deleted_at_asc
-  deleted_at_desc
-  iconicity_desc
-  merchandisability_desc
-  published_at_asc
-  published_at_desc
-  partner_updated_at_desc
-  availability_desc
+  title_asc @deprecated(reason: "use capital enums")
+  title_desc @deprecated(reason: "use capital enums")
+  created_at_asc @deprecated(reason: "use capital enums")
+  created_at_desc @deprecated(reason: "use capital enums")
+  deleted_at_asc @deprecated(reason: "use capital enums")
+  deleted_at_desc @deprecated(reason: "use capital enums")
+  iconicity_desc @deprecated(reason: "use capital enums")
+  merchandisability_desc @deprecated(reason: "use capital enums")
+  published_at_asc @deprecated(reason: "use capital enums")
+  published_at_desc @deprecated(reason: "use capital enums")
+  partner_updated_at_desc @deprecated(reason: "use capital enums")
+  availability_desc @deprecated(reason: "use capital enums")
+  TITLE_ASC
+  TITLE_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  DELETED_AT_ASC
+  DELETED_AT_DESC
+  ICONICITY_DESC
+  MERCHANDISABILITY_DESC
+  PUBLISHED_AT_ASC
+  PUBLISHED_AT_DESC
+  PARTNER_UPDATED_AT_DESC
+  AVAILABILITY_DESC
 }
 
 type Author {
@@ -957,7 +1121,13 @@ type Bidder {
 
   # A type-specific ID.
   id: String!
-  created_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  created_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
   pin: String
   sale: Sale
   qualified_for_bidding: Boolean
@@ -969,9 +1139,27 @@ type BidderPosition {
 
   # A type-specific ID.
   id: String!
-  created_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  updated_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  processed_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  created_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  updated_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  processed_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
   is_active: Boolean
   is_retracted: Boolean
   is_with_bid_max: Boolean
@@ -1105,10 +1293,14 @@ type EditionSet {
 }
 
 enum EventStatus {
-  current
-  running
-  closed
-  upcoming
+  current @deprecated(reason: "use capital enums")
+  running @deprecated(reason: "use capital enums")
+  closed @deprecated(reason: "use capital enums")
+  upcoming @deprecated(reason: "use capital enums")
+  CURRENT
+  RUNNING
+  CLOSED
+  UPCOMING
 }
 
 type ExternalPartner {
@@ -1143,8 +1335,20 @@ type Fair {
 
   # Are we currently in the fair's active period?
   is_active: Boolean
-  start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
   name: String
   tagline: String
   published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
@@ -1174,14 +1378,28 @@ type FeaturedLinkItem {
 type FilterArtworks {
   # Artwork results.
   hits: [Artwork]
-  total: Int
-  followed_artists_total: Int
+  total: Int @deprecated(reason: "Favor `counts.total`")
+  followed_artists_total: Int @deprecated(reason: "Favor `favor counts.followed_artists`")
+  counts: FilterArtworksCounts
 
   # Returns a list of merchandisable artists sorted by merch score.
   merchandisable_artists: [Artist]
 
   # Returns aggregation counts for the given filter query.
   aggregations: [ArtworksAggregationResults]
+}
+
+type FilterArtworksCounts {
+  total(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
+  followed_artists(
+    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    format: String
+    label: String
+  ): FormattedNumber
 }
 
 type FilterPartners {
@@ -1202,7 +1420,7 @@ type FollowArtists {
 enum Format {
   HTML
   PLAIN
-  markdown
+  markdown @deprecated(reason: "deprecated")
 }
 
 # The `FormattedNumber` type represents a number that can optionally be returnedas
@@ -1225,6 +1443,7 @@ type Gene implements Node {
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
+    artist_ids: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -1243,9 +1462,11 @@ type Gene implements Node {
     partner_id: ID
     partner_cities: [String]
     price_range: String
+    estimate_range: String
     page: Int
     size: Int
     sort: String
+    sale_id: ID
   ): FilterArtworks
   href: String
   name: String
@@ -1271,6 +1492,7 @@ type GeneItem implements Node {
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
+    artist_ids: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -1289,9 +1511,11 @@ type GeneItem implements Node {
     partner_id: ID
     partner_cities: [String]
     price_range: String
+    estimate_range: String
     page: Int
     size: Int
     sort: String
+    sale_id: ID
   ): FilterArtworks
   href: String
   name: String
@@ -1307,7 +1531,13 @@ type HighestBid {
 
   # A type-specific ID.
   id: String!
-  created_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  created_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
   number: Int
   is_cancelled: Boolean
 
@@ -1337,8 +1567,20 @@ type HighlightedArticle implements Node {
   id: String!
   cached: Int
   title: String
-  published_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  updated_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  published_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  updated_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
   thumbnail_title: String
   thumbnail_teaser: String
   author: Author
@@ -1371,8 +1613,27 @@ type HighlightedShow implements Node {
   is_displayable: Boolean
   is_fair_booth: Boolean
   press_release(format: Format): String
-  start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  created_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
 
   # A formatted description of the start to end dates
   exhibition_period: String
@@ -1512,9 +1773,14 @@ type HomePageHeroUnit {
   # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
+  mode: HomePageHeroUnitMode
   heading: String
   href: String
   title: String
+  title_image_url(retina: Boolean): String
+  subtitle: String
+  link_text: String
+  credit_line: String
 
   # The image to show, on desktop this defaults to the wide version.
   background_image_url(version: HomePageHeroUnitImageVersion): String
@@ -1523,6 +1789,15 @@ type HomePageHeroUnit {
 enum HomePageHeroUnitImageVersion {
   WIDE
   NARROW
+}
+
+enum HomePageHeroUnitMode {
+  LEFT_DARK
+  LEFT_LIGHT
+  CENTERED_DARK
+  CENTERED_LIGHT
+  RIGHT_DARK
+  RIGHT_LIGHT
 }
 
 enum HomePageHeroUnitPlatform {
@@ -1555,8 +1830,20 @@ type HomePageModuleContextFair {
 
   # Are we currently in the fair's active period?
   is_active: Boolean
-  start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
   name: String
   tagline: String
   published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
@@ -1589,6 +1876,7 @@ type HomePageModuleContextGene implements Node {
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
+    artist_ids: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -1607,9 +1895,11 @@ type HomePageModuleContextGene implements Node {
     partner_id: ID
     partner_cities: [String]
     price_range: String
+    estimate_range: String
     page: Int
     size: Int
     sort: String
+    sale_id: ID
   ): FilterArtworks
   href: String
   name: String
@@ -1647,12 +1937,48 @@ type HomePageModuleContextSale {
   is_with_buyers_premium: Boolean
   auction_state: String @deprecated(reason: "Favor `status` for consistency with other models")
   status: String
-  registration_ends_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  end_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  live_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  event_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  registration_ends_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  live_start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  event_start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  event_end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   artworks(
@@ -1755,7 +2081,13 @@ type Me {
   # A type-specific ID.
   id: String!
   type: String
-  created_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  created_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
   email: String
   name: String
   paddle_number: String
@@ -1867,6 +2199,21 @@ type organizer {
   profile_id: ID
 }
 
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
 type Partner implements Node {
   # A globally unique ID.
   __id: ID!
@@ -1891,7 +2238,7 @@ type Partner implements Node {
   shows(size: Int, sort: PartnerShowSorts, status: EventStatus, fair_id: String, near: Near, displayable: Boolean = true, featured: Boolean, at_a_fair: Boolean): [PartnerShow]
   artworks(size: Int, for_sale: Boolean, sort: ArtworkSorts, exclude: [String]): [Artwork]
   locations(size: Int = 25): [Location]
-  contact_message: String
+  contact_message: String @deprecated(reason: "Prefer artwork contact_message to handle availability-based prompts.")
   counts: PartnerCounts
 }
 
@@ -2070,8 +2417,27 @@ type PartnerShow implements Node {
   is_displayable: Boolean
   is_fair_booth: Boolean
   press_release(format: Format): String
-  start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  created_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
 
   # A formatted description of the start to end dates
   exhibition_period: String
@@ -2127,8 +2493,20 @@ type PartnerShowEventType {
   title: String
   description: String
   event_type: String
-  start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
 }
 
 type PartnerShowSearchEntity implements Node {
@@ -2155,8 +2533,27 @@ type PartnerShowSearchEntity implements Node {
   is_displayable: Boolean
   is_fair_booth: Boolean
   press_release(format: Format): String
-  start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  created_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
 
   # A formatted description of the start to end dates
   exhibition_period: String
@@ -2197,16 +2594,26 @@ type PartnerShowSearchEntity implements Node {
 }
 
 enum PartnerShowSorts {
-  created_at_asc
-  created_at_desc
-  end_at_asc
-  end_at_desc
-  start_at_asc
-  start_at_desc
-  name_asc
-  name_desc
-  publish_at_asc
-  publish_at_desc
+  created_at_asc @deprecated(reason: "use capital enums")
+  created_at_desc @deprecated(reason: "use capital enums")
+  end_at_asc @deprecated(reason: "use capital enums")
+  end_at_desc @deprecated(reason: "use capital enums")
+  start_at_asc @deprecated(reason: "use capital enums")
+  start_at_desc @deprecated(reason: "use capital enums")
+  name_asc @deprecated(reason: "use capital enums")
+  name_desc @deprecated(reason: "use capital enums")
+  publish_at_asc @deprecated(reason: "use capital enums")
+  publish_at_desc @deprecated(reason: "use capital enums")
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  END_AT_ASC
+  END_AT_DESC
+  START_AT_ASC
+  START_AT_DESC
+  NAME_ASC
+  NAME_DESC
+  PUBLISH_AT_ASC
+  PUBLISH_AT_DESC
 }
 
 enum PartnersSortType {
@@ -2315,7 +2722,7 @@ type RootQueryType {
   ): Artist
 
   # A list of Artists
-  artists(size: Int, sort: ArtistSorts): [Artist]
+  artists(size: Int, sale_id: ID, sort: ArtistSorts, page: Int = 1): [Artist]
 
   # An External Partner not on the platform
   external_partner(
@@ -2428,6 +2835,7 @@ type RootQueryType {
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
+    artist_ids: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -2446,9 +2854,11 @@ type RootQueryType {
     partner_id: ID
     partner_cities: [String]
     price_range: String
+    estimate_range: String
     page: Int
     size: Int
     sort: String
+    sale_id: ID
   ): FilterArtworks
 
   # A PartnerCategory
@@ -2528,6 +2938,9 @@ type RootQueryType {
     # Fetch the top artists for each metric within double the base time period
     double_time_period: Boolean = false
   ): TrendingArtists
+
+  # A wildcard used to support complex root queries in Relay
+  viewer: Viewer
   me: Me
 
   # Creates, and authorizes, a JWT custom for Causality
@@ -2561,12 +2974,48 @@ type Sale {
   is_with_buyers_premium: Boolean
   auction_state: String @deprecated(reason: "Favor `status` for consistency with other models")
   status: String
-  registration_ends_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  end_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  live_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  event_start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  event_end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  registration_ends_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  live_start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  event_start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  event_end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
   currency: String
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   artworks(
@@ -2625,6 +3074,9 @@ type SaleArtwork {
   artwork: Artwork
   estimate: String
   counts: SaleArtworkCounts
+
+  # Singular estimate field, if specified
+  estimate_cents: Int
   low_estimate_cents: Int @deprecated(reason: "Favor `low_estimate`")
   high_estimate_cents: Int @deprecated(reason: "Favor `high_estimate")
   opening_bid_cents: Int @deprecated(reason: "Favor `opening_bid`")
@@ -2662,7 +3114,13 @@ type SaleArtworkCurrentBid {
 
 type SaleArtworkHighestBid {
   id: ID
-  created_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  created_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
   is_cancelled: Boolean
 
   # A formatted price with various currency formatting options.
@@ -2841,8 +3299,20 @@ type Show implements Node {
   is_fair_booth: Boolean
   is_reference: Boolean
   press_release(format: Format): String
-  start_at(format: String, timezone: String, convert_to_utc: Boolean): String
-  end_at(format: String, timezone: String, convert_to_utc: Boolean): String
+  start_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+  end_at(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
 
   # A formatted description of the start to end dates
   exhibition_period: String
@@ -2930,4 +3400,36 @@ enum TrendingMetrics {
 
   # Cumulative price achieved at auction. Base time period: 12 weeks
   ARTIST_AUCTION_LOT
+}
+
+# A wildcard used to support complex root queries in Relay
+type Viewer {
+  # Creates, and authorizes, a JWT custom for Causality
+  causality_jwt(
+    # The id of the auction to participate in
+    sale_id: String!
+    role: Role
+  ): String
+  me: Me
+
+  # A Sale
+  sale(
+    # The slug or ID of the Sale
+    id: String!
+  ): Sale
+
+  # A list of Sales
+  sales(
+    size: Int
+
+    # Limit by auction.
+    is_auction: Boolean = true
+
+    # Limit by published status.
+    published: Boolean = true
+
+    # Limit by live status.
+    live: Boolean = true
+    sort: SaleSorts
+  ): [Sale]
 }
