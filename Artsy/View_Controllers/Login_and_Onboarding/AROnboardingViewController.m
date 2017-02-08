@@ -47,6 +47,7 @@
 @property (nonatomic, strong, readwrite) UIView *progressBackgroundBar;
 @property (nonatomic, strong, readwrite) NSString *email;
 @property (nonatomic, strong, readwrite) NSString *password;
+@property (nonnull, strong, readwrite) UITextField *tempTextField;
 
 @end
 
@@ -91,6 +92,11 @@
                                              selector:@selector(didBecomeActive)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
+    
+    
+    self.tempTextField = [[UITextField alloc] initWithFrame:CGRectMake(-500, 0, 0, 0)];
+    [self.view addSubview:self.tempTextField];
+    self.tempTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 }
 
 - (void)dealloc
@@ -115,6 +121,15 @@
         [self startSlideshow];
     }
     [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 // TODO On iOS 9 the status bar is shown *after* viewWillAppear: is called and I have not yet found a better place to
@@ -129,6 +144,20 @@
 {
     return YES;
 }
+
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    _keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    
+//    [(ARPersonalizeViewController *)self.topViewController updateKeyboardFrame:_keyboardFrame];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    _keyboardFrame = CGRectZero;
+}
+
 
 #pragma mark -
 #pragma mark Slideshow
@@ -223,6 +252,7 @@
         self.backgroundView.alpha = 0;
     }];
     [self presentPersonalizationEmail];
+    
 }
 
 - (void)presentPersonalizationEmail
@@ -236,6 +266,8 @@
 
 - (void)presentPersonalizationLogin
 {
+    [self.tempTextField becomeFirstResponder];
+
     self.state = AROnboardingStagePersonalizeLogin;
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;
@@ -245,6 +277,8 @@
 
 - (void)presentPersonalizationPassword
 {
+    [self.tempTextField becomeFirstResponder];
+
     self.state = AROnboardingStagePersonalizePassword;
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;
@@ -254,6 +288,8 @@
 
 - (void)presentPersonalizationName
 {
+    [self.tempTextField becomeFirstResponder];
+
     self.state = AROnboardingStagePersonalizeName;
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;
@@ -263,6 +299,8 @@
 
 - (void)presentPersonalizationQuestionnaires
 {
+    [self.tempTextField resignFirstResponder];
+    
     self.state = AROnboardingStagePersonalizeArtists;
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;

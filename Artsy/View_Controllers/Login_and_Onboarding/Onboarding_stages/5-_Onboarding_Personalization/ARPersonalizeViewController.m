@@ -39,7 +39,6 @@
 @property (nonatomic, assign, readwrite) BOOL followedAtLeastOneCategory;
 @property (nonatomic, strong) NSLayoutConstraint *navigationItemsBottomConstraint;
 
-
 @property (nonatomic, strong, readwrite) NSMutableArray *artistsFollowed;
 @property (nonatomic, strong, readwrite) NSMutableArray *categoriesFollowed;
 
@@ -92,7 +91,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidBeginEditingNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidEndEditingNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
 
@@ -104,7 +103,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self showViews];
+    
+    // Yes I am just as confused as you are
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self showViews];
+    });
+    
+    
 }
 
 - (void)showViews
@@ -116,6 +121,11 @@
 
     [self.onboardingNavigationItems constrainWidthToView:self.view predicate:@"0"];
     self.navigationItemsBottomConstraint = [self.onboardingNavigationItems alignBottomEdgeWithView:self.view predicate:@"0"];
+
+    CGRect keyboardFrame = [(AROnboardingViewController *)self.delegate keyboardFrame];
+    if (CGRectGetHeight(keyboardFrame)>0) {
+        self.navigationItemsBottomConstraint.constant = -keyboardFrame.size.height;
+    }
     [self.onboardingNavigationItems alignLeadingEdgeWithView:self.view predicate:@"0"];
 
     [self.onboardingNavigationItems.next addTarget:self action:@selector(nextTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -277,18 +287,19 @@
 #pragma mark -
 #pragma mark Keyboard Accessory Animation
 
+- (void)updateKeyboardFrame:(CGRect)keyboardFrame
+{
+    self.navigationItemsBottomConstraint.constant = -keyboardFrame.size.height;
 
+}
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-//    [self.view layoutIfNeeded];
-
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     self.navigationItemsBottomConstraint.constant = -keyboardSize.height;
-    
-//    [UIView animateWithDuration:0.5
-//                     animations:^{
-//                         [self.view layoutIfNeeded];
-//                     }];
+}
+
+- (void)keyboardDidShow:(NSNotification *)notification
+{
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
@@ -440,7 +451,6 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [textField resignFirstResponder];
     return YES;
 }
 
@@ -584,7 +594,6 @@
 
 - (void)nextTapped:(id)sender
 {
-    [self.onboardingTextFields resignFirstResponder];
     switch (self.state) {
         case AROnboardingStagePersonalizeEmail:
             [self.delegate personalizeEmailDone:self.onboardingTextFields.emailField.text];

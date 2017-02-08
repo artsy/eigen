@@ -50,10 +50,9 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 - (instancetype)initWithState:(enum ARInitialOnboardingState)state;
 
 @property (nonatomic, assign, readonly) ARInitialOnboardingState initialState;
+@property (nonatomic, assign, readonly) CGRect keyboardFrame;
 
 - (void)finishAccountCreation;
-//- (void)signUp;
-//- (void)logInWithEmail:(NSString *)email;
 - (void)showTermsAndConditions;
 - (void)showPrivacyPolicy;
 

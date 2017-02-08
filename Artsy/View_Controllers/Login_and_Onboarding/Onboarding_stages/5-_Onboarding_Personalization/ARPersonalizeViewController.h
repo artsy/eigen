@@ -13,5 +13,6 @@
 @property (nonatomic, assign, readonly) NSInteger followedThisSession;
 @property (nonatomic, strong, readonly) AROnboardingPersonalizeTableViewController *searchResultsTable;
 
+- (void)updateKeyboardFrame:(CGRect)keyboardFrame;
 
 @end
