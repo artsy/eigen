@@ -76,8 +76,7 @@ exports[`test renders properly 1`] = `
     <ArtworksGrid
       artworks={undefined}
       onComplete={[Function]}
-      queryArtworksKeypath="artist.artworks"
-      queryForPage={[Function]}
+      onFetchMore={[Function]}
       queryState={
         Object {
           "availability": "IS_FOR_SALE",
@@ -170,8 +169,7 @@ exports[`test renders properly 1`] = `
     <ArtworksGrid
       artworks={undefined}
       onComplete={null}
-      queryArtworksKeypath="artist.artworks"
-      queryForPage={[Function]}
+      onFetchMore={[Function]}
       queryState={
         Object {
           "availability": "IS_NOT_FOR_SALE",
