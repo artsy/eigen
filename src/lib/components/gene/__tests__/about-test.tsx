@@ -1,11 +1,10 @@
 import 'react-native'
 import * as React from 'react'
-import About from '../about'
 
 // Note: test renderer must be required after react-native.
 import * as renderer from 'react-test-renderer'
 
-// jest.mock('../../opaque_image_view.tsx', () => 'ImageView')
+import About from '../about'
 
 it('shows trending artists correctly', () => {
   const gene = {

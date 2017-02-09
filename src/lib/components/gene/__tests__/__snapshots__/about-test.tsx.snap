@@ -112,18 +112,12 @@ exports[`test shows trending artists correctly 1`] = `
         }
         testID={undefined}>
         <AROpaqueImageView
-          aspectRatio={undefined}
-          imageURL={null}
-          onLayout={[Function]}
-          placeholderBackgroundColor={4293256677}
+          imageURL="cloudfront.net/some-url"
           style={
-            Array [
-              Object {
-                "height": 1,
-                "width": 1,
-              },
-              null,
-            ]
+            Object {
+              "height": 1,
+              "width": 1,
+            }
           } />
         <Text
           accessible={true}
@@ -176,18 +170,12 @@ exports[`test shows trending artists correctly 1`] = `
         }
         testID={undefined}>
         <AROpaqueImageView
-          aspectRatio={undefined}
-          imageURL={null}
-          onLayout={[Function]}
-          placeholderBackgroundColor={4293256677}
+          imageURL="cloudfront.net/some-url"
           style={
-            Array [
-              Object {
-                "height": 1,
-                "width": 1,
-              },
-              null,
-            ]
+            Object {
+              "height": 1,
+              "width": 1,
+            }
           } />
         <Text
           accessible={true}

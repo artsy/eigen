@@ -5,8 +5,6 @@ import * as renderer from 'react-test-renderer'
 
 import Artwork from '../artwork'
 
-// jest.mock('../../opaque_image_view.tsx', () => 'AROpaqueImageView')
-
 it('renders properly', () => {
   const artworkProps = {
     title: 'Some Kind of Dinosaur',

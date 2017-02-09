@@ -13,7 +13,7 @@ interface Props extends ViewProperties {
   artist: any
 }
 
-class About extends React.Component<Props, {}> {
+class About extends React.Component<Props, null> {
   render() {
     return (
       <View>
@@ -57,7 +57,9 @@ class About extends React.Component<Props, {}> {
   }
 
   relatedArtists() {
-    return this.props.artist.related_artists.length ? <RelatedArtists artists={this.props.artist.related_artists}/> : null
+    return this.props.artist.related_artists.length
+      ? <RelatedArtists artists={this.props.artist.related_artists}/>
+      : null
   }
 
 }

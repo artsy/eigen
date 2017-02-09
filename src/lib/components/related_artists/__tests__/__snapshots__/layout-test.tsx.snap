@@ -60,19 +60,12 @@ exports[`test lays out correctly 1`] = `
       }
       testID={undefined}>
       <AROpaqueImageView
-        aspectRatio={undefined}
-        imageURL={null}
-        onLayout={[Function]}
+        imageURL={undefined}
         style={
-          Array [
-            Object {
-              "height": 161,
-              "width": 242,
-            },
-            Object {
-              "backgroundColor": "#e5e5e5",
-            },
-          ]
+          Object {
+            "height": 161,
+            "width": 242,
+          }
         } />
       <Text
         accessible={true}

@@ -40,7 +40,7 @@
       "build/"
     ],
     "setupFiles": [
-      "./setupJest.js"
+      "./src/setupJest.ts"
     ]
   },
   "repository": {

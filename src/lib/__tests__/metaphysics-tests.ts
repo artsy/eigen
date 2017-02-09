@@ -1,7 +1,6 @@
-import metaphysics from '../metaphysics'
-
 jest.mock('../metaphysics.ts')
-console.dir(metaphysics)
+
+import metaphysics from '../metaphysics'
 
 describe('metaphysics', () => {
   it('should return the mocked module', () => {

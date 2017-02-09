@@ -1,10 +1,11 @@
 import 'react-native'
-
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
+import mockedModule from '../../../../tests/mocked_module'
+
+// mockedModule('../../../opaque_image_view.tsx', 'AROpaqueImageView')
 
 import ShowsList from '../variable_size_shows_list'
-// jest.mock('../../../opaque_image_view.tsx', () => 'AROpaqueImageView')
 
 it('renders properly', () => {
   const show1 = showProps()

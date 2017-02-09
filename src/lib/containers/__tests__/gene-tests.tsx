@@ -10,7 +10,6 @@ jest.mock('../../native_modules/refine_callback.js', () => { return { triggerRef
 // jest.mock('../../components/gene/artworks', () => 'Artworks')
 
 // Native view the Gene references
-debugger;
 // jest.mock('../../components/opaque_image_view.tsx', () => 'AROpaqueImageView')
 // jest.mock('../../components/spinner.tsx', () => 'ARSpinner')
 // jest.mock('../../components/switch_view.tsx', () => 'ARSwitchView')

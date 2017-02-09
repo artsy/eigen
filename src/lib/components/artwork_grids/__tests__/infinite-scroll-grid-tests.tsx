@@ -5,12 +5,6 @@ import { renderWithLayout } from '../../../tests/render_with_layout'
 
 import InfiniteScrollArtworksGrid from '../infinite_scroll_grid'
 
-debugger;
-// jest.mock('react-relay')
-// jest.mock('../../../metaphysics.ts')
-// jest.mock('../../opaque_image_view.tsx', () => 'AROpaqueImageView')
-// jest.mock('../../spinner.tsx', () => 'ARSpinner')
-
 it('renders properly', () => {
   const artist = {
     artworks: {

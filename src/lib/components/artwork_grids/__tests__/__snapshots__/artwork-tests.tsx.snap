@@ -16,16 +16,11 @@ exports[`test renders properly 1`] = `
   testID={undefined}>
   <AROpaqueImageView
     aspectRatio={0.74}
-    imageURL={null}
-    onLayout={[Function]}
-    placeholderBackgroundColor={4293256677}
+    imageURL="artsy.net/image-url"
     style={
-      Array [
-        Object {
-          "marginBottom": 10,
-        },
-        null,
-      ]
+      Object {
+        "marginBottom": 10,
+      }
     } />
   <Text
     accessible={true}

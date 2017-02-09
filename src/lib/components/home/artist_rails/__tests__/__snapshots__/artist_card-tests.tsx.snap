@@ -37,21 +37,14 @@ exports[`test renders correctly 1`] = `
     }
     testID={undefined}>
     <AROpaqueImageView
-      aspectRatio={undefined}
-      imageURL={null}
-      onLayout={[Function]}
+      imageURL={undefined}
       style={
-        Array [
-          Object {
-            "height": 148,
-            "marginLeft": 12,
-            "marginTop": 12,
-            "width": 196,
-          },
-          Object {
-            "backgroundColor": "#e5e5e5",
-          },
-        ]
+        Object {
+          "height": 148,
+          "marginLeft": 12,
+          "marginTop": 12,
+          "width": 196,
+        }
       } />
     <View
       style={

@@ -5,8 +5,6 @@ import * as renderer from 'react-test-renderer'
 
 import About from '../about'
 
-// jest.mock('../../opaque_image_view.tsx', () => 'AROpaqueImageView')
-
 it('renders properly', () => {
   const artist = {
     has_metadata: true,

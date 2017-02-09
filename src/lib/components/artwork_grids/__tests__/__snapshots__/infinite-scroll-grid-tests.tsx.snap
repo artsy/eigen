@@ -1,0 +1,78 @@
+exports[`test renders properly 1`] = `
+<ArtworksGrid
+  artist={
+    Object {
+      "artworks": Object {
+        "edges": Array [
+          Object {
+            "node": Object {
+              "__id": 0.16210295153931287,
+              "artists": Array [
+                Object {
+                  "name": "Jenny Holzer",
+                },
+              ],
+              "date": "2008",
+              "href": "/artwork/jenny-holzer-talking-politics",
+              "image": Object {
+                "aspect_ratio": 1.27,
+                "url": "artsy.net/image-url",
+              },
+              "is_in_auction": false,
+              "partner": Object {
+                "name": "Kukje Gallery",
+              },
+              "sale_message": "Not for sale",
+              "title": "TALKING POLITICS",
+            },
+          },
+          Object {
+            "node": Object {
+              "__id": 0.28603492766972405,
+              "artists": Array [
+                Object {
+                  "name": "Jenny Holzer",
+                },
+              ],
+              "date": "2008",
+              "href": "/artwork/jenny-holzer-talking-politics",
+              "image": Object {
+                "aspect_ratio": 1.27,
+                "url": "artsy.net/image-url",
+              },
+              "is_in_auction": false,
+              "partner": Object {
+                "name": "Kukje Gallery",
+              },
+              "sale_message": "Not for sale",
+              "title": "TALKING POLITICS",
+            },
+          },
+          Object {
+            "node": Object {
+              "__id": 0.24393106130356568,
+              "artists": Array [
+                Object {
+                  "name": "Jenny Holzer",
+                },
+              ],
+              "date": "2008",
+              "href": "/artwork/jenny-holzer-talking-politics",
+              "image": Object {
+                "aspect_ratio": 1.27,
+                "url": "artsy.net/image-url",
+              },
+              "is_in_auction": false,
+              "partner": Object {
+                "name": "Kukje Gallery",
+              },
+              "sale_message": "Not for sale",
+              "title": "TALKING POLITICS",
+            },
+          },
+        ],
+      },
+    }
+  }
+  queryKey="artist" />
+`;

@@ -3,7 +3,6 @@ import * as React from 'react'
 import { ScrollView, View, Dimensions, StyleSheet, ViewProperties } from 'react-native'
 
 import Events from '../native_modules/events'
-
 import Header from '../components/artist/header'
 import About from '../components/artist/about'
 import Shows from '../components/artist/shows'

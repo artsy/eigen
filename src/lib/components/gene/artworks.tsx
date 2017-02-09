@@ -1,5 +1,4 @@
 import * as React from 'react'
-
 import ArtworksGrid from '../artwork_grids/infinite_scroll_grid'
 
 class Artworks extends React.Component<any, any> {

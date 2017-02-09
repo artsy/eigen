@@ -21,18 +21,12 @@ exports[`test renders properly 1`] = `
   }
   testID={undefined}>
   <AROpaqueImageView
-    aspectRatio={undefined}
-    imageURL={null}
-    onLayout={[Function]}
-    placeholderBackgroundColor={4293256677}
+    imageURL="artsy.net/image-url"
     style={
-      Array [
-        Object {
-          "height": 50,
-          "width": 50,
-        },
-        null,
-      ]
+      Object {
+        "height": 50,
+        "width": 50,
+      }
     } />
   <View
     style={

@@ -1,9 +1,8 @@
 import 'react-native'
 import * as React from 'react'
-import RelatedArtists from '../'
 import { renderWithLayout } from '../../../tests/render_with_layout'
 
-// jest.mock('../../opaque_image_view.tsx', () => 'ImageView')
+import RelatedArtists from '../'
 
 it('lays out correctly', () => {
   const artists = [ {

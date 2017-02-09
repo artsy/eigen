@@ -33,18 +33,12 @@ exports[`test renders properly 1`] = `
     }
     testID={undefined}>
     <AROpaqueImageView
-      aspectRatio={undefined}
-      imageURL={null}
-      onLayout={[Function]}
-      placeholderBackgroundColor={4293256677}
+      imageURL="artsy.net/image-url"
       style={
-        Array [
-          Object {
-            "height": 1,
-            "width": 1,
-          },
-          null,
-        ]
+        Object {
+          "height": 1,
+          "width": 1,
+        }
       } />
     <View
       style={
@@ -174,18 +168,12 @@ exports[`test renders properly 1`] = `
     }
     testID={undefined}>
     <AROpaqueImageView
-      aspectRatio={undefined}
-      imageURL={null}
-      onLayout={[Function]}
-      placeholderBackgroundColor={4293256677}
+      imageURL="artsy.net/image-url"
       style={
-        Array [
-          Object {
-            "height": 1,
-            "width": 1,
-          },
-          null,
-        ]
+        Object {
+          "height": 1,
+          "width": 1,
+        }
       } />
     <View
       style={

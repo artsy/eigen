@@ -2,9 +2,9 @@ import { NativeModules } from 'react-native'
 
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
+import mockedModule from '../../../tests/mocked_module'
 
 import Header from '../header'
-// jest.mock('../../spinner.tsx', () => 'ARSpinner')
 
 beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { followStatusForGene: jest.fn() }

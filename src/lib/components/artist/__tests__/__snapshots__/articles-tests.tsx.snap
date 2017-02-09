@@ -21,7 +21,16 @@ exports[`test renders properly 1`] = `
     }>
     Featured Articles
   </Text>
-  <RCTScrollView>
+  <RCTScrollView
+    horizontal={true}
+    scrollsToTop={false}
+    showsHorizontalScrollIndicator={false}
+    style={
+      Object {
+        "marginBottom": 40,
+        "overflow": "visible",
+      }
+    }>
     <View>
       <View
         style={
@@ -49,18 +58,12 @@ exports[`test renders properly 1`] = `
           }
           testID={undefined}>
           <AROpaqueImageView
-            aspectRatio={undefined}
-            imageURL={null}
-            onLayout={[Function]}
-            placeholderBackgroundColor={4293256677}
+            imageURL="artsy.net/image-url"
             style={
-              Array [
-                Object {
-                  "height": 175,
-                  "width": 300,
-                },
-                null,
-              ]
+              Object {
+                "height": 175,
+                "width": 300,
+              }
             } />
           <Text
             accessible={true}
@@ -120,18 +123,12 @@ exports[`test renders properly 1`] = `
           }
           testID={undefined}>
           <AROpaqueImageView
-            aspectRatio={undefined}
-            imageURL={null}
-            onLayout={[Function]}
-            placeholderBackgroundColor={4293256677}
+            imageURL="artsy.net/image-url"
             style={
-              Array [
-                Object {
-                  "height": 175,
-                  "width": 300,
-                },
-                null,
-              ]
+              Object {
+                "height": 175,
+                "width": 300,
+              }
             } />
           <Text
             accessible={true}
