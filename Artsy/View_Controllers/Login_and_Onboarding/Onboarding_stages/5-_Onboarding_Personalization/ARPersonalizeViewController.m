@@ -39,6 +39,8 @@
 @property (nonatomic, strong, readwrite) ARPriceRangeViewController *budgetTable;
 @property (nonatomic, assign, readwrite) BOOL followedAtLeastOneCategory;
 @property (nonatomic, strong) NSLayoutConstraint *navigationItemsBottomConstraint;
+@property (nonatomic, assign, readwrite) BOOL comingBack;
+
 
 @property (nonatomic, strong, readwrite) NSMutableArray *artistsFollowed;
 @property (nonatomic, strong, readwrite) NSMutableArray *categoriesFollowed;
@@ -79,6 +81,10 @@
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
+    
+    if (self.comingBack && self.state == AROnboardingStagePersonalizeEmail) {
+        [self.onboardingTextFields.emailField becomeFirstResponder];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -105,8 +111,6 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self showViews];
     });
-    
-    
 }
 
 - (void)showViews
@@ -716,11 +720,13 @@
 
 - (void)backTapped:(id)sender
 {
+    self.comingBack = YES;
     [self.delegate backTapped];
 }
 
 - (void)facebookTapped:(id)sender
 {
+    self.comingBack = YES;
     [self.delegate personaliseFacebookTapped];
 }
 

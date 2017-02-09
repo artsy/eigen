@@ -381,6 +381,10 @@
 
 - (void)backTapped
 {
+    if (self.state == AROnboardingStagePersonalizePassword) {
+        [self.tempTextField becomeFirstResponder];
+    }
+    
     [self popViewControllerAnimated:YES];
 
     // slight hack, but easiest way
