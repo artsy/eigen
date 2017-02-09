@@ -473,7 +473,6 @@
     self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModePlaceholder;
 
     self.searchRequestOperation = [ArtsyAPI getPopularArtistsWithSuccess:^(NSArray *artists) {
-        [self.searchResultsTable removeLoadingSpinner];
         [self.searchResultsTable updateTableContentsFor:artists
                                         replaceContents:ARSearchResultsReplaceAll
                                                animated:animated];
@@ -491,7 +490,6 @@
 
 
     self.searchRequestOperation = [ArtsyAPI getPopularGenesWithSuccess:^(NSArray *genes) {
-        [self.searchResultsTable removeLoadingSpinner];
         [self.searchResultsTable updateTableContentsFor:genes
                                         replaceContents:ARSearchResultsReplaceAll
                                                animated:animated];
@@ -516,7 +514,6 @@
                 // show default list
                 [self populateTrendingArtistsAnimated:YES];
             }
-
         } failure:^(NSError *error) {
             [self reportError:error];
         }];
@@ -584,6 +581,8 @@
 
 - (void)reportError:(NSError *)error
 {
+    [self.searchResultsTable removeLoadingSpinner];
+
     if (error.code != NSURLErrorCancelled) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         ARErrorLog(@"Personalize search network error %@", error.localizedDescription);

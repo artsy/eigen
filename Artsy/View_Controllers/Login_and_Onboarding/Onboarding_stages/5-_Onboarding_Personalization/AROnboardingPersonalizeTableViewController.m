@@ -72,14 +72,17 @@
 
 - (void)removeLoadingSpinner
 {
-    [self.spinner stopAnimating];
-    self.spinner.hidden = YES;
+    if (self.spinner) {
+        [self.spinner stopAnimating];
+        [self.spinner removeFromSuperview];
+    }
 }
 
 - (void)updateTableContentsFor:(NSArray *)searchResults
                replaceContents:(ARSearchResultsReplaceContents)replaceStyle
                       animated:(BOOL)animated
 {
+    [self removeLoadingSpinner];
     self.loadedInitialResults = YES;
     switch (replaceStyle) {
         case ARSearchResultsReplaceSingle:
