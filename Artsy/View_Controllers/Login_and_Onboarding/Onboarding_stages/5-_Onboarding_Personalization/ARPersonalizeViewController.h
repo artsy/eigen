@@ -16,5 +16,6 @@
 - (void)updateKeyboardFrame:(CGRect)keyboardFrame;
 - (void)passwordResetSent;
 - (void)passwordResetError:(NSString *)message;
+- (void)invalidPasswordOrEmailError;
 
 @end

@@ -9,6 +9,9 @@
 - (void)setupHeaderViewWithTitle:(NSString *)title withLargeLayout:(BOOL)useLargeLayout;
 - (void)addHelpText:(NSString *)helpText withLargeLayout:(BOOL)useLargeLayout;
 
+- (void)enableErrorHelpText;
+- (void)disableErrorHelpText;
+
 - (void)showSearchBar;
 
 @end

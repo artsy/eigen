@@ -74,6 +74,17 @@
 
 }
 
+- (void)enableErrorHelpText
+{
+    self.helpTextLabel.textColor = [UIColor artsyRedRegular];
+}
+
+- (void)disableErrorHelpText
+{
+    self.helpTextLabel.textColor = [UIColor artsyGraySemibold];
+}
+
+
 - (void)showSearchBar
 {
     [self addSubview:self.searchField];

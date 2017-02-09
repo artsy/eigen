@@ -452,6 +452,9 @@
                                              }
                                authenticationFailure:^(NSError *error) {
 //                                   "Couldn’t Log In" message:@"Please check your email and password."
+                                   if (self.state == AROnboardingStagePersonalizeLogin) {
+                                       [(ARPersonalizeViewController *)self.topViewController invalidPasswordOrEmailError];
+                                   }
                                }
                                       networkFailure:^(NSError *error) {
 //                                          "Sign up failed."];

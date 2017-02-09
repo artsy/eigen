@@ -362,6 +362,8 @@
     switch (self.state) {
         case AROnboardingStagePersonalizePassword:
             if (![self validPassword:textField.text]) {
+                [self.onboardingTextFields enablePasswordErrorState];
+                [self.headerView enableErrorHelpText];
                 [self.onboardingNavigationItems showError:@"Try a different password"];
                 return NO;
             } else {
@@ -413,6 +415,8 @@
     NSString *password = self.onboardingTextFields.passwordField.text;
     
     if ([self validPassword:password]) {
+        [self.onboardingTextFields disablePasswordErrorState];
+        [self.headerView disableErrorHelpText];
         [self.onboardingNavigationItems hideError];
         [self.onboardingNavigationItems enableNextStep];
     } else {
@@ -452,6 +456,12 @@
     } else {
         return YES;
     }
+}
+
+- (void)invalidPasswordOrEmailError
+{
+    [self.onboardingTextFields enablePasswordErrorState];
+    [self.onboardingNavigationItems showError:@"Please check your email and password."];
 }
 
 #pragma mark -
