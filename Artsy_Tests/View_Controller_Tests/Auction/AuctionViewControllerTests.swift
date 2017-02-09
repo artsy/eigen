@@ -428,6 +428,10 @@ class Test_SaleViewModel: SaleViewModel {
     var stubbedAuctionState: ARAuctionState = []
     override var currencySymbol: String { return "$" }
     override var auctionState: ARAuctionState { return stubbedAuctionState }
+
+    init(sale: Sale, saleArtworks: [SaleArtwork], bidders: [Bidder]) {
+        super.init(sale: sale, saleArtworks: saleArtworks, bidders: bidders, lotStandings: [])
+    }
 }
 
 class Test_AuctionNetworkModel: AuctionNetworkModelType {

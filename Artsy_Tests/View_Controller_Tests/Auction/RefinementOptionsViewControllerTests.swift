@@ -10,7 +10,7 @@ class RefinementOptionsViewControllerSpec: QuickSpec {
     override func spec() {
         let openSale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "Sotheby’s Boundless Contemporary", "saleDescription": description, "startDate": Date.distantPast, "endDate": Date.distantFuture ], error: Void())
 
-        let openSaleViewModel = SaleViewModel(sale: openSale, saleArtworks: [], bidders: [])
+        let openSaleViewModel = SaleViewModel(sale: openSale, saleArtworks: [], bidders: [], lotStandings: [])
 
         let defaultSettings = AuctionRefineSettings(ordering: .LotNumber, priceRange: (min: 500_00, max: 100_000_00), saleViewModel: openSaleViewModel)
         let differentSettings = AuctionRefineSettings(ordering: .ArtistAlphabetical, priceRange: (min: 500_00, max: 50_000_00), saleViewModel: openSaleViewModel)
