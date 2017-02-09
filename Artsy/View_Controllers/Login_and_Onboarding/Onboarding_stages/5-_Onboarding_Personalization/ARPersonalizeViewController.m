@@ -156,6 +156,7 @@
             [self.onboardingTextFields setupForPassword];
             [self.onboardingTextFields.passwordField becomeFirstResponder];
             self.onboardingTextFields.passwordField.delegate = self;
+            [self addGoBackButton];
             break;
         case AROnboardingStagePersonalizeLogin:
             [self.onboardingNavigationItems disableNextStep];
@@ -217,37 +218,48 @@
     [self.onboardingTextFields constrainHeight:@"100"];
 }
 
-- (void)addFacebookButton
+- (void)addButtons
 {
     self.onboardingButtonsView = [[ARLoginButtonsView alloc] init];
     [self.view addSubview:self.onboardingButtonsView];
     
+    
     [self.onboardingButtonsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
     [self.onboardingButtonsView alignCenterXWithView:self.view predicate:@"0"];
     [self.onboardingButtonsView constrainHeight:@"30"];
-    [self.onboardingButtonsView constrainTopSpaceToView:self.onboardingTextFields predicate:@"40"];
+    [self.onboardingButtonsView constrainTopSpaceToView:self.onboardingTextFields predicate:@"20"];
+}
+- (void)addFacebookButton
+{
+
+    [self addButtons];
     [self.onboardingButtonsView setupForFacebook];
     
-    [self.onboardingButtonsView.facebookActionButton addTarget:self
+    [self.onboardingButtonsView.actionButton addTarget:self
                                                         action:@selector(facebookTapped:)
                                               forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)addForgotPasswordButton
 {
-    self.onboardingButtonsView = [[ARLoginButtonsView alloc] init];
-    [self.view addSubview:self.onboardingButtonsView];
+    [self addButtons];
+    [self.onboardingButtonsView setupForLogin];
     
-    [self.onboardingButtonsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
-    [self.onboardingButtonsView alignCenterXWithView:self.view predicate:@"0"];
-    [self.onboardingButtonsView constrainHeight:@"30"];
-    [self.onboardingButtonsView constrainTopSpaceToView:self.onboardingTextFields predicate:@"40"];
-    [self.onboardingButtonsView setupForNewLogin];
-    
-//    [self.onboardingButtonsView.facebookActionButton addTarget:self
-//                                                        action:@selector(facebookTapped:)
-//                                              forControlEvents:UIControlEventTouchUpInside];
+    [self.onboardingButtonsView.actionButton addTarget:self
+                                                action:@selector(facebookTapped:)
+                                      forControlEvents:UIControlEventTouchUpInside];
 }
+
+- (void)addGoBackButton
+{
+    [self addButtons];
+    [self.onboardingButtonsView setupForSignUp];
+    
+    [self.onboardingButtonsView.actionButton addTarget:self
+                                                action:@selector(backTapped:)
+                                      forControlEvents:UIControlEventTouchUpInside];
+}
+
 
 - (void)addSearchTable
 {

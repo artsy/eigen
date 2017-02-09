@@ -142,13 +142,13 @@
     self.textFieldsView.nameField.delegate = self;
     self.textFieldsView.emailField.delegate = self;
     self.textFieldsView.passwordField.delegate = self;
-
-    [self.buttonsView.emailActionButton setTitle:@"Complete" forState:UIControlStateNormal];
-
-    [self.buttonsView.emailActionButton addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonsView.facebookActionButton addTarget:self action:@selector(fb:) forControlEvents:UIControlEventTouchUpInside];
-
-    [self.buttonsView.emailActionButton setEnabled:[self canSubmit] animated:YES];
+//
+//    [self.buttonsView.emailActionButton setTitle:@"Complete" forState:UIControlStateNormal];
+//
+//    [self.buttonsView.emailActionButton addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.buttonsView.facebookActionButton addTarget:self action:@selector(fb:) forControlEvents:UIControlEventTouchUpInside];
+//
+//    [self.buttonsView.emailActionButton setEnabled:[self canSubmit] animated:YES];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -482,7 +482,7 @@
 
 - (void)textChanged:(NSNotification *)n
 {
-    [self.buttonsView.emailActionButton setEnabled:[self canSubmit] animated:YES];
+//    [self.buttonsView.emailActionButton setEnabled:[self canSubmit] animated:YES];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField

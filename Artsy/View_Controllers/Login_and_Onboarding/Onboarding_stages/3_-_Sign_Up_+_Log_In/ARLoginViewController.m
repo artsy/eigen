@@ -110,12 +110,12 @@
     self.textFieldsView.emailField.delegate = self;
     self.textFieldsView.passwordField.delegate = self;
 
-    [self.buttonsView.emailActionButton setEnabled:NO animated:NO];
-
-    [self.buttonsView.emailActionButton addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonsView.forgotPasswordButton addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonsView.facebookActionButton addTarget:self action:@selector(fb:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonsView.twitterActionButton addTarget:self action:@selector(twitter:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.buttonsView.emailActionButton setEnabled:NO animated:NO];
+//
+//    [self.buttonsView.emailActionButton addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.buttonsView.forgotPasswordButton addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.buttonsView.facebookActionButton addTarget:self action:@selector(fb:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.buttonsView.twitterActionButton addTarget:self action:@selector(twitter:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)viewDidLoad
@@ -234,7 +234,7 @@
 
 - (void)textChanged:(NSNotification *)n
 {
-    [self.buttonsView.emailActionButton setEnabled:[self validates] animated:YES];
+//    [self.buttonsView.emailActionButton setEnabled:[self validates] animated:YES];
 }
 
 #pragma mark -
@@ -499,13 +499,13 @@
 - (void)resetForm
 {
     self.textFieldsView.passwordField.text = @"";
-    self.buttonsView.emailActionButton.alpha = 1;
+//    self.buttonsView.emailActionButton.alpha = 1;
 }
 
 - (void)networkFailure:(NSError *)error
 {
     [ARNetworkErrorManager presentActiveError:error withMessage:@"Sign in failed."];
-    self.buttonsView.emailActionButton.alpha = 1;
+//    self.buttonsView.emailActionButton.alpha = 1;
 }
 
 - (void)presentErrorMessage:(NSString *)message
