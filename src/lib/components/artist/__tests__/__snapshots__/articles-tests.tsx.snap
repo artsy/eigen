@@ -21,16 +21,7 @@ exports[`test renders properly 1`] = `
     }>
     Featured Articles
   </Text>
-  <RCTScrollView
-    horizontal={true}
-    scrollsToTop={false}
-    showsHorizontalScrollIndicator={false}
-    style={
-      Object {
-        "marginBottom": 40,
-        "overflow": "visible",
-      }
-    }>
+  <RCTScrollView>
     <View>
       <View
         style={

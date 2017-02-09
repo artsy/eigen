@@ -6,13 +6,14 @@ var refineCallbackPromise = () => Promise.resolve()
 jest.mock('../../native_modules/refine_callback.js', () => { return { triggerRefine: () => refineCallbackPromise() }})
 
 // Stub out these views for simplicities sake
-jest.mock('../../components/gene/header', () => 'Header')
-jest.mock('../../components/gene/artworks', () => 'Artworks')
+// jest.mock('../../components/gene/header', () => 'Header')
+// jest.mock('../../components/gene/artworks', () => 'Artworks')
 
 // Native view the Gene references
-jest.mock('../../components/opaque_image_view', () => 'ImageView')
-jest.mock('../../components/spinner', () => 'Spinner')
-jest.mock('../../components/switch_view', () => 'Spinner')
+debugger;
+// jest.mock('../../components/opaque_image_view.tsx', () => 'AROpaqueImageView')
+// jest.mock('../../components/spinner.tsx', () => 'ARSpinner')
+// jest.mock('../../components/switch_view.tsx', () => 'ARSwitchView')
 
 import Gene from '../gene'
 
@@ -100,7 +101,6 @@ describe('handling price ranges', () => {
   })
 
   it('is empty when *-*', () => {
-    console.log(gene.render())
     expect(gene.priceRangeToHumanReadableString('*-*')).toEqual('')
   })
 

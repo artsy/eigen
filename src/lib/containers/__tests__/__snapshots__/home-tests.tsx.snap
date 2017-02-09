@@ -1,294 +1,9 @@
 exports[`layout renders as expected 1`] = `
-<RCTScrollView
-  automaticallyAdjustContentInsets={false}
-  dataSource={
-    ListViewDataSource {
-      "items": 6,
-    }
-  }
-  refreshControl={
-    <RefreshControlMock
-      onRefresh={[Function]}
-      refreshing={false} />
-  }
-  renderRow={[Function]}
-  renderScrollComponent={[Function]}
-  style={
-    Object {
-      "marginTop": 20,
-      "overflow": "visible",
-    }
-  }>
-  <RCTRefreshControl />
-  <View>
-    <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      hitSlop={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "alignItems": "center",
-          "backgroundColor": "#f8f8f8",
-          "borderColor": "#e5e5e5",
-          "borderWidth": 1,
-          "flexDirection": "row",
-          "height": 50,
-          "marginLeft": 40,
-          "marginRight": 40,
-          "marginTop": 10,
-        }
-      }
-      testID={undefined}>
-      <Image
-        source={1}
-        style={
-          Object {
-            "height": 16,
-            "marginLeft": 20,
-            "marginRight": 10,
-            "width": 16,
-          }
-        } />
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-        style={
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-            "fontSize": 16,
-            "marginTop": 5,
-          }
-        }>
-        Search for artists and artworks...
-      </Text>
-    </View>
-    <View
-      onLayout={[Function]} />
-    <View
-      accessibilityLabel="Artwork Rail"
-      style={
-        Object {
-          "paddingBottom": 12,
-        }
-      }>
-      <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
-        accessible={true}
-        hitSlop={undefined}
-        onLayout={undefined}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Object {
-            "marginBottom": 20,
-            "marginLeft": 30,
-            "marginRight": 30,
-            "marginTop": 50,
-          }
-        }
-        testID={undefined}>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={0}
-          style={
-            Object {
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 30,
-              "textAlign": "center",
-            }
-          }>
-          Title
-        </Text>
-      </View>
-      <View
-        style={
-          Object {
-            "marginLeft": 40,
-            "marginRight": 40,
-            "minHeight": 400,
-          }
-        }>
-        <View
-          style={
-            Array [
-              Object {
-                "flex": 1,
-              },
-              Object {
-                "alignItems": "center",
-                "justifyContent": "center",
-              },
-            ]
-          }>
-          <ARSpinner
-            spinnerColor={undefined}
-            style={
-              Object {
-                "height": 22,
-                "width": 22,
-              }
-            } />
-        </View>
-      </View>
-    </View>
-    <View
-      accessibilityLabel="Artwork Rail"
-      style={
-        Object {
-          "paddingBottom": 12,
-        }
-      }>
-      <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
-        accessible={true}
-        hitSlop={undefined}
-        onLayout={undefined}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Object {
-            "marginBottom": 20,
-            "marginLeft": 30,
-            "marginRight": 30,
-            "marginTop": 50,
-          }
-        }
-        testID={undefined}>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={0}
-          style={
-            Object {
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 30,
-              "textAlign": "center",
-            }
-          }>
-          Title
-        </Text>
-      </View>
-      <View
-        style={
-          Object {
-            "marginLeft": 40,
-            "marginRight": 40,
-            "minHeight": 400,
-          }
-        }>
-        <View
-          style={
-            Array [
-              Object {
-                "flex": 1,
-              },
-              Object {
-                "alignItems": "center",
-                "justifyContent": "center",
-              },
-            ]
-          }>
-          <ARSpinner
-            spinnerColor={undefined}
-            style={
-              Object {
-                "height": 22,
-                "width": 22,
-              }
-            } />
-        </View>
-      </View>
-    </View>
+<View>
+  <RCTScrollView>
+    <RCTRefreshControl />
     <View>
       <View
-        style={
-          Object {
-            "marginBottom": 10,
-            "marginLeft": 30,
-            "marginRight": 30,
-            "marginTop": 40,
-          }
-        }>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          numberOfLines={0}
-          style={
-            Object {
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 30,
-              "textAlign": "center",
-            }
-          } />
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "flex": 1,
-            },
-            Object {
-              "alignItems": "center",
-              "justifyContent": "center",
-            },
-          ]
-        }>
-        <ARSpinner
-          spinnerColor={undefined}
-          style={
-            Object {
-              "height": 22,
-              "width": 22,
-            }
-          } />
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "backgroundColor": "#e5e5e5",
-              "height": 1,
-              "marginLeft": -40,
-              "marginRight": -40,
-            },
-            undefined,
-          ]
-        } />
-    </View>
-    <View
-      accessibilityLabel="Artwork Rail"
-      style={
-        Object {
-          "paddingBottom": 12,
-        }
-      }>
-      <View
         accessibilityComponentType={undefined}
         accessibilityLabel={undefined}
         accessibilityTraits={undefined}
@@ -303,36 +18,217 @@ exports[`layout renders as expected 1`] = `
         onStartShouldSetResponder={[Function]}
         style={
           Object {
-            "marginBottom": 20,
-            "marginLeft": 30,
-            "marginRight": 30,
-            "marginTop": 50,
+            "alignItems": "center",
+            "backgroundColor": "#f8f8f8",
+            "borderColor": "#e5e5e5",
+            "borderWidth": 1,
+            "flexDirection": "row",
+            "height": 50,
+            "marginLeft": 40,
+            "marginRight": 40,
+            "marginTop": 10,
           }
         }
         testID={undefined}>
+        <Image
+          source={1}
+          style={
+            Object {
+              "height": 16,
+              "marginLeft": 20,
+              "marginRight": 10,
+              "width": 16,
+            }
+          } />
         <Text
           accessible={true}
           allowFontScaling={true}
           ellipsizeMode="tail"
-          numberOfLines={0}
           style={
             Object {
               "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 30,
-              "textAlign": "center",
+              "fontSize": 16,
+              "marginTop": 5,
             }
           }>
-          Title
+          Search for artists and artworks...
         </Text>
       </View>
       <View
+        onLayout={[Function]} />
+      <View
+        accessibilityLabel="Artwork Rail"
         style={
           Object {
-            "marginLeft": 40,
-            "marginRight": 40,
-            "minHeight": 400,
+            "paddingBottom": 12,
           }
         }>
+        <View
+          accessibilityComponentType={undefined}
+          accessibilityLabel={undefined}
+          accessibilityTraits={undefined}
+          accessible={true}
+          hitSlop={undefined}
+          onLayout={undefined}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "marginBottom": 20,
+              "marginLeft": 30,
+              "marginRight": 30,
+              "marginTop": 50,
+            }
+          }
+          testID={undefined}>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={0}
+            style={
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 30,
+                "textAlign": "center",
+              }
+            }>
+            Title
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "marginLeft": 40,
+              "marginRight": 40,
+              "minHeight": 400,
+            }
+          }>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                },
+                Object {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                },
+              ]
+            }>
+            <ARSpinner
+              spinnerColor={undefined}
+              style={
+                Object {
+                  "height": 22,
+                  "width": 22,
+                }
+              } />
+          </View>
+        </View>
+      </View>
+      <View
+        accessibilityLabel="Artwork Rail"
+        style={
+          Object {
+            "paddingBottom": 12,
+          }
+        }>
+        <View
+          accessibilityComponentType={undefined}
+          accessibilityLabel={undefined}
+          accessibilityTraits={undefined}
+          accessible={true}
+          hitSlop={undefined}
+          onLayout={undefined}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "marginBottom": 20,
+              "marginLeft": 30,
+              "marginRight": 30,
+              "marginTop": 50,
+            }
+          }
+          testID={undefined}>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={0}
+            style={
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 30,
+                "textAlign": "center",
+              }
+            }>
+            Title
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "marginLeft": 40,
+              "marginRight": 40,
+              "minHeight": 400,
+            }
+          }>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                },
+                Object {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                },
+              ]
+            }>
+            <ARSpinner
+              spinnerColor={undefined}
+              style={
+                Object {
+                  "height": 22,
+                  "width": 22,
+                }
+              } />
+          </View>
+        </View>
+      </View>
+      <View>
+        <View
+          style={
+            Object {
+              "marginBottom": 10,
+              "marginLeft": 30,
+              "marginRight": 30,
+              "marginTop": 40,
+            }
+          }>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={0}
+            style={
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 30,
+                "textAlign": "center",
+              }
+            } />
+        </View>
         <View
           style={
             Array [
@@ -354,8 +250,95 @@ exports[`layout renders as expected 1`] = `
               }
             } />
         </View>
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#e5e5e5",
+                "height": 1,
+                "marginLeft": -40,
+                "marginRight": -40,
+              },
+              undefined,
+            ]
+          } />
+      </View>
+      <View
+        accessibilityLabel="Artwork Rail"
+        style={
+          Object {
+            "paddingBottom": 12,
+          }
+        }>
+        <View
+          accessibilityComponentType={undefined}
+          accessibilityLabel={undefined}
+          accessibilityTraits={undefined}
+          accessible={true}
+          hitSlop={undefined}
+          onLayout={undefined}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "marginBottom": 20,
+              "marginLeft": 30,
+              "marginRight": 30,
+              "marginTop": 50,
+            }
+          }
+          testID={undefined}>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            numberOfLines={0}
+            style={
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 30,
+                "textAlign": "center",
+              }
+            }>
+            Title
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "marginLeft": 40,
+              "marginRight": 40,
+              "minHeight": 400,
+            }
+          }>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                },
+                Object {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                },
+              ]
+            }>
+            <ARSpinner
+              spinnerColor={undefined}
+              style={
+                Object {
+                  "height": 22,
+                  "width": 22,
+                }
+              } />
+          </View>
+        </View>
       </View>
     </View>
-  </View>
-</RCTScrollView>
+  </RCTScrollView>
+</View>
 `;

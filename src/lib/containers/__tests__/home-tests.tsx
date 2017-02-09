@@ -3,10 +3,10 @@ import * as renderer from 'react-test-renderer'
 
 import Home from '../home'
 
-jest.mock('../../components/home/artist_rails/artist_rail.tsx', () => 'ArtistRail')
-jest.mock('../../components/home/artwork_rails/artwork_rail.tsx', () => 'ArtworkRail')
-jest.mock('../../components/spinner.tsx', () => 'ARSpinner')
-jest.mock('../../components/opaque_image_view.tsx', () => 'AROpaqueImageView')
+// jest.mock('../../components/home/artist_rails/artist_rail.tsx', () => 'ArtistRail')
+// jest.mock('../../components/home/artwork_rails/artwork_rail.tsx', () => 'ArtworkRail')
+// jest.mock('../../components/spinner.tsx', () => 'ARSpinner')
+// jest.mock('../../components/opaque_image_view.tsx', () => 'AROpaqueImageView')
 
 describe('upon initialization', () => {
   it('starts with isRefreshing set to false', () => {

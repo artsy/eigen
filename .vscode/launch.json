@@ -2,24 +2,21 @@
   "version": "0.2.0",
   "configurations": [
     {
-        "name": "Debug Tests",
+        "name": "Run Tests With Debugger (slower, use yarn for normal work)",
         "type": "node",
         "request": "launch",
-        "program": "${workspaceRoot}/node_modules/.bin/jest",
-        "stopOnEntry": true,
-        "args": ["--runInBand"],
-        "cwd": "${workspaceRoot}",
-        "preLaunchTask": null,
+        "port": 5858,
+        "address": "localhost",
+        "sourceMaps": true,
+        "stopOnEntry": false,
         "runtimeExecutable": null,
         "runtimeArgs": [
-            "--nolazy"
+          "debug",
+          "--debug-brk",
+          "./node_modules/.bin/jest",
+          "-i"
         ],
-        "env": {
-            "NODE_ENV": "development"
-        },
-        "externalConsole": false,
-        "sourceMaps": true,
-        "outDir": null
+        "cwd": "${workspaceRoot}"
     },
     {
       "name": "Debug iOS",

@@ -13,7 +13,11 @@ export const renderWithLayout = (component: any, layout: { width?: number, heigh
   }
 
   // manually trigger onLayout with mocked nativeEvent
-  component.toJSON().props.onLayout(mockNativeEvent)
+  const json = component.toJSON()
+
+  if (json.props.onLayout) {
+    json.props.onLayout(mockNativeEvent)
+  }
 
   // re-render
   return component.toJSON()

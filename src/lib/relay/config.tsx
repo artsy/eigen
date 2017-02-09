@@ -3,8 +3,6 @@ import { NativeModules } from 'react-native'
 const { Emission } = NativeModules
 
 
-
-
 let metaphysicsURL
 if (Emission && Emission.useStagingEnvironment) {
   metaphysicsURL = 'https://metaphysics-staging.artsy.net'

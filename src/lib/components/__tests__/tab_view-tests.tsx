@@ -2,7 +2,7 @@ import 'react-native'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 
-jest.mock('../../components/switch_view.tsx', () => 'SwitchView')
+// jest.mock('../../components/switch_view.tsx', () => 'ARSwitchView')
 import TabView from '../tab_view'
 
 it('looks like expected', () => {

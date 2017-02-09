@@ -5,7 +5,7 @@ import * as renderer from 'react-test-renderer'
 
 import Article from '../article'
 
-jest.mock('../../../opaque_image_view.tsx', () => 'AROpaqueImageView')
+// jest.mock('../../../opaque_image_view.tsx', () => 'AROpaqueImageView')
 
 it('renders properly', () => {
   const article = {

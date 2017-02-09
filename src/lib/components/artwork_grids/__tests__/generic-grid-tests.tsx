@@ -4,7 +4,7 @@ import * as React from 'react'
 import { renderWithLayout } from '../../../tests/render_with_layout'
 
 import GenericArtworksGrid from '../generic_grid'
-jest.mock('../../opaque_image_view.tsx', () => 'AROpaqueImageView')
+// jest.mock('../../opaque_image_view.tsx', () => 'AROpaqueImageView')
 
 it('renders properly', () => {
   const artworks = [ artwork(), artwork(), artwork() ]

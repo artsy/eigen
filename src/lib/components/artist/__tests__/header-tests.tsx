@@ -5,7 +5,7 @@ import * as renderer from 'react-test-renderer'
 
 import Header from '../header'
 
-jest.mock('../../spinner.tsx', () => 'ARSpinner')
+// jest.mock('../../spinner.tsx', () => 'ARSpinner')
 
 beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { followStatusForArtist: jest.fn() }

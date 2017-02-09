@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native'
-const { Emission } = NativeModules
+const Emission = NativeModules.Emission || {}
 
 import { metaphysicsURL } from './relay/config'
 import { NetworkError } from './system/errors'
@@ -24,3 +24,5 @@ export default function metaphysics(query: string): Promise<Object> {
     .then((response) => response.json())
     .then(({ data }) => data)
 }
+
+metaphysics.isMocked = false

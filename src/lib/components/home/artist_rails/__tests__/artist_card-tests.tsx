@@ -4,9 +4,9 @@ import * as renderer from 'react-test-renderer'
 
 import ArtistCard from '../artist_card'
 
-jest.mock('../../../spinner.tsx', () => 'ARSpinner')
-jest.mock('../../../opaque_image_view.tsx', () => 'AROpaqueImageView')
-jest.mock('../../../switch_view.tsx', () => 'ARSwitchView')
+// jest.mock('../../../spinner.tsx', () => 'ARSpinner')
+// jest.mock('../../../opaque_image_view.tsx', () => 'AROpaqueImageView')
+// jest.mock('../../../switch_view.tsx', () => 'ARSwitchView')
 
 it('renders correctly', () => {
   const tree = renderer.create(<ArtistCard artist={artistProps().artist} />).toJSON()

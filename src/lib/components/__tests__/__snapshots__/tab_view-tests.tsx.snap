@@ -1,0 +1,27 @@
+exports[`test looks like expected 1`] = `
+<View>
+  <ARSwitchView
+    onSelectionChange={[Function]}
+    selectedIndex={1}
+    style={
+      Array [
+        Object {
+          "height": 46,
+        },
+        Object {
+          "marginBottom": 30,
+          "marginLeft": 0,
+          "marginRight": 0,
+          "marginTop": 30,
+        },
+      ]
+    }
+    titles={
+      Array [
+        "one",
+        "two",
+      ]
+    } />
+  <View />
+</View>
+`;

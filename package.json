@@ -38,6 +38,9 @@
       "\\.snap$",
       "/node_modules/",
       "build/"
+    ],
+    "setupFiles": [
+      "./setupJest.js"
     ]
   },
   "repository": {
@@ -62,7 +65,7 @@
   ],
   "dependencies": {
     "lodash": "3.10.1",
-    "react": "15.4.1",
+    "react": "latest",
     "react-native": "0.42.0-rc.3",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
     "react-relay": "https://github.com/alloy/relay/releases/download/v0.9.3/react-relay-0.9.3.tgz",
@@ -91,6 +94,7 @@
     "flow-bin": "0.32.0",
     "jest": "^18.1.0",
     "jest-cli": "^18.1.0",
+    "jest-fetch-mock": "^1.0.7",
     "jest-react-native": "^17.0.3",
     "react-storybooks-relay-container": "^1.0.0",
     "react-test-renderer": "^15.3.0",

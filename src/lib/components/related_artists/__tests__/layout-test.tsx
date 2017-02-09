@@ -3,7 +3,7 @@ import * as React from 'react'
 import RelatedArtists from '../'
 import { renderWithLayout } from '../../../tests/render_with_layout'
 
-jest.mock('../../opaque_image_view.tsx', () => 'ImageView')
+// jest.mock('../../opaque_image_view.tsx', () => 'ImageView')
 
 it('lays out correctly', () => {
   const artists = [ {
