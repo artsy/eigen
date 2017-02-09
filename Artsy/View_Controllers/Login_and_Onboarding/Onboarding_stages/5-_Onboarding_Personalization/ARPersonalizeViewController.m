@@ -386,6 +386,8 @@
     
     if ([self validEmail:email]) {
         [self.onboardingNavigationItems enableNextStep];
+    } else {
+        [self.onboardingNavigationItems disableNextStep];
     }
 }
 
@@ -410,7 +412,16 @@
 
 - (BOOL)validEmail:(NSString *)email
 {
-    if ([email containsString:@"@"]) {
+    // Got this from http://regexlib.com and modified it to accept plusses in the name too (e.g. name+suffix@domain.com)
+    NSString *emailValidationPattern = @"^([a-zA-Z0-9_\\-\\.\\+]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
+    
+    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:emailValidationPattern
+                                                                      options:NSRegularExpressionCaseInsensitive
+                                                                        error:nil];
+    NSUInteger emailMatch = [regex numberOfMatchesInString:email
+                                                   options:0
+                                                     range:NSMakeRange(0, [email length])];
+    if (emailMatch > 0) {
         return YES;
     } else {
         return NO;
