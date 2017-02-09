@@ -8,6 +8,7 @@ upcoming:
     user_facing:
       - Fixes a problem where auction users were being directed to general inquiries email address instead of specialists - ash
       - Fixes issue where fairs were not shown in search results - maxim
+      - "My Bids" module on auction pages - ash
 
 releases:
   - version: 3.1.0
