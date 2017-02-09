@@ -116,6 +116,7 @@
     [self.view addSubview:self.onboardingNavigationItems];
 
     [self.onboardingNavigationItems constrainWidthToView:self.view predicate:@"0"];
+    [self.onboardingNavigationItems constrainHeight:@"50"];
     self.navigationItemsBottomConstraint = [self.onboardingNavigationItems alignBottomEdgeWithView:self.view predicate:@"0"];
 
     CGRect keyboardFrame = [(AROnboardingViewController *)self.delegate keyboardFrame];
@@ -342,8 +343,14 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     switch (self.state) {
-        case AROnboardingStagePersonalizeEmail:
         case AROnboardingStagePersonalizePassword:
+            if (![self validPassword:textField.text]) {
+                [self.onboardingNavigationItems showError:@"Try a different password"];
+                return NO;
+            } else {
+                [self nextTapped:nil];
+            }
+        case AROnboardingStagePersonalizeEmail:
         case AROnboardingStagePersonalizeLogin:
         case AROnboardingStagePersonalizeName:
             [self nextTapped:nil];
@@ -387,7 +394,10 @@
     NSString *password = self.onboardingTextFields.passwordField.text;
     
     if ([self validPassword:password]) {
+        [self.onboardingNavigationItems hideError];
         [self.onboardingNavigationItems enableNextStep];
+    } else {
+        [self.onboardingNavigationItems disableNextStep];
     }
 }
 
@@ -473,6 +483,7 @@
     self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModePlaceholder;
 
     self.searchRequestOperation = [ArtsyAPI getPopularArtistsWithSuccess:^(NSArray *artists) {
+        [self.searchResultsTable removeLoadingSpinner];
         [self.searchResultsTable updateTableContentsFor:artists
                                         replaceContents:ARSearchResultsReplaceAll
                                                animated:animated];
@@ -490,6 +501,7 @@
 
 
     self.searchRequestOperation = [ArtsyAPI getPopularGenesWithSuccess:^(NSArray *genes) {
+//        [self.searchResultsTable removeLoadingSpinner];
         [self.searchResultsTable updateTableContentsFor:genes
                                         replaceContents:ARSearchResultsReplaceAll
                                                animated:animated];

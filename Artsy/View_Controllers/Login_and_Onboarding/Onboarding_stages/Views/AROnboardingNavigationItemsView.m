@@ -9,7 +9,6 @@
 
 @property (nonatomic, strong) UILabel *warningLabel;
 @property (nonatomic, strong) NSLayoutConstraint *warningLabelHeightConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *selfHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *nextWidthConstraintHalf;
 @property (nonatomic, strong) NSLayoutConstraint *nextWidthConstraintFull;
 @property (nonatomic, strong) UIView *separatorBorder;
@@ -63,19 +62,18 @@
         [_next constrainHeight:@"50"];
 
         _warningLabel = [[UILabel alloc] init];
-        _warningLabel.backgroundColor = [UIColor artsyYellowRegular];
-        _warningLabel.textColor = [UIColor blackColor];
         _warningLabel.font = [UIFont serifFontWithSize:15.0];
         _warningLabel.textAlignment = NSTextAlignmentCenter;
 
         [self addSubview:_warningLabel];
 
-        [_warningLabel constrainWidthToView:self predicate:@"0"];
-        _warningLabelHeightConstraint = [_warningLabel constrainHeight:@"0"];
+        
+        [_warningLabel alignBottomEdgeWithView:self predicate:@"0"];
         [_warningLabel alignLeadingEdgeWithView:self predicate:@"0"];
-        [_warningLabel constrainBottomSpaceToView:_next predicate:@"0"];
-
-        self.selfHeightConstraint = [self constrainHeight:@"50"];
+        [_warningLabel constrainWidthToView:self predicate:@"0"];
+        [_warningLabel constrainHeight:@"50"];
+        
+        _warningLabel.hidden = YES;
     }
 
     return self;
@@ -100,6 +98,10 @@
 - (void)disableNextStep
 {
     [self.next setTitleColor:[UIColor artsyGrayMedium] forState:UIControlStateNormal];
+    [self.next setBackgroundColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    [self.next setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    [self.next setBackgroundColor:[UIColor blackColor] forState:UIControlStateHighlighted];
 }
 
 - (void)enableNextStep
@@ -124,14 +126,33 @@
 - (void)showWarning:(NSString *)text
 {
     self.warningLabel.text = text;
-    self.selfHeightConstraint.constant = 80;
-    self.warningLabelHeightConstraint.constant = 30;
+    
+    self.warningLabel.backgroundColor = [UIColor artsyYellowRegular];
+    self.warningLabel.textColor = [UIColor artsyYellowBold];
+    
+    self.warningLabel.hidden = NO;
 }
 
 - (void)hideWarning
 {
-    self.selfHeightConstraint.constant = 50;
-    self.warningLabelHeightConstraint.constant = 0;
+    self.warningLabel.hidden = YES;
 }
+
+- (void)showError:(NSString *)text
+{
+    self.warningLabel.text = text;
+    
+    self.warningLabel.backgroundColor = [UIColor artsyRedRegular];
+    self.warningLabel.textColor = [UIColor whiteColor];
+    
+    self.warningLabel.hidden = NO;
+
+}
+
+- (void)hideError
+{
+    self.warningLabel.hidden = YES;
+}
+
 
 @end

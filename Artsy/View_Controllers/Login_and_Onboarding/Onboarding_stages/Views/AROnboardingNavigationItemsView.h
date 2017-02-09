@@ -9,6 +9,8 @@
 
 - (void)showWarning:(NSString *)text;
 - (void)hideWarning;
+- (void)showError:(NSString *)text;
+- (void)hideError;
 - (void)disableNextStep;
 - (void)enableNextStep;
 - (void)defaultNextStep;
