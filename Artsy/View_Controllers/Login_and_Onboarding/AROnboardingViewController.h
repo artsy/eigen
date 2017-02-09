@@ -18,6 +18,7 @@
 - (void)splashDone:(ARSignUpSplashViewController *)sender;
 - (void)slideshowDone;
 - (void)setPriceRangeDone:(NSInteger)range;
+- (void)sendPasswordResetEmail:(NSString *)email sender:(id)sender;
 @end
 
 @protocol ARLoginSignupDelegate <NSObject>

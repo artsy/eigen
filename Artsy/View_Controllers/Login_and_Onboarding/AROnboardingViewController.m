@@ -454,6 +454,18 @@
                                       }];
 }
 
+
+- (void)sendPasswordResetEmail:(NSString *)email sender:(id)sender
+{
+    [[ARUserManager sharedManager] sendPasswordResetForEmail:email success:^{
+        [(ARPersonalizeViewController *)sender passwordResetSent];
+        ARActionLog(@"Sent password reset request for %@", email);
+    } failure:^(NSError *error) {
+        ARErrorLog(@"Password reset failed for %@. Error: %@", email, error.localizedDescription);
+        [(ARPersonalizeViewController *)sender passwordResetError:@"Couldn’t send reset password link. Please try again, or contact support@artsy.net"];
+    }];
+}
+
 - (void)applyPersonalizationToUser
 {
     NSString *stringRange = [NSString stringWithFormat:@"%@", @(self.budgetRange)];

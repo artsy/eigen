@@ -23,6 +23,7 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 
 
 @interface ARPersonalizeViewController () <UITextFieldDelegate, ARPersonalizeNetworkDelegate, ARPersonalizeContainer>
@@ -246,7 +247,7 @@
     [self.onboardingButtonsView setupForLogin];
     
     [self.onboardingButtonsView.actionButton addTarget:self
-                                                action:@selector(facebookTapped:)
+                                                action:@selector(forgotPassword:)
                                       forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -448,6 +449,54 @@
         return YES;
     }
 }
+
+#pragma mark -
+#pragma mark Forgot Password
+
+- (void)forgotPassword:(id)sender
+{
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Forgot Password"
+                          message:@"Please enter your email address and we’ll send you a reset link."
+                          delegate:nil
+                          cancelButtonTitle:@"Cancel"
+                          otherButtonTitles:@"Send Link", nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex == alertView.firstOtherButtonIndex) {
+            NSString *email = [[alertView textFieldAtIndex:0] text];
+            if (![self validEmail:email]) {
+                [self passwordResetError:@"Please check your email address"];
+            } else {
+//                [self showSpinner];
+                [self.delegate sendPasswordResetEmail:email sender:self];
+            }
+        }
+    };
+//    [self hideKeyboard];
+    [alert show];
+}
+
+- (void)passwordResetSent
+{
+//    [self hideSpinner];
+    [UIAlertView showWithTitle:@"Please Check Your Email"
+                       message:@"We have sent you an email with a link to reset your password"
+             cancelButtonTitle:@"OK"
+             otherButtonTitles:nil
+                      tapBlock:nil];
+}
+
+- (void)passwordResetError:(NSString *)message
+{
+//    [self hideSpinner];
+    [UIAlertView showWithTitle:@"Couldn’t Reset Password"
+                       message:message
+             cancelButtonTitle:@"OK"
+             otherButtonTitles:nil
+                      tapBlock:nil];
+}
+
 
 #pragma mark -
 #pragma mark Search Field

@@ -14,5 +14,7 @@
 @property (nonatomic, strong, readonly) AROnboardingPersonalizeTableViewController *searchResultsTable;
 
 - (void)updateKeyboardFrame:(CGRect)keyboardFrame;
+- (void)passwordResetSent;
+- (void)passwordResetError:(NSString *)message;
 
 @end
