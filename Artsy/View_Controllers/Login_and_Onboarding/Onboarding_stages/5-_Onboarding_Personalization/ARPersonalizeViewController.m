@@ -301,8 +301,9 @@
 
 - (void)updateKeyboardFrame:(CGRect)keyboardFrame
 {
-    self.navigationItemsBottomConstraint.constant = -keyboardFrame.size.height;
-
+    if (self.onboardingNavigationItems) {
+        self.navigationItemsBottomConstraint.constant = -keyboardFrame.size.height;
+    }
 }
 - (void)keyboardWillShow:(NSNotification *)notification
 {

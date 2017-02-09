@@ -151,15 +151,13 @@
 - (void)keyboardWillShow:(NSNotification *)notification
 {
     _keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    
-//    [(ARPersonalizeViewController *)self.topViewController updateKeyboardFrame:_keyboardFrame];
+    [(ARPersonalizeViewController *)self.topViewController updateKeyboardFrame:_keyboardFrame];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
     _keyboardFrame = CGRectZero;
 }
-
 
 #pragma mark -
 #pragma mark Slideshow
