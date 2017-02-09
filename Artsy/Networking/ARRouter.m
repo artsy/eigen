@@ -1153,6 +1153,17 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARMyBiddersURL parameters:params];
 }
 
++ (NSURLRequest *)lotStandingsRequestForSaleID:(NSString *)saleID
+{
+    NSParameterAssert(saleID);
+    NSDictionary *params = @{
+        @"sale_id": saleID,
+        @"live": @(YES) // We only want to show active bids for open sales.
+    };
+
+    return [self requestWithMethod:@"GET" path:ARMyLotStandingsURL parameters:params];
+}
+
 + (NSURLRequest *)bidderPositionsRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID
 {
     NSDictionary *params = @{ @"sale_id" : saleID,

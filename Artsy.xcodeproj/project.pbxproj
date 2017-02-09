@@ -323,6 +323,7 @@
 		5E6CBB011DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E6CBB001DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m */; };
 		5E6CBB031DB54BC000988CDF /* AROnboardingPersonalizationGeneImageStateReconcilerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E6CBB021DB54BC000988CDF /* AROnboardingPersonalizationGeneImageStateReconcilerTests.m */; };
 		5E6CBB061DB668D100988CDF /* ARSearchViewControllerStyling.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E6CBB051DB668D100988CDF /* ARSearchViewControllerStyling.m */; };
+		5E7081D31E4CFC2800F320C9 /* AuctionLotStandingsNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7081D21E4CFC2800F320C9 /* AuctionLotStandingsNetworkModel.swift */; };
 		5E70AA8E1DF5C7B1002847E9 /* LiveAuctionCurrentLotCTAPositionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E70AA8D1DF5C7B1002847E9 /* LiveAuctionCurrentLotCTAPositionManager.swift */; };
 		5E70AA911DF5D506002847E9 /* LiveAuctionCurrentLotCTAPositionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E70AA8F1DF5D4FE002847E9 /* LiveAuctionCurrentLotCTAPositionManagerTests.swift */; };
 		5E71AFC7195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E71AFC6195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m */; };
@@ -1285,6 +1286,7 @@
 		5E6CBB021DB54BC000988CDF /* AROnboardingPersonalizationGeneImageStateReconcilerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingPersonalizationGeneImageStateReconcilerTests.m; sourceTree = "<group>"; };
 		5E6CBB041DB668D100988CDF /* ARSearchViewControllerStyling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSearchViewControllerStyling.h; sourceTree = "<group>"; };
 		5E6CBB051DB668D100988CDF /* ARSearchViewControllerStyling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSearchViewControllerStyling.m; sourceTree = "<group>"; };
+		5E7081D21E4CFC2800F320C9 /* AuctionLotStandingsNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionLotStandingsNetworkModel.swift; path = Auction/AuctionLotStandingsNetworkModel.swift; sourceTree = "<group>"; };
 		5E70AA8D1DF5C7B1002847E9 /* LiveAuctionCurrentLotCTAPositionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionCurrentLotCTAPositionManager.swift; sourceTree = "<group>"; };
 		5E70AA8F1DF5D4FE002847E9 /* LiveAuctionCurrentLotCTAPositionManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionCurrentLotCTAPositionManagerTests.swift; sourceTree = "<group>"; };
 		5E71AF231912826B008B1426 /* ARPersonalizeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARPersonalizeViewController.h; sourceTree = "<group>"; };
@@ -3025,6 +3027,7 @@
 				5EA7BC3E1C612577009C52C9 /* AuctionNetworkModel.swift */,
 				5EA7BC281C600144009C52C9 /* AuctionSaleNetworkModel.swift */,
 				5EA7BC301C612454009C52C9 /* AuctionBiddersNetworkModel.swift */,
+				5E7081D21E4CFC2800F320C9 /* AuctionLotStandingsNetworkModel.swift */,
 				5EA7BC311C612454009C52C9 /* AuctionSaleArtworksNetworkModel.swift */,
 			);
 			name = Networking;
@@ -5311,6 +5314,7 @@
 				3C35CC80189FF20D00E3D8DE /* ArtsyAPI+OrderedSets.m in Sources */,
 				5E8585F71CF61E8F00B2B487 /* PanDirectionGestureRecognizer.swift in Sources */,
 				516CDA691BB55B54001C02B2 /* UIViewController+WithLoadedData.m in Sources */,
+				5E7081D31E4CFC2800F320C9 /* AuctionLotStandingsNetworkModel.swift in Sources */,
 				5EFF52BA1976CA6C00E2A563 /* ARSearchFieldButton.m in Sources */,
 				60FAEF43179843080031C88B /* ARFavoritesViewController.m in Sources */,
 				3CD3679C189AC4F000285DF7 /* ARAspectRatioImageView.m in Sources */,
