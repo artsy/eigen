@@ -301,7 +301,7 @@
 
 - (void)updateKeyboardFrame:(CGRect)keyboardFrame
 {
-    if (self.onboardingNavigationItems) {
+    if (self.onboardingNavigationItems && !(self.state == AROnboardingStagePersonalizeArtists || self.state == AROnboardingStagePersonalizeCategories)) {
         self.navigationItemsBottomConstraint.constant = -keyboardFrame.size.height;
     }
 }
@@ -374,6 +374,12 @@
         case AROnboardingStagePersonalizeLogin:
         case AROnboardingStagePersonalizeName:
             [self nextTapped:nil];
+            break;
+        case AROnboardingStagePersonalizeArtists:
+            [self.headerView.searchField.searchField resignFirstResponder];
+            break;
+        case AROnboardingStagePersonalizeCategories:
+            [self.headerView.searchField.searchField resignFirstResponder];
             break;
         default:
             break;

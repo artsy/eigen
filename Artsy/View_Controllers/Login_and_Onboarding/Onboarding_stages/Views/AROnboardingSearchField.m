@@ -49,7 +49,7 @@
         [self.searchField alignTopEdgeWithView:self predicate:@"0"];
 
         self.searchField.clearButtonMode = UITextFieldViewModeAlways;
-        self.searchField.returnKeyType = UIReturnKeySearch;
+        self.searchField.returnKeyType = UIReturnKeyDone;
     }
 
     return self;
