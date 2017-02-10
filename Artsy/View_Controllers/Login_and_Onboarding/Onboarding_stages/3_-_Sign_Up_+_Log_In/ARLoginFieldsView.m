@@ -56,6 +56,7 @@
     self.emailField.hidden = YES;
     self.passwordField.hidden = NO;
     self.nameField.hidden = YES;
+    [self.passwordField setPlaceholder:@"Create a password"];
 }
 
 - (void)setupForName
@@ -70,7 +71,7 @@
 {
     [self.nameField setPlaceholder:@"Full Name"];
     [self.emailField setPlaceholder:@"Email"];
-    [self.passwordField setPlaceholder:@"Create a password"];
+    [self.passwordField setPlaceholder:@"Password"];
 
     for (ARTextFieldWithPlaceholder *textfield in @[ self.nameField, self.emailField, self.passwordField ]) {
         [self addSubview:textfield];
