@@ -138,7 +138,7 @@ class SaleViewModelTests: QuickSpec {
         }
 
         it("returns true for hasLotStandings for non-empty standings") {
-            let subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: [], lotStandings: [testSaleArtworkEstimateAt(100)])
+            let subject = SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: [], lotStandings: [LotStanding()])
 
             expect(subject.hasLotStandings) == true
         }

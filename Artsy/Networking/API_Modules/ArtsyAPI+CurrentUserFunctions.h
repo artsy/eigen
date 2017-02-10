@@ -1,6 +1,6 @@
 #import "ArtsyAPI.h"
 
-@class User, Bidder, SaleArtwork;
+@class User, Bidder, LotStanding;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Performs a request for the logged-in user's lot standings for the corresponding sale.
 /// Calls success callback based on a successful API call and JSON deserialiation.
-+ (void)getCurrentUserLotStandingsForSale:(NSString *)saleID success:(void (^)(NSArray<SaleArtwork *> *))success failure:(void (^)(NSError *error))failure;
++ (void)getCurrentUserLotStandingsForSale:(NSString *)saleID success:(void (^)(NSArray<LotStanding *> *))success failure:(void (^)(NSError *error))failure;
 
 @end
 

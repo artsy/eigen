@@ -20,15 +20,15 @@ class AuctionLotStandingsNetworkModelSpec: QuickSpec {
         it("returns fetches the sale artworks") {
             OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/me/lot_standings", withResponse: saleArtworksJSON)
 
-            var saleArtworks: [SaleArtwork]?
+            var lotStandings: [LotStanding]?
             waitUntil { done in
                 subject.fetch(saleID).subscribe { result in
-                    if case .success(let a) = result { saleArtworks = a }
+                    if case .success(let a) = result { lotStandings = a }
                     done()
                 }
             }
 
-            expect(saleArtworks?.first?.saleArtworkID) == saleArtworkID
+            expect(lotStandings).toNot( beEmpty() )
         }
 
 

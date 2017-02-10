@@ -2,23 +2,23 @@ import Foundation
 import Interstellar
 
 protocol AuctionLotStandingsNetworkModelType {
-    func fetch(_ saleID: String) -> Observable<Result<[SaleArtwork]>>
+    func fetch(_ saleID: String) -> Observable<Result<[LotStanding]>>
 
-    var lotStandings: [SaleArtwork] { get }
+    var lotStandings: [LotStanding] { get }
 }
 
 class AuctionLotStandingsNetworkModel: AuctionLotStandingsNetworkModelType {
 
-    fileprivate(set) var lotStandings: [SaleArtwork] = []
+    fileprivate(set) var lotStandings: [LotStanding] = []
 
-    func fetch(_ saleID: String) -> Observable<Result<[SaleArtwork]>> {
-        let observable = Observable<Result<[SaleArtwork]>>()
+    func fetch(_ saleID: String) -> Observable<Result<[LotStanding]>> {
+        let observable = Observable<Result<[LotStanding]>>()
 
         ArtsyAPI.getCurrentUserLotStandings(
             forSale: saleID,
-            success: { [weak self] saleArtworks in
-                self?.lotStandings = saleArtworks
-                observable.update(.success(saleArtworks))
+            success: { [weak self] lotStandings in
+                self?.lotStandings = lotStandings
+                observable.update(.success(lotStandings))
             }, failure: { error in
                 observable.update(.error(error))
         })

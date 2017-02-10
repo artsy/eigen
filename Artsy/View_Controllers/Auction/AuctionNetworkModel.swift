@@ -39,10 +39,10 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
     func fetch() -> Observable<Result<SaleViewModel>> {
 
         return fetchBidders().merge(lotStandingsNetworkModel.fetch(saleID))
-            .flatMap { [weak self] (bidders: Result<[Bidder]>, lotStandings: Result<[SaleArtwork]>) -> Observable<Result<SaleViewModel>> in
+            .flatMap { [weak self] (bidders: Result<[Bidder]>, lotStandings: Result<[LotStanding]>) -> Observable<Result<SaleViewModel>> in
                 guard let `self` = self else { return Observable() }
 
-                var retrievedLotStandings = [SaleArtwork]()
+                var retrievedLotStandings = [LotStanding]()
                 if case .success(let lotStandings) = lotStandings {
                     // Note: we're discarding any error in lotStandings because our UI doesn't expose errors.
                     retrievedLotStandings = lotStandings
@@ -60,7 +60,7 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
             }
     }
 
-    func createViewModel(_ bidders: [Bidder], lotStandings: [SaleArtwork]) -> Observable<Result<SaleViewModel>> {
+    func createViewModel(_ bidders: [Bidder], lotStandings: [LotStanding]) -> Observable<Result<SaleViewModel>> {
         let signal = Observable(saleID)
 
         let fetchSale = signal.flatMap(saleNetworkModel.fetchSale)

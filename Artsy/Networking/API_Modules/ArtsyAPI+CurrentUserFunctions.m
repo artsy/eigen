@@ -3,7 +3,7 @@
 #import "ARUserManager.h"
 #import "ARRouter.h"
 #import "User.h"
-#import "SaleArtwork.h"
+#import "LotStanding.h"
 #import "Bidder.h"
 
 
@@ -30,7 +30,7 @@
     [self getRequest:request parseIntoAnArrayOfClass:[Bidder class] success:success failure:failure];
 }
 
-+ (void)getCurrentUserLotStandingsForSale:(NSString *)saleID success:(void (^)(NSArray<SaleArtwork *> *))success failure:(void (^)(NSError *error))failure
++ (void)getCurrentUserLotStandingsForSale:(NSString *)saleID success:(void (^)(NSArray<LotStanding *> *))success failure:(void (^)(NSError *error))failure
 {
     if ([[ARUserManager sharedManager] currentUser] == nil) {
         success(@[]);
@@ -38,7 +38,7 @@
     }
 
     NSURLRequest *request = [ARRouter lotStandingsRequestForSaleID:saleID];
-    [self getRequest:request parseIntoAnArrayOfClass:[SaleArtwork class] success:success failure:failure];
+    [self getRequest:request parseIntoAnArrayOfClass:[LotStanding class] success:success failure:failure];
 }
 
 

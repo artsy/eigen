@@ -4,11 +4,11 @@ import Artsy_UILabels
 class SaleViewModel: NSObject {
     fileprivate let sale: Sale
     fileprivate let saleArtworks: [SaleArtwork]
-    fileprivate let lotStandings: [SaleArtwork]
+    fileprivate let lotStandings: [LotStanding]
 
     var bidders: [Bidder]
 
-    init(sale: Sale, saleArtworks: [SaleArtwork], bidders: [Bidder], lotStandings: [SaleArtwork]) {
+    init(sale: Sale, saleArtworks: [SaleArtwork], bidders: [Bidder], lotStandings: [LotStanding]) {
         self.sale = sale
         self.saleArtworks = saleArtworks
         self.bidders = bidders

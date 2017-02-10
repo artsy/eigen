@@ -32,6 +32,7 @@
 // Models.
 #import "Sale.h"
 #import "SaleArtwork.h"
+#import "LotStanding.h"
 #import "Artwork.h"
 #import "Artist.h"
 #import "Profile.h"
