@@ -49,7 +49,7 @@
         [self.titleLabel constrainWidthToView:self predicate:@"*.8"];
         [self.titleLabel alignLeadingEdgeWithView:self predicate:@"20"];
     }
-    [self.titleLabel alignTopEdgeWithView:self predicate:useLargeLayout ? @"80" : @"30"];
+    [self.titleLabel alignTopEdgeWithView:self predicate:@"0"];
     [self.titleLabel constrainHeight:@"60"];
 
 }

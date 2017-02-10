@@ -41,6 +41,10 @@
 @property (nonatomic, strong) NSLayoutConstraint *navigationItemsBottomConstraint;
 @property (nonatomic, assign, readwrite) BOOL comingBack;
 
+@property (nonatomic, strong) NSLayoutConstraint *spaceHeaderToTop;
+@property (nonatomic, strong) NSLayoutConstraint *spaceFieldsToHeader;
+
+
 
 @property (nonatomic, strong, readwrite) NSMutableArray *artistsFollowed;
 @property (nonatomic, strong, readwrite) NSMutableArray *categoriesFollowed;
@@ -97,12 +101,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
-
-//- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-//{
-//    [self showViews];
-//}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -136,7 +134,7 @@
     self.headerView = [[AROnboardingHeaderView alloc] init];
     [self.view addSubview:self.headerView];
 
-    [self.headerView alignTopEdgeWithView:self.view predicate:@"0"];
+    self.spaceHeaderToTop = [self.headerView alignTopEdgeWithView:self.view predicate:self.useLargeLayout ? @"80" : @"30"];
     [self.headerView constrainHeight:@"160"];
     [self.headerView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
     [self.headerView alignCenterXWithView:self.view predicate:@"0"];
@@ -210,6 +208,27 @@
         default:
             break;
     }
+    
+    [self finaliseValuesForiPadWithInterfaceOrientation:self.interfaceOrientation];
+}
+
+// Yes, this is deprecated, but it's the most straightforward way to change 2 values for iPad landscape
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self finaliseValuesForiPadWithInterfaceOrientation:toInterfaceOrientation];
+}
+
+- (void)finaliseValuesForiPadWithInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (self.spaceHeaderToTop && self.spaceFieldsToHeader) {
+        if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+            self.spaceHeaderToTop.constant = 20;
+            self.spaceFieldsToHeader.constant = -15;
+        } else {
+            self.spaceHeaderToTop.constant = self.useLargeLayout ? 80 : 30;
+            self.spaceFieldsToHeader.constant = self.useLargeLayout ? 145 : 5;
+        }
+    }
 }
 
 - (void)addTextFields
@@ -219,7 +238,7 @@
     
     [self.onboardingTextFields constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
     [self.onboardingTextFields alignCenterXWithView:self.view predicate:@"0"];
-    [self.onboardingTextFields constrainTopSpaceToView:self.headerView predicate:self.useLargeLayout ? @"150" : @"5"];
+    self.spaceFieldsToHeader = [self.onboardingTextFields constrainTopSpaceToView:self.headerView predicate:self.useLargeLayout ? @"150" : @"5"];
     [self.onboardingTextFields constrainHeight:@"100"];
 }
 
@@ -271,7 +290,6 @@
                                                 action:@selector(backTapped:)
                                       forControlEvents:UIControlEventTouchUpInside];
 }
-
 
 - (void)addSearchTable
 {
