@@ -70,7 +70,7 @@
 {
     [self.nameField setPlaceholder:@"Full Name"];
     [self.emailField setPlaceholder:@"Email"];
-    [self.passwordField setPlaceholder:@"Password"];
+    [self.passwordField setPlaceholder:@"Create a password"];
 
     for (ARTextFieldWithPlaceholder *textfield in @[ self.nameField, self.emailField, self.passwordField ]) {
         [self addSubview:textfield];

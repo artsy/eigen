@@ -50,7 +50,6 @@
     [self.titleLabel alignTopEdgeWithView:self predicate:@"30"];
     [self.titleLabel constrainHeight:@"60"];
 
-
 }
 
 - (void)addHelpText:(NSString *)helpText withLargeLayout:(BOOL)useLargeLayout

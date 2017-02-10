@@ -588,7 +588,6 @@
 
 
     self.searchRequestOperation = [ArtsyAPI getPopularGenesWithSuccess:^(NSArray *genes) {
-//        [self.searchResultsTable removeLoadingSpinner];
         [self.searchResultsTable updateTableContentsFor:genes
                                         replaceContents:ARSearchResultsReplaceAll
                                                animated:animated];
