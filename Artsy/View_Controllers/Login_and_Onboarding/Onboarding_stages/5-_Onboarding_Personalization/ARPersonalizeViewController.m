@@ -166,7 +166,7 @@
             [self.headerView setupHeaderViewWithTitle:@"Enter your password" withLargeLayout:self.useLargeLayout];
 //            [self.headerView addHelpText:@"Enter your password to log in" withLargeLayout:self.useLargeLayout];
             [self addTextFields];
-            [self.onboardingTextFields setupForPassword];
+            [self.onboardingTextFields setupForLogin];
             [self.onboardingTextFields.passwordField becomeFirstResponder];
             self.onboardingTextFields.passwordField.delegate = self;
             [self addForgotPasswordButton];

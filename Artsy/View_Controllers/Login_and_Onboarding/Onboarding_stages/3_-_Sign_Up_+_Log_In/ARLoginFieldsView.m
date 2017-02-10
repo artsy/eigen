@@ -30,10 +30,10 @@
 - (void)setupForLogin
 {
     [self commonSetup];
-    [self.nameField removeConstraint:self.nameFieldHeightConstraint];
-    [self.nameField constrainHeight:@"0"];
+    self.emailField.hidden = YES;
+    self.passwordField.hidden = NO;
     self.nameField.hidden = YES;
-    self.passwordField.returnKeyType = UIReturnKeyNext;
+    [self.passwordField setPlaceholder:@"Password"];
 }
 
 - (void)setupForSignUp
