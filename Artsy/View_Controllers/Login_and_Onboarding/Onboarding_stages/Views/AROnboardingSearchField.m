@@ -8,6 +8,7 @@
 
 
 @interface AROnboardingSearchField ()
+
 @property (nonatomic, assign) BOOL swizzledClear;
 @property (nonatomic, strong) UIImageView *searchIcon;
 
@@ -47,7 +48,7 @@
         [self.searchField alignTrailingEdgeWithView:self predicate:@"-5"];
         [self.searchField constrainHeightToView:self predicate:@"0"];
         [self.searchField alignTopEdgeWithView:self predicate:@"0"];
-
+        
         self.searchField.clearButtonMode = UITextFieldViewModeAlways;
         self.searchField.returnKeyType = UIReturnKeyDone;
     }
@@ -63,20 +64,6 @@
                 NSFontAttributeName : [UIFont serifFontWithSize:18],
                 NSForegroundColorAttributeName : [UIColor artsyGrayMedium]
             }];
-}
-
-- (void)searchStarted
-{
-    [UIView animateWithDuration:0.2 animations:^{
-        self.backgroundColor = [UIColor whiteColor];
-    }];
-}
-
-- (void)searchEnded
-{
-    [UIView animateWithDuration:0.2 animations:^{
-        self.backgroundColor = [UIColor artsyGrayLight];
-    }];
 }
 
 @end

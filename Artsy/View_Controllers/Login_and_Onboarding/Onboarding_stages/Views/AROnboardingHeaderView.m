@@ -13,6 +13,8 @@
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) ARSerifLineHeightLabel *helpTextLabel;
 @property (nonatomic, strong) NSLayoutConstraint *searchHeightConstraint;
+@property (nonatomic, strong) UIButton *doneButton;
+@property (nonatomic, strong) NSLayoutConstraint *trailingSearchFieldConstraint;
 
 @end
 
@@ -91,8 +93,47 @@
     self.searchHeightConstraint = [self.searchField constrainHeight:@"40"];
     [self.searchField constrainTopSpaceToView:self.titleLabel predicate:@"20"];
     [self.searchField alignLeadingEdgeWithView:self predicate:@"20"];
-    [self.searchField alignTrailingEdgeWithView:self predicate:@"-20"];
+    self.trailingSearchFieldConstraint = [self.searchField alignTrailingEdgeWithView:self predicate:@"-20"];
     self.searchField.tintColor = [UIColor blackColor];
+    
+    self.doneButton = [[UIButton alloc] init];
+    self.doneButton.titleLabel.font = [UIFont sansSerifFontWithSize:14.0];
+    self.doneButton.titleLabel.textAlignment = NSTextAlignmentRight;
+    [self.doneButton setTitle:@"DONE" forState:UIControlStateNormal];
+    [self.doneButton setTitleColor:[UIColor artsyGrayMedium] forState:UIControlStateNormal];
+    [self.doneButton addTarget:self action:@selector(doneTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.doneButton];
+    
+    self.doneButton.alpha = 0;
+    [self.doneButton constrainWidth:@"50" height:@"40"];
+    [self.doneButton constrainTopSpaceToView:self.titleLabel predicate:@"20"];
+    [self.doneButton alignTrailingEdgeWithView:self predicate:@"-20"];
+    
+}
+
+- (void)searchStarted
+{
+    [UIView animateWithDuration:0.15 animations:^{
+        self.searchField.backgroundColor = [UIColor whiteColor];
+        self.trailingSearchFieldConstraint.constant = -75;
+        [self layoutIfNeeded];
+        self.doneButton.alpha = 1;
+    }];
+}
+
+- (void)searchEnded
+{
+    [UIView animateWithDuration:0.15 animations:^{
+        self.doneButton.alpha = 0;
+        self.trailingSearchFieldConstraint.constant = -20;
+        [self layoutIfNeeded];
+        self.searchField.backgroundColor = [UIColor artsyGrayLight];
+    }];
+}
+
+- (void)doneTapped:(id)sender
+{
+    [self.searchField.searchField resignFirstResponder];
 }
 
 @end

@@ -14,4 +14,7 @@
 
 - (void)showSearchBar;
 
+- (void)searchStarted;
+- (void)searchEnded;
+
 @end

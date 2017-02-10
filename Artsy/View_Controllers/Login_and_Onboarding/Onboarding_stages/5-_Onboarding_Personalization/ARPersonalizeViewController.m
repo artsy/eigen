@@ -556,12 +556,12 @@
 
 - (void)searchStarted
 {
-    [self.headerView.searchField searchStarted];
+    [self.headerView searchStarted];
 }
 
 - (void)searchEnded
 {
-    [self.headerView.searchField searchEnded];
+    [self.headerView searchEnded];
 }
 
 #pragma mark -
