@@ -32,11 +32,6 @@
 
 + (void)getCurrentUserLotStandingsForSale:(NSString *)saleID success:(void (^)(NSArray<LotStanding *> *))success failure:(void (^)(NSError *error))failure
 {
-    if ([[ARUserManager sharedManager] currentUser] == nil) {
-        success(@[]);
-        return;
-    }
-
     NSURLRequest *request = [ARRouter lotStandingsRequestForSaleID:saleID];
     [self getRequest:request parseIntoAnArrayOfClass:[LotStanding class] success:success failure:failure];
 }

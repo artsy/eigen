@@ -7,19 +7,21 @@ import Artsy
 
 class AuctionLotStandingsNetworkModelSpec: QuickSpec {
     override func spec() {
-        let saleArtworkID = "sale_artwork_id"
-        let saleArtworksJSON: NSArray = [["id": saleArtworkID]]
+        let saleArtworksJSON: NSArray = [[
+            "sale_artwork": [ "id": "some-sale-artwork-id" ],
+            "leading_position": nil
+        ]]
         let saleID = "the-fun-sale"
 
         var subject: AuctionLotStandingsNetworkModel!
 
         beforeEach {
+            OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/me/lot_standings", withResponse: saleArtworksJSON)
+
             subject = AuctionLotStandingsNetworkModel()
         }
 
         it("returns fetches the sale artworks") {
-            OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/me/lot_standings", withResponse: saleArtworksJSON)
-
             var lotStandings: [LotStanding]?
             waitUntil { done in
                 subject.fetch(saleID).subscribe { result in
@@ -33,8 +35,6 @@ class AuctionLotStandingsNetworkModelSpec: QuickSpec {
 
 
         it("stores the sale artworks after fetching") {
-            OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/me/lot_standings", withResponse: saleArtworksJSON)
-
             waitUntil { done in
                 subject.fetch(saleID).subscribe { _ in
                     done()
