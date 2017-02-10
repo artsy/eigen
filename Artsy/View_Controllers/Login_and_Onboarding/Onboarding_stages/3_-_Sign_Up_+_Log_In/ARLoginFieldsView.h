@@ -15,7 +15,7 @@
 - (void)setupForPassword;
 - (void)setupForName;
 
-- (void)enablePasswordErrorState;
-- (void)disablePasswordErrorState;
+- (void)enableErrorState;
+- (void)disableErrorState;
 
 @end

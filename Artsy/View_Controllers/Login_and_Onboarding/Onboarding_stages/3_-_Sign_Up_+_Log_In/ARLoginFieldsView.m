@@ -126,14 +126,16 @@
     self.passwordField.secureTextEntry = YES;
 }
 
-- (void)enablePasswordErrorState
+- (void)enableErrorState
 {
     self.passwordField.baseline.backgroundColor = [UIColor artsyRedRegular].CGColor;
+    self.emailField.baseline.backgroundColor = [UIColor artsyRedRegular].CGColor;
 }
 
-- (void)disablePasswordErrorState
+- (void)disableErrorState
 {
     self.passwordField.baseline.backgroundColor = [UIColor blackColor].CGColor;
+    self.emailField.baseline.backgroundColor = [UIColor blackColor].CGColor;
 }
 
 @end

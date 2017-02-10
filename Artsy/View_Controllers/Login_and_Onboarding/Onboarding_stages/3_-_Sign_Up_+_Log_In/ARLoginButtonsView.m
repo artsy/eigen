@@ -41,7 +41,6 @@
     [attributedTitle appendAttributedString:facebookPart];
     
     [self.actionButton setAttributedTitle:attributedTitle forState:UIControlStateNormal];
-    [self.actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
 }
 
 - (void)setupForLogin
@@ -52,8 +51,6 @@
         NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:titleString attributes:@{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle), NSForegroundColorAttributeName : [UIColor artsyGraySemibold], NSFontAttributeName : [UIFont serifFontWithSize:18.0]}];
 
     [self.actionButton setAttributedTitle:attributedTitle forState:UIControlStateNormal];
-
-    [self.actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
 }
 
 - (void)setupForSignUp
@@ -70,8 +67,6 @@
     [attributedTitle appendAttributedString:linkPart];
     
     [self.actionButton setAttributedTitle:attributedTitle forState:UIControlStateNormal];
-    [self.actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-    
 }
 
 

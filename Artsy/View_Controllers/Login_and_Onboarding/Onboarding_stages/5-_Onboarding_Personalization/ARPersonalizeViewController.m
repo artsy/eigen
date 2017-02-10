@@ -219,7 +219,7 @@
     
     [self.onboardingTextFields constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
     [self.onboardingTextFields alignCenterXWithView:self.view predicate:@"0"];
-    [self.onboardingTextFields constrainTopSpaceToView:self.headerView predicate:@"5"];
+    [self.onboardingTextFields constrainTopSpaceToView:self.headerView predicate:self.useLargeLayout ? @"150" : @"5"];
     [self.onboardingTextFields constrainHeight:@"100"];
 }
 
@@ -232,7 +232,14 @@
     [self.onboardingButtonsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
     [self.onboardingButtonsView alignCenterXWithView:self.view predicate:@"0"];
     [self.onboardingButtonsView constrainHeight:@"30"];
-    [self.onboardingButtonsView constrainTopSpaceToView:self.onboardingTextFields predicate:@"20"];
+    [self.onboardingButtonsView constrainTopSpaceToView:self.onboardingTextFields predicate:self.useLargeLayout ? @"5" : @"20"];
+    
+    if (self.useLargeLayout) {
+        [self.onboardingButtonsView.actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+    } else {
+        [self.onboardingButtonsView.actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    }
+
 }
 - (void)addFacebookButton
 {
@@ -363,7 +370,7 @@
     switch (self.state) {
         case AROnboardingStagePersonalizePassword:
             if (![self validPassword:textField.text]) {
-                [self.onboardingTextFields enablePasswordErrorState];
+                [self.onboardingTextFields enableErrorState];
                 [self.headerView enableErrorHelpText];
                 [self.onboardingNavigationItems showError:@"Try a different password"];
                 return NO;
@@ -371,6 +378,13 @@
                 [self nextTapped:nil];
             }
         case AROnboardingStagePersonalizeEmail:
+            if (![self validEmail:textField.text]) {
+                [self.onboardingTextFields enableErrorState];
+                [self.onboardingNavigationItems showError:@"Try a valid email"];
+                return NO;
+            } else {
+                [self nextTapped:nil];
+            }
         case AROnboardingStagePersonalizeLogin:
         case AROnboardingStagePersonalizeName:
             [self nextTapped:nil];
@@ -411,6 +425,8 @@
     NSString *email = self.onboardingTextFields.emailField.text;
     
     if ([self validEmail:email]) {
+        [self.onboardingTextFields disableErrorState];
+        [self.onboardingNavigationItems hideError];
         [self.onboardingNavigationItems enableNextStep];
     } else {
         [self.onboardingNavigationItems disableNextStep];
@@ -422,7 +438,7 @@
     NSString *password = self.onboardingTextFields.passwordField.text;
     
     if ([self validPassword:password]) {
-        [self.onboardingTextFields disablePasswordErrorState];
+        [self.onboardingTextFields disableErrorState];
         [self.headerView disableErrorHelpText];
         [self.onboardingNavigationItems hideError];
         [self.onboardingNavigationItems enableNextStep];
@@ -467,7 +483,7 @@
 
 - (void)invalidPasswordOrEmailError
 {
-    [self.onboardingTextFields enablePasswordErrorState];
+    [self.onboardingTextFields enableErrorState];
     [self.onboardingNavigationItems showError:@"Please check your email and password."];
 }
 

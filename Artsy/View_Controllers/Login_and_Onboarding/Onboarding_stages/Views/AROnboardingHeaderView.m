@@ -49,7 +49,7 @@
         [self.titleLabel constrainWidthToView:self predicate:@"*.8"];
         [self.titleLabel alignLeadingEdgeWithView:self predicate:@"20"];
     }
-    [self.titleLabel alignTopEdgeWithView:self predicate:@"30"];
+    [self.titleLabel alignTopEdgeWithView:self predicate:useLargeLayout ? @"80" : @"30"];
     [self.titleLabel constrainHeight:@"60"];
 
 }
@@ -64,14 +64,14 @@
     [self addSubview:self.helpTextLabel];
     
     if (useLargeLayout) {
-        [self.helpTextLabel constrainWidth:@"800"];
+        [self.helpTextLabel constrainWidth:@"640"];
         [self.helpTextLabel alignCenterXWithView:self predicate:@"0"];
     } else {
         [self.helpTextLabel constrainWidthToView:self predicate:@"*.9"];
         [self.helpTextLabel alignLeadingEdgeWithView:self predicate:@"20"];
     }
-    [self.helpTextLabel constrainTopSpaceToView:self.titleLabel predicate:@"0"];
-    [self.helpTextLabel constrainHeight:@"50"];
+    [self.helpTextLabel constrainTopSpaceToView:self.titleLabel predicate:useLargeLayout ? @"-10" : @"0"];
+    [self.helpTextLabel constrainHeight:useLargeLayout ? @"80" : @"50"];
 
 }
 
@@ -84,7 +84,6 @@
 {
     self.helpTextLabel.textColor = [UIColor artsyGraySemibold];
 }
-
 
 - (void)showSearchBar
 {
