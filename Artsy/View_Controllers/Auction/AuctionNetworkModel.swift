@@ -4,6 +4,7 @@ import Interstellar
 protocol AuctionNetworkModelType {
     func fetch() -> Observable<Result<SaleViewModel>>
     func fetchBidders() -> Observable<Result<[Bidder]>>
+    func fetchLotStanding() -> Observable<Result<[LotStanding]>>
 
     var bidders: [Bidder] { get }
 }
@@ -58,6 +59,10 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                 // Store the SaleViewModel
                 self.saleViewModel = saleViewModel
             }
+    }
+
+    func fetchLotStanding() -> Observable<Result<[LotStanding]>> {
+        return lotStandingsNetworkModel.fetch(saleID)
     }
 
     func createViewModel(_ bidders: [Bidder], lotStandings: [LotStanding]) -> Observable<Result<SaleViewModel>> {

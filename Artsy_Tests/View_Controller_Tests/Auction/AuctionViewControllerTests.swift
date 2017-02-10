@@ -450,6 +450,11 @@ class Test_AuctionNetworkModel: AuctionNetworkModelType {
     func fetchBidders() -> Observable<Result<[Bidder]>> {
         return Observable(.success(bidders))
     }
+
+    func fetchLotStanding() -> Observable<Result<[LotStanding]>> {
+        // TODO: DI some fake results here.
+        return Observable(.success([]))
+    }
 }
 
 func test_saleArtworkWithLotNumber(_ lotNumber: Int, artistName: String, bidCount: Int, highestBidCents: Int) -> SaleArtwork {
