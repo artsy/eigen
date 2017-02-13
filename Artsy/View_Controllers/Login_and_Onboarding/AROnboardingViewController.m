@@ -408,6 +408,11 @@
 #pragma mark -
 #pragma mark Signup
 
+- (NSString *)userEmail
+{
+    return self.email;
+}
+
 - (void)accountExistsForEmail:(NSString *)email
 {
     __weak typeof(self) wself = self;

@@ -262,7 +262,6 @@
 }
 - (void)addFacebookButton
 {
-
     [self addButtons];
     [self.onboardingButtonsView setupForFacebook];
     
@@ -395,6 +394,7 @@
             } else {
                 [self nextTapped:nil];
             }
+            break;
         case AROnboardingStagePersonalizeEmail:
             if (![self validEmail:textField.text]) {
                 [self.onboardingTextFields enableErrorState];
@@ -403,6 +403,7 @@
             } else {
                 [self nextTapped:nil];
             }
+            break;
         case AROnboardingStagePersonalizeLogin:
         case AROnboardingStagePersonalizeName:
             [self nextTapped:nil];
@@ -510,46 +511,59 @@
 
 - (void)forgotPassword:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Forgot Password"
-                          message:@"Please enter your email address and we’ll send you a reset link."
-                          delegate:nil
-                          cancelButtonTitle:@"Cancel"
-                          otherButtonTitles:@"Send Link", nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    alert.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
-        if (buttonIndex == alertView.firstOtherButtonIndex) {
-            NSString *email = [[alertView textFieldAtIndex:0] text];
-            if (![self validEmail:email]) {
-                [self passwordResetError:@"Please check your email address"];
-            } else {
-//                [self showSpinner];
-                [self.delegate sendPasswordResetEmail:email sender:self];
-            }
-        }
-    };
-//    [self hideKeyboard];
-    [alert show];
+    UIAlertController *forgotPasswordAlert = [UIAlertController alertControllerWithTitle:@"Forgot Password"
+                                                                                 message:@"Please enter your email address and we’ll send you a reset link."
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *sendEmailAction = [UIAlertAction actionWithTitle:@"Send Link"
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction * _Nonnull action) {
+                                                                NSString *email = [[forgotPasswordAlert textFields].firstObject text];
+                                                                if (![self validEmail:email]) {
+                                                                    [self passwordResetError:@"Please check your email address"];
+                                                                } else {
+                                                                    [self.delegate sendPasswordResetEmail:email sender:self];
+                                                                }
+                                                            }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    
+    [forgotPasswordAlert addAction:sendEmailAction];
+    [forgotPasswordAlert addAction:cancelAction];
+    
+    [forgotPasswordAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.text = [self.delegate userEmail];
+    }];
+    
+    [self presentViewController:forgotPasswordAlert animated:YES completion:nil];
 }
 
 - (void)passwordResetSent
 {
-//    [self hideSpinner];
-    [UIAlertView showWithTitle:@"Please Check Your Email"
-                       message:@"We have sent you an email with a link to reset your password"
-             cancelButtonTitle:@"OK"
-             otherButtonTitles:nil
-                      tapBlock:nil];
+    UIAlertController *confirmationAlert = [UIAlertController alertControllerWithTitle:@"Please Check Your Email"
+                                                                               message:@"We have sent you an email with a link to reset your password"
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"OK"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * _Nonnull action) {
+                                                         }];
+    [confirmationAlert addAction:cancelAction];
+    [self presentViewController:confirmationAlert animated:YES completion:nil];
 }
 
 - (void)passwordResetError:(NSString *)message
 {
-//    [self hideSpinner];
-    [UIAlertView showWithTitle:@"Couldn’t Reset Password"
-                       message:message
-             cancelButtonTitle:@"OK"
-             otherButtonTitles:nil
-                      tapBlock:nil];
+    UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:@"Couldn’t Reset Password"
+                                                                               message:@"There was an issue trying to reset your password. Please try again."
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"OK"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * _Nonnull action) {
+                                                         }];
+    [errorAlert addAction:cancelAction];
+    [self presentViewController:errorAlert animated:YES completion:nil];
 }
 
 
