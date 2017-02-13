@@ -500,11 +500,13 @@
     }
 }
 
-- (void)invalidPasswordOrEmailError
+- (void)showErrorWithMessage:(NSString *)errorMessage
 {
     [self.onboardingTextFields enableErrorState];
-    [self.onboardingNavigationItems showError:@"Please check your email and password."];
+    [self.onboardingNavigationItems showError:errorMessage];
 }
+
+
 
 #pragma mark -
 #pragma mark Forgot Password
