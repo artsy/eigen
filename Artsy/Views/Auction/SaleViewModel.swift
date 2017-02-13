@@ -29,6 +29,16 @@ extension SaleViewModel {
         return lotStandings.isNotEmpty
     }
 
+    var numberOfLotStandings: Int {
+        return lotStandings.count
+    }
+
+    func lotStanding(at index: Int) -> LotStanding {
+        precondition(0..<numberOfLotStandings ~= index, "Index exceeds bounds of lotStandings")
+
+        return lotStandings[index]
+    }
+
     var auctionState: ARAuctionState {
         return sale.auctionStateWithBidders(bidders)
     }
