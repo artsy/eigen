@@ -418,8 +418,8 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
     ARFollowableButton *followButton = [[ARFollowableButton alloc] init];
     followButton.tag = ARFairShowViewFollowPartner;
     if (self.show.partner.type == ARPartnerTypeGallery) {
-        followButton.toFollowTitle = @"Follow Gallery";
-        followButton.toUnfollowTitle = @"Following Gallery";
+        followButton.toFollowTitle = @"Follow Institution";
+        followButton.toUnfollowTitle = @"Following Institution";
     }
     [followButton addTarget:self action:@selector(toggleFollowShow:) forControlEvents:UIControlEventTouchUpInside];
 
