@@ -109,7 +109,7 @@ class AuctionViewController: UIViewController {
     }
 
     enum ViewTags: Int {
-        case banner = 0, title
+        case banner = 0, title, lotStandings
 
         case whitespaceGobbler
     }
@@ -165,6 +165,10 @@ extension AuctionViewController {
         titleView.tag = ViewTags.title.rawValue
         headerStack.addSubview(titleView, withTopMargin: "\(topSpacing)", sideMargin: "\(sideSpacing)")
         self.titleView = titleView
+
+        let lotStandingsView = LotStandingsView(saleViewModel: saleViewModel, isCompact: isCompactSize)
+        lotStandingsView.tag = ViewTags.lotStandings.rawValue
+        headerStack.addSubview(lotStandingsView, withTopMargin: "0", sideMargin: "0")
 
         stickyHeader = ScrollingStickyHeaderView().then {
             $0.toggleAttatched(false, animated: false)
