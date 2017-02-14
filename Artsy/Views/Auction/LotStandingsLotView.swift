@@ -76,7 +76,7 @@ extension LotStandingsLotView {
 
         // UI setup that's hard to do in Interface Builder
         currentBidLabel.font = UIFont.serifBoldFont(withSize: currentBidLabel.font.pointSize)
-        lotNumberLabel.font = UIFont.sansSerifFont(withSize: 12)
         artistNameLabel.font = UIFont.serifBoldFont(withSize: artistNameLabel.font.pointSize)
+        lotNumberLabel.font = UIFont.sansSerifFont(withSize: 12)
     }
 }

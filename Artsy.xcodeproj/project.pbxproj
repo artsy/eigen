@@ -318,6 +318,9 @@
 		5E4E32A51E535D2A00C7F724 /* LotStandingsLotViewRegular.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5E4E32A41E535D2A00C7F724 /* LotStandingsLotViewRegular.xib */; };
 		5E4E32A71E535D8000C7F724 /* LotStandingsLotListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E32A61E535D8000C7F724 /* LotStandingsLotListView.swift */; };
 		5E4E32A91E535EB700C7F724 /* LotStandingsLotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E32A81E535EB700C7F724 /* LotStandingsLotView.swift */; };
+		5E4E32AD1E53884E00C7F724 /* paddle.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E4E32AA1E53884E00C7F724 /* paddle.png */; };
+		5E4E32AE1E53884E00C7F724 /* paddle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E4E32AB1E53884E00C7F724 /* paddle@2x.png */; };
+		5E4E32AF1E53884E00C7F724 /* paddle@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E4E32AC1E53884E00C7F724 /* paddle@3x.png */; };
 		5E4F17481CD80FD800AEB6BD /* LiveBidder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E4F17471CD80FD800AEB6BD /* LiveBidder.m */; };
 		5E50987D18F82FCF001AC704 /* AROfflineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E50987C18F82FCF001AC704 /* AROfflineView.m */; };
 		5E55CAB31D9D8014005D0D73 /* LiveAuctionLotBidHistoryGestureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E55CAB21D9D8014005D0D73 /* LiveAuctionLotBidHistoryGestureController.swift */; };
@@ -1287,6 +1290,9 @@
 		5E4E32A41E535D2A00C7F724 /* LotStandingsLotViewRegular.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LotStandingsLotViewRegular.xib; path = Auction/LotStandingsLotViewRegular.xib; sourceTree = "<group>"; };
 		5E4E32A61E535D8000C7F724 /* LotStandingsLotListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LotStandingsLotListView.swift; path = Auction/LotStandingsLotListView.swift; sourceTree = "<group>"; };
 		5E4E32A81E535EB700C7F724 /* LotStandingsLotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LotStandingsLotView.swift; path = Auction/LotStandingsLotView.swift; sourceTree = "<group>"; };
+		5E4E32AA1E53884E00C7F724 /* paddle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paddle.png; sourceTree = "<group>"; };
+		5E4E32AB1E53884E00C7F724 /* paddle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paddle@2x.png"; sourceTree = "<group>"; };
+		5E4E32AC1E53884E00C7F724 /* paddle@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paddle@3x.png"; sourceTree = "<group>"; };
 		5E4F17461CD80FD800AEB6BD /* LiveBidder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LiveBidder.h; path = Live/LiveBidder.h; sourceTree = "<group>"; };
 		5E4F17471CD80FD800AEB6BD /* LiveBidder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LiveBidder.m; path = Live/LiveBidder.m; sourceTree = "<group>"; };
 		5E50987B18F82FCF001AC704 /* AROfflineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROfflineView.h; sourceTree = "<group>"; };
@@ -3908,6 +3914,9 @@
 				5E20BB691C62C81600C6D781 /* CircularInfoButton.png */,
 				5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */,
 				5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */,
+				5E4E32AA1E53884E00C7F724 /* paddle.png */,
+				5E4E32AB1E53884E00C7F724 /* paddle@2x.png */,
+				5E4E32AC1E53884E00C7F724 /* paddle@3x.png */,
 				5E17B1961C5965CC00CE6E98 /* Thumb.png */,
 				5E17B1971C5965CC00CE6E98 /* Thumb@2x.png */,
 				5E17B1921C59645E00CE6E98 /* Range@2x.png */,
@@ -4837,6 +4846,7 @@
 				601E31AB1C80A55F00D09F73 /* live_auctions_static.json in Resources */,
 				E6FFEABA19C7925600A0D7DE /* splash_3@2x~iphone.jpg in Resources */,
 				5E17B1981C5965CC00CE6E98 /* Thumb.png in Resources */,
+				5E4E32AE1E53884E00C7F724 /* paddle@2x.png in Resources */,
 				3C4AE98119094DAA009C0E8B /* MapAnnotation_Highlighted@2x.png in Resources */,
 				60E71A011B4C60AC008948FA /* Artsy_Logo.png in Resources */,
 				605002E317D8912300C090B8 /* Artwork_Icon_Share@2x.png in Resources */,
@@ -4874,6 +4884,7 @@
 				608B707017D4A1C80088A56C /* BackArrow_Highlighted@2x.png in Resources */,
 				3C4AE98719094DAA009C0E8B /* MapAnnotation_Search@2x.png in Resources */,
 				3C4AE98519094DAA009C0E8B /* MapAnnotation_Restroom@2x.png in Resources */,
+				5E4E32AD1E53884E00C7F724 /* paddle.png in Resources */,
 				3C4AE97F19094DAA009C0E8B /* MapAnnotation_Food@2x.png in Resources */,
 				E620C74819C746530064A0FF /* Images.xcassets in Resources */,
 				1C5AAEB11CD7D42E00515B73 /* BackArrowBlack@2x.png in Resources */,
@@ -4902,6 +4913,7 @@
 				608B706E17D4A1C80088A56C /* Artwork_Icon_VIR@2x.png in Resources */,
 				E6FFEAB619C7925600A0D7DE /* splash_1@2x~iphone.jpg in Resources */,
 				5E20BB6A1C62C81600C6D781 /* CircularInfoButton@2x.png in Resources */,
+				5E4E32AF1E53884E00C7F724 /* paddle@3x.png in Resources */,
 				605002E917D9F5DC00C090B8 /* SmallMoreVerticalArrow.png in Resources */,
 				605002EA17D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png in Resources */,
 				E6CD164A18ABE291001254B5 /* Image_Shadow_Overlay@2x.png in Resources */,
