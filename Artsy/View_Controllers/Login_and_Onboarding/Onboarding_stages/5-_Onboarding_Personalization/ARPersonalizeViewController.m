@@ -580,7 +580,16 @@
     [self.searchRequestOperation cancel];
 
     if (searchBarIsEmpty) {
-        [self.searchResultsTable updateTableContentsFor:@[] replaceContents:ARSearchResultsReplaceAll animated:NO];
+        switch (self.state) {
+            case AROnboardingStagePersonalizeArtists: {
+                [self populateTrendingArtistsAnimated:NO];
+            } break;
+            case AROnboardingStagePersonalizeCategories: {
+                [self populateTrendingCategoriesAnimated:NO];
+            } break;
+            default:
+                break;
+        }
         return;
     }
 
