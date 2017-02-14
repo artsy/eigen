@@ -1158,7 +1158,7 @@ static NSString *hostFromString(NSString *string)
     NSParameterAssert(saleID);
     NSDictionary *params = @{
         @"sale_id": saleID,
-        @"live": @(YES) // We only want to show active bids for open sales.
+        @"live": @(NO) // We want to show standings for all sales, not just live ones.
     };
 
     return [self requestWithMethod:@"GET" path:ARMyLotStandingsURL parameters:params];
