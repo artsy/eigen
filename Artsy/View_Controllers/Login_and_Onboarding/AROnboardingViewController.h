@@ -46,7 +46,6 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 
 /// A state-machine based VC that implements the app onboarding process
 
-
 @interface AROnboardingViewController : UINavigationController <ARLoginSignupDelegate, AROnboardingStepsDelegate>
 
 - (instancetype)initWithState:(enum ARInitialOnboardingState)state;
@@ -57,7 +56,5 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
 - (void)finishAccountCreation;
 - (void)showTermsAndConditions;
 - (void)showPrivacyPolicy;
-
-- (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount;
 
 @end

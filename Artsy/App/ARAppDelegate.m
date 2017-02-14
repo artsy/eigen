@@ -252,7 +252,6 @@ static ARAppDelegate *_sharedInstance = nil;
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 
     ar_dispatch_main_queue(^{
-        [self.remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
         if ([User currentUser]) {
             [self.remoteNotificationsDelegate fetchNotificationCounts];
             [ARSpotlight indexAllUsersFavorites];
