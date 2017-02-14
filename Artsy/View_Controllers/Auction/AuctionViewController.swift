@@ -171,6 +171,7 @@ extension AuctionViewController {
         // TODO: Recreate everything from scratch when size class changes.
 
         let headerStack = ORTagBasedAutoStackView()
+        self.headerStack = headerStack
         saleArtworksViewController = ARModelInfiniteScrollViewController()
 
         ar_addAlignedModernChildViewController(saleArtworksViewController)
@@ -217,8 +218,6 @@ extension AuctionViewController {
         displayCurrentItems()
 
         ar_removeIndeterminateLoadingIndicator(animated: allowAnimations)
-
-        self.headerStack = headerStack
     }
 
     func setupForUpcomingLiveInterface(_ timeToLiveStart: TimeInterval) {
