@@ -353,7 +353,7 @@
 - (void)personalizeLoginWithPasswordDone:(NSString *)password
 {
     [self loginUserWithEmail:self.email password:password withSuccess:^{
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AROnboardingHasCompletedOnboarding];
+        [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
         [self finishAccountCreation];
     }];
 }

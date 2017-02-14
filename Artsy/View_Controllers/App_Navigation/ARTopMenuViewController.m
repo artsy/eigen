@@ -150,8 +150,8 @@ static const CGFloat ARMenuButtonDimension = 50;
 
     [self registerWithSwitchBoard:ARSwitchBoard.sharedInstance];
     
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingHasCompletedOnboarding]) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AROnboardingHasCompletedOnboarding];
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding)  {
+        [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
         [self fadeInFromOnboarding];
     }
 }

@@ -16,7 +16,14 @@ extern NSString *const ARXAppTokenExpiryDateDefault;
 #pragma mark -
 #pragma mark onboarding
 
-extern NSString *const AROnboardingHasCompletedOnboarding;
+extern NSString *const AROnboardingUserProgressionStage;
+
+typedef NS_ENUM(NSInteger, AROnboardingUserProgressStage) {
+    AROnboardingStageDefault,
+    AROnboardingStageOnboarding,
+    AROnboardingStageOnboarded
+};
+
 
 #pragma mark -
 #pragma mark push notifications

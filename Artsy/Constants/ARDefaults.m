@@ -1,8 +1,6 @@
 #import "ARDefaults+SiteFeatures.h"
 #import "ARDefaults.h"
 
-const static NSInteger AROnboardingPromptDefault = 25;
-
 NSString *const ARUserIdentifierDefault = @"ARUserIdentifier";
 NSString *const ARUseStagingDefault = @"ARUseStagingDefault";
 
@@ -20,7 +18,7 @@ NSString *const AROAuthTokenExpiryDateDefault = @"AROAuthTokenExpiryDate";
 NSString *const ARXAppTokenKeychainKey = @"ARXAppTokenDefault";
 NSString *const ARXAppTokenExpiryDateDefault = @"ARXAppTokenExpiryDateDefault";
 
-NSString *const AROnboardingHasCompletedOnboarding = @"eigen-onboard-has-completed";
+NSString *const AROnboardingUserProgressionStage = @"eigen-onboard-user-progression-stage";
 
 NSString *const ARPushNotificationsAppleDialogueSeen = @"eigen-push-seen-dialogue";
 NSString *const ARPushNotificationsAppleDialogueRejected = @"eigen-push-reject-dialogue";
@@ -43,7 +41,7 @@ NSString *const AREmissionHeadVersionDefault = @"emission-head-version";
 #endif
 
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{
-        AROnboardingHasCompletedOnboarding : @(NO),
+        AROnboardingUserProgressionStage : @(0),
 
         ARUseStagingDefault : @(useStagingDefault),
         ARStagingAPIURLDefault : @"https://stagingapi.artsy.net",

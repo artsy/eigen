@@ -139,7 +139,28 @@ static ARAppDelegate *_sharedInstance = nil;
     [FBSDKSettings setAppID:[ArtsyKeys new].artsyFacebookAppID];
 
     // This has to be checked *before* creating the first Xapp token.
-    BOOL shouldShowOnboarding = ![[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingHasCompletedOnboarding];
+    NSInteger numberOfRuns = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
+
+    BOOL shouldShowOnboarding;
+    
+    BOOL firstTimeUser = (numberOfRuns == 1);
+    BOOL hasAccount = [[ARUserManager sharedManager] hasExistingAccount];
+    AROnboardingUserProgressStage onboardingState = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
+    
+    if (firstTimeUser && !hasAccount && (onboardingState == AROnboardingStageDefault)) {
+        // you are a fresh install - you will be onboarding and we set the enum to check when you come back
+        [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarding forKey:AROnboardingUserProgressionStage];
+        shouldShowOnboarding = YES;
+    } else if (onboardingState == AROnboardingStageOnboarding) {
+        // you're coming back midway through your onboarding - we force you to complete it
+        shouldShowOnboarding = YES;
+    } else if (hasAccount) {
+        // so if you're not onboarding, you've either already completed it or opened the app before
+        shouldShowOnboarding = NO;
+    } else {
+        // fallback, if the user has no account, they have to log in / onboard to prevent crash
+        shouldShowOnboarding = YES;
+    }
     
     if (ARIsRunningInDemoMode) {
         [self.viewController presentViewController:[[ARDemoSplashViewController alloc] init] animated:NO completion:nil];
@@ -154,9 +175,11 @@ static ARAppDelegate *_sharedInstance = nil;
             [ARSystemTime sync];
         }];
 
-        if ([[ARUserManager sharedManager] hasExistingAccount]) {
+        if (hasAccount) {
+            // you've created an account, but haven't finished personalisation
             [self showOnboardingWithState:ARInitialOnboardingStatePersonalization];
         } else {
+            // you're new - welcome! we onboard you
             [self showOnboarding];
         }
 
