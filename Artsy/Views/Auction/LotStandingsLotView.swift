@@ -3,7 +3,7 @@ import FLKAutoLayout
 import SDWebImage
 
 class LotStandingsLotView: UIView {
-    typealias Config = (lotStanding: LotStanding, drawBottomBorder: Bool)
+    typealias Config = (lotStanding: LotStanding, drawBottomBorder: Bool, isCompact: Bool)
 
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var imageView: UIImageView!
@@ -32,7 +32,7 @@ class LotStandingsLotView: UIView {
         }
 
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.config = (lotStanding: lotStanding, drawBottomBorder: drawBottomBorder)
+        view.config = (lotStanding: lotStanding, drawBottomBorder: drawBottomBorder, isCompact: isCompact)
         view.constrainHeight(isCompact ? "160" : "140")
 
         return view
@@ -78,5 +78,10 @@ extension LotStandingsLotView {
         currentBidLabel.font = UIFont.serifBoldFont(withSize: currentBidLabel.font.pointSize)
         artistNameLabel.font = UIFont.serifBoldFont(withSize: artistNameLabel.font.pointSize)
         lotNumberLabel.font = UIFont.sansSerifFont(withSize: 12)
+        if config.isCompact {
+            bidStatusLabel.font = UIFont.sansSerifFont(withSize: 12)
+        }
+
+        setNeedsLayout()
     }
 }

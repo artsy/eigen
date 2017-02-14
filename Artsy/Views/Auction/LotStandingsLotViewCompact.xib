@@ -65,20 +65,20 @@
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="maz-gK-Krg">
                             <rect key="frame" x="0.0" y="90" width="122" height="20"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="paddle.png" translatesAutoresizingMaskIntoConstraints="NO" id="d8z-6U-TjH">
+                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" image="paddle.png" translatesAutoresizingMaskIntoConstraints="NO" id="d8z-6U-TjH">
                                     <rect key="frame" x="0.0" y="0.0" width="6" height="20"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="20" id="KBu-IL-ypQ"/>
-                                        <constraint firstAttribute="width" constant="6" id="eh8-hC-ZQP"/>
+                                        <constraint firstAttribute="width" constant="6" id="ZgI-mV-gy6"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$12,000,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRs-ie-jjh" customClass="ARSerifLabel">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="500" text="$12,000,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRs-ie-jjh" customClass="ARSerifLabel">
                                     <rect key="frame" x="8" y="0.0" width="52.5" height="20"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="(6 Bids)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sUP-a2-T7M" customClass="ARSerifLabel">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="775" text="(6 Bids)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sUP-a2-T7M" customClass="ARSerifLabel">
                                     <rect key="frame" x="62.5" y="0.0" width="59.5" height="20"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
