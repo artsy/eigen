@@ -421,6 +421,49 @@ class AuctionViewControllerTests: QuickSpec {
                 expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
             }
         }
+
+        context("lot standings") {
+            /*
+             LotStanding *subject = [LotStanding modelWithJSON:@{
+             @"sale_artwork": @{
+             @"id": @"some-sale-artwork-id"
+             },
+             @"leading_position": @{ @"some non-nil key": @"data" }
+             }]
+            */
+            let lotStandings = [
+                LotStanding(json: [
+                    "sale_artwork": ["id": "some-sale-artwork-id"],
+                    "leading_position": ["something": "doesn't matter what"]
+                    ])!,
+                LotStanding(json: [
+                    "sale_artwork": ["id": "some-sale-artwork-id"],
+                    "leading_position": NSNull()
+                    ])!
+            ]
+
+            it("looks good with lot standings") {
+                let now = NSDate()
+                let start = now.addingTimeInterval(-3600.9)
+                let end = now.addingTimeInterval(3600.9) // 0.9 is to cover the possibility a clock tick happens between this line and the next.
+
+                freezeTime(now as Date) {
+                    sale = try! Sale(dictionary: [
+                        "saleID": "the-testing-sale",
+                        "name": "Ash Furrow Auctions: Nerds Collect Art",
+                        "saleDescription": "This is a description",
+                        "startDate": start, "endDate": end], error: Void())
+                    saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
+                    saleViewModel.updateLotStandings(lotStandings)
+
+                    let subject = AuctionViewController(saleID: sale.saleID)
+                    subject.allowAnimations = false
+                    subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, lotStandings: lotStandings)
+
+                    expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
+                }
+            }
+        }
     }
 }
 
@@ -437,10 +480,12 @@ class Test_SaleViewModel: SaleViewModel {
 class Test_AuctionNetworkModel: AuctionNetworkModelType {
     let saleViewModel: SaleViewModel
     var bidders: [Bidder]
+    var lotStandings: [LotStanding]
 
-    init(saleViewModel: SaleViewModel, bidders: [Bidder] = []) {
+    init(saleViewModel: SaleViewModel, bidders: [Bidder] = [], lotStandings: [LotStanding] = []) {
         self.saleViewModel = saleViewModel
         self.bidders = bidders
+        self.lotStandings = lotStandings
     }
 
     func fetch() -> Observable<Result<SaleViewModel>> {
@@ -452,8 +497,7 @@ class Test_AuctionNetworkModel: AuctionNetworkModelType {
     }
 
     func fetchLotStanding() -> Observable<Result<[LotStanding]>> {
-        // TODO: DI some fake results here.
-        return Observable(.success([]))
+        return Observable(.success(lotStandings))
     }
 }
 
