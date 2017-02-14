@@ -6,6 +6,9 @@ class LotStandingsView: UIView {
     let saleViewModel: SaleViewModel
     let isCompact: Bool
 
+    fileprivate var titleView: LotStandingsTitleView?
+    fileprivate var listView: LotStandingsLotListView?
+
     init(saleViewModel: SaleViewModel, isCompact: Bool) {
         self.saleViewModel = saleViewModel
         self.isCompact = isCompact
@@ -19,29 +22,36 @@ class LotStandingsView: UIView {
         return nil
     }
 
-    override var intrinsicContentSize: CGSize {
-        if saleViewModel.hasLotStandings {
-            return super.intrinsicContentSize
-        } else {
-            return CGSize(width: UIViewNoIntrinsicMetric, height: 0)
-        }
-    }
-
     // TODO: Handle changing size class.
 }
 
 private typealias PrivateFunctions = LotStandingsView
 extension PrivateFunctions {
     func setup() {
+        guard saleViewModel.hasLotStandings else { return }
+
         let titleView = LotStandingsTitleView(isCompact: isCompact)
         addSubview(titleView)
         titleView.alignTopEdge(withView: self, predicate: "0")
         titleView.alignLeading("0", trailing: "0", toView: self)
 
-        let lotListView = LotStandingsLotListView(saleViewModel: saleViewModel, isCompact: isCompact)
-        addSubview(lotListView)
-        titleView.alignBottomEdge(withView: lotListView, predicate: "0")
-        lotListView.alignLeading("0", trailing: "0", toView: self)
-        lotListView.alignBottomEdge(withView: self, predicate: "0")
+        let listView = LotStandingsLotListView(saleViewModel: saleViewModel, isCompact: isCompact)
+        addSubview(listView)
+        listView.constrainTopSpace(toView: titleView, predicate: "0")
+        listView.alignLeading("0", trailing: "0", toView: self)
+        listView.alignBottomEdge(withView: self, predicate: isCompact ? "-10" : "-30")
+
+        let bottomBorder = UIView().then {
+            $0.backgroundColor = UIColor.artsyGrayMedium()
+            $0.constrainHeight("1")
+        }
+        addSubview(bottomBorder)
+        bottomBorder.alignBottomEdge(withView: self, predicate: "0")
+        bottomBorder.alignLeading("0", trailing: "0", toView: self)
+
+        self.listView = listView
+        self.titleView = titleView
+
+        setNeedsLayout()
     }
 }

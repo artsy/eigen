@@ -34,7 +34,7 @@ extension PrivateFunctions {
         let borderColor = UIColor.artsyGrayMedium()
 
         if isCompact {
-            titleLabel.alignTop("20", leading: sideSpacing, bottom: "20", trailing: sideSpacing, toView: self)
+            titleLabel.alignTop("20", leading: sideSpacing, bottom: "-20", trailing: trailingSpacing, toView: self)
 
             let topBorder = UIView().then {
                 $0.backgroundColor = borderColor
@@ -44,7 +44,7 @@ extension PrivateFunctions {
             topBorder.alignTopEdge(withView: self, predicate: "0")
             topBorder.alignLeading("0", trailing: "0", toView: self)
         } else {
-            titleLabel.alignTop("20", bottom: "20", toView: self)
+            titleLabel.alignTop("20", bottom: "-20", toView: self)
             titleLabel.alignCenterX(withView: self, predicate: "0")
 
             let borderConfig: (UIView) -> Void = {

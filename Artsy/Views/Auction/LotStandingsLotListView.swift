@@ -23,10 +23,16 @@ private typealias PrivateFunctions = LotStandingsLotListView
 extension PrivateFunctions {
     func setup() {
         let sideMargin = isCompact ? "40" : "80"
+        let topMargin = isCompact ? "10" : "20"
+        let numberOfLotStandings = saleViewModel.numberOfLotStandings
 
-        (0..<saleViewModel.numberOfLotStandings)
+        (0..<numberOfLotStandings)
             .map { saleViewModel.lotStanding(at: $0) }
-            .flatMap { LotStandingsLotView(isCompact: isCompact, lotStanding: $0) }
-            .forEach { addSubview($0, withTopMargin: "0", sideMargin: sideMargin) }
+            .enumerated()
+            .flatMap { (index, lotStanding) -> LotStandingsLotView? in
+                let drawBottomBorder = index != numberOfLotStandings - 1
+                return LotStandingsLotView.fromNib(isCompact: isCompact, lotStanding: lotStanding, drawBottomBorder: drawBottomBorder)
+            }
+            .forEach { addSubview($0, withTopMargin: topMargin, sideMargin: sideMargin) }
     }
 }
