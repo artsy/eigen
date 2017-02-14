@@ -4,10 +4,12 @@ import ORStackView
 class LotStandingsLotListView: ORStackView {
     let saleViewModel: SaleViewModel
     let isCompact: Bool
+    let lotStandingTappedClosure: LotStandingsView.LotStandingTappedClosure
 
-    init(saleViewModel: SaleViewModel, isCompact: Bool) {
+    init(saleViewModel: SaleViewModel, isCompact: Bool, lotStandingTappedClosure: @escaping LotStandingsView.LotStandingTappedClosure) {
         self.saleViewModel = saleViewModel
         self.isCompact = isCompact
+        self.lotStandingTappedClosure = lotStandingTappedClosure
 
         super.init(frame: CGRect.zero)
 
@@ -29,7 +31,11 @@ extension PrivateFunctions {
             .enumerated()
             .flatMap { (index, lotStanding) -> LotStandingsLotView? in
                 let drawBottomBorder = (index != numberOfLotStandings - 1)
-                return LotStandingsLotView.fromNib(isCompact: isCompact, lotStanding: lotStanding, drawBottomBorder: drawBottomBorder)
+                let lotView = LotStandingsLotView.fromNib(isCompact: isCompact, lotStanding: lotStanding, drawBottomBorder: drawBottomBorder)
+                lotView?.tappedClosure = { [weak self] in
+                    self?.lotStandingTappedClosure(index)
+                }
+                return lotView
             }
             .forEach { addSubview($0, withTopMargin: "0", sideMargin: "0") }
     }

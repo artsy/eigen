@@ -4,6 +4,7 @@ import SDWebImage
 
 class LotStandingsLotView: UIView {
     typealias Config = (lotStanding: LotStanding, drawBottomBorder: Bool, isCompact: Bool)
+    typealias TappedClosure = (Void) -> Void
 
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var imageView: UIImageView!
@@ -19,6 +20,8 @@ class LotStandingsLotView: UIView {
             setup()
         }
     }
+
+    var tappedClosure: TappedClosure?
 
     static func fromNib(isCompact: Bool, lotStanding: LotStanding, drawBottomBorder: Bool) -> LotStandingsLotView? {
         let nibName = "LotStandingsLotView" + (isCompact ? "Compact" : "Regular")
@@ -83,5 +86,12 @@ extension LotStandingsLotView {
         }
 
         setNeedsLayout()
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
+        addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    func tapped() {
+        tappedClosure?()
     }
 }

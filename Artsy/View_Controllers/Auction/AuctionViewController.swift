@@ -137,7 +137,15 @@ extension AuctionViewController {
     }
 
     func addLotStandings() {
-        let lotStandingsView = LotStandingsView(saleViewModel: saleViewModel, isCompact: isCompactSize)
+        let lotStandingsView = LotStandingsView(
+            saleViewModel: saleViewModel,
+            isCompact: isCompactSize,
+            lotStandingTappedClosure: { [weak self] index in
+                guard let lotStanding = self?.saleViewModel?.lotStanding(at: index) else { return }
+                guard let artworkViewController = ARArtworkSetViewController(artwork: lotStanding.saleArtwork.artwork) else { return }
+                self?.navigationController?.pushViewController(artworkViewController, animated: true)
+            }
+        )
         lotStandingsView.tag = ViewTags.lotStandings.rawValue
         headerStack.addSubview(lotStandingsView, withTopMargin: "0", sideMargin: "0")
     }
