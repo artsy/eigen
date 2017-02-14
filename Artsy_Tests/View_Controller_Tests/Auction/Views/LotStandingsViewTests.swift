@@ -44,7 +44,7 @@ class LotStandingsViewTests: QuickSpec {
                 }
 
                 ARTestContext.use(device) {
-                    expect(subject).to( haveValidSNapshot(usesDrawRect: true) )
+                    expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
                 }
             }
         }
