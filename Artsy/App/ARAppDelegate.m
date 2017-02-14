@@ -145,7 +145,7 @@ static ARAppDelegate *_sharedInstance = nil;
     
     BOOL firstTimeUser = (numberOfRuns == 1);
     BOOL hasAccount = [[ARUserManager sharedManager] hasExistingAccount];
-    AROnboardingUserProgressStage onboardingState = 1; //[[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
+    AROnboardingUserProgressStage onboardingState = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
     
     if (firstTimeUser && !hasAccount && (onboardingState == AROnboardingStageDefault)) {
         // you are a fresh install - you will be onboarding and we set the enum to check when you come back

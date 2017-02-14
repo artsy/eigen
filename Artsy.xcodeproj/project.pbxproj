@@ -20,6 +20,8 @@
 		1C029B021CCF7FE700808503 /* ARLoginFieldsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B011CCF7FE700808503 /* ARLoginFieldsView.m */; };
 		1C029B051CD130A400808503 /* ARLoginButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C029B041CD130A400808503 /* ARLoginButtonsView.m */; };
 		1C02A20A1CADA80D008B4F6C /* full_logo_white_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C02A2091CADA80D008B4F6C /* full_logo_white_medium@2x.png */; };
+		1C09DFA71E53BAAD003F7BA7 /* onboardingspinner.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C09DFA51E53BAAD003F7BA7 /* onboardingspinner.png */; };
+		1C09DFA81E53BAAD003F7BA7 /* onboardingspinner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C09DFA61E53BAAD003F7BA7 /* onboardingspinner@2x.png */; };
 		1C40C19F1DF8B1B7003F454F /* ArtsyRecordedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C40C19E1DF8B1B7003F454F /* ArtsyRecordedTests.m */; };
 		1C5AAEB11CD7D42E00515B73 /* BackArrowBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB01CD7D42E00515B73 /* BackArrowBlack@2x.png */; };
 		1C5AAEB51CD87D9B00515B73 /* SearchButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB21CD87D9B00515B73 /* SearchButton.png */; };
@@ -799,6 +801,8 @@
 		1C029B031CD130A400808503 /* ARLoginButtonsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARLoginButtonsView.h; path = "../3_-_Sign_Up_+_Log_In/ARLoginButtonsView.h"; sourceTree = "<group>"; };
 		1C029B041CD130A400808503 /* ARLoginButtonsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARLoginButtonsView.m; path = "../3_-_Sign_Up_+_Log_In/ARLoginButtonsView.m"; sourceTree = "<group>"; };
 		1C02A2091CADA80D008B4F6C /* full_logo_white_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_white_medium@2x.png"; sourceTree = "<group>"; };
+		1C09DFA51E53BAAD003F7BA7 /* onboardingspinner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = onboardingspinner.png; path = Artsy/Resources/onboarding/onboardingspinner.png; sourceTree = SOURCE_ROOT; };
+		1C09DFA61E53BAAD003F7BA7 /* onboardingspinner@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "onboardingspinner@2x.png"; path = "Artsy/Resources/onboarding/onboardingspinner@2x.png"; sourceTree = SOURCE_ROOT; };
 		1C40C19C1DF8B1B7003F454F /* ArtsyRecordedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArtsyRecordedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C40C19E1DF8B1B7003F454F /* ArtsyRecordedTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArtsyRecordedTests.m; sourceTree = "<group>"; };
 		1C40C1A01DF8B1B7003F454F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3137,6 +3141,8 @@
 		60059B2017CE9CEE00BE132D /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				1C09DFA51E53BAAD003F7BA7 /* onboardingspinner.png */,
+				1C09DFA61E53BAAD003F7BA7 /* onboardingspinner@2x.png */,
 				E6FFEA9F19C7925600A0D7DE /* onboard_1@2x~ipad.jpg */,
 				E6FFEAA019C7925600A0D7DE /* onboard_1@2x~iphone.jpg */,
 				E6FFEAA519C7925600A0D7DE /* splash_1@2x~ipad.jpg */,
@@ -4779,6 +4785,7 @@
 				5168A7701B46D6D000FFBCBF /* NotificationsButton@2x.png in Resources */,
 				3C4AE98419094DAA009C0E8B /* MapAnnotation_Lounge@2x.png in Resources */,
 				1CC9EBA41CC76CDD00A74E3C /* followButtonChecked.png in Resources */,
+				1C09DFA71E53BAAD003F7BA7 /* onboardingspinner.png in Resources */,
 				6044CFC4179D64F500CE4132 /* Theme.json in Resources */,
 				608B708B17D4A1C80088A56C /* SidebarButtonBG@2x.png in Resources */,
 				E6FFEAB919C7925600A0D7DE /* splash_3@2x~ipad.jpg in Resources */,
@@ -4878,6 +4885,7 @@
 				66A43C671CE470C400FFD6ED /* Hash.png in Resources */,
 				3C4AE98219094DAA009C0E8B /* MapAnnotation_Info@2x.png in Resources */,
 				E6FFEAB819C7925600A0D7DE /* splash_2@2x~iphone.jpg in Resources */,
+				1C09DFA81E53BAAD003F7BA7 /* onboardingspinner@2x.png in Resources */,
 				608B708317D4A1C80088A56C /* MoreArrow@2x.png in Resources */,
 				60A0EA031C511C31002754A8 /* Echo.json in Resources */,
 				5E956E591CD2AD6E005C2332 /* live_auctions_socket.json in Resources */,

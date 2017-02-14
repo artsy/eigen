@@ -33,9 +33,6 @@
     self.emailField.hidden = YES;
     self.passwordField.hidden = NO;
     self.nameField.hidden = YES;
-    
-    NSDictionary *sizeAttributes = @{NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]};
-    [self.passwordField setPlaceholder:@"Password" withAttributes:sizeAttributes];
 }
 
 - (void)setupForSignUpWithLargeLayout:(BOOL)useLargeLayout
@@ -50,8 +47,6 @@
     self.emailField.hidden = NO;
     self.passwordField.hidden = YES;
     self.nameField.hidden = YES;
-    NSDictionary *sizeAttributes = @{NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]};
-    [self.emailField setPlaceholder:@"Email" withAttributes:sizeAttributes];
 }
 
 - (void)setupForPasswordWithLargeLayout:(BOOL)useLargeLayout
@@ -61,8 +56,8 @@
     self.passwordField.hidden = NO;
     self.nameField.hidden = YES;
     
-    NSDictionary *sizeAttributes = @{NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]};
-    [self.passwordField setPlaceholder:@"Create a password" withAttributes:sizeAttributes];
+    NSDictionary *placeholderAttributes = @{NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0], NSForegroundColorAttributeName : [UIColor artsyGrayMedium]};
+    [self.passwordField setPlaceholder:@"Create a password" withAttributes:placeholderAttributes];
 }
 
 - (void)setupForNameWithLargeLayout:(BOOL)useLargeLayout
@@ -71,13 +66,16 @@
     self.emailField.hidden = YES;
     self.passwordField.hidden = YES;
     self.nameField.hidden = NO;
-    NSDictionary *sizeAttributes = @{NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]};
-    [self.nameField setPlaceholder:@"Full Name" withAttributes:sizeAttributes];
-
 }
 
 - (void)commonSetupWithLargeLayout:(BOOL)useLargeLayout
 {
+    NSDictionary *placeholderAttributes = @{NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0], NSForegroundColorAttributeName : [UIColor artsyGrayMedium]};
+
+    [self.nameField setPlaceholder:@"Full Name" withAttributes:placeholderAttributes];
+    [self.emailField setPlaceholder:@"Email" withAttributes:placeholderAttributes];
+    [self.passwordField setPlaceholder:@"Password" withAttributes:placeholderAttributes];
+    
     for (ARTextFieldWithPlaceholder *textfield in @[ self.nameField, self.emailField, self.passwordField ]) {
         [self addSubview:textfield];
         textfield.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -88,14 +86,6 @@
     self.nameFieldHeightConstraint = [self.nameField constrainHeight:@"54"];
     [self.emailField constrainHeight:@"54"];
     [self.passwordField constrainHeight:@"54"];
-
-//    [self.nameField constrainWidthToView:self predicate:@"0"];
-//    [self.emailField constrainWidthToView:self predicate:@"0"];
-//    [self.passwordField constrainWidthToView:self predicate:@"0"];
-
-//    [self.nameField alignCenterXWithView:self predicate:@"0"];
-//    [self.emailField alignCenterXWithView:self predicate:@"0"];
-//    [self.passwordField alignCenterXWithView:self predicate:@"0"];
 
     [self.nameField alignTopEdgeWithView:self predicate:@"30"];
     [self.emailField alignTopEdgeWithView:self predicate:@"30"];
@@ -113,10 +103,6 @@
     
     [self.passwordField alignLeadingEdgeWithView:self predicate:@"20"];
     [self.passwordField alignTrailingEdgeWithView:self predicate:@"-20"];
-    
-    self.emailField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.emailField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyGrayMedium]}];
-    self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyGrayMedium]}];
-    self.nameField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.nameField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyGrayMedium]}];
     
     self.emailField.baseline.backgroundColor = [UIColor blackColor].CGColor;
     self.passwordField.baseline.backgroundColor = [UIColor blackColor].CGColor;

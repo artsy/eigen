@@ -161,7 +161,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     UIView *done = [[UIView alloc] init];
     done.backgroundColor = [UIColor blackColor];
     
-    UIImageView *spinner = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"LiveAuctionSpinner"] ];
+    UIImageView *spinner = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"onboardingspinner"] ];
     
     UILabel *label = [[UILabel alloc] init];
     label.text = @"Personalizing your Artsy experience";
