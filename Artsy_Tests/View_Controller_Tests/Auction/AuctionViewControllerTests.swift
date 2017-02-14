@@ -423,14 +423,6 @@ class AuctionViewControllerTests: QuickSpec {
         }
 
         context("lot standings") {
-            /*
-             LotStanding *subject = [LotStanding modelWithJSON:@{
-             @"sale_artwork": @{
-             @"id": @"some-sale-artwork-id"
-             },
-             @"leading_position": @{ @"some non-nil key": @"data" }
-             }]
-            */
             let lotStandings = [
                 LotStanding(json: [
                     "sale_artwork": ["id": "some-sale-artwork-id"],
@@ -472,8 +464,8 @@ class Test_SaleViewModel: SaleViewModel {
     override var currencySymbol: String { return "$" }
     override var auctionState: ARAuctionState { return stubbedAuctionState }
 
-    init(sale: Sale, saleArtworks: [SaleArtwork], bidders: [Bidder]) {
-        super.init(sale: sale, saleArtworks: saleArtworks, bidders: bidders, lotStandings: [])
+    override init(sale: Sale, saleArtworks: [SaleArtwork], bidders: [Bidder], lotStandings: [LotStanding] = []) {
+        super.init(sale: sale, saleArtworks: saleArtworks, bidders: bidders, lotStandings: lotStandings)
     }
 }
 
