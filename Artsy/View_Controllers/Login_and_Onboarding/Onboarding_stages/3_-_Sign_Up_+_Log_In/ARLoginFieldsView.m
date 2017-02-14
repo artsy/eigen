@@ -27,56 +27,62 @@
     return self;
 }
 
-- (void)setupForLogin
+- (void)setupForLoginWithLargeLayout:(BOOL)useLargeLayout
 {
-    [self commonSetup];
+    [self commonSetupWithLargeLayout:useLargeLayout];
     self.emailField.hidden = YES;
     self.passwordField.hidden = NO;
     self.nameField.hidden = YES;
-    [self.passwordField setPlaceholder:@"Password"];
+    
+    NSDictionary *sizeAttributes = @{NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]};
+    [self.passwordField setPlaceholder:@"Password" withAttributes:sizeAttributes];
 }
 
-- (void)setupForSignUp
+- (void)setupForSignUpWithLargeLayout:(BOOL)useLargeLayout
 {
-    [self commonSetup];
+    [self commonSetupWithLargeLayout:useLargeLayout];
     self.passwordField.returnKeyType = UIReturnKeyNext;
 }
 
-- (void)setupForEmail
+- (void)setupForEmailWithLargeLayout:(BOOL)useLargeLayout
 {
-    [self commonSetup];
+    [self commonSetupWithLargeLayout:useLargeLayout];
     self.emailField.hidden = NO;
     self.passwordField.hidden = YES;
     self.nameField.hidden = YES;
+    NSDictionary *sizeAttributes = @{NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]};
+    [self.emailField setPlaceholder:@"Email" withAttributes:sizeAttributes];
 }
 
-- (void)setupForPassword
+- (void)setupForPasswordWithLargeLayout:(BOOL)useLargeLayout
 {
-    [self commonSetup];
+    [self commonSetupWithLargeLayout:useLargeLayout];
     self.emailField.hidden = YES;
     self.passwordField.hidden = NO;
     self.nameField.hidden = YES;
-    [self.passwordField setPlaceholder:@"Create a password"];
+    
+    NSDictionary *sizeAttributes = @{NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]};
+    [self.passwordField setPlaceholder:@"Create a password" withAttributes:sizeAttributes];
 }
 
-- (void)setupForName
+- (void)setupForNameWithLargeLayout:(BOOL)useLargeLayout
 {
-    [self commonSetup];
+    [self commonSetupWithLargeLayout:useLargeLayout];
     self.emailField.hidden = YES;
     self.passwordField.hidden = YES;
     self.nameField.hidden = NO;
+    NSDictionary *sizeAttributes = @{NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]};
+    [self.nameField setPlaceholder:@"Full Name" withAttributes:sizeAttributes];
+
 }
 
-- (void)commonSetup
+- (void)commonSetupWithLargeLayout:(BOOL)useLargeLayout
 {
-    [self.nameField setPlaceholder:@"Full Name"];
-    [self.emailField setPlaceholder:@"Email"];
-    [self.passwordField setPlaceholder:@"Password"];
-
     for (ARTextFieldWithPlaceholder *textfield in @[ self.nameField, self.emailField, self.passwordField ]) {
         [self addSubview:textfield];
         textfield.autocorrectionType = UITextAutocorrectionTypeNo;
         textfield.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textfield.font = [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0];
     }
 
     self.nameFieldHeightConstraint = [self.nameField constrainHeight:@"54"];

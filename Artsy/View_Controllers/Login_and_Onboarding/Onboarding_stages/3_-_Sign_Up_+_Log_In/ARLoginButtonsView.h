@@ -5,8 +5,8 @@
 
 @property (nonatomic, strong, readonly) UIButton *actionButton;
 
-- (void)setupForLogin; // includes forget password button
-- (void)setupForSignUp; // includes back button
-- (void)setupForFacebook;
+- (void)setupForLoginWithLargeLayout:(BOOL)useLargeLayout; // includes forget password button
+- (void)setupForSignUpWithLargeLayout:(BOOL)useLargeLayout; // includes back button
+- (void)setupForFacebookWithLargeLayout:(BOOL)useLargeLayout;
 
 @end

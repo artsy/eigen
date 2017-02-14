@@ -41,7 +41,15 @@
 
 - (void)setPlaceholder:(NSString *)placeholder
 {
-    self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName : [UIColor artsyGraySemibold]}];
+//    [NSMutableDictionary addEntriesFromDictionary:]
+    [self setPlaceholder:placeholder withAttributes:nil];
+}
+
+- (void)setPlaceholder:(NSString *)placeholder withAttributes:(NSDictionary *)attributes
+{
+    NSMutableDictionary *defaultAttributes = [[NSMutableDictionary alloc] initWithDictionary:@{NSForegroundColorAttributeName : [UIColor artsyGraySemibold]}];;
+    if (attributes) {[defaultAttributes addEntriesFromDictionary:attributes];}
+    self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:defaultAttributes];
 }
 
 - (void)addSubview:(UIView *)view

@@ -205,7 +205,6 @@
 		49405AB317BEBAFF004F86D8 /* AROnboardingNavBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49405AB217BEBAFF004F86D8 /* AROnboardingNavBarView.m */; };
 		494332FD16692010005AB483 /* VideoContentLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 494332FC16692010005AB483 /* VideoContentLink.m */; };
 		49473F3317C18772004BF082 /* ARSlideshowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49473F3217C18772004BF082 /* ARSlideshowViewController.m */; };
-		49473F3617C1907F004BF082 /* ARCreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49473F3517C1907F004BF082 /* ARCreateAccountViewController.m */; };
 		49473F3917C192AE004BF082 /* ARTextFieldWithPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 49473F3817C192AE004BF082 /* ARTextFieldWithPlaceholder.m */; };
 		4953E8321668021D00A09726 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 4953E8311668021D00A09726 /* Image.m */; };
 		4953E8381668179500A09726 /* PostImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4953E8371668179500A09726 /* PostImage.m */; };
@@ -589,7 +588,6 @@
 		60D90A0817C2182F0073D5B9 /* ARExternalWebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D90A0717C2182F0073D5B9 /* ARExternalWebBrowserViewController.m */; };
 		60D90A0B17C218930073D5B9 /* ARInternalMobileWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D90A0A17C218930073D5B9 /* ARInternalMobileWebViewController.m */; };
 		60DCDAD71C6533DF00BB61D7 /* ARSerifNavigationViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 60DCDAD51C6533A900BB61D7 /* ARSerifNavigationViewControllerSpec.m */; };
-		60DE2DE11677B30700621540 /* ARLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 608B2F711657D2DF0046956C /* ARLoginViewController.m */; };
 		60E719FE1B4C6032008948FA /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60E719FD1B4C6032008948FA /* Launch Screen.xib */; };
 		60E71A011B4C60AC008948FA /* Artsy_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 60E71A001B4C60AC008948FA /* Artsy_Logo.png */; };
 		60E738711C64AB8B00AC381B /* ARStubbedAnalyticsProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E738701C64AB8B00AC381B /* ARStubbedAnalyticsProvider.m */; };
@@ -1095,8 +1093,6 @@
 		49473F2E17BEDFFD004BF082 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		49473F3117C18772004BF082 /* ARSlideshowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSlideshowViewController.h; sourceTree = "<group>"; };
 		49473F3217C18772004BF082 /* ARSlideshowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSlideshowViewController.m; sourceTree = "<group>"; };
-		49473F3417C1907F004BF082 /* ARCreateAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCreateAccountViewController.h; sourceTree = "<group>"; };
-		49473F3517C1907F004BF082 /* ARCreateAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCreateAccountViewController.m; sourceTree = "<group>"; };
 		49473F3717C192AE004BF082 /* ARTextFieldWithPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTextFieldWithPlaceholder.h; sourceTree = "<group>"; };
 		49473F3817C192AE004BF082 /* ARTextFieldWithPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTextFieldWithPlaceholder.m; sourceTree = "<group>"; };
 		494F16BC17BEDA8E00204F1D /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -1571,7 +1567,6 @@
 		608B2F611657D1500046956C /* ARDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaults.m; sourceTree = "<group>"; };
 		608B2F6D1657D1D10046956C /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		608B2F6E1657D1D10046956C /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
-		608B2F711657D2DF0046956C /* ARLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLoginViewController.m; sourceTree = "<group>"; };
 		608B703117D4A1C70088A56C /* ActionButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ActionButton@2x.png"; sourceTree = "<group>"; };
 		608B703717D4A1C70088A56C /* Heart_White@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Heart_White@2x.png"; sourceTree = "<group>"; };
 		608B703917D4A1C70088A56C /* Heart_Black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Heart_Black@2x.png"; sourceTree = "<group>"; };
@@ -1710,7 +1705,6 @@
 		60D90A0917C218930073D5B9 /* ARInternalMobileWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalMobileWebViewController.h; sourceTree = "<group>"; };
 		60D90A0A17C218930073D5B9 /* ARInternalMobileWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalMobileWebViewController.m; sourceTree = "<group>"; };
 		60DCDAD51C6533A900BB61D7 /* ARSerifNavigationViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARSerifNavigationViewControllerSpec.m; path = Components/ARSerifNavigationViewControllerSpec.m; sourceTree = "<group>"; };
-		60DE2DDE1677B26A00621540 /* ARLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLoginViewController.h; sourceTree = "<group>"; };
 		60E6446F17BE219E004486B3 /* HACKS.md */ = {isa = PBXFileReference; lastKnownFileType = text; name = HACKS.md; path = ../HACKS.md; sourceTree = "<group>"; };
 		60E719FD1B4C6032008948FA /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		60E71A001B4C60AC008948FA /* Artsy_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Artsy_Logo.png; sourceTree = "<group>"; };
@@ -3133,10 +3127,6 @@
 		60059B1D17CE6D8600BE132D /* Sign Up and Login */ = {
 			isa = PBXGroup;
 			children = (
-				49473F3417C1907F004BF082 /* ARCreateAccountViewController.h */,
-				49473F3517C1907F004BF082 /* ARCreateAccountViewController.m */,
-				60DE2DDE1677B26A00621540 /* ARLoginViewController.h */,
-				608B2F711657D2DF0046956C /* ARLoginViewController.m */,
 				4938742617BD512700724795 /* ARSignUpSplashViewController.h */,
 				4938742717BD512700724795 /* ARSignUpSplashViewController.m */,
 			);
@@ -5177,7 +5167,6 @@
 				60B6F13916638785007C9587 /* ArtsyAPI.m in Sources */,
 				1C029B051CD130A400808503 /* ARLoginButtonsView.m in Sources */,
 				60B6F13E16638815007C9587 /* Artwork.m in Sources */,
-				49473F3617C1907F004BF082 /* ARCreateAccountViewController.m in Sources */,
 				5E1DDF191CE22C0700DFEE2A /* SimpleProgressView.swift in Sources */,
 				6029E9F51993D726002D42C3 /* ARAppSearchViewController.m in Sources */,
 				49473F3917C192AE004BF082 /* ARTextFieldWithPlaceholder.m in Sources */,
@@ -5235,7 +5224,6 @@
 				607E2E7E17C8CA4D00396120 /* ARZoomArtworkImageViewController.m in Sources */,
 				5E20BB671C62C00D00C6D781 /* AuctionCircularButtons.swift in Sources */,
 				6016C199178C2C37008EC8E7 /* ARArtworkFlowModule.m in Sources */,
-				60DE2DE11677B30700621540 /* ARLoginViewController.m in Sources */,
 				600A734317DE3F3F00E21233 /* ArtsyAPI+DeviceTokens.m in Sources */,
 				6002C2601CC5125200E249B2 /* UIViewController+TopMenuViewController.m in Sources */,
 				B31DB35B17FA234C009B122B /* ARArtworkMetadataView.m in Sources */,

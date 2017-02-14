@@ -57,7 +57,7 @@
 - (void)addHelpText:(NSString *)helpText withLargeLayout:(BOOL)useLargeLayout
 {
     self.helpTextLabel.textColor = [UIColor artsyGraySemibold];
-    self.helpTextLabel.font = [UIFont serifFontWithSize:useLargeLayout ? 28.0 : 20.0];
+    self.helpTextLabel.font = [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0];
     self.helpTextLabel.textAlignment = useLargeLayout ? NSTextAlignmentCenter : NSTextAlignmentLeft;
     self.helpTextLabel.text = helpText;
     self.helpTextLabel.numberOfLines = 0;

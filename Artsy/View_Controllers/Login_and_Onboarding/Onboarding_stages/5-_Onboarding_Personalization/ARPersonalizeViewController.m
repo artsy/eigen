@@ -146,7 +146,7 @@
             [self.headerView addHelpText:@"If you don't have an Artsy account yet we'll get one set up"
                          withLargeLayout:self.useLargeLayout];
             [self addTextFields];
-            [self.onboardingTextFields setupForEmail];
+            [self.onboardingTextFields setupForEmailWithLargeLayout:self.useLargeLayout];
             self.onboardingTextFields.emailField.delegate = self;
             [self.onboardingTextFields.emailField becomeFirstResponder];
             [self addFacebookButton];
@@ -156,7 +156,7 @@
             [self.headerView setupHeaderViewWithTitle:@"Create a password" withLargeLayout:self.useLargeLayout];
             [self.headerView addHelpText:@"Must be 7 characters or longer" withLargeLayout:self.useLargeLayout];
             [self addTextFields];
-            [self.onboardingTextFields setupForPassword];
+            [self.onboardingTextFields setupForPasswordWithLargeLayout:self.useLargeLayout];
             [self.onboardingTextFields.passwordField becomeFirstResponder];
             self.onboardingTextFields.passwordField.delegate = self;
             [self addGoBackButton];
@@ -166,7 +166,7 @@
             [self.headerView setupHeaderViewWithTitle:@"Enter your password" withLargeLayout:self.useLargeLayout];
 //            [self.headerView addHelpText:@"Enter your password to log in" withLargeLayout:self.useLargeLayout];
             [self addTextFields];
-            [self.onboardingTextFields setupForLogin];
+            [self.onboardingTextFields setupForLoginWithLargeLayout:self.useLargeLayout];
             [self.onboardingTextFields.passwordField becomeFirstResponder];
             self.onboardingTextFields.passwordField.delegate = self;
             [self addForgotPasswordButton];
@@ -176,7 +176,7 @@
             [self.headerView setupHeaderViewWithTitle:@"Enter your full name" withLargeLayout:self.useLargeLayout];
             [self.headerView addHelpText:@"Galleries and auction houses you contact will identify you by your full name" withLargeLayout:self.useLargeLayout];
             [self addTextFields];
-            [self.onboardingTextFields setupForName];
+            [self.onboardingTextFields setupForNameWithLargeLayout:self.useLargeLayout];
             [self.onboardingTextFields.nameField becomeFirstResponder];
             self.onboardingTextFields.nameField.delegate = self;
             break;
@@ -263,7 +263,7 @@
 - (void)addFacebookButton
 {
     [self addButtons];
-    [self.onboardingButtonsView setupForFacebook];
+    [self.onboardingButtonsView setupForFacebookWithLargeLayout:self.useLargeLayout];
     
     [self.onboardingButtonsView.actionButton addTarget:self
                                                         action:@selector(facebookTapped:)
@@ -273,7 +273,7 @@
 - (void)addForgotPasswordButton
 {
     [self addButtons];
-    [self.onboardingButtonsView setupForLogin];
+    [self.onboardingButtonsView setupForLoginWithLargeLayout:self.useLargeLayout];
     
     [self.onboardingButtonsView.actionButton addTarget:self
                                                 action:@selector(forgotPassword:)
@@ -283,7 +283,7 @@
 - (void)addGoBackButton
 {
     [self addButtons];
-    [self.onboardingButtonsView setupForSignUp];
+    [self.onboardingButtonsView setupForSignUpWithLargeLayout:self.useLargeLayout];
     
     [self.onboardingButtonsView.actionButton addTarget:self
                                                 action:@selector(backTapped:)
