@@ -133,6 +133,8 @@ extension AuctionViewController {
 
     func setupForSale(_ saleViewModel: SaleViewModel) {
 
+        // TODO: Recreate everything from scratch when size class changes.
+
         headerStack = ORTagBasedAutoStackView()
         saleArtworksViewController = ARModelInfiniteScrollViewController()
 

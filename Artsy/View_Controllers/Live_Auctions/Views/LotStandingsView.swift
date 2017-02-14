@@ -6,9 +6,6 @@ class LotStandingsView: UIView {
     let saleViewModel: SaleViewModel
     let isCompact: Bool
 
-    fileprivate var titleView: LotStandingsTitleView?
-    fileprivate var listView: LotStandingsLotListView?
-
     init(saleViewModel: SaleViewModel, isCompact: Bool) {
         self.saleViewModel = saleViewModel
         self.isCompact = isCompact
@@ -21,8 +18,6 @@ class LotStandingsView: UIView {
     required init?(coder aDecoder: NSCoder) {
         return nil
     }
-
-    // TODO: Handle changing size class.
 }
 
 private typealias PrivateFunctions = LotStandingsView
@@ -48,10 +43,5 @@ extension PrivateFunctions {
         addSubview(bottomBorder)
         bottomBorder.alignBottomEdge(withView: self, predicate: "0")
         bottomBorder.alignLeading("0", trailing: "0", toView: self)
-
-        self.listView = listView
-        self.titleView = titleView
-
-        setNeedsLayout()
     }
 }

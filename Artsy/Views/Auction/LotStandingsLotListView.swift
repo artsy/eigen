@@ -28,7 +28,7 @@ extension PrivateFunctions {
             .map { saleViewModel.lotStanding(at: $0) }
             .enumerated()
             .flatMap { (index, lotStanding) -> LotStandingsLotView? in
-                let drawBottomBorder = index != numberOfLotStandings - 1
+                let drawBottomBorder = (index != numberOfLotStandings - 1)
                 return LotStandingsLotView.fromNib(isCompact: isCompact, lotStanding: lotStanding, drawBottomBorder: drawBottomBorder)
             }
             .forEach { addSubview($0, withTopMargin: "0", sideMargin: "0") }
