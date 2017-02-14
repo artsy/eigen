@@ -37,5 +37,11 @@ extension PrivateFunctions {
         addSubview(titleView)
         titleView.alignTopEdge(withView: self, predicate: "0")
         titleView.alignLeading("0", trailing: "0", toView: self)
+
+        let lotListView = LotStandingsLotListView(saleViewModel: saleViewModel, isCompact: isCompact)
+        addSubview(lotListView)
+        titleView.alignBottomEdge(withView: lotListView, predicate: "0")
+        lotListView.alignLeading("0", trailing: "0", toView: self)
+        lotListView.alignBottomEdge(withView: self, predicate: "0")
     }
 }
