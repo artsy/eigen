@@ -44,7 +44,6 @@
 
 #import <Keys/ArtsyKeys.h>
 #import "AREndOfLineInternalMobileWebViewController.h"
-#import "ARDefaults+SiteFeatures.h"
 
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
 #import <VCRURLConnection/VCR.h>
@@ -140,8 +139,8 @@ static ARAppDelegate *_sharedInstance = nil;
     [FBSDKSettings setAppID:[ArtsyKeys new].artsyFacebookAppID];
 
     // This has to be checked *before* creating the first Xapp token.
-    BOOL shouldShowOnboarding = ![[ARUserManager sharedManager] hasExistingAccount];
-
+    BOOL shouldShowOnboarding = ![[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingHasCompletedOnboarding];
+    
     if (ARIsRunningInDemoMode) {
         [self.viewController presentViewController:[[ARDemoSplashViewController alloc] init] animated:NO completion:nil];
         [self performSelector:@selector(finishDemoSplash) withObject:nil afterDelay:1];
@@ -155,7 +154,11 @@ static ARAppDelegate *_sharedInstance = nil;
             [ARSystemTime sync];
         }];
 
-        [self showOnboarding];
+        if ([[ARUserManager sharedManager] hasExistingAccount]) {
+            [self showOnboardingWithState:ARInitialOnboardingStatePersonalization];
+        } else {
+            [self showOnboarding];
+        }
 
     } else {
         // Default logged in setup path
@@ -219,7 +222,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)showOnboardingWithState:(enum ARInitialOnboardingState)state
 {
-    AROnboardingViewController *onboardVC = [[AROnboardingViewController alloc] initWithState:ARInitialOnboardingStateSlideShow];
+    AROnboardingViewController *onboardVC = [[AROnboardingViewController alloc] initWithState:state];
     self.window.rootViewController = onboardVC;
 }
 
@@ -391,17 +394,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     ARQuicksilverViewController *adminSettings = [[ARQuicksilverViewController alloc] init];
     [navigationController pushViewController:adminSettings animated:YES];
-}
-- (void)fetchSiteFeatures
-{
-    [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-       [ArtsyAPI getSiteFeatures:^(NSArray *features) {
-           [ARDefaults setOnboardingDefaults:features];
-
-       } failure:^(NSError *error) {
-           ARErrorLog(@"Couldn't get site features. Error %@", error.localizedDescription);
-       }];
-    }];
 }
 
 - (void)countNumberOfRuns

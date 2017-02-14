@@ -16,10 +16,7 @@ extern NSString *const ARXAppTokenExpiryDateDefault;
 #pragma mark -
 #pragma mark onboarding
 
-extern NSString *const AROnboardingSkipPersonalizeDefault;
-extern NSString *const AROnboardingSkipCollectorLevelDefault;
-extern NSString *const AROnboardingSkipPriceRangeDefault;
-extern NSString *const AROnboardingPromptThresholdDefault;
+extern NSString *const AROnboardingHasCompletedOnboarding;
 
 #pragma mark -
 #pragma mark push notifications

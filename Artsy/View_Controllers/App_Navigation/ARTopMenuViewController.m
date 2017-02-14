@@ -150,7 +150,14 @@ static const CGFloat ARMenuButtonDimension = 50;
 
     [self registerWithSwitchBoard:ARSwitchBoard.sharedInstance];
     
-    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:AROnboardingHasCompletedOnboarding]) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AROnboardingHasCompletedOnboarding];
+        [self fadeInFromOnboarding];
+    }
+}
+
+- (void)fadeInFromOnboarding
+{
     UIView *done = [[UIView alloc] init];
     done.backgroundColor = [UIColor blackColor];
     
@@ -191,6 +198,7 @@ static const CGFloat ARMenuButtonDimension = 50;
             [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
         }];
     }];
+
 }
 
 - (NSArray *)buttons

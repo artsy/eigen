@@ -541,7 +541,6 @@
 		609A82FB17A1147800AFDF13 /* ARNavigationTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 609A82FA17A1147800AFDF13 /* ARNavigationTransition.m */; };
 		609B3C091761F80C00953CB2 /* ARSiteHeroUnitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 609B3C081761F80C00953CB2 /* ARSiteHeroUnitView.m */; };
 		609E394F1CA01FBC0035C6FC /* LiveAuctionsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6019A9071C7E76EF00E292FA /* LiveAuctionsAssets.xcassets */; };
-		609F985C1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F985B1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.m */; };
 		609F985F1AC1054D0079FE21 /* PartnerShowCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F985E1AC1054D0079FE21 /* PartnerShowCoordinates.m */; };
 		60A0AD4A1797FD2E00E976B7 /* ARThemedFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A0AD491797FD2E00E976B7 /* ARThemedFactory.m */; };
 		60A0EA011C510975002754A8 /* ArtsyEcho.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A0EA001C510975002754A8 /* ArtsyEcho.swift */; };
@@ -1627,8 +1626,6 @@
 		609A82FA17A1147800AFDF13 /* ARNavigationTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTransition.m; sourceTree = "<group>"; };
 		609B3C071761F80C00953CB2 /* ARSiteHeroUnitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSiteHeroUnitView.h; sourceTree = "<group>"; };
 		609B3C081761F80C00953CB2 /* ARSiteHeroUnitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSiteHeroUnitView.m; sourceTree = "<group>"; };
-		609F985A1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARDefaults+SiteFeatures.h"; sourceTree = "<group>"; };
-		609F985B1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARDefaults+SiteFeatures.m"; sourceTree = "<group>"; };
 		609F985D1AC1054D0079FE21 /* PartnerShowCoordinates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartnerShowCoordinates.h; sourceTree = "<group>"; };
 		609F985E1AC1054D0079FE21 /* PartnerShowCoordinates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartnerShowCoordinates.m; sourceTree = "<group>"; };
 		60A0AD481797FD2E00E976B7 /* ARThemedFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARThemedFactory.h; sourceTree = "<group>"; };
@@ -3741,8 +3738,6 @@
 				60EEFE741658547C00F43F00 /* Constants.h */,
 				608B2F601657D1500046956C /* ARDefaults.h */,
 				608B2F611657D1500046956C /* ARDefaults.m */,
-				609F985A1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.h */,
-				609F985B1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.m */,
 				60B6F0F01662AADF007C9587 /* ARAppConstants.h */,
 				60B6F0F11662AADF007C9587 /* ARAppConstants.m */,
 				499A5879166561E8004B0E2F /* ARFeedConstants.h */,
@@ -5473,7 +5468,6 @@
 				342F9D1673764FE7442062AC /* ARNetworkErrorManager.m in Sources */,
 				D37E4CFB1A92AC5A00023E2C /* ARAnnotatedMapView.m in Sources */,
 				1C029B021CCF7FE700808503 /* ARLoginFieldsView.m in Sources */,
-				609F985C1AC0FEFA0079FE21 /* ARDefaults+SiteFeatures.m in Sources */,
 				60A0EA011C510975002754A8 /* ArtsyEcho.swift in Sources */,
 				E6E07D6D195DF5D800403D2B /* ARSwitchView+Favorites.m in Sources */,
 				60327DC91987AAD00075B399 /* ARTabContentView.m in Sources */,
@@ -6407,6 +6401,7 @@
 				606C64B41E32A59400FD13E3 /* Demo */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 		B3ECE8361819D1E7009F5C5B /* Build configuration list for PBXNativeTarget "Artsy Tests" */ = {
 			isa = XCConfigurationList;

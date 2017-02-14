@@ -28,7 +28,8 @@
 
 typedef NS_ENUM(NSInteger, ARInitialOnboardingState) {
     ARInitialOnboardingStateSlideShow,
-    ARInitialOnboardingStateInApp
+    ARInitialOnboardingStateInApp,
+    ARInitialOnboardingStatePersonalization
 };
 
 typedef NS_ENUM(NSInteger, AROnboardingStage) {

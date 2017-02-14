@@ -20,10 +20,7 @@ NSString *const AROAuthTokenExpiryDateDefault = @"AROAuthTokenExpiryDate";
 NSString *const ARXAppTokenKeychainKey = @"ARXAppTokenDefault";
 NSString *const ARXAppTokenExpiryDateDefault = @"ARXAppTokenExpiryDateDefault";
 
-NSString *const AROnboardingSkipPersonalizeDefault = @"eigen-onboard-skip-personalize";
-NSString *const AROnboardingSkipCollectorLevelDefault = @"eigen-onboard-skip-collector-level";
-NSString *const AROnboardingSkipPriceRangeDefault = @"eigen-onboard-skip-price-range";
-NSString *const AROnboardingPromptThresholdDefault = @"eigen-onboard-prompt-threshold";
+NSString *const AROnboardingHasCompletedOnboarding = @"eigen-onboard-has-completed";
 
 NSString *const ARPushNotificationsAppleDialogueSeen = @"eigen-push-seen-dialogue";
 NSString *const ARPushNotificationsAppleDialogueRejected = @"eigen-push-reject-dialogue";
@@ -46,11 +43,7 @@ NSString *const AREmissionHeadVersionDefault = @"emission-head-version";
 #endif
 
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{
-        AROnboardingPromptThresholdDefault : @(AROnboardingPromptDefault),
-        AROnboardingSkipPersonalizeDefault : @(NO),
-        AROnboardingSkipCollectorLevelDefault : @(NO),
-        AROnboardingSkipPriceRangeDefault : @(NO),
-        AROnboardingPromptThresholdDefault : @(NO),
+        AROnboardingHasCompletedOnboarding : @(NO),
 
         ARUseStagingDefault : @(useStagingDefault),
         ARStagingAPIURLDefault : @"https://stagingapi.artsy.net",

@@ -73,6 +73,9 @@
 
         case ARInitialOnboardingStateInApp:
             _state = AROnboardingStagePersonalizeEmail;
+            
+        case ARInitialOnboardingStatePersonalization:
+            _state = AROnboardingStagePersonalizeArtists;
     }
     return self;
 }
@@ -122,7 +125,10 @@
 
     if (self.state == AROnboardingStageSlideshow) {
         [self startSlideshow];
+    } else if (self.state == AROnboardingStagePersonalizeArtists) {
+        [self presentPersonalizationQuestionnaires];
     }
+    
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -252,8 +258,8 @@
     [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
         self.backgroundView.alpha = 0;
     }];
+
     [self presentPersonalizationEmail];
-    
 }
 
 - (void)presentPersonalizationEmail
@@ -347,7 +353,8 @@
 - (void)personalizeLoginWithPasswordDone:(NSString *)password
 {
     [self loginUserWithEmail:self.email password:password withSuccess:^{
-        [self dismissOnboardingWithVoidAnimation:YES];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AROnboardingHasCompletedOnboarding];
+        [self finishAccountCreation];
     }];
 }
 
@@ -481,23 +488,25 @@
 
 - (void)applyPersonalizationToUser
 {
-    NSString *stringRange = [NSString stringWithFormat:@"%@", @(self.budgetRange)];
-    [ARAnalytics setUserProperty:ARAnalyticsPriceRangeProperty toValue:stringRange];
-
-    User *user = [User currentUser];
-    user.priceRange = stringRange;
-
-    [user setRemoteUpdatePriceRange:self.budgetRange success:nil failure:^(NSError *error) {
-        ARErrorLog(@"Error updating price range");
-    }];
-
-    // for now, considering we don't have a batch follow API yet
-    for (id<ARFollowable> followableItem in self.followedItemsDuringOnboarding) {
-        [followableItem followWithSuccess:^(id response) {
-          // confetti
-        } failure:^(NSError *error){
-            // tears
+    if (self.budgetRange && self.followedItemsDuringOnboarding) {
+        NSString *stringRange = [NSString stringWithFormat:@"%@", @(self.budgetRange)];
+        [ARAnalytics setUserProperty:ARAnalyticsPriceRangeProperty toValue:stringRange];
+        
+        User *user = [User currentUser];
+        user.priceRange = stringRange;
+        
+        [user setRemoteUpdatePriceRange:self.budgetRange success:nil failure:^(NSError *error) {
+            ARErrorLog(@"Error updating price range");
         }];
+        
+        // for now, considering we don't have a batch follow API yet
+        for (id<ARFollowable> followableItem in self.followedItemsDuringOnboarding) {
+            [followableItem followWithSuccess:^(id response) {
+                // confetti
+            } failure:^(NSError *error){
+                // tears
+            }];
+        }
     }
 }
 
