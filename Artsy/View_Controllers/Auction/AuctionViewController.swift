@@ -48,7 +48,11 @@ class AuctionViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        guard appeared == false else { return }
+        guard appeared == false else {
+            // Re-appearing, so re-fetch lot standings and update.
+            fetchLotStandingsAndUpdate()
+            return
+        }
         appeared = true
 
         self.ar_presentIndeterminateLoadingIndicator(animated: animated)
@@ -118,6 +122,28 @@ class AuctionViewController: UIViewController {
 
 extension AuctionViewController {
 
+    func fetchLotStandingsAndUpdate() {
+        guard let saleViewModel = saleViewModel else { return }
+
+        self.networkModel.fetchLotStanding().next { [weak self] lotStandings in
+            saleViewModel.updateLotStandings(lotStandings)
+
+            if let existingLotStandingsView = self?.headerStack.viewWithTag(ViewTags.lotStandings.rawValue) {
+                self?.headerStack.removeSubview(existingLotStandingsView)
+            }
+
+            self?.addLotStandings()
+        }
+    }
+
+    func addLotStandings() {
+        let lotStandingsView = LotStandingsView(saleViewModel: saleViewModel, isCompact: isCompactSize)
+        lotStandingsView.tag = ViewTags.lotStandings.rawValue
+        headerStack.addSubview(lotStandingsView, withTopMargin: "0", sideMargin: "0")
+    }
+
+    var isCompactSize: Bool { return traitCollection.horizontalSizeClass == .compact }
+
     func setupForUpcomingSale(_ saleViewModel: SaleViewModel) {
 
         self.saleViewModel = saleViewModel
@@ -128,7 +154,7 @@ extension AuctionViewController {
 
         let bannerView = AuctionBannerView(viewModel: saleViewModel)
         bannerView.tag = ViewTags.banner.rawValue
-        auctionInfoVC.scrollView.stackView.insertSubview(bannerView, at: 0, withTopMargin:"0", sideMargin: "0")
+        auctionInfoVC.scrollView.stackView.insertSubview(bannerView, at: 0, withTopMargin: "0", sideMargin: "0")
     }
 
     func setupForSale(_ saleViewModel: SaleViewModel) {
@@ -154,7 +180,6 @@ extension AuctionViewController {
         bannerView.tag = ViewTags.banner.rawValue
         headerStack.addSubview(bannerView, withTopMargin: "0", sideMargin: "0")
 
-        let isCompactSize = traitCollection.horizontalSizeClass == .compact
         let topSpacing = isCompactSize ? 20 : 30
         let sideSpacing = isCompactSize ? 40 : 80
         let titleView = AuctionTitleView(
@@ -168,9 +193,7 @@ extension AuctionViewController {
         headerStack.addSubview(titleView, withTopMargin: "\(topSpacing)", sideMargin: "\(sideSpacing)")
         self.titleView = titleView
 
-        let lotStandingsView = LotStandingsView(saleViewModel: saleViewModel, isCompact: isCompactSize)
-        lotStandingsView.tag = ViewTags.lotStandings.rawValue
-        headerStack.addSubview(lotStandingsView, withTopMargin: "0", sideMargin: "0")
+        addLotStandings()
 
         stickyHeader = ScrollingStickyHeaderView().then {
             $0.toggleAttatched(false, animated: false)

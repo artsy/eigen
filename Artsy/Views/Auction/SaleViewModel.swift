@@ -4,7 +4,7 @@ import Artsy_UILabels
 class SaleViewModel: NSObject {
     fileprivate let sale: Sale
     fileprivate let saleArtworks: [SaleArtwork]
-    fileprivate let lotStandings: [LotStanding]
+    fileprivate var lotStandings: [LotStanding]
 
     var bidders: [Bidder]
 
@@ -37,6 +37,10 @@ extension SaleViewModel {
         precondition(0..<numberOfLotStandings ~= index, "Index exceeds bounds of lotStandings")
 
         return lotStandings[index]
+    }
+
+    func updateLotStandings(_ lotStandings: [LotStanding]) {
+        self.lotStandings = lotStandings
     }
 
     var auctionState: ARAuctionState {
