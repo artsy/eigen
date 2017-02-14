@@ -20,10 +20,11 @@ class LotStandingsView: UIView {
     }
 
     override var intrinsicContentSize: CGSize {
-        // TODO: Provide something computed from number of lot standings
-        let height: CGFloat = saleViewModel.hasLotStandings ? 100 : 0
-
-        return CGSize(width: UIViewNoIntrinsicMetric, height: height)
+        if saleViewModel.hasLotStandings {
+            return super.intrinsicContentSize
+        } else {
+            return CGSize(width: UIViewNoIntrinsicMetric, height: 0)
+        }
     }
 
     // TODO: Handle changing size class.
