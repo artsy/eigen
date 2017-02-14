@@ -7,7 +7,7 @@ class AuctionViewController: UIViewController {
     var saleViewModel: SaleViewModel!
     var appeared = false
 
-    var headerStack: ORStackView!
+    var headerStack: ORStackView?
     var stickyHeader: ScrollingStickyHeaderView!
     var titleView: AuctionTitleView?
 
@@ -48,11 +48,12 @@ class AuctionViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        guard appeared == false else {
+        if appeared {
             // Re-appearing, so re-fetch lot standings and update.
             fetchLotStandingsAndUpdate()
-            return
         }
+
+        guard appeared == false else { return }
         appeared = true
 
         self.ar_presentIndeterminateLoadingIndicator(animated: animated)
@@ -128,8 +129,8 @@ extension AuctionViewController {
         self.networkModel.fetchLotStanding().next { [weak self] lotStandings in
             saleViewModel.updateLotStandings(lotStandings)
 
-            if let existingLotStandingsView = self?.headerStack.viewWithTag(ViewTags.lotStandings.rawValue) {
-                self?.headerStack.removeSubview(existingLotStandingsView)
+            if let existingLotStandingsView = self?.headerStack?.viewWithTag(ViewTags.lotStandings.rawValue) {
+                self?.headerStack?.removeSubview(existingLotStandingsView)
             }
 
             self?.addLotStandings()
@@ -147,7 +148,7 @@ extension AuctionViewController {
             }
         )
         lotStandingsView.tag = ViewTags.lotStandings.rawValue
-        headerStack.addSubview(lotStandingsView, withTopMargin: "0", sideMargin: "0")
+        headerStack?.addSubview(lotStandingsView, withTopMargin: "0", sideMargin: "0")
     }
 
     var isCompactSize: Bool { return traitCollection.horizontalSizeClass == .compact }
@@ -169,7 +170,7 @@ extension AuctionViewController {
 
         // TODO: Recreate everything from scratch when size class changes.
 
-        headerStack = ORTagBasedAutoStackView()
+        let headerStack = ORTagBasedAutoStackView()
         saleArtworksViewController = ARModelInfiniteScrollViewController()
 
         ar_addAlignedModernChildViewController(saleArtworksViewController)
@@ -216,6 +217,8 @@ extension AuctionViewController {
         displayCurrentItems()
 
         ar_removeIndeterminateLoadingIndicator(animated: allowAnimations)
+
+        self.headerStack = headerStack
     }
 
     func setupForUpcomingLiveInterface(_ timeToLiveStart: TimeInterval) {
@@ -226,7 +229,7 @@ extension AuctionViewController {
         let liveCV = ARSwitchBoard.sharedInstance().loadLiveAuction(saleID)
 
         ARTopMenuViewController.shared().push(liveCV!, animated: true) {
-            self.navigationController?.popViewController(animated: false)
+            _ = self.navigationController?.popViewController(animated: false)
         }
     }
 
