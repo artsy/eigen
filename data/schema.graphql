@@ -2938,9 +2938,6 @@ type RootQueryType {
     # Fetch the top artists for each metric within double the base time period
     double_time_period: Boolean = false
   ): TrendingArtists
-
-  # A wildcard used to support complex root queries in Relay
-  viewer: Viewer
   me: Me
 
   # Creates, and authorizes, a JWT custom for Causality
@@ -3400,36 +3397,4 @@ enum TrendingMetrics {
 
   # Cumulative price achieved at auction. Base time period: 12 weeks
   ARTIST_AUCTION_LOT
-}
-
-# A wildcard used to support complex root queries in Relay
-type Viewer {
-  # Creates, and authorizes, a JWT custom for Causality
-  causality_jwt(
-    # The id of the auction to participate in
-    sale_id: String!
-    role: Role
-  ): String
-  me: Me
-
-  # A Sale
-  sale(
-    # The slug or ID of the Sale
-    id: String!
-  ): Sale
-
-  # A list of Sales
-  sales(
-    size: Int
-
-    # Limit by auction.
-    is_auction: Boolean = true
-
-    # Limit by published status.
-    published: Boolean = true
-
-    # Limit by live status.
-    live: Boolean = true
-    sort: SaleSorts
-  ): [Sale]
 }

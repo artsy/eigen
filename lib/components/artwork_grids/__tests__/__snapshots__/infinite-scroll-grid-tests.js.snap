@@ -289,6 +289,13 @@ exports[`test renders properly 1`] = `
           </Text>
         </View>
       </TouchableWithoutFeedback>
+      <View
+        accessibilityLabel="Spacer View"
+        style={
+          Object {
+            "height": 20,
+          }
+        } />
     </View>
     <View
       accessibilityLabel="Section 1"
@@ -432,6 +439,13 @@ exports[`test renders properly 1`] = `
           </Text>
         </View>
       </TouchableWithoutFeedback>
+      <View
+        accessibilityLabel="Spacer View"
+        style={
+          Object {
+            "height": 20,
+          }
+        } />
     </View>
   </View>
 </ScrollView>
