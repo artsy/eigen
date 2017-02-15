@@ -1,6 +1,18 @@
 upcoming:
-    version: 3.1.0
+    version: 3.1.1
     details: Scope not known yet
+    dev:
+      infrastructure:
+        - Report user’s anonymous ID to Adjust for campaign to install tracking - alloy
+        - Font Pod changes which should allow OSS contributors to run our Apps again - orta
+    user_facing:
+      - Fixes a problem where auction users were being directed to general inquiries email address instead of specialists - ash
+      - Fixes issue where fairs were not shown in search results - maxim
+
+releases:
+  - version: 3.1.0
+    details: Sticker pack and various fixes.
+    date: Jan 24, 2017
     dev:
       infrastructure:
         - Updates to Swift 3 / Xcode 8 - ash/orta
@@ -10,6 +22,7 @@ upcoming:
         - Moves live sales away from using end_at gravity field - ash
         - Adds integration tests - maxim
     user_facing:
+      - Fixes bug in push animation of ArtworkVC - sarah
       - Jump to current lot CTA only visible once in the LAI interface, instead of once per lot - ash
       - Fixes issue where links in auction descriptions would lead nowhere when tapped - ash
       - Countdowns to live auctions show the time until live bidding opens, instead of when the sale ends - ash
@@ -17,9 +30,8 @@ upcoming:
       - Fixes appearance of name field in login vc - maxim
       - Fixes a bug when facebook users login without an associated email - maxim
       - Fixes a problem where users were shown both the "Contact Gallery" and "Enter Live Auction" buttons instead of just the auction one - ash
+      - Fixes a messaging issue around winning bids in live auctions - ash
       - Adds a sticker pack with some public domain works - kana/owen
-
-releases:
   - version: 3.0.3
     details: Hot fix for 3.0.2 release. 
     date: Dec 02, 2016

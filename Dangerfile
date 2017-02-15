@@ -75,7 +75,7 @@ fail("There were [snapshot errors](#{snapshots_url})") if snapshots_url
 # Look for unstubbed networking requests in the build log, as these can be a source of test flakiness.
 unstubbed_regex = /   Inside Test: -\[(\w+) (\w+)/m
 if test_log.match(unstubbed_regex)
-  output = "#### Found unstubbbed networking requests\n"
+  output = "#### Found unstubbed networking requests\n"
   test_log.scan(unstubbed_regex).each do |class_and_test|
     class_name = class_and_test[0]
     url = "https://github.com/search?q=#{class_name.gsub("Spec", "")}+repo%3Aartsy%2Feigen&ref=searchresults&type=Code&utf8=✓"

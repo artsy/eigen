@@ -858,6 +858,7 @@ static NSString *hostFromString(NSString *string)
         @"Artwork" : @"/api/v1/artwork/%@/default_image.jpg",
         @"Artist" : @"/api/v1/artist/%@/image",
         @"Gene" : @"/api/v1/gene/%@/image",
+        @"Fair" : @"/api/v1/profile/%@/image/square140",
         @"Tag" : @"/api/v1/tag/%@/image",
         @"Profile" : @"/api/v1/profile/%@/image",
         @"SiteFeature" : @"/api/v1/feature/%@/image",

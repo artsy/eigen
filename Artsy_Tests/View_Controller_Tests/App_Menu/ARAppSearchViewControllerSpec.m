@@ -44,6 +44,7 @@ context(@"searching", ^{
                     @"score": @"excellent",
                     @"search_detail": @"Russian, Founded 1987",
                     @"published": @(YES),
+                    @"imageURL" : @"http://api.artsy.net/api/v1/artist/aes-plus-f/image",
                     @"highlights": @[]
                     },
                 @{
@@ -54,6 +55,7 @@ context(@"searching", ^{
                     @"score": @"excellent",
                     @"search_detail": @"Swedish-American, 1875-1947",
                     @"published": @(YES),
+                    @"imageURL" : @"http://api.artsy.net/api/v1/artist/john-f-carlson/image",
                     @"highlights": @[]
                     },
                 @{
@@ -64,14 +66,11 @@ context(@"searching", ^{
                     @"score": @"excellent",
                     @"search_detail": @"American, born 1955",
                     @"published": @(YES),
+                    @"imageURL" : @"http://api.artsy.net/api/v1/artist/f-scott-hess/image",
                     @"highlights": @[]
                 }]
              ];
-
-            [OHHTTPStubs stubImageResponseAtPathWithDefault:@"/api/v1/artist/aes-plus-f/image"];
-            [OHHTTPStubs stubImageResponseAtPathWithDefault:@"/api/v1/artist/john-f-carlson/image"];
-            [OHHTTPStubs stubImageResponseAtPathWithDefault:@"/api/v1/artist/f-scott-hess/image"];
-
+            
             sut.textField.text = @"f";
             [sut.textField sendActionsForControlEvents:UIControlEventEditingChanged];
 
@@ -93,6 +92,7 @@ context(@"searching", ^{
                 @"score": @"excellent",
                 @"search_detail": @"American, born 1955",
                 @"published": @(YES),
+                @"imageURL" : @"http://api.artsy.net.com",
                 @"highlights": @[]
             }], nil];
             [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/match" withResponse:@[]];

@@ -424,7 +424,9 @@ static ARAppDelegate *_sharedInstance = nil;
     NSInteger numberOfRuns = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty] + 1;
     if (numberOfRuns == 1) {
         [ARAnalytics event:ARAnalyticsFreshInstall];
-        [Adjust trackEvent:[ADJEvent eventWithEventToken:ARAdjustFirstUserInstall]];
+        ADJEvent *event = [ADJEvent eventWithEventToken:ARAdjustFirstUserInstall];
+        [event addCallbackParameter:@"anonymous_id" value:ARUserManager.sharedManager.localTemporaryUserUUID];
+        [Adjust trackEvent:event];
     }
 
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfRuns forKey:ARAnalyticsAppUsageCountProperty];

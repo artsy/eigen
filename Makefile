@@ -3,6 +3,7 @@ SCHEME = Artsy
 SCHEME_INTEGRATION_TESTS = 'Artsy Integration Tests'
 CONFIGURATION = Beta
 APP_PLIST = Artsy/App_Resources/Artsy-Info.plist
+STICKER_PLIST = Artsy\ Stickers/Info.plist
 PLIST_BUDDY = /usr/libexec/PlistBuddy
 DEVICE_HOST = platform='iOS Simulator',OS='9.0',name='iPhone 6'
 
@@ -99,7 +100,8 @@ deploy:
 update_bundle_version:
 	@printf 'What is the new human-readable release version? '; \
 		read HUMAN_VERSION; \
-		$(PLIST_BUDDY) -c "Set CFBundleShortVersionString $$HUMAN_VERSION" $(APP_PLIST)
+		$(PLIST_BUDDY) -c "Set CFBundleShortVersionString $$HUMAN_VERSION" $(APP_PLIST); \
+		$(PLIST_BUDDY) -c "Set CFBundleShortVersionString $$HUMAN_VERSION" $(STICKER_PLIST)
 
 stamp_date:
 	config/stamp --input Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-60@2x.png --output Artsy/Resources/Images.xcassets/AppIcon.appiconset/Icon-60@2x.png --text "$(DATE_MONTH)"
@@ -111,6 +113,7 @@ stamp_date:
 
 change_version_to_date:
 	$(PLIST_BUDDY) -c "Set CFBundleVersion $(DATE_VERSION)" $(APP_PLIST)
+	$(PLIST_BUDDY) -c "Set CFBundleVersion $(DATE_VERSION)" $(STICKER_PLIST)
 
 set_git_properties:
 	$(PLIST_BUDDY) -c "Set GITCommitRev $(GIT_COMMIT_REV)" $(APP_PLIST)
