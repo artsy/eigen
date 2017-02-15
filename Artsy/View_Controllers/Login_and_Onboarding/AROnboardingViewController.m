@@ -589,6 +589,7 @@
                                                       // we've logged them in, let's wrap up
                                                       [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                                       if (sself.state == AROnboardingStagePersonalizeEmail) {
+                                                          [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
                                                           [sself finishAccountCreation];
                                                       } else if (sself.state == AROnboardingStagePersonalizeName) {
                                                           [sself presentPersonalizationQuestionnaires];
