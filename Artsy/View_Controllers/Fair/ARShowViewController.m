@@ -417,10 +417,9 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
     ARFollowableButton *followButton = [[ARFollowableButton alloc] init];
     followButton.tag = ARFairShowViewFollowPartner;
-    if (self.show.partner.type == ARPartnerTypeGallery) {
-        followButton.toFollowTitle = @"Follow Gallery";
-        followButton.toUnfollowTitle = @"Following Gallery";
-    }
+    followButton.toFollowTitle = [self followButtonTitle:NO];
+    followButton.toUnfollowTitle = [self followButtonTitle:YES];
+
     [followButton addTarget:self action:@selector(toggleFollowShow:) forControlEvents:UIControlEventTouchUpInside];
 
     Profile *profile = [[Profile alloc] initWithProfileID:self.show.partner.profileID];
@@ -428,6 +427,23 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
     [followButton setupKVOOnNetworkModel:self.followableNetwork];
 
     return followButton;
+}
+
+- (NSString *)followButtonTitle:(BOOL)following
+{
+    NSString *typeText;
+
+    if (self.show.partner.type == ARPartnerTypeGallery) {
+        typeText = @"Gallery";
+    } else {
+        typeText = @"Institution";
+    }
+
+    if (!following) {
+        return [@"Follow " stringByAppendingString:typeText];
+    }
+
+    return [@"Following " stringByAppendingString:typeText];
 }
 
 - (void)addMapPreview
