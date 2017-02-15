@@ -74,14 +74,16 @@ exports[`test renders properly 1`] = `
       </Text>
     </Text>
     <ArtworksGrid
-      artworks={undefined}
-      onComplete={[Function]}
-      onFetchMore={[Function]}
-      queryState={
+      artist={
         Object {
-          "availability": "IS_FOR_SALE",
+          "counts": Object {
+            "artworks": 5,
+            "for_sale_artworks": 2,
+          },
         }
-      } />
+      }
+      filter="IS_FOR_SALE"
+      onComplete={[Function]} />
   </View>
   <View
     style={
@@ -167,14 +169,16 @@ exports[`test renders properly 1`] = `
       </Text>
     </Text>
     <ArtworksGrid
-      artworks={undefined}
-      onComplete={null}
-      onFetchMore={[Function]}
-      queryState={
+      artist={
         Object {
-          "availability": "IS_NOT_FOR_SALE",
+          "counts": Object {
+            "artworks": 5,
+            "for_sale_artworks": 2,
+          },
         }
-      } />
+      }
+      filter="IS_NOT_FOR_SALE"
+      onComplete={null} />
   </View>
 </View>
 `;
