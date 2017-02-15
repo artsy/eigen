@@ -251,7 +251,7 @@
         case ARArtworkMasonryLayout1Column:
         case ARArtworkMasonryLayout2Column:
             if ([UIDevice isPad]) {
-                return (CGSize){38, 38};
+                return (CGSize){50, 38};
             }
         case ARArtworkMasonryLayout3Column:
             if ([UIDevice isPad]) {
@@ -259,7 +259,7 @@
                 if (UIInterfaceOrientationIsLandscape(orientation)) {
                     return (CGSize){42, 42};
                 } else {
-                    return (CGSize){34, 34};
+                    return (CGSize){40, 34};
                 }
             }
         case ARArtworkMasonryLayout4Column:

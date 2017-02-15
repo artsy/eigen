@@ -59,7 +59,7 @@ static int ARLoadingIndicatorView = 1;
     titleLabel.textColor = [UIColor blackColor];
     titleLabel.font = [UIFont serifFontWithSize:20];
 
-    [self.view.stackView addSubview:titleLabel withTopMargin:@"30" sideMargin:(self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) ? @"90" : @"45"];
+    [self.view.stackView addSubview:titleLabel withTopMargin:@"30" sideMargin:(self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) ? @"85" : @"45"];
 
     [self updateView];
 }

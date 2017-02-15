@@ -68,17 +68,17 @@
     [self addArtistTapRecognizerToView:numberOfWorksAddedLabel];
 
     UIView *wrapper = [[UIView alloc] init];
-    NSString *labelSideMargin = (self.regularHorizontalSizeClass) ? @"75" : @"30";
+    NSString *labelSideMargin = (self.regularHorizontalSizeClass) ? @"40" : @"30";
     [self.view addSubview:wrapper withTopMargin:self.regularHorizontalSizeClass ? @"25" : @"15" sideMargin:labelSideMargin];
-    
+
     [wrapper addSubview:artistNameLabel];
     [wrapper addSubview:dateLabel];
-    
+
     [artistNameLabel alignLeadingEdgeWithView:wrapper predicate:@"0"];
     [artistNameLabel constrainTrailingSpaceToView:dateLabel predicate:@"-20"];
     [artistNameLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [artistNameLabel alignCenterYWithView:wrapper predicate:@"0"];
-    
+
     [dateLabel alignTrailingEdgeWithView:wrapper predicate:@"0"];
     [dateLabel alignCenterYWithView:wrapper predicate:@"0"];
     [dateLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
@@ -107,7 +107,7 @@
         module.layoutProvider = self;
         self.artworksVC.activeModule = module;
         [self.artworksVC appendItems:self.notificationItem.artworks];
-        [self.view addViewController:self.artworksVC toParent:self withTopMargin:@"0" sideMargin:@"0"];
+        [self.view addViewController:self.artworksVC toParent:self withTopMargin:@"0" sideMargin:@"60"];
     }
 }
 
@@ -121,7 +121,7 @@
 - (void)didMoveToParentViewController:(UIViewController *)parent
 {
     [super didMoveToParentViewController:parent];
-    
+
     if (self.artworksVC) {
         // this tells the embedded artworks view controller that it should update for the correct size because self.view.frame.size at this point is (0, 0)
         [self.artworksVC didMoveToParentViewController:parent];
