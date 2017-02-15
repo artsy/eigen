@@ -435,7 +435,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
     if (self.show.partner.type == ARPartnerTypeGallery) {
         typeText = @"Gallery";
-    } else if (self.show.partner.type == ARPartnerTypeInstitution) {
+    } else {
         typeText = @"Institution";
     }
 
