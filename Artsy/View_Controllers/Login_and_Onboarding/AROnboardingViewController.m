@@ -381,7 +381,6 @@
 
 - (void)personalizeBudgetDone
 {
-//    [self applyPersonalizationToUser];
     [self finishAccountCreation];
 }
 
@@ -596,7 +595,6 @@
                                                       }
                                                   }
                                     authenticationFailure:^(NSError *error) {
-                                        // TODO: handle this
                                         __strong typeof (wself) sself = wself;
                                         [(ARPersonalizeViewController *)sself.topViewController showErrorWithMessage:@"There was a problem authenticating with Facebook"];
                                         [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];

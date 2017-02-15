@@ -41,7 +41,6 @@
 
 - (void)setPlaceholder:(NSString *)placeholder
 {
-//    [NSMutableDictionary addEntriesFromDictionary:]
     [self setPlaceholder:placeholder withAttributes:nil];
 }
 
