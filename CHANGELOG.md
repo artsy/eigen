@@ -1,10 +1,9 @@
 ### 1.2.1
 
 - Build with correct react-native version - alloy
+- Replaced fetching in infinite artworks grid component with relay - cab
 
 ### 1.2.0
-
-- Replaced fetching in infinite artworks grid component with relay - cab
 - Gave ESLint, Flow and Danger the ability to fail the build - orta
 - Gene Refine button is enabled - orta
 - Fix extra blankspace in Artist Card when data is missing - luc
