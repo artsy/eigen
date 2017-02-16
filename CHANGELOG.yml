@@ -1,14 +1,18 @@
 upcoming:
-    version: 3.1.1
-    details: Scope not known yet
+    version: 3.2.0
+    details: Gene artworks refinement.
     dev:
       infrastructure:
         - Report user’s anonymous ID to Adjust for campaign to install tracking - alloy
         - Font Pod changes which should allow OSS contributors to run our Apps again - orta
     user_facing:
+      - Gene artworks filtering is enabled - orta
       - Fixes a problem where auction users were being directed to general inquiries email address instead of specialists - ash
       - Fixes issue where fairs were not shown in search results - maxim
       - My Bids module on auction pages - ash
+      - Fixes follow button text in ShowVC to show appropriate copy based on partner type - luc
+      - Fix extra blankspace in Artist Card when data is missing - luc
+      - Gene titles wrap so they don't get covered by back button - luc
 
 releases:
   - version: 3.1.0
@@ -34,10 +38,10 @@ releases:
       - Fixes a messaging issue around winning bids in live auctions - ash
       - Adds a sticker pack with some public domain works - kana/owen
   - version: 3.0.3
-    details: Hot fix for 3.0.2 release. 
+    details: Hot fix for 3.0.2 release.
     date: Dec 02, 2016
     user_facing:
-      - Fixes Facebook signup crash - maxim 
+      - Fixes Facebook signup crash - maxim
   - version: 3.0.2
     details: Second patch fix for 3.0.0 release.
     date: Nov 19, 2016
