@@ -1,3 +1,7 @@
+### 1.2.1
+
+- Build with correct react-native version - alloy
+
 ### 1.2.0
 
 - Gave ESLint, Flow and Danger the ability to fail the build - orta

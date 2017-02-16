@@ -32,10 +32,6 @@ Want to know more about Emission? Read the [mobile](http://artsy.github.io/blog/
 
 Why Yarn? See [our JS glossary for Yarn][glossary-yarn],
 
-### Development
-
-
-
 ### Using VS Code as an IDE
 
 There is a comprehensive document covering [our setup here](docs/vscode.md).
@@ -48,7 +44,6 @@ There is a comprehensive document covering [our setup here](docs/vscode.md).
    * Start the React Storybooks environment.
 
 2. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
-
 
 ### Debugging
 
@@ -103,9 +98,18 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 
 ### Deployment
 
-Currently deploying the emission example app to Testflight is done manually.
-
-On the other hand, our JS is deployed from master to our dev build on Testflight [via AppHub](https://github.com/artsy/emission/pull/263).
+1. Update the [CHANGELOG](CHANGELOG.md) file to reflect the version that will be released.
+2. Bump the version in the [npm package](package.json) file.
+3. Ensure the correct dependencies are installed: `$ yarn install`
+4. Create the compiled JS bundle: `$ yarn bundle`
+5. Update the example installation: `$ cd Example && pod install`
+6. Commit all changes and tag release.
+7. Generate Emission podspec and push it to [the Artsy spec-repo](https://github.com/artsy/Specs):
+   ```
+   $ mkdir -p ~/.cocoapods/repos/artsy/Emission/[VERSION]
+   $ pod ipc spec Emission.podspec > ~/.cocoapods/repos/artsy/Emission/[VERSION]/Emission.podspec.json
+   ```
+8. Also ensure that the React version required by Emission has been published to our spec-repo.
 
 ### Resources
 
