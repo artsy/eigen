@@ -1,6 +1,4 @@
-### Master
-
-- Add your contributions below:
+### 1.2.0
 
 - Gave ESLint, Flow and Danger the ability to fail the build - orta
 - Gene Refine button is enabled - orta
