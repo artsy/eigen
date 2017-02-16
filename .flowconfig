@@ -9,6 +9,9 @@
 # Ignore malformed json
 .*/node_modules/y18n/test/.*\.json
 
+# Ignore externals
+.*/externals/.*
+
 # Ignore the website subdir
 <PROJECT_ROOT>/website/.*
 
