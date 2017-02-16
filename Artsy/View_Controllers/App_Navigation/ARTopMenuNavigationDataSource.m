@@ -48,7 +48,7 @@
         _badgeCounts[i] = 0;
     }
 
-    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] init];
+    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] initWithEmission:nil];
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
 
     _browseViewController = [[ARBrowseViewController alloc] init];
