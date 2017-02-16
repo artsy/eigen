@@ -105,10 +105,12 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 5. Update the example installation: `$ cd Example && pod install`
 6. Commit all changes and tag release.
 7. Generate Emission podspec and push it to [the Artsy spec-repo](https://github.com/artsy/Specs):
+
    ```
    $ mkdir -p ~/.cocoapods/repos/artsy/Emission/[VERSION]
    $ pod ipc spec Emission.podspec > ~/.cocoapods/repos/artsy/Emission/[VERSION]/Emission.podspec.json
    ```
+
 8. Also ensure that the React version required by Emission has been published to our spec-repo.
 
 ### Resources
