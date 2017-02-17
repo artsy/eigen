@@ -2,12 +2,16 @@
 #import "ARShowViewController.h"
 #import "UIDevice-Hardware.h"
 #import "ARStubbedShowNetworkModel.h"
+#import "ARFollowableButton.h"
 
 
 @interface ARShowViewController ()
 
 - (void)addMapPreview;
+- (NSString *)followButtonTitle:(BOOL)following;
+
 @property (nonatomic, strong) ARShowNetworkModel *showNetworkModel;
+@property (nonatomic, strong) ARFollowableButton *followButton;
 
 @end
 
@@ -147,143 +151,198 @@ describe(@"at a fair", ^{
     });
 });
 
+describe(@"follow button", ^{
+    it(@"shows correct text for gallery", ^{
+        PartnerShow *show = [PartnerShow modelWithJSON:@{
+                                                         @"id": @"foley-gallery-foley-gallery-at-the-photography-show-2016-presented-by-aipad",
+                                                         @"name": @"Foley Gallery at The Photography Show 2016 | presented by AIPAD",
+                                                         @"partner": @{
+                                                                 @"id": @"foley-gallery",
+                                                                 @"default_profile_id": @"foley-gallery",
+                                                                 @"name": @"Foley Gallery",
+                                                                 @"type": @"Gallery",
+                                                                 @"default_profile_public": @1
+                                                                 }
+                                                         }];
+        
+        ARStubbedShowNetworkModel *networkModel = [[ARStubbedShowNetworkModel alloc] initWithFair:nil show:show];
+        
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/follow/profile/foley-gallery"
+                               withResponse:@{
+                                          @"error": @"Profile Not Followed"
+                                          }];
+        
+        ARShowViewController *showVC = [[ARShowViewController alloc] initWithShow:show fair:nil];
+        showVC.showNetworkModel = networkModel;
+        
+        [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        expect([showVC followButtonTitle:NO]).to.equal(@"Follow Gallery");
+    });
+    
+    it(@"shows correct text for institution", ^{
+        PartnerShow *show = [PartnerShow modelWithJSON:@{
+                                                         @"id": @"national-gallery-of-art-washington-dc-east-building-permanent-collection",
+                                                         @"name": @"East Building Permanent Collection",
+                                                         @"partner": @{
+                                                                 @"id": @"national-gallery-of-art-washington-dc",
+                                                                 @"default_profile_id": @"national-gallery-of-art-washington-dc",
+                                                                 @"name": @"National Gallery of Art, Washington, D.C.",
+                                                                 @"type": @"Institution",
+                                                                 @"default_profile_public": @1
+                                                                 }
+                                                         }];
+        
+        ARStubbedShowNetworkModel *networkModel = [[ARStubbedShowNetworkModel alloc] initWithFair:nil show:show];
+        
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/follow/profile/national-gallery-of-art-washington-dc"
+                               withResponse:@{
+                                          @"error": @"Profile Not Followed"
+                                          }];
+        
+        ARShowViewController *showVC = [[ARShowViewController alloc] initWithShow:show fair:nil];
+        showVC.showNetworkModel = networkModel;
+        
+        [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        expect([showVC followButtonTitle:NO]).to.equal(@"Follow Institution");
+    });
+});
 
 // a partner gallery show with a publicly viewable location should show the location and a follow button
 
 describe(@"not at a fair", ^{
 
-//    sharedExamples(@"looks correct", ^(NSDictionary *data) {
-//        NSDictionary *json = data[@"json"];
-//
-//        itHasSnapshotsForDevices(^{
-//            PartnerShow *show = [PartnerShow modelWithJSON:json];
-//            ARStubbedShowNetworkModel *networkModel = [[ARStubbedShowNetworkModel alloc] initWithFair:nil show:show];
-//
-//            ARShowViewController *showVC = [[ARShowViewController alloc] initWithShow:show fair:nil];
-//            showVC.showNetworkModel = networkModel;
-//            [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
-//            [showVC.view snapshotViewAfterScreenUpdates:YES];
-//
-//            return showVC;
-//        });
-//    });
+             //    sharedExamples(@"looks correct", ^(NSDictionary *data) {
+             //        NSDictionary *json = data[@"json"];
+             //
+             //        itHasSnapshotsForDevices(^{
+             //            PartnerShow *show = [PartnerShow modelWithJSON:json];
+             //            ARStubbedShowNetworkModel *networkModel = [[ARStubbedShowNetworkModel alloc] initWithFair:nil show:show];
+             //
+             //            ARShowViewController *showVC = [[ARShowViewController alloc] initWithShow:show fair:nil];
+             //            showVC.showNetworkModel = networkModel;
+             //            [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+             //            [showVC.view snapshotViewAfterScreenUpdates:YES];
+             //
+             //            return showVC;
+             //        });
+             //    });
 
-//    __block NSDictionary *showJSON = @{
-//        @"id": @"some-show",
-//        @"name": @"Some Show",
-//        @"partner": [NSMutableDictionary dictionaryWithDictionary:@{
-//             @"id" : @"some-partner",
-//             @"default_profile_id" : @"some-gallery"
-//        }],
-//        @"location": [NSMutableDictionary dictionaryWithDictionary:@{
-//             @"address" : @"123 Some Street",
-//             @"city" : @"New York",
-//             @"state" : @"NY",
-//             }],
-//
-//        @"start_at" : @"1976-01-30T15:00:00+00:00",
-//        @"end_at" : @"1976-02-02T15:00:00+00:00"
-//    };
-//
-//    describe(@"gallery with public profile with public location", ^{
-//        beforeEach(^{
-//            [showJSON[@"partner"] setValue:@"Gallery" forKey:@"type"];
-//            [showJSON[@"partner"] setValue:@"Some Gallery" forKey:@"name"];
-//            [showJSON[@"partner"] setValue:@YES forKey:@"default_profile_public"];
-//            [showJSON[@"location"] setValue:@YES forKey:@"publicly_viewable"];
-//        });
-//
-//       itBehavesLike(@"looks correct", @{@"json":showJSON});
-//
-//    });
-//
-//    describe(@"gallery with public profile with private location", ^{
-//        beforeEach(^{
-//            [showJSON[@"partner"] setValue:@"Gallery" forKey:@"type"];
-//            [showJSON[@"partner"] setValue:@"Some Gallery" forKey:@"name"];
-//            [showJSON[@"partner"] setValue:@YES forKey:@"default_profile_public"];
-//            [showJSON[@"location"] setValue:@NO forKey:@"publicly_viewable"];
-//        });
-//
-//        itBehavesLike(@"looks correct", @{@"json":showJSON});
-//
-//    });
-//
-//    describe(@"gallery with private profile with public location", ^{
-//        beforeEach(^{
-//            [showJSON[@"partner"] setValue:@"Gallery" forKey:@"type"];
-//            [showJSON[@"partner"] setValue:@"Some Gallery" forKey:@"name"];
-//            [showJSON[@"partner"] setValue:@NO forKey:@"default_profile_public"];
-//            [showJSON[@"location"] setValue:@YES forKey:@"publicly_viewable"];
-//        });
-//
-//        itBehavesLike(@"looks correct", @{@"json":showJSON});
-//        
-//    });
-//
-//    describe(@"gallery with private profile with private location", ^{
-//        beforeEach(^{
-//            [showJSON[@"partner"] setValue:@"Gallery" forKey:@"type"];
-//            [showJSON[@"partner"] setValue:@"Some Gallery" forKey:@"name"];
-//            [showJSON[@"partner"] setValue:@NO forKey:@"default_profile_public"];
-//            [showJSON[@"location"] setValue:@NO forKey:@"publicly_viewable"];
-//        });
-//
-//        itBehavesLike(@"looks correct", @{@"json":showJSON});
-//
-//    });
-//
-//    describe(@"non-gallery with public profile with public location", ^{
-//        beforeEach(^{
-//            [showJSON[@"partner"] setValue:@"Museum" forKey:@"type"];
-//            [showJSON[@"partner"] setValue:@"Some Museum" forKey:@"name"];
-//            [showJSON[@"partner"] setValue:@YES forKey:@"default_profile_public"];
-//            [showJSON[@"location"] setValue:@YES forKey:@"publicly_viewable"];
-//        });
-//
-//        itBehavesLike(@"looks correct", @{@"json":showJSON});
-//
-//    });
-//
-//    describe(@"museum with public profile with private location", ^{
-//        beforeEach(^{
-//            [showJSON[@"partner"] setValue:@"Gallery" forKey:@"type"];
-//            [showJSON[@"partner"] setValue:@"Some Gallery" forKey:@"name"];
-//            [showJSON[@"partner"] setValue:@YES forKey:@"default_profile_public"];
-//            [showJSON[@"location"] setValue:@NO forKey:@"publicly_viewable"];
-//        });
-//
-//        itBehavesLike(@"looks correct", @{@"json":showJSON});
-//
-//    });
-//
-//    describe(@"museum with private profile with public location", ^{
-//        beforeEach(^{
-//            [showJSON[@"partner"] setValue:@"Gallery" forKey:@"type"];
-//            [showJSON[@"partner"] setValue:@"Some Gallery" forKey:@"name"];
-//            [showJSON[@"partner"] setValue:@NO forKey:@"default_profile_public"];
-//            [showJSON[@"location"] setValue:@YES forKey:@"publicly_viewable"];
-//        });
-//
-//        itBehavesLike(@"looks correct", @{@"json":showJSON});
-//
-//    });
-//
-//    describe(@"museum with private profile with private location", ^{
-//        beforeEach(^{
-//            [showJSON[@"partner"] setValue:@"Gallery" forKey:@"type"];
-//            [showJSON[@"partner"] setValue:@"Some Gallery" forKey:@"name"];
-//            [showJSON[@"partner"] setValue:@NO forKey:@"default_profile_public"];
-//            [showJSON[@"location"] setValue:@NO forKey:@"publicly_viewable"];
-//        });
-//
-//        itBehavesLike(@"looks correct", @{@"json":showJSON});
-//        
-//    });
-});
+             //    __block NSDictionary *showJSON = @{
+             //        @"id": @"some-show",
+             //        @"name": @"Some Show",
+             //        @"partner": [NSMutableDictionary dictionaryWithDictionary:@{
+             //             @"id" : @"some-partner",
+             //             @"default_profile_id" : @"some-gallery"
+             //        }],
+             //        @"location": [NSMutableDictionary dictionaryWithDictionary:@{
+             //             @"address" : @"123 Some Street",
+             //             @"city" : @"New York",
+             //             @"state" : @"NY",
+             //             }],
+             //
+             //        @"start_at" : @"1976-01-30T15:00:00+00:00",
+             //        @"end_at" : @"1976-02-02T15:00:00+00:00"
+             //    };
+             //
+             //    describe(@"gallery with public profile with public location", ^{
+             //        beforeEach(^{
+             //            [showJSON[@"partner"] setValue:@"Gallery" forKey:@"type"];
+             //            [showJSON[@"partner"] setValue:@"Some Gallery" forKey:@"name"];
+             //            [showJSON[@"partner"] setValue:@YES forKey:@"default_profile_public"];
+             //            [showJSON[@"location"] setValue:@YES forKey:@"publicly_viewable"];
+             //        });
+             //
+             //       itBehavesLike(@"looks correct", @{@"json":showJSON});
+             //
+             //    });
+             //
+             //    describe(@"gallery with public profile with private location", ^{
+             //        beforeEach(^{
+             //            [showJSON[@"partner"] setValue:@"Gallery" forKey:@"type"];
+             //            [showJSON[@"partner"] setValue:@"Some Gallery" forKey:@"name"];
+             //            [showJSON[@"partner"] setValue:@YES forKey:@"default_profile_public"];
+             //            [showJSON[@"location"] setValue:@NO forKey:@"publicly_viewable"];
+             //        });
+             //
+             //        itBehavesLike(@"looks correct", @{@"json":showJSON});
+             //
+             //    });
+             //
+             //    describe(@"gallery with private profile with public location", ^{
+             //        beforeEach(^{
+             //            [showJSON[@"partner"] setValue:@"Gallery" forKey:@"type"];
+             //            [showJSON[@"partner"] setValue:@"Some Gallery" forKey:@"name"];
+             //            [showJSON[@"partner"] setValue:@NO forKey:@"default_profile_public"];
+             //            [showJSON[@"location"] setValue:@YES forKey:@"publicly_viewable"];
+             //        });
+             //
+             //        itBehavesLike(@"looks correct", @{@"json":showJSON});
+             //
+             //    });
+             //
+             //    describe(@"gallery with private profile with private location", ^{
+             //        beforeEach(^{
+             //            [showJSON[@"partner"] setValue:@"Gallery" forKey:@"type"];
+             //            [showJSON[@"partner"] setValue:@"Some Gallery" forKey:@"name"];
+             //            [showJSON[@"partner"] setValue:@NO forKey:@"default_profile_public"];
+             //            [showJSON[@"location"] setValue:@NO forKey:@"publicly_viewable"];
+             //        });
+             //
+             //        itBehavesLike(@"looks correct", @{@"json":showJSON});
+             //
+             //    });
+             //
+             //    describe(@"non-gallery with public profile with public location", ^{
+             //        beforeEach(^{
+             //            [showJSON[@"partner"] setValue:@"Museum" forKey:@"type"];
+             //            [showJSON[@"partner"] setValue:@"Some Museum" forKey:@"name"];
+             //            [showJSON[@"partner"] setValue:@YES forKey:@"default_profile_public"];
+             //            [showJSON[@"location"] setValue:@YES forKey:@"publicly_viewable"];
+             //        });
+             //
+             //        itBehavesLike(@"looks correct", @{@"json":showJSON});
+             //
+             //    });
+             //
+             //    describe(@"museum with public profile with private location", ^{
+             //        beforeEach(^{
+             //            [showJSON[@"partner"] setValue:@"Gallery" forKey:@"type"];
+             //            [showJSON[@"partner"] setValue:@"Some Gallery" forKey:@"name"];
+             //            [showJSON[@"partner"] setValue:@YES forKey:@"default_profile_public"];
+             //            [showJSON[@"location"] setValue:@NO forKey:@"publicly_viewable"];
+             //        });
+             //
+             //        itBehavesLike(@"looks correct", @{@"json":showJSON});
+             //
+             //    });
+             //
+             //    describe(@"museum with private profile with public location", ^{
+             //        beforeEach(^{
+             //            [showJSON[@"partner"] setValue:@"Gallery" forKey:@"type"];
+             //            [showJSON[@"partner"] setValue:@"Some Gallery" forKey:@"name"];
+             //            [showJSON[@"partner"] setValue:@NO forKey:@"default_profile_public"];
+             //            [showJSON[@"location"] setValue:@YES forKey:@"publicly_viewable"];
+             //        });
+             //
+             //        itBehavesLike(@"looks correct", @{@"json":showJSON});
+             //
+             //    });
+             //
+             //    describe(@"museum with private profile with private location", ^{
+             //        beforeEach(^{
+             //            [showJSON[@"partner"] setValue:@"Gallery" forKey:@"type"];
+             //            [showJSON[@"partner"] setValue:@"Some Gallery" forKey:@"name"];
+             //            [showJSON[@"partner"] setValue:@NO forKey:@"default_profile_public"];
+             //            [showJSON[@"location"] setValue:@NO forKey:@"publicly_viewable"];
+             //        });
+             //
+             //        itBehavesLike(@"looks correct", @{@"json":showJSON});
+             //
+             //    });
+         });
 
 //it(@"creates an NSUserActivity", ^{
-//    
+//
 //    PartnerShow *show = [PartnerShow modelWithJSON:@{
 //        @"id": @"some-show",
 //        @"name": @"Some Gallery at the Armory Show",
@@ -304,9 +363,9 @@ describe(@"not at a fair", ^{
 //        @"start_at" : @"1976-01-30T15:00:00+00:00",
 //        @"end_at" : @"1976-02-02T15:00:00+00:00"
 //    }];
-//    
+//
 //    ARStubbedShowNetworkModel *networkModel = [[ARStubbedShowNetworkModel alloc] initWithFair:nil show:show];
-//    
+//
 //    ARShowViewController *showVC = [[ARShowViewController alloc] initWithShow:show fair:nil];
 //    showVC.showNetworkModel = networkModel;
 //    [showVC ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
