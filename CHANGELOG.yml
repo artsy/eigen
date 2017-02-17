@@ -2,16 +2,9 @@ upcoming:
     version: 3.2.0
     details: Gene artworks refinement.
     dev:
-      infrastructure:
-        - Updates to Swift 3 / Xcode 8 - ash/orta
-        - Remove extra xapp fetching and old home feed - maxim
-    user_facing:
-      - Fixes an intermittent crash on the live interface - ash
-      - Attempts to fix a crash that would occur by sending a message to a search VC that it doesn’t implement - alloy
       - Refine existing queries on the Gene Page - orta
-
-        - Report user’s anonymous ID to Adjust for campaign to install tracking - alloy
-        - Font Pod changes which should allow OSS contributors to run our Apps again - orta
+      - Report user’s anonymous ID to Adjust for campaign to install tracking - alloy
+      - Font Pod changes which should allow OSS contributors to run our Apps again - orta
     user_facing:
       - Gene artworks filtering is enabled - orta
       - Fixes a problem where auction users were being directed to general inquiries email address instead of specialists - ash
@@ -52,8 +45,6 @@ releases:
     details: Second patch fix for 3.0.0 release.
     date: Nov 19, 2016
     user_facing:
-      - Refine existing queries on the Gene Page - orta
-
       - Fixes auction countdown timer on iPad - ash
       - Fixes problem where users could not bid on sales if they were registered for too many sales - ash
       - Fixes gene routing bug where search routed to old gene VC instead of RN one - sarah
