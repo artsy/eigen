@@ -6,6 +6,7 @@ upcoming:
       - Report user’s anonymous ID to Adjust for campaign to install tracking - alloy
       - Font Pod changes which should allow OSS contributors to run our Apps again - orta
     user_facing:
+      - Artwork metadata in collection views use sale_message instead of price - sarah
       - Gene artworks filtering is enabled - orta
       - Fixes a problem where auction users were being directed to general inquiries email address instead of specialists - ash
       - Fixes issue where fairs were not shown in search results - maxim
