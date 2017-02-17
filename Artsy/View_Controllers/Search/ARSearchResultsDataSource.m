@@ -33,17 +33,8 @@
     }
 
     cell.textLabel.textColor = self.textColor ?: [UIColor whiteColor];
-
-    __weak typeof(cell) wcell = cell;
-
-    [cell.imageView setImageWithURLRequest:result.imageRequest placeholderImage:self.placeholderImage
-                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-       __strong typeof (wcell) cell = wcell;
-       cell.imageView.image = image;
-       [cell layoutSubviews];
-
-                                   }
-                                   failure:nil];
+    
+    [cell.imageView setImageWithURL:[NSURL URLWithString:result.imageURL] placeholderImage:self.placeholderImage ];
 
     return cell;
 }
