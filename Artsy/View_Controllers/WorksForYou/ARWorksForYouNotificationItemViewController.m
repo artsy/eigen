@@ -13,6 +13,7 @@
 
 #import <ORStackView/ORSplitStackView.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import "UIImageView+AsyncImageLoading.h"
 
 
 @interface ARWorksForYouNotificationItemViewController () <AREmbeddedModelsViewControllerDelegate, ARArtworkMasonryLayoutProvider>
@@ -20,6 +21,7 @@
 @property (nonatomic, strong) AREmbeddedModelsViewController *artworksVC;
 @property (nonatomic, strong) ARArtworkWithMetadataThumbnailCell *singleArtworkView;
 @property (nonatomic, strong) ORStackView *view;
+@property (nonatomic, strong) UIImageView *artistAvatar;
 @end
 
 
@@ -46,46 +48,54 @@
 {
     [super viewDidLoad];
 
-    ARSansSerifLabelWithChevron *artistNameLabel = [[ARSansSerifLabelWithChevron alloc] initWithFrame:CGRectZero];
+    // includes artist avatar, artist name, notification date, and number of works added
+    UIView *metadataWrapper = [[UIView alloc] init];
+    NSString *topMargin = self.regularHorizontalSizeClass ? @"25" : @"15";
+    NSString *sideMargin = self.regularHorizontalSizeClass ? @"20" : @"30";
+    [self addArtistTapRecognizerToView:metadataWrapper];
+    [self.view addSubview:metadataWrapper withTopMargin:topMargin sideMargin:sideMargin];
+
+    self.artistAvatar = [[UIImageView alloc] initWithFrame:CGRectZero];
+    [self.artistAvatar ar_setImageWithURL:self.notificationItem.artist.squareImageURL];
+    [self.artistAvatar constrainWidth:@"40" height:@"40"];
+    [metadataWrapper addSubview:self.artistAvatar];
+
+    UIView *labelWrapper = [[UIView alloc] init];
+
+    ARSansSerifLabel *artistNameLabel = [[ARSansSerifLabel alloc] initWithFrame:CGRectZero];
     artistNameLabel.text = self.notificationItem.artist.name.uppercaseString;
     artistNameLabel.textColor = [UIColor blackColor];
     artistNameLabel.font = [UIFont sansSerifFontWithSize:14];
-    [self addArtistTapRecognizerToView:artistNameLabel];
 
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"MMM dd"];
 
-    ARSansSerifLabel *dateLabel = [[ARSansSerifLabel alloc] initWithFrame:CGRectZero];
-    dateLabel.text = [df stringFromDate:self.notificationItem.date];
-    dateLabel.textColor = [UIColor artsyGraySemibold];
-    dateLabel.textAlignment = NSTextAlignmentRight;
-    dateLabel.font = [UIFont sansSerifFontWithSize:12];
+    NSString *date = [df stringFromDate:self.notificationItem.date];
+    NSString *formattedDate = [@"・" stringByAppendingString:date];
 
     ARSerifLabel *numberOfWorksAddedLabel = [[ARSerifLabel alloc] initWithFrame:CGRectZero];
-    numberOfWorksAddedLabel.text = self.notificationItem.formattedNumberOfWorks;
+    numberOfWorksAddedLabel.text = [self.notificationItem.formattedNumberOfWorks stringByAppendingString:formattedDate];
     numberOfWorksAddedLabel.textColor = [UIColor artsyGraySemibold];
     numberOfWorksAddedLabel.font = [UIFont serifFontWithSize:16];
-    [self addArtistTapRecognizerToView:numberOfWorksAddedLabel];
 
-    UIView *wrapper = [[UIView alloc] init];
-    NSString *labelSideMargin = (self.regularHorizontalSizeClass) ? @"75" : @"30";
-    [self.view addSubview:wrapper withTopMargin:self.regularHorizontalSizeClass ? @"25" : @"15" sideMargin:labelSideMargin];
-    
-    [wrapper addSubview:artistNameLabel];
-    [wrapper addSubview:dateLabel];
-    
-    [artistNameLabel alignLeadingEdgeWithView:wrapper predicate:@"0"];
-    [artistNameLabel constrainTrailingSpaceToView:dateLabel predicate:@"-20"];
+    [labelWrapper addSubview:artistNameLabel];
+    [labelWrapper addSubview:numberOfWorksAddedLabel];
+    [metadataWrapper addSubview:labelWrapper];
+
+    [self.artistAvatar alignLeadingEdgeWithView:metadataWrapper predicate:@"0"];
+    [self.artistAvatar alignCenterYWithView:metadataWrapper predicate:@"0"];
+
+    [artistNameLabel alignLeadingEdgeWithView:labelWrapper predicate:@"0"];
     [artistNameLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-    [artistNameLabel alignCenterYWithView:wrapper predicate:@"0"];
-    
-    [dateLabel alignTrailingEdgeWithView:wrapper predicate:@"0"];
-    [dateLabel alignCenterYWithView:wrapper predicate:@"0"];
-    [dateLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-    [dateLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [artistNameLabel alignTopEdgeWithView:labelWrapper predicate:@"0"];
+    [numberOfWorksAddedLabel alignLeadingEdgeWithView:labelWrapper predicate:@"0"];
+    [numberOfWorksAddedLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    [numberOfWorksAddedLabel constrainTopSpaceToView:artistNameLabel predicate:@"5"];
 
-    [wrapper constrainHeightToView:artistNameLabel predicate:@"0"];
-    [self.view addSubview:numberOfWorksAddedLabel withTopMargin:@"7" sideMargin:labelSideMargin];
+    [labelWrapper constrainLeadingSpaceToView:self.artistAvatar predicate:@"10"];
+    [labelWrapper alignTopEdgeWithView:metadataWrapper predicate:@"0"];
+
+    [metadataWrapper constrainHeightToView:self.artistAvatar predicate:@"0"];
 
     if (self.notificationItem.artworks.count == 1) {
         self.singleArtworkView = self.singleArtworkView ?: [[ARArtworkWithMetadataThumbnailCell alloc] init];
@@ -95,7 +105,7 @@
 
         [self.singleArtworkView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleArtworkTapped:)]];
 
-        [self.view addSubview:self.singleArtworkView withTopMargin:@"10" sideMargin:(self.regularHorizontalSizeClass) ? @"75" : @"30"];
+        [self.view addSubview:self.singleArtworkView withTopMargin:@"20" sideMargin:(self.regularHorizontalSizeClass) ? @"75" : @"30"];
 
     } else {
         self.artworksVC = self.artworksVC ?: [[AREmbeddedModelsViewController alloc] init];
@@ -118,10 +128,17 @@
     [self didMoveToParentViewController:self.parentViewController];
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+
+    self.artistAvatar.layer.cornerRadius = 20;
+}
+
 - (void)didMoveToParentViewController:(UIViewController *)parent
 {
     [super didMoveToParentViewController:parent];
-    
+
     if (self.artworksVC) {
         // this tells the embedded artworks view controller that it should update for the correct size because self.view.frame.size at this point is (0, 0)
         [self.artworksVC didMoveToParentViewController:parent];
@@ -134,14 +151,12 @@
 {
     Artwork *artwork = self.notificationItem.artworks.firstObject;
 
-    BOOL isPad = self.regularHorizontalSizeClass;
-
     CGFloat maxHeight = parent.view.frame.size.height;
-    CGFloat sideMargins = isPad ? 150 : 60;
+    CGFloat sideMargins = 60;
     CGFloat width = parent.view.frame.size.width - sideMargins;
 
     // height of artist and number of works labels with padding
-    CGFloat heightOfLabels = 100;
+    CGFloat heightOfLabels = 80;
 
     // height of thumbnail cell = image height + metadata + padding
     CGFloat viewHeight = width / artwork.aspectRatio + [ARArtworkWithMetadataThumbnailCell heightForMetadataWithArtwork:artwork] + 50;
