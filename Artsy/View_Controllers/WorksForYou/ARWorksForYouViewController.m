@@ -73,7 +73,7 @@ static int ARLoadingIndicatorView = 1;
     [lineView constrainHeight:@"0.5"];
 
     if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
-        [self.view.stackView addSubview:lineView withTopMargin:@"10" sideMargin:@"40"];
+        [self.view.stackView addSubview:lineView withTopMargin:@"5" sideMargin:@"75"];
     } else {
         [self.view.stackView addSubview:lineView withTopMargin:@"10" sideMargin:@"0"];
     }
