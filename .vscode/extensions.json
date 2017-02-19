@@ -3,11 +3,9 @@
 	// for the documentation about the extensions.json format
 	"recommendations": [
 		"Orta.vscode-danger",
-		"christian-kohler.path-intellisense",
 		"christian-kohler.npm-intellisense",
 		"dbaeumer.vscode-eslint",
 		"djabraham.vscode-yaml-validation",
-		"flowtype.flow-for-vscode",
 		"vsmobile.vscode-react-native",
 		"Orta.vscode-react-native-storybooks"
 	]

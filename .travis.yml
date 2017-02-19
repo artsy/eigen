@@ -10,7 +10,7 @@ install:
 
 script:
   - yarn test
-  - yarn run flow -- check
+  - yarn tsc
   - yarn run lint
   - yarn run danger
 
