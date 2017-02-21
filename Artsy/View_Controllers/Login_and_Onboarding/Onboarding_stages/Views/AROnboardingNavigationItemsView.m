@@ -102,6 +102,8 @@
     
     [self.next setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [self.next setBackgroundColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+    
+    self.next.enabled = NO;
 }
 
 - (void)enableNextStep
@@ -111,6 +113,7 @@
     
     [self.next setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
     [self.next setBackgroundColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    self.next.enabled = YES;
 }
 
 - (void)defaultNextStep
@@ -120,6 +123,7 @@
     
     [self.next setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [self.next setBackgroundColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+    self.next.enabled = YES;
 }
 
 
@@ -131,11 +135,13 @@
     self.warningLabel.textColor = [UIColor artsyYellowBold];
     
     self.warningLabel.hidden = NO;
+    self.next.enabled = NO;
 }
 
 - (void)hideWarning
 {
     self.warningLabel.hidden = YES;
+    self.next.enabled = YES;
 }
 
 - (void)showError:(NSString *)text
@@ -146,12 +152,14 @@
     self.warningLabel.textColor = [UIColor whiteColor];
     
     self.warningLabel.hidden = NO;
+    self.next.enabled = NO;
 
 }
 
 - (void)hideError
 {
     self.warningLabel.hidden = YES;
+    self.next.enabled = YES;
 }
 
 
