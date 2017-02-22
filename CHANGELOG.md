@@ -1,3 +1,6 @@
+## Master
+- Made Gene view work with new relay-based infinite scroll grid
+
 ### 1.2.1
 
 - Build with correct react-native version - alloy

@@ -1468,6 +1468,39 @@ type Gene implements Node {
     sort: String
     sale_id: ID
   ): FilterArtworks
+  artworks_connection(
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    artist_ids: [String]
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    estimate_range: String
+    page: Int
+    size: Int
+    sort: String
+    sale_id: ID
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
   href: String
   name: String
   description: String
@@ -1517,6 +1550,39 @@ type GeneItem implements Node {
     sort: String
     sale_id: ID
   ): FilterArtworks
+  artworks_connection(
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    artist_ids: [String]
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    estimate_range: String
+    page: Int
+    size: Int
+    sort: String
+    sale_id: ID
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
   href: String
   name: String
   description: String
@@ -1901,6 +1967,39 @@ type HomePageModuleContextGene implements Node {
     sort: String
     sale_id: ID
   ): FilterArtworks
+  artworks_connection(
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    artist_ids: [String]
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    estimate_range: String
+    page: Int
+    size: Int
+    sort: String
+    sale_id: ID
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
   href: String
   name: String
   description: String
@@ -2167,6 +2266,13 @@ type Me {
     # Pagination, need I say more?
     page: Int
   ): [Artist]
+
+  # A list of feed items, indicating published artworks (grouped by date and artists).
+  notifications(
+    # Number of feed items to return
+    size: Int
+    page: Int
+  ): [NotificationsFeedItem]
 }
 
 input Near {
@@ -2179,6 +2285,27 @@ input Near {
 interface Node {
   # The ID of the object.
   __id: ID!
+}
+
+type NotificationsFeedItem {
+  status: NotificationsFeedItemStatus
+  artists: String
+  message: String
+  date(
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+    convert_to_utc: Boolean
+  ): String
+
+  # List of artworks in this notification bundle
+  artworks: [Artwork]
+}
+
+enum NotificationsFeedItemStatus {
+  READ
+  UNREAD
 }
 
 type OrderedSet {
