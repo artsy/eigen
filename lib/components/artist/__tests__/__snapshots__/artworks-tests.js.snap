@@ -83,7 +83,8 @@ exports[`test renders properly 1`] = `
         }
       }
       filter="IS_FOR_SALE"
-      onComplete={[Function]} />
+      onComplete={[Function]}
+      queryKey="artist" />
   </View>
   <View
     style={
@@ -178,7 +179,8 @@ exports[`test renders properly 1`] = `
         }
       }
       filter="IS_NOT_FOR_SALE"
-      onComplete={null} />
+      onComplete={null}
+      queryKey="artist" />
   </View>
 </View>
 `;

@@ -279,49 +279,20 @@ exports[`test looks like expected 1`] = `
             "paddingRight": 20,
           }
         }>
-        <Artworks
-          gene={
-            Object {
-              "_id": "a UUID",
-              "description": "Here\'s some text",
-              "filtered_artworks": Object {
-                "aggregations": Array [
-                  Object {
-                    "counts": Object {
-                      "count": "Yep",
-                      "id": "OK",
-                      "name": "Sure",
-                    },
-                    "slice": "1212",
-                  },
-                ],
-                "total": 12,
-              },
-              "id": "An ID",
-              "name": "Example Gene",
-              "trending_artists": Array [
-                Object {
-                  "counts": Object {
-                    "artworks": 2,
-                    "for_sale_artworks": 1,
-                  },
-                  "id": "an artist",
-                  "image": Object {
-                    "large_version": "",
-                  },
-                  "name": "Artist name",
-                },
-              ],
-            }
-          }
-          queryState={
-            Object {
-              "selectedMedium": "painting",
-              "selectedPriceRange": "*-100000",
-              "sort": "-partner_updated_at",
-            }
-          }
-          resolveQuery={[Function]} />
+        <ScrollView
+          accessibilityLabel="Artworks ScrollView"
+          onLayout={[Function]}
+          onScroll={[Function]}
+          scrollEventThrottle={50}
+          scrollsToTop={false}>
+          <View
+            accessibilityLabel="Artworks Content View"
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            } />
+        </ScrollView>
       </View>
     </View>
     <View
