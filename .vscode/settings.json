@@ -8,7 +8,7 @@
         "*.snap": "javascriptreact"
     },
     "files.trimTrailingWhitespace": true,
-	"editor.renderWhitespace": true,
+    "editor.renderWhitespace": "boundary",
     "editor.rulers": [120],
     "editor.tabSize": 2,
     "files.exclude": {
@@ -16,7 +16,8 @@
         "**/.svn": true,
         "**/.hg": true,
         "**/.DS_Store": true,
-        "Example/build/": true,
+        "build": true,
+        "Example/build": true,
         "Example/DerivedData": true,
         "Example/Pods/Headers/**": true
     },

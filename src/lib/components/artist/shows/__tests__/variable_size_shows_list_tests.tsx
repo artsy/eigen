@@ -8,8 +8,8 @@ import mockedModule from '../../../../tests/mocked_module'
 import ShowsList from '../variable_size_shows_list'
 
 it('renders properly', () => {
-  const show1 = showProps()
-  var show2 = showProps()
+  const show1 = showProps(1)
+  var show2 = showProps(2)
   show2.partner.name = 'A Very Nice Gallery'
   show2.location.city = 'London'
 
@@ -18,9 +18,9 @@ it('renders properly', () => {
   expect(list).toMatchSnapshot()
 })
 
-var showProps = () => {
+var showProps = (n) => {
   return {
-    __id: Math.random(),
+    __id: `show-expansive-exhibition-${n}`,
     href: 'artsy.net/show',
     cover_image: {
       url: 'artsy.net/image-url'

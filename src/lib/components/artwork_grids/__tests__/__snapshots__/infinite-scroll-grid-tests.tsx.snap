@@ -6,7 +6,7 @@ exports[`test renders properly 1`] = `
         "edges": Array [
           Object {
             "node": Object {
-              "__id": 0.16210295153931287,
+              "__id": "artwork-talking-politics",
               "artists": Array [
                 Object {
                   "name": "Jenny Holzer",
@@ -28,7 +28,7 @@ exports[`test renders properly 1`] = `
           },
           Object {
             "node": Object {
-              "__id": 0.28603492766972405,
+              "__id": "artwork-talking-politics",
               "artists": Array [
                 Object {
                   "name": "Jenny Holzer",
@@ -50,7 +50,7 @@ exports[`test renders properly 1`] = `
           },
           Object {
             "node": Object {
-              "__id": 0.24393106130356568,
+              "__id": "artwork-talking-politics",
               "artists": Array [
                 Object {
                   "name": "Jenny Holzer",

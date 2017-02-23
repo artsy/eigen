@@ -12,7 +12,7 @@ beforeAll(() => {
 
 it('renders properly', () => {
   const gene = {
-    __id: Math.random(),
+    __id: 'gene-deep-time',
     id: 'deep-time',
     name: 'Deep Time'
   }

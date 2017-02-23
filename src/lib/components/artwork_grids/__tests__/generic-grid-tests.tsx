@@ -15,7 +15,7 @@ it('renders properly', () => {
 
 var artwork = () => {
   return {
-    __id: Math.random(),
+    __id: 'artwork-long-title',
     title: 'DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM',
     date: '2012',
     sale_message: null,

@@ -19,7 +19,7 @@ it('renders properly', () => {
 var artwork = () => {
   return {
     node: {
-      __id: Math.random(),
+      __id: 'artwork-talking-politics',
       title: 'TALKING POLITICS',
       date: '2008',
       sale_message: 'Not for sale',

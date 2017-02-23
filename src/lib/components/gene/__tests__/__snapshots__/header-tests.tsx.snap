@@ -2,7 +2,7 @@ exports[`test renders properly 1`] = `
 <Header
   gene={
     Object {
-      "__id": 0.27798720201171867,
+      "__id": "gene-deep-time",
       "id": "deep-time",
       "name": "Deep Time",
     }
