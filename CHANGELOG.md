@@ -1,5 +1,7 @@
 ## Master
-- Made Gene view work with new relay-based infinite scroll grid
+
+- Upgrade to RN 0.42-rc.3 - alloy
+- Made Gene view work with new relay-based infinite scroll grid - cab
 
 ### 1.2.1
 
