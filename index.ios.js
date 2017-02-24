@@ -1,9 +1,9 @@
-import Containers from './build/lib/containers'
-import Components from './build/lib/components'
-import Routes from './build/lib/relay/routes'
+import Containers from './src/lib/containers'
+import Components from './src/lib/components'
+import Routes from './src/lib/relay/routes'
 
-import './build/lib/relay/config'
-import './build/lib/app_registry'
+import './src/lib/relay/config'
+import './src/lib/app_registry'
 
 export default {
   Containers,

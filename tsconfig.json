@@ -23,6 +23,5 @@
         "build",
         "index.ios.js",
         "**/__mocks__"
-    ],
-    "compileOnSave": true
+    ]
 }
