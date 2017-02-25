@@ -1,6 +1,9 @@
+// Not going to import all of the Node.js typings just for this.
+declare const __filename: string
+
 function mockedModule(path: string, moduleName?: string | boolean | null, filename = __filename) {
     debugger
-    if (module) {
+    if (moduleName) {
         jest.mock(path, () => ({'default': moduleName}))
     } else {
         jest.mock(path)
