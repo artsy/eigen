@@ -18,7 +18,7 @@ import Gene from '../gene'
 
 describe('state', () => {
   it('sets up the initial state in componentWillMount', () => {
-      const gene = new Gene()
+      const gene: any = new Gene()
       gene.props = {
         medium: 'glitch',
         price_range: '*-*'
@@ -36,7 +36,7 @@ describe('state', () => {
   })
 
   it('updates from the switch change the selectedTabIndex', ()=> {
-      const gene = new Gene()
+      const gene: any = new Gene()
       const switchEvent = {
         nativeEvent: {
           selectedIndex: 23
@@ -53,7 +53,7 @@ describe('state', () => {
 
   it('updates the state with new data from Eigen', () => {
     // Setup a Gene Component like normal
-     const gene = new Gene()
+     const gene: any = new Gene()
       gene.setState = jest.fn()
       gene.props = {
         medium: 'glitch',
@@ -95,22 +95,22 @@ describe('state', () => {
 
 describe('handling price ranges', () => {
   it('is empty when *-*', () => {
-    const gene = new Gene()
+    const gene: any = new Gene()
     expect(gene.priceRangeToHumanReadableString('*-*')).toEqual('')
   })
 
   it('looks right when there is only a min value', () => {
-    const gene = new Gene()
+    const gene: any = new Gene()
     expect(gene.priceRangeToHumanReadableString('50.00-*')).toEqual('Above $50')
   })
 
   it('looks right when there is only a max value', () => {
-    const gene = new Gene()
+    const gene: any = new Gene()
     expect(gene.priceRangeToHumanReadableString('*-100.00')).toEqual('Below $100')
   })
 
   it('looks right when there is a max and mix value', () => {
-    const gene = new Gene()
+    const gene: any = new Gene()
     expect(gene.priceRangeToHumanReadableString('100.00-10000.00')).toEqual('$100 - $10,000')
   })
 })

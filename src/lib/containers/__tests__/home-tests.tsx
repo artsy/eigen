@@ -5,7 +5,7 @@ import Home from '../home'
 
 describe('upon initialization', () => {
   it('starts with isRefreshing set to false', () => {
-    const homeComponent = new Home(homeProps())
+    const homeComponent: any = new Home(homeProps())
     expect(homeComponent.state.isRefreshing).toBeFalsy()
   })
 
@@ -55,6 +55,6 @@ var modulesOfType = (type: string, count: number) => {
   return modules
 }
 
-var extractListViewDataBlob = (home: Home) => {
+var extractListViewDataBlob = (home: any) => {
   return home.state.dataSource._dataBlob.s1
 }
