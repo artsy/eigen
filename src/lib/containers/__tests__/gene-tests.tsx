@@ -2,7 +2,7 @@ import { ScrollView } from 'react-native'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 
-var refineCallbackPromise = () => Promise.resolve()
+var refineCallbackPromise = () => Promise.resolve({})
 jest.mock('../../native_modules/refine_callback', () => ({ default: { triggerRefine: () => refineCallbackPromise() }}))
 
 // Stub out these views for simplicity sake
@@ -149,7 +149,7 @@ it.skip('looks like expected', () => {
       }
     }
   const tree = renderer.create(
-    <Gene geneID={props.gene.name} medium="painting" price_range="*-100000" gene={props.gene}/>
+    <Gene medium="painting" price_range="*-100000" gene={props.gene} />
   ).toJSON()
   expect(tree).toMatchSnapshot()
 })

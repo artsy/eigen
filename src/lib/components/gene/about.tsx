@@ -20,7 +20,7 @@ class About extends React.Component<RelayProps, any> {
   biography() {
     return (
       <View>
-        <Biography gene={this.props.gene} style={styles.sectionSeparator} />
+        <Biography gene={this.props.gene as any} style={styles.sectionSeparator} />
         <Separator style={styles.sectionSeparator} />
       </View>
     )

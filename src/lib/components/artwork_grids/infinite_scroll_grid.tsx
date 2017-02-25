@@ -117,8 +117,9 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   debugLog(query: string, response?: any, error?: any) {
 
     if (__DEV__ && (global as any).originalXMLHttpRequest !== undefined) {
-      var groupName = 'Infinite scroll request'
-      (console as any).groupCollapsed(groupName, 'color:' + (response ? 'black' : 'red') + ';')
+      const groupName = 'Infinite scroll request'
+      const _console: any = console
+      _console.groupCollapsed(groupName, 'color:' + (response ? 'black' : 'red') + ';')
       console.log('Query:\n', query)
       if (response) {
         console.log('Response:\n', response)

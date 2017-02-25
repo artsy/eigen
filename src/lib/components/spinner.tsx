@@ -2,7 +2,7 @@ import * as React from 'react'
 import { ColorPropType, processColor, requireNativeComponent, View, StyleSheet, ViewProperties } from 'react-native'
 
 interface SpinnerProps extends ViewProperties {
-  spinnerColor: string
+  spinnerColor?: string
 }
 
 export default class Spinner extends React.Component<SpinnerProps, any> {

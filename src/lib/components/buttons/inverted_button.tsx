@@ -13,7 +13,7 @@ interface InvertedButtonProps extends React.Props<InvertedButton> {
   text: string
   selected?: boolean
   inProgress?: boolean
-  onPress: React.TouchEventHandler<InvertedButton>
+  onPress?: React.TouchEventHandler<InvertedButton>
   onSelectionAnimationFinished?: Animated.EndCallback
 }
 

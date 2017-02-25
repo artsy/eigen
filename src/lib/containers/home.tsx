@@ -75,13 +75,13 @@ class Home extends React.Component<Props, State> {
   render() {
     return (
       <ListView dataSource={this.state.dataSource}
-                renderScrollComponent={(props) => {
+                renderScrollComponent={(props: ReactNative.ScrollViewStatic) => {
                   const refreshControl = <RefreshControl refreshing={this.state.isRefreshing}
                                                          onRefresh={this.handleRefresh} />
                   return <ScrollView {...props} automaticallyAdjustContentInsets={false}
                                                 refreshControl={refreshControl} />
                 }}
-                renderRow={({ type, data }, _, row) => {
+                renderRow={({ type, data }, _, row: number) => {
                   // Offset row because we don’t store a reference to the search bar and hero units rows.
                   const registerModule = (module) => this.state.modules[row - 2] = module  // eslint-disable-line no-return-assign
                   switch (type) {

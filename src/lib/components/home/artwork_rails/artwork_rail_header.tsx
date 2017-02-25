@@ -23,7 +23,7 @@ const additionalContentRails = [
 ]
 
 interface Props extends ViewProperties, RelayProps {
-  handleViewAll: () => void
+  handleViewAll: () => void,
 }
 
 interface State {

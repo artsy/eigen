@@ -7,7 +7,7 @@ import SwitchBoard from '../../native_modules/switch_board'
 interface Props extends React.Props<NavigationButton> {
   href: string
   title: string
-  style: Object
+  style?: Object
 }
 
 export default class NavigationButton extends React.Component<Props, any> {

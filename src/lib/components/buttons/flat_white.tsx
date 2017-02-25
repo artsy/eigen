@@ -10,7 +10,7 @@ const AnimatedHeadline = Animated.createAnimatedComponent(Headline)
 
 interface Props extends ViewProperties {
   text: string
-  selected: boolean
+  selected?: boolean
   onPress?: React.TouchEventHandler<WhiteButton>
   onSelectionAnimationFinished?: Animated.EndCallback
 }

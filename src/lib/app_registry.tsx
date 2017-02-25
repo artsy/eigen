@@ -54,7 +54,7 @@ class Gene extends RootContainer {
     this.component = Containers.Gene
 
     const medium = _.get(props, 'refineSettings.medium')
-    const price_range = _.get(props, 'refineSettings.price_range')
+    const price_range = _.get(props, 'refineSettings.price_range') as string
 
     this.route = new Routes.Gene({
       geneID: props.geneID,
