@@ -9,6 +9,7 @@ import Shows from '../components/artist/shows'
 import Artworks from '../components/artist/artworks'
 
 import TabView from '../components/tab_view'
+import { SwitchEvent } from '../components/switch_view'
 
 const isPad = Dimensions.get('window').width > 700
 
@@ -36,7 +37,7 @@ class Artist extends React.Component<Props, {}> {
     }
   }
 
-  tabSelectionDidChange = (event: any) => {
+  tabSelectionDidChange = (event: SwitchEvent) => {
     this.setState({ selectedTabIndex: event.nativeEvent.selectedIndex })
   }
 

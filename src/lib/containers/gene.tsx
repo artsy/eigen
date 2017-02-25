@@ -15,7 +15,7 @@ import {
   GeneInfiniteScrollContainer as Artworks
 } from '../components/artwork_grids/infinite_scroll_grid'
 
-import SwitchView from '../components/switch_view'
+import SwitchView, { SwitchEvent } from '../components/switch_view'
 
 import Refine from '../native_modules/refine_callback'
 import colors from '../../data/colors'
@@ -81,7 +81,7 @@ class Gene extends React.Component<Props, State> {
     }
   }
 
-  switchSelectionDidChange = (event: TouchEvent<SwitchView>) => {
+  switchSelectionDidChange = (event: SwitchEvent) => {
     this.setState({ selectedTabIndex: event.nativeEvent.selectedIndex })
   }
 

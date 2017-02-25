@@ -1,9 +1,17 @@
 import * as React from 'react'
-import { requireNativeComponent, ViewProperties, TouchEventHandler } from 'react-native'
+import {
+  NativeSyntheticEvent,
+  NativeTouchEvent,
+  requireNativeComponent,
+  ViewProperties
+} from 'react-native'
+
+export interface SwitchEvent extends NativeSyntheticEvent<NativeTouchEvent & { selectedIndex: number }> {
+}
 
 interface Props extends ViewProperties {
   titles: string[]
-  onSelectionChange: TouchEventHandler<SwitchView>
+  onSelectionChange: (event: SwitchEvent) => void,
   selectedIndex: number
 }
 

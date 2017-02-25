@@ -1,11 +1,11 @@
 import * as React from 'react'
-import { StyleSheet, View, ViewProperties, TouchEventHandler } from 'react-native'
+import { StyleSheet, View, ViewProperties } from 'react-native'
 
-import SwitchView from './switch_view'
+import SwitchView, { SwitchEvent } from './switch_view'
 
 interface Props extends ViewProperties {
   titles: string[]
-  onSelectionChange: TouchEventHandler<SwitchView>
+  onSelectionChange: (event: SwitchEvent) => void
   selectedIndex: number
 }
 
