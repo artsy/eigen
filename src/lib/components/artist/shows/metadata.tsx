@@ -64,18 +64,18 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'flex-start',
     marginTop: 10,
-  } as React.ViewStyle,
+  } as ReactNative.ViewStyle,
   serifText: {
     margin: 2,
     marginLeft: 0,
-  } as React.ViewStyle,
+  } as ReactNative.ViewStyle,
   sansSerifText: {
     fontSize: 12,
     textAlign: 'left',
     margin: 2,
     marginLeft: 0,
     fontFamily: 'Avant Garde Gothic ITCW01Dm',
-  } as React.ViewStyle,
+  } as ReactNative.ViewStyle,
 })
 
 export default Relay.createContainer(Metadata, {

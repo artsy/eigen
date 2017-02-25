@@ -1,6 +1,6 @@
 import * as Relay from 'react-relay'
 import * as React from 'react'
-import { View, Dimensions, StyleSheet, ViewProperties, TouchEvent } from 'react-native'
+import { View, Dimensions, StyleSheet, ViewProperties } from 'react-native'
 import * as _ from 'lodash'
 import * as ParallaxScrollView from 'react-native-parallax-scroll-view'
 
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingLeft: isPad ? 40 : 20,
     paddingRight: isPad ? 40 : 20
-  } as React.ViewStyle
+  } as ReactNative.ViewStyle
 })
 
 export default Relay.createContainer(Gene, {

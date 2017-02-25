@@ -89,11 +89,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 40,
     paddingRight: 40,
-  } as React.ViewStyle,
+  } as ReactNative.ViewStyle,
   headline: {
     textAlign: 'center',
     fontSize: isPad ? 20 : 14
-  } as React.TextStyle,
+  } as ReactNative.TextStyle,
   followButton: {
     height: 40,
     marginTop: 30,

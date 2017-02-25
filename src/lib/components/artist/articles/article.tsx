@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontFamily: 'Avant Garde Gothic ITCW01Dm',
     color: 'grey',
-  } as React.ViewStyle,
+  } as ReactNative.ViewStyle,
   serifText: {
     fontFamily: 'AGaramondPro-Regular',
     fontSize: 16,

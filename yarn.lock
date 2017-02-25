@@ -72,6 +72,10 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-native@https://github.com/alloy/DefinitelyTyped/releases/download/0.42.0/types-react-native-0.42.0.tgz":
+  version "0.42.0"
+  resolved "https://github.com/alloy/DefinitelyTyped/releases/download/0.42.0/types-react-native-0.42.0.tgz#41f48dfeb513be9e615117dc68568ff250c70a0b"
+
 "@types/react-relay@^0.9.10":
   version "0.9.11"
   resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-0.9.11.tgz#34601bd00bee46da9e52b2210149f9536d6ffcb8"

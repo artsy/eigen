@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginLeft: -10,
     marginRight: -10,
-  } as React.ViewStyle
+  } as ReactNative.ViewStyle
 })
 
 export default Relay.createContainer(ShowsList, {

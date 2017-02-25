@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 30,
     alignSelf: isPad ? 'center' : null,
-  } as React.ViewStyle
+  } as ReactNative.ViewStyle
 })
 
 export default Relay.createContainer(Artist, {

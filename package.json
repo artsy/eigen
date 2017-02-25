@@ -76,7 +76,7 @@
     "@kadira/react-native-storybook": "^1.12.6",
     "@types/jest": "^18.1.1",
     "@types/lodash": "^4.14.52",
-    "@types/react-native": "^0.37.11",
+    "@types/react-native": "https://github.com/alloy/DefinitelyTyped/releases/download/0.42.0/types-react-native-0.42.0.tgz",
     "@types/react-relay": "^0.9.10",
     "apphub": "^0.5.1",
     "babel-jest": "^18.0.0",

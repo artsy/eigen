@@ -259,7 +259,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-  } as React.ViewStyle,
+  } as ReactNative.ViewStyle,
   section: {
     flex: 1,
     flexDirection: 'column',
