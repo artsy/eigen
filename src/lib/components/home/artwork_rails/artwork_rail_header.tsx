@@ -30,7 +30,7 @@ interface State {
   following: boolean
 }
 
-class ArtworkRailHeader extends React.Component<Props, State> {
+class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, State> {
   constructor(props) {
     super(props)
     this.state = { following: props.rail.key === 'followed_artist' }
@@ -159,4 +159,9 @@ interface RelayProps {
     key: string | null,
     context: Array<boolean | number | string | null> | null,
   },
+}
+interface RelayPropsWorkaround {
+  rail: {
+    context: any,
+  }
 }

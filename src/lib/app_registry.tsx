@@ -10,7 +10,7 @@ import Routes from './relay/routes'
 
 class RootContainer extends React.Component<{}, {}> {
   state: { retrying: boolean }
-  component: RootContainer
+  component: Relay.RelayContainerClass<any>
   route: Relay.Route
 
   constructor(props) {

@@ -7,7 +7,7 @@ import metaphysics from '../../../metaphysics'
 import Spinner from '../../spinner'
 import Separator from '../../separator'
 import SectionTitle from '../section_title'
-import ArtistCard from './artist_card'
+import ArtistCard, { ArtistCardQuery } from './artist_card'
 
 const Animation = {
   yDelta: 20,
@@ -19,11 +19,12 @@ const Animation = {
 }
 
 interface Props extends ViewProperties, RelayProps {
+  relay: Relay.RelayProp,
 }
 
 interface State {
-    artists: any[]
-    loadFailed: boolean
+  artists: any[]
+  loadFailed: boolean
 }
 
 class ArtistRail extends React.Component<Props, State> {
@@ -224,7 +225,7 @@ function suggestedArtistQuery(artist_id: string): string {
                           exclude_artists_without_forsale_artworks: true) {
           _id
           __id
-          ${ArtistCard.artistQuery}
+          ${ArtistCardQuery}
         }
       }
     }

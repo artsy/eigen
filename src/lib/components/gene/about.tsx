@@ -7,7 +7,7 @@ import Biography from './biography'
 import RelatedArtists from '../related_artists'
 import Separator from '../separator'
 
-class About extends React.Component<RelayProps, any> {
+class About extends React.Component<RelayPropsWorkaround, any> {
   render() {
     return (
       <View>
@@ -60,4 +60,9 @@ interface RelayProps {
   gene: {
     trending_artists: Array<boolean | number | string | null> | null,
   },
+}
+interface RelayPropsWorkaround {
+  gene: {
+    trending_artists: any[],
+  }
 }

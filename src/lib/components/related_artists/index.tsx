@@ -6,6 +6,9 @@ import SerifText from '../text/serif'
 import RelatedArtist from './related_artist'
 import { LayoutEvent } from '../../system/events'
 
+interface Props extends ViewProperties, RelayProps {
+}
+
 interface State {
   columns: number
   imageSize: {
@@ -14,7 +17,7 @@ interface State {
   }
 }
 
-class RelatedArtists extends React.Component<ViewProperties, State> {
+class RelatedArtists extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {

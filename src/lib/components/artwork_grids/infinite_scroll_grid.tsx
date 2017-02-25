@@ -26,7 +26,7 @@ const PageEndThreshold = 1000
  *   - the calculation currently only takes into account the size of the image, not if e.g. the sale message is present
  */
 
-interface Props extends RelayProps {
+interface Props extends ArtistRelayProps, GeneRelayProps {
   /** The direction for the grid, currently only 'column' is supported . */
   sectionDirection: string;
 
@@ -302,22 +302,22 @@ export default Relay.createContainer(InfiniteScrollArtworksGrid, {
   },
 })
 
-// interface IRelayProps {
-//   gene: {
-//     artworks_connection: {
-//       pageInfo: {
-//         hasNextPage: boolean,
-//       },
-//       edges: Array<{
-//         node: {
-//           image: {
-//             id: string | null,
-//           } | null,
-//         } | null,
-//       }>,
-//     } | null,
-//   },
-// }
+interface ArtistRelayProps {
+  artist: {
+    artworks_connection: {
+      pageInfo: {
+        hasNextPage: boolean,
+      },
+      edges: Array<{
+        node: {
+          image: {
+            id: string | null,
+          } | null,
+        } | null,
+      }>,
+    } | null,
+  },
+}
 
 const GeneInfiniteScrollContainer = Relay.createContainer(InfiniteScrollArtworksGrid, {
   initialVariables: {
@@ -349,19 +349,19 @@ const GeneInfiniteScrollContainer = Relay.createContainer(InfiniteScrollArtworks
 
 export { GeneInfiniteScrollContainer }
 
-// interface IRelayProps {
-//   gene: {
-//     artworks_connection: {
-//       pageInfo: {
-//         hasNextPage: boolean,
-//       },
-//       edges: Array<{
-//         node: {
-//           image: {
-//             id: string | null,
-//           } | null,
-//         } | null,
-//       }>,
-//     } | null,
-//   },
-// }
+interface GeneRelayProps {
+  gene: {
+    artworks_connection: {
+      pageInfo: {
+        hasNextPage: boolean,
+      },
+      edges: Array<{
+        node: {
+          image: {
+            id: string | null,
+          } | null,
+        } | null,
+      }>,
+    } | null,
+  },
+}

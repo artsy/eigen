@@ -212,7 +212,7 @@ const ArtistCardContainer = Relay.createContainer(ArtistCard, {
 
 // TODO Until we figure out how to use Relay to fetch/render suggested artists and replace initially suggested cards,
 //      this query is duplicated so we can fetch the data manually.
-ArtistCardContainer.artistQuery = `
+export const ArtistCardQuery = `
   ... on Artist {
     id
     _id

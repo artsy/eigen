@@ -31,7 +31,7 @@ interface State {
   loadFailed: boolean
 }
 
-class ArtworkRail extends React.Component<Props, State> {
+class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
   constructor(props) {
     super(props)
 
@@ -287,4 +287,9 @@ interface RelayProps {
     context: Array<boolean | number | string | null> | null,
     results: Array<boolean | number | string | null> | null,
   },
+}
+interface RelayPropsWorkaround {
+  rail: {
+    context: any,
+  }
 }

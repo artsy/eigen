@@ -6,7 +6,10 @@ import SerifText from '../text/serif'
 
 const sideMargin = Dimensions.get('window').width > 700 ? 50 : 0
 
-class Biography extends React.Component<RelayProps, any> {
+interface Props extends ReactNative.ViewProperties, RelayProps {
+}
+
+class Biography extends React.Component<Props, any> {
   render() {
     const gene = this.props.gene
     if (!gene.description) {

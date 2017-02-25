@@ -34,7 +34,7 @@ interface Props extends ViewProperties {
   medium: string
   price_range: string
   gene: any
-  relay: Relay.RelayProp
+  relay?: Relay.RelayProp
 }
 
 interface State {
