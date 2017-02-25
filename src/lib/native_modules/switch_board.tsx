@@ -1,7 +1,7 @@
 import { findNodeHandle, NativeModules } from 'react-native'
 const { ARSwitchBoardModule } = NativeModules
 
-function presentNavigationViewController(component: any, route: any) {
+function presentNavigationViewController(component: React.Component<any, any>, route: string) {
   let reactTag
   try {
     reactTag = findNodeHandle(component)
@@ -12,7 +12,7 @@ function presentNavigationViewController(component: any, route: any) {
   ARSwitchBoardModule.presentNavigationViewController(reactTag, route)
 }
 
-function presentModalViewController(component: any, route: any) {
+function presentModalViewController(component: React.Component<any, any>, route: string) {
   let reactTag
   try {
     reactTag = findNodeHandle(component)
