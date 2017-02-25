@@ -24,6 +24,8 @@ mockedModules({
   './lib/components/artwork_grids/infinite_scroll_grid.tsx': 'ArtworksGrid',
 })
 
+mockedModule('./lib/metaphysics.ts')
+
 //Artist tests
 mockedModule('./lib/components/artist/shows/index.tsx', 'Shows')
 mockedModule('./lib/components/artist/artworks/index.tsx', 'Artworks')

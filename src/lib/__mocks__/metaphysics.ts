@@ -4,8 +4,4 @@ function metaphysics(query) {
   })
 }
 
-metaphysics.isMocked = true
-
 export default metaphysics
-
-
