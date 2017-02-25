@@ -77,7 +77,11 @@ class ShowsList extends React.Component<Props, State> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ReactNative.ViewStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
     justifyContent: 'flex-start',
     flexDirection: 'row',
@@ -85,7 +89,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginLeft: -10,
     marginRight: -10,
-  } as ReactNative.ViewStyle
+  },
 })
 
 export default Relay.createContainer(ShowsList, {

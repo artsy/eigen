@@ -93,7 +93,15 @@ class ArtworkRailHeader extends React.Component<Props, State> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ReactNative.ViewStyle,
+  title: ReactNative.TextStyle,
+  viewAllButton: ReactNative.TextStyle,
+  followButton: ReactNative.ViewStyle,
+  followAnnotation: ReactNative.TextStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
     marginTop: isPad ? 50 : 40,
     marginBottom: 20,

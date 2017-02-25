@@ -44,7 +44,12 @@ class RelatedArtist extends React.Component<any, any> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  sansSerifText: ReactNative.TextStyle,
+  serifText: ReactNative.TextStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   sansSerifText: {
     fontSize: 12,
     textAlign: 'left',

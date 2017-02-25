@@ -58,15 +58,20 @@ class Shows extends React.Component<Props, any> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ReactNative.ViewStyle,
+  title: ReactNative.TextStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
     justifyContent: 'flex-start',
-  } as ReactNative.ViewStyle,
+  },
   title: {
     fontSize: 20,
     textAlign: 'left',
     marginLeft: 0
-  } as ReactNative.ViewStyle,
+  },
 })
 
 const pastShowsFragment = windowDimensions.width > 700 ? VariableSizeShowsList.getFragment('shows') : SmallShowsList.getFragment('shows')

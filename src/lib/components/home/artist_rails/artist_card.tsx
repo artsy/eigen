@@ -122,7 +122,18 @@ class ArtistCard extends React.Component<Props, State> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ReactNative.ViewStyle,
+  sansSerifText: ReactNative.TextStyle,
+  serifText: ReactNative.TextStyle,
+  touchableContainer: ReactNative.ViewStyle,
+  image: ReactNative.ViewStyle,
+  textContainer: ReactNative.ViewStyle,
+  serifWorksText: ReactNative.TextStyle,
+  followButton: ReactNative.ViewStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   // TODO The outer wrapping view is currently only there because setting `marginLeft: 16` on the Artist card from the
   //      ArtistRail component isn’t working.
   container: {
@@ -168,7 +179,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000000'
   },
-    serifWorksText: {
+  serifWorksText: {
     color: colors['gray-semibold'],
   },
   followButton: {

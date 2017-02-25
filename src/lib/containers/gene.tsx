@@ -285,7 +285,12 @@ class Gene extends React.Component<Props, State> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  header: ReactNative.ViewStyle,
+  stickyHeader: ReactNative.ViewStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   header: {
     width: isPad ? 330 : null,
     alignSelf: isPad ? 'center' : null,
@@ -298,7 +303,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingLeft: isPad ? 40 : 20,
     paddingRight: isPad ? 40 : 20
-  } as ReactNative.ViewStyle
+  },
 })
 
 export default Relay.createContainer(Gene, {

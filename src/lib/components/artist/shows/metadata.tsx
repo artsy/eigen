@@ -60,22 +60,28 @@ class Metadata extends React.Component<Props, any> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ReactNative.ViewStyle,
+  serifText: ReactNative.TextStyle,
+  sansSerifText: ReactNative.TextStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
     justifyContent: 'flex-start',
     marginTop: 10,
-  } as ReactNative.ViewStyle,
+  },
   serifText: {
     margin: 2,
     marginLeft: 0,
-  } as ReactNative.ViewStyle,
+  },
   sansSerifText: {
     fontSize: 12,
     textAlign: 'left',
     margin: 2,
     marginLeft: 0,
     fontFamily: 'Avant Garde Gothic ITCW01Dm',
-  } as ReactNative.ViewStyle,
+  },
 })
 
 export default Relay.createContainer(Metadata, {

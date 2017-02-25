@@ -256,10 +256,16 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ReactNative.ViewStyle,
+  section: ReactNative.ViewStyle,
+  spinner: ReactNative.ViewStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
     flexDirection: 'row',
-  } as ReactNative.ViewStyle,
+  },
   section: {
     flex: 1,
     flexDirection: 'column',

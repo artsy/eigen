@@ -136,10 +136,17 @@ class Header extends React.Component<HeaderProps, State> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  base: ReactNative.TextStyle,
+  headline: ReactNative.TextStyle,
+  followCount: ReactNative.TextStyle,
+  followButton: ReactNative.ViewStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   base: {
     textAlign: 'center',
-  } as ReactNative.ViewStyle,
+  },
   headline: {
     fontSize: 14,
   },
@@ -153,7 +160,7 @@ const styles = StyleSheet.create({
     alignSelf: isPad ? 'center' : null,
     marginLeft: 0,
     marginRight: 0,
-  } as ReactNative.ViewStyle
+  },
 })
 
 export default Relay.createContainer(Header, {

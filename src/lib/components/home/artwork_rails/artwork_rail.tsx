@@ -203,7 +203,16 @@ class ArtworkRail extends React.Component<Props, State> {
     )
   }
 }
-const styles = StyleSheet.create({
+
+interface Styles {
+  container: ReactNative.ViewStyle,
+  gridContainer: ReactNative.ViewStyle,
+  expansionButton: ReactNative.ViewStyle,
+  viewAllButton: ReactNative.ViewStyle,
+  viewAllText: ReactNative.TextStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
     backgroundColor: 'white',
   },

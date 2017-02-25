@@ -81,7 +81,13 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
 const isPad = Dimensions.get('window').width > 700
 
-const styles = StyleSheet.create({
+interface Styles {
+  header: ReactNative.TextStyle,
+  headline: ReactNative.TextStyle,
+  followButton: ReactNative.ViewStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   header: {
     marginTop: 15,
     height: 36,
@@ -89,15 +95,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 40,
     paddingRight: 40,
-  } as ReactNative.ViewStyle,
+  },
   headline: {
     textAlign: 'center',
     fontSize: isPad ? 20 : 14
-  } as ReactNative.TextStyle,
+  },
   followButton: {
     height: 40,
     marginTop: 30,
-  }
+  },
 })
 
 export default Relay.createContainer(Header, {

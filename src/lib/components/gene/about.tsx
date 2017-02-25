@@ -33,7 +33,11 @@ class About extends React.Component<RelayProps, any> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  sectionSeparator: ReactNative.ViewStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   sectionSeparator: {
     marginBottom: 20,
   },

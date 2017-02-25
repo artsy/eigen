@@ -174,7 +174,12 @@ class ArtistRail extends React.Component<Props, State> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  cardContainer: ReactNative.ViewStyle,
+  title: ReactNative.ViewStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   cardContainer: {
     flexGrow: 1,
     flexDirection: 'row',

@@ -16,7 +16,11 @@ export default class SectionTitle extends React.Component<any, any> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  headerText: ReactNative.TextStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   headerText: {
     fontFamily: 'AGaramondPro-Regular',
     fontSize: 30,

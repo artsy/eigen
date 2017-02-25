@@ -41,7 +41,15 @@ class Article extends React.Component<Props, {}> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ReactNative.ViewStyle,
+  touchableContent: ReactNative.ViewStyle,
+  image: ReactNative.ViewStyle,
+  sansSerifText: ReactNative.TextStyle,
+  serifText: ReactNative.TextStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   // TODO The outer wrapping view is currently only there because setting `marginRight: 20` on the Article from the
   //      Articles component isn’t working.
   container: {
@@ -60,7 +68,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontFamily: 'Avant Garde Gothic ITCW01Dm',
     color: 'grey',
-  } as ReactNative.ViewStyle,
+  },
   serifText: {
     fontFamily: 'AGaramondPro-Regular',
     fontSize: 16,

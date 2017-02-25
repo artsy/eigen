@@ -112,13 +112,17 @@ class Artist extends React.Component<Props, {}> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  tabView: ReactNative.ViewStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   tabView: {
     width: isPad ? 330 : null,
     marginTop: 30,
     marginBottom: 30,
     alignSelf: isPad ? 'center' : null,
-  } as ReactNative.ViewStyle
+  },
 })
 
 export default Relay.createContainer(Artist, {

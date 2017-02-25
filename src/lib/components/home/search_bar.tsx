@@ -24,7 +24,13 @@ export default class SearchBar extends React.Component<any, any> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ReactNative.ViewStyle,
+  text: ReactNative.TextStyle,
+  searchIcon: ReactNative.ViewStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
     height: 50,
     backgroundColor: colors['gray-light'],
@@ -35,17 +41,17 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center',
     flexDirection: 'row',
-  } as ReactNative.ViewStyle,
+  },
   text: {
     fontFamily: 'AGaramondPro-Regular',
     fontSize: 16,
     marginTop: 5
-  } as ReactNative.ViewStyle,
+  },
   searchIcon: {
     marginLeft: leftInnerMargin,
     marginRight: 10,
     height: 16,
     width: 16
-  } as ReactNative.ViewStyle
+  },
 })
 

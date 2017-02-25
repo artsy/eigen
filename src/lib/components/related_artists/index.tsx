@@ -83,7 +83,13 @@ class RelatedArtists extends React.Component<ViewProperties, State> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ReactNative.ViewStyle,
+  artistContainer: ReactNative.ViewStyle,
+  heading: ReactNative.TextStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
     flexDirection: 'column',
   },

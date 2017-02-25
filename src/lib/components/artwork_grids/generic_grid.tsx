@@ -127,7 +127,12 @@ class GenericArtworksGrid extends React.Component<any, any> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ReactNative.ViewStyle,
+  section: ReactNative.ViewStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
     flexDirection: 'row',
   },
