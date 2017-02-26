@@ -1,30 +1,13 @@
-// Not going to import all of the Node.js typings just for this.
-declare const __filename: string
-
-function mockedModule(path: string, moduleName?: string | boolean | null, filename = __filename) {
-    debugger
-    if (moduleName) {
-        jest.mock(path, () => ({'default': moduleName}))
-    } else {
-        jest.mock(path)
-    }
+function mockedModule(path: string, moduleName: string) {
+  jest.mock(path, () => ({'default': moduleName}))
 }
 
-function mockedModules(paths: {[key: string]: string | boolean}) {
-    for (let path in paths) {
-        let moduleName = paths[path]
-        mockedModule(path, moduleName)
-    }
-}
+jest.mock('./lib/metaphysics.ts')
 
-mockedModules({
-  './lib/components/switch_view.tsx': 'SwitchView',
-  './lib/components/spinner.tsx': 'ARSpinner',
-  './lib/components/opaque_image_view.tsx': 'AROpaqueImageView',
-  './lib/components/artwork_grids/infinite_scroll_grid.tsx': 'ArtworksGrid',
-})
-
-mockedModule('./lib/metaphysics.ts')
+mockedModule('./lib/components/switch_view.tsx', 'SwitchView')
+mockedModule('./lib/components/spinner.tsx', 'ARSpinner')
+mockedModule('./lib/components/opaque_image_view.tsx', 'AROpaqueImageView')
+mockedModule('./lib/components/artwork_grids/infinite_scroll_grid.tsx', 'ArtworksGrid')
 
 //Artist tests
 mockedModule('./lib/components/artist/shows/index.tsx', 'Shows')
@@ -33,7 +16,5 @@ mockedModule('./lib/components/artist/header.tsx', 'Header')
 mockedModule('./lib/components/artist/about.tsx', 'About')
 
 //Gene tests
-mockedModules({
-  './lib/components/gene/header.tsx': 'Header',
-  './lib/components/gene/artworks.tsx': 'Artworks'
-})
+mockedModule('./lib/components/gene/header.tsx', 'Header')
+mockedModule('./lib/components/gene/artworks.tsx', 'Artworks')
