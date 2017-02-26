@@ -2,8 +2,8 @@ import * as React from 'react'
 import {
   processColor,
   requireNativeComponent,
-  PixelRatio,
   ColorPropType,
+  PixelRatio,
   StyleSheet
 } from 'react-native'
 
@@ -18,7 +18,7 @@ interface Props {
   imageURL?: string
 
   /** The background colour for the image view */
-  placeholderBackgroundColor?: ColorPropType
+  placeholderBackgroundColor?: string | number,
 
   /** Any additional styling for the imageview */
   style?: any
@@ -44,8 +44,16 @@ interface State {
 }
 
 export default class OpaqueImageView extends React.Component<Props, State> {
-  static defaultProps: {
-    placeholderBackgroundColor: string
+  // These are only needed because they are exposed to a native component.
+  static propTypes: any = {
+    imageURL: React.PropTypes.string,
+    aspectRatio: React.PropTypes.number,
+    onLoad: React.PropTypes.func,
+    placeholderBackgroundColor: ColorPropType,
+  }
+
+  static defaultProps: Props = {
+    placeholderBackgroundColor: colors['gray-regular'],
   }
 
   constructor(props: Props) {
@@ -91,7 +99,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
 
   render() {
     const isLaidOut = !!(this.state.width && this.state.height)
-    const { style, placeholderBackgroundColor, ...props } = this.props
+    const { style, ...props } = this.props
 
     Object.assign(props, {
       aspectRatio: this.state.aspectRatio,
@@ -103,41 +111,13 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     // that it shows immediately.
     let backgroundColorStyle = null
     if (this.props.imageURL) {
-      props.placeholderBackgroundColor = processColor(placeholderBackgroundColor)
+      (props as any).placeholderBackgroundColor = processColor(props.placeholderBackgroundColor)
     } else {
-      backgroundColorStyle = { backgroundColor: placeholderBackgroundColor }
+      backgroundColorStyle = { backgroundColor: props.placeholderBackgroundColor }
     }
 
     return <NativeOpaqueImageView style={[style, backgroundColorStyle]} {...props} />
   }
-}
-
-OpaqueImageView.defaultProps = {
-  placeholderBackgroundColor: colors['gray-regular'],
-}
-
-OpaqueImageView.propTypes = {
-  /**
-   * The URL from where to fetch the image.
-   */
-  imageURL: React.PropTypes.string,
-
-  /**
-   * An aspect ratio created with: width / height.
-   *
-   * When specified:
-   * - The view will be sized in such a way that it maintains the aspect ratio of the image.
-   * - The imageURL will be modified so that it resizes the image to the exact size at which the view has been laid out,
-   *   thus never fetching more data than absolutely necessary.
-   */
-  aspectRatio: React.PropTypes.number,
-
-  /**
-   * A callback that is called once the image is loaded.
-   */
-  onLoad: React.PropTypes.func,
-
-  placeholderBackgroundColor: ColorPropType,
 }
 
 const NativeOpaqueImageView = requireNativeComponent('AROpaqueImageView', OpaqueImageView)
