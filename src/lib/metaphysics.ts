@@ -1,5 +1,6 @@
-import { fetch, NativeModules } from 'react-native'
+import { NativeModules } from 'react-native'
 const Emission = NativeModules.Emission || {}
+declare const fetch: ReactNative.fetch
 
 import { metaphysicsURL } from './relay/config'
 import { NetworkError } from './system/errors'
