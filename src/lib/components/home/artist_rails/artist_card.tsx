@@ -9,14 +9,18 @@ import SwitchBoard from '../../../native_modules/switch_board'
 import InvertedButton from '../../buttons/inverted_button'
 import Events from '../../../native_modules/events'
 
+type ArtistFollowHandlerResult = Promise<ReactNative.Animated.EndResult>
+export type ArtistFollowButtonStatusSetter = (status: boolean) => ArtistFollowHandlerResult
+export type ArtistFollowHandler = (setFollowButtonStatus: ArtistFollowButtonStatusSetter) => void
+
 interface Props extends ViewProperties, RelayProps {
-  onFollow?: (any) => void
+  onFollow?: ArtistFollowHandler,
 }
 
 interface State {
     processingChange: boolean
     following?: boolean
-    followStatusChanged?: boolean
+    followStatusChanged?: ReactNative.Animated.EndCallback,
 }
 
 class ArtistCard extends React.Component<Props, State> {
@@ -48,18 +52,17 @@ class ArtistCard extends React.Component<Props, State> {
           // TODO At some point, this component might be on other screens.
           source_screen: 'home page',
         })
-        this.props.onFollow(this.setFollowStatus)
+        this.props.onFollow(this.setFollowStatus.bind(this))
       }
     })
   }
 
-  setFollowStatus = (status: boolean) => {
-    // $FlowFixMe: We don't know how to get this the followStatusChanged to be the right type.
-    return new Promise((followStatusChanged: boolean) => {
+  setFollowStatus(status: boolean): ArtistFollowHandlerResult {
+    return new Promise(resolve => {
       this.setState({
         following: status,
         processingChange: false,
-        followStatusChanged
+        followStatusChanged: resolve,
       })
     })
   }
@@ -98,7 +101,7 @@ class ArtistCard extends React.Component<Props, State> {
     const imageURL = artist.image && artist.image.url
 
     const selectionAnimationFinishedHandler = this.state.followStatusChanged
-    this.state.followStatusChanged = null
+    delete (this.state as any).followStatusChanged
 
     return (
       <View style={styles.container}>

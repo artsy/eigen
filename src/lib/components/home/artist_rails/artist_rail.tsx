@@ -7,7 +7,7 @@ import metaphysics from '../../../metaphysics'
 import Spinner from '../../spinner'
 import Separator from '../../separator'
 import SectionTitle from '../section_title'
-import ArtistCard, { ArtistCardQuery } from './artist_card'
+import ArtistCard, { ArtistCardQuery, ArtistCardResponse, ArtistFollowButtonStatusSetter } from './artist_card'
 
 const Animation = {
   yDelta: 20,
@@ -71,7 +71,7 @@ class ArtistRail extends React.Component<Props, State> {
     })
   }
 
-  suggestedArtistAnimation(suggestedArtist) {
+  suggestedArtistAnimation(suggestedArtist: SuggestedArtist) {
     return new Promise((resolve, reject) => {
       const { opacity, translateY } = suggestedArtist._animatedValues
       const duration = Animation.duration.suggestedArtist
@@ -83,7 +83,7 @@ class ArtistRail extends React.Component<Props, State> {
     })
   }
 
-  replaceFollowedArtist(followedArtist, suggestedArtist) {
+  replaceFollowedArtist(followedArtist, suggestedArtist: SuggestedArtist): Promise<undefined> {
     const artists = this.state.artists.slice(0)
     const index = artists.indexOf(followedArtist)
     if (suggestedArtist) {
@@ -96,23 +96,25 @@ class ArtistRail extends React.Component<Props, State> {
       // remove card when there is no suggestion
       artists.splice(index, 1)
     }
-    this.setState({ artists })
-    return suggestedArtist
+    // Resolve after re-render
+    return new Promise((resolve, _) => {
+      this.setState({ artists }, resolve)
+    })
   }
 
-  handleFollowChange(followedArtist, setFollowButtonStatus) {
+  handleFollowChange(followedArtist, setFollowButtonStatus: ArtistFollowButtonStatusSetter) {
       // Get a new suggested artist based on the followed artist.
-    return metaphysics(suggestedArtistQuery(followedArtist._id))
+    return metaphysics<SuggestedArtistResponse>(suggestedArtistQuery(followedArtist._id))
       // Return the suggested artist or `undefined` if there is no suggestion.
       .then(({ me: { suggested_artists }}) => suggested_artists[0])
       // Return `undefined` if an error occurred.
       .catch(error => console.error(error))
-      // Change the status of the follow button to ‘following’ and return the suggestion.
-      .then((suggestedArtist) => setFollowButtonStatus(true).then(() => suggestedArtist))
-      // Animate the followed artist card away and return the suggestion.
+      // Change the status of the follow button to ‘following’.
+      .then<SuggestedArtist>((suggestedArtist) => setFollowButtonStatus(true).then(() => suggestedArtist))
+      // Animate the followed artist card away.
       .then((suggestedArtist) => this.followedArtistAnimation(followedArtist).then(() => suggestedArtist))
-      // Replace the followed artist by the suggested one in the list of artists and return the suggestion.
-      .then((suggestedArtist) => this.replaceFollowedArtist(followedArtist, suggestedArtist))
+      // Replace the followed artist by the suggested one in the list of artists.
+      .then((suggestedArtist) => this.replaceFollowedArtist(followedArtist, suggestedArtist).then(() => suggestedArtist))
       // Finally animate the suggested artist card in, if there is a suggestion.
       .then((suggestedArtist) => suggestedArtist && this.suggestedArtistAnimation(suggestedArtist))
   }
@@ -124,10 +126,9 @@ class ArtistRail extends React.Component<Props, State> {
         const key = this.props.rail.__id + artist.__id
         const { opacity, translateY } = artist._animatedValues
         const style = { opacity, transform: [{ translateY }] }
-        const followHandler = (setFollowButtonStatus) => this.handleFollowChange(artist, setFollowButtonStatus)
         return (
           <Animated.View key={key} style={style}>
-            <ArtistCard artist={artist} onFollow={followHandler} />
+            <ArtistCard artist={artist} onFollow={setter => this.handleFollowChange(artist, setter)} />
           </Animated.View>
         )
       })
@@ -195,6 +196,38 @@ const styles = StyleSheet.create<Styles>({
  }
 })
 
+interface SuggestedArtist extends ArtistCardResponse {
+  _id: string,
+  __id: string,
+  _animatedValues?: {
+    opacity: ReactNative.Animated.Value,
+    translateY: ReactNative.Animated.Value,
+  }
+}
+
+interface SuggestedArtistResponse {
+  me: {
+    suggested_artists: SuggestedArtist[],
+  }
+}
+
+function suggestedArtistQuery(artist_id: string): string {
+  return `
+    query {
+      me {
+        suggested_artists(artist_id: "${artist_id}",
+                          size: 1,
+                          exclude_followed_artists: true,
+                          exclude_artists_without_forsale_artworks: true) {
+          _id
+          __id
+          ${ArtistCardQuery}
+        }
+      }
+    }
+  `
+}
+
 export default Relay.createContainer(ArtistRail, {
   initialVariables: {
     fetchContent: false,
@@ -214,23 +247,6 @@ export default Relay.createContainer(ArtistRail, {
     `,
   }
 })
-
-function suggestedArtistQuery(artist_id: string): string {
-  return `
-    query {
-      me {
-        suggested_artists(artist_id: "${artist_id}",
-                          size: 1,
-                          exclude_followed_artists: true,
-                          exclude_artists_without_forsale_artworks: true) {
-          _id
-          __id
-          ${ArtistCardQuery}
-        }
-      }
-    }
-  `
-}
 
 interface RelayProps {
   rail: {

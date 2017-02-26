@@ -5,7 +5,7 @@ declare const fetch: ReactNative.fetch
 import { metaphysicsURL } from './relay/config'
 import { NetworkError } from './system/errors'
 
-export default function metaphysics(query: string): Promise<any> {
+export default function metaphysics<T>(query: string): Promise<T> {
   return fetch(metaphysicsURL, { method: 'POST',
                           headers: {
                             'Content-Type': 'application/json',
@@ -22,6 +22,6 @@ export default function metaphysics(query: string): Promise<any> {
         throw error
       }
     })
-    .then((response) => response.json())
+    .then<{ data: T }>((response) => response.json())
     .then(({ data }) => data)
 }
