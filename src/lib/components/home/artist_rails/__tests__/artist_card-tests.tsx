@@ -27,8 +27,9 @@ const artistProps = (hasBio: boolean) => {
       formatted_nationality_and_birthday: hasBio ? 'Spanish, 1887–1927' : '',
       href: '/artist/juan-gris',
       id: 'juan-gris',
+      _id: '4d8b934a4eb68a1b2c0012a1',
       image: {
-        _urlZizbi: 'https://d32dm0rphc51dk.cloudfront.net/wGMxL6TvlSORJzEHZsK9JA/large.jpg'
+        url: 'https://d32dm0rphc51dk.cloudfront.net/wGMxL6TvlSORJzEHZsK9JA/large.jpg'
       },
       name: 'Juan Gris'
     }

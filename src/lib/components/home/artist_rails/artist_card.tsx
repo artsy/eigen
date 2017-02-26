@@ -192,7 +192,7 @@ const styles = StyleSheet.create<Styles>({
   }
 })
 
-const ArtistCardContainer = Relay.createContainer(ArtistCard, {
+const ArtistCardContainer = Relay.createContainer<Props>(ArtistCard, {
   fragments: {
     artist: () => Relay.QL`
       fragment on Artist {
@@ -209,6 +209,18 @@ const ArtistCardContainer = Relay.createContainer(ArtistCard, {
     `,
   }
 })
+
+export interface ArtistCardResponse {
+  id: string,
+  _id: string,
+  href: string,
+  name: string,
+  formatted_artworks_count: number,
+  formatted_nationality_and_birthday: string,
+  image: {
+    url: string,
+  },
+}
 
 // TODO Until we figure out how to use Relay to fetch/render suggested artists and replace initially suggested cards,
 //      this query is duplicated so we can fetch the data manually.

@@ -37,7 +37,7 @@ exports[`test renders correctly 1`] = `
     }
     testID={undefined}>
     <AROpaqueImageView
-      imageURL={undefined}
+      imageURL="https://d32dm0rphc51dk.cloudfront.net/wGMxL6TvlSORJzEHZsK9JA/large.jpg"
       style={
         Object {
           "height": 148,
