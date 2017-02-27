@@ -9,10 +9,9 @@ install:
   - yarn install
 
 script:
+  - yarn type-check
   - yarn test
-  - yarn tsc
-  - yarn run lint
-  - yarn run danger
+  - yarn danger
 
 deploy:
   provider: script
