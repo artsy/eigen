@@ -18,7 +18,9 @@ export default class NavigationButton extends React.Component<Props, any> {
         <View style={{ }}>
           <Separator style={{ marginRight: 0, marginLeft: 0 }} />
           <View style={{ flexDirection: "row", justifyContent: "space-between"}}>
-            <Text style={{ fontFamily: "Avant Garde Gothic ITCW01Dm",  marginTop: 14, marginBottom: 14 }} >{this.props.title.toUpperCase()}</Text>
+            <Text style={{ fontFamily: "Avant Garde Gothic ITCW01Dm",  marginTop: 14, marginBottom: 14 }}>
+              {this.props.title.toUpperCase()}
+            </Text>
             <Image style={{alignSelf: "center"}} source={require("../../../../images/horizontal_chevron.png")} />
           </View>
           <Separator style={{ marginRight: 0, marginLeft: 0 }}/>

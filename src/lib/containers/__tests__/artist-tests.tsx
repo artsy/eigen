@@ -79,11 +79,11 @@ describe("layout", () => {
   })
 })
 
-let artistProps = (has_metadata: boolean, counts?: any) => {
+let artistProps = (hasMetadata: boolean, counts?: any) => {
   if (!counts) { counts = { articles: 0, partner_shows: 0, artworks: 0 } }
   return {
     artist: {
-      has_metadata,
+      has_metadata: hasMetadata,
       counts
     }
   }

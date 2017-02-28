@@ -31,7 +31,7 @@ class SmallList extends React.Component<Props, State> {
         dataSource={this.state.dataSource}
         renderRow={this.renderShow}
         scrollsToTop={false}
-        renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>}
+        renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
       />
     )
   }

@@ -42,7 +42,11 @@ class Shows extends React.Component<Props, any> {
   }
 
   pastShowsList() {
-    return windowDimensions.width > 700 ? <VariableSizeShowsList showSize={"medium"} shows={this.props.artist.past_shows} /> : <SmallShowsList shows={this.props.artist.past_shows} style={{marginTop: -8, marginBottom: 50}} />
+    if (windowDimensions.width > 700) {
+      return <VariableSizeShowsList showSize={"medium"} shows={this.props.artist.past_shows} />
+    } else {
+      return <SmallShowsList shows={this.props.artist.past_shows} style={{marginTop: -8, marginBottom: 50}} />
+    }
   }
 
   currentAndUpcomingList() {
@@ -74,7 +78,8 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const pastShowsFragment = windowDimensions.width > 700 ? VariableSizeShowsList.getFragment("shows") : SmallShowsList.getFragment("shows")
+const pastShowsFragment = windowDimensions.width > 700 ?
+  VariableSizeShowsList.getFragment("shows") : SmallShowsList.getFragment("shows")
 
 export default Relay.createContainer(Shows, {
   fragments: {

@@ -9,12 +9,12 @@ mockedModule("./lib/components/spinner.tsx", "ARSpinner")
 mockedModule("./lib/components/opaque_image_view.tsx", "AROpaqueImageView")
 mockedModule("./lib/components/artwork_grids/infinite_scroll_grid.tsx", "ArtworksGrid")
 
-//Artist tests
+// Artist tests
 mockedModule("./lib/components/artist/shows/index.tsx", "Shows")
 mockedModule("./lib/components/artist/artworks/index.tsx", "Artworks")
 mockedModule("./lib/components/artist/header.tsx", "Header")
 mockedModule("./lib/components/artist/about.tsx", "About")
 
-//Gene tests
+// Gene tests
 mockedModule("./lib/components/gene/header.tsx", "Header")
 mockedModule("./lib/components/gene/artworks.tsx", "Artworks")

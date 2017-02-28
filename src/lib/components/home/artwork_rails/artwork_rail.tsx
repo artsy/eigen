@@ -1,6 +1,15 @@
 import * as _ from "lodash"
 import * as React from "react"
-import { Dimensions, Image, LayoutAnimation, StyleSheet, Text, TouchableHighlight, View, ViewProperties } from "react-native"
+import {
+  Dimensions,
+  Image,
+  LayoutAnimation,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+  ViewProperties
+} from "react-native"
 import * as Relay from "react-relay"
 
 import colors from "../../../../data/colors"
@@ -10,6 +19,9 @@ import Separator from "../../separator"
 import Spinner from "../../spinner"
 import Header from "./artwork_rail_header"
 import fragments from "./relay_fragments"
+
+// tslint:disable-next-line:no-var-requires
+const chevron: ReactNative.ImageURISource = require("../../../../../images/chevron.png")
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -85,6 +97,9 @@ class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
       case "live_auctions":
         url = context && context.href
         break
+      default:
+        url = "/artworks"
+        break
     }
 
     if (url) { SwitchBoard.presentNavigationViewController(this, url) }
@@ -97,10 +112,9 @@ class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
     const relatedKeys = Object.keys(_.omit(rail.params, ["__dataID__"]))
 
     return rail.context && rail.context.href + "?" +
-      relatedKeys.map(function(key) {
-        if (!rail.params[key]) { return }
-        return encodeURIComponent(key) + "=" + encodeURIComponent(rail.params[key])
-      }).join("&")
+      relatedKeys.map(key =>
+        rail.params[key] && (encodeURIComponent(key) + "=" + encodeURIComponent(rail.params[key]))
+      ).join("&")
   }
 
   onGridLayout(event) {
@@ -161,7 +175,7 @@ class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
     if (this.expandable() && !this.state.expanded) {
       return (
         <TouchableHighlight style={styles.expansionButton} onPress={this.expand} underlayColor={"white"}>
-            <Image style={{height: 8, width: 15, alignSelf: "center", resizeMode: "center"}} source={require("../../../../../images/chevron.png")} />
+          <Image style={{height: 8, width: 15, alignSelf: "center", resizeMode: "center"}} source={chevron} />
         </TouchableHighlight>
       )
     }

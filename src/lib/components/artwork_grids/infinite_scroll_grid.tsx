@@ -74,14 +74,14 @@ interface State {
 }
 
 class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
-  _sentEndForContentLength: null | number
-
   static defaultProps = {
     sectionDirection: "column",
     sectionCount: Dimensions.get("window").width > 700 ? 3 : 2,
     sectionMargin: 20,
     itemMargin: 20,
   }
+
+  private sentEndForContentLength: null | number
 
   constructor(props) {
     super(props)
@@ -92,7 +92,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
       fetchingNextPage: false,
     }
 
-    this._sentEndForContentLength = null
+    this.sentEndForContentLength = null
   }
 
   fetchNextPage() {
@@ -115,11 +115,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
 
   /** A simplified version of the Relay debugging logs for infinite scrolls */
   debugLog(query: string, response?: any, error?: any) {
-
+    // tslint:disable:no-console
     if (__DEV__ && (global as any).originalXMLHttpRequest !== undefined) {
       const groupName = "Infinite scroll request"
-      const _console: any = console
-      _console.groupCollapsed(groupName, "color:" + (response ? "black" : "red") + ";")
+      const c: any = console
+      c.groupCollapsed(groupName, "color:" + (response ? "black" : "red") + ";")
       console.log("Query:\n", query)
       if (response) {
         console.log("Response:\n", response)
@@ -129,6 +129,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
         console.error("Error:\n", error)
       }
     }
+    // tslint:enable:no-console
   }
 
   onLayout = (event: LayoutEvent) => {
@@ -152,9 +153,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
       sectionedArtworks.push([])
       sectionRatioSums.push(0)
     }
-    for (let i = 0; i < artworks.length; i++) {
-      const artwork = artworks[i].node
-
+    for (const artwork of artworks) {
       // There are artworks without images and other ‘issues’. Like Force we’re just going to reject those for now.
       // See: https://github.com/artsy/eigen/issues/1667
       //
@@ -229,12 +228,12 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   onScroll = (event) => {
     const scrollProperties = event.nativeEvent
     const contentLength = scrollProperties.contentSize.height
-    if (contentLength !== this._sentEndForContentLength) {
+    if (contentLength !== this.sentEndForContentLength) {
       const offset = scrollProperties.contentOffset.y
       const visibleLength = scrollProperties.layoutMeasurement.height
       const distanceFromEnd = contentLength - visibleLength - offset
       if (distanceFromEnd < PageEndThreshold) {
-        this._sentEndForContentLength = contentLength
+        this.sentEndForContentLength = contentLength
         this.fetchNextPage()
       }
     }
@@ -329,7 +328,11 @@ const GeneInfiniteScrollContainer = Relay.createContainer(InfiniteScrollArtworks
   fragments: {
     gene: () => Relay.QL`
       fragment on Gene {
-        artworks: artworks_connection(sort: $sort, price_range: $priceRange, medium: $medium, first: $totalSize, for_sale: true){
+        artworks: artworks_connection(sort: $sort,
+                                      price_range: $priceRange,
+                                      medium: $medium,
+                                      first: $totalSize,
+                                      for_sale: true) {
           pageInfo {
             hasNextPage
           }

@@ -42,14 +42,15 @@ export default class WhiteButton extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps: any, prevState: any) {
     if (this.props.selected !== prevProps.selected) {
+      const duration = AnimationDuration
       Animated.parallel([
-        Animated.timing(this.state.textOpacity, { toValue: 1, duration: AnimationDuration }),
-        Animated.timing(this.state.backgroundColor, { toValue: this.props.selected ? 1 : 0, duration: AnimationDuration }),
+        Animated.timing(this.state.textOpacity, { toValue: 1, duration }),
+        Animated.timing(this.state.backgroundColor, { toValue: this.props.selected ? 1 : 0, duration }),
       ]).start(this.props.onSelectionAnimationFinished)
     }
   }
 
-  render(): JSX.Element {
+  render() {
     const backgroundColor = this.state.backgroundColor.interpolate({
       inputRange: [0, 1],
       outputRange: ["white", "black"]
@@ -58,11 +59,13 @@ export default class WhiteButton extends React.Component<Props, State> {
       underlayColor: (this.props.selected ? "black" : colors["purple-regular"]),
       style: [styles.button, { backgroundColor }, this.props.style],
     }
-    let content = <AnimatedHeadline style={[styles.text, { opacity: this.state.textOpacity }]}>{this.props.text}</AnimatedHeadline>
+    const headlineStyles = [styles.text, { opacity: this.state.textOpacity }]
 
     return (
       <AnimatedTouchable onPress={this.props.onPress} activeOpacity={1} {...styling}>
-        <View>{content}</View>
+        <View>
+          <AnimatedHeadline style={headlineStyles}>{this.props.text}</AnimatedHeadline>
+        </View>
       </AnimatedTouchable>
     )
   }

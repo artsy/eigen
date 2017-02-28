@@ -36,7 +36,9 @@ class Biography extends React.Component<Props, any> {
   }
 
   blurb(artist) {
-    return artist.blurb ? <SerifText style={styles.blurb} numberOfLines={0}>{removeMarkdown(artist.blurb)}</SerifText> : null
+    if (artist.blurb) {
+      return <SerifText style={styles.blurb} numberOfLines={0}>{removeMarkdown(artist.blurb)}</SerifText>
+    }
   }
 
   bioText() {

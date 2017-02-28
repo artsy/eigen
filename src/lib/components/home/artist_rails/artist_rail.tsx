@@ -102,9 +102,9 @@ class ArtistRail extends React.Component<Props, State> {
     })
   }
 
-  handleFollowChange(followedArtist, setFollowButtonStatus: ArtistFollowButtonStatusSetter) {
+  handleFollowChange(followArtist, setFollowButtonStatus: ArtistFollowButtonStatusSetter) {
       // Get a new suggested artist based on the followed artist.
-    return metaphysics<SuggestedArtistResponse>(suggestedArtistQuery(followedArtist._id))
+    return metaphysics<SuggestedArtistResponse>(suggestedArtistQuery(followArtist._id))
       // Return the suggested artist or `undefined` if there is no suggestion.
       .then(({ me: { suggested_artists }}) => suggested_artists[0])
       // Return `undefined` if an error occurred.
@@ -112,9 +112,9 @@ class ArtistRail extends React.Component<Props, State> {
       // Change the status of the follow button to ‘following’.
       .then<SuggestedArtist>((suggestedArtist) => setFollowButtonStatus(true).then(() => suggestedArtist))
       // Animate the followed artist card away.
-      .then((suggestedArtist) => this.followedArtistAnimation(followedArtist).then(() => suggestedArtist))
+      .then((suggestedArtist) => this.followedArtistAnimation(followArtist).then(() => suggestedArtist))
       // Replace the followed artist by the suggested one in the list of artists.
-      .then((suggestedArtist) => this.replaceFollowedArtist(followedArtist, suggestedArtist).then(() => suggestedArtist))
+      .then((suggestedArtist) => this.replaceFollowedArtist(followArtist, suggestedArtist).then(() => suggestedArtist))
       // Finally animate the suggested artist card in, if there is a suggestion.
       .then((suggestedArtist) => suggestedArtist && this.suggestedArtistAnimation(suggestedArtist))
   }
@@ -157,6 +157,7 @@ class ArtistRail extends React.Component<Props, State> {
       case "SUGGESTED":
         return "Artists to Follow: Recommended for You"
       case "POPULAR":
+      default: // Just in case
         return "Artists to Follow: Popular"
     }
   }
@@ -211,11 +212,11 @@ interface SuggestedArtistResponse {
   }
 }
 
-function suggestedArtistQuery(artist_id: string): string {
+function suggestedArtistQuery(artistID: string): string {
   return `
     query {
       me {
-        suggested_artists(artist_id: "${artist_id}",
+        suggested_artists(artist_id: "${artistID}",
                           size: 1,
                           exclude_followed_artists: true,
                           exclude_artists_without_forsale_artworks: true) {

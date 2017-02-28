@@ -15,13 +15,14 @@ class Artwork extends React.Component<RelayProps, any> {
 
   render() {
     const artwork = this.props.artwork
+    const partnerName = this.props.artwork.partner && this.props.artwork.partner.name
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View>
           <ImageView style={styles.image} aspectRatio={artwork.image.aspect_ratio} imageURL={artwork.image.url} />
           { this.artists() }
           { this.artworkTitle() }
-          { this.props.artwork.partner ? <SerifText style={styles.text}>{ this.props.artwork.partner.name }</SerifText> : null }
+          { partnerName && <SerifText style={styles.text}>{partnerName}</SerifText> }
           { this.saleMessage() }
         </View>
       </TouchableWithoutFeedback>

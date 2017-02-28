@@ -37,23 +37,23 @@ class HeroUnits extends React.Component<Props, State> {
     this.setState({ width, height, margin, fontSize })
   }
 
-  handlePress = (hero_unit) => {
-    SwitchBoard.presentNavigationViewController(this, hero_unit.href)
+  handlePress = (heroUnit) => {
+    SwitchBoard.presentNavigationViewController(this, heroUnit.href)
   }
 
-  renderHeroUnit(hero_unit, margin, width, height) {
+  renderHeroUnit(heroUnit, margin, width, height) {
     return (
-      <TouchableHighlight key={hero_unit.__id}
-                          onPress={() => this.handlePress(hero_unit)}
+      <TouchableHighlight key={heroUnit.__id}
+                          onPress={() => this.handlePress(heroUnit)}
                           underlayColor="black"
                           style={{ marginLeft: 5, marginRight: 5, marginTop: 20, width, height }}>
         <View style={{ flex: 1, justifyContent: "center" }}>
-          <OpaqueImageView imageURL={width > 600 ? hero_unit.wide_image_url : hero_unit.narrow_image_url}
+          <OpaqueImageView imageURL={width > 600 ? heroUnit.wide_image_url : heroUnit.narrow_image_url}
                               style={{ position: "absolute", top: 0, width, height }} />
           <View style={{ position: "absolute", top: 0, width, height, backgroundColor: "black", opacity: 0.3 }} />
           <View style={{ marginLeft: margin, backgroundColor: "transparent" }}>
-            <Headline style={{ color: "white", fontSize: 12 }}>{hero_unit.heading}</Headline>
-            <Headline style={{ color: "white", fontSize: this.state.fontSize }}>{hero_unit.title}</Headline>
+            <Headline style={{ color: "white", fontSize: 12 }}>{heroUnit.heading}</Headline>
+            <Headline style={{ color: "white", fontSize: this.state.fontSize }}>{heroUnit.title}</Headline>
           </View>
         </View>
       </TouchableHighlight>
@@ -69,7 +69,7 @@ class HeroUnits extends React.Component<Props, State> {
                     horizontal={true}
                     pagingEnabled={true}
                     showsHorizontalScrollIndicator={false}>
-          {(this.props.hero_units || []).map(hero_unit => this.renderHeroUnit(hero_unit, margin, imageWidth, height))}
+          {(this.props.hero_units || []).map(heroUnit => this.renderHeroUnit(heroUnit, margin, imageWidth, height))}
         </ScrollView>
       )
     }

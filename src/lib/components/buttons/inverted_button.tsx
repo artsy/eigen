@@ -39,9 +39,10 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
 
   componentDidUpdate(prevProps: any, prevState: any) {
     if (this.props.selected !== prevProps.selected) {
+      const duration = AnimationDuration
       Animated.parallel([
-        Animated.timing(this.state.textOpacity, { toValue: 1, duration: AnimationDuration }),
-        Animated.timing(this.state.backgroundColor, { toValue: this.props.selected ? 1 : 0, duration: AnimationDuration }),
+        Animated.timing(this.state.textOpacity, { toValue: 1, duration }),
+        Animated.timing(this.state.backgroundColor, { toValue: this.props.selected ? 1 : 0, duration }),
       ]).start(this.props.onSelectionAnimationFinished)
     }
   }
@@ -59,7 +60,8 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
     if (this.props.inProgress) {
       content = <Spinner spinnerColor="white" style={{ backgroundColor: "transparent" }} />
     } else {
-      content = <AnimatedHeadline style={[styles.text, { opacity: this.state.textOpacity }]}>{this.props.text}</AnimatedHeadline>
+      const headlineStyles = [styles.text, { opacity: this.state.textOpacity }]
+      content = <AnimatedHeadline style={headlineStyles}>{this.props.text}</AnimatedHeadline>
     }
     return (
       <AnimatedTouchable onPress={this.props.onPress} activeOpacity={1} disabled={this.props.inProgress} {...styling}>

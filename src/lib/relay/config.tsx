@@ -27,11 +27,8 @@ if (Emission) {
 //
 // It will be `undefined` unless running inside Chrome.
 //
-// See:
-// * https://github.com/facebook/react-native/blob/2d0051f21371e8a51fde836c62a474a941023dd4/Libraries/JavaScriptAppEngine/Initialization/InitializeJavaScriptAppEngine.js#L41-L56
-// * https://github.com/facebook/react-native/issues/934
-//
 if (__DEV__ && global.originalXMLHttpRequest !== undefined) {
   global.XMLHttpRequest = global.originalXMLHttpRequest
+  // tslint:disable-next-line:no-var-requires
   require("react-relay/lib/RelayNetworkDebug").init()
 }

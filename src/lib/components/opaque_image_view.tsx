@@ -24,13 +24,13 @@ interface Props {
   style?: any
 
   /**
-  * An aspect ratio created with: width / height.
-  *
-  * When specified:
-  * - The view will be sized in such a way that it maintains the aspect ratio of the image.
-  * - The imageURL will be modified so that it resizes the image to the exact size at which the view has been laid out,
-  *   thus never fetching more data than absolutely necessary.
-  */
+   * An aspect ratio created with: width / height.
+   *
+   * When specified:
+   * - The view will be sized in such a way that it maintains the aspect ratio of the image.
+   * - The imageURL will be modified so that it resizes the image to the exact size at which the view has been laid out,
+   *   thus never fetching more data than absolutely necessary.
+   */
   aspectRatio?: number
 
   /** A callback that is called once the image is loaded. */
@@ -82,6 +82,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       const type = this.state.aspectRatio ? "fit" : "fill"
       const width = String(this.state.width)
       const height = String(this.state.height)
+      // tslint:disable-next-line:max-line-length
       return `https://${GeminiHost}/?resize_to=${type}&width=${width}&height=${height}&quality=${ImageQuality}&src=${encodeURIComponent(imageURL)}`
     } else {
       return null

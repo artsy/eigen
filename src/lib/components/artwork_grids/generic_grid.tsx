@@ -4,12 +4,18 @@ import * as Relay from "react-relay"
 import { LayoutEvent } from "../../system/events"
 import Artwork from "./artwork"
 
-class GenericArtworksGrid extends React.Component<any, any> {
-  state: {
-    sectionDimension: number,
-    sectionCount: number,
-  }
+interface Props extends RelayProps {
+  sectionDirection: "column", // FIXME: We don’t actually support more options atm
+  sectionMargin: number,
+  itemMargin: number,
+}
 
+interface State {
+  sectionDimension: number,
+  sectionCount: number,
+}
+
+class GenericArtworksGrid extends React.Component<Props, State> {
   static defaultProps = {
     sectionDirection: "column",
     sectionMargin: 20,
@@ -26,7 +32,7 @@ class GenericArtworksGrid extends React.Component<any, any> {
     this.onLayout = this.onLayout.bind(this)
   }
 
-  layoutState(currentLayout) : Object {
+  layoutState(currentLayout): State {
     const width = currentLayout.width
     const isPad = width > 600
     const isPadHorizontal = width > 900
@@ -35,9 +41,10 @@ class GenericArtworksGrid extends React.Component<any, any> {
     const sectionMargins = this.props.sectionMargin * (sectionCount - 1)
     const sectionDimension = (currentLayout.width - sectionMargins) / sectionCount
 
-    return { sectionCount,
-             sectionDimension,
-          }
+    return {
+      sectionCount,
+      sectionDimension,
+    }
   }
 
   onLayout = (event: LayoutEvent) => {
@@ -57,9 +64,7 @@ class GenericArtworksGrid extends React.Component<any, any> {
     }
 
     const artworks = this.props.artworks
-    for (let i = 0; i < artworks.length; i++) {
-      const artwork = artworks[i]
-
+    for (const artwork of artworks) {
       if (artwork.image) {
         let lowestRatioSum = Number.MAX_VALUE
         let sectionIndex: number = null

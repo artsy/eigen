@@ -75,6 +75,7 @@ export class Artist extends React.Component<Props, {}> {
   }
 
   renderSelectedTab = () => {
+    // tslint:disable-next-line:switch-default
     switch (this.selectedTabTitle()) {
       case TABS.ABOUT: return <About artist={this.props.artist} />
       case TABS.WORKS: return <Artworks artist={this.props.artist} />

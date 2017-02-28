@@ -1,5 +1,6 @@
 import * as React from "react"
 import { Dimensions, NativeModules, StyleSheet, View, ViewProperties } from "react-native"
+const { ARTemporaryAPIModule } = NativeModules
 import * as Relay from "react-relay"
 
 import Events from "../../native_modules/events"
@@ -42,7 +43,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   handleFollowChange = () => {
-    NativeModules.ARTemporaryAPIModule.setFollowGeneStatus(!this.state.following, this.props.gene._id, (error, following) => {
+    ARTemporaryAPIModule.setFollowGeneStatus(!this.state.following, this.props.gene._id, (error, following) => {
       if (error) {
         console.error(error)
       } else {

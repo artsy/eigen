@@ -22,11 +22,11 @@ interface Props extends ViewProperties {
 }
 
 class Metadata extends React.Component<Props, any> {
-
   render() {
+    const partnerName = this.props.show.partner && this.props.show.partner.name
     return (
       <View style={styles.container}>
-        { this.props.show.partner ? <Text style={styles.sansSerifText}>{this.props.show.partner.name.toUpperCase()}</Text> : null }
+        { partnerName && <Text style={styles.sansSerifText}>{partnerName.toUpperCase()}</Text>}
         <Text style={styles.sansSerifText}>{this.showTypeString()}</Text>
         <SerifText style={styles.serifText}>{this.props.show.name}</SerifText>
         { this.dateAndLocationString() }
@@ -45,8 +45,8 @@ class Metadata extends React.Component<Props, any> {
     const city = this.props.show.location && this.props.show.location.city
 
     if (city || exhibition_period) {
-      const string = city ? (city.trim() + ", " + exhibition_period) : exhibition_period
-      return <SerifText style={[styles.serifText, {color: "grey"}]}>{ string }</SerifText>
+      const text = city ? (city.trim() + ", " + exhibition_period) : exhibition_period
+      return <SerifText style={[styles.serifText, {color: "grey"}]}>{ text }</SerifText>
     }
     return null
   }

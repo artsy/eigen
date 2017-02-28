@@ -1,5 +1,13 @@
 import * as React from "react"
-import { Dimensions, NativeModules, StyleSheet, Text, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+import {
+  Dimensions,
+  NativeModules,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+  ViewProperties
+} from "react-native"
 import * as Relay from "react-relay"
 const { ARTemporaryAPIModule } = NativeModules
 
@@ -52,7 +60,8 @@ class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, St
 
   followAnnotation() {
     if (this.props.rail.key === "related_artists") {
-      return <SerifText style={styles.followAnnotation}>{ "Based on " + this.props.rail.context.based_on.name }</SerifText>
+      const name = this.props.rail.context.based_on.name
+      return <SerifText style={styles.followAnnotation}>{ "Based on " + name }</SerifText>
     }
   }
 

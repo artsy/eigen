@@ -29,7 +29,7 @@ class RelatedArtists extends React.Component<Props, State> {
     }
   }
 
-  layoutState(currentLayout) : State {
+  layoutState(currentLayout): State {
     const width = currentLayout.width
     const isPad = width > 600
     const isPadHorizontal = width > 900

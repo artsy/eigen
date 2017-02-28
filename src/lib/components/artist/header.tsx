@@ -1,5 +1,6 @@
 import * as React from "react"
 import { Dimensions, NativeModules, StyleSheet, View } from "react-native"
+const { ARTemporaryAPIModule } = NativeModules
 import * as Relay from "react-relay"
 
 import Events from "../../native_modules/events"
@@ -44,8 +45,8 @@ class Header extends React.Component<HeaderProps, State> {
   }
 
   handleFollowChange = () => {
-    const newFollowersCount: number = this.state.following ? (this.state.followersCount - 1) : (this.state.followersCount + 1)
-    NativeModules.ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
+    const newFollowersCount = this.state.following ? (this.state.followersCount - 1) : (this.state.followersCount + 1)
+    ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
       if (error) {
         console.error(error)
       } else {

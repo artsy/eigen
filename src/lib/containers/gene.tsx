@@ -70,6 +70,8 @@ interface State {
    *
    */
 export class Gene extends React.Component<Props, State> {
+  foregroundHeight: number = 200
+
   componentWillMount() {
     this.state = {
       selectedTabIndex: 0,
@@ -105,6 +107,7 @@ export class Gene extends React.Component<Props, State> {
   // }
 
   renderSectionForTab = () => {
+    // tslint:disable-next-line:switch-default
     switch (this.selectedTabTitle()) {
       case TABS.ABOUT: return <About gene={this.props.gene} />
       case TABS.WORKS: return <Artworks
@@ -125,17 +128,20 @@ export class Gene extends React.Component<Props, State> {
     return this.selectedTabTitle() === TABS.WORKS
   }
 
-  foregroundHeight: number = 200
-
   /** Top of the Component */
   renderForeground = () => {
+    const containerStyle = {
+      backgroundColor: "white",
+      paddingLeft: this.commonPadding,
+      paddingRight: this.commonPadding,
+    }
     return (
-      <View style={[{ backgroundColor: "white", paddingLeft: this.commonPadding, paddingRight: this.commonPadding }, styles.header] }>
-          <Header gene={this.props.gene} shortForm={false} />
-          <SwitchView style={{ marginTop: 30 }}
-            titles={this.availableTabs()}
-            selectedIndex={this.state.selectedTabIndex}
-            onSelectionChange={this.switchSelectionDidChange} />
+      <View style={[containerStyle, styles.header]}>
+        <Header gene={this.props.gene} shortForm={false} />
+        <SwitchView style={{ marginTop: 30 }}
+          titles={this.availableTabs()}
+          selectedIndex={this.state.selectedTabIndex}
+          onSelectionChange={this.switchSelectionDidChange} />
       </View>
     )
   }
@@ -184,8 +190,8 @@ export class Gene extends React.Component<Props, State> {
         price_range: newSettings.selectedPrice,
         sort: newSettings.sort
       })
-    }).catch( (error) => {
-      console.log("Errr : ", error)
+    }).catch(error => {
+      console.error(error)
     })
   }
 
@@ -211,17 +217,21 @@ export class Gene extends React.Component<Props, State> {
     const refineButtonWidth = 80
     const maxLabelWidth = Dimensions.get("window").width - (this.commonPadding * 2) - refineButtonWidth - 10
 
-    return (<View style={{ backgroundColor: "white"}}>
-        <Separator style={{marginTop: topMargin, backgroundColor: separatorColor}} />
-        <View style={{flexDirection: "row", justifyContent: "space-between", height: 26, marginTop: 12, marginBottom: 12, paddingLeft: this.commonPadding, paddingRight: this.commonPadding }} >
-          <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>{ this.artworkQuerySummaryString() }</SerifText>
+    return (
+      <View style={{ backgroundColor: "white"}}>
+        <Separator style={{ marginTop: topMargin, backgroundColor: separatorColor }} />
+        <View style={[styles.refineContainer, { paddingLeft: this.commonPadding, paddingRight: this.commonPadding }]} >
+          <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>
+            { this.artworkQuerySummaryString() }
+          </SerifText>
           <WhiteButton text="REFINE" style={{ height: 26, width: refineButtonWidth, }} onPress={this.refineTapped}/>
         </View>
         <Separator style={{ backgroundColor: separatorColor }}/>
-      </View>)
+      </View>
+    )
   }
 
-  render(): JSX.Element {
+  render() {
     const stickyTopMargin = this.state.showingStickyHeader ?  0 : -HeaderHeight
 
     return (
@@ -260,8 +270,12 @@ export class Gene extends React.Component<Props, State> {
     const works = this.props.gene.filtered_artworks.total.toLocaleString()
     items.push(`${works} works`)
 
-    if (this.state.selectedMedium !== "*") { items.push( _.startCase(this.state.selectedMedium) ) }
-    if (this.state.selectedPriceRange !== "*-*") { items.push( this.priceRangeToHumanReadableString(this.state.selectedPriceRange) ) }
+    if (this.state.selectedMedium !== "*") {
+      items.push( _.startCase(this.state.selectedMedium) )
+    }
+    if (this.state.selectedPriceRange !== "*-*") {
+      items.push( this.priceRangeToHumanReadableString(this.state.selectedPriceRange) )
+    }
     return items.join(" ・ ")
   }
 
@@ -288,6 +302,7 @@ export class Gene extends React.Component<Props, State> {
 interface Styles {
   header: ReactNative.ViewStyle,
   stickyHeader: ReactNative.ViewStyle,
+  refineContainer: ReactNative.ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -303,6 +318,13 @@ const styles = StyleSheet.create<Styles>({
     marginBottom: 12,
     paddingLeft: isPad ? 40 : 20,
     paddingRight: isPad ? 40 : 20
+  },
+  refineContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    height: 26,
+    marginTop: 12,
+    marginBottom: 12,
   },
 })
 
@@ -321,7 +343,12 @@ export default Relay.createContainer(Gene, {
         ${Header.getFragment("gene")}
         ${About.getFragment("gene")}
         ${Artworks.getFragment("gene")}
-        filtered_artworks(medium: $medium, price_range: $price_range, sort: $sort, aggregations:[MEDIUM, PRICE_RANGE, TOTAL], page:1, for_sale: true){
+        filtered_artworks(medium: $medium,
+                          price_range: $price_range,
+                          sort: $sort,
+                          aggregations: [MEDIUM, PRICE_RANGE, TOTAL],
+                          page: 1,
+                          for_sale: true) {
           total
           aggregations {
             slice

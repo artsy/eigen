@@ -30,16 +30,17 @@ export class Home extends React.Component<Props, State> {
       { type: "search_bar", data: null },
       { type: "hero_units", data: this.props.home.hero_units },
     ]
-    const artwork_modules = this.props.home.artwork_modules
-    const artist_modules = this.props.home.artist_modules && this.props.home.artist_modules.concat() // create a copy so we can mutate it (with `shift`)
+    const artworkModules = this.props.home.artwork_modules
+    // create a copy so we can mutate it (with `shift`)
+    const artistModules = this.props.home.artist_modules && this.props.home.artist_modules.concat()
 
-    for (let i = 0; i < artwork_modules.length; i++) {
-      const artwork_module = artwork_modules[i]
-      rows.push({ type: "artwork", data: artwork_module })
+    for (let i = 0; i < artworkModules.length; i++) {
+      const artworkModule = artworkModules[i]
+      rows.push({ type: "artwork", data: artworkModule })
       if ((i + 1) % 2 === 0) {
-        const artist_module = artist_modules.shift()
-        if (artist_module) {
-          rows.push({ type: "artist", data: artist_module })
+        const artistModule = artistModules.shift()
+        if (artistModule) {
+          rows.push({ type: "artist", data: artistModule })
         }
       }
     }
@@ -83,7 +84,8 @@ export class Home extends React.Component<Props, State> {
                 }}
                 renderRow={({ type, data }, _, row: number) => {
                   // Offset row because we don’t store a reference to the search bar and hero units rows.
-                  const registerModule = (module) => this.state.modules[row - 2] = module  // eslint-disable-line no-return-assign
+                  const registerModule = (module) => this.state.modules[row - 2] = module
+                  // tslint:disable-next-line:switch-default
                   switch (type) {
                     case "search_bar":
                       return <SearchBar />

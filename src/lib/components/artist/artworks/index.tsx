@@ -35,24 +35,24 @@ class Artworks extends React.Component<Props, State> {
   }
 
   render() {
-    const for_sale_count = this.props.artist.counts.for_sale_artworks
-    const other_count = this.props.artist.counts.artworks - for_sale_count
-    if (for_sale_count === 0) {
+    const forSaleCount = this.props.artist.counts.for_sale_artworks
+    const otherCount = this.props.artist.counts.artworks - forSaleCount
+    if (forSaleCount === 0) {
       return this.renderSection({
         title: "Works",
-        count: other_count,
+        count: otherCount,
         filter: "IS_NOT_FOR_SALE",
         onComplete: null
       })
     } else {
-      let otherWorks : any[] = []
-      const showOtherWorks = (other_count > 0) && (for_sale_count < 10 || this.state.completedForSaleWorks)
+      let otherWorks: any[] = []
+      const showOtherWorks = (otherCount > 0) && (forSaleCount < 10 || this.state.completedForSaleWorks)
       if (showOtherWorks) {
         otherWorks.push(<Separator style={styles.sectionSeparator} key="separator" />)
         otherWorks.push(
           this.renderSection({
             title: "Other Works",
-            count: other_count,
+            count: otherCount,
             filter: "IS_NOT_FOR_SALE",
             onComplete: null
           })
@@ -62,7 +62,7 @@ class Artworks extends React.Component<Props, State> {
         <View style={styles.section}>
           {this.renderSection({
             title: "Works for Sale",
-            count: for_sale_count,
+            count: forSaleCount,
             filter: "IS_FOR_SALE",
             onComplete: () => {
               this.setState({ completedForSaleWorks: true })
@@ -74,11 +74,12 @@ class Artworks extends React.Component<Props, State> {
     }
   }
 
-  renderSection({ title, count, filter, onComplete }){
+  renderSection({ title, count, filter, onComplete }) {
+    const countStyles = [styles.text, styles.count]
     return (
       <View key={title}>
         <SerifText style={styles.heading}>
-          <SerifText style={styles.text}>{title}</SerifText> <SerifText style={[styles.text, styles.count]}>({count})</SerifText>
+          <SerifText style={styles.text}>{title}</SerifText> <SerifText style={countStyles}>({count})</SerifText>
         </SerifText>
         <ArtworksGrid
           artist={this.props.artist}
