@@ -23,10 +23,30 @@
       "taskName": "Start Typescript Compiler (in watch mode)",
       "isBuildCommand": true,
       "args": ["node_modules/.bin/tsc --watch"],
-      "isWatching": true,
+      "isBackground": true,
       "problemMatcher": [
         "$tsc-watch"
       ]
+    },
+    {
+      "taskName": "TSLint: Lint all files",
+      "command": "yarn",
+      "args": ["lint"],
+      "problemMatcher": {
+        "owner": "tslint",
+        "fileLocation": [
+          "relative",
+          "${workspaceRoot}"
+        ],
+        "severity": "warning",
+        "pattern": {
+          "regexp": "^(\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "message": 4
+        }
+      }
     }
- ]
+  ]
 }
