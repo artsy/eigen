@@ -9,7 +9,8 @@ typedef NS_ENUM(NSInteger, ARPartnerType) {
     ARPartnerTypeFoundation,
     ARPartnerTypePublicDomain,
     ARPartnerTypeImageArchive,
-    ARPartnerTypeNonProfit
+    ARPartnerTypeNonProfit,
+    ARPartnerTypeInstitution
 };
 
 

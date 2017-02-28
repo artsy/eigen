@@ -68,17 +68,17 @@
     [self addArtistTapRecognizerToView:numberOfWorksAddedLabel];
 
     UIView *wrapper = [[UIView alloc] init];
-    NSString *labelSideMargin = (self.regularHorizontalSizeClass) ? @"75" : @"30";
-    [self.view addSubview:wrapper withTopMargin:self.regularHorizontalSizeClass ? @"25" : @"15" sideMargin:labelSideMargin];
-    
+    NSString *labelSideMargin = (self.regularHorizontalSizeClass) ? @"65" : @"30";
+    [self.view addSubview:wrapper withTopMargin:self.regularHorizontalSizeClass ? @"15" : @"15" sideMargin:labelSideMargin];
+
     [wrapper addSubview:artistNameLabel];
     [wrapper addSubview:dateLabel];
-    
+
     [artistNameLabel alignLeadingEdgeWithView:wrapper predicate:@"0"];
     [artistNameLabel constrainTrailingSpaceToView:dateLabel predicate:@"-20"];
     [artistNameLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [artistNameLabel alignCenterYWithView:wrapper predicate:@"0"];
-    
+
     [dateLabel alignTrailingEdgeWithView:wrapper predicate:@"0"];
     [dateLabel alignCenterYWithView:wrapper predicate:@"0"];
     [dateLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
@@ -87,17 +87,7 @@
     [wrapper constrainHeightToView:artistNameLabel predicate:@"0"];
     [self.view addSubview:numberOfWorksAddedLabel withTopMargin:@"7" sideMargin:labelSideMargin];
 
-    if (self.notificationItem.artworks.count == 1) {
-        self.singleArtworkView = self.singleArtworkView ?: [[ARArtworkWithMetadataThumbnailCell alloc] init];
-        self.singleArtworkView.imageSize = ARFeedItemImageSizeLarge;
-        self.singleArtworkView.imageViewContentMode = UIViewContentModeScaleAspectFit;
-        [self.singleArtworkView setupWithRepresentedObject:self.notificationItem.artworks.firstObject];
-
-        [self.singleArtworkView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleArtworkTapped:)]];
-
-        [self.view addSubview:self.singleArtworkView withTopMargin:@"10" sideMargin:(self.regularHorizontalSizeClass) ? @"75" : @"30"];
-
-    } else {
+    if (self.regularHorizontalSizeClass || self.notificationItem.artworks.count > 1) {
         self.artworksVC = self.artworksVC ?: [[AREmbeddedModelsViewController alloc] init];
         self.artworksVC.delegate = self;
 
@@ -108,6 +98,15 @@
         self.artworksVC.activeModule = module;
         [self.artworksVC appendItems:self.notificationItem.artworks];
         [self.view addViewController:self.artworksVC toParent:self withTopMargin:@"0" sideMargin:@"0"];
+    } else {
+        self.singleArtworkView = self.singleArtworkView ?: [[ARArtworkWithMetadataThumbnailCell alloc] init];
+        self.singleArtworkView.imageSize = ARFeedItemImageSizeLarge;
+        self.singleArtworkView.imageViewContentMode = UIViewContentModeScaleAspectFit;
+        [self.singleArtworkView setupWithRepresentedObject:self.notificationItem.artworks.firstObject];
+
+        [self.singleArtworkView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleArtworkTapped:)]];
+
+        [self.view addSubview:self.singleArtworkView withTopMargin:@"10" sideMargin:@"30"];
     }
 }
 
@@ -121,7 +120,7 @@
 - (void)didMoveToParentViewController:(UIViewController *)parent
 {
     [super didMoveToParentViewController:parent];
-    
+
     if (self.artworksVC) {
         // this tells the embedded artworks view controller that it should update for the correct size because self.view.frame.size at this point is (0, 0)
         [self.artworksVC didMoveToParentViewController:parent];
@@ -197,17 +196,6 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        if (self.singleArtworkView) {
-            [self updateSingleArtistViewSizeForParent:self.parentViewController];
-        }
-    } completion:nil];
-}
-
 - (BOOL)regularHorizontalSizeClass
 {
     return self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
@@ -217,7 +205,7 @@
 
 - (ARArtworkMasonryLayout)masonryLayoutForSize:(CGSize)size
 {
-    if (self.regularHorizontalSizeClass && self.artworksVC.items.count >= 3) {
+    if (self.regularHorizontalSizeClass) {
         return ARArtworkMasonryLayout3Column;
     } else {
         return ARArtworkMasonryLayout2Column;

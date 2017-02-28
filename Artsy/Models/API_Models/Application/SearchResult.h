@@ -9,6 +9,7 @@
 @property (readonly, nonatomic, copy) NSString *label;
 @property (readonly, nonatomic, copy) NSString *searchDetail;
 @property (readonly, nonatomic, strong) NSNumber *isPublished;
+@property (readonly, nonatomic, copy) NSString *imageURL;
 
 + (BOOL)searchResultIsSupported:(NSDictionary *)dict;
 - (NSURLRequest *)imageRequest;

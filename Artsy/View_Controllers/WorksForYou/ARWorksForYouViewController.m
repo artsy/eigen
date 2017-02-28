@@ -59,7 +59,7 @@ static int ARLoadingIndicatorView = 1;
     titleLabel.textColor = [UIColor blackColor];
     titleLabel.font = [UIFont serifFontWithSize:20];
 
-    [self.view.stackView addSubview:titleLabel withTopMargin:@"30" sideMargin:(self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) ? @"90" : @"45"];
+    [self.view.stackView addSubview:titleLabel withTopMargin:@"30" sideMargin:(self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) ? @"85" : @"45"];
 
     [self updateView];
 }
@@ -73,7 +73,7 @@ static int ARLoadingIndicatorView = 1;
     [lineView constrainHeight:@"0.5"];
 
     if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) {
-        [self.view.stackView addSubview:lineView withTopMargin:@"10" sideMargin:@"40"];
+        [self.view.stackView addSubview:lineView withTopMargin:@"5" sideMargin:@"75"];
     } else {
         [self.view.stackView addSubview:lineView withTopMargin:@"10" sideMargin:@"0"];
     }

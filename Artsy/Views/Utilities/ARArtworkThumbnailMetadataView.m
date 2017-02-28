@@ -94,7 +94,7 @@ static CGFloat ARMetadataFontSize;
     self.secondaryLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 
     if (showPrice) {
-        self.priceLabel.text = artwork.price;
+        self.priceLabel.text = artwork.saleMessage;
     }
     self.showPrice = showPrice;
 }

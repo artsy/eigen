@@ -81,6 +81,7 @@
 
 + (CGFloat)dimensionForlayout:(ARArtworkMasonryLayout)layout useLandscapeValues:(BOOL)useLandscapeValues
 {
+    /// Returns the width of each column or height for each row, depending on the layout
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat shortestDimension = MIN(CGRectGetWidth(screenRect), CGRectGetHeight(screenRect));
 
@@ -96,9 +97,9 @@
             // The 3-column layout is only used on iPad.
             NSAssert([UIDevice isPad], @"ARARtworkMasonryLayout3Column is intended for use with iPad");
             if (useLandscapeValues) {
-                return 280;
+                return 300;
             } else {
-                return 200;
+                return 215;
             }
 
         case ARArtworkMasonryLayout4Column:
@@ -251,15 +252,15 @@
         case ARArtworkMasonryLayout1Column:
         case ARArtworkMasonryLayout2Column:
             if ([UIDevice isPad]) {
-                return (CGSize){38, 38};
+                return (CGSize){50, 38};
             }
         case ARArtworkMasonryLayout3Column:
             if ([UIDevice isPad]) {
                 UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
                 if (UIInterfaceOrientationIsLandscape(orientation)) {
-                    return (CGSize){42, 42};
+                    return (CGSize){20, 20};
                 } else {
-                    return (CGSize){34, 34};
+                    return (CGSize){20, 20};
                 }
             }
         case ARArtworkMasonryLayout4Column:

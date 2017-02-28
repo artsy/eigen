@@ -16,6 +16,12 @@ Want to know more about Eigen? Read the [mobile](http://artsy.github.io/blog/cat
 
 Get setup [here](docs/getting_started.md). Further documentation can be found in the [documentation folder](docs#readme).
 
+### Work at Artsy?
+
+Instead of `make oss` below, run `make artsy` to set up [spacecommander](https://github.com/square/spacecommander) and [SwiftLint](https://github.com/realm/SwiftLint). 
+
+Make sure you have an environment variable of `ARTSY_STAFF_MEMBER` set to be truthy too.
+
 ### OSS Quick Start
 
 Want to get the app running as an OSS project? Run this in your shell:
@@ -34,10 +40,11 @@ This will set you up on our staging server, you will have a running version of t
 
 **Note**: `bundle exec pod install` may fail the first time you run it (due to a [bug](https://github.com/orta/cocoapods-keys/issues/127) in a dependency of ours). Re-running the command should work.
 
-### Work at Artsy?
-
-Instead of `make oss` in the above, run `make artsy` to set up [spacecommander](https://github.com/square/spacecommander) and [SwiftLint](https://github.com/realm/SwiftLint). Make sure you have an environment variable of `ARTSY_STAFF_MEMBER` set to be true too.
 
 ### Thanks
 
-**Copyright**: 2012-2016, Artsy. Thanks to all [our contributors](/docs/thanks.md).
+Thanks to all [our contributors](/docs/thanks.md).
+
+## License
+
+MIT License. See [LICENSE](LICENSE).

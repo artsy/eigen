@@ -1,0 +1,97 @@
+{
+  "sort": "-prices",
+  "selectedMedium": "photography",
+  "selectedPrice": "*-30000",
+  "aggregations": [
+    {
+      "slice": "PRICE_RANGE",
+      "counts": [
+        {
+          "id": "*-*",
+          "name": "for Sale",
+          "count": 22
+        },
+        {
+          "id": "1000-5000",
+          "name": "between $1,000 & $5,000",
+          "count": 22
+        },
+        {
+          "id": "10000-50000",
+          "name": "between $10,000 & $50,000",
+          "count": 22
+        },
+        {
+          "id": "5000-10000",
+          "name": "between $5,000 & $10,000",
+          "count": 22
+        },
+        {
+          "id": "*-1000",
+          "name": "Under $1,000",
+          "count": 22
+        }
+      ]
+    },
+    {
+      "slice": "MEDIUM",
+      "counts": [
+        {
+          "id": "prints",
+          "name": "Prints",
+          "count": 22
+        },
+        {
+          "id": "painting",
+          "name": "Painting",
+          "count": 22
+        },
+        {
+          "id": "work-on-paper",
+          "name": "Work on Paper",
+          "count": 22
+        },
+        {
+          "id": "photography",
+          "name": "Photography",
+          "count": 22
+        },
+        {
+          "id": "sculpture",
+          "name": "Sculpture",
+          "count": 22
+        },
+        {
+          "id": "design",
+          "name": "Design",
+          "count": 22
+        },
+        {
+          "id": "drawing",
+          "name": "Drawing",
+          "count": 22
+        },
+        {
+          "id": "installation",
+          "name": "Installation",
+          "count": 22
+        },
+        {
+          "id": "film-slash-video",
+          "name": "Film/Video",
+          "count": 22
+        },
+        {
+          "id": "performance-art",
+          "name": "Performance Art",
+          "count": 22
+        },
+        {
+          "id": "jewelry",
+          "name": "Jewelry",
+          "count": 22
+        }
+      ]
+    }
+  ]
+}
