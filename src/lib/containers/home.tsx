@@ -85,7 +85,6 @@ export class Home extends React.Component<Props, State> {
                 renderRow={({ type, data }, _, row: number) => {
                   // Offset row because we don’t store a reference to the search bar and hero units rows.
                   const registerModule = (module) => this.state.modules[row - 2] = module
-                  // tslint:disable-next-line:switch-default
                   switch (type) {
                     case "search_bar":
                       return <SearchBar />

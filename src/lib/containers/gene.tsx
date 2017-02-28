@@ -107,7 +107,6 @@ export class Gene extends React.Component<Props, State> {
   // }
 
   renderSectionForTab = () => {
-    // tslint:disable-next-line:switch-default
     switch (this.selectedTabTitle()) {
       case TABS.ABOUT: return <About gene={this.props.gene} />
       case TABS.WORKS: return <Artworks
