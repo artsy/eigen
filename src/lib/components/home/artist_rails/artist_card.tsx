@@ -23,7 +23,7 @@ interface State {
     followStatusChanged?: ReactNative.Animated.EndCallback,
 }
 
-class ArtistCard extends React.Component<Props, State> {
+export class ArtistCard extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {

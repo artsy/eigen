@@ -2,41 +2,41 @@ import 'react-native'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 
-import Artist from '../artist'
+import { Artist } from '../artist'
 
 describe('availableTabs', () => {
   it('returns nothing if artist has no metadata, shows, or works', () => {
-    const artist: any = new Artist()
+    const artist = new Artist()
     artist.props = artistProps(false)
     expect(artist.availableTabs()).toEqual([])
   })
 
   it('returns About tab if artist has metadata', () => {
-    const artist: any = new Artist()
+    const artist = new Artist()
     artist.props = artistProps(true)
     expect(artist.availableTabs()).toEqual(['ABOUT'])
   })
 
   it('returns About tab if artist has articles', () => {
-    const artist: any = new Artist()
+    const artist = new Artist()
     artist.props = artistProps(false, {articles: 1})
     expect(artist.availableTabs()).toEqual(['ABOUT'])
   })
 
   it('returns Shows tab if artist has shows', () => {
-    const artist: any = new Artist()
+    const artist = new Artist()
     artist.props = artistProps(false, { partner_shows: 2 })
     expect(artist.availableTabs()).toEqual(['SHOWS'])
   })
 
   it('returns Works tab if artist has works', () => {
-    const artist: any = new Artist()
+    const artist = new Artist()
     artist.props = artistProps(false, { artworks: 2 })
     expect(artist.availableTabs()).toEqual(['WORKS'])
   })
 
   it('returns all three tabs if artist has metadata, works, and shows', () => {
-    const artist: any = new Artist()
+    const artist = new Artist()
     artist.props = artistProps(true, { artworks: 1, partner_shows: 1 })
     expect(artist.availableTabs()).toEqual(['ABOUT', 'WORKS', 'SHOWS'])
   })
@@ -44,7 +44,7 @@ describe('availableTabs', () => {
 
 describe('after rendering', () => {
   it('mounts with Works tab selected if works exist', () => {
-    const artist: any = new Artist()
+    const artist = new Artist()
     artist.props = artistProps(false, { artworks: 5 })
 
     const worksTabIndex = artist.availableTabs().indexOf('WORKS')
@@ -54,7 +54,7 @@ describe('after rendering', () => {
   })
 
   it('mounts at the first tab index if artist has no works', () => {
-    const artist: any = new Artist()
+    const artist = new Artist()
     artist.props = artistProps(true, { partner_shows: 1 })
 
     artist.componentWillMount()

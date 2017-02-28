@@ -69,7 +69,7 @@ interface State {
    *     the `stickyHeaderIndices` is always at the right index.
    *
    */
-class Gene extends React.Component<Props, State> {
+export class Gene extends React.Component<Props, State> {
   componentWillMount() {
     this.state = {
       selectedTabIndex: 0,

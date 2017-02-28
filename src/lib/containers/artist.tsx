@@ -23,7 +23,7 @@ interface Props extends ViewProperties {
   artist: any
 }
 
-class Artist extends React.Component<Props, {}> {
+export class Artist extends React.Component<Props, {}> {
   state: {
     selectedTabIndex: number,
   };

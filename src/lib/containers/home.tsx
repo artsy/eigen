@@ -22,7 +22,7 @@ interface State {
   dataSource: ListViewDataSource
 }
 
-class Home extends React.Component<Props, State> {
+export class Home extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 

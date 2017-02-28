@@ -2,7 +2,7 @@ import 'react-native'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 
-import ArtistCard from '../artist_card'
+import { ArtistCard } from '../artist_card'
 
 it('renders correctly', () => {
   const tree = renderer.create(<ArtistCard artist={artistProps(true).artist} />).toJSON()
@@ -11,7 +11,7 @@ it('renders correctly', () => {
 
 it('only shows name and artwork count when bio is omitted', () => {
   const props = artistProps(false)
-  const artistComponent: any = new ArtistCard(props)
+  const artistComponent = new ArtistCard(props)
   const metadata = artistComponent.renderMetadata()
 
   expect(metadata).toHaveLength(2)

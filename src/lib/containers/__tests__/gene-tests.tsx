@@ -1,5 +1,6 @@
 import { ScrollView } from 'react-native'
 import * as React from 'react'
+import * as Relay from 'react-relay'
 import * as renderer from 'react-test-renderer'
 
 var refineCallbackPromise = () => Promise.resolve({})
@@ -14,15 +15,15 @@ jest.mock('../../components/opaque_image_view', () => 'AROpaqueImageView')
 jest.mock('../../components/spinner', () => 'ARSpinner')
 jest.mock('../../components/switch_view', () => 'ARSwitchView')
 
-import Gene from '../gene'
+import { Gene } from '../gene'
 
 describe('state', () => {
   it('sets up the initial state in componentWillMount', () => {
-      const gene: any = new Gene()
-      gene.props = {
+      const gene = new Gene({
+        gene: null,
         medium: 'glitch',
         price_range: '*-*'
-      }
+      })
 
       gene.componentWillMount()
 
@@ -36,7 +37,7 @@ describe('state', () => {
   })
 
   it('updates from the switch change the selectedTabIndex', ()=> {
-      const gene: any = new Gene()
+      const gene = new Gene()
       const switchEvent = {
         nativeEvent: {
           selectedIndex: 23
@@ -44,7 +45,7 @@ describe('state', () => {
       }
 
       gene.setState = jest.fn()
-      gene.switchSelectionDidChange(switchEvent)
+      gene.switchSelectionDidChange(switchEvent as any)
 
       expect(gene.setState).lastCalledWith({selectedTabIndex: 23})
   })
@@ -53,29 +54,27 @@ describe('state', () => {
 
   it('updates the state with new data from Eigen', () => {
     // Setup a Gene Component like normal
-     const gene: any = new Gene()
-      gene.setState = jest.fn()
-      gene.props = {
-        medium: 'glitch',
-        price_range: '*-*',
-        relay: { setVariables: jest.fn() },
-        gene: { filtered_artworks: { aggregations: []} }
-      }
+    const gene = new Gene({
+      medium: 'glitch',
+      price_range: '*-*',
+      relay: { setVariables: jest.fn(), variables: {} } as Relay.RelayProp,
+      gene: { filtered_artworks: { aggregations: []} }
+    })
+    gene.setState = jest.fn()
 
-      // The data we expect back from Eigen when you've hit the refine button,
-      // this is a promise that Eigen would normally resolve (via the modal)
-      refineCallbackPromise = () => Promise.resolve({
-        medium: 'porcupines',
-        selectedPrice: '1000-80000',
-        sort: '-desc'
-      })
+    // The data we expect back from Eigen when you've hit the refine button,
+    // this is a promise that Eigen would normally resolve (via the modal)
+    refineCallbackPromise = () => Promise.resolve({
+      medium: 'porcupines',
+      selectedPrice: '1000-80000',
+      sort: '-desc'
+    })
 
-      // Mount it to set up initial state
-      gene.componentWillMount()
+    // Mount it to set up initial state
+    gene.componentWillMount()
 
-      // Then when the gene has been tapped, it returns the refine data above
-      return gene.refineTapped().then(() => {
-
+    // Then when the gene has been tapped, it returns the refine data above
+    return gene.refineTapped(null).then(() => {
       // This should trigger new state inside the component
       expect(gene.setState).lastCalledWith({
         selectedMedium: 'porcupines',
@@ -94,23 +93,25 @@ describe('state', () => {
 })
 
 describe('handling price ranges', () => {
+  let gene: Gene
+
+  beforeEach(() => {
+    gene = new Gene()
+  })
+
   it('is empty when *-*', () => {
-    const gene: any = new Gene()
     expect(gene.priceRangeToHumanReadableString('*-*')).toEqual('')
   })
 
   it('looks right when there is only a min value', () => {
-    const gene: any = new Gene()
     expect(gene.priceRangeToHumanReadableString('50.00-*')).toEqual('Above $50')
   })
 
   it('looks right when there is only a max value', () => {
-    const gene: any = new Gene()
     expect(gene.priceRangeToHumanReadableString('*-100.00')).toEqual('Below $100')
   })
 
   it('looks right when there is a max and mix value', () => {
-    const gene: any = new Gene()
     expect(gene.priceRangeToHumanReadableString('100.00-10000.00')).toEqual('$100 - $10,000')
   })
 })
