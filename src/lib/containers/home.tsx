@@ -13,7 +13,7 @@ type DataSourceRow = {
   data: any,
 }
 
-interface Props extends ViewProperties {
+interface Props extends ViewProperties, RelayProps {
 }
 
 interface State {
@@ -28,10 +28,10 @@ class Home extends React.Component<Props, State> {
 
     const rows: DataSourceRow[] = [
       { type: 'search_bar', data: null },
-      { type: 'hero_units', data: props.home.hero_units },
+      { type: 'hero_units', data: this.props.home.hero_units },
     ]
-    const artwork_modules = props.home.artwork_modules
-    const artist_modules = props.home.artist_modules && props.home.artist_modules.concat() // create a copy so we can mutate it (with `shift`)
+    const artwork_modules = this.props.home.artwork_modules
+    const artist_modules = this.props.home.artist_modules && this.props.home.artist_modules.concat() // create a copy so we can mutate it (with `shift`)
 
     for (let i = 0; i < artwork_modules.length; i++) {
       const artwork_module = artwork_modules[i]
@@ -130,3 +130,15 @@ export default Relay.createContainer(Home, {
     `,
   }
 })
+
+interface RelayProps {
+  home: {
+    hero_units: Array<any | null> | null,
+    artwork_modules: Array<{
+      __id: string,
+    } | null> | null,
+    artist_modules: Array<{
+      __id: string,
+    } | null> | null,
+  },
+}

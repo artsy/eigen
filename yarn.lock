@@ -2017,6 +2017,20 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6,
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
 
+graphql-config-parser@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/graphql-config-parser/-/graphql-config-parser-1.2.1.tgz#74be9f930d2018afc1c78cd74069e04f69f964d7"
+  dependencies:
+    graphql "0.7.1 - 1.0.0"
+    node-fetch "^1.6.3"
+    valid-url "^1.0.9"
+
+"graphql@0.7.1 - 1.0.0", "graphql@0.8.2 - 1.0.0":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.9.1.tgz#f4d154cbec054d4a5d3b1be95f23435c09aa86c8"
+  dependencies:
+    iterall "1.0.3"
+
 graphql@^0.6.0:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.6.2.tgz#19cdcb17e5862d64396a0684f92f7be64e90e7af"
@@ -2477,6 +2491,10 @@ istanbul@0.4.5:
 iterall@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.0.2.tgz#41a2e96ce9eda5e61c767ee5dc312373bb046e91"
+
+iterall@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.0.3.tgz#e0b31958f835013c323ff0b10943829ac69aa4b7"
 
 jade@0.26.3:
   version "0.26.3"
@@ -4025,6 +4043,15 @@ regjsparser@^0.1.4:
   dependencies:
     jsesc "~0.5.0"
 
+relay2ts@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/relay2ts/-/relay2ts-0.2.0.tgz#964f903c0a943a7aa8fa0b8a0ccdfd63f826e669"
+  dependencies:
+    graphql "0.8.2 - 1.0.0"
+    graphql-config-parser "^1.2.1"
+    minimist "^1.2.0"
+    typescript "^2.1.5"
+
 remap-istanbul@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/remap-istanbul/-/remap-istanbul-0.7.0.tgz#c360dadaea641dba734cb6a58cabe9ebd88a2858"
@@ -4614,7 +4641,7 @@ type-is@~1.6.14, type-is@~1.6.6:
     media-typer "0.3.0"
     mime-types "~2.1.13"
 
-typescript@^2.2.1:
+typescript@^2.1.5, typescript@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.2.1.tgz#4862b662b988a4c8ff691cc7969622d24db76ae9"
 
@@ -4701,6 +4728,10 @@ uuid@^2.0.1:
 uuid@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
+
+valid-url@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/valid-url/-/valid-url-1.0.9.tgz#1c14479b40f1397a75782f115e4086447433a200"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.1"

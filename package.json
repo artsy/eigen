@@ -40,6 +40,10 @@
       "./src/setupJest.ts"
     ]
   },
+  "graphql": {
+    "file": "data/schema.json",
+    "tsInterfaceName": "RelayProps"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/artsy/emission.git"
@@ -88,6 +92,7 @@
     "jest-react-native": "^17.0.3",
     "react-storybooks-relay-container": "^1.0.0",
     "react-test-renderer": "^15.3.0",
+    "relay2ts": "^0.2.0",
     "ts-jest": "^18.0.3",
     "tslint": "^4.4.2"
   },
