@@ -7,17 +7,19 @@
     "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -r Pod/Assets/assets/node_modules",
     "clean-example": "cd Example && xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",
     "type-check": "tsc --noEmit",
+    "lint": "tslint 'src/**/*.{ts,tsx}'",
+    "lint-fix": "npm run lint -- --fix",
     "danger": "danger",
     "start": "npm run clean-example && concurrently --kill-others 'npm run start-packager' 'npm run storybook'",
     "start-packager": "node node_modules/react-native/local-cli/cli.js start --config rn-cli.config.js",
     "storybook": "storybook start -p 9001",
-    "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
-    "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
-    "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && npm run dump-schema -- ../../data && rm -rf node_modules",
+    "rndebugger": "REACT_DEBUGGER=\"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\" npm start",
+    "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
     "test": "jest",
     "testing": "jest --watch",
-    "rndebugger": "REACT_DEBUGGER=\"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\" npm start",
-    "ios": "node node_modules/react-native/local-cli/cli.js run-ios"
+    "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
+    "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
+    "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && npm run dump-schema -- ../../data && rm -rf node_modules"
   },
   "jest": {
     "preset": "react-native",
@@ -94,7 +96,7 @@
     "react-test-renderer": "^15.3.0",
     "relay2ts": "^0.2.0",
     "ts-jest": "^18.0.3",
-    "tslint": "^4.4.2"
+    "tslint": "^4.5.0"
   },
   "peerDependencies": {
     "babel-relay-plugin": "^0.9.0"

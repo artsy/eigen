@@ -4,7 +4,7 @@
 	"recommendations": [
 		"Orta.vscode-danger",
 		"christian-kohler.npm-intellisense",
-		"dbaeumer.vscode-eslint",
+		"eg2.tslint",
 		"djabraham.vscode-yaml-validation",
 		"vsmobile.vscode-react-native",
 		"Orta.vscode-react-native-storybooks"
