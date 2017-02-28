@@ -9,8 +9,7 @@ install:
   - yarn install
 
 script:
-  - yarn type-check
-  - yarn test
+  - yarn ci
   - yarn danger
 
 deploy:

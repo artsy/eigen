@@ -6,9 +6,10 @@
   "scripts": {
     "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -r Pod/Assets/assets/node_modules",
     "clean-example": "cd Example && xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc --noEmit --pretty",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "lint-fix": "npm run lint -- --fix",
+    "ci": "npm run type-check && npm run lint && npm run test",
     "danger": "danger",
     "start": "npm run clean-example && concurrently --kill-others 'npm run start-packager' 'npm run storybook'",
     "start-packager": "node node_modules/react-native/local-cli/cli.js start --config rn-cli.config.js",
