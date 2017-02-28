@@ -157,7 +157,6 @@ class ArtistRail extends React.Component<Props, State> {
       case "SUGGESTED":
         return "Artists to Follow: Recommended for You"
       case "POPULAR":
-      default: // Just in case
         return "Artists to Follow: Popular"
     }
   }

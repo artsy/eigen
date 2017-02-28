@@ -37,17 +37,17 @@ describe("layout", () => {
   })
 })
 
-let homeProps = (nHeroUnits?: number, nArtistModules?: number, nArtworkModules?: number) => {
+const homeProps = (nHeroUnits?: number, nArtistModules?: number, nArtworkModules?: number) => {
   return {
-      home: {
-        hero_units: nHeroUnits ? modulesOfType("hero_units", nHeroUnits) : [],
-        artist_modules: nArtistModules ? modulesOfType("artist", nArtistModules) : [],
-        artwork_modules: nArtworkModules ? modulesOfType("artwork", nArtworkModules) : [],
-        },
-    }
+    home: {
+      hero_units: nHeroUnits ? modulesOfType("hero_units", nHeroUnits) : [],
+      artist_modules: nArtistModules ? modulesOfType("artist", nArtistModules) : [],
+      artwork_modules: nArtworkModules ? modulesOfType("artwork", nArtworkModules) : [],
+    },
+  }
 }
 
-let modulesOfType = (type: string, count: number) => {
+const modulesOfType = (type: string, count: number) => {
   const modules = []
   for (let i = 0; i < count; i++) {
     modules.push({ title: "Title", type })
@@ -55,6 +55,6 @@ let modulesOfType = (type: string, count: number) => {
   return modules
 }
 
-let extractListViewDataBlob = (home: Home) => {
+const extractListViewDataBlob = (home: Home) => {
   return (home.state.dataSource as any)._dataBlob.s1
 }
