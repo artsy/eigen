@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontStyle: "italic",
-  }
+  },
 })
 
 export default Relay.createContainer(Artwork, {
@@ -107,8 +107,8 @@ export default Relay.createContainer(Artwork, {
         }
         href
       }
-    `
-  }
+    `,
+  },
 })
 
 interface RelayProps {

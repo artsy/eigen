@@ -138,7 +138,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
       // This is the sum of all margins in between sections, so do not count to the right of last column.
       const sectionMargins = this.props.sectionMargin * (this.props.sectionCount - 1)
       this.setState({
-        sectionDimension: (layout.width - sectionMargins) / this.props.sectionCount
+        sectionDimension: (layout.width - sectionMargins) / this.props.sectionCount,
       })
     }
   }
@@ -205,7 +205,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
         if (j < artworks.length - 1) {
           artworkComponents.push(
-            <View style={spacerStyle} key={"spacer-" + j + "-" + artwork.__id} accessibilityLabel="Spacer View" />
+            <View style={spacerStyle} key={"spacer-" + j + "-" + artwork.__id} accessibilityLabel="Spacer View" />,
           )
         }
       }
@@ -218,7 +218,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
       sections.push(
         <View style={[styles.section, sectionSpecificStyle]} key={i} accessibilityLabel={"Section " + i}>
           {artworkComponents}
-        </View>
+        </View>,
       )
     }
     return sections

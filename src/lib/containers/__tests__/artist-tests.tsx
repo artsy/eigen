@@ -84,7 +84,7 @@ let artistProps = (hasMetadata: boolean, counts?: any) => {
   return {
     artist: {
       has_metadata: hasMetadata,
-      counts
-    }
+      counts,
+    },
   }
 }

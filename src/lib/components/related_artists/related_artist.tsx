@@ -60,8 +60,8 @@ const styles = StyleSheet.create<Styles>({
     fontFamily: "AGaramondPro-Regular",
     fontSize: 16,
     marginTop: 5,
-    color: colors["gray-semibold"]
-  }
+    color: colors["gray-semibold"],
+  },
 })
 
 export default Relay.createContainer(RelatedArtist, {
@@ -79,7 +79,7 @@ export default Relay.createContainer(RelatedArtist, {
         }
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

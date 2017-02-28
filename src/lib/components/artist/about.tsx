@@ -67,7 +67,7 @@ class About extends React.Component<Props, null> {
 const styles = StyleSheet.create({
   sectionSeparator: {
     marginBottom: 20,
-  }
+  },
 })
 
 export default Relay.createContainer(About, {
@@ -86,5 +86,5 @@ export default Relay.createContainer(About, {
         }
       }
     `,
-  }
+  },
 })

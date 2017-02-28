@@ -8,7 +8,7 @@ import {
   Text,
   TouchableHighlight,
   View,
-  ViewProperties
+  ViewProperties,
 } from "react-native"
 import * as Relay from "react-relay"
 
@@ -113,7 +113,7 @@ class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
 
     return rail.context && rail.context.href + "?" +
       relatedKeys.map(key =>
-        rail.params[key] && (encodeURIComponent(key) + "=" + encodeURIComponent(rail.params[key]))
+        rail.params[key] && (encodeURIComponent(key) + "=" + encodeURIComponent(rail.params[key])),
       ).join("&")
   }
 
@@ -242,7 +242,7 @@ const styles = StyleSheet.create<Styles>({
     borderRadius: 30,
     alignSelf: "center",
     top: -20,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   viewAllButton: {
     width: 240,
@@ -258,7 +258,7 @@ const styles = StyleSheet.create<Styles>({
     textAlign: "center",
     fontSize: 14,
     fontFamily: "Avant Garde Gothic ITCW01Dm",
-  }
+  },
 })
 
 export default Relay.createContainer(ArtworkRail, {
@@ -287,7 +287,7 @@ export default Relay.createContainer(ArtworkRail, {
         }
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

@@ -12,7 +12,7 @@ import About from "../components/gene/about"
 import Header from "../components/gene/header"
 
 import {
-  GeneInfiniteScrollContainer as Artworks
+  GeneInfiniteScrollContainer as Artworks,
 } from "../components/artwork_grids/infinite_scroll_grid"
 
 import SwitchView, { SwitchEvent } from "../components/switch_view"
@@ -167,14 +167,14 @@ export class Gene extends React.Component<Props, State> {
       sort: "-partner_updated_at",
       selectedMedium: this.props.medium,
       selectedPrice: this.props.price_range,
-      aggregations: this.props.gene.filtered_artworks.aggregations
+      aggregations: this.props.gene.filtered_artworks.aggregations,
     }
 
     const currentSettings = {
       sort: this.state.sort,
       selectedMedium: this.state.selectedMedium,
       selectedPrice: this.state.selectedPriceRange,
-      aggregations: this.props.gene.filtered_artworks.aggregations
+      aggregations: this.props.gene.filtered_artworks.aggregations,
     }
 
     // We're returning the promise so that it's easier
@@ -183,12 +183,12 @@ export class Gene extends React.Component<Props, State> {
       this.setState({
         selectedMedium: newSettings.medium,
         selectedPriceRange: newSettings.selectedPrice,
-        sort: newSettings.sort
+        sort: newSettings.sort,
       })
       this.props.relay.setVariables({
         medium: newSettings.medium,
         price_range: newSettings.selectedPrice,
-        sort: newSettings.sort
+        sort: newSettings.sort,
       })
     }).catch(error => {
       console.error(error)
@@ -224,7 +224,7 @@ export class Gene extends React.Component<Props, State> {
           <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>
             { this.artworkQuerySummaryString() }
           </SerifText>
-          <WhiteButton text="REFINE" style={{ height: 26, width: refineButtonWidth, }} onPress={this.refineTapped}/>
+          <WhiteButton text="REFINE" style={{ height: 26, width: refineButtonWidth }} onPress={this.refineTapped}/>
         </View>
         <Separator style={{ backgroundColor: separatorColor }}/>
       </View>
@@ -317,7 +317,7 @@ const styles = StyleSheet.create<Styles>({
     marginTop: 12,
     marginBottom: 12,
     paddingLeft: isPad ? 40 : 20,
-    paddingRight: isPad ? 40 : 20
+    paddingRight: isPad ? 40 : 20,
   },
   refineContainer: {
     flexDirection: "row",
@@ -333,7 +333,7 @@ export default Relay.createContainer(Gene, {
   initialVariables: {
     medium: "*",
     price_range: "*-*",
-    sort: "-partner_updated_at"
+    sort: "-partner_updated_at",
   },
   fragments: {
     gene: () => Relay.QL`
@@ -361,5 +361,5 @@ export default Relay.createContainer(Gene, {
         }
       }
     `,
-  }
+  },
 })

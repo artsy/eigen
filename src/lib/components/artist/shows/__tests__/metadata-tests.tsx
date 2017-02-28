@@ -13,11 +13,11 @@ it("renders properly", () => {
     status_update: "Closing in 2 days",
     status: "running",
     partner: {
-      name: "Gallery"
+      name: "Gallery",
     },
     location: {
-      city: "Berlin"
-    }
+      city: "Berlin",
+    },
   }
   const metadata = renderer.create(<Metadata show={show} />).toJSON()
   expect(metadata).toMatchSnapshot()

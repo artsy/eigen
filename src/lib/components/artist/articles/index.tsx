@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   article: {
     // TODO: Why doesn’t this work? Currently working around it by making the Article internal view 20pt wider.
     // marginRight: 20,
-  }
+  },
 })
 
 export default Relay.createContainer(Articles, {
@@ -45,7 +45,7 @@ export default Relay.createContainer(Articles, {
           ${Article.getFragment("article")}
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

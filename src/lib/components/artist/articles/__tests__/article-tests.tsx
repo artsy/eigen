@@ -13,7 +13,7 @@ it("renders properly", () => {
         name: "John Berger",
       },
       thumbnail_image: {
-        url: "artsy.net/image-url"
+        url: "artsy.net/image-url",
       },
   }
   const articleComponent = renderer.create(<Article article={article} />).toJSON()

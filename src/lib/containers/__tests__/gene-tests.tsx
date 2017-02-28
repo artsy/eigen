@@ -22,7 +22,7 @@ describe("state", () => {
       const gene = new Gene({
         gene: null,
         medium: "glitch",
-        price_range: "*-*"
+        price_range: "*-*",
       })
 
       gene.componentWillMount()
@@ -40,8 +40,8 @@ describe("state", () => {
       const gene = new Gene()
       const switchEvent = {
         nativeEvent: {
-          selectedIndex: 23
-        }
+          selectedIndex: 23,
+        },
       }
 
       gene.setState = jest.fn()
@@ -58,7 +58,7 @@ describe("state", () => {
       medium: "glitch",
       price_range: "*-*",
       relay: { setVariables: jest.fn(), variables: {} } as Relay.RelayProp,
-      gene: { filtered_artworks: { aggregations: []} }
+      gene: { filtered_artworks: { aggregations: []} },
     })
     gene.setState = jest.fn()
 
@@ -67,7 +67,7 @@ describe("state", () => {
     refineCallbackPromise = () => Promise.resolve({
       medium: "porcupines",
       selectedPrice: "1000-80000",
-      sort: "-desc"
+      sort: "-desc",
     })
 
     // Mount it to set up initial state
@@ -79,14 +79,14 @@ describe("state", () => {
       expect(gene.setState).lastCalledWith({
         selectedMedium: "porcupines",
         selectedPriceRange: "1000-80000",
-        sort: "-desc"
+        sort: "-desc",
       })
 
       // As well as trigger new state for Relay ( triggering a new call to metaphysics )
       expect(gene.props.relay.setVariables).lastCalledWith({
         medium: "porcupines",
         price_range: "1000-80000",
-        sort: "-desc"
+        sort: "-desc",
       })
     })
   })
@@ -130,9 +130,9 @@ it.skip("looks like expected", () => {
               counts: {
                 id: "OK",
                 name: "Sure",
-                count: "Yep"
-              }
-            }]
+                count: "Yep",
+              },
+            }],
         },
         trending_artists: [
           {
@@ -140,17 +140,17 @@ it.skip("looks like expected", () => {
             name: "Artist name",
             counts: {
               for_sale_artworks: 1,
-              artworks: 2
+              artworks: 2,
             },
             image: {
-              large_version: ""
-            }
-          }
-        ]
-      }
+              large_version: "",
+            },
+          },
+        ],
+      },
     }
   const tree = renderer.create(
-    <Gene medium="painting" price_range="*-100000" gene={props.gene} />
+    <Gene medium="painting" price_range="*-100000" gene={props.gene} />,
   ).toJSON()
   expect(tree).toMatchSnapshot()
 })

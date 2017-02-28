@@ -3,7 +3,7 @@ import {
   NativeSyntheticEvent,
   NativeTouchEvent,
   requireNativeComponent,
-  ViewProperties
+  ViewProperties,
 } from "react-native"
 
 export interface SwitchEvent extends NativeSyntheticEvent<NativeTouchEvent & { selectedIndex: number }> {

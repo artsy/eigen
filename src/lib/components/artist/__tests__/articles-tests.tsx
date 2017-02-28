@@ -20,7 +20,7 @@ let article = (n) => {
         name: "John Berger",
       },
       thumbnail_image: {
-        url: "artsy.net/image-url"
+        url: "artsy.net/image-url",
       },
   }
 }

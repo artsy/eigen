@@ -98,7 +98,7 @@ const styles = StyleSheet.create<Styles>({
   },
   headline: {
     textAlign: "center",
-    fontSize: isPad ? 20 : 14
+    fontSize: isPad ? 20 : 14,
   },
   followButton: {
     height: 40,
@@ -115,7 +115,7 @@ export default Relay.createContainer(Header, {
         name
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

@@ -22,16 +22,16 @@ let artwork = () => {
     is_in_auction: false,
     image: {
       url: "artsy.net/image-url",
-      aspect_ratio: 2.18
+      aspect_ratio: 2.18,
     },
     artists: [
       {
-        name: "Guerrilla Girls"
-      }
+        name: "Guerrilla Girls",
+      },
     ],
     partner: {
-      name: "Whitechapel Gallery"
+      name: "Whitechapel Gallery",
     },
-    href: "/artwork/guerrilla-girls-do-women-still-have-to-be-naked-to-get-into-the-met-museum"
+    href: "/artwork/guerrilla-girls-do-women-still-have-to-be-naked-to-get-into-the-met-museum",
   }
 }

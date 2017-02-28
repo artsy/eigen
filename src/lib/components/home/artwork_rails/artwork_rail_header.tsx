@@ -6,7 +6,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
-  ViewProperties
+  ViewProperties,
 } from "react-native"
 import * as Relay from "react-relay"
 const { ARTemporaryAPIModule } = NativeModules
@@ -141,7 +141,7 @@ const styles = StyleSheet.create<Styles>({
     fontStyle: "italic",
     alignSelf: "center",
     fontSize: 16,
-  }
+  },
 })
 
 export default Relay.createContainer(ArtworkRailHeader, {
@@ -159,7 +159,7 @@ export default Relay.createContainer(ArtworkRailHeader, {
         }
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

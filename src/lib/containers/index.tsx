@@ -5,5 +5,5 @@ import Home from "./home"
 export default {
   Artist,
   Home,
-  Gene
+  Gene,
 }

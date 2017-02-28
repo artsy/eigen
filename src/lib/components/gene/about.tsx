@@ -53,7 +53,7 @@ export default Relay.createContainer(About, {
         }
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

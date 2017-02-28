@@ -14,10 +14,10 @@ interface Props extends ViewProperties {
   artist: {
     counts: {
       for_sale_artworks: number
-      artworks: number
+      artworks: number,
     }
     not_for_sale_artworks: any[]
-    for_sale_artworks: any[]
+    for_sale_artworks: any[],
   }
   relay: any
 }
@@ -30,7 +30,7 @@ class Artworks extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
-      completedForSaleWorks: false
+      completedForSaleWorks: false,
     }
   }
 
@@ -42,7 +42,7 @@ class Artworks extends React.Component<Props, State> {
         title: "Works",
         count: otherCount,
         filter: "IS_NOT_FOR_SALE",
-        onComplete: null
+        onComplete: null,
       })
     } else {
       let otherWorks: any[] = []
@@ -54,8 +54,8 @@ class Artworks extends React.Component<Props, State> {
             title: "Other Works",
             count: otherCount,
             filter: "IS_NOT_FOR_SALE",
-            onComplete: null
-          })
+            onComplete: null,
+          }),
         )
       }
       return (
@@ -66,7 +66,7 @@ class Artworks extends React.Component<Props, State> {
             filter: "IS_FOR_SALE",
             onComplete: () => {
               this.setState({ completedForSaleWorks: true })
-            }
+            },
           })}
           {otherWorks}
         </View>
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   sectionSeparator: {
     marginTop: 40, // FIXME: This is because the above `section.marginBottom` didn’t work before the separator.
     marginBottom: 20,
-  }
+  },
 })
 
 export default Relay.createContainer(Artworks, {
@@ -123,7 +123,7 @@ export default Relay.createContainer(Artworks, {
         ${ArtworksGrid.getFragment("artist", { filter: "IS_NOT_FOR_SALE" })}
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

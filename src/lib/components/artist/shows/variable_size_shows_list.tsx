@@ -100,7 +100,7 @@ export default Relay.createContainer(ShowsList, {
         ${Show.getFragment("show")}
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

@@ -7,7 +7,7 @@ interface SpinnerProps extends ViewProperties {
 
 export default class Spinner extends React.Component<SpinnerProps, any> {
   static propTypes = {
-    spinnerColor: ColorPropType
+    spinnerColor: ColorPropType,
   }
 
   render() {
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   spinner: {
     width: 22,
     height: 22,
-  }
+  },
 })
 
 const NativeSpinner: React.ComponentClass<any> = requireNativeComponent("ARSpinner", Spinner)

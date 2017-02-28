@@ -54,5 +54,5 @@ class Gene extends Relay.Route {
 export default {
   Artist,
   Home,
-  Gene
+  Gene,
 }

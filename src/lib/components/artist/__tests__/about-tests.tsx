@@ -10,7 +10,7 @@ it("renders properly", () => {
     has_metadata: true,
     is_display_auction_link: true,
     articles: [],
-    related_artists: []
+    related_artists: [],
   }
   const about = renderer.create(<About artist={artist}/>).toJSON()
   expect(about).toMatchSnapshot()

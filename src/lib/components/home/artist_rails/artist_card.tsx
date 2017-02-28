@@ -29,7 +29,7 @@ export class ArtistCard extends React.Component<Props, State> {
     this.state = {
       processingChange: false,
       followStatusChanged: null,
-      following: null
+      following: null,
     }
   }
 
@@ -74,14 +74,14 @@ export class ArtistCard extends React.Component<Props, State> {
     lines.push(
       <Text key={1} numberOfLines={1} style={styles.sansSerifText}>
         {artist.name.toUpperCase()}
-      </Text>
+      </Text>,
     )
 
     if (artist.formatted_nationality_and_birthday) {
       lines.push(
         <Text key={2} numberOfLines={1} style={styles.serifText}>
           {artist.formatted_nationality_and_birthday}
-        </Text>
+        </Text>,
       )
     }
 
@@ -89,7 +89,7 @@ export class ArtistCard extends React.Component<Props, State> {
       lines.push(
         <Text key={3} numberOfLines={1} style={[styles.serifText, styles.serifWorksText]}>
           {artist.formatted_artworks_count}
-        </Text>
+        </Text>,
       )
     }
 
@@ -154,8 +154,8 @@ const styles = StyleSheet.create<Styles>({
     shadowRadius: 6,
     shadowOffset: {
       height: 2,
-      width: 0
-    }
+      width: 0,
+    },
 
   },
   image: {
@@ -180,7 +180,7 @@ const styles = StyleSheet.create<Styles>({
     height: 17,
     fontFamily: "AGaramondPro-Regular",
     fontSize: 16,
-    color: "#000000"
+    color: "#000000",
   },
   serifWorksText: {
     color: colors["gray-semibold"],
@@ -191,8 +191,8 @@ const styles = StyleSheet.create<Styles>({
     width: 196,
     height: 30,
     position: "absolute",
-    bottom: 15
-  }
+    bottom: 15,
+  },
 })
 
 const ArtistCardContainer = Relay.createContainer<Props>(ArtistCard, {
@@ -210,7 +210,7 @@ const ArtistCardContainer = Relay.createContainer<Props>(ArtistCard, {
         }
       }
     `,
-  }
+  },
 })
 
 export interface ArtistCardResponse {

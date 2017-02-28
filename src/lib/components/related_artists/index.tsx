@@ -13,7 +13,7 @@ interface State {
   columns: number
   imageSize: {
     width: number
-    height: number
+    height: number,
   }
 }
 
@@ -107,7 +107,7 @@ const styles = StyleSheet.create<Styles>({
   },
   heading: {
     fontSize: 20,
-  }
+  },
 })
 
 export default Relay.createContainer(RelatedArtists, {
@@ -117,8 +117,8 @@ export default Relay.createContainer(RelatedArtists, {
         __id
         ${RelatedArtist.getFragment("artist")}
       }
-    `
-  }
+    `,
+  },
 })
 
 interface RelayProps {

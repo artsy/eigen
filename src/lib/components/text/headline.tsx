@@ -14,9 +14,9 @@ export default class Headline extends React.Component<TextProperties, any> {
 
 const styles = StyleSheet.create({
   default: {
-    fontSize: 12
+    fontSize: 12,
   },
   required: {
     fontFamily: "Avant Garde Gothic ITCW01Dm",
-  }
+  },
 })

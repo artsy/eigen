@@ -43,7 +43,7 @@ let homeProps = (nHeroUnits?: number, nArtistModules?: number, nArtworkModules?:
         hero_units: nHeroUnits ? modulesOfType("hero_units", nHeroUnits) : [],
         artist_modules: nArtistModules ? modulesOfType("artist", nArtistModules) : [],
         artwork_modules: nArtworkModules ? modulesOfType("artwork", nArtworkModules) : [],
-        }
+        },
     }
 }
 

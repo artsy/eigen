@@ -5,6 +5,6 @@ export interface LayoutEvent {
       y: number;
       width: number;
       height: number;
-    }
+    },
   }
 }

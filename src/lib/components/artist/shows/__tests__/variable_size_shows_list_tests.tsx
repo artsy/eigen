@@ -20,7 +20,7 @@ let showProps = (n) => {
     __id: `show-expansive-exhibition-${n}`,
     href: "artsy.net/show",
     cover_image: {
-      url: "artsy.net/image-url"
+      url: "artsy.net/image-url",
     },
     kind: "solo",
     name: "Expansive Exhibition",
@@ -28,10 +28,10 @@ let showProps = (n) => {
     status_update: "Closing in 2 days",
     status: "running",
     partner: {
-      name: "Gallery"
+      name: "Gallery",
     },
     location: {
-      city: "Berlin"
-    }
+      city: "Berlin",
+    },
   }
 }

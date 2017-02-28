@@ -17,8 +17,8 @@ if (Emission) {
       headers: {
         "X-USER-ID": Emission.userID,
         "X-ACCESS-TOKEN": Emission.authenticationToken,
-      }
-    })
+      },
+    }),
   )
 }
 

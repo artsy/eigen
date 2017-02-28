@@ -194,7 +194,7 @@ const styles = StyleSheet.create<Styles>({
     marginRight: 30,
     marginTop: 40,
     marginBottom: 10,
- }
+ },
 })
 
 interface SuggestedArtist extends ArtistCardResponse {
@@ -246,7 +246,7 @@ export default Relay.createContainer(ArtistRail, {
         }
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

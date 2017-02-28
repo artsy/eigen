@@ -13,7 +13,7 @@ interface Props extends ViewProperties {
   artist: {
     past_shows: any[]
     current_shows: any[]
-    upcoming_shows: any[]
+    upcoming_shows: any[],
   }
 }
 
@@ -74,7 +74,7 @@ const styles = StyleSheet.create<Styles>({
   title: {
     fontSize: 20,
     textAlign: "left",
-    marginLeft: 0
+    marginLeft: 0,
   },
 })
 
@@ -96,7 +96,7 @@ export default Relay.createContainer(Shows, {
         }
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

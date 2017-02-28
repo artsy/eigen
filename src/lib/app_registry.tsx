@@ -60,7 +60,7 @@ class Gene extends RootContainer {
       geneID: props.geneID,
       medium: medium ? medium : "*",
       // The replace can be removed once metaphysics#486 is merged
-      price_range: priceRange ? priceRange.replace(/\.00/g, "") : "*-*"
+      price_range: priceRange ? priceRange.replace(/\.00/g, "") : "*-*",
     })
   }
 }

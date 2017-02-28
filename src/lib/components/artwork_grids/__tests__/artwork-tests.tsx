@@ -13,17 +13,17 @@ it("renders properly", () => {
     is_in_auction: false,
     image: {
       url: "artsy.net/image-url",
-      aspect_ratio: 0.74
+      aspect_ratio: 0.74,
     },
     artists: [
       {
-        name: "Mikael Olson"
-      }
+        name: "Mikael Olson",
+      },
     ],
     partner: {
-      name: "Gallery 1261"
+      name: "Gallery 1261",
     },
-    href: "/artwork/mikael-olson-some-kind-of-dinosaur"
+    href: "/artwork/mikael-olson-some-kind-of-dinosaur",
   }
 
   const artwork = renderer.create(<Artwork artwork={artworkProps} />).toJSON()

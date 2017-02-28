@@ -27,7 +27,7 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
     super(props)
     this.state = {
       textOpacity: new Animated.Value(1),
-      backgroundColor: new Animated.Value(props.selected ? 1 : 0)
+      backgroundColor: new Animated.Value(props.selected ? 1 : 0),
     }
   }
 
@@ -50,7 +50,7 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
   render() {
     const backgroundColor = this.state.backgroundColor.interpolate({
       inputRange: [0, 1],
-      outputRange: (["black", colors["purple-regular"]])
+      outputRange: (["black", colors["purple-regular"]]),
     })
     const styling = {
       underlayColor: (this.props.selected ? "black" : colors["purple-regular"]),
@@ -78,6 +78,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    color: "white"
-  }
+    color: "white",
+  },
 })

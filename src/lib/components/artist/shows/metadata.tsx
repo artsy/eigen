@@ -11,13 +11,13 @@ interface Props extends ViewProperties {
     kind: string
     exhibition_period: string
     location?: {
-      city: string
+      city: string,
     }
     status_update?: string
     status: string
     partner?: {
-      name: string
-    }
+      name: string,
+    },
   }
 }
 
@@ -100,8 +100,8 @@ export default Relay.createContainer(Metadata, {
           city
         }
       }
-    `
-  }
+    `,
+  },
 })
 
 interface RelayProps {

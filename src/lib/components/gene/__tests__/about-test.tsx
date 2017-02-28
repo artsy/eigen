@@ -21,11 +21,11 @@ it("shows trending artists correctly", () => {
         name: "Lita Albuquerque",
         counts: {
           for_sale_artworks: 30,
-          artworks: 36
+          artworks: 36,
         },
         image: {
-          url: "cloudfront.net/some-url"
-        }
+          url: "cloudfront.net/some-url",
+        },
       },
       {
         __id: "artist-doug-argue",
@@ -33,14 +33,14 @@ it("shows trending artists correctly", () => {
         name: "Doug Argue",
         counts: {
           for_sale_artworks: 24,
-          artworks: 31
+          artworks: 31,
         },
         image: {
-          url: "cloudfront.net/some-url"
-        }
+          url: "cloudfront.net/some-url",
+        },
 
-      }
-    ]
+      },
+    ],
   }
 
   const about = renderer.create(<About gene={gene} />).toJSON()

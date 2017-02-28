@@ -19,14 +19,14 @@ class GenericArtworksGrid extends React.Component<Props, State> {
   static defaultProps = {
     sectionDirection: "column",
     sectionMargin: 20,
-    itemMargin: 20
+    itemMargin: 20,
   }
 
   constructor(props) {
     super(props)
     this.state = {
       sectionDimension: 0,
-      sectionCount: 0
+      sectionCount: 0,
     }
 
     this.onLayout = this.onLayout.bind(this)
@@ -114,7 +114,7 @@ class GenericArtworksGrid extends React.Component<Props, State> {
       sections.push(
         <View style={[styles.section, sectionSpecificStlye]} key={i} accessibilityLabel={"Section " + i}>
           {artworkComponents}
-        </View>
+        </View>,
       )
     }
     return sections
@@ -157,7 +157,7 @@ const GenericArtworksGridContainer = Relay.createContainer(GenericArtworksGrid, 
         ${Artwork.getFragment("artwork")}
       }
     `,
-  }
+  },
 })
 
 export default GenericArtworksGridContainer

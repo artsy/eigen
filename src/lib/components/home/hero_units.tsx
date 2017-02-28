@@ -25,7 +25,7 @@ class HeroUnits extends React.Component<Props, State> {
       width: null,
       height: null,
       margin: null,
-      fontSize: 0
+      fontSize: 0,
     }
   }
 
@@ -92,7 +92,7 @@ export default Relay.createContainer(HeroUnits, {
         wide_image_url: background_image_url(version: WIDE)
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

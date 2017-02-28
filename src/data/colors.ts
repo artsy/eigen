@@ -10,5 +10,5 @@ export default {
   "yellow-regular": "#fdefd1",
   "yellow-medium": "#fce1a8",
   "yellow-bold": "#f1af1b",
-  "green-regular": "#0eda83"
+  "green-regular": "#0eda83",
 }

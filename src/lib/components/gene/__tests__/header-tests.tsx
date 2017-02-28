@@ -13,7 +13,7 @@ it("renders properly", () => {
   const gene = {
     __id: "gene-deep-time",
     id: "deep-time",
-    name: "Deep Time"
+    name: "Deep Time",
   }
 
   const header = renderer.create(<Header gene={gene} />).toJSON()

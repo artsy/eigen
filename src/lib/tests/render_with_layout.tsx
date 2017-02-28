@@ -8,8 +8,8 @@ export const renderWithLayout = (component: any, layout: { width?: number, heigh
   // create a nativeEvent with desired dimensions
   const mockNativeEvent = {
     nativeEvent: {
-      layout
-    }
+      layout,
+    },
   }
 
   // manually trigger onLayout with mocked nativeEvent

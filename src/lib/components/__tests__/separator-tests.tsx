@@ -5,7 +5,7 @@ import Separator from "../separator"
 
 it("looks like expected", () => {
   const tree = renderer.create(
-    <Separator />
+    <Separator />,
   ).toJSON()
   expect(tree).toMatchSnapshot()
 })

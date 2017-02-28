@@ -20,7 +20,7 @@ class SmallList extends React.Component<Props, State> {
     this.state = {
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
-      }).cloneWithRows(this.props.shows)
+      }).cloneWithRows(this.props.shows),
     }
   }
 
@@ -61,7 +61,7 @@ const showStyles = StyleSheet.create({
     height: 75,
     marginBottom: 20,
     marginTop: 20,
-    marginRight: 15
+    marginRight: 15,
   },
 })
 
@@ -72,7 +72,7 @@ export default Relay.createContainer(SmallList, {
         ${Show.getFragment("show")}
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

@@ -8,8 +8,8 @@ import InfiniteScrollArtworksGrid from "../infinite_scroll_grid"
 it("renders properly", () => {
   const artist = {
     artworks: {
-      edges: [ artwork(), artwork(), artwork() ]
-    }
+      edges: [ artwork(), artwork(), artwork() ],
+    },
   }
 
   const grid = renderWithLayout(<InfiniteScrollArtworksGrid artist={artist} queryKey="artist" />, { width: 768})
@@ -26,17 +26,17 @@ let artwork = () => {
       is_in_auction: false,
       image: {
         url: "artsy.net/image-url",
-        aspect_ratio: 1.27
+        aspect_ratio: 1.27,
       },
       artists: [
         {
-          name: "Jenny Holzer"
-        }
+          name: "Jenny Holzer",
+        },
       ],
       partner: {
-        name: "Kukje Gallery"
+        name: "Kukje Gallery",
       },
-      href: "/artwork/jenny-holzer-talking-politics"
-    }
+      href: "/artwork/jenny-holzer-talking-politics",
+    },
   }
 }

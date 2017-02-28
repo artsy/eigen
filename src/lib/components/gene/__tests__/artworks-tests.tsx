@@ -12,7 +12,7 @@ it("renders properly", () => {
     },
     medium: "painting",
     queryState: null,
-    queryForPage: null
+    queryForPage: null,
   }
   const artworks = renderer.create(<Artworks gene={props}/>).toJSON()
   expect(artworks).toMatchSnapshot()

@@ -29,9 +29,9 @@ const artistProps = (hasBio: boolean) => {
       id: "juan-gris",
       _id: "4d8b934a4eb68a1b2c0012a1",
       image: {
-        url: "https://d32dm0rphc51dk.cloudfront.net/wGMxL6TvlSORJzEHZsK9JA/large.jpg"
+        url: "https://d32dm0rphc51dk.cloudfront.net/wGMxL6TvlSORJzEHZsK9JA/large.jpg",
       },
-      name: "Juan Gris"
-    }
+      name: "Juan Gris",
+    },
   }
 }

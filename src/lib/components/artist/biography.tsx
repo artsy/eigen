@@ -51,13 +51,13 @@ const styles = StyleSheet.create({
   blurb: {
     fontSize: 16,
     lineHeight: 20,
-    marginBottom: 20
+    marginBottom: 20,
   },
   bio: {
     fontSize: 16,
     lineHeight: 20,
-    marginBottom: 40
-  }
+    marginBottom: 40,
+  },
 })
 
 export default Relay.createContainer(Biography, {
@@ -68,7 +68,7 @@ export default Relay.createContainer(Biography, {
         blurb
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

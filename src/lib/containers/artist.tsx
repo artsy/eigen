@@ -16,7 +16,7 @@ const isPad = Dimensions.get("window").width > 700
 const TABS = {
   ABOUT: "ABOUT",
   WORKS: "WORKS",
-  SHOWS: "SHOWS"
+  SHOWS: "SHOWS",
 }
 
 interface Props extends ViewProperties {
@@ -146,7 +146,7 @@ export default Relay.createContainer(Artist, {
         ${Artworks.getFragment("artist")}
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

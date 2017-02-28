@@ -45,12 +45,12 @@ const styles = StyleSheet.create<Styles>({
   text: {
     fontFamily: "AGaramondPro-Regular",
     fontSize: 16,
-    marginTop: 5
+    marginTop: 5,
   },
   searchIcon: {
     marginLeft: leftInnerMargin,
     marginRight: 10,
     height: 16,
-    width: 16
+    width: 16,
   },
 })

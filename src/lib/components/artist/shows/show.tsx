@@ -10,13 +10,13 @@ interface Props extends ViewProperties {
   show: {
     href: string
     cover_image: {
-      url: string
-    }
+      url: string,
+    },
   }
   styles?: {
     container?: any
     image?: any
-    metadata?: any
+    metadata?: any,
   }
 }
 
@@ -53,8 +53,8 @@ export default Relay.createContainer(Show, {
         }
         ${ShowMetadata.getFragment("show")}
       }
-    `
-  }
+    `,
+  },
 })
 
 interface RelayProps {

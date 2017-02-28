@@ -9,12 +9,12 @@ interface Props extends ViewProperties {
   article: {
     href: string
     author: {
-      name
+      name,
     }
     thumbnail_image: {
-      url
+      url,
     }
-    thumbnail_title: string
+    thumbnail_title: string,
   }
 }
 
@@ -74,7 +74,7 @@ const styles = StyleSheet.create<Styles>({
     fontSize: 16,
     marginTop: 10,
     width: 275,
-  }
+  },
 })
 
 export default Relay.createContainer(Article, {
@@ -91,7 +91,7 @@ export default Relay.createContainer(Article, {
         }
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

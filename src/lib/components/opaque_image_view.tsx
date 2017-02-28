@@ -4,7 +4,7 @@ import {
   PixelRatio,
   processColor,
   requireNativeComponent,
-  StyleSheet
+  StyleSheet,
 } from "react-native"
 
 import colors from "../../data/colors"

@@ -9,7 +9,7 @@ it("renders properly", () => {
   const showProps = {
     href: "artsy.net/show",
     cover_image: {
-      url: "artsy.net/image-url"
+      url: "artsy.net/image-url",
     },
     kind: "solo",
     name: "Expansive Exhibition",
@@ -17,18 +17,18 @@ it("renders properly", () => {
     status_update: "Closing in 2 days",
     status: "running",
     partner: {
-      name: "Gallery"
+      name: "Gallery",
     },
     location: {
-      city: "Berlin"
-    }
+      city: "Berlin",
+    },
   }
 
   const showStyles = {
     container: {
       margin: 10,
       marginBottom: 30,
-      width: 100
+      width: 100,
     },
     image: {
       width: 50,

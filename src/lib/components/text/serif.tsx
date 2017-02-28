@@ -14,9 +14,9 @@ export default class Serif extends React.Component<TextProperties, any> {
 
 const styles = StyleSheet.create({
   default: {
-    fontSize: 17
+    fontSize: 17,
   },
   required: {
     fontFamily: "AGaramondPro-Regular",
-  }
+  },
 })

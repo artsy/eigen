@@ -16,6 +16,6 @@ const styles = StyleSheet.create({
     height: 1,
     marginLeft: negativeMargin,
     marginRight: negativeMargin,
-    backgroundColor: colors["gray-regular"]
+    backgroundColor: colors["gray-regular"],
   },
 })

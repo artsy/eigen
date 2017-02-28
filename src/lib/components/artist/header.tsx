@@ -153,7 +153,7 @@ const styles = StyleSheet.create<Styles>({
   },
   followCount: {
     color: colors["gray-semibold"],
-    marginBottom: 30
+    marginBottom: 30,
   },
   followButton: {
     height: 40,
@@ -178,7 +178,7 @@ export default Relay.createContainer(Header, {
         }
       }
     `,
-  }
+  },
 })
 
 interface RelayProps {

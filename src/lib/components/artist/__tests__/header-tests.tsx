@@ -16,7 +16,7 @@ it("renders properly", () => {
       birthday: "11/17/1992",
       counts: {
         follows: 22,
-      }
+      },
   }
   const header = renderer.create(<Header artist={artist} />).toJSON()
   expect(header).toMatchSnapshot()

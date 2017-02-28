@@ -23,14 +23,14 @@ interface State {
 export default class WhiteButton extends React.Component<Props, State> {
   state: {
     textOpacity: Animated.Value,
-    backgroundColor: Animated.Value
+    backgroundColor: Animated.Value,
   }
 
   constructor(props: any) {
     super(props)
     this.state = {
       textOpacity: new Animated.Value(1),
-      backgroundColor: new Animated.Value(props.selected ? 1 : 0)
+      backgroundColor: new Animated.Value(props.selected ? 1 : 0),
     }
   }
 
@@ -53,7 +53,7 @@ export default class WhiteButton extends React.Component<Props, State> {
   render() {
     const backgroundColor = this.state.backgroundColor.interpolate({
       inputRange: [0, 1],
-      outputRange: ["white", "black"]
+      outputRange: ["white", "black"],
     })
     const styling = {
       underlayColor: (this.props.selected ? "black" : colors["purple-regular"]),
@@ -76,10 +76,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderColor: colors["gray-regular"],
-    borderWidth: 1
+    borderWidth: 1,
   },
   text: {
     fontFamily: "AGaramondPro-Regular",
-    color: "black"
-  }
+    color: "black",
+  },
 })
