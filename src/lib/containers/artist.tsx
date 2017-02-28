@@ -1,22 +1,22 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { ScrollView, View, Dimensions, StyleSheet, ViewProperties } from 'react-native'
+import * as React from "react"
+import { Dimensions, ScrollView, StyleSheet, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 
-import Events from '../native_modules/events'
-import Header from '../components/artist/header'
-import About from '../components/artist/about'
-import Shows from '../components/artist/shows'
-import Artworks from '../components/artist/artworks'
+import About from "../components/artist/about"
+import Artworks from "../components/artist/artworks"
+import Header from "../components/artist/header"
+import Shows from "../components/artist/shows"
+import Events from "../native_modules/events"
 
-import TabView from '../components/tab_view'
-import { SwitchEvent } from '../components/switch_view'
+import { SwitchEvent } from "../components/switch_view"
+import TabView from "../components/tab_view"
 
-const isPad = Dimensions.get('window').width > 700
+const isPad = Dimensions.get("window").width > 700
 
 const TABS = {
-  ABOUT: 'ABOUT',
-  WORKS: 'WORKS',
-  SHOWS: 'SHOWS'
+  ABOUT: "ABOUT",
+  WORKS: "WORKS",
+  SHOWS: "SHOWS"
 }
 
 interface Props extends ViewProperties {
@@ -26,7 +26,7 @@ interface Props extends ViewProperties {
 export class Artist extends React.Component<Props, {}> {
   state: {
     selectedTabIndex: number,
-  };
+  }
 
   componentWillMount() {
     const worksTab = this.availableTabs().indexOf(TABS.WORKS)
@@ -67,7 +67,7 @@ export class Artist extends React.Component<Props, {}> {
   // This is *not* called on the initial render, thus it will only post events for when the user actually taps a tab.
   componentDidUpdate(previousProps, previousState) {
     Events.postEvent(this, {
-      name: 'Tapped artist view tab',
+      name: "Tapped artist view tab",
       tab: this.selectedTabTitle().toLowerCase(),
       artist_id: this.props.artist._id,
       artist_slug: this.props.artist.id,
@@ -98,7 +98,7 @@ export class Artist extends React.Component<Props, {}> {
   }
 
   render() {
-    const windowDimensions = Dimensions.get('window')
+    const windowDimensions = Dimensions.get("window")
     const commonPadding = windowDimensions.width > 700 ? 40 : 20
     const displayTabView = this.availableTabs().length > 1
 
@@ -122,7 +122,7 @@ const styles = StyleSheet.create<Styles>({
     width: isPad ? 330 : null,
     marginTop: 30,
     marginBottom: 30,
-    alignSelf: isPad ? 'center' : null,
+    alignSelf: isPad ? "center" : null,
   },
 })
 
@@ -139,10 +139,10 @@ export default Relay.createContainer(Artist, {
           related_artists,
           articles
         }
-        ${Header.getFragment('artist')}
-        ${About.getFragment('artist')}
-        ${Shows.getFragment('artist')}
-        ${Artworks.getFragment('artist')}
+        ${Header.getFragment("artist")}
+        ${About.getFragment("artist")}
+        ${Shows.getFragment("artist")}
+        ${Artworks.getFragment("artist")}
       }
     `,
   }

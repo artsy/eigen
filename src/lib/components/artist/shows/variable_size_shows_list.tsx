@@ -1,12 +1,12 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { View, StyleSheet, ViewProperties } from 'react-native'
-import { LayoutEvent } from '../../../system/events'
+import * as React from "react"
+import { StyleSheet, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
+import { LayoutEvent } from "../../../system/events"
 
-import Show from './show'
+import Show from "./show"
 
 interface Props extends ViewProperties {
-  showSize: 'medium' | 'large'
+  showSize: "medium" | "large"
   shows: any[]
 }
 
@@ -33,14 +33,14 @@ class ShowsList extends React.Component<Props, State> {
     const marginSpace = 20 * this.numberOfColumns(isPad)
     const imageWidth = isPad ? ((width - marginSpace) / this.numberOfColumns(isPad)) : (width - 20)
 
-    const aspectRatio = (showSize === 'large') ? 1.6 : 1.4
+    const aspectRatio = (showSize === "large") ? 1.6 : 1.4
     const imageHeight = Math.floor(imageWidth / aspectRatio)
     return { width: imageWidth, height: imageHeight }
   }
 
   numberOfColumns = (isPad: boolean) => {
     if (isPad) {
-      return (this.props.showSize === 'large') ? 2 : 3
+      return (this.props.showSize === "large") ? 2 : 3
     }
 
     return 1
@@ -56,10 +56,10 @@ class ShowsList extends React.Component<Props, State> {
     const showStyles = StyleSheet.create({
       container: {
         margin: 10,
-        marginBottom: (showSize === 'medium') ? 30 : 10,
+        marginBottom: (showSize === "medium") ? 30 : 10,
         width: this.state.width,
       },
-      image:{
+      image: {
         width: this.state.width,
         height: this.state.height,
       },
@@ -83,10 +83,10 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
+    justifyContent: "flex-start",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "flex-start",
     marginLeft: -10,
     marginRight: -10,
   },
@@ -97,7 +97,7 @@ export default Relay.createContainer(ShowsList, {
     shows: () => Relay.QL`
       fragment on PartnerShow @relay(plural: true) {
         __id
-        ${Show.getFragment('show')}
+        ${Show.getFragment("show")}
       }
     `,
   }

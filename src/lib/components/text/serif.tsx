@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { StyleSheet, Text, TextProperties, TextStatic } from 'react-native'
+import * as React from "react"
+import { StyleSheet, Text, TextProperties, TextStatic } from "react-native"
 
 export default class Serif extends React.Component<TextProperties, any> {
   render() {
@@ -17,6 +17,6 @@ const styles = StyleSheet.create({
     fontSize: 17
   },
   required: {
-    fontFamily: 'AGaramondPro-Regular',
+    fontFamily: "AGaramondPro-Regular",
   }
 })

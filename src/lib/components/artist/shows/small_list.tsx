@@ -1,10 +1,10 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { View, StyleSheet, ListView, ViewProperties, ListViewDataSource } from 'react-native'
+import * as React from "react"
+import { ListView, ListViewDataSource, StyleSheet, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 
-import Show from './show'
+import Show from "./show"
 
-import colors from '../../../../data/colors'
+import colors from "../../../../data/colors"
 
 interface Props extends ViewProperties {
   shows: any[]
@@ -19,7 +19,7 @@ class SmallList extends React.Component<Props, State> {
     super(props)
     this.state = {
       dataSource: new ListView.DataSource({
-        rowHasChanged:(row1, row2) => row1 !== row2,
+        rowHasChanged: (row1, row2) => row1 !== row2,
       }).cloneWithRows(this.props.shows)
     }
   }
@@ -46,15 +46,15 @@ class SmallList extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   separator: {
     height: 1,
-    backgroundColor: colors['gray-regular'],
+    backgroundColor: colors["gray-regular"],
   },
 })
 
 const showStyles = StyleSheet.create({
   container: {
     marginTop: -8,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   image: {
     width: 75,
@@ -65,12 +65,11 @@ const showStyles = StyleSheet.create({
   },
 })
 
-
 export default Relay.createContainer(SmallList, {
   fragments: {
     shows: () => Relay.QL`
       fragment on PartnerShow @relay(plural: true) {
-        ${Show.getFragment('show')}
+        ${Show.getFragment("show")}
       }
     `,
   }

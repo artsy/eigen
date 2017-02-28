@@ -1,10 +1,10 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { StyleSheet, View, ViewProperties } from 'react-native'
+import * as React from "react"
+import { StyleSheet, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 
-import SerifText from '../text/serif'
-import RelatedArtist from './related_artist'
-import { LayoutEvent } from '../../system/events'
+import { LayoutEvent } from "../../system/events"
+import SerifText from "../text/serif"
+import RelatedArtist from "./related_artist"
 
 interface Props extends ViewProperties, RelayProps {
 }
@@ -78,7 +78,7 @@ class RelatedArtists extends React.Component<Props, State> {
     if (numberOfTrailingViews > 0) {
       const extraRequiredViews = this.state.columns - numberOfTrailingViews
       for (let i = 0; i < extraRequiredViews; i++) {
-        artistViews.push(<View key={'related-artist-spacer-' + i} style={this.state.imageSize} />)
+        artistViews.push(<View key={"related-artist-spacer-" + i} style={this.state.imageSize} />)
       }
     }
 
@@ -94,13 +94,13 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   artistContainer: {
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-around',
+    flexWrap: "wrap",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-around",
     marginTop: 12,
     marginLeft: -10,
     marginRight: -10,
@@ -115,7 +115,7 @@ export default Relay.createContainer(RelatedArtists, {
     artists: () => Relay.QL`
       fragment on Artist @relay(plural: true) {
         __id
-        ${RelatedArtist.getFragment('artist')}
+        ${RelatedArtist.getFragment("artist")}
       }
     `
   }

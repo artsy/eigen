@@ -1,11 +1,11 @@
-import 'react-native'
+import "react-native"
 
-import * as React from 'react'
-import * as renderer from 'react-test-renderer'
+import * as React from "react"
+import * as renderer from "react-test-renderer"
 
-import Artworks from '../artworks'
+import Artworks from "../artworks"
 
-it('renders properly', () => {
+it("renders properly", () => {
   const artist = {
     counts: {
       artworks: 5,

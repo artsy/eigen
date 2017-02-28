@@ -1,9 +1,9 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { View, Text, StyleSheet, ViewProperties } from 'react-native'
+import * as React from "react"
+import { StyleSheet, Text, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 
-import colors from '../../../../data/colors'
-import SerifText from '../../text/serif'
+import colors from "../../../../data/colors"
+import SerifText from "../../text/serif"
 
 interface Props extends ViewProperties {
   show: {
@@ -36,7 +36,7 @@ class Metadata extends React.Component<Props, any> {
   }
 
   showTypeString() {
-    let message = this.props.show.kind.toUpperCase() + (this.props.show.kind === 'fair' ? ' BOOTH' : ' SHOW')
+    let message = this.props.show.kind.toUpperCase() + (this.props.show.kind === "fair" ? " BOOTH" : " SHOW")
     return message
   }
 
@@ -45,15 +45,15 @@ class Metadata extends React.Component<Props, any> {
     const city = this.props.show.location && this.props.show.location.city
 
     if (city || exhibition_period) {
-      const string = city ? (city.trim() + ', ' + exhibition_period) : exhibition_period
-      return <SerifText style={[styles.serifText, {color: 'grey'}]}>{ string }</SerifText>
+      const string = city ? (city.trim() + ", " + exhibition_period) : exhibition_period
+      return <SerifText style={[styles.serifText, {color: "grey"}]}>{ string }</SerifText>
     }
     return null
   }
 
   statusText() {
     if (this.props.show.status_update) {
-      let textColor = this.props.show.status === 'upcoming' ? 'green-regular' : 'red-regular'
+      let textColor = this.props.show.status === "upcoming" ? "green-regular" : "red-regular"
       return <SerifText style={{color: colors[textColor]}}>{this.props.show.status_update}</SerifText>
     }
     return null
@@ -68,7 +68,7 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
     marginTop: 10,
   },
   serifText: {
@@ -77,10 +77,10 @@ const styles = StyleSheet.create<Styles>({
   },
   sansSerifText: {
     fontSize: 12,
-    textAlign: 'left',
+    textAlign: "left",
     margin: 2,
     marginLeft: 0,
-    fontFamily: 'Avant Garde Gothic ITCW01Dm',
+    fontFamily: "Avant Garde Gothic ITCW01Dm",
   },
 })
 

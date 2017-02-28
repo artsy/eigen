@@ -1,15 +1,15 @@
-import 'react-native'
-import * as React from 'react'
-import * as renderer from 'react-test-renderer'
+import * as React from "react"
+import "react-native"
+import * as renderer from "react-test-renderer"
 
-import { ArtistCard } from '../artist_card'
+import { ArtistCard } from "../artist_card"
 
-it('renders correctly', () => {
+it("renders correctly", () => {
   const tree = renderer.create(<ArtistCard artist={artistProps(true).artist} />).toJSON()
   expect(tree).toMatchSnapshot()
 })
 
-it('only shows name and artwork count when bio is omitted', () => {
+it("only shows name and artwork count when bio is omitted", () => {
   const props = artistProps(false)
   const artistComponent = new ArtistCard(props)
   const metadata = artistComponent.renderMetadata()
@@ -22,16 +22,16 @@ it('only shows name and artwork count when bio is omitted', () => {
 const artistProps = (hasBio: boolean) => {
   return {
     artist: {
-      __id: 'QXJ0aXN0Omp1YW4tZ3Jpcw==',
-      formatted_artworks_count: '14 works, 3 for sale',
-      formatted_nationality_and_birthday: hasBio ? 'Spanish, 1887–1927' : '',
-      href: '/artist/juan-gris',
-      id: 'juan-gris',
-      _id: '4d8b934a4eb68a1b2c0012a1',
+      __id: "QXJ0aXN0Omp1YW4tZ3Jpcw==",
+      formatted_artworks_count: "14 works, 3 for sale",
+      formatted_nationality_and_birthday: hasBio ? "Spanish, 1887–1927" : "",
+      href: "/artist/juan-gris",
+      id: "juan-gris",
+      _id: "4d8b934a4eb68a1b2c0012a1",
       image: {
-        url: 'https://d32dm0rphc51dk.cloudfront.net/wGMxL6TvlSORJzEHZsK9JA/large.jpg'
+        url: "https://d32dm0rphc51dk.cloudfront.net/wGMxL6TvlSORJzEHZsK9JA/large.jpg"
       },
-      name: 'Juan Gris'
+      name: "Juan Gris"
     }
   }
 }

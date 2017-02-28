@@ -1,13 +1,13 @@
-import 'react-native'
-import * as React from 'react'
-import { renderWithLayout } from '../../../tests/render_with_layout'
+import * as React from "react"
+import "react-native"
+import { renderWithLayout } from "../../../tests/render_with_layout"
 
-import RelatedArtists from '../'
+import RelatedArtists from "../"
 
-it('lays out correctly', () => {
+it("lays out correctly", () => {
   const artists = [ {
     __id: 0,
-    name: 'Sarah Scott',
+    name: "Sarah Scott",
     counts: {
       for_sale_artworks: 2,
       artworks: 4,

@@ -1,18 +1,18 @@
-import * as React from 'react'
-import { View, StyleSheet, Text, Image, Dimensions, TouchableWithoutFeedback } from 'react-native'
+import * as React from "react"
+import { Dimensions, Image, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native"
 
-import colors from '../../../data/colors'
-import Switchboard from '../../native_modules/switch_board'
+import colors from "../../../data/colors"
+import Switchboard from "../../native_modules/switch_board"
 
-const sideMargin = Dimensions.get('window').width > 700 ? 40 : 20
-const leftInnerMargin = Dimensions.get('window').width > 700 ? 20 : 15
+const sideMargin = Dimensions.get("window").width > 700 ? 40 : 20
+const leftInnerMargin = Dimensions.get("window").width > 700 ? 20 : 15
 
 export default class SearchBar extends React.Component<any, any> {
   render() {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View style={styles.container}>
-          <Image style={styles.searchIcon} source={require('../../../../images/SearchButton.png')}/>
+          <Image style={styles.searchIcon} source={require("../../../../images/SearchButton.png")}/>
           <Text style={styles.text}>Search for artists and artworks...</Text>
         </View>
       </TouchableWithoutFeedback>
@@ -20,7 +20,7 @@ export default class SearchBar extends React.Component<any, any> {
   }
 
   handleTap() {
-    Switchboard.presentModalViewController(this, '/search')
+    Switchboard.presentModalViewController(this, "/search")
   }
 }
 
@@ -33,17 +33,17 @@ interface Styles {
 const styles = StyleSheet.create<Styles>({
   container: {
     height: 50,
-    backgroundColor: colors['gray-light'],
-    borderColor: colors['gray-regular'],
+    backgroundColor: colors["gray-light"],
+    borderColor: colors["gray-regular"],
     borderWidth: 1,
     marginLeft: sideMargin,
     marginRight: sideMargin,
     marginTop: 10,
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
   },
   text: {
-    fontFamily: 'AGaramondPro-Regular',
+    fontFamily: "AGaramondPro-Regular",
     fontSize: 16,
     marginTop: 5
   },
@@ -54,4 +54,3 @@ const styles = StyleSheet.create<Styles>({
     width: 16
   },
 })
-

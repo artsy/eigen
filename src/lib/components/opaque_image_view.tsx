@@ -1,16 +1,16 @@
-import * as React from 'react'
+import * as React from "react"
 import {
-  processColor,
-  requireNativeComponent,
   ColorPropType,
   PixelRatio,
+  processColor,
+  requireNativeComponent,
   StyleSheet
-} from 'react-native'
+} from "react-native"
 
-import colors from '../../data/colors'
-import { LayoutEvent } from '../system/events'
+import colors from "../../data/colors"
+import { LayoutEvent } from "../system/events"
 
-const GeminiHost = 'd7hftxdivxxvm.cloudfront.net'
+const GeminiHost = "d7hftxdivxxvm.cloudfront.net"
 const ImageQuality = 85
 
 interface Props {
@@ -53,7 +53,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
   }
 
   static defaultProps: Props = {
-    placeholderBackgroundColor: colors['gray-regular'],
+    placeholderBackgroundColor: colors["gray-regular"],
   }
 
   constructor(props: Props) {
@@ -70,7 +70,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       if (style == null) { return }
 
       if (!(this.state.aspectRatio || (style.width && style.height))) {
-        console.error('[OpaqueImageView] Either an aspect ratio or specific dimensions should be specified.')
+        console.error("[OpaqueImageView] Either an aspect ratio or specific dimensions should be specified.")
       }
     }
   }
@@ -79,7 +79,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     const imageURL = this.props.imageURL
     if (imageURL) {
       // Either scale or crop, based on if an aspect ratio is available.
-      const type = this.state.aspectRatio ? 'fit' : 'fill'
+      const type = this.state.aspectRatio ? "fit" : "fill"
       const width = String(this.state.width)
       const height = String(this.state.height)
       return `https://${GeminiHost}/?resize_to=${type}&width=${width}&height=${height}&quality=${ImageQuality}&src=${encodeURIComponent(imageURL)}`
@@ -120,4 +120,4 @@ export default class OpaqueImageView extends React.Component<Props, State> {
   }
 }
 
-const NativeOpaqueImageView = requireNativeComponent('AROpaqueImageView', OpaqueImageView)
+const NativeOpaqueImageView = requireNativeComponent("AROpaqueImageView", OpaqueImageView)

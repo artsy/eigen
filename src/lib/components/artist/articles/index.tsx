@@ -1,9 +1,9 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { ScrollView, StyleSheet, View, ViewProperties } from 'react-native'
+import * as React from "react"
+import { ScrollView, StyleSheet, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 
-import SerifText from '../../text/serif'
-import Article from './article'
+import SerifText from "../../text/serif"
+import Article from "./article"
 
 interface Props extends ViewProperties {
   articles: any[]
@@ -18,7 +18,7 @@ class Articles extends React.Component<Props, {}> {
         <ScrollView horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     scrollsToTop={false}
-                    style={{ overflow: 'visible', marginBottom: 40 }}>
+                    style={{ overflow: "visible", marginBottom: 40 }}>
           { articles.map(article => <Article key={article.__id} article={article} style={styles.article} />) }
         </ScrollView>
       </View>
@@ -42,7 +42,7 @@ export default Relay.createContainer(Articles, {
     articles: () => Relay.QL`
       fragment on Article @relay(plural: true) {
           __id
-          ${Article.getFragment('article')}
+          ${Article.getFragment("article")}
       }
     `,
   }

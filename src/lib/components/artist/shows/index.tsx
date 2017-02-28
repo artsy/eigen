@@ -1,13 +1,13 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { View, StyleSheet, Dimensions, ViewProperties } from 'react-native'
+import * as React from "react"
+import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 
-import SerifText from '../../text/serif'
-import Separator from '../../separator'
-import VariableSizeShowsList from './variable_size_shows_list'
-import SmallShowsList from './small_list'
+import Separator from "../../separator"
+import SerifText from "../../text/serif"
+import SmallShowsList from "./small_list"
+import VariableSizeShowsList from "./variable_size_shows_list"
 
-const windowDimensions = Dimensions.get('window')
+const windowDimensions = Dimensions.get("window")
 
 interface Props extends ViewProperties {
   artist: {
@@ -42,7 +42,7 @@ class Shows extends React.Component<Props, any> {
   }
 
   pastShowsList() {
-    return windowDimensions.width > 700 ? <VariableSizeShowsList showSize={'medium'} shows={this.props.artist.past_shows} /> : <SmallShowsList shows={this.props.artist.past_shows} style={{marginTop: -8, marginBottom: 50}} />
+    return windowDimensions.width > 700 ? <VariableSizeShowsList showSize={"medium"} shows={this.props.artist.past_shows} /> : <SmallShowsList shows={this.props.artist.past_shows} style={{marginTop: -8, marginBottom: 50}} />
   }
 
   currentAndUpcomingList() {
@@ -51,7 +51,7 @@ class Shows extends React.Component<Props, any> {
       return (
         <View style={{ marginBottom: 20 }}>
           <SerifText style={styles.title}>Current & Upcoming Shows</SerifText>
-          <VariableSizeShowsList showSize={'large'} shows={shows} />
+          <VariableSizeShowsList showSize={"large"} shows={shows} />
         </View>
       )
     }
@@ -65,26 +65,26 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
   },
   title: {
     fontSize: 20,
-    textAlign: 'left',
+    textAlign: "left",
     marginLeft: 0
   },
 })
 
-const pastShowsFragment = windowDimensions.width > 700 ? VariableSizeShowsList.getFragment('shows') : SmallShowsList.getFragment('shows')
+const pastShowsFragment = windowDimensions.width > 700 ? VariableSizeShowsList.getFragment("shows") : SmallShowsList.getFragment("shows")
 
 export default Relay.createContainer(Shows, {
   fragments: {
     artist: () => Relay.QL`
       fragment on Artist {
         current_shows: partner_shows(status: "running") {
-          ${VariableSizeShowsList.getFragment('shows')}
+          ${VariableSizeShowsList.getFragment("shows")}
         }
         upcoming_shows: partner_shows(status: "upcoming") {
-          ${VariableSizeShowsList.getFragment('shows')}
+          ${VariableSizeShowsList.getFragment("shows")}
         }
         past_shows: partner_shows(status: "closed", size: 20) {
           ${pastShowsFragment}

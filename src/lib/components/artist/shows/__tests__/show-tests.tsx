@@ -1,26 +1,26 @@
-import 'react-native'
+import "react-native"
 
-import * as React from 'react'
-import * as renderer from 'react-test-renderer'
+import * as React from "react"
+import * as renderer from "react-test-renderer"
 
-import Show from '../show'
+import Show from "../show"
 
-it('renders properly', () => {
+it("renders properly", () => {
   const showProps = {
-    href: 'artsy.net/show',
+    href: "artsy.net/show",
     cover_image: {
-      url: 'artsy.net/image-url'
+      url: "artsy.net/image-url"
     },
-    kind: 'solo',
-    name: 'Expansive Exhibition',
-    exhibition_period: 'Jan 1 - March 1',
-    status_update: 'Closing in 2 days',
-    status: 'running',
+    kind: "solo",
+    name: "Expansive Exhibition",
+    exhibition_period: "Jan 1 - March 1",
+    status_update: "Closing in 2 days",
+    status: "running",
     partner: {
-      name: 'Gallery'
+      name: "Gallery"
     },
     location: {
-      city: 'Berlin'
+      city: "Berlin"
     }
   }
 

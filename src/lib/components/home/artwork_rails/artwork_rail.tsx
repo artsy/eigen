@@ -1,26 +1,26 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import * as _ from 'lodash'
-import { View, StyleSheet, TouchableHighlight, LayoutAnimation, Text, Image, Dimensions, ViewProperties } from 'react-native'
+import * as _ from "lodash"
+import * as React from "react"
+import { Dimensions, Image, LayoutAnimation, StyleSheet, Text, TouchableHighlight, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 
-import Spinner from '../../spinner'
-import Grid from '../../artwork_grids/generic_grid'
-import Header from './artwork_rail_header'
-import Separator from '../../separator'
-import colors from '../../../../data/colors'
-import SwitchBoard from '../../../native_modules/switch_board'
-import fragments from './relay_fragments'
+import colors from "../../../../data/colors"
+import SwitchBoard from "../../../native_modules/switch_board"
+import Grid from "../../artwork_grids/generic_grid"
+import Separator from "../../separator"
+import Spinner from "../../spinner"
+import Header from "./artwork_rail_header"
+import fragments from "./relay_fragments"
 
-const isPad = Dimensions.get('window').width > 700
+const isPad = Dimensions.get("window").width > 700
 
 const additionalContentRails = [
-  'followed_artists',
-  'saved_works',
-  'live_auctions',
-  'current_fairs',
-  'genes',
-  'generic_gene',
-  'followed_artist',
+  "followed_artists",
+  "saved_works",
+  "live_auctions",
+  "current_fairs",
+  "genes",
+  "generic_gene",
+  "followed_artist",
 ]
 
 interface Props extends ViewProperties, RelayProps {}
@@ -67,22 +67,22 @@ class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
 
     let url = null
     switch (key) {
-      case 'followed_artists':
-        url = '/works-for-you'
+      case "followed_artists":
+        url = "/works-for-you"
         break
-      case 'followed_artist':
-      case 'related_artists':
+      case "followed_artist":
+      case "related_artists":
         url = context && context.artist.href
         break
-      case 'saved_works':
-        url = '/favorites'
+      case "saved_works":
+        url = "/favorites"
         break
-      case 'generic_gene':
+      case "generic_gene":
         url = this.geneQueryLink(this.props.rail)
         break
-      case 'genes':
-      case 'current_fairs':
-      case 'live_auctions':
+      case "genes":
+      case "current_fairs":
+      case "live_auctions":
         url = context && context.href
         break
     }
@@ -91,16 +91,16 @@ class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
   }
 
   geneQueryLink(rail) {
-    if (!rail.context) { return '' }
+    if (!rail.context) { return "" }
     // Pull out any params, removing the first removing data ID
     // and any null values, turn that into a query string
-    const relatedKeys = Object.keys(_.omit(rail.params, ['__dataID__']))
+    const relatedKeys = Object.keys(_.omit(rail.params, ["__dataID__"]))
 
-    return rail.context && rail.context.href + '?' +
+    return rail.context && rail.context.href + "?" +
       relatedKeys.map(function(key) {
         if (!rail.params[key]) { return }
-        return encodeURIComponent(key) + '=' + encodeURIComponent(rail.params[key])
-      }).join('&')
+        return encodeURIComponent(key) + "=" + encodeURIComponent(rail.params[key])
+      }).join("&")
   }
 
   onGridLayout(event) {
@@ -147,21 +147,21 @@ class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
 
     if (this.hasAdditionalContent()) {
       return (
-        <TouchableHighlight style={styles.viewAllButton} onPress={this.handleViewAll} underlayColor={'gray'}>
+        <TouchableHighlight style={styles.viewAllButton} onPress={this.handleViewAll} underlayColor={"gray"}>
           <Text style={styles.viewAllText}>VIEW ALL</Text>
         </TouchableHighlight>
       )
     }
 
       // otherwise, use a spacer view
-      return <View style={{ height: 30 }} />
+    return <View style={{ height: 30 }} />
     }
 
   renderExpansionButton() {
     if (this.expandable() && !this.state.expanded) {
       return (
-        <TouchableHighlight style={styles.expansionButton} onPress={this.expand} underlayColor={'white'}>
-            <Image style={{height: 8, width: 15, alignSelf: 'center', resizeMode: 'center'}} source={require('../../../../../images/chevron.png')} />
+        <TouchableHighlight style={styles.expansionButton} onPress={this.expand} underlayColor={"white"}>
+            <Image style={{height: 8, width: 15, alignSelf: "center", resizeMode: "center"}} source={require("../../../../../images/chevron.png")} />
         </TouchableHighlight>
       )
     }
@@ -214,36 +214,36 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   gridContainer: {
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   expansionButton: {
     height: 40,
     width: 40,
-    backgroundColor: 'white',
-    borderColor: colors['gray-regular'],
+    backgroundColor: "white",
+    borderColor: colors["gray-regular"],
     borderWidth: 1,
     borderRadius: 30,
-    alignSelf: 'center',
+    alignSelf: "center",
     top: -20,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   viewAllButton: {
     width: 240,
     height: 40,
-    backgroundColor: 'black',
-    alignSelf: 'center',
-    justifyContent: 'center',
+    backgroundColor: "black",
+    alignSelf: "center",
+    justifyContent: "center",
     marginBottom: 30,
     marginTop: 30,
   },
   viewAllText: {
-    color: 'white',
-    textAlign: 'center',
+    color: "white",
+    textAlign: "center",
     fontSize: 14,
-    fontFamily: 'Avant Garde Gothic ITCW01Dm',
+    fontFamily: "Avant Garde Gothic ITCW01Dm",
   }
 })
 
@@ -255,7 +255,7 @@ export default Relay.createContainer(ArtworkRail, {
   fragments: {
     rail: () => Relay.QL`
       fragment on HomePageArtworkModule {
-        ${Header.getFragment('rail')}
+        ${Header.getFragment("rail")}
         key
         params {
           medium
@@ -269,7 +269,7 @@ export default Relay.createContainer(ArtworkRail, {
           ${fragments.followedArtistFragment}
         }
         results @include(if: $fetchContent) {
-          ${Grid.getFragment('artworks')}
+          ${Grid.getFragment("artworks")}
         }
       }
     `,

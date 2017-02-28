@@ -6,13 +6,13 @@
 //    - leting the artwork component do a layout pass and calculate its own height based on the column width.
 // 4. Update height of grid to encompass all items.
 
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { Dimensions, View, ScrollView, StyleSheet } from 'react-native'
+import * as React from "react"
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native"
+import * as Relay from "react-relay"
 
-import Artwork from './artwork'
-import Spinner from '../spinner'
-import { LayoutEvent } from '../../system/events'
+import { LayoutEvent } from "../../system/events"
+import Spinner from "../spinner"
+import Artwork from "./artwork"
 
 const PageSize = 10
 const PageEndThreshold = 1000
@@ -77,8 +77,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   _sentEndForContentLength: null | number
 
   static defaultProps = {
-    sectionDirection: 'column',
-    sectionCount: Dimensions.get('window').width > 700 ? 3 : 2,
+    sectionDirection: "column",
+    sectionCount: Dimensions.get("window").width > 700 ? 3 : 2,
     sectionMargin: 20,
     itemMargin: 20,
   }
@@ -117,16 +117,16 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   debugLog(query: string, response?: any, error?: any) {
 
     if (__DEV__ && (global as any).originalXMLHttpRequest !== undefined) {
-      const groupName = 'Infinite scroll request'
+      const groupName = "Infinite scroll request"
       const _console: any = console
-      _console.groupCollapsed(groupName, 'color:' + (response ? 'black' : 'red') + ';')
-      console.log('Query:\n', query)
+      _console.groupCollapsed(groupName, "color:" + (response ? "black" : "red") + ";")
+      console.log("Query:\n", query)
       if (response) {
-        console.log('Response:\n', response)
+        console.log("Response:\n", response)
       }
       console.groupEnd()
       if (error) {
-        console.error('Error:\n', error)
+        console.error("Error:\n", error)
       }
     }
   }
@@ -201,12 +201,12 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
         artworkComponents.push(
           <Artwork
             artwork={artwork}
-            key={'artwork-' + j + '-' + artwork.__id}
+            key={"artwork-" + j + "-" + artwork.__id}
           />)
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
         if (j < artworks.length - 1) {
           artworkComponents.push(
-            <View style={spacerStyle} key={'spacer-' + j + '-' + artwork.__id} accessibilityLabel="Spacer View" />
+            <View style={spacerStyle} key={"spacer-" + j + "-" + artwork.__id} accessibilityLabel="Spacer View" />
           )
         }
       }
@@ -217,7 +217,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
       }
 
       sections.push(
-        <View style={[styles.section, sectionSpecificStyle]} key={i} accessibilityLabel={'Section ' + i}>
+        <View style={[styles.section, sectionSpecificStyle]} key={i} accessibilityLabel={"Section " + i}>
           {artworkComponents}
         </View>
       )
@@ -265,11 +265,11 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   section: {
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   spinner: {
     marginTop: 20,
@@ -293,7 +293,7 @@ export default Relay.createContainer(InfiniteScrollArtworksGrid, {
               image {
                 id
               }
-              ${Artwork.getFragment('artwork')}
+              ${Artwork.getFragment("artwork")}
             }
           }
         }
@@ -322,9 +322,9 @@ interface ArtistRelayProps {
 const GeneInfiniteScrollContainer = Relay.createContainer(InfiniteScrollArtworksGrid, {
   initialVariables: {
     totalSize: PageSize,
-    medium: '*',
-    priceRange: '*-*',
-    sort: '-partner_updated_at',
+    medium: "*",
+    priceRange: "*-*",
+    sort: "-partner_updated_at",
   },
   fragments: {
     gene: () => Relay.QL`
@@ -338,7 +338,7 @@ const GeneInfiniteScrollContainer = Relay.createContainer(InfiniteScrollArtworks
               image {
                 id
               }
-              ${Artwork.getFragment('artwork')}
+              ${Artwork.getFragment("artwork")}
             }
           }
         }

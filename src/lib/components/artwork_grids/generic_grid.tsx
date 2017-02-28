@@ -1,17 +1,17 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { View, StyleSheet } from 'react-native'
-import { LayoutEvent } from '../../system/events'
-import Artwork from './artwork'
+import * as React from "react"
+import { StyleSheet, View } from "react-native"
+import * as Relay from "react-relay"
+import { LayoutEvent } from "../../system/events"
+import Artwork from "./artwork"
 
 class GenericArtworksGrid extends React.Component<any, any> {
   state: {
     sectionDimension: number,
     sectionCount: number,
-  };
+  }
 
   static defaultProps = {
-    sectionDirection: 'column',
+    sectionDirection: "column",
     sectionMargin: 20,
     itemMargin: 20
   }
@@ -35,8 +35,8 @@ class GenericArtworksGrid extends React.Component<any, any> {
     const sectionMargins = this.props.sectionMargin * (sectionCount - 1)
     const sectionDimension = (currentLayout.width - sectionMargins) / sectionCount
 
-    return { sectionCount: sectionCount,
-             sectionDimension: sectionDimension,
+    return { sectionCount,
+             sectionDimension,
           }
   }
 
@@ -98,7 +98,7 @@ class GenericArtworksGrid extends React.Component<any, any> {
         const artwork = artworks[j]
         artworkComponents.push(<Artwork artwork={artwork} key={artwork.__id} />)
         if (j < artworks.length - 1) {
-          artworkComponents.push(<View style={spacerStyle} key={'spacer-' + j} accessibilityLabel="Spacer View" />)
+          artworkComponents.push(<View style={spacerStyle} key={"spacer-" + j} accessibilityLabel="Spacer View" />)
         }
       }
 
@@ -107,7 +107,7 @@ class GenericArtworksGrid extends React.Component<any, any> {
           marginRight: (i === this.state.sectionCount - 1 ? 0 : this.props.sectionMargin),
       }
       sections.push(
-        <View style={[styles.section, sectionSpecificStlye]} key={i} accessibilityLabel={'Section ' + i}>
+        <View style={[styles.section, sectionSpecificStlye]} key={i} accessibilityLabel={"Section " + i}>
           {artworkComponents}
         </View>
       )
@@ -134,10 +134,10 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   section: {
-    flexDirection: 'column',
+    flexDirection: "column",
   },
 })
 
@@ -149,7 +149,7 @@ const GenericArtworksGridContainer = Relay.createContainer(GenericArtworksGrid, 
         image {
           aspect_ratio
         }
-        ${Artwork.getFragment('artwork')}
+        ${Artwork.getFragment("artwork")}
       }
     `,
   }

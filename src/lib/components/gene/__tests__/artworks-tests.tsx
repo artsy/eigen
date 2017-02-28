@@ -1,16 +1,16 @@
-import 'react-native'
+import "react-native"
 
-import * as React from 'react'
-import * as renderer from 'react-test-renderer'
+import * as React from "react"
+import * as renderer from "react-test-renderer"
 
-import Artworks from '../artworks'
+import Artworks from "../artworks"
 
-it('renders properly', () => {
+it("renders properly", () => {
   const props = {
     gene: {
-      id: 'deep-time',
+      id: "deep-time",
     },
-    medium: 'painting',
+    medium: "painting",
     queryState: null,
     queryForPage: null
   }

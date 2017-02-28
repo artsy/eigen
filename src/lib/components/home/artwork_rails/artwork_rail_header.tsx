@@ -1,25 +1,25 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { StyleSheet, Dimensions, View, Text, TouchableWithoutFeedback, NativeModules, ViewProperties } from 'react-native'
+import * as React from "react"
+import { Dimensions, NativeModules, StyleSheet, Text, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 const { ARTemporaryAPIModule } = NativeModules
 
-import Events from '../../../native_modules/events'
+import Events from "../../../native_modules/events"
 
-import SerifText from '../../text/serif'
-import colors from '../../../../data/colors'
-import Button from '../../buttons/inverted_button'
-import fragments from './relay_fragments'
-import SectionTitle from '../section_title'
+import colors from "../../../../data/colors"
+import Button from "../../buttons/inverted_button"
+import SerifText from "../../text/serif"
+import SectionTitle from "../section_title"
+import fragments from "./relay_fragments"
 
-const isPad = Dimensions.get('window').width > 700
+const isPad = Dimensions.get("window").width > 700
 
 const additionalContentRails = [
-  'followed_artists',
-  'saved_works',
-  'live_auctions',
-  'current_fairs',
-  'genes',
-  'generic_gene',
+  "followed_artists",
+  "saved_works",
+  "live_auctions",
+  "current_fairs",
+  "genes",
+  "generic_gene",
 ]
 
 interface Props extends ViewProperties, RelayProps {
@@ -33,7 +33,7 @@ interface State {
 class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, State> {
   constructor(props) {
     super(props)
-    this.state = { following: props.rail.key === 'followed_artist' }
+    this.state = { following: props.rail.key === "followed_artist" }
   }
 
   render() {
@@ -51,8 +51,8 @@ class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, St
   }
 
   followAnnotation() {
-    if (this.props.rail.key === 'related_artists') {
-      return <SerifText style={styles.followAnnotation}>{ 'Based on ' + this.props.rail.context.based_on.name }</SerifText>
+    if (this.props.rail.key === "related_artists") {
+      return <SerifText style={styles.followAnnotation}>{ "Based on " + this.props.rail.context.based_on.name }</SerifText>
     }
   }
 
@@ -63,11 +63,11 @@ class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, St
 
   actionButton() {
     if (this.hasAdditionalContent()) {
-      return <Text style={styles.viewAllButton}> { 'View All'.toUpperCase() } </Text>
-    } else if (this.props.rail.key === 'related_artists' || this.props.rail.key === 'followed_artist') {
+      return <Text style={styles.viewAllButton}> { "View All".toUpperCase() } </Text>
+    } else if (this.props.rail.key === "related_artists" || this.props.rail.key === "followed_artist") {
         return (
           <View style={styles.followButton}>
-            <Button text={this.state.following ? 'Following' : 'Follow'}
+            <Button text={this.state.following ? "Following" : "Follow"}
                     selected={this.state.following}
                     onPress={this.handleFollowChange} />
           </View>
@@ -82,13 +82,13 @@ class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, St
         console.error(error)
       } else {
         Events.postEvent(this, {
-          name: following ? 'Follow artist' : 'Unfollow artist',
+          name: following ? "Follow artist" : "Unfollow artist",
           artist_id: context.artist.id,
           artist_slug: context.artist.id,
-          source_screen: 'artist page',
+          source_screen: "artist page",
         })
       }
-      this.setState({ following: following })
+      this.setState({ following })
     })
   }
 }
@@ -111,26 +111,26 @@ const styles = StyleSheet.create<Styles>({
   title: {
     marginTop: 10,
     fontSize: isPad ? 30 : 26,
-    alignSelf: 'center',
-    textAlign: 'center',
+    alignSelf: "center",
+    textAlign: "center",
   },
   viewAllButton: {
-    fontFamily: 'Avant Garde Gothic ITCW01Dm',
+    fontFamily: "Avant Garde Gothic ITCW01Dm",
     fontSize: isPad ? 14 : 12,
-    color: colors['gray-medium'],
-    textAlign: 'center',
+    color: colors["gray-medium"],
+    textAlign: "center",
     letterSpacing: 0.5,
   },
   followButton: {
     marginTop: 10,
     marginBottom: 0,
-    alignSelf: 'center',
+    alignSelf: "center",
     height: 30,
     width: 90,
   },
   followAnnotation: {
-    fontStyle: 'italic',
-    alignSelf: 'center',
+    fontStyle: "italic",
+    alignSelf: "center",
     fontSize: 16,
   }
 })

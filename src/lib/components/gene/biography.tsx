@@ -1,10 +1,10 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { View, StyleSheet, Dimensions, ViewProperties } from 'react-native'
-import * as removeMarkdown from 'remove-markdown'
-import SerifText from '../text/serif'
+import * as React from "react"
+import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
+import * as removeMarkdown from "remove-markdown"
+import SerifText from "../text/serif"
 
-const sideMargin = Dimensions.get('window').width > 700 ? 50 : 0
+const sideMargin = Dimensions.get("window").width > 700 ? 50 : 0
 
 interface Props extends ReactNative.ViewProperties, RelayProps {
 }

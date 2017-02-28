@@ -1,15 +1,15 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
+import * as React from "react"
+import * as Relay from "react-relay"
 
-import { ListView, ListViewDataSource, ScrollView, RefreshControl, ViewProperties } from 'react-native'
+import { ListView, ListViewDataSource, RefreshControl, ScrollView, ViewProperties } from "react-native"
 
-import HeroUnits from '../components/home/hero_units'
-import ArtworkRail from '../components/home/artwork_rails/artwork_rail'
-import ArtistRail from '../components/home/artist_rails/artist_rail'
-import SearchBar from '../components/home/search_bar'
+import ArtistRail from "../components/home/artist_rails/artist_rail"
+import ArtworkRail from "../components/home/artwork_rails/artwork_rail"
+import HeroUnits from "../components/home/hero_units"
+import SearchBar from "../components/home/search_bar"
 
 type DataSourceRow = {
-  type: 'search_bar' | 'hero_units' | 'artwork' | 'artist',
+  type: "search_bar" | "hero_units" | "artwork" | "artist",
   data: any,
 }
 
@@ -27,19 +27,19 @@ export class Home extends React.Component<Props, State> {
     super(props)
 
     const rows: DataSourceRow[] = [
-      { type: 'search_bar', data: null },
-      { type: 'hero_units', data: this.props.home.hero_units },
+      { type: "search_bar", data: null },
+      { type: "hero_units", data: this.props.home.hero_units },
     ]
     const artwork_modules = this.props.home.artwork_modules
     const artist_modules = this.props.home.artist_modules && this.props.home.artist_modules.concat() // create a copy so we can mutate it (with `shift`)
 
     for (let i = 0; i < artwork_modules.length; i++) {
       const artwork_module = artwork_modules[i]
-      rows.push({ type: 'artwork', data: artwork_module })
+      rows.push({ type: "artwork", data: artwork_module })
       if ((i + 1) % 2 === 0) {
         const artist_module = artist_modules.shift()
         if (artist_module) {
-          rows.push({ type: 'artist', data: artist_module })
+          rows.push({ type: "artist", data: artist_module })
         }
       }
     }
@@ -85,17 +85,17 @@ export class Home extends React.Component<Props, State> {
                   // Offset row because we don’t store a reference to the search bar and hero units rows.
                   const registerModule = (module) => this.state.modules[row - 2] = module  // eslint-disable-line no-return-assign
                   switch (type) {
-                    case 'search_bar':
+                    case "search_bar":
                       return <SearchBar />
-                    case 'hero_units':
+                    case "hero_units":
                       return <HeroUnits hero_units={data} />
-                    case 'artwork':
+                    case "artwork":
                       return <ArtworkRail ref={registerModule} key={data.__id} rail={data} />
-                    case 'artist':
+                    case "artist":
                       return <ArtistRail ref={registerModule} key={data.__id} rail={data} />
                   }
                 }}
-                style={{ marginTop: 20, overflow: 'visible' }} />
+                style={{ marginTop: 20, overflow: "visible" }} />
     )
   }
 }
@@ -105,7 +105,7 @@ export default Relay.createContainer(Home, {
     home: () => Relay.QL`
       fragment on HomePage {
         hero_units(platform: MOBILE) {
-          ${HeroUnits.getFragment('hero_units')}
+          ${HeroUnits.getFragment("hero_units")}
         }
         artwork_modules(max_rails: -1,
                         max_followed_gene_rails: -1,
@@ -120,11 +120,11 @@ export default Relay.createContainer(Home, {
                           FOLLOWED_GENES,
                           GENERIC_GENES]) {
           __id
-          ${ArtworkRail.getFragment('rail')}
+          ${ArtworkRail.getFragment("rail")}
         }
         artist_modules {
           __id
-          ${ArtistRail.getFragment('rail')}
+          ${ArtistRail.getFragment("rail")}
         }
       }
     `,

@@ -1,30 +1,30 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { View, Dimensions, StyleSheet, ViewProperties } from 'react-native'
-import * as _ from 'lodash'
-import * as ParallaxScrollView from 'react-native-parallax-scroll-view'
+import * as _ from "lodash"
+import * as React from "react"
+import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
+import * as ParallaxScrollView from "react-native-parallax-scroll-view"
+import * as Relay from "react-relay"
 
-import WhiteButton from '../components/buttons/flat_white'
-import Separator from '../components/separator'
-import SerifText from '../components/text/serif'
+import WhiteButton from "../components/buttons/flat_white"
+import Separator from "../components/separator"
+import SerifText from "../components/text/serif"
 
-import About from '../components/gene/about'
-import Header from '../components/gene/header'
+import About from "../components/gene/about"
+import Header from "../components/gene/header"
 
 import {
   GeneInfiniteScrollContainer as Artworks
-} from '../components/artwork_grids/infinite_scroll_grid'
+} from "../components/artwork_grids/infinite_scroll_grid"
 
-import SwitchView, { SwitchEvent } from '../components/switch_view'
+import SwitchView, { SwitchEvent } from "../components/switch_view"
 
-import Refine from '../native_modules/refine_callback'
-import colors from '../../data/colors'
+import colors from "../../data/colors"
+import Refine from "../native_modules/refine_callback"
 
-const isPad = Dimensions.get('window').width > 700
+const isPad = Dimensions.get("window").width > 700
 
 const TABS = {
-  WORKS: 'WORKS',
-  ABOUT: 'ABOUT',
+  WORKS: "WORKS",
+  ABOUT: "ABOUT",
 }
 
 /** The title of the gene when scrolled, with margins */
@@ -75,7 +75,7 @@ export class Gene extends React.Component<Props, State> {
       selectedTabIndex: 0,
       showingStickyHeader: true,
 
-      sort: '-partner_updated_at',
+      sort: "-partner_updated_at",
       selectedMedium: this.props.medium,
       selectedPriceRange: this.props.price_range,
     }
@@ -130,7 +130,7 @@ export class Gene extends React.Component<Props, State> {
   /** Top of the Component */
   renderForeground = () => {
     return (
-      <View style={[{ backgroundColor:'white', paddingLeft: this.commonPadding, paddingRight: this.commonPadding }, styles.header] }>
+      <View style={[{ backgroundColor: "white", paddingLeft: this.commonPadding, paddingRight: this.commonPadding }, styles.header] }>
           <Header gene={this.props.gene} shortForm={false} />
           <SwitchView style={{ marginTop: 30 }}
             titles={this.availableTabs()}
@@ -158,7 +158,7 @@ export class Gene extends React.Component<Props, State> {
 
   refineTapped = (button) => {
     const initialSettings = {
-      sort: '-partner_updated_at',
+      sort: "-partner_updated_at",
       selectedMedium: this.props.medium,
       selectedPrice: this.props.price_range,
       aggregations: this.props.gene.filtered_artworks.aggregations
@@ -185,7 +185,7 @@ export class Gene extends React.Component<Props, State> {
         sort: newSettings.sort
       })
     }).catch( (error) => {
-      console.log('Errr : ', error)
+      console.log("Errr : ", error)
     })
   }
 
@@ -194,7 +194,7 @@ export class Gene extends React.Component<Props, State> {
     if (!this.showingArtworksSection) { return null }
     const commonPadding = this.commonPadding
     return (
-      <View style={{ paddingLeft: commonPadding, paddingRight: commonPadding, backgroundColor: 'white' }}>
+      <View style={{ paddingLeft: commonPadding, paddingRight: commonPadding, backgroundColor: "white" }}>
         <Header gene={this.props.gene} shortForm={true} />
       </View>
     )
@@ -206,18 +206,18 @@ export class Gene extends React.Component<Props, State> {
       return null
     }
     const topMargin = this.state.showingStickyHeader ? 0 : HeaderHeight
-    const separatorColor = this.state.showingStickyHeader ? 'white' : colors['gray-regular']
+    const separatorColor = this.state.showingStickyHeader ? "white" : colors["gray-regular"]
 
     const refineButtonWidth = 80
-    const maxLabelWidth = Dimensions.get('window').width - (this.commonPadding * 2) - refineButtonWidth - 10
+    const maxLabelWidth = Dimensions.get("window").width - (this.commonPadding * 2) - refineButtonWidth - 10
 
-    return (<View style={{ backgroundColor: 'white'}}>
+    return (<View style={{ backgroundColor: "white"}}>
         <Separator style={{marginTop: topMargin, backgroundColor: separatorColor}} />
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 26, marginTop:12, marginBottom:12, paddingLeft: this.commonPadding, paddingRight: this.commonPadding }} >
-          <SerifText style={{ fontStyle: 'italic', marginTop: 2, maxWidth: maxLabelWidth }}>{ this.artworkQuerySummaryString() }</SerifText>
+        <View style={{flexDirection: "row", justifyContent: "space-between", height: 26, marginTop: 12, marginBottom: 12, paddingLeft: this.commonPadding, paddingRight: this.commonPadding }} >
+          <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>{ this.artworkQuerySummaryString() }</SerifText>
           <WhiteButton text="REFINE" style={{ height: 26, width: refineButtonWidth, }} onPress={this.refineTapped}/>
         </View>
-        <Separator style={{ backgroundColor:separatorColor }}/>
+        <Separator style={{ backgroundColor: separatorColor }}/>
       </View>)
   }
 
@@ -243,10 +243,10 @@ export class Gene extends React.Component<Props, State> {
         renderBodyComponentHeader={this.renderStickyRefineSection}
 
         parallaxHeaderHeight={this.foregroundHeight}
-        parallaxHeaderContainerStyles={{marginBottom:stickyTopMargin}}
+        parallaxHeaderContainerStyles={{marginBottom: stickyTopMargin}}
         >
 
-        <View style={{ marginTop:20, paddingLeft: this.commonPadding, paddingRight: this.commonPadding }}>
+        <View style={{ marginTop: 20, paddingLeft: this.commonPadding, paddingRight: this.commonPadding }}>
             { this.renderSectionForTab() }
         </View>
 
@@ -260,27 +260,27 @@ export class Gene extends React.Component<Props, State> {
     const works = this.props.gene.filtered_artworks.total.toLocaleString()
     items.push(`${works} works`)
 
-    if (this.state.selectedMedium !== '*') { items.push( _.startCase(this.state.selectedMedium) ) }
-    if (this.state.selectedPriceRange !== '*-*') { items.push( this.priceRangeToHumanReadableString(this.state.selectedPriceRange) ) }
-    return items.join(' ・ ')
+    if (this.state.selectedMedium !== "*") { items.push( _.startCase(this.state.selectedMedium) ) }
+    if (this.state.selectedPriceRange !== "*-*") { items.push( this.priceRangeToHumanReadableString(this.state.selectedPriceRange) ) }
+    return items.join(" ・ ")
   }
 
   /** Converts a price string like 30.00-5000.00 to $30 - $5,000 */
   priceRangeToHumanReadableString = (range: string) => {
     const dollars = (value: string) => {
-      return parseInt(value, 10).toLocaleString('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits: 0})
+      return parseInt(value, 10).toLocaleString("en-US", {style: "currency", currency: "USD", minimumFractionDigits: 0})
     }
 
-    if (range === '*-*') { return '' }
-    if (range.includes('-*')) {
-      const below = dollars(range.split('-*')[0])
+    if (range === "*-*") { return "" }
+    if (range.includes("-*")) {
+      const below = dollars(range.split("-*")[0])
       return `Above ${below}`
     }
-    if (range.includes('*-')) {
-      const below = dollars(range.split('*-').pop())
+    if (range.includes("*-")) {
+      const below = dollars(range.split("*-").pop())
       return `Below ${below}`
     }
-    const [first, second] = range.split('-')
+    const [first, second] = range.split("-")
     return `${dollars(first)} - ${dollars(second)}`
   }
 }
@@ -293,11 +293,11 @@ interface Styles {
 const styles = StyleSheet.create<Styles>({
   header: {
     width: isPad ? 330 : null,
-    alignSelf: isPad ? 'center' : null,
+    alignSelf: isPad ? "center" : null,
   },
   stickyHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     height: 26,
     marginTop: 12,
     marginBottom: 12,
@@ -309,18 +309,18 @@ const styles = StyleSheet.create<Styles>({
 export default Relay.createContainer(Gene, {
   // fallbacks for when no medium/price_range is set
   initialVariables: {
-    medium: '*',
-    price_range: '*-*',
-    sort: '-partner_updated_at'
+    medium: "*",
+    price_range: "*-*",
+    sort: "-partner_updated_at"
   },
   fragments: {
     gene: () => Relay.QL`
       fragment on Gene {
         _id
         id
-        ${Header.getFragment('gene')}
-        ${About.getFragment('gene')}
-        ${Artworks.getFragment('gene')}
+        ${Header.getFragment("gene")}
+        ${About.getFragment("gene")}
+        ${Artworks.getFragment("gene")}
         filtered_artworks(medium: $medium, price_range: $price_range, sort: $sort, aggregations:[MEDIUM, PRICE_RANGE, TOTAL], page:1, for_sale: true){
           total
           aggregations {

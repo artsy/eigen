@@ -1,13 +1,13 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { StyleSheet, View, Text, TouchableWithoutFeedback, NativeModules, ViewProperties } from 'react-native'
+import * as React from "react"
+import { NativeModules, StyleSheet, Text, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 const { ARTemporaryAPIModule } = NativeModules
 
-import colors from '../../../../data/colors'
-import ImageView from '../../opaque_image_view'
-import SwitchBoard from '../../../native_modules/switch_board'
-import InvertedButton from '../../buttons/inverted_button'
-import Events from '../../../native_modules/events'
+import colors from "../../../../data/colors"
+import Events from "../../../native_modules/events"
+import SwitchBoard from "../../../native_modules/switch_board"
+import InvertedButton from "../../buttons/inverted_button"
+import ImageView from "../../opaque_image_view"
 
 type ArtistFollowHandlerResult = Promise<ReactNative.Animated.EndResult>
 export type ArtistFollowButtonStatusSetter = (status: boolean) => ArtistFollowHandlerResult
@@ -46,11 +46,11 @@ export class ArtistCard extends React.Component<Props, State> {
         this.setState({ processingChange: false })
       } else {
         Events.postEvent(this, {
-          name: 'Follow artist',
+          name: "Follow artist",
           artist_id: this.props.artist._id,
           artist_slug: this.props.artist.id,
           // TODO At some point, this component might be on other screens.
-          source_screen: 'home page',
+          source_screen: "home page",
         })
         this.props.onFollow(this.setFollowStatus.bind(this))
       }
@@ -112,7 +112,7 @@ export class ArtistCard extends React.Component<Props, State> {
               {this.renderMetadata()}
             </View>
             <View style={styles.followButton}>
-              <InvertedButton text={this.state.following ? 'Following' : 'Follow'}
+              <InvertedButton text={this.state.following ? "Following" : "Follow"}
                               selected={this.state.following}
                               onPress={this.handleFollowChange}
                               inProgress={this.state.processingChange}
@@ -147,9 +147,9 @@ const styles = StyleSheet.create<Styles>({
     width: 220,
     height: 280,
     marginLeft: 16,
-    borderColor: '#F3F3F3',
+    borderColor: "#F3F3F3",
     borderWidth: 1,
-    shadowColor: '#000000',
+    shadowColor: "#000000",
     shadowOpacity: 0.08,
     shadowRadius: 6,
     shadowOffset: {
@@ -172,25 +172,25 @@ const styles = StyleSheet.create<Styles>({
     marginRight: 12,
     height: 17,
     fontSize: 12,
-    textAlign: 'left',
-    fontFamily: 'Avant Garde Gothic ITCW01Dm',
+    textAlign: "left",
+    fontFamily: "Avant Garde Gothic ITCW01Dm",
   },
   serifText: {
     marginRight: 12,
     height: 17,
-    fontFamily: 'AGaramondPro-Regular',
+    fontFamily: "AGaramondPro-Regular",
     fontSize: 16,
-    color: '#000000'
+    color: "#000000"
   },
   serifWorksText: {
-    color: colors['gray-semibold'],
+    color: colors["gray-semibold"],
   },
   followButton: {
     marginTop: 12,
     marginLeft: 12,
     width: 196,
     height: 30,
-    position: 'absolute',
+    position: "absolute",
     bottom: 15
   }
 })

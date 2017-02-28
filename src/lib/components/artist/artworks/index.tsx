@@ -1,12 +1,12 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { View, StyleSheet, ViewProperties } from 'react-native'
+import * as React from "react"
+import { StyleSheet, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 
-import Separator from '../../separator'
-import SerifText from '../../text/serif'
-import ArtworksGrid from '../../artwork_grids/infinite_scroll_grid'
+import ArtworksGrid from "../../artwork_grids/infinite_scroll_grid"
+import Separator from "../../separator"
+import SerifText from "../../text/serif"
 
-import colors from '../../../../data/colors'
+import colors from "../../../../data/colors"
 
 const PageSize = 10
 
@@ -39,9 +39,9 @@ class Artworks extends React.Component<Props, State> {
     const other_count = this.props.artist.counts.artworks - for_sale_count
     if (for_sale_count === 0) {
       return this.renderSection({
-        title: 'Works',
+        title: "Works",
         count: other_count,
-        filter: 'IS_NOT_FOR_SALE',
+        filter: "IS_NOT_FOR_SALE",
         onComplete: null
       })
     } else {
@@ -51,9 +51,9 @@ class Artworks extends React.Component<Props, State> {
         otherWorks.push(<Separator style={styles.sectionSeparator} key="separator" />)
         otherWorks.push(
           this.renderSection({
-            title: 'Other Works',
+            title: "Other Works",
             count: other_count,
-            filter: 'IS_NOT_FOR_SALE',
+            filter: "IS_NOT_FOR_SALE",
             onComplete: null
           })
         )
@@ -61,9 +61,9 @@ class Artworks extends React.Component<Props, State> {
       return (
         <View style={styles.section}>
           {this.renderSection({
-            title: 'Works for Sale',
+            title: "Works for Sale",
             count: for_sale_count,
-            filter: 'IS_FOR_SALE',
+            filter: "IS_FOR_SALE",
             onComplete: () => {
               this.setState({ completedForSaleWorks: true })
             }
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   count: {
-    color: colors['gray-semibold'],
+    color: colors["gray-semibold"],
   },
   section: {
     marginBottom: 40,
@@ -118,8 +118,8 @@ export default Relay.createContainer(Artworks, {
           artworks
           for_sale_artworks
         }
-        ${ArtworksGrid.getFragment('artist', { filter: 'IS_FOR_SALE' })}
-        ${ArtworksGrid.getFragment('artist', { filter: 'IS_NOT_FOR_SALE' })}
+        ${ArtworksGrid.getFragment("artist", { filter: "IS_FOR_SALE" })}
+        ${ArtworksGrid.getFragment("artist", { filter: "IS_NOT_FOR_SALE" })}
       }
     `,
   }

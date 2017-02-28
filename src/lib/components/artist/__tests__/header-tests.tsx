@@ -1,19 +1,19 @@
-import { NativeModules } from 'react-native'
+import { NativeModules } from "react-native"
 
-import * as React from 'react'
-import * as renderer from 'react-test-renderer'
+import * as React from "react"
+import * as renderer from "react-test-renderer"
 
-import Header from '../header'
+import Header from "../header"
 
 beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { followStatusForArtist: jest.fn() }
 })
 
-it('renders properly', () => {
+it("renders properly", () => {
   const artist = {
-      name: 'Marcel Duchamp',
-      nationality: 'French',
-      birthday: '11/17/1992',
+      name: "Marcel Duchamp",
+      nationality: "French",
+      birthday: "11/17/1992",
       counts: {
         follows: 22,
       }

@@ -1,9 +1,9 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { StyleSheet, View, Text, TouchableWithoutFeedback, ViewProperties } from 'react-native'
+import * as React from "react"
+import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 
-import ImageView from '../../opaque_image_view'
-import SwitchBoard from '../../../native_modules/switch_board'
+import SwitchBoard from "../../../native_modules/switch_board"
+import ImageView from "../../opaque_image_view"
 
 interface Props extends ViewProperties {
   article: {
@@ -64,13 +64,13 @@ const styles = StyleSheet.create<Styles>({
   },
   sansSerifText: {
     fontSize: 10,
-    textAlign: 'left',
+    textAlign: "left",
     marginTop: 5,
-    fontFamily: 'Avant Garde Gothic ITCW01Dm',
-    color: 'grey',
+    fontFamily: "Avant Garde Gothic ITCW01Dm",
+    color: "grey",
   },
   serifText: {
-    fontFamily: 'AGaramondPro-Regular',
+    fontFamily: "AGaramondPro-Regular",
     fontSize: 16,
     marginTop: 10,
     width: 275,

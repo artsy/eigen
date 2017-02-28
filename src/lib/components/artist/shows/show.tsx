@@ -1,10 +1,10 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { View, TouchableWithoutFeedback, ViewProperties } from 'react-native'
+import * as React from "react"
+import { TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 
-import OpaqueImageView from '../../opaque_image_view'
-import ShowMetadata from './metadata'
-import SwitchBoard from '../../../native_modules/switch_board'
+import SwitchBoard from "../../../native_modules/switch_board"
+import OpaqueImageView from "../../opaque_image_view"
+import ShowMetadata from "./metadata"
 
 interface Props extends ViewProperties {
   show: {
@@ -51,7 +51,7 @@ export default Relay.createContainer(Show, {
         cover_image {
           url(version: "large")
         }
-        ${ShowMetadata.getFragment('show')}
+        ${ShowMetadata.getFragment("show")}
       }
     `
   }

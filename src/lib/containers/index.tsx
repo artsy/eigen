@@ -1,6 +1,6 @@
-import Artist from './artist'
-import Home from './home'
-import Gene from './gene'
+import Artist from "./artist"
+import Gene from "./gene"
+import Home from "./home"
 
 export default {
   Artist,

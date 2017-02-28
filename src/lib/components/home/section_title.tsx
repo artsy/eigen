@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import * as React from "react"
+import { StyleSheet, Text } from "react-native"
 
 export default class SectionTitle extends React.Component<any, any> {
   static propTypes = {
@@ -22,8 +22,8 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   headerText: {
-    fontFamily: 'AGaramondPro-Regular',
+    fontFamily: "AGaramondPro-Regular",
     fontSize: 30,
-    textAlign: 'center',
+    textAlign: "center",
   }
 })

@@ -1,11 +1,11 @@
-import * as React from 'react'
-import * as Relay from 'react-relay'
-import { NativeModules, StyleSheet, View, Dimensions, ViewProperties } from 'react-native'
+import * as React from "react"
+import { Dimensions, NativeModules, StyleSheet, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 
-import Events from '../../native_modules/events'
+import Events from "../../native_modules/events"
 
-import InvertedButton from '../buttons/inverted_button'
-import Headline from '../text/headline'
+import InvertedButton from "../buttons/inverted_button"
+import Headline from "../text/headline"
 
 interface HeaderProps extends ViewProperties, RelayProps {
   shortForm: boolean
@@ -23,10 +23,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   componentDidMount() {
     NativeModules.ARTemporaryAPIModule.followStatusForGene(this.props.gene._id, (error, following) => {
-      this.setState({ following: following })
+      this.setState({ following })
     })
   }
-
 
   render() {
     const gene = this.props.gene
@@ -48,13 +47,13 @@ class Header extends React.Component<HeaderProps, HeaderState> {
         console.error(error)
       } else {
         Events.postEvent(this, {
-          name: following ? 'Follow gene' : 'Unfollow gene',
+          name: following ? "Follow gene" : "Unfollow gene",
           gene_id: this.props.gene._id,
           gene_slug: this.props.gene.id,
-          source_screen: 'gene page',
+          source_screen: "gene page",
         })
       }
-      this.setState({ following: following })
+      this.setState({ following })
     })
     this.setState({ following: !this.state.following })
   }
@@ -64,7 +63,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     if (this.state.following !== null) {
       return (
         <View style={styles.followButton}>
-            <InvertedButton text={this.state.following ? 'Following' : 'Follow'}
+            <InvertedButton text={this.state.following ? "Following" : "Follow"}
                             selected={this.state.following}
                             onPress={this.handleFollowChange} />
         </View>
@@ -79,7 +78,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
 }
 
-const isPad = Dimensions.get('window').width > 700
+const isPad = Dimensions.get("window").width > 700
 
 interface Styles {
   header: ReactNative.TextStyle,
@@ -91,13 +90,13 @@ const styles = StyleSheet.create<Styles>({
   header: {
     marginTop: 15,
     height: 36,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingLeft: 40,
     paddingRight: 40,
   },
   headline: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: isPad ? 20 : 14
   },
   followButton: {

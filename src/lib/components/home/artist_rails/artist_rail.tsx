@@ -1,13 +1,13 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { Animated, Easing, ScrollView, StyleSheet, View, ViewProperties } from 'react-native'
+import * as React from "react"
+import { Animated, Easing, ScrollView, StyleSheet, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 
-import metaphysics from '../../../metaphysics'
+import metaphysics from "../../../metaphysics"
 
-import Spinner from '../../spinner'
-import Separator from '../../separator'
-import SectionTitle from '../section_title'
-import ArtistCard, { ArtistCardQuery, ArtistCardResponse, ArtistFollowButtonStatusSetter } from './artist_card'
+import Separator from "../../separator"
+import Spinner from "../../spinner"
+import SectionTitle from "../section_title"
+import ArtistCard, { ArtistCardQuery, ArtistCardResponse, ArtistFollowButtonStatusSetter } from "./artist_card"
 
 const Animation = {
   yDelta: 20,
@@ -142,7 +142,7 @@ class ArtistRail extends React.Component<Props, State> {
             // Adding a spacer view to have padding at the end of the rail
             // If you add marginRight, it will cut off the cards as you scroll through
           }
-          <View style={{width:15}} />
+          <View style={{width: 15}} />
         </ScrollView>
       )
     } else {
@@ -152,12 +152,12 @@ class ArtistRail extends React.Component<Props, State> {
 
   title() {
     switch (this.props.rail.key) {
-      case 'TRENDING':
-        return 'Artists to Follow: Trending'
-      case 'SUGGESTED':
-        return 'Artists to Follow: Recommended for You'
-      case 'POPULAR':
-        return 'Artists to Follow: Popular'
+      case "TRENDING":
+        return "Artists to Follow: Trending"
+      case "SUGGESTED":
+        return "Artists to Follow: Recommended for You"
+      case "POPULAR":
+        return "Artists to Follow: Popular"
     }
   }
 
@@ -184,7 +184,7 @@ interface Styles {
 const styles = StyleSheet.create<Styles>({
   cardContainer: {
     flexGrow: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 10,
     minHeight: 330,
  },
@@ -241,7 +241,7 @@ export default Relay.createContainer(ArtistRail, {
         results @include(if: $fetchContent) {
           _id
           __id
-          ${ArtistCard.getFragment('artist')}
+          ${ArtistCard.getFragment("artist")}
         }
       }
     `,

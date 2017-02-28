@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { ColorPropType, processColor, requireNativeComponent, View, StyleSheet, ViewProperties } from 'react-native'
+import * as React from "react"
+import { ColorPropType, processColor, requireNativeComponent, StyleSheet, View, ViewProperties } from "react-native"
 
 interface SpinnerProps extends ViewProperties {
   spinnerColor?: string
@@ -21,8 +21,8 @@ export default class Spinner extends React.Component<SpinnerProps, any> {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   spinner: {
     width: 22,
@@ -30,4 +30,4 @@ const styles = StyleSheet.create({
   }
 })
 
-const NativeSpinner: React.ComponentClass<any> = requireNativeComponent('ARSpinner', Spinner)
+const NativeSpinner: React.ComponentClass<any> = requireNativeComponent("ARSpinner", Spinner)

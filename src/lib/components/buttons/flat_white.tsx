@@ -1,8 +1,8 @@
-import * as React from 'react'
-import { Animated, StyleSheet, TouchableHighlight, View, ViewProperties } from 'react-native'
+import * as React from "react"
+import { Animated, StyleSheet, TouchableHighlight, View, ViewProperties } from "react-native"
 
-import Headline from '../text/headline'
-import colors from '../../../data/colors'
+import colors from "../../../data/colors"
+import Headline from "../text/headline"
 
 const AnimationDuration = 250
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableHighlight)
@@ -52,10 +52,10 @@ export default class WhiteButton extends React.Component<Props, State> {
   render(): JSX.Element {
     const backgroundColor = this.state.backgroundColor.interpolate({
       inputRange: [0, 1],
-      outputRange: ['white', 'black']
+      outputRange: ["white", "black"]
     })
     const styling = {
-      underlayColor: (this.props.selected ? 'black' : colors['purple-regular']),
+      underlayColor: (this.props.selected ? "black" : colors["purple-regular"]),
       style: [styles.button, { backgroundColor }, this.props.style],
     }
     let content = <AnimatedHeadline style={[styles.text, { opacity: this.state.textOpacity }]}>{this.props.text}</AnimatedHeadline>
@@ -70,13 +70,13 @@ export default class WhiteButton extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
   button: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: colors['gray-regular'],
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: colors["gray-regular"],
     borderWidth: 1
   },
   text: {
-    fontFamily: 'AGaramondPro-Regular',
-    color: 'black'
+    fontFamily: "AGaramondPro-Regular",
+    color: "black"
   }
 })

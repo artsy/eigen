@@ -1,13 +1,12 @@
-import * as Relay from 'react-relay'
-import { NativeModules } from 'react-native'
+import { NativeModules } from "react-native"
+import * as Relay from "react-relay"
 const { Emission } = NativeModules
-
 
 let metaphysicsURL
 if (Emission && Emission.useStagingEnvironment) {
-  metaphysicsURL = 'https://metaphysics-staging.artsy.net'
+  metaphysicsURL = "https://metaphysics-staging.artsy.net"
 } else {
-  metaphysicsURL = 'https://metaphysics-production.artsy.net'
+  metaphysicsURL = "https://metaphysics-production.artsy.net"
 }
 
 export { metaphysicsURL }
@@ -16,8 +15,8 @@ if (Emission) {
   Relay.injectNetworkLayer(
     new Relay.DefaultNetworkLayer(metaphysicsURL, {
       headers: {
-        'X-USER-ID': Emission.userID,
-        'X-ACCESS-TOKEN': Emission.authenticationToken,
+        "X-USER-ID": Emission.userID,
+        "X-ACCESS-TOKEN": Emission.authenticationToken,
       }
     })
   )
@@ -34,5 +33,5 @@ if (Emission) {
 //
 if (__DEV__ && global.originalXMLHttpRequest !== undefined) {
   global.XMLHttpRequest = global.originalXMLHttpRequest
-  require('react-relay/lib/RelayNetworkDebug').init()
+  require("react-relay/lib/RelayNetworkDebug").init()
 }

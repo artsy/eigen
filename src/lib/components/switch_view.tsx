@@ -1,10 +1,10 @@
-import * as React from 'react'
+import * as React from "react"
 import {
   NativeSyntheticEvent,
   NativeTouchEvent,
   requireNativeComponent,
   ViewProperties
-} from 'react-native'
+} from "react-native"
 
 export interface SwitchEvent extends NativeSyntheticEvent<NativeTouchEvent & { selectedIndex: number }> {
 }
@@ -29,4 +29,4 @@ export default class SwitchView extends React.Component<Props, any> {
   }
 }
 
-const NativeSwitchView: React.ComponentClass<any> = requireNativeComponent('ARSwitchView', SwitchView)
+const NativeSwitchView: React.ComponentClass<any> = requireNativeComponent("ARSwitchView", SwitchView)

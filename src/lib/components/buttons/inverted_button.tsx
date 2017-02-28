@@ -1,9 +1,9 @@
-import * as React from 'react'
-import { Animated, StyleSheet, TouchableHighlight, View } from 'react-native'
+import * as React from "react"
+import { Animated, StyleSheet, TouchableHighlight, View } from "react-native"
 
-import Headline from '../text/headline'
-import colors from '../../../data/colors'
-import Spinner from '../spinner'
+import colors from "../../../data/colors"
+import Spinner from "../spinner"
+import Headline from "../text/headline"
 
 const AnimationDuration = 250
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableHighlight)
@@ -49,15 +49,15 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
   render() {
     const backgroundColor = this.state.backgroundColor.interpolate({
       inputRange: [0, 1],
-      outputRange: (['black', colors['purple-regular']])
+      outputRange: (["black", colors["purple-regular"]])
     })
     const styling = {
-      underlayColor: (this.props.selected ? 'black' : colors['purple-regular']),
+      underlayColor: (this.props.selected ? "black" : colors["purple-regular"]),
       style: [styles.button, { backgroundColor }],
     }
     let content: JSX.Element = null
     if (this.props.inProgress) {
-      content = <Spinner spinnerColor="white" style={{ backgroundColor: 'transparent' }} />
+      content = <Spinner spinnerColor="white" style={{ backgroundColor: "transparent" }} />
     } else {
       content = <AnimatedHeadline style={[styles.text, { opacity: this.state.textOpacity }]}>{this.props.text}</AnimatedHeadline>
     }
@@ -72,10 +72,10 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
 const styles = StyleSheet.create({
   button: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   text: {
-    color: 'white'
+    color: "white"
   }
 })

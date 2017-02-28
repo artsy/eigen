@@ -1,11 +1,11 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { View, StyleSheet } from 'react-native'
+import * as React from "react"
+import { StyleSheet, View } from "react-native"
+import * as Relay from "react-relay"
 
-import Biography from './biography'
+import Biography from "./biography"
 
-import RelatedArtists from '../related_artists'
-import Separator from '../separator'
+import RelatedArtists from "../related_artists"
+import Separator from "../separator"
 
 class About extends React.Component<RelayPropsWorkaround, any> {
   render() {
@@ -47,9 +47,9 @@ export default Relay.createContainer(About, {
   fragments: {
     gene: () => Relay.QL`
       fragment on Gene {
-        ${Biography.getFragment('gene')}
+        ${Biography.getFragment("gene")}
         trending_artists {
-          ${RelatedArtists.getFragment('artists')}
+          ${RelatedArtists.getFragment("artists")}
         }
       }
     `,

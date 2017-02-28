@@ -1,16 +1,16 @@
-import { NativeModules } from 'react-native'
+import { NativeModules } from "react-native"
 const Emission = NativeModules.Emission || {}
 declare const fetch: ReactNative.fetch
 
-import { metaphysicsURL } from './relay/config'
-import { NetworkError } from './system/errors'
+import { metaphysicsURL } from "./relay/config"
+import { NetworkError } from "./system/errors"
 
 export default function metaphysics<T>(query: string): Promise<T> {
-  return fetch(metaphysicsURL, { method: 'POST',
+  return fetch(metaphysicsURL, { method: "POST",
                           headers: {
-                            'Content-Type': 'application/json',
-                            'X-USER-ID': Emission.userID,
-                            'X-ACCESS-TOKEN': Emission.authenticationToken,
+                            "Content-Type": "application/json",
+                            "X-USER-ID": Emission.userID,
+                            "X-ACCESS-TOKEN": Emission.authenticationToken,
                           },
                           body: JSON.stringify({ query }) })
     .then((response) => {

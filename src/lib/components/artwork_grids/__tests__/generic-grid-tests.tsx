@@ -1,10 +1,10 @@
-import 'react-native'
-import * as React from 'react'
-import { renderWithLayout } from '../../../tests/render_with_layout'
+import * as React from "react"
+import "react-native"
+import { renderWithLayout } from "../../../tests/render_with_layout"
 
-import GenericArtworksGrid from '../generic_grid'
+import GenericArtworksGrid from "../generic_grid"
 
-it('renders properly', () => {
+it("renders properly", () => {
   const artworks = [ artwork(), artwork(), artwork() ]
 
   const layout = { width: 768 }
@@ -13,25 +13,25 @@ it('renders properly', () => {
   expect(grid).toMatchSnapshot()
 })
 
-var artwork = () => {
+let artwork = () => {
   return {
-    __id: 'artwork-long-title',
-    title: 'DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM',
-    date: '2012',
+    __id: "artwork-long-title",
+    title: "DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM",
+    date: "2012",
     sale_message: null,
     is_in_auction: false,
     image: {
-      url: 'artsy.net/image-url',
+      url: "artsy.net/image-url",
       aspect_ratio: 2.18
     },
     artists: [
       {
-        name: 'Guerrilla Girls'
+        name: "Guerrilla Girls"
       }
     ],
     partner: {
-      name: 'Whitechapel Gallery'
+      name: "Whitechapel Gallery"
     },
-    href: '/artwork/guerrilla-girls-do-women-still-have-to-be-naked-to-get-into-the-met-museum'
+    href: "/artwork/guerrilla-girls-do-women-still-have-to-be-naked-to-get-into-the-met-museum"
   }
 }

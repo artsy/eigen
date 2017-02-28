@@ -1,22 +1,22 @@
-import 'react-native'
+import "react-native"
 
-import * as React from 'react'
-import * as renderer from 'react-test-renderer'
+import * as React from "react"
+import * as renderer from "react-test-renderer"
 
-import Metadata from '../metadata'
+import Metadata from "../metadata"
 
-it('renders properly', () => {
+it("renders properly", () => {
   const show = {
-    kind: 'solo',
-    name: 'Expansive Exhibition',
-    exhibition_period: 'Jan 1 - March 1',
-    status_update: 'Closing in 2 days',
-    status: 'running',
+    kind: "solo",
+    name: "Expansive Exhibition",
+    exhibition_period: "Jan 1 - March 1",
+    status_update: "Closing in 2 days",
+    status: "running",
     partner: {
-      name: 'Gallery'
+      name: "Gallery"
     },
     location: {
-      city: 'Berlin'
+      city: "Berlin"
     }
   }
   const metadata = renderer.create(<Metadata show={show} />).toJSON()

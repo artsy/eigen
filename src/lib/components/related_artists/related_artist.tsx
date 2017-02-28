@@ -1,10 +1,10 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native'
+import * as React from "react"
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native"
+import * as Relay from "react-relay"
 
-import colors from '../../../data/colors'
-import ImageView from '../opaque_image_view'
-import SwitchBoard from '../../native_modules/switch_board'
+import colors from "../../../data/colors"
+import SwitchBoard from "../../native_modules/switch_board"
+import ImageView from "../opaque_image_view"
 
 class RelatedArtist extends React.Component<any, any> {
   handleTap() {
@@ -28,17 +28,17 @@ class RelatedArtist extends React.Component<any, any> {
 
   artworksString(counts) {
     if (counts.totalWorks <= 0) {
-      return ''
+      return ""
     }
 
-    const totalWorks = counts.artworks ? counts.artworks + (counts.artworks > 1 ? ' works' : ' work') : null
+    const totalWorks = counts.artworks ? counts.artworks + (counts.artworks > 1 ? " works" : " work") : null
     if (totalWorks && counts.for_sale_artworks === counts.artworks) {
-      return totalWorks + ' for sale'
+      return totalWorks + " for sale"
     }
 
-    const forSale = counts.for_sale_artworks ? counts.for_sale_artworks + ' for sale' : null
+    const forSale = counts.for_sale_artworks ? counts.for_sale_artworks + " for sale" : null
     if (forSale && totalWorks) {
-      return totalWorks + ', ' + forSale
+      return totalWorks + ", " + forSale
     }
     return forSale ? forSale : totalWorks
   }
@@ -52,15 +52,15 @@ interface Styles {
 const styles = StyleSheet.create<Styles>({
   sansSerifText: {
     fontSize: 12,
-    textAlign: 'left',
+    textAlign: "left",
     marginTop: 10,
-    fontFamily: 'Avant Garde Gothic ITCW01Dm',
+    fontFamily: "Avant Garde Gothic ITCW01Dm",
   },
   serifText: {
-    fontFamily: 'AGaramondPro-Regular',
+    fontFamily: "AGaramondPro-Regular",
     fontSize: 16,
     marginTop: 5,
-    color: colors['gray-semibold']
+    color: colors["gray-semibold"]
   }
 })
 

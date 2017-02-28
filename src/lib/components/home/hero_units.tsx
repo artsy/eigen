@@ -1,12 +1,12 @@
-import * as React from 'react'
-import * as Relay from 'react-relay'
-import { ScrollView, View, TouchableHighlight, ViewProperties } from 'react-native'
+import * as React from "react"
+import { ScrollView, TouchableHighlight, View, ViewProperties } from "react-native"
+import * as Relay from "react-relay"
 
-import Headline from '../text/headline'
-import OpaqueImageView from '../opaque_image_view'
-import SwitchBoard from '../../native_modules/switch_board'
+import SwitchBoard from "../../native_modules/switch_board"
+import OpaqueImageView from "../opaque_image_view"
+import Headline from "../text/headline"
 
-import { LayoutEvent } from '../../system/events'
+import { LayoutEvent } from "../../system/events"
 
 interface Props extends ViewProperties, RelayProps {
 }
@@ -47,13 +47,13 @@ class HeroUnits extends React.Component<Props, State> {
                           onPress={() => this.handlePress(hero_unit)}
                           underlayColor="black"
                           style={{ marginLeft: 5, marginRight: 5, marginTop: 20, width, height }}>
-        <View style={{ flex: 1, justifyContent: 'center' }}>
+        <View style={{ flex: 1, justifyContent: "center" }}>
           <OpaqueImageView imageURL={width > 600 ? hero_unit.wide_image_url : hero_unit.narrow_image_url}
-                              style={{ position: 'absolute', top: 0, width, height }} />
-          <View style={{ position: 'absolute', top: 0, width, height, backgroundColor: 'black', opacity: 0.3 }} />
-          <View style={{ marginLeft: margin, backgroundColor: 'transparent' }}>
-            <Headline style={{ color: 'white', fontSize: 12 }}>{hero_unit.heading}</Headline>
-            <Headline style={{ color: 'white', fontSize: this.state.fontSize }}>{hero_unit.title}</Headline>
+                              style={{ position: "absolute", top: 0, width, height }} />
+          <View style={{ position: "absolute", top: 0, width, height, backgroundColor: "black", opacity: 0.3 }} />
+          <View style={{ marginLeft: margin, backgroundColor: "transparent" }}>
+            <Headline style={{ color: "white", fontSize: 12 }}>{hero_unit.heading}</Headline>
+            <Headline style={{ color: "white", fontSize: this.state.fontSize }}>{hero_unit.title}</Headline>
           </View>
         </View>
       </TouchableHighlight>
@@ -65,7 +65,7 @@ class HeroUnits extends React.Component<Props, State> {
     if (width && height && margin) {
       const imageWidth = width - (margin * 2)
       return (
-        <ScrollView style={{ overflow: 'visible', marginLeft: margin - 5, marginRight: margin - 5 }}
+        <ScrollView style={{ overflow: "visible", marginLeft: margin - 5, marginRight: margin - 5 }}
                     horizontal={true}
                     pagingEnabled={true}
                     showsHorizontalScrollIndicator={false}>

@@ -1,7 +1,7 @@
-import * as React from 'react'
-import { StyleSheet, View, ViewProperties } from 'react-native'
+import * as React from "react"
+import { StyleSheet, View, ViewProperties } from "react-native"
 
-import SwitchView, { SwitchEvent } from './switch_view'
+import SwitchView, { SwitchEvent } from "./switch_view"
 
 interface Props extends ViewProperties {
   titles: string[]

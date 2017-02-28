@@ -1,26 +1,26 @@
-import 'react-native'
+import "react-native"
 
-import * as React from 'react'
-import * as renderer from 'react-test-renderer'
+import * as React from "react"
+import * as renderer from "react-test-renderer"
 
-import Articles from '../articles'
+import Articles from "../articles"
 
-it('renders properly', () => {
+it("renders properly", () => {
   const articles = [ article(1), article(2) ]
   const articlesComponent = renderer.create(<Articles articles={articles} />).toJSON()
   expect(articlesComponent).toMatchSnapshot()
 })
 
-var article = (n) => {
+let article = (n) => {
   return {
     __id: `artwork-john-berger-${n}`,
-    thumbnail_title: 'Something Happened',
-      href: 'artsy.net/something-happened',
+    thumbnail_title: "Something Happened",
+      href: "artsy.net/something-happened",
       author: {
-        name: 'John Berger',
+        name: "John Berger",
       },
       thumbnail_image: {
-        url: 'artsy.net/image-url'
+        url: "artsy.net/image-url"
       },
   }
 }

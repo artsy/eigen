@@ -1,4 +1,4 @@
-import { findNodeHandle, NativeModules } from 'react-native'
+import { findNodeHandle, NativeModules } from "react-native"
 const { ARSwitchBoardModule } = NativeModules
 
 function presentNavigationViewController(component: React.Component<any, any>, route: string) {

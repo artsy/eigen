@@ -1,12 +1,12 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { Image, View, StyleSheet, TouchableWithoutFeedback } from 'react-native'
-import { map } from 'lodash'
+import { map } from "lodash"
+import * as React from "react"
+import { Image, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
+import * as Relay from "react-relay"
 
-import ImageView from '../opaque_image_view'
-import SerifText from '../text/serif'
-import colors from '../../../data/colors'
-import SwitchBoard from '../../native_modules/switch_board'
+import colors from "../../../data/colors"
+import SwitchBoard from "../../native_modules/switch_board"
+import ImageView from "../opaque_image_view"
+import SerifText from "../text/serif"
 
 class Artwork extends React.Component<RelayProps, any> {
   handleTap() {
@@ -33,7 +33,7 @@ class Artwork extends React.Component<RelayProps, any> {
     if (artists && artists.length > 0) {
       return (
         <SerifText style={[styles.text, styles.artist]}>
-          {map(artists, 'name').join(', ')}
+          {map(artists, "name").join(", ")}
         </SerifText>
       )
     } else {
@@ -47,7 +47,7 @@ class Artwork extends React.Component<RelayProps, any> {
       return (
         <SerifText style={styles.text}>
           <SerifText style={[styles.text, styles.title]}>{ artwork.title }</SerifText>
-          { artwork.date ? (', ' + artwork.date) : '' }
+          { artwork.date ? (", " + artwork.date) : "" }
         </SerifText>
       )
     } else {
@@ -59,8 +59,8 @@ class Artwork extends React.Component<RelayProps, any> {
     const artwork = this.props.artwork
     if (artwork.is_in_auction) {
       return (
-        <View style={{flexDirection: 'row'}}>
-          <Image style={{ marginRight: 4 }} source={require('../../../../images/paddle.png')} />
+        <View style={{flexDirection: "row"}}>
+          <Image style={{ marginRight: 4 }} source={require("../../../../images/paddle.png")} />
           <SerifText style={styles.text}>Bid now</SerifText>
         </View>
       )
@@ -76,13 +76,13 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 12,
-    color: colors['gray-semibold'],
+    color: colors["gray-semibold"],
   },
   artist: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   title: {
-    fontStyle: 'italic',
+    fontStyle: "italic",
   }
 })
 

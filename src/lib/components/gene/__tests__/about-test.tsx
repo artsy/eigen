@@ -1,12 +1,12 @@
-import 'react-native'
-import * as React from 'react'
+import * as React from "react"
+import "react-native"
 
 // Note: test renderer must be required after react-native.
-import * as renderer from 'react-test-renderer'
+import * as renderer from "react-test-renderer"
 
-import About from '../about'
+import About from "../about"
 
-it('shows trending artists correctly', () => {
+it("shows trending artists correctly", () => {
   const gene = {
     description: `Deep time refers to the concept of an expansive time that stretches far beyond human history to
                   include the approximately 4.5 billion-year geological history of Earth and the estimated 13.8
@@ -16,27 +16,27 @@ it('shows trending artists correctly', () => {
                   which use long-exposure photography to capture a sense of expanded time.`,
     trending_artists: [
       {
-        __id: 'artist-lita-albuquerque',
-        href: '/artist/lita-albuquerque',
-        name: 'Lita Albuquerque',
+        __id: "artist-lita-albuquerque",
+        href: "/artist/lita-albuquerque",
+        name: "Lita Albuquerque",
         counts: {
           for_sale_artworks: 30,
           artworks: 36
         },
         image: {
-          url: 'cloudfront.net/some-url'
+          url: "cloudfront.net/some-url"
         }
       },
       {
-        __id: 'artist-doug-argue',
-        href: '/artist/doug-argue',
-        name: 'Doug Argue',
+        __id: "artist-doug-argue",
+        href: "/artist/doug-argue",
+        name: "Doug Argue",
         counts: {
           for_sale_artworks: 24,
           artworks: 31
         },
         image: {
-          url: 'cloudfront.net/some-url'
+          url: "cloudfront.net/some-url"
         }
 
       }
