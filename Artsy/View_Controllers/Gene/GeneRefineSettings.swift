@@ -1,22 +1,44 @@
 import UIKit
 import SwiftyJSON
 
+/// As the Refine setting uses a lot of Swift-specific features,
+/// we need something to coordinate between the rest of our app
+/// and the refine setting VC.
+
+class RefineSwiftCoordinator : NSObject {
+    static func showRefineSettingForGeneSettings(_ viewController: UIViewController, initial: [String: AnyObject], current: [String: AnyObject], completion: @escaping (_ newRefineSettings: [String: AnyObject]?) -> ()) {
+        guard let initialSettings = GeneRefineSettings.refinementFromAggregationJSON(initial, initial:true) else { return completion(nil) }
+        guard let currentSettings = GeneRefineSettings.refinementFromAggregationJSON(current, initial:false) else { return completion(nil) }
+
+        let optionsVC = RefinementOptionsViewController(defaultSettings: initialSettings, initialSettings: currentSettings, currencySymbol: "$", userDidCancelClosure: { (optionsVC) in
+            completion(nil)
+                viewController.dismiss(animated: true, completion: nil)
+
+            }) { (newSettings) in
+                                completion(newSettings.toJSON())
+                viewController.dismiss(animated: true, completion: nil)
+
+        }
+        viewController.present(optionsVC, animated: true, completion: nil)
+    }
+}
+
 enum GeneSortingOrder: String {
-    case RecentlyAdded = "Recently Added"
+    case RecentlyUpdated = "Recently Updated"
     case LeastExpensive = "Least Expensive"
     case MostExpensive = "Most Expensive"
 
     static func allValues() -> [GeneSortingOrder] {
-        return [RecentlyAdded, LeastExpensive, MostExpensive]
+        return [RecentlyUpdated, LeastExpensive, MostExpensive]
     }
 
     static func fromID(_ id: String) -> GeneSortingOrder? {
         switch id {
-        case "-year":
-            return .RecentlyAdded
-        case "-prices":
-            return .LeastExpensive
+        case "-partner_updated_at":
+            return .RecentlyUpdated
         case "prices":
+            return .LeastExpensive
+        case "-prices":
             return .MostExpensive
         default:
             return nil
@@ -25,12 +47,12 @@ enum GeneSortingOrder: String {
 
     func toID() -> String {
         switch self {
-        case .RecentlyAdded:
-            return "-year"
+        case .RecentlyUpdated:
+            return "-partner_updated_at"
         case .LeastExpensive:
-            return "-prices"
-        case .MostExpensive:
             return "prices"
+        case .MostExpensive:
+            return "-prices"
         }
     }
 }
@@ -38,6 +60,7 @@ enum GeneSortingOrder: String {
 struct Medium {
     let id: String
     let name: String
+    let count: Int
 }
 
 extension Medium: Equatable {}
@@ -48,10 +71,11 @@ func == (lhs: Medium, rhs: Medium) -> Bool {
 
 struct Price {
     let id: String
-    let name: String
 
+    /// Generates a cents based price for the Refine settings
     func maxPrice() -> Int {
         if id == "*-*" {
+            // There will always be a from star to star
             return 0
         } else if id.hasSuffix("-*") {
             // max can be represented as "XXX-*"
@@ -62,16 +86,22 @@ struct Price {
         return 0
     }
 
-    func priceRange() -> PriceRange {
-        return (min:0, max: maxPrice())
+    // Min Price
+    func minPrice() -> Int {
+        if id == "*-*" {
+            return 0
+        } else if !id.hasPrefix("*-") && id.contains("-") {
+            return Int(id.components(separatedBy: "-").first!)!
+        }
+        return 0
     }
 
-    func representedPriceID() -> String {
-        if maxPrice() == 0 {
-            return "*-*"
-        } else {
-            return "0-\(maxPrice())"
-        }
+    func centsPriceRange() -> PriceRange {
+        return (min:minPrice() * 100, max: maxPrice() * 100)
+    }
+
+    func dollarsPriceRange() -> PriceRange {
+        return (min:minPrice(), max: maxPrice())
     }
 }
 
@@ -88,35 +118,57 @@ func > (lhs: Price, rhs: Price) -> Bool {
 
 struct GeneRefineSettings {
     let sort: GeneSortingOrder
-    let medium: Medium
+    let medium: Medium?
     let mediums: [Medium]
     var priceRange: PriceRange?
 
-    static func refinementFromAggregationJSON(_ data: [String: AnyObject]) -> GeneRefineSettings? {
+    static func refinementFromAggregationJSON(_ data: [String: AnyObject], initial: Bool) -> GeneRefineSettings? {
         let json = JSON(data)
         guard let aggregations = json["aggregations"].array,
             let sort = json["sort"].string, let sorting = GeneSortingOrder.fromID(sort),
-            let mediumID = json["selectedMedium"].string else { return nil }
+            let mediumID = json["selectedMedium"].string else {
+                return nil
+        }
 
-        let prices = aggregations.filter({ $0["slice"].stringValue == "PRICE_RANGE" }).first?["counts"].arrayValue.map({ Price(id: $0["id"].stringValue, name: $0["name"].stringValue) })
-
-        let maxPrice = prices?.sorted(by: >).first
+        let price: Price?
+        if (initial) {
+            // Initial is _always_ a 0-Max of all allocations
+            let prices = aggregations.filter({ $0["slice"].stringValue == "PRICE_RANGE" }).first?["counts"].arrayValue.map({ Price(id: $0["id"].stringValue) })
+            guard let maxPrice = prices?.sorted(by: >).first else { return nil }
+            price = Price(id: "0-\(maxPrice.maxPrice())")
+        } else {
+            price = Price(id: json["selectedPrice"].string ?? "*-*")
+        }
 
         guard let mediumsJSON = aggregations.filter({ $0["slice"].stringValue == "MEDIUM" }).first else { return nil }
-        let mediums = mediumsJSON["counts"].arrayValue.map({ Medium(id: $0["id"].stringValue, name: $0["name"].stringValue) })
+        let mediums = mediumsJSON["counts"].arrayValue.map({ Medium(id: $0["id"].stringValue, name: $0["name"].stringValue, count: $0["count"].intValue) })
 
-        guard let selectedMedium = mediums.first({ $0.id == mediumID }) else { return nil }
+        let allowedMediums = mediums.filter { $0.count > 0 }
+        let allMedium = Medium(id: "*", name: "All Mediums", count: 1)
+        let allMediums = [allMedium] + allowedMediums
+        let selectedMedium = allMediums.first({ $0.id == mediumID })
 
-        return GeneRefineSettings(sort: sorting, medium: selectedMedium, mediums:mediums, priceRange: maxPrice?.priceRange())
+        return GeneRefineSettings(sort: sorting, medium: selectedMedium, mediums:allMediums, priceRange: price?.centsPriceRange())
+    }
+
+    func emissionPriceRange(_ priceRange: PriceRange) -> String {
+        var dollarsMax = Double(priceRange.max / 100)
+        let dollarsMin = priceRange.min / 100
+        // If it's a large number, round it down to be 
+        // consistent with what we show in the user interface
+        if dollarsMax > 1000 {
+            dollarsMax = floor(dollarsMax / 1000) * 1000
+        }
+        return "\(dollarsMin)-\(Int(dollarsMax))"
     }
 
     func toJSON() -> [String: AnyObject] {
-
-        let priceRangeID = (priceRange != nil) ? "\(priceRange?.min)-\(priceRange?.max)" : "*-*"
+        let priceRangeID = (priceRange != nil) ? emissionPriceRange(priceRange!) : "*-*"
+        let mediumID = (medium != nil) ? medium!.id : "*"
         return [
             "sort": sort.toID() as AnyObject,
-            "selectedPrice": priceRangeID as AnyObject,
-            "medium" : medium.id as AnyObject
+            "selectedPrice": priceRangeID  as AnyObject,
+            "medium" : mediumID as AnyObject
         ]
     }
 }
@@ -161,7 +213,7 @@ extension GeneRefineSettings: RefinableType {
         if indexPath.section == SortPosition {
             return GeneSortingOrder.allValues()[indexPath.row] == sort
         } else {
-            return mediums[indexPath.row].id == medium.id
+            return (medium != nil) && mediums[indexPath.row].id == medium!.id
         }
     }
 
@@ -202,6 +254,7 @@ extension GeneRefineSettings: RefinableType {
     }
 
     func indexPathOfSelectedMedium() -> IndexPath? {
+        guard let medium = medium else { return nil }
         if let i = mediums.index(of: medium) {
             return IndexPath.init(item: i, section: 1)
         }

@@ -27,6 +27,7 @@
 #import <objc/runtime.h>
 #import <ARAnalytics/ARAnalytics.h>
 #import <AppHub/AppHub.h>
+#import "Artsy-Swift.h"
 
 static void
 FollowRequestSuccess(RCTResponseSenderBlock block, BOOL following)
@@ -144,9 +145,14 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 #pragma mark - Native Module: Refine filter
 
-    emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull initial, NSDictionary *_Nonnull current, UIViewController *_Nonnull controller, _Nonnull RCTPromiseResolveBlock resolve, _Nonnull RCTPromiseRejectBlock reject) {
-      // TODO
-      resolve(@{});
+    emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull initial, NSDictionary *_Nonnull current, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
+        [RefineSwiftCoordinator showRefineSettingForGeneSettings:controller initial:initial current:current completion:^(NSDictionary<NSString *,id> * _Nullable newRefineSettings) {
+            if (newRefineSettings) {
+                resolve(newRefineSettings);
+            } else {
+                reject(@"0", @"", nil);
+            }
+        }];
     };
 
 #pragma mark - Native Module: SwitchBoard

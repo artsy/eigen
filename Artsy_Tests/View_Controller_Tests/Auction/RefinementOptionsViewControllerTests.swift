@@ -66,7 +66,7 @@ class RefinementOptionsViewControllerSpec: QuickSpec {
         it("looks good with gene refine settings") {
             let json = jsonForStub("gene_refine_example_full")
 
-            guard let geneSettings = GeneRefineSettings.refinementFromAggregationJSON(json) else { return fail() }
+            guard let geneSettings = GeneRefineSettings.refinementFromAggregationJSON(json, initial: false) else { return fail() }
 
             let subject = RefinementOptionsViewController(defaultSettings: geneSettings, initialSettings: geneSettings, currencySymbol: "$", userDidCancelClosure: nil, userDidApplyClosure: nil)
 
@@ -75,9 +75,9 @@ class RefinementOptionsViewControllerSpec: QuickSpec {
         }
 
         it("looks good with gene refine settings with no price") {
-            let json = jsonForStub("gene_refine_example_short_medium")
+            let json = jsonForStub("gene_refine_example_short_no_prize_medium")
 
-            guard let geneSettings = GeneRefineSettings.refinementFromAggregationJSON(json) else { return fail() }
+            guard let geneSettings = GeneRefineSettings.refinementFromAggregationJSON(json, initial: false) else { return fail() }
 
             let subject = RefinementOptionsViewController(defaultSettings: geneSettings, initialSettings: geneSettings, currencySymbol: "$", userDidCancelClosure: nil, userDidApplyClosure: nil)
 
@@ -89,7 +89,7 @@ class RefinementOptionsViewControllerSpec: QuickSpec {
         it("looks good with gene refine settings showing price") {
             let json = jsonForStub("gene_refine_example_medium_price")
 
-            guard let geneSettings = GeneRefineSettings.refinementFromAggregationJSON(json) else { return fail() }
+            guard let geneSettings = GeneRefineSettings.refinementFromAggregationJSON(json, initial: false) else { return fail() }
 
             let subject = RefinementOptionsViewController(defaultSettings: geneSettings, initialSettings: geneSettings, currencySymbol: "$", userDidCancelClosure: nil, userDidApplyClosure: nil)
 

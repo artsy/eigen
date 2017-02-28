@@ -50,10 +50,10 @@ describe(@"with related artworks", ^{
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks"
                                  withParams:@{@"artwork[]": @"some-artwork"}
                                withResponse:@[
-                                              @{ @"id": @"one", @"title": @"One", @"price_hidden": @YES, @"price": @"$10" },
-                                              @{ @"id": @"two", @"title": @"Two", @"price": @"$1,200" },
-                                              @{ @"id": @"three", @"title": @"Three", @"price": @"$10", @"sold": @YES },
-                                              @{ @"id": @"four", @"title": @"Four", @"price": @"$300" }
+                                              @{ @"id": @"one", @"title": @"One", @"sale_message": @"$10" },
+                                              @{ @"id": @"two", @"title": @"Two", @"sale_message": @"Sold" },
+                                              @{ @"id": @"three", @"title": @"Three", @"sale_message": @"Not For Sale" },
+                                              @{ @"id": @"four", @"title": @"Four" }
                                               ]];
         
         

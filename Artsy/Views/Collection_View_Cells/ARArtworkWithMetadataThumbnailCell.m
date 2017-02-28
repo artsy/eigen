@@ -36,7 +36,7 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
 
 + (BOOL)showPriceLabelWithArtwork:(Artwork *)artwork
 {
-    return artwork.price.length && !artwork.isPriceHidden.boolValue && !artwork.sold.boolValue;
+    return artwork.saleMessage.length;
 }
 
 - (void)prepareForReuse
