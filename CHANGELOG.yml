@@ -37,6 +37,9 @@ releases:
       - Fixes a problem where users were shown both the "Contact Gallery" and "Enter Live Auction" buttons instead of just the auction one - ash
       - Fixes a messaging issue around winning bids in live auctions - ash
       - Adds a sticker pack with some public domain works - kana/owen
+      - Fixes a problem with jump-to-current-lot CTA - ash
+
+releases:
   - version: 3.0.3
     details: Hot fix for 3.0.2 release.
     date: Dec 02, 2016

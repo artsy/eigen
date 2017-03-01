@@ -75,8 +75,11 @@ class LiveAuctionLotSetViewController: UIViewController {
     var hasJumpedToOpenLotAtLaunch = false
     var suppressJumpingToOpenLots = false
 
-    func hasChangedLot(_ lot: LiveAuctionLotViewModelType?) {
+    func hasChangedCurrentLot(_ lot: LiveAuctionLotViewModelType?) {
         guard let newLot = lot, let newLotIndex = salesPerson.indexForViewModel(newLot) else { return }
+
+        currentLotCTAPositionManager.currentLotDidChange(to: newLot)
+
         guard !suppressJumpingToOpenLots else { return }
 
         /// Support jumping directly to the live lot when we load
@@ -97,10 +100,14 @@ class LiveAuctionLotSetViewController: UIViewController {
                 guard let focusedLotAfterDelayIndex = self.salesPerson.currentFocusedLotIndex.peek(), focusedLotAfterDelayIndex == focusedLotIndex else { return }
 
                 guard let currentLotVC = self.auctionDataSource.liveAuctionPreviewViewControllerForIndex(newLotIndex) else { return }
+                self.currentLotCTAPositionManager.didStartJump(to: newLot)
                 self.pageController.setViewControllers([currentLotVC], direction: .forward, animated: true) { _ in
                     self.pageViewController(self.pageController, didFinishAnimating: true, previousViewControllers: [], transitionCompleted: true)
                 }
             }
+        } else {
+            currentLotCTAPositionManager.currentLotDidChange(to: newLot)
+            currentLotCTAPositionManager.updateFocusedLotIndex(to: focusedLotIndex)
         }
     }
 
@@ -278,15 +285,18 @@ class LiveAuctionLotSetViewController: UIViewController {
         }
 
         // To make sure we can handle transitioning to the next live auction
-        salesPerson.currentLotSignal.subscribe(applyWeakly(self, LiveAuctionLotSetViewController.hasChangedLot))
+        salesPerson.currentLotSignal.subscribe(applyWeakly(self, LiveAuctionLotSetViewController.hasChangedCurrentLot))
     }
 
     func jumpToLotAtIndex(_ index: Int) {
         guard let currentLotVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(index) else { return }
 
         salesPerson.currentFocusedLotIndex.update(index)
+        currentLotCTAPositionManager.updateFocusedLotIndex(to: index)
         lotImageCollectionView.reloadData()
-        pageController.setViewControllers([currentLotVC], direction: .forward, animated: false, completion: nil)
+        pageController.setViewControllers([currentLotVC], direction: .forward, animated: false) { _ in
+            self.currentLotCTAPositionManager.didCompleteJump()
+        }
     }
 
     func jumpToLiveLot() {
@@ -294,18 +304,8 @@ class LiveAuctionLotSetViewController: UIViewController {
         guard case let .some(.some(currentLot)) = salesPerson.currentLotSignal.peek() else { return }
         guard let liveLotIndex = salesPerson.indexForViewModel(currentLot) else { return }
 
+        currentLotCTAPositionManager.didStartJump(to: currentLot)
         jumpToLotAtIndex(liveLotIndex)
-    }
-
-    func nextLot() {
-        guard let current = pageController.childViewControllers.first else { return }
-        guard let nextLotVC = auctionDataSource.pageViewController(pageController, viewControllerAfter: current) else { return }
-        pageController.setViewControllers([nextLotVC], direction: .forward, animated: true, completion: nil)    }
-
-    func previousLot() {
-        guard let current = pageController.childViewControllers.first else { return }
-        guard let previousLotVC = auctionDataSource.pageViewController(pageController, viewControllerBefore: current) else { return }
-        pageController.setViewControllers([previousLotVC], direction: .reverse, animated: true, completion: nil)
     }
 }
 
@@ -368,6 +368,7 @@ extension PageViewDelegate: UIPageViewControllerDelegate, LiveAuctionSaleLotsDat
         if completed {
             print("Updating current focused index to:", viewController.index)
             salesPerson.currentFocusedLotIndex.update(viewController.index)
+            self.currentLotCTAPositionManager.didCompleteJump()
         }
     }
 
