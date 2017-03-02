@@ -22,6 +22,7 @@ class LiveAuctionViewController: UIViewController {
 
     var overlaySubscription: ObserverToken<Bool>?
 
+    // Status maintainer no longer working with refactor.
     fileprivate var statusMaintainer = ARSerifStatusMaintainer()
     lazy var app = UIApplication.shared
     var suppressJumpingToOpenLots = false
@@ -39,13 +40,13 @@ class LiveAuctionViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-
-
+        super.viewWillAppear(animated)
         statusMaintainer.viewWillAppear(animated, app: app)
         connectToNetwork()
 
         app.isIdleTimerDisabled = true
 
+        // TODO: This isn't working since the refactor.
         if waitingForInitialLoad {
             loadingView = LiveAuctionLoadingView().then {
                 $0.operation = applyWeakly(self, LiveAuctionViewController.dismissLiveAuctionsModal)
@@ -197,7 +198,8 @@ extension PrivateFunctions {
         let salesPerson = self.salesPersonCreator(sale, jwt, bidderCredentials)
 
         // Create and add to our hierachry a sale view controller.
-        saleViewController = LiveAuctionSaleViewController(sale: sale, salesPerson: salesPerson, suppressJumpingToOpenLots: suppressJumpingToOpenLots).then {
+        let useCompactLayout = traitCollection.horizontalSizeClass == .compact
+        saleViewController = LiveAuctionSaleViewController(sale: sale, salesPerson: salesPerson, useCompactLayout: useCompactLayout, suppressJumpingToOpenLots: suppressJumpingToOpenLots).then {
             ar_addAlignedModernChildViewController($0)
         }
 

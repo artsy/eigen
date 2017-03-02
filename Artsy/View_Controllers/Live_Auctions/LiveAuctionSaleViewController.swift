@@ -5,15 +5,17 @@ import Then
 class LiveAuctionSaleViewController: UISplitViewController {
     let sale: LiveSale
     let salesPerson: LiveAuctionsSalesPersonType
+    let useCompactLayout: Bool
     let suppressJumpingToOpenLots: Bool
 
     var lotSetController: LiveAuctionLotSetViewController?
     var lotsSetNavigationController: ARSerifNavigationViewController?
     var lotListController: LiveAuctionLotListViewController?
 
-    init(sale: LiveSale, salesPerson: LiveAuctionsSalesPersonType, suppressJumpingToOpenLots: Bool) {
+    init(sale: LiveSale, salesPerson: LiveAuctionsSalesPersonType, useCompactLayout: Bool, suppressJumpingToOpenLots: Bool) {
         self.sale = sale
         self.salesPerson = salesPerson
+        self.useCompactLayout = useCompactLayout
         self.suppressJumpingToOpenLots = suppressJumpingToOpenLots
 
         super.init(nibName: nil, bundle: nil)
@@ -71,10 +73,6 @@ class LiveAuctionSaleViewController: UISplitViewController {
 
 private typealias PrivateFunctions = LiveAuctionSaleViewController
 extension PrivateFunctions {
-    var useSingleLayout: Bool {
-        return traitCollection.horizontalSizeClass == .compact
-    }
-
     func setup() {
         let lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson, traitCollection: view.traitCollection).then {
             $0.suppressJumpingToOpenLots = suppressJumpingToOpenLots
@@ -84,7 +82,7 @@ extension PrivateFunctions {
         let lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
         self.lotsSetNavigationController = lotsSetNavigationController
 
-        if useSingleLayout {
+        if useCompactLayout {
             viewControllers = [lotsSetNavigationController]
         } else {
             let lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel).then {

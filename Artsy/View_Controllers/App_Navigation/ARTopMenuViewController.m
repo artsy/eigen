@@ -375,7 +375,7 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 + (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController
 {
-    NSArray *modalClasses = @[ UINavigationController.class, UISplitViewController.class ];
+    NSArray *modalClasses = @[ UINavigationController.class, UISplitViewController.class, LiveAuctionViewController.class ];
     for (Class klass in modalClasses) {
         if ([viewController isKindOfClass:klass]) {
             return YES;
