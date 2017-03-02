@@ -31,10 +31,10 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
     }
 }
 
-func loadJSON(_ filename: String) -> AnyObject! {
+func loadJSON(_ filename: String) -> AnyObject {
     let jsonPath = Bundle.main.path(forResource: filename, ofType: "json")
     let jsonData = try! Data(contentsOf: URL(fileURLWithPath: jsonPath!))
     let json = try? JSONSerialization.jsonObject(with: jsonData, options: .allowFragments)
 
-    return json as AnyObject!
+    return json as AnyObject
 }

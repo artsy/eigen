@@ -6,27 +6,21 @@ import SwiftyJSON
 import FXBlurView
 import ORStackView
 
-class LiveAuctionViewController: UISplitViewController {
-    let saleSlugOrID: String
+typealias SalesPersonCreator = (LiveSale, JWT, BiddingCredentials) -> LiveAuctionsSalesPersonType
 
-    lazy var useSingleLayout: Bool = { [weak self] in
-        return self?.traitCollection.horizontalSizeClass == .compact
-    }()
+class LiveAuctionViewController: UIViewController {
+    let saleSlugOrID: String
 
     lazy var staticDataFetcher: LiveAuctionStaticDataFetcherType = { [weak self] in
         return LiveAuctionStaticDataFetcher(saleSlugOrID: self?.saleSlugOrID ?? "")
     }()
 
-    lazy var salesPersonCreator: (LiveSale, JWT, BiddingCredentials) -> LiveAuctionsSalesPersonType = LiveAuctionViewController.salesPerson
+    lazy var salesPersonCreator: SalesPersonCreator = LiveAuctionViewController.salesPerson
 
-    var lotSetController: LiveAuctionLotSetViewController!
-    var lotsSetNavigationController: ARSerifNavigationViewController!
-    var lotListController: LiveAuctionLotListViewController!
     var loadingView: LiveAuctionLoadingView?
+    var saleViewController: LiveAuctionSaleViewController?
 
     var overlaySubscription: ObserverToken<Bool>?
-
-    var sale: LiveSale?
 
     fileprivate var statusMaintainer = ARSerifStatusMaintainer()
     lazy var app = UIApplication.shared
@@ -39,21 +33,13 @@ class LiveAuctionViewController: UISplitViewController {
 
         self.title = saleSlugOrID
 
-        // UIKit complains if we don't have at least one view controller; we replace this later in setupWithSale()
-        viewControllers = [UIViewController()]
-
         // Find out when we've updated registration status
         NotificationCenter.default
             .addObserver(self, selector: #selector(userHasChangedRegistrationStatus), name: NSNotification.Name.ARAuctionArtworkRegistrationUpdated, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if delegate != nil { return }
 
-        preferredDisplayMode = .allVisible
-        preferredPrimaryColumnWidthFraction = 0.4
-        delegate = self
 
         statusMaintainer.viewWillAppear(animated, app: app)
         connectToNetwork()
@@ -75,7 +61,6 @@ class LiveAuctionViewController: UISplitViewController {
 
             switch result {
             case .success(let (sale, jwt, bidderCredentials)):
-                self?.sale = sale
                 self?.setupWithSale(sale, jwt: jwt, bidderCredentials: bidderCredentials)
 
             case .error(let error):
@@ -178,26 +163,6 @@ class LiveAuctionViewController: UISplitViewController {
 
         statusMaintainer.viewWillDisappear(animated, app: app)
         app.isIdleTimerDisabled = false
-
-        // Hrm, yes, so this seems to be a weird side effect of UISplitVC
-        // in that it won't pass the view transition funcs down to it's children
-        viewControllers.forEach { vc in
-            vc.beginAppearanceTransition(false, animated: animated)
-        }
-
-        // This crashes on iOS 10
-        if #available(iOS 10, *) {} else {
-            guard let internalPopover = value(forKey: "_hidden" + "PopoverController") as? UIPopoverController else { return }
-            internalPopover.dismiss(animated: false)
-        }
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-
-        viewControllers.forEach { vc in
-            vc.endAppearanceTransition()
-        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -222,31 +187,28 @@ extension LiveAuctionViewController: AROfflineViewDelegate {
 
 fileprivate typealias PrivateFunctions = LiveAuctionViewController
 extension PrivateFunctions {
-
     func setupWithSale(_ sale: LiveSale, jwt: JWT, bidderCredentials: BiddingCredentials) {
+        // Remove any previous view controllers so we can set up fresh.
+        if let saleViewController = saleViewController {
+            ar_modernRemoveChildViewController(saleViewController)
+        }
+
+        // Create a sales person
         let salesPerson = self.salesPersonCreator(sale, jwt, bidderCredentials)
 
+        // Create and add to our hierachry a sale view controller.
+        saleViewController = LiveAuctionSaleViewController(sale: sale, salesPerson: salesPerson, suppressJumpingToOpenLots: suppressJumpingToOpenLots).then {
+            ar_addAlignedModernChildViewController($0)
+        }
+
+        // Dispose of, then create a new overlay subscription for network connectivity issues.
         overlaySubscription?.unsubscribe()
         overlaySubscription = salesPerson.socketConnectionSignal
             .merge(salesPerson.operatorConnectedSignal)
             .map { return $0.0 && $0.1 } // We are connected iff the socket is connected and the operator is connected.
             .subscribe(showSocketDisconnectedOverlay)
 
-        lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson, traitCollection: view.traitCollection)
-        lotSetController.suppressJumpingToOpenLots = suppressJumpingToOpenLots
-        lotsSetNavigationController = ARSerifNavigationViewController(rootViewController: lotSetController)
-
-        if useSingleLayout {
-            viewControllers = [lotsSetNavigationController]
-        } else {
-            lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
-            lotListController.delegate = self
-
-            let lotListNav = ARSerifNavigationViewController(rootViewController: lotListController)
-
-            viewControllers = [lotListNav, lotsSetNavigationController]
-        }
-
+        // Wait for the initial state to load before removing the loading view.
         salesPerson.initialStateLoadedSignal.subscribe { [weak self] _ in
             self?.waitingForInitialLoad = false
             self?.loadingView?.removeFromSuperview()
@@ -256,17 +218,5 @@ extension PrivateFunctions {
 
     class func salesPerson(_ sale: LiveSale, jwt: JWT, biddingCredentials: BiddingCredentials) -> LiveAuctionsSalesPersonType {
         return LiveAuctionsSalesPerson(sale: sale, jwt: jwt, biddingCredentials: biddingCredentials)
-    }
-}
-
-extension LiveAuctionViewController: UISplitViewControllerDelegate {
-    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
-        return true
-    }
-}
-
-extension LiveAuctionViewController: LiveAuctionLotListViewControllerDelegate {
-    func didSelectLotAtIndex(_ index: Int, forLotListViewController lotListViewController: LiveAuctionLotListViewController) {
-        lotSetController.jumpToLotAtIndex(index)
     }
 }
