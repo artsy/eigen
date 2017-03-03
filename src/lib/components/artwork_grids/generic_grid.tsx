@@ -63,8 +63,7 @@ class GenericArtworksGrid extends React.Component<Props, State> {
       sectionRatioSums.push(0)
     }
 
-    const artworks = this.props.artworks
-    for (const artwork of artworks) {
+    this.props.artworks.forEach(artwork => {
       if (artwork.image) {
         let lowestRatioSum = Number.MAX_VALUE
         let sectionIndex: number = null
@@ -86,7 +85,8 @@ class GenericArtworksGrid extends React.Component<Props, State> {
           sectionRatioSums[sectionIndex] += (1 / aspectRatio)
         }
       }
-    }
+    })
+
     return sectionedArtworks
   }
 

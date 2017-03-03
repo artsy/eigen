@@ -144,16 +144,16 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   }
 
   sectionedArtworks() {
-    const sectionedArtworks: any[][] = []
+    const sectionedArtworks: Artworks[] = []
     const sectionRatioSums: number[] = []
     const queryKey = this.props.queryKey
-    const artworks = this.props[queryKey].artworks ? this.props[queryKey].artworks.edges : []
+    const artworks: Artworks = this.props[queryKey].artworks ? this.props[queryKey].artworks.edges.map(({ node }) => node) : []
 
     for (let i = 0; i < this.props.sectionCount; i++) {
       sectionedArtworks.push([])
       sectionRatioSums.push(0)
     }
-    for (const artwork of artworks) {
+    artworks.forEach(artwork => {
       // There are artworks without images and other ‘issues’. Like Force we’re just going to reject those for now.
       // See: https://github.com/artsy/eigen/issues/1667
       //
@@ -179,7 +179,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
           sectionRatioSums[sectionIndex] += (1 / aspectRatio)
         }
       }
-    }
+    })
 
     return sectionedArtworks
   }
@@ -199,7 +199,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
         const artwork = sectionedArtworks[i][j]
         artworkComponents.push(
           <Artwork
-            artwork={artwork}
+            artwork={artwork as any}
             key={"artwork-" + j + "-" + artwork.__id}
           />)
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
@@ -275,6 +275,14 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
+// TODO Just took this from the below interfaces.
+type Artworks = Array<{
+  __id: string,
+  image: {
+    aspect_ratio: number | null,
+  } | null,
+}>
+
 export default Relay.createContainer(InfiniteScrollArtworksGrid, {
   initialVariables: {
     totalSize: PageSize,
@@ -289,8 +297,9 @@ export default Relay.createContainer(InfiniteScrollArtworksGrid, {
           }
           edges {
             node {
+              __id
               image {
-                id
+                aspect_ratio
               }
               ${Artwork.getFragment("artwork")}
             }
@@ -309,8 +318,9 @@ interface ArtistRelayProps {
       },
       edges: Array<{
         node: {
+          __id: string,
           image: {
-            id: string | null,
+            aspect_ratio: number | null,
           } | null,
         } | null,
       }>,
@@ -338,8 +348,9 @@ const GeneInfiniteScrollContainer = Relay.createContainer(InfiniteScrollArtworks
           }
           edges {
             node {
+              __id
               image {
-                id
+                aspect_ratio
               }
               ${Artwork.getFragment("artwork")}
             }
@@ -360,8 +371,9 @@ interface GeneRelayProps {
       },
       edges: Array<{
         node: {
+          __id: string,
           image: {
-            id: string | null,
+            aspect_ratio: number | null,
           } | null,
         } | null,
       }>,
