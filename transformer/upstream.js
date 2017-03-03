@@ -22,7 +22,7 @@ const makeHMRConfig = require('babel-preset-react-native/configs/hmr');
 const path = require('path');
 const resolvePlugins = require('babel-preset-react-native/lib/resolvePlugins');
 
-const {compactMapping} = require('./src/Bundler/source-map');
+const {compactMapping} = require('react-native/packager/src/Bundler/source-map');
 
 /**
  * Return a memoized function that checks for the existence of a
@@ -128,17 +128,7 @@ function transform(src, filename, options) {
   }
 }
 
-module.exports = function(data, callback) {
-  let result;
-  try {
-    result = transform(data.sourceCode, data.filename, data.options);
-  } catch (e) {
-    callback(e);
-    return;
-  }
-
-  callback(null, result);
-};
-
-// export for use in jest
-module.exports.transform = transform;
+module.exports = {
+  buildBabelConfig,
+  transform,
+}

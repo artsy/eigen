@@ -1,4 +1,4 @@
-var blacklist = require('react-native/packager/blacklist')
+var blacklist = require("react-native/packager/blacklist")
 
 var config = {
   getBlacklistRE(platform) {

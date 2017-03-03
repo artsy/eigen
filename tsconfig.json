@@ -6,7 +6,6 @@
         "rootDir": "src",
         "outDir": "build",
         "allowJs": true,
-        "sourceMap": true,
         "moduleResolution": "node",
         "strictNullChecks": false
     },
