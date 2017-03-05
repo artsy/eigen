@@ -517,6 +517,12 @@
     [[ARAppDelegate sharedInstance] finishOnboarding:self animated:YES];
 }
 
+- (void)dismissOnboardingWithVoidAnimation:(BOOL)animated
+{
+    [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
+    [self finishAccountCreation];
+}
+
 #pragma mark -
 #pragma mark Facebook Dance
 

@@ -86,10 +86,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
-    // Maxim TODO: this is a quick hack for onboarding prototype. Remove if merging to master!
-    [[ARUserManager sharedManager] disableSharedWebCredentials];
-
     if (ARIsRunningInDemoMode) {
         [[ARUserManager sharedManager] disableSharedWebCredentials];
         [ARUserManager clearUserData];
