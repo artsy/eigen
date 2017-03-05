@@ -16,5 +16,7 @@
 - (void)defaultNextStep;
 - (void)addBackButton;
 - (void)hideBackButton;
+- (void)showSpinner;
+- (void)hideSpinner;
 
 @end

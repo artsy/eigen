@@ -3,6 +3,7 @@
 
 #import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <Extraction/ARSpinner.h>
 
 
 @interface AROnboardingNavigationItemsView ()
@@ -12,6 +13,8 @@
 @property (nonatomic, strong) NSLayoutConstraint *nextWidthConstraintHalf;
 @property (nonatomic, strong) NSLayoutConstraint *nextWidthConstraintFull;
 @property (nonatomic, strong) UIView *separatorBorder;
+@property (nonatomic, strong) UIView *spinnerView;
+@property (nonatomic, strong) ARSpinner *spinner;
 @end
 
 
@@ -67,13 +70,30 @@
 
         [self addSubview:_warningLabel];
 
-        
         [_warningLabel alignBottomEdgeWithView:self predicate:@"0"];
         [_warningLabel alignLeadingEdgeWithView:self predicate:@"0"];
         [_warningLabel constrainWidthToView:self predicate:@"0"];
         [_warningLabel constrainHeight:@"50"];
         
         _warningLabel.hidden = YES;
+        
+        _spinnerView = [[UIView alloc] init];
+        _spinnerView.backgroundColor = [UIColor blackColor];
+        
+        _spinner = [[ARSpinner alloc] init];
+        _spinner.spinnerColor = [UIColor whiteColor];
+        
+        [self addSubview:_spinnerView];
+        [_spinnerView addSubview:_spinner];
+        
+        [_spinner alignCenterWithView:_spinnerView];
+        
+        [_spinnerView alignBottomEdgeWithView:self predicate:@"0"];
+        [_spinnerView alignLeadingEdgeWithView:self predicate:@"0"];
+        [_spinnerView constrainWidthToView:self predicate:@"0"];
+        [_spinnerView constrainHeight:@"50"];
+        
+        _spinnerView.hidden = YES;
     }
 
     return self;
@@ -159,6 +179,21 @@
 - (void)hideError
 {
     self.warningLabel.hidden = YES;
+    self.next.enabled = YES;
+}
+
+- (void)showSpinner
+{
+    [self.spinner startAnimating];
+    self.spinnerView.hidden = NO;
+    self.next.enabled = NO;
+    
+}
+
+- (void)hideSpinner
+{
+    [self.spinner stopAnimating];
+    self.spinnerView.hidden = YES;
     self.next.enabled = YES;
 }
 

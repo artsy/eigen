@@ -150,7 +150,7 @@
     self.descriptionLabel.backgroundColor = [UIColor clearColor];
     self.descriptionLabel.opaque = NO;
     self.descriptionLabel.font = [UIFont serifFontWithSize:self.useLargeLayout ? 38 : 22];
-    self.descriptionLabel.textColor = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)  ? [UIColor whiteColor] : [UIColor blackColor];
+    self.descriptionLabel.textColor = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) ? [UIColor whiteColor] : [UIColor blackColor];
     self.descriptionLabel.textAlignment = NSTextAlignmentCenter;
     self.descriptionLabel.numberOfLines = 0;
     self.descriptionLabel.text = self.pages[0][@"copy"];

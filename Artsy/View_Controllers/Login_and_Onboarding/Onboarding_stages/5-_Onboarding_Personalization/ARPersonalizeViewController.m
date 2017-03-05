@@ -765,9 +765,11 @@
             [self.delegate personalizePasswordDone:self.onboardingTextFields.passwordField.text];
             break;
         case AROnboardingStagePersonalizeLogin:
+            [self.onboardingNavigationItems showSpinner];
             [self.delegate personalizeLoginWithPasswordDone:self.onboardingTextFields.passwordField.text];
             break;
         case AROnboardingStagePersonalizeName:
+            [self.onboardingNavigationItems showSpinner];
             [self.delegate personalizeNameDone:self.onboardingTextFields.nameField.text];
             break;
         case AROnboardingStagePersonalizeArtists:
