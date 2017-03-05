@@ -14,12 +14,12 @@ PODS:
   - Emission (1.2.1):
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
-    - React/Core (= 0.42.0-rc.3)
-    - React/RCTImage (= 0.42.0-rc.3)
-    - React/RCTNetwork (= 0.42.0-rc.3)
-    - React/RCTText (= 0.42.0-rc.3)
+    - React/Core (= 0.42.0)
+    - React/RCTImage (= 0.42.0)
+    - React/RCTNetwork (= 0.42.0)
+    - React/RCTText (= 0.42.0)
     - SDWebImage (>= 3.7.2)
-    - Yoga (= 0.42.0-rc.3.React)
+    - Yoga (= 0.42.0.React)
   - Extraction (1.2.3):
     - Extraction/ARAnimationContinuation (= 1.2.3)
     - Extraction/ARLoadFailureView (= 1.2.3)
@@ -48,24 +48,24 @@ PODS:
   - NSURL+QueryDictionary (1.2.0)
   - ORStackView (2.0.3):
     - FLKAutoLayout
-  - React (0.42.0-rc.3):
-    - React/Core (= 0.42.0-rc.3)
-  - React/Core (0.42.0-rc.3):
+  - React (0.42.0):
+    - React/Core (= 0.42.0)
+  - React/Core (0.42.0):
     - React/cxxreact
-    - Yoga (= 0.42.0-rc.3.React)
-  - React/cxxreact (0.42.0-rc.3):
+    - Yoga (= 0.42.0.React)
+  - React/cxxreact (0.42.0):
     - React/jschelpers
-  - React/jschelpers (0.42.0-rc.3)
-  - React/RCTImage (0.42.0-rc.3):
+  - React/jschelpers (0.42.0)
+  - React/RCTImage (0.42.0):
     - React/Core
     - React/RCTNetwork
-  - React/RCTNetwork (0.42.0-rc.3):
+  - React/RCTNetwork (0.42.0):
     - React/Core
-  - React/RCTTest (0.42.0-rc.3):
+  - React/RCTTest (0.42.0):
     - React/Core
-  - React/RCTText (0.42.0-rc.3):
+  - React/RCTText (0.42.0):
     - React/Core
-  - React/RCTWebSocket (0.42.0-rc.3):
+  - React/RCTWebSocket (0.42.0):
     - React/Core
   - SAMKeychain (1.5.0)
   - SDWebImage (3.7.5):
@@ -73,7 +73,7 @@ PODS:
   - SDWebImage/Core (3.7.5)
   - Specta (1.0.5)
   - UIView+BooleanAnimations (1.0.2)
-  - Yoga (0.42.0-rc.3.React)
+  - Yoga (0.42.0.React)
 
 DEPENDENCIES:
   - AppHub
@@ -111,18 +111,18 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   Artsy+UIFonts: eb25b56a47550acd70b536f9084cdb34b4f42c3b
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
-  Emission: 9c4a041a3b5ffdce976a1835dc9e7f3254095a00
+  Emission: d3a2a12e1a953cdf9605d0d4bbf028680a40b199
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
-  React: 595dd56966a44d51a8f720fb1751ec165181b3b0
+  React: 8ec97f0d79ba31892c526cf56425937926cc9b48
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
-  Yoga: 29d2c370c8fb8bf892d3c3a3fe6aec68ea8cc450
+  Yoga: 4183cc70cae189d73f996b1e40c3078aca9f96ef
 
 PODFILE CHECKSUM: 990bd33b5f7498ce22f8913c5c5d09ff6f1ce39e
 
