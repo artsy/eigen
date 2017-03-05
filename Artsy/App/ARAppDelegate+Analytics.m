@@ -1242,14 +1242,50 @@
                     ARAnalyticsClass: ARSignUpSplashViewController.class,
                     ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"Onboarding start" } ]
                 },
-//                @{
-//                    ARAnalyticsClass: ARLoginViewController.class,
-//                    ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"Onboarding login" } ]
-//                },
-//                @{
-//                    ARAnalyticsClass: ARCreateAccountViewController.class,
-//                    ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"Onboarding signup" } ]
-//                },
+                @{
+                    ARAnalyticsClass: ARPersonalizeViewController.class,
+                    ARAnalyticsDetails: @[
+                            @{
+                                ARAnalyticsPageName: @"Onboarding enter your email",
+                                ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                    return (controller.state == AROnboardingStagePersonalizeEmail);
+                                    }
+                                }
+                            ]
+                    },
+                @{
+                    ARAnalyticsClass: ARPersonalizeViewController.class,
+                    ARAnalyticsDetails: @[
+                            @{
+                                ARAnalyticsPageName: @"Onboarding enter your password",
+                                ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                    return (controller.state == AROnboardingStagePersonalizeLogin);
+                                    }
+                                }
+                            ]
+                    },
+                @{
+                    ARAnalyticsClass: ARPersonalizeViewController.class,
+                    ARAnalyticsDetails: @[
+                            @{
+                                ARAnalyticsPageName: @"Onboarding create a password",
+                                ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                    return (controller.state == AROnboardingStagePersonalizePassword);
+                                    }
+                                }
+                            ]
+                    },
+                @{
+                    ARAnalyticsClass: ARPersonalizeViewController.class,
+                    ARAnalyticsDetails: @[
+                            @{
+                                ARAnalyticsPageName: @"Onboarding enter your full name",
+                                ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                    return (controller.state == AROnboardingStagePersonalizeName);
+                                    }
+                                }
+                            ]
+                    },
                 @{
                     ARAnalyticsClass: ARPersonalizeViewController.class,
                     ARAnalyticsDetails: @[
