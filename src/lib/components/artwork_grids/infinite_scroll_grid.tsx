@@ -147,7 +147,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     const sectionedArtworks: Artworks[] = []
     const sectionRatioSums: number[] = []
     const queryKey = this.props.queryKey
-    const artworks: Artworks = this.props[queryKey].artworks ? this.props[queryKey].artworks.edges.map(({ node }) => node) : []
+    const artworks: Artworks = this.props[queryKey].artworks ?
+      this.props[queryKey].artworks.edges.map(({ node }) => node) : []
 
     for (let i = 0; i < this.props.sectionCount; i++) {
       sectionedArtworks.push([])
