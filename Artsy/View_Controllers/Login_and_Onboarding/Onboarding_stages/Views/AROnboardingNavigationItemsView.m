@@ -149,6 +149,8 @@
 
 - (void)showWarning:(NSString *)text
 {
+    [self hideSpinner];
+    
     self.warningLabel.text = text;
     
     self.warningLabel.backgroundColor = [UIColor artsyYellowRegular];
@@ -166,6 +168,8 @@
 
 - (void)showError:(NSString *)text
 {
+    [self hideSpinner];
+    
     self.warningLabel.text = text;
     
     self.warningLabel.backgroundColor = [UIColor artsyRedRegular];
