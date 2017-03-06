@@ -3,6 +3,7 @@
 
 @interface ARSecureTextFieldWithPlaceholder ()
 @property (nonatomic, strong) NSString *actualText;
+@property (nonatomic, strong) NSString *displayText;
 @end
 
 
@@ -32,11 +33,7 @@
 
 - (NSString *)text
 {
-    if (self.isSecureTextEntry) {
-        return [super text];
-    } else {
-        return self.actualText;
-    }
+    return [super text];
 }
 
 - (void)editingDidBegin
@@ -56,13 +53,14 @@
 
 - (void)setSecureTextEntry:(BOOL)secureTextEntry
 {
-    if (secureTextEntry) {
+    if (!secureTextEntry) {
         self.text = self.actualText;
-    } else {
-        self.actualText = self.text;
-        self.text = [self dotPlaceholder];
     }
+    
     [super setSecureTextEntry:secureTextEntry];
+    
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 - (NSString *)dotPlaceholder
@@ -75,6 +73,5 @@
     }
     return dots;
 }
-
 
 @end

@@ -5,11 +5,14 @@
 
 #import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+
 
 
 @interface ARLoginFieldsView ()
 
 @property (nonatomic, strong) NSLayoutConstraint *nameFieldHeightConstraint;
+@property (nonatomic, strong) ARUppercaseButton *showPasswordButton;
 
 @end
 
@@ -20,9 +23,10 @@
 {
     self = [super init];
     if (self) {
-        _nameField = [[ARTextFieldWithPlaceholder alloc] initWithFrame:CGRectZero];
-        _emailField = [[ARTextFieldWithPlaceholder alloc] initWithFrame:CGRectZero];
-        _passwordField = [[ARSecureTextFieldWithPlaceholder alloc] initWithFrame:CGRectZero];
+        _nameField = [[ARTextFieldWithPlaceholder alloc] init];
+        _emailField = [[ARTextFieldWithPlaceholder alloc] init];
+        _passwordField = [[ARSecureTextFieldWithPlaceholder alloc] init];
+        _showPasswordButton = [[ARUppercaseButton alloc] init];
     }
     return self;
 }
@@ -32,6 +36,7 @@
     [self commonSetupWithLargeLayout:useLargeLayout];
     self.emailField.hidden = YES;
     self.passwordField.hidden = NO;
+    self.showPasswordButton.hidden = NO;
     self.nameField.hidden = YES;
 }
 
@@ -46,14 +51,17 @@
     [self commonSetupWithLargeLayout:useLargeLayout];
     self.emailField.hidden = NO;
     self.passwordField.hidden = YES;
+    self.showPasswordButton.hidden = YES;
     self.nameField.hidden = YES;
 }
 
 - (void)setupForPasswordWithLargeLayout:(BOOL)useLargeLayout
 {
     [self commonSetupWithLargeLayout:useLargeLayout];
+    
     self.emailField.hidden = YES;
     self.passwordField.hidden = NO;
+    self.showPasswordButton.hidden = NO;
     self.nameField.hidden = YES;
     
     NSDictionary *placeholderAttributes = @{NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0], NSForegroundColorAttributeName : [UIColor artsyGrayMedium]};
@@ -65,13 +73,14 @@
     [self commonSetupWithLargeLayout:useLargeLayout];
     self.emailField.hidden = YES;
     self.passwordField.hidden = YES;
+    self.showPasswordButton.hidden = YES;
     self.nameField.hidden = NO;
 }
 
 - (void)commonSetupWithLargeLayout:(BOOL)useLargeLayout
 {
     NSDictionary *placeholderAttributes = @{NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0], NSForegroundColorAttributeName : [UIColor artsyGrayMedium]};
-
+    
     [self.nameField setPlaceholder:@"Full Name" withAttributes:placeholderAttributes];
     [self.emailField setPlaceholder:@"Email" withAttributes:placeholderAttributes];
     [self.passwordField setPlaceholder:@"Password" withAttributes:placeholderAttributes];
@@ -82,11 +91,22 @@
         textfield.clearButtonMode = UITextFieldViewModeWhileEditing;
         textfield.font = [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0];
     }
-
+    
+    [self.showPasswordButton setTitle:@"SHOW" forState:UIControlStateNormal];
+    [self.showPasswordButton setTitleColor:[UIColor artsyGrayMedium] forState:UIControlStateNormal];
+    self.showPasswordButton.titleLabel.font = [UIFont sansSerifFontWithSize:14.0];
+    self.showPasswordButton.titleLabel.textAlignment = NSTextAlignmentRight;
+    [self.showPasswordButton addTarget:self action:@selector(toggleShowPassword:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.showPasswordButton];
+    
+    [self.showPasswordButton alignTopEdgeWithView:self predicate:@"30"];
+    [self.showPasswordButton constrainWidth:@"80" height:@"54"];
+    [self.showPasswordButton alignTrailingEdgeWithView:self predicate:@"-1"];
+    
     self.nameFieldHeightConstraint = [self.nameField constrainHeight:@"54"];
     [self.emailField constrainHeight:@"54"];
     [self.passwordField constrainHeight:@"54"];
-
+    
     [self.nameField alignTopEdgeWithView:self predicate:@"30"];
     [self.emailField alignTopEdgeWithView:self predicate:@"30"];
     [self.passwordField alignTopEdgeWithView:self predicate:@"30"];
@@ -94,6 +114,7 @@
     self.emailField.hidden = YES;
     self.nameField.hidden = YES;
     self.passwordField.hidden = YES;
+    self.showPasswordButton.hidden = YES;
     
     [self.nameField alignLeadingEdgeWithView:self predicate:@"20"];
     [self.nameField alignTrailingEdgeWithView:self predicate:@"-20"];
@@ -110,7 +131,7 @@
     
     self.nameField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     self.nameField.returnKeyType = UIReturnKeyNext;
-
+    
     self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
     self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.emailField.returnKeyType = UIReturnKeyNext;
@@ -119,7 +140,17 @@
     self.passwordField.secureTextEntry = YES;
 }
 
+- (void)toggleShowPassword:(id)sender
+{
+    self.passwordField.secureTextEntry = !self.passwordField.secureTextEntry;
+    
+    NSString *titleText = self.passwordField.secureTextEntry ? @"SHOW" : @"HIDE";
+    [self.showPasswordButton setTitle:titleText forState:UIControlStateNormal];
+    
+}
+
 - (void)enableErrorState
+
 {
     self.passwordField.baseline.backgroundColor = [UIColor artsyRedRegular].CGColor;
     self.emailField.baseline.backgroundColor = [UIColor artsyRedRegular].CGColor;
