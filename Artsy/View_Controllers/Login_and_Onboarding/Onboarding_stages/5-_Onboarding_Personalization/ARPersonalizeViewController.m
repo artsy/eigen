@@ -223,7 +223,7 @@
     if (self.spaceHeaderToTop && self.spaceFieldsToHeader) {
         if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
             self.spaceHeaderToTop.constant = 20;
-            self.spaceFieldsToHeader.constant = -15;
+            self.spaceFieldsToHeader.constant = -35;
         } else {
             self.spaceHeaderToTop.constant = self.useLargeLayout ? 80 : 30;
             self.spaceFieldsToHeader.constant = self.useLargeLayout ? 145 : 5;
