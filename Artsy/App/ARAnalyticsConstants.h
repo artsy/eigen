@@ -32,42 +32,23 @@ extern NSString *const ARAnalyticsSlideshowStarted;
 extern NSString *const ARAnalyticsOnboardingGetStarted;
 extern NSString *const ARAnalyticsOnboardingTappedSearch;
 extern NSString *const ARAnalyticsOnboardingBudgetSelected;
-extern NSString *const ARAnalyticsOnboardingLogin;
-extern NSString *const ARAnalyticsOnboardingLoginStarted;
-extern NSString *const ARAnalyticsOnboardingLoginSuccess;
-extern NSString *const ARAnalyticsOnboardingLoginFailed;
-extern NSString *const ARAnalyticsOnboardingSignupStarted;
-extern NSString *const ARAnalyticsOnboardingSignupSuccess;
-extern NSString *const ARAnalyticsOnboardingSignupFailed;
 
 // Push notifications
 
 extern NSString *const ARAnalyticsPushNotificationLocal;
 extern NSString *const ARAnalyticsPushNotificationApple;
 
-// These are used whenever there is a button to tap
-// for sign in, or create account
-
-extern NSString *const ARAnalyticsTappedSignUp;
-extern NSString *const ARAnalyticsTappedLogIn;
-
-
 // Note: Sign in / Sign up analyics live entirely in ARUserManager
 
-extern NSString *const ARAnalyticsSignInEmail;
-extern NSString *const ARAnalyticsSignInTwitter;
-extern NSString *const ARAnalyticsSignInFacebook;
-extern NSString *const ARAnalyticsSignInWebCredentials;
-extern NSString *const ARAnalyticsSignInError;
-
-// Sign up
-
-extern NSString *const ARAnalyticsSignUpEmail;
-extern NSString *const ARAnalyticsSignUpTwitter;
-extern NSString *const ARAnalyticsSignUpFacebook;
 extern NSString *const ARAnalyticsAccountCreated;
-extern NSString *const ARAnalyticsSignUpError;
-extern NSString *const ARAnalyticsTryWithoutAccount;
+extern NSString *const ARAnalyticsLoggedIn;
+extern NSString *const ARAnalyticsAuthError;
+
+// Onboarding Account actions
+
+extern NSString *const ARAnalyticsOnboardingConnectWithFacebook;
+extern NSString *const ARAnalyticsOnboardingForgotPassword;
+extern NSString *const ARAnalyticsOnboardingForgotPasswordSent;
 
 // Inquiring
 

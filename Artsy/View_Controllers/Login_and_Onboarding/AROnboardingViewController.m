@@ -353,6 +353,7 @@
 - (void)personalizeLoginWithPasswordDone:(NSString *)password
 {
     [self loginUserWithEmail:self.email password:password withSuccess:^{
+        [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"email"}];
         [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
         [self finishAccountCreation];
     }];
@@ -459,7 +460,8 @@
     [[ARUserManager sharedManager] loginWithUsername:email
                                             password:password
                               successWithCredentials:nil
-                                             gotUser:^(User *currentUser) { success();
+                                             gotUser:^(User *currentUser) {
+                                                 success();
                                              }
                                authenticationFailure:^(NSError *error) {
                                    __strong typeof (wself) sself = wself;
@@ -595,6 +597,7 @@
                                                       [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                                       if (sself.state == AROnboardingStagePersonalizeEmail) {
                                                           [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
+                                                          [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"facebook"}];
                                                           [sself finishAccountCreation];
                                                       } else if (sself.state == AROnboardingStagePersonalizeName) {
                                                           [sself presentPersonalizationQuestionnaires];
