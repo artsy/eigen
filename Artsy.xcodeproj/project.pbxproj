@@ -309,7 +309,6 @@
 		5E47F3561C4435C100EC0751 /* AuctionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F3551C4435C100EC0751 /* AuctionTitleView.swift */; };
 		5E47F35B1C4444A900EC0751 /* SaleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F35A1C4444A900EC0751 /* SaleViewModel.swift */; };
 		5E47F35D1C444E3300EC0751 /* UIViewController+ORStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E47F35C1C444E3300EC0751 /* UIViewController+ORStackView.swift */; };
-		5E48380D1E6DD7D0007B5309 /* UILabel+Resizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E48380C1E6DD7D0007B5309 /* UILabel+Resizing.swift */; };
 		5E4962441CA1C7E800E77DD5 /* NSAttributedString+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4962431CA1C7E800E77DD5 /* NSAttributedString+Additions.swift */; };
 		5E4E329A1E4E4A1C00C7F724 /* LotStanding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E32991E4E4A1C00C7F724 /* LotStanding.m */; };
 		5E4E329D1E4E4C7B00C7F724 /* LotStandingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E329B1E4E4C5000C7F724 /* LotStandingTests.m */; };
@@ -1282,7 +1281,6 @@
 		5E47F3551C4435C100EC0751 /* AuctionTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionTitleView.swift; path = Auction/AuctionTitleView.swift; sourceTree = "<group>"; };
 		5E47F35A1C4444A900EC0751 /* SaleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaleViewModel.swift; path = Auction/SaleViewModel.swift; sourceTree = "<group>"; };
 		5E47F35C1C444E3300EC0751 /* UIViewController+ORStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+ORStackView.swift"; sourceTree = "<group>"; };
-		5E48380C1E6DD7D0007B5309 /* UILabel+Resizing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Resizing.swift"; sourceTree = "<group>"; };
 		5E4962431CA1C7E800E77DD5 /* NSAttributedString+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Additions.swift"; sourceTree = "<group>"; };
 		5E4E32981E4E4A1C00C7F724 /* LotStanding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LotStanding.h; sourceTree = "<group>"; };
 		5E4E32991E4E4A1C00C7F724 /* LotStanding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LotStanding.m; sourceTree = "<group>"; };
@@ -2266,7 +2264,6 @@
 				5E4962431CA1C7E800E77DD5 /* NSAttributedString+Additions.swift */,
 				6002C25E1CC5125200E249B2 /* UIViewController+TopMenuViewController.h */,
 				6002C25F1CC5125200E249B2 /* UIViewController+TopMenuViewController.m */,
-				5E48380C1E6DD7D0007B5309 /* UILabel+Resizing.swift */,
 			);
 			path = Apple;
 			sourceTree = "<group>";
@@ -5280,7 +5277,6 @@
 				4953E83B16681A4200A09726 /* ContentLink.m in Sources */,
 				494332FD16692010005AB483 /* VideoContentLink.m in Sources */,
 				E676B2EB18D0CC330057B4E1 /* ARURLItemProvider.m in Sources */,
-				5E48380D1E6DD7D0007B5309 /* UILabel+Resizing.swift in Sources */,
 				5EF9E1141C56CEDB00CD80DB /* AuctionRefineSettings.swift in Sources */,
 				5E288EA91CC0219A00A974AA /* LotListCollectionViewCell+Private.swift in Sources */,
 				60A49F601676559300B9B95D /* ARNetworkConstants.m in Sources */,

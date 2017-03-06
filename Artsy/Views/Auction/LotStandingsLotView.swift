@@ -47,23 +47,32 @@ extension LotStandingsLotView {
     func setup() {
         guard let config = config, let saleArtwork = config.lotStanding.saleArtwork else { return }
 
-        // config-specific setup
+        // Config-specific setup
         bottomBorder.isHidden = !config.drawBottomBorder
         imageView.sd_setImage(with: saleArtwork.artwork.urlForThumbnail())
-        artworkNameLabel.text = saleArtwork.artwork.name()
         currentBidLabel.text = saleArtwork.currentBid.convertToDollarString(saleArtwork.currencySymbol)
         numberOfBidsLabel.text = saleArtwork.numberOfBidsString()
+
+        if let artworkName = saleArtwork.artwork.name() {
+            if saleArtwork.artwork.date.isEmpty {
+                artworkNameLabel.text = artworkName
+            } else {
+                artworkNameLabel.text = "\(artworkName), \(saleArtwork.artwork.date)"
+            }
+        } else {
+            artworkNameLabel.text = nil
+        }
 
         if let lotNumber = saleArtwork.lotNumber {
             lotNumberLabel.text = "Lot \(lotNumber)"
         } else {
-            lotNumberLabel.text = "No Lot Number" // TODO: Check on what force does here.
+            lotNumberLabel.text = "No Lot Number"
         }
 
         if let artist = saleArtwork.artwork.artist {
             artistNameLabel.text = artist.name
         } else {
-            artistNameLabel.text = "No Artist" // TODO: Check on what force does here.
+            artistNameLabel.text = "No Artist"
         }
 
         if config.lotStanding.isLeading {
@@ -87,12 +96,15 @@ extension LotStandingsLotView {
             bidStatusLabel.resizeFont(to: 12)
         } else {
             artistNameLabel.font = UIFont.serifSemiBoldFont(withSize: 12)
-            // TODO: Add year, unitalicized.
             artworkNameLabel.resizeFont(to: 14)
             currentBidLabel.resizeFont(to: 12)
             numberOfBidsLabel.resizeFont(to: 12)
             bidStatusLabel.resizeFont(to: 10)
         }
+        if let artworkName = saleArtwork.artwork.name() {
+            artworkNameLabel.makeSubstring(artworkName, useFont: UIFont.serifItalicFont(withSize: artworkNameLabel.font.pointSize))
+        }
+
 
         setNeedsLayout()
 

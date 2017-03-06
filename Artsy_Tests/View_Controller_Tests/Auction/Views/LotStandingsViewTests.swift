@@ -75,7 +75,8 @@ fileprivate func test_LotStanding(highBidder: Bool, reserveMet: Bool) -> LotStan
         "artwork": [
             "artist": [
                 "name": "Todd"
-            ]
+            ],
+            "year": "1999"
         ],
         "reserve_status": (reserveMet ? "reserve_met" : "reserve_not_met")
     ]
