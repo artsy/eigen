@@ -78,11 +78,20 @@ extension LotStandingsLotView {
         }
 
         // UI setup that's hard to do in Interface Builder
-        currentBidLabel.font = UIFont.serifBoldFont(withSize: currentBidLabel.font.pointSize)
-        artistNameLabel.font = UIFont.serifBoldFont(withSize: artistNameLabel.font.pointSize)
-        lotNumberLabel.font = UIFont.sansSerifFont(withSize: 12)
+        lotNumberLabel.resizeFont(to: 10)
         if config.isCompact {
-            bidStatusLabel.font = UIFont.sansSerifFont(withSize: 12)
+            artistNameLabel.resizeFont(to: 14)
+            artworkNameLabel.resizeFont(to: 14)
+            currentBidLabel.resizeFont(to: 14)
+            numberOfBidsLabel.resizeFont(to: 14)
+            bidStatusLabel.resizeFont(to: 12)
+        } else {
+            artistNameLabel.font = UIFont.serifSemiBoldFont(withSize: 12)
+            // TODO: Add year, unitalicized.
+            artworkNameLabel.resizeFont(to: 14)
+            currentBidLabel.resizeFont(to: 12)
+            numberOfBidsLabel.resizeFont(to: 12)
+            bidStatusLabel.resizeFont(to: 10)
         }
 
         setNeedsLayout()
