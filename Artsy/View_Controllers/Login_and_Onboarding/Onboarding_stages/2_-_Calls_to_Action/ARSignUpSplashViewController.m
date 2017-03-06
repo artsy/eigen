@@ -35,6 +35,9 @@
 @property (nonatomic) ARSerifLineHeightLabel *descriptionLabel;
 @property (nonatomic, strong, readwrite) UIActivityIndicatorView *spinnerView;
 @property (nonatomic, strong, readwrite) UIImageView *logoView;
+@property (nonatomic, strong) NSLayoutConstraint *spaceLogoToTop;
+@property (nonatomic, strong) NSLayoutConstraint *spaceDescription;
+
 @end
 
 
@@ -95,6 +98,25 @@
     [super viewDidAppear:animated];
 }
 
+// Yes, this is deprecated, but it's the most straightforward way to change 2 values for iPad landscape
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self finaliseValuesForiPadWithInterfaceOrientation:toInterfaceOrientation];
+}
+
+- (void)finaliseValuesForiPadWithInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (self.spaceLogoToTop) {
+        if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+            self.spaceLogoToTop.constant = 100;
+            self.spaceDescription.constant = -90;
+        } else {
+            self.spaceLogoToTop.constant = 260;
+            self.spaceDescription.constant = -190;
+        }
+    }
+}
+
 - (void)loggedInWithSharedCredentials
 {
     // This is also a method for ARAppDelegate+Analytics to hook into.
@@ -116,7 +138,7 @@
     self.logoView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:self.logoView];
     [self.logoView alignCenterXWithView:self.view predicate:@"0"];
-    [self.logoView alignTopEdgeWithView:self.view predicate:self.useLargeLayout ? @"260" : @"70"];
+    self.spaceLogoToTop = [self.logoView alignTopEdgeWithView:self.view predicate:self.useLargeLayout ? @"260" : @"70"];
 
     self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.view addSubview:self.spinnerView];
@@ -163,7 +185,7 @@
 
     [self.descriptionLabel constrainWidth:self.useLargeLayout ? @"500" : @"280" height:self.useLargeLayout ? @"160" : @"120"];
     [self.descriptionLabel alignCenterXWithView:self.view predicate:@"0"];
-    [self.descriptionLabel constrainBottomSpaceToView:self.getStartedButton predicate:self.useLargeLayout ? @"-190" : @"-25"];
+    self.spaceDescription = [self.descriptionLabel constrainBottomSpaceToView:self.getStartedButton predicate:self.useLargeLayout ? @"-190" : @"-25"];
     
     [self.getStartedButton alignBottomEdgeWithView:self.view predicate:self.useLargeLayout ? @"-170" : @"-80"];
     [self.getStartedButton alignCenterXWithView:self.view predicate:@"0"];
@@ -174,6 +196,7 @@
     [label alignBottomEdgeWithView:self.view predicate:self.useLargeLayout ? @"-55" : @"-10"];
 
     [self hideControls];
+    [self finaliseValuesForiPadWithInterfaceOrientation:self.interfaceOrientation];
 }
 
 - (void)hideControls
