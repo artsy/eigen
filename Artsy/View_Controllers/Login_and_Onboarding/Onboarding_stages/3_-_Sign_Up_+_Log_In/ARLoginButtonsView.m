@@ -31,17 +31,50 @@
     [self commonSetupWithLargeLayout:useLargeLayout];
     
     NSString *titleString = @"You can also ";
-    NSString *facebookLink = @"connect with Facebook";
+    NSString *facebookLink = @"CONNECT WITH FACEBOOK";
     
     UIColor *facebookBlue = [UIColor colorWithRed:60.0 / 225.0 green:89.0 / 225.0 blue:155.0 / 255.0 alpha:1.0];
     
     NSMutableAttributedString *attributedTitle = [[NSMutableAttributedString alloc] initWithString:titleString attributes: @{NSForegroundColorAttributeName : [UIColor artsyGraySemibold], NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]}];
     
-    NSAttributedString *facebookPart = [[NSAttributedString alloc] initWithString:facebookLink attributes:@{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle), NSForegroundColorAttributeName : facebookBlue, NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]}];
+    NSAttributedString *facebookPart = [[NSAttributedString alloc] initWithString:facebookLink attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor], NSFontAttributeName : [UIFont sansSerifFontWithSize:useLargeLayout ? 16.0 : 12.0]}];
+
+    UIView *tempView = [[UIView alloc] init];
     
-    [attributedTitle appendAttributedString:facebookPart];
+    UILabel *firstbit = [[UILabel alloc] init];
+    firstbit.attributedText = attributedTitle;
+    firstbit.textAlignment = useLargeLayout ? NSTextAlignmentCenter : NSTextAlignmentLeft;
     
-    [self.actionButton setAttributedTitle:attributedTitle forState:UIControlStateNormal];
+    UILabel *secondbit = [[UILabel alloc] init];
+    secondbit.attributedText = facebookPart;
+    secondbit.textAlignment = NSTextAlignmentCenter;
+    secondbit.layer.cornerRadius = useLargeLayout ? 20 : 17;
+    secondbit.layer.backgroundColor = facebookBlue.CGColor;
+    
+    [tempView addSubview:firstbit];
+    [tempView addSubview:secondbit];
+
+    [self.actionButton addSubview:tempView];
+    
+    if (useLargeLayout) {
+        [tempView alignCenterWithView:self.actionButton];
+    } else {
+        [tempView alignTop:@"0" leading:@"0" toView:self.actionButton];
+    }
+    [tempView constrainWidth:useLargeLayout ? @"400" : @"300"];
+    [tempView constrainHeightToView:self.actionButton predicate:@"0"];
+    
+    [firstbit constrainWidth:useLargeLayout? @"140" : @"100"];
+    [firstbit constrainHeightToView:tempView predicate:@"0"];
+    
+    [secondbit constrainWidth:useLargeLayout? @"260" : @"200"];
+    [secondbit constrainHeightToView:tempView predicate:useLargeLayout ? @"0" : @"-6"];
+    
+    [firstbit constrainTrailingSpaceToView:secondbit predicate:@"0"];
+    [firstbit alignTop:@"0" leading:@"0" toView:tempView];
+    [secondbit alignTopEdgeWithView:tempView predicate:@"0"];
+    
+    tempView.userInteractionEnabled = NO;
 }
 
 - (void)setupForLoginWithLargeLayout:(BOOL)useLargeLayout

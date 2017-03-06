@@ -108,11 +108,11 @@
 {
     if (self.spaceLogoToTop) {
         if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
-            self.spaceLogoToTop.constant = 100;
-            self.spaceDescription.constant = -90;
+            self.spaceLogoToTop.constant = self.useLargeLayout ? 100 : 70;
+            self.spaceDescription.constant = self.useLargeLayout ? -90 : -25;
         } else {
-            self.spaceLogoToTop.constant = 260;
-            self.spaceDescription.constant = -190;
+            self.spaceLogoToTop.constant = self.useLargeLayout ? 260 : 70;
+            self.spaceDescription.constant = self.useLargeLayout ? -190 : -25;
         }
     }
 }
