@@ -693,6 +693,13 @@
                                 }
                             },
                         @{
+                            ARAnalyticsEventName: ARAnalyticsOnboardingAlreadyAccountBack,
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(backTapped:)),
+                            ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                    return (controller.state == AROnboardingStagePersonalizePassword);
+                                }
+                            },
+                        @{
                             ARAnalyticsEventName: ARAnalyticsOnboardingTappedSearch,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(searchStarted:)),
                             ARAnalyticsProperties: ^NSDictionary*(ARPersonalizeViewController *controller, NSArray *_){

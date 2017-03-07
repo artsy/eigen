@@ -38,7 +38,7 @@ extern NSString *const ARAnalyticsOnboardingBudgetSelected;
 extern NSString *const ARAnalyticsPushNotificationLocal;
 extern NSString *const ARAnalyticsPushNotificationApple;
 
-// Note: Sign in / Sign up analyics live entirely in ARUserManager
+// Note: Sign in / Sign up analyics live entirely in ARUserManager and OnboardingViewController
 
 extern NSString *const ARAnalyticsAccountCreated;
 extern NSString *const ARAnalyticsLoggedIn;
@@ -49,6 +49,7 @@ extern NSString *const ARAnalyticsAuthError;
 extern NSString *const ARAnalyticsOnboardingConnectWithFacebook;
 extern NSString *const ARAnalyticsOnboardingForgotPassword;
 extern NSString *const ARAnalyticsOnboardingForgotPasswordSent;
+extern NSString *const ARAnalyticsOnboardingAlreadyAccountBack;
 
 // Inquiring
 

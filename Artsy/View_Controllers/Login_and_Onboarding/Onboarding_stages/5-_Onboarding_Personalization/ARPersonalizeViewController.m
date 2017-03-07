@@ -24,7 +24,6 @@
 #import <AFNetworking/AFNetworking.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
-#import "UIDevice-Hardware.h"
 
 
 @interface ARPersonalizeViewController () <UITextFieldDelegate, ARPersonalizeNetworkDelegate, ARPersonalizeContainer>
@@ -172,7 +171,6 @@
         case AROnboardingStagePersonalizeLogin:
             [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Enter your password" withLargeLayout:self.useLargeLayout];
-//            [self.headerView addHelpText:@"Enter your password to log in" withLargeLayout:self.useLargeLayout];
             [self addTextFields];
             [self.onboardingTextFields setupForLoginWithLargeLayout:self.useLargeLayout];
             [self.onboardingTextFields.passwordField becomeFirstResponder];

@@ -208,7 +208,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             if (authenticationFailure) {
-                [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : @"login authentication error"}];
                 authenticationFailure(error);
             }
         }];
@@ -218,12 +217,10 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (JSON) {
             if (authenticationFailure) {
-                [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : @"login authentication error"}];
                 authenticationFailure(error);
             }
         } else {
             if (networkFailure) {
-                [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : @"network failed error"}];
                 networkFailure(error);
             }
         }
@@ -271,7 +268,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
             if (authenticationFailure) {
-                [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : @"facebook login authentication error"}];
                 authenticationFailure(error);
             }
         }];
@@ -281,12 +277,10 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (JSON) {
             if (authenticationFailure) {
-                [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : @"facebook login authentication error"}];
                 authenticationFailure(error);
             }
         } else {
             if (networkFailure) {
-                [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : @"network failed error"}];
                 networkFailure(error);
             }
         }
@@ -325,7 +319,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
              User *user = [User modelWithJSON:JSON error:&error];
              if (error) {
                  ARErrorLog(@"Couldn't create user model from fresh user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
-                 [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : @"Couldn't create user model from fresh user."}];
 
                  failure(error, JSON);
                  return;
@@ -349,7 +342,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              ARActionLog(@"Creating a new user account failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
              failure(error, JSON);
-                 [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : @"Creating a new user account failed."}];         }];
+                          }];
 
         [op start];
 
@@ -366,7 +359,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
              User *user = [User modelWithJSON:JSON error:&error];
              if (error) {
                  ARErrorLog(@"Couldn't create user model from fresh Facebook user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
-                [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : @"Couldn't create user model from fresh Facebook user."}];
                  failure(error, JSON);
                  return;
              }
@@ -381,7 +373,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              failure(error, JSON);
-            [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : @"Facebook user creation error"}];
          }];
         [op start];
     }];

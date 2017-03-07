@@ -447,9 +447,14 @@
         }];
     } failure:^(NSError *error, id JSON) {
         __strong typeof (wself) sself = wself;
-        if (sself.state == AROnboardingStagePersonalizeName) {
-            [(ARPersonalizeViewController *)sself.topViewController showErrorWithMessage:@"Could not create account"];
+        if (JSON) {
+            if (sself.state == AROnboardingStagePersonalizeName) {
+                [sself displayError:@"Could not create account"];
+            }
+        } else {
+            [sself displayNetworkFailureError];
         }
+
     }];
 
 }
@@ -466,12 +471,12 @@
                                authenticationFailure:^(NSError *error) {
                                    __strong typeof (wself) sself = wself;
                                    if (sself.state == AROnboardingStagePersonalizeLogin) {
-                                       [(ARPersonalizeViewController *)sself.topViewController showErrorWithMessage:@"Please check your email and password"];
+                                       [sself displayError:@"Please check your email and password"];
                                    }
                                }
                                       networkFailure:^(NSError *error) {
                                           __strong typeof (wself) sself = wself;
-                                          [(ARPersonalizeViewController *)sself.topViewController showErrorWithMessage:@"Connection failed"];
+                                          [sself displayNetworkFailureError];
                                       }];
 }
 
@@ -484,6 +489,8 @@
     } failure:^(NSError *error) {
         ARErrorLog(@"Password reset failed for %@. Error: %@", email, error.localizedDescription);
         [(ARPersonalizeViewController *)sender passwordResetError:@"Couldn’t send reset password link. Please try again, or contact support@artsy.net"];
+        [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : @"Couldn’t send reset password link."}];
+
     }];
 }
 
@@ -538,7 +545,7 @@
         
     } failure:^(NSError *error) {
         __strong typeof (wself) sself = wself;
-        [(ARPersonalizeViewController *)sself.topViewController showErrorWithMessage:@"There was a problem authenticating with Facebook"];
+        [sself displayError:@"There was a problem authenticating with Facebook"];
         [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
     }];
 }
@@ -568,15 +575,14 @@
                                                                                  || [JSON[@"error"] isEqualToString:@"User Already Invited"]) {
                                                                           // there's already a user with this email
                                                                           __strong typeof (wself) sself = wself;
-                                                                          [(ARPersonalizeViewController *)sself.topViewController showErrorWithMessage:@"User already exists with this email. Please log in with your email and password."];
+                                                                          [sself displayError:@"User already exists with this email. Please log in with your email and password."];
                                                                           return;
                                                                       }
                                                                   }
                                                                   
                                                                   // something else went wrong
                                                                   ARErrorLog(@"Couldn't link Facebook account. Error: %@. The server said: %@", error.localizedDescription, JSON);
-                                                                  [(ARPersonalizeViewController *)self.topViewController showErrorWithMessage:@"Couldn't link Facebook account"];
-                                                                  // we'll display an alert view
+                                                                  [sself displayError:@"Couldn't link Facebook account"];;
                                                               }];
         
     } else {
@@ -605,17 +611,31 @@
                                                   }
                                     authenticationFailure:^(NSError *error) {
                                         __strong typeof (wself) sself = wself;
-                                        [(ARPersonalizeViewController *)sself.topViewController showErrorWithMessage:@"There was a problem authenticating with Facebook"];
+                                        [sself displayError:@"There was a problem authenticating with Facebook"];
                                         [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                     }
                                            networkFailure:^(NSError *error) {
                                                // TODO: handle this
                                                __strong typeof (wself) sself = wself;
-                                               [(ARPersonalizeViewController *)sself.topViewController showErrorWithMessage:@"Connection failed"];
+                                               [sself displayNetworkFailureError];
                                                [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                            }];
 }
 
+#pragma mark -
+#pragma mark Errors
+
+- (void)displayError:(NSString *)errorMessage
+{
+    [(ARPersonalizeViewController *)self.topViewController showErrorWithMessage:errorMessage];
+    [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : errorMessage}];
+
+}
+
+- (void)displayNetworkFailureError
+{
+    [self displayError:@"Connection failed"];
+}
 
 #pragma mark -
 #pragma mark Navigation Delegate
