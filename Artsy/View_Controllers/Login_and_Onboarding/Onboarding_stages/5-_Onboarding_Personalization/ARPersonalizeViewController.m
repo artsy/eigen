@@ -24,6 +24,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
+#import "UIDevice-Hardware.h"
 
 
 @interface ARPersonalizeViewController () <UITextFieldDelegate, ARPersonalizeNetworkDelegate, ARPersonalizeContainer>
@@ -133,9 +134,16 @@
 
     self.headerView = [[AROnboardingHeaderView alloc] init];
     [self.view addSubview:self.headerView];
+    
+    // for iPhone 5
+    if ([[UIScreen mainScreen] bounds].size.height == 568.0) {
+        self.spaceHeaderToTop = [self.headerView alignTopEdgeWithView:self.view predicate:self.useLargeLayout ? @"80" : @"20"];
+        [self.headerView constrainHeight:@"120"];
+    } else {
+        self.spaceHeaderToTop = [self.headerView alignTopEdgeWithView:self.view predicate:self.useLargeLayout ? @"80" : @"30"];
+        [self.headerView constrainHeight:@"160"];
+    }
 
-    self.spaceHeaderToTop = [self.headerView alignTopEdgeWithView:self.view predicate:self.useLargeLayout ? @"80" : @"30"];
-    [self.headerView constrainHeight:@"160"];
     [self.headerView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
     [self.headerView alignCenterXWithView:self.view predicate:@"0"];
 
@@ -239,7 +247,13 @@
     [self.onboardingTextFields constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"0"];
     [self.onboardingTextFields alignCenterXWithView:self.view predicate:@"0"];
     self.spaceFieldsToHeader = [self.onboardingTextFields constrainTopSpaceToView:self.headerView predicate:self.useLargeLayout ? @"150" : @"5"];
-    [self.onboardingTextFields constrainHeight:@"100"];
+    
+    // for iPhone 5
+    if ([[UIScreen mainScreen] bounds].size.height == 568.0) {
+        [self.onboardingTextFields constrainHeight:@"80"];
+    } else {
+        [self.onboardingTextFields constrainHeight:@"100"];
+    }
 }
 
 - (void)addButtons
