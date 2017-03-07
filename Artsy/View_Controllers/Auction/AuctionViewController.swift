@@ -134,6 +134,11 @@ extension AuctionViewController {
             }
 
             self?.addLotStandings()
+
+            // Needs to dispatch because of UIKit ¯\_(ツ)_/¯
+            DispatchQueue.main.async {
+                self?.view.setNeedsUpdateConstraints()
+            }
         }
     }
 
