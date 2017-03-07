@@ -26,74 +26,74 @@
     if (self) {
 
         _back = [[ARWhiteFlatButton alloc] init];
-        [_back setTitle:@"Back" forState:UIControlStateNormal];
+        [self.back setTitle:@"Back" forState:UIControlStateNormal];
         
         _next = [[ARWhiteFlatButton alloc] init];
-        [_next setTitle:@"Next" forState:UIControlStateNormal];
+        [self.next setTitle:@"Next" forState:UIControlStateNormal];
         
         UIView *topBorder = [[UIView alloc] init];
-        _separatorBorder = [[UIView alloc] init];
+        self.separatorBorder = [[UIView alloc] init];
         topBorder.backgroundColor = [UIColor artsyGrayRegular];
-        _separatorBorder.backgroundColor = [UIColor artsyGrayRegular];
+        self.separatorBorder.backgroundColor = [UIColor artsyGrayRegular];
         
-        [self addSubview:_back];
-        [self addSubview:_next];
+        [self addSubview:self.back];
+        [self addSubview:self.next];
         [self addSubview:topBorder];
-        [self addSubview:_separatorBorder];
+        [self addSubview:self.separatorBorder];
         
         [topBorder constrainHeight:@"0.5"];
         [topBorder constrainWidthToView:self predicate:@"0"];
         [topBorder alignTop:@"0" leading:@"0" toView:self];
         
-        [_separatorBorder constrainWidth:@"0.5"];
-        [_separatorBorder constrainHeightToView:self predicate:@"0"];
-        [_separatorBorder alignCenterWithView:self];
+        [self.separatorBorder constrainWidth:@"0.5"];
+        [self.separatorBorder constrainHeightToView:self predicate:@"0"];
+        [self.separatorBorder alignCenterWithView:self];
         
-        [_back alignBottomEdgeWithView:self predicate:@"0"];
-        [_back alignLeadingEdgeWithView:self predicate:@"0"];
-        [_back constrainWidthToView:self predicate:@"*.5"];
-        [_back constrainHeight:@"50"];
+        [self.back alignBottomEdgeWithView:self predicate:@"0"];
+        [self.back alignLeadingEdgeWithView:self predicate:@"0"];
+        [self.back constrainWidthToView:self predicate:@"*.5"];
+        [self.back constrainHeight:@"50"];
         
-        _back.hidden = YES;
-        _separatorBorder.hidden = YES;
+        self.back.hidden = YES;
+        self.separatorBorder.hidden = YES;
         
-        [_next alignBottomEdgeWithView:self predicate:@"0"];
-        [_next alignTrailingEdgeWithView:self predicate:@"0"];
-        _nextWidthConstraintFull = [_next constrainWidthToView:self predicate:@"1"];
-        _nextWidthConstraintHalf = [_next constrainWidthToView:self predicate:@"*.5"];
-        _nextWidthConstraintHalf.active = NO;
-        [_next constrainHeight:@"50"];
+        [self.next alignBottomEdgeWithView:self predicate:@"0"];
+        [self.next alignTrailingEdgeWithView:self predicate:@"0"];
+        self.nextWidthConstraintFull = [self.next constrainWidthToView:self predicate:@"1"];
+        self.nextWidthConstraintHalf = [self.next constrainWidthToView:self predicate:@"*.5"];
+        self.nextWidthConstraintHalf.active = NO;
+        [self.next constrainHeight:@"50"];
 
-        _warningLabel = [[UILabel alloc] init];
-        _warningLabel.font = [UIFont serifFontWithSize:15.0];
-        _warningLabel.textAlignment = NSTextAlignmentCenter;
+        self.warningLabel = [[UILabel alloc] init];
+        self.warningLabel.font = [UIFont serifFontWithSize:15.0];
+        self.warningLabel.textAlignment = NSTextAlignmentCenter;
 
-        [self addSubview:_warningLabel];
+        [self addSubview:self.warningLabel];
 
-        [_warningLabel alignBottomEdgeWithView:self predicate:@"0"];
-        [_warningLabel alignLeadingEdgeWithView:self predicate:@"0"];
-        [_warningLabel constrainWidthToView:self predicate:@"0"];
-        [_warningLabel constrainHeight:@"50"];
+        [self.warningLabel alignBottomEdgeWithView:self predicate:@"0"];
+        [self.warningLabel alignLeadingEdgeWithView:self predicate:@"0"];
+        [self.warningLabel constrainWidthToView:self predicate:@"0"];
+        [self.warningLabel constrainHeight:@"50"];
         
-        _warningLabel.hidden = YES;
+        self.warningLabel.hidden = YES;
         
-        _spinnerView = [[UIView alloc] init];
-        _spinnerView.backgroundColor = [UIColor blackColor];
+        self.spinnerView = [[UIView alloc] init];
+        self.spinnerView.backgroundColor = [UIColor blackColor];
         
-        _spinner = [[ARSpinner alloc] init];
-        _spinner.spinnerColor = [UIColor whiteColor];
+        self.spinner = [[ARSpinner alloc] init];
+        self.spinner.spinnerColor = [UIColor whiteColor];
         
-        [self addSubview:_spinnerView];
-        [_spinnerView addSubview:_spinner];
+        [self addSubview:self.spinnerView];
+        [self.spinnerView addSubview:self.spinner];
         
-        [_spinner alignCenterWithView:_spinnerView];
+        [self.spinner alignCenterWithView:self.spinnerView];
         
-        [_spinnerView alignBottomEdgeWithView:self predicate:@"0"];
-        [_spinnerView alignLeadingEdgeWithView:self predicate:@"0"];
-        [_spinnerView constrainWidthToView:self predicate:@"0"];
-        [_spinnerView constrainHeight:@"50"];
+        [self.spinnerView alignBottomEdgeWithView:self predicate:@"0"];
+        [self.spinnerView alignLeadingEdgeWithView:self predicate:@"0"];
+        [self.spinnerView constrainWidthToView:self predicate:@"0"];
+        [self.spinnerView constrainHeight:@"50"];
         
-        _spinnerView.hidden = YES;
+        self.spinnerView.hidden = YES;
     }
 
     return self;
