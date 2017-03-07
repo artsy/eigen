@@ -350,8 +350,7 @@
         UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kind forIndexPath:indexPath];
         if (view.subviews.count == 0) {
             [view addSubview:self.stickyHeaderView];
-            [self.stickyHeaderView alignTopEdgeWithView:view predicate:@"0"];
-            [self.stickyHeaderView alignLeading:@"0" trailing:@"0" toView:view];
+            [self.stickyHeaderView alignToView:view];
         }
         return view;
     }
