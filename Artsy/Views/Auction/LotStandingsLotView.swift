@@ -49,7 +49,9 @@ extension LotStandingsLotView {
         // Config-specific setup
         bottomBorder.isHidden = !config.drawBottomBorder
         imageView.sd_setImage(with: saleArtwork.artwork.urlForThumbnail())
-        currentBidLabel.text = "\(saleArtwork.currentBid.convertToDollarString(saleArtwork.currencySymbol)) \(saleArtwork.numberOfBidsString())"
+        let bid = saleArtwork.currentBid.convertToDollarString(saleArtwork.currencySymbol)
+        let numberOfBids = saleArtwork.numberOfBidsString()
+        currentBidLabel.text = "\(bid) \(numberOfBids)"
 
         if let artworkName = saleArtwork.artwork.name() {
             if saleArtwork.artwork.date.isEmpty {
