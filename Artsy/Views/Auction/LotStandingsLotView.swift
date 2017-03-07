@@ -10,7 +10,6 @@ class LotStandingsLotView: UIView {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var bidStatusLabel: UILabel!
     @IBOutlet weak var currentBidLabel: UILabel!
-    @IBOutlet weak var numberOfBidsLabel: UILabel!
     @IBOutlet weak var lotNumberLabel: UILabel!
     @IBOutlet weak var artistNameLabel: UILabel!
     @IBOutlet weak var artworkNameLabel: UILabel!
@@ -50,8 +49,7 @@ extension LotStandingsLotView {
         // Config-specific setup
         bottomBorder.isHidden = !config.drawBottomBorder
         imageView.sd_setImage(with: saleArtwork.artwork.urlForThumbnail())
-        currentBidLabel.text = saleArtwork.currentBid.convertToDollarString(saleArtwork.currencySymbol)
-        numberOfBidsLabel.text = saleArtwork.numberOfBidsString()
+        currentBidLabel.text = "\(saleArtwork.currentBid.convertToDollarString(saleArtwork.currencySymbol)) \(saleArtwork.numberOfBidsString())"
 
         if let artworkName = saleArtwork.artwork.name() {
             if saleArtwork.artwork.date.isEmpty {
@@ -92,13 +90,11 @@ extension LotStandingsLotView {
             artistNameLabel.resizeFont(to: 14)
             artworkNameLabel.resizeFont(to: 14)
             currentBidLabel.resizeFont(to: 14)
-            numberOfBidsLabel.resizeFont(to: 14)
             bidStatusLabel.resizeFont(to: 12)
         } else {
             artistNameLabel.font = UIFont.serifSemiBoldFont(withSize: 12)
             artworkNameLabel.resizeFont(to: 14)
             currentBidLabel.resizeFont(to: 12)
-            numberOfBidsLabel.resizeFont(to: 12)
             bidStatusLabel.resizeFont(to: 10)
         }
         if let artworkName = saleArtwork.artwork.name() {

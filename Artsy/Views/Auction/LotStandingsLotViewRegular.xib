@@ -34,14 +34,8 @@
                         <constraint firstAttribute="width" constant="6" id="eh8-hC-ZQP"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$12,000,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRs-ie-jjh" customClass="ARSerifLabel">
-                    <rect key="frame" x="389.5" y="59.5" width="98" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(6 Bids)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sUP-a2-T7M" customClass="ARSerifLabel">
-                    <rect key="frame" x="492.5" y="59.5" width="55.5" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$12,000,000 (6 Bids)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRs-ie-jjh" customClass="ARSerifLabel">
+                    <rect key="frame" x="389.5" y="60" width="161" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -64,7 +58,7 @@
                     <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lounge chair &amp; ottoman, 1965" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uFF-Hg-ojj" customClass="ARSerifLabel">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lounge chair (1956)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uFF-Hg-ojj" customClass="ARSerifLabel">
                     <rect key="frame" x="195" y="83.5" width="162.5" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -74,33 +68,28 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="uFF-Hg-ojj" firstAttribute="leading" secondItem="wv6-Dl-4rk" secondAttribute="leading" id="0Hv-Ps-g34"/>
-                <constraint firstItem="sUP-a2-T7M" firstAttribute="leading" secondItem="bRs-ie-jjh" secondAttribute="trailing" constant="5" id="3Dv-3h-Yga"/>
                 <constraint firstItem="uFF-Hg-ojj" firstAttribute="leading" secondItem="DKt-9u-HCN" secondAttribute="trailing" constant="20" id="3mD-CJ-38y"/>
                 <constraint firstItem="DKt-9u-HCN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="40" id="4II-wW-bs8"/>
                 <constraint firstAttribute="trailing" secondItem="qGL-gR-41X" secondAttribute="trailing" constant="40" id="7dL-HH-hdb"/>
                 <constraint firstItem="sVW-GY-jju" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="8GK-2J-5sg"/>
                 <constraint firstItem="uFF-Hg-ojj" firstAttribute="top" secondItem="wv6-Dl-4rk" secondAttribute="bottom" constant="27" id="DAK-7O-W8L"/>
-                <constraint firstItem="sUP-a2-T7M" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="E4H-Qr-e5u"/>
                 <constraint firstItem="bRs-ie-jjh" firstAttribute="leading" secondItem="d8z-6U-TjH" secondAttribute="trailing" constant="6" id="ElK-6v-oSt"/>
                 <constraint firstItem="uFF-Hg-ojj" firstAttribute="top" secondItem="sVW-GY-jju" secondAttribute="bottom" constant="3" id="IyO-5o-Eir"/>
                 <constraint firstItem="sVW-GY-jju" firstAttribute="leading" secondItem="wv6-Dl-4rk" secondAttribute="leading" id="Jeq-gE-rj3"/>
                 <constraint firstAttribute="trailing" secondItem="qGL-gR-41X" secondAttribute="trailing" constant="40" id="MeZ-Al-LHD"/>
+                <constraint firstAttribute="trailing" secondItem="bRs-ie-jjh" secondAttribute="trailing" constant="217.5" id="PBx-8T-Ts8"/>
                 <constraint firstItem="qGL-gR-41X" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="PLc-MZ-5go"/>
                 <constraint firstAttribute="trailing" secondItem="dlY-yE-giM" secondAttribute="trailing" constant="40" id="Vtj-Aj-rDC"/>
                 <constraint firstAttribute="bottom" secondItem="dlY-yE-giM" secondAttribute="bottom" id="Wul-In-JyL"/>
-                <constraint firstItem="sUP-a2-T7M" firstAttribute="leading" secondItem="d8z-6U-TjH" secondAttribute="trailing" constant="109.5" id="aFK-hd-N40"/>
                 <constraint firstItem="sVW-GY-jju" firstAttribute="width" secondItem="wv6-Dl-4rk" secondAttribute="width" id="fL9-25-cy8"/>
                 <constraint firstItem="dlY-yE-giM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="40" id="gXb-Av-CfR"/>
                 <constraint firstItem="d8z-6U-TjH" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="ig8-ae-WJ7"/>
                 <constraint firstItem="bRs-ie-jjh" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="k7U-4Z-nyo"/>
                 <constraint firstItem="uFF-Hg-ojj" firstAttribute="width" secondItem="wv6-Dl-4rk" secondAttribute="width" id="kjv-YT-ipB"/>
-                <constraint firstItem="d8z-6U-TjH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sVW-GY-jju" secondAttribute="trailing" constant="20" id="ucE-os-ZOK"/>
                 <constraint firstItem="dlY-yE-giM" firstAttribute="top" secondItem="DKt-9u-HCN" secondAttribute="bottom" constant="19" id="uyS-kf-y8C"/>
                 <constraint firstItem="sVW-GY-jju" firstAttribute="leading" secondItem="DKt-9u-HCN" secondAttribute="trailing" constant="20" id="wAp-CH-iV9"/>
-                <constraint firstItem="sUP-a2-T7M" firstAttribute="leading" secondItem="bRs-ie-jjh" secondAttribute="trailing" constant="5" id="x5A-5g-VXB"/>
                 <constraint firstItem="bRs-ie-jjh" firstAttribute="leading" secondItem="d8z-6U-TjH" secondAttribute="trailing" constant="6" id="xsq-2s-szx"/>
                 <constraint firstItem="DKt-9u-HCN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="yaN-nM-0JP"/>
-                <constraint firstAttribute="trailing" secondItem="sUP-a2-T7M" secondAttribute="trailing" constant="220" id="yuL-Nd-bBl"/>
                 <constraint firstItem="wv6-Dl-4rk" firstAttribute="leading" secondItem="DKt-9u-HCN" secondAttribute="trailing" constant="20" id="z4m-Rg-cGU"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
@@ -115,7 +104,6 @@
                 <outlet property="currentBidLabel" destination="bRs-ie-jjh" id="zfC-AD-nAZ"/>
                 <outlet property="imageView" destination="DKt-9u-HCN" id="WA3-Rc-0Gy"/>
                 <outlet property="lotNumberLabel" destination="wv6-Dl-4rk" id="jSt-as-Qsq"/>
-                <outlet property="numberOfBidsLabel" destination="sUP-a2-T7M" id="izz-j0-Uej"/>
             </connections>
             <point key="canvasLocation" x="34" y="54"/>
         </view>

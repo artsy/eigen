@@ -36,7 +36,7 @@
                     </variation>
                 </imageView>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Vko-em-QBe">
-                    <rect key="frame" x="178" y="25" width="122" height="110"/>
+                    <rect key="frame" x="178" y="25" width="122" height="110.5"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="HIGHEST BIDDER" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qGL-gR-41X" customClass="ARSansSerifLabel">
                             <rect key="frame" x="0.0" y="0.0" width="122" height="20.5"/>
@@ -62,8 +62,8 @@
                             <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="maz-gK-Krg">
-                            <rect key="frame" x="0.0" y="90" width="122" height="20"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="maz-gK-Krg">
+                            <rect key="frame" x="0.0" y="90" width="105.5" height="20.5"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" image="paddle.png" translatesAutoresizingMaskIntoConstraints="NO" id="d8z-6U-TjH">
                                     <rect key="frame" x="0.0" y="0.0" width="6" height="20"/>
@@ -73,13 +73,7 @@
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="$12,000,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRs-ie-jjh" customClass="ARSerifLabel">
-                                    <rect key="frame" x="8" y="0.0" width="97.5" height="20"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="400" text="(6 Bids)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sUP-a2-T7M" customClass="ARSerifLabel">
-                                    <rect key="frame" x="107.5" y="0.0" width="14.5" height="20"/>
+                                    <rect key="frame" x="8" y="0.0" width="97.5" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
@@ -118,7 +112,6 @@
                 <outlet property="currentBidLabel" destination="bRs-ie-jjh" id="zfC-AD-nAZ"/>
                 <outlet property="imageView" destination="DKt-9u-HCN" id="WA3-Rc-0Gy"/>
                 <outlet property="lotNumberLabel" destination="wv6-Dl-4rk" id="jSt-as-Qsq"/>
-                <outlet property="numberOfBidsLabel" destination="sUP-a2-T7M" id="izz-j0-Uej"/>
             </connections>
             <point key="canvasLocation" x="34" y="54"/>
         </view>
