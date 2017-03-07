@@ -123,6 +123,7 @@ class AuctionViewController: UIViewController {
 
 extension AuctionViewController {
 
+    // Fetches new lot standings, updates the model, removes the old standings view, and adds a fresh one.
     func fetchLotStandingsAndUpdate() {
         guard let saleViewModel = saleViewModel else { return }
 
