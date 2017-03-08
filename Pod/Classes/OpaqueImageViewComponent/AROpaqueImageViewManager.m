@@ -1,7 +1,6 @@
 #import "AROpaqueImageViewManager.h"
 
 #import "AROpaqueImageView.h"
-#import "AROpaqueImageShadowView.h"
 
 #import <React/RCTConvert.h>
 
@@ -24,7 +23,6 @@
 @implementation AROpaqueImageViewManager
 
 RCT_EXPORT_MODULE();
-RCT_EXPORT_SHADOW_PROPERTY(aspectRatio, CGFloat);
 RCT_EXPORT_VIEW_PROPERTY(onLoad, RCTDirectEventBlock);
 
 RCT_CUSTOM_VIEW_PROPERTY(placeholderBackgroundColor, NSNumber, AROpaqueImageView)
@@ -40,11 +38,6 @@ RCT_CUSTOM_VIEW_PROPERTY(imageURL, NSString, AROpaqueImageView)
 - (UIView *)view;
 {
   return [AROpaqueImageViewComponent new];
-}
-
-- (RCTShadowView *)shadowView;
-{
-  return [AROpaqueImageShadowView new];
 }
 
 @end

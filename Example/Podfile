@@ -2,13 +2,18 @@ source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '9.0'
+# FIXME: Figure out why we are getting hit by this issue.
+install! 'cocoapods', :deterministic_uuids => false
+
 react_path = '../node_modules/react-native'
+yoga_path = File.join(react_path, 'ReactCommon/yoga')
 
 target 'Emission' do
   pod 'Emission', :path => '../'
 
   # As this runs dev, we need the developer web socket
   pod 'React', :path => react_path, :subspecs => %w(RCTWebSocket)
+  pod 'Yoga', :path => yoga_path
 
   # Got to make it look right
   pod 'Artsy+UIFonts'

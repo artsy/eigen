@@ -1,0 +1,145 @@
+import * as React from "react"
+import * as Relay from "react-relay"
+
+import { ListView, ListViewDataSource, RefreshControl, ScrollView, ViewProperties } from "react-native"
+
+import ArtistRail from "../components/home/artist_rails/artist_rail"
+import ArtworkRail from "../components/home/artwork_rails/artwork_rail"
+import HeroUnits from "../components/home/hero_units"
+import SearchBar from "../components/home/search_bar"
+
+type DataSourceRow = {
+  type: "search_bar" | "hero_units" | "artwork" | "artist",
+  data: any,
+}
+
+interface Props extends ViewProperties, RelayProps {
+}
+
+interface State {
+  modules: any[]
+  isRefreshing: boolean
+  dataSource: ListViewDataSource
+}
+
+export class Home extends React.Component<Props, State> {
+  constructor(props) {
+    super(props)
+
+    const rows: DataSourceRow[] = [
+      { type: "search_bar", data: null },
+      { type: "hero_units", data: this.props.home.hero_units },
+    ]
+    const artworkModules = this.props.home.artwork_modules
+    // create a copy so we can mutate it (with `shift`)
+    const artistModules = this.props.home.artist_modules && this.props.home.artist_modules.concat()
+
+    for (let i = 0; i < artworkModules.length; i++) {
+      const artworkModule = artworkModules[i]
+      rows.push({ type: "artwork", data: artworkModule })
+      if ((i + 1) % 2 === 0) {
+        const artistModule = artistModules.shift()
+        if (artistModule) {
+          rows.push({ type: "artist", data: artistModule })
+        }
+      }
+    }
+
+    const dataSource: ListViewDataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+
+    this.state = {
+      isRefreshing: false,
+      modules: [],
+      dataSource: dataSource.cloneWithRows(rows),
+    }
+  }
+
+  handleRefresh = () => {
+    this.setState({ isRefreshing: true })
+    const stopRefreshing = () => this.setState({ isRefreshing: false })
+
+    Promise.all(this.state.modules.map(module => {
+      return new Promise((resolve, reject) => {
+        module.forceFetch(null, (readyState) => {
+          if (readyState.error) {
+            reject(readyState.error)
+          } else if (readyState.aborted) {
+            reject()
+          } else if (readyState.done) {
+            resolve()
+          }
+        })
+      })
+    })).then(stopRefreshing, stopRefreshing)
+  }
+
+  render() {
+    return (
+      <ListView dataSource={this.state.dataSource}
+                renderScrollComponent={(props: ReactNative.ScrollViewStatic) => {
+                  const refreshControl = <RefreshControl refreshing={this.state.isRefreshing}
+                                                         onRefresh={this.handleRefresh} />
+                  return <ScrollView {...props} automaticallyAdjustContentInsets={false}
+                                                refreshControl={refreshControl} />
+                }}
+                renderRow={({ type, data }, _, row: number) => {
+                  // Offset row because we don’t store a reference to the search bar and hero units rows.
+                  const registerModule = (module) => this.state.modules[row - 2] = module
+                  switch (type) {
+                    case "search_bar":
+                      return <SearchBar />
+                    case "hero_units":
+                      return <HeroUnits hero_units={data} />
+                    case "artwork":
+                      return <ArtworkRail ref={registerModule} key={data.__id} rail={data} />
+                    case "artist":
+                      return <ArtistRail ref={registerModule} key={data.__id} rail={data} />
+                  }
+                }}
+                style={{ marginTop: 20, overflow: "visible" }} />
+    )
+  }
+}
+
+export default Relay.createContainer(Home, {
+  fragments: {
+    home: () => Relay.QL`
+      fragment on HomePage {
+        hero_units(platform: MOBILE) {
+          ${HeroUnits.getFragment("hero_units")}
+        }
+        artwork_modules(max_rails: -1,
+                        max_followed_gene_rails: -1,
+                        order: [
+                          RECOMMENDED_WORKS,
+                          FOLLOWED_ARTISTS,
+                          RELATED_ARTISTS,
+                          FOLLOWED_GALLERIES,
+                          SAVED_WORKS,
+                          LIVE_AUCTIONS,
+                          CURRENT_FAIRS,
+                          FOLLOWED_GENES,
+                          GENERIC_GENES]) {
+          __id
+          ${ArtworkRail.getFragment("rail")}
+        }
+        artist_modules {
+          __id
+          ${ArtistRail.getFragment("rail")}
+        }
+      }
+    `,
+  },
+})
+
+interface RelayProps {
+  home: {
+    hero_units: Array<any | null> | null,
+    artwork_modules: Array<{
+      __id: string,
+    } | null> | null,
+    artist_modules: Array<{
+      __id: string,
+    } | null> | null,
+  },
+}

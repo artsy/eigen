@@ -1,10 +1,15 @@
 require 'json'
 
-npm_package = JSON.load(File.read(File.expand_path('../package.json', __FILE__)))
+pkg_version = lambda do |dir_from_root|
+  JSON.load(File.read(File.join(__dir__, dir_from_root, 'package.json')))['version']
+end
+
+emission_version = pkg_version.call('.')
+react_native_version = pkg_version.call('node_modules/react-native')
 
 Pod::Spec.new do |s|
   s.name           = 'Emission'
-  s.version        = npm_package['version']
+  s.version        = emission_version
   s.summary        = 'React Native Components used by Eigen.'
   s.homepage       = 'https://github.com/artsy/emission'
   s.license        = 'MIT'
@@ -23,7 +28,7 @@ Pod::Spec.new do |s|
 
   # 3rd-party pods
   s.dependency 'SDWebImage', '>= 3.7.2'
-  react_native_version = npm_package['dependencies']['react-native'].sub('^', '~>')
+  s.dependency 'Yoga', "#{react_native_version}.React"
   s.dependency 'React/Core', react_native_version
   s.dependency 'React/RCTText', react_native_version
   s.dependency 'React/RCTImage', react_native_version

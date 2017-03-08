@@ -1,0 +1,11 @@
+exports[`test renders properly 1`] = `
+<Artworks
+  artist={
+    Object {
+      "counts": Object {
+        "artworks": 5,
+        "for_sale_artworks": 2,
+      },
+    }
+  } />
+`;

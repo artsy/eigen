@@ -1,0 +1,35 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "react"
+  ],
+  "rules": {
+    "arrow-parens": false,
+    "interface-name": [
+      true,
+      "never-prefix"
+    ],
+    "max-classes-per-file": [
+      false
+    ],
+    "member-access": [
+      false,
+      "check-accessor",
+      "check-constructor"
+    ],
+    // Disabled till there’s an auto-fixer for this.
+    // https://github.com/palantir/tslint/blob/master/src/rules/objectLiteralSortKeysRule.ts
+    "object-literal-sort-keys": false,
+    "semicolon": [
+      true,
+      "never",
+      "ignore-interfaces",
+      "ignore-bound-class-methods"
+    ],
+    "switch-default": false,
+    "trailing-comma": [
+      true,
+      { "multiline": "always", "singleline": "never" }
+    ]
+  }
+}

@@ -2,6 +2,23 @@
   "version": "0.2.0",
   "configurations": [
     {
+        "name": "Run Tests With Debugger (slower, use yarn for normal work)",
+        "type": "node",
+        "request": "launch",
+        "port": 5858,
+        "address": "localhost",
+        "sourceMaps": true,
+        "stopOnEntry": false,
+        "runtimeExecutable": null,
+        "runtimeArgs": [
+          "debug",
+          "--debug-brk",
+          "./node_modules/.bin/jest",
+          "-i"
+        ],
+        "cwd": "${workspaceRoot}"
+    },
+    {
       "name": "Debug iOS",
       "program": "${workspaceRoot}/.vscode/launchReactNative.js",
       "type": "reactnative",

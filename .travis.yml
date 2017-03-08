@@ -9,10 +9,8 @@ install:
   - yarn install
 
 script:
-  - yarn test
-  - yarn run flow -- check
-  - yarn run lint
-  - yarn run danger
+  - yarn ci
+  - yarn danger
 
 deploy:
   provider: script

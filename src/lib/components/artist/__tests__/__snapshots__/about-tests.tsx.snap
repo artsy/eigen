@@ -1,0 +1,11 @@
+exports[`test renders properly 1`] = `
+<About
+  artist={
+    Object {
+      "articles": Array [],
+      "has_metadata": true,
+      "is_display_auction_link": true,
+      "related_artists": Array [],
+    }
+  } />
+`;

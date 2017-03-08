@@ -4,11 +4,11 @@
         "*.podspec": "ruby",
         "Podfile": "ruby",
         "*.h": "objective-c",
-        "*.js": "javascriptreact"
+        "*.js": "javascriptreact",
+        "*.snap": "javascriptreact"
     },
     "files.trimTrailingWhitespace": true,
-
-	"editor.renderWhitespace": true,
+    "editor.renderWhitespace": "boundary",
     "editor.rulers": [120],
     "editor.tabSize": 2,
     "files.exclude": {
@@ -16,7 +16,8 @@
         "**/.svn": true,
         "**/.hg": true,
         "**/.DS_Store": true,
-        "Example/build/": true,
+        "build": true,
+        "Example/build": true,
         "Example/DerivedData": true,
         "Example/Pods/Headers/**": true
     },
@@ -27,9 +28,6 @@
         "Pod/Assets/Emission.*": true,
         ".vscode/.react/*": true
     },
-
-    // Because we use Flow - see https://github.com/flowtype/flow-for-vscode#setup
-    "javascript.validate.enable": false,
     "clang.compilationDatabase": "${workspaceRoot}/Example/compile_commands.json",
-    "flow.useNPMPackagedFlow": true
-}
+    "typescript.tsdk": "./node_modules/typescript/lib"
+  }

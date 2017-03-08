@@ -1,9 +1,0 @@
-{
-  "globalDependencies": {
-    "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
-    "lodash": "registry:dt/lodash#4.14.0+20160802150749",
-    "react": "registry:dt/react#0.14.0+20160805125551",
-    "react-native": "registry:dt/react-native#0.29.0+20160728152643",
-    "react-relay": "registry:dt/react-relay#0.9.2+20160729215536"
-  }
-}

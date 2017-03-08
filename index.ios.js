@@ -1,12 +1,9 @@
-/* @flow */
-'use strict'
+import Containers from './src/lib/containers'
+import Components from './src/lib/components'
+import Routes from './src/lib/relay/routes'
 
-import Containers from './lib/containers'
-import Components from './lib/components'
-import Routes from './lib/relay/routes'
-
-import './lib/relay/config'
-import './lib/app_registry'
+import './src/lib/relay/config'
+import './src/lib/app_registry'
 
 export default {
   Containers,
