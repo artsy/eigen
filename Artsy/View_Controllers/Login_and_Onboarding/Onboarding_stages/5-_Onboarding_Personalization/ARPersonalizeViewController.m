@@ -203,7 +203,8 @@
             self.headerView.searchField.searchField.delegate = self;
             self.searchResultsTable.headerPlaceholderText = @"POPULAR CATEGORIES OF ART ON ARTSY";
             [self.headerView.searchField.searchField setPlaceholder:@"Search medium, movement, or style"];
-            [self.onboardingNavigationItems disableNextStep];
+            [self.onboardingNavigationItems disableNextStep]; // for the styling
+            self.onboardingNavigationItems.next.enabled = YES; 
             [self populateTrendingCategoriesAnimated:NO];
             break;
         case AROnboardingStagePersonalizeBudget:
