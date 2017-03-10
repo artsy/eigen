@@ -25,17 +25,14 @@
 #import "ARSwitchBoard+Eigen.h"
 #import "ARDispatchManager.h"
 #import "ARFollowable.h"
+#import "ARRouter.h"
+#import "AFHTTPRequestOperation+JSON.h"
 
 #import "UIDevice-Hardware.h"
 
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <Extraction/UIView+ARSpinner.h>
-
-// Temporary imports
-#import "ARRouter.h"
-#import "AFHTTPRequestOperation+JSON.h"
-
 
 
 @interface AROnboardingViewController () <UINavigationControllerDelegate>

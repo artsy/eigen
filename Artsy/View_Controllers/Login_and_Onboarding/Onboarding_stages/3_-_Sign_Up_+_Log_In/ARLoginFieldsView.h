@@ -10,10 +10,10 @@
 @property (nonatomic, strong, readonly) ARSecureTextFieldWithPlaceholder *passwordField;
 
 - (void)setupForLoginWithLargeLayout:(BOOL)useLargeLayout;
-- (void)setupForSignUpWithLargeLayout:(BOOL)useLargeLayout;;
-- (void)setupForEmailWithLargeLayout:(BOOL)useLargeLayout;;
-- (void)setupForPasswordWithLargeLayout:(BOOL)useLargeLayout;;
-- (void)setupForNameWithLargeLayout:(BOOL)useLargeLayout;;
+- (void)setupForSignUpWithLargeLayout:(BOOL)useLargeLayout;
+- (void)setupForEmailWithLargeLayout:(BOOL)useLargeLayout;
+- (void)setupForPasswordWithLargeLayout:(BOOL)useLargeLayout;
+- (void)setupForNameWithLargeLayout:(BOOL)useLargeLayout;
 
 - (void)enableErrorState;
 - (void)disableErrorState;
