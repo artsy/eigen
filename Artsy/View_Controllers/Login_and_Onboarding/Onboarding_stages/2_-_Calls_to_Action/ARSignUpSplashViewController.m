@@ -143,7 +143,7 @@
     self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.view addSubview:self.spinnerView];
 
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
         // The new image on iPhone has artwork in the center that makes it hard to see the activity indicator
         // Hence it's now in the lower half and black for better contrast on the white image background
         self.spinnerView.color = [UIColor blackColor];
