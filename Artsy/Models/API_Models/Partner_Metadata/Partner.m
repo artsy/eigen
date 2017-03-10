@@ -5,6 +5,7 @@
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
+
 @implementation Partner
 @synthesize imageURLs;
 
@@ -31,6 +32,7 @@
         @"Public Domain" : @(ARPartnerTypePublicDomain),
         @"Image Archive" : @(ARPartnerTypeImageArchive),
         @"Non Profit" : @(ARPartnerTypeNonProfit),
+        @"Institution" : @(ARPartnerTypeInstitution)
     };
 
     return [ARValueTransformer enumValueTransformerWithMap:types];

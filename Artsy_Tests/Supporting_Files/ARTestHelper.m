@@ -17,7 +17,7 @@
 {
     NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
 
-    NSAssert(version.majorVersion == 9,
+    NSAssert(version.majorVersion == 9 && version.minorVersion == 0,
              @"The tests should be run on iOS 9.x, not %ld.%ld", version.majorVersion, version.minorVersion);
 
     CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
