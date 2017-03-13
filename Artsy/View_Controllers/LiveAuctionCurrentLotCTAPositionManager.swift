@@ -9,6 +9,7 @@ class LiveAuctionCurrentLotCTAPositionManager: NSObject {
     let bottomPositionConstraint: NSLayoutConstraint
 
     fileprivate var currentLot: LiveAuctionLotViewModelType?
+    fileprivate var isIgnoringScrollEvents = false
 
     fileprivate let hiddenConstraintConstant: CGFloat = 100
     fileprivate let visibleConstraintConstant: CGFloat = -5
@@ -18,21 +19,28 @@ class LiveAuctionCurrentLotCTAPositionManager: NSObject {
         self.bottomPositionConstraint = bottomPositionConstraint
 
         super.init()
-
-        salesPerson.currentLotSignal.subscribe { [weak self] currentLot in
-            self?.currentLot = currentLot
-        }
-
-        salesPerson.currentFocusedLotIndex.subscribe { [weak self] focusedIndex in
-            self?.didJump(to: focusedIndex)
-        }
     }
 }
 
 private typealias PublicFunctions = LiveAuctionCurrentLotCTAPositionManager
 extension PublicFunctions {
 
+    func didStartJump(to lot: LiveAuctionLotViewModelType) {
+        currentLot = lot
+        isIgnoringScrollEvents = true
+    }
+
+    func didCompleteJump() {
+        isIgnoringScrollEvents = false
+    }
+
+    func currentLotDidChange(to lot: LiveAuctionLotViewModelType) {
+        currentLot = lot
+    }
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard !isIgnoringScrollEvents else { return }
+
         let originLot = salesPerson.lotViewModelRelativeToShowingIndex(0)
         guard let currentLot = self.currentLot else {
             // If there is no current lot, hide the current lot CTA.
@@ -80,11 +88,8 @@ extension PublicFunctions {
             bottomPositionConstraint.constant = visibleConstraintConstant
         }
     }
-}
 
-private typealias PrivateFunctions = LiveAuctionCurrentLotCTAPositionManager
-fileprivate extension PrivateFunctions {
-    func didJump(to focusedLotIndex: Int) {
+    func updateFocusedLotIndex(to focusedLotIndex: Int) {
         let focusedLot = salesPerson.lotViewModelForIndex(focusedLotIndex)
         guard let currentLot = self.currentLot else {
             // If there is no current lot, hide the current lot CTA.
