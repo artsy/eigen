@@ -1,16 +1,16 @@
-import * as React from 'react'
-import { AppRegistry } from 'react-native'
-import * as Relay from 'react-relay'
-import * as _ from 'lodash'
+import * as _ from "lodash"
+import * as React from "react"
+import { AppRegistry } from "react-native"
+import * as Relay from "react-relay"
 
-import Spinner from './components/spinner'
-import LoadFailureView from './components/load_failure_view'
-import Containers from './containers/index'
-import Routes from './relay/routes'
+import LoadFailureView from "./components/load_failure_view"
+import Spinner from "./components/spinner"
+import Containers from "./containers/index"
+import Routes from "./relay/routes"
 
 class RootContainer extends React.Component<{}, {}> {
   state: { retrying: boolean }
-  component: RootContainer
+  component: Relay.RelayContainerClass<any>
   route: Relay.Route
 
   constructor(props) {
@@ -53,13 +53,14 @@ class Gene extends RootContainer {
     super(props)
     this.component = Containers.Gene
 
-    const medium = _.get(props, 'refineSettings.medium')
-    const price_range = _.get(props, 'refineSettings.price_range')
+    const medium = _.get(props, "refineSettings.medium")
+    const priceRange = _.get(props, "refineSettings.price_range") as string
 
     this.route = new Routes.Gene({
       geneID: props.geneID,
-      medium: medium ? medium : '*',
-      price_range: price_range ? price_range : '*-*'
+      medium: medium ? medium : "*",
+      // The replace can be removed once metaphysics#486 is merged
+      price_range: priceRange ? priceRange.replace(/\.00/g, "") : "*-*",
     })
   }
 }
@@ -80,7 +81,7 @@ class WorksForYou extends RootContainer {
   }
 }
 
-AppRegistry.registerComponent('Artist', () => Artist)
-AppRegistry.registerComponent('Home', () => Home)
-AppRegistry.registerComponent('Gene', () => Gene)
-AppRegistry.registerComponent('WorksForYou', () => WorksForYou)
+AppRegistry.registerComponent("Artist", () => Artist)
+AppRegistry.registerComponent("Home", () => Home)
+AppRegistry.registerComponent("Gene", () => Gene)
+AppRegistry.registerComponent("WorksForYou", () => WorksForYou)

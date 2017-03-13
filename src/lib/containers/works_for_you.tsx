@@ -1,21 +1,21 @@
-import * as Relay from 'react-relay'
-import * as React from 'react'
-import { StyleSheet, ScrollView, ListView, ListViewDataSource, View } from 'react-native'
+import * as React from "react"
+import { ListView, ListViewDataSource, ScrollView, StyleSheet, View } from "react-native"
+import * as Relay from "react-relay"
 
-import { LayoutEvent } from '../system/events'
-import Notification from '../components/works_for_you/notification'
-import SerifText from '../components/text/serif'
-import Headline from '../components/text/headline'
+import Headline from "../components/text/headline"
+import SerifText from "../components/text/serif"
+import Notification from "../components/works_for_you/notification"
+import { LayoutEvent } from "../system/events"
 
-import colors from '../../data/colors'
+import colors from "../../data/colors"
 
 interface Props {
   me: {
     notifications_connection: {
-      edges: {
-        node: any
-      }[]
-    }
+      edges: Array<{
+        node: any,
+      }>,
+    },
   }
 }
 
@@ -31,7 +31,7 @@ class WorksForYou extends React.Component<Props, State> {
 
     this.state = {
       dataSource: new ListView.DataSource({
-        rowHasChanged:(row1, row2) => row1 !== row2,
+        rowHasChanged: (row1, row2) => row1 !== row2,
       }).cloneWithRows(rows),
       sideMargin: 20,
     }
@@ -40,9 +40,8 @@ class WorksForYou extends React.Component<Props, State> {
   onLayout = (event: LayoutEvent) => {
     const layout = event.nativeEvent.layout
     const sideMargin = layout.width > 600 ? 40 : 20
-    this.setState({ sideMargin: sideMargin })
+    this.setState({ sideMargin })
   }
-
 
   render() {
     const margin = this.state.sideMargin
@@ -74,14 +73,14 @@ class WorksForYou extends React.Component<Props, State> {
   }
 
   renderEmptyState() {
-    const border = <View style={{height: 1, backgroundColor: 'black'}}/>
-    const text = 'Follow artists to get updates about new works that become available.'
+    const border = <View style={{height: 1, backgroundColor: "black"}}/>
+    const text = "Follow artists to get updates about new works that become available."
     return (
       <View style={styles.emptyStateContainer}>
         <View style={{paddingBottom: 60}}>
         { border }
         <View style={styles.emptyStateText}>
-          <SerifText style={styles.emptyStateMainLabel}>You're not following any artists yet</SerifText>
+          <SerifText style={styles.emptyStateMainLabel}>You"re not following any artists yet</SerifText>
           <SerifText style={styles.emptyStateSubLabel} numberOfLines={2}>{ text }</SerifText>
         </View>
         { border }
@@ -91,39 +90,49 @@ class WorksForYou extends React.Component<Props, State> {
   }
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ReactNative.ViewStyle,
+  title: ReactNative.TextStyle,
+  emptyStateContainer: ReactNative.ViewStyle,
+  emptyStateText: ReactNative.ViewStyle,
+  emptyStateMainLabel: ReactNative.TextStyle,
+  emptyStateSubLabel: ReactNative.TextStyle,
+  separator: ReactNative.ViewStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
-  } as React.ViewStyle,
+  },
   title: {
     marginTop: 20,
     fontSize: 20,
-  } as React.ViewStyle,
+  },
   emptyStateContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  } as React.ViewStyle,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   emptyStateText: {
     marginTop: 25,
     marginBottom: 25,
-    alignItems: 'center'
-  } as React.ViewStyle,
+    alignItems: "center",
+  },
   emptyStateMainLabel: {
     fontSize: 20,
-  } as React.ViewStyle,
+  },
   emptyStateSubLabel: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 16,
-    color: colors['gray-semibold'],
+    color: colors["gray-semibold"],
     marginTop: 10,
     marginLeft: 20,
     marginRight: 20,
-  } as React.ViewStyle,
+  },
   separator: {
     height: 1,
-    backgroundColor: colors['gray-regular'],
-  } as React.ViewStyle,
+    backgroundColor: colors["gray-regular"],
+  },
 })
 
 export default Relay.createContainer(WorksForYou, {
@@ -133,10 +142,22 @@ export default Relay.createContainer(WorksForYou, {
         notifications_connection(first: 10) {
           edges {
             node {
-              ${Notification.getFragment('notification')}
+              ${Notification.getFragment("notification")}
             }
           }
         }
-      }`
-  }
+      }`,
+  },
 })
+
+interface RelayProps {
+  me: {
+    notifications_connection: {
+      edges: Array<{
+        node: {
+          any,
+        },
+      }>,
+    },
+  },
+}

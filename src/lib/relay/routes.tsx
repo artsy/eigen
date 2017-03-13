@@ -1,21 +1,21 @@
-import * as Relay from 'react-relay'
+import * as Relay from "react-relay"
 
 class Artist extends Relay.Route {
   static queries = {
     artist: (component, params) => Relay.QL`
       query {
         artist(id: $artistID) {
-          ${component.getFragment('artist', params)}
+          ${component.getFragment("artist", params)}
         }
       }
     `,
-  };
+  }
 
   static paramDefinitions = {
     artistID: { required: true },
-  };
+  }
 
-  static routeName = 'ArtistRoute';
+  static routeName = "ArtistRoute"
 }
 
 class Home extends Relay.Route {
@@ -23,13 +23,13 @@ class Home extends Relay.Route {
     home: (component, params) => Relay.QL`
       query {
         home_page {
-          ${component.getFragment('home', params)}
+          ${component.getFragment("home", params)}
         }
       }
     `,
-  };
+  }
 
-  static routeName = 'HomeRoute';
+  static routeName = "HomeRoute"
 }
 
 class Gene extends Relay.Route {
@@ -37,19 +37,19 @@ class Gene extends Relay.Route {
     gene: (component, params) => Relay.QL`
       query {
         gene(id: $geneID) {
-          ${component.getFragment('gene', params)}
+          ${component.getFragment("gene", params)}
         }
       }
     `,
-  };
+  }
 
   static paramDefinitions = {
     geneID: { required: true },
     medium: { required: false },
     price_range: { required: false },
-  };
+  }
 
-  static routeName = 'GeneRoute';
+  static routeName = "GeneRoute"
 }
 
 class WorksForYou extends Relay.Route {
@@ -57,13 +57,13 @@ class WorksForYou extends Relay.Route {
     me: (component, params) => Relay.QL`
       query {
         me {
-          ${component.getFragment('me', params)}
+          ${component.getFragment("me", params)}
         }
       }
     `,
-  };
+  }
 
-  static routeName = 'WorksForYouRoute';
+  static routeName = "WorksForYouRoute"
 }
 
 export default {

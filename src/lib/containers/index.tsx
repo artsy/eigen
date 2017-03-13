@@ -1,7 +1,7 @@
-import Artist from './artist'
-import Home from './home'
-import Gene from './gene'
-import WorksForYou from './works_for_you'
+import Artist from "./artist"
+import Gene from "./gene"
+import Home from "./home"
+import WorksForYou from "./works_for_you"
 
 export default {
   Artist,
