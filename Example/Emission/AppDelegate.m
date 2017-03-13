@@ -191,7 +191,7 @@ randomBOOL(void)
 {
   UIViewController *viewController = nil;
 
-  if ([route hasPrefix:@"/artist/"] && [route componentsSeparatedByString:@"/"].count == 3) {
+  if ([route hasPrefix:@"/artist/"] && [route componentsSeparatedByString:@"/"].count == 1) {
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
 

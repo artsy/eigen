@@ -11,6 +11,7 @@
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
+#import <Emission/ARWorksForYouComponentViewController.h>
 #import "ARStorybookComponentViewController.h"
 
 @implementation ARRootViewController
@@ -51,6 +52,7 @@
   [sectionData addCellData:self.jumpToHomepage];
   [sectionData addCellData:self.jumpToGene];
   [sectionData addCellData:self.jumpToRefinedGene];
+  [sectionData addCellData:self.jumpToWorksForYou];
 
   return sectionData;
 }
@@ -129,6 +131,14 @@
   // From: https://github.com/artsy/metaphysics/blob/master/schema/home/add_generic_genes.js
   return [self tappableCellDataWithTitle:@"Gene Refined" selection: ^{
     id viewController = [[ARGeneComponentViewController alloc] initWithGeneID:@"emerging-art" refineSettings:@{ @"medium": @"painting", @"price_range": @"50.00-10000.00" }];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+- (ARCellData *)jumpToWorksForYou
+{
+  return [self tappableCellDataWithTitle:@"Works For You" selection:^{
+    id viewController = [[ARWorksForYouComponentViewController alloc] initWithEmission:nil];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

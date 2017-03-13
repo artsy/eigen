@@ -2268,11 +2268,7 @@ type Me {
   ): [Artist]
 
   # A list of feed items, indicating published artworks (grouped by date and artists).
-  notifications(
-    # Number of feed items to return
-    size: Int
-    page: Int
-  ): [NotificationsFeedItem]
+  notifications_connection(after: String, first: Int, before: String, last: Int): NotificationsFeedItemConnection
 }
 
 input Near {
@@ -2301,6 +2297,24 @@ type NotificationsFeedItem {
 
   # List of artworks in this notification bundle
   artworks: [Artwork]
+}
+
+# A connection to a list of items.
+type NotificationsFeedItemConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [NotificationsFeedItemEdge]
+}
+
+# An edge in a connection.
+type NotificationsFeedItemEdge {
+  # The item at the end of the edge
+  node: NotificationsFeedItem
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 enum NotificationsFeedItemStatus {
@@ -2849,7 +2863,7 @@ type RootQueryType {
   ): Artist
 
   # A list of Artists
-  artists(size: Int, sale_id: ID, sort: ArtistSorts, page: Int = 1): [Artist]
+  artists(size: Int, sort: ArtistSorts, page: Int = 1): [Artist]
 
   # An External Partner not on the platform
   external_partner(
