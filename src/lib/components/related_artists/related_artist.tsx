@@ -1,6 +1,13 @@
 import * as React from "react"
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native"
 import * as Relay from "react-relay"
+
+import {
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native"
 
 import colors from "../../../data/colors"
 import SwitchBoard from "../../native_modules/switch_board"
@@ -45,8 +52,8 @@ class RelatedArtist extends React.Component<any, any> {
 }
 
 interface Styles {
-  sansSerifText: ReactNative.TextStyle,
-  serifText: ReactNative.TextStyle,
+  sansSerifText: TextStyle,
+  serifText: TextStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

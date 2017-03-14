@@ -1,5 +1,10 @@
 import * as React from "react"
-import { StyleSheet, Text } from "react-native"
+
+import {
+  StyleSheet,
+  Text,
+  TextStyle,
+} from "react-native"
 
 export default class SectionTitle extends React.Component<any, any> {
   static propTypes = {
@@ -17,7 +22,7 @@ export default class SectionTitle extends React.Component<any, any> {
 }
 
 interface Styles {
-  headerText: ReactNative.TextStyle,
+  headerText: TextStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

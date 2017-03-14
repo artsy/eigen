@@ -1,6 +1,8 @@
 import * as React from "react"
+
 import {
   ColorPropType,
+  LayoutChangeEvent,
   PixelRatio,
   processColor,
   requireNativeComponent,
@@ -8,7 +10,6 @@ import {
 } from "react-native"
 
 import colors from "../../data/colors"
-import { LayoutEvent } from "../system/events"
 
 const GeminiHost = "d7hftxdivxxvm.cloudfront.net"
 const ImageQuality = 85
@@ -89,7 +90,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     }
   }
 
-  onLayout = (event: LayoutEvent) => {
+  onLayout = (event: LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout
     const scale = PixelRatio.get()
     this.setState({

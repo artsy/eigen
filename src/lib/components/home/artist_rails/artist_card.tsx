@@ -1,6 +1,17 @@
 import * as React from "react"
-import { NativeModules, StyleSheet, Text, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
 import * as Relay from "react-relay"
+
+import {
+  Animated,
+  NativeModules,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableWithoutFeedback,
+  View,
+  ViewProperties,
+  ViewStyle,
+} from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
 
 import colors from "../../../../data/colors"
@@ -9,7 +20,7 @@ import SwitchBoard from "../../../native_modules/switch_board"
 import InvertedButton from "../../buttons/inverted_button"
 import ImageView from "../../opaque_image_view"
 
-type ArtistFollowHandlerResult = Promise<ReactNative.Animated.EndResult>
+type ArtistFollowHandlerResult = Promise<Animated.EndResult>
 export type ArtistFollowButtonStatusSetter = (status: boolean) => ArtistFollowHandlerResult
 export type ArtistFollowHandler = (setFollowButtonStatus: ArtistFollowButtonStatusSetter) => void
 
@@ -20,7 +31,7 @@ interface Props extends ViewProperties, RelayProps {
 interface State {
     processingChange: boolean
     following?: boolean
-    followStatusChanged?: ReactNative.Animated.EndCallback,
+    followStatusChanged?: Animated.EndCallback,
 }
 
 export class ArtistCard extends React.Component<Props, State> {
@@ -126,14 +137,14 @@ export class ArtistCard extends React.Component<Props, State> {
 }
 
 interface Styles {
-  container: ReactNative.ViewStyle,
-  sansSerifText: ReactNative.TextStyle,
-  serifText: ReactNative.TextStyle,
-  touchableContainer: ReactNative.ViewStyle,
-  image: ReactNative.ViewStyle,
-  textContainer: ReactNative.ViewStyle,
-  serifWorksText: ReactNative.TextStyle,
-  followButton: ReactNative.ViewStyle,
+  container: ViewStyle,
+  sansSerifText: TextStyle,
+  serifText: TextStyle,
+  touchableContainer: ViewStyle,
+  image: ViewStyle,
+  textContainer: ViewStyle,
+  serifWorksText: TextStyle,
+  followButton: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

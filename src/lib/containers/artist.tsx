@@ -1,6 +1,14 @@
 import * as React from "react"
-import { Dimensions, ScrollView, StyleSheet, View, ViewProperties } from "react-native"
 import * as Relay from "react-relay"
+
+import {
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  View,
+  ViewProperties,
+  ViewStyle,
+} from "react-native"
 
 import About from "../components/artist/about"
 import Artworks from "../components/artist/artworks"
@@ -114,7 +122,7 @@ export class Artist extends React.Component<Props, {}> {
 }
 
 interface Styles {
-  tabView: ReactNative.ViewStyle,
+  tabView: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

@@ -1,6 +1,15 @@
 import * as React from "react"
-import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
 import * as Relay from "react-relay"
+
+import {
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableWithoutFeedback,
+  View,
+  ViewProperties,
+  ViewStyle,
+} from "react-native"
 
 import SwitchBoard from "../../../native_modules/switch_board"
 import ImageView from "../../opaque_image_view"
@@ -42,11 +51,11 @@ class Article extends React.Component<Props, {}> {
 }
 
 interface Styles {
-  container: ReactNative.ViewStyle,
-  touchableContent: ReactNative.ViewStyle,
-  image: ReactNative.ViewStyle,
-  sansSerifText: ReactNative.TextStyle,
-  serifText: ReactNative.TextStyle,
+  container: ViewStyle,
+  touchableContent: ViewStyle,
+  image: ViewStyle,
+  sansSerifText: TextStyle,
+  serifText: TextStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

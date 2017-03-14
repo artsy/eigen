@@ -1,8 +1,15 @@
 import * as React from "react"
-import { StyleSheet, View, ViewProperties } from "react-native"
 import * as Relay from "react-relay"
 
-import { LayoutEvent } from "../../system/events"
+import {
+  LayoutChangeEvent,
+  StyleSheet,
+  TextStyle,
+  View,
+  ViewProperties,
+  ViewStyle,
+} from "react-native"
+
 import SerifText from "../text/serif"
 import RelatedArtist from "./related_artist"
 
@@ -50,7 +57,7 @@ class RelatedArtists extends React.Component<Props, State> {
     }
   }
 
-  onLayout = (event: LayoutEvent) => {
+  onLayout = (event: LayoutChangeEvent) => {
     const newLayoutState = this.layoutState(event.nativeEvent.layout)
     if (this.state.columns !== newLayoutState.columns) {
       this.setState(newLayoutState)
@@ -87,9 +94,9 @@ class RelatedArtists extends React.Component<Props, State> {
 }
 
 interface Styles {
-  container: ReactNative.ViewStyle,
-  artistContainer: ReactNative.ViewStyle,
-  heading: ReactNative.TextStyle,
+  container: ViewStyle,
+  artistContainer: ViewStyle,
+  heading: TextStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

@@ -1,5 +1,15 @@
 import * as React from "react"
-import { Dimensions, Image, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native"
+
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from "react-native"
 
 import colors from "../../../data/colors"
 import Switchboard from "../../native_modules/switch_board"
@@ -25,9 +35,9 @@ export default class SearchBar extends React.Component<any, any> {
 }
 
 interface Styles {
-  container: ReactNative.ViewStyle,
-  text: ReactNative.TextStyle,
-  searchIcon: ReactNative.ViewStyle,
+  container: ViewStyle,
+  text: TextStyle,
+  searchIcon: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

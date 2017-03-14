@@ -53,11 +53,10 @@ describe("state", () => {
   // OK, this is a long one, but it's important.
 
   it("updates the state with new data from Eigen", () => {
-    // Setup a Gene Component like normal
     const gene = new Gene({
       medium: "glitch",
       price_range: "*-*",
-      relay: { setVariables: jest.fn(), variables: {} } as Relay.RelayProp,
+      relay: { setVariables: jest.fn(), variables: {} } as any,
       gene: { filtered_artworks: { aggregations: []} },
     })
     gene.setState = jest.fn()

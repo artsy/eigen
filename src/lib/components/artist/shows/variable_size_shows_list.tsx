@@ -1,7 +1,13 @@
 import * as React from "react"
-import { StyleSheet, View, ViewProperties } from "react-native"
 import * as Relay from "react-relay"
-import { LayoutEvent } from "../../../system/events"
+
+import {
+  LayoutChangeEvent,
+  StyleSheet,
+  View,
+  ViewProperties,
+  ViewStyle,
+} from "react-native"
 
 import Show from "./show"
 
@@ -46,7 +52,7 @@ class ShowsList extends React.Component<Props, State> {
     return 1
   }
 
-  onLayout = (event: LayoutEvent) => {
+  onLayout = (event: LayoutChangeEvent) => {
     const layout = event.nativeEvent.layout
     this.setState(this.imageDimensions(layout))
   }
@@ -78,7 +84,7 @@ class ShowsList extends React.Component<Props, State> {
 }
 
 interface Styles {
-  container: ReactNative.ViewStyle,
+  container: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

@@ -1,6 +1,15 @@
 import * as React from "react"
-import { Animated, Easing, ScrollView, StyleSheet, View, ViewProperties } from "react-native"
 import * as Relay from "react-relay"
+
+import {
+  Animated,
+  Easing,
+  ScrollView,
+  StyleSheet,
+  View,
+  ViewProperties,
+  ViewStyle,
+} from "react-native"
 
 import metaphysics from "../../../metaphysics"
 
@@ -177,8 +186,8 @@ class ArtistRail extends React.Component<Props, State> {
 }
 
 interface Styles {
-  cardContainer: ReactNative.ViewStyle,
-  title: ReactNative.ViewStyle,
+  cardContainer: ViewStyle,
+  title: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -200,8 +209,8 @@ interface SuggestedArtist extends ArtistCardResponse {
   _id: string,
   __id: string,
   _animatedValues?: {
-    opacity: ReactNative.Animated.Value,
-    translateY: ReactNative.Animated.Value,
+    opacity: Animated.Value,
+    translateY: Animated.Value,
   }
 }
 

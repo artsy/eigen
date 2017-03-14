@@ -1,12 +1,17 @@
 import * as React from "react"
-import { ScrollView, TouchableHighlight, View, ViewProperties } from "react-native"
 import * as Relay from "react-relay"
+
+import {
+  LayoutChangeEvent,
+  ScrollView,
+  TouchableHighlight,
+  View,
+  ViewProperties,
+} from "react-native"
 
 import SwitchBoard from "../../native_modules/switch_board"
 import OpaqueImageView from "../opaque_image_view"
 import Headline from "../text/headline"
-
-import { LayoutEvent } from "../../system/events"
 
 interface Props extends ViewProperties, RelayProps {
 }
@@ -29,7 +34,7 @@ class HeroUnits extends React.Component<Props, State> {
     }
   }
 
-  handleLayout = (event: LayoutEvent) => {
+  handleLayout = (event: LayoutChangeEvent) => {
     const { nativeEvent: { layout: { width } } } = event
     const margin = width > 700 ? 40 : 20
     const height = width > 700 ? 300 : 160
