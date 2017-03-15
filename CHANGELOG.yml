@@ -5,6 +5,7 @@ upcoming:
       - Refine existing queries on the Gene Page - orta
       - Report user’s anonymous ID to Adjust for campaign to install tracking - alloy
       - Font Pod changes which should allow OSS contributors to run our Apps again - orta
+      - Switched Metaphysics query to use a POST instead of a GET - ash
     user_facing:
       - Artwork metadata in collection views use sale_message instead of price - sarah
       - Gene artworks filtering is enabled - orta
