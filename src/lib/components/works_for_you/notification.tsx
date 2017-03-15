@@ -1,5 +1,5 @@
 import * as React from "react"
-import { StyleSheet, View, ViewProperties } from "react-native"
+import { StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 import * as Relay from "react-relay"
 
 import ArtworksGrid from "../artwork_grids/generic_grid"
@@ -8,15 +8,7 @@ import SerifText from "../text/serif"
 
 import colors from "../../../data/colors"
 
-interface Props extends ViewProperties {
-  notification: {
-    message: string
-    date: string
-    artists: string
-    status: "READ" | "UNREAD"
-    artworks: any[],
-  }
-}
+interface Props extends RelayProps {}
 
 class Notification extends React.Component<Props, any> {
   render() {
@@ -40,12 +32,12 @@ class Notification extends React.Component<Props, any> {
 }
 
 interface Styles {
-  container: ReactNative.ViewStyle,
-  header: ReactNative.ViewStyle,
-  artistName: ReactNative.TextStyle,
-  metadata: ReactNative.TextStyle,
-  gridContainer: ReactNative.ViewStyle,
-  readStatus: ReactNative.ViewStyle,
+  container: ViewStyle,
+  header: ViewStyle,
+  artistName: TextStyle,
+  metadata: TextStyle,
+  gridContainer: ViewStyle,
+  readStatus: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -87,6 +79,7 @@ export default Relay.createContainer(Notification, {
         artworks {
           ${ArtworksGrid.getFragment("artworks")}
         }
+        status
       }
     `,
   },
@@ -98,5 +91,6 @@ interface RelayProps {
     message: string,
     artists: string,
     artworks: any[],
+    status: "READ" | "UNREAD",
   },
 }

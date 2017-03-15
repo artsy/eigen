@@ -1,9 +1,17 @@
-### Master
-
-- Add your contributions below:
+## Master
 
 - Added a Works For You container - sarah
+- Upgrade to RN 0.42-rc.3 - alloy
+- Made Gene view work with new relay-based infinite scroll grid - cab
+
+### 1.2.1
+
+- Build with correct react-native version - alloy
+- Replaced fetching in infinite artworks grid component with relay - cab
+
+### 1.2.0
 - Gave ESLint, Flow and Danger the ability to fail the build - orta
+- Gene Refine button is enabled - orta
 - Fix extra blankspace in Artist Card when data is missing - luc
 - Gene titles wrap so they don't get covered by back button - luc
 

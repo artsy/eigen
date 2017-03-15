@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ListView, ListViewDataSource, ScrollView, StyleSheet, View } from "react-native"
+import { ListView, ListViewDataSource, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 import * as Relay from "react-relay"
 
 import Headline from "../components/text/headline"
@@ -9,15 +9,7 @@ import { LayoutEvent } from "../system/events"
 
 import colors from "../../data/colors"
 
-interface Props {
-  me: {
-    notifications_connection: {
-      edges: Array<{
-        node: any,
-      }>,
-    },
-  }
-}
+interface Props extends RelayProps {}
 
 interface State {
   dataSource: ListViewDataSource
@@ -53,7 +45,7 @@ class WorksForYou extends React.Component<Props, State> {
     */
     return (
       <ScrollView contentContainerStyle={ hasNotifications ? {} : styles.container}>
-        <SerifText style={[styles.title, containerMargins]}>Works by Artists you follow</SerifText>
+        <SerifText style={[styles.title, containerMargins]}>Works by Artists you Follow</SerifText>
         <View style={[containerMargins, {flex: 1}]} onLayout={this.onLayout.bind(this)}>
           { hasNotifications ? this.renderNotifications() : this.renderEmptyState() }
         </View>
@@ -80,7 +72,7 @@ class WorksForYou extends React.Component<Props, State> {
         <View style={{paddingBottom: 60}}>
         { border }
         <View style={styles.emptyStateText}>
-          <SerifText style={styles.emptyStateMainLabel}>You"re not following any artists yet</SerifText>
+          <SerifText style={styles.emptyStateMainLabel}>You’re not following any artists yet</SerifText>
           <SerifText style={styles.emptyStateSubLabel} numberOfLines={2}>{ text }</SerifText>
         </View>
         { border }
@@ -91,13 +83,13 @@ class WorksForYou extends React.Component<Props, State> {
 }
 
 interface Styles {
-  container: ReactNative.ViewStyle,
-  title: ReactNative.TextStyle,
-  emptyStateContainer: ReactNative.ViewStyle,
-  emptyStateText: ReactNative.ViewStyle,
-  emptyStateMainLabel: ReactNative.TextStyle,
-  emptyStateSubLabel: ReactNative.TextStyle,
-  separator: ReactNative.ViewStyle,
+  container: ViewStyle,
+  title: TextStyle,
+  emptyStateContainer: ViewStyle,
+  emptyStateText: ViewStyle,
+  emptyStateMainLabel: TextStyle,
+  emptyStateSubLabel: TextStyle,
+  separator: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({
