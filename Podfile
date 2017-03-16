@@ -62,7 +62,7 @@ target 'Artsy' do
   pod 'ORStackView', '2.0.3'
   pod 'UIView+BooleanAnimations'
   pod 'NAMapKit', :git => 'https://github.com/neilang/NAMapKit'
-  pod 'Aerodramus', :git => 'https://github.com/artsy/Aerodramus.git', :branch => 'tests'
+  pod 'Aerodramus'
 
   # Custom CollectionView Layouts
   pod 'ARCollectionViewMasonryLayout', :git => 'https://github.com/ashfurrow/ARCollectionViewMasonryLayout', :branch => "modern"

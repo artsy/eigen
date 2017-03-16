@@ -1,4 +1,5 @@
 #import "Bid.h"
+#import "ARMacros.h"
 
 
 @implementation Bid
@@ -6,8 +7,8 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        @"cents" : @"amount_cents",
-        @"bidID" : @"id"
+        ar_keypath(Bid.new, cents) : @"amount_cents",
+        ar_keypath(Bid.new, bidID) : @"id"
     };
 }
 

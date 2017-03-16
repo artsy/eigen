@@ -2,7 +2,7 @@ PODS:
   - Adjust (4.11.0):
     - Adjust/Core (= 4.11.0)
   - Adjust/Core (4.11.0)
-  - Aerodramus (0.1.0):
+  - Aerodramus (0.3.0):
     - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
     - AFNetworking/NSURLConnection (~> 2.0)
@@ -193,7 +193,7 @@ PODS:
     - OHHTTPStubs
 
 DEPENDENCIES:
-  - Aerodramus (from `https://github.com/artsy/Aerodramus.git`, branch `tests`)
+  - Aerodramus
   - AFNetworkActivityLogger
   - AFNetworking (~> 2.5)
   - AFOAuth1Client (from `https://github.com/lxcid/AFOAuth1Client.git`, tag `0.4.0`)
@@ -262,9 +262,6 @@ DEPENDENCIES:
   - XCTest+OHHTTPStubSuiteCleanUp
 
 EXTERNAL SOURCES:
-  Aerodramus:
-    :branch: tests
-    :git: https://github.com/artsy/Aerodramus.git
   AFOAuth1Client:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
@@ -305,9 +302,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/alloy/SSFadingScrollView.git
 
 CHECKOUT OPTIONS:
-  Aerodramus:
-    :commit: f3ad5f2c4d4f060722510bab83e07026c202ac7a
-    :git: https://github.com/artsy/Aerodramus.git
   AFOAuth1Client:
     :git: https://github.com/lxcid/AFOAuth1Client.git
     :tag: 0.4.0
@@ -353,7 +347,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Adjust: 87b3f066ea103f1dabfaa8e428a75b992bf7712e
-  Aerodramus: e6cd0bcbd5419aa7e666afbfc9d6e62fd77d7645
+  Aerodramus: cb58f8cd0fc5104019e8afdfabf0fcd7f9394bf3
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
@@ -421,6 +415,6 @@ SPEC CHECKSUMS:
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
 
-PODFILE CHECKSUM: a4c1a229f7ad09b360fa6ba10dc0917a95ff8239
+PODFILE CHECKSUM: e320b732fae033d79dab90066b987cc9f2bd194a
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.1.1

@@ -7,7 +7,7 @@ class AuctionViewController: UIViewController {
     var saleViewModel: SaleViewModel!
     var appeared = false
 
-    var headerStack: ORStackView!
+    var headerStack: ORStackView?
     var stickyHeader: ScrollingStickyHeaderView!
     var titleView: AuctionTitleView?
 
@@ -47,6 +47,11 @@ class AuctionViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        if appeared {
+            // Re-appearing, so re-fetch lot standings and update.
+            fetchLotStandingsAndUpdate()
+        }
 
         guard appeared == false else { return }
         appeared = true
@@ -109,7 +114,7 @@ class AuctionViewController: UIViewController {
     }
 
     enum ViewTags: Int {
-        case banner = 0, title
+        case banner = 0, title, lotStandings
 
         case whitespaceGobbler
     }
@@ -117,6 +122,42 @@ class AuctionViewController: UIViewController {
 }
 
 extension AuctionViewController {
+
+    // Fetches new lot standings, updates the model, removes the old standings view, and adds a fresh one.
+    func fetchLotStandingsAndUpdate() {
+        guard let saleViewModel = saleViewModel else { return }
+
+        self.networkModel.fetchLotStanding().next { [weak self] lotStandings in
+            saleViewModel.updateLotStandings(lotStandings)
+
+            if let existingLotStandingsView = self?.headerStack?.viewWithTag(ViewTags.lotStandings.rawValue) {
+                self?.headerStack?.removeSubview(existingLotStandingsView)
+            }
+
+            self?.addLotStandings()
+
+            // Needs to dispatch because of UIKit ¯\_(ツ)_/¯
+            DispatchQueue.main.async {
+                self?.view.setNeedsUpdateConstraints()
+            }
+        }
+    }
+
+    func addLotStandings() {
+        let lotStandingsView = LotStandingsView(
+            saleViewModel: saleViewModel,
+            isCompact: isCompactSize,
+            lotStandingTappedClosure: { [weak self] index in
+                guard let lotStanding = self?.saleViewModel?.lotStanding(at: index) else { return }
+                guard let artworkViewController = ARArtworkSetViewController(artwork: lotStanding.saleArtwork.artwork) else { return }
+                self?.navigationController?.pushViewController(artworkViewController, animated: true)
+            }
+        )
+        lotStandingsView.tag = ViewTags.lotStandings.rawValue
+        headerStack?.addSubview(lotStandingsView, withTopMargin: "0", sideMargin: "0")
+    }
+
+    var isCompactSize: Bool { return traitCollection.horizontalSizeClass == .compact }
 
     func setupForUpcomingSale(_ saleViewModel: SaleViewModel) {
 
@@ -128,12 +169,15 @@ extension AuctionViewController {
 
         let bannerView = AuctionBannerView(viewModel: saleViewModel)
         bannerView.tag = ViewTags.banner.rawValue
-        auctionInfoVC.scrollView.stackView.insertSubview(bannerView, at: 0, withTopMargin:"0", sideMargin: "0")
+        auctionInfoVC.scrollView.stackView.insertSubview(bannerView, at: 0, withTopMargin: "0", sideMargin: "0")
     }
 
     func setupForSale(_ saleViewModel: SaleViewModel) {
 
-        headerStack = ORTagBasedAutoStackView()
+        // TODO: Recreate everything from scratch when size class changes.
+
+        let headerStack = ORTagBasedAutoStackView()
+        self.headerStack = headerStack
         saleArtworksViewController = ARModelInfiniteScrollViewController()
 
         ar_addAlignedModernChildViewController(saleArtworksViewController)
@@ -152,7 +196,6 @@ extension AuctionViewController {
         bannerView.tag = ViewTags.banner.rawValue
         headerStack.addSubview(bannerView, withTopMargin: "0", sideMargin: "0")
 
-        let isCompactSize = traitCollection.horizontalSizeClass == .compact
         let topSpacing = isCompactSize ? 20 : 30
         let sideSpacing = isCompactSize ? 40 : 80
         let titleView = AuctionTitleView(
@@ -165,6 +208,8 @@ extension AuctionViewController {
         titleView.tag = ViewTags.title.rawValue
         headerStack.addSubview(titleView, withTopMargin: "\(topSpacing)", sideMargin: "\(sideSpacing)")
         self.titleView = titleView
+
+        addLotStandings()
 
         stickyHeader = ScrollingStickyHeaderView().then {
             $0.toggleAttatched(false, animated: false)
@@ -189,7 +234,7 @@ extension AuctionViewController {
         let liveCV = ARSwitchBoard.sharedInstance().loadLiveAuction(saleID)
 
         ARTopMenuViewController.shared().push(liveCV!, animated: true) {
-            self.navigationController?.popViewController(animated: false)
+            _ = self.navigationController?.popViewController(animated: false)
         }
     }
 

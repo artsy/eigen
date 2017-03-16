@@ -4,13 +4,15 @@ import Artsy_UILabels
 class SaleViewModel: NSObject {
     fileprivate let sale: Sale
     fileprivate let saleArtworks: [SaleArtwork]
+    fileprivate var lotStandings: [LotStanding]
 
     var bidders: [Bidder]
 
-    init(sale: Sale, saleArtworks: [SaleArtwork], bidders: [Bidder]) {
+    init(sale: Sale, saleArtworks: [SaleArtwork], bidders: [Bidder], lotStandings: [LotStanding]) {
         self.sale = sale
         self.saleArtworks = saleArtworks
         self.bidders = bidders
+        self.lotStandings = lotStandings
     }
 }
 
@@ -21,6 +23,24 @@ extension SaleViewModel {
         case .closed: return true
         default: return false
         }
+    }
+
+    var hasLotStandings: Bool {
+        return lotStandings.isNotEmpty
+    }
+
+    var numberOfLotStandings: Int {
+        return lotStandings.count
+    }
+
+    func lotStanding(at index: Int) -> LotStanding {
+        precondition(0..<numberOfLotStandings ~= index, "Index exceeds bounds of lotStandings")
+
+        return lotStandings[index]
+    }
+
+    func updateLotStandings(_ lotStandings: [LotStanding]) {
+        self.lotStandings = lotStandings
     }
 
     var auctionState: ARAuctionState {
