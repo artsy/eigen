@@ -46,7 +46,6 @@ class LiveAuctionViewController: UIViewController {
 
         app.isIdleTimerDisabled = true
 
-        // TODO: This isn't working since the refactor.
         if waitingForInitialLoad {
             loadingView = LiveAuctionLoadingView().then {
                 $0.operation = applyWeakly(self, LiveAuctionViewController.dismissLiveAuctionsModal)
@@ -58,8 +57,6 @@ class LiveAuctionViewController: UIViewController {
 
     func connectToNetwork() {
         staticDataFetcher.fetchStaticData().subscribe { [weak self] result in
-            self?.ar_removeIndeterminateLoadingIndicator(animated: ARPerformWorkAsynchronously.boolValue)
-
             switch result {
             case .success(let (sale, jwt, bidderCredentials)):
                 self?.setupWithSale(sale, jwt: jwt, bidderCredentials: bidderCredentials)
@@ -201,6 +198,11 @@ extension PrivateFunctions {
         let useCompactLayout = traitCollection.horizontalSizeClass == .compact
         saleViewController = LiveAuctionSaleViewController(sale: sale, salesPerson: salesPerson, useCompactLayout: useCompactLayout, suppressJumpingToOpenLots: suppressJumpingToOpenLots).then {
             ar_addAlignedModernChildViewController($0)
+            // If we're loading (we probably are) then continue to show the loading view until things complete.
+            // We'll dismiss the loading view based on initialStateLoadedSignal.
+            if let loadingView = loadingView {
+                view.bringSubview(toFront: loadingView)
+            }
         }
 
         // Dispose of, then create a new overlay subscription for network connectivity issues.
