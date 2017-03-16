@@ -168,6 +168,7 @@
 
 + (NSURLRequest *)biddersRequest;
 + (NSURLRequest *)biddersRequestForSale:(NSString *)saleID;
++ (NSURLRequest *)lotStandingsRequestForSaleID:(NSString *)saleID;
 + (NSURLRequest *)createBidderPositionsForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID maxBidAmountCents:(NSInteger)maxBidAmountCents;
 + (NSURLRequest *)bidderPositionsRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID;
 + (NSURLRequest *)saleArtworkRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID;

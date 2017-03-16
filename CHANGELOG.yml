@@ -10,6 +10,7 @@ upcoming:
       - Gene artworks filtering is enabled - orta
       - Fixes a problem where auction users were being directed to general inquiries email address instead of specialists - ash
       - Fixes issue where fairs were not shown in search results - maxim
+      - My Bids module on auction pages - ash
       - Fixes follow button text in ShowVC to show appropriate copy based on partner type - luc
       - Fix extra blankspace in Artist Card when data is missing - luc
       - Gene titles wrap so they don't get covered by back button - luc
