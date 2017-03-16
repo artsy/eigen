@@ -1,49 +1,108 @@
-import { danger, fail, warn } from 'danger'
-import { includes } from 'lodash'
+import { danger, fail, warn } from "danger"
+import fs from "fs"
+import { compact, includes, remove } from "lodash"
+import os from "os"
+import path from "path"
 
-// CHANGELOG check
-const modifiedAppFiles = danger.git.modified_files.filter(path => path.includes('lib/'))
-const changelogChanges = danger.git.modified_files.includes('CHANGELOG.md')
+// Setup
 
-if (modifiedAppFiles.length > 0 && !changelogChanges) {
-  fail('No CHANGELOG added.')
+const pr = danger.github.pr
+const modified = danger.git.modified_files
+const newFiles = danger.git.created_files
+const bodyAndTitle = (pr.body + pr.title).toLowerCase()
+
+// Custom modifiers for people submitting PRs to be able to say "skip this"
+const trivialPR = bodyAndTitle.includes("trivial")
+const acceptedNoTests = bodyAndTitle.includes("skip new tests")
+
+// Custom subsets of known files
+const modifiedAppFiles = modified.filter(path => path.includes("lib/"))
+const modifiedTestFiles = modified.filter(path => path.includes("__tests__"))
+
+// Modified or Created can be treated the same a lot of the time
+const touchedFiles = modified.concat(danger.git.created_files)
+const touchedAppOnlyFiles = touchedFiles.filter(path => path.includes("src/lib/") && !path.includes("__tests__"))
+const touchedComponents = touchedFiles.filter(path => path.includes("src/lib/components"), !path.includes("__tests__"))
+
+const touchedTestFiles = touchedFiles.filter(path => path.includes("__tests__"))
+const touchedStoryFiles = touchedFiles.filter(path => path.includes("src/stories"))
+
+// Rules
+
+// When there are app-changes and it's not a PR marked as trivial, expect
+// there to be CHANGELOG changes.
+const changelogChanges = includes(modified, "CHANGELOG.md")
+if (modifiedAppFiles.length > 0 && !trivialPR && !changelogChanges) {
+  fail("No CHANGELOG added.")
 }
 
-if (!danger.github.pr.body.length) {
-  fail('Please add a description to your PR.')
+// No PR is too small to warrent a paragraph or two of summary
+if (pr.body.length === 0) {
+  fail("Please add a description to your PR.")
 }
 
-// Warns if there are changes to package.json without changes to yarn.lock.
-const packageChanged = includes(danger.git.modified_files, 'package.json')
-const lockfileChanged = includes(danger.git.modified_files, 'yarn.lock')
+// Warn if there are changes to package.json without changes to yarn.lock.
+const packageChanged = includes(modified, "package.json")
+const lockfileChanged = includes(modified, "yarn.lock")
 if (packageChanged && !lockfileChanged) {
-  const message = 'Changes were made to package.json, but not to yarn.lock'
-  const idea = 'Perhaps you need to run `yarn install`?'
+  const message = "Changes were made to package.json, but not to yarn.lock"
+  const idea = "Perhaps you need to run `yarn install`?"
   warn(`${message} - <i>${idea}</i>`)
 }
 
-const someoneAssigned = danger.github.pr.assignee
-if (someoneAssigned === null) {
-  fail('Please assign someone to merge this PR, and optionally include people who should review.')
+// Always ensure we assign someone, so that our Slackbot can do it's work correctly
+if (pr.assignee === null) {
+  fail("Please assign someone to merge this PR, and optionally include people who should review.")
 }
 
-// Danger JS doesn't support warn yet.
+// Check that every file touched has a corresponding test file
+const correspondingTestsForAppFiles = touchedAppOnlyFiles.map(f => {
+  const newPath = path.dirname(f)
+  const name = path.basename(f).replace(".ts", "-tests.ts")
+  return `${newPath}/__tests__/${name}`
+})
 
-//  const testFiles = _.filter(git.modified_files, function(path) {
-//    return _.includes(path, '__tests__/');
-//  })
-//
-//  const logicalTestPaths = _.map(testFiles, function(path) {
-//    // turns "lib/__tests__/i-am-good-tests.js" into "lib/i-am-good.js"
-//    return path.replace(/__tests__\//, '').replace(/-tests\./, '.')
-//  })
-//
-//  const sourcePaths = _.filter(git.modified_files, function(path) {
-//    return _.includes(path, 'lib/') &&  !_.includes(path, '__tests__/');
-//  })
-//
-//  // Check that any new file has a corresponding tests file
-//  const untestedFiles = _.difference(sourcePaths, logicalTestPaths)
-//  if (untestedFiles.length > 0) {
-//    warn("The following files do not have tests: " + github.html_link//(untestedFiles))
-//  }
+// New app files should get new test files
+// Allow warning instead of failing if you say "Skip New Tests" inside the body, make it explicit.
+const testFilesThatDontExist = correspondingTestsForAppFiles.filter(f => fs.existsSync(f))
+if (testFilesThatDontExist.length > 0) {
+  const callout = acceptedNoTests ? warn : fail
+  const output = `Missing Test Files:
+    ${testFilesThatDontExist.map(f => `  - [] \`${f}\``).join("\n")}
+
+    If these files are supposed to not exist, please update your PR body to include "Skip New Tests".
+  `
+  callout(output)
+}
+
+// A component should have a corresponding story reference, so that we're consistent
+// with how the web create their components
+
+const reactComponentForPath = (path) => {
+  const content = fs.readFileSync(path)
+  const match = content.match(/export class (.*) extends React.Component/)
+  if (match.length === 0) { return null }
+  return match[0]
+}
+
+// Start with a full list of all Components, then look
+// through all story files removing them from the list if found.
+// If any are left, leave a warning.
+let componentsForFiles = compact(touchedComponents.map(reactComponentForPath))
+
+// This may need updating once there are multiple folders for components
+const storyFiles = fs.readdirSync("src/stories")
+
+storyFiles.forEach(story => {
+  const content = fs.readFileSync(story)
+  componentsForFiles.forEach(component => {
+    if (content.includes(component)) {
+      componentsForFiles = componentsForFiles.filter(f => f !== component)
+    }
+  })
+})
+
+if (componentsForFiles.length) {
+  const components = componentsForFiles.map(c => ` - [] \`${c}\``).join("\n")
+  warn(`Could not find corresponding stories for these components: \n${components}`)
+}
