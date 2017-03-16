@@ -39,12 +39,6 @@ class LiveAuctionViewController: UIViewController {
             .addObserver(self, selector: #selector(userHasChangedRegistrationStatus), name: NSNotification.Name.ARAuctionArtworkRegistrationUpdated, object: nil)
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        view.backgroundColor = .white
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -204,7 +198,9 @@ extension PrivateFunctions {
         // Create and add to our hierachry a sale view controller.
         let useCompactLayout = traitCollection.horizontalSizeClass == .compact
         saleViewController = LiveAuctionSaleViewController(sale: sale, salesPerson: salesPerson, useCompactLayout: useCompactLayout, suppressJumpingToOpenLots: suppressJumpingToOpenLots).then {
-            ar_addAlignedModernChildViewController($0)
+            // We're bypassing the use of topLayoutGuide here.
+            ar_addModernChildViewController($0)
+            $0.view.alignTop("0", leading: "0", bottom: "0", trailing: "0", toView: view)
             // If we're loading (we probably are) then continue to show the loading view until things complete.
             // We'll dismiss the loading view based on initialStateLoadedSignal.
             if let loadingView = loadingView {

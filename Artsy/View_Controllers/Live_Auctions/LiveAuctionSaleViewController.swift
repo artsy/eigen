@@ -30,8 +30,7 @@ class LiveAuctionSaleViewController: UISplitViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-
+        // Split-view specific setup.
         preferredDisplayMode = .allVisible
         preferredPrimaryColumnWidthFraction = 0.4
         delegate = self
