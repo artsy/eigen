@@ -34,12 +34,13 @@ class LiveAuctionViewControllerTests: QuickSpec {
             subject = LiveAuctionViewController(saleSlugOrID: "sale-id")
 
             subject.staticDataFetcher = Stubbed_StaticDataFetcher()
-            subject.useSingleLayout = singleLayout
             subject.suppressJumpingToOpenLots = true
 
             subject.salesPersonCreator = { _ in
                 return fakeSalesPerson
             }
+
+            subject.stubHorizontalSizeClass(singleLayout ? .compact : .regular)
         }
 
         it("looks good by default") {
@@ -49,7 +50,6 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
         it("handles splitting in an iPad") {
             setupViewControllerForPhone(false)
-            subject.stubHorizontalSizeClass(.regular)
             subject.view.frame = CGRect(x: 0, y: 0, width: 1024, height: 768)
 
             expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))

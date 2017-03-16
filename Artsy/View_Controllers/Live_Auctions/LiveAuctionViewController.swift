@@ -41,6 +41,7 @@ class LiveAuctionViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         statusMaintainer.viewWillAppear(animated, app: app)
         connectToNetwork()
 
