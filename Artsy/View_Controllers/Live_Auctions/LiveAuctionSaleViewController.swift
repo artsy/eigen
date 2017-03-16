@@ -31,16 +31,14 @@ class LiveAuctionSaleViewController: UISplitViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        if delegate != nil { return }
 
         preferredDisplayMode = .allVisible
         preferredPrimaryColumnWidthFraction = 0.4
         delegate = self
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
