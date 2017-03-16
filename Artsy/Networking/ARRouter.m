@@ -1133,7 +1133,18 @@ static NSString *hostFromString(NSString *string)
 }",
                                                  causalityRole, saleID, saleID];
 
-    NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url parameters:@{ @"query" : query }];
+    // Makes a copy of the request serializer, one that will encode HTTP body as JSON instead of URL-encoded params.
+    AFJSONRequestSerializer *jsonSerializer = [[AFJSONRequestSerializer alloc] init];
+    for (NSString *key in staticHTTPClient.requestSerializer.HTTPRequestHeaders.allKeys) {
+        id value = staticHTTPClient.requestSerializer.HTTPRequestHeaders[key];
+        [jsonSerializer setValue:value forHTTPHeaderField:key];
+    }
+    NSError *error;
+    NSMutableURLRequest *request = [jsonSerializer requestWithMethod:@"POST" URLString:url parameters:@{ @"query" : query } error:&error];
+
+    if (error) {
+        NSLog(@"Error serializing request: %@", error);
+    }
 
     return request;
 }
