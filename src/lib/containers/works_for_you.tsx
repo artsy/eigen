@@ -12,21 +12,24 @@ import colors from "../../data/colors"
 interface Props extends RelayProps {}
 
 interface State {
-  dataSource: ListViewDataSource
+  dataSource: ListViewDataSource | null
   sideMargin: number
 }
 
-class WorksForYou extends React.Component<Props, State> {
+export class WorksForYou extends React.Component<Props, State> {
   constructor(props) {
     super(props)
-    const rows: any[] = props.me.notifications_connection.edges.map((edge) => edge.node)
+
+    const edges = props.me.notifications_connection.edges
+    const dataSource = edges.length && new ListView.DataSource({
+                                      rowHasChanged: (row1, row2) => row1 !== row2,
+                                    }).cloneWithRows(edges.map((edge) => edge.node))
 
     this.state = {
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-      }).cloneWithRows(rows),
+      dataSource,
       sideMargin: 20,
     }
+
   }
 
   onLayout = (event: LayoutEvent) => {
@@ -38,15 +41,15 @@ class WorksForYou extends React.Component<Props, State> {
   render() {
     const margin = this.state.sideMargin
     const containerMargins = { marginLeft: margin, marginRight: margin }
-    const hasNotifications = this.props.me.notifications_connection.edges.length
+    const hasNotifications = this.state.dataSource
 
     /* if showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
        otherwise, it should not use any flex growth.
     */
     return (
-      <ScrollView contentContainerStyle={ hasNotifications ? {} : styles.container}>
+      <ScrollView contentContainerStyle={ hasNotifications ? {} : styles.container} onLayout={this.onLayout.bind(this)}>
         <SerifText style={[styles.title, containerMargins]}>Works by Artists you Follow</SerifText>
-        <View style={[containerMargins, {flex: 1}]} onLayout={this.onLayout.bind(this)}>
+        <View style={[containerMargins, {flex: 1}]}>
           { hasNotifications ? this.renderNotifications() : this.renderEmptyState() }
         </View>
       </ScrollView>
@@ -146,9 +149,7 @@ interface RelayProps {
   me: {
     notifications_connection: {
       edges: Array<{
-        node: {
-          any,
-        },
+        node: any | null,
       }>,
     },
   },
