@@ -16,13 +16,13 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dlY-yE-giM">
                     <rect key="frame" x="20" y="159" width="280" height="1"/>
-                    <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="fde-Tn-amQ"/>
                         <constraint firstAttribute="height" constant="1" id="zXA-Yr-Sen"/>
                     </constraints>
                 </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DKt-9u-HCN">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DKt-9u-HCN" userLabel="Thumbnail Image">
                     <rect key="frame" x="20" y="20" width="140" height="120"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="140" id="OZj-b1-C6Q"/>
@@ -35,8 +35,8 @@
                         </mask>
                     </variation>
                 </imageView>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Vko-em-QBe">
-                    <rect key="frame" x="178" y="25" width="122" height="110.5"/>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Vko-em-QBe" userLabel="Details Stack View">
+                    <rect key="frame" x="178" y="25.5" width="122" height="110.5"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" text="HIGHEST BIDDER" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qGL-gR-41X" customClass="ARSansSerifLabel">
                             <rect key="frame" x="0.0" y="0.0" width="122" height="20.5"/>
@@ -62,16 +62,28 @@
                             <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="maz-gK-Krg">
+                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="maz-gK-Krg" userLabel="Bid Stack View">
                             <rect key="frame" x="0.0" y="90" width="105.5" height="20.5"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" image="paddle.png" translatesAutoresizingMaskIntoConstraints="NO" id="d8z-6U-TjH">
-                                    <rect key="frame" x="0.0" y="0.0" width="6" height="20"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lvG-Zn-Uwl" userLabel="Paddle Container">
+                                    <rect key="frame" x="0.0" y="0.5" width="6" height="20"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="800" image="paddle.png" translatesAutoresizingMaskIntoConstraints="NO" id="d8z-6U-TjH">
+                                            <rect key="frame" x="0.0" y="-2" width="6" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="KBu-IL-ypQ"/>
+                                                <constraint firstAttribute="width" constant="6" id="ZgI-mV-gy6"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="20" id="KBu-IL-ypQ"/>
-                                        <constraint firstAttribute="width" constant="6" id="ZgI-mV-gy6"/>
+                                        <constraint firstItem="d8z-6U-TjH" firstAttribute="centerX" secondItem="lvG-Zn-Uwl" secondAttribute="centerX" id="24B-d3-JIi"/>
+                                        <constraint firstAttribute="height" constant="20" id="Ppe-GO-Zrq"/>
+                                        <constraint firstItem="d8z-6U-TjH" firstAttribute="centerY" secondItem="lvG-Zn-Uwl" secondAttribute="centerY" constant="-2" id="ZcD-lj-WOo"/>
+                                        <constraint firstAttribute="width" constant="6" id="v2X-Td-1yz"/>
                                     </constraints>
-                                </imageView>
+                                </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="$12,000,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRs-ie-jjh" customClass="ARSerifLabel">
                                     <rect key="frame" x="8" y="0.0" width="97.5" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
