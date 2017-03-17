@@ -10,14 +10,15 @@ import colors from "../../../data/colors"
 
 interface Props extends RelayProps {}
 
-class Notification extends React.Component<Props, any> {
+export class Notification extends React.Component<Props, any> {
   render() {
     const notification = this.props.notification
 
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <View>
+          <View style={styles.artistAvatar}/>
+          <View style={{alignSelf: "center"}}>
             <Headline style={styles.artistName}>{notification.artists}</Headline>
             <SerifText style={styles.metadata}>{notification.message + " · " + notification.date}</SerifText>
           </View>
@@ -34,6 +35,7 @@ class Notification extends React.Component<Props, any> {
 interface Styles {
   container: ViewStyle,
   header: ViewStyle,
+  artistAvatar: ViewStyle,
   artistName: TextStyle,
   metadata: TextStyle,
   gridContainer: ViewStyle,
@@ -46,6 +48,14 @@ const styles = StyleSheet.create<Styles>({
   },
   header: {
     flexDirection: "row",
+  },
+  artistAvatar: {
+    height: 40,
+    width: 40,
+    backgroundColor: colors["purple-light"],
+    alignSelf: "center",
+    borderRadius: 20,
+    marginRight: 10,
   },
   artistName: {
     fontSize: 14,
@@ -91,6 +101,6 @@ interface RelayProps {
     message: string,
     artists: string,
     artworks: any[],
-    status: "READ" | "UNREAD",
+    status: string,
   },
 }

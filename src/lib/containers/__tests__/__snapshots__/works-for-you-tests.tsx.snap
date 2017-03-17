@@ -69,7 +69,23 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                   "flexDirection": "row",
                 }
               }>
-              <View>
+              <View
+                style={
+                  Object {
+                    "alignSelf": "center",
+                    "backgroundColor": "#e2d2ff",
+                    "borderRadius": 20,
+                    "height": 40,
+                    "marginRight": 10,
+                    "width": 40,
+                  }
+                } />
+              <View
+                style={
+                  Object {
+                    "alignSelf": "center",
+                  }
+                }>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -144,7 +160,23 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                   "flexDirection": "row",
                 }
               }>
-              <View>
+              <View
+                style={
+                  Object {
+                    "alignSelf": "center",
+                    "backgroundColor": "#e2d2ff",
+                    "borderRadius": 20,
+                    "height": 40,
+                    "marginRight": 10,
+                    "width": 40,
+                  }
+                } />
+              <View
+                style={
+                  Object {
+                    "alignSelf": "center",
+                  }
+                }>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -269,7 +301,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
         renderSeparator={[Function]}
         style={
           Object {
-            "marginTop": 20,
+            "marginTop": 0,
           }
         }>
         <View>
@@ -285,7 +317,23 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                   "flexDirection": "row",
                 }
               }>
-              <View>
+              <View
+                style={
+                  Object {
+                    "alignSelf": "center",
+                    "backgroundColor": "#e2d2ff",
+                    "borderRadius": 20,
+                    "height": 40,
+                    "marginRight": 10,
+                    "width": 40,
+                  }
+                } />
+              <View
+                style={
+                  Object {
+                    "alignSelf": "center",
+                  }
+                }>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -360,7 +408,23 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                   "flexDirection": "row",
                 }
               }>
-              <View>
+              <View
+                style={
+                  Object {
+                    "alignSelf": "center",
+                    "backgroundColor": "#e2d2ff",
+                    "borderRadius": 20,
+                    "height": 40,
+                    "marginRight": 10,
+                    "width": 40,
+                  }
+                } />
+              <View
+                style={
+                  Object {
+                    "alignSelf": "center",
+                  }
+                }>
                 <Text
                   accessible={true}
                   allowFontScaling={true}

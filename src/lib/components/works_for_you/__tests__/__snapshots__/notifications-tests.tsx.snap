@@ -1,0 +1,198 @@
+exports[`test lays out correctly for read notification 1`] = `
+<View
+  style={
+    Object {
+      "marginTop": 20,
+    }
+  }>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }>
+    <View
+      style={
+        Object {
+          "alignSelf": "center",
+          "backgroundColor": "#e2d2ff",
+          "borderRadius": 20,
+          "height": 40,
+          "marginRight": 10,
+          "width": 40,
+        }
+      } />
+    <View
+      style={
+        Object {
+          "alignSelf": "center",
+        }
+      }>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "fontSize": 12,
+            },
+            Object {
+              "fontSize": 14,
+            },
+            Object {
+              "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            },
+          ]
+        }>
+        JEAN-MICHEL BASQUIAT
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "color": "gray",
+              "fontSize": 16,
+              "marginTop": 2,
+            },
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }>
+        1 Work Added · Mar 16
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "marginBottom": 20,
+        "marginTop": 20,
+      }
+    }>
+    <View
+      onLayout={[Function]}>
+      <View
+        accessibilityLabel="Artworks Content View"
+        style={
+          Object {
+            "flexDirection": "row",
+          }
+        } />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`test lays out correctly for unread notification 1`] = `
+<View
+  style={
+    Object {
+      "marginTop": 20,
+    }
+  }>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }>
+    <View
+      style={
+        Object {
+          "alignSelf": "center",
+          "backgroundColor": "#e2d2ff",
+          "borderRadius": 20,
+          "height": 40,
+          "marginRight": 10,
+          "width": 40,
+        }
+      } />
+    <View
+      style={
+        Object {
+          "alignSelf": "center",
+        }
+      }>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "fontSize": 12,
+            },
+            Object {
+              "fontSize": 14,
+            },
+            Object {
+              "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            },
+          ]
+        }>
+        JEAN-MICHEL BASQUIAT
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontSize": 17,
+            },
+            Object {
+              "color": "gray",
+              "fontSize": 16,
+              "marginTop": 2,
+            },
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }>
+        1 Work Added · Mar 16
+      </Text>
+    </View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#6e1fff",
+          "borderRadius": 5,
+          "height": 10,
+          "position": "absolute",
+          "right": 0,
+          "width": 10,
+        }
+      } />
+  </View>
+  <View
+    style={
+      Object {
+        "marginBottom": 20,
+        "marginTop": 20,
+      }
+    }>
+    <View
+      onLayout={[Function]}>
+      <View
+        accessibilityLabel="Artworks Content View"
+        style={
+          Object {
+            "flexDirection": "row",
+          }
+        } />
+    </View>
+  </View>
+</View>
+`;
