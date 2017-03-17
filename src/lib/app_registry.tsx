@@ -73,6 +73,15 @@ class Home extends RootContainer {
   }
 }
 
+class WorksForYou extends RootContainer {
+  constructor(props) {
+    super(props)
+    this.component = Containers.WorksForYou
+    this.route = new Routes.WorksForYou()
+  }
+}
+
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Home", () => Home)
 AppRegistry.registerComponent("Gene", () => Gene)
+AppRegistry.registerComponent("WorksForYou", () => WorksForYou)

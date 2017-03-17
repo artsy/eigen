@@ -49,10 +49,26 @@ class Gene extends Relay.Route {
     price_range: { required: false },
   }
 
-  static routeName = "ArtistRoute"
+  static routeName = "GeneRoute"
 }
+
+class WorksForYou extends Relay.Route {
+  static queries = {
+    me: (component, params) => Relay.QL`
+      query {
+        me {
+          ${component.getFragment("me", params)}
+        }
+      }
+    `,
+  }
+
+  static routeName = "WorksForYouRoute"
+}
+
 export default {
   Artist,
   Home,
   Gene,
+  WorksForYou,
 }
