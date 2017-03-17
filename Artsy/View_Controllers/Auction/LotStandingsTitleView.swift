@@ -31,7 +31,7 @@ extension PrivateFunctions {
 
         let sideSpacing = isCompact ? "20" : "40"
         let trailingSpacing = "-\(sideSpacing)"
-        let borderColor = UIColor.artsyGrayMedium()
+        let borderColor = UIColor.artsyGrayRegular()
 
         if isCompact {
             titleLabel.alignTop("20", leading: sideSpacing, bottom: "0", trailing: trailingSpacing, toView: self)
