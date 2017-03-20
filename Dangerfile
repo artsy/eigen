@@ -55,6 +55,9 @@ begin
   current_version = `/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" Artsy/App_Resources/Artsy-Info.plist`.strip
   fail("You need to set the App's plist version to #{upcoming_version}") if current_version != upcoming_version
 
+  current_sticker_version = `/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" Artsy\ Stickers/Info.plist`.strip
+  fail("You need to set the Sticker extensions's plist version to #{upcoming_version}") if current_sticker_version != upcoming_version
+
 rescue StandardError
   # YAML could not be parsed, fail the build.
   fail("CHANGELOG isn't valid YAML")
