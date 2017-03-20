@@ -29,14 +29,14 @@
 
 @interface ARSignUpSplashViewController ()
 
-@property (nonatomic) NSArray *pages;
-@property (nonatomic) ARCrossfadingImageView *imageView;
-@property (nonatomic) ARBlackFlatButton *getStartedButton;
-@property (nonatomic) ARSerifLineHeightLabel *descriptionLabel;
+@property (nonatomic, strong, readwrite) NSArray *pages;
+@property (nonatomic, strong, readwrite) ARCrossfadingImageView *imageView;
+@property (nonatomic, strong, readwrite) ARBlackFlatButton *getStartedButton;
+@property (nonatomic, strong, readwrite) ARSerifLineHeightLabel *descriptionLabel;
 @property (nonatomic, strong, readwrite) UIActivityIndicatorView *spinnerView;
 @property (nonatomic, strong, readwrite) UIImageView *logoView;
-@property (nonatomic, strong) NSLayoutConstraint *spaceLogoToTop;
-@property (nonatomic, strong) NSLayoutConstraint *spaceDescription;
+@property (nonatomic, strong, readwrite) NSLayoutConstraint *spaceLogoToTop;
+@property (nonatomic, strong, readwrite) NSLayoutConstraint *spaceDescription;
 
 @end
 

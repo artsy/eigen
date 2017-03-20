@@ -143,14 +143,12 @@
 - (void)toggleShowPassword:(id)sender
 {
     self.passwordField.secureTextEntry = !self.passwordField.secureTextEntry;
-    
     NSString *titleText = self.passwordField.secureTextEntry ? @"SHOW" : @"HIDE";
     [self.showPasswordButton setTitle:titleText forState:UIControlStateNormal];
     
 }
 
 - (void)enableErrorState
-
 {
     self.passwordField.baseline.backgroundColor = [UIColor artsyRedRegular].CGColor;
     self.emailField.baseline.backgroundColor = [UIColor artsyRedRegular].CGColor;
