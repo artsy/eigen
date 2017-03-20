@@ -1,6 +1,10 @@
 import * as React from "react"
-import { ListView, ListViewDataSource, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
+import { ListView, ListViewDataSource, NativeModules, ScrollView, StyleSheet, TextStyle, View, ViewStyle }
+  from "react-native"
+const { ARTemporaryAPIModule } = NativeModules
 import * as Relay from "react-relay"
+
+import Events from "../native_modules/events"
 
 import Headline from "../components/text/headline"
 import SerifText from "../components/text/serif"
@@ -30,6 +34,19 @@ export class WorksForYou extends React.Component<Props, State> {
       sideMargin: 20,
     }
 
+  }
+
+  componentDidMount() {
+    NativeModules.ARTemporaryAPIModule.markNotificationsRead((error) => {
+      if (error) {
+        console.error(error)
+      } else {
+        Events.postEvent(this, {
+          name: "Notifications read",
+          source_screen: "works for you page",
+        })
+      }
+    })
   }
 
   onLayout = (event: LayoutEvent) => {

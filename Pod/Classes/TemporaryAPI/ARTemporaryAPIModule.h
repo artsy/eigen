@@ -7,6 +7,8 @@ typedef void(^ARArtistFollowStatusAssigner)(NSString *artistID, BOOL following, 
 typedef void(^ARGeneFollowStatusProvider)(NSString *geneID, RCTResponseSenderBlock block);
 typedef void(^ARGeneFollowStatusAssigner)(NSString *geneID, BOOL following, RCTResponseSenderBlock block);
 
+typedef void(^ARNotificationReadStatusAssigner)(RCTResponseSenderBlock block);
+
 /// While metaphysics is read-only, we need to rely on Eigen's
 /// v1 API access to get/set these bits of information.
 
@@ -17,5 +19,7 @@ typedef void(^ARGeneFollowStatusAssigner)(NSString *geneID, BOOL following, RCTR
 
 @property (nonatomic, copy, readwrite) ARGeneFollowStatusProvider geneFollowStatusProvider;
 @property (nonatomic, copy, readwrite) ARGeneFollowStatusAssigner geneFollowStatusAssigner;
+
+@property (nonatomic, copy, readwrite) ARNotificationReadStatusAssigner notificationReadStatusAssigner;
 
 @end
