@@ -40,7 +40,8 @@
     ],
     "setupFiles": [
       "./src/setupJest.ts"
-    ]
+    ],
+    "cacheDirectory": ".jest/cache"
   },
   "graphql": {
     "file": "data/schema.json",

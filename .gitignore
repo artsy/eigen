@@ -41,3 +41,7 @@ Example/Emission/Configuration.h
 typings
 .apphub
 coverage
+
+# Use a custom, cached location for Jest to save transpiling
+# on every PR
+.jest/cache
