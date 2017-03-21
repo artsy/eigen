@@ -21,7 +21,7 @@ class LiveAuctionLoadingView: UIView {
 
         let containerView = UIView()
 
-        spinningImageView.then {
+        _ = spinningImageView.then {
             $0.image = UIImage(asset: .LiveAuctionSpinner)
             $0.contentMode = .scaleAspectFit
 
