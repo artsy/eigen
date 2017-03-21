@@ -31,11 +31,6 @@
     [self addTarget:self action:@selector(editingDidFinish) forControlEvents:UIControlEventEditingDidEnd];
 }
 
-- (NSString *)text
-{
-    return [super text];
-}
-
 - (void)editingDidBegin
 {
     self.secureTextEntry = YES;
