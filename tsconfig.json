@@ -6,6 +6,7 @@
         "rootDir": "src",
         "outDir": "build",
         "allowJs": true,
+        "pretty": true,
         "moduleResolution": "node",
         "strictNullChecks": false
     },
@@ -15,6 +16,7 @@
         "src/**/*.tsx"
     ],
     "exclude": [
+        "dangerfile.ts",
         "node_modules",
         "Pod/Assets",
         "Example/Build",
