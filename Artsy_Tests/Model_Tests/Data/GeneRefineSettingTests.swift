@@ -45,8 +45,14 @@ class RefineGeneSettingsTests: QuickSpec {
             expect(gene.mediums.map({ $0.id })) == ["*", "prints"]
             expect(gene.priceRange?.min) == 0
             expect(gene.priceRange?.max) == 10_000_00
-
         }
-
+      
+        it("Creates a Gene with a price range that spans the full price spectrum") {
+            let json = self.jsonForStub("gene_refine_example_medium_price")
+            guard let gene = GeneRefineSettings.refinementFromAggregationJSON(json, initial: false) else { return fail() }
+            
+            expect(gene.priceRange?.min) == 0
+            expect(gene.priceRange?.max) == 10_000_00
+        }
     }
 }
