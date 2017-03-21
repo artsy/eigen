@@ -48,11 +48,24 @@ class LiveAuctionViewController: UIViewController {
         app.isIdleTimerDisabled = true
 
         if waitingForInitialLoad {
-            loadingView = LiveAuctionLoadingView().then {
-                $0.operation = applyWeakly(self, LiveAuctionViewController.dismissLiveAuctionsModal)
-                view.addSubview($0)
-                $0.align(toView: view)
-            }
+            showLoadingView()
+        } else if registrationStatusChanged {
+            // we have to ask for a new metaphysics JWT ( as they contain metadata about bidder status )
+            // so we need to pull down the current view heirarchy, and recreate it
+            // Which luckily, connectToNetwork() does for us via setupWithSale()
+            showLoadingView()
+            connectToNetwork()
+            registrationStatusChanged = false
+        }
+    }
+
+    func showLoadingView() {
+        guard loadingView == nil else { return } // Already showing a loading view, don't show another.
+
+        loadingView = LiveAuctionLoadingView().then {
+            $0.operation = applyWeakly(self, LiveAuctionViewController.dismissLiveAuctionsModal)
+            view.addSubview($0)
+            $0.align(toView: view)
         }
     }
 
@@ -78,6 +91,7 @@ class LiveAuctionViewController: UIViewController {
     var showSocketDisconnectWarning = false
     var waitingToShowDisconnect = false
     var waitingForInitialLoad = true
+    var registrationStatusChanged = false
 
     /// param is hide because it recieves a "connected" signal
     func showSocketDisconnectedOverlay(_ hide: Bool) {
@@ -146,10 +160,9 @@ class LiveAuctionViewController: UIViewController {
     }
 
     func userHasChangedRegistrationStatus() {
-        // we have to ask for a new metaphysics JWT ( as they contain metadata about bidder status )
-        // so we need to pull down the current view heirarchy, and recreate it
-        // Which luckily, connectToNetwork() does for us via setupWithSale()
-        connectToNetwork()
+        // We receive the notification while not at the foremost of the VC hierarhcy, so we need 
+        // to delay until we reappear.
+        registrationStatusChanged = true
     }
 
     func dismissLiveAuctionsModal() {
