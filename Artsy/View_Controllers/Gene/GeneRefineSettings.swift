@@ -131,13 +131,13 @@ struct GeneRefineSettings {
         }
 
         let price: Price?
-        if (initial) {
-            // Initial is _always_ a 0-Max of all allocations
+        // The initial settings should always span the full price spectrum, as should non-specific selected prices.
+        if (initial || json["selectedPrice"].string == nil || json["selectedPrice"].string == "*-*") {
             let prices = aggregations.filter({ $0["slice"].stringValue == "PRICE_RANGE" }).first?["counts"].arrayValue.map({ Price(id: $0["id"].stringValue) })
             guard let maxPrice = prices?.sorted(by: >).first else { return nil }
             price = Price(id: "0-\(maxPrice.maxPrice())")
         } else {
-            price = Price(id: json["selectedPrice"].string ?? "*-*")
+            price = Price(id: json["selectedPrice"].string!)
         }
 
         guard let mediumsJSON = aggregations.filter({ $0["slice"].stringValue == "MEDIUM" }).first else { return nil }
