@@ -23,7 +23,7 @@ class LiveAuctionLotSetViewControllerSpec: QuickSpec {
             it("looks good by default") {
                 ARTestContext.use(device) {
                     let fakeSalesPerson = stub_auctionSalesPerson(Test_LiveAuctionViewModel())
-                    let subject = LiveAuctionLotSetViewController(salesPerson: fakeSalesPerson, traitCollection: UITraitCollection.init(horizontalSizeClass: horizontalSizeClass))
+                    let subject = LiveAuctionLotSetViewController(salesPerson: fakeSalesPerson, useCompactLayout: (horizontalSizeClass == .compact))
                     subject.suppressJumpingToOpenLots = true
 
                     subject.stubTraitCollection(UITraitCollection(horizontalSizeClass: horizontalSizeClass))

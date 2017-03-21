@@ -10,6 +10,7 @@ import UICKeyChainStore
 class LiveAuctionLotSetViewController: UIViewController {
     let salesPerson: LiveAuctionsSalesPersonType
 
+    let useCompactLayout: Bool
     let auctionDataSource = LiveAuctionSaleLotsDataSource()
     let progressBar = SimpleProgressView()
     let pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [:])
@@ -31,6 +32,7 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     init(salesPerson: LiveAuctionsSalesPersonType, useCompactLayout: Bool) {
         self.salesPerson = salesPerson
+        self.useCompactLayout = useCompactLayout
 
         let dataSource = LiveAuctionLotCollectionViewDataSource(salesPerson: salesPerson)
         lotImageCollectionViewDataSource = dataSource
@@ -224,8 +226,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         lots.accessibilityLabel = "Show all Lots"
         lots.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.showLots), for: .touchUpInside)
 
-        let phone = traitCollection.userInterfaceIdiom == .phone
-        let items: [UIBarButtonItem] = phone ? [close, lots, info] : [close, info]
+        let items: [UIBarButtonItem] = useCompactLayout ? [close, lots, info] : [close, info]
 
         navigationItem.rightBarButtonItems = items
     }
