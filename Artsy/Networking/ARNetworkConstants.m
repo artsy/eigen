@@ -38,6 +38,7 @@ NSString *const ARAddArtworkToFavoritesURLFormat = @"/api/v1/collection/saved-ar
 NSString *const ARFavoritesURL = @"/api/v1/collection/saved-artwork/artworks";
 NSString *const ARSalesForArtworkURL = @"/api/v1/related/sales";
 NSString *const ARMyBiddersURL = @"/api/v1/me/bidders";
+NSString *const ARMyLotStandingsURL = @"/api/v1/me/lot_standings";
 NSString *const ARBidderPositionsForSaleAndArtworkURL = @"/api/v1/me/bidder_positions";
 NSString *const ARSaleArtworkForSaleAndArtworkURLFormat = @"/api/v1/sale/%@/sale_artwork/%@";
 NSString *const ARSaleURLFormat = @"/api/v1/sale/%@";

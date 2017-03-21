@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="LotStandingsLotView" customModule="Artsy" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="768" height="140"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dlY-yE-giM">
+                    <rect key="frame" x="40" y="139" width="688" height="1"/>
+                    <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="zXA-Yr-Sen"/>
+                    </constraints>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DKt-9u-HCN">
+                    <rect key="frame" x="40" y="20" width="135" height="100"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="135" id="OZj-b1-C6Q"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="paddle.png" translatesAutoresizingMaskIntoConstraints="NO" id="d8z-6U-TjH">
+                    <rect key="frame" x="377.5" y="64.5" width="6" height="9"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="9" id="KBu-IL-ypQ"/>
+                        <constraint firstAttribute="width" constant="6" id="eh8-hC-ZQP"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$12,000,000 (6 Bids)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRs-ie-jjh" customClass="ARSerifLabel">
+                    <rect key="frame" x="389.5" y="60" width="161" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HIGHEST BIDDER" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qGL-gR-41X" customClass="ARSansSerifLabel">
+                    <rect key="frame" x="592" y="59.5" width="136" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lot 201" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wv6-Dl-4rk" customClass="ARSansSerifLabel">
+                    <rect key="frame" x="195" y="35.5" width="162.5" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Charles &amp; Ray Eames" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sVW-GY-jju" customClass="ARSerifLabel">
+                    <rect key="frame" x="195" y="59.5" width="162.5" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lounge chair (1956)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uFF-Hg-ojj" customClass="ARSerifLabel">
+                    <rect key="frame" x="195" y="83.5" width="162.5" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="uFF-Hg-ojj" firstAttribute="leading" secondItem="wv6-Dl-4rk" secondAttribute="leading" id="0Hv-Ps-g34"/>
+                <constraint firstItem="uFF-Hg-ojj" firstAttribute="leading" secondItem="DKt-9u-HCN" secondAttribute="trailing" constant="20" id="3mD-CJ-38y"/>
+                <constraint firstItem="DKt-9u-HCN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="40" id="4II-wW-bs8"/>
+                <constraint firstAttribute="trailing" secondItem="qGL-gR-41X" secondAttribute="trailing" constant="40" id="7dL-HH-hdb"/>
+                <constraint firstItem="sVW-GY-jju" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="8GK-2J-5sg"/>
+                <constraint firstItem="uFF-Hg-ojj" firstAttribute="top" secondItem="wv6-Dl-4rk" secondAttribute="bottom" constant="27" id="DAK-7O-W8L"/>
+                <constraint firstItem="bRs-ie-jjh" firstAttribute="leading" secondItem="d8z-6U-TjH" secondAttribute="trailing" constant="6" id="ElK-6v-oSt"/>
+                <constraint firstItem="uFF-Hg-ojj" firstAttribute="top" secondItem="sVW-GY-jju" secondAttribute="bottom" constant="3" id="IyO-5o-Eir"/>
+                <constraint firstItem="sVW-GY-jju" firstAttribute="leading" secondItem="wv6-Dl-4rk" secondAttribute="leading" id="Jeq-gE-rj3"/>
+                <constraint firstAttribute="trailing" secondItem="qGL-gR-41X" secondAttribute="trailing" constant="40" id="MeZ-Al-LHD"/>
+                <constraint firstAttribute="trailing" secondItem="bRs-ie-jjh" secondAttribute="trailing" constant="217.5" id="PBx-8T-Ts8"/>
+                <constraint firstItem="qGL-gR-41X" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="PLc-MZ-5go"/>
+                <constraint firstAttribute="trailing" secondItem="dlY-yE-giM" secondAttribute="trailing" constant="40" id="Vtj-Aj-rDC"/>
+                <constraint firstAttribute="bottom" secondItem="dlY-yE-giM" secondAttribute="bottom" id="Wul-In-JyL"/>
+                <constraint firstItem="sVW-GY-jju" firstAttribute="width" secondItem="wv6-Dl-4rk" secondAttribute="width" id="fL9-25-cy8"/>
+                <constraint firstItem="dlY-yE-giM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="40" id="gXb-Av-CfR"/>
+                <constraint firstItem="d8z-6U-TjH" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-1" id="ig8-ae-WJ7"/>
+                <constraint firstItem="bRs-ie-jjh" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="k7U-4Z-nyo"/>
+                <constraint firstItem="uFF-Hg-ojj" firstAttribute="width" secondItem="wv6-Dl-4rk" secondAttribute="width" id="kjv-YT-ipB"/>
+                <constraint firstItem="dlY-yE-giM" firstAttribute="top" secondItem="DKt-9u-HCN" secondAttribute="bottom" constant="19" id="uyS-kf-y8C"/>
+                <constraint firstItem="sVW-GY-jju" firstAttribute="leading" secondItem="DKt-9u-HCN" secondAttribute="trailing" constant="20" id="wAp-CH-iV9"/>
+                <constraint firstItem="bRs-ie-jjh" firstAttribute="leading" secondItem="d8z-6U-TjH" secondAttribute="trailing" constant="6" id="xsq-2s-szx"/>
+                <constraint firstItem="DKt-9u-HCN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="yaN-nM-0JP"/>
+                <constraint firstItem="wv6-Dl-4rk" firstAttribute="leading" secondItem="DKt-9u-HCN" secondAttribute="trailing" constant="20" id="z4m-Rg-cGU"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="artistNameLabel" destination="sVW-GY-jju" id="SAI-Hx-Wss"/>
+                <outlet property="artworkNameLabel" destination="uFF-Hg-ojj" id="KH4-Nm-esg"/>
+                <outlet property="bidStatusLabel" destination="qGL-gR-41X" id="YhF-1v-5dc"/>
+                <outlet property="bottomBorder" destination="dlY-yE-giM" id="yL9-T5-CfX"/>
+                <outlet property="currentBidLabel" destination="bRs-ie-jjh" id="zfC-AD-nAZ"/>
+                <outlet property="imageView" destination="DKt-9u-HCN" id="WA3-Rc-0Gy"/>
+                <outlet property="lotNumberLabel" destination="wv6-Dl-4rk" id="jSt-as-Qsq"/>
+            </connections>
+            <point key="canvasLocation" x="34" y="54"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="paddle.png" width="6" height="9"/>
+    </resources>
+</document>

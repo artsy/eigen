@@ -121,8 +121,9 @@ private extension AuctionTitleView {
             infoButton.alignTrailingEdge(withView: container, predicate: "0")
             infoButton.alignTop("0", bottom: "0", toView: container)
 
-            // Ensure button doesn't overlap with title
-            titleLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .horizontal)
+            // Ensure button doesn't overlap with title BUT we don't want the label to shrink,
+            // so we use something _just_ bigger than UILayoutPriorityDefaultLow.
+            titleLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow + 1, for: .horizontal)
             infoButton.constrainLeadingSpace(toView: titleLabel, predicate: ">= \(regularSize ? 20 : 30)@400")
         } else {
             container.alignTop("0", bottom: "0", toView: titleLabel)

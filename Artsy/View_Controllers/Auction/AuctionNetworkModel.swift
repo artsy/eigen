@@ -4,6 +4,7 @@ import Interstellar
 protocol AuctionNetworkModelType {
     func fetch() -> Observable<Result<SaleViewModel>>
     func fetchBidders() -> Observable<Result<[Bidder]>>
+    func fetchLotStanding() -> Observable<Result<[LotStanding]>>
 
     var bidders: [Bidder] { get }
 }
@@ -19,6 +20,7 @@ class AuctionNetworkModel {
     lazy var saleNetworkModel: AuctionSaleNetworkModelType = AuctionSaleNetworkModel()
     lazy var saleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType = AuctionSaleArtworksNetworkModel()
     lazy var bidderNetworkModel: AuctionBiddersNetworkModelType = AuctionBiddersNetworkModel()
+    lazy var lotStandingsNetworkModel: AuctionLotStandingsNetworkModel = AuctionLotStandingsNetworkModel()
 
     init(saleID: String) {
         self.saleID = saleID
@@ -37,13 +39,19 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
 
     func fetch() -> Observable<Result<SaleViewModel>> {
 
-        return fetchBidders()
-            .flatMap { [weak self] (bidders: Result<[Bidder]>) -> Observable<Result<SaleViewModel>> in
+        return fetchBidders().merge(lotStandingsNetworkModel.fetch(saleID))
+            .flatMap { [weak self] (bidders: Result<[Bidder]>, lotStandings: Result<[LotStanding]>) -> Observable<Result<SaleViewModel>> in
                 guard let `self` = self else { return Observable() }
+
+                var retrievedLotStandings = [LotStanding]()
+                if case .success(let lotStandings) = lotStandings {
+                    // Note: we're discarding any error in lotStandings because our UI doesn't expose errors.
+                    retrievedLotStandings = lotStandings
+                }
 
                 switch bidders {
                 case .success(let bidders):
-                    return self.createViewModel(bidders)
+                    return self.createViewModel(bidders, lotStandings: retrievedLotStandings)
                 case .error(let error):
                     return Observable(.error(error))
                 }
@@ -53,7 +61,11 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
             }
     }
 
-    func createViewModel(_ bidders: [Bidder]) -> Observable<Result<SaleViewModel>> {
+    func fetchLotStanding() -> Observable<Result<[LotStanding]>> {
+        return lotStandingsNetworkModel.fetch(saleID)
+    }
+
+    func createViewModel(_ bidders: [Bidder], lotStandings: [LotStanding]) -> Observable<Result<SaleViewModel>> {
         let signal = Observable(saleID)
 
         let fetchSale = signal.flatMap(saleNetworkModel.fetchSale)
@@ -67,7 +79,7 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                 switch tuple {
                 case (.success(let sale), .success(let saleArtworks)):
                     saleArtworks.forEach { $0.auction = sale }
-                    return .success(SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: bidders))
+                    return .success(SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: bidders, lotStandings: lotStandings))
 
                 case (.error(let error), .error):
                     return .error(error) // Need to pick one error, might as well go with the first.

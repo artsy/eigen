@@ -150,7 +150,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
             if (newRefineSettings) {
                 resolve(newRefineSettings);
             } else {
-                reject(@"0", @"", nil);
+                reject(@"no_changes", @"No refinement changes were made", nil);
             }
         }];
     };
