@@ -1,8 +1,12 @@
+
 import { danger, fail, warn } from "danger"
-import fs from "fs"
 import { compact, includes, remove } from "lodash"
-import os from "os"
-import path from "path"
+
+// For now you can ignore these 3 errors, I'm not sure why
+// they are being raised. They definitely exist in the node runtime.
+import * as fs from "fs"
+import * as os from "os"
+import * as path from "path"
 
 // Setup
 
@@ -16,16 +20,16 @@ const trivialPR = bodyAndTitle.includes("trivial")
 const acceptedNoTests = bodyAndTitle.includes("skip new tests")
 
 // Custom subsets of known files
-const modifiedAppFiles = modified.filter(path => path.includes("lib/"))
-const modifiedTestFiles = modified.filter(path => path.includes("__tests__"))
+const modifiedAppFiles = modified.filter(path => includes(path, "lib/"))
+const modifiedTestFiles = modified.filter(path => includes(path, "__tests__"))
 
 // Modified or Created can be treated the same a lot of the time
 const touchedFiles = modified.concat(danger.git.created_files)
-const touchedAppOnlyFiles = touchedFiles.filter(path => path.includes("src/lib/") && !path.includes("__tests__"))
-const touchedComponents = touchedFiles.filter(path => path.includes("src/lib/components"), !path.includes("__tests__"))
+const touchedAppOnlyFiles = touchedFiles.filter(path => includes(path, "src/lib/") && !includes(path, "__tests__"))
+const touchedComponents = touchedFiles.filter(p => includes(p, "src/lib/components") && !includes(p, "__tests__"))
 
-const touchedTestFiles = touchedFiles.filter(path => path.includes("__tests__"))
-const touchedStoryFiles = touchedFiles.filter(path => path.includes("src/stories"))
+const touchedTestFiles = touchedFiles.filter(path => includes(path, "__tests__"))
+const touchedStoryFiles = touchedFiles.filter(path => includes(path, "src/stories"))
 
 // Rules
 
@@ -36,7 +40,7 @@ if (modifiedAppFiles.length > 0 && !trivialPR && !changelogChanges) {
   fail("No CHANGELOG added.")
 }
 
-// No PR is too small to warrent a paragraph or two of summary
+// No PR is too small to warrant a paragraph or two of summary
 if (pr.body.length === 0) {
   fail("Please add a description to your PR.")
 }
@@ -50,7 +54,7 @@ if (packageChanged && !lockfileChanged) {
   warn(`${message} - <i>${idea}</i>`)
 }
 
-// Always ensure we assign someone, so that our Slackbot can do it's work correctly
+// Always ensure we assign someone, so that our Slackbot can do its work correctly
 if (pr.assignee === null) {
   fail("Please assign someone to merge this PR, and optionally include people who should review.")
 }
@@ -94,7 +98,7 @@ let componentsForFiles = compact(touchedComponents.map(reactComponentForPath))
 const storyFiles = fs.readdirSync("src/stories")
 
 storyFiles.forEach(story => {
-  const content = fs.readFileSync(story)
+  const content = fs.readFileSync("src/stories/" + story)
   componentsForFiles.forEach(component => {
     if (content.includes(component)) {
       componentsForFiles = componentsForFiles.filter(f => f !== component)
