@@ -113,7 +113,7 @@ GEM
       http-2 (>= 0.8)
     mini_portile2 (2.0.0)
     minitest (5.10.1)
-    molinillo (0.5.6)
+    molinillo (0.5.7)
     multipart-post (2.0.0)
     mustache (0.99.8)
     nanaimo (0.2.3)
@@ -167,4 +167,4 @@ DEPENDENCIES
   xcpretty
 
 BUNDLED WITH
-   1.13.6
+   1.14.3

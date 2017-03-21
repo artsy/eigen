@@ -16,6 +16,7 @@ upcoming:
       - Fixes follow button text in ShowVC to show appropriate copy based on partner type - luc
       - Fix extra blankspace in Artist Card when data is missing - luc
       - Gene titles wrap so they don't get covered by back button - luc
+      - Fixes when the refine price range sliders get cut off - ash
 
 releases:
   - version: 3.1.0

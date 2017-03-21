@@ -28,7 +28,7 @@
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="paddle.png" translatesAutoresizingMaskIntoConstraints="NO" id="d8z-6U-TjH">
-                    <rect key="frame" x="377.5" y="65.5" width="6" height="9"/>
+                    <rect key="frame" x="377.5" y="64.5" width="6" height="9"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="9" id="KBu-IL-ypQ"/>
                         <constraint firstAttribute="width" constant="6" id="eh8-hC-ZQP"/>
@@ -83,7 +83,7 @@
                 <constraint firstAttribute="bottom" secondItem="dlY-yE-giM" secondAttribute="bottom" id="Wul-In-JyL"/>
                 <constraint firstItem="sVW-GY-jju" firstAttribute="width" secondItem="wv6-Dl-4rk" secondAttribute="width" id="fL9-25-cy8"/>
                 <constraint firstItem="dlY-yE-giM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="40" id="gXb-Av-CfR"/>
-                <constraint firstItem="d8z-6U-TjH" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="ig8-ae-WJ7"/>
+                <constraint firstItem="d8z-6U-TjH" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-1" id="ig8-ae-WJ7"/>
                 <constraint firstItem="bRs-ie-jjh" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="k7U-4Z-nyo"/>
                 <constraint firstItem="uFF-Hg-ojj" firstAttribute="width" secondItem="wv6-Dl-4rk" secondAttribute="width" id="kjv-YT-ipB"/>
                 <constraint firstItem="dlY-yE-giM" firstAttribute="top" secondItem="DKt-9u-HCN" secondAttribute="bottom" constant="19" id="uyS-kf-y8C"/>

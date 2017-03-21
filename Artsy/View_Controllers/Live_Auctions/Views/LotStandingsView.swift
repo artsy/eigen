@@ -41,7 +41,7 @@ extension PrivateFunctions {
         listView.alignBottomEdge(withView: self, predicate: isCompact ? "-10" : "-30")
 
         let bottomBorder = UIView().then {
-            $0.backgroundColor = UIColor.artsyGrayMedium()
+            $0.backgroundColor = UIColor.artsyGrayRegular()
             $0.constrainHeight("1")
         }
         addSubview(bottomBorder)
