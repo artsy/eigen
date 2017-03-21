@@ -23,7 +23,11 @@ class LiveAuctionViewControllerTests: QuickSpec {
         }
 
         beforeEach {
-            OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[:])
+            OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[
+                ["id": "1234"]
+            ])
+            OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/me/bidders", withResponse:[:])
+
 
             auctionViewModel = Test_LiveAuctionViewModel()
             fakeSalesPerson = stub_auctionSalesPerson(auctionViewModel)
@@ -88,8 +92,6 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
             expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
         }
-
-
 
         it("shows an operator disconnect screen when operator disconnects") {
             setupViewControllerForPhone(true)
