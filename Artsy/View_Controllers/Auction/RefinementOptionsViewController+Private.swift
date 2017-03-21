@@ -160,6 +160,12 @@ private extension RefinementOptionsViewController {
             }
             stackView.addSubview(slider, withTopMargin: "10", sideMargin: "40")
 
+            let spacer = UIView().then {
+                $0.backgroundColor = .white
+                $0.constrainHeight("1")
+            }
+            stackView.addSubview(spacer, withTopMargin: "0")
+
             // Max/min labels
             let minLabel = ARItalicsSerifLabel().then {
                 $0.font = UIFont.serifFont(withSize: 15)
