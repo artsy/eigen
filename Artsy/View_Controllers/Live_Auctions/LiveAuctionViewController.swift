@@ -17,13 +17,28 @@ class LiveAuctionViewController: UIViewController {
 
     lazy var salesPersonCreator: SalesPersonCreator = LiveAuctionViewController.salesPerson
 
-    var loadingView: LiveAuctionLoadingView?
-    var saleViewController: LiveAuctionSaleViewController?
+    /// This is the offline view when we cannot fetch metaphysics static data
+    /// which means we can't connect to the server for JSON data
+    fileprivate var offlineView: AROfflineView?
 
-    var overlaySubscription: ObserverToken<Bool>?
+    fileprivate var loadingView: LiveAuctionLoadingView?
+    fileprivate var saleViewController: LiveAuctionSaleViewController?
+
+    fileprivate var overlaySubscription: ObserverToken<Bool>?
+    fileprivate var waitingForInitialLoad = true
+    fileprivate var registrationStatusChanged = false
+
+    /// We want to offer ~1 second of delay to allow
+    /// the socket to reconnect before we show the disconnect warning
+    /// This is mainly to ensure it doesn't consistently flicker on/off
+    /// with unpredictable connections
+    fileprivate var showSocketDisconnectWarning = false
+    fileprivate var waitingToShowDisconnect = false
 
     // Status maintainer no longer working with refactor.
     fileprivate var statusMaintainer = ARSerifStatusMaintainer()
+
+    // These are injectable during tests.
     lazy var app = UIApplication.shared
     var suppressJumpingToOpenLots = false
 
@@ -83,16 +98,6 @@ class LiveAuctionViewController: UIViewController {
         }
     }
 
-    /// We want to offer ~1 second of delay to allow
-    /// the socket to reconnect before we show the disconnect warning
-    /// This is mainly to ensure it doesn't consistently flicker on/off
-    /// with unpredictable connections
-
-    var showSocketDisconnectWarning = false
-    var waitingToShowDisconnect = false
-    var waitingForInitialLoad = true
-    var registrationStatusChanged = false
-
     /// param is hide because it recieves a "connected" signal
     func showSocketDisconnectedOverlay(_ hide: Bool) {
         if hide { actuallyShowDisconnectedOverlay(false) }
@@ -122,10 +127,6 @@ class LiveAuctionViewController: UIViewController {
             ar_presentBlurredOverlayWithTitle(title, subtitle: subtitle, buttonState:menuButton)
         }
     }
-
-    /// This is the offline view when we cannot fetch metaphysics static data
-    /// which means we can't connect to the server for JSON data
-    var offlineView: AROfflineView?
 
     func showOfflineView() {
         // Stop the spinner to indicate that it's
