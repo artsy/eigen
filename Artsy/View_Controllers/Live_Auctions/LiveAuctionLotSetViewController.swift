@@ -29,7 +29,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     fileprivate let saleNetworkModel = AuctionSaleNetworkModel()
     fileprivate let biddersNetworkModel = AuctionBiddersNetworkModel()
 
-    init(salesPerson: LiveAuctionsSalesPersonType, traitCollection: UITraitCollection) {
+    init(salesPerson: LiveAuctionsSalesPersonType, useCompactLayout: Bool) {
         self.salesPerson = salesPerson
 
         let dataSource = LiveAuctionLotCollectionViewDataSource(salesPerson: salesPerson)
@@ -39,7 +39,7 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         let adjustConstraintsForLargeScreens: Bool
 
-        if traitCollection.horizontalSizeClass != .regular {
+        if useCompactLayout {
             let screenWidthIsLarge = UIScreen.main.bounds.width > 320
             let size: LiveAuctionFancyLotCollectionViewLayout.Size = screenWidthIsLarge ? .normal : .compact
             adjustConstraintsForLargeScreens = (size == .normal)

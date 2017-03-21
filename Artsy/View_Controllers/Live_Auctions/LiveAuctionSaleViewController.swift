@@ -71,7 +71,7 @@ class LiveAuctionSaleViewController: UISplitViewController {
 private typealias PrivateFunctions = LiveAuctionSaleViewController
 extension PrivateFunctions {
     func setup() {
-        let lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson, traitCollection: view.traitCollection).then {
+        let lotSetController = LiveAuctionLotSetViewController(salesPerson: salesPerson, useCompactLayout: useCompactLayout).then {
             $0.suppressJumpingToOpenLots = suppressJumpingToOpenLots
         }
         self.lotSetController = lotSetController
