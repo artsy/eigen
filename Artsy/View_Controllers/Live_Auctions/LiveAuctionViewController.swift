@@ -58,12 +58,11 @@ class LiveAuctionViewController: UIViewController {
         super.viewWillAppear(animated)
 
         statusMaintainer.viewWillAppear(animated, app: app)
-        connectToNetwork()
-
         app.isIdleTimerDisabled = true
 
         if waitingForInitialLoad {
             showLoadingView()
+            connectToNetwork()
         } else if registrationStatusChanged {
             // we have to ask for a new metaphysics JWT ( as they contain metadata about bidder status )
             // so we need to pull down the current view heirarchy, and recreate it
