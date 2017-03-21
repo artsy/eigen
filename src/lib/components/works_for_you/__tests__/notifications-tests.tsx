@@ -20,6 +20,14 @@ it("lays out correctly for read notification", () => {
   expect(component).toMatchSnapshot()
 })
 
+it("does not show artist avatar if no avatar image exists", () => {
+  const props = notification()
+  props.image = null
+  const component = renderWithLayout(<Notification notification={props}/>, { width: 300 })
+
+  expect(component).toMatchSnapshot()
+})
+
 let notification = () => {
   return {
     artists: "Jean-Michel Basquiat",
@@ -27,5 +35,10 @@ let notification = () => {
     message: "1 Work Added",
     artworks: [ { title: "Anti-Product Postcard" } ],
     status: "UNREAD",
+    image: {
+      resized: {
+        url: "cloudfront.url",
+      },
+    },
   }
 }

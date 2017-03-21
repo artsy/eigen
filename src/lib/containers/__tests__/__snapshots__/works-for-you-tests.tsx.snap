@@ -69,11 +69,16 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                   "flexDirection": "row",
                 }
               }>
-              <View
+              <Image
+                source={
+                  Object {
+                    "uri": "cloudfront.url",
+                  }
+                }
                 style={
                   Object {
                     "alignSelf": "center",
-                    "backgroundColor": "#e2d2ff",
+                    "backgroundColor": "#f8f8f8",
                     "borderRadius": 20,
                     "height": 40,
                     "marginRight": 10,
@@ -160,11 +165,16 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                   "flexDirection": "row",
                 }
               }>
-              <View
+              <Image
+                source={
+                  Object {
+                    "uri": "cloudfront.url",
+                  }
+                }
                 style={
                   Object {
                     "alignSelf": "center",
-                    "backgroundColor": "#e2d2ff",
+                    "backgroundColor": "#f8f8f8",
                     "borderRadius": 20,
                     "height": 40,
                     "marginRight": 10,
@@ -317,11 +327,16 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                   "flexDirection": "row",
                 }
               }>
-              <View
+              <Image
+                source={
+                  Object {
+                    "uri": "cloudfront.url",
+                  }
+                }
                 style={
                   Object {
                     "alignSelf": "center",
-                    "backgroundColor": "#e2d2ff",
+                    "backgroundColor": "#f8f8f8",
                     "borderRadius": 20,
                     "height": 40,
                     "marginRight": 10,
@@ -408,11 +423,16 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                   "flexDirection": "row",
                 }
               }>
-              <View
+              <Image
+                source={
+                  Object {
+                    "uri": "cloudfront.url",
+                  }
+                }
                 style={
                   Object {
                     "alignSelf": "center",
-                    "backgroundColor": "#e2d2ff",
+                    "backgroundColor": "#f8f8f8",
                     "borderRadius": 20,
                     "height": 40,
                     "marginRight": 10,

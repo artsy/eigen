@@ -1,5 +1,5 @@
 import * as React from "react"
-import { StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
+import { Image, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 import * as Relay from "react-relay"
 
 import ArtworksGrid from "../artwork_grids/generic_grid"
@@ -17,7 +17,7 @@ export class Notification extends React.Component<Props, any> {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <View style={styles.artistAvatar}/>
+          { notification.image && <Image source={{uri: notification.image.resized.url}} style={styles.artistAvatar}/> }
           <View style={{alignSelf: "center"}}>
             <Headline style={styles.artistName}>{notification.artists}</Headline>
             <SerifText style={styles.metadata}>{notification.message + " · " + notification.date}</SerifText>
@@ -52,7 +52,7 @@ const styles = StyleSheet.create<Styles>({
   artistAvatar: {
     height: 40,
     width: 40,
-    backgroundColor: colors["purple-light"],
+    backgroundColor: colors["gray-light"],
     alignSelf: "center",
     borderRadius: 20,
     marginRight: 10,
@@ -90,6 +90,11 @@ export default Relay.createContainer(Notification, {
           ${ArtworksGrid.getFragment("artworks")}
         }
         status
+        image {
+          resized(height: 80, width: 80) {
+            url
+          }
+        }
       }
     `,
   },
@@ -102,5 +107,10 @@ interface RelayProps {
     artists: string,
     artworks: any[],
     status: string,
+    image: {
+      resized: {
+        url: string,
+      },
+    } | null,
   },
 }
