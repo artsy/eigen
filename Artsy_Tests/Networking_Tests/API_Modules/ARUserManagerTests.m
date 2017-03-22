@@ -78,13 +78,6 @@ describe(@"login", ^{
         itBehavesLike(@"success", nil);
     });
 
-    describe(@"with a Twitter token", ^{
-        beforeEach(^{
-            [ARUserManager stubAndLoginWithTwitterToken];
-        });
-        itBehavesLike(@"success", nil);
-    });
-
     it(@"fails with a missing client id", ^{
         [OHHTTPStubs stubJSONResponseAtPath:@"/oauth2/access_token" withResponse:@{ @"error": @"invalid_client", @"error_description": @"missing client_id" } andStatusCode:401];
 
@@ -290,35 +283,5 @@ describe(@"createUserViaFacebookWithToken", ^{
         expect(currentUser.name).to.equal(ARUserManager.stubUserName);
     });
 });
-
-describe(@"createUserViaTwitterWithToken", ^{
-    beforeEach(^{
-        [ARUserManager stubXappToken:[ARUserManager stubXappToken] expiresIn:[ARUserManager stubXappTokenExpiresIn]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/user" withResponse:@{ @"id": [ARUserManager stubUserID], @"email": [ARUserManager stubUserEmail], @"name": [ARUserManager stubUserName] } andStatusCode:201];
-
-        __block BOOL done = NO;
-        [[ARUserManager sharedManager] createUserViaTwitterWithToken:@"twitter token" secret:@"twitter secret" email:[ARUserManager stubUserEmail] name:[ARUserManager stubUserName] success:^(User *user) {
-            done = YES;
-        } failure:^(NSError *error, id JSON) {
-            XCTFail(@"createUserWithFacebookToken: %@", error);
-            done = YES;
-        }];
-
-        while(!done) {
-            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-        }
-    });
-
-    it(@"sets current user", ^{
-        expect([ARUserManager didCreateAccountThisSession]).to.beTruthy();
-
-        User *currentUser = [[ARUserManager sharedManager] currentUser];
-        expect(currentUser).toNot.beNil();
-        expect(currentUser.userID).to.equal(ARUserManager.stubUserID);
-        expect(currentUser.email).to.equal(ARUserManager.stubUserEmail);
-        expect(currentUser.name).to.equal(ARUserManager.stubUserName);
-    });
-});
-
 
 SpecEnd;

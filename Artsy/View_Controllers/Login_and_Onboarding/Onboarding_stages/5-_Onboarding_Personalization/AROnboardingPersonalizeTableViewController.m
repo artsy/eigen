@@ -8,6 +8,7 @@
 #import "UIImageView+AsyncImageLoading.h"
 #import "AROnboardingPersonalizationGeneImageStateReconciler.h"
 
+#import <Extraction/ARSpinner.h>
 #import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
@@ -20,6 +21,7 @@
 @property (nonatomic, strong, readwrite) NSMutableArray *searchResults;
 @property (nonatomic, strong) UILabel *noResultsLabel;
 @property (nonatomic, assign) BOOL loadedInitialResults;
+@property (nonatomic, strong) ARSpinner *spinner;
 
 @end
 
@@ -56,10 +58,31 @@
     [self setupEmptyResultsLabel];
 }
 
+- (void)showLoadingSpinner
+{
+    ARSpinner *spinner = [[ARSpinner alloc] init];
+    [self.view addSubview:spinner];
+
+    [spinner constrainWidth:@"44" height:@"44"];
+    [spinner alignCenterWithView:self.view];
+    spinner.spinnerColor = [UIColor blackColor];
+    self.spinner = spinner;
+    [self.spinner startAnimating];
+}
+
+- (void)removeLoadingSpinner
+{
+    if (self.spinner) {
+        [self.spinner stopAnimating];
+        [self.spinner removeFromSuperview];
+    }
+}
+
 - (void)updateTableContentsFor:(NSArray *)searchResults
                replaceContents:(ARSearchResultsReplaceContents)replaceStyle
                       animated:(BOOL)animated
 {
+    [self removeLoadingSpinner];
     self.loadedInitialResults = YES;
     switch (replaceStyle) {
         case ARSearchResultsReplaceSingle:

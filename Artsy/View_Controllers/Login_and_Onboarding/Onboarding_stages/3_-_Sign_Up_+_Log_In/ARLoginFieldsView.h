@@ -9,7 +9,13 @@
 @property (nonatomic, strong, readonly) ARTextFieldWithPlaceholder *emailField;
 @property (nonatomic, strong, readonly) ARSecureTextFieldWithPlaceholder *passwordField;
 
-- (void)setupForLogin;
-- (void)setupForSignUp;
+- (void)setupForLoginWithLargeLayout:(BOOL)useLargeLayout;
+- (void)setupForSignUpWithLargeLayout:(BOOL)useLargeLayout;
+- (void)setupForEmailWithLargeLayout:(BOOL)useLargeLayout;
+- (void)setupForPasswordWithLargeLayout:(BOOL)useLargeLayout;
+- (void)setupForNameWithLargeLayout:(BOOL)useLargeLayout;
+
+- (void)enableErrorState;
+- (void)disableErrorState;
 
 @end

@@ -3,6 +3,7 @@
 
 @interface ARSecureTextFieldWithPlaceholder ()
 @property (nonatomic, strong) NSString *actualText;
+@property (nonatomic, strong) NSString *displayText;
 @end
 
 
@@ -30,15 +31,6 @@
     [self addTarget:self action:@selector(editingDidFinish) forControlEvents:UIControlEventEditingDidEnd];
 }
 
-- (NSString *)text
-{
-    if (self.isSecureTextEntry) {
-        return [super text];
-    } else {
-        return self.actualText;
-    }
-}
-
 - (void)editingDidBegin
 {
     self.secureTextEntry = YES;
@@ -56,13 +48,14 @@
 
 - (void)setSecureTextEntry:(BOOL)secureTextEntry
 {
-    if (secureTextEntry) {
+    if (!secureTextEntry) {
         self.text = self.actualText;
-    } else {
-        self.actualText = self.text;
-        self.text = [self dotPlaceholder];
     }
+    
     [super setSecureTextEntry:secureTextEntry];
+    
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 - (NSString *)dotPlaceholder
@@ -75,6 +68,5 @@
     }
     return dots;
 }
-
 
 @end

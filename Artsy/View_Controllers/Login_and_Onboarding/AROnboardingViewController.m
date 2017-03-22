@@ -25,11 +25,14 @@
 #import "ARSwitchBoard+Eigen.h"
 #import "ARDispatchManager.h"
 #import "ARFollowable.h"
+#import "ARRouter.h"
+#import "AFHTTPRequestOperation+JSON.h"
 
 #import "UIDevice-Hardware.h"
 
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <Extraction/UIView+ARSpinner.h>
 
 
 @interface AROnboardingViewController () <UINavigationControllerDelegate>
@@ -40,6 +43,9 @@
 @property (nonatomic, assign, readwrite) NSInteger budgetRange;
 @property (nonatomic, strong, readwrite) UIView *progressBar;
 @property (nonatomic, strong, readwrite) UIView *progressBackgroundBar;
+@property (nonatomic, strong, readwrite) NSString *email;
+@property (nonatomic, strong, readwrite) NSString *password;
+@property (nonnull, strong, readwrite) UITextField *tempTextField;
 
 @end
 
@@ -63,7 +69,10 @@
             break;
 
         case ARInitialOnboardingStateInApp:
-            _state = AROnboardingStageSignUp;
+            _state = AROnboardingStagePersonalizeEmail;
+            
+        case ARInitialOnboardingStatePersonalization:
+            _state = AROnboardingStagePersonalizeArtists;
     }
     return self;
 }
@@ -84,6 +93,13 @@
                                              selector:@selector(didBecomeActive)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
+    
+    
+    self.tempTextField = [[UITextField alloc] initWithFrame:CGRectMake(-500, 0, 0, 0)];
+    self.tempTextField.returnKeyType = UIReturnKeyNext;
+    self.tempTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    [self.view addSubview:self.tempTextField];
+    
 }
 
 - (void)dealloc
@@ -106,8 +122,20 @@
 
     if (self.state == AROnboardingStageSlideshow) {
         [self startSlideshow];
+    } else if (self.state == AROnboardingStagePersonalizeArtists) {
+        [self presentPersonalizationQuestionnaires];
     }
+    
     [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 // TODO On iOS 9 the status bar is shown *after* viewWillAppear: is called and I have not yet found a better place to
@@ -121,6 +149,20 @@
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    _keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    if ([self.topViewController respondsToSelector:@selector(updateKeyboardFrame:)]) {
+        [(ARPersonalizeViewController *)self.topViewController updateKeyboardFrame:_keyboardFrame];
+    }
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    _keyboardFrame = CGRectZero;
 }
 
 #pragma mark -
@@ -152,11 +194,6 @@
 
 #pragma mark -
 #pragma mark Signup splash
-
-- (void)splashDoneWithLogin:(ARSignUpSplashViewController *)sender
-{
-    [self logInWithEmail:nil];
-}
 
 - (void)splashDone:(ARSignUpSplashViewController *)sender
 {
@@ -199,6 +236,19 @@
     }];
 }
 
+- (void)showTermsAndConditions
+{
+    AROnboardingWebViewController *webViewController = [[AROnboardingWebViewController alloc] initWithMobileArtsyPath:@"terms"];
+    [self pushViewController:webViewController animated:YES];
+}
+
+- (void)showPrivacyPolicy
+{
+    AROnboardingWebViewController *webViewController = [[AROnboardingWebViewController alloc] initWithMobileArtsyPath:@"privacy"];
+    [self pushViewController:webViewController animated:YES];
+}
+
+
 #pragma mark -
 #pragma mark Personalize level
 
@@ -207,16 +257,61 @@
     [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
         self.backgroundView.alpha = 0;
     }];
-    [self presentPersonalizationQuestionnaires];
+
+    [self presentPersonalizationEmail];
+}
+
+- (void)presentPersonalizationEmail
+{
+    self.state = AROnboardingStagePersonalizeEmail;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
+    personalize.delegate = self;
+    [self pushViewController:personalize animated:YES];
+    [self updateProgress:0.20];
+}
+
+- (void)presentPersonalizationLogin
+{
+    [self.tempTextField becomeFirstResponder];
+
+    self.state = AROnboardingStagePersonalizeLogin;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
+    personalize.delegate = self;
+    [self pushViewController:personalize animated:YES];
+    [self updateProgress:0.90];
+}
+
+- (void)presentPersonalizationPassword
+{
+    [self.tempTextField becomeFirstResponder];
+
+    self.state = AROnboardingStagePersonalizePassword;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
+    personalize.delegate = self;
+    [self pushViewController:personalize animated:YES];
+    [self updateProgress:0.40];
+}
+
+- (void)presentPersonalizationName
+{
+    [self.tempTextField becomeFirstResponder];
+
+    self.state = AROnboardingStagePersonalizeName;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
+    personalize.delegate = self;
+    [self pushViewController:personalize animated:YES];
+    [self updateProgress:0.60];
 }
 
 - (void)presentPersonalizationQuestionnaires
 {
+    [self.tempTextField resignFirstResponder];
+    
     self.state = AROnboardingStagePersonalizeArtists;
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
-    [self updateProgress:0.25];
+    [self updateProgress:0.75];
 }
 
 - (void)presentPersonalizeCategories
@@ -225,7 +320,7 @@
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
-    [self updateProgress:0.5];
+    [self updateProgress:0.85];
 }
 
 - (void)presentPersonalizeBudget
@@ -234,7 +329,38 @@
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
-    [self updateProgress:0.75];
+    [self updateProgress:0.95];
+}
+
+- (void)personalizeEmailDone:(NSString *)email
+{
+    self.email = email;
+    [self accountExistsForEmail:email];
+}
+
+- (void)personaliseFacebookTapped
+{
+    [self fb];
+}
+
+- (void)personalizePasswordDone:(NSString *)password
+{
+    self.password = password;
+    [self presentPersonalizationName];
+}
+
+- (void)personalizeLoginWithPasswordDone:(NSString *)password
+{
+    [self loginUserWithEmail:self.email password:password withSuccess:^{
+        [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"email"}];
+        [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
+        [self finishAccountCreation];
+    }];
+}
+
+- (void)personalizeNameDone:(NSString *)name
+{
+    [self createUserWithName:name email:self.email password:self.password];
 }
 
 - (void)personalizeArtistsDone
@@ -255,11 +381,15 @@
 
 - (void)personalizeBudgetDone
 {
-    [self signUp];
+    [self finishAccountCreation];
 }
 
 - (void)backTapped
 {
+    if (self.state == AROnboardingStagePersonalizePassword) {
+        [self.tempTextField becomeFirstResponder];
+    }
+    
     [self popViewControllerAnimated:YES];
 
     // slight hack, but easiest way
@@ -284,83 +414,226 @@
 #pragma mark -
 #pragma mark Signup
 
-- (void)signUp
+- (NSString *)userEmail
 {
-    ARCreateAccountViewController *createVC = [[ARCreateAccountViewController alloc] init];
-    createVC.delegate = self;
-    [self pushViewController:createVC animated:YES];
-    self.state = AROnboardingStageSignUp;
-    [self updateProgress:0.95];
+    return self.email;
+}
+
+- (void)accountExistsForEmail:(NSString *)email
+{
+    __weak typeof(self) wself = self;
+    NSURLRequest *request = [ARRouter checkExistingUserWithEmail:email];
+    AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        __strong typeof (wself) sself = wself;
+        if (JSON[@"id"]) {
+            [sself presentPersonalizationLogin];
+        }
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        __strong typeof (wself) sself = wself;
+        [sself presentPersonalizationPassword];
+    }];
+        
+  [op start];
+}
+
+- (void)createUserWithName:(NSString *)name email:(NSString *)email password:(NSString *)password
+{
+    __weak typeof(self) wself = self;
+    [[ARUserManager sharedManager] createUserWithName:name email:email password:password success:^(User *user) {
+        __strong typeof (wself) sself = wself;
+        [sself loginUserWithEmail:email password:password withSuccess:^{
+            [sself presentPersonalizationQuestionnaires];
+        }];
+    } failure:^(NSError *error, id JSON) {
+        __strong typeof (wself) sself = wself;
+        if (JSON) {
+            if (sself.state == AROnboardingStagePersonalizeName) {
+                [sself displayError:@"Could not create account"];
+            }
+        } else {
+            [sself displayNetworkFailureError];
+        }
+
+    }];
+
+}
+
+- (void)loginUserWithEmail:(NSString *)email password:(NSString *)password withSuccess:(void (^)())success
+{
+    __weak typeof(self) wself = self;
+    [[ARUserManager sharedManager] loginWithUsername:email
+                                            password:password
+                              successWithCredentials:nil
+                                             gotUser:^(User *currentUser) {
+                                                 success();
+                                             }
+                               authenticationFailure:^(NSError *error) {
+                                   __strong typeof (wself) sself = wself;
+                                   if (sself.state == AROnboardingStagePersonalizeLogin) {
+                                       [sself displayError:@"Please check your email and password"];
+                                   }
+                               }
+                                      networkFailure:^(NSError *error) {
+                                          __strong typeof (wself) sself = wself;
+                                          [sself displayNetworkFailureError];
+                                      }];
+}
+
+
+- (void)sendPasswordResetEmail:(NSString *)email sender:(id)sender
+{
+    [[ARUserManager sharedManager] sendPasswordResetForEmail:email success:^{
+        [(ARPersonalizeViewController *)sender passwordResetSent];
+        ARActionLog(@"Sent password reset request for %@", email);
+    } failure:^(NSError *error) {
+        ARErrorLog(@"Password reset failed for %@. Error: %@", email, error.localizedDescription);
+        [(ARPersonalizeViewController *)sender passwordResetError:@"Couldn’t send reset password link. Please try again, or contact support@artsy.net"];
+        [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : @"Couldn’t send reset password link."}];
+
+    }];
 }
 
 - (void)applyPersonalizationToUser
 {
-    NSString *stringRange = [NSString stringWithFormat:@"%@", @(self.budgetRange)];
-    [ARAnalytics setUserProperty:ARAnalyticsPriceRangeProperty toValue:stringRange];
-
-    User *user = [User currentUser];
-    user.priceRange = stringRange;
-
-    [user setRemoteUpdatePriceRange:self.budgetRange success:nil failure:^(NSError *error) {
-        ARErrorLog(@"Error updating price range");
-    }];
-
-    // for now, considering we don't have a batch follow API yet
-    for (id<ARFollowable> followableItem in self.followedItemsDuringOnboarding) {
-        [followableItem followWithSuccess:^(id response) {
-          // confetti
-        } failure:^(NSError *error){
-            // tears
+    if (self.budgetRange && self.followedItemsDuringOnboarding) {
+        NSString *stringRange = [NSString stringWithFormat:@"%@", @(self.budgetRange)];
+        [ARAnalytics setUserProperty:ARAnalyticsPriceRangeProperty toValue:stringRange];
+        
+        User *user = [User currentUser];
+        user.priceRange = stringRange;
+        
+        [user setRemoteUpdatePriceRange:self.budgetRange success:nil failure:^(NSError *error) {
+            ARErrorLog(@"Error updating price range");
         }];
+        
+        // for now, considering we don't have a batch follow API yet
+        for (id<ARFollowable> followableItem in self.followedItemsDuringOnboarding) {
+            [followableItem followWithSuccess:^(id response) {
+                // confetti
+            } failure:^(NSError *error){
+                // tears
+            }];
+        }
     }
 }
-
-- (void)dismissOnboardingWithVoidAnimation:(BOOL)createdAccount
-{
-    // send them off into the app
-
-    if (createdAccount) {
-        [self applyPersonalizationToUser];
-    }
-    [[ARAppDelegate sharedInstance] finishOnboarding:self animated:createdAccount];
-}
-
-- (void)showTermsAndConditions
-{
-    AROnboardingWebViewController *webViewController = [[AROnboardingWebViewController alloc] initWithMobileArtsyPath:@"terms"];
-    [self pushViewController:webViewController animated:YES];
-}
-
-- (void)showPrivacyPolicy
-{
-    AROnboardingWebViewController *webViewController = [[AROnboardingWebViewController alloc] initWithMobileArtsyPath:@"privacy"];
-    [self pushViewController:webViewController animated:YES];
-}
-
 
 - (void)finishAccountCreation
 {
-    [self dismissOnboardingWithVoidAnimation:YES];
+    if ([[ARUserManager sharedManager] currentUser]) {
+        [self applyPersonalizationToUser];
+    }
+    [[ARAppDelegate sharedInstance] finishOnboarding:self animated:YES];
 }
 
-- (void)twitterError
+- (void)dismissOnboardingWithVoidAnimation:(BOOL)animated
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn’t get Twitter credentials"
-                                                    message:@"Couldn’t get Twitter credentials. Please link a Twitter account in the settings app. If you continue having trouble, please email Artsy support at support@artsy.net"
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
+    [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
+    [self finishAccountCreation];
 }
 
-- (void)logInWithEmail:(NSString *)email
-{
-    ARLoginViewController *loginViewController = [[ARLoginViewController alloc] initWithEmail:email];
-    //        ARCreateAccountViewController *loginViewController = [[ARCreateAccountViewController alloc] init];
-    loginViewController.delegate = self;
+#pragma mark -
+#pragma mark Facebook Dance
 
-    [self pushViewController:loginViewController animated:YES];
-    self.state = AROnboardingStageLogin;
+- (void)fb
+{
+    __weak typeof(self) wself = self;
+    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
+    [ARAuthProviders getTokenForFacebook:^(NSString *token, NSString *email, NSString *name) {
+        __strong typeof (wself) sself = wself;
+        [sself fbSuccessWithToken:token email:email name:name];
+        
+    } failure:^(NSError *error) {
+        __strong typeof (wself) sself = wself;
+        [sself displayError:@"There was a problem authenticating with Facebook"];
+        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+    }];
+}
+
+- (void)fbSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
+{
+    __weak typeof(self) wself = self;
+    if (email || ![email isEqualToString:@""]) {
+        [[ARUserManager sharedManager] createUserViaFacebookWithToken:token
+                                                                email:email
+                                                                 name:name
+                                                              success:^(User *user) {
+                                                                  __strong typeof (wself) sself = wself;
+                                                                  // we've created a user, now let's log them in
+                                                                  sself.state = AROnboardingStagePersonalizeName; // at stage of having all their details
+                                                                  [sself loginWithFacebookCredentialToken:token];
+                                                              }
+                                                              failure:^(NSError *error, id JSON) {
+                                                                  __strong typeof (wself) sself = wself;
+                                                                  if (JSON && [JSON isKindOfClass:[NSDictionary class]]) {
+                                                                      if ([JSON[@"error"] containsString:@"Another Account Already Linked"]) {
+                                                                          // this facebook account is already an artsy account
+                                                                          // let's log them in
+                                                                          [sself loginWithFacebookCredentialToken:token];
+                                                                          return;
+                                                                      } else if ([JSON[@"error"] isEqualToString:@"User Already Exists"]
+                                                                                 || [JSON[@"error"] isEqualToString:@"User Already Invited"]) {
+                                                                          // there's already a user with this email
+                                                                          __strong typeof (wself) sself = wself;
+                                                                          [sself displayError:@"User already exists with this email. Please log in with your email and password."];
+                                                                          return;
+                                                                      }
+                                                                  }
+                                                                  
+                                                                  // something else went wrong
+                                                                  ARErrorLog(@"Couldn't link Facebook account. Error: %@. The server said: %@", error.localizedDescription, JSON);
+                                                                  [sself displayError:@"Couldn't link Facebook account"];;
+                                                              }];
+        
+    } else {
+        // provide popup warning asking the user to use a Facebook account with email
+        [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+        
+    }
+}
+
+- (void)loginWithFacebookCredentialToken:(NSString *)token
+{
+    __weak typeof(self) wself = self;
+    [[ARUserManager sharedManager] loginWithFacebookToken:token
+                                   successWithCredentials:nil
+                                                  gotUser:^(User *currentUser) {
+                                                      __strong typeof (wself) sself = wself;
+                                                      // we've logged them in, let's wrap up
+                                                      [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                                      if (sself.state == AROnboardingStagePersonalizeEmail) {
+                                                          [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
+                                                          [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"facebook"}];
+                                                          [sself finishAccountCreation];
+                                                      } else if (sself.state == AROnboardingStagePersonalizeName) {
+                                                          [sself presentPersonalizationQuestionnaires];
+                                                      }
+                                                  }
+                                    authenticationFailure:^(NSError *error) {
+                                        __strong typeof (wself) sself = wself;
+                                        [sself displayError:@"There was a problem authenticating with Facebook"];
+                                        [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                    }
+                                           networkFailure:^(NSError *error) {
+                                               // TODO: handle this
+                                               __strong typeof (wself) sself = wself;
+                                               [sself displayNetworkFailureError];
+                                               [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+                                           }];
+}
+
+#pragma mark -
+#pragma mark Errors
+
+- (void)displayError:(NSString *)errorMessage
+{
+    [(ARPersonalizeViewController *)self.topViewController showErrorWithMessage:errorMessage];
+    [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : errorMessage}];
+
+}
+
+- (void)displayNetworkFailureError
+{
+    [self displayError:@"Connection failed"];
 }
 
 #pragma mark -

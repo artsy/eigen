@@ -12,39 +12,24 @@ NSString *const ARAnalyticsNotificationTapped = @"notification tapped";
 
 NSString *const ARAnalyticsFreshInstall = @"first user install";
 
-NSString *const ARAnalyticsTappedSignUp = @"Tapped sign up";
-NSString *const ARAnalyticsTappedLogIn = @"Tapped log in";
-
-NSString *const ARAnalyticsSignInEmail = @"Login with email";
-NSString *const ARAnalyticsSignInTwitter = @"Login with twitter";
-NSString *const ARAnalyticsSignInFacebook = @"Login with facebook";
-NSString *const ARAnalyticsSignInWebCredentials = @"Login with web credentials";
-NSString *const ARAnalyticsSignInError = @"Login errors";
-
-NSString *const ARAnalyticsSignUpEmail = @"Sign up with email";
-NSString *const ARAnalyticsSignUpTwitter = @"Connect with twitter";
-NSString *const ARAnalyticsSignUpFacebook = @"Connect with facebook";
 NSString *const ARAnalyticsAccountCreated = @"Created account";
-NSString *const ARAnalyticsSignUpError = @"Sign up errors";
-NSString *const ARAnalyticsTryWithoutAccount = @"Try without an account";
+NSString *const ARAnalyticsLoggedIn = @"Successfully logged in";
+NSString *const ARAnalyticsAuthError =@"Authentication error";
+
+NSString *const ARAnalyticsSlideshowStarted = @"Slideshow started";
+
+NSString *const ARAnalyticsOnboardingGetStarted = @"Tapped get started";
+NSString *const ARAnalyticsOnboardingConnectWithFacebook = @"Tapped connect with facebook";
+NSString *const ARAnalyticsOnboardingForgotPassword = @"Tapped forgot password";
+NSString *const ARAnalyticsOnboardingForgotPasswordSent = @"Successfully sent password reset link";
+NSString *const ARAnalyticsOnboardingAlreadyAccountBack = @"Tapped already have an account go back";
+NSString *const ARAnalyticsOnboardingTappedSearch = @"Tapped onboarding search";
+NSString *const ARAnalyticsOnboardingBudgetSelected = @"Budget selected";
 
 NSString *const ARAnalyticsStartedGalleryInquiry = @"Contact gallery";
 NSString *const ARAnalyticsStartedSpecialistInquiry = @"Ask a specialist";
 NSString *const ARAnalyticsSubmittedInquiry = @"Sent artwork inquiry";
 NSString *const ARAnalyticsInquiryError = @"Inquiry error";
-
-NSString *const ARAnalyticsSlideshowStarted = @"Slideshow started";
-
-NSString *const ARAnalyticsOnboardingGetStarted = @"Tapped get started";
-NSString *const ARAnalyticsOnboardingTappedSearch = @"Tapped onboarding search";
-NSString *const ARAnalyticsOnboardingBudgetSelected = @"Budget selected";
-NSString *const ARAnalyticsOnboardingLogin = @"Tapped log in on start screen";
-NSString *const ARAnalyticsOnboardingLoginStarted = @"Tapped log in on log in screen";
-NSString *const ARAnalyticsOnboardingLoginSuccess = @"Successfully logged in";
-NSString *const ARAnalyticsOnboardingLoginFailed = @"Log in failed";
-NSString *const ARAnalyticsOnboardingSignupStarted = @"Tapped sign up";
-NSString *const ARAnalyticsOnboardingSignupSuccess = @"Created account";
-NSString *const ARAnalyticsOnboardingSignupFailed = @"Sign up failed";
 
 NSString *const ARAnalyticsPushNotificationLocal = @"Artsy notification prompt response";
 NSString *const ARAnalyticsPushNotificationApple = @"Apple notification prompt response";
