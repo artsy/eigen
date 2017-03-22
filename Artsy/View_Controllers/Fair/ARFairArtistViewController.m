@@ -131,13 +131,22 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 - (void)addArtistOnArtsyButton
 {
     NSString *title = NSStringWithFormat(@"%@ on Artsy", self.artist.name);
-    ARNavigationButton *button = [[ARNavigationButton alloc] initWithTitle:title];
-    button.tag = ARFairArtistOnArtsy;
-    button.onTap = ^(UIButton *tappedButton) {
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadArtistWithID:self.artist.artistID inFair:nil];
-        [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
-    };
-    [self.view.stackView addSubview:button withTopMargin:@"20" sideMargin:@"40"];
+
+    NSArray *artistOnArtsyButtonDescription = @[@{ ARNavigationButtonClassKey : ARNavigationButton.class,
+                                                   ARNavigationButtonPropertiesKey : @{
+                                                           ar_keypath(ARNavigationButton.new, title) : title
+                                                           },
+                                                   ARNavigationButtonHandlerKey : ^(UIButton *sender) {
+                                                       UIViewController *viewController = [ARSwitchBoard.sharedInstance loadArtistWithID:self.artist.artistID inFair:nil];
+                                                       [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                                                   }
+                                                   }];
+
+    ARNavigationButtonsViewController* arstistOnArstyNavigationButtonVC = [[ARNavigationButtonsViewController alloc] init];
+    [arstistOnArstyNavigationButtonVC addButtonDescriptions:artistOnArtsyButtonDescription unique:YES];
+    arstistOnArstyNavigationButtonVC.view.tag = ARFairArtistOnArtsy;
+
+    [self.view.stackView addViewController:arstistOnArstyNavigationButtonVC toParent:self withTopMargin:@"20" sideMargin:@"40"];
 }
 
 - (void)addArtworksForShowToStack:(PartnerShow *)show tag:(NSInteger)tag
@@ -156,13 +165,22 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
 - (void)addNavigationButtonForShowToStack:(PartnerShow *)show tag:(NSInteger)tag
 {
-    ARNavigationButton *button = [[ARSerifNavigationButton alloc] initWithTitle:show.partner.name andSubtitle:show.locationInFair withBorder:0];
-    button.tag = tag;
-    button.onTap = ^(UIButton *tappedButton) {
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadShow:show fair:self.fair];
-        [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
-    };
-    [self.view.stackView addSubview:button withTopMargin:@"0" sideMargin:@"40"];
+    NSArray *showButtonDescription = @[@{ ARNavigationButtonClassKey : ARNavigationButton.class,
+                                          ARNavigationButtonPropertiesKey : @{
+                                                  ar_keypath(ARNavigationButton.new, title) : show.partner.name,
+                                                  ar_keypath(ARNavigationButton.new, subtitle) : show.locationInFair
+                                                  },
+                                          ARNavigationButtonHandlerKey : ^(UIButton *sender) {
+                                              UIViewController *viewController = [ARSwitchBoard.sharedInstance loadShow:show fair:self.fair];
+                                              [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                                          }
+                                          }];
+
+    ARNavigationButtonsViewController* showNavigationButtonVC = [[ARNavigationButtonsViewController alloc] init];
+    [showNavigationButtonVC addButtonDescriptions:showButtonDescription unique:YES];
+    showNavigationButtonVC.view.tag = tag;
+
+    [self.view.stackView addViewController:showNavigationButtonVC toParent:self withTopMargin:@"0" sideMargin:@"40"];
 }
 
 - (void)addSubtitle
