@@ -8,6 +8,7 @@
 #import "ARGeneViewController.h"
 #import "ARParallaxEffect.h"
 #import "ARSearchViewController+Private.h"
+#import "Fair.h"
 #import "Gene.h"
 #import "Profile.h"
 #import "SiteFeature.h"
@@ -120,6 +121,8 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
     } else if (result.model == [SiteFeature class]) {
         NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);
         controller = [ARSwitchBoard.sharedInstance loadPath:path];
+    } else if (result.model == [Fair class]) {
+        controller = [ARSwitchBoard.sharedInstance loadProfileWithID:result.modelID];
     }
 
     [self.ar_TopMenuViewController pushViewController:controller animated:YES];
