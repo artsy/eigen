@@ -30,6 +30,7 @@
 #import <ORStackView/ORTagBasedAutoStackView.h>
 #import <ORStackView/ORStackScrollView.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 #import "Artsy-Swift.h"
 
@@ -42,6 +43,17 @@ typedef NS_ENUM(NSInteger, ARFairArtistViewIndex) {
     ARFairArtistOnArtsy = ARFairArtistShows + 3 * 42, // we don't expect more than 42 shows
     ARFairArtistWhitespaceGobbler
 };
+
+// This is a simple workaround to make the navigation buttons in ARNavigationButtonsViewControllers look mostly
+// identical to what they were before.
+@interface ARFairArtistNavigationButton : ARNavigationButton
+@end
+@implementation ARFairArtistNavigationButton
+- (CGFloat)verticalPadding
+{
+    return 12;
+}
+@end
 
 
 @interface ARFairArtistViewController () <AREmbeddedModelsViewControllerDelegate>
@@ -132,7 +144,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 {
     NSString *title = NSStringWithFormat(@"%@ on Artsy", self.artist.name);
 
-    NSArray *artistOnArtsyButtonDescription = @[@{ ARNavigationButtonClassKey : ARNavigationButton.class,
+    NSArray *artistOnArtsyButtonDescription = @[@{ ARNavigationButtonClassKey : ARFairArtistNavigationButton.class,
                                                    ARNavigationButtonPropertiesKey : @{
                                                            ar_keypath(ARNavigationButton.new, title) : title
                                                            },
@@ -142,11 +154,12 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
                                                    }
                                                    }];
 
-    ARNavigationButtonsViewController* arstistOnArstyNavigationButtonVC = [[ARNavigationButtonsViewController alloc] init];
-    [arstistOnArstyNavigationButtonVC addButtonDescriptions:artistOnArtsyButtonDescription unique:YES];
-    arstistOnArstyNavigationButtonVC.view.tag = ARFairArtistOnArtsy;
+    ARNavigationButtonsViewController* artistOnArstyNavigationButtonVC = [[ARNavigationButtonsViewController alloc] init];
+    [artistOnArstyNavigationButtonVC addButtonDescriptions:artistOnArtsyButtonDescription unique:YES];
+    artistOnArstyNavigationButtonVC.view.tag = ARFairArtistOnArtsy;
+    [artistOnArstyNavigationButtonVC.view constrainHeight:@"39"];
 
-    [self.view.stackView addViewController:arstistOnArstyNavigationButtonVC toParent:self withTopMargin:@"20" sideMargin:@"40"];
+    [self.view.stackView addViewController:artistOnArstyNavigationButtonVC toParent:self withTopMargin:@"20" sideMargin:@"40"];
 }
 
 - (void)addArtworksForShowToStack:(PartnerShow *)show tag:(NSInteger)tag
@@ -165,7 +178,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
 - (void)addNavigationButtonForShowToStack:(PartnerShow *)show tag:(NSInteger)tag
 {
-    NSArray *showButtonDescription = @[@{ ARNavigationButtonClassKey : ARNavigationButton.class,
+    NSArray *showButtonDescription = @[@{ ARNavigationButtonClassKey : ARFairArtistNavigationButton.class,
                                           ARNavigationButtonPropertiesKey : @{
                                                   ar_keypath(ARNavigationButton.new, title) : show.partner.name,
                                                   ar_keypath(ARNavigationButton.new, subtitle) : show.locationInFair
