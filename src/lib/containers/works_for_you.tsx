@@ -1,7 +1,7 @@
 import * as React from "react"
 import { ListView, ListViewDataSource, NativeModules, ScrollView, StyleSheet, TextStyle, View, ViewStyle }
   from "react-native"
-const { ARTemporaryAPIModule } = NativeModules
+const { ARTemporaryAPIModule, ARWorksForYouModule } = NativeModules
 import * as Relay from "react-relay"
 
 import Events from "../native_modules/events"
@@ -37,6 +37,7 @@ export class WorksForYou extends React.Component<Props, State> {
   }
 
   componentDidMount() {
+    // update status in gravity
     NativeModules.ARTemporaryAPIModule.markNotificationsRead((error) => {
       if (error) {
         console.error(error)
@@ -47,6 +48,9 @@ export class WorksForYou extends React.Component<Props, State> {
         })
       }
     })
+
+    // update anything in Eigen that relies on notification count
+    NativeModules.ARWorksForYouModule.updateNotificationsCount(0)
   }
 
   onLayout = (event: LayoutEvent) => {

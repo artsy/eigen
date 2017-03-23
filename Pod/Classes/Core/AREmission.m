@@ -3,6 +3,7 @@
 #import "ARSwitchBoardModule.h"
 #import "ARTemporaryAPIModule.h"
 #import "ARRefineOptionsModule.h"
+#import "ARWorksForYouModule.h"
 
 #import <React/RCTBridge.h>
 #import <React/RCTBridgeModule.h>
@@ -71,13 +72,14 @@ static AREmission *_sharedInstance = nil;
     _switchBoardModule = [ARSwitchBoardModule new];
     _APIModule = [ARTemporaryAPIModule new];
     _refineModule = [ARRefineOptionsModule new];
+    _worksForYouModule = [ARWorksForYouModule new];
 
     _configurationModule = [AREmissionConfiguration new];
     _configurationModule.userID = userID;
     _configurationModule.authenticationToken = authenticationToken;
     _configurationModule.useStagingEnvironment = useStagingEnvironment;
 
-    NSArray *modules = @[_APIModule, _configurationModule, _eventsModule, _switchBoardModule, _refineModule];
+    NSArray *modules = @[_APIModule, _configurationModule, _eventsModule, _switchBoardModule, _refineModule, _worksForYouModule];
 
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
                                     moduleProvider:^{ return modules; }

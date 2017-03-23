@@ -7,6 +7,7 @@ import { WorksForYou } from "../works_for_you"
 
 beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { markNotificationsRead: jest.fn() }
+  NativeModules.ARWorksForYouModule = { updateNotificationsCount: jest.fn() }
 })
 
 describe("with notifications", () => {
