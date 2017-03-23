@@ -1,14 +1,25 @@
 import * as React from "react"
-import "react-native"
+import { NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import { renderWithLayout } from "../../tests/render_with_layout"
 import { WorksForYou } from "../works_for_you"
 
+beforeAll(() => {
+  NativeModules.ARTemporaryAPIModule = { markNotificationsRead: jest.fn() }
+  NativeModules.ARWorksForYouModule = { updateNotificationsCount: jest.fn() }
+})
+
 describe("with notifications", () => {
   it("creates a ListViewDataSource upon instantiation", () => {
     const worksForYou = new WorksForYou(notificationsResponse())
     expect(worksForYou.state.dataSource).toBeTruthy()
+  })
+
+  it("updates the notification count", () => {
+    const worksForYou = new WorksForYou(notificationsResponse())
+    worksForYou.componentDidMount()
+    expect(NativeModules.ARTemporaryAPIModule.markNotificationsRead).toBeCalled()
   })
 
   it("lays out correctly on small screens", () => {

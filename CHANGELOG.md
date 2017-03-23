@@ -1,5 +1,6 @@
 ## Master
 
+- Added a notifications updater to ARTemporaryAPIModule - sarah
 - Added a Works For You container - sarah
 - Upgrade to RN 0.42-rc.3 - alloy
 - Made Gene view work with new relay-based infinite scroll grid - cab

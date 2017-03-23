@@ -24,4 +24,10 @@ RCT_EXPORT_METHOD(setFollowGeneStatus:(BOOL)status geneID:(NSString *)geneID com
     self.geneFollowStatusAssigner(geneID, status, block);
 }
 
+RCT_EXPORT_METHOD(markNotificationsRead:(RCTResponseSenderBlock)block)
+{
+    /* In eigen, this should mark the notifications as read using ArtsyAPI */
+    self.notificationReadStatusAssigner(block);
+}
+
 @end

@@ -10,6 +10,7 @@
 #import <Emission/ARSwitchBoardModule.h>
 #import <Emission/AREventsModule.h>
 #import <Emission/ARRefineOptionsModule.h>
+#import <Emission/ARWorksForYouModule.h>
 
 #import "ARStorybookComponentViewController.h"
 #import <Emission/ARArtistComponentViewController.h>
@@ -151,6 +152,13 @@ randomBOOL(void)
       //      }
     });
   };
+  
+  emission.APIModule.notificationReadStatusAssigner = ^(RCTResponseSenderBlock block) {
+    NSLog(@"notificationReadStatusAssigner from APIModule called");
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      block(@[[NSNull null]]);
+    });
+  };
 
 
   emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
@@ -184,6 +192,11 @@ randomBOOL(void)
   emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull initial, NSDictionary *_Nonnull current, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
     sleep(1);
     resolve(@{ @"sort": @"-year", @"medium": @"design", @"selectedPrice": @"0-50000" });
+  };
+  
+  emission.worksForYouModule.setNotificationsCount = ^(NSInteger count) {
+    sleep(1);
+    NSLog(@"Set notifications count: %ld", (long)count);
   };
 }
 
