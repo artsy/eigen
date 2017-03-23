@@ -18,6 +18,7 @@ upcoming:
       - Gene titles wrap so they don't get covered by back button - luc
       - Onboarding V2, account creation before personalisation - maxim
       - Fixes when the refine price range sliders get cut off - ash
+      - Fixes my-bids view with long artist/artwork names - ash
 
 releases:
   - version: 3.1.0
