@@ -9,8 +9,6 @@
 
 @interface ARLoginButtonsView ()
 
-@property (nonatomic, strong) UIView *separatorLine;
-@property (nonatomic, strong) ARSansSerifLabel *separatorLabel;
 
 @end
 
@@ -21,101 +19,102 @@
 {
     self = [super init];
     if (self) {
-        _emailActionButton = [[ARBlackFlatButton alloc] init];
-        _facebookActionButton = [[ARBlackFlatButton alloc] init];
-        _twitterActionButton = [[ARBlackFlatButton alloc] init];
-        _forgotPasswordButton = [[ARClearFlatButton alloc] init];
-        _separatorLine = [[UIView alloc] init];
-        _separatorLabel = [[ARSansSerifLabel alloc] init];
+        _actionButton = [[UIButton alloc] init];
     }
 
     return self;
 }
 
-- (void)setupForLogin
+- (void)setupForFacebookWithLargeLayout:(BOOL)useLargeLayout
 {
-    [self commonSetup];
-    [self addTwitterButton];
-    [self addForgotPasswordButton];
 
-    [self.emailActionButton setTitle:@"LOGIN" forState:UIControlStateNormal];
-    [self.emailActionButton constrainTopSpaceToView:self.forgotPasswordButton predicate:@"40"];
+    [self commonSetupWithLargeLayout:useLargeLayout];
+    
+    NSString *titleString = @"You can also ";
+    NSString *facebookLink = @"CONNECT WITH FACEBOOK";
+    
+    UIColor *facebookBlue = [UIColor colorWithRed:60.0 / 225.0 green:89.0 / 225.0 blue:155.0 / 255.0 alpha:1.0];
+    
+    NSMutableAttributedString *attributedTitle = [[NSMutableAttributedString alloc] initWithString:titleString attributes: @{NSForegroundColorAttributeName : [UIColor artsyGraySemibold], NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]}];
+    
+    NSAttributedString *facebookPart = [[NSAttributedString alloc] initWithString:facebookLink attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor], NSFontAttributeName : [UIFont sansSerifFontWithSize:useLargeLayout ? 16.0 : 12.0]}];
+
+    UIView *tempView = [[UIView alloc] init];
+    
+    UILabel *firstbit = [[UILabel alloc] init];
+    firstbit.attributedText = attributedTitle;
+    firstbit.textAlignment = useLargeLayout ? NSTextAlignmentCenter : NSTextAlignmentLeft;
+    
+    UILabel *secondbit = [[UILabel alloc] init];
+    secondbit.attributedText = facebookPart;
+    secondbit.textAlignment = NSTextAlignmentCenter;
+    secondbit.layer.cornerRadius = useLargeLayout ? 20 : 17;
+    secondbit.layer.backgroundColor = facebookBlue.CGColor;
+    
+    [tempView addSubview:firstbit];
+    [tempView addSubview:secondbit];
+
+    [self.actionButton addSubview:tempView];
+    
+    if (useLargeLayout) {
+        [tempView alignCenterWithView:self.actionButton];
+    } else {
+        [tempView alignTop:@"0" leading:@"0" toView:self.actionButton];
+    }
+    [tempView constrainWidth:useLargeLayout ? @"400" : @"300"];
+    [tempView constrainHeightToView:self.actionButton predicate:@"0"];
+    
+    [firstbit constrainWidth:useLargeLayout? @"140" : @"100"];
+    [firstbit constrainHeightToView:tempView predicate:@"0"];
+    
+    [secondbit constrainWidth:useLargeLayout? @"260" : @"200"];
+    [secondbit constrainHeightToView:tempView predicate:useLargeLayout ? @"0" : @"-6"];
+    
+    [firstbit constrainTrailingSpaceToView:secondbit predicate:@"0"];
+    [firstbit alignTop:@"0" leading:@"0" toView:tempView];
+    [secondbit alignTopEdgeWithView:tempView predicate:@"0"];
+    
+    tempView.userInteractionEnabled = NO;
 }
 
-- (void)setupForSignUp
+- (void)setupForLoginWithLargeLayout:(BOOL)useLargeLayout
 {
-    [self commonSetup];
-    [self.emailActionButton setTitle:@"JOIN" forState:UIControlStateNormal];
-    [self.emailActionButton alignTopEdgeWithView:self predicate:@"40"];
+    [self commonSetupWithLargeLayout:useLargeLayout];
+    
+    NSString *titleString = @"Forgot password";
+    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:titleString attributes:@{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle), NSForegroundColorAttributeName : [UIColor artsyGraySemibold], NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]}];
+
+    [self.actionButton setAttributedTitle:attributedTitle forState:UIControlStateNormal];
+}
+
+- (void)setupForSignUpWithLargeLayout:(BOOL)useLargeLayout
+{
+    [self commonSetupWithLargeLayout:useLargeLayout];
+    
+    NSString *titleString = @"Already have an account? ";
+    NSString *backLink = @"Go back";
+    
+    NSMutableAttributedString *attributedTitle = [[NSMutableAttributedString alloc] initWithString:titleString attributes: @{NSForegroundColorAttributeName : [UIColor artsyGraySemibold], NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]}];
+    
+    NSAttributedString *linkPart = [[NSAttributedString alloc] initWithString:backLink attributes:@{NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle), NSForegroundColorAttributeName : [UIColor artsyGraySemibold], NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]}];
+    
+    [attributedTitle appendAttributedString:linkPart];
+    
+    [self.actionButton setAttributedTitle:attributedTitle forState:UIControlStateNormal];
 }
 
 
-- (void)commonSetup
+- (void)commonSetupWithLargeLayout:(BOOL)useLargeLayout
 {
-    [self addSubview:self.emailActionButton];
+    [self addSubview:self.actionButton];
 
-    [self.emailActionButton constrainWidthToView:self predicate:@"0"];
-    [self.emailActionButton constrainHeight:@"40"];
-    [self.emailActionButton alignCenterXWithView:self predicate:@"0"];
-
-    self.separatorLine.backgroundColor = [UIColor artsyGrayRegular];
-    [self addSubview:self.separatorLine];
-
-    [self.separatorLine constrainHeight:@"1"];
-    [self.separatorLine constrainWidthToView:self predicate:@"0"];
-    [self.separatorLine alignCenterXWithView:self predicate:@"0"];
-    [self.separatorLine constrainTopSpaceToView:self.emailActionButton predicate:@"30"];
-
-    self.separatorLabel.text = @"OR";
-    self.separatorLabel.backgroundColor = [UIColor whiteColor];
-    self.separatorLabel.textAlignment = NSTextAlignmentCenter;
-    [self addSubview:self.separatorLabel];
-
-    [self.separatorLabel constrainWidth:@"60" height:@"20"];
-    [self.separatorLabel alignCenterXWithView:self predicate:@"0"];
-    [self.separatorLabel alignCenterYWithView:self.separatorLine predicate:@"0"];
-
-    [self.facebookActionButton setTitle:@"CONNECT WITH FACEBOOK" forState:UIControlStateNormal];
-    [self.facebookActionButton setBackgroundColor:[UIColor colorWithRed:60.0 / 225.0 green:89.0 / 225.0 blue:155.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
-
-    [self addSubview:self.facebookActionButton];
-
-    [self.facebookActionButton constrainWidthToView:self predicate:@"0"];
-    [self.facebookActionButton constrainHeight:@"40"];
-    [self.facebookActionButton alignCenterXWithView:self predicate:@"0"];
-    [self.facebookActionButton constrainTopSpaceToView:self.separatorLine predicate:@"30"];
+    self.actionButton.titleLabel.font = [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0];
+    
+    [self.actionButton constrainWidthToView:self predicate:@"0"];
+    [self.actionButton constrainHeight:@"40"];
+    [self.actionButton alignLeadingEdgeWithView:self predicate:@"0"];
+    [self.actionButton alignTopEdgeWithView:self predicate:@"0"];
 }
 
-- (void)addTwitterButton
-{
-    [self.twitterActionButton setTitle:@"CONNECT WITH TWITTER" forState:UIControlStateNormal];
-    [self.twitterActionButton setBackgroundColor:[UIColor colorWithRed:85.0 / 225.0 green:172.0 / 225.0 blue:238.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
-
-    [self addSubview:self.twitterActionButton];
-
-    [self.twitterActionButton constrainWidthToView:self predicate:@"0"];
-    [self.twitterActionButton constrainHeight:@"40"];
-    [self.twitterActionButton alignCenterXWithView:self predicate:@"0"];
-    [self.twitterActionButton constrainTopSpaceToView:self.facebookActionButton predicate:@"10"];
-}
-
-- (void)addForgotPasswordButton
-{
-    [self.forgotPasswordButton setTitle:@"FORGOT PASSWORD?" forState:UIControlStateNormal];
-    [self.forgotPasswordButton setTitleColor:[UIColor artsyGraySemibold] forState:UIControlStateNormal];
-    self.forgotPasswordButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    self.forgotPasswordButton.titleLabel.font = [UIFont sansSerifFontWithSize:10];
-
-    [self addSubview:self.forgotPasswordButton];
-
-    [self.forgotPasswordButton alignTopEdgeWithView:self predicate:@"16"];
-    [self.forgotPasswordButton constrainWidthToView:self predicate:@"*.5"];
-    [self.forgotPasswordButton alignTrailingEdgeWithView:self predicate:@"0"];
-    [self.forgotPasswordButton constrainHeight:@"30"];
-
-    [self.forgotPasswordButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
-    [self.forgotPasswordButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
-    [self.forgotPasswordButton setBorderColor:[UIColor clearColor] forState:UIControlStateHighlighted];
-}
 
 @end

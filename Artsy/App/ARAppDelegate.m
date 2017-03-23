@@ -44,7 +44,6 @@
 
 #import <Keys/ArtsyKeys.h>
 #import "AREndOfLineInternalMobileWebViewController.h"
-#import "ARDefaults+SiteFeatures.h"
 
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
 #import <VCRURLConnection/VCR.h>
@@ -136,8 +135,29 @@ static ARAppDelegate *_sharedInstance = nil;
     [FBSDKSettings setAppID:[ArtsyKeys new].artsyFacebookAppID];
 
     // This has to be checked *before* creating the first Xapp token.
-    BOOL shouldShowOnboarding = ![[ARUserManager sharedManager] hasExistingAccount];
+    NSInteger numberOfRuns = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
 
+    BOOL shouldShowOnboarding;
+    
+    BOOL firstTimeUser = (numberOfRuns == 1);
+    BOOL hasAccount = [[ARUserManager sharedManager] hasExistingAccount];
+    AROnboardingUserProgressStage onboardingState = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
+    
+    if (firstTimeUser && !hasAccount && (onboardingState == AROnboardingStageDefault)) {
+        // you are a fresh install - you will be onboarding and we set the enum to check when you come back
+        [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarding forKey:AROnboardingUserProgressionStage];
+        shouldShowOnboarding = YES;
+    } else if (onboardingState == AROnboardingStageOnboarding) {
+        // you're coming back midway through your onboarding - we force you to complete it
+        shouldShowOnboarding = YES;
+    } else if (hasAccount) {
+        // so if you're not onboarding, you've either already completed it or opened the app before
+        shouldShowOnboarding = NO;
+    } else {
+        // fallback, if the user has no account, they have to log in / onboard to prevent crash
+        shouldShowOnboarding = YES;
+    }
+    
     if (ARIsRunningInDemoMode) {
         [self.viewController presentViewController:[[ARDemoSplashViewController alloc] init] animated:NO completion:nil];
         [self performSelector:@selector(finishDemoSplash) withObject:nil afterDelay:1];
@@ -151,7 +171,13 @@ static ARAppDelegate *_sharedInstance = nil;
             [ARSystemTime sync];
         }];
 
-        [self showOnboarding];
+        if (hasAccount) {
+            // you've created an account, but haven't finished personalisation
+            [self showOnboardingWithState:ARInitialOnboardingStatePersonalization];
+        } else {
+            // you're new - welcome! we onboard you
+            [self showOnboarding];
+        }
 
     } else {
         // Default logged in setup path
@@ -215,7 +241,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)showOnboardingWithState:(enum ARInitialOnboardingState)state
 {
-    AROnboardingViewController *onboardVC = [[AROnboardingViewController alloc] initWithState:ARInitialOnboardingStateSlideShow];
+    AROnboardingViewController *onboardVC = [[AROnboardingViewController alloc] initWithState:state];
     self.window.rootViewController = onboardVC;
 }
 
@@ -248,7 +274,6 @@ static ARAppDelegate *_sharedInstance = nil;
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 
     ar_dispatch_main_queue(^{
-        [self.remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
         if ([User currentUser]) {
             [self.remoteNotificationsDelegate fetchNotificationCounts];
             [ARSpotlight indexAllUsersFavorites];
@@ -389,26 +414,15 @@ static ARAppDelegate *_sharedInstance = nil;
     ARQuicksilverViewController *adminSettings = [[ARQuicksilverViewController alloc] init];
     [navigationController pushViewController:adminSettings animated:YES];
 }
-- (void)fetchSiteFeatures
-{
-    [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-       [ArtsyAPI getSiteFeatures:^(NSArray *features) {
-           [ARDefaults setOnboardingDefaults:features];
-
-       } failure:^(NSError *error) {
-           ARErrorLog(@"Couldn't get site features. Error %@", error.localizedDescription);
-       }];
-    }];
-}
 
 - (void)countNumberOfRuns
 {
     NSInteger numberOfRuns = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty] + 1;
     if (numberOfRuns == 1) {
         [ARAnalytics event:ARAnalyticsFreshInstall];
-        ADJEvent *event = [ADJEvent eventWithEventToken:ARAdjustFirstUserInstall];
-        [event addCallbackParameter:@"anonymous_id" value:ARUserManager.sharedManager.localTemporaryUserUUID];
-        [Adjust trackEvent:event];
+        [Adjust addSessionPartnerParameter:@"anonymous_id"
+                                     value:ARUserManager.sharedManager.localTemporaryUserUUID];
+        [Adjust trackEvent:[ADJEvent eventWithEventToken:ARAdjustFirstUserInstall]];
     }
 
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfRuns forKey:ARAnalyticsAppUsageCountProperty];

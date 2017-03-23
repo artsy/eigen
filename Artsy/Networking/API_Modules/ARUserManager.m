@@ -157,7 +157,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
                          gotUser:gotUser
            authenticationFailure:authenticationFailure
                   networkFailure:networkFailure
-        saveSharedWebCredentials:YES];
+        saveSharedWebCredentials:NO]; // This has been changed to NO because in the current onboarding flow we do not request this
 }
 
 - (void)loginWithUsername:(NSString *)username
@@ -289,66 +289,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [op start];
 }
 
-- (void)loginWithTwitterToken:(NSString *)token secret:(NSString *)secret
-       successWithCredentials:(void (^)(NSString *, NSDate *))credentials
-                      gotUser:(void (^)(User *))gotUser
-        authenticationFailure:(void (^)(NSError *error))authenticationFailure
-               networkFailure:(void (^)(NSError *))networkFailure
-{
-    NSURLRequest *request = [ARRouter newTwitterOAuthRequestWithToken:token andSecret:secret];
-    AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
-        success:^(NSURLRequest *oauthRequest, NSHTTPURLResponse *response, id JSON) {
-
-        NSString *token = JSON[AROAuthTokenKey];
-        NSString *expiryDateString = JSON[AROExpiryDateKey];
-
-        [ARRouter setAuthToken:token];
-
-        // Create an Expiration Date
-        ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
-        NSDate *expiryDate = [dateFormatter dateFromString:expiryDateString];
-
-        // Let clients perform any actions once we've got the tokens sorted
-        if (credentials) {
-            credentials(token, expiryDate);
-        }
-
-        NSURLRequest *userRequest = [ARRouter newUserInfoRequest];
-        AFHTTPRequestOperation *userOp = [AFHTTPRequestOperation JSONRequestOperationWithRequest:userRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-
-            User *user = [User modelWithJSON:JSON];
-
-            self.currentUser = user;
-            [self storeUserData];
-            [user updateProfile:^{
-                [self storeUserData];
-            }];
-
-            // Store the credentials for next app launch
-            [self saveUserOAuthToken:token expiryDate:expiryDate];
-
-            gotUser(user);
-
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-            if (authenticationFailure) {
-                authenticationFailure(error);
-            }
-        }];
-        [userOp start];
-        }
-        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        if (JSON) {
-            if (authenticationFailure) {
-                authenticationFailure(error);
-            }
-        } else {
-            networkFailure(error);
-        }
-        }];
-
-    [op start];
-}
-
 - (void)createUserWithName:(NSString *)name
                      email:(NSString *)email
                   password:(NSString *)password
@@ -370,8 +310,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
                    failure:(void (^)(NSError *error, id JSON))failure
   saveSharedWebCredentials:(BOOL)saveSharedWebCredentials;
 {
-    [ARAnalytics event:ARAnalyticsSignUpEmail];
-
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         NSURLRequest *request = [ARRouter newCreateUserRequestWithName:name email:email password:password];
         AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
@@ -381,7 +319,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
              User *user = [User modelWithJSON:JSON error:&error];
              if (error) {
                  ARErrorLog(@"Couldn't create user model from fresh user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
-                 [ARAnalytics event:ARAnalyticsSignUpError];
+
                  failure(error, JSON);
                  return;
              }
@@ -395,7 +333,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
              if (success) success(user);
 
-             [ARAnalytics event:ARAnalyticsAccountCreated];
+             [ARAnalytics event:ARAnalyticsAccountCreated withProperties:@{@"context_type" : @"email"}];
 
              ADJEvent *event = [ADJEvent eventWithEventToken:ARAdjustCreatedAnAccount];
              [event addCallbackParameter:@"email" value:email];
@@ -404,8 +342,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              ARActionLog(@"Creating a new user account failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
              failure(error, JSON);
-             [ARAnalytics event:ARAnalyticsSignUpError];
-         }];
+                          }];
 
         [op start];
 
@@ -414,8 +351,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
 - (void)createUserViaFacebookWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name success:(void (^)(User *))success failure:(void (^)(NSError *, id))failure
 {
-    [ARAnalytics event:ARAnalyticsSignUpFacebook];
-
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
         NSURLRequest *request = [ARRouter newCreateUserViaFacebookRequestWithToken:token email:email name:name];
         AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
@@ -424,7 +359,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
              User *user = [User modelWithJSON:JSON error:&error];
              if (error) {
                  ARErrorLog(@"Couldn't create user model from fresh Facebook user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
-                 [ARAnalytics event:ARAnalyticsSignUpError];
                  failure(error, JSON);
                  return;
              }
@@ -435,44 +369,10 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
              if (success) { success(user); }
 
-             [ARAnalytics event:ARAnalyticsAccountCreated];
+             [ARAnalytics event:ARAnalyticsAccountCreated withProperties:@{@"context_type" : @"facebook"}];
 
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              failure(error, JSON);
-             [ARAnalytics event:ARAnalyticsSignUpError];
-         }];
-        [op start];
-    }];
-}
-
-- (void)createUserViaTwitterWithToken:(NSString *)token secret:(NSString *)secret email:(NSString *)email name:(NSString *)name success:(void (^)(User *))success failure:(void (^)(NSError *, id))failure
-{
-    [ARAnalytics event:ARAnalyticsSignUpTwitter];
-
-    [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {
-        NSURLRequest *request = [ARRouter newCreateUserViaTwitterRequestWithToken:token secret:secret email:email name:name];
-        AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
-         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-             NSError *error;
-             User *user = [User modelWithJSON:JSON error:&error];
-             if (error) {
-                 ARErrorLog(@"Couldn't create user model from fresh Twitter user. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
-                 [ARAnalytics event:ARAnalyticsSignUpError];
-                 failure(error, JSON);
-                 return;
-             }
-
-             self.didCreateAccountThisSession = YES;
-             self.currentUser = user;
-             [self storeUserData];
-             
-             if(success) success(user);
-
-             [ARAnalytics event:ARAnalyticsAccountCreated];
-
-         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-             failure(error, JSON);
-             [ARAnalytics event:ARAnalyticsSignUpError];
          }];
         [op start];
     }];
@@ -485,6 +385,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         AFHTTPRequestOperation *op = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request
          success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
              if (success) {
+                 [ARAnalytics event:ARAnalyticsOnboardingForgotPasswordSent];
                  success();
              }
          }
@@ -676,6 +577,8 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         } else {
             NSDictionary *account = [(__bridge NSArray *)credentials firstObject];
             if (account) {
+                [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"safari keychain"}];
+
                 [[ARUserManager sharedManager] loginWithUsername:account[(__bridge NSString *)kSecAttrAccount]
                                                         password:account[(__bridge NSString *)kSecSharedPassword]
                                           successWithCredentials:nil

@@ -102,7 +102,8 @@ extension LotStandingsLotView {
         if let artworkName = saleArtwork.artwork.name() {
             artworkNameLabel.makeSubstring(artworkName, useFont: UIFont.serifItalicFont(withSize: artworkNameLabel.font.pointSize))
         }
-
+        artistNameLabel.numberOfLines = 1
+        artworkNameLabel.numberOfLines = 1
 
         setNeedsLayout()
 

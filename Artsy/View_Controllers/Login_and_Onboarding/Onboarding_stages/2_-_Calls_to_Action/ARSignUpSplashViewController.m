@@ -29,13 +29,15 @@
 
 @interface ARSignUpSplashViewController ()
 
-@property (nonatomic) NSArray *pages;
-@property (nonatomic) ARCrossfadingImageView *imageView;
-@property (nonatomic) ARWhiteFlatButton *getStartedButton;
-@property (nonatomic) ARClearFlatButton *logInButton;
-@property (nonatomic) ARSignUpSplashTextViewController *textViewController;
+@property (nonatomic, strong, readwrite) NSArray *pages;
+@property (nonatomic, strong, readwrite) ARCrossfadingImageView *imageView;
+@property (nonatomic, strong, readwrite) ARBlackFlatButton *getStartedButton;
+@property (nonatomic, strong, readwrite) ARSerifLineHeightLabel *descriptionLabel;
 @property (nonatomic, strong, readwrite) UIActivityIndicatorView *spinnerView;
 @property (nonatomic, strong, readwrite) UIImageView *logoView;
+@property (nonatomic, strong, readwrite) NSLayoutConstraint *spaceLogoToTop;
+@property (nonatomic, strong, readwrite) NSLayoutConstraint *spaceDescription;
+
 @end
 
 
@@ -55,7 +57,7 @@
     if (self) {
         _pages = @[
             [self pageWithImageName:@"onboard_1.jpg"
-                           bodyCopy:@"Collect art from premier galleries and auction houses from around the world."],
+                           bodyCopy:@"Buy art from premier galleries and auction houses from around the world"],
         ];
     }
 
@@ -72,8 +74,6 @@
 
     [super viewWillAppear:animated];
 
-    // Put this in viewWillAppear instead of viewDidLoad because of tests and view lifecycle issues
-    // TODO: perhaps move back when traitcollections and tests have been fixed
     [self showBackgroundViews];
     [self setupControls];
 }
@@ -98,6 +98,25 @@
     [super viewDidAppear:animated];
 }
 
+// Yes, this is deprecated, but it's the most straightforward way to change 2 values for iPad landscape
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self finaliseValuesForiPadWithInterfaceOrientation:toInterfaceOrientation];
+}
+
+- (void)finaliseValuesForiPadWithInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (self.spaceLogoToTop) {
+        if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+            self.spaceLogoToTop.constant = self.useLargeLayout ? 100 : 70;
+            self.spaceDescription.constant = self.useLargeLayout ? -90 : -25;
+        } else {
+            self.spaceLogoToTop.constant = self.useLargeLayout ? 260 : 70;
+            self.spaceDescription.constant = self.useLargeLayout ? -190 : -25;
+        }
+    }
+}
+
 - (void)loggedInWithSharedCredentials
 {
     // This is also a method for ARAppDelegate+Analytics to hook into.
@@ -113,16 +132,29 @@
     self.imageView.userInteractionEnabled = YES;
 
 
-    NSString *imageName = NSStringWithFormat(@"full_logo_white_%@", self.useLargeLayout ? @"medium" : @"small");
+    NSString *imageColor = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) ? @"white" : @"black";
+    NSString *imageName = NSStringWithFormat(@"full_logo_%@_%@", imageColor, self.useLargeLayout ? @"medium" : @"small");
     self.logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
     self.logoView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:self.logoView];
     [self.logoView alignCenterXWithView:self.view predicate:@"0"];
-    [self.logoView alignCenterYWithView:self.view predicate:self.useLargeLayout ? @"-224" : @"-153"];
+    self.spaceLogoToTop = [self.logoView alignTopEdgeWithView:self.view predicate:self.useLargeLayout ? @"260" : @"70"];
 
     self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.view addSubview:self.spinnerView];
-    [self.spinnerView alignToView:self.view];
+
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        // The new image on iPhone has artwork in the center that makes it hard to see the activity indicator
+        // Hence it's now in the lower half and black for better contrast on the white image background
+        self.spinnerView.color = [UIColor blackColor];
+        [self.spinnerView constrainHeightToView:self.view predicate:@"*.5"];
+        [self.spinnerView constrainWidthToView:self.view predicate:@"0"];
+        [self.spinnerView alignBottom:@"0" trailing:@"0" toView:self.view];
+    } else {
+        // Business as usual
+        [self.spinnerView alignToView:self.view];
+    }
+    
     [self.spinnerView startAnimating];
 
     NSArray *images = [self.pages map:^id(NSDictionary *object) {
@@ -134,58 +166,61 @@
 
 - (void)setupControls;
 {
-    self.textViewController = [self viewControllerForIndex:0];
-    [self addChildViewController:self.textViewController];
-    [self.view addSubview:self.textViewController.view];
 
-    [self.textViewController.view constrainTopSpaceToView:self.logoView predicate:self.useLargeLayout ? @"140" : @"160"];
-    [self.textViewController.view alignCenterXWithView:self.view predicate:@"0"];
-
-    self.getStartedButton = [[ARWhiteFlatButton alloc] init];
-    [self.view addSubview:self.getStartedButton];
+    self.getStartedButton = [[ARBlackFlatButton alloc] init];
     [self.getStartedButton setTitle:@"GET STARTED" forState:UIControlStateNormal];
     [self.getStartedButton addTarget:self action:@selector(startOnboarding:) forControlEvents:UIControlEventTouchUpInside];
 
-
-    [self.getStartedButton constrainTopSpaceToView:self.textViewController.view predicate:self.useLargeLayout ? @"<=260" : @"<=100"];
-
-    [self.getStartedButton alignCenterXWithView:self.view predicate:@"0"];
-    [self.getStartedButton constrainWidth:self.useLargeLayout ? @"340" : @"300"];
-
-    self.logInButton = [[ARClearFlatButton alloc] init];
-    [self.view addSubview:self.logInButton];
-    [self.logInButton setTitle:@"LOG IN" forState:UIControlStateNormal];
-    [self.logInButton addTarget:self action:@selector(logIn:) forControlEvents:UIControlEventTouchUpInside];
-    [self.logInButton constrainTopSpaceToView:self.getStartedButton predicate:@"12"];
-    [self.logInButton alignCenterXWithView:self.view predicate:@"0"];
-    [self.logInButton constrainWidth:self.useLargeLayout ? @"340" : @"300"];
-
-    [self.logInButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-    [self.logInButton setBackgroundColor:[UIColor blackColor] forState:UIControlStateHighlighted];
-    [self.logInButton setBorderColor:[UIColor blackColor] forState:UIControlStateHighlighted];
-
+    // using device here rather than large layout, because it's about the color on the background image
+    // because the bgimage is loaded with ~ipad / ~iphone, the colouring is device rather than layout specific
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        [self.getStartedButton setBackgroundColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.getStartedButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [self.getStartedButton setBackgroundColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+        [self.getStartedButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    }
+    
+    self.descriptionLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:6];
+    self.descriptionLabel.backgroundColor = [UIColor clearColor];
+    self.descriptionLabel.opaque = NO;
+    self.descriptionLabel.font = [UIFont serifFontWithSize:self.useLargeLayout ? 38 : 22];
+    self.descriptionLabel.textColor = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) ? [UIColor whiteColor] : [UIColor blackColor];
+    self.descriptionLabel.textAlignment = NSTextAlignmentCenter;
+    self.descriptionLabel.numberOfLines = 0;
+    self.descriptionLabel.text = self.pages[0][@"copy"];
+    
     ARTermsAndConditionsView *label = [[ARTermsAndConditionsView alloc] init];
-    [label constrainWidth:@"280"];
+    
+    [self.view addSubview:self.descriptionLabel];
+    [self.view addSubview:self.getStartedButton];
     [self.view addSubview:label];
+
+    [self.descriptionLabel constrainWidth:self.useLargeLayout ? @"500" : @"280" height:self.useLargeLayout ? @"160" : @"120"];
+    [self.descriptionLabel alignCenterXWithView:self.view predicate:@"0"];
+    self.spaceDescription = [self.descriptionLabel constrainBottomSpaceToView:self.getStartedButton predicate:self.useLargeLayout ? @"-190" : @"-25"];
+    
+    [self.getStartedButton alignBottomEdgeWithView:self.view predicate:self.useLargeLayout ? @"-170" : @"-80"];
+    [self.getStartedButton alignCenterXWithView:self.view predicate:@"0"];
+    [self.getStartedButton constrainWidth:self.useLargeLayout ? @"340" : @"300" height:@"40"];
+    
+    [label constrainWidth:@"280" height:@"40"];
     [label alignCenterXWithView:self.view predicate:@"0"];
-    [label constrainTopSpaceToView:self.logInButton predicate:@"10"];
-    [label alignBottomEdgeWithView:self.view predicate:self.useLargeLayout ? @"-60" : @"-20"];
+    [label alignBottomEdgeWithView:self.view predicate:self.useLargeLayout ? @"-55" : @"-10"];
 
     [self hideControls];
+    [self finaliseValuesForiPadWithInterfaceOrientation:self.interfaceOrientation];
 }
 
 - (void)hideControls
 {
-    self.textViewController.view.layer.opacity = 0;
-    self.logInButton.layer.opacity = 0;
+    self.descriptionLabel.layer.opacity = 0;
     self.getStartedButton.layer.opacity = 0;
 }
 
 - (void)showControls
 {
     [UIView animateIf:YES duration:2.3 delay:0.3 options:UIViewAnimationOptionCurveEaseInOut:^{
-        self.textViewController.view.layer.opacity = 1;
-        self.logInButton.layer.opacity = 1;
+        self.descriptionLabel.layer.opacity = 1;
         self.getStartedButton.layer.opacity = 1;
     } completion:nil];
 }
@@ -196,7 +231,6 @@
 - (void)setFormEnabled:(BOOL)enabled
 {
     self.getStartedButton.enabled = enabled;
-    self.logInButton.enabled = enabled;
 }
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage
@@ -209,12 +243,6 @@
     return self.imageView.images[self.imageView.currentIndex];
 }
 
-- (ARSignUpSplashTextViewController *)viewControllerForIndex:(NSInteger)index
-{
-    return [[ARSignUpSplashTextViewController alloc] initWithText:self.pages[0][@"copy"] andIndex:index];
-}
-
-
 #pragma mark Actions
 
 - (void)startOnboarding:(id)sender
@@ -224,7 +252,7 @@
 
 - (void)logIn:(id)sender
 {
-    [self.delegate splashDoneWithLogin:self];
+    [self.delegate splashDone:self];
 }
 
 - (void)enableForm
@@ -247,59 +275,11 @@
 - (void)setFormEnabled:(BOOL)enabled animated:(BOOL)animated
 {
     [UIView animateIf:animated duration:0.15:^{
-        for (UIView *view in @[self.logInButton, self.getStartedButton]) {
+        for (UIView *view in @[self.getStartedButton]) {
             view.userInteractionEnabled = enabled;
             view.alpha = enabled ? 1 : 0.3;
         }
     }];
-}
-
-@end
-
-
-@implementation ARSignUpSplashTextViewController
-- (instancetype)initWithText:(NSString *)text andIndex:(NSInteger)index
-{
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    _text = text;
-    _index = index;
-    return self;
-}
-
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-    [super traitCollectionDidChange:previousTraitCollection];
-
-    [self setupViews];
-}
-
-- (void)setupViews
-{
-    UILabel *copyLabel = [self labelForCopy];
-    copyLabel.text = self.text;
-
-
-    [self.view addSubview:copyLabel];
-    [copyLabel constrainWidth:self.useLargeLayout ? @"500" : @"280" height:self.useLargeLayout ? @"160" : @"120"];
-    [copyLabel alignCenterXWithView:self.view predicate:@"0"];
-    [copyLabel alignCenterYWithView:self.view predicate:self.useLargeLayout ? @"40" : @"-60"];
-}
-
-- (UILabel *)labelForCopy
-{
-    ARSerifLineHeightLabel *copyLabel = [[ARSerifLineHeightLabel alloc] initWithLineSpacing:6];
-    copyLabel.backgroundColor = [UIColor clearColor];
-    copyLabel.opaque = NO;
-    copyLabel.font = [UIFont serifFontWithSize:self.useLargeLayout ? 38 : 26];
-    copyLabel.textColor = [UIColor whiteColor];
-    copyLabel.textAlignment = NSTextAlignmentCenter;
-    copyLabel.numberOfLines = 0;
-    copyLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
-    return copyLabel;
 }
 
 @end

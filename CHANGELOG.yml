@@ -1,11 +1,13 @@
 upcoming:
     version: 3.2.0
+    details: Scope not known yet
     details: Gene artworks refinement.
     dev:
       - Refine existing queries on the Gene Page - orta
       - Report user’s anonymous ID to Adjust for campaign to install tracking - alloy
       - Font Pod changes which should allow OSS contributors to run our Apps again - orta
       - Refactors LAI view controller hierarchy - ash
+      - Font Pod changes which should allow OSS contributors to run our Apps again x 2 - orta
       - Switched Metaphysics query to use a POST instead of a GET - ash
     user_facing:
       - Artwork metadata in collection views use sale_message instead of price - sarah
@@ -16,7 +18,9 @@ upcoming:
       - Fixes follow button text in ShowVC to show appropriate copy based on partner type - luc
       - Fix extra blankspace in Artist Card when data is missing - luc
       - Gene titles wrap so they don't get covered by back button - luc
+      - Onboarding V2, account creation before personalisation - maxim
       - Fixes when the refine price range sliders get cut off - ash
+      - Fixes my-bids view with long artist/artwork names - ash
 
 releases:
   - version: 3.1.0

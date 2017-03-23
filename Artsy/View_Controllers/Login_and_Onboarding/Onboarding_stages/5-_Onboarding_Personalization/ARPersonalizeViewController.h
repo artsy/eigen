@@ -13,5 +13,9 @@
 @property (nonatomic, assign, readonly) NSInteger followedThisSession;
 @property (nonatomic, strong, readonly) AROnboardingPersonalizeTableViewController *searchResultsTable;
 
+- (void)updateKeyboardFrame:(CGRect)keyboardFrame;
+- (void)passwordResetSent;
+- (void)passwordResetError:(NSString *)message;
+- (void)showErrorWithMessage:(NSString *)errorMessage;
 
 @end

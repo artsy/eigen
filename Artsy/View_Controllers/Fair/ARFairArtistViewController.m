@@ -30,6 +30,7 @@
 #import <ORStackView/ORTagBasedAutoStackView.h>
 #import <ORStackView/ORStackScrollView.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 #import "Artsy-Swift.h"
 
@@ -42,6 +43,17 @@ typedef NS_ENUM(NSInteger, ARFairArtistViewIndex) {
     ARFairArtistOnArtsy = ARFairArtistShows + 3 * 42, // we don't expect more than 42 shows
     ARFairArtistWhitespaceGobbler
 };
+
+// This is a simple workaround to make the navigation buttons in ARNavigationButtonsViewControllers look mostly
+// identical to what they were before.
+@interface ARFairArtistNavigationButton : ARNavigationButton
+@end
+@implementation ARFairArtistNavigationButton
+- (CGFloat)verticalPadding
+{
+    return 12;
+}
+@end
 
 
 @interface ARFairArtistViewController () <AREmbeddedModelsViewControllerDelegate>
@@ -131,13 +143,23 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 - (void)addArtistOnArtsyButton
 {
     NSString *title = NSStringWithFormat(@"%@ on Artsy", self.artist.name);
-    ARNavigationButton *button = [[ARNavigationButton alloc] initWithTitle:title];
-    button.tag = ARFairArtistOnArtsy;
-    button.onTap = ^(UIButton *tappedButton) {
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadArtistWithID:self.artist.artistID inFair:nil];
-        [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
-    };
-    [self.view.stackView addSubview:button withTopMargin:@"20" sideMargin:@"40"];
+
+    NSArray *artistOnArtsyButtonDescription = @[@{ ARNavigationButtonClassKey : ARFairArtistNavigationButton.class,
+                                                   ARNavigationButtonPropertiesKey : @{
+                                                           ar_keypath(ARNavigationButton.new, title) : title
+                                                           },
+                                                   ARNavigationButtonHandlerKey : ^(UIButton *sender) {
+                                                       UIViewController *viewController = [ARSwitchBoard.sharedInstance loadArtistWithID:self.artist.artistID inFair:nil];
+                                                       [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                                                   }
+                                                   }];
+
+    ARNavigationButtonsViewController* artistOnArstyNavigationButtonVC = [[ARNavigationButtonsViewController alloc] init];
+    [artistOnArstyNavigationButtonVC addButtonDescriptions:artistOnArtsyButtonDescription unique:YES];
+    artistOnArstyNavigationButtonVC.view.tag = ARFairArtistOnArtsy;
+    [artistOnArstyNavigationButtonVC.view constrainHeight:@"39"];
+
+    [self.view.stackView addViewController:artistOnArstyNavigationButtonVC toParent:self withTopMargin:@"20" sideMargin:@"40"];
 }
 
 - (void)addArtworksForShowToStack:(PartnerShow *)show tag:(NSInteger)tag
@@ -156,13 +178,22 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
 
 - (void)addNavigationButtonForShowToStack:(PartnerShow *)show tag:(NSInteger)tag
 {
-    ARNavigationButton *button = [[ARSerifNavigationButton alloc] initWithTitle:show.partner.name andSubtitle:show.locationInFair withBorder:0];
-    button.tag = tag;
-    button.onTap = ^(UIButton *tappedButton) {
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadShow:show fair:self.fair];
-        [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
-    };
-    [self.view.stackView addSubview:button withTopMargin:@"0" sideMargin:@"40"];
+    NSArray *showButtonDescription = @[@{ ARNavigationButtonClassKey : ARFairArtistNavigationButton.class,
+                                          ARNavigationButtonPropertiesKey : @{
+                                                  ar_keypath(ARNavigationButton.new, title) : show.partner.name,
+                                                  ar_keypath(ARNavigationButton.new, subtitle) : show.locationInFair
+                                                  },
+                                          ARNavigationButtonHandlerKey : ^(UIButton *sender) {
+                                              UIViewController *viewController = [ARSwitchBoard.sharedInstance loadShow:show fair:self.fair];
+                                              [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+                                          }
+                                          }];
+
+    ARNavigationButtonsViewController* showNavigationButtonVC = [[ARNavigationButtonsViewController alloc] init];
+    [showNavigationButtonVC addButtonDescriptions:showButtonDescription unique:YES];
+    showNavigationButtonVC.view.tag = tag;
+
+    [self.view.stackView addViewController:showNavigationButtonVC toParent:self withTopMargin:@"0" sideMargin:@"40"];
 }
 
 - (void)addSubtitle

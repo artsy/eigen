@@ -1,16 +1,12 @@
 #import <UIKit/UIKit.h>
 
-@class ARBlackFlatButton, ARClearFlatButton;
-
 
 @interface ARLoginButtonsView : UIView
 
-@property (nonatomic, strong, readonly) ARBlackFlatButton *emailActionButton;
-@property (nonatomic, strong, readonly) ARBlackFlatButton *facebookActionButton;
-@property (nonatomic, strong, readonly) ARBlackFlatButton *twitterActionButton;
-@property (nonatomic, strong, readonly) ARClearFlatButton *forgotPasswordButton;
+@property (nonatomic, strong, readonly) UIButton *actionButton;
 
-- (void)setupForLogin;
-- (void)setupForSignUp;
+- (void)setupForLoginWithLargeLayout:(BOOL)useLargeLayout; // includes forget password button
+- (void)setupForSignUpWithLargeLayout:(BOOL)useLargeLayout; // includes back button
+- (void)setupForFacebookWithLargeLayout:(BOOL)useLargeLayout;
 
 @end

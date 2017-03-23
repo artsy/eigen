@@ -34,5 +34,7 @@ typedef NS_ENUM(NSInteger, ARTableViewContentDisplayMode) {
                replaceContents:(ARSearchResultsReplaceContents)replaceStyle
                       animated:(BOOL)animated;
 
+- (void)showLoadingSpinner;
+- (void)removeLoadingSpinner;
 
 @end

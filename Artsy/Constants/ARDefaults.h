@@ -16,10 +16,14 @@ extern NSString *const ARXAppTokenExpiryDateDefault;
 #pragma mark -
 #pragma mark onboarding
 
-extern NSString *const AROnboardingSkipPersonalizeDefault;
-extern NSString *const AROnboardingSkipCollectorLevelDefault;
-extern NSString *const AROnboardingSkipPriceRangeDefault;
-extern NSString *const AROnboardingPromptThresholdDefault;
+extern NSString *const AROnboardingUserProgressionStage;
+
+typedef NS_ENUM(NSInteger, AROnboardingUserProgressStage) {
+    AROnboardingStageDefault,
+    AROnboardingStageOnboarding,
+    AROnboardingStageOnboarded
+};
+
 
 #pragma mark -
 #pragma mark push notifications
