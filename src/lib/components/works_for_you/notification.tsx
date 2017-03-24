@@ -17,7 +17,7 @@ export class Notification extends React.Component<Props, any> {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          { notification.image && <Image source={{uri: notification.image.resized.url}} style={styles.artistAvatar}/> }
+          { <Image source={{uri: notification.image.resized.url}} style={styles.artistAvatar}/> }
           <View style={{alignSelf: "center"}}>
             <Headline style={styles.artistName}>{notification.artists}</Headline>
             <SerifText style={styles.metadata}>{notification.message + " · " + notification.date}</SerifText>

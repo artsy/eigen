@@ -11,6 +11,22 @@ exports[`test does not show artist avatar if no avatar image exists 1`] = `
         "flexDirection": "row",
       }
     }>
+    <Image
+      source={
+        Object {
+          "uri": null,
+        }
+      }
+      style={
+        Object {
+          "alignSelf": "center",
+          "backgroundColor": "#f8f8f8",
+          "borderRadius": 20,
+          "height": 40,
+          "marginRight": 10,
+          "width": 40,
+        }
+      } />
     <View
       style={
         Object {

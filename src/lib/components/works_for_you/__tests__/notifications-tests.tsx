@@ -22,7 +22,7 @@ it("lays out correctly for read notification", () => {
 
 it("does not show artist avatar if no avatar image exists", () => {
   const props = notification()
-  props.image = null
+  props.image.resized.url = null
   const component = renderWithLayout(<Notification notification={props}/>, { width: 300 })
 
   expect(component).toMatchSnapshot()
