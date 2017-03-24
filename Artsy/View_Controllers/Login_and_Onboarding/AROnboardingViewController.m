@@ -45,7 +45,7 @@
 @property (nonatomic, strong, readwrite) UIView *progressBackgroundBar;
 @property (nonatomic, strong, readwrite) NSString *email;
 @property (nonatomic, strong, readwrite) NSString *password;
-@property (nonnull, strong, readwrite) UITextField *tempTextField;
+@property (nonatomic, nonnull, strong, readwrite) UITextField *tempTextField;
 
 @end
 

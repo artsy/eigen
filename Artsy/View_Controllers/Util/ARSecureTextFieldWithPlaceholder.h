@@ -2,7 +2,4 @@
 
 
 @interface ARSecureTextFieldWithPlaceholder : ARTextFieldWithPlaceholder
-
-- (void)toggleShowContents;
-
 @end
