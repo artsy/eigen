@@ -1,7 +1,13 @@
 import * as React from "react"
-import { StyleSheet, View } from "react-native"
 import * as Relay from "react-relay"
-import { LayoutEvent } from "../../system/events"
+
+import {
+  LayoutChangeEvent,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from "react-native"
+
 import Artwork from "./artwork"
 
 interface Props extends RelayProps {
@@ -47,7 +53,7 @@ class GenericArtworksGrid extends React.Component<Props, State> {
     }
   }
 
-  onLayout = (event: LayoutEvent) => {
+  onLayout = (event: LayoutChangeEvent) => {
     const layout = event.nativeEvent.layout
     const newLayoutState = this.layoutState(layout)
     if (layout.width > 0) {
@@ -133,8 +139,8 @@ class GenericArtworksGrid extends React.Component<Props, State> {
 }
 
 interface Styles {
-  container: ReactNative.ViewStyle,
-  section: ReactNative.ViewStyle,
+  container: ViewStyle,
+  section: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

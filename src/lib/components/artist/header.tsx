@@ -1,7 +1,15 @@
 import * as React from "react"
-import { Dimensions, NativeModules, StyleSheet, View } from "react-native"
-const { ARTemporaryAPIModule } = NativeModules
 import * as Relay from "react-relay"
+
+import {
+  Dimensions,
+  NativeModules,
+  StyleSheet,
+  TextStyle,
+  View,
+  ViewStyle,
+} from "react-native"
+const { ARTemporaryAPIModule } = NativeModules
 
 import Events from "../../native_modules/events"
 
@@ -138,10 +146,10 @@ class Header extends React.Component<HeaderProps, State> {
 }
 
 interface Styles {
-  base: ReactNative.TextStyle,
-  headline: ReactNative.TextStyle,
-  followCount: ReactNative.TextStyle,
-  followButton: ReactNative.ViewStyle,
+  base: TextStyle,
+  headline: TextStyle,
+  followCount: TextStyle,
+  followButton: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

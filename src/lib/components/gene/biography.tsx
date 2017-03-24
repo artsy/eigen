@@ -1,12 +1,19 @@
 import * as React from "react"
-import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
 import * as Relay from "react-relay"
 import * as removeMarkdown from "remove-markdown"
+
+import {
+  Dimensions,
+  StyleSheet,
+  View,
+  ViewProperties,
+} from "react-native"
+
 import SerifText from "../text/serif"
 
 const sideMargin = Dimensions.get("window").width > 700 ? 50 : 0
 
-interface Props extends ReactNative.ViewProperties, RelayProps {
+interface Props extends ViewProperties, RelayProps {
 }
 
 class Biography extends React.Component<Props, any> {

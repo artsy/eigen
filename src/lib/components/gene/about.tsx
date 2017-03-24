@@ -1,6 +1,11 @@
 import * as React from "react"
-import { StyleSheet, View } from "react-native"
 import * as Relay from "react-relay"
+
+import {
+  StyleSheet,
+  View,
+  ViewStyle,
+} from "react-native"
 
 import Biography from "./biography"
 
@@ -34,7 +39,7 @@ class About extends React.Component<RelayPropsWorkaround, any> {
 }
 
 interface Styles {
-  sectionSeparator: ReactNative.ViewStyle,
+  sectionSeparator: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

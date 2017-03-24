@@ -1,8 +1,15 @@
 import * as _ from "lodash"
 import * as React from "react"
-import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
 import * as ParallaxScrollView from "react-native-parallax-scroll-view"
 import * as Relay from "react-relay"
+
+import {
+  Dimensions,
+  StyleSheet,
+  View,
+  ViewProperties,
+  ViewStyle,
+} from "react-native"
 
 import WhiteButton from "../components/buttons/flat_white"
 import Separator from "../components/separator"
@@ -299,9 +306,9 @@ export class Gene extends React.Component<Props, State> {
 }
 
 interface Styles {
-  header: ReactNative.ViewStyle,
-  stickyHeader: ReactNative.ViewStyle,
-  refineContainer: ReactNative.ViewStyle,
+  header: ViewStyle,
+  stickyHeader: ViewStyle,
+  refineContainer: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

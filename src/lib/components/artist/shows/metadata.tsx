@@ -1,6 +1,14 @@
 import * as React from "react"
-import { StyleSheet, Text, View, ViewProperties } from "react-native"
 import * as Relay from "react-relay"
+
+import {
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+  ViewProperties,
+  ViewStyle,
+} from "react-native"
 
 import colors from "../../../../data/colors"
 import SerifText from "../../text/serif"
@@ -61,9 +69,9 @@ class Metadata extends React.Component<Props, any> {
 }
 
 interface Styles {
-  container: ReactNative.ViewStyle,
-  serifText: ReactNative.TextStyle,
-  sansSerifText: ReactNative.TextStyle,
+  container: ViewStyle,
+  serifText: TextStyle,
+  sansSerifText: TextStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

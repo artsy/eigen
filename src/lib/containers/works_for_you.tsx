@@ -1,15 +1,24 @@
 import * as React from "react"
-import { ListView, ListViewDataSource, NativeModules, ScrollView, StyleSheet, TextStyle, View, ViewStyle }
-  from "react-native"
-const { ARTemporaryAPIModule, ARWorksForYouModule } = NativeModules
 import * as Relay from "react-relay"
+
+import {
+  LayoutChangeEvent,
+  ListView,
+  ListViewDataSource,
+  NativeModules,
+  ScrollView,
+  StyleSheet,
+  TextStyle,
+  View,
+  ViewStyle,
+} from "react-native"
+const { ARTemporaryAPIModule, ARWorksForYouModule } = NativeModules
 
 import Events from "../native_modules/events"
 
 import Headline from "../components/text/headline"
 import SerifText from "../components/text/serif"
 import Notification from "../components/works_for_you/notification"
-import { LayoutEvent } from "../system/events"
 
 import colors from "../../data/colors"
 
@@ -53,7 +62,7 @@ export class WorksForYou extends React.Component<Props, State> {
     NativeModules.ARWorksForYouModule.updateNotificationsCount(0)
   }
 
-  onLayout = (event: LayoutEvent) => {
+  onLayout = (event: LayoutChangeEvent) => {
     const layout = event.nativeEvent.layout
     const sideMargin = layout.width > 600 ? 40 : 20
     this.setState({ sideMargin })

@@ -1,6 +1,14 @@
 import * as React from "react"
-import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
 import * as Relay from "react-relay"
+
+import {
+  Dimensions,
+  StyleSheet,
+  TextStyle,
+  View,
+  ViewProperties,
+  ViewStyle,
+} from "react-native"
 
 import Separator from "../../separator"
 import SerifText from "../../text/serif"
@@ -63,8 +71,8 @@ class Shows extends React.Component<Props, any> {
 }
 
 interface Styles {
-  container: ReactNative.ViewStyle,
-  title: ReactNative.TextStyle,
+  container: ViewStyle,
+  title: TextStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

@@ -1,7 +1,16 @@
 import * as React from "react"
-import { Dimensions, NativeModules, StyleSheet, View, ViewProperties } from "react-native"
-const { ARTemporaryAPIModule } = NativeModules
 import * as Relay from "react-relay"
+
+import {
+  Dimensions,
+  NativeModules,
+  StyleSheet,
+  TextStyle,
+  View,
+  ViewProperties,
+  ViewStyle,
+} from "react-native"
+const { ARTemporaryAPIModule } = NativeModules
 
 import Events from "../../native_modules/events"
 
@@ -82,9 +91,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 const isPad = Dimensions.get("window").width > 700
 
 interface Styles {
-  header: ReactNative.TextStyle,
-  headline: ReactNative.TextStyle,
-  followButton: ReactNative.ViewStyle,
+  header: TextStyle,
+  headline: TextStyle,
+  followButton: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

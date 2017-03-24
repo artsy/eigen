@@ -1,7 +1,14 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import { ListView, ListViewDataSource, RefreshControl, ScrollView, ViewProperties } from "react-native"
+import {
+  ListView,
+  ListViewDataSource,
+  RefreshControl,
+  ScrollView,
+  ScrollViewStatic,
+  ViewProperties,
+} from "react-native"
 
 import ArtistRail from "../components/home/artist_rails/artist_rail"
 import ArtworkRail from "../components/home/artwork_rails/artwork_rail"
@@ -76,7 +83,7 @@ export class Home extends React.Component<Props, State> {
   render() {
     return (
       <ListView dataSource={this.state.dataSource}
-                renderScrollComponent={(props: ReactNative.ScrollViewStatic) => {
+                renderScrollComponent={(props: ScrollViewStatic) => {
                   const refreshControl = <RefreshControl refreshing={this.state.isRefreshing}
                                                          onRefresh={this.handleRefresh} />
                   return <ScrollView {...props} automaticallyAdjustContentInsets={false}

@@ -1,14 +1,17 @@
 import * as React from "react"
+import * as Relay from "react-relay"
+
 import {
   Dimensions,
   NativeModules,
   StyleSheet,
   Text,
+  TextStyle,
   TouchableWithoutFeedback,
   View,
   ViewProperties,
+  ViewStyle,
 } from "react-native"
-import * as Relay from "react-relay"
 const { ARTemporaryAPIModule } = NativeModules
 
 import Events from "../../../native_modules/events"
@@ -103,11 +106,11 @@ class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, St
 }
 
 interface Styles {
-  container: ReactNative.ViewStyle,
-  title: ReactNative.TextStyle,
-  viewAllButton: ReactNative.TextStyle,
-  followButton: ReactNative.ViewStyle,
-  followAnnotation: ReactNative.TextStyle,
+  container: ViewStyle,
+  title: TextStyle,
+  viewAllButton: TextStyle,
+  followButton: ViewStyle,
+  followAnnotation: TextStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

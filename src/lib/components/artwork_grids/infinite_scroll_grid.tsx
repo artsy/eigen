@@ -7,10 +7,17 @@
 // 4. Update height of grid to encompass all items.
 
 import * as React from "react"
-import { Dimensions, ScrollView, StyleSheet, View } from "react-native"
 import * as Relay from "react-relay"
 
-import { LayoutEvent } from "../../system/events"
+import {
+  Dimensions,
+  LayoutChangeEvent,
+  ScrollView,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from "react-native"
+
 import Spinner from "../spinner"
 import Artwork from "./artwork"
 
@@ -132,7 +139,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     // tslint:enable:no-console
   }
 
-  onLayout = (event: LayoutEvent) => {
+  onLayout = (event: LayoutChangeEvent) => {
     const layout = event.nativeEvent.layout
     if (layout.width > 0) {
       // This is the sum of all margins in between sections, so do not count to the right of last column.
@@ -258,9 +265,9 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
 }
 
 interface Styles {
-  container: ReactNative.ViewStyle,
-  section: ReactNative.ViewStyle,
-  spinner: ReactNative.ViewStyle,
+  container: ViewStyle,
+  section: ViewStyle,
+  spinner: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({

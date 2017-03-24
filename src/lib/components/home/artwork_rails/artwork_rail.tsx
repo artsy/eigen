@@ -1,16 +1,20 @@
 import * as _ from "lodash"
 import * as React from "react"
+import * as Relay from "react-relay"
+
 import {
   Dimensions,
   Image,
+  ImageURISource,
   LayoutAnimation,
   StyleSheet,
   Text,
+  TextStyle,
   TouchableHighlight,
   View,
   ViewProperties,
+  ViewStyle,
 } from "react-native"
-import * as Relay from "react-relay"
 
 import colors from "../../../../data/colors"
 import SwitchBoard from "../../../native_modules/switch_board"
@@ -21,7 +25,7 @@ import Header from "./artwork_rail_header"
 import fragments from "./relay_fragments"
 
 // tslint:disable-next-line:no-var-requires
-const chevron: ReactNative.ImageURISource = require("../../../../../images/chevron.png")
+const chevron: ImageURISource = require("../../../../../images/chevron.png")
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -219,11 +223,11 @@ class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
 }
 
 interface Styles {
-  container: ReactNative.ViewStyle,
-  gridContainer: ReactNative.ViewStyle,
-  expansionButton: ReactNative.ViewStyle,
-  viewAllButton: ReactNative.ViewStyle,
-  viewAllText: ReactNative.TextStyle,
+  container: ViewStyle,
+  gridContainer: ViewStyle,
+  expansionButton: ViewStyle,
+  viewAllButton: ViewStyle,
+  viewAllText: TextStyle,
 }
 
 const styles = StyleSheet.create<Styles>({
