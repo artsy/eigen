@@ -7,6 +7,10 @@
 - Updated our fonts lib - orta
 - Converted to TypeScript - luc, sarah, alloy, orta
 
+### 1.2.2
+
+- Move active bids home module to the top of the feed - alloy
+
 ### 1.2.1
 
 - Build with correct react-native version - alloy

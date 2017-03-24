@@ -111,6 +111,7 @@ export default Relay.createContainer(Home, {
         artwork_modules(max_rails: -1,
                         max_followed_gene_rails: -1,
                         order: [
+                          ACTIVE_BIDS,
                           RECOMMENDED_WORKS,
                           FOLLOWED_ARTISTS,
                           RELATED_ARTISTS,
