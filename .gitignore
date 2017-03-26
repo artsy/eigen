@@ -47,4 +47,4 @@ iOSInjectionProject/
 .vscode/.browse.VC.db
 fastlane/Gemfile.lock
 
-builtimes.log
+buildtimes.log
