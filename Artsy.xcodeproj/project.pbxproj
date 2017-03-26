@@ -4670,7 +4670,9 @@
 			buildConfigurationList = 49BA7E231655ABE600C06572 /* Build configuration list for PBXNativeTarget "Artsy" */;
 			buildPhases = (
 				3DDFDE0BD89435CF2CCB5242 /* [CP] Check Pods Manifest.lock */,
+				5E11A5901E88559300063DA7 /* Log Start Time */,
 				49BA7DFB1655ABE600C06572 /* Sources */,
+				5E11A5911E8855AF00063DA7 /* Log Duration */,
 				49BA7DFC1655ABE600C06572 /* Frameworks */,
 				49BA7DFD1655ABE600C06572 /* Resources */,
 				5150685F1BCC176300018352 /* Generate Compilation DB */,
@@ -5039,6 +5041,34 @@
 			shellPath = /bin/sh;
 			shellScript = "if type -p clang-compilation-database-tool > /dev/null 2>&1; then\n  clang-compilation-database-tool collect \"${OBJECT_FILE_DIR_normal}\" > \"${SRCROOT}/compiler_commands.json\"\nfi";
 			showEnvVarsInLog = 0;
+		};
+		5E11A5901E88559300063DA7 /* Log Start Time */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Log Start Time";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"$(date +%s)\" > \"buildtimes.log\"";
+		};
+		5E11A5911E8855AF00063DA7 /* Log Duration */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Log Duration";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "startime=$(<buildtimes.log)\nendtime=$(date +%s)\ndeltatime=$((endtime-startime))\nnewline=$'\\n'\necho \"[Start] $startime$newline[End] $endtime$newline[Delta] $deltatime\" > \"buildtimes.log\"";
 		};
 		63B07CC4F2ED22DBB2DD6BB9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

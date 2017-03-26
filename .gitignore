@@ -46,3 +46,5 @@ Artsy/Eigen.playground/
 iOSInjectionProject/
 .vscode/.browse.VC.db
 fastlane/Gemfile.lock
+
+builtimes.log
