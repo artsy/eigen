@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 
-
 /// Dispatches asynchronously when ARPerformWorkAsynchronously is set to true, and synchronously otherwise
 extern void ar_dispatch_async(dispatch_block_t block);
 

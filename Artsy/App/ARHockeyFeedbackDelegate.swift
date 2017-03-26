@@ -28,10 +28,16 @@ class ARHockeyFeedbackDelegate: NSObject {
         }
 
         let user = User.current()
-        let initialMessage = "From: \(user != nil ? user?.name : "Onboarding user")\n\n"
-        
-        // Create an array of optionals, then flatmap them to be only real values
-        let items = ([initialMessage as Optional<AnyObject>, image, analyticsLog] as [AnyObject?]).flatMap { $0 }
+        let initialMessage = NSString(string: "From: \(user?.name ?? "Onboarding user")\n\n")
+
+        var items = [AnyObject]()
+        items.append(initialMessage)
+        if let image = image {
+            items.append(image)
+        }
+        if let analyticsLog = analyticsLog {
+            items.append(analyticsLog)
+        }
 
         let vc = BITHockeyManager.shared().feedbackManager
         vc?.showFeedbackComposeView(withPreparedItems: items)
