@@ -146,11 +146,6 @@ static NSNumberFormatter *currencyFormatter;
     currencyFormatter.currencySymbol = symbol;
     NSString *centString = [currencyFormatter stringFromNumber:amount];
 
-    if (centString.length < 3) {
-        // just covering this very degenerate case
-        // that hopefully this never happens
-        return [symbol stringByAppendingString:@"1"];
-    }
     return centString;
 }
 
