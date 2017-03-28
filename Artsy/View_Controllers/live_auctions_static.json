@@ -59,7 +59,7 @@
       "sale_artworks": [
         {
           "_id": "54c7ecc27261692b5e420600",
-          "position": 1,
+          "lot_label": "1",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -80,7 +80,7 @@
         },
         {
           "_id": "54c7ed2a7261692bfa910200",
-          "position": 2,
+          "lot_label": "2",
           "currency": "USD",
           "estimate": "Estimate String",
           "symbol": "$",
@@ -101,7 +101,7 @@
         },
         {
           "_id": "54c7eff17261692b51460200",
-          "position": 3,
+          "lot_label": "3",
           "currency": "USD",
           "symbol": "$",
           "estimate": "Estimate String",
@@ -122,7 +122,7 @@
         },
         {
           "_id": "54c7f0667261692b60c10600",
-          "position": 4,
+          "lot_label": "4",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -142,7 +142,7 @@
         },
         {
           "_id": "54c7f0f0726169330f821900",
-          "position": 5,
+          "lot_label": "5",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -162,7 +162,7 @@
         },
         {
           "_id": "54c7f12e7261692b60e20200",
-          "position": 6,
+          "lot_label": "6",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -182,7 +182,7 @@
         },
         {
           "_id": "54c7f1f17261692be4f60100",
-          "position": 7,
+          "lot_label": "7",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -202,7 +202,7 @@
         },
         {
           "_id": "54c7f6bb7261692bc1e11000",
-          "position": 8,
+          "lot_label": "8",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -222,7 +222,7 @@
         },
         {
           "_id": "54c7f7a57261692bcc220100",
-          "position": 9,
+          "lot_label": "9",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -242,7 +242,7 @@
         },
         {
           "_id": "54c7f7ea7261692b66510700",
-          "position": 10,
+          "lot_label": "10",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -262,7 +262,7 @@
         },
         {
           "_id": "54c7f82d7261692c59d21900",
-          "position": 11,
+          "lot_label": "11",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -282,7 +282,7 @@
         },
         {
           "_id": "54c7f8907261692b43170300",
-          "position": 12,
+          "lot_label": "12",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -302,7 +302,7 @@
         },
         {
           "_id": "54c7f8cf7261692bdd510100",
-          "position": 13,
+          "lot_label": "13",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "no_reserve",
@@ -322,7 +322,7 @@
         },
         {
           "_id": "54c7f91a7261692c69871b00",
-          "position": 14,
+          "lot_label": "14",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -342,7 +342,7 @@
         },
         {
           "_id": "54c7f9517261690cfdfa1800",
-          "position": 15,
+          "lot_label": "15",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -362,7 +362,7 @@
         },
         {
           "_id": "54c7f9887261692b71b00600",
-          "position": 16,
+          "lot_label": "16",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -382,7 +382,7 @@
         },
         {
           "_id": "54c7fa6d7261692b572d0700",
-          "position": 17,
+          "lot_label": "17",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -402,7 +402,7 @@
         },
         {
           "_id": "54c7fabc7261693304eb1900",
-          "position": 18,
+          "lot_label": "18",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -422,7 +422,7 @@
         },
         {
           "_id": "54c7fb087261692bbd3c1100",
-          "position": 19,
+          "lot_label": "19",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -442,7 +442,7 @@
         },
         {
           "_id": "54c7fb317261692b43300300",
-          "position": 20,
+          "lot_label": "20",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -462,7 +462,7 @@
         },
         {
           "_id": "54c7fb767261692b5cb20600",
-          "position": 21,
+          "lot_label": "21",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -482,7 +482,7 @@
         },
         {
           "_id": "54c7fb9c7261692b55d30200",
-          "position": 22,
+          "lot_label": "22",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -502,7 +502,7 @@
         },
         {
           "_id": "54c7fbca7261694b0c661600",
-          "position": 23,
+          "lot_label": "23",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",
@@ -522,7 +522,7 @@
         },
         {
           "_id": "54c7fbeb7261692b604a0300",
-          "position": 24,
+          "lot_label": "24",
           "currency": "USD",
           "symbol": "$",
           "reserve_status": "reserve_met",

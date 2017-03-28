@@ -14,7 +14,7 @@ beforeEach(^{
     [[[saleArtworkMock stub] andReturn:[NSURL URLWithString:@"http://example.com"]] thumbnailURL];
     [[[saleArtworkMock stub] andReturn:@"$1,000"] currentOrStartingBidWithNumberOfBids:NO];
     [[[saleArtworkMock stub] andReturn:@"$1,000 (4 Bids)"] currentOrStartingBidWithNumberOfBids:YES];
-    [(SaleArtworkViewModel *)[[saleArtworkMock stub] andReturn:@"4"] lotNumber];
+    [(SaleArtworkViewModel *)[[saleArtworkMock stub] andReturn:@"4"] lotLabel];
     [(SaleArtworkViewModel *)[[saleArtworkMock stub] andReturn:@"4"] numberOfBids];
 });
 

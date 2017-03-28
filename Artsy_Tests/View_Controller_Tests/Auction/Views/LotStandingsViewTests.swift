@@ -66,7 +66,7 @@ class LotStandingsViewTests: QuickSpec {
 fileprivate func test_LotStanding(highBidder: Bool, reserveMet: Bool) -> LotStanding {
     let saleArtworkDictionary: NSDictionary = [
         "id": "some-sale-artwork-id",
-        "lot_number": 1,
+        "lot_label": "1",
         "bidder_positions_count": 2,
         "highest_bid": [
             "amount_cents": 500_00,

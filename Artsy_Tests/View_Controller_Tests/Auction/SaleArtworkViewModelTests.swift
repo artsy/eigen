@@ -31,7 +31,7 @@ class SaleArtworkViewModelTests: QuickSpec {
                 [
                     "id": "sale",
                     "artwork": artworkJSON,
-                    "lot_number": 13,
+                    "lot_label": "13",
                     "bidder_positions_count": 4,
                     "highest_bid": ["id": "bid-id", "amount_cents": 1_000_00],
                     "symbol": "$"
@@ -54,7 +54,7 @@ class SaleArtworkViewModelTests: QuickSpec {
         }
 
         it("returns lot number") {
-            expect(subject.lotNumber) == "13"
+            expect(subject.lotLabel) == "13"
         }
 
         it("returns number of bids") {
