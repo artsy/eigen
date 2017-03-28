@@ -4,8 +4,8 @@ import FLKAutoLayout
 
 class LiveAuctionToolbarView: UIView {
 
-    fileprivate enum Views {
-        case lotLabel, time, bidders
+    fileprivate enum Views: String {
+        case lot, time, bidders
     }
 
     var lotViewModel: LiveAuctionLotViewModelType!
@@ -58,13 +58,13 @@ class LiveAuctionToolbarView: UIView {
 
         case .closedLot:
             viewStructure = [
-                [.lotLabel: lotNumberString()],
+                [.lot: lotNumberString()],
                 [.time: attributify("Closed", color: .auctionRed())],
             ]
 
         case .liveLot:
             viewStructure = [
-                [.lotLabel: lotNumberString()],
+                [.lot: lotNumberString()],
                 [.time: attributify("--:--")],
                 [.bidders: attributify(String(lotViewModel.numberOfBids))]
             ]
@@ -100,7 +100,7 @@ class LiveAuctionToolbarView: UIView {
             }
 
             viewStructure = [
-                [.lotLabel: lotNumberString()],
+                [.lot: lotNumberString()],
                 [.time: attributify(lotString, color: .artsyPurpleRegular())],
                 [.bidders: attributify(String(lotViewModel.numberOfBids))]
             ]
@@ -109,7 +109,7 @@ class LiveAuctionToolbarView: UIView {
         // swiftlint:disable force_unwrapping
         let views: [UIView] = viewStructure.map { dict in
             let key = dict.keys.first!
-            let thumbnail = UIImage(named: "lot_\(key)_info")
+            let thumbnail = UIImage(named: "lot_\(key.rawValue)_info")
 
             let view = UIView()
             let thumbnailView = UIImageView(image: thumbnail)
