@@ -1,5 +1,9 @@
 SpecBegin(SaleArtwork);
 
+before(^{
+    [SaleArtwork class];
+});
+
 describe(@"artwork for sale", ^{
     __block SaleArtwork *_saleArtwork;
 
@@ -143,6 +147,10 @@ describe(@"artwork for sale", ^{
 
     it(@"formats small numbers correctly", ^{
         expect([SaleArtwork dollarsFromCents:@(500) currencySymbol:@"$"]).to.equal(@"$5");
+    });
+
+    it(@"formats large numbers correctly", ^{
+        expect([SaleArtwork dollarsFromCents:@(500000000) currencySymbol:@"$"]).to.equal(@"$5,000,000");
     });
 });
 
