@@ -4,6 +4,10 @@ import FLKAutoLayout
 
 class LiveAuctionToolbarView: UIView {
 
+    fileprivate enum Views {
+        case lotLabel, time, bidders
+    }
+
     var lotViewModel: LiveAuctionLotViewModelType!
     var auctionViewModel: LiveAuctionViewModelType!
 
@@ -46,7 +50,7 @@ class LiveAuctionToolbarView: UIView {
     var timeSinceLotOpenedLabel: UILabel?
 
     func setupUsingState(_ lotState: LotState) {
-        let viewStructure: [[String: NSAttributedString]]
+        let viewStructure: [[Views: NSAttributedString]]
         var clockClosure: ((UILabel) -> ())?
         var numberOfBidsClosure: ((UILabel) -> Void)?
 
@@ -54,15 +58,15 @@ class LiveAuctionToolbarView: UIView {
 
         case .closedLot:
             viewStructure = [
-                ["lot": lotNumberString()],
-                ["time": attributify("Closed", color: .auctionRed())],
+                [.lotLabel: lotNumberString()],
+                [.time: attributify("Closed", color: .auctionRed())],
             ]
 
         case .liveLot:
             viewStructure = [
-                ["lot": lotNumberString()],
-                ["time": attributify("--:--")],
-                ["bidders": attributify(String(lotViewModel.numberOfBids))]
+                [.lotLabel: lotNumberString()],
+                [.time: attributify("--:--")],
+                [.bidders: attributify(String(lotViewModel.numberOfBids))]
             ]
 
             numberOfBidsClosure = { [weak self] label in
@@ -96,9 +100,9 @@ class LiveAuctionToolbarView: UIView {
             }
 
             viewStructure = [
-                ["lot": lotNumberString()],
-                ["time": attributify(lotString, color: .artsyPurpleRegular())],
-                ["bidders": attributify(String(lotViewModel.numberOfBids))]
+                [.lotLabel: lotNumberString()],
+                [.time: attributify(lotString, color: .artsyPurpleRegular())],
+                [.bidders: attributify(String(lotViewModel.numberOfBids))]
             ]
         }
 
@@ -117,11 +121,11 @@ class LiveAuctionToolbarView: UIView {
 
             label.attributedText = dict.values.first!
 
-            if key == "time" {
+            if key == .time {
                 clockClosure?(label)
             }
 
-            if key == "bidders" {
+            if key == .bidders {
                 numberOfBidsClosure?(label)
             }
 
