@@ -20,6 +20,7 @@ upcoming:
       - Fixes when the refine price range sliders get cut off - ash
       - Fixes my-bids view with long artist/artwork names - ash
       - Adds Active Bids to home view - ash
+      - Adds support for lot_label in auctions - ash
 
 releases:
   - version: 3.1.0

@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSNumber *_Nullable highEstimateCents;
 @property (nonatomic, strong) NSNumber *_Nullable bidCount;
 
-@property (nonatomic, copy, readonly) NSNumber *_Nullable lotNumber;
+@property (nonatomic, copy, readonly) NSString *_Nullable lotLabel;
 
 @property (nonatomic, assign, readonly) ARAuctionState auctionState;
 @property (nonatomic, assign) ARReserveStatus reserveStatus;

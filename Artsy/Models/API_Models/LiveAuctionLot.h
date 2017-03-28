@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly) NSString *liveAuctionLotID;
 @property (nonatomic, assign, readonly) NSInteger position;
-@property (nonatomic, assign, readonly) NSInteger lotNumber;
+@property (nonatomic, assign, readonly) NSString *_Nullable lotLabel;
 
 // Note: Not parsed from JSON, stored locally.
 @property (nonatomic, copy, readonly) NSArray<NSString *> *eventIDs;

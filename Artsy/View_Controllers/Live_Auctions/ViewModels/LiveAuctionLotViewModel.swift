@@ -36,7 +36,7 @@ protocol LiveAuctionLotViewModelType: class {
     var lotName: String { get }
     var lotID: String { get }
     var lotIndex: String { get }
-    var lotNumber: String { get }
+    var lotLabel: String? { get }
     var lotArtworkCreationDate: String? { get }
     var urlForThumbnail: URL { get }
     var urlForProfile: URL { get }
@@ -149,8 +149,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return String(model.position)
     }
 
-    var lotNumber: String {
-        return String(model.lotNumber)
+    var lotLabel: String? {
+        return model.lotLabel as String?
     }
 
     var winningBidPrice: UInt64? {

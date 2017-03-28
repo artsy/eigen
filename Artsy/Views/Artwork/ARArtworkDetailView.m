@@ -277,9 +277,9 @@ typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
         [self.delegate didUpdateArtworkDetailView:self];
     }
 
-    if (saleArtwork.lotNumber) {
+    if (saleArtwork.lotLabel) {
         ARSerifLabel *lotLabel = [self viewFor:ARDetailArtworkLotNumber];
-        lotLabel.text = [NSString stringWithFormat:@"LOT %@", saleArtwork.lotNumber];
+        lotLabel.text = [NSString stringWithFormat:@"LOT %@", saleArtwork.lotLabel];
         lotLabel.font = [lotLabel.font fontWithSize:12];
         [self addSubview:lotLabel withTopMargin:@"12" sideMargin:@"0"];
         [self.delegate didUpdateArtworkDetailView:self];

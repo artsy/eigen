@@ -26,8 +26,8 @@ extension PublicComputedProperties {
         return saleArtwork.artwork.title ?? ""
     }
 
-    var lotNumber: String {
-        return saleArtwork.lotNumber?.stringValue ?? ""
+    var lotLabel: String {
+        return saleArtwork.lotLabel ?? ""
     }
 
     var numberOfBids: String {
