@@ -9,22 +9,8 @@
 // For a number formatter
 @import Artsy_UILabels;
 
-static NSNumberFormatter *currencyFormatter;
-
 
 @implementation SaleArtwork
-
-+ (void)initialize
-{
-    if (self == [SaleArtwork class]) {
-        currencyFormatter = [[NSNumberFormatter alloc] init];
-        currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
-        currencyFormatter.currencyGroupingSeparator = @",";
-        // This comes in from the server, so we can't apply it heere
-        currencyFormatter.currencySymbol = @"";
-        currencyFormatter.maximumFractionDigits = 0;
-    }
-}
 
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -138,12 +124,20 @@ static NSNumberFormatter *currencyFormatter;
 
 + (NSString *)dollarsFromCents:(NSNumber *)cents currencySymbol:(NSString *)symbol
 {
-    NSNumber *amount = @(roundf(cents.floatValue / 100));
-    if ([amount integerValue] == 0) {
-        return [symbol stringByAppendingString:@"0"];
+    static NSNumberFormatter *currencyFormatter;
+    if (!currencyFormatter || ![currencyFormatter.currencySymbol isEqualToString:symbol]) {
+        // Changing currencySymbol on NSNumberFormatter causes it to behave weirdly...
+        // So we recreate it if the instance is nil or if the symbol has changed from the last invocations.
+        // See https://github.com/artsy/eigen/pull/2247#issuecomment-289928233
+        currencyFormatter = [[NSNumberFormatter alloc] init];
+        currencyFormatter.currencySymbol = symbol;
+        currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
+        currencyFormatter.currencyGroupingSeparator = @",";
+        currencyFormatter.maximumFractionDigits = 0;
+        currencyFormatter.minimumFractionDigits = 0;
     }
 
-    currencyFormatter.currencySymbol = symbol;
+    NSNumber *amount = @(roundf(cents.floatValue / 100));
     NSString *centString = [currencyFormatter stringFromNumber:amount];
 
     return centString;
