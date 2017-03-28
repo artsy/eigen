@@ -50,9 +50,4 @@
     });
     return isRunningTests;
 }
-
-+ (BOOL)isOSNineOrGreater
-{
-    return (&UIApplicationOpenURLOptionsAnnotationKey != NULL);
-}
 @end

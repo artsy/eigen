@@ -16,7 +16,4 @@
 
 /// Is the app running tests?
 + (BOOL)isRunningTests;
-
-/// Is the app running in iOS 9
-+ (BOOL)isOSNineOrGreater;
 @end
