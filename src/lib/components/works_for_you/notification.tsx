@@ -1,5 +1,5 @@
 import * as React from "react"
-import { StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
+import { Image, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 import * as Relay from "react-relay"
 
 import ArtworksGrid from "../artwork_grids/generic_grid"
@@ -10,14 +10,15 @@ import colors from "../../../data/colors"
 
 interface Props extends RelayProps {}
 
-class Notification extends React.Component<Props, any> {
+export class Notification extends React.Component<Props, any> {
   render() {
     const notification = this.props.notification
 
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <View>
+          { <Image source={{uri: notification.image.resized.url}} style={styles.artistAvatar}/> }
+          <View style={{alignSelf: "center"}}>
             <Headline style={styles.artistName}>{notification.artists}</Headline>
             <SerifText style={styles.metadata}>{notification.message + " · " + notification.date}</SerifText>
           </View>
@@ -34,6 +35,7 @@ class Notification extends React.Component<Props, any> {
 interface Styles {
   container: ViewStyle,
   header: ViewStyle,
+  artistAvatar: ViewStyle,
   artistName: TextStyle,
   metadata: TextStyle,
   gridContainer: ViewStyle,
@@ -46,6 +48,14 @@ const styles = StyleSheet.create<Styles>({
   },
   header: {
     flexDirection: "row",
+  },
+  artistAvatar: {
+    height: 40,
+    width: 40,
+    backgroundColor: colors["gray-light"],
+    alignSelf: "center",
+    borderRadius: 20,
+    marginRight: 10,
   },
   artistName: {
     fontSize: 14,
@@ -80,6 +90,11 @@ export default Relay.createContainer(Notification, {
           ${ArtworksGrid.getFragment("artworks")}
         }
         status
+        image {
+          resized(height: 80, width: 80) {
+            url
+          }
+        }
       }
     `,
   },
@@ -91,6 +106,11 @@ interface RelayProps {
     message: string,
     artists: string,
     artworks: any[],
-    status: "READ" | "UNREAD",
+    status: string,
+    image: {
+      resized: {
+        url: string,
+      },
+    } | null,
   },
 }
