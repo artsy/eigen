@@ -66,9 +66,10 @@ end
 
 # Ensure that we push the Pods submodule
 pods_submodule = `git submodule status --recursive`.lines.first { |l| l.include? "Pods"}
-submodule_sha = pods_submodule.split(" ").first
+# Depending on your git, sometimes a "-" sneaks in
+submodule_sha = pods_submodule.split(" ").first.sub("-", "")
 begin
-  client.commit("artsy/eigen-artefacts", submodule_sha)
+  github.api.commit("artsy/eigen-artefacts", submodule_sha)
 rescue StandardError
   # YAML could not be parsed, fail the build.
   url = "https://github.com/artsy/eigen-artefacts/"
