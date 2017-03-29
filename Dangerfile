@@ -1,3 +1,6 @@
+# This one runs on Travis CI
+# There is another in Dangerfuile.circle.rb
+
 # Sometimes its a README fix, or something like that - which isn't relevant for
 # including in a CHANGELOG for example
 declared_trivial = github.pr_title.include? "#trivial"
@@ -53,44 +56,12 @@ begin
 
   # Ensure that our version number is consistent with the upcoming version
   upcoming_version = readme_data["upcoming"]["version"]
-  current_version = `/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" Artsy/App_Resources/Artsy-Info.plist`.strip
-  fail("You need to set the App's plist version to #{upcoming_version}") if current_version != upcoming_version
-
-  current_sticker_version = `/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "Artsy Stickers/Info.plist"`.strip
-  fail("You need to set the Sticker extensions's plist version to #{upcoming_version}") if current_sticker_version != upcoming_version
+  plist_contents = File.read "Artsy/App_Resources/Artsy-Info.plist"
+  fail("You need to set the App's plist version to #{upcoming_version}") unless plist_contents.include? upcoming_version
 
 rescue StandardError
   # YAML could not be parsed, fail the build.
   fail("CHANGELOG isn't valid YAML")
-end
-
-# Can't run these rules when you're using something like `bundle exec danger pr [url]`
-running_on_ci = ENV["CIRCLE_ARTIFACTS"]
-if running_on_ci
-
-  # Use Circle's build artifacts feature to let Danger read the build, and test logs.
-  # There's nothing fancy here, just a unix command chain with `tee` sending the output to a known file.
-  #
-  build_file = File.join(ENV["CIRCLE_ARTIFACTS"], "xcode_build_raw.log")
-  test_file = File.join(ENV["CIRCLE_ARTIFACTS"], "xcode_test_raw.log")
-
-  # If there's snapshot fails, we should also fail danger, but we can make the thing clickable in a comment instead of hidden in the log
-  # Note: this _may_ break in a future build of Danger, I am debating sandboxing the runner from ENV vars.
-  test_log = File.read test_file
-  snapshots_url = test_log.match(%r{https://eigen-ci.s3.amazonaws.com/\d+/index.html})
-  fail("There were [snapshot errors](#{snapshots_url})") if snapshots_url
-
-  # Look for unstubbed networking requests in the build log, as these can be a source of test flakiness.
-  unstubbed_regex = /   Inside Test: -\[(\w+) (\w+)/m
-  if test_log.match(unstubbed_regex)
-    output = "#### Found unstubbed networking requests\n"
-    test_log.scan(unstubbed_regex).each do |class_and_test|
-      class_name = class_and_test[0]
-      url = "https://github.com/search?q=#{class_name.gsub("Spec", "")}+repo%3Aartsy%2Feigen&ref=searchresults&type=Code&utf8=✓"
-      output += "\n* [#{class_name}](#{url}) in `#{class_and_test[1]}`"
-    end
-    warn(output)
-  end
 end
 
 # Ensure that we push the Pods submodule
@@ -101,5 +72,5 @@ begin
 rescue StandardError
   # YAML could not be parsed, fail the build.
   url = "https://github.com/artsy/eigen-artefacts/"
-  fail("Could not find the commit #{submodule_sha} in [artsy/eigen-artefacts](#{url}). </br>You need to `git push` in the Pods dir.")
+  fail("Could not find the commit #{submodule_sha} in [artsy/eigen-artefacts](#{url}). \n\nYou need to `git push` in the Pods dir.")
 end
