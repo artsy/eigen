@@ -1,0 +1,17 @@
+language: ruby
+rvm:
+  - 2.2
+
+git:
+  submodules: false
+
+cache:
+  directories:
+    - bundle
+
+bundler_args: "--without documentation --path bundle"
+
+script:
+  # Tests use real git commands
+  - bundle exec danger --danger_id=travis 
+
