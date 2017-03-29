@@ -1,5 +1,9 @@
 SpecBegin(SaleArtwork);
 
+before(^{
+    [SaleArtwork class];
+});
+
 describe(@"artwork for sale", ^{
     __block SaleArtwork *_saleArtwork;
 
@@ -10,7 +14,7 @@ describe(@"artwork for sale", ^{
     it(@"has default state", ^{
         expect([_saleArtwork auctionState]).to.equal(ARAuctionStateDefault);
     });
-    
+
     it(@"says it has no estimate when there is no min/max estimate", ^{
         _saleArtwork = [[SaleArtwork alloc] init];
         expect(_saleArtwork.hasEstimate).to.beFalsy();
@@ -139,6 +143,14 @@ describe(@"artwork for sale", ^{
         it(@"sets max bidder position", ^{
             expect([_saleArtwork userMaxBidderPosition]).to.equal(_position);
         });
+    });
+
+    it(@"formats small numbers correctly", ^{
+        expect([SaleArtwork dollarsFromCents:@(500) currencySymbol:@"$"]).to.equal(@"$5");
+    });
+
+    it(@"formats large numbers correctly", ^{
+        expect([SaleArtwork dollarsFromCents:@(500000000) currencySymbol:@"$"]).to.equal(@"$5,000,000");
     });
 });
 
