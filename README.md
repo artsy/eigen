@@ -12,6 +12,7 @@ Inside here you will find:
 
 * __State:__ production
 * __Point People:__ [@sarahscott](https://github.com/sarahscott), [@alloy](https://github.com/alloy)
+* __CI:__ [![Build Status](https://travis-ci.org/artsy/emission.svg?branch=master)](https://travis-ci.org/artsy/emission)
 
 This is a core [Artsy Mobile](https://github.com/artsy/mobile) OSS project, along with [Energy](https://github.com/artsy/energy), [Eidolon](https://github.com/artsy/eidolon), [Eigen](https://github.com/artsy/eigen) and [Emergence](https://github.com/artsy/emergence).
 
