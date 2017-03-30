@@ -9,7 +9,7 @@
     "type-check": "tsc --noEmit --pretty",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "lint-fix": "npm run lint -- --fix",
-    "ci": "npm run type-check && npm run lint && npm run test",
+    "ci": "npm run type-check && npm run lint && npm run test -- --runInBand",
     "danger": "danger",
     "start": "npm run clean-example && concurrently --kill-others 'npm run start-packager' 'npm run storybook'",
     "start-packager": "node node_modules/react-native/local-cli/cli.js start --config rn-cli.config.js",
