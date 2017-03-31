@@ -2,6 +2,7 @@ upcoming:
     version: 3.2.1
     details: Scope not know yet
     dev:
+      - Refactors LAI view controller hierarchy - ash
     user_facing:
 
 releases:
@@ -12,7 +13,6 @@ releases:
       - Refine existing queries on the Gene Page - orta
       - Report user’s anonymous ID to Adjust for campaign to install tracking - alloy
       - Font Pod changes which should allow OSS contributors to run our Apps again - orta
-      - Refactors LAI view controller hierarchy - ash
       - Font Pod changes which should allow OSS contributors to run our Apps again x 2 - orta
       - Switched Metaphysics query to use a POST instead of a GET - ash
     user_facing:
