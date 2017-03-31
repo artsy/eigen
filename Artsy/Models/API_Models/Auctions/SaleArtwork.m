@@ -11,7 +11,6 @@
 
 static NSNumberFormatter *currencyFormatter;
 
-
 @implementation SaleArtwork
 
 + (void)initialize
@@ -20,12 +19,12 @@ static NSNumberFormatter *currencyFormatter;
         currencyFormatter = [[NSNumberFormatter alloc] init];
         currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
         currencyFormatter.currencyGroupingSeparator = @",";
-        // This comes in from the server, so we can't apply it heere
-        currencyFormatter.currencySymbol = @"";
         currencyFormatter.maximumFractionDigits = 0;
+        // This comes in from the server, so we can't apply it here
+        currencyFormatter.currencySymbol = @"";
+        currencyFormatter.internationalCurrencySymbol = @"";
     }
 }
-
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
@@ -139,19 +138,12 @@ static NSNumberFormatter *currencyFormatter;
 + (NSString *)dollarsFromCents:(NSNumber *)cents currencySymbol:(NSString *)symbol
 {
     NSNumber *amount = @(roundf(cents.floatValue / 100));
-    if ([amount integerValue] == 0) {
-        return [symbol stringByAppendingString:@"0"];
-    }
 
+    // Need to set both of these to work around this bug http://www.openradar.me/18034852
     currencyFormatter.currencySymbol = symbol;
-    NSString *centString = [currencyFormatter stringFromNumber:amount];
+    currencyFormatter.internationalCurrencySymbol = symbol;
 
-    if (centString.length < 3) {
-        // just covering this very degenerate case
-        // that hopefully this never happens
-        return [symbol stringByAppendingString:@"1"];
-    }
-    return centString;
+    return [currencyFormatter stringFromNumber:amount];
 }
 
 - (BOOL)hasEstimate

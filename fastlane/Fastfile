@@ -24,6 +24,9 @@ lane :ship_beta do
   commit = `git log -n1 --format='%h'`.strip
   beta_readme = "## #{upcoming["version"]} - #{commit} \n\n - #{upcoming["user_facing"].join "\n - "} \n\n"
 
+  # Make sure the stickers app is up to date in it's plist
+  `/usr/libexec/PlistBuddy -c "Set CFBundleVersion #{latest_version}" Artsy\ Stickers/Info.plist`
+
   # Builds the app
   gym
 

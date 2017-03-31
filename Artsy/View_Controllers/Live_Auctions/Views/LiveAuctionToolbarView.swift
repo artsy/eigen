@@ -4,6 +4,10 @@ import FLKAutoLayout
 
 class LiveAuctionToolbarView: UIView {
 
+    fileprivate enum Views: String {
+        case lot, time, bidders
+    }
+
     var lotViewModel: LiveAuctionLotViewModelType!
     var auctionViewModel: LiveAuctionViewModelType!
 
@@ -47,7 +51,7 @@ class LiveAuctionToolbarView: UIView {
     var timeSinceLotOpenedLabel: UILabel?
 
     func setupUsingState(_ lotState: LotState) {
-        let viewStructure: [[String: NSAttributedString]]
+        let viewStructure: [[Views: NSAttributedString]]
         var clockClosure: ((UILabel) -> ())?
         var numberOfBidsClosure: ((UILabel) -> Void)?
 
@@ -55,15 +59,15 @@ class LiveAuctionToolbarView: UIView {
 
         case .closedLot:
             viewStructure = [
-                ["lot": lotNumberString()],
-                ["time": attributify("Closed", color: .auctionRed())],
+                [.lot: lotNumberString()],
+                [.time: attributify("Closed", color: .auctionRed())],
             ]
 
         case .liveLot:
             viewStructure = [
-                ["lot": lotNumberString()],
-                ["time": attributify("--:--")],
-                ["bidders": attributify(String(lotViewModel.numberOfBids))]
+                [.lot: lotNumberString()],
+                [.time: attributify("--:--")],
+                [.bidders: attributify(String(lotViewModel.numberOfBids))]
             ]
 
             numberOfBidsClosure = { [weak self] label in
@@ -97,16 +101,16 @@ class LiveAuctionToolbarView: UIView {
             }
 
             viewStructure = [
-                ["lot": lotNumberString()],
-                ["time": attributify(lotString, color: .artsyPurpleRegular())],
-                ["bidders": attributify(String(lotViewModel.numberOfBids))]
+                [.lot: lotNumberString()],
+                [.time: attributify(lotString, color: .artsyPurpleRegular())],
+                [.bidders: attributify(String(lotViewModel.numberOfBids))]
             ]
         }
 
         // swiftlint:disable force_unwrapping
         let views: [UIView] = viewStructure.map { dict in
             let key = dict.keys.first!
-            let thumbnail = UIImage(named: "lot_\(key)_info")
+            let thumbnail = UIImage(named: "lot_\(key.rawValue)_info")
 
             let view = UIView()
             let thumbnailView = UIImageView(image: thumbnail)
@@ -118,11 +122,11 @@ class LiveAuctionToolbarView: UIView {
 
             label.attributedText = dict.values.first!
 
-            if key == "time" {
+            if key == .time {
                 clockClosure?(label)
             }
 
-            if key == "bidders" {
+            if key == .bidders {
                 numberOfBidsClosure?(label)
             }
 
