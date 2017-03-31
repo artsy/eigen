@@ -2,6 +2,7 @@ upcoming:
     version: 3.2.1
     details: Scope not know yet
     dev:
+      - Improves Swift compile times.
     user_facing:
 
 releases:
