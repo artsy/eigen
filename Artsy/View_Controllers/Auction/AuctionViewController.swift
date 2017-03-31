@@ -248,11 +248,12 @@ extension AuctionViewController {
     }
 
     func showRefineTappedAnimated(_ animated: Bool) {
-        let refineViewController = RefinementOptionsViewController(defaultSettings: defaultRefineSettings(),
+        let refineViewController = RefinementOptionsViewController<AuctionRefineSettings>(defaultSettings: defaultRefineSettings(),
             initialSettings: refineSettings,
             currencySymbol: saleViewModel.currencySymbol,
-            userDidCancelClosure: { (refineVC) in
-                self.dismiss(animated: animated, completion: nil)},
+            userDidCancelClosure: { _ in
+                self.dismiss(animated: animated, completion: nil)
+        },
             userDidApplyClosure: { (settings: AuctionRefineSettings) in
                 self.refineSettings = settings
 
@@ -261,13 +262,16 @@ extension AuctionViewController {
         })
 
         refineViewController.modalPresentationStyle = .formSheet
-        refineViewController.applyButtonPressedAnalyticsOption = RefinementAnalyticsOption(name: ARAnalyticsTappedApplyRefine, properties: [
-            "auction_slug" as NSObject: saleViewModel.saleID,
-            "context_type" as NSObject: "sale" as AnyObject,
-            "slug" as NSObject: NSString(format:"/auction/%@/refine", saleViewModel.saleID)
-        ])
+        var properties = [String: Any]()
+        properties["auction_slug"] = saleViewModel.saleID
+        properties["context_type"] = "sale"
+        properties["slug"] = NSString(format:"/auction/%@/refine", saleViewModel.saleID)
+        refineViewController.applyButtonPressedAnalyticsOption = RefinementAnalyticsOption(name: ARAnalyticsTappedApplyRefine, properties: properties)
 
-        refineViewController.viewDidAppearAnalyticsOption = RefinementAnalyticsOption(name: "Sale Information", properties: [ "context" as NSObject: "auction" as AnyObject, "slug" as NSObject: "/auction/\(saleViewModel.saleID)/refine" as AnyObject])
+        properties = [String: Any]()
+        properties["context"] = "auction"
+        properties["slub"] = "/auction/\(saleViewModel.saleID)/refine"
+        refineViewController.viewDidAppearAnalyticsOption = RefinementAnalyticsOption(name: "Sale Information", properties: properties)
         refineViewController.changeStatusBar = self.traitCollection.horizontalSizeClass == .compact
         present(refineViewController, animated: animated, completion: nil)
     }
