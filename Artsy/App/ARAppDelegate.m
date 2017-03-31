@@ -5,6 +5,7 @@
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Adjust/Adjust.h>
+#import <FBSDKCoreKit/FBSDKAppEvents.h>
 
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAnalyticsConstants.h"
@@ -199,6 +200,7 @@ static ARAppDelegate *_sharedInstance = nil;
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
     [self checkForiOS8Deprecation];
+    [FBSDKAppEvents activateApp];
 }
 
 - (void)startupApp
