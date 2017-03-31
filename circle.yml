@@ -31,7 +31,6 @@ dependencies:
   post:
     - make ci
 
-
 test:
   pre:
     # See https://discuss.circleci.com/t/xcode-exit-code-65/4284/13 
@@ -39,6 +38,6 @@ test:
     - sleep 15
   override:
     - make test
-    - bundle exec danger --verbose
+    - bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
   post:
     - make deploy_if_beta_branch
