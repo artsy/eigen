@@ -1,7 +1,13 @@
 upcoming:
-    version: 3.2.0
-    details: Scope not known yet
+    version: 3.2.1
+    details: Scope not know yet
+    dev:
+    user_facing:
+
+releases:
+  - version: 3.2.0
     details: Gene artworks refinement.
+    date: March 30, 2017
     dev:
       - Refine existing queries on the Gene Page - orta
       - Report user’s anonymous ID to Adjust for campaign to install tracking - alloy
@@ -22,7 +28,6 @@ upcoming:
       - Adds Active Bids to home view - ash
       - Fixes a problem formatting small numbers - ash
 
-releases:
   - version: 3.1.0
     details: Sticker pack and various fixes.
     date: Jan 24, 2017
@@ -47,7 +52,6 @@ releases:
       - Adds a sticker pack with some public domain works - kana/owen
       - Fixes a problem with jump-to-current-lot CTA - ash
 
-releases:
   - version: 3.0.3
     details: Hot fix for 3.0.2 release.
     date: Dec 02, 2016
