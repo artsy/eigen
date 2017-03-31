@@ -42,6 +42,65 @@ class LiveAuctionLotViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupStack()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        // If atRestMetadataPosition is not set, then we set it based on the lotMetadatStack's position in our view.
+        // This should occur during the view's initial layout pass, before any user interaction.
+        if atRestMetadataPosition == nil {
+            atRestMetadataPosition = lotMetadataStack?.frame.origin.y
+            print("Resetting atRestMetadataPosition to \(atRestMetadataPosition)")
+        }
+    }
+
+    // This is strictly iPad support, trait collections on iPhone won't chage as we don't support rotation.
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        // This closes the bid history, typically on rotation. We animate alongside the rotation animation for a smooooth user experience.
+        coordinator.animate(alongsideTransition: { context in
+            self.shrinkBidHistory()
+        }, completion: { _ in
+            self.shrinkBidHistoryCompleted()
+        })
+    }
+
+    fileprivate func shrinkBidHistory() {
+        alignMetadataToTopConstraint?.constant = openedMetadataPosition ?? 0 // Reset this to stick to the top, we'll set its active status below.
+        alignMetadataToTopConstraint?.isActive = false
+        lotHistoryHeightConstraint?.isActive = true
+
+        bidHistoryDelta.update((delta: 0, animating: true))
+    }
+
+    fileprivate func shrinkBidHistoryCompleted() {
+        bidHistoryGestureController?.forceCloseBidHistory()
+        lotMetadataStack?.setShowInfoButtonEnabled(true)
+        atRestMetadataPosition = nil
+        view.setNeedsLayout() // Triggers a re-set of atRestMetadataPosition
+    }
+
+    fileprivate var atRestMetadataPosition: CGFloat? {
+        didSet {
+            bidHistoryGestureController?.closedPosition = atRestMetadataPosition ?? 0
+            bidHistoryGestureController?.openedPosition = openedMetadataPosition ?? 0
+        }
+    }
+    fileprivate var openedMetadataPosition: CGFloat? {
+        switch atRestMetadataPosition {
+        case .some(let atRestMetadataPosition): return atRestMetadataPosition / 2
+        case nil: return nil
+        }
+    }
+}
+
+fileprivate typealias PrivateFunctions = LiveAuctionLotViewController
+extension PrivateFunctions {
+    func setupStack() {
+
         // We need to obscure the content behind our view, so the first thing we do is create
         // this background view and give it a mostly-opaque background color. We'll
         let backgroundView = UIView().then {
@@ -50,7 +109,6 @@ class LiveAuctionLotViewController: UIViewController {
         view.addSubview(backgroundView)
 
         let sideMargin: String
-
         if traitCollection.horizontalSizeClass == .regular {
             sideMargin = "80"
         } else {
@@ -106,6 +164,7 @@ class LiveAuctionLotViewController: UIViewController {
 
         let pan = PanDirectionGestureRecognizer(direction: .vertical)
         view.addGestureRecognizer(pan)
+
         bidHistoryGestureController = LiveAuctionLotBidHistoryGestureController(gestureRecognizer: pan,
             begining: { [weak self] originalState in
                 if originalState == .closed {
@@ -204,57 +263,6 @@ class LiveAuctionLotViewController: UIViewController {
 
         infoToolbar.lotViewModel = lotViewModel
         infoToolbar.auctionViewModel = salesPerson.auctionViewModel
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        // If atRestMetadataPosition is not set, then we set it based on the lotMetadatStack's position in our view.
-        // This should occur during the view's initial layout pass, before any user interaction.
-        if atRestMetadataPosition == nil {
-            atRestMetadataPosition = lotMetadataStack?.frame.origin.y
-            print("Resetting atRestMetadataPosition to \(atRestMetadataPosition)")
-        }
-    }
-
-    // This is strictly iPad support, trait collections on iPhone won't chage as we don't support rotation.
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-
-        // This closes the bid history, typically on rotation. We animate alongside the rotation animation for a smooooth user experience.
-        coordinator.animate(alongsideTransition: { context in
-            self.shrinkBidHistory()
-        }, completion: { _ in
-            self.shrinkBidHistoryCompleted()
-        })
-    }
-
-    fileprivate func shrinkBidHistory() {
-        alignMetadataToTopConstraint?.constant = openedMetadataPosition ?? 0 // Reset this to stick to the top, we'll set its active status below.
-        alignMetadataToTopConstraint?.isActive = false
-        lotHistoryHeightConstraint?.isActive = true
-
-        bidHistoryDelta.update((delta: 0, animating: true))
-    }
-
-    fileprivate func shrinkBidHistoryCompleted() {
-        bidHistoryGestureController?.forceCloseBidHistory()
-        lotMetadataStack?.setShowInfoButtonEnabled(true)
-        atRestMetadataPosition = nil
-        view.setNeedsLayout() // Triggers a re-set of atRestMetadataPosition
-    }
-
-    fileprivate var atRestMetadataPosition: CGFloat? {
-        didSet {
-            bidHistoryGestureController?.closedPosition = atRestMetadataPosition ?? 0
-            bidHistoryGestureController?.openedPosition = openedMetadataPosition ?? 0
-        }
-    }
-    fileprivate var openedMetadataPosition: CGFloat? {
-        switch atRestMetadataPosition {
-        case .some(let atRestMetadataPosition): return atRestMetadataPosition / 2
-        case nil: return nil
-        }
     }
 }
 

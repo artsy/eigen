@@ -74,17 +74,19 @@ class LiveAuctionBidViewModel: NSObject {
 
         super.init()
 
-        let askingPrice = lotViewModel.askingPriceSignal.peek() ?? UInt64(0)
+        let askingPrice: UInt64 = lotViewModel.askingPriceSignal.peek() ?? 0
         currentBid = salesPerson.bidIncrements.minimumNextBidCentsIncrement(askingPrice)
 
         bidIncrements = [currentBid]
 
+        let threshold = 3 * max(lotVM.askingPrice, (lotVM.highEstimateCents ?? 0))
         var i = 0
         repeat {
             let nextBid = salesPerson.bidIncrements.minimumNextBidCentsIncrement(bidIncrements[i])
-            bidIncrements += [nextBid]
+            bidIncrements.append(nextBid)
             i += 1
-        } while bidIncrements[i] < (3 * max(lotVM.askingPrice, lotVM.highEstimateCents ?? 0))
+
+        } while bidIncrements[i] < threshold
     }
 
     var availableIncrements: Int {

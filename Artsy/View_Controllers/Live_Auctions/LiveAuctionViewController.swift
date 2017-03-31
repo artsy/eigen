@@ -288,7 +288,7 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
         let signal = Observable<StaticSaleResult>()
 
         let json = loadJSON("live_auctions_static")
-        let sale = self.parseSale(JSON(json))!
+        let sale = self.parseSale(JSON(json!))!
         let bidderCredentials = BiddingCredentials(bidders: bidders, paddleNumber: paddleNumber)
 
         let stubbedJWT = JWT(jwtString: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWN0aW9ucyIsInJvbGUiOiJvYnNlcnZlciIsInVzZXJJZCI6bnVsbCwic2FsZUlkIjoiNTRjN2U4ZmE3MjYxNjkyYjVhY2QwNjAwIiwiYmlkZGVySWQiOm51bGwsImlhdCI6MTQ2NTIzNDI2NDI2N30.2q3bh1E897walHdSXIocGKElbxOhCGmCCsL8Bf-UWNA")!

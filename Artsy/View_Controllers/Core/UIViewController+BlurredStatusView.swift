@@ -31,11 +31,11 @@ extension UIViewController {
         ar_dispatch_async {
 
             UIGraphicsBeginImageContext(self.view.bounds.size)
-            self.view.drawHierarchy(in: self.view.bounds, afterScreenUpdates:false)
+            self.view.drawHierarchy(in: self.view.bounds, afterScreenUpdates: false)
             let viewImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
 
-            let blurredImage = viewImage?.blurredImage(withRadius: 12, iterations: 2, tintColor: UIColor.black)
+            let blurredImage: UIImage? = viewImage?.blurredImage(withRadius: 12, iterations: 2, tintColor: UIColor.black)
 
             ar_dispatch_main_queue {
                 // Create an imageview of the blurred view, for the view's background
@@ -81,11 +81,12 @@ extension UIViewController {
 
                 let textStack = ORStackView()
                 textStack.addSerifPageTitle(title, subtitle: subtitle)
-                textStack.subviews.forEach {
-                    guard let label = $0 as? UILabel else { return }
-                    label.textColor = .white
-                    label.backgroundColor = .clear
-                }
+                textStack.subviews
+                    .flatMap { $0 as? UILabel }
+                    .forEach { label in
+                        label.textColor = .white
+                        label.backgroundColor = .clear
+                    }
 
                 // Vertically center the text stack
                 imageView.addSubview(textStack)
