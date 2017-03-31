@@ -20,7 +20,8 @@ class LiveAuctionToolbarView: UIView {
     }
 
     func lotNumberString() -> NSAttributedString {
-        return NSAttributedString(string: lotViewModel.lotNumber, attributes: [:])
+        guard let lotLabel = lotViewModel.lotLabel else { return NSAttributedString() }
+        return NSAttributedString(string: lotLabel, attributes: [:])
     }
 
     func attributify(_ string: String, color: UIColor = .black) -> NSAttributedString {

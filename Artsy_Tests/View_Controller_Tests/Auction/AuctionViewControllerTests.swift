@@ -519,7 +519,7 @@ func test_saleArtworkWithLotNumber(_ lotNumber: Int, artistName: String, bidCoun
         [
             "id": "sale",
             "artwork": artworkJSON,
-            "lot_number": lotNumber,
+            "lot_label": String(lotNumber),
             "bidder_positions_count": bidCount,
             "low_estimate_cents": 1_000_000_00,
             "highest_bid": ["id": "bid-id", "amount_cents": highestBidCents],

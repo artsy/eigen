@@ -63,8 +63,8 @@ extension LotStandingsLotView {
             artworkNameLabel.text = nil
         }
 
-        if let lotNumber = saleArtwork.lotNumber {
-            lotNumberLabel.text = "Lot \(lotNumber)"
+        if let lotLabel = saleArtwork.lotLabel {
+            lotNumberLabel.text = "Lot \(lotLabel)"
         } else {
             lotNumberLabel.text = "No Lot Number"
         }

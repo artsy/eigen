@@ -1112,7 +1112,7 @@ static NSString *hostFromString(NSString *string)
       reserve_status\
       low_estimate_cents\
       high_estimate_cents\
-      lot_number\
+      lot_label\
       currency\
       estimate\
       artwork {\

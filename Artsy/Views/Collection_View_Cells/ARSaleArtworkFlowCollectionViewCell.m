@@ -110,8 +110,8 @@
     self.currentOrStartingBidLabel.text = [self currentOrStartingBidLabelTextForSaleArtwork:saleArtworkViewModel];
     self.numberOfBidsLabel.text = saleArtworkViewModel.numberOfBids;
 
-    if (saleArtworkViewModel.lotNumber.length) {
-        self.lotNumberLabel.text = [@"LOT " stringByAppendingString:saleArtworkViewModel.lotNumber];
+    if (saleArtworkViewModel.lotLabel.length) {
+        self.lotNumberLabel.text = [@"LOT " stringByAppendingString:saleArtworkViewModel.lotLabel];
     }
 }
 

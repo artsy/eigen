@@ -39,7 +39,7 @@ static NSNumberFormatter *currencyFormatter;
         ar_keypath(SaleArtwork.new, lowEstimateCents) : @"low_estimate_cents",
         ar_keypath(SaleArtwork.new, highEstimateCents) : @"high_estimate_cents",
         ar_keypath(SaleArtwork.new, reserveStatus) : @"reserve_status",
-        ar_keypath(SaleArtwork.new, lotNumber) : @"lot_number",
+        ar_keypath(SaleArtwork.new, lotLabel) : @"lot_label",
         ar_keypath(SaleArtwork.new, bidCount) : @"bidder_positions_count"
     };
 }

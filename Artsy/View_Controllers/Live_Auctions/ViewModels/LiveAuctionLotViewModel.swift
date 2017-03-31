@@ -35,8 +35,7 @@ protocol LiveAuctionLotViewModelType: class {
     var highEstimateCents: UInt64? { get }
     var lotName: String { get }
     var lotID: String { get }
-    var lotIndex: String { get }
-    var lotNumber: String { get }
+    var lotLabel: String? { get }
     var lotArtworkCreationDate: String? { get }
     var urlForThumbnail: URL { get }
     var urlForProfile: URL { get }
@@ -63,7 +62,8 @@ protocol LiveAuctionLotViewModelType: class {
 extension LiveAuctionLotViewModelType {
 
     var formattedLotIndexDisplayString: String {
-        return "Lot \(lotIndex)"
+        guard let lotLabel = lotLabel else { return "" }
+        return "Lot \(lotLabel)"
     }
 
     var currentBidSignal: Observable<CurrentBid> {
@@ -144,13 +144,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.artwork.dimensionsCM
     }
 
-    var lotIndex: String {
-        // TODO: a lot's position is not the same as it's lot number. See: https://github.com/artsy/eigen/issues/1791
-        return String(model.position)
-    }
-
-    var lotNumber: String {
-        return String(model.lotNumber)
+    var lotLabel: String? {
+        return model.lotLabel as String?
     }
 
     var winningBidPrice: UInt64? {

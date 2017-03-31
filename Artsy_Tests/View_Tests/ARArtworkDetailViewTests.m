@@ -29,7 +29,7 @@ it(@"shows auction data", ^{
     }];
 
     SaleArtwork *saleArtwork = [SaleArtwork modelWithJSON:@{
-        @"lot_number": @56,
+        @"lot_label": @"56",
         @"opening_bid_cents": @100000,
         @"highest_bid_amount_cents": @110000,
         @"minimum_next_bid_cents": @120000,
