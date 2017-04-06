@@ -3,6 +3,7 @@
 #import "AROptions.h"
 #import "ARRouter.h"
 #import "ArtsyAPI.h"
+#import "ArtsyEcho.h"
 #import "ArtsyAPI+Profiles.h"
 #import "ARTopMenuViewController.h"
 #import "ARSerifNavigationViewController.h"
@@ -23,6 +24,9 @@
 #import "ARMutableLinkViewController.h"
 #import <Emission/ARArtistComponentViewController.h>
 #import "Artsy-Swift.h"
+
+@interface Testing_ArtyEcho: ArtsyEcho
+@end
 
 @interface ARSwitchBoard (Tests)
 - (NSURL *)resolveRelativeUrl:(NSString *)path;
@@ -57,6 +61,7 @@ describe(@"ARSwitchboard", ^{
 
     beforeEach(^{
         switchboard = [[ARSwitchBoard alloc] init];
+        switchboard.echo = [[Testing_ArtyEcho alloc] init];
         [switchboard updateRoutes];
     });
 
@@ -440,3 +445,12 @@ describe(@"ARSwitchboard", ^{
 });
 
 SpecEnd;
+
+@implementation Testing_ArtyEcho
+
+- (void)checkForUpdates:(void (^)(BOOL updatedDataOnServer))updateCheckCompleted
+{
+    updateCheckCompleted(NO);
+}
+
+@end

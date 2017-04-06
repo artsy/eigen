@@ -22,6 +22,7 @@
 // TODO This does not use the new React based VC yet.
 #import "ARFairArtistViewController.h"
 
+#import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
 #import "AROptions.h"
 
