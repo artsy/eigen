@@ -41,7 +41,7 @@ export class WorksForYou extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 
-    const edges = props.me.notifications.edges
+    const edges = props.me.notifications_connection.edges
     const dataSource = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 })
 
     this.state = {
@@ -125,7 +125,7 @@ export class WorksForYou extends React.Component<Props, State> {
   renderNotifications() {
     return(
       <ListView dataSource={this.state.dataSource}
-                renderRow={(notification) => <Notification notification={notification}/>}
+                renderRow={data => <Notification key={Math.random()} notification={data}/>}
                 renderSeparator={(sectionID, rowID) =>
                   <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>
                 }
@@ -204,7 +204,7 @@ export default Relay.createContainer(WorksForYou, {
   fragments: {
     me: () => Relay.QL`
       fragment on Me {
-        notifications: notifications_connection(first: $totalSize) {
+        notifications_connection(first: $totalSize) {
           pageInfo {
             hasNextPage
           }
