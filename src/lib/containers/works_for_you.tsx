@@ -42,7 +42,7 @@ export class WorksForYou extends React.Component<Props, State> {
     super(props)
 
     const edges = props.me.notifications_connection.edges
-    const dataSource = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 })
+    const dataSource = edges.length && new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 })
 
     this.state = {
       dataSource,
@@ -55,6 +55,9 @@ export class WorksForYou extends React.Component<Props, State> {
 
   componentDidMount() {
     const notifications = this.props.me.notifications_connection.edges.map((edge) => edge.node)
+
+    if (!notifications.length) { return }
+
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(notifications),
     })
@@ -95,7 +98,7 @@ export class WorksForYou extends React.Component<Props, State> {
         const notifications = this.props.me.notifications_connection.edges.map((edge) => edge.node)
         this.setState({
           fetchingNextPage: false,
-          dataSource: this.state.dataSource.cloneWithRows(notifications)
+          dataSource: this.state.dataSource.cloneWithRows(notifications),
         })
         if (!this.props.me.notifications_connection.pageInfo.hasNextPage) {
           this.setState({ completed: true })
@@ -125,7 +128,7 @@ export class WorksForYou extends React.Component<Props, State> {
   renderNotifications() {
     return(
       <ListView dataSource={this.state.dataSource}
-                renderRow={data => <Notification key={Math.random()} notification={data}/>}
+                renderRow={data => <Notification notification={data}/>}
                 renderSeparator={(sectionID, rowID) =>
                   <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>
                 }

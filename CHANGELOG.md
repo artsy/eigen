@@ -1,5 +1,6 @@
 ## Master
 
+- Added pagination to WFU container - sarah
 - Added a notifications updater to ARTemporaryAPIModule - sarah
 - Added artist avatar to WFU notifications - sarah
 - Added a Works For You container - sarah
