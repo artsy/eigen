@@ -1,10 +1,8 @@
 #import "ArtsyEcho.h"
 #import <Keys/ArtsyKeys.h>
 #import <Foundation/Foundation.h>
+#import "ARAppStatus.h"
 
-@interface Aerodramus ()
-- (void)updateWithJSONData:(NSData *)JSONdata;
-@end
 
 @implementation ArtsyEcho
 
@@ -15,20 +13,14 @@
     return self;
 }
 
-- (void)setup {
-    [super setup];
-
-    NSLog(@"Aerodamus setup, routes: %@", self.routes);
-
-    if (self.routes.count == 0) {
-        NSLog(@"Routes are empty");
+- (void)checkForUpdates:(void (^)(BOOL updatedDataOnServer))updateCheckCompleted
+{
+    if ([ARAppStatus isRunningTests]) {
+        // Prevent all networking in a testing environment.
+        updateCheckCompleted(NO);
+    } else {
+        [super checkForUpdates:updateCheckCompleted];
     }
-}
-
-- (void)updateWithJSONData:(NSData *)JSONdata {
-    [super updateWithJSONData:JSONdata];
-
-    NSLog(@"Aerodramus update, json string: %@", [[NSString alloc] initWithData:JSONdata encoding:NSUTF8StringEncoding]);
 }
 
 @end

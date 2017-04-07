@@ -25,9 +25,6 @@
 #import <Emission/ARArtistComponentViewController.h>
 #import "Artsy-Swift.h"
 
-@interface Testing_ArtyEcho: ArtsyEcho
-@end
-
 @interface ARSwitchBoard (Tests)
 - (NSURL *)resolveRelativeUrl:(NSString *)path;
 - (id)routeInternalURL:(NSURL *)url fair:(Fair *)fair;
@@ -61,7 +58,6 @@ describe(@"ARSwitchboard", ^{
 
     beforeEach(^{
         switchboard = [[ARSwitchBoard alloc] init];
-        switchboard.echo = [[Testing_ArtyEcho alloc] init];
         [switchboard updateRoutes];
     });
 
@@ -337,7 +333,7 @@ describe(@"ARSwitchboard", ^{
         it(@"does not route to react gene when echo has a feature called 'DisableReactGenes'", ^{
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
-            ArtsyEcho *echo = [[Testing_ArtyEcho alloc] init];
+            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
             echo.features = @{ @"DisableReactGenes" : [[Feature alloc] initWithName:@"" state:@1] };
             switchboard.echo = echo;
 
@@ -356,13 +352,8 @@ describe(@"ARSwitchboard", ^{
         });
 
         it(@"routes live auctions", ^{
-
             switchboard = [[ARSwitchBoard alloc] init];
-            switchboard.echo = [Testing_ArtyEcho new];
             [switchboard updateRoutes];
-
-            NSLog(@"%@", switchboard.echo.routes);
-            NSLog(@"%@", switchboard.echo.features);
 
             id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net/live_auction"]];
             NSString *classString = NSStringFromClass([subject class]);
@@ -395,7 +386,7 @@ describe(@"ARSwitchboard", ^{
         it(@"can not route to native auctions when echo has a feature called 'DisableNativeAuctions'", ^{
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
-            ArtsyEcho *echo = [[Testing_ArtyEcho alloc] init];
+            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
             echo.features = @{ @"DisableNativeAuctions" : [[Feature alloc] initWithName:@"" state:@1] };
             switchboard.echo = echo;
 
@@ -407,7 +398,7 @@ describe(@"ARSwitchboard", ^{
         it(@"can not route to react artists when echo has a feature called 'DisableReactArtists'", ^{
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
-            ArtsyEcho *echo = [[Testing_ArtyEcho alloc] init];
+            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
             echo.features = @{ @"DisableReactArtists" : [[Feature alloc] initWithName:@"" state:@1] };
             switchboard.echo = echo;
 
@@ -450,18 +441,3 @@ describe(@"ARSwitchboard", ^{
 });
 
 SpecEnd;
-
-// We never update, and we always indicate that there is no update available.
-@implementation Testing_ArtyEcho
-
-- (void)checkForUpdates:(void (^)(BOOL updatedDataOnServer))updateCheckCompleted
-{
-    updateCheckCompleted(NO);
-}
-
-- (void)update:(void (^)(BOOL, NSError * _Nullable))completed
-{
-    completed(NO, nil);
-}
-
-@end
