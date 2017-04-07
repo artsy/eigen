@@ -358,6 +358,7 @@ describe(@"ARSwitchboard", ^{
         it(@"routes live auctions", ^{
 
             switchboard = [[ARSwitchBoard alloc] init];
+            switchboard.echo = [Testing_ArtyEcho new];
             [switchboard updateRoutes];
 
             NSLog(@"%@", switchboard.echo.routes);
