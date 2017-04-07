@@ -337,7 +337,7 @@ describe(@"ARSwitchboard", ^{
         it(@"does not route to react gene when echo has a feature called 'DisableReactGenes'", ^{
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
-            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+            ArtsyEcho *echo = [[Testing_ArtyEcho alloc] init];
             echo.features = @{ @"DisableReactGenes" : [[Feature alloc] initWithName:@"" state:@1] };
             switchboard.echo = echo;
 
@@ -394,7 +394,7 @@ describe(@"ARSwitchboard", ^{
         it(@"can not route to native auctions when echo has a feature called 'DisableNativeAuctions'", ^{
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
-            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+            ArtsyEcho *echo = [[Testing_ArtyEcho alloc] init];
             echo.features = @{ @"DisableNativeAuctions" : [[Feature alloc] initWithName:@"" state:@1] };
             switchboard.echo = echo;
 
@@ -406,7 +406,7 @@ describe(@"ARSwitchboard", ^{
         it(@"can not route to react artists when echo has a feature called 'DisableReactArtists'", ^{
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
-            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+            ArtsyEcho *echo = [[Testing_ArtyEcho alloc] init];
             echo.features = @{ @"DisableReactArtists" : [[Feature alloc] initWithName:@"" state:@1] };
             switchboard.echo = echo;
 
@@ -450,11 +450,17 @@ describe(@"ARSwitchboard", ^{
 
 SpecEnd;
 
+// We never update, and we always indicate that there is no update available.
 @implementation Testing_ArtyEcho
 
 - (void)checkForUpdates:(void (^)(BOOL updatedDataOnServer))updateCheckCompleted
 {
     updateCheckCompleted(NO);
+}
+
+- (void)update:(void (^)(BOOL, NSError * _Nullable))completed
+{
+    completed(NO, nil);
 }
 
 @end
