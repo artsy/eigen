@@ -356,8 +356,12 @@ describe(@"ARSwitchboard", ^{
         });
 
         it(@"routes live auctions", ^{
+
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
+
+            NSLog(@"%@", switchboard.echo.routes);
+            NSLog(@"%@", switchboard.echo.features);
 
             id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net/live_auction"]];
             NSString *classString = NSStringFromClass([subject class]);
