@@ -3,7 +3,8 @@ upcoming:
     details: Scope not know yet
     dev:
       - Refactors LAI view controller hierarchy - ash
-      - Improves Swift compile times.
+      - Improves Swift compile times - ash
+      - Fixes echo update issues - ash
     user_facing:
       - Adds support for lot_label in auctions - ash
 

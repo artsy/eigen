@@ -1,4 +1,5 @@
 #import "ARSwitchBoard.h"
+#import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
 #import <JLRoutes/JLRoutes.h>
 

@@ -29,6 +29,7 @@
 #import "ARMutableLinkViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 
+#import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
 

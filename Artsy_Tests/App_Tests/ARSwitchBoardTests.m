@@ -3,6 +3,7 @@
 #import "AROptions.h"
 #import "ARRouter.h"
 #import "ArtsyAPI.h"
+#import "ArtsyEcho.h"
 #import "ArtsyAPI+Profiles.h"
 #import "ARTopMenuViewController.h"
 #import "ARSerifNavigationViewController.h"

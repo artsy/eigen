@@ -51,7 +51,7 @@ target 'Artsy' do
   pod 'Mantle', '~> 1.5.6'
   pod 'MMMarkdown'
   pod 'NPKeyboardLayoutGuide'
-  pod 'ReactiveCocoa'
+  pod 'ReactiveCocoa', '< 3'
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
   pod 'EDColor'
