@@ -4,12 +4,11 @@ import { compact, includes, remove } from "lodash"
 
 // For now you can ignore these 3 errors, I'm not sure why
 // they are being raised. They definitely exist in the node runtime.
-import * as fs from "fs"
-import * as os from "os"
-import * as path from "path"
+const fs = require("fs") // tslint:disable-line
+const os = require("os") // tslint:disable-line
+const path = require("path") // tslint:disable-line
 
 // Setup
-
 const pr = danger.github.pr
 const modified = danger.git.modified_files
 const newFiles = danger.git.created_files
@@ -20,16 +19,16 @@ const trivialPR = bodyAndTitle.includes("trivial")
 const acceptedNoTests = bodyAndTitle.includes("skip new tests")
 
 // Custom subsets of known files
-const modifiedAppFiles = modified.filter(path => includes(path, "lib/"))
-const modifiedTestFiles = modified.filter(path => includes(path, "__tests__"))
+const modifiedAppFiles = modified.filter(p => includes(p, "lib/"))
+const modifiedTestFiles = modified.filter(p => includes(p, "__tests__"))
 
 // Modified or Created can be treated the same a lot of the time
 const touchedFiles = modified.concat(danger.git.created_files)
-const touchedAppOnlyFiles = touchedFiles.filter(path => includes(path, "src/lib/") && !includes(path, "__tests__"))
+const touchedAppOnlyFiles = touchedFiles.filter(p => includes(p, "src/lib/") && !includes(p, "__tests__"))
 const touchedComponents = touchedFiles.filter(p => includes(p, "src/lib/components") && !includes(p, "__tests__"))
 
-const touchedTestFiles = touchedFiles.filter(path => includes(path, "__tests__"))
-const touchedStoryFiles = touchedFiles.filter(path => includes(path, "src/stories"))
+const touchedTestFiles = touchedFiles.filter(p => includes(p, "__tests__"))
+const touchedStoryFiles = touchedFiles.filter(p => includes(p, "src/stories"))
 
 // Rules
 
@@ -82,8 +81,8 @@ if (testFilesThatDontExist.length > 0) {
 // A component should have a corresponding story reference, so that we're consistent
 // with how the web create their components
 
-const reactComponentForPath = (path) => {
-  const content = fs.readFileSync(path)
+const reactComponentForPath = (filePath) => {
+  const content = fs.readFileSync(filePath).toString()
   const match = content.match(/export class (.*) extends React.Component/)
   if (match.length === 0) { return null }
   return match[0]
@@ -98,7 +97,7 @@ let componentsForFiles = compact(touchedComponents.map(reactComponentForPath))
 const storyFiles = fs.readdirSync("src/stories")
 
 storyFiles.forEach(story => {
-  const content = fs.readFileSync("src/stories/" + story)
+  const content = fs.readFileSync("src/stories/" + story).toString()
   componentsForFiles.forEach(component => {
     if (content.includes(component)) {
       componentsForFiles = componentsForFiles.filter(f => f !== component)
