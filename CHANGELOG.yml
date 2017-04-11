@@ -5,6 +5,7 @@ upcoming:
       - Refactors LAI view controller hierarchy - ash
       - Improves Swift compile times - ash
       - Fixes echo update issues - ash
+      - Adds scroll to top on onboarding search - maxim
     user_facing:
       - Adds support for lot_label in auctions - ash
 
