@@ -97,6 +97,9 @@
             }
             break;
         case ARSearchResultsReplaceAll:
+            if (self.searchResults.count > 1) {
+               [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            }
             [self.geneImageReconciler reset];
             self.searchResults = searchResults.mutableCopy;
             break;
