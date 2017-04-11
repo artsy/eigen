@@ -1,3 +1,4 @@
+import * as moment from "moment"
 import * as React from "react"
 import * as Relay from "react-relay"
 
@@ -8,6 +9,7 @@ import {
   NativeModules,
   ScrollView,
   StyleSheet,
+  Text,
   TextStyle,
   View,
   ViewStyle,
@@ -41,8 +43,13 @@ export class WorksForYou extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 
-    const edges = props.me.notifications_connection.edges
-    const dataSource = edges.length && new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 })
+    const notifications = this.props.viewer.me.notifications.edges.map((edge) => edge.node)
+    if (this.props.viewer.selectedArtist) {
+      notifications.unshift(this.formattedSpecialNotification())
+    }
+
+    const dataSource = notifications.length &&
+      new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }).cloneWithRows(notifications)
 
     this.state = {
       dataSource,
@@ -54,15 +61,7 @@ export class WorksForYou extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const notifications = this.props.me.notifications_connection.edges.map((edge) => edge.node)
-
-    if (!notifications.length) { return }
-
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(notifications),
-    })
-
-    // update status in gravity
+    // Update read status in gravity
     NativeModules.ARTemporaryAPIModule.markNotificationsRead((error) => {
       if (error) {
         console.error(error)
@@ -76,6 +75,24 @@ export class WorksForYou extends React.Component<Props, State> {
 
     // update anything in Eigen that relies on notification count
     NativeModules.ARWorksForYouModule.updateNotificationsCount(0)
+  }
+
+  formattedSpecialNotification() {
+    const artist = this.props.viewer.selectedArtist
+
+    return {
+      date: moment().format("MMM DD"),
+      message: artist.artworks.length + (artist.artworks.length > 1 ? " Works Added" : "Work Added"),
+      artists: artist.name,
+      artworks: artist.artworks,
+      status: "UNREAD",
+      image: {
+        resized: {
+          url: artist.image.resized.url,
+        },
+      },
+      artistHref: artist.href,
+    }
   }
 
   onLayout = (event: LayoutChangeEvent) => {
@@ -95,12 +112,16 @@ export class WorksForYou extends React.Component<Props, State> {
       totalSize: this.props.relay.variables.totalSize + PageSize,
     }, (readyState) => {
       if (readyState.done) {
-        const notifications = this.props.me.notifications_connection.edges.map((edge) => edge.node)
+        let notifications = this.props.viewer.me.notifications.edges.map((edge) => edge.node)
+
+        // Make sure we maintain the special notification if it exists
+        if (this.props.viewer.selectedArtist) { notifications.unshift(this.formattedSpecialNotification()) }
+
         this.setState({
           fetchingNextPage: false,
           dataSource: this.state.dataSource.cloneWithRows(notifications),
         })
-        if (!this.props.me.notifications_connection.pageInfo.hasNextPage) {
+        if (!this.props.viewer.me.notifications.pageInfo.hasNextPage) {
           this.setState({ completed: true })
         }
       }
@@ -203,33 +224,75 @@ const styles = StyleSheet.create<Styles>({
 export default Relay.createContainer(WorksForYou, {
   initialVariables: {
     totalSize: PageSize,
+    selectedArtist: null,
+    showSpecialNotification: false,
   },
   fragments: {
-    me: () => Relay.QL`
-      fragment on Me {
-        notifications_connection(first: $totalSize) {
-          pageInfo {
-            hasNextPage
-          }
-          edges {
-            node {
-              ${Notification.getFragment("notification")}
+    viewer: () => Relay.QL`
+      fragment on Viewer {
+        me {
+          notifications: notifications_connection(first: $totalSize) {
+            pageInfo {
+              hasNextPage
+            }
+            edges {
+              node {
+                ${(Notification.getFragment("notification"))}
+              }
             }
           }
         }
+
+        selectedArtist: artist(id: $selectedArtist)
+                          @include(if: $showSpecialNotification) {
+          name
+          image {
+            resized(height: 80, width: 80) {
+              url
+            }
+          }
+          artworks(sort:published_at_desc, size: 6) @relay(plural: true) {
+            __id
+            title
+            date
+            sale_message
+            is_in_auction
+            image {
+              aspect_ratio
+              url(version: "large")
+            }
+            partner {
+              name
+            }
+            href
+          },
+          href
+        },
       }`,
   },
 })
 
 interface RelayProps {
-  me: {
-    notifications_connection: {
-      pageInfo: {
-        hasNextPage: boolean,
+  viewer: {
+    me: {
+      notifications: {
+        pageInfo: {
+          hasNextPage: boolean,
+        },
+        edges: Array<{
+          node: any | null,
+        }>,
       },
-      edges: Array<{
-        node: any | null,
-      }>,
+    },
+    selectedArtist: {
+      name: string,
+      image: {
+        resized: {
+          url: string,
+        },
+      } | null,
+      artworks: any[],
+      href: string,
     },
   },
 }

@@ -4,7 +4,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ARWorksForYouComponentViewController : ARComponentViewController
 
-- (instancetype)initWithEmission:(nullable AREmission *)emission NS_DESIGNATED_INITIALIZER;
+@property (nonatomic, strong, readonly) NSString *selectedArtist;
+
+- (instancetype)initWithSelectedArtist:(NSString *)artistID;
+- (instancetype)initWithSelectedArtist:(NSString *)artistID
+                              emission:(nullable AREmission*)emission NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithEmission:(nullable AREmission *)emission
                       moduleName:(NSString *)moduleName

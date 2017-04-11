@@ -5,7 +5,7 @@ class Artist extends Relay.Route {
     artist: (component, params) => Relay.QL`
       query {
         artist(id: $artistID) {
-          ${component.getFragment("artist", params)}
+          ${(component.getFragment("artist", params))}
         }
       }
     `,
@@ -23,7 +23,7 @@ class Home extends Relay.Route {
     home: (component, params) => Relay.QL`
       query {
         home_page {
-          ${component.getFragment("home", params)}
+          ${(component.getFragment("home", params))}
         }
       }
     `,
@@ -37,7 +37,7 @@ class Gene extends Relay.Route {
     gene: (component, params) => Relay.QL`
       query {
         gene(id: $geneID) {
-          ${component.getFragment("gene", params)}
+          ${(component.getFragment("gene", params))}
         }
       }
     `,
@@ -54,13 +54,18 @@ class Gene extends Relay.Route {
 
 class WorksForYou extends Relay.Route {
   static queries = {
-    me: (component, params) => Relay.QL`
+    viewer: (component, params) => Relay.QL`
       query {
-        me {
-          ${component.getFragment("me", params)}
+        viewer {
+          ${(component.getFragment("viewer", params))}
         }
       }
     `,
+  }
+
+  static paramDefinitions = {
+    showSpecialNotification: { required: false },
+    selectedArtist: { required: false },
   }
 
   static routeName = "WorksForYouRoute"

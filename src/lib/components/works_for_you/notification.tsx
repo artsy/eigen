@@ -13,7 +13,9 @@ interface Props extends RelayProps {}
 
 export class Notification extends React.Component<Props, any> {
   handleArtistTap() {
-    const artistHref = this.props.notification.artworks[0].artists[0].href
+    // Special notifications will pass down an artistHref. Otherwise, grab it from the artworks
+    const artistHref = this.props.notification.artistHref || this.props.notification.artworks[0].artists[0].href
+    if (!artistHref) { return }
     SwitchBoard.presentNavigationViewController(this, artistHref)
   }
 
@@ -29,7 +31,7 @@ export class Notification extends React.Component<Props, any> {
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this)}>
           <View style={styles.header}>
-            { <Image source={{uri: notification.image.resized.url}} style={styles.artistAvatar}/> }
+            { notification.image && <Image source={{uri: notification.image.resized.url}} style={styles.artistAvatar}/>}
             <View style={{alignSelf: "center"}}>
               <Headline style={styles.artistName}>{notification.artists}</Headline>
               <SerifText style={styles.metadata}>{notification.message + " · " + notification.date}</SerifText>
@@ -103,7 +105,7 @@ export default Relay.createContainer(Notification, {
           artists (shallow: true) {
             href
           }
-          ${ArtworksGrid.getFragment("artworks")}
+          ${(ArtworksGrid.getFragment("artworks"))}
         }
         status
         image {
@@ -128,5 +130,6 @@ interface RelayProps {
         url: string,
       },
     } | null,
+    artistHref: string | null,
   },
 }

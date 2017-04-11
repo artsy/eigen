@@ -69,6 +69,7 @@
   ],
   "dependencies": {
     "lodash": "3.10.1",
+    "moment": "latest",
     "react": "latest",
     "react-native": "https://github.com/alloy/react-native.git#v0.42.0-with-customisable-source-exts",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
