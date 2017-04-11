@@ -17,20 +17,20 @@ describe("with notifications", () => {
   })
 
   it("updates the notification count", () => {
-    const worksForYou = new WorksForYou(notificationsResponse())
-    worksForYou.componentDidMount()
+    const me = notificationsResponse().me
+    const worksForYou = renderer.create(<WorksForYou me={me} relay={null}/>).toJSON()
     expect(NativeModules.ARTemporaryAPIModule.markNotificationsRead).toBeCalled()
   })
 
   it("lays out correctly on small screens", () => {
     const me = notificationsResponse().me
-    const component = renderWithLayout(<WorksForYou me={me}/>, {width: 100})
+    const component = renderWithLayout(<WorksForYou me={me} relay={null}/>, {width: 100})
     expect(component).toMatchSnapshot()
   })
 
   it("lays out correctly on larger screens", () => {
     const me = notificationsResponse().me
-    const component = renderWithLayout(<WorksForYou me={me}/>, {width: 700})
+    const component = renderWithLayout(<WorksForYou me={me} relay={null}/>, {width: 700})
     expect(component).toMatchSnapshot()
   })
 })
@@ -43,13 +43,13 @@ describe("without notifications", () => {
 
   it("lays out correctly on small screens", () => {
     const me = emptyStateResponse().me
-    const component = renderWithLayout(<WorksForYou me={me}/>, {width: 100})
+    const component = renderWithLayout(<WorksForYou me={me} relay={null}/>, {width: 100})
     expect(component).toMatchSnapshot()
   })
 
   it("lays out correctly on larger screens", () => {
     const me = emptyStateResponse().me
-    const component = renderWithLayout(<WorksForYou me={me}/>, { width: 700 })
+    const component = renderWithLayout(<WorksForYou me={me} relay={null}/>, { width: 700 })
     expect(component).toMatchSnapshot()
   })
 })
@@ -58,6 +58,9 @@ let notificationsResponse = () => {
   return {
     me: {
       notifications_connection: {
+        pageInfo: {
+          hasNextPage: true,
+        },
         edges: [
           {
             node: {
@@ -95,6 +98,9 @@ let emptyStateResponse = () => {
   return {
     me: {
       notifications_connection: {
+        pageInfo: {
+          hasNextPage: true,
+        },
         edges: [],
       },
     },

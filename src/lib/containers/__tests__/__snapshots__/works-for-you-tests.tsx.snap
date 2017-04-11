@@ -48,6 +48,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
             "items": 2,
           }
         }
+        onEndReached={[Function]}
         renderRow={[Function]}
         renderScrollComponent={[Function]}
         renderSeparator={[Function]}
@@ -64,11 +65,24 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
               }
             }>
             <View
+              accessibilityComponentType={undefined}
+              accessibilityLabel={undefined}
+              accessibilityTraits={undefined}
+              accessible={true}
+              hitSlop={undefined}
+              onLayout={undefined}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
                 Object {
                   "flexDirection": "row",
                 }
-              }>
+              }
+              testID={undefined}>
               <Image
                 source={
                   Object {
@@ -160,11 +174,24 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
               }
             }>
             <View
+              accessibilityComponentType={undefined}
+              accessibilityLabel={undefined}
+              accessibilityTraits={undefined}
+              accessible={true}
+              hitSlop={undefined}
+              onLayout={undefined}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
                 Object {
                   "flexDirection": "row",
                 }
-              }>
+              }
+              testID={undefined}>
               <Image
                 source={
                   Object {
@@ -306,6 +333,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
             "items": 2,
           }
         }
+        onEndReached={[Function]}
         renderRow={[Function]}
         renderScrollComponent={[Function]}
         renderSeparator={[Function]}
@@ -322,11 +350,24 @@ exports[`with notifications lays out correctly on small screens 1`] = `
               }
             }>
             <View
+              accessibilityComponentType={undefined}
+              accessibilityLabel={undefined}
+              accessibilityTraits={undefined}
+              accessible={true}
+              hitSlop={undefined}
+              onLayout={undefined}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
                 Object {
                   "flexDirection": "row",
                 }
-              }>
+              }
+              testID={undefined}>
               <Image
                 source={
                   Object {
@@ -418,11 +459,24 @@ exports[`with notifications lays out correctly on small screens 1`] = `
               }
             }>
             <View
+              accessibilityComponentType={undefined}
+              accessibilityLabel={undefined}
+              accessibilityTraits={undefined}
+              accessible={true}
+              hitSlop={undefined}
+              onLayout={undefined}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
                 Object {
                   "flexDirection": "row",
                 }
-              }>
+              }
+              testID={undefined}>
               <Image
                 source={
                   Object {
