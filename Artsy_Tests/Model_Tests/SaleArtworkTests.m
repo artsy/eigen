@@ -59,6 +59,7 @@ describe(@"artwork for sale", ^{
         beforeEach(^{
             _saleArtwork.auction = nil;
             _saleArtwork.bidder = [[Bidder alloc] init];
+            _saleArtwork.bidder.qualifiedForBidding = YES;
         });
 
         it(@"sets user is registered state", ^{

@@ -68,7 +68,7 @@ static NSNumberFormatter *currencyFormatter;
     }
 
     if (self.bidder) {
-        if (self.bidder.saleRequiresBidderApproval && !self.bidder.qualifiedForBidding) {
+        if (!self.bidder.qualifiedForBidding) {
             state |= ARAuctionStateUserPendingRegistration;
         } else {
             state |= ARAuctionStateUserIsRegistered;
