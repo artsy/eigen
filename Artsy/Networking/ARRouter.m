@@ -1073,11 +1073,37 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" URLString:url parameters:nil];
 }
 
-+ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role
++ (NSURLRequest *)graphQLRequestForQuery:(NSString *)query
 {
     // Note that we're relying on the host to specify the domain for the request.
     NSString *url = [self baseMetaphysicsApiURLString];
 
+    // Makes a copy of the request serializer, one that will encode HTTP body as JSON instead of URL-encoded params.
+    AFJSONRequestSerializer *jsonSerializer = [[AFJSONRequestSerializer alloc] init];
+    for (NSString *key in staticHTTPClient.requestSerializer.HTTPRequestHeaders.allKeys) {
+        id value = staticHTTPClient.requestSerializer.HTTPRequestHeaders[key];
+        [jsonSerializer setValue:value forHTTPHeaderField:key];
+    }
+    NSError *error;
+    NSMutableURLRequest *request = [jsonSerializer requestWithMethod:@"POST" URLString:url parameters:@{ @"query" : query } error:&error];
+
+    if (error) {
+        NSLog(@"Error serializing request: %@", error);
+    }
+
+    return request;
+
+}
+
++ (NSURLRequest *)auctionDataQuery:(NSString *)saleID
+{
+    NSString *query = [NSString stringWithFormat:@"\
+    }"];
+    return [self graphQLRequestForQuery:query];
+}
+
++ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role
+{
     NSString *accessType = role ? [NSString stringWithFormat:@"role: %@,", [role uppercaseString]] : @"";
     NSString *causalityRole = [NSString stringWithFormat:@"causality_jwt(%@ sale_id: \"%@\")", accessType, saleID];
 
@@ -1138,20 +1164,7 @@ static NSString *hostFromString(NSString *string)
 }",
                                                  causalityRole, saleID, saleID];
 
-    // Makes a copy of the request serializer, one that will encode HTTP body as JSON instead of URL-encoded params.
-    AFJSONRequestSerializer *jsonSerializer = [[AFJSONRequestSerializer alloc] init];
-    for (NSString *key in staticHTTPClient.requestSerializer.HTTPRequestHeaders.allKeys) {
-        id value = staticHTTPClient.requestSerializer.HTTPRequestHeaders[key];
-        [jsonSerializer setValue:value forHTTPHeaderField:key];
-    }
-    NSError *error;
-    NSMutableURLRequest *request = [jsonSerializer requestWithMethod:@"POST" URLString:url parameters:@{ @"query" : query } error:&error];
-
-    if (error) {
-        NSLog(@"Error serializing request: %@", error);
-    }
-
-    return request;
+    return [self graphQLRequestForQuery:query];
 }
 
 + (NSURLRequest *)biddersRequest
