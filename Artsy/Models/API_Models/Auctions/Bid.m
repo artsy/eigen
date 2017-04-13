@@ -8,7 +8,6 @@
 {
     return @{
         ar_keypath(Bid.new, cents) : @"amount_cents",
-        ar_keypath(Bid.new, bidID) : @"id"
     };
 }
 
@@ -24,12 +23,12 @@
 
 - (BOOL)isEqualToBid:(Bid *)otherBid
 {
-    return [self.bidID isEqual:otherBid.bidID];
+    return [self.cents isEqual:otherBid.cents];
 }
 
 - (NSUInteger)hash
 {
-    return self.bidID.hash;
+    return self.cents.hash;
 }
 
 @end

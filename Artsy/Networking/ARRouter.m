@@ -1098,7 +1098,97 @@ static NSString *hostFromString(NSString *string)
 + (NSURLRequest *)auctionDataQuery:(NSString *)saleID
 {
     NSString *query = [NSString stringWithFormat:@"\
-    }"];
+{\
+  me {\
+    bidders(sale_id: \"%1$@\") {\
+      id\
+      sale {\
+        id\
+      }\
+      qualified_for_bidding\
+    }\
+    lot_standings(live: false, sale_id: \"%1$@\", active_positions: false) {\
+      leading_position: is_leading_bidder\
+      sale_artwork {\
+        id\
+        symbol\
+        bidder_positions_count\
+        lot_label\
+        reserve_status\
+        current_bid {\
+          amount_cents: cents\
+        }\
+        artwork {\
+          id: _id\
+          display: title\
+          date\
+          artist {\
+            name\
+          }\
+          images {\
+            id\
+            is_default\
+            image_url\
+            original_height\
+            original_width\
+            aspect_ratio\
+          }\
+        }\
+      }\
+    }\
+  }\
+  sale(id: \"%1$@\") {\
+    id: _id\
+    is_auction\
+    start_at\
+    end_at\
+    auction_state\
+    live_start_at\
+    registration_ends_at\
+    buyers_premium {\
+      amount\
+    }\
+    description\
+    bannerImageURLString: cover_image {\
+      url\
+    }\
+    sale_artworks {\
+      id: _id\
+      symbol\
+      opening_bid_cents\
+      minimum_next_bid_cents\
+      highest_bid {\
+        id\
+        amount_cents\
+      }\
+      bidder_positions_count\
+      low_estimate_cents\
+      high_estimate_cents\
+      reserve_status\
+      lot_label\
+      artwork {\
+        id: _id\
+        date\
+        images {\
+          id\
+          is_default\
+          image_url\
+          original_height\
+          original_width\
+          aspect_ratio\
+        }\
+        additional_information\
+        dimensions {\
+          cm\
+          in\
+        }\
+        display: title\
+        sold: is_sold\
+      }\
+    }\
+  }\
+}\
+    }", saleID];
     return [self graphQLRequestForQuery:query];
 }
 

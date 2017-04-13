@@ -33,7 +33,7 @@
 {
     ARReserveStatus reserveStatus = saleArtwork.reserveStatus;
 
-    NSInteger bidCount = saleArtwork.artworkNumPositions.integerValue;
+    NSInteger bidCount = saleArtwork.bidCount.integerValue;
     NSString *bids = bidCount > 1 ? @"Bids" : @"Bid";
     BOOL startedAuction = saleArtwork.auctionState & ARAuctionStateStarted;
 
