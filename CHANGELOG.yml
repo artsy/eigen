@@ -5,6 +5,7 @@ upcoming:
       - Refactors LAI view controller hierarchy - ash
       - Improves Swift compile times - ash
       - Fixes echo update issues - ash
+      - Removes saleRequiresBidderApproval field from Bidder model - ash
     user_facing:
       - Adds support for lot_label in auctions - ash
 
