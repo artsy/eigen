@@ -10,8 +10,8 @@ import Mantle
 import Artsy
 
 
-let pendingBidder = try! Bidder(dictionary: ["qualifiedForBidding": false, "saleRequiresBidderApproval": true, "bidderID": "123456"], error: Void())
-let qualifiedBidder = try! Bidder(dictionary: ["qualifiedForBidding": true, "saleRequiresBidderApproval": true, "bidderID": "123456"], error: Void())
+let pendingBidder = try! Bidder(dictionary: ["qualifiedForBidding": false, "bidderID": "123456"], error: Void())
+let qualifiedBidder = try! Bidder(dictionary: ["qualifiedForBidding": true, "bidderID": "123456"], error: Void())
 
 
 var dateMock: AnyObject?

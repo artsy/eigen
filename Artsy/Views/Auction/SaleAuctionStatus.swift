@@ -32,7 +32,7 @@ extension SaleAuctionStatusType {
         }
 
         if let bidder = bidders.bestBidder {
-            if bidder.saleRequiresBidderApproval && !bidder.qualifiedForBidding {
+            if !bidder.qualifiedForBidding {
                 state.insert(.userPendingRegistration)
             } else {
                 state.insert(.userIsRegistered)

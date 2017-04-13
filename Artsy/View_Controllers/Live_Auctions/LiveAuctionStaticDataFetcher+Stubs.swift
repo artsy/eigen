@@ -11,7 +11,7 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
     var paddleNumber: String = "123456"
 
     init() {
-        if let bidder = try? Bidder(dictionary: ["qualifiedForBidding": true, "saleRequiresBidderApproval": true, "bidderID": "123456"], error: Void()) {
+        if let bidder = try? Bidder(dictionary: ["qualifiedForBidding": true, "bidderID": "123456"], error: Void()) {
             bidders = [bidder]
         }
     }
