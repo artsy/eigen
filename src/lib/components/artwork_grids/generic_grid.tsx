@@ -160,7 +160,7 @@ const GenericArtworksGridContainer = Relay.createContainer(GenericArtworksGrid, 
         image {
           aspect_ratio
         }
-        ${Artwork.getFragment("artwork")}
+        ${(Artwork.getFragment("artwork"))}
       }
     `,
   },

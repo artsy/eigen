@@ -76,8 +76,9 @@ class Home extends RootContainer {
 class WorksForYou extends RootContainer {
   constructor(props) {
     super(props)
+
     this.component = Containers.WorksForYou
-    this.route = new Routes.WorksForYou()
+    this.route = new Routes.WorksForYou({ selectedArtist: props.selectedArtist })
   }
 }
 

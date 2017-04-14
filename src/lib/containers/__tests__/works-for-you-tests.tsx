@@ -1,3 +1,4 @@
+import * as moment from "moment"
 import * as React from "react"
 import { NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"
@@ -17,21 +18,42 @@ describe("with notifications", () => {
   })
 
   it("updates the notification count", () => {
-    const me = notificationsResponse().me
-    const worksForYou = renderer.create(<WorksForYou me={me} relay={null}/>).toJSON()
+    const viewer = notificationsResponse().viewer
+    const worksForYou = renderer.create(<WorksForYou viewer={viewer} relay={null}/>).toJSON()
     expect(NativeModules.ARTemporaryAPIModule.markNotificationsRead).toBeCalled()
   })
 
   it("lays out correctly on small screens", () => {
-    const me = notificationsResponse().me
-    const component = renderWithLayout(<WorksForYou me={me} relay={null}/>, {width: 100})
+    const viewer = notificationsResponse().viewer
+    const component = renderWithLayout(<WorksForYou viewer={viewer} relay={null}/>, {width: 100})
     expect(component).toMatchSnapshot()
   })
 
   it("lays out correctly on larger screens", () => {
-    const me = notificationsResponse().me
-    const component = renderWithLayout(<WorksForYou me={me} relay={null}/>, {width: 700})
+    const viewer = notificationsResponse().viewer
+    const component = renderWithLayout(<WorksForYou viewer={viewer} relay={null}/>, {width: 700})
     expect(component).toMatchSnapshot()
+  })
+})
+
+describe("when it has a special notification", () => {
+  it("properly formats it and adds it to the top of the dataSource blob", () => {
+    let response = selectedArtistResponse()
+    const worksForYou = new WorksForYou(response)
+    const expectedFormattedNotification = {
+      date: moment().format("MMM DD"),
+      message: "1 Work Added",
+      artists: "Juliana Huxtable",
+      artworks: selectedArtistResponse().viewer.selectedArtist.artworks,
+      status: "UNREAD",
+      image: {
+        resized: {
+          url: "cloudfront.url",
+        },
+      },
+      artistHref: "artist/juliana-huxtable",
+    }
+    expect(worksForYou.state.dataSource.getRowData(0, 0)).toEqual(expectedFormattedNotification)
   })
 })
 
@@ -42,67 +64,134 @@ describe("without notifications", () => {
   })
 
   it("lays out correctly on small screens", () => {
-    const me = emptyStateResponse().me
-    const component = renderWithLayout(<WorksForYou me={me} relay={null}/>, {width: 100})
+    const viewer = emptyStateResponse().viewer
+    const component = renderWithLayout(<WorksForYou viewer={viewer} relay={null}/>, {width: 100})
     expect(component).toMatchSnapshot()
   })
 
   it("lays out correctly on larger screens", () => {
-    const me = emptyStateResponse().me
-    const component = renderWithLayout(<WorksForYou me={me} relay={null}/>, { width: 700 })
+    const viewer = emptyStateResponse().viewer
+    const component = renderWithLayout(<WorksForYou viewer={viewer} relay={null}/>, { width: 700 })
     expect(component).toMatchSnapshot()
   })
 })
 
-let notificationsResponse = () => {
-  return {
+interface NotificationsResponse {
+  viewer: {
     me: {
-      notifications_connection: {
+      notifications: {
         pageInfo: {
-          hasNextPage: true,
+          hasNextPage: boolean,
         },
         edges: [
           {
             node: {
-              artists: "Jean-Michel Basquiat",
-              date: "Mar 16",
-              message: "1 Work Added",
-              artworks: [ { title: "Anti-Product Postcard" } ],
+              artists: string,
+              date: string,
+              message: string,
+              artworks: [ { title: string } ],
               image: {
                 resized: {
-                  url: "cloudfront.url",
+                  url: string,
                 },
               },
             },
           },
           {
             node: {
-              artists: "Ana Mendieta",
-              date: "Mar 16",
-              message: "2 Works Added",
-              artworks: [ { title: "Corazón de Roca con Sangre" }, { title: "Butterfly" } ],
+              artists: string,
+              date: string,
+              message: string,
+              artworks: [ { title: string }, { title: string } ],
               image: {
                 resized: {
-                  url: "cloudfront.url",
+                  url: string,
                 },
               },
             },
+          }],
+      },
+    },
+
+    selectedArtist ?: any,
+  }
+}
+
+let notificationsResponse = () => {
+  return {
+    viewer: {
+      me: {
+        notifications: {
+          pageInfo: {
+            hasNextPage: true,
           },
-        ],
+          edges: [
+            {
+              node: {
+                artists: "Jean-Michel Basquiat",
+                date: "Mar 16",
+                message: "1 Work Added",
+                artworks: [ { title: "Anti-Product Postcard" } ],
+                image: {
+                  resized: {
+                    url: "cloudfront.url",
+                  },
+                },
+              },
+            },
+            {
+              node: {
+                artists: "Ana Mendieta",
+                date: "Mar 16",
+                message: "2 Works Added",
+                artworks: [ { title: "Corazón de Roca con Sangre" }, { title: "Butterfly" } ],
+                image: {
+                  resized: {
+                    url: "cloudfront.url",
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  } as NotificationsResponse
+}
+
+let emptyStateResponse = () => {
+  return {
+    viewer: {
+      me: {
+        notifications: {
+          pageInfo: {
+            hasNextPage: true,
+          },
+          edges: [],
+        },
       },
     },
   }
 }
 
-let emptyStateResponse = () => {
-  return {
-    me: {
-      notifications_connection: {
-        pageInfo: {
-          hasNextPage: true,
+let selectedArtistResponse = () => {
+  {
+    let response = notificationsResponse()
+    response.viewer.selectedArtist = {
+      name: "Juliana Huxtable",
+      href: "artist/juliana-huxtable",
+      image: {
+        resized: {
+          url: "cloudfront.url",
         },
-        edges: [],
       },
-    },
+      artworks: [
+        {
+          __id: "4594385943",
+          title: "Untitled (Casual Power)",
+        },
+      ],
+    }
+    return response
   }
 }
