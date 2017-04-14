@@ -1,5 +1,6 @@
 ## Master
 
+- Added ability to create a special notification for a single artist in WFU - sarah
 - Added pagination to WFU container - sarah
 - Added a notifications updater to ARTemporaryAPIModule - sarah
 - Added artist avatar to WFU notifications - sarah

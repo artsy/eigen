@@ -227,6 +227,12 @@ export default Relay.createContainer(WorksForYou, {
     selectedArtist: null,
     showSpecialNotification: false,
   },
+  prepareVariables: prevVariables => {
+    return {
+      ...prevVariables,
+      showSpecialNotification: !!prevVariables.selectedArtist,
+    }
+  },
   fragments: {
     viewer: () => Relay.QL`
       fragment on Viewer {

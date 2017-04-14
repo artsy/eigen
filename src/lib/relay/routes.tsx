@@ -64,7 +64,6 @@ class WorksForYou extends Relay.Route {
   }
 
   static paramDefinitions = {
-    showSpecialNotification: { required: false },
     selectedArtist: { required: false },
   }
 

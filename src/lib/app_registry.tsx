@@ -77,11 +77,8 @@ class WorksForYou extends RootContainer {
   constructor(props) {
     super(props)
 
-    // This really has to be a boolean for Relay to understand it
-    const showSpecialNotification = props.selectedArtist && props.selectedArtist !== ""
-
     this.component = Containers.WorksForYou
-    this.route = new Routes.WorksForYou({ selectedArtist: props.selectedArtist, showSpecialNotification })
+    this.route = new Routes.WorksForYou({ selectedArtist: props.selectedArtist })
   }
 }
 
