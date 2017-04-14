@@ -138,7 +138,7 @@
 - (ARCellData *)jumpToWorksForYou
 {
   return [self tappableCellDataWithTitle:@"Works For You" selection:^{
-    id viewController = [[ARWorksForYouComponentViewController alloc] initWithSelectedArtist:@"brenna-murphy"];
+    id viewController = [[ARWorksForYouComponentViewController alloc] initWithSelectedArtist:nil];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

@@ -82,7 +82,7 @@ export class WorksForYou extends React.Component<Props, State> {
 
     return {
       date: moment().format("MMM DD"),
-      message: artist.artworks.length + (artist.artworks.length > 1 ? " Works Added" : "Work Added"),
+      message: artist.artworks.length + (artist.artworks.length > 1 ? " Works Added" : " Work Added"),
       artists: artist.name,
       artworks: artist.artworks,
       status: "UNREAD",
@@ -245,6 +245,7 @@ export default Relay.createContainer(WorksForYou, {
 
         selectedArtist: artist(id: $selectedArtist)
                           @include(if: $showSpecialNotification) {
+          href
           name
           image {
             resized(height: 80, width: 80) {
@@ -253,6 +254,7 @@ export default Relay.createContainer(WorksForYou, {
           }
           artworks(sort:published_at_desc, size: 6) @relay(plural: true) {
             __id
+            href
             title
             date
             sale_message
@@ -264,9 +266,7 @@ export default Relay.createContainer(WorksForYou, {
             partner {
               name
             }
-            href
           },
-          href
         },
       }`,
   },
@@ -284,7 +284,7 @@ interface RelayProps {
         }>,
       },
     },
-    selectedArtist: {
+    selectedArtist ?: {
       name: string,
       image: {
         resized: {
@@ -293,6 +293,6 @@ interface RelayProps {
       } | null,
       artworks: any[],
       href: string,
-    },
+    } | null,
   },
 }

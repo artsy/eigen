@@ -130,6 +130,6 @@ interface RelayProps {
         url: string,
       },
     } | null,
-    artistHref: string | null,
+    artistHref?: string | null,
   },
 }

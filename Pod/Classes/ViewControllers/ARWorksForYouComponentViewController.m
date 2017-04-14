@@ -9,9 +9,14 @@
 
 - (instancetype)initWithSelectedArtist:(NSString *)artistID emission:(AREmission *)emission;
 {
+    NSDictionary *initialProperties = @{};
+    if (artistID) {
+        initialProperties = @{ @"selectedArtist": artistID };
+    }
+
     if ((self = [super initWithEmission:emission
                             moduleName:@"WorksForYou"
-                     initialProperties:@{ @"selectedArtist": artistID }])) {
+                     initialProperties:initialProperties])) {
         _selectedArtist = artistID;
     }
     return self;
