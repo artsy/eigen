@@ -7,6 +7,7 @@ upcoming:
       - Fixes echo update issues - ash
       - Removes saleRequiresBidderApproval field from Bidder model - ash
       - Adds scroll to top on onboarding search - maxim
+      - Parallelizes auctions network calls - ash
     user_facing:
       - Adds support for lot_label in auctions - ash
 
