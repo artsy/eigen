@@ -127,7 +127,7 @@ PODS:
     - Forgeries/Core
     - OCMock
   - FXBlurView (1.6.1)
-  - HockeySDK-Source (3.8.5)
+  - HockeySDK-Source (4.1.4)
   - Interstellar/Core (2.0.0)
   - iRate (1.10.2)
   - ISO8601DateFormatter (0.7.1)
@@ -376,7 +376,7 @@ SPEC CHECKSUMS:
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  HockeySDK-Source: 85233ef10090148e5571f7a0a82deb8213b1691e
+  HockeySDK-Source: 5bdf74ccf516d9751f04b755464bfd83f0d3be32
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2

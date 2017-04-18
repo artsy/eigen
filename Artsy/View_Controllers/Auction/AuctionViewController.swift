@@ -287,8 +287,12 @@ extension AuctionViewController {
 
     /// Displays the current items, sorted/filtered through the current refine settings.
     func displayCurrentItems() {
-        let items = saleViewModel.refinedSaleArtworks(refineSettings)
-
+        var items = saleViewModel.refinedSaleArtworks(refineSettings)
+        var i = 0
+        items = items.filter({ (saleArtwork) -> Bool in
+            i += 1
+            return i == 51
+        })
         let viewWidth = self.view.bounds.size.width
 
         let newModule: ARModelCollectionViewModule
