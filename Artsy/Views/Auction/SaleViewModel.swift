@@ -102,7 +102,7 @@ extension SaleViewModel {
         return sale.startDate
     }
 
-    var closingDate: Date {
+    var closingDate: Date? {
         return sale.endDate
     }
 
