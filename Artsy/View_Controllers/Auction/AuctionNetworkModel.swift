@@ -39,8 +39,12 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
 
     func fetch() -> Observable<Result<SaleViewModel>> {
 
-        return fetchBidders().merge(lotStandingsNetworkModel.fetch(saleID))
-            .flatMap { [weak self] (bidders: Result<[Bidder]>, lotStandings: Result<[LotStanding]>) -> Observable<Result<SaleViewModel>> in
+        return combine(
+                fetchBidders(),
+                lotStandingsNetworkModel.fetch(saleID),
+                saleNetworkModel.fetchSale(saleID),
+                saleArtworksNetworkModel.fetchSaleArtworks(saleID)
+            ).flatMap { [weak self] (bidders, lotStandings, sale, saleArtworks) -> Observable<Result<SaleViewModel>> in
                 guard let `self` = self else { return Observable() }
 
                 var retrievedLotStandings = [LotStanding]()
@@ -49,9 +53,10 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                     retrievedLotStandings = lotStandings
                 }
 
+
                 switch bidders {
                 case .success(let bidders):
-                    return self.createViewModel(bidders, lotStandings: retrievedLotStandings)
+                    return Observable(self.createViewModel(bidders: bidders, lotStandings: retrievedLotStandings, sale: sale, saleArtworks: saleArtworks))
                 case .error(let error):
                     return Observable(.error(error))
                 }
@@ -65,32 +70,60 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
         return lotStandingsNetworkModel.fetch(saleID)
     }
 
-    func createViewModel(_ bidders: [Bidder], lotStandings: [LotStanding]) -> Observable<Result<SaleViewModel>> {
-        let signal = Observable(saleID)
+    func createViewModel(bidders: [Bidder], lotStandings: [LotStanding], sale: Result<Sale>, saleArtworks: Result<[SaleArtwork]>) -> Result<SaleViewModel> {
+        // We need to extract them from their respective Result containers. If either failed, we pass along that failure.
+        switch (sale, saleArtworks) {
+        case (.success(let sale), .success(let saleArtworks)):
+            saleArtworks.forEach { $0.auction = sale }
+            return .success(SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: bidders, lotStandings: lotStandings))
 
-        let fetchSale = signal.flatMap(saleNetworkModel.fetchSale)
-        let fetchSaleArtworks = signal.flatMap(saleArtworksNetworkModel.fetchSaleArtworks)
+        case (.error(let error), .error):
+            return .error(error) // Need to pick one error, might as well go with the first.
 
-        return fetchSale.merge(fetchSaleArtworks)
-            .map { tuple -> Result<SaleViewModel> in
+        case (.error(let error), .success):
+            return .error(error)
 
-                // Tuple has the Sale and [SaleArtwork] from previous network requests.
-                // We need to extract them from their respective Result containers. If either failed, we pass along that failure.
-                switch tuple {
-                case (.success(let sale), .success(let saleArtworks)):
-                    saleArtworks.forEach { $0.auction = sale }
-                    return .success(SaleViewModel(sale: sale, saleArtworks: saleArtworks, bidders: bidders, lotStandings: lotStandings))
-
-                case (.error(let error), .error):
-                    return .error(error) // Need to pick one error, might as well go with the first.
-
-                case (.error(let error), .success):
-                    return .error(error)
-
-                case (.success, .error(let error)):
-                    return .error(error)
-                }
-
+        case (.success, .error(let error)):
+            return .error(error)
         }
     }
+}
+
+// Interstellar's merge() runs in sequence, this combine() runs in parallel. It's ugly but it works.
+func combine<A, B, C, D>(
+    _ a: Observable<Result<A>>,
+    _ b: Observable<Result<B>>,
+    _ c: Observable<Result<C>>,
+    _ d: Observable<Result<D>>
+    ) -> Observable<(Result<A>, Result<B>, Result<C>, Result<D>)> {
+    var aResult: Result<A>?
+    var bResult: Result<B>?
+    var cResult: Result<C>?
+    var dResult: Result<D>?
+
+    let observable = Observable<(Result<A>, Result<B>, Result<C>, Result<D>)>()
+    let notifyIfComplete: () -> Void = {
+        if let aResult = aResult, let bResult = bResult, let cResult = cResult, let dResult = dResult {
+            observable.update(aResult, bResult, cResult, dResult)
+        }
+    }
+
+    a.subscribe { result in
+        aResult = result
+        notifyIfComplete()
+    }
+    b.subscribe { result in
+        bResult = result
+        notifyIfComplete()
+    }
+    c.subscribe { result in
+        cResult = result
+        notifyIfComplete()
+    }
+    d.subscribe { result in
+        dResult = result
+        notifyIfComplete()
+    }
+
+    return observable
 }
