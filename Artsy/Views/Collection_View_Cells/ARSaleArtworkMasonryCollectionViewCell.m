@@ -52,7 +52,7 @@
     UIFont *serifFont = [[self class] serifFont];
 
     self.artistNameLabel = [[ARSerifLabel alloc] init];
-    self.artistNameLabel.font = serifFont;
+    self.artistNameLabel.font = [UIFont serifSemiBoldFontWithSize:serifFont.pointSize];
     self.artistNameLabel.textColor = darkGrey;
     [self.contentView addSubview:self.artistNameLabel];
 
