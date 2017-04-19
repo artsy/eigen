@@ -1089,6 +1089,7 @@ static NSString *hostFromString(NSString *string)
     paddle_number\
     bidders(sale_id: \"%@\") {\
       id\
+      qualified_for_bidding\
     }\
   }\
   sale(id: \"%@\") {\
