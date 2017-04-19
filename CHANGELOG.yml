@@ -12,6 +12,7 @@ upcoming:
     user_facing:
       - Adds support for lot_label in auctions - ash
       - Fixes a crash in opening sales with no end date - ash
+      - Spruced up artworks in auctio view - ash
 
 releases:
   - version: 3.2.0
