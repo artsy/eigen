@@ -27,6 +27,10 @@ extension PublicComputedProperties {
         return saleArtwork.artwork.title ?? ""
     }
 
+    var artworkDate: String {
+        return saleArtwork.artwork.date
+    }
+
     var lotLabel: String {
         return saleArtwork.lotLabel ?? ""
     }
@@ -37,17 +41,6 @@ extension PublicComputedProperties {
 
     var artworkID: String {
         return saleArtwork.artwork.artworkID
-    }
-
-    func attributedArtworkName(normalFont: UIFont, italicFont: UIFont) -> NSAttributedString {
-        let attributedString = NSMutableAttributedString()
-        attributedString.append(NSAttributedString(string: artworkName, attributes: [NSFontAttributeName: italicFont]))
-
-        if saleArtwork.artwork.date.isNotEmpty {
-            attributedString.append(NSAttributedString(string: ", \(saleArtwork.artwork.date)", attributes: [NSFontAttributeName: normalFont]))
-        }
-
-        return attributedString
     }
 
     func currentOrStartingBidWithNumberOfBids(_ includeNumberOfBids: Bool) -> String {

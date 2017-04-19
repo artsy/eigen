@@ -20,9 +20,9 @@
 @property (nonatomic, strong) ARAspectRatioImageView *artworkImageView;
 @property (nonatomic, strong) ARSansSerifLabel *lotNumberLabel;
 @property (nonatomic, strong) ARSerifLabel *artistNameLabel;
-// TODO: Should this be a ARArtworkTitleLabel? ( should it show a date? )
-@property (nonatomic, strong) ARSerifLabel *artworkNameLabel;
+@property (nonatomic, strong) ARArtworkTitleLabel *artworkNameLabel;
 @property (nonatomic, strong) ARSerifLabel *currentOrStartingBidLabel;
+@property (nonatomic, strong) UIImageView *paddleImageView;
 
 @end
 
@@ -56,7 +56,7 @@
     self.artistNameLabel.textColor = darkGrey;
     [self.contentView addSubview:self.artistNameLabel];
 
-    self.artworkNameLabel = [[ARSerifLabel alloc] init];
+    self.artworkNameLabel = [[ARArtworkTitleLabel alloc] init];
     self.artworkNameLabel.font = serifFont;
     self.artworkNameLabel.textColor = darkGrey;
     [self.contentView addSubview:self.artworkNameLabel];
@@ -68,6 +68,10 @@
     self.currentOrStartingBidLabel.font = serifFont;
     self.currentOrStartingBidLabel.textColor = lightGrey;
     [self.contentView addSubview:self.currentOrStartingBidLabel];
+
+    self.paddleImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paddle"]];
+    [self.paddleImageView constrainWidth:@"6" height:@"9"];
+    [self.contentView addSubview:self.paddleImageView];
 }
 
 - (void)constrainViewsWithLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
@@ -90,9 +94,14 @@
         [lhs alignAttribute:NSLayoutAttributeBottom toAttribute:NSLayoutAttributeTop ofView:rhs predicate:@"-2"];
     }];
 
-    [labels each:^(id object) {
+    [@[ self.lotNumberLabel, self.artistNameLabel, self.artworkNameLabel] each:^(id object) {
         [object alignLeading:@"0" trailing:@"0" toView:self.contentView];
     }];
+
+    [self.paddleImageView alignCenterYWithView:self.currentOrStartingBidLabel predicate:@"-2"];
+    [self.paddleImageView alignLeadingEdgeWithView:self.contentView predicate:@"1"];
+    [self.paddleImageView constrainTrailingSpaceToView:self.currentOrStartingBidLabel predicate:@"-2"];
+    [self.currentOrStartingBidLabel alignTrailingEdgeWithView:self.contentView predicate:@"0"];
 }
 
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
@@ -113,7 +122,7 @@
     [self.artworkImageView ar_setImageWithURL:saleArtworkViewModel.thumbnailURL];
 
     self.artistNameLabel.text = saleArtworkViewModel.artistName;
-    self.artworkNameLabel.attributedText = [saleArtworkViewModel attributedArtworkNameWithNormalFont:[[self class] serifFont] italicFont:[[self class] italicsSerifFont]];
+    [self.artworkNameLabel setTitle:saleArtworkViewModel.artworkName date:saleArtworkViewModel.artworkDate];
     self.currentOrStartingBidLabel.text = [saleArtworkViewModel currentOrStartingBidWithNumberOfBids:YES];
     if (saleArtworkViewModel.lotLabel.length) {
         self.lotNumberLabel.text = [@"LOT " stringByAppendingString:saleArtworkViewModel.lotLabel];
