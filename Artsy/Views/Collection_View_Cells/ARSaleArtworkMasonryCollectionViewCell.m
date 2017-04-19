@@ -29,6 +29,8 @@
 
 @implementation ARSaleArtworkMasonryCollectionViewCell
 
++ (UIFont *)serifFont { return [UIFont serifFontWithSize:12]; }
++ (UIFont *)italicsSerifFont { return [UIFont serifItalicFontWithSize:12]; }
 
 - (void)createSubviews
 {
@@ -47,7 +49,7 @@
     self.lotNumberLabel.textColor = darkGrey;
     [self.contentView addSubview:self.lotNumberLabel];
 
-    UIFont *serifFont = [UIFont serifFontWithSize:14];
+    UIFont *serifFont = [[self class] serifFont];
 
     self.artistNameLabel = [[ARSerifLabel alloc] init];
     self.artistNameLabel.font = serifFont;
@@ -55,7 +57,7 @@
     [self.contentView addSubview:self.artistNameLabel];
 
     self.artworkNameLabel = [[ARSerifLabel alloc] init];
-    self.artworkNameLabel.font = [UIFont serifItalicFontWithSize:serifFont.pointSize];
+    self.artworkNameLabel.font = serifFont;
     self.artworkNameLabel.textColor = darkGrey;
     [self.contentView addSubview:self.artworkNameLabel];
 
@@ -81,7 +83,7 @@
     }];
 
     // Stick the first label under the image view, plus ten points.
-    [[labels firstObject] alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:self.artworkImageView predicate:@"10"];
+    [[labels firstObject] alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:self.artworkImageView predicate:@"8"];
 
     // Stack the labels on top of eachother.
     [labels betweenObjects:^(id lhs, id rhs) {
@@ -111,7 +113,7 @@
     [self.artworkImageView ar_setImageWithURL:saleArtworkViewModel.thumbnailURL];
 
     self.artistNameLabel.text = saleArtworkViewModel.artistName;
-    self.artworkNameLabel.text = saleArtworkViewModel.artworkName;
+    self.artworkNameLabel.attributedText = [saleArtworkViewModel attributedArtworkNameWithNormalFont:[[self class] serifFont] italicFont:[[self class] italicsSerifFont]];
     self.currentOrStartingBidLabel.text = [saleArtworkViewModel currentOrStartingBidWithNumberOfBids:YES];
     if (saleArtworkViewModel.lotLabel.length) {
         self.lotNumberLabel.text = [@"LOT " stringByAppendingString:saleArtworkViewModel.lotLabel];
@@ -120,8 +122,8 @@
 
 + (CGFloat)paddingForMetadata
 {
-    // 3 labels @14pt + 1 label @10pt + 2 * 3 label padding + 10pt padding under image  = 66
-    return 66;
+    // 3 labels @14pt + 1 label @10pt + 2 * 3 label padding + 15pt padding under image = 73
+    return 73;
 }
 
 @end

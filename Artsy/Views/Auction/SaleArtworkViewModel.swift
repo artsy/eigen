@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 @objc class SaleArtworkViewModel: NSObject {
     fileprivate let saleArtwork: SaleArtwork
@@ -36,6 +37,17 @@ extension PublicComputedProperties {
 
     var artworkID: String {
         return saleArtwork.artwork.artworkID
+    }
+
+    func attributedArtworkName(normalFont: UIFont, italicFont: UIFont) -> NSAttributedString {
+        let attributedString = NSMutableAttributedString()
+        attributedString.append(NSAttributedString(string: artworkName, attributes: [NSFontAttributeName: italicFont]))
+
+        if saleArtwork.artwork.date.isNotEmpty {
+            attributedString.append(NSAttributedString(string: ", \(saleArtwork.artwork.date)", attributes: [NSFontAttributeName: normalFont]))
+        }
+
+        return attributedString
     }
 
     func currentOrStartingBidWithNumberOfBids(_ includeNumberOfBids: Bool) -> String {
