@@ -56,7 +56,7 @@ extension PublicComputedProperties {
         }
 
         let bidString = saleArtwork.highestOrStartingBidString()
-        if includeNumberOfBids {
+        if includeNumberOfBids && (saleArtwork.bidCount?.intValue ?? 0) > 0 {
             let numberOfBidsString = saleArtwork.numberOfBidsString()
             return "\(bidString) \(numberOfBidsString)"
         } else {
