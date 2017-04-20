@@ -83,8 +83,8 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission'
-  pod 'React/Core', :git => 'https://github.com/alloy/react-native.git', :branch => '0.34.1-with-scrollview-fix'
+  pod 'Emission', :path => '/Users/sarahscott/Desktop/dev/emission'
+  pod 'React/Core'
 
 
   # Facebook

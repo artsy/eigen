@@ -4,6 +4,7 @@
 #import "Artist.h"
 #import "Gene.h"
 #import "ArtsyAPI+Following.h"
+#import "ArtsyAPI+Notifications.h"
 #import "ARDispatchManager.h"
 #import "ARNetworkErrorManager.h"
 #import "ARSwitchBoard+Eigen.h"
@@ -14,6 +15,7 @@
 #import "ARAppNotificationsDelegate.h"
 #import "ARDefaults.h"
 #import "ARNavigationController.h"
+#import "ARTopMenuViewController.h"
 
 #import <Aerodramus/Aerodramus.h>
 #import <Emission/AREmission.h>
@@ -21,6 +23,7 @@
 #import <Emission/ARSwitchBoardModule.h>
 #import <Emission/AREventsModule.h>
 #import <Emission/ARRefineOptionsModule.h>
+#import <Emission/ARWorksForYouModule.h>
 #import <Emission/ARArtistComponentViewController.h>
 
 #import <React/RCTUtils.h>
@@ -131,7 +134,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                          FollowRequestFailure(block, NO, error);
                                      }];
     };
-    
+
     emission.APIModule.geneFollowStatusAssigner = ^(NSString *geneID, BOOL following, RCTResponseSenderBlock block) {
         [ArtsyAPI setFavoriteStatus:following
                             forGene:[[Gene alloc] initWithGeneID:geneID]
@@ -141,6 +144,15 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                             failure:^(NSError *error) {
                                 FollowRequestFailure(block, !following, error);
                             }];
+    };
+
+    emission.APIModule.notificationReadStatusAssigner = ^(RCTResponseSenderBlock block) {
+        NSLog(@"notificationsReadStatusAssigner");
+        [ArtsyAPI markUserNotificationsReadWithSuccess:^(id response) {
+            block(@[[NSNull null]]);
+        } failure:^(NSError *error) {
+            block(@[ RCTJSErrorFromNSError(error)]);
+        }];
     };
 
 #pragma mark - Native Module: Refine filter
@@ -188,6 +200,12 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                 [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
             }
         });
+    };
+
+#pragma mark - Native Module: WorksForYou
+
+    emission.worksForYouModule.setNotificationsCount = ^(NSInteger count) {
+        [[ARTopMenuViewController sharedController] setNotificationCount:0 forControllerAtIndex:ARTopTabControllerIndexNotifications];
     };
 }
 

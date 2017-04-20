@@ -76,14 +76,15 @@ PODS:
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
   - EDColor (1.0.0)
-  - Emission (1.2.3):
+  - Emission (1.2.1):
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
-    - React/Core (= 0.34.1)
-    - React/RCTImage (= 0.34.1)
-    - React/RCTNetwork (= 0.34.1)
-    - React/RCTText (= 0.34.1)
+    - React/Core (= 0.42.0)
+    - React/RCTImage (= 0.42.0)
+    - React/RCTNetwork (= 0.42.0)
+    - React/RCTText (= 0.42.0)
     - SDWebImage (>= 3.7.2)
+    - Yoga (= 0.42.0.React)
   - Expecta (1.0.5)
   - Expecta+Snapshots (3.0.0):
     - Expecta (~> 1.0)
@@ -161,13 +162,18 @@ PODS:
   - ORStackView (2.0.3):
     - FLKAutoLayout
   - Quick (0.10.0)
-  - React/Core (0.34.1)
-  - React/RCTImage (0.34.1):
+  - React/Core (0.42.0):
+    - React/cxxreact
+    - Yoga (= 0.42.0.React)
+  - React/cxxreact (0.42.0):
+    - React/jschelpers
+  - React/jschelpers (0.42.0)
+  - React/RCTImage (0.42.0):
     - React/Core
     - React/RCTNetwork
-  - React/RCTNetwork (0.34.1):
+  - React/RCTNetwork (0.42.0):
     - React/Core
-  - React/RCTText (0.34.1):
+  - React/RCTText (0.42.0):
     - React/Core
   - ReactiveCocoa (2.5):
     - ReactiveCocoa/UI (= 2.5)
@@ -191,6 +197,7 @@ PODS:
   - VCRURLConnection (0.2.0)
   - XCTest+OHHTTPStubSuiteCleanUp (1.0.0):
     - OHHTTPStubs
+  - Yoga (0.42.0.React)
 
 DEPENDENCIES:
   - Aerodramus
@@ -214,7 +221,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission
+  - Emission (from `/Users/sarahscott/Desktop/dev/emission`)
   - Expecta
   - Expecta+Snapshots
   - Extraction
@@ -247,7 +254,7 @@ DEPENDENCIES:
   - ORKeyboardReactingApplication
   - ORStackView (= 2.0.3)
   - Quick
-  - React/Core (from `https://github.com/alloy/react-native.git`, branch `0.34.1-with-scrollview-fix`)
+  - React/Core
   - ReactiveCocoa (< 3)
   - SDWebImage (>= 3.7.2)
   - Specta
@@ -280,6 +287,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/dblock/ARTiledImageView
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
+  Emission:
+    :path: "/Users/sarahscott/Desktop/dev/emission"
   FLKAutoLayout:
     :branch: v1
     :git: https://github.com/orta/FLKAutoLayout.git
@@ -294,9 +303,6 @@ EXTERNAL SOURCES:
     :path: Pods/CocoaPodsKeys
   NAMapKit:
     :git: https://github.com/neilang/NAMapKit
-  React:
-    :branch: 0.34.1-with-scrollview-fix
-    :git: https://github.com/alloy/react-native.git
   SSFadingScrollView:
     :branch: add-axial-support
     :git: https://github.com/alloy/SSFadingScrollView.git
@@ -338,9 +344,6 @@ CHECKOUT OPTIONS:
   NAMapKit:
     :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
     :git: https://github.com/neilang/NAMapKit
-  React:
-    :commit: 73fa7b42b1a1384d9661fca4ddffd85a10ad94dc
-    :git: https://github.com/alloy/react-native.git
   SSFadingScrollView:
     :commit: 3920e3582e46c9fe23b0d1200e28614ebd66d801
     :git: https://github.com/alloy/SSFadingScrollView.git
@@ -366,7 +369,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 991e10156ec8f7210d94f5c8af3ff2869f8e898b
+  Emission: d3a2a12e1a953cdf9605d0d4bbf028680a40b199
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
@@ -400,8 +403,13 @@ SPEC CHECKSUMS:
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
+<<<<<<< HEAD
   React: fc15d22bec0ec10fe15c12749fbefdac37ddc541
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
+=======
+  React: 8ec97f0d79ba31892c526cf56425937926cc9b48
+  ReactiveCocoa: 81ee2fb7df2dfc6bd52b5d70473662195e20ca7d
+>>>>>>> [WFU] Supports new RN WFU container
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
@@ -414,7 +422,12 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
+  Yoga: 77f4e44e919b274504599a3536cdc90140fb58d8
 
+<<<<<<< HEAD
 PODFILE CHECKSUM: 089509a701bc3ddd400a3d1cf9df1eaa96219326
+=======
+PODFILE CHECKSUM: e2f088c2fe826308199ef3633736c5a124b1c234
+>>>>>>> [WFU] Supports new RN WFU container
 
 COCOAPODS: 1.2.0
