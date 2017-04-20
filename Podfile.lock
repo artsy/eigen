@@ -403,13 +403,8 @@ SPEC CHECKSUMS:
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
-<<<<<<< HEAD
-  React: fc15d22bec0ec10fe15c12749fbefdac37ddc541
-  ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
-=======
   React: 8ec97f0d79ba31892c526cf56425937926cc9b48
-  ReactiveCocoa: 81ee2fb7df2dfc6bd52b5d70473662195e20ca7d
->>>>>>> [WFU] Supports new RN WFU container
+  ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
@@ -424,10 +419,6 @@ SPEC CHECKSUMS:
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 77f4e44e919b274504599a3536cdc90140fb58d8
 
-<<<<<<< HEAD
-PODFILE CHECKSUM: 089509a701bc3ddd400a3d1cf9df1eaa96219326
-=======
 PODFILE CHECKSUM: e2f088c2fe826308199ef3633736c5a124b1c234
->>>>>>> [WFU] Supports new RN WFU container
 
 COCOAPODS: 1.2.0
