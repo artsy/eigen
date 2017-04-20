@@ -1,7 +1,6 @@
 @import Artsy_UILabels;
 @import Artsy_UIFonts;
 @import Artsy_UIColors;
-@import EDColor;
 @import FLKAutoLayout;
 @import ObjectiveSugar;
 
@@ -61,12 +60,9 @@
     self.artworkNameLabel.textColor = darkGrey;
     [self.contentView addSubview:self.artworkNameLabel];
 
-    // TODO: Replace with Artsy standard colour.
-    UIColor *lightGrey = [UIColor colorWithHex:0x999999];
-
     self.currentOrStartingBidLabel = [[ARSerifLabel alloc] init];
     self.currentOrStartingBidLabel.font = serifFont;
-    self.currentOrStartingBidLabel.textColor = lightGrey;
+    self.currentOrStartingBidLabel.textColor = darkGrey;
     [self.contentView addSubview:self.currentOrStartingBidLabel];
 
     self.paddleImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paddle"]];
