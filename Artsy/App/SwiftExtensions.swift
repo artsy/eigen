@@ -49,6 +49,17 @@ extension Collection {
     }
 }
 
+protocol Occupiable {
+    var isEmpty: Bool { get }
+    var isNotEmpty: Bool { get }
+}
+
+extension Occupiable {
+    var isNotEmpty: Bool { return !isEmpty }
+}
+
+extension String: Occupiable {}
+
 extension Array {
     mutating func remove(matching closure: @escaping ((Element) -> Bool)) -> Element? {
         return enumerated().reduce(nil, { (memo, e) -> Element? in
