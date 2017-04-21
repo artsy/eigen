@@ -1,4 +1,6 @@
-exports[`test renders properly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
 <View
   onLayout={[Function]}
   style={
@@ -10,7 +12,8 @@ exports[`test renders properly 1`] = `
       "marginLeft": -10,
       "marginRight": -10,
     }
-  }>
+  }
+>
   <View
     accessibilityComponentType={undefined}
     accessibilityLabel={undefined}
@@ -31,7 +34,8 @@ exports[`test renders properly 1`] = `
         "width": 1,
       }
     }
-    testID={undefined}>
+    testID={undefined}
+  >
     <AROpaqueImageView
       imageURL="artsy.net/image-url"
       style={
@@ -39,14 +43,16 @@ exports[`test renders properly 1`] = `
           "height": 1,
           "width": 1,
         }
-      } />
+      }
+    />
     <View
       style={
         Object {
           "justifyContent": "flex-start",
           "marginTop": 10,
         }
-      }>
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -59,7 +65,8 @@ exports[`test renders properly 1`] = `
             "marginLeft": 0,
             "textAlign": "left",
           }
-        }>
+        }
+      >
         GALLERY
       </Text>
       <Text
@@ -74,7 +81,8 @@ exports[`test renders properly 1`] = `
             "marginLeft": 0,
             "textAlign": "left",
           }
-        }>
+        }
+      >
         SOLO SHOW
       </Text>
       <Text
@@ -95,7 +103,8 @@ exports[`test renders properly 1`] = `
               "fontFamily": "AGaramondPro-Regular",
             },
           ]
-        }>
+        }
+      >
         Expansive Exhibition
       </Text>
       <Text
@@ -121,7 +130,8 @@ exports[`test renders properly 1`] = `
               "fontFamily": "AGaramondPro-Regular",
             },
           ]
-        }>
+        }
+      >
         Berlin, Jan 1 - March 1
       </Text>
       <Text
@@ -141,7 +151,8 @@ exports[`test renders properly 1`] = `
               "fontFamily": "AGaramondPro-Regular",
             },
           ]
-        }>
+        }
+      >
         Closing in 2 days
       </Text>
     </View>
@@ -166,7 +177,8 @@ exports[`test renders properly 1`] = `
         "width": 1,
       }
     }
-    testID={undefined}>
+    testID={undefined}
+  >
     <AROpaqueImageView
       imageURL="artsy.net/image-url"
       style={
@@ -174,14 +186,16 @@ exports[`test renders properly 1`] = `
           "height": 1,
           "width": 1,
         }
-      } />
+      }
+    />
     <View
       style={
         Object {
           "justifyContent": "flex-start",
           "marginTop": 10,
         }
-      }>
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -194,7 +208,8 @@ exports[`test renders properly 1`] = `
             "marginLeft": 0,
             "textAlign": "left",
           }
-        }>
+        }
+      >
         A VERY NICE GALLERY
       </Text>
       <Text
@@ -209,7 +224,8 @@ exports[`test renders properly 1`] = `
             "marginLeft": 0,
             "textAlign": "left",
           }
-        }>
+        }
+      >
         SOLO SHOW
       </Text>
       <Text
@@ -230,7 +246,8 @@ exports[`test renders properly 1`] = `
               "fontFamily": "AGaramondPro-Regular",
             },
           ]
-        }>
+        }
+      >
         Expansive Exhibition
       </Text>
       <Text
@@ -256,7 +273,8 @@ exports[`test renders properly 1`] = `
               "fontFamily": "AGaramondPro-Regular",
             },
           ]
-        }>
+        }
+      >
         London, Jan 1 - March 1
       </Text>
       <Text
@@ -276,7 +294,8 @@ exports[`test renders properly 1`] = `
               "fontFamily": "AGaramondPro-Regular",
             },
           ]
-        }>
+        }
+      >
         Closing in 2 days
       </Text>
     </View>

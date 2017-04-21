@@ -1,4 +1,6 @@
-exports[`test looks like expected 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks like expected 1`] = `
 <View>
   <SwitchView
     onSelectionChange={[Function]}
@@ -16,7 +18,8 @@ exports[`test looks like expected 1`] = `
         "one",
         "two",
       ]
-    } />
+    }
+  />
   <View />
 </View>
 `;

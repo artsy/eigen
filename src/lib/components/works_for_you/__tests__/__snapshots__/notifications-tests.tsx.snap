@@ -1,10 +1,13 @@
-exports[`test does not show artist avatar if no avatar image exists 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`does not show artist avatar if no avatar image exists 1`] = `
 <View
   style={
     Object {
       "marginTop": 20,
     }
-  }>
+  }
+>
   <View
     accessibilityComponentType={undefined}
     accessibilityLabel={undefined}
@@ -23,7 +26,8 @@ exports[`test does not show artist avatar if no avatar image exists 1`] = `
         "flexDirection": "row",
       }
     }
-    testID={undefined}>
+    testID={undefined}
+  >
     <Image
       source={
         Object {
@@ -39,13 +43,15 @@ exports[`test does not show artist avatar if no avatar image exists 1`] = `
           "marginRight": 10,
           "width": 40,
         }
-      } />
+      }
+    />
     <View
       style={
         Object {
           "alignSelf": "center",
         }
-      }>
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -62,7 +68,8 @@ exports[`test does not show artist avatar if no avatar image exists 1`] = `
               "fontFamily": "Avant Garde Gothic ITCW01Dm",
             },
           ]
-        }>
+        }
+      >
         JEAN-MICHEL BASQUIAT
       </Text>
       <Text
@@ -84,7 +91,8 @@ exports[`test does not show artist avatar if no avatar image exists 1`] = `
               "fontFamily": "AGaramondPro-Regular",
             },
           ]
-        }>
+        }
+      >
         1 Work Added · Mar 16
       </Text>
     </View>
@@ -98,7 +106,8 @@ exports[`test does not show artist avatar if no avatar image exists 1`] = `
           "right": 0,
           "width": 10,
         }
-      } />
+      }
+    />
   </View>
   <View
     style={
@@ -106,28 +115,32 @@ exports[`test does not show artist avatar if no avatar image exists 1`] = `
         "marginBottom": 20,
         "marginTop": 20,
       }
-    }>
+    }
+  >
     <View
-      onLayout={[Function]}>
+      onLayout={[Function]}
+    >
       <View
         accessibilityLabel="Artworks Content View"
         style={
           Object {
             "flexDirection": "row",
           }
-        } />
+        }
+      />
     </View>
   </View>
 </View>
 `;
 
-exports[`test lays out correctly for read notification 1`] = `
+exports[`lays out correctly for read notification 1`] = `
 <View
   style={
     Object {
       "marginTop": 20,
     }
-  }>
+  }
+>
   <View
     accessibilityComponentType={undefined}
     accessibilityLabel={undefined}
@@ -146,7 +159,8 @@ exports[`test lays out correctly for read notification 1`] = `
         "flexDirection": "row",
       }
     }
-    testID={undefined}>
+    testID={undefined}
+  >
     <Image
       source={
         Object {
@@ -162,13 +176,15 @@ exports[`test lays out correctly for read notification 1`] = `
           "marginRight": 10,
           "width": 40,
         }
-      } />
+      }
+    />
     <View
       style={
         Object {
           "alignSelf": "center",
         }
-      }>
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -185,7 +201,8 @@ exports[`test lays out correctly for read notification 1`] = `
               "fontFamily": "Avant Garde Gothic ITCW01Dm",
             },
           ]
-        }>
+        }
+      >
         JEAN-MICHEL BASQUIAT
       </Text>
       <Text
@@ -207,7 +224,8 @@ exports[`test lays out correctly for read notification 1`] = `
               "fontFamily": "AGaramondPro-Regular",
             },
           ]
-        }>
+        }
+      >
         1 Work Added · Mar 16
       </Text>
     </View>
@@ -218,28 +236,32 @@ exports[`test lays out correctly for read notification 1`] = `
         "marginBottom": 20,
         "marginTop": 20,
       }
-    }>
+    }
+  >
     <View
-      onLayout={[Function]}>
+      onLayout={[Function]}
+    >
       <View
         accessibilityLabel="Artworks Content View"
         style={
           Object {
             "flexDirection": "row",
           }
-        } />
+        }
+      />
     </View>
   </View>
 </View>
 `;
 
-exports[`test lays out correctly for unread notification 1`] = `
+exports[`lays out correctly for unread notification 1`] = `
 <View
   style={
     Object {
       "marginTop": 20,
     }
-  }>
+  }
+>
   <View
     accessibilityComponentType={undefined}
     accessibilityLabel={undefined}
@@ -258,7 +280,8 @@ exports[`test lays out correctly for unread notification 1`] = `
         "flexDirection": "row",
       }
     }
-    testID={undefined}>
+    testID={undefined}
+  >
     <Image
       source={
         Object {
@@ -274,13 +297,15 @@ exports[`test lays out correctly for unread notification 1`] = `
           "marginRight": 10,
           "width": 40,
         }
-      } />
+      }
+    />
     <View
       style={
         Object {
           "alignSelf": "center",
         }
-      }>
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -297,7 +322,8 @@ exports[`test lays out correctly for unread notification 1`] = `
               "fontFamily": "Avant Garde Gothic ITCW01Dm",
             },
           ]
-        }>
+        }
+      >
         JEAN-MICHEL BASQUIAT
       </Text>
       <Text
@@ -319,7 +345,8 @@ exports[`test lays out correctly for unread notification 1`] = `
               "fontFamily": "AGaramondPro-Regular",
             },
           ]
-        }>
+        }
+      >
         1 Work Added · Mar 16
       </Text>
     </View>
@@ -333,7 +360,8 @@ exports[`test lays out correctly for unread notification 1`] = `
           "right": 0,
           "width": 10,
         }
-      } />
+      }
+    />
   </View>
   <View
     style={
@@ -341,16 +369,19 @@ exports[`test lays out correctly for unread notification 1`] = `
         "marginBottom": 20,
         "marginTop": 20,
       }
-    }>
+    }
+  >
     <View
-      onLayout={[Function]}>
+      onLayout={[Function]}
+    >
       <View
         accessibilityLabel="Artworks Content View"
         style={
           Object {
             "flexDirection": "row",
           }
-        } />
+        }
+      />
     </View>
   </View>
 </View>

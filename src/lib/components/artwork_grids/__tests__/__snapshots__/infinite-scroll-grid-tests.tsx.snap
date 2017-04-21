@@ -1,4 +1,6 @@
-exports[`test renders properly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
 <ArtworksGrid
   artist={
     Object {
@@ -74,5 +76,6 @@ exports[`test renders properly 1`] = `
       },
     }
   }
-  queryKey="artist" />
+  queryKey="artist"
+/>
 `;

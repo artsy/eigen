@@ -1,4 +1,6 @@
-exports[`test shows trending artists correctly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`shows trending artists correctly 1`] = `
 <View>
   <View>
     <View
@@ -7,7 +9,8 @@ exports[`test shows trending artists correctly 1`] = `
           "marginLeft": 50,
           "marginRight": 50,
         }
-      }>
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -27,7 +30,8 @@ exports[`test shows trending artists correctly 1`] = `
               "fontFamily": "AGaramondPro-Regular",
             },
           ]
-        }>
+        }
+      >
         Deep time refers to the concept of an expansive time that stretches far beyond human history to
                           include the approximately 4.5 billion-year geological history of Earth and the estimated 13.8
                           billion-year history of the universe. In art, deep time could be explored in works that deal with the
@@ -49,7 +53,8 @@ exports[`test shows trending artists correctly 1`] = `
             "marginBottom": 20,
           },
         ]
-      } />
+      }
+    />
   </View>
   <View
     onLayout={[Function]}
@@ -57,7 +62,8 @@ exports[`test shows trending artists correctly 1`] = `
       Object {
         "flexDirection": "column",
       }
-    }>
+    }
+  >
     <Text
       accessible={true}
       allowFontScaling={true}
@@ -75,7 +81,8 @@ exports[`test shows trending artists correctly 1`] = `
             "fontFamily": "AGaramondPro-Regular",
           },
         ]
-      }>
+      }
+    >
       Related Artists
     </Text>
     <View
@@ -89,7 +96,8 @@ exports[`test shows trending artists correctly 1`] = `
           "marginRight": -10,
           "marginTop": 12,
         }
-      }>
+      }
+    >
       <View
         accessibilityComponentType={undefined}
         accessibilityLabel={undefined}
@@ -110,7 +118,8 @@ exports[`test shows trending artists correctly 1`] = `
             "width": 1,
           }
         }
-        testID={undefined}>
+        testID={undefined}
+      >
         <AROpaqueImageView
           imageURL="cloudfront.net/some-url"
           style={
@@ -118,7 +127,8 @@ exports[`test shows trending artists correctly 1`] = `
               "height": 1,
               "width": 1,
             }
-          } />
+          }
+        />
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -130,7 +140,8 @@ exports[`test shows trending artists correctly 1`] = `
               "marginTop": 10,
               "textAlign": "left",
             }
-          }>
+          }
+        >
           LITA ALBUQUERQUE
         </Text>
         <Text
@@ -144,7 +155,8 @@ exports[`test shows trending artists correctly 1`] = `
               "fontSize": 16,
               "marginTop": 5,
             }
-          }>
+          }
+        >
           36 works, 30 for sale
         </Text>
       </View>
@@ -168,7 +180,8 @@ exports[`test shows trending artists correctly 1`] = `
             "width": 1,
           }
         }
-        testID={undefined}>
+        testID={undefined}
+      >
         <AROpaqueImageView
           imageURL="cloudfront.net/some-url"
           style={
@@ -176,7 +189,8 @@ exports[`test shows trending artists correctly 1`] = `
               "height": 1,
               "width": 1,
             }
-          } />
+          }
+        />
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -188,7 +202,8 @@ exports[`test shows trending artists correctly 1`] = `
               "marginTop": 10,
               "textAlign": "left",
             }
-          }>
+          }
+        >
           DOUG ARGUE
         </Text>
         <Text
@@ -202,7 +217,8 @@ exports[`test shows trending artists correctly 1`] = `
               "fontSize": 16,
               "marginTop": 5,
             }
-          }>
+          }
+        >
           31 works, 24 for sale
         </Text>
       </View>

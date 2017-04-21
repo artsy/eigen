@@ -1,11 +1,14 @@
-exports[`test lays out correctly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`lays out correctly 1`] = `
 <View
   onLayout={[Function]}
   style={
     Object {
       "flexDirection": "column",
     }
-  }>
+  }
+>
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -23,7 +26,8 @@ exports[`test lays out correctly 1`] = `
           "fontFamily": "AGaramondPro-Regular",
         },
       ]
-    }>
+    }
+  >
     Related Artists
   </Text>
   <View
@@ -37,7 +41,8 @@ exports[`test lays out correctly 1`] = `
         "marginRight": -10,
         "marginTop": 12,
       }
-    }>
+    }
+  >
     <View
       accessibilityComponentType={undefined}
       accessibilityLabel={undefined}
@@ -58,7 +63,8 @@ exports[`test lays out correctly 1`] = `
           "width": 242,
         }
       }
-      testID={undefined}>
+      testID={undefined}
+    >
       <AROpaqueImageView
         imageURL={undefined}
         style={
@@ -66,7 +72,8 @@ exports[`test lays out correctly 1`] = `
             "height": 161,
             "width": 242,
           }
-        } />
+        }
+      />
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -78,7 +85,8 @@ exports[`test lays out correctly 1`] = `
             "marginTop": 10,
             "textAlign": "left",
           }
-        }>
+        }
+      >
         SARAH SCOTT
       </Text>
       <Text
@@ -92,7 +100,8 @@ exports[`test lays out correctly 1`] = `
             "fontSize": 16,
             "marginTop": 5,
           }
-        }>
+        }
+      >
         4 works, 2 for sale
       </Text>
     </View>
@@ -102,14 +111,16 @@ exports[`test lays out correctly 1`] = `
           "height": 161,
           "width": 242,
         }
-      } />
+      }
+    />
     <View
       style={
         Object {
           "height": 161,
           "width": 242,
         }
-      } />
+      }
+    />
   </View>
 </View>
 `;

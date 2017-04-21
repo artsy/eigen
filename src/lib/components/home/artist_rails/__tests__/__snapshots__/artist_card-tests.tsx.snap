@@ -1,11 +1,14 @@
-exports[`test renders correctly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
 <View
   style={
     Object {
       "height": 310,
       "width": 236,
     }
-  }>
+  }
+>
   <View
     accessibilityComponentType={undefined}
     accessibilityLabel={undefined}
@@ -35,7 +38,8 @@ exports[`test renders correctly 1`] = `
         "width": 220,
       }
     }
-    testID={undefined}>
+    testID={undefined}
+  >
     <AROpaqueImageView
       imageURL="https://d32dm0rphc51dk.cloudfront.net/wGMxL6TvlSORJzEHZsK9JA/large.jpg"
       style={
@@ -45,14 +49,16 @@ exports[`test renders correctly 1`] = `
           "marginTop": 12,
           "width": 196,
         }
-      } />
+      }
+    />
     <View
       style={
         Object {
           "marginLeft": 12,
           "marginTop": 12,
         }
-      }>
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -66,7 +72,8 @@ exports[`test renders correctly 1`] = `
             "marginRight": 12,
             "textAlign": "left",
           }
-        }>
+        }
+      >
         JUAN GRIS
       </Text>
       <Text
@@ -82,7 +89,8 @@ exports[`test renders correctly 1`] = `
             "height": 17,
             "marginRight": 12,
           }
-        }>
+        }
+      >
         Spanish, 1887–1927
       </Text>
       <Text
@@ -103,7 +111,8 @@ exports[`test renders correctly 1`] = `
               "color": "#666666",
             },
           ]
-        }>
+        }
+      >
         14 works, 3 for sale
       </Text>
     </View>
@@ -117,7 +126,8 @@ exports[`test renders correctly 1`] = `
           "position": "absolute",
           "width": 196,
         }
-      }>
+      }
+    >
       <View
         accessibilityComponentType={undefined}
         accessibilityLabel={undefined}
@@ -147,7 +157,8 @@ exports[`test renders correctly 1`] = `
           ]
         }
         testID={undefined}
-        tvParallaxProperties={undefined}>
+        tvParallaxProperties={undefined}
+      >
         <View>
           <Text
             accessible={true}
@@ -166,7 +177,8 @@ exports[`test renders correctly 1`] = `
                   "fontFamily": "Avant Garde Gothic ITCW01Dm",
                 },
               ]
-            }>
+            }
+          >
             FOLLOW
           </Text>
         </View>

@@ -1,4 +1,6 @@
-exports[`test renders properly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
 <View
   style={
     Array [
@@ -9,7 +11,8 @@ exports[`test renders properly 1`] = `
       },
       undefined,
     ]
-  }>
+  }
+>
   <View
     accessibilityComponentType={undefined}
     accessibilityLabel={undefined}
@@ -24,7 +27,8 @@ exports[`test renders properly 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={Object {}}
-    testID={undefined}>
+    testID={undefined}
+  >
     <View
       style={
         Array [
@@ -39,14 +43,16 @@ exports[`test renders properly 1`] = `
             "marginRight": 0,
           },
         ]
-      } />
+      }
+    />
     <View
       style={
         Object {
           "flexDirection": "row",
           "justifyContent": "space-between",
         }
-      }>
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -57,7 +63,8 @@ exports[`test renders properly 1`] = `
             "marginBottom": 14,
             "marginTop": 14,
           }
-        }>
+        }
+      >
         I AM A NAVIGATION BUTTON
       </Text>
       <Image
@@ -66,7 +73,8 @@ exports[`test renders properly 1`] = `
           Object {
             "alignSelf": "center",
           }
-        } />
+        }
+      />
     </View>
     <View
       style={
@@ -82,7 +90,8 @@ exports[`test renders properly 1`] = `
             "marginRight": 0,
           },
         ]
-      } />
+      }
+    />
   </View>
 </View>
 `;
