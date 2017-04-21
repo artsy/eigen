@@ -2,6 +2,7 @@ upcoming:
     version: 3.2.1
     details: Scope not know yet
     dev:
+      - Adds React Native version of WorksForYou/Notifications tab - sarah
       - Refactors LAI view controller hierarchy - ash
       - Improves the reporting tools for beta users - orta
       - Improves Swift compile times - ash

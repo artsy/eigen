@@ -33,7 +33,6 @@
 static const CGFloat ARMenuButtonDimension = 50;
 
 
-
 @interface ARTopMenuViewController () <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) NSArray *constraintsForButtons;
 
@@ -149,8 +148,8 @@ static const CGFloat ARMenuButtonDimension = 50;
     (void)self.keyboardLayoutGuide;
 
     [self registerWithSwitchBoard:ARSwitchBoard.sharedInstance];
-    
-    if ([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding)  {
+
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding) {
         [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
         [self fadeInFromOnboarding];
     }
@@ -160,19 +159,19 @@ static const CGFloat ARMenuButtonDimension = 50;
 {
     UIView *done = [[UIView alloc] init];
     done.backgroundColor = [UIColor blackColor];
-    
-    UIImageView *spinner = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"onboardingspinner"] ];
-    
+
+    UIImageView *spinner = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"onboardingspinner"]];
+
     UILabel *label = [[UILabel alloc] init];
     label.text = @"Personalizing your Artsy experience";
     label.font = [UIFont serifFontWithSize:20.0];
     label.textColor = [UIColor whiteColor];
     label.textAlignment = NSTextAlignmentCenter;
-    
+
     [done addSubview:spinner];
     [done addSubview:label];
     [self.view addSubview:done];
-    
+
     [done alignTop:@"0" leading:@"0" bottom:@"0" trailing:@"0" toView:self.view];
     [spinner alignCenterXWithView:done predicate:@"0"];
     [spinner alignCenterYWithView:done predicate:@"-50"];
@@ -182,9 +181,9 @@ static const CGFloat ARMenuButtonDimension = 50;
     [label constrainWidthToView:done predicate:@"0"];
     [label constrainHeight:@"100"];
     [spinner ar_startSpinningIndefinitely];
-    
+
     done.alpha = 0.95;
-    
+
     [UIView animateWithDuration:0.4 delay:0.3 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         done.alpha = 1;
     } completion:^(BOOL finished) {
@@ -198,7 +197,6 @@ static const CGFloat ARMenuButtonDimension = 50;
             [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
         }];
     }];
-
 }
 
 - (NSArray *)buttons
@@ -243,7 +241,7 @@ static const CGFloat ARMenuButtonDimension = 50;
 
     for (NSNumber *tabIndex in menuToPaths.keyEnumerator) {
         [switchboard registerPathCallbackAtPath:menuToPaths[tabIndex] callback:^id _Nullable(NSDictionary *_Nullable parameters) {
-            return [self rootNavigationControllerAtIndex:tabIndex.integerValue].rootViewController;
+            return [self rootNavigationControllerAtIndex:tabIndex.integerValue parameters:parameters].rootViewController;
         }];
     }
 }
@@ -291,7 +289,12 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 - (ARNavigationController *)rootNavigationControllerAtIndex:(NSInteger)index;
 {
-    return (ARNavigationController *)[self.navigationDataSource navigationControllerAtIndex:index];
+    return (ARNavigationController *)[self rootNavigationControllerAtIndex:index parameters:nil];
+}
+
+- (ARNavigationController *)rootNavigationControllerAtIndex:(NSInteger)index parameters:(NSDictionary *)params;
+{
+    return (ARNavigationController *)[self.navigationDataSource navigationControllerAtIndex:index parameters:params];
 }
 
 - (void)presentRootViewControllerAtIndex:(NSInteger)index animated:(BOOL)animated;
@@ -526,9 +529,8 @@ static const CGFloat ARMenuButtonDimension = 50;
 
         // Otherwise find the first scrollview and pop to top
         else if (index == ARTopTabControllerIndexFeed ||
-            index == ARTopTabControllerIndexBrowse ||
-            index == ARTopTabControllerIndexFavorites) {
-
+                 index == ARTopTabControllerIndexBrowse ||
+                 index == ARTopTabControllerIndexFavorites) {
             UIViewController *currentRootViewController = [controller.childViewControllers first];
             UIScrollView *rootScrollView = (id)[self firstScrollToTopScrollViewFromRootView:currentRootViewController.view];
             [rootScrollView setContentOffset:CGPointMake(rootScrollView.contentOffset.x, -rootScrollView.contentInset.top) animated:YES];
@@ -540,7 +542,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     return YES;
 }
 
-- (NSObject  * _Nullable)firstScrollToTopScrollViewFromRootView:(UIView *)initialView
+- (NSObject *_Nullable)firstScrollToTopScrollViewFromRootView:(UIView *)initialView
 {
     UIView *rootView = initialView;
     while (rootView.subviews.firstObject && (![rootView isKindOfClass:UIScrollView.class] || ![(id)rootView scrollsToTop])) {
