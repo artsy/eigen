@@ -1,4 +1,6 @@
-exports[`test renders properly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
 <Artworks
   artist={
     Object {
@@ -7,5 +9,6 @@ exports[`test renders properly 1`] = `
         "for_sale_artworks": 2,
       },
     }
-  } />
+  }
+/>
 `;

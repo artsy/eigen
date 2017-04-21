@@ -1,4 +1,6 @@
-exports[`test renders properly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
 <View
   accessibilityComponentType={undefined}
   accessibilityLabel={undefined}
@@ -13,7 +15,8 @@ exports[`test renders properly 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
   style={undefined}
-  testID={undefined}>
+  testID={undefined}
+>
   <AROpaqueImageView
     aspectRatio={0.74}
     imageURL="artsy.net/image-url"
@@ -21,7 +24,8 @@ exports[`test renders properly 1`] = `
       Object {
         "marginBottom": 10,
       }
-    } />
+    }
+  />
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -45,7 +49,8 @@ exports[`test renders properly 1`] = `
           "fontFamily": "AGaramondPro-Regular",
         },
       ]
-    }>
+    }
+  >
     Mikael Olson
   </Text>
   <Text
@@ -66,7 +71,8 @@ exports[`test renders properly 1`] = `
           "fontFamily": "AGaramondPro-Regular",
         },
       ]
-    }>
+    }
+  >
     <Text
       accessible={true}
       allowFontScaling={true}
@@ -90,7 +96,8 @@ exports[`test renders properly 1`] = `
             "fontFamily": "AGaramondPro-Regular",
           },
         ]
-      }>
+      }
+    >
       Some Kind of Dinosaur
     </Text>
     , 2015
@@ -113,7 +120,8 @@ exports[`test renders properly 1`] = `
           "fontFamily": "AGaramondPro-Regular",
         },
       ]
-    }>
+    }
+  >
     Gallery 1261
   </Text>
   <Text
@@ -134,7 +142,8 @@ exports[`test renders properly 1`] = `
           "fontFamily": "AGaramondPro-Regular",
         },
       ]
-    }>
+    }
+  >
     $875
   </Text>
 </View>

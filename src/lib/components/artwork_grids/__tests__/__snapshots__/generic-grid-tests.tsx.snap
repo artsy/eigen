@@ -1,13 +1,17 @@
-exports[`test renders properly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
 <View
-  onLayout={[Function]}>
+  onLayout={[Function]}
+>
   <View
     accessibilityLabel="Artworks Content View"
     style={
       Object {
         "flexDirection": "row",
       }
-    }>
+    }
+  >
     <View
       accessibilityLabel="Section 0"
       style={
@@ -20,7 +24,8 @@ exports[`test renders properly 1`] = `
             "width": 242.66666666666666,
           },
         ]
-      }>
+      }
+    >
       <View
         accessibilityComponentType={undefined}
         accessibilityLabel={undefined}
@@ -35,7 +40,8 @@ exports[`test renders properly 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={undefined}
-        testID={undefined}>
+        testID={undefined}
+      >
         <AROpaqueImageView
           aspectRatio={2.18}
           imageURL="artsy.net/image-url"
@@ -43,7 +49,8 @@ exports[`test renders properly 1`] = `
             Object {
               "marginBottom": 10,
             }
-          } />
+          }
+        />
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -67,7 +74,8 @@ exports[`test renders properly 1`] = `
                 "fontFamily": "AGaramondPro-Regular",
               },
             ]
-          }>
+          }
+        >
           Guerrilla Girls
         </Text>
         <Text
@@ -88,7 +96,8 @@ exports[`test renders properly 1`] = `
                 "fontFamily": "AGaramondPro-Regular",
               },
             ]
-          }>
+          }
+        >
           <Text
             accessible={true}
             allowFontScaling={true}
@@ -112,7 +121,8 @@ exports[`test renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                 },
               ]
-            }>
+            }
+          >
             DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM
           </Text>
           , 2012
@@ -135,7 +145,8 @@ exports[`test renders properly 1`] = `
                 "fontFamily": "AGaramondPro-Regular",
               },
             ]
-          }>
+          }
+        >
           Whitechapel Gallery
         </Text>
       </View>
@@ -152,7 +163,8 @@ exports[`test renders properly 1`] = `
             "width": 242.66666666666666,
           },
         ]
-      }>
+      }
+    >
       <View
         accessibilityComponentType={undefined}
         accessibilityLabel={undefined}
@@ -167,7 +179,8 @@ exports[`test renders properly 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={undefined}
-        testID={undefined}>
+        testID={undefined}
+      >
         <AROpaqueImageView
           aspectRatio={2.18}
           imageURL="artsy.net/image-url"
@@ -175,7 +188,8 @@ exports[`test renders properly 1`] = `
             Object {
               "marginBottom": 10,
             }
-          } />
+          }
+        />
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -199,7 +213,8 @@ exports[`test renders properly 1`] = `
                 "fontFamily": "AGaramondPro-Regular",
               },
             ]
-          }>
+          }
+        >
           Guerrilla Girls
         </Text>
         <Text
@@ -220,7 +235,8 @@ exports[`test renders properly 1`] = `
                 "fontFamily": "AGaramondPro-Regular",
               },
             ]
-          }>
+          }
+        >
           <Text
             accessible={true}
             allowFontScaling={true}
@@ -244,7 +260,8 @@ exports[`test renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                 },
               ]
-            }>
+            }
+          >
             DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM
           </Text>
           , 2012
@@ -267,7 +284,8 @@ exports[`test renders properly 1`] = `
                 "fontFamily": "AGaramondPro-Regular",
               },
             ]
-          }>
+          }
+        >
           Whitechapel Gallery
         </Text>
       </View>
@@ -284,7 +302,8 @@ exports[`test renders properly 1`] = `
             "width": 242.66666666666666,
           },
         ]
-      }>
+      }
+    >
       <View
         accessibilityComponentType={undefined}
         accessibilityLabel={undefined}
@@ -299,7 +318,8 @@ exports[`test renders properly 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={undefined}
-        testID={undefined}>
+        testID={undefined}
+      >
         <AROpaqueImageView
           aspectRatio={2.18}
           imageURL="artsy.net/image-url"
@@ -307,7 +327,8 @@ exports[`test renders properly 1`] = `
             Object {
               "marginBottom": 10,
             }
-          } />
+          }
+        />
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -331,7 +352,8 @@ exports[`test renders properly 1`] = `
                 "fontFamily": "AGaramondPro-Regular",
               },
             ]
-          }>
+          }
+        >
           Guerrilla Girls
         </Text>
         <Text
@@ -352,7 +374,8 @@ exports[`test renders properly 1`] = `
                 "fontFamily": "AGaramondPro-Regular",
               },
             ]
-          }>
+          }
+        >
           <Text
             accessible={true}
             allowFontScaling={true}
@@ -376,7 +399,8 @@ exports[`test renders properly 1`] = `
                   "fontFamily": "AGaramondPro-Regular",
                 },
               ]
-            }>
+            }
+          >
             DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM
           </Text>
           , 2012
@@ -399,7 +423,8 @@ exports[`test renders properly 1`] = `
                 "fontFamily": "AGaramondPro-Regular",
               },
             ]
-          }>
+          }
+        >
           Whitechapel Gallery
         </Text>
       </View>

@@ -1,3 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`layout renders as expected 1`] = `
 <RCTScrollView
   automaticallyAdjustContentInsets={false}
@@ -9,7 +11,8 @@ exports[`layout renders as expected 1`] = `
   refreshControl={
     <RefreshControlMock
       onRefresh={[Function]}
-      refreshing={false} />
+      refreshing={false}
+    />
   }
   renderRow={[Function]}
   renderScrollComponent={[Function]}
@@ -18,7 +21,8 @@ exports[`layout renders as expected 1`] = `
       "marginTop": 20,
       "overflow": "visible",
     }
-  }>
+  }
+>
   <RCTRefreshControl />
   <View>
     <View
@@ -47,7 +51,8 @@ exports[`layout renders as expected 1`] = `
           "marginTop": 10,
         }
       }
-      testID={undefined}>
+      testID={undefined}
+    >
       <Image
         source={1}
         style={
@@ -57,7 +62,8 @@ exports[`layout renders as expected 1`] = `
             "marginRight": 10,
             "width": 16,
           }
-        } />
+        }
+      />
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -68,19 +74,22 @@ exports[`layout renders as expected 1`] = `
             "fontSize": 16,
             "marginTop": 5,
           }
-        }>
+        }
+      >
         Search for artists and artworks...
       </Text>
     </View>
     <View
-      onLayout={[Function]} />
+      onLayout={[Function]}
+    />
     <View
       accessibilityLabel="Artwork Rail"
       style={
         Object {
           "paddingBottom": 12,
         }
-      }>
+      }
+    >
       <View
         accessibilityComponentType={undefined}
         accessibilityLabel={undefined}
@@ -102,7 +111,8 @@ exports[`layout renders as expected 1`] = `
             "marginTop": 50,
           }
         }
-        testID={undefined}>
+        testID={undefined}
+      >
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -114,7 +124,8 @@ exports[`layout renders as expected 1`] = `
               "fontSize": 30,
               "textAlign": "center",
             }
-          }>
+          }
+        >
           Title
         </Text>
       </View>
@@ -125,13 +136,15 @@ exports[`layout renders as expected 1`] = `
             "marginRight": 40,
             "minHeight": 400,
           }
-        }>
+        }
+      >
         <ARSpinner
           style={
             Object {
               "flex": 1,
             }
-          } />
+          }
+        />
       </View>
     </View>
     <View
@@ -140,7 +153,8 @@ exports[`layout renders as expected 1`] = `
         Object {
           "paddingBottom": 12,
         }
-      }>
+      }
+    >
       <View
         accessibilityComponentType={undefined}
         accessibilityLabel={undefined}
@@ -162,7 +176,8 @@ exports[`layout renders as expected 1`] = `
             "marginTop": 50,
           }
         }
-        testID={undefined}>
+        testID={undefined}
+      >
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -174,7 +189,8 @@ exports[`layout renders as expected 1`] = `
               "fontSize": 30,
               "textAlign": "center",
             }
-          }>
+          }
+        >
           Title
         </Text>
       </View>
@@ -185,13 +201,15 @@ exports[`layout renders as expected 1`] = `
             "marginRight": 40,
             "minHeight": 400,
           }
-        }>
+        }
+      >
         <ARSpinner
           style={
             Object {
               "flex": 1,
             }
-          } />
+          }
+        />
       </View>
     </View>
     <View>
@@ -203,7 +221,8 @@ exports[`layout renders as expected 1`] = `
             "marginRight": 30,
             "marginTop": 40,
           }
-        }>
+        }
+      >
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -215,14 +234,16 @@ exports[`layout renders as expected 1`] = `
               "fontSize": 30,
               "textAlign": "center",
             }
-          } />
+          }
+        />
       </View>
       <ARSpinner
         style={
           Object {
             "flex": 1,
           }
-        } />
+        }
+      />
       <View
         style={
           Array [
@@ -234,7 +255,8 @@ exports[`layout renders as expected 1`] = `
             },
             undefined,
           ]
-        } />
+        }
+      />
     </View>
     <View
       accessibilityLabel="Artwork Rail"
@@ -242,7 +264,8 @@ exports[`layout renders as expected 1`] = `
         Object {
           "paddingBottom": 12,
         }
-      }>
+      }
+    >
       <View
         accessibilityComponentType={undefined}
         accessibilityLabel={undefined}
@@ -264,7 +287,8 @@ exports[`layout renders as expected 1`] = `
             "marginTop": 50,
           }
         }
-        testID={undefined}>
+        testID={undefined}
+      >
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -276,7 +300,8 @@ exports[`layout renders as expected 1`] = `
               "fontSize": 30,
               "textAlign": "center",
             }
-          }>
+          }
+        >
           Title
         </Text>
       </View>
@@ -287,13 +312,15 @@ exports[`layout renders as expected 1`] = `
             "marginRight": 40,
             "minHeight": 400,
           }
-        }>
+        }
+      >
         <ARSpinner
           style={
             Object {
               "flex": 1,
             }
-          } />
+          }
+        />
       </View>
     </View>
   </View>

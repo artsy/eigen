@@ -1,4 +1,6 @@
-exports[`test renders properly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
 <About
   artist={
     Object {
@@ -7,5 +9,6 @@ exports[`test renders properly 1`] = `
       "is_display_auction_link": true,
       "related_artists": Array [],
     }
-  } />
+  }
+/>
 `;

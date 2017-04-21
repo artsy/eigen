@@ -1,4 +1,6 @@
-exports[`test renders properly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
 <View
   accessibilityComponentType={undefined}
   accessibilityLabel={undefined}
@@ -28,7 +30,8 @@ exports[`test renders properly 1`] = `
     ]
   }
   testID={undefined}
-  tvParallaxProperties={undefined}>
+  tvParallaxProperties={undefined}
+>
   <View>
     <Text
       accessible={true}
@@ -47,7 +50,8 @@ exports[`test renders properly 1`] = `
             "fontFamily": "Avant Garde Gothic ITCW01Dm",
           },
         ]
-      }>
+      }
+    >
       I AM AN INVERTED BUTTON
     </Text>
   </View>

@@ -1,11 +1,14 @@
-exports[`test renders properly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
 <View
   style={
     Object {
       "marginLeft": 50,
       "marginRight": 50,
     }
-  }>
+  }
+>
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -22,7 +25,8 @@ exports[`test renders properly 1`] = `
           "fontFamily": "Avant Garde Gothic ITCW01Dm",
         },
       ]
-    }>
+    }
+  >
     BIOGRAPHY
   </Text>
   <Text
@@ -44,7 +48,8 @@ exports[`test renders properly 1`] = `
           "fontFamily": "AGaramondPro-Regular",
         },
       ]
-    }>
+    }
+  >
     Once lived in a room with a live coyote for several days to protest the Vietnam War
   </Text>
   <Text
@@ -66,7 +71,8 @@ exports[`test renders properly 1`] = `
           "fontFamily": "AGaramondPro-Regular",
         },
       ]
-    }>
+    }
+  >
     Born 1922, Germany
   </Text>
 </View>

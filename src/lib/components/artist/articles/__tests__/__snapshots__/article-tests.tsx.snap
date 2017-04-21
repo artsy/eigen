@@ -1,10 +1,13 @@
-exports[`test renders properly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
 <View
   style={
     Object {
       "width": 320,
     }
-  }>
+  }
+>
   <View
     accessibilityComponentType={undefined}
     accessibilityLabel={undefined}
@@ -23,7 +26,8 @@ exports[`test renders properly 1`] = `
         "width": 300,
       }
     }
-    testID={undefined}>
+    testID={undefined}
+  >
     <AROpaqueImageView
       imageURL="artsy.net/image-url"
       style={
@@ -31,7 +35,8 @@ exports[`test renders properly 1`] = `
           "height": 175,
           "width": 300,
         }
-      } />
+      }
+    />
     <Text
       accessible={true}
       allowFontScaling={true}
@@ -44,7 +49,8 @@ exports[`test renders properly 1`] = `
           "marginTop": 10,
           "width": 275,
         }
-      }>
+      }
+    >
       Something Happened
     </Text>
     <Text
@@ -59,7 +65,8 @@ exports[`test renders properly 1`] = `
           "marginTop": 5,
           "textAlign": "left",
         }
-      }>
+      }
+    >
       JOHN BERGER
     </Text>
   </View>

@@ -1,7 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`layout works as expected with no tabs 1`] = `
 <RCTScrollView
   automaticallyAdjustContentInsets={false}
-  scrollsToTop={true}>
+  scrollsToTop={true}
+>
   <View>
     <View
       style={
@@ -9,7 +12,8 @@ exports[`layout works as expected with no tabs 1`] = `
           "paddingLeft": 40,
           "paddingRight": 40,
         }
-      }>
+      }
+    >
       <Header
         artist={
           Object {
@@ -20,13 +24,15 @@ exports[`layout works as expected with no tabs 1`] = `
             },
             "has_metadata": false,
           }
-        } />
+        }
+      />
       <View
         style={
           Object {
             "paddingTop": 30,
           }
-        } />
+        }
+      />
     </View>
   </View>
 </RCTScrollView>
@@ -35,7 +41,8 @@ exports[`layout works as expected with no tabs 1`] = `
 exports[`layout works as expected with one tab 1`] = `
 <RCTScrollView
   automaticallyAdjustContentInsets={false}
-  scrollsToTop={true}>
+  scrollsToTop={true}
+>
   <View>
     <View
       style={
@@ -43,7 +50,8 @@ exports[`layout works as expected with one tab 1`] = `
           "paddingLeft": 40,
           "paddingRight": 40,
         }
-      }>
+      }
+    >
       <Header
         artist={
           Object {
@@ -54,13 +62,15 @@ exports[`layout works as expected with one tab 1`] = `
             },
             "has_metadata": true,
           }
-        } />
+        }
+      />
       <View
         style={
           Object {
             "paddingTop": 30,
           }
-        }>
+        }
+      >
         <About
           artist={
             Object {
@@ -71,7 +81,8 @@ exports[`layout works as expected with one tab 1`] = `
               },
               "has_metadata": true,
             }
-          } />
+          }
+        />
       </View>
     </View>
   </View>
@@ -81,7 +92,8 @@ exports[`layout works as expected with one tab 1`] = `
 exports[`layout works as expected with three tabs 1`] = `
 <RCTScrollView
   automaticallyAdjustContentInsets={false}
-  scrollsToTop={true}>
+  scrollsToTop={true}
+>
   <View>
     <View
       style={
@@ -89,7 +101,8 @@ exports[`layout works as expected with three tabs 1`] = `
           "paddingLeft": 40,
           "paddingRight": 40,
         }
-      }>
+      }
+    >
       <Header
         artist={
           Object {
@@ -99,7 +112,8 @@ exports[`layout works as expected with three tabs 1`] = `
             },
             "has_metadata": true,
           }
-        } />
+        }
+      />
       <View>
         <SwitchView
           onSelectionChange={[Function]}
@@ -118,7 +132,8 @@ exports[`layout works as expected with three tabs 1`] = `
               "WORKS",
               "SHOWS",
             ]
-          } />
+          }
+        />
         <View>
           <Artworks
             artist={
@@ -129,7 +144,8 @@ exports[`layout works as expected with three tabs 1`] = `
                 },
                 "has_metadata": true,
               }
-            } />
+            }
+          />
         </View>
       </View>
     </View>

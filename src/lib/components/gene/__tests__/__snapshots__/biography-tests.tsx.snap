@@ -1,11 +1,14 @@
-exports[`test renders properly 1`] = `
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
 <View
   style={
     Object {
       "marginLeft": 50,
       "marginRight": 50,
     }
-  }>
+  }
+>
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -25,7 +28,8 @@ exports[`test renders properly 1`] = `
           "fontFamily": "AGaramondPro-Regular",
         },
       ]
-    }>
+    }
+  >
     Watercolor painting is very nice
   </Text>
 </View>
