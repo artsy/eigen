@@ -1,4 +1,4 @@
-## Master
+### 1.3.0
 
 - Added ability to create a special notification for a single artist in WFU - sarah
 - Added pagination to WFU container - sarah
