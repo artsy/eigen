@@ -83,7 +83,7 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission', :path => '/Users/sarahscott/Desktop/dev/emission'
+  pod 'Emission'
   pod 'React/Core'
 
 
