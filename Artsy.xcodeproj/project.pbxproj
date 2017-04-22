@@ -260,6 +260,7 @@
 		51B4BA491C6A2B7F0014A394 /* AuctionBiddersNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517201C31C6A239E007148B7 /* AuctionBiddersNetworkModel.swift */; };
 		51B4BA4A1C6A2BC50014A394 /* AuctionNetworkModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517201C11C6A239E007148B7 /* AuctionNetworkModelTests.swift */; };
 		51B4BA4B1C6A91260014A394 /* RefinementOptionsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517201C21C6A239E007148B7 /* RefinementOptionsViewControllerTests.swift */; };
+		51C863151EAB81F00069E9AC /* ArtsyAPI+Sailthru.m in Sources */ = {isa = PBXBuildFile; fileRef = 51C863141EAB81F00069E9AC /* ArtsyAPI+Sailthru.m */; };
 		51D141B01AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141AF1AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m */; };
 		51D141B71AF0F14B000091CF /* ARTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141B61AF0F14B000091CF /* ARTestHelper.m */; };
 		51D141B91AF25DB4000091CF /* ARAutoLayoutDebugging.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D141B81AF25DB4000091CF /* ARAutoLayoutDebugging.m */; };
@@ -1214,6 +1215,8 @@
 		5174A03A1A859E2C006CD337 /* ARFairMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairMapView.m; sourceTree = "<group>"; };
 		518B421D1B57CF7100210A02 /* AttentionIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AttentionIcon@2x.png"; sourceTree = "<group>"; };
 		51B4BA441C6A24490014A394 /* AuctionInformationViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionInformationViewControllerTests.swift; sourceTree = "<group>"; };
+		51C863131EAB81F00069E9AC /* ArtsyAPI+Sailthru.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Sailthru.h"; sourceTree = "<group>"; };
+		51C863141EAB81F00069E9AC /* ArtsyAPI+Sailthru.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Sailthru.m"; sourceTree = "<group>"; };
 		51D141AF1AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmbeddedModelsViewControllerTests.m; sourceTree = "<group>"; };
 		51D141B51AF0F14B000091CF /* ARTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTestHelper.h; sourceTree = "<group>"; };
 		51D141B61AF0F14B000091CF /* ARTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTestHelper.m; sourceTree = "<group>"; };
@@ -4142,6 +4145,8 @@
 				608AABDB1B3884C600855A1C /* ARKeychainable.m */,
 				605191981C7760500002E11A /* ArtsyAPI+Pages.h */,
 				605191991C7760500002E11A /* ArtsyAPI+Pages.m */,
+				51C863131EAB81F00069E9AC /* ArtsyAPI+Sailthru.h */,
+				51C863141EAB81F00069E9AC /* ArtsyAPI+Sailthru.m */,
 			);
 			name = "API Modules";
 			path = API_Modules;
@@ -5219,6 +5224,7 @@
 				60B79B89182C54CE00945FFF /* ARQuicksilverSearchBar.m in Sources */,
 				60C2CBEF1CC11433009B30CA /* LiveAuctionToolbarView.swift in Sources */,
 				5EF8407E1CECDFFD006248D7 /* LiveAuctionLotCollectionViewLayoutAttributes.swift in Sources */,
+				51C863151EAB81F00069E9AC /* ArtsyAPI+Sailthru.m in Sources */,
 				5EA0E74C1DCA3DD200CE9203 /* Interstellar+Artsy.swift in Sources */,
 				49EC62181778AF100020D648 /* PartnerShow.m in Sources */,
 				5168A76E1B46A70500FFBCBF /* ARFilteredStackTrace.m in Sources */,

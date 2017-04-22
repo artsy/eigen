@@ -4,6 +4,7 @@
 #import "ARArtworkViewController.h"
 #import "ARUserManager.h"
 #import "ARAppDelegate+Analytics.h"
+#import "ArtsyAPI+Sailthru.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
 
@@ -41,6 +42,7 @@ describe(@"concerning loading a VC from a URL and reporting analytics", ^{
     __block id userManagerMock = nil;
     __block id topMenuMock = nil;
     __block id appDelegateMock = nil;
+    __block id apiMock = nil;
 
     beforeEach(^{
         userManagerMock = [OCMockObject partialMockForObject:[ARUserManager sharedManager]];
@@ -57,14 +59,28 @@ describe(@"concerning loading a VC from a URL and reporting analytics", ^{
         
         appDelegateMock = [OCMockObject partialMockForObject:[ARAppDelegate sharedInstance]];
         [[appDelegateMock expect] lookAtURLForAnalytics:URL];
+        
+        apiMock = [OCMockObject mockForClass:ArtsyAPI.class];
     });
 
     afterEach(^{
+        [apiMock stopMocking];
         [userManagerMock stopMocking];
+        
         [topMenuMock verify];
         [topMenuMock stopMocking];
+        
         [appDelegateMock verify];
         [appDelegateMock stopMocking];
+    });
+
+    it(@"routes the Spotlight link to the appropriate view controller and shows it", ^{
+        NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:CSSearchableItemActionType];
+        activity.userInfo = @{ CSSearchableItemActivityIdentifier: URL.absoluteString };
+        
+        expect([delegate application:app
+                continueUserActivity:activity
+                  restorationHandler:^(NSArray *_) {}]).to.beTruthy();
     });
 
     it(@"routes the WebBrowsing link to the appropriate view controller and shows it", ^{
@@ -76,13 +92,19 @@ describe(@"concerning loading a VC from a URL and reporting analytics", ^{
                   restorationHandler:^(NSArray *_) {}]).to.beTruthy();
     });
 
-    it(@"routes the Spotlight link to the appropriate view controller and shows it", ^{
-       NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:CSSearchableItemActionType];
-       activity.userInfo = @{ CSSearchableItemActivityIdentifier: URL.absoluteString };
+    it(@"requests a decoded URL from Sailthru and then routes the WebBrowsing link to the appropriate view controller and shows it", ^{
+        NSURL *sailthruURL = [NSURL URLWithString:@"https://link.artsy.net/click/some-opaque-ID"];
+        
+        NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:NSUserActivityTypeBrowsingWeb];
+        activity.webpageURL = sailthruURL;
 
-       expect([delegate application:app
-               continueUserActivity:activity
-                 restorationHandler:^(NSArray *_) {}]).to.beTruthy();
+        [[apiMock expect] getDecodedURLAndRegisterClick:sailthruURL
+                                             completion:[OCMArg checkWithBlock:^(void (^callback)(NSURL *URL)) {
+            callback(URL);
+            return YES;
+        }]];
+        [delegate application:app continueUserActivity:activity restorationHandler:^(NSArray *_) {}];
+        [apiMock verify];
     });
 });
 

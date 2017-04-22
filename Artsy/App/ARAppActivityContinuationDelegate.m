@@ -5,8 +5,11 @@
 #import "ARSwitchBoard.h"
 #import "ARTopMenuViewController.h"
 #import "ArtsyAPI.h"
+#import "ArtsyAPI+Sailthru.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
+
+static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
 @implementation ARAppActivityContinuationDelegate
 
@@ -29,16 +32,14 @@
         URL = userActivity.webpageURL;
     }
 
-    dispatch_block_t showViewController = ^{
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:URL];
-        if (viewController) {
-            [[ARTopMenuViewController sharedController] pushViewController:viewController];
-        }
-    };
-
     if ([[ARUserManager sharedManager] hasExistingAccount]) {
-        [[ARAppDelegate sharedInstance] lookAtURLForAnalytics:URL];
-        showViewController();
+        DecodeURL(URL, ^(NSURL *decodedURL) {
+            [[ARAppDelegate sharedInstance] lookAtURLForAnalytics:decodedURL];
+            UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:decodedURL];
+            if (viewController) {
+                [[ARTopMenuViewController sharedController] pushViewController:viewController];
+            }
+        });
     } else {
         // This is (hopefully) an edge-case where the user did not launch the app yet since installing it, in which case
         // we show on-boarding.
@@ -46,6 +47,15 @@
     }
 
     return YES;
+}
+
+static void
+DecodeURL(NSURL *URL, void (^callback)(NSURL *URL)) {
+    if ([URL.host isEqualToString:SailthruLinkDomain]) {
+        [ArtsyAPI getDecodedURLAndRegisterClick:URL completion:callback];
+    } else {
+        callback(URL);
+    }
 }
 
 @end
