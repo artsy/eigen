@@ -1,6 +1,6 @@
 #import "ARAppActivityContinuationDelegate.h"
 
-#import "ARAppDelegate.h"
+#import "ARAppDelegate+Analytics.h"
 #import "ARUserManager.h"
 #import "ARSwitchBoard.h"
 #import "ARTopMenuViewController.h"
@@ -37,11 +37,12 @@
     };
 
     if ([[ARUserManager sharedManager] hasExistingAccount]) {
+        [[ARAppDelegate sharedInstance] lookAtURLForAnalytics:URL];
         showViewController();
     } else {
         // This is (hopefully) an edge-case where the user did not launch the app yet since installing it, in which case
         // we show on-boarding.
-        [(ARAppDelegate *)[[JSDecoupledAppDelegate sharedAppDelegate] appStateDelegate] showOnboarding];
+        [[ARAppDelegate sharedInstance] showOnboarding];
     }
 
     return YES;

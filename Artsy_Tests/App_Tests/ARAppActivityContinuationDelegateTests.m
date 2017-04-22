@@ -3,6 +3,7 @@
 #import "ARArtworkSetViewController.h"
 #import "ARArtworkViewController.h"
 #import "ARUserManager.h"
+#import "ARAppDelegate+Analytics.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
 
@@ -35,9 +36,11 @@ it(@"accepts any user activity with the Artsy prefix", ^{
     }];
 });
 
-describe(@"concerning loading a view controller", ^{
+describe(@"concerning loading a VC from a URL and reporting analytics", ^{
+    NSURL *URL = [NSURL URLWithString:@"https://www.artsy.net/artwork/andy-warhol-tree-frog"];
     __block id userManagerMock = nil;
     __block id topMenuMock = nil;
+    __block id appDelegateMock = nil;
 
     beforeEach(^{
         userManagerMock = [OCMockObject partialMockForObject:[ARUserManager sharedManager]];
@@ -51,17 +54,22 @@ describe(@"concerning loading a view controller", ^{
             NSString *artworkID = viewController.currentArtworkViewController.artwork.artworkID;
             return [artworkID isEqualToString:@"andy-warhol-tree-frog"];
         }]];
+        
+        appDelegateMock = [OCMockObject partialMockForObject:[ARAppDelegate sharedInstance]];
+        [[appDelegateMock expect] lookAtURLForAnalytics:URL];
     });
 
     afterEach(^{
         [userManagerMock stopMocking];
         [topMenuMock verify];
         [topMenuMock stopMocking];
+        [appDelegateMock verify];
+        [appDelegateMock stopMocking];
     });
 
     it(@"routes the WebBrowsing link to the appropriate view controller and shows it", ^{
         NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:NSUserActivityTypeBrowsingWeb];
-        activity.webpageURL = [NSURL URLWithString:@"https://www.artsy.net/artwork/andy-warhol-tree-frog"];
+        activity.webpageURL = URL;
 
         expect([delegate application:app
                 continueUserActivity:activity
@@ -70,7 +78,7 @@ describe(@"concerning loading a view controller", ^{
 
     it(@"routes the Spotlight link to the appropriate view controller and shows it", ^{
        NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:CSSearchableItemActionType];
-       activity.userInfo = @{ CSSearchableItemActivityIdentifier: @"https://www.artsy.net/artwork/andy-warhol-tree-frog" };
+       activity.userInfo = @{ CSSearchableItemActivityIdentifier: URL.absoluteString };
 
        expect([delegate application:app
                continueUserActivity:activity
