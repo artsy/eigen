@@ -2,6 +2,9 @@
 #import "ARTopMenuViewController.h"
 #import "ARArtworkSetViewController.h"
 #import "ARArtworkViewController.h"
+#import "ARUserManager.h"
+#import "ARAppDelegate+Analytics.h"
+#import "ArtsyAPI+Sailthru.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
 
@@ -34,43 +37,75 @@ it(@"accepts any user activity with the Artsy prefix", ^{
     }];
 });
 
-describe(@"concerning loading a view controller", ^{
-    __block id mock = nil;
+describe(@"concerning loading a VC from a URL and reporting analytics", ^{
+    NSURL *URL = [NSURL URLWithString:@"https://www.artsy.net/artwork/andy-warhol-tree-frog"];
+    __block id userManagerMock = nil;
+    __block id topMenuMock = nil;
+    __block id appDelegateMock = nil;
+    __block id apiMock = nil;
 
     beforeEach(^{
+        userManagerMock = [OCMockObject partialMockForObject:[ARUserManager sharedManager]];
+        [[[userManagerMock stub] andReturnValue:@(YES)] hasExistingAccount];
+        
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@{}];
 
-        mock = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
-        [[mock expect] pushViewController:[OCMArg checkWithBlock:^(ARArtworkSetViewController *viewController) {
+        topMenuMock = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
+        [[topMenuMock expect] pushViewController:[OCMArg checkWithBlock:^(ARArtworkSetViewController *viewController) {
             (void)viewController.view; // ensure the artwork view controller gets created
             NSString *artworkID = viewController.currentArtworkViewController.artwork.artworkID;
             return [artworkID isEqualToString:@"andy-warhol-tree-frog"];
         }]];
+        
+        appDelegateMock = [OCMockObject partialMockForObject:[ARAppDelegate sharedInstance]];
+        [[appDelegateMock expect] lookAtURLForAnalytics:URL];
+        
+        apiMock = [OCMockObject mockForClass:ArtsyAPI.class];
     });
 
     afterEach(^{
-        [mock verify];
-        [mock stopMocking];
+        [apiMock stopMocking];
+        [userManagerMock stopMocking];
+        
+        [topMenuMock verify];
+        [topMenuMock stopMocking];
+        
+        [appDelegateMock verify];
+        [appDelegateMock stopMocking];
     });
 
-    // TODO MAXIM : Fix tests
-//    it(@"routes the WebBrowsing link to the appropriate view controller and shows it", ^{
-//        NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:NSUserActivityTypeBrowsingWeb];
-//        activity.webpageURL = [NSURL URLWithString:@"https://www.artsy.net/artwork/andy-warhol-tree-frog"];
-//
-//        expect([delegate application:app
-//                continueUserActivity:activity
-//                  restorationHandler:^(NSArray *_) {}]).to.beTruthy();
-//    });
-//
-//   it(@"routes the Spotlight link to the appropriate view controller and shows it", ^{
-//       NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:CSSearchableItemActionType];
-//       activity.userInfo = @{ CSSearchableItemActivityIdentifier: @"https://www.artsy.net/artwork/andy-warhol-tree-frog" };
-//
-//       expect([delegate application:app
-//               continueUserActivity:activity
-//                 restorationHandler:^(NSArray *_) {}]).to.beTruthy();
-//   });
+    it(@"routes the Spotlight link to the appropriate view controller and shows it", ^{
+        NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:CSSearchableItemActionType];
+        activity.userInfo = @{ CSSearchableItemActivityIdentifier: URL.absoluteString };
+        
+        expect([delegate application:app
+                continueUserActivity:activity
+                  restorationHandler:^(NSArray *_) {}]).to.beTruthy();
+    });
+
+    it(@"routes the WebBrowsing link to the appropriate view controller and shows it", ^{
+        NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:NSUserActivityTypeBrowsingWeb];
+        activity.webpageURL = URL;
+
+        expect([delegate application:app
+                continueUserActivity:activity
+                  restorationHandler:^(NSArray *_) {}]).to.beTruthy();
+    });
+
+    it(@"requests a decoded URL from Sailthru and then routes the WebBrowsing link to the appropriate view controller and shows it", ^{
+        NSURL *sailthruURL = [NSURL URLWithString:@"https://link.artsy.net/click/some-opaque-ID"];
+        
+        NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:NSUserActivityTypeBrowsingWeb];
+        activity.webpageURL = sailthruURL;
+
+        [[apiMock expect] getDecodedURLAndRegisterClick:sailthruURL
+                                             completion:[OCMArg checkWithBlock:^(void (^callback)(NSURL *URL)) {
+            callback(URL);
+            return YES;
+        }]];
+        [delegate application:app continueUserActivity:activity restorationHandler:^(NSArray *_) {}];
+        [apiMock verify];
+    });
 });
 
 SpecEnd;
