@@ -10,6 +10,7 @@ upcoming:
       - Removes saleRequiresBidderApproval field from Bidder model - ash
       - Adds scroll to top on onboarding search - maxim
       - Parallelizes auctions network calls - ash
+      - Fix issue with push notification when not coming from account creation - maxim
     user_facing:
       - Adds support for lot_label in auctions - ash
       - Fixes a crash in opening sales with no end date - ash
