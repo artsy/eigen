@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
 @interface ARTopMenuNavigationDataSource : NSObject <ARTabViewDataSource>
 
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
+- (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index parameters:(NSDictionary *)params;
 - (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
 - (BOOL)searchButtonAtIndex:(NSInteger)index;
 

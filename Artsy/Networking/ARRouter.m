@@ -1089,6 +1089,7 @@ static NSString *hostFromString(NSString *string)
     paddle_number\
     bidders(sale_id: \"%@\") {\
       id\
+      qualified_for_bidding\
     }\
   }\
   sale(id: \"%@\") {\
@@ -1277,6 +1278,11 @@ static NSString *hostFromString(NSString *string)
 {
     NSString *fullPath = [[NSURL URLWithString:path relativeToURL:[ARRouter baseWebURL]] absoluteString];
     return [self requestWithMethod:@"HEAD" URLString:fullPath parameters:nil];
+}
+
++ (NSURLRequest *)newSailthruRegisterClickAndDecodeURLRequest:(NSURL *)encodedURL;
+{
+    return [self requestWithMethod:@"HEAD" URLString:encodedURL.absoluteString parameters:nil];
 }
 
 @end

@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 @objc class SaleArtworkViewModel: NSObject {
     fileprivate let saleArtwork: SaleArtwork
@@ -26,6 +27,10 @@ extension PublicComputedProperties {
         return saleArtwork.artwork.title ?? ""
     }
 
+    var artworkDate: String {
+        return saleArtwork.artwork.date
+    }
+
     var lotLabel: String {
         return saleArtwork.lotLabel ?? ""
     }
@@ -44,7 +49,7 @@ extension PublicComputedProperties {
         }
 
         let bidString = saleArtwork.highestOrStartingBidString()
-        if includeNumberOfBids {
+        if includeNumberOfBids && (saleArtwork.bidCount?.intValue ?? 0) > 0 {
             let numberOfBidsString = saleArtwork.numberOfBidsString()
             return "\(bidString) \(numberOfBidsString)"
         } else {

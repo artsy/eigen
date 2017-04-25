@@ -11,6 +11,7 @@
 #import <JSBadgeView/JSBadgeView.h>
 #import "ARSwitchBoard.h"
 #import "ARFavoritesViewController.h"
+#import <Emission/ARWorksForYouComponentViewController.h>
 
 
 @interface ARTopMenuNavigationDataSource (Test)
@@ -18,6 +19,7 @@
 @property (nonatomic, assign, readonly) NSUInteger *badgeCounts;
 
 @end
+
 
 @interface ARTopMenuViewController (ExposedForTesting) <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
@@ -237,6 +239,8 @@ describe(@"navigation", ^{
                 id viewcontroller = [switchboard loadPath:menuToPaths[tabIndex]];
                 if (tabIndex.integerValue == ARTopTabControllerIndexFavorites) {
                     expect(viewcontroller).to.beAKindOf(ARFavoritesViewController.class);
+                } else if (tabIndex.integerValue == ARTopTabControllerIndexNotifications) {
+                    expect(viewcontroller).to.beAKindOf(ARWorksForYouComponentViewController.class);
                 } else {
                     expect(viewcontroller).to.equal([[ARTopMenuViewController sharedController] rootNavigationControllerAtIndex:tabIndex.integerValue].rootViewController);
                 }

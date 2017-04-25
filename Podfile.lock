@@ -76,14 +76,15 @@ PODS:
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
   - EDColor (1.0.0)
-  - Emission (1.2.3):
+  - Emission (1.3.0):
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
-    - React/Core (= 0.34.1)
-    - React/RCTImage (= 0.34.1)
-    - React/RCTNetwork (= 0.34.1)
-    - React/RCTText (= 0.34.1)
+    - React/Core (= 0.42.0)
+    - React/RCTImage (= 0.42.0)
+    - React/RCTNetwork (= 0.42.0)
+    - React/RCTText (= 0.42.0)
     - SDWebImage (>= 3.7.2)
+    - Yoga (= 0.42.0.React)
   - Expecta (1.0.5)
   - Expecta+Snapshots (3.0.0):
     - Expecta (~> 1.0)
@@ -127,7 +128,7 @@ PODS:
     - Forgeries/Core
     - OCMock
   - FXBlurView (1.6.1)
-  - HockeySDK-Source (3.8.5)
+  - HockeySDK-Source (4.1.4)
   - Interstellar/Core (2.0.0)
   - iRate (1.10.2)
   - ISO8601DateFormatter (0.7.1)
@@ -161,13 +162,18 @@ PODS:
   - ORStackView (2.0.3):
     - FLKAutoLayout
   - Quick (0.10.0)
-  - React/Core (0.34.1)
-  - React/RCTImage (0.34.1):
+  - React/Core (0.42.0):
+    - React/cxxreact
+    - Yoga (= 0.42.0.React)
+  - React/cxxreact (0.42.0):
+    - React/jschelpers
+  - React/jschelpers (0.42.0)
+  - React/RCTImage (0.42.0):
     - React/Core
     - React/RCTNetwork
-  - React/RCTNetwork (0.34.1):
+  - React/RCTNetwork (0.42.0):
     - React/Core
-  - React/RCTText (0.34.1):
+  - React/RCTText (0.42.0):
     - React/Core
   - ReactiveCocoa (2.5):
     - ReactiveCocoa/UI (= 2.5)
@@ -182,8 +188,8 @@ PODS:
   - SDWebImage/Core (3.7.3)
   - Specta (1.0.5)
   - SSFadingScrollView (1.1.0)
-  - Starscream (2.0.2)
-  - SwiftyJSON (3.1.1)
+  - Starscream (2.0.4)
+  - SwiftyJSON (3.1.4)
   - Then (2.1.0)
   - UIAlertView+Blocks (0.8)
   - UICKeyChainStore (1.0.5)
@@ -191,6 +197,7 @@ PODS:
   - VCRURLConnection (0.2.0)
   - XCTest+OHHTTPStubSuiteCleanUp (1.0.0):
     - OHHTTPStubs
+  - Yoga (0.42.0.React)
 
 DEPENDENCIES:
   - Aerodramus
@@ -247,7 +254,7 @@ DEPENDENCIES:
   - ORKeyboardReactingApplication
   - ORStackView (= 2.0.3)
   - Quick
-  - React/Core (from `https://github.com/alloy/react-native.git`, branch `0.34.1-with-scrollview-fix`)
+  - React/Core
   - ReactiveCocoa (< 3)
   - SDWebImage (>= 3.7.2)
   - Specta
@@ -294,9 +301,6 @@ EXTERNAL SOURCES:
     :path: Pods/CocoaPodsKeys
   NAMapKit:
     :git: https://github.com/neilang/NAMapKit
-  React:
-    :branch: 0.34.1-with-scrollview-fix
-    :git: https://github.com/alloy/react-native.git
   SSFadingScrollView:
     :branch: add-axial-support
     :git: https://github.com/alloy/SSFadingScrollView.git
@@ -338,9 +342,6 @@ CHECKOUT OPTIONS:
   NAMapKit:
     :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
     :git: https://github.com/neilang/NAMapKit
-  React:
-    :commit: 73fa7b42b1a1384d9661fca4ddffd85a10ad94dc
-    :git: https://github.com/alloy/react-native.git
   SSFadingScrollView:
     :commit: 3920e3582e46c9fe23b0d1200e28614ebd66d801
     :git: https://github.com/alloy/SSFadingScrollView.git
@@ -353,7 +354,7 @@ SPEC CHECKSUMS:
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
   Analytics: b342fb4f43fa4f97ca6f4358b44d3295217ba294
-  AppHub: '03788112dd48c42b60d51321c0ffff4ef15a4432'
+  AppHub: 03788112dd48c42b60d51321c0ffff4ef15a4432
   ARAnalytics: 96e23ba7f54298f4914de9e1ac999db7a15f3fdd
   ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
@@ -366,17 +367,17 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 991e10156ec8f7210d94f5c8af3ff2869f8e898b
+  Emission: 0626f1f5f2c3a3f4c7e9761d7a480c852f27eee0
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FBSDKCoreKit: d2aaed5e9ab7d8d6301c533376a1fbff1cf3deb5
   FBSDKLoginKit: 699ff169080e3072de4b9b0faca90bf23dc36deb
-  FBSnapshotTestCase: '094f9f314decbabe373b87cc339bea235a63e07a'
+  FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  HockeySDK-Source: 85233ef10090148e5571f7a0a82deb8213b1691e
+  HockeySDK-Source: 5bdf74ccf516d9751f04b755464bfd83f0d3be32
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
@@ -400,21 +401,22 @@ SPEC CHECKSUMS:
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
-  React: fc15d22bec0ec10fe15c12749fbefdac37ddc541
+  React: 8ec97f0d79ba31892c526cf56425937926cc9b48
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   SSFadingScrollView: a2f142312afad23585e354a41a6ed337045e1aa3
-  Starscream: 6c135a34e0a6e60cedaa0b30db67a4c05cf7cd38
-  SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
+  Starscream: df5974ee928b157c8eda8af8de7c620276b7dfcc
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   Then: 8496793c8fcac95482b943909b440724c7d8d82c
   UIAlertView+Blocks: 6b408d63507287b22c6e631a2b25ca26f96fb609
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
+  Yoga: 77f4e44e919b274504599a3536cdc90140fb58d8
 
-PODFILE CHECKSUM: '089509a701bc3ddd400a3d1cf9df1eaa96219326'
+PODFILE CHECKSUM: b498f78870627cf2b9bfba9e27bedd54a28d6439
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.2.1

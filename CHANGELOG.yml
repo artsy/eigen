@@ -2,7 +2,9 @@ upcoming:
     version: 3.2.1
     details: Scope not know yet
     dev:
+      - Adds React Native version of WorksForYou/Notifications tab - sarah
       - Refactors LAI view controller hierarchy - ash
+      - Improves the reporting tools for beta users - orta
       - Improves Swift compile times - ash
       - Fixes echo update issues - ash
       - Removes saleRequiresBidderApproval field from Bidder model - ash
@@ -11,6 +13,7 @@ upcoming:
     user_facing:
       - Adds support for lot_label in auctions - ash
       - Fixes a crash in opening sales with no end date - ash
+      - Spruced up artworks in auctio view - ash
 
 releases:
   - version: 3.2.0

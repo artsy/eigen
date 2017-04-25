@@ -211,5 +211,6 @@
 #pragma mark - Misc
 
 + (NSURLRequest *)newHEADRequestForPath:(NSString *)path;
++ (NSURLRequest *)newSailthruRegisterClickAndDecodeURLRequest:(NSURL *)encodedURL;
 
 @end

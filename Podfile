@@ -84,7 +84,7 @@ target 'Artsy' do
   pod 'Extraction'
 
   pod 'Emission'
-  pod 'React/Core', :git => 'https://github.com/alloy/react-native.git', :branch => '0.34.1-with-scrollview-fix'
+  pod 'React/Core'
 
 
   # Facebook

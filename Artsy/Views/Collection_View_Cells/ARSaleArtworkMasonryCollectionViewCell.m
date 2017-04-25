@@ -1,7 +1,6 @@
 @import Artsy_UILabels;
 @import Artsy_UIFonts;
 @import Artsy_UIColors;
-@import EDColor;
 @import FLKAutoLayout;
 @import ObjectiveSugar;
 
@@ -20,15 +19,17 @@
 @property (nonatomic, strong) ARAspectRatioImageView *artworkImageView;
 @property (nonatomic, strong) ARSansSerifLabel *lotNumberLabel;
 @property (nonatomic, strong) ARSerifLabel *artistNameLabel;
-// TODO: Should this be a ARArtworkTitleLabel? ( should it show a date? )
-@property (nonatomic, strong) ARSerifLabel *artworkNameLabel;
+@property (nonatomic, strong) ARArtworkTitleLabel *artworkNameLabel;
 @property (nonatomic, strong) ARSerifLabel *currentOrStartingBidLabel;
+@property (nonatomic, strong) UIImageView *paddleImageView;
 
 @end
 
 
 @implementation ARSaleArtworkMasonryCollectionViewCell
 
++ (UIFont *)serifFont { return [UIFont serifFontWithSize:12]; }
++ (UIFont *)italicsSerifFont { return [UIFont serifItalicFontWithSize:12]; }
 
 - (void)createSubviews
 {
@@ -47,25 +48,26 @@
     self.lotNumberLabel.textColor = darkGrey;
     [self.contentView addSubview:self.lotNumberLabel];
 
-    UIFont *serifFont = [UIFont serifFontWithSize:14];
+    UIFont *serifFont = [[self class] serifFont];
 
     self.artistNameLabel = [[ARSerifLabel alloc] init];
-    self.artistNameLabel.font = serifFont;
+    self.artistNameLabel.font = [UIFont serifSemiBoldFontWithSize:serifFont.pointSize];
     self.artistNameLabel.textColor = darkGrey;
     [self.contentView addSubview:self.artistNameLabel];
 
-    self.artworkNameLabel = [[ARSerifLabel alloc] init];
-    self.artworkNameLabel.font = [UIFont serifItalicFontWithSize:serifFont.pointSize];
+    self.artworkNameLabel = [[ARArtworkTitleLabel alloc] init];
+    self.artworkNameLabel.font = serifFont;
     self.artworkNameLabel.textColor = darkGrey;
     [self.contentView addSubview:self.artworkNameLabel];
 
-    // TODO: Replace with Artsy standard colour.
-    UIColor *lightGrey = [UIColor colorWithHex:0x999999];
-
     self.currentOrStartingBidLabel = [[ARSerifLabel alloc] init];
     self.currentOrStartingBidLabel.font = serifFont;
-    self.currentOrStartingBidLabel.textColor = lightGrey;
+    self.currentOrStartingBidLabel.textColor = darkGrey;
     [self.contentView addSubview:self.currentOrStartingBidLabel];
+
+    self.paddleImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paddle"]];
+    [self.paddleImageView constrainWidth:@"6" height:@"9"];
+    [self.contentView addSubview:self.paddleImageView];
 }
 
 - (void)constrainViewsWithLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
@@ -81,16 +83,21 @@
     }];
 
     // Stick the first label under the image view, plus ten points.
-    [[labels firstObject] alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:self.artworkImageView predicate:@"10"];
+    [[labels firstObject] alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:self.artworkImageView predicate:@"8"];
 
     // Stack the labels on top of eachother.
     [labels betweenObjects:^(id lhs, id rhs) {
         [lhs alignAttribute:NSLayoutAttributeBottom toAttribute:NSLayoutAttributeTop ofView:rhs predicate:@"-2"];
     }];
 
-    [labels each:^(id object) {
+    [@[ self.lotNumberLabel, self.artistNameLabel, self.artworkNameLabel] each:^(id object) {
         [object alignLeading:@"0" trailing:@"0" toView:self.contentView];
     }];
+
+    [self.paddleImageView alignCenterYWithView:self.currentOrStartingBidLabel predicate:@"-2"];
+    [self.paddleImageView alignLeadingEdgeWithView:self.contentView predicate:@"1"];
+    [self.paddleImageView constrainTrailingSpaceToView:self.currentOrStartingBidLabel predicate:@"-2"];
+    [self.currentOrStartingBidLabel alignTrailingEdgeWithView:self.contentView predicate:@"0"];
 }
 
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
@@ -111,7 +118,7 @@
     [self.artworkImageView ar_setImageWithURL:saleArtworkViewModel.thumbnailURL];
 
     self.artistNameLabel.text = saleArtworkViewModel.artistName;
-    self.artworkNameLabel.text = saleArtworkViewModel.artworkName;
+    [self.artworkNameLabel setTitle:saleArtworkViewModel.artworkName date:saleArtworkViewModel.artworkDate];
     self.currentOrStartingBidLabel.text = [saleArtworkViewModel currentOrStartingBidWithNumberOfBids:YES];
     if (saleArtworkViewModel.lotLabel.length) {
         self.lotNumberLabel.text = [@"LOT " stringByAppendingString:saleArtworkViewModel.lotLabel];
@@ -120,8 +127,8 @@
 
 + (CGFloat)paddingForMetadata
 {
-    // 3 labels @14pt + 1 label @10pt + 2 * 3 label padding + 10pt padding under image  = 66
-    return 66;
+    // 3 labels @14pt + 1 label @10pt + 2 * 3 label padding + 15pt padding under image = 73
+    return 73;
 }
 
 @end

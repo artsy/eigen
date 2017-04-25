@@ -4,6 +4,7 @@
 #import "ARBrowseViewController.h"
 #import <Emission/AREmission.h>
 #import <Emission/ARHomeComponentViewController.h>
+#import <Emission/ARWorksForYouComponentViewController.h>
 #import "ARFavoritesViewController.h"
 #import "ARTopMenuInternalMobileWebViewController.h"
 #import "ARFeedSubclasses.h"
@@ -55,9 +56,6 @@
     _browseViewController.networkModel = [[ARBrowseNetworkModel alloc] init];
     _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:_browseViewController];
 
-    ARWorksForYouReloadingHostViewController *worksForYouHostViewController = [[ARWorksForYouReloadingHostViewController alloc] init];
-    _worksForYouNavigationController = [[ARNavigationController alloc] initWithRootViewController:worksForYouHostViewController];
-
     return self;
 }
 
@@ -73,7 +71,18 @@
     return [[ARNavigationController alloc] initWithRootViewController:favoritesViewController];
 }
 
+- (ARNavigationController *)worksForYouNavigationControllerWithSelectedArtist:(NSString *)artistID
+{
+    ARWorksForYouComponentViewController *worksForYouComponentVC = [[ARWorksForYouComponentViewController alloc] initWithSelectedArtist:artistID];
+    return [[ARNavigationController alloc] initWithRootViewController:worksForYouComponentVC];
+}
+
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
+{
+    return (ARNavigationController *)[self navigationControllerAtIndex:index parameters:nil];
+}
+
+- (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index parameters:(NSDictionary *)params;
 {
     switch (index) {
         case ARTopTabControllerIndexFeed:
@@ -83,7 +92,7 @@
         case ARTopTabControllerIndexFavorites:
             return self.favoritesNavigationController;
         case ARTopTabControllerIndexNotifications:
-            return self.worksForYouNavigationController;
+            return [self worksForYouNavigationControllerWithSelectedArtist:params[@"artist_id"]];
     }
 
     return nil;

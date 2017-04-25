@@ -1,6 +1,7 @@
 #import <HockeySDK_Source/HockeySDK.h>
 #import <HockeySDK_Source/BITFeedbackManager.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import <ReplayKit/ReplayKit.h>
 
 #import "ARAdminSettingsViewController.h"
 #import "ARQuicksilverViewController.h"
@@ -31,6 +32,7 @@
 
 NSString *const AROptionCell = @"OptionCell";
 NSString *const ARLabOptionCell = @"LabOptionCell";
+NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 
 @implementation ARAdminSettingsViewController
@@ -54,6 +56,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
         [self generateLogOut],
         [self generateOnboarding],
         [self generateFeedback],
+        [self generateRecording],
         [self generateRestart],
         [self generateStagingSwitch],
         [self generateQuicksilver],
@@ -122,11 +125,43 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 
     [emailData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
         ARHockeyFeedbackDelegate *feedback = [[ARHockeyFeedbackDelegate alloc] init];
-        [feedback showFeedback:nil];
+        [feedback showFeedback:nil data:nil];
 
     }];
     return emailData;
 }
+
+
+- (ARCellData *)generateRecording
+{
+    BOOL isRecording = [AROptions boolForOption:ARRecordingScreen];
+    ARCellData *emailData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    [emailData setCellConfigurationBlock:^(UITableViewCell *cell) {
+        NSString *message = isRecording ? @"Stop Recording" : @"Create feedback Video";
+        cell.textLabel.text = message;
+    }];
+
+    [emailData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+        if(!isRecording) {
+            [self.navigationController popViewControllerAnimated:FALSE];
+            [[RPScreenRecorder sharedRecorder] startRecordingWithHandler:^(NSError * _Nullable error) {
+                if (error) {
+                    [self showAlertViewWithTitle:@"Error setting up recorder" message:error.localizedDescription actionTitle:@"Sorry..." actionHandler:nil];
+                }
+                [AROptions setBool:YES forOption:ARRecordingScreen];
+            }];
+        } else {
+            [AROptions setBool:NO forOption:ARRecordingScreen];
+            [[RPScreenRecorder sharedRecorder] stopRecordingWithHandler:^(RPPreviewViewController * _Nullable previewViewController, NSError * _Nullable error) {
+                previewViewController.previewControllerDelegate = [ARHockeyFeedbackDelegate shared];
+                [[ARTopMenuViewController sharedController] pushViewController:previewViewController];
+
+            }];
+        }
+    }];
+    return emailData;
+}
+
 
 
 - (ARCellData *)generateRestart
