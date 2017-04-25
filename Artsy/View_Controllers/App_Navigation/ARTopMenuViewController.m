@@ -148,9 +148,8 @@ static const CGFloat ARMenuButtonDimension = 50;
     (void)self.keyboardLayoutGuide;
 
     [self registerWithSwitchBoard:ARSwitchBoard.sharedInstance];
-
-    if ([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding) {
-        [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
+    
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding)  {
         [self fadeInFromOnboarding];
     }
 }
@@ -193,6 +192,7 @@ static const CGFloat ARMenuButtonDimension = 50;
             done.alpha = 0;
         } completion:^(BOOL finished) {
             [done removeFromSuperview];
+            [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
             ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
             [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
         }];
@@ -389,6 +389,13 @@ static const CGFloat ARMenuButtonDimension = 50;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    // Essentially the else part of the check in viewDidLoad
+    // If not coming from a new account (with animation), then prompt for push on the usual constraints
+    if (!([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding))  {
+        ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+        [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
+    }
 
 #ifdef DEBUG
     if ([ARAppStatus isRunningTests] == NO) {
