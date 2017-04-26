@@ -102,7 +102,7 @@ class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
         url = context && context.href
         break
       default:
-        url = "/artworks"
+        url = null
         break
     }
 
