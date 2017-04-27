@@ -307,6 +307,10 @@ static const CGFloat ARMenuButtonDimension = 50;
         ARNavigationController *rootController = [self rootNavigationControllerAtIndex:index];
         if (rootController.rootViewController == viewController) {
             return index;
+        } else if ([viewController isKindOfClass:ARFavoritesViewController.class]) {
+            return ARTopTabControllerIndexFavorites;
+        } else if ([viewController isKindOfClass:ARWorksForYouComponentViewController.class]) {
+            return ARTopTabControllerIndexNotifications;
         }
     }
     return NSNotFound;
@@ -462,12 +466,21 @@ static const CGFloat ARMenuButtonDimension = 50;
 {
     ARNavigationController *presentableController;
     
-    // If there is an existing instance, use that one instead
     NSInteger index = [self indexOfRootViewController:viewController];
-    if (index != NSNotFound) {
-        presentableController = [self rootNavigationControllerAtIndex:index];
-    } else {
-        presentableController = [[ARNavigationController alloc] initWithRootViewController:viewController];
+    
+    // If there is an existing instance at that index, use it. Otherwise use the instance passed in as viewController.
+    // If for some reason something went wrong, default to Home
+    switch (index) {
+        case ARTopTabControllerIndexFeed:
+        case ARTopTabControllerIndexBrowse:
+            presentableController = [self rootNavigationControllerAtIndex:index];
+            break;
+        case ARTopTabControllerIndexFavorites:
+        case ARTopTabControllerIndexNotifications:
+            presentableController = [[ARNavigationController alloc] initWithRootViewController:viewController];
+            break;
+        default:
+            presentableController = [self rootNavigationControllerAtIndex:ARTopTabControllerIndexFeed];
     }
     
     BOOL alreadySelectedTab = self.selectedTabIndex == index;
@@ -476,11 +489,6 @@ static const CGFloat ARMenuButtonDimension = 50;
     }
     
     if (!alreadySelectedTab) {
-        if (index == NSNotFound) {
-            if ([viewController isKindOfClass:ARFavoritesViewController.class] || [viewController isKindOfClass:ARWorksForYouComponentViewController.class]) {
-                index = 4;
-            }
-        }
         [self.tabContentView forceSetViewController:presentableController atIndex:index animated:animated];
     }
 }
