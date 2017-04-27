@@ -30,6 +30,7 @@ static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerB
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
 static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationControllerMenuAwareScrollViewContext;
 
+
 @protocol ARMenuAwareViewController;
 
 

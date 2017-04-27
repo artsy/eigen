@@ -205,4 +205,11 @@
     return [UIDevice isPad];
 }
 
+#pragma mark - ARRootViewController
+
+- (BOOL)isRootViewController
+{
+    return YES;
+}
+
 @end

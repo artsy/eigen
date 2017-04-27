@@ -16,6 +16,7 @@
 #import "ARDefaults.h"
 #import "ARNavigationController.h"
 #import "ARTopMenuViewController.h"
+#import "ARRootViewController.h"
 
 #import <Aerodramus/Aerodramus.h>
 #import <Emission/AREmission.h>
@@ -25,6 +26,8 @@
 #import <Emission/ARRefineOptionsModule.h>
 #import <Emission/ARWorksForYouModule.h>
 #import <Emission/ARArtistComponentViewController.h>
+#import <Emission/ARHomeComponentViewController.h>
+#import <Emission/ARWorksForYouComponentViewController.h>
 
 #import <React/RCTUtils.h>
 #import <objc/runtime.h>
@@ -207,6 +210,32 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     emission.worksForYouModule.setNotificationsCount = ^(NSInteger count) {
         [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
     };
+}
+
+@end
+
+#pragma mark - ARRootViewController additions
+
+@interface ARHomeComponentViewController (ARRootViewController) <ARRootViewController>
+@end
+
+@implementation ARHomeComponentViewController (ARRootViewController)
+
+- (BOOL)isRootViewController
+{
+    return YES;
+}
+
+@end
+
+@interface ARWorksForYouComponentViewController (ARRootViewController) <ARRootViewController>
+@end
+
+@implementation ARWorksForYouComponentViewController (ARRootViewController)
+
+- (BOOL)isRootViewController
+{
+    return YES;
 }
 
 @end

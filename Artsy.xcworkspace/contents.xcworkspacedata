@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Artsy/View_Controllers/Util/ARRootViewController.h">
+   </FileRef>
+   <FileRef
       location = "group:Artsy.xcodeproj">
    </FileRef>
    <FileRef

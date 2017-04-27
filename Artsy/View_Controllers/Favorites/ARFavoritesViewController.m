@@ -379,4 +379,11 @@
     [self updateView];
 }
 
+#pragma mark - ARRootViewController
+
+- (BOOL)isRootViewController
+{
+    return YES;
+}
+
 @end

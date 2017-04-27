@@ -141,6 +141,11 @@ static BOOL ARTabViewDirectionRight = YES;
 
 - (void)forceSetCurrentViewIndex:(NSInteger)index animated:(BOOL)animated
 {
+    [self forceSetViewController:[self navigationControllerForIndex:index] atIndex:index animated:animated];
+}
+
+- (void)forceSetViewController:(UINavigationController *)viewController atIndex:(NSInteger)index animated:(BOOL)animated
+{
     BOOL isARNavigationController = [self.currentNavigationController isKindOfClass:ARNavigationController.class];
 
     // If selecting search button, toggle search VC
@@ -182,7 +187,7 @@ static BOOL ARTabViewDirectionRight = YES;
     }
 
     // Get the next View Controller, add to self
-    _currentNavigationController = [self navigationControllerForIndex:index];
+    _currentNavigationController = viewController;
     self.currentNavigationController.view.frame = nextViewInitialFrame;
 
     if (!self.currentNavigationController.parentViewController) {
