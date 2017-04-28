@@ -157,7 +157,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
                          gotUser:gotUser
            authenticationFailure:authenticationFailure
                   networkFailure:networkFailure
-        saveSharedWebCredentials:NO]; // This has been changed to NO because in the current onboarding flow we do not request this
+        saveSharedWebCredentials:YES];
 }
 
 - (void)loginWithUsername:(NSString *)username
