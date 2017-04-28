@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Can the Switchboard handle a URL?
 - (BOOL)canRouteURL:(NSURL *)url;
 
-/// Converts a path into a full URL based on staging/prod + device
+/// Converts a path into a full URL based on staging/prod
 - (NSURL *)resolveRelativeUrl:(NSString *)path;
 
 /// Shows the View Controller in Eigen

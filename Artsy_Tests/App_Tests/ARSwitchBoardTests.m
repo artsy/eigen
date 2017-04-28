@@ -79,7 +79,7 @@ describe(@"ARSwitchboard", ^{
 
         it(@"resolves relative url", ^{
             NSString *resolvedUrl = [[switchboard resolveRelativeUrl:@"/foo/bar"] absoluteString];
-            expect(resolvedUrl).to.equal(@"https://m.artsy.net/foo/bar");
+            expect(resolvedUrl).to.equal(@"https://www.artsy.net/foo/bar");
         });
     });
 

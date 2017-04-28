@@ -1871,7 +1871,6 @@
 		D39E87511AB0FBDF006B5BE9 /* ARStubbedBrowseNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARStubbedBrowseNetworkModel.m; sourceTree = "<group>"; };
 		D3A9C23B1AF15FF00018A12E /* ARFairNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairNetworkModel.h; sourceTree = "<group>"; };
 		D3A9C23C1AF15FF00018A12E /* ARFairNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairNetworkModel.m; sourceTree = "<group>"; };
-		D3AC809B1A9E9493000CB97A /* ARRouter+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARRouter+Private.h"; sourceTree = "<group>"; };
 		D3ACE5381AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARExternalWebBrowserViewControllerTests.m; sourceTree = "<group>"; };
 		D3BB62911AAE510F00BBF3D2 /* ARBrowseViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBrowseViewControllerTests.m; sourceTree = "<group>"; };
 		D3C8C2051B66D2FF004CAD7F /* ARImageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageTests.m; sourceTree = "<group>"; };
@@ -4339,7 +4338,6 @@
 				60A49F5E1676559200B9B95D /* ARNetworkConstants.h */,
 				60A49F5F1676559300B9B95D /* ARNetworkConstants.m */,
 				601C317616582BA30013E061 /* ARRouter.h */,
-				D3AC809B1A9E9493000CB97A /* ARRouter+Private.h */,
 				601C317716582BA30013E061 /* ARRouter.m */,
 				60B6F13716638785007C9587 /* ArtsyAPI.h */,
 				CB9E243F17CBC36F00773A9A /* ARAuthProviders.h */,

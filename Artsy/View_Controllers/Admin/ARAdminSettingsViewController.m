@@ -475,12 +475,11 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     labsSectionData.headerTitle = @"Developer";
 
     ARCellData *stagingAPI = [self cellDataWithName:@"API" defaultKey:ARStagingAPIURLDefault];
-    ARCellData *stagingPhoneWeb = [self cellDataWithName:@"Phone Web" defaultKey:ARStagingPhoneWebURLDefault];
-    ARCellData *stagingPadWeb = [self cellDataWithName:@"Pad Web" defaultKey:ARStagingPadWebURLDefault];
+    ARCellData *stagingWeb = [self cellDataWithName:@"Web" defaultKey:ARStagingWebURLDefault];
     ARCellData *stagingMetaphysics = [self cellDataWithName:@"Metaphysics" defaultKey:ARStagingMetaphysicsURLDefault];
     ARCellData *stagingSocket = [self cellDataWithName:@"Live Auctions Socket" defaultKey:ARStagingLiveAuctionSocketURLDefault];
 
-    [labsSectionData addCellDataFromArray:@[ stagingAPI, stagingPhoneWeb, stagingPadWeb, stagingMetaphysics, stagingSocket ]];
+    [labsSectionData addCellDataFromArray:@[stagingAPI, stagingWeb, stagingMetaphysics, stagingSocket]];
     return labsSectionData;
 }
 

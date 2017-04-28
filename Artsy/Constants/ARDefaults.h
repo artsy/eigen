@@ -2,8 +2,7 @@ extern NSString *const ARUserIdentifierDefault;
 extern NSString *const ARUseStagingDefault;
 
 extern NSString *const ARStagingAPIURLDefault;
-extern NSString *const ARStagingPhoneWebURLDefault;
-extern NSString *const ARStagingPadWebURLDefault;
+extern NSString *const ARStagingWebURLDefault;
 extern NSString *const ARStagingMetaphysicsURLDefault;
 extern NSString *const ARStagingLiveAuctionSocketURLDefault;
 

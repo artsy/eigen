@@ -55,18 +55,23 @@ describe(@"initWithURL", ^{
         });
 
         it(@"rewrites the scheme", ^{
-            ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://m.artsy.net/foo/bar"]];
-            expect([controller currentURL].absoluteString).to.equal(@"https://m.artsy.net/foo/bar");
+            ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://www.artsy.net/foo/bar"]];
+            expect([controller currentURL].absoluteString).to.equal(@"https://www.artsy.net/foo/bar");
         });
 
         it(@"with an artsy.net url", ^{
-            ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://artsy.net/foo/bar"]];
-            expect([controller currentURL].absoluteString).to.equal(@"https://m.artsy.net/foo/bar");
+            ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"https://artsy.net/foo/bar"]];
+            expect([controller currentURL].absoluteString).to.equal(@"https://www.artsy.net/foo/bar");
+        });
+        
+        it(@"with an m.artsy.net url", ^{
+            ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"https://m.artsy.net/foo/bar"]];
+            expect([controller currentURL].absoluteString).to.equal(@"https://www.artsy.net/foo/bar");
         });
 
         it(@"with a relative url", ^{
             ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/foo/bar"]];
-            expect([controller currentURL].absoluteString).to.equal(@"https://m.artsy.net/foo/bar");
+            expect([controller currentURL].absoluteString).to.equal(@"https://www.artsy.net/foo/bar");
         });
 
         it(@"with an external artsy.net url", ^{
@@ -102,18 +107,23 @@ describe(@"initWithURL", ^{
         });
 
         it(@"rewrites the scheme", ^{
-            ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"https://m-staging.artsy.net/foo/bar"]];
-            expect([controller currentURL].absoluteString).to.equal(@"https://m-staging.artsy.net/foo/bar");
+            ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://staging.artsy.net/foo/bar"]];
+            expect([controller currentURL].absoluteString).to.equal(@"https://staging.artsy.net/foo/bar");
         });
 
         it(@"with an artsy.net url", ^{
-            ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://staging.artsy.net/foo/bar"]];
-            expect([controller currentURL].absoluteString).to.equal(@"https://m-staging.artsy.net/foo/bar");
+            ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"https://artsy.net/foo/bar"]];
+            expect([controller currentURL].absoluteString).to.equal(@"https://staging.artsy.net/foo/bar");
+        });
+
+        it(@"with an m-staging.artsy.net url", ^{
+            ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"https://m-staging.artsy.net/foo/bar"]];
+            expect([controller currentURL].absoluteString).to.equal(@"https://staging.artsy.net/foo/bar");
         });
 
         it(@"with a relative url", ^{
             ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/foo/bar"]];
-            expect([controller currentURL].absoluteString).to.equal(@"https://m-staging.artsy.net/foo/bar");
+            expect([controller currentURL].absoluteString).to.equal(@"https://staging.artsy.net/foo/bar");
         });
 
         it(@"with an external artsy.net url", ^{
@@ -138,7 +148,7 @@ describe(@"authenticated", ^{
     });
     
     it(@"injects an X-Auth-Token header in requests", ^{
-        ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://m.artsy.net/"]];
+        ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://www.artsy.net/"]];
         NSURLRequest *request = [controller requestWithURL:controller.currentURL];
         expect([request valueForHTTPHeaderField:ARAuthHeader]).toNot.beNil();
     });

@@ -97,7 +97,7 @@
         @"image_url" : @"http://static1.artsy.net/featured_links/52277695c9dc2405b000022b/:version.jpg",
         @"title" : @"Featured Works For Sale",
         @"subtitle" : @"",
-        @"href" : @"http://m.artsy.net/home/featured_works",
+        @"href" : @"http://www.artsy.net/home/featured_works",
         @"display_on_mobile" : @YES
     }];
 }

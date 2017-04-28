@@ -59,7 +59,7 @@ describe(@"login", ^{
         });
         
         it(@"sets router auth token", ^{
-            NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://m.artsy.net"]];
+            NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://www.artsy.net"]];
             expect([request valueForHTTPHeaderField:ARAuthHeader]).toNot.beNil();
         });
     });
@@ -193,7 +193,7 @@ describe(@"clearUserData", ^{
         });
         
         it(@"unsets router auth token", ^{
-            NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://m.artsy.net"]];
+            NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://www.artsy.net"]];
             expect([request valueForHTTPHeaderField:ARAuthHeader]).to.beNil();
         });
     });
