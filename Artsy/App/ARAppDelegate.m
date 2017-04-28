@@ -198,7 +198,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
-    [self checkForiOS8Deprecation];
 }
 
 - (void)startupApp
@@ -425,36 +424,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfRuns forKey:ARAnalyticsAppUsageCountProperty];
     [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (void)checkForiOS8Deprecation
-
-{
-    // To totally deprecate all iOS8 devices
-    // set the "iOS8 Redirection URL" featured link's HREF to something like /404/ios8
-    // https://admin.artsy.net/set/54e4aab97261692d085a1c00
-
-    // This was added in iOS9
-    if (&UIApplicationOpenURLOptionsAnnotationKey != NULL) {
-        return;
-    }
-
-    [ArtsyAPI getOrderedSetWithKey:@"eigen-ios-deprecation-featured-links" success:^(OrderedSet *set) {
-        [set getItems:^(NSArray *items) {
-            FeaturedLink *link = [items detect:^BOOL(FeaturedLink *link) {
-                return [link.title isEqualToString:@"iOS8 Redirection URL"];
-            }];
-
-            // By default it be 0 length
-            if (link.href.length) {
-                UINavigationController *navigationController = ARTopMenuViewController.sharedController.rootNavigationController;
-                NSURL *url = [NSURL URLWithString:link.href relativeToURL:[ARRouter baseWebURL]];
-                UIViewController *martsyWarning = [[AREndOfLineInternalMobileWebViewController alloc] initWithURL:url];
-                [navigationController setViewControllers:@[martsyWarning] animated:NO];
-            }
-
-        }];
-    } failure:nil];
 }
 
 @end
