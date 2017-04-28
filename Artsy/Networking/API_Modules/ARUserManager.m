@@ -59,12 +59,12 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 + (void)identifyAnalyticsUser
 {
     User *user = [User currentUser];
+    NSString *anonymousID = self.sharedManager.localTemporaryUserUUID;
 
     [ARAnalytics setUserProperty:@"is_temporary_user" toValue:@(user == nil)];
+    [ARAnalytics identifyUserWithID:user.userID anonymousID:anonymousID andEmailAddress:user.email];
 
-    [ARAnalytics identifyUserWithID:user.userID
-                        anonymousID:self.sharedManager.localTemporaryUserUUID
-                    andEmailAddress:user.email];
+    [Adjust addSessionPartnerParameter:@"anonymous_id" value:anonymousID];
 }
 
 - (instancetype)init

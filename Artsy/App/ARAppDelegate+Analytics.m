@@ -87,18 +87,11 @@
     ArtsyKeys *keys = [[ArtsyKeys alloc] init];
 
     NSString *segmentWriteKey = keys.segmentProductionWriteKey;
-    NSString *environment = ADJEnvironmentProduction;
+    NSString *adjustEnv = ADJEnvironmentProduction;
 
     if (ARAppStatus.isBetaOrDev) {
         segmentWriteKey = keys.segmentDevWriteKey;
-        environment = ADJEnvironmentSandbox;
-    }
-
-    if (ARAppStatus.isRunningTests == NO) {
-        // Skipping ARAnalytics because Adjust has its own expectations
-        // around event names being < 6 chars
-        ADJConfig *adjustConfig = [ADJConfig configWithAppToken:keys.adjustProductionAppToken environment:environment];
-        [Adjust appDidLaunch:adjustConfig];
+        adjustEnv = ADJEnvironmentSandbox;
     }
 
     if ([AROptions boolForOption:AROptionsShowAnalyticsOnScreen]) {
@@ -1463,6 +1456,16 @@
 
     [ARUserManager identifyAnalyticsUser];
     [ARAnalytics incrementUserProperty:ARAnalyticsAppUsageCountProperty byInt:1];
+    
+    if (ARAppStatus.isRunningTests == NO) {
+        // Skipping ARAnalytics because Adjust has its own expectations
+        // around event names being < 6 chars
+        ADJConfig *adjustConfig = [ADJConfig configWithAppToken:keys.adjustProductionAppToken environment:adjustEnv];
+        
+        // This has to be called at the absolute latest, definitely *after* identifying the user, because tracked
+        // install events will not contain the associated anonymous ID otherwise.
+        [Adjust appDidLaunch:adjustConfig];
+    }
 }
 
 @end
