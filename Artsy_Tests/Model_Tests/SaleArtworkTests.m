@@ -87,15 +87,30 @@ describe(@"artwork for sale", ^{
         });
     });
 
-    describe(@"with an auction that has ended", ^{
+    describe(@"with an auction that has closed", ^{
         beforeEach(^{
-            _saleArtwork.auction = [Sale saleWithStart:[NSDate distantPast] end:[NSDate distantPast]];
+            _saleArtwork.auction = [Sale modelWithJSON:@{ @"auction_state" : @"closed"}];
         });
 
         it(@"sets auction ended state", ^{
             expect([_saleArtwork auctionState]).to.equal(ARAuctionStateEnded);
         });
     });
+
+    describe(@"with an auction that has closed with no set end date", ^{
+        beforeEach(^{
+            _saleArtwork.auction = [Sale modelWithJSON:@{
+               @"auction_state" : @"closed",
+               @"startDate" : [NSDate distantPast],
+               @"endDate" : [NSNull null]
+           }];
+        });
+
+        it(@"sets auction ended state", ^{
+            expect([_saleArtwork auctionState]).to.equal(ARAuctionStateEnded);
+        });
+    });
+
 
     describe(@"with a bid", ^{
         beforeEach(^{
