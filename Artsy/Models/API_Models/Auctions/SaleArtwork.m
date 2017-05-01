@@ -50,7 +50,7 @@ static NSNumberFormatter *currencyFormatter;
     NSDate *now = [ARSystemTime date];
 
     BOOL hasStarted = [self.auction.startDate compare:now] == NSOrderedAscending;
-    BOOL hasFinished = [self.auction.endDate compare:now] == NSOrderedAscending;
+    BOOL hasFinished = self.auction.saleState == SaleStateClosed;
     BOOL notYetStarted = [self.auction.startDate compare:now] == NSOrderedDescending;
     // registrationEndsAtDate is often nil.
     BOOL regstrationClosed = self.auction.registrationEndsAtDate && [self.auction.registrationEndsAtDate compare:now] == NSOrderedAscending;
