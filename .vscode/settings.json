@@ -16,6 +16,7 @@
         "**/.svn": true,
         "**/.hg": true,
         "**/.DS_Store": true,
+        ".jest/": true,
         "build": true,
         "Example/build": true,
         "Example/DerivedData": true,
