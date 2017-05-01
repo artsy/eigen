@@ -13,7 +13,7 @@
     "danger": "danger",
     "start": "npm run clean-example && concurrently --kill-others 'npm run start-packager' 'npm run storybook'",
     "start-packager": "node node_modules/react-native/local-cli/cli.js start --config rn-cli.config.js",
-    "storybook": "storybook start -p 9001",
+    "storybook": "storybook start -p 9001 -c .storybook --skip-packager",
     "rndebugger": "REACT_DEBUGGER=\"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\" npm start",
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
     "test": "jest",
@@ -68,6 +68,7 @@
     "lib"
   ],
   "dependencies": {
+    "awesome-typescript-loader": "^3.1.3",
     "lodash": "3.10.1",
     "moment": "latest",
     "react": "latest",
@@ -78,7 +79,7 @@
     "typescript": "^2.2.1"
   },
   "devDependencies": {
-    "@kadira/react-native-storybook": "^1.12.6",
+    "@kadira/react-native-storybook": "^2.3.0",
     "@types/jest": "^19.2.2",
     "@types/lodash": "^4.14.53",
     "@types/react-native": "^0.42.9",
