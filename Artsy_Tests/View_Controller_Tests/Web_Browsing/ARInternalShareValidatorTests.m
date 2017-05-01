@@ -9,7 +9,7 @@ before(^{
     sut = [[ARInternalShareValidator alloc] init];
     facebookURL = [NSURL URLWithString:@"https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.artsy.net%2Farticle%2Fnicholas-o-brien-are-algorithms-conceptual-art-s-next-frontier"];
 
-    twitterURL = [NSURL URLWithString:@"https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Fm.artsy.net%2Fmagazine&text=Why%20Brilliant%20African-American%20Painter%20Alma%20Thomas%20Wasn%E2%80%99t%20Discovered%20Until%20Age%2075%20@Artsy&url=https://m.artsy.net/article/editorial-why-brilliant-african-american-painter-alma-thomas-wasnt"];
+    twitterURL = [NSURL URLWithString:@"https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Fwww.artsy.net%2Fmagazine&text=Why%20Brilliant%20African-American%20Painter%20Alma%20Thomas%20Wasn%E2%80%99t%20Discovered%20Until%20Age%2075%20@Artsy&url=https://www.artsy.net/article/editorial-why-brilliant-african-american-painter-alma-thomas-wasnt"];
 
     linkedInURL =  [NSURL URLWithString:@"https://linkedin/share/share?url=https%3A%2F%2Fwww.artsy.net%2Farticle%2Fnicholas-o-brien-are-algorithms-conceptual-art-s-next-frontier&via=artsy"];
 });
@@ -57,7 +57,7 @@ describe(@"correctly pulls out the name", ^{
 describe(@"correctly pulls out the address", ^{
 
     it(@"twitter", ^{
-        expect([sut addressBeingSharedFromShareURL:twitterURL]).to.equal(@"https://m.artsy.net/article/editorial-why-brilliant-african-american-painter-alma-thomas-wasnt");
+        expect([sut addressBeingSharedFromShareURL:twitterURL]).to.equal(@"https://www.artsy.net/article/editorial-why-brilliant-african-american-painter-alma-thomas-wasnt");
     });
 
     it(@"facebook", ^{

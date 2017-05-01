@@ -1,5 +1,4 @@
 #import "ARRouter.h"
-#import "ARRouter+Private.h"
 
 #import "Artist.h"
 #import "Artwork.h"
@@ -38,16 +37,20 @@ static NSString *hostFromString(NSString *string)
 
 + (void)setup
 {
-    NSString *productionHost = hostFromString(ARBaseDesktopWebURL);
-    NSString *productionMobile = hostFromString(ARBaseMobileWebURL);
-    NSString *productionAPI = hostFromString(ARBaseMobileWebURL);
+    NSString *productionWeb = hostFromString(ARBaseWebURL);
+    NSString *productionDeprecatedMobileWeb = hostFromString(ARBaseDeprecatedMobileWebURL);
+    NSString *productionAPI = hostFromString(ARBaseApiURL);
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *stagingHost = hostFromString([defaults stringForKey:ARStagingPadWebURLDefault]);
-    NSString *stagingMobile = hostFromString([defaults stringForKey:ARStagingPhoneWebURLDefault]);
+    NSString *stagingWeb = hostFromString([defaults stringForKey:ARStagingWebURLDefault]);
+    NSString *stagingDeprecatedMobileWeb = hostFromString(ARStagingBaseDeprecatedMobileWebURL);
     NSString *stagingAPI = hostFromString([defaults stringForKey:ARStagingAPIURLDefault]);
 
-    artsyHosts = [NSSet setWithArray:@[ @"artsy.net", productionAPI, productionHost, productionMobile, stagingAPI, stagingHost, stagingMobile ]];
+    artsyHosts = [NSSet setWithArray:@[
+        @"artsy.net",
+        productionAPI, productionWeb, productionDeprecatedMobileWeb,
+        stagingAPI, stagingWeb, stagingDeprecatedMobileWeb
+    ]];
 
     [ARRouter setupWithBaseApiURL:[ARRouter baseApiURL]];
 
@@ -101,20 +104,8 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURL *)baseWebURL
 {
-    return [UIDevice isPad] ? [self baseDesktopWebURL] : [self baseMobileWebURL];
-}
-
-+ (NSURL *)baseDesktopWebURL
-{
-    NSString *stagingBaseWebURL = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingPadWebURLDefault];
-    NSString *url = [AROptions boolForOption:ARUseStagingDefault] ? stagingBaseWebURL : ARBaseDesktopWebURL;
-    return [NSURL URLWithString:url];
-}
-
-+ (NSURL *)baseMobileWebURL
-{
-    NSString *stagingBaseWebURL = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingPhoneWebURLDefault];
-    NSString *url = [AROptions boolForOption:ARUseStagingDefault] ? stagingBaseWebURL : ARBaseMobileWebURL;
+    NSString *stagingBaseWebURL = [[NSUserDefaults standardUserDefaults] stringForKey:ARStagingWebURLDefault];
+    NSString *url = [AROptions boolForOption:ARUseStagingDefault] ? stagingBaseWebURL : ARBaseWebURL;
     return [NSURL URLWithString:url];
 }
 

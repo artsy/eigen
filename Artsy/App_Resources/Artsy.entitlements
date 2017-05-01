@@ -10,18 +10,15 @@
 		<string>applinks:www.artsy.net</string>
 		<string>applinks:staging.artsy.net</string>
 		<string>applinks:m.artsy.net</string>
-		<string>applinks:m-staging.artsy.net</string>
 		<string>applinks:link.artsy.net</string>
 		<string>activitycontinuation:artsy.net</string>
 		<string>activitycontinuation:www.artsy.net</string>
 		<string>activitycontinuation:staging.artsy.net</string>
 		<string>activitycontinuation:m.artsy.net</string>
-		<string>activitycontinuation:m-staging.artsy.net</string>
 		<string>webcredentials:artsy.net</string>
 		<string>webcredentials:www.artsy.net</string>
 		<string>webcredentials:staging.artsy.net</string>
 		<string>webcredentials:m.artsy.net</string>
-		<string>webcredentials:m-staging.artsy.net</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>

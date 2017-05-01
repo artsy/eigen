@@ -5,8 +5,7 @@ NSString *const ARUserIdentifierDefault = @"ARUserIdentifier";
 NSString *const ARUseStagingDefault = @"ARUseStagingDefault";
 
 NSString *const ARStagingAPIURLDefault = @"ARStagingAPIURLDefault";
-NSString *const ARStagingPhoneWebURLDefault = @"ARStagingPhoneWebURLDefault";
-NSString *const ARStagingPadWebURLDefault = @"ARStagingPadWebURLDefault";
+NSString *const ARStagingWebURLDefault = @"ARStagingWebURLDefault";
 NSString *const ARStagingMetaphysicsURLDefault = @"ARStagingMetaphysicsURLDefault";
 NSString *const ARStagingLiveAuctionSocketURLDefault = @"ARStagingLiveAuctionSocketURLDefault";
 
@@ -45,8 +44,7 @@ NSString *const AREmissionHeadVersionDefault = @"emission-head-version";
 
         ARUseStagingDefault : @(useStagingDefault),
         ARStagingAPIURLDefault : @"https://stagingapi.artsy.net",
-        ARStagingPhoneWebURLDefault : @"https://m-staging.artsy.net",
-        ARStagingPadWebURLDefault : @"https://staging.artsy.net",
+        ARStagingWebURLDefault : @"https://staging.artsy.net",
         ARStagingMetaphysicsURLDefault : @"http://metaphysics-staging.artsy.net",
         ARStagingLiveAuctionSocketURLDefault : @"wss://causality-staging.artsy.net"
     }];

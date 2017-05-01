@@ -147,7 +147,7 @@ static void *ARProgressContext = &ARProgressContext;
             CGRect position = (CGRect){.origin = lastTouchPointInView, .size = CGSizeZero};
             [self.shareValidator shareURL:URL inView:self.view frame:position];
 
-            ARActionLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
+            ARActionLog(@"Artsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
             return WKNavigationActionPolicyCancel;
 
         } else {
@@ -156,12 +156,12 @@ static void *ARProgressContext = &ARProgressContext;
                 [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
             }
 
-            ARActionLog(@"Martsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
+            ARActionLog(@"Artsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
             return WKNavigationActionPolicyCancel;
         }
     }
 
-    ARActionLog(@"Martsy URL: Allowed - %@ - %@", URL, @(navigationAction.navigationType));
+    ARActionLog(@"Artsy URL: Allowed - %@ - %@", URL, @(navigationAction.navigationType));
     return WKNavigationActionPolicyAllow;
 }
 

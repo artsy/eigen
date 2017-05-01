@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
 
-NSString *const ARBaseDesktopWebURL = @"https://www.artsy.net";
-NSString *const ARBaseMobileWebURL = @"https://m.artsy.net";
+NSString *const ARBaseWebURL = @"https://www.artsy.net";
+NSString *const ARBaseDeprecatedMobileWebURL = @"https://m.artsy.net";
+NSString *const ARStagingBaseDeprecatedMobileWebURL = @"https://m-staging.artsy.net";
 NSString *const ARBaseApiURL = @"https://api.artsy.net";
 NSString *const ARBaseMetaphysicsApiURL = @"https://metaphysics-production.artsy.net/";
 NSString *const ARCausalityBidderSocketURL = @"wss://causality-bidders.artsy.net";

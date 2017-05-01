@@ -84,7 +84,7 @@
     NSMutableArray *results = [NSMutableArray array];
     NSSet *allShows = self.fair.shows;
     for (PartnerShow *show in allShows) {
-        // boths are usually some text that ends with the booth number
+        // booths are usually some text that ends with the booth number
         if ([show.locationInFair.lowercaseString hasSuffix:query]) {
             [results addObject:[SearchResult modelWithJSON:@{
                 @"id" : show.showID,

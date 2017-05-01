@@ -322,7 +322,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
     } else if ([ARRouter isInternalURL:url] || url.scheme == nil) {
         /// Is it an Artsy URL, or a purely relative path?
 
-        /// Normalize URL ( e.g. m.artsy.net -> staging-m.artsy.net
+        /// Normalize URL ( e.g. www.artsy.net -> staging.artsy.net
         NSURL *fixedURL = [self fixHostForURL:url];
         return [self routeInternalURL:fixedURL fair:fair];
 

@@ -11,7 +11,6 @@
 + (NSSet *)artsyHosts;
 + (NSURL *)baseApiURL;
 + (NSURL *)baseWebURL;
-+ (NSURL *)baseDesktopWebURL;
 
 + (AFHTTPSessionManager *)httpClient;
 + (void)setupWithBaseApiURL:(NSURL *)baseApiURL;

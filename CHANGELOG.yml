@@ -12,6 +12,7 @@ upcoming:
       - Parallelizes auctions network calls - ash
       - Fix issue with push notification when not coming from account creation - maxim
       - Fix anonymous user ID not being included in Adjust install events - alloy
+      - Remove references to martsy, only serve from Force - alloy
       - Makes logic for an auction being closed the same as force - orta
     user_facing:
       - Adds support for lot_label in auctions - ash

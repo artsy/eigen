@@ -1,6 +1,6 @@
 #import "ARURLItemProvider.h"
 #import "ARNetworkConstants.h"
-#import "ARRouter+Private.h"
+#import "ARRouter.h"
 
 SpecBegin(ARURLItemProvider);
 
@@ -15,7 +15,7 @@ describe(@"url and image thumbnail", ^{
     __block NSURL *expectedURL;
     before(^{
         image = [UIImage imageNamed:@"stub.jpg"];
-        NSURL *pathUrl = [NSURL URLWithString:path relativeToURL:[ARRouter baseDesktopWebURL]];
+        NSURL *pathUrl = [NSURL URLWithString:path relativeToURL:[ARRouter baseWebURL]];
         expectedURL = [NSURL URLWithString:[pathUrl absoluteString]];
     });
 

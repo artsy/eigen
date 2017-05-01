@@ -16,7 +16,7 @@ describe(@"requestForURL", ^{
         });
 
         it(@"sets router auth token for Artsy URLs", ^{
-            NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://m.artsy.net"]];
+            NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://www.artsy.net"]];
             expect([request valueForHTTPHeaderField:ARAuthHeader]).to.equal(@"token");
         });
 
@@ -36,7 +36,7 @@ describe(@"requestForURL", ^{
         });
         
         it(@"sets router xapp token for Artsy URLs", ^{
-            NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://m.artsy.net"]];
+            NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://www.artsy.net"]];
             expect([request valueForHTTPHeaderField:ARXappHeader]).to.equal(@"token");
         });
         
@@ -163,7 +163,7 @@ describe(@"User-Agent", ^{
 //        [[[userMock stub] andReturnValue:@(NO)] isLocalTemporaryUser];
 //        [ARRouter setup];
 //
-//        NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://m.artsy.net"]];
+//        NSURLRequest *request = [ARRouter requestForURL:[NSURL URLWithString:@"http://www.artsy.net"]];
 //        expect([request valueForHTTPHeaderField:AREigenLocalTemporaryUserIDHeader]).to.beFalsy();
 //    });
 //
@@ -184,8 +184,8 @@ describe(@"baseWebURL", ^{
         [ARRouter setup];
     });
     
-    it(@"points to artsy mobile on iphone", ^{
-        expect([ARRouter baseWebURL]).to.equal([NSURL URLWithString:@"https://m.artsy.net"]);
+    it(@"points to artsy web on iphone", ^{
+        expect([ARRouter baseWebURL]).to.equal([NSURL URLWithString:@"https://www.artsy.net"]);
     });
     
     it(@"points to artsy web on ipad", ^{
