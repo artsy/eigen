@@ -13,6 +13,7 @@
 #import "User.h"
 #import "ARSwitchBoard.h"
 #import "ARAppNotificationsDelegate.h"
+#import "ARRootViewController.h"
 
 #import "UIView+HitTestExpansion.h"
 #import <objc/runtime.h>
@@ -28,6 +29,7 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 #import <Emission/ARHomeComponentViewController.h>
+#import <Emission/ARWorksForYouComponentViewController.h>
 #import <React/RCTScrollView.h>
 
 static const CGFloat ARMenuButtonDimension = 50;
@@ -297,17 +299,6 @@ static const CGFloat ARMenuButtonDimension = 50;
     return (ARNavigationController *)[self.navigationDataSource navigationControllerAtIndex:index parameters:params];
 }
 
-- (void)presentRootViewControllerAtIndex:(NSInteger)index animated:(BOOL)animated;
-{
-    BOOL alreadySelectedTab = self.selectedTabIndex == index;
-    ARNavigationController *controller = [self rootNavigationControllerAtIndex:index];
-    if (controller.viewControllers.count > 1) {
-        [controller popToRootViewControllerAnimated:(animated && alreadySelectedTab)];
-    }
-    if (!alreadySelectedTab) {
-        [self.tabContentView setCurrentViewIndex:index animated:animated];
-    }
-}
 
 - (NSInteger)indexOfRootViewController:(UIViewController *)viewController;
 {
@@ -316,6 +307,10 @@ static const CGFloat ARMenuButtonDimension = 50;
         ARNavigationController *rootController = [self rootNavigationControllerAtIndex:index];
         if (rootController.rootViewController == viewController) {
             return index;
+        } else if ([viewController isKindOfClass:ARFavoritesViewController.class]) {
+            return ARTopTabControllerIndexFavorites;
+        } else if ([viewController isKindOfClass:ARWorksForYouComponentViewController.class]) {
+            return ARTopTabControllerIndexNotifications;
         }
     }
     return NSNotFound;
@@ -448,19 +443,63 @@ static const CGFloat ARMenuButtonDimension = 50;
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
-
+    
     if ([self.class shouldPresentViewControllerAsModal:viewController]) {
         [self presentViewController:viewController animated:animated completion:completion];
         return;
     }
 
-    NSInteger index = [self indexOfRootViewController:viewController];
-    if (index != NSNotFound) {
-        [self presentRootViewControllerAtIndex:index animated:(animated && index != self.selectedTabIndex)];
+    if ([viewController respondsToSelector:@selector(isRootViewController)] && [(id<ARRootViewController>)viewController isRootViewController]) {
+        [self presentRootViewController:viewController animated:animated];
     } else {
         [self.rootNavigationController pushViewController:viewController animated:animated];
     }
 }
+
+- (void)presentRootViewControllerAtIndex:(NSInteger)index animated:(BOOL)animated;
+{
+    BOOL alreadySelectedTab = self.selectedTabIndex == index;
+    ARNavigationController *controller = [self rootNavigationControllerAtIndex:index];
+    if (controller.viewControllers.count > 1) {
+        [controller popToRootViewControllerAnimated:(animated && alreadySelectedTab)];
+    }
+    if (!alreadySelectedTab) {
+        [self.tabContentView setCurrentViewIndex:index animated:animated];
+    }
+}
+
+
+- (void)presentRootViewController:(UIViewController *)viewController animated:(BOOL)animated;
+{
+    ARNavigationController *presentableController;
+    
+    NSInteger index = [self indexOfRootViewController:viewController];
+    
+    // If there is an existing instance at that index, use it. Otherwise use the instance passed in as viewController.
+    // If for some reason something went wrong, default to Home
+    switch (index) {
+        case ARTopTabControllerIndexFeed:
+        case ARTopTabControllerIndexBrowse:
+            presentableController = [self rootNavigationControllerAtIndex:index];
+            break;
+        case ARTopTabControllerIndexFavorites:
+        case ARTopTabControllerIndexNotifications:
+            presentableController = [[ARNavigationController alloc] initWithRootViewController:viewController];
+            break;
+        default:
+            presentableController = [self rootNavigationControllerAtIndex:ARTopTabControllerIndexFeed];
+    }
+    
+    BOOL alreadySelectedTab = self.selectedTabIndex == index;
+    if (presentableController.viewControllers.count > 1) {
+        [presentableController popToRootViewControllerAnimated:(animated && alreadySelectedTab)];
+    }
+    
+    if (!alreadySelectedTab) {
+        [self.tabContentView forceSetViewController:presentableController atIndex:index animated:animated];
+    }
+}
+
 
 #pragma mark - Auto Rotation
 

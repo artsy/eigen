@@ -49,6 +49,7 @@
 @property (nonatomic, assign, readonly) NSInteger currentViewIndex;
 @property (nonatomic, assign, readonly) NSInteger previousViewIndex;
 - (void)setCurrentViewIndex:(NSInteger)currentViewIndex animated:(BOOL)animated;
+- (void)forceSetViewController:(UINavigationController *)viewController atIndex:(NSInteger)index animated:(BOOL)animated;
 - (void)returnToPreviousViewIndex;
 
 // Move to the next or previous tab, if you're at the end it does nothing
