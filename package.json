@@ -96,6 +96,7 @@
     "jest-react-native": "^17.0.3",
     "react-storybooks-relay-container": "^1.0.0",
     "react-test-renderer": "^15.3.0",
+    "recursive-readdir-sync": "^1.0.6",
     "relay2ts": "^0.2.0",
     "ts-jest": "^19.0.10",
     "tslint": "^4.5.0"

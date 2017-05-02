@@ -8,6 +8,9 @@ const fs = require("fs") // tslint:disable-line
 const os = require("os") // tslint:disable-line
 const path = require("path") // tslint:disable-line
 
+import * as recurseSync from "recursive-readdir-sync"
+const allFiles = recurseSync("./src")
+
 // Setup
 const pr = danger.github.pr
 const modified = danger.git.modified_files
@@ -81,36 +84,32 @@ if (testFilesThatDontExist.length > 0) {
   callout(output)
 }
 
-// TODO: Add this back
+// A component should have a corresponding story reference, so that we're consistent
+// with how the web create their components
 
-// // A component should have a corresponding story reference, so that we're consistent
-// // with how the web create their components
+const reactComponentForPath = (filePath) => {
+  const content = fs.readFileSync(filePath).toString()
+  const match = content.match(/class (.*) extends React.Component/)
+  if (!match || match.length === 0) { return null }
+  return match[1]
+}
 
-// const reactComponentForPath = (filePath) => {
-//   const content = fs.readFileSync(filePath).toString()
-//   const match = content.match(/export class (.*) extends React.Component/)
-//   if (!match || match.length === 0) { return null }
-//   return match[0]
-// }
+// Start with a full list of all Components, then look
+// through all story files removing them from the list if found.
+// If any are left, leave a warning.
+let componentsForFiles = compact(touchedComponents.map(reactComponentForPath))
+const storyFiles = allFiles.filter(f => f.includes("__stories__/") && f.includes(".story."))
 
-// // Start with a full list of all Components, then look
-// // through all story files removing them from the list if found.
-// // If any are left, leave a warning.
-// let componentsForFiles = compact(touchedComponents.map(reactComponentForPath))
+storyFiles.forEach(story => {
+  const content = fs.readFileSync(story, "utf8")
+  componentsForFiles.forEach(component => {
+    if (content.includes(component)) {
+      componentsForFiles = componentsForFiles.filter(f => f !== component)
+    }
+  })
+})
 
-// // This may need updating once there are multiple folders for components
-// const storyFiles = fs.readdirSync("src/stories")
-
-// storyFiles.forEach(story => {
-//   const content = fs.readFileSync("src/stories/" + story).toString()
-//   componentsForFiles.forEach(component => {
-//     if (content.includes(component)) {
-//       componentsForFiles = componentsForFiles.filter(f => f !== component)
-//     }
-//   })
-// })
-
-// if (componentsForFiles.length) {
-//   const components = componentsForFiles.map(c => ` - [] \`${c}\``).join("\n")
-//   warn(`Could not find corresponding stories for these components: \n${components}`)
-// }
+if (componentsForFiles.length) {
+  const components = componentsForFiles.map(c => ` - [] \`${c}\``).join("\n")
+  warn(`Could not find corresponding stories for these components: \n${components}`)
+}
