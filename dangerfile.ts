@@ -18,17 +18,19 @@ const bodyAndTitle = (pr.body + pr.title).toLowerCase()
 const trivialPR = bodyAndTitle.includes("trivial")
 const acceptedNoTests = bodyAndTitle.includes("skip new tests")
 
+const filesOnly = (file: string) => fs.existsSync(file) && fs.lstatSync(file).isFile()
+
 // Custom subsets of known files
-const modifiedAppFiles = modified.filter(p => includes(p, "lib/"))
-const modifiedTestFiles = modified.filter(p => includes(p, "__tests__"))
+const modifiedAppFiles = modified.filter(p => includes(p, "lib/")).filter(p => filesOnly(p))
+const modifiedTestFiles = modified.filter(p => includes(p, "__tests__")).filter(p => filesOnly(p))
 
 // Modified or Created can be treated the same a lot of the time
-const touchedFiles = modified.concat(danger.git.created_files)
+const touchedFiles = modified.concat(danger.git.created_files).filter(p => filesOnly(p))
 const touchedAppOnlyFiles = touchedFiles.filter(p => includes(p, "src/lib/") && !includes(p, "__tests__"))
 const touchedComponents = touchedFiles.filter(p => includes(p, "src/lib/components") && !includes(p, "__tests__"))
 
 const touchedTestFiles = touchedFiles.filter(p => includes(p, "__tests__"))
-const touchedStoryFiles = touchedFiles.filter(p => includes(p, "src/stories"))
+const touchedStoryFiles = touchedFiles.filter(p => includes(p, "__stories__"))
 
 // Rules
 
@@ -79,34 +81,36 @@ if (testFilesThatDontExist.length > 0) {
   callout(output)
 }
 
-// A component should have a corresponding story reference, so that we're consistent
-// with how the web create their components
+// TODO: Add this back
 
-const reactComponentForPath = (filePath) => {
-  const content = fs.readFileSync(filePath).toString()
-  const match = content.match(/export class (.*) extends React.Component/)
-  if (!match || match.length === 0) { return null }
-  return match[0]
-}
+// // A component should have a corresponding story reference, so that we're consistent
+// // with how the web create their components
 
-// Start with a full list of all Components, then look
-// through all story files removing them from the list if found.
-// If any are left, leave a warning.
-let componentsForFiles = compact(touchedComponents.map(reactComponentForPath))
+// const reactComponentForPath = (filePath) => {
+//   const content = fs.readFileSync(filePath).toString()
+//   const match = content.match(/export class (.*) extends React.Component/)
+//   if (!match || match.length === 0) { return null }
+//   return match[0]
+// }
 
-// This may need updating once there are multiple folders for components
-const storyFiles = fs.readdirSync("src/stories")
+// // Start with a full list of all Components, then look
+// // through all story files removing them from the list if found.
+// // If any are left, leave a warning.
+// let componentsForFiles = compact(touchedComponents.map(reactComponentForPath))
 
-storyFiles.forEach(story => {
-  const content = fs.readFileSync("src/stories/" + story).toString()
-  componentsForFiles.forEach(component => {
-    if (content.includes(component)) {
-      componentsForFiles = componentsForFiles.filter(f => f !== component)
-    }
-  })
-})
+// // This may need updating once there are multiple folders for components
+// const storyFiles = fs.readdirSync("src/stories")
 
-if (componentsForFiles.length) {
-  const components = componentsForFiles.map(c => ` - [] \`${c}\``).join("\n")
-  warn(`Could not find corresponding stories for these components: \n${components}`)
-}
+// storyFiles.forEach(story => {
+//   const content = fs.readFileSync("src/stories/" + story).toString()
+//   componentsForFiles.forEach(component => {
+//     if (content.includes(component)) {
+//       componentsForFiles = componentsForFiles.filter(f => f !== component)
+//     }
+//   })
+// })
+
+// if (componentsForFiles.length) {
+//   const components = componentsForFiles.map(c => ` - [] \`${c}\``).join("\n")
+//   warn(`Could not find corresponding stories for these components: \n${components}`)
+// }
