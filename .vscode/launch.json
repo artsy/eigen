@@ -38,21 +38,6 @@
       "internalDebuggerPort": 9090,
       "sourceMaps": true,
       "outDir": "${workspaceRoot}/.vscode/.react"
-    },
-    {
-      "name": "Run Tests With Debugger (slower, use npm run watch for normal work)",
-      "type": "node",
-      "request": "launch",
-      "port": 5858,
-      "address": "localhost",
-      "stopOnEntry": false,
-      "runtimeExecutable": null,
-      "runtimeArgs": [
-        "--debug-brk",
-        "./node_modules/.bin/jest",
-        "-i"
-      ],
-      "cwd": "${workspaceRoot}"
     }
   ]
 }

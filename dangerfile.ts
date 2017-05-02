@@ -8,6 +8,9 @@ const fs = require("fs") // tslint:disable-line
 const os = require("os") // tslint:disable-line
 const path = require("path") // tslint:disable-line
 
+import * as recurseSync from "recursive-readdir-sync"
+const allFiles = recurseSync("./src")
+
 // Setup
 const pr = danger.github.pr
 const modified = danger.git.modified_files
@@ -18,17 +21,19 @@ const bodyAndTitle = (pr.body + pr.title).toLowerCase()
 const trivialPR = bodyAndTitle.includes("trivial")
 const acceptedNoTests = bodyAndTitle.includes("skip new tests")
 
+const filesOnly = (file: string) => fs.existsSync(file) && fs.lstatSync(file).isFile()
+
 // Custom subsets of known files
-const modifiedAppFiles = modified.filter(p => includes(p, "lib/"))
-const modifiedTestFiles = modified.filter(p => includes(p, "__tests__"))
+const modifiedAppFiles = modified.filter(p => includes(p, "lib/")).filter(p => filesOnly(p))
+const modifiedTestFiles = modified.filter(p => includes(p, "__tests__")).filter(p => filesOnly(p))
 
 // Modified or Created can be treated the same a lot of the time
-const touchedFiles = modified.concat(danger.git.created_files)
+const touchedFiles = modified.concat(danger.git.created_files).filter(p => filesOnly(p))
 const touchedAppOnlyFiles = touchedFiles.filter(p => includes(p, "src/lib/") && !includes(p, "__tests__"))
 const touchedComponents = touchedFiles.filter(p => includes(p, "src/lib/components") && !includes(p, "__tests__"))
 
 const touchedTestFiles = touchedFiles.filter(p => includes(p, "__tests__"))
-const touchedStoryFiles = touchedFiles.filter(p => includes(p, "src/stories"))
+const touchedStoryFiles = touchedFiles.filter(p => includes(p, "__stories__"))
 
 // Rules
 
@@ -55,7 +60,8 @@ if (packageChanged && !lockfileChanged) {
 
 // Always ensure we assign someone, so that our Slackbot can do its work correctly
 if (pr.assignee === null) {
-  fail("Please assign someone to merge this PR, and optionally include people who should review.")
+  const method = pr.title.includes("WIP") ? warn : fail
+  method("Please assign someone to merge this PR, and optionally include people who should review.")
 }
 
 // Check that every file touched has a corresponding test file
@@ -83,21 +89,19 @@ if (testFilesThatDontExist.length > 0) {
 
 const reactComponentForPath = (filePath) => {
   const content = fs.readFileSync(filePath).toString()
-  const match = content.match(/export class (.*) extends React.Component/)
-  if (match.length === 0) { return null }
-  return match[0]
+  const match = content.match(/class (.*) extends React.Component/)
+  if (!match || match.length === 0) { return null }
+  return match[1]
 }
 
 // Start with a full list of all Components, then look
 // through all story files removing them from the list if found.
 // If any are left, leave a warning.
 let componentsForFiles = compact(touchedComponents.map(reactComponentForPath))
-
-// This may need updating once there are multiple folders for components
-const storyFiles = fs.readdirSync("src/stories")
+const storyFiles = allFiles.filter(f => f.includes("__stories__/") && f.includes(".story."))
 
 storyFiles.forEach(story => {
-  const content = fs.readFileSync("src/stories/" + story).toString()
+  const content = fs.readFileSync(story, "utf8")
   componentsForFiles.forEach(component => {
     if (content.includes(component)) {
       componentsForFiles = componentsForFiles.filter(f => f !== component)
