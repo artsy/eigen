@@ -49,29 +49,51 @@ exports[`does not show artist avatar if no avatar image exists 1`] = `
       style={
         Object {
           "alignSelf": "center",
+          "flex": 1,
         }
       }
     >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
+      <View
         style={
-          Array [
-            Object {
-              "fontSize": 12,
-            },
-            Object {
-              "fontSize": 14,
-            },
-            Object {
-              "fontFamily": "Avant Garde Gothic ITCW01Dm",
-            },
-          ]
+          Object {
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "space-between",
+          }
         }
       >
-        JEAN-MICHEL BASQUIAT
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "fontSize": 12,
+              },
+              Object {
+                "fontSize": 14,
+              },
+              Object {
+                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+              },
+            ]
+          }
+        >
+          JEAN-MICHEL BASQUIAT
+        </Text>
+        <View
+          style={
+            Object {
+              "alignSelf": "center",
+              "backgroundColor": "#6e1fff",
+              "borderRadius": 5,
+              "height": 10,
+              "width": 10,
+            }
+          }
+        />
+      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -83,7 +105,7 @@ exports[`does not show artist avatar if no avatar image exists 1`] = `
               "fontSize": 17,
             },
             Object {
-              "color": "gray",
+              "color": "#666666",
               "fontSize": 16,
               "marginTop": 2,
             },
@@ -96,18 +118,6 @@ exports[`does not show artist avatar if no avatar image exists 1`] = `
         1 Work Added · Mar 16
       </Text>
     </View>
-    <View
-      style={
-        Object {
-          "backgroundColor": "#6e1fff",
-          "borderRadius": 5,
-          "height": 10,
-          "position": "absolute",
-          "right": 0,
-          "width": 10,
-        }
-      }
-    />
   </View>
   <View
     style={
@@ -182,29 +192,40 @@ exports[`lays out correctly for read notification 1`] = `
       style={
         Object {
           "alignSelf": "center",
+          "flex": 1,
         }
       }
     >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
+      <View
         style={
-          Array [
-            Object {
-              "fontSize": 12,
-            },
-            Object {
-              "fontSize": 14,
-            },
-            Object {
-              "fontFamily": "Avant Garde Gothic ITCW01Dm",
-            },
-          ]
+          Object {
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "space-between",
+          }
         }
       >
-        JEAN-MICHEL BASQUIAT
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "fontSize": 12,
+              },
+              Object {
+                "fontSize": 14,
+              },
+              Object {
+                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+              },
+            ]
+          }
+        >
+          JEAN-MICHEL BASQUIAT
+        </Text>
+      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -216,7 +237,7 @@ exports[`lays out correctly for read notification 1`] = `
               "fontSize": 17,
             },
             Object {
-              "color": "gray",
+              "color": "#666666",
               "fontSize": 16,
               "marginTop": 2,
             },
@@ -303,29 +324,51 @@ exports[`lays out correctly for unread notification 1`] = `
       style={
         Object {
           "alignSelf": "center",
+          "flex": 1,
         }
       }
     >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
+      <View
         style={
-          Array [
-            Object {
-              "fontSize": 12,
-            },
-            Object {
-              "fontSize": 14,
-            },
-            Object {
-              "fontFamily": "Avant Garde Gothic ITCW01Dm",
-            },
-          ]
+          Object {
+            "flexDirection": "row",
+            "flexGrow": 1,
+            "justifyContent": "space-between",
+          }
         }
       >
-        JEAN-MICHEL BASQUIAT
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "fontSize": 12,
+              },
+              Object {
+                "fontSize": 14,
+              },
+              Object {
+                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+              },
+            ]
+          }
+        >
+          JEAN-MICHEL BASQUIAT
+        </Text>
+        <View
+          style={
+            Object {
+              "alignSelf": "center",
+              "backgroundColor": "#6e1fff",
+              "borderRadius": 5,
+              "height": 10,
+              "width": 10,
+            }
+          }
+        />
+      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -337,7 +380,7 @@ exports[`lays out correctly for unread notification 1`] = `
               "fontSize": 17,
             },
             Object {
-              "color": "gray",
+              "color": "#666666",
               "fontSize": 16,
               "marginTop": 2,
             },
@@ -350,18 +393,6 @@ exports[`lays out correctly for unread notification 1`] = `
         1 Work Added · Mar 16
       </Text>
     </View>
-    <View
-      style={
-        Object {
-          "backgroundColor": "#6e1fff",
-          "borderRadius": 5,
-          "height": 10,
-          "position": "absolute",
-          "right": 0,
-          "width": 10,
-        }
-      }
-    />
   </View>
   <View
     style={

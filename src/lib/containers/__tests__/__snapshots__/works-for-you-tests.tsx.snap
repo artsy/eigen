@@ -112,29 +112,40 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                 style={
                   Object {
                     "alignSelf": "center",
+                    "flex": 1,
                   }
                 }
               >
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <View
                   style={
-                    Array [
-                      Object {
-                        "fontSize": 12,
-                      },
-                      Object {
-                        "fontSize": 14,
-                      },
-                      Object {
-                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
-                      },
-                    ]
+                    Object {
+                      "flexDirection": "row",
+                      "flexGrow": 1,
+                      "justifyContent": "space-between",
+                    }
                   }
                 >
-                  JEAN-MICHEL BASQUIAT
-                </Text>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 12,
+                        },
+                        Object {
+                          "fontSize": 14,
+                        },
+                        Object {
+                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        },
+                      ]
+                    }
+                  >
+                    JEAN-MICHEL BASQUIAT
+                  </Text>
+                </View>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -146,7 +157,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                         "fontSize": 17,
                       },
                       Object {
-                        "color": "gray",
+                        "color": "#666666",
                         "fontSize": 16,
                         "marginTop": 2,
                       },
@@ -230,29 +241,40 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                 style={
                   Object {
                     "alignSelf": "center",
+                    "flex": 1,
                   }
                 }
               >
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <View
                   style={
-                    Array [
-                      Object {
-                        "fontSize": 12,
-                      },
-                      Object {
-                        "fontSize": 14,
-                      },
-                      Object {
-                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
-                      },
-                    ]
+                    Object {
+                      "flexDirection": "row",
+                      "flexGrow": 1,
+                      "justifyContent": "space-between",
+                    }
                   }
                 >
-                  ANA MENDIETA
-                </Text>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 12,
+                        },
+                        Object {
+                          "fontSize": 14,
+                        },
+                        Object {
+                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        },
+                      ]
+                    }
+                  >
+                    ANA MENDIETA
+                  </Text>
+                </View>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -264,7 +286,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                         "fontSize": 17,
                       },
                       Object {
-                        "color": "gray",
+                        "color": "#666666",
                         "fontSize": 16,
                         "marginTop": 2,
                       },
@@ -419,29 +441,40 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                 style={
                   Object {
                     "alignSelf": "center",
+                    "flex": 1,
                   }
                 }
               >
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <View
                   style={
-                    Array [
-                      Object {
-                        "fontSize": 12,
-                      },
-                      Object {
-                        "fontSize": 14,
-                      },
-                      Object {
-                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
-                      },
-                    ]
+                    Object {
+                      "flexDirection": "row",
+                      "flexGrow": 1,
+                      "justifyContent": "space-between",
+                    }
                   }
                 >
-                  JEAN-MICHEL BASQUIAT
-                </Text>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 12,
+                        },
+                        Object {
+                          "fontSize": 14,
+                        },
+                        Object {
+                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        },
+                      ]
+                    }
+                  >
+                    JEAN-MICHEL BASQUIAT
+                  </Text>
+                </View>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -453,7 +486,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                         "fontSize": 17,
                       },
                       Object {
-                        "color": "gray",
+                        "color": "#666666",
                         "fontSize": 16,
                         "marginTop": 2,
                       },
@@ -537,29 +570,40 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                 style={
                   Object {
                     "alignSelf": "center",
+                    "flex": 1,
                   }
                 }
               >
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <View
                   style={
-                    Array [
-                      Object {
-                        "fontSize": 12,
-                      },
-                      Object {
-                        "fontSize": 14,
-                      },
-                      Object {
-                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
-                      },
-                    ]
+                    Object {
+                      "flexDirection": "row",
+                      "flexGrow": 1,
+                      "justifyContent": "space-between",
+                    }
                   }
                 >
-                  ANA MENDIETA
-                </Text>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 12,
+                        },
+                        Object {
+                          "fontSize": 14,
+                        },
+                        Object {
+                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        },
+                      ]
+                    }
+                  >
+                    ANA MENDIETA
+                  </Text>
+                </View>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -571,7 +615,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                         "fontSize": 17,
                       },
                       Object {
-                        "color": "gray",
+                        "color": "#666666",
                         "fontSize": 16,
                         "marginTop": 2,
                       },

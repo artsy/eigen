@@ -32,11 +32,13 @@ export class Notification extends React.Component<Props, any> {
         <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this)}>
           <View style={styles.header}>
             { notification.image && <Image source={{uri: notification.image.resized.url}} style={styles.artistAvatar}/>}
-            <View style={{alignSelf: "center"}}>
-              <Headline style={styles.artistName}>{notification.artists}</Headline>
+            <View style={styles.metadataContainer}>
+              <View style={styles.nameAndStatusContainer}>
+                <Headline style={styles.artistName}>{notification.artists}</Headline>
+                { notification.status === "UNREAD" && <View style={styles.readStatus}/>}
+              </View>
               <SerifText style={styles.metadata}>{notification.message + " · " + notification.date}</SerifText>
             </View>
-            { notification.status === "UNREAD" && <View style={styles.readStatus}/>}
           </View>
         </TouchableWithoutFeedback>
         <View style={styles.gridContainer}>
@@ -51,10 +53,12 @@ interface Styles {
   container: ViewStyle,
   header: ViewStyle,
   artistAvatar: ViewStyle,
+  metadataContainer: ViewStyle,
+  nameAndStatusContainer: ViewStyle,
+  readStatus: ViewStyle,
   artistName: TextStyle,
   metadata: TextStyle,
   gridContainer: ViewStyle,
-  readStatus: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -72,25 +76,33 @@ const styles = StyleSheet.create<Styles>({
     borderRadius: 20,
     marginRight: 10,
   },
-  artistName: {
-    fontSize: 14,
+  metadataContainer: {
+    alignSelf: "center",
+    flex: 1,
   },
-  metadata: {
-    marginTop: 2,
-    fontSize: 16,
-    color: "gray",
-  },
-  gridContainer: {
-    marginTop: 20,
-    marginBottom: 20,
+  nameAndStatusContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flexGrow: 1,
   },
   readStatus: {
     backgroundColor: colors["purple-regular"],
     width: 10,
     height: 10,
     borderRadius: 5,
-    position: "absolute",
-    right: 0,
+    alignSelf: "center",
+  },
+  artistName: {
+    fontSize: 14,
+  },
+  metadata: {
+    marginTop: 2,
+    fontSize: 16,
+    color: colors["gray-semibold"],
+  },
+  gridContainer: {
+    marginTop: 20,
+    marginBottom: 20,
   },
 })
 
