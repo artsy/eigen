@@ -105,9 +105,9 @@
   version "4.14.57"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.57.tgz#f0095fb15ec1004455613f3ad73766583e62f830"
 
-"@types/react-native@^0.42.9":
-  version "0.42.9"
-  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.42.9.tgz#bcb9c24e77d6e6b3994518fcb0e37350b5db3206"
+"@types/react-native@^0.43.7":
+  version "0.43.7"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.43.7.tgz#ca2f3d9c05156111e864da53022b70f1d78fd6af"
   dependencies:
     "@types/react" "*"
 
@@ -5856,15 +5856,9 @@ source-list-map@^0.1.4, source-list-map@~0.1.7:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/source-list-map/-/source-list-map-0.1.8.tgz#c550b2ab5427f6b3f21f5afead88c4f5587b2106"
 
-source-map-support@^0.4.15:
+source-map-support@^0.4.15, source-map-support@^0.4.2, source-map-support@^0.4.4:
   version "0.4.15"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.15.tgz#03202df65c06d2bd8c7ec2362a193056fef8d3b1"
-  dependencies:
-    source-map "^0.5.6"
-
-source-map-support@^0.4.2, source-map-support@^0.4.4:
-  version "0.4.14"
-  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.14.tgz#9d4463772598b86271b4f523f6c1f4e02a7d6aef"
   dependencies:
     source-map "^0.5.6"
 

@@ -1,3 +1,2 @@
-require("./artist_articles_story")
-require("./artist_component_story")
-require("./artist_header_story")
+import "./artist_articles.story"
+import "./artist_header.story"
