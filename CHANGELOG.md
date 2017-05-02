@@ -1,3 +1,7 @@
+### 1.3.1
+
+- Works For You container QA - sarah
+
 ### 1.3.0
 
 - Added ability to create a special notification for a single artist in WFU - sarah
