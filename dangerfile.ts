@@ -84,7 +84,7 @@ if (testFilesThatDontExist.length > 0) {
 const reactComponentForPath = (filePath) => {
   const content = fs.readFileSync(filePath).toString()
   const match = content.match(/export class (.*) extends React.Component/)
-  if (match.length === 0) { return null }
+  if (!match || match.length === 0) { return null }
   return match[0]
 }
 
