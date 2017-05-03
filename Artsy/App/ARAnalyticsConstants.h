@@ -25,6 +25,10 @@ extern NSString *const ARAnalyticsNotificationTapped;
 
 extern NSString *const ARAnalyticsFreshInstall;
 
+// Universal Links
+
+extern NSString *const ARAnalyticsDeepLinkOpened;
+
 // Onboarding
 
 extern NSString *const ARAnalyticsSlideshowStarted;
