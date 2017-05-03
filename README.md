@@ -48,12 +48,7 @@ There is a comprehensive document covering [our setup here](docs/vscode.md).
 
 ### Debugging
 
-You can use React Native debugger which is a standalone app to inspect views as well as the standard chrome debugging tools.
-
-1. Install [RN debugger](https://github.com/jhen0409/react-native-debugger): `$ brew update && brew cask install react-native-debugger`.
-2. You can now use `$ yarn run rndebugger` instead of `$ yarn start` to configure the React Native packager to use RNdebugger.
-
-![screen shot 2017-01-23 at 1 00 01 pm](https://cloud.githubusercontent.com/assets/296775/22220775/09bb10ec-e17e-11e6-8801-3b0ccbdbaa84.png)
+There is a comprehensive document covering [the various options](docs/debugging.md).
 
 ### Updating Dependencies
 
