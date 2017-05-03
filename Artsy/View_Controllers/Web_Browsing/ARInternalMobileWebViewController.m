@@ -8,6 +8,7 @@
 #import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuViewController.h"
 #import "UIViewController+TopMenuViewController.h"
+#import "AROptions.h"
 
 static void *ARProgressContext = &ARProgressContext;
 
@@ -74,9 +75,21 @@ static void *ARProgressContext = &ARProgressContext;
 {
     [super viewDidLoad];
     [self showLoading];
-
+    
     // KVO on progress for when we can show the page
     [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew & NSKeyValueObservingOptionOld context:ARProgressContext];
+    
+    if ([AROptions boolForOption:AROptionsShowMartsyOnScreen]) {
+        [self displayDebugMartsyIndicator];
+    }
+}
+
+- (void)displayDebugMartsyIndicator {
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 25, 30, 10, 10)]; // nice and oldschool
+    view.layer.cornerRadius = 5;
+    view.layer.masksToBounds = YES;
+    view.backgroundColor = [UIColor redColor];
+    [self.view insertSubview:view aboveSubview:self.webView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
