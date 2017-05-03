@@ -62,6 +62,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [self generateQuicksilver],
         [self generateShowAllLiveAuctions],
         [self generateOnScreenAnalytics],
+        [self generateOnScreenMartsy],
         [self generateEchoContents],
     ]];
 
@@ -241,6 +242,25 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         exit(YES);
     }];
     return crashCellData;
+}
+
+- (ARCellData *)generateOnScreenMartsy
+{
+    ARCellData *martsyCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    [martsyCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
+        if ([AROptions boolForOption:AROptionsShowMartsyOnScreen]) {
+            cell.textLabel.text = @"Hide Red Dot for Martsy Views";
+        } else {
+            cell.textLabel.text = @"Show Red Dot for Martsy Views";
+        }
+    }];
+    
+    [martsyCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+        BOOL current = [AROptions boolForOption:AROptionsShowMartsyOnScreen];
+        [AROptions setBool:!current forOption:AROptionsShowMartsyOnScreen];
+        exit(YES);
+    }];
+    return martsyCellData;
 }
 
 - (ARCellData *)generateEchoContents
