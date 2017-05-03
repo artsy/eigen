@@ -6,8 +6,8 @@ import {
   ListViewDataSource,
   RefreshControl,
   ScrollView,
-  ViewProperties,
   ScrollViewProps,
+  ViewProperties,
 } from "react-native"
 
 import ArtistRail from "../components/home/artist_rails/artist_rail"
