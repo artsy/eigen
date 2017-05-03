@@ -80,6 +80,7 @@
 - (void)lookAtURLForAnalytics:(NSURL *)url
 {
     [Adjust appWillOpenUrl:url];
+    [ARAnalytics event:ARAnalyticsDeepLinkOpened withProperties:@{@"link" : url.absoluteString}];
 }
 
 - (void)setupAnalytics
