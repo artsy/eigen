@@ -1,11 +1,11 @@
 import * as React from "react"
-import { StyleSheet, Text, TextProperties, TextStatic } from "react-native"
+import { StyleSheet, Text, TextProperties } from "react-native"
 
 export default class Headline extends React.Component<TextProperties, any> {
   render() {
     const content = (this.props.children || "") as string
     return (
-      <Text {...this.props as TextStatic} style={[styles.default, this.props.style, styles.required]} >
+      <Text {...this.props} style={[styles.default, this.props.style, styles.required]} >
         {content.toUpperCase()}
       </Text>
     )

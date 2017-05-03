@@ -105,9 +105,9 @@
   version "4.14.57"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.57.tgz#f0095fb15ec1004455613f3ad73766583e62f830"
 
-"@types/react-native@^0.43.7":
-  version "0.43.7"
-  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.43.7.tgz#ca2f3d9c05156111e864da53022b70f1d78fd6af"
+"@types/react-native@^0.43.9":
+  version "0.43.9"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.43.9.tgz#0b7607af56141ca8dd4c889bbc1834313c95a808"
   dependencies:
     "@types/react" "*"
 

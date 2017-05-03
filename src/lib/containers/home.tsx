@@ -6,7 +6,7 @@ import {
   ListViewDataSource,
   RefreshControl,
   ScrollView,
-  ScrollViewStatic,
+  ScrollViewProps,
   ViewProperties,
 } from "react-native"
 
@@ -83,7 +83,7 @@ export class Home extends React.Component<Props, State> {
   render() {
     return (
       <ListView dataSource={this.state.dataSource}
-                renderScrollComponent={(props: ScrollViewStatic) => {
+                renderScrollComponent={(props: ScrollViewProps) => {
                   const refreshControl = <RefreshControl refreshing={this.state.isRefreshing}
                                                          onRefresh={this.handleRefresh} />
                   return <ScrollView {...props} automaticallyAdjustContentInsets={false}
