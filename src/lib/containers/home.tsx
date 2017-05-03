@@ -6,8 +6,8 @@ import {
   ListViewDataSource,
   RefreshControl,
   ScrollView,
-  ScrollViewStatic,
   ViewProperties,
+  ScrollViewProps,
 } from "react-native"
 
 import ArtistRail from "../components/home/artist_rails/artist_rail"
@@ -83,7 +83,7 @@ export class Home extends React.Component<Props, State> {
   render() {
     return (
       <ListView dataSource={this.state.dataSource}
-                renderScrollComponent={(props: ScrollViewStatic) => {
+                renderScrollComponent={(props: ScrollViewProps) => {
                   const refreshControl = <RefreshControl refreshing={this.state.isRefreshing}
                                                          onRefresh={this.handleRefresh} />
                   return <ScrollView {...props} automaticallyAdjustContentInsets={false}
