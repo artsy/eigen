@@ -1,6 +1,9 @@
-### 1.3.1
+### 1.3.2
 
 - Fix for blank scrollview bug - sarah
+
+### 1.3.1
+
 - Works For You container QA - sarah
 
 ### 1.3.0
