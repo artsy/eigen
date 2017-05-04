@@ -40,6 +40,9 @@ interface State {
 }
 
 export class WorksForYou extends React.Component<Props, State> {
+  listView?: ListView
+  currentScrollOffset?: number = 0
+
   constructor(props) {
     super(props)
 
@@ -128,6 +131,10 @@ export class WorksForYou extends React.Component<Props, State> {
     })
   }
 
+  componentDidUpdate() {
+    this.listView.scrollTo({ y: this.currentScrollOffset + 1, animated: false })
+  }
+
   render() {
     const margin = this.state.sideMargin
     const containerMargins = { marginLeft: margin, marginRight: margin }
@@ -153,6 +160,8 @@ export class WorksForYou extends React.Component<Props, State> {
                 renderSeparator={(sectionID, rowID) =>
                   <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>
                 }
+                onScroll={event => this.currentScrollOffset = event.nativeEvent.contentOffset.y}
+                ref={listView => this.listView = listView}
                 style={{marginTop: this.state.topMargin}}
                 onEndReached={ () => this.fetchNextPage()}
       />)

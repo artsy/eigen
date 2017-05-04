@@ -1,4 +1,5 @@
 #import "ARWorksForYouComponentViewController.h"
+#import <React/RCTRootView.h>
 
 @implementation ARWorksForYouComponentViewController
 
@@ -15,6 +16,22 @@
         _selectedArtist = artistID;
     }
     return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    RCTRootView *rootView = self.view.subviews.firstObject;
+    [rootView setAppProperties:@{ @"trigger1pxScrollHack": @YES }];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    RCTRootView *rootView = self.view.subviews.firstObject;
+    [rootView setAppProperties:@{ @"trigger1pxScrollHack": @NO }];
 }
 
 @end

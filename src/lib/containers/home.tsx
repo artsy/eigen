@@ -30,6 +30,9 @@ interface State {
 }
 
 export class Home extends React.Component<Props, State> {
+  listView?: ListView
+  currentScrollOffset?: number = 0
+
   constructor(props) {
     super(props)
 
@@ -80,6 +83,10 @@ export class Home extends React.Component<Props, State> {
     })).then(stopRefreshing, stopRefreshing)
   }
 
+  componentDidUpdate() {
+    this.listView.scrollTo({ y: this.currentScrollOffset + 1, animated: false })
+  }
+
   render() {
     return (
       <ListView dataSource={this.state.dataSource}
@@ -103,6 +110,8 @@ export class Home extends React.Component<Props, State> {
                       return <ArtistRail ref={registerModule} key={data.__id} rail={data} />
                   }
                 }}
+                onScroll={event => this.currentScrollOffset = event.nativeEvent.contentOffset.y}
+                ref={listView => this.listView = listView}
                 style={{ marginTop: 20, overflow: "visible" }} />
     )
   }
