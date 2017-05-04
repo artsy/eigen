@@ -1,4 +1,5 @@
 #import "ARHomeComponentViewController.h"
+#import <React/RCTRootView.h>
 
 @implementation ARHomeComponentViewController
 
@@ -16,6 +17,22 @@
                                       attribute:NSLayoutAttributeTop
                                      multiplier:1
                                        constant:0];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    RCTRootView *rootView = self.view.subviews.firstObject;
+    [rootView setAppProperties:@{ @"trigger1pxScrollHack": @YES }];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    RCTRootView *rootView = self.view.subviews.firstObject;
+    [rootView setAppProperties:@{ @"trigger1pxScrollHack": @NO }];
 }
 
 @end

@@ -54,6 +54,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
           }
         }
         onEndReached={[Function]}
+        onScroll={[Function]}
         renderRow={[Function]}
         renderScrollComponent={[Function]}
         renderSeparator={[Function]}
@@ -383,6 +384,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
           }
         }
         onEndReached={[Function]}
+        onScroll={[Function]}
         renderRow={[Function]}
         renderScrollComponent={[Function]}
         renderSeparator={[Function]}
