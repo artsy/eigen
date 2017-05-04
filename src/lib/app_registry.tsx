@@ -9,7 +9,7 @@ import Containers from "./containers/index"
 import Routes from "./relay/routes"
 
 interface Props extends ViewProperties {
-  trigger1pxScrollHack ?: boolean,
+  trigger1pxScrollHack?: boolean,
 }
 
 class RootContainer extends React.Component<Props, {}> {

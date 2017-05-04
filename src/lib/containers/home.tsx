@@ -30,8 +30,8 @@ interface State {
 }
 
 export class Home extends React.Component<Props, State> {
-  listView: ListView
-  currentScrollOffset: number
+  listView?: ListView
+  currentScrollOffset?: number = 0
 
   constructor(props) {
     super(props)
