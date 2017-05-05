@@ -40,7 +40,8 @@ interface State {
 }
 
 export class WorksForYou extends React.Component<Props, State> {
-  listView?: ListView
+  // TODO: This `| any` is a hack workaround to a typing bug in https://github.com/artsy/emission/pull/504/
+  listView?: ListView | any
   currentScrollOffset?: number = 0
 
   constructor(props) {

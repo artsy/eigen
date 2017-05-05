@@ -30,7 +30,8 @@ interface State {
 }
 
 export class Home extends React.Component<Props, State> {
-  listView?: ListView
+  // TODO: This `| any` is a hack workaround to a typing bug in https://github.com/artsy/emission/pull/504/
+  listView?: ListView | any
   currentScrollOffset?: number = 0
 
   constructor(props) {
@@ -111,7 +112,7 @@ export class Home extends React.Component<Props, State> {
                   }
                 }}
                 onScroll={event => this.currentScrollOffset = event.nativeEvent.contentOffset.y}
-                ref={listView => this.listView = listView}
+                ref={listView => this.listView = listView }
                 style={{ marginTop: 20, overflow: "visible" }} />
     )
   }

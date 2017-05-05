@@ -21,8 +21,11 @@ import {
 import Spinner from "../spinner"
 import Artwork from "./artwork"
 
-const PageSize = 10
-const PageEndThreshold = 1000
+import { ArtistRelayProps } from "./relay_connections/artist_artworks_grid"
+import { GeneRelayProps } from "./relay_connections/gene_artworks_grid"
+
+export const PageSize = 10
+export const PageEndThreshold = 1000
 
 /**
  * TODOs:
@@ -32,6 +35,13 @@ const PageEndThreshold = 1000
  *   - see ARMasonryCollectionViewLayout for details on how to deal with last works sticking out
  *   - the calculation currently only takes into account the size of the image, not if e.g. the sale message is present
  */
+
+type Artworks = Array<{
+  __id: string,
+  image: {
+    aspect_ratio: number | null,
+  } | null,
+}>
 
 interface Props extends ArtistRelayProps, GeneRelayProps {
   /** The direction for the grid, currently only 'column' is supported . */
@@ -283,108 +293,4 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-// TODO Just took this from the below interfaces.
-type Artworks = Array<{
-  __id: string,
-  image: {
-    aspect_ratio: number | null,
-  } | null,
-}>
-
-export default Relay.createContainer(InfiniteScrollArtworksGrid, {
-  initialVariables: {
-    totalSize: PageSize,
-    filter: null,
-  },
-  fragments: {
-    artist: () => Relay.QL`
-      fragment on Artist {
-        artworks: artworks_connection(sort: partner_updated_at_desc, filter: $filter, first: $totalSize) {
-          pageInfo {
-            hasNextPage
-          }
-          edges {
-            node {
-              __id
-              image {
-                aspect_ratio
-              }
-              ${Artwork.getFragment("artwork")}
-            }
-          }
-        }
-      }
-    `,
-  },
-})
-
-interface ArtistRelayProps {
-  artist: {
-    artworks_connection: {
-      pageInfo: {
-        hasNextPage: boolean,
-      },
-      edges: Array<{
-        node: {
-          __id: string,
-          image: {
-            aspect_ratio: number | null,
-          } | null,
-        } | null,
-      }>,
-    } | null,
-  },
-}
-
-const GeneInfiniteScrollContainer = Relay.createContainer(InfiniteScrollArtworksGrid, {
-  initialVariables: {
-    totalSize: PageSize,
-    medium: "*",
-    priceRange: "*-*",
-    sort: "-partner_updated_at",
-  },
-  fragments: {
-    gene: () => Relay.QL`
-      fragment on Gene {
-        artworks: artworks_connection(sort: $sort,
-                                      price_range: $priceRange,
-                                      medium: $medium,
-                                      first: $totalSize,
-                                      for_sale: true) {
-          pageInfo {
-            hasNextPage
-          }
-          edges {
-            node {
-              __id
-              image {
-                aspect_ratio
-              }
-              ${Artwork.getFragment("artwork")}
-            }
-          }
-        }
-      }
-    `,
-  },
-})
-
-export { GeneInfiniteScrollContainer }
-
-interface GeneRelayProps {
-  gene: {
-    artworks_connection: {
-      pageInfo: {
-        hasNextPage: boolean,
-      },
-      edges: Array<{
-        node: {
-          __id: string,
-          image: {
-            aspect_ratio: number | null,
-          } | null,
-        } | null,
-      }>,
-    } | null,
-  },
-}
+export default InfiniteScrollArtworksGrid

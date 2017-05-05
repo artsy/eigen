@@ -1,5 +1,5 @@
 import * as React from "react"
-import ArtworksGrid from "../artwork_grids/infinite_scroll_grid"
+import ArtworksGrid from "../artwork_grids/relay_connections/gene_artworks_grid"
 
 class Artworks extends React.Component<any, any> {
   static propTypes: Object = {
