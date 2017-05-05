@@ -60,7 +60,6 @@ class AuctionTitleViewSpec: QuickSpec {
                 expect(subject).to( haveValidSnapshot() )
             }
         }
-
         describe("with the registration button having side insets") {
             beforeEach {
                 fullWidth = false
