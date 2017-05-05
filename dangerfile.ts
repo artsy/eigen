@@ -73,7 +73,7 @@ const correspondingTestsForAppFiles = touchedAppOnlyFiles.map(f => {
 
 // New app files should get new test files
 // Allow warning instead of failing if you say "Skip New Tests" inside the body, make it explicit.
-const testFilesThatDontExist = correspondingTestsForAppFiles.filter(f => fs.existsSync(f))
+const testFilesThatDontExist = correspondingTestsForAppFiles.filter(f => !fs.existsSync(f))
 if (testFilesThatDontExist.length > 0) {
   const callout = acceptedNoTests ? warn : fail
   const output = `Missing Test Files:
