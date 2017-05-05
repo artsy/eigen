@@ -70,9 +70,22 @@ class WorksForYou extends Relay.Route {
   static routeName = "WorksForYouRoute"
 }
 
+class MyProfile extends Relay.Route {
+  static queries = {
+    me: (component) => Relay.QL`
+      query {
+        ${(component.getFragment("me"))}
+      }
+    `,
+  }
+
+  static routeName = "MyProfileRoute"
+}
+
 export default {
   Artist,
   Home,
   Gene,
   WorksForYou,
+  MyProfile,
 }
