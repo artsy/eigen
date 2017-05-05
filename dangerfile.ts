@@ -1,6 +1,6 @@
 
 import { danger, fail, warn } from "danger"
-import { compact, includes, remove } from "lodash"
+import { compact, includes, remove, uniq } from "lodash"
 
 // For now you can ignore these 3 errors, I'm not sure why
 // they are being raised. They definitely exist in the node runtime.
@@ -73,14 +73,17 @@ const correspondingTestsForAppFiles = touchedAppOnlyFiles.map(f => {
 
 // New app files should get new test files
 // Allow warning instead of failing if you say "Skip New Tests" inside the body, make it explicit.
-const testFilesThatDontExist = correspondingTestsForAppFiles.filter(f => !fs.existsSync(f))
+const testFilesThatDontExist = correspondingTestsForAppFiles
+                                 .filter(f => !f.includes("index-tests.tsx")) // skip indexes
+                                 .filter(f => !fs.existsSync(f))
+
 if (testFilesThatDontExist.length > 0) {
   const callout = acceptedNoTests ? warn : fail
   const output = `Missing Test Files:
-    ${testFilesThatDontExist.map(f => `  - [] \`${f}\``).join("\n")}
 
-    If these files are supposed to not exist, please update your PR body to include "Skip New Tests".
-  `
+${testFilesThatDontExist.map(f => `- \`${f}\``).join("\n")}
+
+If these files are supposed to not exist, please update your PR body to include "Skip New Tests".`
   callout(output)
 }
 
@@ -97,7 +100,7 @@ const reactComponentForPath = (filePath) => {
 // Start with a full list of all Components, then look
 // through all story files removing them from the list if found.
 // If any are left, leave a warning.
-let componentsForFiles = compact(touchedComponents.map(reactComponentForPath))
+let componentsForFiles = uniq(compact(touchedComponents.map(reactComponentForPath)))
 const storyFiles = allFiles.filter(f => f.includes("__stories__/") && f.includes(".story."))
 
 storyFiles.forEach(story => {
@@ -110,6 +113,10 @@ storyFiles.forEach(story => {
 })
 
 if (componentsForFiles.length) {
-  const components = componentsForFiles.map(c => ` - [] \`${c}\``).join("\n")
-  warn(`Could not find corresponding stories for these components: \n${components}`)
+  const components = componentsForFiles.map(c => `- \`${c}\``).join("\n")
+  warn(`Could not find stories using these components:
+
+${components}
+
+`)
 }
