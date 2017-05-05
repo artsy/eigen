@@ -21,6 +21,7 @@ protocol LiveAuctionSocketCommunicatorType {
     var postEventResponses: Observable<AnyObject> { get }
     var socketConnectionSignal: Observable<Bool> { get }
     var operatorConnectedSignal: Observable<AnyObject> { get }
+    var saleOnHoldSignal: Observable<AnyObject> { get }
 
     func bidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String)
     func leaveMaxBidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String)
@@ -38,6 +39,7 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
     let postEventResponses = Observable<AnyObject>()
     let socketConnectionSignal = Observable<Bool>()
     let operatorConnectedSignal = Observable<AnyObject>()
+    let saleOnHoldSignal = Observable<AnyObject>()
 
     let jwt: JWT
 
@@ -151,7 +153,7 @@ private extension SocketSetup {
         case "PostEventFailedUnauthorized": fallthrough
         case "ConnectionUnauthorized": break
             // TODO: handle auth error.
-
+        case "SaleOnHold": break
         default:
             print("Received unknown socket event type. Payload: \(json)")
 
