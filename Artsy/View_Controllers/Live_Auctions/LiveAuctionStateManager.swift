@@ -23,6 +23,7 @@ class LiveAuctionStateManager: NSObject {
     let sale: LiveSale
     let bidderCredentials: BiddingCredentials
     let operatorConnectedSignal = Observable<Bool>()
+    let saleOnHoldSignal = Observable<Bool>()
     let initialStateLoadedSignal = Observable<Void>(options: .Once)
 
     fileprivate let socketCommunicator: LiveAuctionSocketCommunicatorType
@@ -51,6 +52,7 @@ class LiveAuctionStateManager: NSObject {
         socketCommunicator.updatedAuctionState.subscribe { [weak self] state in
             self?.stateReconciler.updateState(state)
             self?.handleOperatorConnectedState(state)
+            self?.handleSaleOnHoldInitialState(state)
             self?.initialStateLoadedSignal.update()
         }
 
@@ -72,6 +74,10 @@ class LiveAuctionStateManager: NSObject {
 //            let liveEvent = LiveEvent(JSON: eventJSON)
             let confirmed = LiveAuctionBiddingProgressState.bidAcknowledged
             biddingViewModel?.bidPendingSignal.update(confirmed)
+        }
+
+        socketCommunicator.saleOnHoldSignal.subscribe { [weak self] response in
+            self?.handleSaleOnHoldState(response)
         }
 
         socketCommunicator.operatorConnectedSignal.subscribe(applyWeakly(self, LiveAuctionStateManager.handleOperatorConnectedState))
@@ -123,6 +129,17 @@ private extension PrivateFunctions {
         let operatorConnected = json["operatorConnected"].bool ?? true // Defaulting to true in case the value isn't specified, we don't want to obstruct the user.
         self.operatorConnectedSignal.update(operatorConnected)
     }
+
+    func handleSaleOnHoldState(_ state: AnyObject) {
+        let json = JSON(state)
+        let saleOnHold = json["isOnHold"].boolValue
+        saleOnHoldSignal.update(saleOnHold)
+    }
+    func handleSaleOnHoldInitialState(_ state: AnyObject) {
+        let json = JSON(state)
+        let saleOnHold = json["saleOnHold"].boolValue
+        saleOnHoldSignal.update(saleOnHold)
+    }
 }
 
 
@@ -154,6 +171,7 @@ private class Stubbed_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let postEventResponses = Observable<AnyObject>()
     let socketConnectionSignal = Observable<Bool>(true) // We're conencted by default.
     let operatorConnectedSignal = Observable<AnyObject>()
+    let saleOnHoldSignal = Observable<AnyObject>()
 
     init (state: AnyObject) {
         updatedAuctionState = Observable(state)

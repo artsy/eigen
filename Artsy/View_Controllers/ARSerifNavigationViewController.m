@@ -7,6 +7,7 @@
 #import "ARTopMenuViewController.h"
 #import "ARSerifStatusMaintainer.h"
 @import Artsy_UILabels;
+@import FLKAutoLayout;
 @import ObjectiveSugar;
 
 

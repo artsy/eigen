@@ -34,6 +34,19 @@ class LiveAuctionSaleViewController: UISplitViewController {
         preferredDisplayMode = .allVisible
         preferredPrimaryColumnWidthFraction = 0.4
         delegate = self
+        salesPerson.saleOnHoldSignal.subscribe { [weak self] (onHold) in
+            guard let `self` = self else { return }
+            let message: String?
+            if onHold {
+                message = (self.traitCollection.horizontalSizeClass == .compact) ?
+                    "The auction is currently on hold.\nYou can still place max bids." :
+                    "The auction is currently on hold. You can still place max bids."
+            } else {
+                message = nil
+            }
+            
+            self.lotSetController?.setSaleStatus(message: message)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -92,6 +105,34 @@ extension PrivateFunctions {
             viewControllers = [lotListNav, lotsSetNavigationController]
         }
     }
+//    func DELETEMEsetSaleStatusMessage(_ message: String?) {
+//        guard let unwrappedMessage = message else {
+//            saleStatusView?.removeFromSuperview()
+//            saleStatusView = nil
+//            return
+//        }
+//
+//        let newSaleStatusView = UIView()
+//        newSaleStatusView.backgroundColor = .red
+//        self.view.addSubview(newSaleStatusView)
+//        newSaleStatusView.constrainWidth(toView: self.view, predicate: "0")
+//        newSaleStatusView.constrainHeight("20")
+//        newSaleStatusView.alignTopEdge(withView: self.view, predicate: "0")
+//
+//        self.saleStatusView = newSaleStatusView
+//
+////        if let unwrappedMessage = message {
+////
+////        } else {
+////
+////        }
+////
+////        if message != nil {
+////            let unwrappedMessage = message!
+////        } else {
+////
+////        }
+//    }
 }
 
 extension LiveAuctionSaleViewController: UISplitViewControllerDelegate {
