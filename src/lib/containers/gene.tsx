@@ -18,9 +18,7 @@ import SerifText from "../components/text/serif"
 import About from "../components/gene/about"
 import Header from "../components/gene/header"
 
-import {
-  GeneInfiniteScrollContainer as Artworks,
-} from "../components/artwork_grids/infinite_scroll_grid"
+import Artworks from "../components/artwork_grids/relay_connections/gene_artworks_grid"
 
 import SwitchView, { SwitchEvent } from "../components/switch_view"
 

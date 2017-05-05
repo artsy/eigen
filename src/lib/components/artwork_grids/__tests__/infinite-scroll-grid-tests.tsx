@@ -3,7 +3,7 @@ import "react-native"
 import * as React from "react"
 import { renderWithLayout } from "../../../tests/render_with_layout"
 
-import InfiniteScrollArtworksGrid from "../infinite_scroll_grid"
+import InfiniteScrollArtworksGrid from "../relay_connections/artist_artworks_grid"
 
 it("renders properly", () => {
   const artist = {
