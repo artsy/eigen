@@ -1,3 +1,8 @@
+### Master
+
+- [dev] Updates TypeScript to 2.3 - orta
+- [dev] Adds back storybooks - orta
+
 ### 1.3.2
 
 - Fix for blank scrollview bug - sarah

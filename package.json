@@ -76,7 +76,7 @@
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
     "react-relay": "https://github.com/alloy/relay/releases/download/v0.9.3/react-relay-0.9.3.tgz",
     "remove-markdown": "0.1.0",
-    "typescript": "^2.2.1"
+    "typescript": "^2.3.2"
   },
   "devDependencies": {
     "@kadira/react-native-storybook": "^2.3.0",
