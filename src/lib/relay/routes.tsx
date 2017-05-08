@@ -72,9 +72,11 @@ class WorksForYou extends Relay.Route {
 
 class MyProfile extends Relay.Route {
   static queries = {
-    me: (component) => Relay.QL`
+    viewer: (component, params) => Relay.QL`
       query {
-        ${(component.getFragment("me"))}
+        viewer {
+          ${(component.getFragment("viewer", params))}
+        }
       }
     `,
   }

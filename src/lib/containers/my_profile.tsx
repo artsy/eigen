@@ -33,7 +33,7 @@ export class MyProfile extends React.Component<Props, {}> {
     return (
       <ScrollView scrollsToTop={true} automaticallyAdjustContentInsets={false}>
         <View style={{ paddingLeft: commonPadding, paddingRight: commonPadding }}>
-        <Headline>Hi</Headline>
+          <Headline>Hi</Headline>
         </View>
       </ScrollView>
     )
