@@ -48,7 +48,15 @@ randomBOOL(void)
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
 {
+
+  BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
+  NSString *service = useStaging? @"Emission-Staging" : @"Emission-Production";
+
+  AuthenticationManager *auth = [[AuthenticationManager alloc] initWithService:service];
+
   ARRootViewController *rootVC = [ARRootViewController new];
+  rootVC.authenticationManager = auth;
+  
   self.navigationController = [[EigenLikeNavigationController alloc] initWithRootViewController:rootVC];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -62,10 +70,6 @@ randomBOOL(void)
   [[AppHub buildManager] setDebugBuildsEnabled:YES];
 #endif
 
-  BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
-  NSString *service = useStaging? @"Emission-Staging" : @"Emission-Production";
-
-  AuthenticationManager *auth = [[AuthenticationManager alloc] initWithService:service];
 
   if ([auth isAuthenticated]) {
     NSString *accessToken = [auth token];
