@@ -25,6 +25,7 @@
 
 - (void)updateFromStoredCredentials
 {
+
   _userID = [SAMKeychain accountsForService:self.service][0][kSAMKeychainAccountKey];
   _token = [SAMKeychain passwordForService:self.service account:_userID];
   _isAuthenticated = _userID && _token;
@@ -119,5 +120,14 @@
   }];
 }
 
+- (void)logOut
+{
+  NSString *userID = [SAMKeychain accountsForService:self.service][0][kSAMKeychainAccountKey];
+  NSError *error = nil;
+  [SAMKeychain deletePasswordForService:self.service account:userID error:&error];
+  if(error) {
+    NSLog(@"Error: %@", error.localizedDescription);
+  }
+}
 
 @end
