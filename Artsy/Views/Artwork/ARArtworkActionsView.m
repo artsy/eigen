@@ -322,10 +322,12 @@ return [navigationButtons copy];
 
 #pragma mark - Info Logic
 
-// Show the bid status labels iff the user is the highest bidder or is a bidder.
+// Show the bid status labels if the sale is ongoing and the user is the highest bidder or is a bidder.
 - (BOOL)showBidStatusLabels
 {
-    return self.saleArtwork.auctionState & (ARAuctionStateUserIsHighBidder | ARAuctionStateUserIsBidder);
+    BOOL isOngoing = (self.saleArtwork.auctionState & ARAuctionStateStarted);
+    BOOL userIsBidder = self.saleArtwork.auctionState & (ARAuctionStateUserIsHighBidder | ARAuctionStateUserIsBidder);
+    return isOngoing && userIsBidder;
 }
 
 // Show the auction price view if the auction has started (implies not finished) or is showing a preview.

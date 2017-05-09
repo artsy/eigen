@@ -20,6 +20,7 @@ upcoming:
       - Fixes a crash in opening sales with no end date - ash
       - Spruced up artworks in auctio view - ash
       - Add support for Universal Links to Sailthru links - alloy
+      - No longer shows bidding status labels for artworks in a closed sale - ash
 
 releases:
   - version: 3.2.0
