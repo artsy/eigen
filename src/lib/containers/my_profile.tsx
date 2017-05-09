@@ -17,9 +17,7 @@ import TabView from "../components/tab_view"
 
 const isPad = Dimensions.get("window").width > 700
 
-interface Props extends ViewProperties {
-  artist: any
-}
+interface Props extends ViewProperties, RelayProps {}
 
 export class MyProfile extends React.Component<Props, {}> {
   state: {
@@ -33,7 +31,7 @@ export class MyProfile extends React.Component<Props, {}> {
     return (
       <ScrollView scrollsToTop={true} automaticallyAdjustContentInsets={false}>
         <View style={{ paddingLeft: commonPadding, paddingRight: commonPadding }}>
-          <Headline>Hi</Headline>
+          <Headline>{this.props.me.name}</Headline>
         </View>
       </ScrollView>
     )
@@ -56,25 +54,15 @@ const styles = StyleSheet.create<Styles>({
 export default Relay.createContainer(MyProfile, {
   fragments: {
     me: () => Relay.QL`
-      query {
-        me {
-          name
-        }
+      fragment on Me {
+        name
       }
     `,
   },
 })
 
 interface RelayProps {
-  artist: {
-    _id: string,
-    id: string,
-    has_metadata: boolean | null,
-    counts: {
-      artworks: boolean | number | string | null,
-      partner_shows: boolean | number | string | null,
-      related_artists: boolean | number | string | null,
-      articles: boolean | number | string | null,
-    } | null,
+  me: {
+    name: string | null,
   },
 }
