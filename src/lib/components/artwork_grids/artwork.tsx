@@ -59,10 +59,15 @@ class Artwork extends React.Component<RelayProps, any> {
   saleMessage() {
     const artwork = this.props.artwork
     if (artwork.is_in_auction) {
+      const numberOfBids = artwork.sale_artwork.bidder_positions_count
+      let text = artwork.sale_artwork.opening_bid.display
+      if (numberOfBids > 0 ) {
+        text = `${artwork.sale_artwork.current_bid.display} (${numberOfBids} bid${numberOfBids === 1 ? "" : "s"})`
+      }
       return (
         <View style={{flexDirection: "row"}}>
           <Image style={{ marginRight: 4 }} source={require("../../../../images/paddle.png")} />
-          <SerifText style={styles.text}>Bid now</SerifText>
+          <SerifText style={styles.text}>{text}</SerifText>
         </View>
       )
     } else {
@@ -95,6 +100,11 @@ export default Relay.createContainer(Artwork, {
         date
         sale_message
         is_in_auction
+        sale_artwork {
+          opening_bid { display }
+          current_bid { display }
+          bidder_positions_count
+        }
         image {
           url(version: "large")
           aspect_ratio
