@@ -2,6 +2,7 @@
 #import "ARAnimatedTickView.h"
 #import "ARTickedTableViewCell.h"
 #import "ARAdminTableViewCell.h"
+#import <SAMKeychain/SAMKeychain.h>
 
 #import "ARDefaults.h"
 
@@ -36,6 +37,9 @@
   ARSectionData *developerSection = [self developersSection];
   [tableViewData addSectionData:developerSection];
 #endif
+
+  ARSectionData *userSection = [self userSection];
+  [tableViewData addSectionData:userSection];
 
   self.tableViewData = tableViewData;
 }
@@ -163,5 +167,26 @@
   }];
   return crashCellData;
 }
+
+- (ARSectionData *)userSection
+{
+  ARSectionData *sectionData = [[ARSectionData alloc] init];
+  [self setupSection:sectionData withTitle:@"User"];
+
+  [sectionData addCellData:self.logOutButton];
+  return sectionData;
+}
+
+- (ARCellData *)logOutButton
+{
+  return [self tappableCellDataWithTitle:@"Log Out" selection:^{
+    [self showAlertViewWithTitle:@"Confirm Log Out" message:@"" actionTitle:@"Continue" actionHandler:^{
+
+      [self.authenticationManager logOut];
+      exit(0);
+    }];
+  }];
+}
+
 
 @end

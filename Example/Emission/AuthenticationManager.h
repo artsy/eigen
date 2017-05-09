@@ -10,6 +10,8 @@
 
 - (void)presentAuthenticationPromptOnViewController:(UIViewController *)viewController completion:(dispatch_block_t)completion;
 
+- (void)logOut;
+
 /// Is there a userID & token?
 @property (readonly) BOOL isAuthenticated;
 
