@@ -127,6 +127,15 @@ interface RelayProps {
     date: string | null,
     sale_message: string | null,
     is_in_auction: boolean | null,
+    sale_artwork: {
+      opening_bid: {
+        display: string | null,
+      } | null,
+      current_bid: {
+        display: string | null,
+      } | null,
+      bidder_positions_count: number | null,
+    } | null,
     image: {
       url: string | null,
       aspect_ratio: number | null,

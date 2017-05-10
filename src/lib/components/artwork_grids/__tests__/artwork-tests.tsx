@@ -11,6 +11,7 @@ it("renders properly", () => {
     date: "2015",
     sale_message: "$875",
     is_in_auction: false,
+    sale_artwork: null,
     image: {
       url: "artsy.net/image-url",
       aspect_ratio: 0.74,
