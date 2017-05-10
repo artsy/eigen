@@ -2,8 +2,8 @@ upcoming:
     version: 3.2.1
     details: Scope not know yet
     dev:
+      - Adds Sentry for error logging - orta
       - Updates ARTopMenuVC to allow for unretained instances of root VCs - sarah
-      - Adds React Native version of WorksForYou/Notifications tab - sarah
       - Refactors LAI view controller hierarchy - ash
       - Improves the reporting tools for beta users - orta
       - Improves Swift compile times - ash
@@ -20,6 +20,7 @@ upcoming:
       - Fixes a crash in opening sales with no end date - ash
       - Spruced up artworks in auctio view - ash
       - Add support for Universal Links to Sailthru links - alloy
+      - Adds React Native version of WorksForYou/Notifications tab - sarah
 
 releases:
   - version: 3.2.0

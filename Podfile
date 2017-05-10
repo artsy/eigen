@@ -23,6 +23,8 @@ plugin 'cocoapods-keys', {
     "SegmentDevWriteKey",
     "AdjustProductionAppToken",
     "ArtsyEchoProductionToken",
+    "SentryProductionDSN",
+    "SentryStagingDSN"
   ]
 }
 
@@ -111,6 +113,9 @@ target 'Artsy' do
 
   # This can be changed when 0.5.2 is out
   pod 'AppHub', :git => 'https://github.com/orta/apphub.git', :branch => "build_list"
+
+  # Note: This is a Swift Pod
+  pod 'Sentry'
 
   target 'Artsy Tests' do
     inherit! :search_paths

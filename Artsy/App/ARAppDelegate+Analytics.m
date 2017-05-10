@@ -55,6 +55,7 @@
 #import "ARSearchViewController.h"
 #import "ARNavigationController.h"
 #import <Emission/ARArtistComponentViewController.h>
+#import "ARSentryAnalyticsProvider.h"
 
 // Views
 #import "ARHeartButton.h"
@@ -89,10 +90,12 @@
 
     NSString *segmentWriteKey = keys.segmentProductionWriteKey;
     NSString *adjustEnv = ADJEnvironmentProduction;
+    NSString *sentryEnv = keys.sentryProductionDSN;
 
     if (ARAppStatus.isBetaOrDev) {
         segmentWriteKey = keys.segmentDevWriteKey;
         adjustEnv = ADJEnvironmentSandbox;
+        sentryEnv = keys.sentryStagingDSN;
     }
 
     if ([AROptions boolForOption:AROptionsShowAnalyticsOnScreen]) {
@@ -100,11 +103,12 @@
         [ARAnalytics setupProvider:visualizer];
     }
 
-#if DEBUG
+    id sentry = [[ARSentryAnalyticsProvider alloc] initWithDSN:sentryEnv];
+    [ARAnalytics setupProvider:sentry];
+
     BITHockeyManager *hockey = [BITHockeyManager sharedHockeyManager];
-    hockey.disableUpdateManager = YES;
     hockey.disableCrashManager = YES;
-#endif
+    hockey.disableUpdateManager = YES;
 
     ARAnalyticsEventShouldFireBlock heartedShouldFireBlock = ^BOOL(id controller, NSArray *parameters) {
         ARHeartButton *sender = parameters.firstObject;
