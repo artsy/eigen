@@ -7,10 +7,15 @@
 {
     self = [super init];
     if (!self) { return nil; }
+<<<<<<< HEAD
 
     SentryClient *client = [[SentryClient alloc] initWithDsnString:DSN];
     [client startCrashHandler];
     [SentryClient setShared:client];
+=======
+    SentryClient *client = [[SentryClient alloc] initWithDsnString:DSN];
+    [SentryClient setShared: client];
+>>>>>>> [Dev] Adds Sentry as a provider for handling crashes in Eigen
     return self;
 }
 

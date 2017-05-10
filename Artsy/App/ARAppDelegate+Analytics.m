@@ -55,12 +55,9 @@
 #import "ARSearchViewController.h"
 #import "ARNavigationController.h"
 #import "ARArtworkInfoViewController.h"
-<<<<<<< HEAD
 #import "ARSentryAnalyticsProvider.h"
-#import <Emission/ARWorksForYouModule.h>
-=======
+
 #import <Emission/ARWorksForYouComponentViewController.h>
->>>>>>> [Analytics] Use new WFU
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
