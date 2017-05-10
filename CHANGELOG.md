@@ -1,5 +1,6 @@
 ### Master
 
+- Fix for strange scrolling behavior in WFU - sarah
 - [dev] Updates TypeScript to 2.3 - orta
 - [dev] Adds back storybooks - orta
 - Adds initial work on a new personal profile page - orta

@@ -41,7 +41,7 @@ interface State {
 
 export class WorksForYou extends React.Component<Props, State> {
   // TODO: This `| any` is a hack workaround to a typing bug in https://github.com/artsy/emission/pull/504/
-  listView?: ListView | any
+  scrollView?: ScrollView | any
   currentScrollOffset?: number = 0
 
   constructor(props) {
@@ -133,7 +133,7 @@ export class WorksForYou extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    this.listView.scrollTo({ y: this.currentScrollOffset + 1, animated: false })
+    this.scrollView.scrollTo({ y: this.currentScrollOffset + 1, animated: false })
   }
 
   render() {
@@ -145,7 +145,12 @@ export class WorksForYou extends React.Component<Props, State> {
        otherwise, it should not use any flex growth.
     */
     return (
-      <ScrollView contentContainerStyle={ hasNotifications ? {} : styles.container} onLayout={this.onLayout.bind(this)}>
+      <ScrollView contentContainerStyle={ hasNotifications ? {} : styles.container}
+                  onLayout={this.onLayout.bind(this)}
+                  onScroll={event => this.currentScrollOffset = event.nativeEvent.contentOffset.y}
+                  scrollEventThrottle={100}
+                  ref={scrollView => this.scrollView = scrollView}
+      >
         <SerifText style={[styles.title, containerMargins]}>Works by Artists you Follow</SerifText>
         <View style={[containerMargins, {flex: 1}]}>
           { hasNotifications ? this.renderNotifications() : this.renderEmptyState() }
@@ -161,10 +166,9 @@ export class WorksForYou extends React.Component<Props, State> {
                 renderSeparator={(sectionID, rowID) =>
                   <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>
                 }
-                onScroll={event => this.currentScrollOffset = event.nativeEvent.contentOffset.y}
-                ref={listView => this.listView = listView}
                 style={{marginTop: this.state.topMargin}}
                 onEndReached={ () => this.fetchNextPage()}
+                scrollEnabled={false}
       />)
   }
 

@@ -4,6 +4,8 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
 <RCTScrollView
   contentContainerStyle={Object {}}
   onLayout={[Function]}
+  onScroll={[Function]}
+  scrollEventThrottle={100}
 >
   <View>
     <Text
@@ -54,10 +56,10 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
           }
         }
         onEndReached={[Function]}
-        onScroll={[Function]}
         renderRow={[Function]}
         renderScrollComponent={[Function]}
         renderSeparator={[Function]}
+        scrollEnabled={false}
         style={
           Object {
             "marginTop": 20,
@@ -334,6 +336,8 @@ exports[`with notifications lays out correctly on small screens 1`] = `
 <RCTScrollView
   contentContainerStyle={Object {}}
   onLayout={[Function]}
+  onScroll={[Function]}
+  scrollEventThrottle={100}
 >
   <View>
     <Text
@@ -384,10 +388,10 @@ exports[`with notifications lays out correctly on small screens 1`] = `
           }
         }
         onEndReached={[Function]}
-        onScroll={[Function]}
         renderRow={[Function]}
         renderScrollComponent={[Function]}
         renderSeparator={[Function]}
+        scrollEnabled={false}
         style={
           Object {
             "marginTop": 0,
@@ -668,6 +672,8 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
     }
   }
   onLayout={[Function]}
+  onScroll={[Function]}
+  scrollEventThrottle={100}
 >
   <View>
     <Text
@@ -815,6 +821,8 @@ exports[`without notifications lays out correctly on small screens 1`] = `
     }
   }
   onLayout={[Function]}
+  onScroll={[Function]}
+  scrollEventThrottle={100}
 >
   <View>
     <Text
