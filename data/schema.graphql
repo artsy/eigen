@@ -194,32 +194,32 @@ type ArtistCarousel {
 
 type ArtistCounts {
   artworks(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   follows(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   for_sale_artworks(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   partner_shows(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   related_artists(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   articles(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
@@ -503,7 +503,6 @@ type Artwork implements Node {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
-  cached: Int
   additional_information(format: Format): String
   artist(
     # Use whatever is in the original response instead of making a request
@@ -552,7 +551,7 @@ type Artwork implements Node {
   # Is this artwork part of an auction that is currently running?
   is_biddable: Boolean
 
-  # When in an auction, can the work be bought before any bids are placed
+  # When in an auction, can the work be bought immediately
   is_buy_nowable: Boolean
   is_comparable_with_auction_results: Boolean
 
@@ -579,6 +578,7 @@ type Artwork implements Node {
 
   # True for inquireable artworks that have an exact price.
   is_purchasable: Boolean
+  is_saved: Boolean
   is_shareable: Boolean
   is_sold: Boolean
   is_unique: Boolean
@@ -606,6 +606,7 @@ type Artwork implements Node {
   title: String
   to_s: String
   website: String
+  cached: Int
 }
 
 enum ArtworkAggregation {
@@ -709,6 +710,7 @@ type ArtworkContextAuction {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  require_bidder_approval: Boolean
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   sale_type: String
   start_at(
@@ -926,6 +928,7 @@ type ArtworkContextSale {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  require_bidder_approval: Boolean
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   sale_type: String
   start_at(
@@ -947,6 +950,25 @@ type ArtworkEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+union ArtworkFilterFacet = ArtworkFilterTag
+
+type ArtworkFilterTag {
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+
+  # A type-specific Gravity Mongo Document ID.
+  _id: String!
+  cached: Int
+  description: String
+  name: String
+  href: String
+  image: Image
+  count: Int
 }
 
 type ArtworkInquiry {
@@ -1007,7 +1029,6 @@ type ArtworkSearchEntity implements Node {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
-  cached: Int
   additional_information(format: Format): String
   artist(
     # Use whatever is in the original response instead of making a request
@@ -1056,7 +1077,7 @@ type ArtworkSearchEntity implements Node {
   # Is this artwork part of an auction that is currently running?
   is_biddable: Boolean
 
-  # When in an auction, can the work be bought before any bids are placed
+  # When in an auction, can the work be bought immediately
   is_buy_nowable: Boolean
   is_comparable_with_auction_results: Boolean
 
@@ -1083,6 +1104,7 @@ type ArtworkSearchEntity implements Node {
 
   # True for inquireable artworks that have an exact price.
   is_purchasable: Boolean
+  is_saved: Boolean
   is_shareable: Boolean
   is_sold: Boolean
   is_unique: Boolean
@@ -1110,6 +1132,7 @@ type ArtworkSearchEntity implements Node {
   title: String
   to_s: String
   website: String
+  cached: Int
 }
 
 enum ArtworkSorts {
@@ -1264,6 +1287,15 @@ enum BuyerOutcomeTypes {
 }
 
 type BuyersPremium {
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+
+  # A type-specific Gravity Mongo Document ID.
+  _id: String!
+
   # A formatted price with various currency formatting options.
   amount(
     decimal: String = "."
@@ -1281,6 +1313,24 @@ type BuyersPremium {
 enum CategoryType {
   GALLERY
   INSTITUTION
+}
+
+type Collection implements Node {
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+
+  # A type-specific Gravity Mongo Document ID.
+  _id: String!
+  cached: Int
+  artworks_connection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  description: String!
+  default: Boolean!
+  name: String!
+  private: Boolean!
+  slug: String!
 }
 
 type CollectorProfileType {
@@ -1506,16 +1556,17 @@ type FilterArtworks {
   # Returns a list of merchandisable artists sorted by merch score.
   merchandisable_artists: [Artist]
   total: Int @deprecated(reason: "Favor `counts.total`")
+  facet: ArtworkFilterFacet
 }
 
 type FilterArtworksCounts {
   total(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   followed_artists(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
@@ -1538,12 +1589,12 @@ type FilterSaleArtworks {
 
 type FilterSaleArtworksCounts {
   total(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   followed_artists(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
@@ -2239,6 +2290,7 @@ type HomePageModuleContextSale {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  require_bidder_approval: Boolean
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   sale_type: String
   start_at(
@@ -2276,14 +2328,23 @@ type Image {
 
   # A type-specific ID.
   id: String
+  image_url: String
+  image_versions: [String]
   is_default: Boolean
   is_zoomable: Boolean
+  max_tiled_height: Int
+  max_tiled_width: Int
+  original_height: Int
+  original_width: Int
   orientation: String
 
   # Value to use when `padding-bottom` for fluid image placeholders
   placeholder: String
   position: Int
   resized(width: Int, height: Int, version: [String]): ResizedImageUrl
+  tile_base_url: String
+  tile_format: String
+  tile_size: Int
   title: String
   width: Int
   url(version: [String]): String
@@ -2499,6 +2560,7 @@ type OrderedSet {
 
 type organizer {
   profile_id: ID
+  profile: Profile
 }
 
 # Information about pagination in a connection.
@@ -2562,12 +2624,12 @@ type PartnerArtist {
 
 type PartnerArtistCounts {
   artworks(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   for_sale_artworks(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
@@ -2627,57 +2689,57 @@ enum PartnerClassification {
 
 type PartnerCounts {
   artworks(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   artists(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   partner_artists(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   eligible_artworks(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   published_for_sale_artworks(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   published_not_for_sale_artworks(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   shows(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   displayable_shows(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   current_displayable_shows(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   artist_documents(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
   partner_show_documents(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
@@ -2786,7 +2848,7 @@ type PartnerShowCounts {
     artist_id: String
   ): Int
   eligible_artworks(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
@@ -2951,11 +3013,12 @@ type Profile {
   initials(length: Int = 3): String
   is_published: Boolean
   name: String
+  is_publically_visible: Boolean
 }
 
 type ProfileCounts {
   follows(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
@@ -2979,6 +3042,7 @@ type ProfileSearchEntity {
   initials(length: Int = 3): String
   is_published: Boolean
   name: String
+  is_publically_visible: Boolean
 }
 
 type ResizedImageUrl {
@@ -2996,6 +3060,7 @@ enum Role {
 type RootMutationType {
   updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
   updateConversation(input: UpdateConversationInput!): UpdateConversationPayload
+  saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
 }
 
 type RootQueryType {
@@ -3033,6 +3098,10 @@ type RootQueryType {
     # The id of the auction to participate in
     sale_id: String!
   ): String
+  collection(
+    # The slug or ID of the Collection
+    id: String!
+  ): Collection
 
   # An External Partner not on the platform
   external_partner(
@@ -3244,6 +3313,10 @@ type RootQueryType {
     id: String!
   ): Show
   status: Status
+  tag(
+    # The slug or ID of the Tag
+    id: String!
+  ): Tag
 
   # Trending artists
   trending_artists(
@@ -3339,6 +3412,7 @@ type Sale {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  require_bidder_approval: Boolean
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
   sale_type: String
   start_at(
@@ -3411,7 +3485,7 @@ enum SaleArtworkAggregation {
 
 type SaleArtworkCounts {
   bidder_positions(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
@@ -3586,6 +3660,17 @@ enum SaleSorts {
   TIMELY_AT_NAME_DESC
 }
 
+input SaveArtworkInput {
+  artwork_id: String
+  remove: Boolean
+  clientMutationId: String
+}
+
+type SaveArtworkPayload {
+  artwork: Artwork
+  clientMutationId: String
+}
+
 type Search {
   cached: Int
   results: [SearchResult]
@@ -3690,7 +3775,7 @@ type ShowCounts {
     artist_id: String
   ): Int
   eligible_artworks(
-    # Returns a `String` when format is specified. e.g.`"0,0.0000"`
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
@@ -3706,6 +3791,23 @@ type Status {
 # Gravity ping
 type StatusGravity {
   ping: Boolean
+}
+
+type Tag {
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+
+  # A type-specific Gravity Mongo Document ID.
+  _id: String!
+  cached: Int
+  description: String
+  name: String
+  href: String
+  image: Image
+  count: Int
 }
 
 type TrendingArtists {
@@ -3827,6 +3929,10 @@ type Viewer {
     # The id of the auction to participate in
     sale_id: String!
   ): String
+  collection(
+    # The slug or ID of the Collection
+    id: String!
+  ): Collection
 
   # An External Partner not on the platform
   external_partner(
@@ -4038,6 +4144,10 @@ type Viewer {
     id: String!
   ): Show
   status: Status
+  tag(
+    # The slug or ID of the Tag
+    id: String!
+  ): Tag
 
   # Trending artists
   trending_artists(

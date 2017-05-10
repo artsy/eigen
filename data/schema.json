@@ -268,6 +268,33 @@
               "deprecationReason": null
             },
             {
+              "name": "collection",
+              "description": null,
+              "args": [
+                {
+                  "name": "id",
+                  "description": "The slug or ID of the Collection",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Collection",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "external_partner",
               "description": "An External Partner not on the platform",
               "args": [
@@ -1741,6 +1768,33 @@
               "deprecationReason": null
             },
             {
+              "name": "tag",
+              "description": null,
+              "args": [
+                {
+                  "name": "id",
+                  "description": "The slug or ID of the Tag",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Tag",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "trending_artists",
               "description": "Trending artists",
               "args": [
@@ -2169,6 +2223,11 @@
             },
             {
               "kind": "OBJECT",
+              "name": "Collection",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
               "name": "Gene",
               "ofType": null
             },
@@ -2466,6 +2525,34 @@
               "deprecationReason": null
             },
             {
+              "name": "image_url",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "image_versions",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "is_default",
               "description": null,
               "args": [],
@@ -2484,6 +2571,54 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "max_tiled_height",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "max_tiled_width",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "original_height",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "original_width",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -2567,6 +2702,42 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "ResizedImageUrl",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "tile_base_url",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "tile_format",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "tile_size",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -2974,18 +3145,6 @@
                   "name": "String",
                   "ofType": null
                 }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "cached",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -3468,7 +3627,7 @@
             },
             {
               "name": "is_buy_nowable",
-              "description": "When in an auction, can the work be bought before any bids are placed",
+              "description": "When in an auction, can the work be bought immediately",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -3649,6 +3808,18 @@
             {
               "name": "is_purchasable",
               "description": "True for inquireable artworks that have an exact price.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "is_saved",
+              "description": null,
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -4134,6 +4305,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "cached",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -5696,7 +5879,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -5729,7 +5912,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -5762,7 +5945,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -5795,7 +5978,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -5828,7 +6011,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -5861,7 +6044,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -6551,7 +6734,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -7486,6 +7669,18 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "is_publically_visible",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -7504,7 +7699,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -7549,6 +7744,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "ID",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "profile",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Profile",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -8021,7 +8228,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -8054,7 +8261,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -8087,7 +8294,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -8120,7 +8327,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -8153,7 +8360,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -8186,7 +8393,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -8219,7 +8426,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -8252,7 +8459,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -8285,7 +8492,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -8318,7 +8525,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -8351,7 +8558,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -9273,7 +9480,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -9558,7 +9765,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -9591,7 +9798,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -10285,6 +10492,18 @@
               "deprecationReason": null
             },
             {
+              "name": "require_bidder_approval",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "sale_artworks",
               "description": null,
               "args": [
@@ -10495,6 +10714,54 @@
           "name": "BuyersPremium",
           "description": null,
           "fields": [
+            {
+              "name": "__id",
+              "description": "A globally unique ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": "A type-specific ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "_id",
+              "description": "A type-specific Gravity Mongo Document ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
             {
               "name": "amount",
               "description": "A formatted price with various currency formatting options.",
@@ -11022,7 +11289,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -12518,6 +12785,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "require_bidder_approval",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -14201,6 +14480,18 @@
               "deprecationReason": null
             },
             {
+              "name": "require_bidder_approval",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "sale_artworks",
               "description": null,
               "args": [
@@ -15653,6 +15944,216 @@
           "possibleTypes": null
         },
         {
+          "kind": "OBJECT",
+          "name": "Collection",
+          "description": null,
+          "fields": [
+            {
+              "name": "__id",
+              "description": "A globally unique ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": "A type-specific ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "_id",
+              "description": "A type-specific Gravity Mongo Document ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "cached",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "artworks_connection",
+              "description": null,
+              "args": [
+                {
+                  "name": "after",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "first",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "before",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "last",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ArtworkConnection",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "default",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "name",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "private",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "slug",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
           "kind": "ENUM",
           "name": "FairSorts",
           "description": null,
@@ -16243,6 +16744,18 @@
               },
               "isDeprecated": true,
               "deprecationReason": "Favor `counts.total`"
+            },
+            {
+              "name": "facet",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "UNION",
+                "name": "ArtworkFilterFacet",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -16300,7 +16813,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -16333,7 +16846,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -16355,6 +16868,153 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "FormattedNumber",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "UNION",
+          "name": "ArtworkFilterFacet",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": [
+            {
+              "kind": "OBJECT",
+              "name": "ArtworkFilterTag",
+              "ofType": null
+            }
+          ]
+        },
+        {
+          "kind": "OBJECT",
+          "name": "ArtworkFilterTag",
+          "description": null,
+          "fields": [
+            {
+              "name": "__id",
+              "description": "A globally unique ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": "A type-specific ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "_id",
+              "description": "A type-specific Gravity Mongo Document ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "cached",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "name",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "href",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "image",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Image",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "count",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -16506,7 +17166,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -16539,7 +17199,7 @@
               "args": [
                 {
                   "name": "format",
-                  "description": "Returns a `String` when format is specified. e.g.`\"0,0.0000\"`",
+                  "description": "Returns a `String` when format is specified. e.g.`'0,0.0000''`",
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
@@ -19677,6 +20337,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "require_bidder_approval",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -26700,18 +27372,6 @@
               "deprecationReason": null
             },
             {
-              "name": "cached",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "additional_information",
               "description": null,
               "args": [
@@ -27189,7 +27849,7 @@
             },
             {
               "name": "is_buy_nowable",
-              "description": "When in an auction, can the work be bought before any bids are placed",
+              "description": "When in an auction, can the work be bought immediately",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -27370,6 +28030,18 @@
             {
               "name": "is_purchasable",
               "description": "True for inquireable artworks that have an exact price.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "is_saved",
+              "description": null,
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -27855,6 +28527,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "cached",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -28659,6 +29343,18 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "is_publically_visible",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -28713,6 +29409,137 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "Tag",
+          "description": null,
+          "fields": [
+            {
+              "name": "__id",
+              "description": "A globally unique ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": "A type-specific ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "_id",
+              "description": "A type-specific Gravity Mongo Document ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "cached",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "name",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "href",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "image",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Image",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "count",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -29051,6 +29878,33 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "collection",
+              "description": null,
+              "args": [
+                {
+                  "name": "id",
+                  "description": "The slug or ID of the Collection",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Collection",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -30530,6 +31384,33 @@
               "deprecationReason": null
             },
             {
+              "name": "tag",
+              "description": null,
+              "args": [
+                {
+                  "name": "id",
+                  "description": "The slug or ID of the Tag",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Tag",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "trending_artists",
               "description": "Trending artists",
               "args": [
@@ -30646,6 +31527,33 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "UpdateConversationPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "saveArtwork",
+              "description": null,
+              "args": [
+                {
+                  "name": "input",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "SaveArtworkInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "SaveArtworkPayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -31102,6 +32010,82 @@
                   "name": "ConversationType",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "clientMutationId",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "SaveArtworkInput",
+          "description": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "artwork_id",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "remove",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "clientMutationId",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "SaveArtworkPayload",
+          "description": null,
+          "fields": [
+            {
+              "name": "artwork",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Artwork",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null

@@ -2,6 +2,7 @@
 
 - [dev] Updates TypeScript to 2.3 - orta
 - [dev] Adds back storybooks - orta
+- Adds initial work on a new personal profile page - orta
 - [dev] Automates TS linting at dev time - orta
 
 ### 1.3.2

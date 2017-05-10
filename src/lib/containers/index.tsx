@@ -1,6 +1,7 @@
 import Artist from "./artist"
 import Gene from "./gene"
 import Home from "./home"
+import MyAccount from "./my_account"
 import WorksForYou from "./works_for_you"
 
 export default {
@@ -8,4 +9,5 @@ export default {
   Home,
   Gene,
   WorksForYou,
+  MyAccount,
 }

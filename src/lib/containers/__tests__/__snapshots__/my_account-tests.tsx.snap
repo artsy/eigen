@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks like expected 1`] = `
+<RCTScrollView
+  automaticallyAdjustContentInsets={false}
+  scrollsToTop={true}
+>
+  <View>
+    <View
+      style={
+        Object {
+          "paddingLeft": 40,
+          "paddingRight": 40,
+        }
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "fontSize": 12,
+            },
+            undefined,
+            Object {
+              "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            },
+          ]
+        }
+      >
+        DANGER MCSHANE
+      </Text>
+    </View>
+  </View>
+</RCTScrollView>
+`;

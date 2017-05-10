@@ -75,6 +75,9 @@ const correspondingTestsForAppFiles = touchedAppOnlyFiles.map(f => {
 // Allow warning instead of failing if you say "Skip New Tests" inside the body, make it explicit.
 const testFilesThatDontExist = correspondingTestsForAppFiles
                                  .filter(f => !f.includes("index-tests.tsx")) // skip indexes
+                                 .filter(f => !f.includes("__stories__")) // skip stories
+                                 .filter(f => !f.includes("app_registry")) // skip registry, kinda untestable
+                                 .filter(f => !f.includes("routes")) // skip routes, kinda untestable
                                  .filter(f => !fs.existsSync(f))
 
 if (testFilesThatDontExist.length > 0) {
