@@ -6,8 +6,8 @@ upcoming:
       - Adds back storybooks - orta
       - Adds initial work on a new personal profile page - orta
       - Automates TS linting at dev time - orta
+      - Adds Sentry for error logging - orta
       - Updates ARTopMenuVC to allow for unretained instances of root VCs - sarah
-      - Adds React Native version of WorksForYou/Notifications tab - sarah
       - Refactors LAI view controller hierarchy - ash
       - Improves the reporting tools for beta users - orta
       - Improves Swift compile times - ash
@@ -33,6 +33,7 @@ upcoming:
       - Fixes display of artworks in non-expanding grids in artwork rails - ash
       - Adds inline bid info to artist grid elements - ash
       - Fixes loading state UI for artwork rail - luc
+      - Adds React Native version of WorksForYou/Notifications tab - sarah
 
 releases:
   - version: 3.2.0

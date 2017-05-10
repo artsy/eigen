@@ -329,6 +329,7 @@ DEPENDENCIES:
   - React/Core
   - ReactiveCocoa (< 3)
   - SDWebImage (>= 3.7.2)
+  - Sentry
   - Specta
   - SSFadingScrollView (from `https://github.com/alloy/SSFadingScrollView.git`, branch `add-axial-support`)
   - Starscream
@@ -492,6 +493,6 @@ SPEC CHECKSUMS:
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 77f4e44e919b274504599a3536cdc90140fb58d8
 
-PODFILE CHECKSUM: b498f78870627cf2b9bfba9e27bedd54a28d6439
+PODFILE CHECKSUM: b886481d878c7f1a4bcbea1523cdc8895d388990
 
 COCOAPODS: 1.2.1

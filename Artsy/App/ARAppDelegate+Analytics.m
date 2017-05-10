@@ -55,6 +55,8 @@
 #import "ARSearchViewController.h"
 #import "ARNavigationController.h"
 #import "ARArtworkInfoViewController.h"
+#import "ARSentryAnalyticsProvider.h"
+
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
@@ -93,10 +95,12 @@
 
     NSString *segmentWriteKey = keys.segmentProductionWriteKey;
     NSString *adjustEnv = ADJEnvironmentProduction;
+    NSString *sentryEnv = keys.sentryProductionDSN;
 
     if (ARAppStatus.isBetaOrDev) {
         segmentWriteKey = keys.segmentDevWriteKey;
         adjustEnv = ADJEnvironmentSandbox;
+        sentryEnv = keys.sentryStagingDSN;
     }
 
     if ([AROptions boolForOption:AROptionsShowAnalyticsOnScreen]) {
@@ -104,11 +108,12 @@
         [ARAnalytics setupProvider:visualizer];
     }
 
-#if DEBUG
+    id sentry = [[ARSentryAnalyticsProvider alloc] initWithDSN:sentryEnv];
+    [ARAnalytics setupProvider:sentry];
+
     BITHockeyManager *hockey = [BITHockeyManager sharedHockeyManager];
-    hockey.disableUpdateManager = YES;
     hockey.disableCrashManager = YES;
-#endif
+    hockey.disableUpdateManager = YES;
 
     ARAnalyticsEventShouldFireBlock heartedShouldFireBlock = ^BOOL(id controller, NSArray *parameters) {
         ARHeartButton *sender = parameters.firstObject;
@@ -429,7 +434,7 @@
                                     recoverySuggestion = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                                     responseString = [recoverySuggestion objectForKey:@"message"];
                                 }
-        
+
                                 return @{
                                     @"errors" : ([error localizedDescription] ?: [error description]) ?: @"",
                                     @"response" : responseString ?: @"",
@@ -559,7 +564,7 @@
                                 } else if (context == ARAppNotificationsRequestContextLaunch) {
                                     analyticsContext = @"launch";
                                 }
-                                
+
                                 return @{
                                          @"outcome"      : @"yes",
                                          @"context_type" : analyticsContext
@@ -770,7 +775,7 @@
                                     firstInvocation = NO;
                                     return NO;
                                 }
- 
+
                                 return YES;
                             }
                         }
@@ -1374,12 +1379,12 @@
 
     [ARUserManager identifyAnalyticsUser];
     [ARAnalytics incrementUserProperty:ARAnalyticsAppUsageCountProperty byInt:1];
-    
+
     if (ARAppStatus.isRunningTests == NO) {
         // Skipping ARAnalytics because Adjust has its own expectations
         // around event names being < 6 chars
         ADJConfig *adjustConfig = [ADJConfig configWithAppToken:keys.adjustProductionAppToken environment:adjustEnv];
-        
+
         // This has to be called at the absolute latest, definitely *after* identifying the user, because tracked
         // install events will not contain the associated anonymous ID otherwise.
         [Adjust appDidLaunch:adjustConfig];
