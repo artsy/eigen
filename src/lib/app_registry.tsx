@@ -91,11 +91,11 @@ class WorksForYou extends RootContainer {
   }
 }
 
-class MyProfile extends RootContainer {
+class MyAccount extends RootContainer {
   constructor(props) {
     super(props)
-    this.component = Containers.MyProfile
-    this.route = new Routes.MyProfile()
+    this.component = Containers.MyAccount
+    this.route = new Routes.MyAccount()
   }
 }
 
@@ -103,4 +103,4 @@ AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Home", () => Home)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
-AppRegistry.registerComponent("MyProfile", () => MyProfile)
+AppRegistry.registerComponent("MyAccount", () => MyAccount)

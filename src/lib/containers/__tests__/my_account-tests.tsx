@@ -1,7 +1,7 @@
 import * as React from "react"
 import * as renderer from "react-test-renderer"
 
-import { MyProfile } from "../my_profile"
+import { MyAccount } from "../my_account"
 
 it("looks like expected", () => {
   const props = {
@@ -10,7 +10,7 @@ it("looks like expected", () => {
       },
     }
   const tree = renderer.create(
-    <MyProfile me={props.me} />,
+    <MyAccount me={props.me} />,
   ).toJSON()
   expect(tree).toMatchSnapshot()
 })

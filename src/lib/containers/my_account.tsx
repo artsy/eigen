@@ -19,7 +19,7 @@ const isPad = Dimensions.get("window").width > 700
 
 interface Props extends ViewProperties, RelayProps {}
 
-export class MyProfile extends React.Component<Props, {}> {
+export class MyAccount extends React.Component<Props, {}> {
   state: {
     selectedTabIndex: number,
   }
@@ -51,7 +51,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(MyProfile, {
+export default Relay.createContainer(MyAccount, {
   fragments: {
     me: () => Relay.QL`
       fragment on Me {

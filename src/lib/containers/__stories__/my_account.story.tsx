@@ -3,10 +3,10 @@ import * as React from "react"
 import { RootContainer } from "react-relay"
 
 import Routes from "../../relay/routes"
-import MyProfile from "../my_profile"
+import MyAccount from "../my_account"
 
-storiesOf("My Profile")
+storiesOf("My Account")
   .add("Root", () => {
-    const profileRoute = new Routes.MyProfile()
-    return <RootContainer Component={MyProfile} route={profileRoute} />
+    const profileRoute = new Routes.MyAccount()
+    return <RootContainer Component={MyAccount} route={profileRoute} />
   })

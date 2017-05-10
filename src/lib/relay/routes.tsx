@@ -70,7 +70,7 @@ class WorksForYou extends Relay.Route {
   static routeName = "WorksForYouRoute"
 }
 
-class MyProfile extends Relay.Route {
+class MyAccount extends Relay.Route {
   static queries = {
     me: (component, params) => Relay.QL`
       query {
@@ -81,7 +81,7 @@ class MyProfile extends Relay.Route {
     `,
   }
 
-  static routeName = "MyProfileRoute"
+  static routeName = "MyAccountRoute"
 }
 
 export default {
@@ -89,5 +89,5 @@ export default {
   Home,
   Gene,
   WorksForYou,
-  MyProfile,
+  MyAccount,
 }
