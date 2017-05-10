@@ -11,6 +11,7 @@ upcoming:
       - Adds back storybooks - orta
       - Adds initial work on a new personal profile page - orta
       - Automates TS linting at dev time - orta
+      - Adds Sentry for error logging - orta
       - Updates ARTopMenuVC to allow for unretained instances of root VCs - sarah
       - Refactors LAI view controller hierarchy - ash
       - Improves the reporting tools for beta users - orta
