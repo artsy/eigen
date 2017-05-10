@@ -6,6 +6,7 @@
 - Adds initial work on a new personal profile page - orta
 - [dev] Automates TS linting at dev time - orta
 - Adds inline bid info to artist grid elements - ash
+- Fixes display of artworks in non-expanding grids in artwork rails - ash
 
 ### 1.3.2
 

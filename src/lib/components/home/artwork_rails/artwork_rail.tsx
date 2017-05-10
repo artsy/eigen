@@ -122,7 +122,10 @@ class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
   }
 
   onGridLayout(event) {
-    this.setState({ gridHeight: event.nativeEvent.layout.height })
+    let { height } = event.nativeEvent.layout
+    // Non-expandable rails require a non-zero height for an initial render pass,
+    // So that we can rely on their subsequent, accurate calls to this function.
+    this.setState({ gridHeight: height > 0 ? height : 1 })
   }
 
   expandable() {
