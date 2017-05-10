@@ -128,22 +128,20 @@
     }
 
     if ([self showAuctionControls]) {
-        ARAuctionState state = self.saleArtwork.auctionState;
-
-        if (state & (ARAuctionStateUserIsHighBidder | ARAuctionStateUserIsBidder)) {
+        if ([self showBidStatusLabels]) {
             self.bidderStatusLabel = [[ARAuctionBidderStateLabel alloc] init];
             [self.bidderStatusLabel updateWithSaleArtwork:self.saleArtwork];
             [self addSubview:self.bidderStatusLabel withTopMargin:@"0" sideMargin:@"0"];
         }
 
-        if (state & (ARAuctionStateStarted | ARAuctionStateShowingPreview)) {
+        if ([self showAuctionPriceView]) {
             self.auctionPriceView = [[ARArtworkAuctionPriceView alloc] init];
             [self.auctionPriceView updateWithSaleArtwork:self.saleArtwork];
             [self addSubview:self.auctionPriceView withTopMargin:@"12" sideMargin:@"0"];
         }
 
         ARBidButton *bidButton = [[ARBidButton alloc] init];
-        bidButton.auctionState = state;
+        bidButton.auctionState = self.saleArtwork.auctionState;
         [self addSubview:bidButton withTopMargin:@"30" sideMargin:@"0"];
         [bidButton addTarget:self action:@selector(tappedBidButton:) forControlEvents:UIControlEventTouchUpInside];
         self.bidButton = bidButton;
@@ -323,6 +321,20 @@ return [navigationButtons copy];
 }
 
 #pragma mark - Info Logic
+
+// Show the bid status labels if the sale is ongoing and the user is the highest bidder or is a bidder.
+- (BOOL)showBidStatusLabels
+{
+    BOOL isOngoing = (self.saleArtwork.auctionState & ARAuctionStateStarted);
+    BOOL userIsBidder = self.saleArtwork.auctionState & (ARAuctionStateUserIsHighBidder | ARAuctionStateUserIsBidder);
+    return isOngoing && userIsBidder;
+}
+
+// Show the auction price view if the auction has started (implies not finished) or is showing a preview.
+- (BOOL)showAuctionPriceView
+{
+    return self.saleArtwork.auctionState & (ARAuctionStateStarted | ARAuctionStateShowingPreview);
+}
 
 // Show if inquireable but not sold and not for sale
 - (BOOL)showNotForSaleLabel
