@@ -58,6 +58,15 @@ lane :ship_beta do
          public_identifier: ENV['HockeyAppBetaID'],
          repository_url: "https://github.com/artsy/eigen.git", commit_sha: commit
 
+  upload_symbols_to_sentry auth_token: ENV['SentryUploadAuthKey'],
+                           org_slug: 'artsynet',
+                           project_slug: 'eigen'
+
+
+  upload_symbols_to_sentry auth_token: ENV['SentryUploadAuthKey'],
+                           org_slug: 'artsynet',
+                           project_slug: 'eigen-staging '
+
   # Send to the app store
   pilot changelog: beta_readme
 
