@@ -5,6 +5,7 @@
 - [dev] Adds back storybooks - orta
 - Adds initial work on a new personal profile page - orta
 - [dev] Automates TS linting at dev time - orta
+- Adds inline bid info to artist grid elements - ash
 
 ### 1.3.2
 
