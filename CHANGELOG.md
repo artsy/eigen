@@ -3,6 +3,7 @@
 - [dev] Updates TypeScript to 2.3 - orta
 - [dev] Adds back storybooks - orta
 - [dev] Automates TS linting at dev time - orta
+- Adds inline bid info to artist grid elements - ash
 
 ### 1.3.2
 
