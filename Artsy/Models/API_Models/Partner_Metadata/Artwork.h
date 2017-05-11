@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Artwork : MTLModel <ARPostAttachment, MTLJSONSerializing, ARHasImageBaseURL, ARShareableObject, ARSpotlightMetadataProvider>
 
 @property (nonatomic, copy) NSString *artworkID;
+@property (nonatomic, copy) NSString *artworkUUID;
 @property (nonatomic, strong) NSNumber *depth;
 @property (nonatomic, strong) NSNumber *diameter;
 @property (nonatomic, strong) NSNumber *height;

@@ -40,6 +40,7 @@ static ARStandardDateFormatter *staticDateFormatter;
 {
     return @{
         ar_keypath(PartnerShow.new, showID) : @"id",
+        ar_keypath(PartnerShow.new, showUUID) : @"_id",
         ar_keypath(PartnerShow.new, partner) : @"partner",
         ar_keypath(PartnerShow.new, artworks) : @"artworks",
         ar_keypath(PartnerShow.new, artists) : @"artists",
