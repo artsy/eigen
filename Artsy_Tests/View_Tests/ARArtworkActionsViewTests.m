@@ -346,6 +346,17 @@ context(@"price view", ^{
     });
 
     context(@"at auction", ^{
+        context(@"a bidder", ^{
+            it(@"is sold", ^{
+                view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000), @"symbol" : @"$" }];
+                view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"auction_state" : @"closed" }];
+                view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
+                [view updateUI];
+                [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+                [view layoutIfNeeded];
+                expect(view).to.haveValidSnapshot();
+            });
+        });
 
         it(@"no bids", ^{
             view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000), @"symbol" : @"$" }];
