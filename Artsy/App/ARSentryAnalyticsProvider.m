@@ -7,8 +7,10 @@
 {
     self = [super init];
     if (!self) { return nil; }
+
     SentryClient *client = [[SentryClient alloc] initWithDsnString:DSN];
-    [SentryClient setShared: client];
+    [client startCrashHandler];
+    [SentryClient setShared:client];
     return self;
 }
 
