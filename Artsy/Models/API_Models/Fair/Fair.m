@@ -38,6 +38,7 @@
     return @{
         ar_keypath(Fair.new, name) : @"name",
         ar_keypath(Fair.new, fairID) : @"id",
+        ar_keypath(Fair.new, fairUUID) : @"_id",
         ar_keypath(Fair.new, defaultProfileID) : @"default_profile_id",
         ar_keypath(Fair.new, organizer) : @"organizer",
         ar_keypath(Fair.new, startDate) : @"start_at",
