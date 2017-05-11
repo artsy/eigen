@@ -1,5 +1,5 @@
 #import "UnroutedViewController.h"
-#import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
+#import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 
 @interface UnroutedViewController()
