@@ -35,6 +35,13 @@ describe("layout", () => {
     const homeComponent = renderer.create(<Home home={homeProps(3, 3, 3).home}/>).toJSON()
     expect(homeComponent).toMatchSnapshot()
   })
+
+  it("does not render rails without artworks", () => {
+    const props = homeProps(2, 2, 2)
+    props.home.artwork_modules[0].results = []
+    const homeComponent = renderer.create(<Home home={props.home}/>).toJSON()
+    expect(homeComponent).toMatchSnapshot()
+  })
 })
 
 const homeProps = (nHeroUnits?: number, nArtistModules?: number, nArtworkModules?: number) => {
@@ -50,7 +57,7 @@ const homeProps = (nHeroUnits?: number, nArtistModules?: number, nArtworkModules
 const modulesOfType = (type: string, count: number) => {
   const modules = []
   for (let i = 0; i < count; i++) {
-    modules.push({ title: "Title", type })
+    modules.push({ title: "Title", type, results: [{title: "Artwork"}]})
   }
   return modules
 }

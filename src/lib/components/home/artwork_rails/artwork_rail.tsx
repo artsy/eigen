@@ -208,6 +208,10 @@ class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
       return null
     }
 
+    if (!this.props.rail.results || !this.props.rail.results.length) {
+      return null
+    }
+
     const sideMargin = isPad ? 40 : 20
     const style: any = { marginLeft: sideMargin, marginRight: sideMargin }
     if (!(this.props.relay && this.props.relay.variables.fetchContent)) {

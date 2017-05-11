@@ -1,5 +1,258 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`layout does not render rails without artworks 1`] = `
+<RCTScrollView
+  automaticallyAdjustContentInsets={false}
+  dataSource={
+    ListViewDataSource {
+      "items": 5,
+    }
+  }
+  onScroll={[Function]}
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={false}
+    />
+  }
+  renderRow={[Function]}
+  renderScrollComponent={[Function]}
+  style={
+    Object {
+      "marginTop": 20,
+      "overflow": "visible",
+    }
+  }
+>
+  <RCTRefreshControl />
+  <View>
+    <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      hitSlop={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#f8f8f8",
+          "borderColor": "#e5e5e5",
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "height": 50,
+          "marginLeft": 40,
+          "marginRight": 40,
+          "marginTop": 10,
+        }
+      }
+      testID={undefined}
+    >
+      <Image
+        source={1}
+        style={
+          Object {
+            "height": 16,
+            "marginLeft": 20,
+            "marginRight": 10,
+            "width": 16,
+          }
+        }
+      />
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 16,
+            "marginTop": 5,
+          }
+        }
+      >
+        Search for artists and artworks...
+      </Text>
+    </View>
+    <View
+      onLayout={[Function]}
+    />
+    <View
+      accessibilityLabel="Artwork Rail"
+      style={
+        Object {
+          "paddingBottom": 12,
+        }
+      }
+    >
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hitSlop={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "marginBottom": 20,
+            "marginLeft": 30,
+            "marginRight": 30,
+            "marginTop": 50,
+          }
+        }
+        testID={undefined}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={0}
+          style={
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 30,
+              "textAlign": "center",
+            }
+          }
+        >
+          Title
+        </Text>
+      </View>
+      <View
+        style={
+          Object {
+            "marginLeft": 40,
+            "marginRight": 40,
+            "minHeight": 400,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "white",
+              },
+              Object {
+                "height": 30,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "height": 0,
+                },
+              ]
+            }
+          >
+            <View
+              onLayout={[Function]}
+            >
+              <View
+                onLayout={[Function]}
+              >
+                <View
+                  accessibilityLabel="Artworks Content View"
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "height": 30,
+              }
+            }
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#e5e5e5",
+                  "height": 1,
+                  "marginLeft": -40,
+                  "marginRight": -40,
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
+      </View>
+    </View>
+    <View>
+      <View
+        style={
+          Object {
+            "marginBottom": 10,
+            "marginLeft": 30,
+            "marginRight": 30,
+            "marginTop": 40,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={0}
+          style={
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 30,
+              "textAlign": "center",
+            }
+          }
+        />
+      </View>
+      <ARSpinner
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#e5e5e5",
+              "height": 1,
+              "marginLeft": -40,
+              "marginRight": -40,
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
 exports[`layout renders as expected 1`] = `
 <RCTScrollView
   automaticallyAdjustContentInsets={false}
@@ -139,13 +392,68 @@ exports[`layout renders as expected 1`] = `
           }
         }
       >
-        <ARSpinner
+        <View
           style={
-            Object {
-              "flex": 1,
-            }
+            Array [
+              Object {
+                "backgroundColor": "white",
+              },
+              Object {
+                "height": 30,
+              },
+            ]
           }
-        />
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "height": 0,
+                },
+              ]
+            }
+          >
+            <View
+              onLayout={[Function]}
+            >
+              <View
+                onLayout={[Function]}
+              >
+                <View
+                  accessibilityLabel="Artworks Content View"
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "height": 30,
+              }
+            }
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#e5e5e5",
+                  "height": 1,
+                  "marginLeft": -40,
+                  "marginRight": -40,
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
       </View>
     </View>
     <View
@@ -204,13 +512,68 @@ exports[`layout renders as expected 1`] = `
           }
         }
       >
-        <ARSpinner
+        <View
           style={
-            Object {
-              "flex": 1,
-            }
+            Array [
+              Object {
+                "backgroundColor": "white",
+              },
+              Object {
+                "height": 30,
+              },
+            ]
           }
-        />
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "height": 0,
+                },
+              ]
+            }
+          >
+            <View
+              onLayout={[Function]}
+            >
+              <View
+                onLayout={[Function]}
+              >
+                <View
+                  accessibilityLabel="Artworks Content View"
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "height": 30,
+              }
+            }
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#e5e5e5",
+                  "height": 1,
+                  "marginLeft": -40,
+                  "marginRight": -40,
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
       </View>
     </View>
     <View>
@@ -315,13 +678,68 @@ exports[`layout renders as expected 1`] = `
           }
         }
       >
-        <ARSpinner
+        <View
           style={
-            Object {
-              "flex": 1,
-            }
+            Array [
+              Object {
+                "backgroundColor": "white",
+              },
+              Object {
+                "height": 30,
+              },
+            ]
           }
-        />
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "height": 0,
+                },
+              ]
+            }
+          >
+            <View
+              onLayout={[Function]}
+            >
+              <View
+                onLayout={[Function]}
+              >
+                <View
+                  accessibilityLabel="Artworks Content View"
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "height": 30,
+              }
+            }
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#e5e5e5",
+                  "height": 1,
+                  "marginLeft": -40,
+                  "marginRight": -40,
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
       </View>
     </View>
   </View>
