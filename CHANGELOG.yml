@@ -15,6 +15,7 @@ upcoming:
       - Fix anonymous user ID not being included in Adjust install events - alloy
       - Remove references to martsy, only serve from Force - alloy
       - Makes logic for an auction being closed the same as force - orta
+      - Update screen analytics - maxim
     user_facing:
       - Adds support for lot_label in auctions - ash
       - Fixes a crash in opening sales with no end date - ash
