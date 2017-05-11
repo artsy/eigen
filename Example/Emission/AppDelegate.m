@@ -100,7 +100,8 @@ randomBOOL(void)
   emission = [[AREmission alloc] initWithUserID:userID
                             authenticationToken:accessToken
                                     packagerURL:packagerURL
-                          useStagingEnvironment:useStaging];
+                          useStagingEnvironment:useStaging
+                                      sentryDSN:nil];
 #else
 #ifdef DEPLOY
   AHBuild *build = [[AppHub buildManager] currentBuild];
