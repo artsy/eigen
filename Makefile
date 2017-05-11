@@ -65,6 +65,7 @@ certs:
 	bundle exec match appstore
 
 distribute:  change_version_to_date set_git_properties setup_fastlane_env
+	bundle exec fastlane update_plugins
 	bundle exec fastlane ship_beta
 
 setup_fastlane_env:
