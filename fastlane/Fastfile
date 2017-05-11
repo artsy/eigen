@@ -70,6 +70,20 @@ lane :ship_beta do
   # Send to the app store
   pilot changelog: beta_readme
 
+  sentry_json = %{ -d '
+  \{
+    "version": "#{latest_version}",
+    "refs": [\{
+        "repository":"artsy/eigen",
+        "commit":"#{commit}"
+    \}],
+    "projects":["eigen","eigen-staging"]
+  \}
+  '
+  }
+
+ `curl https://sentry.io/api/0/organizations/artsynet/releases/ -X POST  -H 'Authorization: Bearer {TOKEN}' -H 'Content-Type: application/json' #{sentry_json}`
+
   # Let us know everything has finished
   slack message: "There is a new Eigen beta available. Grab it from Testflight on your iOS device.",
         payload: {
