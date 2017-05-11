@@ -55,7 +55,7 @@
 #import "ARSearchViewController.h"
 #import "ARNavigationController.h"
 #import "ARArtworkInfoViewController.h"
-#import <Emission/ARWorksForYouModule.h>
+#import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
@@ -1173,7 +1173,7 @@
                             ]
                 },
                 @{
-                    ARAnalyticsClass: ARWorksForYouModule.class,
+                    ARAnalyticsClass: ARWorksForYouComponentViewController.class,
                     ARAnalyticsDetails: @[
                             @{
                                 ARAnalyticsPageName: @"Works by artists you follow",
