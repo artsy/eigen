@@ -22,15 +22,18 @@ Pod::Spec.new do |s|
   s.source_files   = 'Pod/Classes/**/*.{h,m}'
   s.resources      = 'Pod/Assets/{Emission.js,assets}'
 
-  # Artsy pods
   s.dependency 'Artsy+UIFonts', '>= 3.0.0'
   s.dependency 'Extraction', '>= 1.2.1'
 
-  # 3rd-party pods
-  s.dependency 'SDWebImage', '>= 3.7.2'
   s.dependency 'Yoga', "#{react_native_version}.React"
   s.dependency 'React/Core', react_native_version
   s.dependency 'React/RCTText', react_native_version
   s.dependency 'React/RCTImage', react_native_version
   s.dependency 'React/RCTNetwork', react_native_version
+
+  s.dependency 'SDWebImage', '>= 3.7.2'
+  # This needs to be locked down because we’re including this specific version’s JS in our bundle, so it needs to match
+  # with the SentryReactNative version that CocoaPods would pull into Eigen.
+  s.dependency 'SentryReactNative', '0.8.1'
+  s.dependency 'Sentry', '>= 2.1.9' # This is for until SentryReactNative specifies the right minimum version.
 end
