@@ -7,6 +7,7 @@
 - [dev] Automates TS linting at dev time - orta
 - Adds inline bid info to artist grid elements - ash
 - Fixes display of artworks in non-expanding grids in artwork rails - ash
+- Adds Sentry for React Native which integrates with Eigen’s use of Sentry - alloy
 
 ### 1.3.2
 

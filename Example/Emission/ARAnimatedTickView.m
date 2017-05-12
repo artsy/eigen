@@ -1,5 +1,5 @@
 #import "ARAnimatedTickView.h"
-#import <Artsy+UIColors/UIColor+ArtsyColors.h>
+#import <Artsy_UIColors/UIColor+ArtsyColors.h>
 
 #define TICK_DIMENSION 32
 

@@ -2,11 +2,14 @@ source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '9.0'
+use_frameworks!
 # FIXME: Figure out why we are getting hit by this issue.
 install! 'cocoapods', :deterministic_uuids => false
 
-react_path = '../node_modules/react-native'
+node_modules_path = '../node_modules'
+react_path = File.join(node_modules_path, 'react-native')
 yoga_path = File.join(react_path, 'ReactCommon/yoga')
+sentry_path = File.join(node_modules_path, 'react-native-sentry')
 
 target 'Emission' do
   pod 'Emission', :path => '../'
@@ -14,6 +17,8 @@ target 'Emission' do
   # As this runs dev, we need the developer web socket
   pod 'React', :path => react_path, :subspecs => %w(RCTWebSocket)
   pod 'Yoga', :path => yoga_path
+
+  pod 'SentryReactNative', :path => sentry_path
 
   # Got to make it look right
   pod 'Artsy+UIFonts'
@@ -42,5 +47,12 @@ target 'Emission' do
 
     pod 'Specta'
     # pod 'Expecta'
+  end
+end
+
+post_install do |installer|
+  installer.pods_project.build_configurations.each do |config|
+    config.build_settings['SWIFT_VERSION'] = '3.0'
+    config.build_settings['ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES'] = 'YES'
   end
 end

@@ -22,7 +22,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithUserID:(NSString *)userID
            authenticationToken:(NSString *)authenticationToken
                    packagerURL:(nullable NSURL *)packagerURL
-         useStagingEnvironment:(BOOL)useStagingEnvironment NS_DESIGNATED_INITIALIZER;
+         useStagingEnvironment:(BOOL)useStagingEnvironmen;
+
+- (instancetype)initWithUserID:(NSString *)userID
+           authenticationToken:(NSString *)authenticationToken
+                   packagerURL:(nullable NSURL *)packagerURL
+         useStagingEnvironment:(BOOL)useStagingEnvironment
+                     sentryDSN:(nullable NSString *)sentryDSN NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 

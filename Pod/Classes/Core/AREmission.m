@@ -7,11 +7,13 @@
 
 #import <React/RCTBridge.h>
 #import <React/RCTBridgeModule.h>
+#import <SentryReactNative/RNSentry.h>
 
 
 @interface AREmissionConfiguration : NSObject <RCTBridgeModule>
-@property (nonatomic, strong, readwrite) NSString *userID;
-@property (nonatomic, strong, readwrite) NSString *authenticationToken;
+@property (nonatomic, copy, readwrite) NSString *userID;
+@property (nonatomic, copy, readwrite) NSString *authenticationToken;
+@property (nonatomic, copy, readwrite) NSString *sentryDSN;
 @property (nonatomic, assign, readwrite) BOOL useStagingEnvironment;
 @end
 
@@ -25,6 +27,7 @@ RCT_EXPORT_MODULE(Emission);
     @"userID": self.userID,
     @"authenticationToken": self.authenticationToken,
     @"useStagingEnvironment": @(self.useStagingEnvironment),
+    @"sentryDSN": self.sentryDSN ?: @"", // Empty is falsy in JS, so this is fine too.
   };
 }
 
@@ -64,6 +67,19 @@ static AREmission *_sharedInstance = nil;
                    packagerURL:(nullable NSURL *)packagerURL
          useStagingEnvironment:(BOOL)useStagingEnvironment;
 {
+  return [self initWithUserID:userID
+          authenticationToken:authenticationToken
+                  packagerURL:packagerURL
+        useStagingEnvironment:useStagingEnvironment
+                    sentryDSN:nil];
+}
+
+- (instancetype)initWithUserID:(NSString *)userID
+           authenticationToken:(NSString *)authenticationToken
+                   packagerURL:(nullable NSURL *)packagerURL
+         useStagingEnvironment:(BOOL)useStagingEnvironment
+                     sentryDSN:(nullable NSString *)sentryDSN;
+{
   NSParameterAssert(userID);
   NSParameterAssert(authenticationToken);
 
@@ -78,12 +94,17 @@ static AREmission *_sharedInstance = nil;
     _configurationModule.userID = userID;
     _configurationModule.authenticationToken = authenticationToken;
     _configurationModule.useStagingEnvironment = useStagingEnvironment;
+    _configurationModule.sentryDSN = sentryDSN;
 
     NSArray *modules = @[_APIModule, _configurationModule, _eventsModule, _switchBoardModule, _refineModule, _worksForYouModule];
 
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
                                     moduleProvider:^{ return modules; }
                                      launchOptions:nil];
+    
+    if (sentryDSN) {
+      [RNSentry installWithBridge:_bridge];
+    }
   }
   return self;
 }
