@@ -11,9 +11,9 @@
 
 
 @interface AREmissionConfiguration : NSObject <RCTBridgeModule>
-@property (nonatomic, strong, readwrite) NSString *userID;
-@property (nonatomic, strong, readwrite) NSString *authenticationToken;
-@property (nonatomic, strong, readwrite) NSString *sentryDSN;
+@property (nonatomic, copy, readwrite) NSString *userID;
+@property (nonatomic, copy, readwrite) NSString *authenticationToken;
+@property (nonatomic, copy, readwrite) NSString *sentryDSN;
 @property (nonatomic, assign, readwrite) BOOL useStagingEnvironment;
 @end
 
