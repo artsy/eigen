@@ -66,7 +66,7 @@ certs:
 
 distribute:  change_version_to_date set_git_properties setup_fastlane_env
 	bundle exec fastlane update_plugins
-	bundle exec fastlane ship_beta || { cat ~/.fastlane/latest_crash.json; exit 1; }
+	bundle exec fastlane ship_beta
 
 setup_fastlane_env:
 	rm Gemfile.lock Gemfile
