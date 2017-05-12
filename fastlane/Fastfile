@@ -200,3 +200,9 @@ lane :setup_for_app_store do
   # Clean-up
   `rm -rf #{signing_root}`
 end
+
+error do |_, exception|
+  File.open(File.join(ENV['CIRCLE_ARTIFACTS'], "fastlane-error.txt"), "w") do |file|
+    file.puts("#{exception.message}\n\t#{exception.backtrace.join("\n\t")}")
+  end
+end
