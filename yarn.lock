@@ -5437,9 +5437,9 @@ react-modal@^1.2.1:
   version "0.18.2"
   resolved "https://github.com/orta/react-native-parallax-scroll-view#4e20440f9cd0b6280303b57124c0348c0e63b7c0"
 
-"react-native-sentry@https://github.com/alloy/react-native-sentry.git#fix-podspec":
-  version "0.8.1"
-  resolved "https://github.com/alloy/react-native-sentry.git#e3b7fa8271fb6746c799abfdf31dad4d9c5b4e20"
+react-native-sentry@^0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/react-native-sentry/-/react-native-sentry-0.8.3.tgz#14c72df5aeae01431059d9acd515313da40ba9f7"
   dependencies:
     glob "7.1.1"
     inquirer "3.0.6"
@@ -6024,8 +6024,8 @@ send@0.15.1:
     statuses "~1.3.1"
 
 sentry-cli-binary@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/sentry-cli-binary/-/sentry-cli-binary-1.9.0.tgz#99d7b62480cf85d674dbb193e7da313cdf820a06"
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/sentry-cli-binary/-/sentry-cli-binary-1.9.1.tgz#a99d5ce4e1f480e16efe64f83e65596d1123b926"
 
 serve-favicon@~2.3.0:
   version "2.3.2"

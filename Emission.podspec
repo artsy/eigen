@@ -6,6 +6,7 @@ end
 
 emission_version = pkg_version.call('.')
 react_native_version = pkg_version.call('node_modules/react-native')
+sentry_version = pkg_version.call('node_modules/react-native-sentry')
 
 Pod::Spec.new do |s|
   s.name           = 'Emission'
@@ -34,6 +35,5 @@ Pod::Spec.new do |s|
   s.dependency 'SDWebImage', '>= 3.7.2'
   # This needs to be locked down because we’re including this specific version’s JS in our bundle, so it needs to match
   # with the SentryReactNative version that CocoaPods would pull into Eigen.
-  s.dependency 'SentryReactNative', '0.8.1'
-  s.dependency 'Sentry', '>= 2.1.9' # This is for until SentryReactNative specifies the right minimum version.
+  s.dependency 'SentryReactNative', sentry_version
 end

@@ -76,7 +76,7 @@
     "react": "latest",
     "react-native": "https://github.com/alloy/react-native.git#v0.42.0-with-customisable-source-exts",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
-    "react-native-sentry": "https://github.com/alloy/react-native-sentry.git#fix-podspec",
+    "react-native-sentry": "^0.8.3",
     "react-relay": "https://github.com/alloy/relay/releases/download/v0.9.3/react-relay-0.9.3.tgz",
     "remove-markdown": "0.1.0",
     "typescript": "^2.3.2"
