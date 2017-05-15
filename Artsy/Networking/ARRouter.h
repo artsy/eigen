@@ -100,6 +100,7 @@
 + (NSURLRequest *)newGeneRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude;
 + (NSURLRequest *)newGenesRelatedToGeneRequest:(Gene *)gene excluding:(NSArray *)genesToExclude;
 + (NSURLRequest *)newArtistsPopularRequest;
++ (NSURLRequest *)newArtistsPopularRequestFallback;
 + (NSURLRequest *)newGenesPopularRequest;
 + (NSURLRequest *)newShowsRequestForArtist:(NSString *)artistID;
 + (NSURLRequest *)newShowsRequestForArtistID:(NSString *)artistID inFairID:(NSString *)fairID;
