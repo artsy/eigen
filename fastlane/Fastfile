@@ -88,8 +88,8 @@ lane :ship_beta do
                           finalize: true
   end
 
-  sentry("eigen")
-  sentry("eigen-staging")
+  sentry.call("eigen")
+  sentry.call("eigen-staging")
 
   # Send to the app store
   pilot changelog: beta_readme
