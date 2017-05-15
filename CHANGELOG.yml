@@ -22,6 +22,7 @@ upcoming:
       - Add support for Universal Links to Sailthru links - alloy
       - No longer shows bidding status labels for artworks in a closed sale - ash
       - Allows users to place higher bids in advance in LAI - ash
+      - Add popular artists fallback url for onboarding - maxim
 
 releases:
   - version: 3.2.0
