@@ -44,9 +44,11 @@ lane :ship_beta do
   tag = "#{latest_version}-#{build_version}"
   `git tag -d "#{tag}"`
 
-  add_git_tag tag: tag
-  `git remote add http https://github.com/artsy/eigen.git`
-  `git push http #{tag}`
+  # add_git_tag tag: tag
+  # `git remote add http https://github.com/artsy/eigen.git`
+  # `git push http #{tag}`
+
+  FastlaneCore::Globals.verbose = true
 
   sentry = lambda do |project_slug|
     org_slug = "artsynet"
@@ -85,16 +87,16 @@ lane :ship_beta do
   sentry.call("eigen")
   sentry.call("eigen-staging")
 
-  # Send to the app store
-  pilot changelog: beta_readme
+  # # Send to the app store
+  # pilot changelog: beta_readme
 
-  # Let us know everything has finished
-  slack message: "There is a new Eigen beta available. Grab it from Testflight on your iOS device.",
-        payload: {
-          'Version' => latest_version,
-          'What\'s new' => beta_readme
-        },
-        default_payloads: []
+  # # Let us know everything has finished
+  # slack message: "There is a new Eigen beta available. Grab it from Testflight on your iOS device.",
+  #       payload: {
+  #         'Version' => latest_version,
+  #         'What\'s new' => beta_readme
+  #       },
+  #       default_payloads: []
 end
 
 lane :deploy_latest_to_external do
