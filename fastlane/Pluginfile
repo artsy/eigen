@@ -2,4 +2,4 @@
 #
 # Ensure this file is checked in to source control!
 
-gem 'fastlane-plugin-sentry'
+gem 'fastlane-plugin-sentry', git => "https://github.com/orta/fastlane-plugin-sentry.git"
