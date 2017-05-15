@@ -104,6 +104,7 @@ describe(@"init", ^{
           @{
               @"model" : @"artist",
               @"id" : @"leila-pazooki",
+              @"_id" : @"5074b70927ef8d0002000141",
               @"display": @"Leila Pazooki",
               @"label": @"Artist",
               @"published": @YES,
