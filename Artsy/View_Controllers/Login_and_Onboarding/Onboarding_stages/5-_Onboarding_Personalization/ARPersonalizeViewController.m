@@ -646,22 +646,21 @@
     [self.searchResultsTable showLoadingSpinner];
 
     self.searchResultsTable.contentDisplayMode = ARTableViewContentDisplayModePlaceholder;
+    
+    void (^updateArtistsTable)(NSArray*) = ^(NSArray *artists) {
+        [self.searchResultsTable removeLoadingSpinner];
+        [self.searchResultsTable updateTableContentsFor:artists
+                                        replaceContents:ARSearchResultsReplaceAll
+                                               animated:animated];
+    };
 
     self.searchRequestOperation = [ArtsyAPI getPopularArtistsWithSuccess:^(NSArray *artists) {
         if (artists.count == 0) {
-            self.searchRequestOperation = [ArtsyAPI getPopularArtistsFallbackWithSuccess:^(NSArray *artists) {
-                [self.searchResultsTable removeLoadingSpinner];
-                [self.searchResultsTable updateTableContentsFor:artists
-                                                replaceContents:ARSearchResultsReplaceAll
-                                                       animated:animated];
-            } failure:^(NSError *error) {
+            self.searchRequestOperation = [ArtsyAPI getPopularArtistsFallbackWithSuccess:updateArtistsTable failure:^(NSError *error) {
                 [self reportError:error];
             }];
         } else {
-            [self.searchResultsTable removeLoadingSpinner];
-            [self.searchResultsTable updateTableContentsFor:artists
-                                            replaceContents:ARSearchResultsReplaceAll
-                                                   animated:animated];
+            updateArtistsTable(artists);
         }
 
     } failure:^(NSError *error) {
