@@ -19,6 +19,7 @@ upcoming:
       - Fix anonymous user ID not being included in Adjust install events - alloy
       - Remove references to martsy, only serve from Force - alloy
       - Makes logic for an auction being closed the same as force - orta
+      - Update screen analytics - maxim
     user_facing:
       - Ensured rails without artworks cannot be rendered - sarah
       - Fix for strange scrolling behavior in WFU - sarah

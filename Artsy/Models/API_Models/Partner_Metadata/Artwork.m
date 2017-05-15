@@ -54,6 +54,7 @@
 {
     return @{
         ar_keypath(Artwork.new, artworkID) : @"id",
+        ar_keypath(Artwork.new, artworkUUID) : @"_id",
         ar_keypath(Artwork.new, auctionResultCount) : @"comparables_count",
         ar_keypath(Artwork.new, canShareImage) : @"can_share_image",
         ar_keypath(Artwork.new, collectingInstitution) : @"collecting_institution",

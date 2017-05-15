@@ -14,6 +14,7 @@
 @property (nonatomic, strong, readonly) Location *location;
 
 @property (nonatomic, copy, readonly) NSString *showID;
+@property (nonatomic, copy, readonly) NSString *showUUID;
 
 @property (nonatomic, copy, readonly) NSString *name;
 @property (nonatomic, copy, readonly) NSString *officialDescription;
