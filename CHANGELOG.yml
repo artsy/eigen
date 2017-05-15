@@ -2,6 +2,10 @@ upcoming:
     version: 3.2.1
     details: Scope not know yet
     dev:
+      - Updates TypeScript to 2.3 - orta
+      - Adds back storybooks - orta
+      - Adds initial work on a new personal profile page - orta
+      - Automates TS linting at dev time - orta
       - Updates ARTopMenuVC to allow for unretained instances of root VCs - sarah
       - Adds React Native version of WorksForYou/Notifications tab - sarah
       - Refactors LAI view controller hierarchy - ash
@@ -16,6 +20,8 @@ upcoming:
       - Remove references to martsy, only serve from Force - alloy
       - Makes logic for an auction being closed the same as force - orta
     user_facing:
+      - Ensured rails without artworks cannot be rendered - sarah
+      - Fix for strange scrolling behavior in WFU - sarah
       - Adds support for lot_label in auctions - ash
       - Fixes a crash in opening sales with no end date - ash
       - Spruced up artworks in auctio view - ash
@@ -23,6 +29,8 @@ upcoming:
       - No longer shows bidding status labels for artworks in a closed sale - ash
       - Allows users to place higher bids in advance in LAI - ash
       - Add popular artists fallback url for onboarding - maxim
+      - Fixes display of artworks in non-expanding grids in artwork rails - ash
+      - Adds inline bid info to artist grid elements - ash
 
 releases:
   - version: 3.2.0
