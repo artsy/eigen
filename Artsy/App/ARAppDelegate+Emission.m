@@ -17,8 +17,10 @@
 #import "ARNavigationController.h"
 #import "ARTopMenuViewController.h"
 #import "ARRootViewController.h"
+#import "ARAppStatus.h"
 
 #import <Aerodramus/Aerodramus.h>
+#import <Keys/ArtsyKeys.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/ARSwitchBoardModule.h>
@@ -100,10 +102,14 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     NSParameterAssert(userID);
     NSParameterAssert(authenticationToken);
 
+    ArtsyKeys *keys = [ArtsyKeys new];
+    NSString *sentryDSN = [ARAppStatus isBetaOrDev] ? [keys sentryStagingDSN] : [keys sentryProductionDSN];
+
     AREmission *emission = [[AREmission alloc] initWithUserID:userID
                                           authenticationToken:authenticationToken
                                                   packagerURL:packagerURL
-                                        useStagingEnvironment:[AROptions boolForOption:ARUseStagingDefault]];
+                                        useStagingEnvironment:[AROptions boolForOption:ARUseStagingDefault]
+                                                    sentryDSN:sentryDSN];
     [AREmission setSharedInstance:emission];
 
 #pragma mark - Native Module: Follow status
