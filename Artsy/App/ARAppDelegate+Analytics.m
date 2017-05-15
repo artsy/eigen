@@ -1149,7 +1149,6 @@
                     ARAnalyticsDetails: @[
                         @{
                             ARAnalyticsPageName: @"Search",
-                            ARAnalyticsSelectorName: @"viewDidAppear:",
                         }
                     ]
                 },
@@ -1158,7 +1157,6 @@
                     ARAnalyticsDetails: @[
                             @{
                                 ARAnalyticsPageName: @"Home",
-                                ARAnalyticsSelectorName: @"viewDidAppear:",
                                 }
                             ]
                 },
@@ -1167,7 +1165,6 @@
                     ARAnalyticsDetails: @[
                             @{
                                 ARAnalyticsPageName: @"Explore",
-                                ARAnalyticsSelectorName: @"viewDidAppear:",
                                 }
                             ]
                 },
@@ -1176,7 +1173,6 @@
                     ARAnalyticsDetails: @[
                             @{
                                 ARAnalyticsPageName: @"You",
-                                ARAnalyticsSelectorName: @"viewDidAppear:",
                                 }
                             ]
                 },
@@ -1185,7 +1181,6 @@
                     ARAnalyticsDetails: @[
                             @{
                                 ARAnalyticsPageName: @"Works by artists you follow",
-                                ARAnalyticsSelectorName: @"viewDidAppear:",
                                 }
                             ]
                 },
@@ -1219,12 +1214,11 @@
                             ARAnalyticsPageName: @"Artwork More Info",
                             ARAnalyticsSelectorName: @"viewDidAppear:",
                             ARAnalyticsProperties: ^NSDictionary *(ARArtworkInfoViewController *controller, NSArray *_) {
-                                NSDictionary *basics =  @{
+                                return @{
                                     @"owner_type": @"artwork",
                                     @"owner_id": controller.artwork.artworkUUID ?: @"",
                                     @"owner_slug": controller.artwork.artworkID ?: @""
                                 };
-                                return basics;
                             }
                         }
                     ]
@@ -1236,12 +1230,11 @@
                             ARAnalyticsPageName: @"Contact gallery",
                             ARAnalyticsSelectorName: @"viewDidAppear:",
                             ARAnalyticsProperties: ^NSDictionary *(ARInquireForArtworkViewController *controller, NSArray *_) {
-                                NSDictionary *basics =  @{
+                                return @{
                                     @"owner_type": @"artwork",
                                     @"owner_id": controller.artwork.artworkUUID ?: @"",
                                     @"owner_slug": controller.artwork.artworkID ?: @""
                                 };
-                                return basics;
                             }
                         }
                     ]
@@ -1252,11 +1245,10 @@
                         @{
                             ARAnalyticsPageName: @"Artist",
                             ARAnalyticsProperties: ^NSDictionary *(ARArtistComponentViewController *controller, NSArray *_) {
-                                NSString *artistID = controller.artistID ?: @"";
                                 return @{
                                          @"owner_type": @"artist",
                                          @"owner_id": @"",
-                                         @"owner_slug": artistID
+                                         @"owner_slug": controller.artistID ?: @""
                                          };
                             }
                         }
@@ -1292,7 +1284,8 @@
                             ARAnalyticsProperties: ^NSDictionary *(ARGeneComponentViewController *controller, NSArray *_) {
                                 return @{ @"owner-type": @"gene",
                                           @"owner-id": @"",
-                                          @"owner-slug": controller.geneID ?: @"" };
+                                          @"owner-slug": controller.geneID ?: @""
+                                          };
                             }
                         }
                     ]
