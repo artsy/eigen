@@ -2425,13 +2425,6 @@ element-class@^0.2.0:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/element-class/-/element-class-0.2.2.tgz#9d3bbd0767f9013ef8e1c8ebe722c1402a60050e"
 
-emission@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/emission/-/emission-0.0.4.tgz#9f75743a679655a7009c9a7a1f4e88d4fcd87625"
-  dependencies:
-    async "^1.4.2"
-    redis "^0.12.1"
-
 emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
@@ -5679,10 +5672,6 @@ redent@^1.0.0:
   dependencies:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
-
-redis@^0.12.1:
-  version "0.12.1"
-  resolved "https://registry.yarnpkg.com/redis/-/redis-0.12.1.tgz#64df76ad0fc8acebaebd2a0645e8a48fac49185e"
 
 reduce-css-calc@^1.2.6:
   version "1.3.0"
