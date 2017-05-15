@@ -48,16 +48,6 @@ lane :ship_beta do
   `git remote add http https://github.com/artsy/eigen.git`
   `git push http #{tag}`
 
-  # Ship to hockey first, testflight has to wait for processing
-  hockey notes: beta_readme, api_token: ENV['HOCKEY_API_TOKEN'],
-         public_identifier: ENV['HockeyAppLiveID'],
-        repository_url: "https://github.com/artsy/eigen.git", commit_sha: commit
-
-  # Do both beta / store, as right now any build can migrate across
-  hockey notes: beta_readme, api_token: ENV['HOCKEY_API_TOKEN'],
-         public_identifier: ENV['HockeyAppBetaID'],
-         repository_url: "https://github.com/artsy/eigen.git", commit_sha: commit
-
   sentry = lambda do |project_slug|
     org_slug = "artsynet"
 
