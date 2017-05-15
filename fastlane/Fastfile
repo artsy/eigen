@@ -138,7 +138,7 @@ lane :setup_for_app_store do
     path: "Artsy.xcodeproj",
     teamid: "23KMWZ572J"
   )
-  update_project_codesigning(
+  automatic_code_signing(
     path: 'Artsy.xcodeproj',
     use_automatic_signing: false
   )
