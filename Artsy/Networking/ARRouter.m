@@ -702,6 +702,16 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARPopularArtistsURL parameters:nil];
 }
 
++ (NSURLRequest *)newArtistsPopularRequestFallback
+{
+    // we guard against delta not being able to provide us the current popular artists
+    // by having a backup list on S3
+    
+    NSString *stringURL = @"https://s3.amazonaws.com/eigen-production/json/eigen_popularartists.json";
+    
+    return [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:stringURL]];
+}
+
 + (NSURLRequest *)newGenesPopularRequest
 
 {
