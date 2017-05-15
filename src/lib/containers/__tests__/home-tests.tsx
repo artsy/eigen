@@ -50,7 +50,7 @@ const homeProps = (nHeroUnits?: number, nArtistModules?: number, nArtworkModules
 const modulesOfType = (type: string, count: number) => {
   const modules = []
   for (let i = 0; i < count; i++) {
-    modules.push({ title: "Title", type })
+    modules.push({ title: "Title", type, results: [{title: "Artwork"}]})
   }
   return modules
 }

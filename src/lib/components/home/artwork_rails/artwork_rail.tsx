@@ -47,7 +47,7 @@ interface State {
   loadFailed: boolean
 }
 
-class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
+export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
   constructor(props) {
     super(props)
 
@@ -207,13 +207,21 @@ class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
     if (this.state.loadFailed) {
       return null
     }
+    const hasStartedFetching = this.props.relay && this.props.relay.variables.fetchContent
 
     const sideMargin = isPad ? 40 : 20
     const style: any = { marginLeft: sideMargin, marginRight: sideMargin }
-    if (!(this.props.relay && this.props.relay.variables.fetchContent)) {
+    if (!hasStartedFetching) {
       // if there's no content, set minHeight to prevent spinners from all the rails showing
       style.minHeight = 400
     }
+
+    const hasArtworks = hasStartedFetching && this.props.rail.results && this.props.rail.results.length
+    if (!hasArtworks) {
+      // if the data has been fetched but there are no results, hide the whole thing
+      return null
+    }
+
     return (
       <View accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
         <Header rail={this.props.rail} handleViewAll={this.handleViewAll}/>
