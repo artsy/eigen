@@ -2,5 +2,4 @@
 #
 # Ensure this file is checked in to source control!
 
-gem 'fastlane-plugin-update_project_codesigning'
 gem 'fastlane-plugin-sentry'
