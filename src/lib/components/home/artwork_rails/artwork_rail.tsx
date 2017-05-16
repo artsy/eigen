@@ -65,9 +65,10 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
   componentDidMount() {
     if (this.props.relay) {
       this.props.relay.setVariables({ fetchContent: true }, readyState => {
+        let error = !!readyState.error
         this.setState({
-          didPerformFetch: readyState.done,
-          loadFailed: !!readyState.error,
+          didPerformFetch: readyState.done || readyState.ready || error,
+          loadFailed: error,
         })
       })
     }
