@@ -33,6 +33,7 @@ upcoming:
       - Fixes display of artworks in non-expanding grids in artwork rails - ash
       - Adds inline bid info to artist grid elements - ash
       - No longer show sale messaging banner for artwork pages for lots in closed sales - ash
+      - Fixes loading state UI for artwork rail - luc
 
 releases:
   - version: 3.2.0
