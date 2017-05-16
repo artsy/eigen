@@ -39,6 +39,10 @@
     }
     _auctionState = auctionState;
 
+    if (auctionState & ARAuctionStateEnded) {
+        return;
+    }
+
     if (auctionState & ARAuctionStateUserIsHighBidder) {
         self.backgroundColor = [UIColor artsyPurpleRegular];
         self.label.text = @"You are currently the high\nbidder for this lot.";
