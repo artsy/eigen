@@ -47,6 +47,7 @@ interface State {
   expanded: boolean
   gridHeight: number
   loadFailed: boolean
+  didPerformFetch: boolean
 }
 
 export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
@@ -57,6 +58,7 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
       expanded: false,
       gridHeight: 0,
       loadFailed: false,
+      didPerformFetch: false,
     }
   }
 
@@ -64,6 +66,7 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
     if (this.props.relay) {
       this.props.relay.setVariables({ fetchContent: true }, readyState => {
         this.setState({
+          didPerformFetch: readyState.done,
           loadFailed: !!readyState.error,
         })
       })
@@ -108,7 +111,9 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
         break
     }
 
-    if (url) { SwitchBoard.presentNavigationViewController(this, url) }
+    if (url) {
+      SwitchBoard.presentNavigationViewController(this, url)
+    }
   }
 
   geneQueryLink(rail) {
@@ -132,10 +137,6 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
 
   expandable() {
     return this.props.rail.results.length > (isPad ? 3 : 6)
-  }
-
-  hasFetchedData() {
-    return this.props.relay && this.props.relay.variables.fetchContent
   }
 
   mainContainerHeight() {
@@ -213,7 +214,7 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
     const sideMargin = isPad ? 40 : 20
     const style: any = { marginLeft: sideMargin, marginRight: sideMargin }
 
-    if (!this.hasFetchedData()) {
+    if (!this.state.didPerformFetch) {
       style.minHeight = minRailHeight
     }
 
@@ -226,7 +227,7 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
     }
 
     const hasArtworks = this.props.rail.results && this.props.rail.results.length
-    if (this.hasFetchedData() && !hasArtworks) {
+    if (this.state.didPerformFetch && !hasArtworks) {
       // if the data has been fetched but there are no results, hide the whole thing
       return null
     }
