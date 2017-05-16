@@ -58,13 +58,19 @@ lane :ship_beta do
   sentry = lambda do |project_slug|
     org_slug = "artsynet"
 
+    sentry_create_release auth_token: ENV['SentryUploadAuthKey'],
+                          org_slug: org_slug,
+                          project_slug: project_slug,
+                          version: latest_version, # TODO Does this create versions for the release number?
+                          finalize: true
+    puts "Created a release for #{project_slug}"
+
     Dir.glob(File.join(dsyms_path, "*.dSYM")).each do |dsym_path|
       sentry_upload_dsym auth_token: ENV['SentryUploadAuthKey'],
                         org_slug: org_slug,
                         project_slug: project_slug,
                         dsym_path: dsym_path
     end
-
 
     puts "Uploaded dsym for #{project_slug}"
 
@@ -84,13 +90,6 @@ lane :ship_beta do
                             sourcemap: "Pods/Emission/Pod/Assets/Emission.js.map",
                             rewrite: true
     puts "Uploaded Emission.js.map for #{project_slug}"
-
-    sentry_create_release auth_token: ENV['SentryUploadAuthKey'],
-                          org_slug: org_slug,
-                          project_slug: project_slug,
-                          version: latest_version, # TODO Does this create versions for the release number?
-                          finalize: true
-    puts "Created a release for #{project_slug}"
   end
 
   sentry.call("eigen")
