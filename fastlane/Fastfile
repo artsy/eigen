@@ -61,7 +61,7 @@ lane :ship_beta do
     sentry_create_release auth_token: ENV['SentryUploadAuthKey'],
                           org_slug: org_slug,
                           project_slug: project_slug,
-                          version: latest_version, # TODO Does this create versions for the release number?
+                          version: tag,
                           finalize: true
     puts "Created a release for #{project_slug}"
 
