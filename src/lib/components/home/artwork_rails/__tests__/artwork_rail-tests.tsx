@@ -5,7 +5,7 @@ import * as renderer from "react-test-renderer"
 import { ArtworkRail, minRailHeight } from "../artwork_rail"
 
 it("renders correctly", () => {
-  const props = railProps() as any
+  const props = railProps(false) as any
   const tree = renderer.create(<ArtworkRail {...props} />).toJSON()
   expect(tree).toMatchSnapshot()
 })
