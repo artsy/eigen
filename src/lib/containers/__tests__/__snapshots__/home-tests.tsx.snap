@@ -83,6 +83,246 @@ exports[`layout renders as expected 1`] = `
     <View
       onLayout={[Function]}
     />
+    <View
+      accessibilityLabel="Artwork Rail"
+      style={
+        Object {
+          "paddingBottom": 12,
+        }
+      }
+    >
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hitSlop={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "marginBottom": 20,
+            "marginLeft": 30,
+            "marginRight": 30,
+            "marginTop": 50,
+          }
+        }
+        testID={undefined}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={0}
+          style={
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 30,
+              "textAlign": "center",
+            }
+          }
+        >
+          Title
+        </Text>
+      </View>
+      <View
+        style={
+          Object {
+            "marginLeft": 40,
+            "marginRight": 40,
+            "minHeight": 400,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "white",
+              },
+              Object {
+                "height": 30,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "height": 0,
+                },
+              ]
+            }
+          >
+            <View
+              onLayout={[Function]}
+            >
+              <View
+                onLayout={[Function]}
+              >
+                <View
+                  accessibilityLabel="Artworks Content View"
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "height": 30,
+              }
+            }
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#e5e5e5",
+                  "height": 1,
+                  "marginLeft": -40,
+                  "marginRight": -40,
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityLabel="Artwork Rail"
+      style={
+        Object {
+          "paddingBottom": 12,
+        }
+      }
+    >
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hitSlop={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "marginBottom": 20,
+            "marginLeft": 30,
+            "marginRight": 30,
+            "marginTop": 50,
+          }
+        }
+        testID={undefined}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={0}
+          style={
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 30,
+              "textAlign": "center",
+            }
+          }
+        >
+          Title
+        </Text>
+      </View>
+      <View
+        style={
+          Object {
+            "marginLeft": 40,
+            "marginRight": 40,
+            "minHeight": 400,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "white",
+              },
+              Object {
+                "height": 30,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "height": 0,
+                },
+              ]
+            }
+          >
+            <View
+              onLayout={[Function]}
+            >
+              <View
+                onLayout={[Function]}
+              >
+                <View
+                  accessibilityLabel="Artworks Content View"
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "height": 30,
+              }
+            }
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#e5e5e5",
+                  "height": 1,
+                  "marginLeft": -40,
+                  "marginRight": -40,
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
+      </View>
+    </View>
     <View>
       <View
         style={
@@ -128,6 +368,126 @@ exports[`layout renders as expected 1`] = `
           ]
         }
       />
+    </View>
+    <View
+      accessibilityLabel="Artwork Rail"
+      style={
+        Object {
+          "paddingBottom": 12,
+        }
+      }
+    >
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hitSlop={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "marginBottom": 20,
+            "marginLeft": 30,
+            "marginRight": 30,
+            "marginTop": 50,
+          }
+        }
+        testID={undefined}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          numberOfLines={0}
+          style={
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 30,
+              "textAlign": "center",
+            }
+          }
+        >
+          Title
+        </Text>
+      </View>
+      <View
+        style={
+          Object {
+            "marginLeft": 40,
+            "marginRight": 40,
+            "minHeight": 400,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "white",
+              },
+              Object {
+                "height": 30,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "height": 0,
+                },
+              ]
+            }
+          >
+            <View
+              onLayout={[Function]}
+            >
+              <View
+                onLayout={[Function]}
+              >
+                <View
+                  accessibilityLabel="Artworks Content View"
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "height": 30,
+              }
+            }
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#e5e5e5",
+                  "height": 1,
+                  "marginLeft": -40,
+                  "marginRight": -40,
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
+      </View>
     </View>
   </View>
 </RCTScrollView>
