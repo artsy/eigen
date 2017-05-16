@@ -58,10 +58,12 @@ lane :ship_beta do
   sentry = lambda do |project_slug|
     org_slug = "artsynet"
 
-    sentry_upload_dsym auth_token: ENV['SentryUploadAuthKey'],
-                      org_slug: org_slug,
-                      project_slug: project_slug,
-                      dsym_path: dsyms_path
+    Dir.glob(File.join(dsyms_path, "*.dSYM")).each do |dsym_path|
+      sentry_upload_dsym auth_token: ENV['SentryUploadAuthKey'],
+                        org_slug: org_slug,
+                        project_slug: project_slug,
+                        dsym_path: dsym_path
+    end
 
 
     puts "Uploaded dsym for #{project_slug}"
