@@ -11,6 +11,7 @@
 - Adds inline bid info to artist grid elements - ash
 - Fixes display of artworks in non-expanding grids in artwork rails - ash
 - Adds Sentry for React Native which integrates with Eigen’s use of Sentry - alloy
+- Fixes loading state UI for artwork rail - luc
 
 ### 1.3.2
 
