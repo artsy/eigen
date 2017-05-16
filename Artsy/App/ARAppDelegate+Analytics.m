@@ -1240,7 +1240,8 @@
                                 return @{
                                          @"owner_type": @"artist",
                                          @"owner_id": @"",
-                                         @"owner_slug": controller.artistID ?: @""
+                                         @"owner_slug": controller.artistID ?: @"",
+                                         @"partial" : @"true"
                                          };
                             }
                         }
@@ -1276,7 +1277,8 @@
                             ARAnalyticsProperties: ^NSDictionary *(ARGeneComponentViewController *controller, NSArray *_) {
                                 return @{ @"owner-type": @"gene",
                                           @"owner-id": @"",
-                                          @"owner-slug": controller.geneID ?: @""
+                                          @"owner-slug": controller.geneID ?: @"",
+                                          @"partial" : @"true"
                                           };
                             }
                         }

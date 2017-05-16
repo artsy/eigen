@@ -19,6 +19,13 @@ class RefineSwiftCoordinator : NSObject {
                 viewController.dismiss(animated: true, completion: nil)
 
         }
+        var properties = [String: Any]()
+        properties["owner_type"] = "gene"
+        properties["owner_id"] = ""
+        properties["owner_slug"] = ""
+        properties["partial"] = "true"
+        optionsVC.viewDidAppearAnalyticsOption = RefinementAnalyticsOption(name: "Category refine", properties: properties)
+        
         viewController.present(optionsVC, animated: true, completion: nil)
     }
 }
