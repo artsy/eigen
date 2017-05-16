@@ -46,19 +46,54 @@ lane :ship_beta do
 
   add_git_tag tag: tag
   `git remote add http https://github.com/artsy/eigen.git`
-  `git push http #{tag}`
+  `git push http #{tag} -f`
 
-  # Ship to hockey first, testflight has to wait for processing
-  hockey notes: beta_readme, api_token: ENV['HOCKEY_API_TOKEN'],
-         public_identifier: ENV['HockeyAppLiveID'],
-        repository_url: "https://github.com/artsy/eigen.git", commit_sha: commit
+  # First make individual dSYM archives available to the sentry-cli tool.
+  root = File.expand_path("../..", __FILE__)
+  dsyms_path = File.join(root, "dSYMs")
+  sh "unzip -d #{dsyms_path} #{File.join(root, "Artsy.app.dSYM.zip")}"
 
-  # Do both beta / store, as right now any build can migrate across
-  hockey notes: beta_readme, api_token: ENV['HOCKEY_API_TOKEN'],
-         public_identifier: ENV['HockeyAppBetaID'],
-         repository_url: "https://github.com/artsy/eigen.git", commit_sha: commit
+  sentry = lambda do |project_slug|
+    org_slug = "artsynet"
 
-  # Send to the app store
+    sentry_create_release auth_token: ENV['SentryUploadAuthKey'],
+                          org_slug: org_slug,
+                          project_slug: project_slug,
+                          version: tag,
+                          finalize: true
+    puts "Created a release for #{project_slug}"
+
+    Dir.glob(File.join(dsyms_path, "*.dSYM")).each do |dsym_path|
+      sentry_upload_dsym auth_token: ENV['SentryUploadAuthKey'],
+                        org_slug: org_slug,
+                        project_slug: project_slug,
+                        dsym_path: dsym_path
+    end
+
+    puts "Uploaded dsym for #{project_slug}"
+
+    sentry_upload_file auth_token: ENV['SentryUploadAuthKey'],
+                       org_slug: org_slug,
+                       project_slug: project_slug,
+                       version: latest_version,
+                       dist: tag,
+                       file: "Pods/Emission/Pod/Assets/Emission.js"
+    puts "Uploaded Emission.js for #{project_slug}"
+
+    sentry_upload_sourcemap auth_token: ENV['SentryUploadAuthKey'],
+                            org_slug: org_slug,
+                            project_slug: project_slug,
+                            version: latest_version,
+                            dist: tag,
+                            sourcemap: "Pods/Emission/Pod/Assets/Emission.js.map",
+                            rewrite: true
+    puts "Uploaded Emission.js.map for #{project_slug}"
+  end
+
+  sentry.call("eigen")
+  # sentry.call("eigen-staging")
+
+  # # Send to the app store
   pilot changelog: beta_readme
 
   # Let us know everything has finished
@@ -111,7 +146,7 @@ lane :setup_for_app_store do
     path: "Artsy.xcodeproj",
     teamid: "23KMWZ572J"
   )
-  update_project_codesigning(
+  automatic_code_signing(
     path: 'Artsy.xcodeproj',
     use_automatic_signing: false
   )
@@ -152,4 +187,10 @@ lane :setup_for_app_store do
 
   # Clean-up
   `rm -rf #{signing_root}`
+end
+
+error do |_, exception|
+  File.open(File.join(ENV['CIRCLE_ARTIFACTS'], "fastlane-error.txt"), "w") do |file|
+    file.puts("#{exception.message}\n\t#{exception.backtrace.join("\n\t")}")
+  end
 end
