@@ -95,7 +95,7 @@ deploy_if_beta_branch:
 	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute; fi
 
 deploy:
-	git push origin "$(LOCAL_BRANCH):beta"
+	git push origin "$(LOCAL_BRANCH):beta" -f
 
 ### Utility functions
 
