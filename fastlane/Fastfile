@@ -46,7 +46,7 @@ lane :ship_beta do
 
   add_git_tag tag: tag
   `git remote add http https://github.com/artsy/eigen.git`
-  `git push http #{tag}`
+  `git push http #{tag} -f`
 
   FastlaneCore::Globals.verbose = true
 
@@ -93,7 +93,7 @@ lane :ship_beta do
   end
 
   sentry.call("eigen")
-  sentry.call("eigen-staging")
+  # sentry.call("eigen-staging")
 
   # # Send to the app store
   pilot changelog: beta_readme
