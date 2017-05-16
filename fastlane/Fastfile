@@ -46,9 +46,7 @@ lane :ship_beta do
 
   add_git_tag tag: tag
   `git remote add http https://github.com/artsy/eigen.git`
-  `git push http #{tag}`
-
-  FastlaneCore::Globals.verbose = true
+  `git push http #{tag} -f`
 
   # First make individual dSYM archives available to the sentry-cli tool.
   root = File.expand_path("../..", __FILE__)
@@ -93,7 +91,7 @@ lane :ship_beta do
   end
 
   sentry.call("eigen")
-  sentry.call("eigen-staging")
+  # sentry.call("eigen-staging")
 
   # # Send to the app store
   pilot changelog: beta_readme
