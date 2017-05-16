@@ -1,3 +1,4 @@
+import { shallow } from "enzyme"
 import * as React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
@@ -19,15 +20,19 @@ it("has a min height while data is loading", () => {
 
 it("has no min height when data is not loading", () => {
   const props = railProps(true) as any
-  const rail = new ArtworkRail(props)
-  const railStyle = rail.railStyle()
+  const wrapper = shallow(<ArtworkRail {...props} />)
+  wrapper.setState({ didPerformFetch: true })
+
+  const instance = wrapper.instance() as ArtworkRail
+  const railStyle = instance.railStyle()
   expect(railStyle.minHeight).toBeUndefined()
 })
 
 it("renders nothing when there are no artworks", () => {
   const props = railProps(true) as any
-  const rail = new ArtworkRail(props)
-  expect(rail.render()).toBeNull()
+  const wrapper = shallow(<ArtworkRail {...props} />)
+  wrapper.setState({ didPerformFetch: true })
+  expect(wrapper.instance().render()).toBeNull()
 })
 
 it("renders when there are artworks", () => {
