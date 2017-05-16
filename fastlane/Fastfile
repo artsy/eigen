@@ -78,7 +78,7 @@ lane :ship_beta do
                        org_slug: org_slug,
                        project_slug: project_slug,
                        version: latest_version,
-                       dist: build_version.to_s,
+                       dist: tag,
                        file: "Pods/Emission/Pod/Assets/Emission.js"
     puts "Uploaded Emission.js for #{project_slug}"
 
@@ -86,7 +86,7 @@ lane :ship_beta do
                             org_slug: org_slug,
                             project_slug: project_slug,
                             version: latest_version,
-                            dist: build_version.to_s,
+                            dist: tag,
                             sourcemap: "Pods/Emission/Pod/Assets/Emission.js.map",
                             rewrite: true
     puts "Uploaded Emission.js.map for #{project_slug}"
