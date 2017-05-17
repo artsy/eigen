@@ -1,5 +1,7 @@
 ### Master
 
+- Adds a root component for the Consignments flow  - orta
+
 ### 1.3.5
 
 - Fixes an issue where the WFU component was fetching data for artworks itself rather than delegating that to the nested
@@ -98,7 +100,7 @@
 ### 1.1.0-beta.4
 
 - GeneVC scrolls as expected, and can request data from Eigen - orta
-- Fix crash that would occur when tapping the ‘failed to load’ view retry button a second time - alloy
+- Fix crash that would occur when tapping the "failed to load" view retry button a second time - alloy
 - Make tapping the search bar open the search VC - sarah
 
 ### 1.1.0-beta.3
@@ -114,7 +116,7 @@
 - [dev] Turns on "keychain sharing" to fix a keychain bug in sim - orta
 - GeneVC now shows about information, and trending artists - orta
 - GeneVC now shows artworks for the gene - orta
-- Show ‘bid now’ call to action on artworks that are in an auction - alloy
+- Show "bid now" call to action on artworks that are in an auction - alloy
 
 ### 1.1.0-beta.2
 
