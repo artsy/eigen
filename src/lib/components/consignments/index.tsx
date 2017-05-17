@@ -1,6 +1,9 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
+import Button from "../buttons/inverted_button"
+import Welcome from "./setup/welcome"
+
 import {
   LayoutChangeEvent,
   NavigatorIOS,
@@ -47,9 +50,14 @@ export default class Consignments extends React.Component<Props, any> {
 
   render() {
     return  (
-      <View>
-        <Text>Hello</Text>
-      </View>
+      <NavigatorIOS
+        navigationBarHidden={true}
+        initialRoute={{
+          component: Welcome,
+          title: "Welcome",
+        }}
+        style={{flex: 1}}
+      />
     )
   }
 }

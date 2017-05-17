@@ -1,13 +1,132 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Sets up the right view heirarchy 1`] = `
-<View>
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <RCTNavigator
+    interactivePopGestureEnabled={undefined}
+    onNavigationComplete={[Function]}
+    requestedTopOfStack={0}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+    vertical={undefined}
   >
-    Hello
-  </Text>
+    <RCTNavItem
+      initialRoute={
+        Object {
+          "component": [Function],
+          "title": "Welcome",
+        }
+      }
+      navigationBarHidden={true}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "white",
+            "bottom": 0,
+            "left": 0,
+            "overflow": "hidden",
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          undefined,
+          undefined,
+        ]
+      }
+      title="Welcome"
+      translucent={true}
+    >
+      <View
+        style={
+          Object {
+            "backgroundColor": "green",
+            "marginTop": 20,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Hello this is the welcome
+        </Text>
+        <View
+          style={
+            Object {
+              "height": 26,
+              "marginTop": 20,
+              "width": 320,
+            }
+          }
+        >
+          <View
+            accessibilityComponentType={undefined}
+            accessibilityLabel={undefined}
+            accessibilityTraits={undefined}
+            accessible={true}
+            hasTVPreferredFocus={undefined}
+            hitSlop={undefined}
+            isTVSelectable={true}
+            onLayout={undefined}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                },
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "rgba(0, 0, 0, 1)",
+                  "flex": 1,
+                  "justifyContent": "center",
+                },
+              ]
+            }
+            testID={undefined}
+            tvParallaxProperties={undefined}
+          >
+            <View>
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "fontSize": 12,
+                    },
+                    Object {
+                      "color": "white",
+                      "opacity": 1,
+                    },
+                    Object {
+                      "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                    },
+                  ]
+                }
+              >
+                GO
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </RCTNavItem>
+  </RCTNavigator>
 </View>
 `;
