@@ -7,6 +7,7 @@
 
 ### 1.3.4
 
+- Fixes pull-to-refresh scroll position bug on Home - sarah
 - Fixes loading state UI for artwork rail - luc
 
 ### 1.3.3
