@@ -4,6 +4,9 @@ import * as renderer from "react-test-renderer"
 import Welcome from "../welcome"
 
 it("Sets up the right view heirarchy", () => {
-    const tree = renderer.create(<Welcome />).toJSON()
-    expect(tree).toMatchSnapshot()
+      const nav = {} as any
+      const route = {} as any
+
+      const tree = renderer.create(<Welcome navigator={nav} route={route}/>).toJSON()
+      expect(tree).toMatchSnapshot()
 })
