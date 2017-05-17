@@ -114,7 +114,7 @@ export default Relay.createContainer(Notification, {
         message
         artists
         artworks {
-          artists (shallow: true) {
+          artists(shallow: true) {
             href
           }
           ${(ArtworksGrid.getFragment("artworks"))}
