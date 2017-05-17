@@ -18,6 +18,7 @@ const { ARTemporaryAPIModule, ARWorksForYouModule } = NativeModules
 
 import Events from "../native_modules/events"
 
+import ArtworksGrid from "../components/artwork_grids/generic_grid"
 import Headline from "../components/text/headline"
 import SerifText from "../components/text/serif"
 import Notification from "../components/works_for_you/notification"
@@ -119,7 +120,9 @@ export class WorksForYou extends React.Component<Props, State> {
         let notifications = this.props.viewer.me.notifications.edges.map((edge) => edge.node)
 
         // Make sure we maintain the special notification if it exists
-        if (this.props.viewer.selectedArtist) { notifications.unshift(this.formattedSpecialNotification()) }
+        if (this.props.viewer.selectedArtist) {
+          notifications.unshift(this.formattedSpecialNotification())
+        }
 
         this.setState({
           fetchingNextPage: false,
@@ -262,7 +265,6 @@ export default Relay.createContainer(WorksForYou, {
             }
           }
         }
-
         selectedArtist: artist(id: $selectedArtist)
                           @include(if: $showSpecialNotification) {
           href
@@ -272,22 +274,10 @@ export default Relay.createContainer(WorksForYou, {
               url
             }
           }
-          artworks(sort:published_at_desc, size: 6) @relay(plural: true) {
-            __id
-            href
-            title
-            date
-            sale_message
-            is_in_auction
-            image {
-              aspect_ratio
-              url(version: "large")
-            }
-            partner {
-              name
-            }
-          },
-        },
+          artworks(sort:published_at_desc, size: 6) {
+            ${(ArtworksGrid.getFragment("artworks"))}
+          }
+        }
       }`,
   },
 })
@@ -304,7 +294,7 @@ interface RelayProps {
         }>,
       },
     },
-    selectedArtist ?: {
+    selectedArtist?: {
       name: string,
       image: {
         resized: {
