@@ -1,4 +1,5 @@
 #import "ARRootViewController+AppHub.h"
+#import "NSDateFormatter+TimeAgo.h"
 
 #import <AppHub/AppHub.h>
 #import <ARGenericTableViewController/ARGenericTableViewController.h>
@@ -26,13 +27,9 @@
     } if (build && !build.creationDate) {
       cell.textLabel.text = @"Current Build: Bundled with Emission";
     } else {
-      NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-      formatter.doesRelativeDateFormatting = YES;
-      formatter.locale = [NSLocale currentLocale];
-      formatter.dateStyle = NSDateFormatterShortStyle;
-      formatter.timeStyle = NSDateFormatterShortStyle;
-      NSString *timeString = [formatter stringFromDate:build.creationDate];
-      cell.textLabel.text = [NSString stringWithFormat:@"Current Build: %@", timeString];
+      
+      NSString *timeString =  [NSDateFormatter timeAgoFromDate:build.creationDate];
+      cell.textLabel.text = [NSString stringWithFormat:@"Current Build: From %@", timeString];
     }
   };
   return cellData;

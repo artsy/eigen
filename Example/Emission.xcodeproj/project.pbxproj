@@ -26,6 +26,7 @@
 		60A1A77E1DA3A23C005E3357 /* BackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */; };
 		60A1A77F1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77C1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png */; };
 		60A1A7801DA3A23C005E3357 /* BackArrowBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77D1DA3A23C005E3357 /* BackArrowBlack@2x.png */; };
+		60AEE7A01ECC6237008058E3 /* NSDateFormatter+TimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AEE79F1ECC6237008058E3 /* NSDateFormatter+TimeAgo.m */; };
 		60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B743B61D3EB12600E6B2A3 /* ARStorybookComponentViewController.m */; };
 		60E02A681ECB39630010F5D5 /* ARRootViewController+AppHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E02A671ECB39630010F5D5 /* ARRootViewController+AppHub.m */; };
 		60F61A8B1DAF982B00A72101 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F61A8A1DAF982B00A72101 /* AuthenticationManager.m */; };
@@ -91,6 +92,8 @@
 		60A1A77C1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrow_Highlighted@2x.png"; sourceTree = "<group>"; };
 		60A1A77D1DA3A23C005E3357 /* BackArrowBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrowBlack@2x.png"; sourceTree = "<group>"; };
 		60A1A7841DA3A879005E3357 /* ARMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARMacros.h; sourceTree = "<group>"; };
+		60AEE79E1ECC6237008058E3 /* NSDateFormatter+TimeAgo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+TimeAgo.h"; sourceTree = "<group>"; };
+		60AEE79F1ECC6237008058E3 /* NSDateFormatter+TimeAgo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+TimeAgo.m"; sourceTree = "<group>"; };
 		60B743B51D3EB12600E6B2A3 /* ARStorybookComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARStorybookComponentViewController.h; sourceTree = "<group>"; };
 		60B743B61D3EB12600E6B2A3 /* ARStorybookComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARStorybookComponentViewController.m; sourceTree = "<group>"; };
 		60E02A661ECB39630010F5D5 /* ARRootViewController+AppHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARRootViewController+AppHub.h"; sourceTree = "<group>"; };
@@ -136,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				60F61A881DAF849700A72101 /* App */,
+				60AEE79D1ECC620F008058E3 /* Categories */,
 				60F61A871DAF848E00A72101 /* View Controllers */,
 				6011C2521DAF7EF600CE54E5 /* Launch */,
 				6011C23C1DAF619700CE54E5 /* Admin Tableview Cells */,
@@ -244,6 +248,15 @@
 				60A1A77D1DA3A23C005E3357 /* BackArrowBlack@2x.png */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		60AEE79D1ECC620F008058E3 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				60AEE79E1ECC6237008058E3 /* NSDateFormatter+TimeAgo.h */,
+				60AEE79F1ECC6237008058E3 /* NSDateFormatter+TimeAgo.m */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 		60D3D56C1D42531200A15671 /* Storybooks */ = {
@@ -546,6 +559,7 @@
 				6011C2461DAF61AF00CE54E5 /* ARTickedTableViewCell.m in Sources */,
 				60F61A8B1DAF982B00A72101 /* AuthenticationManager.m in Sources */,
 				6011C2471DAF61AF00CE54E5 /* ARAnimatedTickView.m in Sources */,
+				60AEE7A01ECC6237008058E3 /* NSDateFormatter+TimeAgo.m in Sources */,
 				510DCB151CCA69EC0075E8CB /* AppDelegate.m in Sources */,
 				6011C24B1DAF63C000CE54E5 /* ARDefaults.m in Sources */,
 				510DCB121CCA69EC0075E8CB /* main.m in Sources */,
