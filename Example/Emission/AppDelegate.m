@@ -103,7 +103,7 @@ randomBOOL(void)
                           useStagingEnvironment:useStaging
                                       sentryDSN:nil];
 #else
-#ifdef DEPLOY
+#if DEPLOY
   AHBuild *build = [[AppHub buildManager] currentBuild];
   NSURL *jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
 #else

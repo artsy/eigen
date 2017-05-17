@@ -9,6 +9,7 @@
 // See https://github.com/artsy/eigen/blob/master/Artsy/View_Controllers/Admin/ARAdminSettingsViewController.m
 // for examples of how to work with this.
 
+#import "ARRootViewController+AppHub.h"
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
@@ -38,8 +39,10 @@
   [tableViewData addSectionData:developerSection];
 #endif
 
-  ARSectionData *userSection = [self userSection];
-  [tableViewData addSectionData:userSection];
+#ifdef DEPLOY
+  ARSectionData *appHubSection = [self appHubSectionData];
+  [tableViewData addSectionData:appHubSection];
+#endif
 
   self.tableViewData = tableViewData;
 }

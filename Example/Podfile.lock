@@ -1,6 +1,6 @@
 PODS:
   - AppHub (0.5.1):
-    - React
+    - React/Core
   - ARGenericTableViewController (1.0.2)
   - Artsy+Authentication/email (1.5.0):
     - ISO8601DateFormatter
@@ -125,8 +125,6 @@ PODS:
     - React/RCTNetwork
   - React/RCTNetwork (0.42.0):
     - React/Core
-  - React/RCTTest (0.42.0):
-    - React/Core
   - React/RCTText (0.42.0):
     - React/Core
   - React/RCTWebSocket (0.42.0):
@@ -142,25 +140,25 @@ PODS:
     - React
     - RSSwizzle (~> 0.1.0)
     - Sentry (~> 2.1.9)
-  - Specta (1.0.5)
   - UIView+BooleanAnimations (1.0.2)
   - Yoga (0.42.0.React)
 
 DEPENDENCIES:
-  - AppHub
+  - AppHub (from `https://github.com/orta/apphub.git`, branch `build_list`)
   - ARGenericTableViewController
   - Artsy+Authentication/email (from `https://github.com/artsy/Artsy-Authentication.git`, branch `fetch-user-details`)
   - Artsy+UIFonts
   - Emission (from `../`)
   - FLKAutoLayout
-  - React/RCTTest (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - SAMKeychain
   - SentryReactNative (from `../node_modules/react-native-sentry`)
-  - Specta
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 EXTERNAL SOURCES:
+  AppHub:
+    :branch: build_list
+    :git: https://github.com/orta/apphub.git
   Artsy+Authentication:
     :branch: fetch-user-details
     :git: https://github.com/artsy/Artsy-Authentication.git
@@ -174,12 +172,15 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
+  AppHub:
+    :commit: 2659ddef3d63f17902e7a8786cc889c428769ab4
+    :git: https://github.com/orta/apphub.git
   Artsy+Authentication:
     :commit: 1b582675598c999726d9edacd3b8559e01cf7c48
     :git: https://github.com/artsy/Artsy-Authentication.git
 
 SPEC CHECKSUMS:
-  AppHub: f073cd229f87afe1a27200670e1adab24ebda2b8
+  AppHub: '03788112dd48c42b60d51321c0ffff4ef15a4432'
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   Artsy+Authentication: 3bf11ceca61c52e9e31490535bf5798f625406fa
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
@@ -198,10 +199,9 @@ SPEC CHECKSUMS:
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   Sentry: 0025c374b2f9fb0da8185a45199de985408a40b2
   SentryReactNative: 3de8c386dfebb9f42c5e989adb7060b3f2dc4878
-  Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: 4183cc70cae189d73f996b1e40c3078aca9f96ef
 
-PODFILE CHECKSUM: f5d89b564529ea868668555a1fd91a7bcfc038ce
+PODFILE CHECKSUM: d6a15664ed36c307019c8bfb134a27637ae5ee02
 
 COCOAPODS: 1.2.1

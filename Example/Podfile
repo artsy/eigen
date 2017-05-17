@@ -24,7 +24,7 @@ target 'Emission' do
   pod 'Artsy+UIFonts'
 
   # For easy updating of the JS
-  pod 'AppHub'
+  pod 'AppHub', :git => 'https://github.com/orta/apphub.git', :branch => "build_list"
 
   # Native UI tweaks
   pod 'FLKAutoLayout'
@@ -40,14 +40,14 @@ target 'Emission' do
                               :git => 'https://github.com/artsy/Artsy-Authentication.git',
                               :branch => 'fetch-user-details'
 
-  target 'EmissionTests' do
-    inherit! :search_paths
-
-    pod 'React', :path => react_path, :subspecs => %w(RCTTest)
-
-    pod 'Specta'
-    # pod 'Expecta'
-  end
+# target 'EmissionTests' do
+#    inherit! :search_paths
+#
+#    pod 'React', :path => react_path, :subspecs => %w(Core RCTTest)
+#
+#    pod 'Specta'
+#    pod 'Expecta'
+# end
 end
 
 post_install do |installer|
