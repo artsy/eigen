@@ -2,12 +2,12 @@
 
 ### 1.3.5
 
+- Fixes pull-to-refresh scroll position bug on Home - sarah
 - Fixes an issue where the WFU component was fetching data for artworks itself rather than delegating that to the nested
   artworks components - alloy
 
 ### 1.3.4
 
-- Fixes pull-to-refresh scroll position bug on Home - sarah
 - Fixes loading state UI for artwork rail - luc
 
 ### 1.3.3
