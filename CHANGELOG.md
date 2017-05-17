@@ -1,5 +1,10 @@
 ### Master
 
+### 1.3.5
+
+- Fixes an issue where the WFU component was fetching data for artworks itself rather than delegating that to the nested
+  artworks components - alloy
+
 ### 1.3.4
 
 - Fixes loading state UI for artwork rail - luc
