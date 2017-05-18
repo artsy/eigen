@@ -97,7 +97,10 @@
 - (void)tappedContactGallery
 {
     if (ARIsRunningInDemoMode) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         [UIAlertView showWithTitle:nil message:@"Feature not enabled for this demo" cancelButtonTitle:@"OK" otherButtonTitles:nil tapBlock:nil];
+#pragma clang diagnostic pop
         return;
     }
 

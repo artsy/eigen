@@ -270,7 +270,7 @@ static ARAppDelegate *_sharedInstance = nil;
     // And set up emission
     [self startupApp];
 
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] ar_setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 
     ar_dispatch_main_queue(^{
         if ([User currentUser]) {

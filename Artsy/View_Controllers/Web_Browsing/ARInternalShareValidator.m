@@ -23,7 +23,7 @@
 
 - (NSString *)addressBeingSharedFromShareURL:(NSURL *)url
 {
-    NSString *readableQuery = [url.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *readableQuery = [url.query stringByRemovingPercentEncoding];
 
     if ([self isFacebookShareURL:url]) {
         return [readableQuery componentsSeparatedByString:@"u="].lastObject;
@@ -39,7 +39,7 @@
     if ([self isFacebookShareURL:url]) {
         return nil;
     } else if ([self isTwitterShareURL:url]) {
-        NSString *readableQuery = [url.query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *readableQuery = [url.query stringByRemovingPercentEncoding];
         return [readableQuery substringBetween:@"&text=" and:@"&url="];
     }
     return nil;
