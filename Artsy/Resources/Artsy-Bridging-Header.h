@@ -28,6 +28,7 @@
 #import "ARDispatchManager.h"
 #import "UIImageView+AsyncImageLoading.h"
 #import "UIImage+ImageFromColor.h"
+#import "UIViewController+Popovers.h"
 
 // Models.
 #import "Sale.h"
