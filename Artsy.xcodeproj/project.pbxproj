@@ -297,6 +297,7 @@
 		5E20BB6A1C62C81600C6D781 /* CircularInfoButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E20BB681C62C81600C6D781 /* CircularInfoButton@2x.png */; };
 		5E20BB6B1C62C81600C6D781 /* CircularInfoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E20BB691C62C81600C6D781 /* CircularInfoButton.png */; };
 		5E257E331ECDEB6600C62008 /* UIViewController+Popovers.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E257E321ECDEB6600C62008 /* UIViewController+Popovers.m */; };
+		5E257E361ECDEDB800C62008 /* UIApplication+StatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E257E351ECDEDB800C62008 /* UIApplication+StatusBar.m */; };
 		5E26AF801CE66A7E00C67B7C /* Stringify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E26AF7F1CE66A7E00C67B7C /* Stringify.swift */; };
 		5E284609194A2E58007274AB /* ARFairGuideContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E284608194A2E58007274AB /* ARFairGuideContainerViewController.m */; };
 		5E288EA91CC0219A00A974AA /* LotListCollectionViewCell+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E288EA81CC0219A00A974AA /* LotListCollectionViewCell+Private.swift */; };
@@ -1269,6 +1270,8 @@
 		5E20BB721C6557F400C6D781 /* Artsy-Tests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Artsy-Tests-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E257E311ECDEB3900C62008 /* UIViewController+Popovers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Popovers.h"; sourceTree = "<group>"; };
 		5E257E321ECDEB6600C62008 /* UIViewController+Popovers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Popovers.m"; sourceTree = "<group>"; };
+		5E257E341ECDEDB800C62008 /* UIApplication+StatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+StatusBar.h"; sourceTree = "<group>"; };
+		5E257E351ECDEDB800C62008 /* UIApplication+StatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+StatusBar.m"; sourceTree = "<group>"; };
 		5E26AF7F1CE66A7E00C67B7C /* Stringify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stringify.swift; path = Artsy/Stringify.swift; sourceTree = SOURCE_ROOT; };
 		5E284607194A2E58007274AB /* ARFairGuideContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairGuideContainerViewController.h; sourceTree = "<group>"; };
 		5E284608194A2E58007274AB /* ARFairGuideContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairGuideContainerViewController.m; sourceTree = "<group>"; };
@@ -2272,6 +2275,8 @@
 				6002C25F1CC5125200E249B2 /* UIViewController+TopMenuViewController.m */,
 				5E257E311ECDEB3900C62008 /* UIViewController+Popovers.h */,
 				5E257E321ECDEB6600C62008 /* UIViewController+Popovers.m */,
+				5E257E341ECDEDB800C62008 /* UIApplication+StatusBar.h */,
+				5E257E351ECDEDB800C62008 /* UIApplication+StatusBar.m */,
 			);
 			path = Apple;
 			sourceTree = "<group>";
@@ -5252,6 +5257,7 @@
 				D39E874F1AB0F97A006B5BE9 /* ARBrowseNetworkModel.m in Sources */,
 				60B6E5981C88BEF3003B1D46 /* LiveSale.m in Sources */,
 				5E407DF71DF7390B00999533 /* AREchoContentsViewController.m in Sources */,
+				5E257E361ECDEDB800C62008 /* UIApplication+StatusBar.m in Sources */,
 				60647C671A8BB9AE00A45247 /* BuyersPremium.m in Sources */,
 				3CCCC8A51899B6F9008015DD /* FairOrganizer.m in Sources */,
 				60D90A0817C2182F0073D5B9 /* ARExternalWebBrowserViewController.m in Sources */,

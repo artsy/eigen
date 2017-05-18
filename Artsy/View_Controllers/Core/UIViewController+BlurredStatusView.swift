@@ -59,7 +59,7 @@ extension UIViewController {
                 // it's not going to show it.
                 let app = UIApplication.shared
                 statusViewPreviousStatusBarStyle = app.statusBarStyle
-                app.setStatusBarStyle(.lightContent, animated: true)
+                app.ar_setStatusBarStyle(.lightContent, animated: true)
 
                 // Optional X button in the top trailing edge
                 if case .show(let target, let selector) = buttonState {

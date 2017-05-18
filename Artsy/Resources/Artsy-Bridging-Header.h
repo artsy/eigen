@@ -29,6 +29,7 @@
 #import "UIImageView+AsyncImageLoading.h"
 #import "UIImage+ImageFromColor.h"
 #import "UIViewController+Popovers.h"
+#import "UIApplication+StatusBar.h"
 
 // Models.
 #import "Sale.h"
