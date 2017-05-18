@@ -9,7 +9,11 @@
 #import "PartnerShow.h"
 #import "ARTopMenuViewController.h"
 
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
+#pragma clang diagnostic pop
 
 
 @interface ARSharingController ()

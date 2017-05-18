@@ -23,7 +23,6 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 
 
 @interface ARPersonalizeViewController () <UITextFieldDelegate, ARPersonalizeNetworkDelegate, ARPersonalizeContainer>

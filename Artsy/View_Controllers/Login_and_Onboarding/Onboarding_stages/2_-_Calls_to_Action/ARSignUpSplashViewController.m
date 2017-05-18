@@ -13,7 +13,6 @@
 #import "Artsy-Swift.h"
 
 @import Artsy_UILabels;
-#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>

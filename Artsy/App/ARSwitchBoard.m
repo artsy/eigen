@@ -34,7 +34,6 @@
 #import "UIDevice-Hardware.h"
 
 #import <JLRoutes/JLRoutes.h>
-#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 
