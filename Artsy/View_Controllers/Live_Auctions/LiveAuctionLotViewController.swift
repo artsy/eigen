@@ -52,7 +52,7 @@ class LiveAuctionLotViewController: UIViewController {
         // This should occur during the view's initial layout pass, before any user interaction.
         if atRestMetadataPosition == nil {
             atRestMetadataPosition = lotMetadataStack?.frame.origin.y
-            print("Resetting atRestMetadataPosition to \(atRestMetadataPosition)")
+            print("Resetting atRestMetadataPosition to \(String(describing: atRestMetadataPosition))")
         }
     }
 

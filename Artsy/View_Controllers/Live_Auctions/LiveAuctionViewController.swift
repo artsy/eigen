@@ -90,7 +90,7 @@ class LiveAuctionViewController: UIViewController {
                 self?.setupWithSale(sale, jwt: jwt, bidderCredentials: bidderCredentials)
 
             case .error(let error):
-                print("Error pulling down sale data for \(self?.saleSlugOrID)")
+                print("Error pulling down sale data for \(String(describing: self?.saleSlugOrID))")
                 print("Error: \(error)")
                 self?.showOfflineView()
             }
