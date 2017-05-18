@@ -8,6 +8,7 @@
         "*.snap": "javascriptreact"
     },
     "eslint.enable": false,
+    "flow.enabled": false,
     "files.trimTrailingWhitespace": true,
     "editor.renderWhitespace": "boundary",
     "editor.rulers": [120],
