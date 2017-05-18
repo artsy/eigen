@@ -2,11 +2,9 @@
 import { danger, fail, warn } from "danger"
 import { compact, includes, remove, uniq } from "lodash"
 
-// For now you can ignore these 3 errors, I'm not sure why
-// they are being raised. They definitely exist in the node runtime.
-const fs = require("fs") // tslint:disable-line
-const os = require("os") // tslint:disable-line
-const path = require("path") // tslint:disable-line
+import * as fs from "fs"
+import * as os from "os"
+import * as path from "path"
 
 import * as recurseSync from "recursive-readdir-sync"
 const allFiles = recurseSync("./src")
@@ -21,16 +19,20 @@ const bodyAndTitle = (pr.body + pr.title).toLowerCase()
 const trivialPR = bodyAndTitle.includes("trivial")
 const acceptedNoTests = bodyAndTitle.includes("skip new tests")
 
+const typescriptOnly = (file: string) => includes(file, ".ts")
 const filesOnly = (file: string) => fs.existsSync(file) && fs.lstatSync(file).isFile()
 
 // Custom subsets of known files
-const modifiedAppFiles = modified.filter(p => includes(p, "lib/")).filter(p => filesOnly(p))
-const modifiedTestFiles = modified.filter(p => includes(p, "__tests__")).filter(p => filesOnly(p))
+const modifiedAppFiles = modified.filter(p => includes(p, "lib/")).filter(p => filesOnly(p) && typescriptOnly(p))
 
 // Modified or Created can be treated the same a lot of the time
 const touchedFiles = modified.concat(danger.git.created_files).filter(p => filesOnly(p))
-const touchedAppOnlyFiles = touchedFiles.filter(p => includes(p, "src/lib/") && !includes(p, "__tests__"))
-const touchedComponents = touchedFiles.filter(p => includes(p, "src/lib/components") && !includes(p, "__tests__"))
+
+const touchedAppOnlyFiles = touchedFiles.filter(p =>
+  includes(p, "src/lib/") && !includes(p, "__tests__") && typescriptOnly(p))
+
+const touchedComponents = touchedFiles.filter(p =>
+  includes(p, "src/lib/components") && !includes(p, "__tests__"))
 
 const touchedTestFiles = touchedFiles.filter(p => includes(p, "__tests__"))
 const touchedStoryFiles = touchedFiles.filter(p => includes(p, "__stories__"))
