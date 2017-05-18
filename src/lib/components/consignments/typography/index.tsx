@@ -22,10 +22,17 @@ const Subtitle = (props: TextProperties) => {
   return <Text key={children} style ={style}>{children}</Text>
 }
 
+const BodyText = (props: TextProperties) => {
+  const children: string = (props as any).children
+  const style = [styles.bodyDefault, props.style || {}, styles.bodyRequired]
+  return <Text key={children} style ={style}>{children}</Text>
+}
+
 export  {
   LargeHeadline,
   SmallHeadline,
-  Subtitle
+  Subtitle,
+  BodyText
 }
 
 interface Styles {
@@ -35,6 +42,8 @@ interface Styles {
   smallDefault: TextStyle
   subtitleRequired: TextStyle
   subtitleDefault: TextStyle
+  bodyRequired: TextStyle
+  bodyDefault: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -42,6 +51,8 @@ const styles = StyleSheet.create<Styles>({
     fontSize:  30,
     color: "white",
     textAlign: "center",
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 
   largeRequired: {
@@ -67,5 +78,19 @@ const styles = StyleSheet.create<Styles>({
 
   subtitleRequired: {
     fontFamily: fonts["garamond-italic"],
+  },
+
+  bodyDefault: {
+    fontSize:  20,
+    color: colors["gray-medium"],
+    paddingLeft: 25,
+    paddingRight: 25,
+    marginTop: 18,
+    marginBottom: 18,
+    textAlign: "center",
+  },
+
+  bodyRequired: {
+    fontFamily: fonts["garamond-regular"],
   },
 })

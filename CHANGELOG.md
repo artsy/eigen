@@ -2,6 +2,7 @@
 
 - Adds a root component for the Consignments flow  - orta
 - [dev] Adds storybooks for consignments  - orta
+- Added the Welcome/Overview screen for consignments - orta
 
 ### 1.3.5
 

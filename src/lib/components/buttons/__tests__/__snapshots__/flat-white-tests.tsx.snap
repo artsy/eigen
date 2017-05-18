@@ -26,6 +26,7 @@ exports[`renders properly 1`] = `
         "backgroundColor": "rgba(0, 0, 0, 1)",
         "borderColor": "#e5e5e5",
         "borderWidth": 1,
+        "flex": 1,
         "justifyContent": "center",
       },
     ]
