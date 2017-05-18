@@ -125,7 +125,9 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
         controller = [ARSwitchBoard.sharedInstance loadProfileWithID:result.modelID];
     }
 
-    [self.ar_TopMenuViewController pushViewController:controller animated:YES];
+    if (controller) {
+        [self.ar_TopMenuViewController pushViewController:controller animated:YES];
+    }
 }
 
 - (void)closeSearch:(id)sender
