@@ -4,9 +4,19 @@
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 @implementation UIApplication (StatusBar)
 
+- (void)ar_setStatusBarStyle:(UIStatusBarStyle)statusBarStyle
+{
+    [self setStatusBarStyle:statusBarStyle];
+}
+
 - (void)ar_setStatusBarStyle:(UIStatusBarStyle)statusBarStyle animated:(BOOL)animated
 {
     [self setStatusBarStyle:statusBarStyle animated:animated];
+}
+
+- (void)ar_setStatusBarHidden:(BOOL)hidden
+{
+    [self setStatusBarHidden:hidden];
 }
 
 - (void)ar_setStatusBarHidden:(BOOL)hidden withAnimation:(UIStatusBarAnimation)animation

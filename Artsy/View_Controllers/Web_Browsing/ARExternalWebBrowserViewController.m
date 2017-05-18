@@ -4,6 +4,7 @@
 #import "ARSwitchBoard+Eigen.h"
 #import "ARLogger.h"
 #import "ARExternalWebBrowserViewController.h"
+#import "UIApplication+StatusBar.h"
 
 #import "ARNavigationController.h"
 #import "ARScrollNavigationChief.h"
@@ -103,7 +104,7 @@
     [super viewWillAppear:animated];
 
     if (self.ignoreStatusBar == NO) {
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+        [[UIApplication sharedApplication] ar_setStatusBarStyle:UIStatusBarStyleLightContent];
     }
 }
 

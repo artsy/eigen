@@ -1,4 +1,5 @@
 #import "ARSerifStatusMaintainer.h"
+#import "UIApplication+StatusBar.h"
 
 
 @interface ARSerifStatusMaintainer ()
@@ -15,18 +16,18 @@
     self.oldStatusBarStyle = app.statusBarStyle;
     self.oldStatusBarHiddenStatus = app.statusBarHidden;
 
-    [app setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
+    [app ar_setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
 
     UIStatusBarAnimation animation = animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone;
-    [app setStatusBarHidden:NO withAnimation:animation];
+    [app ar_setStatusBarHidden:NO withAnimation:animation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated app:(UIApplication *)app
 {
-    [app setStatusBarStyle:self.oldStatusBarStyle animated:animated];
+    [app ar_setStatusBarStyle:self.oldStatusBarStyle animated:animated];
 
     UIStatusBarAnimation animation = animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone;
-    [app setStatusBarHidden:self.oldStatusBarHiddenStatus withAnimation:animation];
+    [app ar_setStatusBarHidden:self.oldStatusBarHiddenStatus withAnimation:animation];
 }
 
 @end

@@ -28,6 +28,7 @@
 #import "AFHTTPRequestOperation+JSON.h"
 
 #import "UIDevice-Hardware.h"
+#import "UIApplication+StatusBar.h"
 
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -117,7 +118,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    [[UIApplication sharedApplication] ar_setStatusBarHidden:YES];
 
     if (self.state == AROnboardingStageSlideshow) {
         [self startSlideshow];
@@ -141,7 +142,7 @@
 //      make sure it never shows. This way it is shown for a very short period, but that’s better than nothing.
 - (void)viewDidAppear:(BOOL)animated;
 {
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    [[UIApplication sharedApplication] ar_setStatusBarHidden:YES];
     [super viewDidAppear:animated];
 }
 
