@@ -1,4 +1,4 @@
-#import "ARSwitchboard+Eigen.h"
+#import "ARSwitchBoard+Eigen.h"
 
 // View Controllers
 #import "ARArtworkSetViewController.h"

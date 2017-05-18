@@ -1505,7 +1505,7 @@
 		60388702189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTiledImageDataSourceWithImage.m; sourceTree = "<group>"; };
 		60388704189C103F00D3EEAA /* ARFairMapZoomManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapZoomManager.h; sourceTree = "<group>"; };
 		60388705189C103F00D3EEAA /* ARFairMapZoomManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairMapZoomManager.m; sourceTree = "<group>"; };
-		6038B7881C2856BA00359F3B /* ARSwitchboard+Eigen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARSwitchboard+Eigen.h"; sourceTree = "<group>"; };
+		6038B7881C2856BA00359F3B /* ARSwitchBoard+Eigen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARSwitchBoard+Eigen.h"; sourceTree = "<group>"; };
 		6038B7891C2856BA00359F3B /* ARSwitchboard+Eigen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARSwitchboard+Eigen.m"; sourceTree = "<group>"; };
 		603B3AE91774A0FA00BA5BD3 /* ARNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARNavigationController.h; sourceTree = "<group>"; };
 		603B3AEA1774A0FA00BA5BD3 /* ARNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARNavigationController.m; sourceTree = "<group>"; };
@@ -4090,7 +4090,7 @@
 			children = (
 				6037442316D4227500AE7788 /* ARSwitchBoard.h */,
 				6037442416D4227500AE7788 /* ARSwitchBoard.m */,
-				6038B7881C2856BA00359F3B /* ARSwitchboard+Eigen.h */,
+				6038B7881C2856BA00359F3B /* ARSwitchBoard+Eigen.h */,
 				6038B7891C2856BA00359F3B /* ARSwitchboard+Eigen.m */,
 				5E830A501E969B1800A56C75 /* ArtsyEcho.h */,
 				5E830A511E969B1800A56C75 /* ArtsyEcho.m */,
