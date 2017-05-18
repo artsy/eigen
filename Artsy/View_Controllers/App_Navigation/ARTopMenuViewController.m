@@ -487,6 +487,9 @@ static const CGFloat ARMenuButtonDimension = 50;
         case ARTopTabControllerIndexFavorites:
         case ARTopTabControllerIndexNotifications:
             presentableController = [[ARNavigationController alloc] initWithRootViewController:viewController];
+            
+            // Setting alreadySelectedTab to NO so the notification (Works for you) view controller gets presented even though
+            // the tab index hasn't changed. animated is to NO since we're transitioning to the same VC
             alreadySelectedTab = NO;
             animated = NO;
             break;
