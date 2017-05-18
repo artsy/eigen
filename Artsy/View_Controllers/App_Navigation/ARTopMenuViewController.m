@@ -477,6 +477,8 @@ static const CGFloat ARMenuButtonDimension = 50;
     
     // If there is an existing instance at that index, use it. Otherwise use the instance passed in as viewController.
     // If for some reason something went wrong, default to Home
+    BOOL alreadySelectedTab = self.selectedTabIndex == index;
+    
     switch (index) {
         case ARTopTabControllerIndexFeed:
         case ARTopTabControllerIndexBrowse:
@@ -485,12 +487,13 @@ static const CGFloat ARMenuButtonDimension = 50;
         case ARTopTabControllerIndexFavorites:
         case ARTopTabControllerIndexNotifications:
             presentableController = [[ARNavigationController alloc] initWithRootViewController:viewController];
+            alreadySelectedTab = NO;
+            animated = NO;
             break;
         default:
             presentableController = [self rootNavigationControllerAtIndex:ARTopTabControllerIndexFeed];
     }
     
-    BOOL alreadySelectedTab = self.selectedTabIndex == index;
     if (presentableController.viewControllers.count > 1) {
         [presentableController popToRootViewControllerAnimated:(animated && alreadySelectedTab)];
     }
