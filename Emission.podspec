@@ -1,10 +1,12 @@
 require 'json'
 
-pkg_version = lambda do |dir_from_root|
-  JSON.load(File.read(File.join(__dir__, dir_from_root, 'package.json')))['version']
+root = ENV["EMISSION_ROOT"] || __dir__
+pkg_version = lambda do |dir_from_root = ''|
+  path = File.join(root, dir_from_root, 'package.json')
+  JSON.load(File.read(path))['version']
 end
 
-emission_version = pkg_version.call('.')
+emission_version = pkg_version.call
 react_native_version = pkg_version.call('node_modules/react-native')
 sentry_version = pkg_version.call('node_modules/react-native-sentry')
 
