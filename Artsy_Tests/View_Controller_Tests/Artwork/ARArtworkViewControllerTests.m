@@ -1,6 +1,18 @@
 #import "ARArtworkViewController.h"
 #import "ARArtworkView.h"
 
+
+void stubEmptyBidderPositions();
+void stubEmptySaleArtworks();
+void stubSaleArtwork();
+void stubBidder(BOOL requiresApproval);
+
+@interface ARArtworkViewController ()
+
+@property (nonatomic, strong) NSTimer *updateInterfaceWhenAuctionOpensTimer;
+
+@end
+
 SpecBegin(ARArtworkViewController);
 
 __block ARArtworkViewController *vc;
@@ -148,28 +160,11 @@ describe(@"at a closed auction", ^{
             @"auction_state": @"closed",
             @"published": @YES
         }]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/bidder_positions" withParams:@{
-            @"artwork_id":@"some-artwork",
-            @"sale_id":@"some-auction"
-        } withResponse:@[]];
-
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/bidders" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sale/some-auction/sale_artworks" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sale/some-auction/sale_artwork/some-artwork" withResponse:@{
-            @"id": @"some-artwork",
-            @"sale_id": @"some-auction",
-            @"bidder_positions_count": @(1),
-            @"opening_bid_cents": @(1700000),
-            @"highest_bid_amount_cents": @(2200000),
-            @"minimum_next_bid_cents": @(2400000),
-            @"highest_bid": @{
-                @"id": @"highest-bid-id",
-                @"amount_cents": @(2200000)
-            }
-        }];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/some-artwork"
-            withResponse:@{ @"id": @"some-artwork", @"title": @"Some Title" }];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
+        stubEmptyBidderPositions();
+        stubEmptySaleArtworks();
+        stubSaleArtwork();
     });
 
     it(@"displays artwork on iPhone", ^{
@@ -197,6 +192,14 @@ describe(@"at a closed auction", ^{
             
         }];
     });
+    
+//    it(@"does not set up a timer", ^{
+//        vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+//        [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+//        [vc setHasFinishedScrolling];
+//        
+//        expect(vc.updateInterfaceWhenAuctionOpensTimer).to.beNil();
+//    });
 });
 
 
@@ -212,33 +215,11 @@ describe(@"at an auction requireing registration", ^{
             @"auction_state": @"open",
             @"published": @YES,
         }]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/bidder_positions" withParams:@{
-            @"artwork_id":@"some-artwork",
-            @"sale_id":@"some-auction"
-        } withResponse:@[]];
-
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/bidders" withResponse:@[
-@{
-             @"qualified_for_bidding": @NO,
-             @"id":@"asdada",
-             @"sale": @{ @"id" : @"some-auction", @"require_bidder_approval": @YES },
-        }]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sale/some-auction/sale_artworks" withResponse:@[]];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sale/some-auction/sale_artwork/some-artwork" withResponse:@{
-            @"id": @"some-artwork",
-            @"sale_id": @"some-auction",
-            @"bidder_positions_count": @(1),
-            @"opening_bid_cents": @(1700000),
-            @"highest_bid_amount_cents": @(2200000),
-            @"minimum_next_bid_cents": @(2400000),
-            @"highest_bid": @{
-                @"id": @"highest-bid-id",
-                @"amount_cents": @(2200000),
-            }
-        }];
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/some-artwork"
-            withResponse:@{ @"id": @"some-artwork", @"title": @"Some Title" }];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
+        stubEmptyBidderPositions();
+        stubBidder(YES);
+        stubEmptySaleArtworks();
+        stubSaleArtwork();
     });
 
     it(@"displays artwork on iPhone", ^{
@@ -251,6 +232,38 @@ describe(@"at an auction requireing registration", ^{
             [vc.view snapshotViewAfterScreenUpdates:YES];
             expect(vc.view).to.haveValidSnapshot();
         }];
+    });
+});
+
+describe(@"before a live auction", ^{
+    before(^{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[
+            @{
+            @"id": @"some-auction",
+            @"name": @"Some Auction",
+            @"is_auction": @YES,
+            @"start_at": @"2000-04-07T16:00:00.000+00:00",
+            @"live_start_at": @"2020-04-17T03:59:00.000+00:00",
+            @"auction_state": @"open",
+            @"published": @YES,
+        }]];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sale/some-auction/sale_artworks" withResponse:@[]];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
+        stubEmptyBidderPositions();
+        stubBidder(NO);
+        stubSaleArtwork();
+    });
+    
+    it(@"sets up an internal timer", ^{
+        vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+        [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        [vc setHasFinishedScrolling];
+        
+        expect(vc.updateInterfaceWhenAuctionOpensTimer).toNot.beNil();
+    });
+    
+    it(@"sets up the timer with a time interval", ^{
+        
     });
 });
 
@@ -268,3 +281,38 @@ it(@"creates an NSUserActivity", ^{
 pending(@"at a fair");
 
 SpecEnd;
+
+void stubEmptySaleArtworks() {
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sale/some-auction/sale_artworks" withResponse:@[]];
+}
+
+void stubEmptyBidderPositions() {
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/bidder_positions" withParams:@{
+        @"artwork_id":@"some-artwork",
+        @"sale_id":@"some-auction"
+    } withResponse:@[]];
+}
+
+void stubSaleArtwork() {
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sale/some-auction/sale_artwork/some-artwork" withResponse:@{
+        @"id": @"some-artwork",
+        @"sale_id": @"some-auction",
+        @"bidder_positions_count": @(1),
+        @"opening_bid_cents": @(1700000),
+        @"highest_bid_amount_cents": @(2200000),
+        @"minimum_next_bid_cents": @(2400000),
+        @"highest_bid": @{
+            @"id": @"highest-bid-id",
+            @"amount_cents": @(2200000),
+        }
+    }];
+}
+
+void stubBidder(BOOL requiresApproval) {
+    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/bidders" withResponse:@[
+        @{
+             @"qualified_for_bidding": @(!requiresApproval),
+             @"id":@"asdada",
+             @"sale": @{ @"id" : @"some-auction", @"require_bidder_approval": @(requiresApproval) },
+        }]];
+}
