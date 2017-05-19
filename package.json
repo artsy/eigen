@@ -23,7 +23,7 @@
     "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && npm run dump-schema -- ../../data && rm -rf node_modules",
     "precommit": "lint-staged",
     "prepush": "yarn run type-check",
-    "version": "yarn install && yarn bundle && pushd Example && pod install && git add Pod/Assets Example/Podfile.lock",
+    "version": "yarn install && yarn bundle && pushd Example && pod install && popd && git add Pod/Assets Example/Podfile.lock",
     "postversion": "git push --follow-tags && env EMISSION_ROOT=\"$(pwd)\" pod repo push artsy --allow-warnings --use-json --skip-import-validation"
   },
   "jest": {
