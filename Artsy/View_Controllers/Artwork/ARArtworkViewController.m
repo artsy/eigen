@@ -1,6 +1,7 @@
 #import "ARArtworkViewController.h"
 
 #import "Artwork.h"
+#import "ARSystemTime.h"
 #import "ARTopMenuViewController.h"
 #import "UIViewController+TopMenuViewController.h"
 #import "UIViewController+FullScreenLoading.h"
@@ -22,6 +23,8 @@
 
 @property (nonatomic, strong) ARArtworkView *view;
 @property (nonatomic, strong, readonly) ARPostsViewController *postsVC;
+@property (nonatomic, strong) NSTimer *updateInterfaceWhenAuctionOpensTimer;
+
 @end
 
 
@@ -128,6 +131,7 @@
     self.view.scrollsToTop = NO;
     [self.view.relatedArtworksView cancelRequests];
     [super viewDidDisappear:ARPerformWorkAsynchronously && animated];
+    [self.updateInterfaceWhenAuctionOpensTimer invalidate], self.updateInterfaceWhenAuctionOpensTimer = nil;
 }
 
 - (void)setHasFinishedScrolling
@@ -135,9 +139,15 @@
     // Get the full artwork details once scroll is settled.
     // This is only called on the primary artwork view
     self.view.scrollsToTop = YES;
+    [self setupUI];
+}
 
+- (void)setupUI
+{
     [self.artwork updateArtwork];
-    [self.artwork updateSaleArtwork];
+    [self.artwork onSaleArtworkUpdate:^(SaleArtwork * _Nonnull saleArtwork) {
+        [self startTimerForSaleArtwork:saleArtwork];
+    } failure:nil allowCached:NO];
     [self.artwork updateFair];
     [self.artwork updatePartnerShow];
     [self.view.relatedArtworksView updateWithArtwork:self.artwork];
@@ -171,6 +181,17 @@
 - (NSString *)inquiryURLRepresentation
 {
     return [NSString stringWithFormat:@"http://artsy.net/artwork/%@", self.artwork.artworkID];
+}
+
+- (void)startTimerForSaleArtwork:(SaleArtwork *)saleArtwork
+{
+    if (saleArtwork.auction.liveAuctionStartDate == nil) { return; }
+    
+    NSDate *now = [ARSystemTime date];
+    NSTimeInterval interval = [saleArtwork.auction.liveAuctionStartDate timeIntervalSinceDate:now];
+    if (interval > 0) {
+        self.updateInterfaceWhenAuctionOpensTimer = [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(setupUI) userInfo:nil repeats:NO];
+    }
 }
 
 #pragma mark - ScrollView delegate methods
