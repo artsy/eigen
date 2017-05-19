@@ -148,6 +148,7 @@
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork * _Nonnull saleArtwork) {
         [self startTimerForSaleArtwork:saleArtwork];
     } failure:nil allowCached:NO];
+    [self.artwork updateSaleArtwork];
     [self.artwork updateFair];
     [self.artwork updatePartnerShow];
     [self.view.relatedArtworksView updateWithArtwork:self.artwork];
