@@ -1,5 +1,9 @@
 ### Master
 
+### 1.3.6
+
+- Fixes missing compiled bundle - alloy
+
 ### 1.3.5
 
 - Fixes pull-to-refresh scroll position bug on Home - sarah
