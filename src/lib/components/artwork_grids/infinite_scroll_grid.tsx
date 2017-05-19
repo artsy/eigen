@@ -7,7 +7,6 @@
 // 4. Update height of grid to encompass all items.
 
 import * as React from "react"
-import * as Relay from "react-relay"
 
 import {
   Dimensions,

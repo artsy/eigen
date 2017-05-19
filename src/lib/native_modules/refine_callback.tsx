@@ -1,5 +1,4 @@
 import { findNodeHandle, NativeModules } from "react-native"
-import Gene from "../containers/gene"
 const { ARRefineOptionsModule } = NativeModules
 
 async function triggerRefine(

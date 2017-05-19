@@ -9,24 +9,20 @@ import {
   NativeModules,
   ScrollView,
   StyleSheet,
-  Text,
   TextStyle,
   View,
   ViewStyle,
 } from "react-native"
-const { ARTemporaryAPIModule, ARWorksForYouModule } = NativeModules
 
 import Events from "../native_modules/events"
 
 import ArtworksGrid from "../components/artwork_grids/generic_grid"
-import Headline from "../components/text/headline"
 import SerifText from "../components/text/serif"
 import Notification from "../components/works_for_you/notification"
 
 import colors from "../../data/colors"
 
 const PageSize = 10
-const PageEndThreshold = 1000
 
 interface Props extends RelayProps {
   relay: any;
