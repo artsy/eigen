@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
   s.dependency 'React/RCTImage', react_native_version
   s.dependency 'React/RCTNetwork', react_native_version
 
-  s.dependency 'SDWebImage', '>= 3.7.2'
+  s.dependency 'SDWebImage', '>= 3.7.2', '< 4'
   # This needs to be locked down because we’re including this specific version’s JS in our bundle, so it needs to match
   # with the SentryReactNative version that CocoaPods would pull into Eigen.
   s.dependency 'SentryReactNative', sentry_version
