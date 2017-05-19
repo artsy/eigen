@@ -193,13 +193,15 @@ describe(@"at a closed auction", ^{
         }];
     });
     
-//    it(@"does not set up a timer", ^{
-//        vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-//        [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
-//        [vc setHasFinishedScrolling];
-//        
-//        expect(vc.updateInterfaceWhenAuctionOpensTimer).to.beNil();
-//    });
+    it(@"does not set up a timer", ^{
+        [ARTestContext useDevice:ARDeviceTypePad :^{
+            vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+            [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+            [vc setHasFinishedScrolling];
+            
+            expect(vc.updateInterfaceWhenAuctionOpensTimer).to.beNil();
+        }];
+    });
 });
 
 
@@ -223,15 +225,12 @@ describe(@"at an auction requireing registration", ^{
     });
 
     it(@"displays artwork on iPhone", ^{
-        [ARTestContext useDevice:ARDeviceTypePhone6 :^{
-
-            vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
-            [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
-            [vc setHasFinishedScrolling];
-
-            [vc.view snapshotViewAfterScreenUpdates:YES];
-            expect(vc.view).to.haveValidSnapshot();
-        }];
+        vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+        [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
+        [vc setHasFinishedScrolling];
+        
+        [vc.view snapshotViewAfterScreenUpdates:YES];
+        expect(vc.view).to.haveValidSnapshot();
     });
 });
 
@@ -260,10 +259,6 @@ describe(@"before a live auction", ^{
         [vc setHasFinishedScrolling];
         
         expect(vc.updateInterfaceWhenAuctionOpensTimer).toNot.beNil();
-    });
-    
-    it(@"sets up the timer with a time interval", ^{
-        
     });
 });
 
