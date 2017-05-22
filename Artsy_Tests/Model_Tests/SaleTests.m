@@ -57,6 +57,52 @@ describe(@"live auction", ^{
 
         expect([sale shouldShowLiveInterface]).to.beFalsy();
     });
+
+    NSCalendar *gregorianCalendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+
+    it(@"uses a future liveStartAt for uiDateOfInterest", ^{
+        Sale *sale = [Sale modelWithJSON:@{
+            @"start_at" : @"1-12-30 00:00:00",
+            @"live_start_at" : @"4000-12-30 00:00:00",
+            @"end_at" : @"4001-01-01 00:00:00",
+            @"auction_state" : @"preview"
+        }];
+
+        expect([gregorianCalendar components:NSCalendarUnitYear fromDate:sale.uiDateOfInterest].year).to.equal(@(4000));
+    });
+
+    it(@"uses a future endAt for uiDateOfInterest", ^{
+        Sale *sale = [Sale modelWithJSON:@{
+            @"start_at" : @"1-12-30 00:00:00",
+            @"live_start_at" : @"1-12-30 00:00:00",
+            @"end_at" : @"4001-01-01 00:00:00",
+            @"auction_state" : @"preview"
+        }];
+
+        expect([gregorianCalendar components:NSCalendarUnitYear fromDate:sale.uiDateOfInterest].year).to.equal(@(4001));
+    });
+
+    it(@"uses a future startAt for uiDateOfInterest", ^{
+        Sale *sale = [Sale modelWithJSON:@{
+            @"start_at" : @"4002-12-30 00:00:00",
+            @"live_start_at" : @"1-12-30 00:00:00",
+            @"end_at" : @"2-01-01 00:00:00",
+            @"auction_state" : @"preview"
+        }];
+
+        expect([gregorianCalendar components:NSCalendarUnitYear fromDate:sale.uiDateOfInterest].year).to.equal(@(4002));
+    });
+
+    it(@"uses a nil for uiDateOfInterest for past sales", ^{
+        Sale *sale = [Sale modelWithJSON:@{
+            @"start_at" : @"1-12-30 00:00:00",
+            @"live_start_at" : @"1-12-30 00:00:00",
+            @"end_at" : @"2-01-01 00:00:00",
+            @"auction_state" : @"preview"
+        }];
+
+        expect(sale.uiDateOfInterest).to.beNil();
+    });
 });
 
 describe(@"future auction", ^{

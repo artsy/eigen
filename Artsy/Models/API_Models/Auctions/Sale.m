@@ -98,6 +98,21 @@
     return [self.imageURLs objectForKey:possibleVersions.firstObject];
 }
 
+- (NSDate *)uiDateOfInterest
+{
+    NSDate *now = [ARSystemTime date];
+    if (self.liveAuctionStartDate && [self.liveAuctionStartDate laterDate:now] == self.liveAuctionStartDate) {
+        return self.liveAuctionStartDate;
+    }
+    if (self.startDate && [self.startDate laterDate:now] == self.startDate) {
+        return self.startDate;
+    }
+    if (self.endDate && [self.endDate laterDate:now] == self.endDate) {
+        return self.endDate;
+    }
+    return nil;
+}
+
 - (BOOL)isEqual:(id)object
 {
     if ([object isKindOfClass:[self class]]) {

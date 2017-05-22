@@ -40,6 +40,7 @@ upcoming:
       - No longer show sale messaging banner for artwork pages for lots in closed sales - ash
       - Fixes loading state UI for artwork rail - luc
       - Adds React Native version of WorksForYou/Notifications tab - sarah
+      - Adds timer for artwork view that refreshes UI when the associated live sale opens - ash
 
 releases:
   - version: 3.2.0
