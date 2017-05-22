@@ -81,6 +81,7 @@
     "react-native-sentry": "^0.8.3",
     "react-relay": "https://github.com/alloy/relay/releases/download/v0.9.3/react-relay-0.9.3.tgz",
     "remove-markdown": "0.1.0",
+    "styled-components": "rc",
     "typescript": "^2.3.2"
   },
   "devDependencies": {
