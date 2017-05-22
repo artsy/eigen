@@ -1,6 +1,14 @@
 upcoming:
-    version: 3.2.1
+    version: 3.2.2
+    details: Scope not known yet
+    dev:
+    user_facing:
+      - Adds timer for artwork view that refreshes UI when the associated live sale opens - ash
+
+releases:
+  - version: 3.2.1
     details: Scope not know yet
+    date: May 22, 2017
     dev:
       - Updates TypeScript to 2.3 - orta
       - Adds back storybooks - orta
@@ -40,9 +48,7 @@ upcoming:
       - No longer show sale messaging banner for artwork pages for lots in closed sales - ash
       - Fixes loading state UI for artwork rail - luc
       - Adds React Native version of WorksForYou/Notifications tab - sarah
-      - Adds timer for artwork view that refreshes UI when the associated live sale opens - ash
 
-releases:
   - version: 3.2.0
     details: Gene artworks refinement.
     date: March 30, 2017
