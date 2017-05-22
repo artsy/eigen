@@ -1,14 +1,14 @@
 import * as React from "react"
-import Button from "../../buttons/inverted_button"
-import Welcome from "./welcome"
-
 import {
   NavigatorIOS,
   Route,
-  Text,
   View,
   ViewProperties,
 } from "react-native"
+import { LargeHeadline, Subtitle } from "../typography"
+
+import TODO from "../components/artwork-consignment-todo"
+import Welcome from "./welcome"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS,
@@ -21,15 +21,15 @@ export default class Info extends React.Component<Props, any> {
       component: Welcome,
     })
   }
-
   render() {
-    return  (
-      <View>
-        <Text>Hello this is the info</Text>
-        <View style={{height: 26, width: 320, marginBottom: 20}}>
-          <Button text="Go" onPress={this.goTapped}/>
-        </View>
+    const title = "Complete work details to submit"
+    const subtitle = "Provide as much detail as possible so that our partners can best assess your work."
+    return (
+      <View style={{backgroundColor: "black", flex: 1}}>
+        <LargeHeadline>{title}</LargeHeadline>
+        <Subtitle>{subtitle}</Subtitle>
 
+        <TODO/>
       </View>
     )
   }

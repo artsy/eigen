@@ -1,8 +1,15 @@
 ### Master
 
-- Adds a root component for the Consignments flow  - orta
+#### Consignments
+
+- [dev] Adds component for consignments todo  - orta
+- [dev] Adds a root component for the Consignments flow  - orta
 - [dev] Adds storybooks for consignments  - orta
 - Added the Welcome/Overview screen for consignments - orta
+
+### Emission
+
+- [dev] Allows toggling the back button by pressing space - orta
 
 ### 1.3.6
 

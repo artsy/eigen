@@ -111,15 +111,14 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
   - https://github.com/facebook/relay/tree/master/examples
   - https://github.com/fbsamples/f8app/
 
+* TypeScript:
+  - https://www.typescriptlang.org
+  - https://github.com/basarat/typescript-book
+
 * Testing:
   - https://facebook.github.io/jest/
   - https://facebook.github.io/jest/docs/api.html#content
   - https://facebook.github.io/jest/blog/2016/07/27/jest-14.html
-
-* Flow:
-  - http://flowtype.org/docs/type-annotations.html
-  - http://flowtype.org/docs/react.html
-  - http://flowtype.org/docs/quick-reference.html (and the rest of the language reference)
 
 * Flexbox:
   - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
@@ -131,6 +130,7 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 
 * React Native Debugger:
   - https://github.com/jhen0409/react-native-debugger
+
 
 [React Native]: http://facebook.github.io/react-native/
 [Eigen]: https://github.com/artsy/eigen
