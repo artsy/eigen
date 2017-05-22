@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderColor: colors["gray-regular"],
     borderWidth: 1,
-    flex: 1,
   },
   text: {
     fontFamily: "AGaramondPro-Regular",

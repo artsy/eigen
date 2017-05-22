@@ -46,7 +46,7 @@ export default class Welcome extends React.Component<Props, any> {
           </View>
 
           <View style={{height: 43, width: 320, marginTop: 20}}>
-            <Button text="GET STARTED" onPress={this.goTapped}/>
+            <Button text="GET STARTED" onPress={this.goTapped} style={{flex: 1}}/>
           </View>
         </View>
       </ScrollView>
