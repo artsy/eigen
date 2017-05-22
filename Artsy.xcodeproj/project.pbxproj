@@ -43,7 +43,7 @@
 		1CFA4EB81E5C4B6B00D44A5A /* full_logo_black_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CFA4EB51E5C4B6B00D44A5A /* full_logo_black_small@2x.png */; };
 		342F902302C1CF0FD342AB93 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97C153D8524B132D0927 /* NSDate+Util.m */; };
 		342F9061CC93426E7F8579A2 /* ARFeedImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */; };
-		342F906FD605E75158D32876 /* ARSharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9DC4018D17E7378DA607 /* ARSharingController.m */; };
+		342F906FD605E75158D32876 /* ARSharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9DC4018D17E7378DA607 /* ARSharingController.m */; settings = {COMPILER_FLAGS = "-Wno-deprecated-declarations"; }; };
 		342F90AEE6950A52210D2DC2 /* UILabel+Typography.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9F6EDBFE4624755933EB /* UILabel+Typography.m */; };
 		342F90FACF8AABA704AF5FC1 /* PartnerShowFairLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9A17225A44AC4BE26303 /* PartnerShowFairLocation.m */; };
 		342F917E6CFBD49D6F43873D /* ARCollapsableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F927CDF62DAE64F3A1AD7 /* ARCollapsableTextView.m */; };
@@ -436,7 +436,7 @@
 		601E31AB1C80A55F00D09F73 /* live_auctions_static.json in Resources */ = {isa = PBXBuildFile; fileRef = 601E31AA1C80A55F00D09F73 /* live_auctions_static.json */; };
 		601E31B01C80E35600D09F73 /* LiveAuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = 601E31AF1C80E35600D09F73 /* LiveAuctionLot.m */; };
 		601E53371B84C41F00679E10 /* ARArtworkViewControllerBuyButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 601E53351B84C35D00679E10 /* ARArtworkViewControllerBuyButtonTests.m */; };
-		601F029817F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 601F029717F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m */; };
+		601F029817F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 601F029717F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m */; settings = {COMPILER_FLAGS = "-Wno-deprecated-declarations"; }; };
 		6021D1B81CB7C6F800C475C1 /* TextStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021D1B71CB7C6F800C475C1 /* TextStack.swift */; };
 		6021D1BA1CB7D2E800C475C1 /* AuctionLotMetadataStackScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021D1B91CB7D2E800C475C1 /* AuctionLotMetadataStackScrollView.swift */; };
 		6021F97F17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6021F97E17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m */; };
