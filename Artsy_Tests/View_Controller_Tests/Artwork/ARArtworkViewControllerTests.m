@@ -9,7 +9,7 @@ void stubBidder(BOOL requiresApproval);
 
 @interface ARArtworkViewController ()
 
-@property (nonatomic, strong) NSTimer *updateInterfaceWhenAuctionOpensTimer;
+@property (nonatomic, strong) NSTimer *updateInterfaceWhenAuctionChangesTimer;
 
 @end
 
@@ -199,7 +199,7 @@ describe(@"at a closed auction", ^{
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
             
-            expect(vc.updateInterfaceWhenAuctionOpensTimer).to.beNil();
+            expect(vc.updateInterfaceWhenAuctionChangesTimer).to.beNil();
         }];
     });
 });
@@ -258,7 +258,7 @@ describe(@"before a live auction", ^{
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
         [vc setHasFinishedScrolling];
         
-        expect(vc.updateInterfaceWhenAuctionOpensTimer).toNot.beNil();
+        expect(vc.updateInterfaceWhenAuctionChangesTimer).toNot.beNil();
     });
 });
 

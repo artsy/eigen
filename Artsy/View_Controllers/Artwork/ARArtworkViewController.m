@@ -2,6 +2,8 @@
 
 #import "Artwork.h"
 #import "ARSystemTime.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARArtworkSetViewController.h"
 #import "ARTopMenuViewController.h"
 #import "UIViewController+TopMenuViewController.h"
 #import "UIViewController+FullScreenLoading.h"
@@ -23,7 +25,7 @@
 
 @property (nonatomic, strong) ARArtworkView *view;
 @property (nonatomic, strong, readonly) ARPostsViewController *postsVC;
-@property (nonatomic, strong) NSTimer *updateInterfaceWhenAuctionOpensTimer;
+@property (nonatomic, strong) NSTimer *updateInterfaceWhenAuctionChangesTimer;
 
 @end
 
@@ -131,7 +133,7 @@
     self.view.scrollsToTop = NO;
     [self.view.relatedArtworksView cancelRequests];
     [super viewDidDisappear:ARPerformWorkAsynchronously && animated];
-    [self.updateInterfaceWhenAuctionOpensTimer invalidate], self.updateInterfaceWhenAuctionOpensTimer = nil;
+    [self.updateInterfaceWhenAuctionChangesTimer invalidate], self.updateInterfaceWhenAuctionChangesTimer = nil;
 }
 
 - (void)setHasFinishedScrolling
@@ -144,9 +146,10 @@
 
 - (void)setupUI
 {
+    __weak ARArtworkViewController *weakSelf = self;
     [self.artwork updateArtwork];
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork * _Nonnull saleArtwork) {
-        [self startTimerForSaleArtwork:saleArtwork];
+        [weakSelf startTimerForSaleArtwork:saleArtwork];
     } failure:nil allowCached:NO];
     [self.artwork updateSaleArtwork];
     [self.artwork updateFair];
@@ -155,6 +158,16 @@
     if (!self.postsVC.posts.count) {
         [self getRelatedPosts];
     }
+}
+
+/// Reloads the artwork set view controller to fetch fresh content from the server.
+/// Useful for artworks that are lots in auctions, to reload when the auction event begins or ends.
+- (void)reloadUI {
+    ARArtworkSetViewController *newViewController = [[ARSwitchBoard sharedInstance] loadArtwork:self.artwork inFair:self.artwork.fair];
+    // We need to fetch this upfront and cache in a local variable, since `self.navigationController` will be nil once we pop.
+    UINavigationController *navigationController = self.navigationController;
+    [navigationController popViewControllerAnimated:NO];
+    [navigationController pushViewController:newViewController animated:NO];
 }
 
 - (void)getRelatedPosts
@@ -186,12 +199,12 @@
 
 - (void)startTimerForSaleArtwork:(SaleArtwork *)saleArtwork
 {
-    if (saleArtwork.auction.liveAuctionStartDate == nil) { return; }
+    if (saleArtwork.auction.uiDateOfInterest == nil) { return; }
     
     NSDate *now = [ARSystemTime date];
-    NSTimeInterval interval = [saleArtwork.auction.liveAuctionStartDate timeIntervalSinceDate:now];
+    NSTimeInterval interval = [saleArtwork.auction.uiDateOfInterest timeIntervalSinceDate:now];
     if (interval > 0) {
-        self.updateInterfaceWhenAuctionOpensTimer = [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(setupUI) userInfo:nil repeats:NO];
+        self.updateInterfaceWhenAuctionChangesTimer = [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(reloadUI) userInfo:nil repeats:NO];
     }
 }
 
