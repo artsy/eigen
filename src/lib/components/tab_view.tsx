@@ -11,7 +11,7 @@ interface Props extends ViewProperties {
 
 export default class TabView extends React.Component<Props, any> {
   render() {
-    const { children, ...props } = this.props
+    const { children } = this.props
     return (
       <View>
         <SwitchView style={styles.switch}

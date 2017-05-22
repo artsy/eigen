@@ -1,5 +1,4 @@
 import * as React from "react"
-import * as Relay from "react-relay"
 
 import Button from "../../buttons/flat_white"
 import Circle from "../components/circle_image"
@@ -7,15 +6,12 @@ import {
   BodyText as P,
   LargeHeadline,
 } from "../typography"
-import Info from "./info"
+import Overview from "./overview"
 
 import {
-  LayoutChangeEvent,
   NavigatorIOS,
   Route,
   ScrollView,
-  StyleSheet,
-  TouchableHighlight,
   View,
   ViewProperties,
 } from "react-native"
@@ -28,7 +24,7 @@ interface Props extends ViewProperties {
 export default class Welcome extends React.Component<Props, any> {
   goTapped = () => {
     this.props.navigator.push({
-      component: Info,
+      component: Overview,
     })
   }
 

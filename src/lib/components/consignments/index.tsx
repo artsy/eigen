@@ -1,16 +1,8 @@
 import * as React from "react"
-import * as Relay from "react-relay"
-
-import Button from "../buttons/inverted_button"
 import Welcome from "./setup/welcome"
 
 import {
-  LayoutChangeEvent,
   NavigatorIOS,
-  ScrollView,
-  Text,
-  TouchableHighlight,
-  View,
   ViewProperties,
 } from "react-native"
 

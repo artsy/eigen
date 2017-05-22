@@ -1,8 +1,6 @@
 import { storiesOf } from "@kadira/react-native-storybook"
 import * as React from "react"
 import { View } from "react-native"
-
-import Consignment from "../"
 import * as T from "../typography"
 
 const Wrapper = (p) => <View style={{backgroundColor: "black", flex: 1, paddingTop: 20}}>{p.children}</View>

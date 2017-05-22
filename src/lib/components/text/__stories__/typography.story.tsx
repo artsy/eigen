@@ -1,6 +1,5 @@
 import { storiesOf } from "@kadira/react-native-storybook"
 import * as React from "react"
-import { RootContainer } from "react-relay"
 
 import Headline from "../headline"
 import Serif from "../serif"

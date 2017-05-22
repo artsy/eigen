@@ -2,9 +2,6 @@ import { action, storiesOf } from "@kadira/react-native-storybook"
 import * as React from "react"
 import { View } from "react-native"
 
-import { RootContainer } from "react-relay"
-import StubContainer from "react-storybooks-relay-container"
-
 import FlatWhite from "../flat_white"
 import InvertedButton from "../inverted_button"
 import NavigationButton from "../navigation_button"

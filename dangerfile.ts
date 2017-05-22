@@ -1,9 +1,8 @@
 
 import { danger, fail, warn } from "danger"
-import { compact, includes, remove, uniq } from "lodash"
+import { compact, includes, uniq } from "lodash"
 
 import * as fs from "fs"
-import * as os from "os"
 import * as path from "path"
 
 import * as recurseSync from "recursive-readdir-sync"
@@ -12,7 +11,6 @@ const allFiles = recurseSync("./src")
 // Setup
 const pr = danger.github.pr
 const modified = danger.git.modified_files
-const newFiles = danger.git.created_files
 const bodyAndTitle = (pr.body + pr.title).toLowerCase()
 
 // Custom modifiers for people submitting PRs to be able to say "skip this"
@@ -33,9 +31,6 @@ const touchedAppOnlyFiles = touchedFiles.filter(p =>
 
 const touchedComponents = touchedFiles.filter(p =>
   includes(p, "src/lib/components") && !includes(p, "__tests__"))
-
-const touchedTestFiles = touchedFiles.filter(p => includes(p, "__tests__"))
-const touchedStoryFiles = touchedFiles.filter(p => includes(p, "__stories__"))
 
 // Rules
 
@@ -80,6 +75,7 @@ const testFilesThatDontExist = correspondingTestsForAppFiles
                                  .filter(f => !f.includes("__stories__")) // skip stories
                                  .filter(f => !f.includes("app_registry")) // skip registry, kinda untestable
                                  .filter(f => !f.includes("routes")) // skip routes, kinda untestable
+                                 .filter(f => !f.includes("native_modules")) // skip native_modules
                                  .filter(f => !fs.existsSync(f))
 
 if (testFilesThatDontExist.length > 0) {
