@@ -1,6 +1,9 @@
 #import "ARArtworkViewController.h"
 
 #import "Artwork.h"
+#import "ARSystemTime.h"
+#import "ARSwitchBoard+Eigen.h"
+#import "ARArtworkSetViewController.h"
 #import "ARTopMenuViewController.h"
 #import "UIViewController+TopMenuViewController.h"
 #import "UIViewController+FullScreenLoading.h"
@@ -22,6 +25,8 @@
 
 @property (nonatomic, strong) ARArtworkView *view;
 @property (nonatomic, strong, readonly) ARPostsViewController *postsVC;
+@property (nonatomic, strong) NSTimer *updateInterfaceWhenAuctionChangesTimer;
+
 @end
 
 
@@ -128,6 +133,7 @@
     self.view.scrollsToTop = NO;
     [self.view.relatedArtworksView cancelRequests];
     [super viewDidDisappear:ARPerformWorkAsynchronously && animated];
+    [self.updateInterfaceWhenAuctionChangesTimer invalidate], self.updateInterfaceWhenAuctionChangesTimer = nil;
 }
 
 - (void)setHasFinishedScrolling
@@ -135,8 +141,16 @@
     // Get the full artwork details once scroll is settled.
     // This is only called on the primary artwork view
     self.view.scrollsToTop = YES;
+    [self setupUI];
+}
 
+- (void)setupUI
+{
+    __weak ARArtworkViewController *weakSelf = self;
     [self.artwork updateArtwork];
+    [self.artwork onSaleArtworkUpdate:^(SaleArtwork * _Nonnull saleArtwork) {
+        [weakSelf startTimerForSaleArtwork:saleArtwork];
+    } failure:nil allowCached:NO];
     [self.artwork updateSaleArtwork];
     [self.artwork updateFair];
     [self.artwork updatePartnerShow];
@@ -144,6 +158,16 @@
     if (!self.postsVC.posts.count) {
         [self getRelatedPosts];
     }
+}
+
+/// Reloads the artwork set view controller to fetch fresh content from the server.
+/// Useful for artworks that are lots in auctions, to reload when the auction event begins or ends.
+- (void)reloadUI {
+    ARArtworkSetViewController *newViewController = [[ARSwitchBoard sharedInstance] loadArtwork:self.artwork inFair:self.artwork.fair];
+    // We need to fetch this upfront and cache in a local variable, since `self.navigationController` will be nil once we pop.
+    UINavigationController *navigationController = self.navigationController;
+    [navigationController popViewControllerAnimated:NO];
+    [navigationController pushViewController:newViewController animated:NO];
 }
 
 - (void)getRelatedPosts
@@ -171,6 +195,17 @@
 - (NSString *)inquiryURLRepresentation
 {
     return [NSString stringWithFormat:@"http://artsy.net/artwork/%@", self.artwork.artworkID];
+}
+
+- (void)startTimerForSaleArtwork:(SaleArtwork *)saleArtwork
+{
+    if (saleArtwork.auction.uiDateOfInterest == nil) { return; }
+    
+    NSDate *now = [ARSystemTime date];
+    NSTimeInterval interval = [saleArtwork.auction.uiDateOfInterest timeIntervalSinceDate:now];
+    if (interval > 0) {
+        self.updateInterfaceWhenAuctionChangesTimer = [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(reloadUI) userInfo:nil repeats:NO];
+    }
 }
 
 #pragma mark - ScrollView delegate methods
