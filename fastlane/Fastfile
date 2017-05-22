@@ -1,5 +1,6 @@
 require 'yaml'
 require 'spaceship'
+require 'fileutils'
 
 APP_ID = "net.artsy.artsy"
 
@@ -49,9 +50,12 @@ lane :ship_beta do
   `git push http #{tag} -f`
 
   # First make individual dSYM archives available to the sentry-cli tool.
+  sentry_version = "#{APP_ID}-#{latest_version}"
+  sentry_dist = get_build_number
   root = File.expand_path("../..", __FILE__)
+  dsym_archive = File.join(root, "Artsy.app.dSYM.zip")
   dsyms_path = File.join(root, "dSYMs")
-  sh "unzip -d #{dsyms_path} #{File.join(root, "Artsy.app.dSYM.zip")}"
+  sh "unzip -d #{dsyms_path} #{dsym_archive}"
 
   sentry = lambda do |project_slug|
     org_slug = "artsynet"
@@ -59,11 +63,12 @@ lane :ship_beta do
     sentry_create_release auth_token: ENV['SentryUploadAuthKey'],
                           org_slug: org_slug,
                           project_slug: project_slug,
-                          version: tag,
-                          finalize: true
+                          version: sentry_version,
+                          finalize: false
     puts "Created a release for #{project_slug}"
 
     Dir.glob(File.join(dsyms_path, "*.dSYM")).each do |dsym_path|
+      # No need to specify `dist` as the build number is encoded in the dSYM’s Info.plist
       sentry_upload_dsym auth_token: ENV['SentryUploadAuthKey'],
                         org_slug: org_slug,
                         project_slug: project_slug,
@@ -75,16 +80,16 @@ lane :ship_beta do
     sentry_upload_file auth_token: ENV['SentryUploadAuthKey'],
                        org_slug: org_slug,
                        project_slug: project_slug,
-                       version: latest_version,
-                       dist: tag,
+                       version: sentry_version,
+                       dist: sentry_dist,
                        file: "Pods/Emission/Pod/Assets/Emission.js"
     puts "Uploaded Emission.js for #{project_slug}"
 
     sentry_upload_sourcemap auth_token: ENV['SentryUploadAuthKey'],
                             org_slug: org_slug,
                             project_slug: project_slug,
-                            version: latest_version,
-                            dist: tag,
+                            version: sentry_version,
+                            dist: sentry_dist,
                             sourcemap: "Pods/Emission/Pod/Assets/Emission.js.map",
                             rewrite: true
     puts "Uploaded Emission.js.map for #{project_slug}"
@@ -92,6 +97,9 @@ lane :ship_beta do
 
   sentry.call("eigen")
   # sentry.call("eigen-staging")
+
+  # Make dSYM archive available in case we failed to put them in the right place in Sentry.
+  FileUtils.mv(dsym_archive, ENV['CIRCLE_ARTIFACTS'])
 
   # # Send to the app store
   pilot changelog: beta_readme
