@@ -50,9 +50,9 @@ lane :ship_beta do
   `git push http #{tag} -f`
 
   # First make individual dSYM archives available to the sentry-cli tool.
-  sentry_version = "#{APP_ID}-#{latest_version}"
-  sentry_dist = get_build_number
   root = File.expand_path("../..", __FILE__)
+  sentry_version = "#{APP_ID}-#{latest_version}"
+  sentry_dist = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, "Artsy/App_Resources/Artsy-Info.plist")}`.strip
   dsym_archive = File.join(root, "Artsy.app.dSYM.zip")
   dsyms_path = File.join(root, "dSYMs")
   sh "unzip -d #{dsyms_path} #{dsym_archive}"
