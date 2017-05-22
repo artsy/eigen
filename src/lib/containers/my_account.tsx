@@ -4,18 +4,12 @@ import * as Relay from "react-relay"
 import {
   Dimensions,
   ScrollView,
-  StyleSheet,
   View,
   ViewProperties,
   ViewStyle,
 } from "react-native"
 
 import Headline from "../components/text/headline"
-
-import { SwitchEvent } from "../components/switch_view"
-import TabView from "../components/tab_view"
-
-const isPad = Dimensions.get("window").width > 700
 
 interface Props extends ViewProperties, RelayProps {}
 
@@ -41,15 +35,6 @@ export class MyAccount extends React.Component<Props, {}> {
 interface Styles {
   tabView: ViewStyle,
 }
-
-const styles = StyleSheet.create<Styles>({
-  tabView: {
-    width: isPad ? 330 : null,
-    marginTop: 30,
-    marginBottom: 30,
-    alignSelf: isPad ? "center" : null,
-  },
-})
 
 export default Relay.createContainer(MyAccount, {
   fragments: {

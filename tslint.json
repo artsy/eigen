@@ -30,6 +30,7 @@
     "trailing-comma": [
       true,
       { "multiline": "always", "singleline": "never" }
-    ]
+    ],
+    "no-unused-variable": [true, {"ignore-pattern": "React" }]
   }
 }

@@ -1,5 +1,9 @@
 ### Master
 
+- Adds a root component for the Consignments flow  - orta
+- [dev] Adds storybooks for consignments  - orta
+- Added the Welcome/Overview screen for consignments - orta
+
 ### 1.3.6
 
 - Fixes missing compiled bundle - alloy
@@ -103,7 +107,7 @@
 ### 1.1.0-beta.4
 
 - GeneVC scrolls as expected, and can request data from Eigen - orta
-- Fix crash that would occur when tapping the ‘failed to load’ view retry button a second time - alloy
+- Fix crash that would occur when tapping the "failed to load" view retry button a second time - alloy
 - Make tapping the search bar open the search VC - sarah
 
 ### 1.1.0-beta.3
@@ -119,7 +123,7 @@
 - [dev] Turns on "keychain sharing" to fix a keychain bug in sim - orta
 - GeneVC now shows about information, and trending artists - orta
 - GeneVC now shows artworks for the gene - orta
-- Show ‘bid now’ call to action on artworks that are in an auction - alloy
+- Show "bid now" call to action on artworks that are in an auction - alloy
 
 ### 1.1.0-beta.2
 

@@ -100,7 +100,7 @@
     "danger": "^0.18.0",
     "enzyme": "^2.8.2",
     "husky": "^0.13.3",
-    "jest": "^19.0.2",
+    "jest": "^20.0.3",
     "jest-fetch-mock": "^1.0.7",
     "jest-react-native": "^17.0.3",
     "lint-staged": "^3.4.1",
@@ -108,7 +108,7 @@
     "react-test-renderer": "^15.5.4",
     "recursive-readdir-sync": "^1.0.6",
     "relay2ts": "^0.2.0",
-    "ts-jest": "^19.0.10",
+    "ts-jest": "^20.0.3",
     "tslint": "^4.5.0"
   },
   "peerDependencies": {
