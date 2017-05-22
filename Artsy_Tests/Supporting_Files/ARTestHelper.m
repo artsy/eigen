@@ -94,7 +94,7 @@ static UIWindow *_hostingWindow = nil;
     UIWindow *previousKeyWindow = [[UIApplication sharedApplication] keyWindow];
 
     UIViewController *viewController = [UIViewController new];
-    viewController.view.frame = [[UIScreen mainScreen] applicationFrame];
+    viewController.view.frame = [[UIScreen mainScreen] bounds];
     viewController.view.backgroundColor = [UIColor redColor];
     [viewController.view addSubview:view];
 

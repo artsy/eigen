@@ -14,7 +14,10 @@
     // Pods that come in from the other target
     #import <AFNetworking/AFNetworking.h>
     #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
+    #pragma clang diagnostic pop
     #import <UICKeyChainStore/UICKeyChainStore.h>
     #import <Mantle/Mantle.h>
     #import <Mantle/MTLJSONAdapter.h>
