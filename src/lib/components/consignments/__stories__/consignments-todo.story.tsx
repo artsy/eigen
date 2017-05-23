@@ -45,6 +45,14 @@ const withProvenance: ConsignmentSetup = {
   provenance: "This work has seen many hands.",
 }
 
+export const allStates = {
+  withArtist,
+  withPhotos,
+  withMetadata,
+  withLocation,
+  withProvenance,
+}
+
 const longProv = "This is a long long long run on sentence that should break correctly."
 
 storiesOf("Consignments - TODO")
