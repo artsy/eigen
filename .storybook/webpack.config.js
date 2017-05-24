@@ -3,7 +3,7 @@ const path = require("path");
 module.exports = {
   devtool: "#inline-source-map", // Otherwise getting errors about e.g. `Relay` not being defined.
   resolve: {
-    extensions: ["", ".js", ".jsx", ".ts", ".tsx"],
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
   module: {
     loaders: [
