@@ -2,6 +2,7 @@ upcoming:
     version: 3.2.2
     details: Scope not known yet
     dev:
+      - Fix analytics double fire in artwork pages - maxim
     user_facing:
       - Adds timer for artwork view that refreshes UI when the associated live sale opens - ash
 
