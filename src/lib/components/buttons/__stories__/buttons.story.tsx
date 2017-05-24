@@ -1,4 +1,4 @@
-import { action, storiesOf } from "@kadira/react-native-storybook"
+import { action, storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import { View } from "react-native"
 

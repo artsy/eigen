@@ -1,9 +1,13 @@
-const path = require("path");
+const path = require('path')
+const webpack = require('webpack')
+
+const { OccurenceOrderPlugin, includePaths, excludePaths } = require('@storybook/react-native/dist/server/config/utils')
+
 
 module.exports = {
   devtool: "#inline-source-map", // Otherwise getting errors about e.g. `Relay` not being defined.
   resolve: {
-    extensions: ["", ".js", ".jsx", ".ts", ".tsx"],
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
   module: {
     loaders: [
@@ -14,4 +18,17 @@ module.exports = {
       },
     ],
   },
+  entry: {
+    manager: [require.resolve('../../manager')],
+  },
+  output: {
+    path: path.join(__dirname, 'dist'),
+    filename: 'static/[name].bundle.js',
+    publicPath: '/',
+  },
+  plugins: [
+    new OccurenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    // new CaseSensitivePathsPlugin(),
+  ],
 }

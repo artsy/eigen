@@ -123,10 +123,11 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 * Flexbox:
   - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
   - http://blog.krawaller.se/posts/a-react-app-demonstrating-css3-flexbox/
+  - https://egghead.io/courses/flexbox-fundamentals
 
 * React Native Storybooks:
-  - https://github.com/kadirahq/react-native-storybook
-  - https://github.com/kadirahq/react-storybook
+  - https://github.com/storybooks/storybook/
+  - https://github.com/storybooks/storybook/tree/master/app/react-native
 
 * React Native Debugger:
   - https://github.com/jhen0409/react-native-debugger
