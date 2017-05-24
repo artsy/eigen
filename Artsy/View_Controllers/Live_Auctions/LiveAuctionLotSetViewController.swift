@@ -29,6 +29,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     fileprivate var progressBarBottomConstraint: NSLayoutConstraint?
     fileprivate let saleNetworkModel = AuctionSaleNetworkModel()
     fileprivate let biddersNetworkModel = AuctionBiddersNetworkModel()
+    fileprivate let saleStatusView = SaleStatusView()
 
     init(salesPerson: LiveAuctionsSalesPersonType, useCompactLayout: Bool) {
         self.salesPerson = salesPerson
@@ -132,7 +133,12 @@ class LiveAuctionLotSetViewController: UIViewController {
         // Lot collection view setup.
         view.addSubview(lotImageCollectionView)
         lotImageCollectionView.alignTop("0", leading: "0", bottom: "\(collectionViewBottomConstraint)", trailing: "0", toView: view)
-
+        
+        // Sale status view setup.
+        view.addSubview(saleStatusView)
+        saleStatusView.alignLeading("0", trailing: "0", toView: view)/* constrainWidth(toView: view, predicate: "0") */
+        saleStatusView.alignTopEdge(withView: view, predicate: "0")
+        
         // Page view controller setup.
         ar_addModernChildViewController(pageController)
         pageController.delegate = self
@@ -329,6 +335,15 @@ extension LiveAuctionLotSetViewController: AuctionTitleViewDelegate {
         let registrationPath = "/auction-registration/\(self.salesPerson.liveSaleID)"
         let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
         self.present(viewController, animated: true) {}
+    }
+    
+    func setSaleStatus(message: String?) {
+        guard let message = message else {
+            self.saleStatusView.isHidden = true
+            return
+        }
+        self.saleStatusView.isHidden = false
+        self.saleStatusView.setMessage(message)
     }
 }
 
