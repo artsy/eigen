@@ -22,7 +22,7 @@ typedef enum: NSUInteger {
 @property (nonatomic, strong, readonly) NSDate *endDate;
 @property (nonatomic, strong, readonly) NSDate *registrationEndsAtDate;
 
-@property (nonnull, strong, readonly) NSDate *uiDateOfInterest;
+@property (nonatomic, strong, readonly) NSDate *uiDateOfInterest;
 
 @property (nonatomic, strong, readonly) BuyersPremium *buyersPremium;
 

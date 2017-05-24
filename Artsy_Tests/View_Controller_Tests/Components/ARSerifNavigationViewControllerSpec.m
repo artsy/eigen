@@ -87,7 +87,10 @@ describe(@"", ^{
         });
 
         it(@"sets the status bar to hidden", ^{
+            #pragma clang diagnostic push
+            #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             [subject.sharedApplication setStatusBarHidden:NO];
+            #pragma clang diagnostic pop
 
             [subject beginAppearanceTransition:YES animated:NO];
             [subject endAppearanceTransition];
@@ -97,7 +100,10 @@ describe(@"", ^{
 
         it(@"returns the hidden back to the original value", ^{
             BOOL originalHidden = YES;
+            #pragma clang diagnostic push
+            #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             [subject.sharedApplication setStatusBarHidden:originalHidden];
+            #pragma clang diagnostic pop
 
             [subject beginAppearanceTransition:YES animated:NO];
             [subject endAppearanceTransition];

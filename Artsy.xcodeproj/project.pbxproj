@@ -43,7 +43,7 @@
 		1CFA4EB81E5C4B6B00D44A5A /* full_logo_black_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CFA4EB51E5C4B6B00D44A5A /* full_logo_black_small@2x.png */; };
 		342F902302C1CF0FD342AB93 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97C153D8524B132D0927 /* NSDate+Util.m */; };
 		342F9061CC93426E7F8579A2 /* ARFeedImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */; };
-		342F906FD605E75158D32876 /* ARSharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9DC4018D17E7378DA607 /* ARSharingController.m */; };
+		342F906FD605E75158D32876 /* ARSharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9DC4018D17E7378DA607 /* ARSharingController.m */; settings = {COMPILER_FLAGS = "-Wno-deprecated-declarations"; }; };
 		342F90AEE6950A52210D2DC2 /* UILabel+Typography.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9F6EDBFE4624755933EB /* UILabel+Typography.m */; };
 		342F90FACF8AABA704AF5FC1 /* PartnerShowFairLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9A17225A44AC4BE26303 /* PartnerShowFairLocation.m */; };
 		342F917E6CFBD49D6F43873D /* ARCollapsableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F927CDF62DAE64F3A1AD7 /* ARCollapsableTextView.m */; };
@@ -296,6 +296,8 @@
 		5E20BB671C62C00D00C6D781 /* AuctionCircularButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E20BB661C62C00D00C6D781 /* AuctionCircularButtons.swift */; };
 		5E20BB6A1C62C81600C6D781 /* CircularInfoButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E20BB681C62C81600C6D781 /* CircularInfoButton@2x.png */; };
 		5E20BB6B1C62C81600C6D781 /* CircularInfoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E20BB691C62C81600C6D781 /* CircularInfoButton.png */; };
+		5E257E331ECDEB6600C62008 /* UIViewController+Popovers.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E257E321ECDEB6600C62008 /* UIViewController+Popovers.m */; };
+		5E257E361ECDEDB800C62008 /* UIApplication+StatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E257E351ECDEDB800C62008 /* UIApplication+StatusBar.m */; };
 		5E26AF801CE66A7E00C67B7C /* Stringify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E26AF7F1CE66A7E00C67B7C /* Stringify.swift */; };
 		5E284609194A2E58007274AB /* ARFairGuideContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E284608194A2E58007274AB /* ARFairGuideContainerViewController.m */; };
 		5E288EA91CC0219A00A974AA /* LotListCollectionViewCell+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E288EA81CC0219A00A974AA /* LotListCollectionViewCell+Private.swift */; };
@@ -434,7 +436,7 @@
 		601E31AB1C80A55F00D09F73 /* live_auctions_static.json in Resources */ = {isa = PBXBuildFile; fileRef = 601E31AA1C80A55F00D09F73 /* live_auctions_static.json */; };
 		601E31B01C80E35600D09F73 /* LiveAuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = 601E31AF1C80E35600D09F73 /* LiveAuctionLot.m */; };
 		601E53371B84C41F00679E10 /* ARArtworkViewControllerBuyButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 601E53351B84C35D00679E10 /* ARArtworkViewControllerBuyButtonTests.m */; };
-		601F029817F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 601F029717F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m */; };
+		601F029817F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 601F029717F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m */; settings = {COMPILER_FLAGS = "-Wno-deprecated-declarations"; }; };
 		6021D1B81CB7C6F800C475C1 /* TextStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021D1B71CB7C6F800C475C1 /* TextStack.swift */; };
 		6021D1BA1CB7D2E800C475C1 /* AuctionLotMetadataStackScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021D1B91CB7D2E800C475C1 /* AuctionLotMetadataStackScrollView.swift */; };
 		6021F97F17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6021F97E17B2B27400318185 /* ARArtworkWithMetadataThumbnailCell.m */; };
@@ -1266,6 +1268,10 @@
 		5E20BB681C62C81600C6D781 /* CircularInfoButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CircularInfoButton@2x.png"; sourceTree = "<group>"; };
 		5E20BB691C62C81600C6D781 /* CircularInfoButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CircularInfoButton.png; sourceTree = "<group>"; };
 		5E20BB721C6557F400C6D781 /* Artsy-Tests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Artsy-Tests-Bridging-Header.h"; sourceTree = "<group>"; };
+		5E257E311ECDEB3900C62008 /* UIViewController+Popovers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Popovers.h"; sourceTree = "<group>"; };
+		5E257E321ECDEB6600C62008 /* UIViewController+Popovers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Popovers.m"; sourceTree = "<group>"; };
+		5E257E341ECDEDB800C62008 /* UIApplication+StatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+StatusBar.h"; sourceTree = "<group>"; };
+		5E257E351ECDEDB800C62008 /* UIApplication+StatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+StatusBar.m"; sourceTree = "<group>"; };
 		5E26AF7F1CE66A7E00C67B7C /* Stringify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stringify.swift; path = Artsy/Stringify.swift; sourceTree = SOURCE_ROOT; };
 		5E284607194A2E58007274AB /* ARFairGuideContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairGuideContainerViewController.h; sourceTree = "<group>"; };
 		5E284608194A2E58007274AB /* ARFairGuideContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairGuideContainerViewController.m; sourceTree = "<group>"; };
@@ -1505,7 +1511,7 @@
 		60388702189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTiledImageDataSourceWithImage.m; sourceTree = "<group>"; };
 		60388704189C103F00D3EEAA /* ARFairMapZoomManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapZoomManager.h; sourceTree = "<group>"; };
 		60388705189C103F00D3EEAA /* ARFairMapZoomManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairMapZoomManager.m; sourceTree = "<group>"; };
-		6038B7881C2856BA00359F3B /* ARSwitchboard+Eigen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARSwitchboard+Eigen.h"; sourceTree = "<group>"; };
+		6038B7881C2856BA00359F3B /* ARSwitchBoard+Eigen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARSwitchBoard+Eigen.h"; sourceTree = "<group>"; };
 		6038B7891C2856BA00359F3B /* ARSwitchboard+Eigen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARSwitchboard+Eigen.m"; sourceTree = "<group>"; };
 		603B3AE91774A0FA00BA5BD3 /* ARNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARNavigationController.h; sourceTree = "<group>"; };
 		603B3AEA1774A0FA00BA5BD3 /* ARNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARNavigationController.m; sourceTree = "<group>"; };
@@ -2267,6 +2273,10 @@
 				5E4962431CA1C7E800E77DD5 /* NSAttributedString+Additions.swift */,
 				6002C25E1CC5125200E249B2 /* UIViewController+TopMenuViewController.h */,
 				6002C25F1CC5125200E249B2 /* UIViewController+TopMenuViewController.m */,
+				5E257E311ECDEB3900C62008 /* UIViewController+Popovers.h */,
+				5E257E321ECDEB6600C62008 /* UIViewController+Popovers.m */,
+				5E257E341ECDEDB800C62008 /* UIApplication+StatusBar.h */,
+				5E257E351ECDEDB800C62008 /* UIApplication+StatusBar.m */,
 			);
 			path = Apple;
 			sourceTree = "<group>";
@@ -4090,7 +4100,7 @@
 			children = (
 				6037442316D4227500AE7788 /* ARSwitchBoard.h */,
 				6037442416D4227500AE7788 /* ARSwitchBoard.m */,
-				6038B7881C2856BA00359F3B /* ARSwitchboard+Eigen.h */,
+				6038B7881C2856BA00359F3B /* ARSwitchBoard+Eigen.h */,
 				6038B7891C2856BA00359F3B /* ARSwitchboard+Eigen.m */,
 				5E830A501E969B1800A56C75 /* ArtsyEcho.h */,
 				5E830A511E969B1800A56C75 /* ArtsyEcho.m */,
@@ -4750,7 +4760,7 @@
 			attributes = {
 				CLASSPREFIX = AR;
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = Artsy;
 				TargetAttributes = {
 					1C40C19B1DF8B1B7003F454F = {
@@ -5237,6 +5247,7 @@
 				E61446AF195A1CDC00BFB7C3 /* ARFairFavoritesNetworkModel.m in Sources */,
 				5174A03B1A859E2C006CD337 /* ARFairMapView.m in Sources */,
 				51DCC6C81C60E26800455309 /* AuctionInformationViewController.swift in Sources */,
+				5E257E331ECDEB6600C62008 /* UIViewController+Popovers.m in Sources */,
 				60B6F13916638785007C9587 /* ArtsyAPI.m in Sources */,
 				1C029B051CD130A400808503 /* ARLoginButtonsView.m in Sources */,
 				60B6F13E16638815007C9587 /* Artwork.m in Sources */,
@@ -5246,6 +5257,7 @@
 				D39E874F1AB0F97A006B5BE9 /* ARBrowseNetworkModel.m in Sources */,
 				60B6E5981C88BEF3003B1D46 /* LiveSale.m in Sources */,
 				5E407DF71DF7390B00999533 /* AREchoContentsViewController.m in Sources */,
+				5E257E361ECDEDB800C62008 /* UIApplication+StatusBar.m in Sources */,
 				60647C671A8BB9AE00A45247 /* BuyersPremium.m in Sources */,
 				3CCCC8A51899B6F9008015DD /* FairOrganizer.m in Sources */,
 				60D90A0817C2182F0073D5B9 /* ARExternalWebBrowserViewController.m in Sources */,
@@ -5943,22 +5955,34 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"DEBUG=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -6162,13 +6186,25 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "${inherited}";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -6280,14 +6316,26 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Art.sy Inc. (23KMWZ572J)";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "${inherited}";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";

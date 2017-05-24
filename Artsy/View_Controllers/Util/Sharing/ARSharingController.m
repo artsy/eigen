@@ -9,7 +9,11 @@
 #import "PartnerShow.h"
 #import "ARTopMenuViewController.h"
 
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
+#pragma clang diagnostic pop
 
 
 @interface ARSharingController ()
@@ -49,7 +53,11 @@
 - (void)presentActivityViewControllerFromView:(UIView *)view frame:(CGRect)frame
 {
     if (ARIsRunningInDemoMode) {
+        
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         [UIAlertView showWithTitle:nil message:@"Feature not enabled for this demo" cancelButtonTitle:@"OK" otherButtonTitles:nil tapBlock:nil];
+#pragma clang diagnostic pop
         return;
     }
 
@@ -63,7 +71,10 @@
         UIActivityTypePostToFlickr,
         UIActivityTypePostToVimeo,
         UIActivityTypePostToTencentWeibo
-    ];
+        ];
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
     // Declare it here so it can be accessed from the UIActivityViewController's completionHandler.
     __block UIPopoverController *popover = nil;
@@ -77,6 +88,7 @@
                permittedArrowDirections:UIPopoverArrowDirectionAny
                                animated:YES];
     }
+#pragma clang diagnostic pop
 
     activityVC.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
         [popover dismissPopoverAnimated:YES];

@@ -355,7 +355,9 @@
         newViewController = [ARSwitchBoard.sharedInstance loadGene:gene];
     }
 
-    [self.ar_TopMenuViewController pushViewController:newViewController animated:ARPerformWorkAsynchronously];
+    if (newViewController) {
+        [self.ar_TopMenuViewController pushViewController:newViewController animated:ARPerformWorkAsynchronously];
+    }
 }
 
 - (void)embeddedModelsViewControllerDidScrollPastEdge:(AREmbeddedModelsViewController *)embeddedModelsViewController

@@ -23,7 +23,6 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 
 
 @interface ARPersonalizeViewController () <UITextFieldDelegate, ARPersonalizeNetworkDelegate, ARPersonalizeContainer>
@@ -216,7 +215,10 @@
             break;
     }
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [self finaliseValuesForiPadWithInterfaceOrientation:self.interfaceOrientation];
+#pragma clang diagnostic pop
 }
 
 // Yes, this is deprecated, but it's the most straightforward way to change 2 values for iPad landscape

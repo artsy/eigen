@@ -53,7 +53,7 @@
 
         [self.back constrainHeight:@"44"];
         [self.forward constrainHeightToView:self.back predicate:@"0"];
-        [self constrainHeightToView:self.back predicate:[UIDevice isPad] ? @"*2" : nil];
+        [self constrainHeightToView:self.back predicate:[UIDevice isPad] ? @"*2" : @"0"];
     }
 
     return self;

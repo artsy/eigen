@@ -17,6 +17,7 @@
 
 #import "ARMacros.h"
 #import "UIDevice-Hardware.h"
+#import "UIApplication+StatusBar.h"
 
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
@@ -309,9 +310,9 @@ ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
 - (void)showStatusBar:(BOOL)visible animated:(BOOL)animated
 {
     if (animated) {
-        [[UIApplication sharedApplication] setStatusBarHidden:!visible withAnimation:UIStatusBarAnimationSlide];
+        [[UIApplication sharedApplication] ar_setStatusBarHidden:!visible withAnimation:UIStatusBarAnimationSlide];
     } else {
-        [[UIApplication sharedApplication] setStatusBarHidden:!visible withAnimation:UIStatusBarAnimationNone];
+        [[UIApplication sharedApplication] ar_setStatusBarHidden:!visible withAnimation:UIStatusBarAnimationNone];
     }
 
     [UIView animateIf:animated duration:ARAnimationDuration:^{
@@ -325,7 +326,7 @@ ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
 {
     CGFloat visibleAlpha = isHome ? 0.98 : 1;
     UIStatusBarStyle statusBarStyle = isHome ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
-    [[UIApplication sharedApplication] setStatusBarStyle:statusBarStyle];
+    [[UIApplication sharedApplication] ar_setStatusBarStyle:statusBarStyle];
 
     [UIView animateIf:animated duration:ARAnimationDuration:^{
         self.statusBarView.backgroundColor = isHome ? UIColor.whiteColor : UIColor.blackColor;

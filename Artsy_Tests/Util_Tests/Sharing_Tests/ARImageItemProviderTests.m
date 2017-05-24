@@ -8,22 +8,30 @@
 SpecBegin(ARImageItemProvider);
 
 describe(@"image provider item", ^{
-    __block UIImage *image = [UIImage imageNamed:@"stub.jpg"];
-    __block ARImageItemProvider *provider = [[ARImageItemProvider alloc] initWithPlaceholderItem:image];
-    __block id providerMock = [OCMockObject partialMockForObject:provider];
+    NSBundle *bundle = [NSBundle bundleForClass:ARImageItemProviderSpec.class];
+    NSString *path = [bundle pathForResource:@"stub" ofType:@"jpg"];
+    UIImage *image = [UIImage imageWithContentsOfFile:path];
+    
+    __block ARImageItemProvider *provider;
+    __block id providerMock;
 
-    NSArray *imagelessActivities = @[@"Twitter", @"Facebook"];
-
-    for (NSString *activity in imagelessActivities) {
-        it([NSString stringWithFormat:@"%@%@", @"returns nil for ", activity], ^{
-            NSString *activityType = [NSString stringWithFormat:@"%@%@",@"com.apple.UIKit.activity.PostTo", activity];
-            [(ARImageItemProvider *)[[providerMock stub] andReturn:activityType] activityType];
-            expect(provider.item).to.beNil();
-        });
-    }
+    beforeEach(^{
+        provider = [[ARImageItemProvider alloc] initWithPlaceholderItem:image];
+        providerMock = [OCMockObject partialMockForObject:provider];
+    });
+    
+    it(@"returns nil for twitter", ^{
+        [(ARImageItemProvider *)[[providerMock stub] andReturn:UIActivityTypePostToTwitter] activityType];;
+        expect(provider.item).to.equal([NSNull null]);
+    });
+    
+    it(@"returns nil for facebook", ^{
+        [(ARImageItemProvider *)[[providerMock stub] andReturn:UIActivityTypePostToFacebook] activityType];;
+        expect(provider.item).to.equal([NSNull null]);
+    });
 
     it(@"returns placeholderItem for other activities", ^{
-        [(ARImageItemProvider *)[[providerMock stub] andReturn:@"another activity"] activityType];;
+        [(ARImageItemProvider *)[[providerMock stub] andReturn:UIActivityTypeCopyToPasteboard] activityType];;
         expect(provider.item).to.equal(image);
     });
 

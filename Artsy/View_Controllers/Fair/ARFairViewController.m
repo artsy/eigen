@@ -378,7 +378,9 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
         controller = [switchBoard loadShowWithID:partnerShow.showID fair:self.fair];
     }
 
-    [self.ar_TopMenuViewController pushViewController:controller animated:ARPerformWorkAsynchronously];
+    if (controller) {
+        [self.ar_TopMenuViewController pushViewController:controller animated:ARPerformWorkAsynchronously];
+    }
 }
 
 - (void)cancelledSearch:(ARFairSearchViewController *)controller

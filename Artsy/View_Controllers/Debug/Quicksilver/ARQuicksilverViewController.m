@@ -266,7 +266,9 @@
         controller = [ARSwitchBoard.sharedInstance loadPath:path];
     }
 
-    [ARTopMenuViewController.sharedController pushViewController:controller animated:YES];
+    if (controller) {
+        [ARTopMenuViewController.sharedController pushViewController:controller animated:YES];
+    }
 }
 
 - (NSArray *)contentArray

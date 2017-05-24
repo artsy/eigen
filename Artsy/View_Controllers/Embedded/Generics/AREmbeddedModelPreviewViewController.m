@@ -86,7 +86,7 @@
         return [self previewActionItemsForArtwork:(Artwork *)self.object];
     }
 
-    return nil;
+    return @[];
 }
 
 - (NSArray<id<UIPreviewActionItem>> *)previewActionItemsForArtwork:(Artwork *)artwork

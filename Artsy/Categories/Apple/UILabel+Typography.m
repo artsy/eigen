@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 
 
-@implementation UILabel (Typography)
+@implementation UILabel (ArtsyTypography)
 
 - (void)setText:(NSString *)text withLineHeight:(CGFloat)lineHeight
 {

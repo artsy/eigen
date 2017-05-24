@@ -14,7 +14,6 @@
     // Pods that come in from the other target
     #import <AFNetworking/AFNetworking.h>
     #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
-    #import <UIAlertView_Blocks/UIAlertView+Blocks.h>
     #import <UICKeyChainStore/UICKeyChainStore.h>
     #import <Mantle/Mantle.h>
     #import <Mantle/MTLJSONAdapter.h>
