@@ -1183,12 +1183,12 @@
                 },
                 // ========== CORE CONTENT SCREENS ==========
                 @{
-                    ARAnalyticsClass: ARArtworkView.class,
+                    ARAnalyticsClass: ARArtworkViewController.class,
                     ARAnalyticsDetails: @[
                         @{
                             ARAnalyticsPageName: @"Artwork",
-                            ARAnalyticsSelectorName: @"artworkUpdated",
-                            ARAnalyticsProperties: ^NSDictionary *(ARArtworkView *view, NSArray *_) {
+                            ARAnalyticsProperties: ^NSDictionary *(ARArtworkViewController *vc, NSArray *_) {
+                                ARArtworkView *view = (ARArtworkView *)vc.view;
                                 NSDictionary *basics =  @{
                                     @"owner_type": @"artwork",
                                     @"owner_id": view.artwork.artworkUUID ?: @"",
