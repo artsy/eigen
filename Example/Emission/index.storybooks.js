@@ -1,5 +1,5 @@
 import { AppRegistry } from 'react-native';
-import { getStorybookUI, configure } from '@storybook/react-native-storybook';
+import { getStorybookUI, configure } from '@storybook/react-native';
 
 // import your stories
 configure(() => {
