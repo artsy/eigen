@@ -7,7 +7,7 @@ import {
 } from "react-native"
 
 /** The metadata for a consigned work */
-interface ConsignmentMetadata {
+export interface ConsignmentMetadata {
   title: string | null
   year: string | null
   category: string | null
@@ -15,16 +15,19 @@ interface ConsignmentMetadata {
   width: number | null
   height: number | null
   depth: number | null
-  units: "in" | "cm"
+  unit: "in" | "cm",
+  displayString: string // This would look something like "1/5", "5/5"
 }
 
-interface Props extends ViewProperties {
+export interface ConsignmentSetup {
   artist?: any
   photos?: string[]
   metadata?: ConsignmentMetadata
   location?: string
   provenance?: string
 }
+
+interface Props extends ViewProperties, ConsignmentSetup { }
 
 export default class Consignments extends React.Component<Props, any> {
   // constructor(props) {
@@ -41,14 +44,14 @@ export default class Consignments extends React.Component<Props, any> {
   // }
 
   render() {
-    return  (
+    return (
       <NavigatorIOS
         navigationBarHidden={true}
         initialRoute={{
           component: Welcome,
           title: "Welcome",
         }}
-        style={{flex: 1}}
+        style={{ flex: 1 }}
       />
     )
   }
