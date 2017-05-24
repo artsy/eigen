@@ -3,6 +3,7 @@ upcoming:
     details: Scope not known yet
     dev:
       - Removes compiler warnings and static analyzer warnings - ash
+      - Fix analytics double fire in artwork pages - maxim
     user_facing:
       - Adds timer for artwork view that refreshes UI when the associated live sale opens - ash
 
