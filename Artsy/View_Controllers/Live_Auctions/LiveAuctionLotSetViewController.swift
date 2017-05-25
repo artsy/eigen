@@ -22,6 +22,7 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     fileprivate var hasBeenSetup = false
     fileprivate var firstAppearance = true
+    fileprivate var saleIsOnHold = false
     fileprivate var pageViewScrollView: UIScrollView?
     fileprivate var saleAvailabilityObserver: ObserverToken<SaleAvailabilityState>?
     fileprivate var progressBarBottomConstraintAtRestConstant: CGFloat = -165
@@ -135,9 +136,10 @@ class LiveAuctionLotSetViewController: UIViewController {
         lotImageCollectionView.alignTop("0", leading: "0", bottom: "\(collectionViewBottomConstraint)", trailing: "0", toView: view)
         
         // Sale status view setup.
-        view.addSubview(saleStatusView)
-        saleStatusView.alignLeading("0", trailing: "0", toView: view)/* constrainWidth(toView: view, predicate: "0") */
-        saleStatusView.alignTopEdge(withView: view, predicate: "0")
+        salesPerson.saleOnHoldSignal.subscribe { [weak self] onHold in
+            self?.saleIsOnHold = onHold
+            self?.updateTitle()
+        }
         
         // Page view controller setup.
         ar_addModernChildViewController(pageController)
@@ -208,10 +210,23 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func updateTitle() {
+        // Reset everything upfront.
+        navigationItem.title = nil
+        navigationItem.titleView = nil
+        navigationItem.leftBarButtonItem = nil
         // On iPhone, show the sale name, since we're taking up the full screen.
         // Otherwise, on iPad, show nothing (sale name is shown in the lot list).
         if traitCollection.horizontalSizeClass == .compact {
-            title = salesPerson.liveSaleName
+            if saleIsOnHold {
+                // Normally we would use `titleView` and not `leftBarButtonItem` but we want the view to be left-aligned instead of centred.
+                // 4 leading is for a strange horizontal offset from UIKit.
+                navigationItem.leftBarButtonItem = SaleStatusView.barButtonItem(adjustedLeftMarginBy: 4)
+                navigationController?.navigationBar.setNeedsLayout()
+            } else {
+                navigationItem.title = salesPerson.liveSaleName
+                // The ARSerifNavigationBar handles titles in its own custom way, this is a hack but it works for now.
+                (navigationController as? UINavigationControllerDelegate)?.navigationController?(navigationController!, willShow: self, animated: false)
+            }
         }
     }
 
