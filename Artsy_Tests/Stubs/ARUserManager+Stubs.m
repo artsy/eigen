@@ -137,6 +137,20 @@
     }
 }
 
++ (void)stubAndLoginWithTwitterToken {
+    // nop
+}
+
++ (void)stubbedLoginWithTwitterToken:(NSString *)token
+                              secret:(NSString *)secret
+              successWithCredentials:(void (^)(NSString *, NSDate *))credentials
+                             gotUser:(void (^)(User *))success
+               authenticationFailure:(void (^)(NSError *error))authFail
+                      networkFailure:(void (^)(NSError *))networkFailure
+{
+    // nop
+}
+
 #pragma mark -
 #pragma mark Utilities
 

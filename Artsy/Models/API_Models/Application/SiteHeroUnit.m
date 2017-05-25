@@ -88,7 +88,7 @@
 - (NSURL *)titleImageURL
 {
     NSString *address = self.titleImageAddress;
-    return [NSURL URLWithString:[address stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+    return [NSURL URLWithString:[address stringByRemovingPercentEncoding]];
 }
 
 - (NSURL *)preferredImageURL
@@ -97,7 +97,7 @@
     if (self.mobileBackgroundImageAddress && ![UIDevice isPad]) {
         address = self.mobileBackgroundImageAddress;
     }
-    return [NSURL URLWithString:[address stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+    return [NSURL URLWithString:[address stringByRemovingPercentEncoding]];
 }
 
 - (BOOL)isCurrentlyActive

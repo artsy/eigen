@@ -34,7 +34,6 @@
 #import "UIDevice-Hardware.h"
 
 #import <JLRoutes/JLRoutes.h>
-#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 
@@ -393,7 +392,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
     BOOL isTrustedHostForPredictableRouting = ([[ARRouter artsyHosts] containsObject:url.host] || url.host == nil);
     if (isTrustedHostForPredictableRouting) {
         // Use the internal JLRouter for the actual routing
-        id routedViewController = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : nil)];
+        id routedViewController = [self.routes routeURL:url withParameters:(fair ? @{ @"fair" : fair } : @{})];
         if (routedViewController) {
             return routedViewController;
         }

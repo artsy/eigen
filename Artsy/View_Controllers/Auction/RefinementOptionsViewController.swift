@@ -99,7 +99,7 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
         presentationController?.presentedView?.layer.cornerRadius = 0
 
         if changeStatusBar {
-            UIApplication.shared.setStatusBarHidden(true, with: animated ? .slide : .none)
+            UIApplication.shared.ar_setStatusBarHidden(true, with: animated ? .slide : .none)
         }
     }
 
@@ -113,7 +113,7 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
         super.viewWillDisappear(animated)
 
         if changeStatusBar {
-            UIApplication.shared.setStatusBarHidden(false, with: animated ? .slide : .none)
+            UIApplication.shared.ar_setStatusBarHidden(false, with: animated ? .slide : .none)
         }
     }
 

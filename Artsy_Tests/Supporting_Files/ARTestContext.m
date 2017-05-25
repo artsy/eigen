@@ -12,7 +12,7 @@ static OCMockObject *ARPartialScreenMock;
 
 @implementation ARTestContext
 
-+ (void)useDevice:(enum ARDeviceType)device:(void (^)(void))block
++ (void)useDevice:(enum ARDeviceType)device :(void (^)(void))block
 {
     [self stubDevice:device];
     block();

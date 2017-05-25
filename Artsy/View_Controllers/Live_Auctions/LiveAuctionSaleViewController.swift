@@ -49,13 +49,7 @@ class LiveAuctionSaleViewController: UISplitViewController {
             vc.beginAppearanceTransition(false, animated: animated)
         }
 
-        // Dismiss any popovers.
-        if #available(iOS 10, *) {
-            // This crashes on iOS 10, but the bug we're working around is resolved so do nothing.
-        } else {
-            guard let internalPopover = value(forKey: "_hidden" + "PopoverController") as? UIPopoverController else { return }
-            internalPopover.dismiss(animated: false)
-        }
+        self.ar_dismissPopovers()
     }
 
     override func viewDidDisappear(_ animated: Bool) {

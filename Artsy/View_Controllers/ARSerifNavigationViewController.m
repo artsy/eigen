@@ -31,7 +31,7 @@
 + (void)initialize
 {
     if (self == ARSerifNavigationViewController.class) {
-        UINavigationBar *nav = [ARSerifNavigationBar appearanceWhenContainedIn:self.class, nil];
+        UINavigationBar *nav = [ARSerifNavigationBar appearanceWhenContainedInInstancesOfClasses:@[self.class]];
         [nav setBarTintColor:UIColor.whiteColor];
         [nav setTintColor:UIColor.blackColor];
         [nav setTitleTextAttributes:@{

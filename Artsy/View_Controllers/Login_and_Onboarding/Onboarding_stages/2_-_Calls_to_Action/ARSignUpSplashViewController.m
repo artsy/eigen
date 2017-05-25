@@ -13,7 +13,6 @@
 #import "Artsy-Swift.h"
 
 @import Artsy_UILabels;
-#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -208,7 +207,10 @@
     [label alignBottomEdgeWithView:self.view predicate:self.useLargeLayout ? @"-55" : @"-10"];
 
     [self hideControls];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [self finaliseValuesForiPadWithInterfaceOrientation:self.interfaceOrientation];
+#pragma clang diagnostic pop
 }
 
 - (void)hideControls

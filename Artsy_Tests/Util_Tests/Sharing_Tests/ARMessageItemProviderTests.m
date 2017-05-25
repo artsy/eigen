@@ -41,9 +41,9 @@ describe(@"message provider", ^{
                 expect(subject).to.equal(@"So And So on Artsy");
             });
 
-            it(@"returns nil for other activities", ^{
+            it(@"returns nothing for other activities", ^{
                 NSString *subject = [provider activityViewController:activityVC subjectForActivityType:@"another activity"];
-                expect(subject).to.beNil();
+                expect(subject).to.equal(@"");
             });
         });
     });

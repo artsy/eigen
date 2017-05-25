@@ -12,10 +12,11 @@ beforeEach(^{
     [[[saleArtworkMock stub] andReturn:@"Yozo Bozo"] artistName];
     [[[saleArtworkMock stub] andReturn:@"A lovely photo"] artworkName];
     [[[saleArtworkMock stub] andReturn:[NSURL URLWithString:@"http://example.com"]] thumbnailURL];
-    [[[saleArtworkMock stub] andReturn:@"$1,000"] currentOrStartingBidWithNumberOfBids:NO];
-    [[[saleArtworkMock stub] andReturn:@"$1,000 (4 Bids)"] currentOrStartingBidWithNumberOfBids:YES];
+    id stub1 = [[[saleArtworkMock stub] andReturn:@"$1,000"] currentOrStartingBidWithNumberOfBids:NO];
+    id stub2 = [[[saleArtworkMock stub] andReturn:@"$1,000 (4 Bids)"] currentOrStartingBidWithNumberOfBids:YES];
     [(SaleArtworkViewModel *)[[saleArtworkMock stub] andReturn:@"4"] lotLabel];
     [(SaleArtworkViewModel *)[[saleArtworkMock stub] andReturn:@"4"] numberOfBids];
+    stub1 = nil, stub2 = nil;
 });
 
 it(@"looks good with compact cells", ^{

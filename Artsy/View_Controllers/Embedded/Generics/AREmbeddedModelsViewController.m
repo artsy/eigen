@@ -356,8 +356,8 @@
         return view;
     }
 
-    NSAssert(YES, @"Should not be able to get here");
-    return nil;
+    NSAssert(NO, @"Should not be able to get here");
+    return [UICollectionReusableView new];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout stickyHeaderHasChangedStickyness:(BOOL)isAttachedToLeadingEdge

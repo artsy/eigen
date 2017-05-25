@@ -14,5 +14,5 @@
 
 /// Provides a stubbed API that is easily inspected
 @interface ARDictionaryBackedKeychain : NSObject <ARKeychainable>
-@property (nonatomic, copy) NSMutableDictionary *dict;
+@property (nonatomic, strong) NSMutableDictionary *dict;
 @end

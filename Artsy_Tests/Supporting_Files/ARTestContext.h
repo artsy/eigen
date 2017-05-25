@@ -11,7 +11,7 @@ typedef NS_ENUM(NSInteger, ARDeviceType) {
 @interface ARTestContext : NSObject
 
 /// Runs the block in the specified device context
-+ (void)useDevice:(enum ARDeviceType)device:(void (^)(void))block;
++ (void)useDevice:(enum ARDeviceType)device :(void (^)(void))block;
 
 /// Stubs the device related Apple objects
 + (void)stubDevice:(enum ARDeviceType)device;

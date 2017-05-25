@@ -27,7 +27,7 @@
     } else if ([self.activityType isEqualToString:UIActivityTypeAddToReadingList]) {
         return self.url;
     } else if ([self.activityType isEqualToString:UIActivityTypeAirDrop]) {
-        return nil; // served by ARURLItemProvider
+        return [NSNull null]; // served by ARURLItemProvider
     } else {
         return self.message;
     }
@@ -38,7 +38,7 @@
     if ([activityType isEqualToString:UIActivityTypeMail]) {
         return self.message;
     } else {
-        return nil;
+        return @"";
     }
 }
 

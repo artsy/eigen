@@ -8,7 +8,7 @@
 
 @interface ARWebViewCacheHost () <WKNavigationDelegate>
 @property (nonatomic, strong, nonnull) WKProcessPool *processPool;
-@property (nonatomic, copy, nonnull) NSMutableArray<WKWebView *> *webViews;
+@property (nonatomic, strong, nonnull) NSMutableArray<WKWebView *> *webViews;
 @end
 
 

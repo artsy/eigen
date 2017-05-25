@@ -99,7 +99,7 @@ private extension SocketSetup {
     }
 
     func socketDisconnected(_ error: NSError?) {
-        print("Socket disconnected: \(error)")
+        print("Socket disconnected: \(String(describing: error))")
         socketConnectionSignal.update(false)
 
         // Give it half a second to re-connect
