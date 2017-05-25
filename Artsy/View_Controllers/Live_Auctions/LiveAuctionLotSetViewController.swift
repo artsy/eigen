@@ -30,6 +30,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     fileprivate var progressBarBottomConstraint: NSLayoutConstraint?
     fileprivate let saleNetworkModel = AuctionSaleNetworkModel()
     fileprivate let biddersNetworkModel = AuctionBiddersNetworkModel()
+    fileprivate let saleStatusView = SaleStatusView()
 
     init(salesPerson: LiveAuctionsSalesPersonType, useCompactLayout: Bool) {
         self.salesPerson = salesPerson
@@ -349,6 +350,15 @@ extension LiveAuctionLotSetViewController: AuctionTitleViewDelegate {
         let registrationPath = "/auction-registration/\(self.salesPerson.liveSaleID)"
         let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
         self.present(viewController, animated: true) {}
+    }
+    
+    func setSaleStatus(message: String?) {
+        guard let message = message else {
+            self.saleStatusView.isHidden = true
+            return
+        }
+        self.saleStatusView.isHidden = false
+        self.saleStatusView.setMessage(message)
     }
 }
 

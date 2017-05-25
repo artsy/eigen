@@ -34,7 +34,7 @@ class SaleStatusView: UIView {
     required init?(coder aDecoder: NSCoder) {
         return nil
     }
-    
+
     class func barButtonItem(adjustedLeftMarginBy leftMargin: CGFloat = 0) -> UIBarButtonItem {
         let saleStatusView = SaleStatusView()
 
