@@ -1,6 +1,4 @@
 import * as React from "react"
-import { ScrollView } from "react-native"
-import * as Relay from "react-relay"
 import * as renderer from "react-test-renderer"
 
 let refineCallbackPromise = () => Promise.resolve({})
