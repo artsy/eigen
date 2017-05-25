@@ -151,10 +151,12 @@ extension PrivateFunctions {
             navigationItem.title = "Lots"
         } else {
             if saleIsOnHold {
-                // TODO: explain why leftBarButtonItem and not titleView
+                // Normally we would use `titleView` and not `leftBarButtonItem` but we want the view to be left-aligned instead of centred.
                 navigationItem.leftBarButtonItem = SaleStatusView.barButtonItem()
             } else {
                 navigationItem.title = salesPerson.liveSaleName
+                // The ARSerifNavigationBar handles titles in its own custom way, this is a hack but it works for now.
+                (navigationController as? UINavigationControllerDelegate)!.navigationController!(navigationController!, willShow: self, animated: false)
             }
         }
     }

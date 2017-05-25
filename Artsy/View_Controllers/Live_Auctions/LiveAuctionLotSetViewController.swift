@@ -217,9 +217,14 @@ class LiveAuctionLotSetViewController: UIViewController {
         // Otherwise, on iPad, show nothing (sale name is shown in the lot list).
         if traitCollection.horizontalSizeClass == .compact {
             if saleIsOnHold {
-                navigationItem.leftBarButtonItem = SaleStatusView.barButtonItem()
+                // Normally we would use `titleView` and not `leftBarButtonItem` but we want the view to be left-aligned instead of centred.
+                // 4 leading is for a strange horizontal offset from UIKit.
+                navigationItem.leftBarButtonItem = SaleStatusView.barButtonItem(adjustedLeftMarginBy: 4)
+                navigationController?.navigationBar.setNeedsLayout()
             } else {
                 navigationItem.title = salesPerson.liveSaleName
+                // The ARSerifNavigationBar handles titles in its own custom way, this is a hack but it works for now.
+                (navigationController as? UINavigationControllerDelegate)?.navigationController?(navigationController!, willShow: self, animated: false)
             }
         }
     }
