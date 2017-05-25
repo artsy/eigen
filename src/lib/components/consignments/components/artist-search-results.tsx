@@ -76,7 +76,7 @@ const noResults = (props) => {
    </UnknownLabel>
 }
 
-export default (props: ArtistQueryData) =>
+const render = (props: ArtistQueryData) =>
   <View>
 
     <View style={{flexDirection: "row"}}>
@@ -104,3 +104,8 @@ export default (props: ArtistQueryData) =>
       <Button text="DONE" />
     </View>
   </View>
+
+// Export a pure component version
+export default class SearchResults extends React.PureComponent<ArtistQueryData, null> {
+  render() { return render(this.props) }
+}
