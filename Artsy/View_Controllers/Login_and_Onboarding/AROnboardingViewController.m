@@ -551,7 +551,7 @@
 - (void)fbSuccessWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
 {
     __weak typeof(self) wself = self;
-    if (email || ![email isEqualToString:@""]) {
+    if (email && ![email isEqualToString:@""]) {
         [[ARUserManager sharedManager] createUserViaFacebookWithToken:token
                                                                 email:email
                                                                  name:name
