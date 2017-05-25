@@ -4,7 +4,7 @@ import * as React from "react"
 import Headline from "../headline"
 import Serif from "../serif"
 
-storiesOf("🎨 Typography")
+storiesOf("Artsy Typography")
   .add("App Headline", () => {
     return <Headline>This is a Blank headline</Headline>
   })

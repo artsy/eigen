@@ -82,12 +82,14 @@ const render = (props: ArtistQueryData) =>
     <View style={{flexDirection: "row"}}>
       <Input
         autoFocus={true}
+        autoCorrect={false}
+        clearButtonMode="while-editing"
         onChangeText={props.textDidChange}
         defaultValue="Artist/Designer Name"
         keyboardAppearance="dark"
         placeholderTextColor={ colors["gray-medium"] }
-        autoCorrect={false}
         value={props.query}
+        returnKeyType="search"
         selectionColor={ colors["gray-medium"] }
       />
       <ActivityIndicator animating={props.searching} />

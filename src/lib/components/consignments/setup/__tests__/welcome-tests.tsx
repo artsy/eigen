@@ -3,7 +3,7 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 import Welcome from "../welcome"
 
-it("Sets up the right view heirarchy", () => {
+it("Sets up the right view hierarchy", () => {
       const nav = {} as any
       const route = {} as any
 
