@@ -18,17 +18,8 @@ module.exports = {
       },
     ],
   },
-  entry: {
-    manager: [require.resolve('../../manager')],
-  },
-  output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'static/[name].bundle.js',
-    publicPath: '/',
-  },
   plugins: [
     new OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    // new CaseSensitivePathsPlugin(),
   ],
 }
