@@ -349,7 +349,7 @@ extension AuctionInformationViewController {
 
         func expand() {
             contentHeightConstraint.isActive = false
-            tapDirection.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+            tapDirection.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
         }
 
         func collapse() {
