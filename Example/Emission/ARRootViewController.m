@@ -31,6 +31,9 @@
   [appData addCellData:self.generateStagingSwitch];
   [tableViewData addSectionData:appData];
 
+  ARSectionData *userSection = [self userSection];
+  [tableViewData addSectionData:userSection];
+
   ARSectionData *viewControllerSection = [self jumpToViewControllersSection];
   [tableViewData addSectionData:viewControllerSection];
 
@@ -38,9 +41,6 @@
   ARSectionData *developerSection = [self developersSection];
   [tableViewData addSectionData:developerSection];
 #endif
-
-  ARSectionData *userSection = [self userSection];
-  [tableViewData addSectionData:userSection];
 
   self.tableViewData = tableViewData;
 }
@@ -69,6 +69,7 @@
   [self setupSection:sectionData withTitle:@"Developer"];
 
   [sectionData addCellData:self.jumpToStorybooks];
+
   return sectionData;
 }
 
@@ -77,8 +78,17 @@
 
 - (ARCellData *)jumpToStorybooks
 {
-  return [self tappableCellDataWithTitle:@"Open Storybooks" selection: ^{
+  return [self tappableCellDataWithTitle:@"Open Storybook" selection: ^{
     id viewController = [ARStorybookComponentViewController new];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+- (ARCellData *)jumpToEndUserStorybooks
+{
+  return [self tappableCellDataWithTitle:@"Open Storybook Browser" selection: ^{
+    id viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"StorybookBrowser" initialProperties: @{}];
+
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
@@ -185,6 +195,7 @@
   ARSectionData *sectionData = [[ARSectionData alloc] init];
   [self setupSection:sectionData withTitle:@"User"];
 
+  [sectionData addCellData:self.jumpToEndUserStorybooks];
   [sectionData addCellData:self.logOutButton];
   return sectionData;
 }

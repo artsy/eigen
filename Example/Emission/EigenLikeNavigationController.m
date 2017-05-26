@@ -34,7 +34,14 @@
 
 - (void)pop
 {
-  [self popViewControllerAnimated:YES];
+  // Support popping inside NavigatorIOS before falling back to our navigation VC
+  UINavigationController *targetNav = self;
+  for (UIViewController *controller in self.topViewController.childViewControllers) {
+    if ([controller isKindOfClass:UINavigationController.class]) {
+      if (controller.childViewControllers.count > 1) { targetNav = (id)controller; }
+    }
+  }
+  [targetNav popViewControllerAnimated:YES];
 }
 
 - (UIButton *)createBackButton
