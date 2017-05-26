@@ -1,12 +1,8 @@
-
 import { danger, fail, warn } from "danger"
-import { compact, includes, remove, uniq } from "lodash"
+import { compact, includes, uniq } from "lodash"
 
-// For now you can ignore these 3 errors, I'm not sure why
-// they are being raised. They definitely exist in the node runtime.
-const fs = require("fs") // tslint:disable-line
-const os = require("os") // tslint:disable-line
-const path = require("path") // tslint:disable-line
+import * as fs from "fs"
+import * as path from "path"
 
 import * as recurseSync from "recursive-readdir-sync"
 const allFiles = recurseSync("./src")
@@ -14,26 +10,26 @@ const allFiles = recurseSync("./src")
 // Setup
 const pr = danger.github.pr
 const modified = danger.git.modified_files
-const newFiles = danger.git.created_files
 const bodyAndTitle = (pr.body + pr.title).toLowerCase()
 
 // Custom modifiers for people submitting PRs to be able to say "skip this"
 const trivialPR = bodyAndTitle.includes("trivial")
 const acceptedNoTests = bodyAndTitle.includes("skip new tests")
 
+const typescriptOnly = (file: string) => includes(file, ".ts")
 const filesOnly = (file: string) => fs.existsSync(file) && fs.lstatSync(file).isFile()
 
 // Custom subsets of known files
-const modifiedAppFiles = modified.filter(p => includes(p, "lib/")).filter(p => filesOnly(p))
-const modifiedTestFiles = modified.filter(p => includes(p, "__tests__")).filter(p => filesOnly(p))
+const modifiedAppFiles = modified.filter(p => includes(p, "lib/")).filter(p => filesOnly(p) && typescriptOnly(p))
 
 // Modified or Created can be treated the same a lot of the time
 const touchedFiles = modified.concat(danger.git.created_files).filter(p => filesOnly(p))
-const touchedAppOnlyFiles = touchedFiles.filter(p => includes(p, "src/lib/") && !includes(p, "__tests__"))
-const touchedComponents = touchedFiles.filter(p => includes(p, "src/lib/components") && !includes(p, "__tests__"))
 
-const touchedTestFiles = touchedFiles.filter(p => includes(p, "__tests__"))
-const touchedStoryFiles = touchedFiles.filter(p => includes(p, "__stories__"))
+const touchedAppOnlyFiles = touchedFiles.filter(p =>
+  includes(p, "src/lib/") && !includes(p, "__tests__") && typescriptOnly(p))
+
+const touchedComponents = touchedFiles.filter(p =>
+  includes(p, "src/lib/components") && !includes(p, "__tests__"))
 
 // Rules
 
@@ -78,6 +74,7 @@ const testFilesThatDontExist = correspondingTestsForAppFiles
                                  .filter(f => !f.includes("__stories__")) // skip stories
                                  .filter(f => !f.includes("app_registry")) // skip registry, kinda untestable
                                  .filter(f => !f.includes("routes")) // skip routes, kinda untestable
+                                 .filter(f => !f.includes("native_modules")) // skip native_modules
                                  .filter(f => !fs.existsSync(f))
 
 if (testFilesThatDontExist.length > 0) {

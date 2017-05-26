@@ -7,6 +7,8 @@
         "*.js": "javascriptreact",
         "*.snap": "javascriptreact"
     },
+    "eslint.enable": false,
+    "flow.enabled": false,
     "files.trimTrailingWhitespace": true,
     "editor.renderWhitespace": "boundary",
     "editor.rulers": [120],
@@ -30,5 +32,24 @@
         ".vscode/.react/*": true
     },
     "clang.compilationDatabase": "${workspaceRoot}/Example/compile_commands.json",
-    "typescript.tsdk": "./node_modules/typescript/lib"
-  }
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "spellchecker.ignoreWordsList": [
+        "orta",
+        "sarah",
+        "luc",
+        "mzikherman",
+        "CHANGELOG",
+        "Eigen",
+        "scrollview",
+        "blankspace",
+        "ESLint",
+        "GeneVC",
+        "keychain",
+        "linting",
+        "inline",
+        "iPad",
+        "iPhone",
+        "ListView",
+        "ARTemporaryAPIModule"
+    ]
+}

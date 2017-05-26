@@ -1,6 +1,5 @@
 import * as React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import { renderWithLayout } from "../../../tests/render_with_layout"
 import { Notification } from "../notification"
