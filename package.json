@@ -12,7 +12,7 @@
     "ci": "npm run type-check && npm run lint && npm run test -- --runInBand",
     "danger": "danger",
     "start": "npm run clean-example && concurrently --kill-others 'npm run start-packager'",
-    "start-packager": "node node_modules/react-native/local-cli/cli.js start --config rn-cli.config.js",
+    "start-packager": "node node_modules/react-native/local-cli/cli.js start --config \"$(pwd)\"/rn-cli.config.js",
     "storybook": "storybook start -p 9001 -c .storybook --skip-packager",
     "rndebugger": "REACT_DEBUGGER=\"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\" npm start",
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
