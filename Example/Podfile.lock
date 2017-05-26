@@ -114,14 +114,18 @@ PODS:
     - FLKAutoLayout
   - React (0.45.0-rc.1):
     - React/Core (= 0.45.0-rc.1)
+  - React/BatchedBridge (0.45.0-rc.1):
+    - React/Core
+    - React/cxxreact_legacy
   - React/Core (0.45.0-rc.1):
     - Yoga (= 0.45.0-rc.1.React)
+  - React/cxxreact_legacy (0.45.0-rc.1):
+    - React/jschelpers_legacy
+  - React/jschelpers_legacy (0.45.0-rc.1)
   - React/RCTImage (0.45.0-rc.1):
     - React/Core
     - React/RCTNetwork
   - React/RCTNetwork (0.45.0-rc.1):
-    - React/Core
-  - React/RCTTest (0.45.0-rc.1):
     - React/Core
   - React/RCTText (0.45.0-rc.1):
     - React/Core
@@ -148,6 +152,7 @@ DEPENDENCIES:
   - Artsy+UIFonts
   - Emission (from `../`)
   - FLKAutoLayout
+  - React/BatchedBridge (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
   - SAMKeychain
   - SentryReactNative (from `../node_modules/react-native-sentry`)
@@ -178,7 +183,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/artsy/Artsy-Authentication.git
 
 SPEC CHECKSUMS:
-  AppHub: '03788112dd48c42b60d51321c0ffff4ef15a4432'
+  AppHub: 03788112dd48c42b60d51321c0ffff4ef15a4432
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   Artsy+Authentication: 3bf11ceca61c52e9e31490535bf5798f625406fa
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
@@ -200,6 +205,6 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: 63e64d6f9a277e67f3f2adf9643d0ecddd52f5ca
 
-PODFILE CHECKSUM: d6a15664ed36c307019c8bfb134a27637ae5ee02
+PODFILE CHECKSUM: 99e590044f9766597836987e46a41917af3ff165
 
 COCOAPODS: 1.2.1
