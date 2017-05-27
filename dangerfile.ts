@@ -120,3 +120,43 @@ ${components}
 
 `)
 }
+
+// We'd like to improve visibility of whether someone has tested on a device,
+// or run through the code at all. So, to look at improving this, we're going to try appending
+// a checklist, and provide useful info on how to run the code yourself inside the PR.
+
+const splitter = `<hr data-danger="yep"/>`
+const userBody = pr.body.split(splitter)[0]
+const localBranch = `${pr.user.login}-${pr.number}-checkout`
+const bodyFooter = `
+### Tested on Device?
+
+- [ ] @${pr.user.login}
+${pr.assignees.map(assignee => `- [ ] @${assignee.login}`).join("\n")}
+
+<details>
+  <summary>How to get set up with this PR?</summary>
+  <p>&nbsp;</p>
+   <p><b>To run on your computer:</b></p>
+<pre><code>git fetch origin pull/${pr.number}/head:${localBranch}
+git checkout ${localBranch}
+yarn install
+cd example; pod install; cd ..
+open -a Simulator
+yarn start</code></pre>
+   </p>
+   <p>Then run <code>xcrun simctl launch booted net.artsy.Emission</code> once a the simulator has finished booting</p>
+   <p><b>To run inside Eigen (prod or beta) or Emission (beta):</b> Shake the phone to get the Admin menu.</p>
+   <p>If you see <i>"Use Staging React Env" </i> - click that and restart, then follow the next step.</p>
+   <p>Click on <i>"Choose an RN build" </i> - then pick the one that says: "X,Y,Z"</p>
+   <p>Note: this is a TODO for PRs, currently  you can only do it on master commits.</p>
+</details>
+`
+const newBody = userBody + splitter + "\n" + bodyFooter
+
+// The individual state of a ticked/unticket item in a markdown list should not
+// require Danger to submit a new body (and thus overwrite those changes.)
+const neuterMarkdownTicks = /- \[*.\]/g
+if (pr.body.replace(neuterMarkdownTicks, "-") !== newBody.replace(neuterMarkdownTicks, "-")) {
+  danger.github.api.pullRequests.update({...danger.github.thisPR, body: newBody })
+}
