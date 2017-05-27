@@ -94,20 +94,9 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 
 ### Deployment
 
-1. Update the [CHANGELOG](CHANGELOG.md) file to reflect the version that will be released.
-2. Bump the version in the [npm package](package.json) file.
-3. Ensure the correct dependencies are installed: `$ yarn install`
-4. Create the compiled JS bundle: `$ yarn bundle`
-5. Update the example installation: `$ cd Example && pod install`
-6. Commit all changes and tag release.
-7. Generate Emission podspec and push it to [the Artsy spec-repo](https://github.com/artsy/Specs):
-
-   ```
-   $ mkdir -p ~/.cocoapods/repos/artsy/Emission/[VERSION]
-   $ pod ipc spec Emission.podspec > ~/.cocoapods/repos/artsy/Emission/[VERSION]/Emission.podspec.json
-   ```
-
-8. Also ensure that the React version required by Emission has been published to our spec-repo.
+1. Ensure that the React version required by Emission has been published to [our spec-repo][spec-repo].
+2. Update the [CHANGELOG](CHANGELOG.md) file to reflect the version that will be released and commit it.
+3. Release the version with either `npm version patch`, `npm version minor`, or `npm version major`.
 
 ### Resources
 
@@ -122,26 +111,27 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
   - https://github.com/facebook/relay/tree/master/examples
   - https://github.com/fbsamples/f8app/
 
+* TypeScript:
+  - https://www.typescriptlang.org
+  - https://github.com/basarat/typescript-book
+
 * Testing:
   - https://facebook.github.io/jest/
   - https://facebook.github.io/jest/docs/api.html#content
   - https://facebook.github.io/jest/blog/2016/07/27/jest-14.html
 
-* Flow:
-  - http://flowtype.org/docs/type-annotations.html
-  - http://flowtype.org/docs/react.html
-  - http://flowtype.org/docs/quick-reference.html (and the rest of the language reference)
-
 * Flexbox:
   - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
   - http://blog.krawaller.se/posts/a-react-app-demonstrating-css3-flexbox/
+  - https://egghead.io/courses/flexbox-fundamentals
 
 * React Native Storybooks:
-  - https://github.com/kadirahq/react-native-storybook
-  - https://github.com/kadirahq/react-storybook
+  - https://github.com/storybooks/storybook/
+  - https://github.com/storybooks/storybook/tree/master/app/react-native
 
 * React Native Debugger:
   - https://github.com/jhen0409/react-native-debugger
+
 
 [React Native]: http://facebook.github.io/react-native/
 [Eigen]: https://github.com/artsy/eigen
@@ -150,3 +140,4 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 [node]: http://nodejs.org
 [glossary-yarn]: http://artsy.github.io/blog/2016/11/14/JS-Glossary/#yarn
 [blog here]: http://artsy.github.io/blog/2016/08/24/On-Emission/
+[spec-repo]: https://github.com/artsy/Specs/tree/master/React

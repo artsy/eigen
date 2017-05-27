@@ -20,7 +20,7 @@ describe("with notifications", () => {
 
   it("updates the notification count", () => {
     const viewer = notificationsResponse().viewer
-    const worksForYou = renderer.create(<WorksForYou viewer={viewer} relay={null}/>).toJSON()
+    renderer.create(<WorksForYou viewer={viewer} relay={null}/>).toJSON()
     expect(NativeModules.ARTemporaryAPIModule.markNotificationsRead).toBeCalled()
   })
 

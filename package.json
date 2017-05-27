@@ -1,6 +1,6 @@
 {
   "name": "emission",
-  "version": "1.3.3",
+  "version": "1.3.6",
   "description": "Artsy React(Native) components.",
   "main": "index.ios.js",
   "scripts": {
@@ -22,7 +22,9 @@
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
     "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && npm run dump-schema -- ../../data && rm -rf node_modules",
     "precommit": "lint-staged",
-    "prepush": "yarn run type-check"
+    "prepush": "yarn run type-check",
+    "version": "yarn install && yarn bundle && pushd Example && pod install && popd && git add Pod/Assets Example/Podfile.lock",
+    "postversion": "git push --follow-tags && env EMISSION_ROOT=\"$(pwd)\" pod repo push artsy --allow-warnings --use-json --skip-import-validation"
   },
   "jest": {
     "preset": "react-native",
@@ -79,31 +81,36 @@
     "react-native-sentry": "^0.8.3",
     "react-relay": "https://github.com/alloy/relay/releases/download/v0.9.3/react-relay-0.9.3.tgz",
     "remove-markdown": "0.1.0",
+    "styled-components": "rc",
     "typescript": "^2.3.2"
   },
   "devDependencies": {
-    "@kadira/react-native-storybook": "^2.3.0",
+    "@storybook/react-native": "^3.0.0-alpha.0",
+    "@types/enzyme": "^2.8.0",
     "@types/jest": "^19.2.2",
     "@types/lodash": "^4.14.53",
     "@types/react-native": "^0.43.9",
     "@types/react-relay": "^0.9.10",
+    "@types/react-test-renderer": "^15.5.0",
     "apphub": "^0.5.1",
     "babel-jest": "^18.0.0",
     "babel-polyfill": "^6.13.0",
     "babel-preset-react-native": "^1.9.1",
     "babel-relay-plugin": "https://github.com/alloy/relay/releases/download/v0.9.3/babel-relay-plugin-0.9.3.tgz",
     "concurrently": "^2.2.0",
-    "danger": "^0.18.0",
+    "danger": "^0.19.0",
+    "enzyme": "^2.8.2",
     "husky": "^0.13.3",
-    "jest": "^19.0.2",
+    "jest": "^20.0.3",
     "jest-fetch-mock": "^1.0.7",
     "jest-react-native": "^17.0.3",
     "lint-staged": "^3.4.1",
+    "react-dom": "^15.5.4",
     "react-storybooks-relay-container": "^1.0.0",
-    "react-test-renderer": "^15.3.0",
+    "react-test-renderer": "^15.5.4",
     "recursive-readdir-sync": "^1.0.6",
     "relay2ts": "^0.2.0",
-    "ts-jest": "^19.0.10",
+    "ts-jest": "^20.0.3",
     "tslint": "^4.5.0"
   },
   "peerDependencies": {

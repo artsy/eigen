@@ -8,8 +8,6 @@ import SerifText from "../../text/serif"
 
 import colors from "../../../../data/colors"
 
-const PageSize = 10
-
 interface Props extends ViewProperties {
   artist: {
     counts: {

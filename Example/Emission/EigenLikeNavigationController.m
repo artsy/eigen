@@ -20,6 +20,9 @@
   [backButton alignLeadingEdgeWithView:self.view predicate:@"12"];
   [backButton constrainWidth:@"40" height:@"40"];
   _backButton = backButton;
+
+  UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:@" " modifierFlags:0 action:@selector(toggleNav)];
+  [self addKeyCommand: command];
 }
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -58,6 +61,14 @@
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations;
 {
     return self.topViewController.supportedInterfaceOrientations;
+}
+
+- (void)toggleNav
+{
+  [UIView animateWithDuration:0.1 animations:^{
+    CGFloat alpha = [self.backButton alpha];
+    [self.backButton setAlpha:!alpha];
+  }];
 }
 
 @end

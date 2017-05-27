@@ -9,23 +9,20 @@ import {
   NativeModules,
   ScrollView,
   StyleSheet,
-  Text,
   TextStyle,
   View,
   ViewStyle,
 } from "react-native"
-const { ARTemporaryAPIModule, ARWorksForYouModule } = NativeModules
 
 import Events from "../native_modules/events"
 
-import Headline from "../components/text/headline"
+import ArtworksGrid from "../components/artwork_grids/generic_grid"
 import SerifText from "../components/text/serif"
 import Notification from "../components/works_for_you/notification"
 
 import colors from "../../data/colors"
 
 const PageSize = 10
-const PageEndThreshold = 1000
 
 interface Props extends RelayProps {
   relay: any;
@@ -119,7 +116,9 @@ export class WorksForYou extends React.Component<Props, State> {
         let notifications = this.props.viewer.me.notifications.edges.map((edge) => edge.node)
 
         // Make sure we maintain the special notification if it exists
-        if (this.props.viewer.selectedArtist) { notifications.unshift(this.formattedSpecialNotification()) }
+        if (this.props.viewer.selectedArtist) {
+          notifications.unshift(this.formattedSpecialNotification())
+        }
 
         this.setState({
           fetchingNextPage: false,
@@ -262,7 +261,6 @@ export default Relay.createContainer(WorksForYou, {
             }
           }
         }
-
         selectedArtist: artist(id: $selectedArtist)
                           @include(if: $showSpecialNotification) {
           href
@@ -272,22 +270,10 @@ export default Relay.createContainer(WorksForYou, {
               url
             }
           }
-          artworks(sort:published_at_desc, size: 6) @relay(plural: true) {
-            __id
-            href
-            title
-            date
-            sale_message
-            is_in_auction
-            image {
-              aspect_ratio
-              url(version: "large")
-            }
-            partner {
-              name
-            }
-          },
-        },
+          artworks(sort:published_at_desc, size: 6) {
+            ${(ArtworksGrid.getFragment("artworks"))}
+          }
+        }
       }`,
   },
 })
@@ -304,7 +290,7 @@ interface RelayProps {
         }>,
       },
     },
-    selectedArtist ?: {
+    selectedArtist?: {
       name: string,
       image: {
         resized: {

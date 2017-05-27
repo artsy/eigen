@@ -39,12 +39,15 @@ const additionalContentRails = [
   "followed_artist",
 ]
 
+export const minRailHeight = 400
+
 interface Props extends ViewProperties, RelayProps {}
 
 interface State {
   expanded: boolean
   gridHeight: number
   loadFailed: boolean
+  didPerformFetch: boolean
 }
 
 export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
@@ -55,15 +58,18 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
       expanded: false,
       gridHeight: 0,
       loadFailed: false,
+      didPerformFetch: false,
     }
   }
 
   componentDidMount() {
     if (this.props.relay) {
       this.props.relay.setVariables({ fetchContent: true }, readyState => {
-        if (readyState.error) {
-          this.setState({ loadFailed: true })
-        }
+        let error = !!readyState.error
+        this.setState({
+          didPerformFetch: readyState.done || readyState.ready || error,
+          loadFailed: error,
+        })
       })
     }
   }
@@ -106,7 +112,9 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
         break
     }
 
-    if (url) { SwitchBoard.presentNavigationViewController(this, url) }
+    if (url) {
+      SwitchBoard.presentNavigationViewController(this, url)
+    }
   }
 
   geneQueryLink(rail) {
@@ -174,9 +182,9 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
       )
     }
 
-      // otherwise, use a spacer view
+    // otherwise, use a spacer view
     return <View style={{ height: 30 }} />
-    }
+  }
 
   renderExpansionButton() {
     if (this.expandable() && !this.state.expanded) {
@@ -203,21 +211,24 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
     }
   }
 
+  railStyle() {
+    const sideMargin = isPad ? 40 : 20
+    const style: any = { marginLeft: sideMargin, marginRight: sideMargin }
+
+    if (!this.state.didPerformFetch) {
+      style.minHeight = minRailHeight
+    }
+
+    return style
+  }
+
   render() {
     if (this.state.loadFailed) {
       return null
     }
-    const hasStartedFetching = this.props.relay && this.props.relay.variables.fetchContent
 
-    const sideMargin = isPad ? 40 : 20
-    const style: any = { marginLeft: sideMargin, marginRight: sideMargin }
-    if (!hasStartedFetching) {
-      // if there's no content, set minHeight to prevent spinners from all the rails showing
-      style.minHeight = 400
-    }
-
-    const hasArtworks = hasStartedFetching && this.props.rail.results && this.props.rail.results.length
-    if (!hasArtworks) {
+    const hasArtworks = this.props.rail.results && this.props.rail.results.length
+    if (this.state.didPerformFetch && !hasArtworks) {
       // if the data has been fetched but there are no results, hide the whole thing
       return null
     }
@@ -225,7 +236,7 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
     return (
       <View accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
         <Header rail={this.props.rail} handleViewAll={this.handleViewAll}/>
-        <View style={style}>
+        <View style={this.railStyle()}>
           { this.renderModuleResults() }
         </View>
       </View>
