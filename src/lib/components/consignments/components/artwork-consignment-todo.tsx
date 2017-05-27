@@ -93,7 +93,7 @@ const ImagePreview = (images) =>
     </ImageDarkener>
   </ImageStyle>
 
-export default (props: ConsignmentSetup) =>
+const render = (props: ConsignmentSetup) =>
   <Background>
     <Separator />
     <Button>
@@ -132,3 +132,8 @@ export default (props: ConsignmentSetup) =>
 
     <Separator />
   </Background>
+
+// Export a pure component version
+export default class ConsignmentTODO extends React.PureComponent<ConsignmentSetup, null> {
+  render() { return render(this.props) }
+}
