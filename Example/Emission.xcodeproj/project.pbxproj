@@ -698,6 +698,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 822BF881E9F1716840710C01 /* Pods-Emission.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
 				CODE_SIGN_ENTITLEMENTS = Emission/Emission.entitlements;
@@ -724,6 +725,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7F3A1FEFE0AEAB158547A0BB /* Pods-Emission.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
 				CODE_SIGN_ENTITLEMENTS = Emission/Emission.entitlements;
@@ -842,6 +844,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A9EDBCE5F6E1D1A6CEA0264A /* Pods-Emission.deploy.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
 				CODE_SIGN_ENTITLEMENTS = Emission/Emission.entitlements;
