@@ -32,7 +32,7 @@
     if (diff == 1) return @"yesterday";
     if (diff == 7) return @"last week";
 
-    return[NSString stringWithFormat:@"%@ days ago", @(diff)];
+    return [NSString stringWithFormat:@"%@ days ago", @(diff)];
     
   } else {
     NSInteger diff = round(time / 60 / 60 / 24 / 7);
