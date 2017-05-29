@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 
-import TODO from "../components/artwork-consignment-todo"
+import TODO from "../components/artwork_consignment_todo"
 import { ConsignmentMetadata, ConsignmentSetup } from "../index"
 
 export const name = "Consignments - TODO"
