@@ -21,7 +21,7 @@
 #import <TargetConditionals.h>
 #import "AuthenticationManager.h"
 
-#ifdef DEPLOY
+#if defined(DEPLOY)
 #import <AppHub/AppHub.h>
 #endif
 
@@ -64,7 +64,7 @@ randomBOOL(void)
   self.window.rootViewController = self.navigationController;
   [self.window makeKeyAndVisible];
 
-#ifdef DEPLOY
+#if defined(DEPLOY)
   // [AppHub setLogLevel: AHLogLevelDebug];
   [AppHub setApplicationID: @"Z6IwqK52JBXrKLI4kpvJ"];
   [[AppHub buildManager] setDebugBuildsEnabled:YES];
