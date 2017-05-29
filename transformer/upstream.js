@@ -23,10 +23,7 @@ const makeHMRConfig = require('babel-preset-react-native/configs/hmr');
 const path = require('path');
 const resolvePlugins = require('babel-preset-react-native/lib/resolvePlugins');
 
-const {compactMapping} = require('./src/Bundler/source-map');
-
-import type {Plugins as BabelPlugins} from 'babel-core';
-import type {Transformer, TransformOptions} from './src/JSTransformer/worker/worker';
+const { compactMapping } = require("react-native/packager/src/Bundler/source-map")
 
 const cacheKeyParts = [
   fs.readFileSync(__filename),
@@ -41,7 +38,7 @@ const cacheKeyParts = [
  * default RN babelrc file and uses that.
  */
 const getBabelRC = (function() {
-  let babelRC: ?{extends?: string, plugins: BabelPlugins} = null;
+  let babelRC = null;
 
   return function _getBabelRC(projectRoot) {
     if (babelRC !== null) {
@@ -112,11 +109,7 @@ function buildBabelConfig(filename, options) {
   return Object.assign({}, babelRC, config);
 }
 
-function transform(
-  src: string,
-  filename: string,
-  options,
-) {
+function transform(src, filename, options) {
   options = options || {};
 
   const OLD_BABEL_ENV = process.env.BABEL_ENV;
@@ -154,7 +147,7 @@ function transform(
   }
 }
 
-function getCacheKey(options: TransformOptions) {
+function getCacheKey(options) {
   var key = crypto.createHash('md5');
   cacheKeyParts.forEach(part => key.update(part));
   return key.digest('hex');
@@ -163,4 +156,5 @@ function getCacheKey(options: TransformOptions) {
 module.exports = ({
   transform,
   getCacheKey,
-}: Transformer<>);
+  buildBabelConfig
+});
