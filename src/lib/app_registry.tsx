@@ -100,9 +100,18 @@ class MyAccount extends RootContainer {
   }
 }
 
+class Messages extends RootContainer {
+  constructor(props) {
+    super(props)
+    this.component = Containers.Messages
+    this.route = new Routes.MyAccount()
+  }
+}
+
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Home", () => Home)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
 AppRegistry.registerComponent("MyAccount", () => MyAccount)
+AppRegistry.registerComponent("Messages", () => Messages)
