@@ -123,6 +123,7 @@ type Artist implements Node {
 
   # Only specific Artists should show a link to auction results.
   is_display_auction_link: Boolean
+  is_followed: Boolean
   is_public: Boolean
   is_shareable: Boolean
   location: String
@@ -192,6 +193,15 @@ type ArtistCarousel {
   images: [Image]
 }
 
+# A connection to a list of items.
+type ArtistConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ArtistEdge]
+}
+
 type ArtistCounts {
   artworks(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
@@ -223,6 +233,15 @@ type ArtistCounts {
     format: String
     label: String
   ): FormattedNumber
+}
+
+# An edge in a connection.
+type ArtistEdge {
+  # The item at the end of the edge
+  node: Artist
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 type ArtistItem implements Node {
@@ -295,6 +314,7 @@ type ArtistItem implements Node {
 
   # Only specific Artists should show a link to auction results.
   is_display_auction_link: Boolean
+  is_followed: Boolean
   is_public: Boolean
   is_shareable: Boolean
   location: String
@@ -422,6 +442,7 @@ type ArtistSearchEntity implements Node {
 
   # Only specific Artists should show a link to auction results.
   is_display_auction_link: Boolean
+  is_followed: Boolean
   is_public: Boolean
   is_shareable: Boolean
   location: String
@@ -694,6 +715,7 @@ type ArtworkContextAuction {
   is_open: Boolean
   is_live_open: Boolean
   is_preview: Boolean
+  is_registration_closed: Boolean
   is_with_buyers_premium: Boolean
   live_start_at(
     convert_to_utc: Boolean
@@ -912,6 +934,7 @@ type ArtworkContextSale {
   is_open: Boolean
   is_live_open: Boolean
   is_preview: Boolean
+  is_registration_closed: Boolean
   is_with_buyers_premium: Boolean
   live_start_at(
     convert_to_utc: Boolean
@@ -993,6 +1016,121 @@ type ArtworkInquiryEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+type ArtworkItem implements Node {
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+
+  # A type-specific Gravity Mongo Document ID.
+  _id: String!
+  additional_information(format: Format): String
+  artist(
+    # Use whatever is in the original response instead of making a request
+    shallow: Boolean
+  ): Artist
+  artists(
+    # Use whatever is in the original response instead of making a request
+    shallow: Boolean
+  ): [Artist]
+  artist_names: String
+  articles(size: Int): [Article]
+  availability: String
+  can_share_image: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  category: String
+  collecting_institution: String
+  contact_label: String
+
+  # Pre-filled inquiry text
+  contact_message: String
+
+  # Returns the associated Fair/Sale/PartnerShow
+  context: ArtworkContext
+  cultural_maker: String
+  date: String
+  description(format: Format): String
+  dimensions: dimensions
+
+  # Returns an HTML string representing the embedded content (video)
+  embed(width: Int = 853, height: Int = 450, autoplay: Boolean = false): String
+  edition_of: String
+  edition_sets: [EditionSet]
+  exhibition_history(format: Format): String
+  fair: Fair
+
+  # Returns the highlighted shows and articles
+  highlights: [Highlighted]
+  href: String
+  image: Image
+  image_rights: String
+  image_title: String
+  images(size: Int): [Image]
+
+  # Whether work can be purchased through e-commerce
+  is_acquireable: Boolean
+
+  # Is this artwork part of an auction that is currently running?
+  is_biddable: Boolean
+
+  # When in an auction, can the work be bought immediately
+  is_buy_nowable: Boolean
+  is_comparable_with_auction_results: Boolean
+
+  # Are we able to display a contact form on artwork pages?
+  is_contactable: Boolean @deprecated(reason: "Prefer to use is_inquireable")
+  is_downloadable: Boolean
+  is_embeddable_video: Boolean
+  is_ecommerce: Boolean @deprecated(reason: "Should not be used to determine anything UI-level")
+  is_for_sale: Boolean
+  is_hangable: Boolean
+
+  # Do we want to encourage inquiries on this work?
+  is_inquireable: Boolean
+
+  # Is this artwork part of an auction?
+  is_in_auction: Boolean
+
+  # Is this artwork part of a current show
+  is_in_show: Boolean
+  is_not_for_sale: String
+  is_on_hold: String
+  is_price_hidden: Boolean
+  is_price_range: Boolean
+
+  # True for inquireable artworks that have an exact price.
+  is_purchasable: Boolean
+  is_saved: Boolean
+  is_shareable: Boolean
+  is_sold: Boolean
+  is_unique: Boolean
+  layer(id: String): ArtworkLayer
+  layers: [ArtworkLayer]
+  literature(format: Format): String
+  manufacturer(format: Format): String
+  medium: String
+  meta: ArtworkMeta
+  partner(
+    # Use whatever is in the original response instead of making a request
+    shallow: Boolean
+  ): Partner
+  price: String
+  provenance(format: Format): String
+  publisher(format: Format): String
+  related(size: Int): [Artwork]
+  sale: Sale
+  sale_artwork: SaleArtwork
+  sale_message: String
+  series(format: Format): String
+  show(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): PartnerShow
+  shows(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): [PartnerShow]
+  signature(format: Format): String
+  title: String
+  to_s: String
+  website: String
+  cached: Int
 }
 
 type ArtworkLayer {
@@ -1402,8 +1540,10 @@ type ConversationType {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
-  initial_message: String
   purchase_request: Boolean
+  initial_message: String
+  last_message: String
+  artworks: [Artwork]
 }
 
 type coordinates {
@@ -1600,8 +1740,48 @@ type FilterSaleArtworksCounts {
   ): FormattedNumber
 }
 
+type FollowArtist {
+  artist: Artist
+  auto: Boolean
+
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+}
+
+# A connection to a list of items.
+type FollowArtistConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FollowArtistEdge]
+}
+
 type FollowArtistCounts {
   artists: Int
+}
+
+# An edge in a connection.
+type FollowArtistEdge {
+  # The item at the end of the edge
+  node: FollowArtist
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input FollowArtistInput {
+  artist_id: String
+  unfollow: Boolean = false
+  clientMutationId: String
+}
+
+type FollowArtistPayload {
+  artist: Artist
+  clientMutationId: String
 }
 
 type FollowArtists {
@@ -1630,6 +1810,7 @@ type Gene implements Node {
   _id: String!
   cached: Int
   artists: [Artist]
+  artists_connection(after: String, first: Int, before: String, last: Int): ArtistConnection
   artworks_connection(
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
@@ -1699,6 +1880,7 @@ type Gene implements Node {
   ): FilterArtworks
   href: String
   image: Image
+  mode: String
   name: String
   trending_artists(sample: Int): [Artist]
 }
@@ -1714,6 +1896,7 @@ type GeneItem implements Node {
   _id: String!
   cached: Int
   artists: [Artist]
+  artists_connection(after: String, first: Int, before: String, last: Int): ArtistConnection
   artworks_connection(
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
@@ -1783,6 +1966,7 @@ type GeneItem implements Node {
   ): FilterArtworks
   href: String
   image: Image
+  mode: String
   name: String
   trending_artists(sample: Int): [Artist]
 }
@@ -1993,14 +2177,14 @@ type HomePageArtistModule implements Node {
 }
 
 enum HomePageArtistModuleTypes {
-  # The most searched for artists.
-  POPULAR
-
   # Artists recommended for the specific user.
   SUGGESTED
 
   # The trending artists.
   TRENDING
+
+  # The most searched for artists.
+  POPULAR
 }
 
 type HomePageArtworkModule implements Node {
@@ -2137,6 +2321,7 @@ type HomePageModuleContextGene implements Node {
   _id: String!
   cached: Int
   artists: [Artist]
+  artists_connection(after: String, first: Int, before: String, last: Int): ArtistConnection
   artworks_connection(
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
@@ -2206,6 +2391,7 @@ type HomePageModuleContextGene implements Node {
   ): FilterArtworks
   href: String
   image: Image
+  mode: String
   name: String
   trending_artists(sample: Int): [Artist]
 }
@@ -2274,6 +2460,7 @@ type HomePageModuleContextSale {
   is_open: Boolean
   is_live_open: Boolean
   is_preview: Boolean
+  is_registration_closed: Boolean
   is_with_buyers_premium: Boolean
   live_start_at(
     convert_to_utc: Boolean
@@ -2351,7 +2538,7 @@ type Image {
   versions: [String]
 }
 
-union Item = ArtistItem | FeaturedLinkItem | GeneItem
+union Item = ArtistItem | ArtworkItem | FeaturedLinkItem | GeneItem
 
 type Location {
   # A globally unique ID.
@@ -2432,6 +2619,9 @@ type Me implements Node {
   # A list of the current user’s artist follows
   follow_artists(page: Int, size: Int): FollowArtists
 
+  # A list of the current user’s inquiry requests
+  followed_artists_connection(after: String, first: Int, before: String, last: Int): FollowArtistConnection
+
   # The current user's status relating to bids on artworks
   lot_standing(artwork_id: String!, sale_id: String!): LotStanding
 
@@ -2466,6 +2656,7 @@ type Me implements Node {
     size: Int
     sort: SaleSorts
   ): [SaleRegistration]
+  saved_artworks: Collection
 
   # A list of the current user’s suggested artists, based on a single artist
   suggested_artists(
@@ -3058,6 +3249,7 @@ enum Role {
 }
 
 type RootMutationType {
+  followArtist(input: FollowArtistInput!): FollowArtistPayload
   updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
   updateConversation(input: UpdateConversationInput!): UpdateConversationPayload
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
@@ -3192,6 +3384,21 @@ type RootQueryType {
 
   # Home screen content
   home_page: HomePage
+
+  # A Search for Artists
+  match_artist(
+    # Your search term
+    term: String!
+
+    # Maximum number of items to retrieve. Default: 5.
+    size: Int
+
+    # Page to retrieve. Default: 1.
+    page: Int
+
+    # Exclude these MongoDB ids from results
+    exclude_ids: [String]
+  ): [Artist]
   me: Me
 
   # Fetches an object given its Globally Unique ID
@@ -3199,6 +3406,12 @@ type RootQueryType {
     # The ID of the object
     __id: ID!
   ): Node
+
+  # An OrderedSet
+  ordered_set(
+    # The ID of the OrderedSet
+    id: String!
+  ): OrderedSet
 
   # A collection of OrderedSets
   ordered_sets(
@@ -3396,6 +3609,7 @@ type Sale {
   is_open: Boolean
   is_live_open: Boolean
   is_preview: Boolean
+  is_registration_closed: Boolean
   is_with_buyers_premium: Boolean
   live_start_at(
     convert_to_utc: Boolean
@@ -4023,6 +4237,21 @@ type Viewer {
 
   # Home screen content
   home_page: HomePage
+
+  # A Search for Artists
+  match_artist(
+    # Your search term
+    term: String!
+
+    # Maximum number of items to retrieve. Default: 5.
+    size: Int
+
+    # Page to retrieve. Default: 1.
+    page: Int
+
+    # Exclude these MongoDB ids from results
+    exclude_ids: [String]
+  ): [Artist]
   me: Me
 
   # Fetches an object given its Globally Unique ID
@@ -4030,6 +4259,12 @@ type Viewer {
     # The ID of the object
     __id: ID!
   ): Node
+
+  # An OrderedSet
+  ordered_set(
+    # The ID of the OrderedSet
+    id: String!
+  ): OrderedSet
 
   # A collection of OrderedSets
   ordered_sets(
