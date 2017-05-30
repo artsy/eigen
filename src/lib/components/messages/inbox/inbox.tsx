@@ -15,7 +15,11 @@ export default class Inbox extends React.Component<{}, any> {
   render() {
     return  (
       <ScrollView>
-          <LargeHeadline style={{marginTop: 10, marginBottom: 10}}>Messages</LargeHeadline>
+          <LargeHeadline style={{marginTop: 10}}>Messages</LargeHeadline>
+          <ConversationSnippet />
+          <ConversationSnippet />
+          <ConversationSnippet />
+          <ConversationSnippet />
           <ConversationSnippet />
       </ScrollView>
     )
