@@ -1,4 +1,5 @@
 import * as React from "react"
+import * as Relay from "react-relay"
 
 import {
   LargeHeadline,
@@ -10,18 +11,47 @@ import {
 
 import ConversationSnippet from "./conversationsnippet"
 
-export default class Inbox extends React.Component<{}, any> {
+export class Inbox extends React.Component<any, any> {
+  renderConversations() {
+    return (this.props.conversations || []).map(conversation => (
+      <ConversationSnippet conversation={conversation} />
+    ))
+  }
 
   render() {
-    return  (
+    return (
       <ScrollView>
           <LargeHeadline style={{marginTop: 10}}>Messages</LargeHeadline>
-          <ConversationSnippet />
-          <ConversationSnippet />
-          <ConversationSnippet />
-          <ConversationSnippet />
-          <ConversationSnippet />
+          {this.renderConversations()}
       </ScrollView>
     )
   }
 }
+
+export default Relay.createContainer(Inbox, {
+  fragments: {
+    conversations: () => Relay.QL`
+      fragment on ConversationType @relay(plural: true) {
+        id
+        inquiry_id
+        from_name
+        from_email
+        to_name
+        last_message
+        artworks {
+          id
+          href
+          title
+          date
+          artist {
+            name
+          }
+          image {
+            url
+            image_url
+          }
+        }
+      }
+    `,
+  },
+})
