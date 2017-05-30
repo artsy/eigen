@@ -7,6 +7,7 @@ exports[`in a sale renders with current bid 1`] = `
   accessibilityTraits={undefined}
   accessible={true}
   hitSlop={undefined}
+  nativeID={undefined}
   onLayout={undefined}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
@@ -29,6 +30,7 @@ exports[`in a sale renders with current bid 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
+    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -56,6 +58,7 @@ exports[`in a sale renders with current bid 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
+    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -76,6 +79,7 @@ exports[`in a sale renders with current bid 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
+      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -105,6 +109,7 @@ exports[`in a sale renders with current bid 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
+    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -142,6 +147,7 @@ exports[`in a sale renders with current bid 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
+      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -172,6 +178,7 @@ exports[`in a sale renders with starting bid 1`] = `
   accessibilityTraits={undefined}
   accessible={true}
   hitSlop={undefined}
+  nativeID={undefined}
   onLayout={undefined}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
@@ -194,6 +201,7 @@ exports[`in a sale renders with starting bid 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
+    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -221,6 +229,7 @@ exports[`in a sale renders with starting bid 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
+    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -241,6 +250,7 @@ exports[`in a sale renders with starting bid 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
+      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -270,6 +280,7 @@ exports[`in a sale renders with starting bid 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
+    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -307,6 +318,7 @@ exports[`in a sale renders with starting bid 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
+      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -337,6 +349,7 @@ exports[`renders properly 1`] = `
   accessibilityTraits={undefined}
   accessible={true}
   hitSlop={undefined}
+  nativeID={undefined}
   onLayout={undefined}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
@@ -359,6 +372,7 @@ exports[`renders properly 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
+    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -386,6 +400,7 @@ exports[`renders properly 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
+    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -406,6 +421,7 @@ exports[`renders properly 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
+      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -435,6 +451,7 @@ exports[`renders properly 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
+    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -457,6 +474,7 @@ exports[`renders properly 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
+    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
