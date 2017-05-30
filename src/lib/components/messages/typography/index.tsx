@@ -76,7 +76,7 @@ const styles = StyleSheet.create<Styles>({
   },
 
   smallDefault: {
-    fontSize:  12,
+    fontSize:  11,
     color: "black",
     textAlign: "left",
   },
@@ -95,7 +95,7 @@ const styles = StyleSheet.create<Styles>({
   },
 
   metadataDefault: {
-    fontSize:  12,
+    fontSize:  11,
     color: colors["gray-medium"],
     textAlign: "left",
   },

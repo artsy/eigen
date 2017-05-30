@@ -8,9 +8,12 @@ import {
 } from "../typography"
 
 import {
+  StyleSheet,
   View,
+  ViewStyle,
 } from "react-native"
 
+import colors from "../../../../data/colors"
 import OpaqueImageView from "../../opaque_image_view"
 
 export default class ConversationSnippet extends React.Component<{}, any> {
@@ -23,16 +26,15 @@ export default class ConversationSnippet extends React.Component<{}, any> {
     const date = "11:00 AM"
     const imageURL = "https://d32dm0rphc51dk.cloudfront.net/rmpESHC2mhtxdTq0S6mMCw/tall.jpg"
     return (
-      <View style={{ marginLeft: 20, marginRight: 20 }}>
-        <View style={{ flex: 1, flexDirection: "row" }}>
-          <OpaqueImageView imageURL={imageURL} style={{ width: 58, height: 58 }} />
-          <View style={{ flex: 1, flexDirection: "column", marginLeft: 15 }}>
-            <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between" }}>
+      <View style={styles.conversationCard}>
+        <View style={styles.contentContainer}>
+          <OpaqueImageView imageURL={imageURL} style={styles.image} />
+          <View style={styles.textContainer}>
+            <View style={styles.headingContainer}>
               <SmallHeadline>{galleryName}</SmallHeadline>
-              <View style={{flex: 1, flexDirection: "row", justifyContent: "flex-end"}}>
+              <View style={styles.dateContainer}>
                 <MetadataText>{date}</MetadataText>
-                <View style={{ height: 8, width: 8, borderRadius: 4, backgroundColor: "purple",
-                marginLeft: 4, marginVertical: 4}} />
+                <View style={styles.unreadIndicator} />
               </View>
             </View>
             <View style={{ flex: 1, flexDirection: "row" }}>
@@ -41,8 +43,56 @@ export default class ConversationSnippet extends React.Component<{}, any> {
             <P>{conversationText}</P>
           </View>
         </View>
-        <View style={{ height: 1, width: "100%", backgroundColor: "black", marginTop: 20 }} />
+        <View style={styles.separator} />
       </View>
     )
   }
 }
+
+interface Styles {
+  conversationCard: ViewStyle,
+  contentContainer: ViewStyle,
+  image: ViewStyle,
+  textContainer: ViewStyle,
+  headingContainer: ViewStyle,
+  dateContainer: ViewStyle,
+  unreadIndicator: ViewStyle,
+  separator: ViewStyle,
+}
+
+const styles = StyleSheet.create<Styles>({
+  conversationCard: {
+    marginLeft: 20, marginRight: 20, marginTop: 20,
+  },
+  image: {
+    width: 58, height: 58,
+  },
+  contentContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  textContainer: {
+    flex: 1, flexDirection: "column", marginLeft: 15,
+  },
+  headingContainer: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  dateContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+  unreadIndicator: {
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    backgroundColor: colors["purple-regular"],
+    marginLeft: 4,
+    marginVertical: 3,
+  },
+  separator: {
+    height: 1, width: "100%", backgroundColor: colors["gray-regular"], marginTop: 20,
+  },
+})
