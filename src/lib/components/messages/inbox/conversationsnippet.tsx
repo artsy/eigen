@@ -62,10 +62,13 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   conversationCard: {
-    marginLeft: 20, marginRight: 20, marginTop: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 20,
   },
   image: {
-    width: 58, height: 58,
+    width: 58,
+    height: 58,
   },
   contentContainer: {
     flex: 1,
@@ -73,7 +76,9 @@ const styles = StyleSheet.create<Styles>({
     justifyContent: "space-between",
   },
   textContainer: {
-    flex: 1, flexDirection: "column", marginLeft: 15,
+    flex: 1,
+    flexDirection: "column",
+    marginLeft: 15,
   },
   headingContainer: {
     flex: 1,
@@ -93,6 +98,9 @@ const styles = StyleSheet.create<Styles>({
     marginVertical: 3,
   },
   separator: {
-    height: 1, width: "100%", backgroundColor: colors["gray-regular"], marginTop: 20,
+    height: 1,
+    width: "100%",
+    backgroundColor: colors["gray-regular"],
+    marginTop: 20,
   },
 })
