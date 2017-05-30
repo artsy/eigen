@@ -4,7 +4,7 @@ const { Emission } = NativeModules
 
 let metaphysicsURL
 if (Emission && Emission.useStagingEnvironment) {
-  metaphysicsURL = "https://metaphysics-staging.artsy.net"
+  metaphysicsURL = "http://localhost:5000"
 } else {
   metaphysicsURL = "https://metaphysics-production.artsy.net"
 }

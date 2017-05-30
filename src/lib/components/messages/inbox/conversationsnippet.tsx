@@ -16,15 +16,19 @@ import {
 import colors from "../../../../data/colors"
 import OpaqueImageView from "../../opaque_image_view"
 
-export default class ConversationSnippet extends React.Component<{}, any> {
+export default class ConversationSnippet extends React.Component<any, any> {
 
   render() {
-    const galleryName = "Patrick Parrish"
-    const artworkTitle = "Threestool, 2014"
-    const artworkArtist = "Ian Stell · "
-    const conversationText = "Hi Katarina, thanks for for reaching out with regards to this artwork"
+    const conversation = this.props.conversation
+    const artwork = conversation.artworks[0]
+
+    const galleryName = conversation.to_name
+    const artworkTitle = `${artwork.title}, ${artwork.date}`
+    const artworkArtist = `${artwork.artist.name} · `
+    const conversationText = conversation.last_message.replace(/\n/g, " ")
     const date = "11:00 AM"
-    const imageURL = "https://d32dm0rphc51dk.cloudfront.net/rmpESHC2mhtxdTq0S6mMCw/tall.jpg"
+    const imageURL = artwork.image.url
+
     return (
       <View style={styles.conversationCard}>
         <View style={styles.contentContainer}>
