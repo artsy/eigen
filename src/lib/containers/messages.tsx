@@ -1,14 +1,12 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  Text,
-} from "react-native"
+import Inbox from "../../lib/components/messages/inbox/inbox"
 
 export class Messages extends React.Component<{}, {}> {
   render() {
     return (
-        <Text>Hello world</Text>
+      <Inbox />
     )
   }
 }
