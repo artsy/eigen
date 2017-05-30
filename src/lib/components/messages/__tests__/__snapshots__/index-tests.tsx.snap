@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Sets up the right view hierarchy 1`] = `
+exports[`Looks correct when rendered 1`] = `
 <RCTScrollView>
   <View>
     <Text
