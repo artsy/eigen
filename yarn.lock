@@ -4143,28 +4143,7 @@ jest-fetch-mock@^1.0.7:
   dependencies:
     whatwg-fetch "1.0.0"
 
-jest-haste-map@19.0.0:
-  version "19.0.0"
-  resolved "https://registry.yarnpkg.com/jest-haste-map/-/jest-haste-map-19.0.0.tgz#adde00b62b1fe04432a104b3254fc5004514b55e"
-  dependencies:
-    fb-watchman "^2.0.0"
-    graceful-fs "^4.1.6"
-    micromatch "^2.3.11"
-    sane "~1.5.0"
-    worker-farm "^1.3.1"
-
-jest-haste-map@^20.0.3:
-  version "20.0.3"
-  resolved "https://registry.yarnpkg.com/jest-haste-map/-/jest-haste-map-20.0.3.tgz#6377d537eaf34eb5f75121a691cae3fde82ba971"
-  dependencies:
-    fb-watchman "^2.0.0"
-    graceful-fs "^4.1.11"
-    jest-docblock "^20.0.3"
-    micromatch "^2.3.11"
-    sane "~1.6.0"
-    worker-farm "^1.3.1"
-
-jest-haste-map@^20.0.4:
+jest-haste-map@^20.0.3, jest-haste-map@^20.0.4:
   version "20.0.4"
   resolved "https://registry.yarnpkg.com/jest-haste-map/-/jest-haste-map-20.0.4.tgz#653eb55c889ce3c021f7b94693f20a4159badf03"
   dependencies:
@@ -6142,9 +6121,9 @@ react-native-sentry@^0.8.3:
     raven-js "^3.15.0"
     sentry-cli-binary "^1.9.0"
 
-react-native@v0.45.0-rc.1:
-  version "0.45.0-rc.1"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.45.0-rc.1.tgz#48c78afb472e405834f71d52c957f4c17c299b1f"
+react-native@next:
+  version "0.45.0-rc.2"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.45.0-rc.2.tgz#e28c048403f6c13cb0d201ce0577549181558367"
   dependencies:
     absolute-path "^0.0.0"
     art "^0.10.0"
@@ -6185,7 +6164,7 @@ react-native@v0.45.0-rc.1:
     graceful-fs "^4.1.3"
     image-size "^0.3.5"
     inquirer "^0.12.0"
-    jest-haste-map "19.0.0"
+    jest-haste-map "^20.0.4"
     joi "^6.6.1"
     json-stable-stringify "^1.0.1"
     json5 "^0.4.0"
@@ -6666,18 +6645,6 @@ sane@~1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/sane/-/sane-1.4.1.tgz#88f763d74040f5f0c256b6163db399bf110ac715"
   dependencies:
-    exec-sh "^0.2.0"
-    fb-watchman "^1.8.0"
-    minimatch "^3.0.2"
-    minimist "^1.1.1"
-    walker "~1.0.5"
-    watch "~0.10.0"
-
-sane@~1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/sane/-/sane-1.5.0.tgz#a4adeae764d048621ecb27d5f9ecf513101939f3"
-  dependencies:
-    anymatch "^1.3.0"
     exec-sh "^0.2.0"
     fb-watchman "^1.8.0"
     minimatch "^3.0.2"
