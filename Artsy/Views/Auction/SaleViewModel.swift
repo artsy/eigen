@@ -88,10 +88,11 @@ extension SaleViewModel {
     }
 
     var timeToLiveStart: TimeInterval? {
-        guard let liveStartDate = sale.liveAuctionStartDate, shouldShowLiveInterface else { return nil }
+        guard let liveStartDate = sale.liveAuctionStartDate else { return nil }
 
         let now = ARSystemTime.date()
-        return liveStartDate.timeIntervalSince(now!)
+        let timeInterval = liveStartDate.timeIntervalSince(now!)
+        return (timeInterval > 0 ? timeInterval : nil)
     }
 
     var saleID: NSString {
