@@ -13,8 +13,53 @@ import {
   ViewStyle,
 } from "react-native"
 
+import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 import OpaqueImageView from "../../opaque_image_view"
+
+const Card = styled.View`
+    marginLeft: 20
+    marginRight: 20
+    marginTop: 20
+`
+
+const VerticalLayout = styled.View`
+    flex: 1
+    flex-direction: column
+`
+
+const HorizontalLayout = styled.View`
+    flex: 1
+    flex-direction: row
+`
+
+const CardContent = HorizontalLayout.extend`
+    justify-content: space-between
+`
+
+const TextPreview = VerticalLayout.extend`
+    marginLeft: 15
+`
+
+const DateHeading = HorizontalLayout.extend`
+    justify-content: flex-end
+`
+
+const UnreadIndicator = styled.View`
+    height: 8
+    width: 8
+    borderRadius: 4
+    background-color: ${colors["purple-regular"]}
+    marginLeft: 4
+    marginVertical: 3
+`
+
+const Separator = styled.View`
+    height: 1
+    width: 100%
+    background-color: ${colors["gray-regular"]}
+    marginTop: 20
+`
 
 export default class ConversationSnippet extends React.Component<any, any> {
 
@@ -30,81 +75,37 @@ export default class ConversationSnippet extends React.Component<any, any> {
     const imageURL = artwork.image.url
 
     return (
-      <View style={styles.conversationCard}>
-        <View style={styles.contentContainer}>
+      <Card>
+        <CardContent>
           <OpaqueImageView imageURL={imageURL} style={styles.image} />
-          <View style={styles.textContainer}>
-            <View style={styles.headingContainer}>
+          <TextPreview>
+            <HorizontalLayout>
               <SmallHeadline>{galleryName}</SmallHeadline>
-              <View style={styles.dateContainer}>
+              <DateHeading>
                 <MetadataText>{date}</MetadataText>
-                <View style={styles.unreadIndicator} />
-              </View>
-            </View>
+                <UnreadIndicator />
+              </DateHeading>
+            </HorizontalLayout>
             <View style={{ flex: 1, flexDirection: "row" }}>
               <Subtitle>{artworkArtist}</Subtitle><Subtitle>{artworkTitle}</Subtitle>
             </View>
             <P>{conversationText}</P>
-          </View>
-        </View>
-        <View style={styles.separator} />
-      </View>
+          </TextPreview>
+        </CardContent>
+        <Separator />
+      </Card>
     )
   }
 }
 
 interface Styles {
-  conversationCard: ViewStyle,
-  contentContainer: ViewStyle,
   image: ViewStyle,
-  textContainer: ViewStyle,
-  headingContainer: ViewStyle,
-  dateContainer: ViewStyle,
-  unreadIndicator: ViewStyle,
-  separator: ViewStyle,
 }
 
 const styles = StyleSheet.create<Styles>({
-  conversationCard: {
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 20,
-  },
   image: {
     width: 58,
     height: 58,
-  },
-  contentContainer: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  textContainer: {
-    flex: 1,
-    flexDirection: "column",
-    marginLeft: 15,
-  },
-  headingContainer: {
-    flex: 1,
-    flexDirection: "row",
-  },
-  dateContainer: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-end",
-  },
-  unreadIndicator: {
-    height: 8,
-    width: 8,
     borderRadius: 4,
-    backgroundColor: colors["purple-regular"],
-    marginLeft: 4,
-    marginVertical: 3,
-  },
-  separator: {
-    height: 1,
-    width: "100%",
-    backgroundColor: colors["gray-regular"],
-    marginTop: 20,
   },
 })
