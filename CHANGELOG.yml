@@ -6,7 +6,8 @@ upcoming:
       - Fix analytics double fire in artwork pages - maxim
     user_facing:
       - Adds timer for artwork view that refreshes UI when the associated live sale opens - ash
-      - Fix crash where facebook email can be nil - maxim 
+      - Fix crash where facebook email can be nil - maxim
+      - Fixes a problem with auction information views now showing auction end time - ash
 
 releases:
   - version: 3.2.1

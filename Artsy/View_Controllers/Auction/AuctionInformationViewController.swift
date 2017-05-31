@@ -108,12 +108,21 @@ class AuctionInformationViewController: UIViewController {
         auctionBeginsLabel.text = formatter.string(from: saleViewModel.startDate as Date)
         stackView?.addSubview(auctionBeginsLabel, withTopMargin: "10", sideMargin: "40")
 
-        if let liveAuctionStartDate = saleViewModel.liveAuctionStartDate {
-            auctionBeginsHeaderLabel.text = "LIVE BIDDING BEGINS"
-            auctionBeginsLabel.text = formatter.string(from: liveAuctionStartDate as Date)
+        if saleViewModel.saleIsClosed {
+            auctionBeginsHeaderLabel.text = "SALE CLOSED"
+            if let endDate = saleViewModel.closingDate {
+                auctionBeginsLabel.text = formatter.string(from: endDate)
+            } else {
+                auctionBeginsLabel.text = ""
+            }
         } else {
-            auctionBeginsHeaderLabel.text = "AUCTION BEGINS"
-            auctionBeginsLabel.text = formatter.string(from: saleViewModel.startDate)
+            if let liveAuctionStartDate = saleViewModel.liveAuctionStartDate {
+                auctionBeginsHeaderLabel.text = "LIVE BIDDING BEGINS"
+                auctionBeginsLabel.text = formatter.string(from: liveAuctionStartDate as Date)
+            } else {
+                auctionBeginsHeaderLabel.text = "AUCTION BEGINS"
+                auctionBeginsLabel.text = formatter.string(from: saleViewModel.startDate)
+            }
         }
 
         let faqButtonDescription = NavigationButton(
