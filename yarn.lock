@@ -6237,9 +6237,9 @@ react-proxy@^1.1.7:
     lodash "^4.6.1"
     react-deep-force-update "^1.0.0"
 
-"react-relay@https://github.com/alloy/relay/releases/download/v0.9.3%2Breact-native-0.45-fix/react-relay-0.9.3.react-native-0.45-fix.tgz":
-  version "0.9.3+react-native-0.45-fix"
-  resolved "https://github.com/alloy/relay/releases/download/v0.9.3%2Breact-native-0.45-fix/react-relay-0.9.3.react-native-0.45-fix.tgz#bc1dde370365b77b5772b7bee6243d2084428da9"
+"react-relay@https://github.com/alloy/relay/releases/download/react-relay-0.9.3%2Breact-native-0.45-fix-2/react-relay-0.9.3.react-native-0.45-fix-2.tgz":
+  version "0.9.3+react-native-0.45-fix-2"
+  resolved "https://github.com/alloy/relay/releases/download/react-relay-0.9.3%2Breact-native-0.45-fix-2/react-relay-0.9.3.react-native-0.45-fix-2.tgz#0d6a763042abb12e541b5bd797069623063065b1"
   dependencies:
     babel-runtime "^6.6.1"
     fbjs "^0.8.1"
