@@ -4,17 +4,16 @@ import {
   MetadataText,
   PreviewText as P,
   SmallHeadline,
-  Subtitle,
 } from "../typography"
 
 import {
   StyleSheet,
-  View,
   ViewStyle,
 } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
+import fonts from "../../../../data/fonts"
 import OpaqueImageView from "../../opaque_image_view"
 
 const Card = styled.View`
@@ -60,6 +59,17 @@ const Separator = styled.View`
     background-color: ${colors["gray-regular"]}
     marginTop: 20
 `
+const ArtworkSubtitle = styled.Text`
+  font-family: ${fonts["garamond-regular"]}
+  fontSize: 16
+  color: black
+  marginTop: 6
+  marginBottom: 2
+`
+
+const ArtworkTitle = ArtworkSubtitle.extend`
+  font-family: ${fonts["garamond-italic"]}
+`
 
 export default class ConversationSnippet extends React.Component<any, any> {
 
@@ -68,7 +78,8 @@ export default class ConversationSnippet extends React.Component<any, any> {
     const artwork = conversation.artworks[0]
 
     const galleryName = conversation.to_name
-    const artworkTitle = `${artwork.title}, ${artwork.date}`
+    const artworkTitle = `${artwork.title}, `
+    const artworkDate = `${artwork.date}`
     const artworkArtist = `${artwork.artist.name} · `
     const conversationText = conversation.last_message.replace(/\n/g, " ")
     const date = "11:00 AM"
@@ -86,9 +97,11 @@ export default class ConversationSnippet extends React.Component<any, any> {
                 <UnreadIndicator />
               </DateHeading>
             </HorizontalLayout>
-            <View style={{ flex: 1, flexDirection: "row" }}>
-              <Subtitle>{artworkArtist}</Subtitle><Subtitle>{artworkTitle}</Subtitle>
-            </View>
+            <HorizontalLayout>
+              <ArtworkSubtitle>{artworkArtist}</ArtworkSubtitle>
+              <ArtworkTitle>{artworkTitle}</ArtworkTitle>
+              <ArtworkSubtitle>{artworkDate}</ArtworkSubtitle>
+            </HorizontalLayout>
             <P>{conversationText}</P>
           </TextPreview>
         </CardContent>
