@@ -78,7 +78,7 @@ export default class ConversationSnippet extends React.Component<any, any> {
     const artwork = conversation.artworks[0]
 
     const galleryName = conversation.to_name
-    const artworkTitle = `${artwork.title}, `
+    const artworkTitle = `${artwork.title.trim()}, `
     const artworkDate = `${artwork.date}`
     const artworkArtist = `${artwork.artist.name} · `
     const conversationText = conversation.last_message.replace(/\n/g, " ")
