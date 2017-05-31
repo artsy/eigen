@@ -125,6 +125,8 @@ PODS:
     - React/Core
     - React/RCTWebSocket
   - React/jschelpers_legacy (0.45.0-rc.1)
+  - React/RCTAnimation (0.45.0-rc.1):
+    - React/Core
   - React/RCTImage (0.45.0-rc.1):
     - React/Core
     - React/RCTNetwork
@@ -157,6 +159,7 @@ DEPENDENCIES:
   - FLKAutoLayout
   - React/BatchedBridge (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTAnimation (from `../node_modules/react-native`)
   - SAMKeychain
   - SentryReactNative (from `../node_modules/react-native-sentry`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -208,6 +211,6 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: 63e64d6f9a277e67f3f2adf9643d0ecddd52f5ca
 
-PODFILE CHECKSUM: e52a50bf7ec580e2968fb14a1b4aaefeb1bc4db8
+PODFILE CHECKSUM: b7c4dbde1d69b77f0c1a776861ae701c13db0f02
 
 COCOAPODS: 1.2.1
