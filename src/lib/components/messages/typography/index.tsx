@@ -86,7 +86,7 @@ const styles = StyleSheet.create<Styles>({
   },
 
  subtitleDefault: {
-    fontSize:  14,
+    fontSize:  16,
     color: "black",
   },
 
@@ -105,7 +105,7 @@ const styles = StyleSheet.create<Styles>({
   },
 
   bodyDefault: {
-    fontSize:  15,
+    fontSize:  16,
     color: "black",
     textAlign: "left",
   },
