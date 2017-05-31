@@ -8,6 +8,7 @@ upcoming:
       - Adds timer for artwork view that refreshes UI when the associated live sale opens - ash
       - Fix crash where facebook email can be nil - maxim
       - Fixes a problem with auction information views now showing auction end time - ash
+      - Fixes a problem with auction views not refreshing when live sales opened - ash
 
 releases:
   - version: 3.2.1
