@@ -14,12 +14,6 @@ interface Props extends ViewProperties {
 }
 
 class Biography extends React.Component<Props, any> {
-  static propTypes = {
-    artist: React.PropTypes.shape({
-      bio: React.PropTypes.string,
-    }),
-  }
-
   render() {
     const artist = this.props.artist
     if (!artist.blurb && !artist.bio) {
