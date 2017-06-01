@@ -6,7 +6,7 @@ import Inbox from "../../lib/components/messages/inbox/inbox"
 export class Messages extends React.Component<any, any> {
   render() {
     return (
-      <Inbox conversations={this.props.me.conversations} />
+      <Inbox me={this.props.me} />
     )
   }
 }
@@ -15,10 +15,7 @@ export default Relay.createContainer(Messages, {
   fragments: {
     me: () => Relay.QL`
       fragment on Me {
-        name
-        conversations {
-          ${Inbox.getFragment("conversations")}
-        }
+        ${Inbox.getFragment("me")}
       }
     `,
   },
