@@ -1,4 +1,5 @@
 import * as React from "react"
+import * as Relay from "react-relay"
 
 import {
   MetadataText,
@@ -37,11 +38,12 @@ const CardContent = HorizontalLayout.extend`
 `
 
 const TextPreview = VerticalLayout.extend`
-    marginLeft: 15
+    margin-left: 15
 `
 
 const DateHeading = HorizontalLayout.extend`
     justify-content: flex-end
+    margin-bottom: 4
 `
 
 const UnreadIndicator = styled.View`
@@ -71,8 +73,7 @@ const ArtworkTitle = ArtworkSubtitle.extend`
   font-family: ${fonts["garamond-italic"]}
 `
 
-export default class ConversationSnippet extends React.Component<any, any> {
-
+export class ConversationSnippet extends React.Component<any, any> {
   render() {
     const conversation = this.props.conversation
     const artwork = conversation.artworks[0]
@@ -98,9 +99,11 @@ export default class ConversationSnippet extends React.Component<any, any> {
               </DateHeading>
             </HorizontalLayout>
             <HorizontalLayout>
-              <ArtworkSubtitle>{artworkArtist}</ArtworkSubtitle>
-              <ArtworkTitle>{artworkTitle}</ArtworkTitle>
-              <ArtworkSubtitle>{artworkDate}</ArtworkSubtitle>
+              <P>
+                <ArtworkSubtitle>{artworkArtist}</ArtworkSubtitle>
+                <ArtworkTitle>{artworkTitle}</ArtworkTitle>
+                <ArtworkSubtitle>{artworkDate}</ArtworkSubtitle>
+              </P>
             </HorizontalLayout>
             <P>{conversationText}</P>
           </TextPreview>
@@ -120,5 +123,33 @@ const styles = StyleSheet.create<Styles>({
     width: 58,
     height: 58,
     borderRadius: 4,
+  },
+})
+
+export default Relay.createContainer(ConversationSnippet, {
+  fragments: {
+    conversation: () => Relay.QL`
+      fragment on ConversationType {
+        id
+        inquiry_id
+        from_name
+        from_email
+        to_name
+        last_message
+        artworks {
+          id
+          href
+          title
+          date
+          artist {
+            name
+          }
+          image {
+            url
+            image_url
+          }
+        }
+      }
+    `,
   },
 })
