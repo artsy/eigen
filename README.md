@@ -33,6 +33,13 @@ Want to know more about Emission? Read the [mobile](http://artsy.github.io/blog/
 
 Why Yarn? See [our JS glossary for Yarn][glossary-yarn],
 
+If you like git hooks, you could setup the following:
+
+* Lint and auto-fix new changes on commit:
+  `$ echo -e "#!/bin/sh\nyarn run lint-staged\n" > .git/hooks/pre-commit; chmod +x .git/hooks/pre-commit`
+* Run type-checker before push:
+  `$ echo -e "#!/bin/sh\nyarn run type-check\n" > .git/hooks/pre-push; chmod +x .git/hooks/pre-push`
+
 ### Using VS Code as an IDE
 
 There is a comprehensive document covering [our setup here](docs/vscode.md).
