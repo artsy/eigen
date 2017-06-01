@@ -103,16 +103,17 @@ function extractRawMappings(sourceMap) {
   return rawMappings
 }
 
-module.exports = function(data, callback) {
-  try {
-    let src = data.sourceCode
-    if (path.extname(data.filename) == ".tsx" || path.extname(data.filename) == ".ts") {
-      src = transformTypeScript(src, data.filename, data.options)
-    } else {
-      src = upstream.transform(src, data.filename, data.options)
+function transform(sourceCode, fileName, options) {
+    try {
+      let src = sourceCode
+      if (path.extname(fileName) == ".tsx" || path.extname(fileName) == ".ts") {
+        src = transformTypeScript(src, fileName, options)
+      } else {
+        src = upstream.transform(src, fileName, options)
+      }
+      return src
+    } catch(e) {
+      console.error(e)
     }
-    callback(null, src)
-  } catch(e) {
-    callback(e)
-  }
 }
+module.exports.transform = transform;

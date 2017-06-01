@@ -1,3 +1,4 @@
+import * as PropTypes from "prop-types"
 import * as React from "react"
 import * as Relay from "react-relay"
 
@@ -31,12 +32,12 @@ interface State {
 
 class Header extends React.Component<HeaderProps, State> {
   static propTypes = {
-    artist: React.PropTypes.shape({
-      name: React.PropTypes.string,
-      nationality: React.PropTypes.string,
-      birthday: React.PropTypes.string,
-      counts: React.PropTypes.shape({
-        follows: React.PropTypes.number,
+    artist: PropTypes.shape({
+      name: PropTypes.string,
+      nationality: PropTypes.string,
+      birthday: PropTypes.string,
+      counts: PropTypes.shape({
+        follows: PropTypes.number,
       }),
     }),
   }

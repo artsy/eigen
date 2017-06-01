@@ -1,3 +1,4 @@
+import * as PropTypes from "prop-types"
 import * as React from "react"
 
 import {
@@ -47,9 +48,9 @@ interface State {
 export default class OpaqueImageView extends React.Component<Props, State> {
   // These are only needed because they are exposed to a native component.
   static propTypes: any = {
-    imageURL: React.PropTypes.string,
-    aspectRatio: React.PropTypes.number,
-    onLoad: React.PropTypes.func,
+    imageURL: PropTypes.string,
+    aspectRatio: PropTypes.number,
+    onLoad: PropTypes.func,
     placeholderBackgroundColor: ColorPropType,
   }
 

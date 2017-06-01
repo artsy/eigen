@@ -1,4 +1,3 @@
-import { shallow } from "enzyme"
 import * as React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
@@ -20,19 +19,23 @@ it("has a min height while data is loading", () => {
 
 it("has no min height when data is not loading", () => {
   const props = railProps(true) as any
-  const wrapper = shallow(<ArtworkRail {...props} />)
-  wrapper.setState({ didPerformFetch: true })
+  const rail = new ArtworkRail(props) as any
 
-  const instance = wrapper.instance() as ArtworkRail
-  const railStyle = instance.railStyle()
+  /**
+   * This is a less-than-ideal workaround because setState wasn't actually updating the state. Ideally we should bring
+   * back Enzyme or something similar once we figure out compatibility issues with RN 0.45+
+   */
+  rail.state = { didPerformFetch: true }
+
+  const railStyle = rail.railStyle()
   expect(railStyle.minHeight).toBeUndefined()
 })
 
 it("renders nothing when there are no artworks", () => {
   const props = railProps(true) as any
-  const wrapper = shallow(<ArtworkRail {...props} />)
-  wrapper.setState({ didPerformFetch: true })
-  expect(wrapper.instance().render()).toBeNull()
+  const rail = new ArtworkRail(props) as any
+  rail.state = { didPerformFetch: true }
+  expect(rail.render()).toBeNull()
 })
 
 it("renders when there are artworks", () => {

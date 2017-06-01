@@ -1,3 +1,4 @@
+import * as PropTypes from "prop-types"
 import * as React from "react"
 import {
   NativeSyntheticEvent,
@@ -17,9 +18,9 @@ interface Props extends ViewProperties {
 
 export default class SwitchView extends React.Component<Props, any> {
   static propTypes = {
-    titles: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-    onSelectionChange: React.PropTypes.func.isRequired,
-    selectedIndex: React.PropTypes.number,
+    titles: PropTypes.arrayOf(PropTypes.string).isRequired,
+    onSelectionChange: PropTypes.func.isRequired,
+    selectedIndex: PropTypes.number,
   }
 
   render() {

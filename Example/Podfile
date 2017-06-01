@@ -15,7 +15,7 @@ target 'Emission' do
   pod 'Emission', :path => '../'
 
   # As this runs dev, we need the developer web socket
-  pod 'React', :path => react_path, :subspecs => %w(RCTWebSocket)
+  pod 'React', :path => react_path, :subspecs => %w(DevSupport BatchedBridge RCTAnimation)
   pod 'Yoga', :path => yoga_path
 
   pod 'SentryReactNative', :path => sentry_path

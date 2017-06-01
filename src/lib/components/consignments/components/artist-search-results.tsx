@@ -81,7 +81,7 @@ const render = (props: ArtistQueryData) =>
 
     <View style={{flexDirection: "row"}}>
       <Input
-        autoFocus={true}
+        autoFocus={typeof(jest) === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
         autoCorrect={false}
         clearButtonMode="while-editing"
         onChangeText={props.textDidChange}
