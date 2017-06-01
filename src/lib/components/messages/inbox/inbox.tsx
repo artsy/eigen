@@ -10,7 +10,7 @@ import { LargeHeadline } from "../typography"
 
 import ConversationSnippet from "./conversation_snippet"
 
-const PageSize = 6
+const PageSize = 10
 
 interface State {
   dataSource: ListViewDataSource | null
@@ -91,7 +91,7 @@ export class Inbox extends React.Component<any, State> {
 export default Relay.createContainer(Inbox, {
   initialVariables: {
     totalSize: PageSize,
-  }
+  },
   fragments: {
     me: () => Relay.QL`
       fragment on Me {
