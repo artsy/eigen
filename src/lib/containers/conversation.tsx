@@ -9,6 +9,7 @@ import { ImageURISource, ViewProperties } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../data/colors"
+import Composer from "../components/messages/composer"
 import Message from "../components/messages/message"
 
 // tslint:disable-next-line:no-var-requires
@@ -22,7 +23,7 @@ const Container = styled.View`
 `
 const Header = styled.View`
   alignSelf: stretch
-  marginTop: 15
+  marginTop: 10
   flexDirection: column
 `
 
@@ -32,13 +33,13 @@ const HeaderTextContainer = styled.View`
 `
 
 const BackButtonPlaceholder = styled.Image`
-  height: 8
-  width: 15
-  resizeMode: center
+  height: 12
+  width: 7
+  transform: rotate(180deg)
 `
 
 const DottedBorder = styled.View`
-  marginTop: 35
+  marginTop: 30
   height: 1
   borderWidth: 1
   borderStyle: dotted
@@ -54,9 +55,10 @@ interface Props extends ViewProperties {
   last_message: string,
 }
 
-export default class Conversation extends React.Component<Props, any> {
+export default class Conversation extends React.Component<Props, {}> {
   render() {
     const partnerName = "Patrick Parrish Gallery"
+
     return (
       <Container>
         <Header>
@@ -68,6 +70,7 @@ export default class Conversation extends React.Component<Props, any> {
           <DottedBorder />
         </Header>
         <Message />
+        <Composer onSubmit={(text) => console.log(text)}/>
       </Container>
     )
   }

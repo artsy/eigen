@@ -10,8 +10,8 @@ import styled from "styled-components/native"
 import colors from "../../../data/colors"
 
 const VerticalLayout = styled.View`
-  flex: 1
   flex-direction: column
+  flex: 1
 `
 
 const HorizontalLayout = styled.View`
@@ -20,9 +20,9 @@ const HorizontalLayout = styled.View`
 
 const Container = HorizontalLayout.extend`
   flex: 1
-  height: 50
   alignSelf: stretch
   marginTop: 15
+  marginBottom: 10
 `
 
 const Avatar = styled.View`
