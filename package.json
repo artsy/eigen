@@ -72,8 +72,7 @@
     "lib"
   ],
   "dependencies": {
-    "awesome-typescript-loader": "^3.1.3",
-    "lodash": "3.10.1",
+    "lodash": "^4.17.4",
     "moment": "latest",
     "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.12",
@@ -82,27 +81,24 @@
     "react-native-sentry": "^0.8.3",
     "react-relay": "https://github.com/alloy/relay/releases/download/react-relay-0.9.3%2Breact-native-0.45-fix-2/react-relay-0.9.3.react-native-0.45-fix-2.tgz",
     "remove-markdown": "0.1.0",
-    "styled-components": "^2.0.0",
-    "typescript": "^2.3.2"
+    "styled-components": "^2.0.0"
   },
   "devDependencies": {
     "@storybook/react-native": "^3.0.0-alpha.0",
-    "@types/enzyme": "^2.8.0",
     "@types/jest": "^19.2.2",
-    "@types/lodash": "^4.14.53",
+    "@types/lodash": "^4.14.64",
     "@types/react-native": "^0.44.0",
     "@types/react-relay": "^0.9.10",
     "@types/react-test-renderer": "^15.5.0",
     "apphub": "^0.5.1",
+    "awesome-typescript-loader": "^3.1.3",
     "babel-jest": "^18.0.0",
     "babel-polyfill": "^6.13.0",
     "babel-preset-react-native": "^1.9.1",
     "babel-relay-plugin": "https://github.com/alloy/relay/releases/download/v0.9.3/babel-relay-plugin-0.9.3.tgz",
     "concurrently": "^2.2.0",
     "danger": "^0.19.0",
-    "enzyme": "^2.8.2",
     "jest": "^20.0.4",
-    "jest-fetch-mock": "^1.0.7",
     "jest-react-native": "18.0.0",
     "lint-staged": "^3.4.1",
     "react-dom": "16.0.0-alpha.12",
@@ -111,7 +107,8 @@
     "recursive-readdir-sync": "^1.0.6",
     "relay2ts": "^0.2.0",
     "ts-jest": "^20.0.3",
-    "tslint": "^4.5.0"
+    "tslint": "^4.5.0",
+    "typescript": "^2.3.2"
   },
   "peerDependencies": {
     "babel-relay-plugin": "^0.9.0"
