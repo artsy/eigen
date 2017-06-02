@@ -85,7 +85,6 @@
   },
   "devDependencies": {
     "@storybook/react-native": "^3.0.0-alpha.0",
-    "@types/enzyme": "^2.8.0",
     "@types/jest": "^19.2.2",
     "@types/lodash": "^4.14.53",
     "@types/react-native": "^0.44.0",
