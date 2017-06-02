@@ -72,7 +72,7 @@
     "lib"
   ],
   "dependencies": {
-    "lodash": "3.10.1",
+    "lodash": "^4.17.4",
     "moment": "latest",
     "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.12",
@@ -86,7 +86,7 @@
   "devDependencies": {
     "@storybook/react-native": "^3.0.0-alpha.0",
     "@types/jest": "^19.2.2",
-    "@types/lodash": "^4.14.53",
+    "@types/lodash": "^4.14.64",
     "@types/react-native": "^0.44.0",
     "@types/react-relay": "^0.9.10",
     "@types/react-test-renderer": "^15.5.0",
