@@ -99,7 +99,6 @@
     "concurrently": "^2.2.0",
     "danger": "^0.19.0",
     "jest": "^20.0.4",
-    "jest-fetch-mock": "^1.0.7",
     "jest-react-native": "18.0.0",
     "lint-staged": "^3.4.1",
     "react-dom": "16.0.0-alpha.12",
