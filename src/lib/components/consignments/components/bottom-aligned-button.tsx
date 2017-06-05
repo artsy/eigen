@@ -32,7 +32,7 @@ const Separator = styled.View`
   height: 1
 `
 
-interface BottomAlignedProps {
+export interface BottomAlignedProps {
   onPress: () => void,
   children: any[]
 }
@@ -41,7 +41,7 @@ const render = (props: BottomAlignedProps) =>
   <View>
     {props.children}
     <Separator />
-    <View style={{ backgroundColor: "black", color: "white" }}>
+    <View style={{ backgroundColor: "black", color: "white", height: 40 }}>
       <Button title="DONE" onPress={props.onPress} />
     </View>
   </View>

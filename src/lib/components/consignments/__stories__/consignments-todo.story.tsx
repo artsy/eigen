@@ -4,13 +4,22 @@ import * as React from "react"
 import TODO from "../components/artwork-consignment-todo"
 import { ConsignmentMetadata, ConsignmentSetup } from "../index"
 
-const withArtist: ConsignmentSetup = { artist: { name: "Glenn Brown" } }
-const withOnePhoto: ConsignmentSetup = {
-  ...withArtist,
-  photos: ["https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg"],
+export const name = "Consignments - TODO"
+export const component = TODO
+
+interface States {
+  [name: string]: ConsignmentSetup;
 }
 
-const withPhotos: ConsignmentSetup = {
+const withArtist = { artist: { name: "Glenn Brown" } }
+const withOnePhoto = {
+  ...withArtist,
+  photos: [
+    "https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg",
+  ],
+}
+
+const withPhotos = {
   ...withArtist,
   photos: [
     "https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg",
@@ -30,38 +39,32 @@ const metadata: ConsignmentMetadata = {
   displayString: "5/5",
 }
 
-const withMetadata: ConsignmentSetup = {
+const withMetadata = {
   ...withPhotos,
   metadata,
 }
 
-const withLocation: ConsignmentSetup = {
+const withLocation = {
   ...withMetadata,
   location: "Huddersfield, UK",
 }
 
-const withProvenance: ConsignmentSetup = {
+const withProvenance = {
   ...withLocation,
   provenance: "This work has seen many hands.",
 }
 
-export const allStates = {
-  withArtist,
-  withPhotos,
-  withMetadata,
-  withLocation,
-  withProvenance,
-}
+const longProv =
+  "This is a long long long run on sentence that should break correctly."
 
-const longProv = "This is a long long long run on sentence that should break correctly."
-
-storiesOf("Consignments - TODO")
-  .add("Empty", () => <TODO />)
-  .add("With Artist", () => <TODO {...withArtist} />)
-  .add("With Photos", () => <TODO {...withPhotos} />)
-  .add("With Metadata", () => <TODO {...withMetadata} />)
-  .add("With Location", () => <TODO {...withLocation} />)
-  .add("With Provenance", () => <TODO {...withProvenance} />)
-  .add("With Just Metadata", () => <TODO metadata={metadata} />)
-  .add("With One Photo", () => <TODO {...withOnePhoto} />)
-  .add("With Long Provenance", () => <TODO provenance={longProv} />)
+export const allStates: States[] = [
+  { "Empty Metadata": {} },
+  { "With Artist": withArtist },
+  { "With Photos": withPhotos },
+  { "With Metadata": withMetadata },
+  { "With Location": withMetadata },
+  { "With Provenance": withProvenance },
+  { "With Just Metadata": { metadata } },
+  { "With One": withOnePhoto },
+  { "With Long": { provenance: longProv } },
+]
