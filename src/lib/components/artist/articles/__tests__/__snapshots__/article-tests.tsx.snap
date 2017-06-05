@@ -14,7 +14,6 @@ exports[`renders properly 1`] = `
     accessibilityTraits={undefined}
     accessible={true}
     hitSlop={undefined}
-    nativeID={undefined}
     onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
@@ -41,7 +40,6 @@ exports[`renders properly 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={5}
       style={
@@ -58,7 +56,6 @@ exports[`renders properly 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Object {

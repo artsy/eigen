@@ -67,7 +67,6 @@ exports[`For different states Looks right withArtist 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -87,7 +86,6 @@ exports[`For different states Looks right withArtist 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -154,7 +152,6 @@ exports[`For different states Looks right withArtist 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -219,7 +216,6 @@ exports[`For different states Looks right withArtist 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -239,7 +235,6 @@ exports[`For different states Looks right withArtist 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -306,7 +301,6 @@ exports[`For different states Looks right withArtist 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -326,7 +320,6 @@ exports[`For different states Looks right withArtist 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -393,7 +386,6 @@ exports[`For different states Looks right withArtist 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -413,7 +405,6 @@ exports[`For different states Looks right withArtist 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -515,7 +506,6 @@ exports[`For different states Looks right withLocation 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -535,7 +525,6 @@ exports[`For different states Looks right withLocation 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -604,7 +593,6 @@ exports[`For different states Looks right withLocation 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -659,7 +647,6 @@ exports[`For different states Looks right withLocation 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -726,7 +713,6 @@ exports[`For different states Looks right withLocation 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -746,7 +732,6 @@ exports[`For different states Looks right withLocation 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -815,7 +800,6 @@ exports[`For different states Looks right withLocation 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -835,7 +819,6 @@ exports[`For different states Looks right withLocation 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -902,7 +885,6 @@ exports[`For different states Looks right withLocation 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -922,7 +904,6 @@ exports[`For different states Looks right withLocation 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -1024,7 +1005,6 @@ exports[`For different states Looks right withMetadata 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1044,7 +1024,6 @@ exports[`For different states Looks right withMetadata 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1113,7 +1092,6 @@ exports[`For different states Looks right withMetadata 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1168,7 +1146,6 @@ exports[`For different states Looks right withMetadata 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -1235,7 +1212,6 @@ exports[`For different states Looks right withMetadata 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1255,7 +1231,6 @@ exports[`For different states Looks right withMetadata 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1322,7 +1297,6 @@ exports[`For different states Looks right withMetadata 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1342,7 +1316,6 @@ exports[`For different states Looks right withMetadata 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1409,7 +1382,6 @@ exports[`For different states Looks right withMetadata 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1429,7 +1401,6 @@ exports[`For different states Looks right withMetadata 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -1531,7 +1502,6 @@ exports[`For different states Looks right withPhotos 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1551,7 +1521,6 @@ exports[`For different states Looks right withPhotos 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1620,7 +1589,6 @@ exports[`For different states Looks right withPhotos 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1675,7 +1643,6 @@ exports[`For different states Looks right withPhotos 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -1740,7 +1707,6 @@ exports[`For different states Looks right withPhotos 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1760,7 +1726,6 @@ exports[`For different states Looks right withPhotos 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1827,7 +1792,6 @@ exports[`For different states Looks right withPhotos 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1847,7 +1811,6 @@ exports[`For different states Looks right withPhotos 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1914,7 +1877,6 @@ exports[`For different states Looks right withPhotos 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -1934,7 +1896,6 @@ exports[`For different states Looks right withPhotos 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -2036,7 +1997,6 @@ exports[`For different states Looks right withProvenance 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -2056,7 +2016,6 @@ exports[`For different states Looks right withProvenance 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -2125,7 +2084,6 @@ exports[`For different states Looks right withProvenance 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -2180,7 +2138,6 @@ exports[`For different states Looks right withProvenance 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -2247,7 +2204,6 @@ exports[`For different states Looks right withProvenance 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -2267,7 +2223,6 @@ exports[`For different states Looks right withProvenance 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -2336,7 +2291,6 @@ exports[`For different states Looks right withProvenance 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -2356,7 +2310,6 @@ exports[`For different states Looks right withProvenance 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -2425,7 +2378,6 @@ exports[`For different states Looks right withProvenance 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -2445,7 +2397,6 @@ exports[`For different states Looks right withProvenance 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={

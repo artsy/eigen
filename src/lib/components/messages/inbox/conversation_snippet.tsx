@@ -33,15 +33,15 @@ const HorizontalLayout = styled.View`
     flex-direction: row
 `
 
-const CardContent = HorizontalLayout.extend`
+const CardContent = styled(HorizontalLayout)`
     justify-content: space-between
 `
 
-const TextPreview = VerticalLayout.extend`
+const TextPreview = styled(VerticalLayout)`
     margin-left: 15
 `
 
-const DateHeading = HorizontalLayout.extend`
+const DateHeading = styled(HorizontalLayout)`
     justify-content: flex-end
     margin-bottom: 4
 `
@@ -69,11 +69,37 @@ const ArtworkSubtitle = styled.Text`
   marginBottom: 2
 `
 
-const ArtworkTitle = ArtworkSubtitle.extend`
+const ArtworkTitle = styled(ArtworkSubtitle)`
   font-family: ${fonts["garamond-italic"]}
 `
 
-export class ConversationSnippet extends React.Component<any, any> {
+export interface Conversation {
+  id: string | null
+  inquiry_id: string | null
+  from_name: string | null
+  from_email: string | null
+  to_name: string | null
+  last_message: string | null
+  artworks: {
+    id: string | null
+    href: string | null
+    title: string | null
+    date: string | null
+    artist: {
+      name: string | null,
+    }
+    image: {
+      url: string | null
+      image_url: string | null,
+    },
+  }
+}
+
+interface Props {
+  conversation: Conversation
+}
+
+export class ConversationSnippet extends React.Component<Props, any> {
   render() {
     const conversation = this.props.conversation
     const artwork = conversation.artworks[0]
