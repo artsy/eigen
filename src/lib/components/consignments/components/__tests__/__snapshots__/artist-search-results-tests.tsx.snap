@@ -99,6 +99,7 @@ exports[`For different states Looks right when Found four results 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -149,6 +150,7 @@ exports[`For different states Looks right when Found four results 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -199,6 +201,7 @@ exports[`For different states Looks right when Found four results 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -249,6 +252,7 @@ exports[`For different states Looks right when Found four results 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -294,6 +298,7 @@ exports[`For different states Looks right when Found four results 1`] = `
       hasTVPreferredFocus={undefined}
       hitSlop={undefined}
       isTVSelectable={true}
+      nativeID={undefined}
       onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -321,6 +326,7 @@ exports[`For different states Looks right when Found four results 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -414,6 +420,7 @@ exports[`For different states Looks right when Found no results 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
+        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -430,6 +437,7 @@ exports[`For different states Looks right when Found no results 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -473,6 +481,7 @@ exports[`For different states Looks right when Found no results 1`] = `
       hasTVPreferredFocus={undefined}
       hitSlop={undefined}
       isTVSelectable={true}
+      nativeID={undefined}
       onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -500,6 +509,7 @@ exports[`For different states Looks right when Found no results 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -623,6 +633,7 @@ exports[`For different states Looks right when Found one result 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -668,6 +679,7 @@ exports[`For different states Looks right when Found one result 1`] = `
       hasTVPreferredFocus={undefined}
       hitSlop={undefined}
       isTVSelectable={true}
+      nativeID={undefined}
       onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -695,6 +707,7 @@ exports[`For different states Looks right when Found one result 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -818,6 +831,7 @@ exports[`For different states Looks right when Found one result, and searching 1
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -863,6 +877,7 @@ exports[`For different states Looks right when Found one result, and searching 1
       hasTVPreferredFocus={undefined}
       hitSlop={undefined}
       isTVSelectable={true}
+      nativeID={undefined}
       onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -890,6 +905,7 @@ exports[`For different states Looks right when Found one result, and searching 1
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -1013,6 +1029,7 @@ exports[`For different states Looks right when Found two results 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -1063,6 +1080,7 @@ exports[`For different states Looks right when Found two results 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -1108,6 +1126,7 @@ exports[`For different states Looks right when Found two results 1`] = `
       hasTVPreferredFocus={undefined}
       hitSlop={undefined}
       isTVSelectable={true}
+      nativeID={undefined}
       onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -1135,6 +1154,7 @@ exports[`For different states Looks right when Found two results 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -1252,6 +1272,7 @@ exports[`For different states Looks right when Looking for new results 1`] = `
       hasTVPreferredFocus={undefined}
       hitSlop={undefined}
       isTVSelectable={true}
+      nativeID={undefined}
       onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -1279,6 +1300,7 @@ exports[`For different states Looks right when Looking for new results 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -1396,6 +1418,7 @@ exports[`For different states Looks right when No query 1`] = `
       hasTVPreferredFocus={undefined}
       hitSlop={undefined}
       isTVSelectable={true}
+      nativeID={undefined}
       onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -1423,6 +1446,7 @@ exports[`For different states Looks right when No query 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
