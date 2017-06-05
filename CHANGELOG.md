@@ -2,7 +2,7 @@
 
 #### Consignments
 
-- Users now can access stories from inside the app - orta
+- [dev] Adds component for attaching buttons to the keyboard  - orta
 - [dev] Adds component for artist search  - orta
 - [dev] Adds component for consignments todo  - orta
 - [dev] Adds a root component for the Consignments flow  - orta
@@ -11,6 +11,7 @@
 
 ### Emission
 
+- Users now can access stories from inside the app - orta
 - [dev] Upgrades React Native to v0.45 - sarah
 - [dev] Allows toggling the back button by pressing space - orta
 

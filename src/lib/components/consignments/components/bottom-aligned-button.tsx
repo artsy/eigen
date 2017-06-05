@@ -14,7 +14,7 @@ const ButtonText = styled.Text`
 `
 
 const Body = styled.TouchableOpacity`
-  height: 40
+  height: 56
   margin-bottom: 20
   padding-top: 18
 `
