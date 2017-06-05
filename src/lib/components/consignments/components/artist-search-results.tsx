@@ -5,8 +5,6 @@ import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
 
-import Button from "../../buttons/inverted_button"
-
 const Input = styled.TextInput`
   height: 40
   backgroundColor: black

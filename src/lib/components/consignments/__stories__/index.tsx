@@ -10,7 +10,7 @@ import * as search from  "./consignments-search.story"
 import * as todo from  "./consignments-todo.story"
 
 // Just a quick interface so you know the API
-interface AutoStory {
+export interface AutoStory {
   name: string,
   allStates: any[],
   component: any
