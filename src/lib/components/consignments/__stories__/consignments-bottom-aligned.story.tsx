@@ -12,12 +12,12 @@ interface States {
 }
 
 const withText = {
-  children: [<Text>hi</Text>],
+  children: [<Text style={{color: "white"}}>hi</Text>],
   onPress: () => "" ,
 }
 
 const withSearchResults = {
-  children: [<Search searching={false} query="Bank" results={null} />],
+  children: [<Search searching={false} query="Banko" results={null} />],
   onPress: () => "",
 }
 
@@ -25,3 +25,5 @@ export const allStates: States[] = [
   { "With a Text element" : withText },
   { "With an Artist Search Results Component" : withSearchResults },
 ]
+
+// TODO: Make a component that animates keyboard back and forth
