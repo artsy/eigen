@@ -4,9 +4,9 @@
 #import <Extraction/ARSpinner.h>
 #import <SAMKeychain/SAMKeychain.h>
 
-#import <Artsy_Authentication/ArtsyAuthentication.h>
-#import <Artsy_Authentication/ArtsyAuthenticationRouter.h>
-#import <Artsy_Authentication/ArtsyToken.h>
+#import <Artsy+Authentication/ArtsyAuthentication.h>
+#import <Artsy+Authentication/ArtsyAuthenticationRouter.h>
+#import <Artsy+Authentication/ArtsyToken.h>
 
 @interface AuthenticationManager()
 @property (nonatomic, strong) UIViewController *authenticationSpinnerController;
