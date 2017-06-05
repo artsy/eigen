@@ -12,7 +12,7 @@
     "lint-staged": "lint-staged",
     "ci": "npm run type-check && npm run lint && npm run test -- --runInBand",
     "danger": "danger",
-    "start": "npm run clean-example && concurrently --kill-others 'npm run start-packager'",
+    "start": "npm run clean-example && concurrently --kill-others 'npm run start-packager' 'npm run storybook'",
     "start-packager": "node node_modules/react-native/local-cli/cli.js start --config \"$(pwd)\"/rn-cli.config.js",
     "storybook": "storybook start -p 9001 -c .storybook --skip-packager",
     "rndebugger": "REACT_DEBUGGER=\"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\" npm start",
@@ -84,7 +84,7 @@
     "styled-components": "^2.0.0"
   },
   "devDependencies": {
-    "@storybook/react-native": "^3.0.0-alpha.0",
+    "@storybook/react-native": "^3.0.0",
     "@types/jest": "^19.2.2",
     "@types/lodash": "^4.14.64",
     "@types/react-native": "^0.44.0",
