@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Looks correct when rendered 1`] = `
+exports[`looks correct when rendered 1`] = `
 <RCTScrollView
   onScroll={[Function]}
   scrollEventThrottle={10}
