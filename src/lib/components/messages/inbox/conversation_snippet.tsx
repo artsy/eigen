@@ -80,7 +80,7 @@ export interface Conversation {
   from_email: string | null
   to_name: string | null
   last_message: string | null
-  artworks: {
+  artworks: Array<{
     id: string | null
     href: string | null
     title: string | null
@@ -92,7 +92,7 @@ export interface Conversation {
       url: string | null
       image_url: string | null,
     },
-  }
+  }>
 }
 
 interface Props {
