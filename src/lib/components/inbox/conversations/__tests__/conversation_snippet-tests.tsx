@@ -4,7 +4,7 @@ import * as renderer from "react-test-renderer"
 
 import ConversationSnippet from "../conversation_snippet"
 
-it("Renders correctly", () => {
+it("renders correctly", () => {
   const tree = renderer.create(<ConversationSnippet conversation={conversation} />)
   expect(tree).toMatchSnapshot()
 })

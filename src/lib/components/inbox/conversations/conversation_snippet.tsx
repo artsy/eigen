@@ -144,6 +144,8 @@ interface Styles {
   image: ViewStyle,
 }
 
+// Need to keep the stylesheet for OpaqueImageView because it expects borderRadius to be an integer
+// whereas styled-components converts the value to a string
 const styles = StyleSheet.create<Styles>({
   image: {
     width: 58,

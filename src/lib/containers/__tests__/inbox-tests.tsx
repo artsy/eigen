@@ -4,7 +4,7 @@ import * as renderer from "react-test-renderer"
 
 import Inbox from "../inbox"
 
-it("Renders correctly", () => {
+it("renders correctly", () => {
   const tree = renderer.create(<Inbox me={meProps} />).toJSON()
   expect(tree).toMatchSnapshot()
 })
