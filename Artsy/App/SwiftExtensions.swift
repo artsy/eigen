@@ -58,7 +58,12 @@ extension Occupiable {
     var isNotEmpty: Bool { return !isEmpty }
 }
 
-extension String: Occupiable {}
+// Required for Xcode 8/9 compatibility. Can be dropped when we move to Swift 4.
+extension String: Occupiable {
+    var isNotEmpty: Bool {
+        return !isEmpty
+    }
+}
 
 extension Array {
     mutating func remove(matching closure: @escaping ((Element) -> Bool)) -> Element? {

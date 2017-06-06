@@ -4,7 +4,7 @@ import SDWebImage
 
 class LotStandingsLotView: UIView {
     typealias Config = (lotStanding: LotStanding, drawBottomBorder: Bool, isCompact: Bool)
-    typealias TappedClosure = (Void) -> Void
+    typealias TappedClosure = () -> Void
 
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var imageView: UIImageView!
