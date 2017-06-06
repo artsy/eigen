@@ -6,7 +6,8 @@ node_js:
 
 script:
   - yarn ci
-  - yarn danger
+  # Disabling danger until we fix builds
+  # - yarn danger
 
 deploy:
   provider: script
