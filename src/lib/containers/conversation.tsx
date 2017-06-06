@@ -3,14 +3,14 @@ import * as React from "react"
 import {
   MetadataText,
   SmallHeadline,
-} from "../../lib/components/messages/typography"
+} from "../components/inbox/typography"
 
 import { ImageURISource, ViewProperties } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../data/colors"
-import Composer from "../components/messages/composer"
-import Message from "../components/messages/message"
+import Composer from "../components/inbox/conversations/composer"
+import Message from "../components/inbox/conversations/message"
 
 // tslint:disable-next-line:no-var-requires
 const chevron: ImageURISource = require("../../../images/horizontal_chevron.png")
@@ -47,12 +47,12 @@ const DottedBorder = styled.View`
 `
 
 interface Props extends ViewProperties {
-  id: string,
-  inquiry_id: string,
-  from_name: string,
-  from_email: string,
-  to_name: string,
-  last_message: string,
+  id: string | null,
+  inquiry_id: string | null,
+  from_name: string | null,
+  from_email: string | null,
+  to_name: string | null,
+  last_message: string | null,
 }
 
 export default class Conversation extends React.Component<Props, {}> {
@@ -70,7 +70,7 @@ export default class Conversation extends React.Component<Props, {}> {
           <DottedBorder />
         </Header>
         <Message />
-        <Composer onSubmit={(text) => console.log(text)}/>
+        <Composer />
       </Container>
     )
   }

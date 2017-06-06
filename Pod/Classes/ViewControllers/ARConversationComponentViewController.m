@@ -2,17 +2,17 @@
 
 @implementation ARConversationComponentViewController
 
-- (instancetype)initWithInquiryID:(NSString *)inquiryID
+- (instancetype)initWithConversationID:(NSString *)conversationID
 {
-    return [self initWithInquiryID:inquiryID emission:nil];
+    return [self initWithConversationID:conversationID emission:nil];
 }
-- (instancetype)initWithInquiryID:(NSString *)inquiryID
+- (instancetype)initWithConversationID:(NSString *)conversationID
                          emission:(nullable AREmission *)emission
 {
     if ((self = [super initWithEmission:emission
                              moduleName:@"Conversation"
-                      initialProperties:@{ @"inquiryID": inquiryID }])) {
-        _inquiryID = inquiryID;
+                      initialProperties:@{ @"conversationID": conversationID }])) {
+        _conversationID = conversationID;
     }
     return self;
 }

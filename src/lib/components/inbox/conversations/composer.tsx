@@ -3,8 +3,8 @@ import * as React from "react"
 import { Keyboard, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback } from "react-native"
 
 import styled from "styled-components/native"
-import colors from "../../../data/colors"
-import fonts from "../../../data/fonts"
+import colors from "../../../../data/colors"
+import fonts from "../../../../data/fonts"
 
 const Container = styled.View`
   flexDirection: row

@@ -248,9 +248,9 @@ randomBOOL(void)
     }
     viewController = [[ARGeneComponentViewController alloc] initWithGeneID:geneID refineSettings:params];
 
-  } else if ([route hasPrefix:@"/inquiry/"] || [route hasPrefix:@"inquiry/"]) {
-    NSString *inquiryID = [[route componentsSeparatedByString:@"/"] lastObject];
-    viewController = [[ARConversationComponentViewController alloc] initWithInquiryID:inquiryID];
+  } else if ([route hasPrefix:@"/conversation/"] || [route hasPrefix:@"conversation/"]) {
+    NSString *conversationID = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARConversationComponentViewController alloc] initWithConversationID:conversationID];
   } else if ([route isEqualToString:@"/"]) {
     viewController = [[ARHomeComponentViewController alloc] initWithEmission:nil];
 

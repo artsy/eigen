@@ -4,10 +4,10 @@ import {
   BodyText,
   MetadataText,
   SmallHeadline,
-} from "./typography"
+} from "../typography"
 
 import styled from "styled-components/native"
-import colors from "../../../data/colors"
+import colors from "../../../../data/colors"
 
 const VerticalLayout = styled.View`
   flex-direction: column

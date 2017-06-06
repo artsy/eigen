@@ -4,10 +4,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ARConversationComponentViewController : ARComponentViewController
 
-@property (nonatomic, strong, readonly) NSString *inquiryID;
+@property (nonatomic, strong, readonly) NSString *conversationID;
 
-- (instancetype)initWithInquiryID:(NSString *)inquiryID;
-- (instancetype)initWithInquiryID:(NSString *)inquiryID
+- (instancetype)initWithConversationID:(NSString *)conversationID;
+- (instancetype)initWithConversationID:(NSString *)conversationID
                          emission:(nullable AREmission *)emission NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithEmission:(nullable AREmission *)emission
                       moduleName:(NSString *)moduleName

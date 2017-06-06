@@ -146,7 +146,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
   }
 
   handleTap() {
-    SwitchBoard.presentNavigationViewController(this, "/inquiry/")
+    SwitchBoard.presentNavigationViewController(this, "/conversation/")
   }
 }
 
