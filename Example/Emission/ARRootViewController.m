@@ -15,7 +15,7 @@
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARComponentViewController.h>
-#import <Emission/ARMessagesComponentViewController.h>
+#import <Emission/ARInboxComponentViewController.h>
 #import "ARStorybookComponentViewController.h"
 
 @implementation ARRootViewController
@@ -66,7 +66,7 @@
   [sectionData addCellData:self.jumpToRefinedGene];
   [sectionData addCellData:self.jumpToWorksForYou];
   [sectionData addCellData:self.jumpToConsignments];
-  [sectionData addCellData:self.jumpToMessages];
+  [sectionData addCellData:self.jumpToInbox];
 
   return sectionData;
 }
@@ -175,10 +175,10 @@
   }];
 }
 
-- (ARCellData *)jumpToMessages
+- (ARCellData *)jumpToInbox
 {
-  return [self tappableCellDataWithTitle:@"Messages" selection:^{
-    id viewController = [[ARMessagesComponentViewController alloc] initWithMessages];
+  return [self tappableCellDataWithTitle:@"Inbox" selection:^{
+    id viewController = [[ARInboxComponentViewController alloc] initWithInbox];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

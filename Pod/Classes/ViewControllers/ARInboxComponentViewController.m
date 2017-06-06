@@ -1,13 +1,13 @@
-#import "ARMessagesComponentViewController.h"
+#import "ARInboxComponentViewController.h"
 #import <React/RCTRootView.h>
 
-@interface ARMessagesComponentViewController ()
+@interface ARInboxComponentViewController ()
 
 @end
 
-@implementation ARMessagesComponentViewController
+@implementation ARInboxComponentViewController
 
-- (instancetype)initWithMessages;
+- (instancetype)initWithInbox;
 {
     if ((self = [super initWithEmission:nil
                              moduleName:@"Inbox"

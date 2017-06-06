@@ -172,13 +172,13 @@ EXTERNAL SOURCES:
     :branch: fetch-user-details
     :git: https://github.com/artsy/Artsy-Authentication.git
   Emission:
-    :path: ../
+    :path: "../"
   React:
-    :path: ../node_modules/react-native
+    :path: "../node_modules/react-native"
   SentryReactNative:
-    :path: ../node_modules/react-native-sentry
+    :path: "../node_modules/react-native-sentry"
   Yoga:
-    :path: ../node_modules/react-native/ReactCommon/yoga
+    :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
   AppHub:
