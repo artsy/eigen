@@ -1,4 +1,4 @@
-import * as TODO from "../../__stories__/consignments_todo.story"
+import * as TODO from "../../__stories__/todo.story"
 import storyRunner from "./runner"
 
 storyRunner("TODO states:", TODO)

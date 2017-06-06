@@ -3,6 +3,8 @@ import * as React from "react"
 import { View } from "react-native"
 import * as T from "../typography"
 
+import BooleanSelector from "../components/boolean_button"
+
 const Wrapper = (p) => <View style={{backgroundColor: "black", flex: 1, paddingTop: 20}}>{p.children}</View>
 
 storiesOf("Consignments - Type")
@@ -18,5 +20,12 @@ storiesOf("Consignments - Type")
   .add("blank", () =>
     <Wrapper>
       <T.Subtitle>Subtitle</T.Subtitle>
+    </Wrapper>,
+  )
+
+  .add("Boolean selector", () =>
+    <Wrapper>
+      <BooleanSelector selected={true}/>
+      <BooleanSelector selected={false}/>
     </Wrapper>,
   )
