@@ -9,7 +9,6 @@ it("Renders correctly", () => {
   expect(tree).toMatchSnapshot()
 })
 
-
 const conversation = {
     id: "582",
     inquiry_id: "59302144275b244a81d0f9c6",
