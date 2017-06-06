@@ -2,7 +2,7 @@ import * as React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import Inbox from "../inbox"
+import Inbox from "../"
 
 it("Looks correct when rendered", () => {
     const tree = renderer.create(<Inbox me={meProps} />).toJSON()

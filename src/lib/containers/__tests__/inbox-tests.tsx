@@ -2,10 +2,10 @@ import * as React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import Messages from "../messages"
+import Inbox from "../inbox"
 
 it("Renders correctly", () => {
-  const tree = renderer.create(<Messages me={meProps} />).toJSON()
+  const tree = renderer.create(<Inbox me={meProps} />).toJSON()
   expect(tree).toMatchSnapshot()
 })
 

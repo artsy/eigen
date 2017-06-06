@@ -18,7 +18,7 @@ interface State {
   completed: boolean
 }
 
-export class Inbox extends React.Component<any, State> {
+export class Conversations extends React.Component<any, State> {
   currentScrollOffset?: number = 0
 
   constructor(props) {
@@ -88,7 +88,7 @@ export class Inbox extends React.Component<any, State> {
   }
 }
 
-export default Relay.createContainer(Inbox, {
+export default Relay.createContainer(Conversations, {
   initialVariables: {
     totalSize: PageSize,
   },
