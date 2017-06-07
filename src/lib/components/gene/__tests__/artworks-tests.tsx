@@ -14,6 +14,6 @@ it("renders properly", () => {
     queryState: null,
     queryForPage: null,
   }
-  const artworks = renderer.create(<Artworks gene={props}/>).toJSON()
+  const artworks = renderer.create(<Artworks gene={props} />).toJSON()
   expect(artworks).toMatchSnapshot()
 })

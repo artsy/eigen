@@ -4,12 +4,12 @@ import { AppRegistry, NavigatorIOS } from "react-native"
 import Browser from "./section_browser"
 
 export interface Story {
-  name: string,
+  name: string
   render: () => any
 }
 
 export interface StorySection {
-  kind: string,
+  kind: string
   stories: Story[]
 }
 
@@ -21,7 +21,9 @@ const render = (props: any) =>
   />
 
 export default class StorybookBrowser extends React.PureComponent<any, null> {
-  render() { return render(this.props) }
+  render() {
+    return render(this.props)
+  }
 }
 
 AppRegistry.registerComponent("StorybookBrowser", () => StorybookBrowser)

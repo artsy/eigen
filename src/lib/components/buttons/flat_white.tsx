@@ -22,8 +22,8 @@ interface State {
 
 export default class WhiteButton extends React.Component<Props, State> {
   state: {
-    textOpacity: Animated.Value,
-    backgroundColor: Animated.Value,
+    textOpacity: Animated.Value
+    backgroundColor: Animated.Value
   }
 
   constructor(props: any) {
@@ -56,7 +56,7 @@ export default class WhiteButton extends React.Component<Props, State> {
       outputRange: ["white", "black"],
     })
     const styling = {
-      underlayColor: (this.props.selected ? "black" : colors["purple-regular"]),
+      underlayColor: this.props.selected ? "black" : colors["purple-regular"],
       style: [styles.button, { backgroundColor }, this.props.style],
     }
     const headlineStyles = [styles.text, { opacity: this.state.textOpacity }]

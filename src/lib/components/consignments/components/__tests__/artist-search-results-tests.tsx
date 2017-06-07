@@ -12,7 +12,7 @@ describe("For different states", () => {
     const name = Object.keys(test)[0]
     const state = test[name]
     it(`Looks right when ${name}`, () => {
-      const todo = renderer.create(<Search {...state}/>)
+      const todo = renderer.create(<Search {...state} />)
       expect(todo.toJSON()).toMatchSnapshot()
     })
   })

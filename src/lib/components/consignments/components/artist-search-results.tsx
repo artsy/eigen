@@ -57,57 +57,63 @@ const Separator = styled.View`
 `
 
 export interface ArtistQueryData {
-  query: string,
-  searching: boolean,
-  results: Array<{ name: string, id: string, image: { url: string } }> | null
+  query: string
+  searching: boolean
+  results: Array<{ name: string; id: string; image: { url: string } }> | null
   textDidChange?: (text: string) => void
 }
 
-const rowForResult = (result) =>
+const rowForResult = result =>
   <Result key={result.id}>
-    <Image source={{uri: result.image.url}} />
+    <Image source={{ uri: result.image.url }} />
     <Text>{result.name}</Text>
   </Result>
 
-const noResults = (props) => {
-   if (!props.query || props.searching) { return null }
-   return <UnknownLabel>
-    Unfortunately we are not accepting consignments for works by <UnknownName>{props.query}</UnknownName>
-   </UnknownLabel>
+const noResults = props => {
+  if (!props.query || props.searching) {
+    return null
+  }
+  return (
+    <UnknownLabel>
+      Unfortunately we are not accepting consignments for works by <UnknownName>{props.query}</UnknownName>
+    </UnknownLabel>
+  )
 }
 
 const render = (props: ArtistQueryData) =>
   <View>
 
-    <View style={{flexDirection: "row"}}>
+    <View style={{ flexDirection: "row" }}>
       <Input
-        autoFocus={typeof(jest) === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
+        autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
         autoCorrect={false}
         clearButtonMode="while-editing"
         onChangeText={props.textDidChange}
         defaultValue="Artist/Designer Name"
         keyboardAppearance="dark"
-        placeholderTextColor={ colors["gray-medium"] }
+        placeholderTextColor={colors["gray-medium"]}
         value={props.query}
         returnKeyType="search"
-        selectionColor={ colors["gray-medium"] }
+        selectionColor={colors["gray-medium"]}
       />
       <ActivityIndicator animating={props.searching} />
     </View>
 
-    <Separator/>
+    <Separator />
 
-    <ScrollView style={{height: 182, paddingTop: 16}} scrollEnabled={props.results && !!props.results.length}>
-      {props.results && props.results.length ? props.results.map(rowForResult) : noResults(props) }
+    <ScrollView style={{ height: 182, paddingTop: 16 }} scrollEnabled={props.results && !!props.results.length}>
+      {props.results && props.results.length ? props.results.map(rowForResult) : noResults(props)}
     </ScrollView>
 
-    <Separator/>
-    <View style={{height: 40}}>
+    <Separator />
+    <View style={{ height: 40 }}>
       <Button text="DONE" />
     </View>
   </View>
 
 // Export a pure component version
 export default class SearchResults extends React.PureComponent<ArtistQueryData, null> {
-  render() { return render(this.props) }
+  render() {
+    return render(this.props)
+  }
 }

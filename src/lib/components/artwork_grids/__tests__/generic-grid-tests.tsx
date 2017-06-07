@@ -5,7 +5,7 @@ import { renderWithLayout } from "../../../tests/render_with_layout"
 import GenericArtworksGrid from "../generic_grid"
 
 it("renders properly", () => {
-  const artworks = [ artwork(), artwork(), artwork() ]
+  const artworks = [artwork(), artwork(), artwork()]
 
   const layout = { width: 768 }
 
@@ -13,7 +13,7 @@ it("renders properly", () => {
   expect(grid).toMatchSnapshot()
 })
 
-let artwork = () => {
+const artwork = () => {
   return {
     __id: "artwork-long-title",
     title: "DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM",

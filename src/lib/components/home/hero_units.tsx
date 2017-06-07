@@ -1,20 +1,13 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  LayoutChangeEvent,
-  ScrollView,
-  TouchableHighlight,
-  View,
-  ViewProperties,
-} from "react-native"
+import { LayoutChangeEvent, ScrollView, TouchableHighlight, View, ViewProperties } from "react-native"
 
 import SwitchBoard from "../../native_modules/switch_board"
 import OpaqueImageView from "../opaque_image_view"
 import Headline from "../text/headline"
 
-interface Props extends ViewProperties, RelayProps {
-}
+interface Props extends ViewProperties, RelayProps {}
 
 interface State {
   width?: number
@@ -42,19 +35,23 @@ class HeroUnits extends React.Component<Props, State> {
     this.setState({ width, height, margin, fontSize })
   }
 
-  handlePress = (heroUnit) => {
+  handlePress = heroUnit => {
     SwitchBoard.presentNavigationViewController(this, heroUnit.href)
   }
 
   renderHeroUnit(heroUnit, margin, width, height) {
     return (
-      <TouchableHighlight key={heroUnit.__id}
-                          onPress={() => this.handlePress(heroUnit)}
-                          underlayColor="black"
-                          style={{ marginLeft: 5, marginRight: 5, marginTop: 20, width, height }}>
+      <TouchableHighlight
+        key={heroUnit.__id}
+        onPress={() => this.handlePress(heroUnit)}
+        underlayColor="black"
+        style={{ marginLeft: 5, marginRight: 5, marginTop: 20, width, height }}
+      >
         <View style={{ flex: 1, justifyContent: "center" }}>
-          <OpaqueImageView imageURL={width > 600 ? heroUnit.wide_image_url : heroUnit.narrow_image_url}
-                              style={{ position: "absolute", top: 0, width, height }} />
+          <OpaqueImageView
+            imageURL={width > 600 ? heroUnit.wide_image_url : heroUnit.narrow_image_url}
+            style={{ position: "absolute", top: 0, width, height }}
+          />
           <View style={{ position: "absolute", top: 0, width, height, backgroundColor: "black", opacity: 0.3 }} />
           <View style={{ marginLeft: margin, backgroundColor: "transparent" }}>
             <Headline style={{ color: "white", fontSize: 12 }}>{heroUnit.heading}</Headline>
@@ -68,12 +65,14 @@ class HeroUnits extends React.Component<Props, State> {
   renderHeroUnits() {
     const { width, height, margin } = this.state
     if (width && height && margin) {
-      const imageWidth = width - (margin * 2)
+      const imageWidth = width - margin * 2
       return (
-        <ScrollView style={{ overflow: "visible", marginLeft: margin - 5, marginRight: margin - 5 }}
-                    horizontal={true}
-                    pagingEnabled={true}
-                    showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          style={{ overflow: "visible", marginLeft: margin - 5, marginRight: margin - 5 }}
+          horizontal={true}
+          pagingEnabled={true}
+          showsHorizontalScrollIndicator={false}
+        >
           {(this.props.hero_units || []).map(heroUnit => this.renderHeroUnit(heroUnit, margin, imageWidth, height))}
         </ScrollView>
       )
@@ -102,11 +101,11 @@ export default Relay.createContainer(HeroUnits, {
 
 interface RelayProps {
   hero_units: Array<{
-    __id: string,
-    href: string | null,
-    title: string | null,
-    heading: string | null,
-    narrow_image_url: string | null,
-    wide_image_url: string | null,
-  } | null> | null,
+    __id: string
+    href: string | null
+    title: string | null
+    heading: string | null
+    narrow_image_url: string | null
+    wide_image_url: string | null
+  } | null> | null
 }

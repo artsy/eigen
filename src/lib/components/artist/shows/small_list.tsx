@@ -11,7 +11,7 @@ interface Props extends ViewProperties {
 }
 
 interface State {
-  dataSource: ListViewDataSource,
+  dataSource: ListViewDataSource
 }
 
 class SmallList extends React.Component<Props, State> {
@@ -37,9 +37,7 @@ class SmallList extends React.Component<Props, State> {
   }
 
   renderShow = (show: any) => {
-    return (
-      <Show show={show} styles={showStyles} />
-    ) as React.ReactElement<{}>
+    return <Show show={show} styles={showStyles} /> as React.ReactElement<{}>
   }
 }
 
@@ -76,7 +74,5 @@ export default Relay.createContainer(SmallList, {
 })
 
 interface RelayProps {
-  shows: Array<{
-
-  } | null> | null,
+  shows: Array<{} | null> | null
 }

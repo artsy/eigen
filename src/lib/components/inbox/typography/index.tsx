@@ -7,47 +7,40 @@ import fonts from "../../../../data/fonts"
 const LargeHeadline = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.largeDefault, props.style || {}, styles.largeRequired]
-  return <Text key={children} style ={style}>{children}</Text>
+  return <Text key={children} style={style}>{children}</Text>
 }
 
 const SmallHeadline = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.smallDefault, props.style || {}, styles.smallRequired]
-  return <Text key={children} style ={style}>{children.toUpperCase()}</Text>
+  return <Text key={children} style={style}>{children.toUpperCase()}</Text>
 }
 
 const Subtitle = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.subtitleDefault, props.style || {}, styles.subtitleRequired]
-  return <Text key={children} style ={style}>{children}</Text>
+  return <Text key={children} style={style}>{children}</Text>
 }
 
 const MetadataText = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.metadataDefault, props.style || {}, styles.metadataRequired]
-  return <Text key={children} style ={style}>{children.toUpperCase()}</Text>
+  return <Text key={children} style={style}>{children.toUpperCase()}</Text>
 }
 
 const PreviewText = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.bodyDefault, props.style || {}, styles.bodyRequired]
-  return <Text key={children} style ={style} numberOfLines={1} ellipsizeMode={"tail"}>{children}</Text>
+  return <Text key={children} style={style} numberOfLines={1} ellipsizeMode={"tail"}>{children}</Text>
 }
 
 const BodyText = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.bodyDefault, props.style || {}, styles.bodyRequired]
-  return <Text key={children} style ={style}>{children}</Text>
+  return <Text key={children} style={style}>{children}</Text>
 }
 
-export  {
-  LargeHeadline,
-  SmallHeadline,
-  Subtitle,
-  MetadataText,
-  PreviewText,
-  BodyText
-}
+export { LargeHeadline, SmallHeadline, Subtitle, MetadataText, PreviewText, BodyText }
 
 interface Styles {
   largeRequired: TextStyle
@@ -64,7 +57,7 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   largeDefault: {
-    fontSize:  30,
+    fontSize: 30,
     color: "black",
     textAlign: "left",
     paddingLeft: 20,
@@ -76,7 +69,7 @@ const styles = StyleSheet.create<Styles>({
   },
 
   smallDefault: {
-    fontSize:  11,
+    fontSize: 11,
     color: "black",
     textAlign: "left",
   },
@@ -85,8 +78,8 @@ const styles = StyleSheet.create<Styles>({
     fontFamily: fonts["avant-garde-regular"],
   },
 
- subtitleDefault: {
-    fontSize:  16,
+  subtitleDefault: {
+    fontSize: 16,
     color: "black",
   },
 
@@ -95,7 +88,7 @@ const styles = StyleSheet.create<Styles>({
   },
 
   metadataDefault: {
-    fontSize:  11,
+    fontSize: 11,
     color: colors["gray-medium"],
     textAlign: "left",
   },
@@ -105,7 +98,7 @@ const styles = StyleSheet.create<Styles>({
   },
 
   bodyDefault: {
-    fontSize:  16,
+    fontSize: 16,
     color: "black",
     textAlign: "left",
   },

@@ -1,18 +1,12 @@
 import * as PropTypes from "prop-types"
 import * as React from "react"
-import {
-  NativeSyntheticEvent,
-  NativeTouchEvent,
-  requireNativeComponent,
-  ViewProperties,
-} from "react-native"
+import { NativeSyntheticEvent, NativeTouchEvent, requireNativeComponent, ViewProperties } from "react-native"
 
-export interface SwitchEvent extends NativeSyntheticEvent<NativeTouchEvent & { selectedIndex: number }> {
-}
+export interface SwitchEvent extends NativeSyntheticEvent<NativeTouchEvent & { selectedIndex: number }> {} // tslint:disable-line
 
 interface Props extends ViewProperties {
   titles: string[]
-  onSelectionChange: (event: SwitchEvent) => void,
+  onSelectionChange: (event: SwitchEvent) => void
   selectedIndex: number
 }
 

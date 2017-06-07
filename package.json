@@ -10,8 +10,11 @@
     "type-check": "tsc --noEmit --pretty",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "lint-fix": "npm run lint -- --fix",
+    "prettier": "prettier",
+    "prettier-write": "npm run prettier -- --parser typescript --no-semi --trailing-comma es5 --write --print-width 120 ",
+    "prettier-project": "npm run prettier-write -- 'src/**/*.{ts,tsx}'",
     "lint-staged": "lint-staged",
-    "ci": "npm run type-check && npm run lint && npm run test -- --runInBand",
+    "ci": "npm run type-check && npm run lint && npm run prettier-project -- -l && npm run test -- --runInBand",
     "danger": "danger",
     "start": "npm run clean-example && concurrently --kill-others 'npm run start-packager' 'npm run storybook'",
     "start-packager": "node node_modules/react-native/local-cli/cli.js start --config \"$(pwd)\"/rn-cli.config.js",
@@ -102,13 +105,14 @@
     "jest": "^20.0.4",
     "jest-react-native": "18.0.0",
     "lint-staged": "^3.4.1",
+    "prettier": "^1.4.2",
     "react-dom": "16.0.0-alpha.12",
     "react-storybooks-relay-container": "^1.0.0",
     "react-test-renderer": "16.0.0-alpha.12",
     "recursive-readdir-sync": "^1.0.6",
     "relay2ts": "^0.2.0",
     "ts-jest": "^20.0.3",
-    "tslint": "^4.5.0",
+    "tslint": "^5.4.3",
     "typescript": "^2.3.2"
   },
   "peerDependencies": {
@@ -117,6 +121,7 @@
   "lint-staged": {
     "*.@(ts|tsx)": [
       "tslint --fix",
+      "yarn prettier-write --",
       "git add"
     ]
   }

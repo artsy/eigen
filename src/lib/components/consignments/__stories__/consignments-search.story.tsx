@@ -57,7 +57,7 @@ const query2Results: ArtistQueryData = {
       id: "banksy",
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
     },
-        {
+    {
       name: "Banksy's Brother",
       id: "thanksy",
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/zKBFBZPGN-V5TljXtsSuEg/square.jpg" },
@@ -66,37 +66,38 @@ const query2Results: ArtistQueryData = {
 }
 
 const artistGen = (name: string) => ({
-    name,
-    id: camelCase(name),
-    image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
-
+  name,
+  id: camelCase(name),
+  image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
 })
 
 const query4Results: ArtistQueryData = {
   query: "bank",
   searching: false,
   results: [
-    artistGen("Ada Van Hoorebeke"), artistGen("Kathleen Adair Brown"),
-    artistGen("Linda Adair"), artistGen("Hector Adalid"),
+    artistGen("Ada Van Hoorebeke"),
+    artistGen("Kathleen Adair Brown"),
+    artistGen("Linda Adair"),
+    artistGen("Hector Adalid"),
   ],
 }
 
 export const allStates = [
-  { "No query" : noQuery },
-  { "Looking for new results" : queryNoResultsSearching },
-  { "Found no results" : queryNoResults },
-  { "Found one result" : query1Result },
-  { "Found one result, and searching" : query1ResultSearching },
-  { "Found two results" : query2Results },
-  { "Found four results" : query4Results },
+  { "No query": noQuery },
+  { "Looking for new results": queryNoResultsSearching },
+  { "Found no results": queryNoResults },
+  { "Found one result": query1Result },
+  { "Found one result, and searching": query1ResultSearching },
+  { "Found two results": query2Results },
+  { "Found four results": query4Results },
 ]
 
 const stories = storiesOf("Consignments - Search")
 allStates.forEach(element => {
   const name = Object.keys(element)[0]
   stories.add(name, () =>
-  <View style={{flex: 1, backgroundColor: "black", padding: 20, marginTop: 60}}>
-    <Search {...element[name]} />
-  </View>,
+    <View style={{ flex: 1, backgroundColor: "black", padding: 20, marginTop: 60 }}>
+      <Search {...element[name]} />
+    </View>
   )
 })

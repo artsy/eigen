@@ -1,6 +1,6 @@
 import * as Relay from "react-relay"
 import Artwork from "../artwork"
-import InfiniteScrollArtworksGrid, {PageSize} from "../infinite_scroll_grid"
+import InfiniteScrollArtworksGrid, { PageSize } from "../infinite_scroll_grid"
 
 export default Relay.createContainer(InfiniteScrollArtworksGrid, {
   initialVariables: {
@@ -39,16 +39,18 @@ export interface GeneRelayProps {
   gene: {
     artworks_connection: {
       pageInfo: {
-        hasNextPage: boolean,
-      },
-      edges: Array<{
-        node: {
-          __id: string,
-          image: {
-            aspect_ratio: number | null,
-          } | null,
-        } | null,
-      }>,
-    } | null,
-  },
+        hasNextPage: boolean
+      }
+      edges: Array<
+        {
+          node: {
+            __id: string
+            image: {
+              aspect_ratio: number | null
+            } | null
+          } | null
+        }
+      >
+    } | null
+  }
 }

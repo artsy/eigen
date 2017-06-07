@@ -4,7 +4,7 @@ const { ARRefineOptionsModule } = NativeModules
 async function triggerRefine(
   component: React.Component<any, any>,
   initialSettings: any,
-  currentSettings: any,
+  currentSettings: any
 ): Promise<any> {
   let reactTag
   try {

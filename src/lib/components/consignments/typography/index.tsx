@@ -7,33 +7,28 @@ import fonts from "../../../../data/fonts"
 const LargeHeadline = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.largeDefault, props.style || {}, styles.largeRequired]
-  return <Text key={children} style ={style}>{children}</Text>
+  return <Text key={children} style={style}>{children}</Text>
 }
 
 const SmallHeadline = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.smallDefault, props.style || {}, styles.smallRequired]
-  return <Text key={children} style ={style}>{children}</Text>
+  return <Text key={children} style={style}>{children}</Text>
 }
 
 const Subtitle = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.subtitleDefault, props.style || {}, styles.subtitleRequired]
-  return <Text key={children} style ={style}>{children}</Text>
+  return <Text key={children} style={style}>{children}</Text>
 }
 
 const BodyText = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.bodyDefault, props.style || {}, styles.bodyRequired]
-  return <Text key={children} style ={style}>{children}</Text>
+  return <Text key={children} style={style}>{children}</Text>
 }
 
-export  {
-  LargeHeadline,
-  SmallHeadline,
-  Subtitle,
-  BodyText
-}
+export { LargeHeadline, SmallHeadline, Subtitle, BodyText }
 
 interface Styles {
   largeRequired: TextStyle
@@ -48,7 +43,7 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   largeDefault: {
-    fontSize:  30,
+    fontSize: 30,
     color: "white",
     textAlign: "center",
     paddingLeft: 20,
@@ -60,7 +55,7 @@ const styles = StyleSheet.create<Styles>({
   },
 
   smallDefault: {
-    fontSize:  30,
+    fontSize: 30,
     color: "white",
     textAlign: "center",
   },
@@ -69,8 +64,8 @@ const styles = StyleSheet.create<Styles>({
     fontFamily: fonts["garamond-regular"],
   },
 
- subtitleDefault: {
-    fontSize:  20,
+  subtitleDefault: {
+    fontSize: 20,
     color: colors["gray-medium"],
     paddingLeft: 25,
     paddingRight: 25,
@@ -81,7 +76,7 @@ const styles = StyleSheet.create<Styles>({
   },
 
   bodyDefault: {
-    fontSize:  20,
+    fontSize: 20,
     color: colors["gray-medium"],
     paddingLeft: 25,
     paddingRight: 25,

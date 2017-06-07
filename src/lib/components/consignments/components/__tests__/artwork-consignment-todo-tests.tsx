@@ -12,7 +12,7 @@ describe("For different states", () => {
     if (allStates.hasOwnProperty(key)) {
       const state = allStates[key]
       it(`Looks right ${key}`, () => {
-        const todo = renderer.create(<TODO {...state}/>)
+        const todo = renderer.create(<TODO {...state} />)
         expect(todo.toJSON()).toMatchSnapshot()
       })
     }

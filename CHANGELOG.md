@@ -11,6 +11,7 @@
 
 ### Emission
 
+- [dev] Applies prettier, and adds it to the webhooks + extension settings - orta
 - [dev] Upgrades Sentry to 3.0, note Eigen integrator, this may require changes to Eigen - orta
 - [Messaging] Adds Inbox view with real data - luc
 - [dev] Upgrades React Native to v0.45 - sarah

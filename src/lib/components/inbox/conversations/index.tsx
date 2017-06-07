@@ -1,11 +1,7 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  ListView,
-  ListViewDataSource,
-  ScrollView,
-} from "react-native"
+import { ListView, ListViewDataSource, ScrollView } from "react-native"
 import { LargeHeadline } from "../typography"
 
 import ConversationSnippet from "./conversation_snippet"
@@ -52,7 +48,7 @@ export class Conversations extends React.Component<any, State> {
     const totalSize = this.props.relay.variables.totalSize + PageSize
 
     this.setState({ fetchingNextPage: true })
-    this.props.relay.setVariables({totalSize}, readyState => {
+    this.props.relay.setVariables({ totalSize }, readyState => {
       if (readyState.done) {
         this.setState({
           fetchingNextPage: false,
@@ -79,10 +75,12 @@ export class Conversations extends React.Component<any, State> {
 
   render() {
     return (
-      <ScrollView onScroll={event => this.currentScrollOffset = event.nativeEvent.contentOffset.y}
-                  scrollEventThrottle={10}>
-          <LargeHeadline style={{marginTop: 10}}>Messages</LargeHeadline>
-          {this.renderConversations()}
+      <ScrollView
+        onScroll={event => (this.currentScrollOffset = event.nativeEvent.contentOffset.y)}
+        scrollEventThrottle={10}
+      >
+        <LargeHeadline style={{ marginTop: 10 }}>Messages</LargeHeadline>
+        {this.renderConversations()}
       </ScrollView>
     )
   }

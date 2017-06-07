@@ -3,7 +3,7 @@ import * as React from "react"
 import ArtworksGrid from "../artwork_grids/relay_connections/gene_artworks_grid"
 
 class Artworks extends React.Component<any, any> {
-  static propTypes: Object = {
+  static propTypes = {
     gene: PropTypes.shape({
       id: PropTypes.string,
     }),
@@ -13,13 +13,14 @@ class Artworks extends React.Component<any, any> {
   }
 
   render() {
-   return (
+    return (
       <ArtworksGrid
         artworks={[]}
         queryState={this.props.queryState}
         queryForPage={this.props.resolveQuery}
-        queryArtworksKeypath="gene.filtered_artworks.hits" />
-      )
+        queryArtworksKeypath="gene.filtered_artworks.hits"
+      />
+    )
   }
 }
 
