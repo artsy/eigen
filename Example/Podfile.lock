@@ -140,10 +140,10 @@ PODS:
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
-  - Sentry (3.0.2):
-    - Sentry/Core (= 3.0.2)
-  - Sentry/Core (3.0.2)
-  - Sentry/KSCrash (3.0.2):
+  - Sentry (3.0.4):
+    - Sentry/Core (= 3.0.4)
+  - Sentry/Core (3.0.4)
+  - Sentry/KSCrash (3.0.4):
     - KSCrash (~> 1.15.8)
   - SentryReactNative (0.11.6):
     - KSCrash (~> 1.15.8)
@@ -163,8 +163,8 @@ DEPENDENCIES:
   - React/DevSupport (from `../node_modules/react-native`)
   - React/RCTAnimation (from `../node_modules/react-native`)
   - SAMKeychain
-  - Sentry/Core (from `https://github.com/orta/sentry-cocoa.git`, branch `dep_order`)
-  - Sentry/KSCrash (from `https://github.com/orta/sentry-cocoa.git`, branch `dep_order`)
+  - Sentry/Core
+  - Sentry/KSCrash
   - SentryReactNative (from `../node_modules/react-native-sentry`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -179,9 +179,6 @@ EXTERNAL SOURCES:
     :path: "../"
   React:
     :path: "../node_modules/react-native"
-  Sentry:
-    :branch: dep_order
-    :git: https://github.com/orta/sentry-cocoa.git
   SentryReactNative:
     :path: "../node_modules/react-native-sentry"
   Yoga:
@@ -194,9 +191,6 @@ CHECKOUT OPTIONS:
   Artsy+Authentication:
     :commit: 1b582675598c999726d9edacd3b8559e01cf7c48
     :git: https://github.com/artsy/Artsy-Authentication.git
-  Sentry:
-    :commit: f8d2c4833fd0b2775920bfdd37e4fecb8dca7572
-    :git: https://github.com/orta/sentry-cocoa.git
 
 SPEC CHECKSUMS:
   AppHub: '03788112dd48c42b60d51321c0ffff4ef15a4432'
@@ -215,11 +209,11 @@ SPEC CHECKSUMS:
   React: c30b44eb8e84d2071fb78cd1ed58e1512a822a57
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
-  Sentry: c5cb68c0525cdbba7bca8c67c6c097fd9fc3ceaa
+  Sentry: 8970911143109f9e87971913f6e2b7f3f4f08a5f
   SentryReactNative: e3684b0c140a1d3ee1e5d15c71aa2f1c1ccfdbea
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: d43165f478a090e7b603edc5796965a1de27d473
 
-PODFILE CHECKSUM: 251ce3c3ac21fca7644090dce5cf6968bddfb9e8
+PODFILE CHECKSUM: e4469b89c7780696fdd217fd34068fcbaab6fb25
 
 COCOAPODS: 1.2.1

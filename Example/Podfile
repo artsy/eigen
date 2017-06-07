@@ -17,9 +17,7 @@ target 'Emission' do
   pod 'React', :path => react_path, :subspecs => %w(DevSupport BatchedBridge RCTAnimation)
   pod 'Yoga', :path => yoga_path
 
-  # https://github.com/getsentry/sentry-cocoa/pull/171
-  pod 'Sentry', :git => "https://github.com/orta/sentry-cocoa.git", :branch => "dep_order", :subspecs => ['Core', 'KSCrash']
-  # https://github.com/getsentry/react-native-sentry/pull/84
+  pod 'Sentry', :subspecs => ['Core', 'KSCrash']
   pod 'SentryReactNative', :path => sentry_path
 
   # Got to make it look right

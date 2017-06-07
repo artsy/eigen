@@ -9,7 +9,7 @@
 #import <Artsy+Authentication/ArtsyToken.h>
 
 @interface AuthenticationManager()
-@property (nonatomic, strong) UIViewController *authenticationSpinnerController;
+@property (nonatomic, strong) UIViewController *viewController;
 @end
 
 @implementation AuthenticationManager
@@ -33,15 +33,8 @@
 
 - (void)presentAuthenticationPromptOnViewController:(UIViewController *)viewController completion:(dispatch_block_t)completion
 {
-  if (self.authenticationSpinnerController == nil) {
-    ARSpinner *spinner = [ARSpinner new];
-    [spinner startAnimating];
-    self.authenticationSpinnerController = [UIViewController new];
-    self.authenticationSpinnerController.view = spinner;
-    [viewController presentViewController:self.authenticationSpinnerController animated:NO completion:^{
-      [self showAuthenticationToArtsy:nil completion:completion];
-    }];
-  }
+  self.viewController = viewController;
+  [self showAuthenticationToArtsy:nil completion:completion];
 }
 
 /// Create an alert view to type in your user credentials
@@ -70,7 +63,7 @@
                      completion:completion];
   }]];
 
-  [self.authenticationSpinnerController presentViewController:alert animated:YES completion:nil];
+  [self.viewController presentViewController:alert animated:YES completion:nil];
 }
 
 /// Attempt to log in with creds, if it fails, set up the alert view again
@@ -110,7 +103,7 @@
               NSLog(@"%@", error);
             }
 
-            [self.authenticationSpinnerController dismissViewControllerAnimated:YES completion:nil];
+            [self.viewController dismissViewControllerAnimated:YES completion:nil];
             [self updateFromStoredCredentials];
             completion();
           }

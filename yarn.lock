@@ -2,32 +2,35 @@
 # yarn lockfile v1
 
 
-"@storybook/addon-actions@^3.0.0-alpha.0":
-  version "3.0.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-3.0.0-alpha.4.tgz#3bf0c2fcb6639bbdf9c0e1113b85d6d53721d74d"
+"@storybook/addon-actions@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-3.0.0.tgz#e141378eeff36cbc61d27ba4330eaadfb6cd5c8b"
   dependencies:
+    "@storybook/addons" "^3.0.0"
     deep-equal "^1.0.1"
     json-stringify-safe "^5.0.1"
     prop-types "^15.5.8"
     react-inspector "^2.0.0"
 
-"@storybook/addon-links@^3.0.0-alpha.0":
-  version "3.0.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-3.0.0-alpha.4.tgz#04a254444a291f1019b389f013769c9c67d33778"
-
-"@storybook/addons@^3.0.0-alpha.0":
-  version "3.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@storybook/addons/-/addons-3.0.0-alpha.0.tgz#b3902587f60196408c6d8289a21dcadeabdbee36"
-
-"@storybook/channel-websocket@^3.0.0-alpha.0":
-  version "3.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@storybook/channel-websocket/-/channel-websocket-3.0.0-alpha.0.tgz#b0c5b52af9be1dece83e68ad2f7a10005cbf6567"
+"@storybook/addon-links@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-3.0.0.tgz#497ae071b9f36f150a47a5c61d0688d615faec0c"
   dependencies:
-    "@storybook/channels" "^3.0.0-alpha.0"
+    "@storybook/addons" "^3.0.0"
 
-"@storybook/channels@^3.0.0-alpha.0":
-  version "3.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@storybook/channels/-/channels-3.0.0-alpha.0.tgz#8264742c92b8f36560a69eaa1a52bee04a3a6e5f"
+"@storybook/addons@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@storybook/addons/-/addons-3.0.0.tgz#0a59b73bbea15f927ec439d7bd9e67ef3719a819"
+
+"@storybook/channel-websocket@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@storybook/channel-websocket/-/channel-websocket-3.0.0.tgz#06965485622202599cf7d66c116fcbd7d60a0391"
+  dependencies:
+    "@storybook/channels" "^3.0.0"
+
+"@storybook/channels@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@storybook/channels/-/channels-3.0.0.tgz#603a1ea4779ee3d0b86d854f0ae6f899958ba73d"
 
 "@storybook/react-fuzzy@^0.4.0":
   version "0.4.0"
@@ -38,15 +41,15 @@
     fuse.js "^3.0.1"
     prop-types "^15.5.9"
 
-"@storybook/react-native@^3.0.0-alpha.0":
-  version "3.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@storybook/react-native/-/react-native-3.0.0-alpha.0.tgz#6d15da3f3b04b10bc7cc409771fb7236a96dd43a"
+"@storybook/react-native@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@storybook/react-native/-/react-native-3.0.0.tgz#69f8046af5984e2ce9d6fab4b29bea587ab80f6e"
   dependencies:
-    "@storybook/addon-actions" "^3.0.0-alpha.0"
-    "@storybook/addon-links" "^3.0.0-alpha.0"
-    "@storybook/addons" "^3.0.0-alpha.0"
-    "@storybook/channel-websocket" "^3.0.0-alpha.0"
-    "@storybook/ui" "^3.0.0-alpha.0"
+    "@storybook/addon-actions" "^3.0.0"
+    "@storybook/addon-links" "^3.0.0"
+    "@storybook/addons" "^3.0.0"
+    "@storybook/channel-websocket" "^3.0.0"
+    "@storybook/ui" "^3.0.0"
     autoprefixer "^7.0.1"
     babel-core "^6.24.1"
     babel-loader "^7.0.0"
@@ -81,9 +84,9 @@
     webpack-dev-middleware "^1.10.1"
     webpack-hot-middleware "^2.18.0"
 
-"@storybook/ui@^3.0.0-alpha.0":
-  version "3.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@storybook/ui/-/ui-3.0.0-alpha.0.tgz#01b29670f9bb4ced0bb6f5dafbdf74fd613e1a27"
+"@storybook/ui@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@storybook/ui/-/ui-3.0.0.tgz#64d83dd7529ebe0ffe7622d90e08bf00cd362508"
   dependencies:
     "@storybook/react-fuzzy" "^0.4.0"
     babel-runtime "^6.23.0"
@@ -5778,9 +5781,9 @@ react-modal@^1.7.6:
   version "0.18.2"
   resolved "https://github.com/orta/react-native-parallax-scroll-view#4e20440f9cd0b6280303b57124c0348c0e63b7c0"
 
-react-native-sentry@orta/react-native-sentry#remove-swizzle:
-  version "0.11.6"
-  resolved "https://codeload.github.com/orta/react-native-sentry/tar.gz/34ca4faff923b6a7d342bbf6d1a8af88a1c0f925"
+react-native-sentry@^0.11.8:
+  version "0.11.8"
+  resolved "https://registry.yarnpkg.com/react-native-sentry/-/react-native-sentry-0.11.8.tgz#fcf05778ac60b874f694b88423ba68c631eb6715"
   dependencies:
     chalk "^1.1.1"
     glob "7.1.1"
