@@ -1543,6 +1543,13 @@ type ConversationType {
   purchase_request: Boolean
   initial_message: String
   last_message: String
+  last_message_at(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
   artworks: [Artwork]
 }
 

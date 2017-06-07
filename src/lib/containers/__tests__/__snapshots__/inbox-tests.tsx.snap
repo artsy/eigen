@@ -173,7 +173,7 @@ exports[`renders correctly 1`] = `
                       ]
                     }
                   >
-                    11:00 AM
+                    A FEW SECONDS
                   </Text>
                   <View
                     style={
@@ -460,7 +460,7 @@ exports[`renders correctly 1`] = `
                       ]
                     }
                   >
-                    11:00 AM
+                    A FEW SECONDS
                   </Text>
                   <View
                     style={
