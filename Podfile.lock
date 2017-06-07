@@ -1,7 +1,7 @@
 PODS:
-  - Adjust (4.11.0):
-    - Adjust/Core (= 4.11.0)
-  - Adjust/Core (4.11.0)
+  - Adjust (4.11.4):
+    - Adjust/Core (= 4.11.4)
+  - Adjust/Core (4.11.4)
   - Aerodramus (0.3.1):
     - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
@@ -129,7 +129,7 @@ PODS:
     - Forgeries/Core
     - OCMock
   - FXBlurView (1.6.1)
-  - HockeySDK-Source (4.1.4)
+  - HockeySDK-Source (4.1.5)
   - Interstellar/Core (2.0.0)
   - iRate (1.10.2)
   - ISO8601DateFormatter (0.7.1)
@@ -303,6 +303,7 @@ DEPENDENCIES:
   - FLKAutoLayout (from `https://github.com/orta/FLKAutoLayout.git`, branch `v1`)
   - Forgeries/Mocks
   - FXBlurView
+  - HockeySDK-Source (from `https://github.com/bitstadium/HockeySDK-iOS.git`)
   - Interstellar/Core (from `https://github.com/ashfurrow/Interstellar.git`, branch `observable-unsubscribe`)
   - iRate
   - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
@@ -363,6 +364,8 @@ EXTERNAL SOURCES:
   FLKAutoLayout:
     :branch: v1
     :git: https://github.com/orta/FLKAutoLayout.git
+  HockeySDK-Source:
+    :git: https://github.com/bitstadium/HockeySDK-iOS.git
   Interstellar:
     :branch: observable-unsubscribe
     :git: https://github.com/ashfurrow/Interstellar.git
@@ -403,6 +406,9 @@ CHECKOUT OPTIONS:
   FLKAutoLayout:
     :commit: 4aa27fa1a9aba36d5465e6cd181ba4b78b0691d3
     :git: https://github.com/orta/FLKAutoLayout.git
+  HockeySDK-Source:
+    :commit: 551ca733c29bd35dddb651d9661c8839de4e7985
+    :git: https://github.com/bitstadium/HockeySDK-iOS.git
   Interstellar:
     :commit: 9ac6f95e19565af8a67324da4090dbfe17303c78
     :git: https://github.com/ashfurrow/Interstellar.git
@@ -420,14 +426,14 @@ CHECKOUT OPTIONS:
     :git: https://github.com/alloy/SSFadingScrollView.git
 
 SPEC CHECKSUMS:
-  Adjust: 87b3f066ea103f1dabfaa8e428a75b992bf7712e
+  Adjust: c3265d1c75916d727277aca22ac4b52072fc18d2
   Aerodramus: 648bab2c441eb6116db823e6301b1f2d4d2b61a0
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
   Analytics: b342fb4f43fa4f97ca6f4358b44d3295217ba294
-  AppHub: 03788112dd48c42b60d51321c0ffff4ef15a4432
+  AppHub: '03788112dd48c42b60d51321c0ffff4ef15a4432'
   ARAnalytics: 96e23ba7f54298f4914de9e1ac999db7a15f3fdd
   ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
@@ -446,11 +452,11 @@ SPEC CHECKSUMS:
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FBSDKCoreKit: d2aaed5e9ab7d8d6301c533376a1fbff1cf3deb5
   FBSDKLoginKit: 699ff169080e3072de4b9b0faca90bf23dc36deb
-  FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
+  FBSnapshotTestCase: '094f9f314decbabe373b87cc339bea235a63e07a'
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  HockeySDK-Source: 5bdf74ccf516d9751f04b755464bfd83f0d3be32
+  HockeySDK-Source: ab4eef2ac5c07c45db5844ae724bf6f06199b214
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
@@ -493,6 +499,6 @@ SPEC CHECKSUMS:
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 77f4e44e919b274504599a3536cdc90140fb58d8
 
-PODFILE CHECKSUM: b886481d878c7f1a4bcbea1523cdc8895d388990
+PODFILE CHECKSUM: a8aa200764a9cd051349edebee6c2f9130ad0658
 
 COCOAPODS: 1.2.1

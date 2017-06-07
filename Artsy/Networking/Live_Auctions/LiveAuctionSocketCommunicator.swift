@@ -4,7 +4,7 @@ import Starscream
 
 protocol SocketType: class {
     var onText: ((String) -> Void)? { get set }
-    var onConnect: ((Void) -> Void)? { get set }
+    var onConnect: (() -> Void)? { get set }
     var onDisconnect: ((NSError?) -> Void)? { get set }
 
     func write(string: String)

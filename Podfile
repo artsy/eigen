@@ -96,6 +96,8 @@ target 'Artsy' do
   # Analytics
   pod 'Analytics'
   pod 'ARAnalytics', :git=> "https://github.com/orta/ARAnalytics.git", :commit => "6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e", :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
+  # Required as a workaround for https://github.com/bitstadium/HockeySDK-iOS/pull/421
+  pod 'HockeySDK-Source', git: 'https://github.com/bitstadium/HockeySDK-iOS.git'
 
   # Developer Pods
   pod 'DHCShakeNotifier'
