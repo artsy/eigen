@@ -1,13 +1,11 @@
+import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import "react-native"
 import {
   ScrollView,
 } from "react-native"
-import { storiesOf } from "@storybook/react-native"
 
-import {ConversationSnippet, Conversation} from "../conversation_snippet"
-
-
+import {Conversation, ConversationSnippet} from "../conversation_snippet"
 
 const conversation: Conversation = {
     id: "582",
@@ -33,9 +31,10 @@ const conversation: Conversation = {
   ],
 }
 
-
 storiesOf("Conversations - Snippet")
-  //.add("No data", () => <ConversationSnippet conversation={{}} />)
   .add("Single row", () => <ConversationSnippet conversation={conversation} />)
-  .add("A few threads", () => <ScrollView><ConversationSnippet conversation={conversation} /><ConversationSnippet conversation={conversation} /><ConversationSnippet conversation={conversation} /></ScrollView>)
-
+  .add("A few threads", () => <ScrollView>
+      <ConversationSnippet conversation={conversation} />
+      <ConversationSnippet conversation={conversation} />
+      <ConversationSnippet conversation={conversation} />
+    </ScrollView>)

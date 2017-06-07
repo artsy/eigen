@@ -12,13 +12,18 @@ import ConversationSnippet from "./conversation_snippet"
 
 const PageSize = 10
 
+interface Props {
+  me: any // we probably want to generate an interface for this
+  relay: Relay.RelayProp
+}
+
 interface State {
   dataSource: ListViewDataSource | null
   fetchingNextPage: boolean
   completed: boolean
 }
 
-export class Conversations extends React.Component<any, State> {
+export class Conversations extends React.Component<Props, State> {
   currentScrollOffset?: number = 0
 
   constructor(props) {
