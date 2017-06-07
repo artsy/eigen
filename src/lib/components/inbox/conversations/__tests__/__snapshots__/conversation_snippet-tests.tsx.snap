@@ -131,7 +131,7 @@ exports[`renders correctly 1`] = `
               ]
             }
           >
-            11:00 AM
+            A DAY
           </Text>
           <View
             style={
