@@ -13,6 +13,7 @@
 
 - [dev] Upgrades React Native to v0.45 - sarah
 - [dev] Allows toggling the back button by pressing space - orta
+- Users/Devs can run any PR from inside beta/sim - orta
 
 ### 1.3.6
 
