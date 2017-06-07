@@ -15,6 +15,7 @@
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARComponentViewController.h>
+#import <Emission/ARInboxComponentViewController.h>
 #import "ARStorybookComponentViewController.h"
 
 @implementation ARRootViewController
@@ -65,6 +66,7 @@
   [sectionData addCellData:self.jumpToRefinedGene];
   [sectionData addCellData:self.jumpToWorksForYou];
   [sectionData addCellData:self.jumpToConsignments];
+  [sectionData addCellData:self.jumpToInbox];
 
   return sectionData;
 }
@@ -165,7 +167,6 @@
   }];
 }
 
-
 - (ARCellData *)jumpToConsignments
 {
   return [self tappableCellDataWithTitle:@"Start Consignment Flow" selection:^{
@@ -174,6 +175,13 @@
   }];
 }
 
+- (ARCellData *)jumpToInbox
+{
+  return [self tappableCellDataWithTitle:@"Inbox" selection:^{
+    id viewController = [[ARInboxComponentViewController alloc] initWithInbox];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
 
 - (ARCellData *)generateStagingSwitch
 {

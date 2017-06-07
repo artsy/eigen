@@ -11,6 +11,7 @@
 
 ### Emission
 
+- [Messaging] Adds Inbox view with real data - luc
 - [dev] Upgrades React Native to v0.45 - sarah
 - [dev] Allows toggling the back button by pressing space - orta
 
