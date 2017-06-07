@@ -19,7 +19,7 @@ PODS:
     - React/RCTNetwork (= 0.45.0-rc.2)
     - React/RCTText (= 0.45.0-rc.2)
     - SDWebImage (< 4, >= 3.7.2)
-    - SentryReactNative (= 0.11.6)
+    - SentryReactNative (= 0.11.8)
     - Yoga (= 0.45.0-rc.2.React)
   - Extraction (1.2.3):
     - Extraction/ARAnimationContinuation (= 1.2.3)
@@ -140,15 +140,12 @@ PODS:
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
-  - Sentry (3.0.4):
-    - Sentry/Core (= 3.0.4)
   - Sentry/Core (3.0.4)
   - Sentry/KSCrash (3.0.4):
     - KSCrash (~> 1.15.8)
-  - SentryReactNative (0.11.6):
-    - KSCrash (~> 1.15.8)
+  - SentryReactNative (0.11.8):
     - React
-    - Sentry (~> 3.0.1)
+    - Sentry/KSCrash (~> 3.0.4)
   - UIView+BooleanAnimations (1.0.2)
   - Yoga (0.45.0-rc.2.React)
 
@@ -199,7 +196,7 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   Artsy+UIFonts: e66afb5c40100e2fc5bba28feb7487e252f2d06f
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
-  Emission: 64e21cdac287436bdf6fc677b7a4203985899cab
+  Emission: 4ea0bb9082a5b4fc9ea3aa764b6ceed99a1c17a0
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
@@ -210,7 +207,7 @@ SPEC CHECKSUMS:
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   Sentry: 8970911143109f9e87971913f6e2b7f3f4f08a5f
-  SentryReactNative: e3684b0c140a1d3ee1e5d15c71aa2f1c1ccfdbea
+  SentryReactNative: e72212b0c0dbf5c9f6ad285c371c356ee2d39ca4
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: d43165f478a090e7b603edc5796965a1de27d473
 
