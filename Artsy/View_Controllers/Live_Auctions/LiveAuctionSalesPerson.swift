@@ -140,22 +140,22 @@ extension LiveAuctionsSalesPerson {
 
     // Returns nil if there is no current lot.
     func lotViewModelRelativeToShowingIndex(_ offset: Int) -> LiveAuctionLotViewModelType {
-        precondition(abs(offset) < lotCount)
-
         let currentlyShowingIndex = currentFocusedLotIndex.peek() ?? 0 // The coalesce is only to satisfy the compiler, should never happen since the currentFocusedLotIndex is created with an initial value.
 
         // Apply the offset
         let newIndex = currentlyShowingIndex + offset
+        var loopingIndex = newIndex
 
         // Guarantee the offset is within the bounds of our array.
-        let loopingIndex: Int
-        if newIndex >= lotCount {
-            loopingIndex = newIndex - lotCount
-        } else if newIndex < 0 {
-            loopingIndex = newIndex + lotCount
-        } else {
-            loopingIndex = newIndex
-        }
+        repeat {
+            if loopingIndex >= lotCount {
+                loopingIndex -= lotCount
+            } else if loopingIndex < 0 {
+                loopingIndex += lotCount
+            } else {
+                loopingIndex = newIndex
+            }
+        } while !lots.indices.contains(loopingIndex)
 
         return lotViewModelForIndex(loopingIndex)
     }

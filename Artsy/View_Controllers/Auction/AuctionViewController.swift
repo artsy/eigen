@@ -58,25 +58,26 @@ class AuctionViewController: UIViewController {
 
         self.ar_presentIndeterminateLoadingIndicator(animated: animated)
 
-        self.networkModel.fetch().next { [weak self] saleViewModel in
+        self.networkModel
+            .fetch()
+            .next { [weak self] saleViewModel in
 
-            if saleViewModel.shouldShowLiveInterface {
-                self?.setupLiveInterfaceAndPop()
-            } else if saleViewModel.isUpcomingAndHasNoLots {
-                self?.setupForUpcomingSale(saleViewModel)
-            } else {
-                self?.setupForSale(saleViewModel)
-            }
+                if saleViewModel.shouldShowLiveInterface {
+                    self?.setupLiveInterfaceAndPop()
+                } else if saleViewModel.isUpcomingAndHasNoLots {
+                    self?.setupForUpcomingSale(saleViewModel)
+                } else {
+                    self?.setupForSale(saleViewModel)
+                }
 
-            if let timeToLiveStart = saleViewModel.timeToLiveStart {
-                self?.setupForUpcomingLiveInterface(timeToLiveStart)
+                if let timeToLiveStart = saleViewModel.timeToLiveStart {
+                    self?.setupForUpcomingLiveInterface(timeToLiveStart)
+                }
 
-            }
-
-            saleViewModel.registerSaleAsActiveActivity(self)
+                saleViewModel.registerSaleAsActiveActivity(self)
             }.error { error in
                 // TODO: Error-handling somehow
-        }
+            }
 
         NotificationCenter.default.addObserver(self, selector: #selector(AuctionViewController.registrationUpdated(_:)), name: NSNotification.Name.ARAuctionArtworkRegistrationUpdated, object: nil)
     }
@@ -227,6 +228,7 @@ extension AuctionViewController {
     }
 
     func setupForUpcomingLiveInterface(_ timeToLiveStart: TimeInterval) {
+        guard timeToLiveStart > 0 else { return }
         self.showLiveInterfaceWhenAuctionOpensTimer = Timer.scheduledTimer(timeInterval: timeToLiveStart, target: self, selector: #selector(AuctionViewController.setupLiveInterfaceAndPop), userInfo: nil, repeats: false)
     }
 
