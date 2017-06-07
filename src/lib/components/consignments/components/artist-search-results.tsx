@@ -5,8 +5,6 @@ import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
 
-import Button from "../../buttons/inverted_button"
-
 const Input = styled.TextInput`
   height: 40
   backgroundColor: black
@@ -100,11 +98,6 @@ const render = (props: ArtistQueryData) =>
     <ScrollView style={{height: 182, paddingTop: 16}} scrollEnabled={props.results && !!props.results.length}>
       {props.results && props.results.length ? props.results.map(rowForResult) : noResults(props) }
     </ScrollView>
-
-    <Separator/>
-    <View style={{height: 40}}>
-      <Button text="DONE" />
-    </View>
   </View>
 
 // Export a pure component version

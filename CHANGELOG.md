@@ -7,16 +7,16 @@
 - [dev] Upgrades React Native to v0.45 - sarah
 - [dev] Allows toggling the back button by pressing space - orta
 - Users/Devs can run any PR from inside beta/sim - orta
+- Users now can access stories from inside the app - orta
 
 #### Consignments
 
-- Users now can access stories from inside the app - orta
+- [dev] Adds component for attaching buttons to the keyboard  - orta
 - [dev] Adds component for artist search  - orta
 - [dev] Adds component for consignments todo  - orta
 - [dev] Adds a root component for the Consignments flow  - orta
 - [dev] Adds storybooks for consignments  - orta
 - Added the Welcome/Overview screen for consignments - orta
-
 
 ### 1.3.6
 
