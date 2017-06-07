@@ -5,8 +5,9 @@ node_js:
   - "6.7"
 
 script:
+  - scripts/deploy_commit.sh
   - yarn ci
-  - yarn danger -- run -t
+  - yarn danger
 
 deploy:
   provider: script
