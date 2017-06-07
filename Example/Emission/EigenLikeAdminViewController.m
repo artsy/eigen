@@ -1,5 +1,5 @@
 #import "EigenLikeAdminViewController.h"
-#import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
+#import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
 
 NSString *const AROptionCell = @"OptionCell";
 NSString *const ARLabOptionCell = @"LabOptionCell";

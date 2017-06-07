@@ -2,7 +2,6 @@ source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '9.0'
-use_frameworks!
 # FIXME: Figure out why we are getting hit by this issue.
 install! 'cocoapods', :deterministic_uuids => false
 
@@ -18,6 +17,7 @@ target 'Emission' do
   pod 'React', :path => react_path, :subspecs => %w(DevSupport BatchedBridge RCTAnimation)
   pod 'Yoga', :path => yoga_path
 
+  pod 'Sentry', :subspecs => ['Core', 'KSCrash']
   pod 'SentryReactNative', :path => sentry_path
 
   # Got to make it look right
@@ -48,11 +48,4 @@ target 'Emission' do
 #    pod 'Specta'
 #    pod 'Expecta'
 # end
-end
-
-post_install do |installer|
-  installer.pods_project.build_configurations.each do |config|
-    config.build_settings['SWIFT_VERSION'] = '3.0'
-    config.build_settings['ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES'] = 'YES'
-  end
 end
