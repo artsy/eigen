@@ -46,6 +46,7 @@ extension LotStandingsLotView {
     func setup() {
         guard let config = config, let saleArtwork = config.lotStanding.saleArtwork else { return }
 
+        // TODO: Copy into GraphQL request.
         // Config-specific setup
         bottomBorder.isHidden = !config.drawBottomBorder
         imageView.sd_setImage(with: saleArtwork.artwork.urlForThumbnail())

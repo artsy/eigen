@@ -1074,11 +1074,127 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" URLString:url parameters:nil];
 }
 
-+ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role
++ (NSURLRequest *)graphQLRequestForQuery:(NSString *)query
 {
     // Note that we're relying on the host to specify the domain for the request.
     NSString *url = [self baseMetaphysicsApiURLString];
 
+    // Makes a copy of the request serializer, one that will encode HTTP body as JSON instead of URL-encoded params.
+    AFJSONRequestSerializer *jsonSerializer = [[AFJSONRequestSerializer alloc] init];
+    for (NSString *key in staticHTTPClient.requestSerializer.HTTPRequestHeaders.allKeys) {
+        id value = staticHTTPClient.requestSerializer.HTTPRequestHeaders[key];
+        [jsonSerializer setValue:value forHTTPHeaderField:key];
+    }
+    NSError *error;
+    NSMutableURLRequest *request = [jsonSerializer requestWithMethod:@"POST" URLString:url parameters:@{ @"query" : query } error:&error];
+
+    if (error) {
+        NSLog(@"Error serializing request: %@", error);
+    }
+
+    return request;
+
+}
+
++ (NSURLRequest *)auctionDataQuery:(NSString *)saleID
+{
+    NSString *query = [NSString stringWithFormat:@"\
+{\
+  me {\
+    bidders(sale_id: \"%1$@\") {\
+      id\
+      sale {\
+        id\
+      }\
+      qualified_for_bidding\
+    }\
+    lot_standings(live: false, sale_id: \"%1$@\", active_positions: false) {\
+      leading_position: is_leading_bidder\
+      sale_artwork {\
+        id\
+        symbol\
+        bidder_positions_count\
+        lot_label\
+        reserve_status\
+        current_bid {\
+          amount_cents: cents\
+        }\
+        artwork {\
+          id: _id\
+          display: title\
+          date\
+          artist {\
+            name\
+          }\
+          images {\
+            id\
+            is_default\
+            image_url\
+            original_height\
+            original_width\
+            aspect_ratio\
+          }\
+        }\
+      }\
+    }\
+  }\
+  sale(id: \"%1$@\") {\
+    id: _id\
+    is_auction\
+    start_at\
+    end_at\
+    auction_state\
+    live_start_at\
+    registration_ends_at\
+    buyers_premium {\
+      amount\
+    }\
+    description\
+    bannerImageURLString: cover_image {\
+      url\
+    }\
+    sale_artworks {\
+      id: _id\
+      symbol\
+      opening_bid_cents\
+      minimum_next_bid_cents\
+      highest_bid {\
+        id\
+        amount_cents\
+      }\
+      bidder_positions_count\
+      low_estimate_cents\
+      high_estimate_cents\
+      reserve_status\
+      lot_label\
+      artwork {\
+        id: _id\
+        date\
+        images {\
+          id\
+          is_default\
+          image_url\
+          original_height\
+          original_width\
+          aspect_ratio\
+        }\
+        additional_information\
+        dimensions {\
+          cm\
+          in\
+        }\
+        display: title\
+        sold: is_sold\
+      }\
+    }\
+  }\
+}\
+    }", saleID];
+    return [self graphQLRequestForQuery:query];
+}
+
++ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role
+{
     NSString *accessType = role ? [NSString stringWithFormat:@"role: %@,", [role uppercaseString]] : @"";
     NSString *causalityRole = [NSString stringWithFormat:@"causality_jwt(%@ sale_id: \"%@\")", accessType, saleID];
 
@@ -1140,20 +1256,7 @@ static NSString *hostFromString(NSString *string)
 }",
                                                  causalityRole, saleID, saleID];
 
-    // Makes a copy of the request serializer, one that will encode HTTP body as JSON instead of URL-encoded params.
-    AFJSONRequestSerializer *jsonSerializer = [[AFJSONRequestSerializer alloc] init];
-    for (NSString *key in staticHTTPClient.requestSerializer.HTTPRequestHeaders.allKeys) {
-        id value = staticHTTPClient.requestSerializer.HTTPRequestHeaders[key];
-        [jsonSerializer setValue:value forHTTPHeaderField:key];
-    }
-    NSError *error;
-    NSMutableURLRequest *request = [jsonSerializer requestWithMethod:@"POST" URLString:url parameters:@{ @"query" : query } error:&error];
-
-    if (error) {
-        NSLog(@"Error serializing request: %@", error);
-    }
-
-    return request;
+    return [self graphQLRequestForQuery:query];
 }
 
 + (NSURLRequest *)biddersRequest
