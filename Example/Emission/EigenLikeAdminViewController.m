@@ -1,5 +1,5 @@
 #import "EigenLikeAdminViewController.h"
-#import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
+#import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
 
 NSString *const AROptionCell = @"OptionCell";
 NSString *const ARLabOptionCell = @"LabOptionCell";
@@ -103,7 +103,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
   // trigger the lines between cells.
   UIView *emptyView_ = [[UIView alloc] initWithFrame:CGRectZero];
   emptyView_.backgroundColor = [UIColor clearColor];
-  [ self.tableView setTableFooterView:emptyView_];
+  [self.tableView setTableFooterView:emptyView_];
 }
 
 @end
