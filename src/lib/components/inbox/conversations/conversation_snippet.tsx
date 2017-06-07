@@ -21,6 +21,7 @@ const Card = styled.View`
     marginLeft: 20
     marginRight: 20
     marginTop: 20
+    minHeight: 80
 `
 
 const VerticalLayout = styled.View`
