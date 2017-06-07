@@ -36,6 +36,6 @@ const conversation: Conversation = {
 
 storiesOf("Conversations - Snippet")
   //.add("No data", () => <ConversationSnippet conversation={{}} />)
-  .add("Default data", () => <ConversationSnippet conversation={conversation} />)
-  .add("A few rows", () => <ScrollView><ConversationSnippet conversation={conversation} /><ConversationSnippet conversation={conversation} /><ConversationSnippet conversation={conversation} /></ScrollView>)
+  .add("Single row", () => <ConversationSnippet conversation={conversation} />)
+  .add("A few threads", () => <ScrollView><ConversationSnippet conversation={conversation} /><ConversationSnippet conversation={conversation} /><ConversationSnippet conversation={conversation} /></ScrollView>)
 
