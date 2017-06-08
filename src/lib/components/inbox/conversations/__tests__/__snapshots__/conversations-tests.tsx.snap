@@ -187,7 +187,7 @@ exports[`looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    2 DAYS
+                    3 DAYS
                   </Text>
                   <View
                     style={
@@ -488,7 +488,7 @@ exports[`looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    5 DAYS
+                    6 DAYS
                   </Text>
                   <View
                     style={

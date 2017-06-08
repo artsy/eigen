@@ -2,6 +2,7 @@
 
 #### Emission
 
+- [Messaging] Adds Conversation, Composer, and Message components - sarah
 - [dev] Upgrades Sentry to 3.0, note Eigen integrator, this may require changes to Eigen - orta
 - [Messaging] Adds Inbox view with real data - luc
 - [dev] Upgrades React Native to v0.45 - sarah

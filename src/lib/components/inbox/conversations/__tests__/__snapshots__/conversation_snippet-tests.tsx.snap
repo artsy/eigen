@@ -145,7 +145,7 @@ exports[`renders correctly 1`] = `
               ]
             }
           >
-            A DAY
+            2 DAYS
           </Text>
           <View
             style={
