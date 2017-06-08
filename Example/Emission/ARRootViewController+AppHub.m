@@ -8,12 +8,12 @@
 
 - (ARSectionData *)appHubSectionData;
 {
-  ARSectionData *section = [[ARSectionData alloc] initWithCellDataArray: @[
+  ARSectionData *section = [[ARSectionData alloc] initWithCellDataArray:@[
     [self appHubBuildChooser],
     [self appHubMetadata],
     [self showPRForBuild]
   ]];
-  section.headerTitle = [@"AppHub" uppercaseString];
+  [self setupSection:section withTitle:@"AppHub"];
   return section;
 }
 

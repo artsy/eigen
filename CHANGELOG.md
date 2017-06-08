@@ -1,5 +1,17 @@
 ### Master
 
+#### Emission
+
+- [dev] Applies prettier, and adds it to the webhooks + extension settings - orta
+- [dev] Adds stories for new messaging components - maxim
+- [Messaging] Adds Conversation, Composer, and Message components - sarah
+- [dev] Upgrades Sentry to 3.0, note Eigen integrator, this may require changes to Eigen - orta
+- [Messaging] Adds Inbox view with real data - luc
+- [dev] Upgrades React Native to v0.45 - sarah
+- [dev] Allows toggling the back button by pressing space - orta
+- Users/Devs can run any PR from inside beta/sim - orta
+- Users now can access stories from inside the app - orta
+
 #### Consignments
 
 - [dev] Adds component for attaching buttons to the keyboard  - orta
@@ -7,13 +19,8 @@
 - [dev] Adds component for consignments todo  - orta
 - [dev] Adds a root component for the Consignments flow  - orta
 - [dev] Adds storybooks for consignments  - orta
+- [dev] Adds some form elements for consignments - orta
 - Added the Welcome/Overview screen for consignments - orta
-
-### Emission
-
-- Users now can access stories from inside the app - orta
-- [dev] Upgrades React Native to v0.45 - sarah
-- [dev] Allows toggling the back button by pressing space - orta
 
 ### 1.3.6
 

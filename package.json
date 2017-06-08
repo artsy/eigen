@@ -5,12 +5,16 @@
   "main": "index.ios.js",
   "scripts": {
     "bundle": "react-native bundle --config \"$(pwd)\"/rn-cli.config.js --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
+    "bundle-with-storybooks": "react-native bundle --config \"$(pwd)\"/rn-cli.config.js --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output Emission.js --assets-dest Pod/Assets",
     "clean-example": "cd Example && xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",
     "type-check": "tsc --noEmit --pretty",
-    "lint": "tslint 'src/**/*.{ts,tsx}'",
+    "lint": "npm run tslint 'src/**/*.{ts,tsx}'",
     "lint-fix": "npm run lint -- --fix",
+    "prettier": "prettier",
+    "prettier-write": "npm run prettier -- --parser typescript --no-semi --trailing-comma es5 --write --print-width 120 ",
+    "prettier-project": "npm run prettier-write -- 'src/**/*.{ts,tsx}'",
     "lint-staged": "lint-staged",
-    "ci": "npm run type-check && npm run lint && npm run test -- --runInBand",
+    "ci": "npm run type-check && npm run lint && npm run prettier-project -- -l && npm run test -- --runInBand",
     "danger": "danger",
     "start": "npm run clean-example && npm run start-servers",
     "start-servers": "concurrently --kill-others 'npm run start-packager' 'npm run storybook'",
@@ -20,6 +24,7 @@
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
     "test": "jest",
     "testing": "jest --watch",
+    "tslint": "tslint",
     "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
     "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && npm run dump-schema -- ../../data && rm -rf node_modules",
@@ -79,7 +84,7 @@
     "react": "16.0.0-alpha.12",
     "react-native": "next",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
-    "react-native-sentry": "^0.8.3",
+    "react-native-sentry": "^0.11.8",
     "react-relay": "https://github.com/alloy/relay/releases/download/react-relay-0.9.3%2Breact-native-0.45-fix-2/react-relay-0.9.3.react-native-0.45-fix-2.tgz",
     "remove-markdown": "0.1.0",
     "styled-components": "^2.0.0"
@@ -103,13 +108,14 @@
     "jest-react-native": "18.0.0",
     "jest-snapshots-svg": "^0.0.11",
     "lint-staged": "^3.4.1",
+    "prettier": "^1.4.2",
     "react-dom": "16.0.0-alpha.12",
     "react-storybooks-relay-container": "^1.0.0",
     "react-test-renderer": "16.0.0-alpha.12",
     "recursive-readdir-sync": "^1.0.6",
     "relay2ts": "^0.2.0",
     "ts-jest": "^20.0.3",
-    "tslint": "^4.5.0",
+    "tslint": "^5.4.3",
     "typescript": "^2.3.2"
   },
   "peerDependencies": {
@@ -118,6 +124,7 @@
   "lint-staged": {
     "*.@(ts|tsx)": [
       "tslint --fix",
+      "npm run prettier-write --",
       "git add"
     ]
   }

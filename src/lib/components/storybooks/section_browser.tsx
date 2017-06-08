@@ -7,14 +7,13 @@ import StoryBrowser from "./story_browser"
 import { Background, BodyText, Separator, Title } from "./styles"
 
 interface Props extends ViewProperties {
-  navigator: NavigatorIOS,
+  navigator: NavigatorIOS
   route: Route
 }
 
 const Headline = () => <Title>Stories</Title>
 
 const render = (props: Props) => {
-
   const ListViewItem = (item: StorySection) => {
     const showStoriesForSection = () => {
       props.navigator.push({ title: item.kind, component: StoryBrowser, passProps: { section: item } })
@@ -30,8 +29,9 @@ const render = (props: Props) => {
     )
   }
 
-  const storybookDS = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
-    .cloneWithRows(storybook.getStorybook())
+  const storybookDS = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }).cloneWithRows(
+    storybook.getStorybook()
+  )
 
   return (
     <Background>
@@ -42,5 +42,7 @@ const render = (props: Props) => {
 
 // Export a pure component version
 export default class StorybookBrowser extends React.PureComponent<Props, null> {
-  render() { return render(this.props) }
+  render() {
+    return render(this.props)
+  }
 }

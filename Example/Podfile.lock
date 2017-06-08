@@ -19,7 +19,7 @@ PODS:
     - React/RCTNetwork (= 0.45.0-rc.2)
     - React/RCTText (= 0.45.0-rc.2)
     - SDWebImage (< 4, >= 3.7.2)
-    - SentryReactNative (= 0.8.3)
+    - SentryReactNative (= 0.11.8)
     - Yoga (= 0.45.0-rc.2.React)
   - Extraction (1.2.3):
     - Extraction/ARAnimationContinuation (= 1.2.3)
@@ -136,17 +136,16 @@ PODS:
     - React/Core
   - React/RCTWebSocket (0.45.0-rc.2):
     - React/Core
-  - RSSwizzle (0.1.0)
   - SAMKeychain (1.5.0)
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
-  - Sentry (2.1.9):
-    - KSCrash (~> 1.15.5)
-  - SentryReactNative (0.8.3):
+  - Sentry/Core (3.0.4)
+  - Sentry/KSCrash (3.0.4):
+    - KSCrash (~> 1.15.8)
+  - SentryReactNative (0.11.8):
     - React
-    - RSSwizzle (~> 0.1.0)
-    - Sentry (~> 2.1.9)
+    - Sentry/KSCrash (~> 3.0.4)
   - UIView+BooleanAnimations (1.0.2)
   - Yoga (0.45.0-rc.2.React)
 
@@ -161,6 +160,8 @@ DEPENDENCIES:
   - React/DevSupport (from `../node_modules/react-native`)
   - React/RCTAnimation (from `../node_modules/react-native`)
   - SAMKeychain
+  - Sentry/Core
+  - Sentry/KSCrash
   - SentryReactNative (from `../node_modules/react-native-sentry`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -195,7 +196,7 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   Artsy+UIFonts: e66afb5c40100e2fc5bba28feb7487e252f2d06f
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
-  Emission: e76e3474d3af32b681452a3852f74a0d90c5fc6a
+  Emission: 4ea0bb9082a5b4fc9ea3aa764b6ceed99a1c17a0
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
@@ -203,14 +204,13 @@ SPEC CHECKSUMS:
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   React: c30b44eb8e84d2071fb78cd1ed58e1512a822a57
-  RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
-  Sentry: 0025c374b2f9fb0da8185a45199de985408a40b2
-  SentryReactNative: 3de8c386dfebb9f42c5e989adb7060b3f2dc4878
+  Sentry: 8970911143109f9e87971913f6e2b7f3f4f08a5f
+  SentryReactNative: e72212b0c0dbf5c9f6ad285c371c356ee2d39ca4
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: d43165f478a090e7b603edc5796965a1de27d473
 
-PODFILE CHECKSUM: b7c4dbde1d69b77f0c1a776861ae701c13db0f02
+PODFILE CHECKSUM: e4469b89c7780696fdd217fd34068fcbaab6fb25
 
 COCOAPODS: 1.2.1

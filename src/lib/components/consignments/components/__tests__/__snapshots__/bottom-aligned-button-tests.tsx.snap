@@ -63,7 +63,7 @@ exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
     onStartShouldSetResponder={[Function]}
     style={
       Object {
-        "height": 40,
+        "height": 56,
         "marginBottom": 20,
         "opacity": 1,
         "paddingTop": 18,
@@ -252,7 +252,7 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
     onStartShouldSetResponder={[Function]}
     style={
       Object {
-        "height": 40,
+        "height": 56,
         "marginBottom": 20,
         "opacity": 1,
         "paddingTop": 18,

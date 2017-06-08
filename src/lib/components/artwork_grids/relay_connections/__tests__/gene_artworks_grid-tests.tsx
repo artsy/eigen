@@ -9,10 +9,10 @@ import GeneArtworks from "../gene_artworks_grid"
 it("renders properly", () => {
   const gene = {
     artworks: {
-      edges: [ artwork(), artwork(), artwork() ],
+      edges: [artwork(), artwork(), artwork()],
     },
   }
 
-  const grid = renderWithLayout(<GeneArtworks gene={gene} queryKey="gene" />, { width: 768})
+  const grid = renderWithLayout(<GeneArtworks gene={gene} queryKey="gene" />, { width: 768 })
   expect(grid).toMatchSnapshot()
 })

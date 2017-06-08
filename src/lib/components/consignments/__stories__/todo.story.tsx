@@ -8,18 +8,16 @@ export const name = "Consignments - TODO"
 export const component = TODO
 
 interface States {
-  [name: string]: ConsignmentSetup;
+  [name: string]: ConsignmentSetup
 }
 
-const withArtist = { artist: { name: "Glenn Brown" } }
-const withOnePhoto = {
+const withArtist: ConsignmentSetup = { artist: { name: "Glenn Brown" } }
+const withOnePhoto: ConsignmentSetup = {
   ...withArtist,
-  photos: [
-    "https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg",
-  ],
+  photos: ["https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg"],
 }
 
-const withPhotos = {
+const withPhotos: ConsignmentSetup = {
   ...withArtist,
   photos: [
     "https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg",
@@ -39,23 +37,22 @@ const metadata: ConsignmentMetadata = {
   displayString: "5/5",
 }
 
-const withMetadata = {
+const withMetadata: ConsignmentSetup = {
   ...withPhotos,
   metadata,
 }
 
-const withLocation = {
+const withLocation: ConsignmentSetup = {
   ...withMetadata,
   location: "Huddersfield, UK",
 }
 
-const withProvenance = {
+const withProvenance: ConsignmentSetup = {
   ...withLocation,
   provenance: "This work has seen many hands.",
 }
 
-const longProv =
-  "This is a long long long run on sentence that should break correctly."
+const longProv = "This is a long long long run on sentence that should break correctly."
 
 export const allStates: States[] = [
   { "Empty Metadata": {} },

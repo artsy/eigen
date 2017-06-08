@@ -10,13 +10,13 @@ interface Props extends ViewProperties {
   show: {
     href: string
     cover_image: {
-      url: string,
-    },
+      url: string
+    }
   }
   styles?: {
     container?: any
     image?: any
-    metadata?: any,
+    metadata?: any
   }
 }
 
@@ -33,7 +33,7 @@ class Show extends React.Component<Props, {}> {
     const styles = this.props.styles
 
     return (
-      <TouchableWithoutFeedback onPress={this.handleTap.bind(this)} >
+      <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View style={styles && styles.container}>
           <OpaqueImageView imageURL={imageURL} style={styles && styles.image} />
           <ShowMetadata show={show as any} style={styles && styles.metadata} />
@@ -59,9 +59,9 @@ export default Relay.createContainer(Show, {
 
 interface RelayProps {
   show: {
-    href: string | null,
+    href: string | null
     cover_image: {
-      url: string | null,
-    } | null,
-  },
+      url: string | null
+    } | null
+  }
 }

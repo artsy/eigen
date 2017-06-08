@@ -50,28 +50,28 @@ const CircleSpacer = styled.View`
 `
 
 interface BooleanButton {
-  selected: boolean,
-  onPress?: () => void,
+  selected: boolean
+  onPress?: () => void
 }
 
 const render = (props: BooleanButton) => {
   const { selected } = props
-  const mainBGColor  = selected ? "white" : "black"
+  const mainBGColor = selected ? "white" : "black"
   const leftTextColor = selected ? "black" : "white"
   const rightTextColor = selected ? "black" : "white"
   const dotDirection = selected ? "row-reverse" : "row"
   const dotBorder = selected ? "white" : "white"
-  const Circle = selected ?  BlackCircle : WhiteCircle
+  const Circle = selected ? BlackCircle : WhiteCircle
 
   return (
-    <Background style={{backgroundColor: mainBGColor}} onPress={props.onPress}>
+    <Background style={{ backgroundColor: mainBGColor }} onPress={props.onPress}>
       <View>
         <TextBackground>
           <Title style={{ color: leftTextColor }}>YES</Title>
-          <Title style={{ textAlign: "right", color: rightTextColor}}>NO</Title>
+          <Title style={{ textAlign: "right", color: rightTextColor }}>NO</Title>
         </TextBackground>
-        <CircleSpacer style={{flexDirection: dotDirection}}>
-          <Circle style = {{ border: dotBorder }}/>
+        <CircleSpacer style={{ flexDirection: dotDirection }}>
+          <Circle style={{ border: dotBorder }} />
         </CircleSpacer>
       </View>
     </Background>
@@ -80,5 +80,7 @@ const render = (props: BooleanButton) => {
 
 // Export a pure component version
 export default class ConsignmentTODO extends React.PureComponent<BooleanButton, null> {
-  render() { return render(this.props) }
+  render() {
+    return render(this.props)
+  }
 }

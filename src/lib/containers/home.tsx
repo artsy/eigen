@@ -1,23 +1,16 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  ListView,
-  ListViewDataSource,
-  RefreshControl,
-  ScrollView,
-  ScrollViewProps,
-  ViewProperties,
-} from "react-native"
+import { ListView, ListViewDataSource, RefreshControl, ScrollView, ScrollViewProps, ViewProperties } from "react-native"
 
 import ArtistRail from "../components/home/artist_rails/artist_rail"
 import ArtworkRail from "../components/home/artwork_rails/artwork_rail"
 import HeroUnits from "../components/home/hero_units"
 import SearchBar from "../components/home/search_bar"
 
-type DataSourceRow = {
-  type: "search_bar" | "hero_units" | "artwork" | "artist",
-  data: any,
+interface DataSourceRow {
+  type: "search_bar" | "hero_units" | "artwork" | "artist"
+  data: any
 }
 
 interface Props extends ViewProperties, RelayProps {
@@ -70,24 +63,26 @@ export class Home extends React.Component<Props, State> {
     this.setState({ isRefreshing: true })
     const stopRefreshing = () => this.setState({ isRefreshing: false })
 
-    Promise.all(this.state.modules.map(module => {
-      return new Promise((resolve, reject) => {
-        module.forceFetch(null, (readyState) => {
-          if (readyState.error) {
-            reject(readyState.error)
-          } else if (readyState.aborted) {
-            reject()
-          } else if (readyState.done) {
-            resolve()
-          }
+    Promise.all(
+      this.state.modules.map(module => {
+        return new Promise((resolve, reject) => {
+          module.forceFetch(null, readyState => {
+            if (readyState.error) {
+              reject(readyState.error)
+            } else if (readyState.aborted) {
+              reject()
+            } else if (readyState.done) {
+              resolve()
+            }
+          })
         })
       })
-    })).then(stopRefreshing, stopRefreshing)
+    ).then(stopRefreshing, stopRefreshing)
   }
 
   componentDidUpdate(previousProps: Props) {
-    const didTrigger1pxScrollHack = (!!previousProps.trigger1pxScrollHack) === false
-                                    && this.props.trigger1pxScrollHack === true
+    const didTrigger1pxScrollHack =
+      !!previousProps.trigger1pxScrollHack === false && this.props.trigger1pxScrollHack === true
     if (didTrigger1pxScrollHack) {
       this.listView.scrollTo({ y: this.currentScrollOffset + 1, animated: false })
     }
@@ -95,30 +90,30 @@ export class Home extends React.Component<Props, State> {
 
   render() {
     return (
-      <ListView dataSource={this.state.dataSource}
-                renderScrollComponent={(props: ScrollViewProps) => {
-                  const refreshControl = <RefreshControl refreshing={this.state.isRefreshing}
-                                                         onRefresh={this.handleRefresh} />
-                  return <ScrollView {...props} automaticallyAdjustContentInsets={false}
-                                                refreshControl={refreshControl} />
-                }}
-                renderRow={({ type, data }, _, row: number) => {
-                  // Offset row because we don’t store a reference to the search bar and hero units rows.
-                  const registerModule = (module) => this.state.modules[row - 2] = module
-                  switch (type) {
-                    case "search_bar":
-                      return <SearchBar />
-                    case "hero_units":
-                      return <HeroUnits hero_units={data} />
-                    case "artwork":
-                      return <ArtworkRail ref={registerModule} key={data.__id} rail={data} />
-                    case "artist":
-                      return <ArtistRail ref={registerModule} key={data.__id} rail={data} />
-                  }
-                }}
-                onScroll={event => this.currentScrollOffset = event.nativeEvent.contentOffset.y}
-                ref={listView => this.listView = listView }
-                style={{ marginTop: 20, overflow: "visible" }} />
+      <ListView
+        dataSource={this.state.dataSource}
+        renderScrollComponent={(props: ScrollViewProps) => {
+          const refreshControl = <RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />
+          return <ScrollView {...props} automaticallyAdjustContentInsets={false} refreshControl={refreshControl} />
+        }}
+        renderRow={({ type, data }, _, row: number) => {
+          // Offset row because we don’t store a reference to the search bar and hero units rows.
+          const registerModule = module => (this.state.modules[row - 2] = module)
+          switch (type) {
+            case "search_bar":
+              return <SearchBar />
+            case "hero_units":
+              return <HeroUnits hero_units={data} />
+            case "artwork":
+              return <ArtworkRail ref={registerModule} key={data.__id} rail={data} />
+            case "artist":
+              return <ArtistRail ref={registerModule} key={data.__id} rail={data} />
+          }
+        }}
+        onScroll={event => (this.currentScrollOffset = event.nativeEvent.contentOffset.y)}
+        ref={listView => (this.listView = listView)}
+        style={{ marginTop: 20, overflow: "visible" }}
+      />
     )
   }
 }
@@ -157,12 +152,12 @@ export default Relay.createContainer(Home, {
 
 interface RelayProps {
   home: {
-    hero_units: Array<any | null> | null,
+    hero_units: Array<any | null> | null
     artwork_modules: Array<{
-      __id: string,
-    } | null> | null,
+      __id: string
+    } | null> | null
     artist_modules: Array<{
-      __id: string,
-    } | null> | null,
-  },
+      __id: string
+    } | null> | null
+  }
 }

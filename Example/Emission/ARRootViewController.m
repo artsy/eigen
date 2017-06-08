@@ -4,17 +4,21 @@
 #import "ARAdminTableViewCell.h"
 #import <SAMKeychain/SAMKeychain.h>
 
+#import "AppDelegate.h"
 #import "ARDefaults.h"
 
 // See https://github.com/artsy/eigen/blob/master/Artsy/View_Controllers/Admin/ARAdminSettingsViewController.m
 // for examples of how to work with this.
 
 #import "ARRootViewController+AppHub.h"
+#import "ARRootViewController+PRs.h"
+
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARComponentViewController.h>
+#import <Emission/ARInboxComponentViewController.h>
 #import "ARStorybookComponentViewController.h"
 
 @implementation ARRootViewController
@@ -29,19 +33,23 @@
 
   ARSectionData *appData = [[ARSectionData alloc] init];
   [self setupSection:appData withTitle:[self titleForApp]];
+  [appData addCellData:self.emissionJSLocationDescription];
   [appData addCellData:self.generateStagingSwitch];
   [tableViewData addSectionData:appData];
+
+#if TARGET_OS_SIMULATOR && defined(DEBUG)
+  ARSectionData *developerSection = [self developersSection];
+  [tableViewData addSectionData:developerSection];
+#endif
+
+  ARSectionData *reviewSection = [self prSectionData];
+  [tableViewData addSectionData:reviewSection];
 
   ARSectionData *userSection = [self userSection];
   [tableViewData addSectionData:userSection];
 
   ARSectionData *viewControllerSection = [self jumpToViewControllersSection];
   [tableViewData addSectionData:viewControllerSection];
-
-#if TARGET_OS_SIMULATOR && defined(DEBUG)
-  ARSectionData *developerSection = [self developersSection];
-  [tableViewData addSectionData:developerSection];
-#endif
 
 #if defined(DEPLOY)
   ARSectionData *appHubSection = [self appHubSectionData];
@@ -65,6 +73,7 @@
   [sectionData addCellData:self.jumpToRefinedGene];
   [sectionData addCellData:self.jumpToWorksForYou];
   [sectionData addCellData:self.jumpToConsignments];
+  [sectionData addCellData:self.jumpToInbox];
 
   return sectionData;
 }
@@ -165,7 +174,6 @@
   }];
 }
 
-
 - (ARCellData *)jumpToConsignments
 {
   return [self tappableCellDataWithTitle:@"Start Consignment Flow" selection:^{
@@ -174,6 +182,13 @@
   }];
 }
 
+- (ARCellData *)jumpToInbox
+{
+  return [self tappableCellDataWithTitle:@"Inbox" selection:^{
+    id viewController = [[ARInboxComponentViewController alloc] initWithInbox];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
 
 - (ARCellData *)generateStagingSwitch
 {
@@ -195,6 +210,19 @@
   }];
   return crashCellData;
 }
+
+- (ARCellData *)emissionJSLocationDescription
+{
+  AppDelegate *appDelegate = (id)[UIApplication sharedApplication].delegate;
+
+  ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+  [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
+    cell.textLabel.text = [appDelegate emissionLoadedFromString];
+  }];
+
+  return crashCellData;
+}
+
 
 - (ARSectionData *)userSection
 {

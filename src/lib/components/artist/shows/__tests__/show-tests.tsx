@@ -36,6 +36,6 @@ it("renders properly", () => {
     },
   }
 
-  const show = renderer.create(<Show show={showProps} styles={showStyles}/>).toJSON()
+  const show = renderer.create(<Show show={showProps} styles={showStyles} />).toJSON()
   expect(show).toMatchSnapshot()
 })

@@ -1,6 +1,9 @@
-import { danger, fail, warn } from "danger"
+import { danger, fail, markdown, warn } from "danger"
 import { compact, includes, uniq } from "lodash"
 
+// TypeScript thinks we're in React Native,
+// so the node API gives us errors:
+import * as child_process from "child_process"
 import * as fs from "fs"
 import * as path from "path"
 
@@ -25,11 +28,11 @@ const modifiedAppFiles = modified.filter(p => includes(p, "lib/")).filter(p => f
 // Modified or Created can be treated the same a lot of the time
 const touchedFiles = modified.concat(danger.git.created_files).filter(p => filesOnly(p))
 
-const touchedAppOnlyFiles = touchedFiles.filter(p =>
-  includes(p, "src/lib/") && !includes(p, "__tests__") && typescriptOnly(p))
+const touchedAppOnlyFiles = touchedFiles.filter(
+  p => includes(p, "src/lib/") && !includes(p, "__tests__") && typescriptOnly(p)
+)
 
-const touchedComponents = touchedFiles.filter(p =>
-  includes(p, "src/lib/components") && !includes(p, "__tests__"))
+const touchedComponents = touchedFiles.filter(p => includes(p, "src/lib/components") && !includes(p, "__tests__"))
 
 // Rules
 
@@ -70,12 +73,12 @@ const correspondingTestsForAppFiles = touchedAppOnlyFiles.map(f => {
 // New app files should get new test files
 // Allow warning instead of failing if you say "Skip New Tests" inside the body, make it explicit.
 const testFilesThatDontExist = correspondingTestsForAppFiles
-                                 .filter(f => !f.includes("index-tests.tsx")) // skip indexes
-                                 .filter(f => !f.includes("__stories__")) // skip stories
-                                 .filter(f => !f.includes("app_registry")) // skip registry, kinda untestable
-                                 .filter(f => !f.includes("routes")) // skip routes, kinda untestable
-                                 .filter(f => !f.includes("native_modules")) // skip native_modules
-                                 .filter(f => !fs.existsSync(f))
+  .filter(f => !f.includes("index-tests.tsx")) // skip indexes
+  .filter(f => !f.includes("__stories__")) // skip stories
+  .filter(f => !f.includes("app_registry")) // skip registry, kinda untestable
+  .filter(f => !f.includes("routes")) // skip routes, kinda untestable
+  .filter(f => !f.includes("native_modules")) // skip native_modules
+  .filter(f => !fs.existsSync(f))
 
 if (testFilesThatDontExist.length > 0) {
   const callout = acceptedNoTests ? warn : fail
@@ -89,11 +92,12 @@ If these files are supposed to not exist, please update your PR body to include 
 
 // A component should have a corresponding story reference, so that we're consistent
 // with how the web create their components
-
-const reactComponentForPath = (filePath) => {
+const reactComponentForPath = filePath => {
   const content = fs.readFileSync(filePath).toString()
   const match = content.match(/class (.*) extends React.Component/)
-  if (!match || match.length === 0) { return null }
+  if (!match || match.length === 0) {
+    return null
+  }
   return match[1]
 }
 
@@ -124,7 +128,6 @@ ${components}
 // We'd like to improve visibility of whether someone has tested on a device,
 // or run through the code at all. So, to look at improving this, we're going to try appending
 // a checklist, and provide useful info on how to run the code yourself inside the PR.
-
 const splitter = `<hr data-danger="yep"/>`
 const userBody = pr.body.split(splitter)[0]
 const localBranch = `${pr.user.login}-${pr.number}-checkout`
@@ -158,5 +161,36 @@ const newBody = userBody + splitter + "\n" + bodyFooter
 // require Danger to submit a new body (and thus overwrite those changes.)
 const neuterMarkdownTicks = /- \[*.\]/g
 if (pr.body.replace(neuterMarkdownTicks, "-") !== newBody.replace(neuterMarkdownTicks, "-")) {
-  danger.github.api.pullRequests.update({...danger.github.thisPR, body: newBody })
+  // See https://github.com/artsy/emission/issues/589
+  // danger.github.api.pullRequests.update({...danger.github.thisPR, body: newBody })
+}
+
+// No `yarn run` inside the Package.json
+// It would make the shell glob instead of CLI tools which do a better job.
+// See: https://github.com/yarnpkg/yarn/issues/3595
+const packageText = fs.readFileSync("package.json", "utf8")
+if (packageText.includes("yarn run")) {
+  const url = "https://github.com/yarnpkg/yarn/issues/3595"
+  fail(`You have a \`yarn run\` inside the package.json. This is probably a mistake, see ${url}.`)
+}
+
+// Show TSLint errors inline
+// Yes, this is a bit lossy, we run the linter twice now, but its still a short amount of time
+// Perhaps we could indicate that tslint failed somehow the first time?
+
+// This process should always fail, so needs the `|| true` so it won't raise.
+child_process.execSync(`npm run lint -- -- --format json --out tslint-errors.json || true`)
+const tslintErrors = JSON.parse(fs.readFileSync("tslint-errors.json")) as any[]
+if (tslintErrors.length) {
+  const errors = tslintErrors.map(error => {
+    const format = error.ruleSeverity === "ERROR" ? ":no_entry_sign:" : ":warning:"
+    const linkToFile = danger.github.utils.fileLinks([error.name])
+    return `* ${format} ${linkToFile} - ${error.ruleName} - ${error.failure}`
+  })
+  const tslintMarkdown = `
+## TSLint Issues:
+
+${errors.join("\n")}
+`
+  markdown(tslintMarkdown)
 }
