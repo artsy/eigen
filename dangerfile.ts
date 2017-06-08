@@ -1,4 +1,4 @@
-import { danger, fail, warn } from "danger"
+import { danger, fail, markdown, warn } from "danger"
 import { compact, includes, uniq } from "lodash"
 
 // TypeScript thinks we're in React Native,
@@ -175,10 +175,20 @@ if (packageText.includes("yarn run")) {
 // Show TSLint errors inline
 // Yes, this is a bit lossy, we run the linter twice now, but its still a short amount of time
 // Perhaps we could indicate that tslint failed somehow the first time?
-const tslint = child_process.execSync(`npm run lint -- -- --format json --out tslint-errors.json`)
+
+// This process should always fail, so needs the `|| true` so it won't raise.
+child_process.execSync(`npm run lint -- -- --format json --out tslint-errors.json || true`)
 const tslintErrors = JSON.parse(fs.readFileSync("tslint-errors.json")) as any[]
-tslintErrors.forEach(error => {
-  const format = error.ruleSeverity === "ERROR" ? fail : warn
-  const linkToFile = danger.github .utils.fileLinks(error.name)
-  format(`${linkToFile} - ${error.ruleName} - ${error.failure}`)
-})
+if (tslintErrors.length) {
+  const errors = tslintErrors.map(error => {
+    const format = error.ruleSeverity === "ERROR" ? ":no_entry_sign:" : ":warning:"
+    const linkToFile = danger.github .utils.fileLinks([error.name])
+    return `* ${format} ${linkToFile} - ${error.ruleName} - ${error.failure}`
+  })
+  const tslintMarkdown = `
+## TSLint Issues:
+
+${errors.join("\n")}
+`
+  markdown(tslintMarkdown)
+}

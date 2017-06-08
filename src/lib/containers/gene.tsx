@@ -51,24 +51,24 @@ interface State {
 }
 
   /**
-   *  There are 3 different major views inside this componentDidUpdate
-   *
-   *   - Foreground [title, follow, switch]
-   *   - Sticky Refine [work counter, refine]
-   *   - Section inside tab [artworks || about + related artists]
-   *
-   *   Nuance:
-   *
-   *   - The foreground switches between the "foreground" and "sticky header"
-   *     the foreground being the title, buttons and switch, the header being
-   *     just the title. It only does this for Artworks, not about.
-   *
-   *   - The sticky refine, when scrolled up _gains_ a 64px margin
-   *     this is so it can reach all the way of the screen, and fit
-   *     the sticky header's mini title inside it.
-   *
-   *   - We use a fork of react-native-parallax-scroll-view which has access
-   *     to change the style component of the header, as well as a well-ordered
+       *  There are 3 different major views inside this componentDidUpdate
+       *
+       *   - Foreground [title, follow, switch]
+       *   - Sticky Refine [work counter, refine]
+       *   - Section inside tab [artworks || about + related artists]
+       *
+       *   Nuance:
+       *
+       *   - The foreground switches between the "foreground" and "sticky header"
+       *     the foreground being the title, buttons and switch, the header being
+       *     just the title. It only does this for Artworks, not about.
+       *
+       *   - The sticky refine, when scrolled up _gains_ a 64px margin
+       *     this is so it can reach all the way of the screen, and fit
+       *     the sticky header's mini title inside it.
+       *
+       *   - We use a fork of react-native-parallax-scroll-view which has access
+       *     to change the style component of the header, as well as a well-ordered
    *     API for inserting a component into the tree. This is used so that the
    *     sticky refine section will _always_ be at a specific index, making sure
    *     the `stickyHeaderIndices` is always at the right index.
