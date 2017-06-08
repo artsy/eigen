@@ -1,6 +1,9 @@
 import { danger, fail, warn } from "danger"
 import { compact, includes, uniq } from "lodash"
 
+// TypeScript thinks we're in React Native,
+// so the node API gives us errors:
+import * as child_process from "child_process"
 import * as fs from "fs"
 import * as path from "path"
 
@@ -89,7 +92,6 @@ If these files are supposed to not exist, please update your PR body to include 
 
 // A component should have a corresponding story reference, so that we're consistent
 // with how the web create their components
-
 const reactComponentForPath = (filePath) => {
   const content = fs.readFileSync(filePath).toString()
   const match = content.match(/class (.*) extends React.Component/)
@@ -124,7 +126,6 @@ ${components}
 // We'd like to improve visibility of whether someone has tested on a device,
 // or run through the code at all. So, to look at improving this, we're going to try appending
 // a checklist, and provide useful info on how to run the code yourself inside the PR.
-
 const splitter = `<hr data-danger="yep"/>`
 const userBody = pr.body.split(splitter)[0]
 const localBranch = `${pr.user.login}-${pr.number}-checkout`
@@ -161,3 +162,23 @@ if (pr.body.replace(neuterMarkdownTicks, "-") !== newBody.replace(neuterMarkdown
   // See https://github.com/artsy/emission/issues/589
   // danger.github.api.pullRequests.update({...danger.github.thisPR, body: newBody })
 }
+
+// No `yarn run` inside the Package.json
+// It would make the shell glob instead of CLI tools which do a better job.
+// See: https://github.com/yarnpkg/yarn/issues/3595
+const packageText = fs.readFileSync("package.json", "utf8")
+if (packageText.includes("yarn run")) {
+  const url = "https://github.com/yarnpkg/yarn/issues/3595"
+  fail(`You have a \`yarn run\` inside the package.json. This is probably a mistake, see ${url}.`)
+}
+
+// Show TSLint errors inline
+// Yes, this is a bit lossy, we run the linter twice now, but its still a short amount of time
+// Perhaps we could indicate that tslint failed somehow the first time?
+const tslint = child_process.execSync(`npm run lint -- -- --format json --out tslint-errors.json`)
+const tslintErrors = JSON.parse(fs.readFileSync("tslint-errors.json")) as any[]
+tslintErrors.forEach(error => {
+  const format = error.ruleSeverity === "ERROR" ? fail : warn
+  const linkToFile = danger.github .utils.fileLinks(error.name)
+  format(`${linkToFile} - ${error.ruleName} - ${error.failure}`)
+})
