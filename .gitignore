@@ -49,3 +49,6 @@ coverage
 # A commit deploy using `yarn bundle-with-storybooks` generates these
 Emission.js
 Emission.js.meta
+
+# Danger artifacts
+tslint-errors.json

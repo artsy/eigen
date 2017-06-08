@@ -8,7 +8,7 @@
     "bundle-with-storybooks": "react-native bundle --config \"$(pwd)\"/rn-cli.config.js --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output Emission.js --assets-dest Pod/Assets",
     "clean-example": "cd Example && xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",
     "type-check": "tsc --noEmit --pretty",
-    "lint": "tslint 'src/**/*.{ts,tsx}'",
+    "lint": "npm run tslint 'src/**/*.{ts,tsx}'",
     "lint-fix": "npm run lint -- --fix",
     "prettier": "prettier",
     "prettier-write": "npm run prettier -- --parser typescript --no-semi --trailing-comma es5 --write --print-width 120 ",
@@ -23,6 +23,7 @@
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
     "test": "jest",
     "testing": "jest --watch",
+    "tslint": "tslint",
     "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
     "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && npm run dump-schema -- ../../data && rm -rf node_modules",
@@ -121,7 +122,7 @@
   "lint-staged": {
     "*.@(ts|tsx)": [
       "tslint --fix",
-      "yarn prettier-write --",
+      "npm run prettier-write --",
       "git add"
     ]
   }
