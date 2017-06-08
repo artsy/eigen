@@ -187,7 +187,7 @@ exports[`looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    3 DAYS
+                    30 MINUTES
                   </Text>
                   <View
                     style={
@@ -257,7 +257,7 @@ exports[`looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    Bradley Theodore · 
+                    Bradley Theodore ·
                   </Text>
                   <Text
                     accessible={true}
@@ -282,7 +282,7 @@ exports[`looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    Karl and Anna Face Off (Diptych), 
+                    Karl and Anna Face Off (Diptych),
                   </Text>
                   <Text
                     accessible={true}
@@ -488,7 +488,7 @@ exports[`looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    6 DAYS
+                    AN HOUR
                   </Text>
                   <View
                     style={
@@ -558,7 +558,7 @@ exports[`looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    Aida Muluneh · 
+                    Aida Muluneh ·
                   </Text>
                   <Text
                     accessible={true}
@@ -583,7 +583,7 @@ exports[`looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    Darkness Give Way to Light, 
+                    Darkness Give Way to Light,
                   </Text>
                   <Text
                     accessible={true}
