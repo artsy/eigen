@@ -15,11 +15,13 @@ class Articles extends React.Component<Props, {}> {
     return (
       <View>
         <SerifText style={styles.heading}>Featured Articles</SerifText>
-        <ScrollView horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    scrollsToTop={false}
-                    style={{ overflow: "visible", marginBottom: 40 }}>
-          { articles.map(article => <Article key={article.__id} article={article} style={styles.article} />) }
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          scrollsToTop={false}
+          style={{ overflow: "visible", marginBottom: 40 }}
+        >
+          {articles.map(article => <Article key={article.__id} article={article} style={styles.article} />)}
         </ScrollView>
       </View>
     )
@@ -49,7 +51,13 @@ export default Relay.createContainer(Articles, {
 })
 
 interface RelayProps {
-  articles: Array<{
-    __id: string,
-  } | null> | null,
+  articles:
+    | Array<
+
+        | {
+          __id: string,
+        }
+        | null
+    >
+    | null
 }

@@ -10,13 +10,11 @@ const smallButton = { height: 26, width: 320, marginBottom: 20 }
 const largeButton = { height: 26, width: 320, marginBottom: 20 }
 
 storiesOf("Artsy Buttons")
-  .addDecorator((story) => (
-    <View style={{ marginTop: 60, marginLeft: 20, marginRight: 20 }}>{story()}</View>
-  ))
+  .addDecorator(story => <View style={{ marginTop: 60, marginLeft: 20, marginRight: 20 }}>{story()}</View>)
   .add("Flat White", () => {
     return [
       <FlatWhite text="Default" style={smallButton} />,
-      <FlatWhite text="Clickable" style = {smallButton} onPress = {action("Pressed")} />,
+      <FlatWhite text="Clickable" style={smallButton} onPress={action("Pressed")} />,
     ]
   })
   .add("Inverted Button", () => {
@@ -27,13 +25,11 @@ storiesOf("Artsy Buttons")
       <View style={largeButton}>
         <InvertedButton text="Clickable" onPress={action("Pressed")} />
       </View>,
-       <View style={largeButton}>
+      <View style={largeButton}>
         <InvertedButton text="In Progress..." inProgress={true} />
       </View>,
     ]
   })
   .add("Navigation Button", () => {
-    return [
-      <NavigationButton title="Default" href="/link/place" />,
-    ]
+    return [<NavigationButton title="Default" href="/link/place" />]
   })

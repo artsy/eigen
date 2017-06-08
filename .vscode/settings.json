@@ -9,6 +9,16 @@
     },
     "eslint.enable": false,
     "flow.enabled": false,
+
+    "prettier.singleQuote": false,
+    "prettier.trailingComma": "es5",
+    "prettier.typescriptEnable": [
+        "typescript",
+        "typescriptreact"
+    ],
+    "prettier.semi": false,
+    "prettier.printWidth": 120,
+
     "files.trimTrailingWhitespace": true,
     "editor.renderWhitespace": "boundary",
     "editor.rulers": [120],

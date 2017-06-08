@@ -8,14 +8,7 @@
 
 import * as React from "react"
 
-import {
-  Dimensions,
-  LayoutChangeEvent,
-  ScrollView,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from "react-native"
+import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
 
 import Spinner from "../spinner"
 import Artwork from "./artwork"
@@ -35,52 +28,56 @@ export const PageEndThreshold = 1000
  *   - the calculation currently only takes into account the size of the image, not if e.g. the sale message is present
  */
 
-type Artworks = Array<{
-  __id: string,
-  image: {
-    aspect_ratio: number | null,
-  } | null,
-}>
+type Artworks = Array<
+  {
+    __id: string,
+    image:
+      | {
+        aspect_ratio: number | null,
+      }
+      | null,
+  }
+>
 
 interface Props extends ArtistRelayProps, GeneRelayProps {
   /** The direction for the grid, currently only 'column' is supported . */
-  sectionDirection: string;
+  sectionDirection: string
 
   /** The arity of the number of sections (e.g. columns) to show */
-  sectionCount: number;
+  sectionCount: number
 
   /** The inset margin for the whole grid */
-  sectionMargin: number;
+  sectionMargin: number
 
   /** The per-item margin */
-  itemMargin: number;
+  itemMargin: number
 
   /** The artist in question */
-  artist: any;
+  artist: any
 
   /** The gene in question */
-  gene: any;
+  gene: any
 
   /** The key to get artworks */
-  queryKey: any;
+  queryKey: any
 
   /** Filter for artist artworks */
-  filter: any;
+  filter: any
 
   /** Medium for filter artworks */
-  medium: string;
+  medium: string
 
   /** Price range for filter artworks */
-  priceRange: any;
+  priceRange: any
 
   /** Sort for filter artworks */
-  sort: any;
+  sort: any
 
   /** Relay */
-  relay: any;
+  relay: any
 
   /** A callback that is called once all artworks have been queried. */
-  onComplete?: () => void;
+  onComplete?: () => void
 }
 
 interface State {
@@ -116,17 +113,20 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
       return
     }
     this.setState({ fetchingNextPage: true })
-    this.props.relay.setVariables({
-      totalSize: this.props.relay.variables.totalSize + PageSize,
-    }, (readyState) => {
-      if (readyState.done) {
-        this.setState({ fetchingNextPage: false })
-        if (!this.props[this.props.queryKey].artworks.pageInfo.hasNextPage && this.props.onComplete) {
-          this.props.onComplete()
-          this.setState({ completed: true })
+    this.props.relay.setVariables(
+      {
+        totalSize: this.props.relay.variables.totalSize + PageSize,
+      },
+      readyState => {
+        if (readyState.done) {
+          this.setState({ fetchingNextPage: false })
+          if (!this.props[this.props.queryKey].artworks.pageInfo.hasNextPage && this.props.onComplete) {
+            this.props.onComplete()
+            this.setState({ completed: true })
+          }
         }
       }
-    })
+    )
   }
 
   /** A simplified version of the Relay debugging logs for infinite scrolls */
@@ -163,8 +163,9 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     const sectionedArtworks: Artworks[] = []
     const sectionRatioSums: number[] = []
     const queryKey = this.props.queryKey
-    const artworks: Artworks = this.props[queryKey].artworks ?
-      this.props[queryKey].artworks.edges.map(({ node }) => node) : []
+    const artworks: Artworks = this.props[queryKey].artworks
+      ? this.props[queryKey].artworks.edges.map(({ node }) => node)
+      : []
 
     for (let i = 0; i < this.props.sectionCount; i++) {
       sectionedArtworks.push([])
@@ -193,7 +194,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
           // Keep track of total section aspect ratio
           const aspectRatio = artwork.image.aspect_ratio || 1 // Ensure we never divide by null/0
           // Invert the aspect ratio so that a lower value means a shorter section.
-          sectionRatioSums[sectionIndex] += (1 / aspectRatio)
+          sectionRatioSums[sectionIndex] += 1 / aspectRatio
         }
       }
     })
@@ -214,35 +215,31 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
       const artworkComponents: JSX.Element[] = []
       for (let j = 0; j < sectionedArtworks[i].length; j++) {
         const artwork = sectionedArtworks[i][j]
-        artworkComponents.push(
-          <Artwork
-            artwork={artwork as any}
-            key={"artwork-" + j + "-" + artwork.__id}
-          />)
+        artworkComponents.push(<Artwork artwork={artwork as any} key={"artwork-" + j + "-" + artwork.__id} />)
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
         if (j < artworks.length - 1) {
           artworkComponents.push(
-            <View style={spacerStyle} key={"spacer-" + j + "-" + artwork.__id} accessibilityLabel="Spacer View" />,
+            <View style={spacerStyle} key={"spacer-" + j + "-" + artwork.__id} accessibilityLabel="Spacer View" />
           )
         }
       }
 
       const sectionSpecificStyle = {
         width: this.state.sectionDimension,
-        marginRight: (i === this.props.sectionCount - 1 ? 0 : this.props.sectionMargin),
+        marginRight: i === this.props.sectionCount - 1 ? 0 : this.props.sectionMargin,
       }
 
       sections.push(
         <View style={[styles.section, sectionSpecificStyle]} key={i} accessibilityLabel={"Section " + i}>
           {artworkComponents}
-        </View>,
+        </View>
       )
     }
     return sections
   }
 
   // Lifted pretty much straight from RN’s ListView.js
-  onScroll = (event) => {
+  onScroll = event => {
     const scrollProperties = event.nativeEvent
     const contentLength = scrollProperties.contentSize.height
     if (contentLength !== this.sentEndForContentLength) {
@@ -259,11 +256,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
     return (
-      <ScrollView onScroll={this.onScroll}
-                  scrollEventThrottle={50}
-                  onLayout={this.onLayout}
-                  scrollsToTop={false}
-                  accessibilityLabel="Artworks ScrollView">
+      <ScrollView
+        onScroll={this.onScroll}
+        scrollEventThrottle={50}
+        onLayout={this.onLayout}
+        scrollsToTop={false}
+        accessibilityLabel="Artworks ScrollView"
+      >
         <View style={styles.container} accessibilityLabel="Artworks Content View">
           {artworks}
         </View>
@@ -274,9 +273,9 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
 }
 
 interface Styles {
-  container: ViewStyle,
-  section: ViewStyle,
-  spinner: ViewStyle,
+  container: ViewStyle
+  section: ViewStyle
+  spinner: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({

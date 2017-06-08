@@ -25,13 +25,13 @@ export type ArtistFollowButtonStatusSetter = (status: boolean) => ArtistFollowHa
 export type ArtistFollowHandler = (setFollowButtonStatus: ArtistFollowButtonStatusSetter) => void
 
 interface Props extends ViewProperties, RelayProps {
-  onFollow?: ArtistFollowHandler,
+  onFollow?: ArtistFollowHandler
 }
 
 interface State {
-    processingChange: boolean
-    following?: boolean
-    followStatusChanged?: Animated.EndCallback,
+  processingChange: boolean
+  following?: boolean
+  followStatusChanged?: Animated.EndCallback
 }
 
 export class ArtistCard extends React.Component<Props, State> {
@@ -85,14 +85,14 @@ export class ArtistCard extends React.Component<Props, State> {
     lines.push(
       <Text key={1} numberOfLines={1} style={styles.sansSerifText}>
         {artist.name.toUpperCase()}
-      </Text>,
+      </Text>
     )
 
     if (artist.formatted_nationality_and_birthday) {
       lines.push(
         <Text key={2} numberOfLines={1} style={styles.serifText}>
           {artist.formatted_nationality_and_birthday}
-        </Text>,
+        </Text>
       )
     }
 
@@ -100,7 +100,7 @@ export class ArtistCard extends React.Component<Props, State> {
       lines.push(
         <Text key={3} numberOfLines={1} style={[styles.serifText, styles.serifWorksText]}>
           {artist.formatted_artworks_count}
-        </Text>,
+        </Text>
       )
     }
 
@@ -123,11 +123,13 @@ export class ArtistCard extends React.Component<Props, State> {
               {this.renderMetadata()}
             </View>
             <View style={styles.followButton}>
-              <InvertedButton text={this.state.following ? "Following" : "Follow"}
-                              selected={this.state.following}
-                              onPress={this.handleFollowChange}
-                              inProgress={this.state.processingChange}
-                              onSelectionAnimationFinished={selectionAnimationFinishedHandler} />
+              <InvertedButton
+                text={this.state.following ? "Following" : "Follow"}
+                selected={this.state.following}
+                onPress={this.handleFollowChange}
+                inProgress={this.state.processingChange}
+                onSelectionAnimationFinished={selectionAnimationFinishedHandler}
+              />
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -137,14 +139,14 @@ export class ArtistCard extends React.Component<Props, State> {
 }
 
 interface Styles {
-  container: ViewStyle,
-  sansSerifText: TextStyle,
-  serifText: TextStyle,
-  touchableContainer: ViewStyle,
-  image: ViewStyle,
-  textContainer: ViewStyle,
-  serifWorksText: TextStyle,
-  followButton: ViewStyle,
+  container: ViewStyle
+  sansSerifText: TextStyle
+  serifText: TextStyle
+  touchableContainer: ViewStyle
+  image: ViewStyle
+  textContainer: ViewStyle
+  serifWorksText: TextStyle
+  followButton: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -167,7 +169,6 @@ const styles = StyleSheet.create<Styles>({
       height: 2,
       width: 0,
     },
-
   },
   image: {
     width: 196,
@@ -225,15 +226,15 @@ const ArtistCardContainer = Relay.createContainer<Props>(ArtistCard, {
 })
 
 export interface ArtistCardResponse {
-  id: string,
-  _id: string,
-  href: string,
-  name: string,
-  formatted_artworks_count: number,
-  formatted_nationality_and_birthday: string,
+  id: string
+  _id: string
+  href: string
+  name: string
+  formatted_artworks_count: number
+  formatted_nationality_and_birthday: string
   image: {
     url: string,
-  },
+  }
 }
 
 // TODO Until we figure out how to use Relay to fetch/render suggested artists and replace initially suggested cards,
@@ -262,8 +263,10 @@ interface RelayProps {
     name: string | null,
     formatted_artworks_count: string | null,
     formatted_nationality_and_birthday: string | null,
-    image: {
-      url: string | null,
-    } | null,
-  },
+    image:
+      | {
+        url: string | null,
+      }
+      | null,
+  }
 }

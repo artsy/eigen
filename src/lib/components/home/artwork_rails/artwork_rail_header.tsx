@@ -34,7 +34,7 @@ const additionalContentRails = [
 ]
 
 interface Props extends ViewProperties, RelayProps {
-  handleViewAll: () => void,
+  handleViewAll: () => void
 }
 
 interface State {
@@ -51,11 +51,11 @@ class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, St
     return (
       <TouchableWithoutFeedback onPress={this.props.handleViewAll}>
         <View style={styles.container}>
-          { this.props.rail.context && this.followAnnotation() }
+          {this.props.rail.context && this.followAnnotation()}
           <SectionTitle>
-          { this.props.rail.title }
+            {this.props.rail.title}
           </SectionTitle>
-          { this.actionButton() }
+          {this.actionButton()}
         </View>
       </TouchableWithoutFeedback>
     )
@@ -64,7 +64,7 @@ class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, St
   followAnnotation() {
     if (this.props.rail.key === "related_artists") {
       const name = this.props.rail.context.based_on.name
-      return <SerifText style={styles.followAnnotation}>{ "Based on " + name }</SerifText>
+      return <SerifText style={styles.followAnnotation}>{"Based on " + name}</SerifText>
     }
   }
 
@@ -75,15 +75,17 @@ class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, St
 
   actionButton() {
     if (this.hasAdditionalContent()) {
-      return <Text style={styles.viewAllButton}> { "View All".toUpperCase() } </Text>
+      return <Text style={styles.viewAllButton}> {"View All".toUpperCase()} </Text>
     } else if (this.props.rail.key === "related_artists" || this.props.rail.key === "followed_artist") {
-        return (
-          <View style={styles.followButton}>
-            <Button text={this.state.following ? "Following" : "Follow"}
-                    selected={this.state.following}
-                    onPress={this.handleFollowChange} />
-          </View>
-        )
+      return (
+        <View style={styles.followButton}>
+          <Button
+            text={this.state.following ? "Following" : "Follow"}
+            selected={this.state.following}
+            onPress={this.handleFollowChange}
+          />
+        </View>
+      )
     }
   }
 
@@ -106,11 +108,11 @@ class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, St
 }
 
 interface Styles {
-  container: ViewStyle,
-  title: TextStyle,
-  viewAllButton: TextStyle,
-  followButton: ViewStyle,
-  followAnnotation: TextStyle,
+  container: ViewStyle
+  title: TextStyle
+  viewAllButton: TextStyle
+  followButton: ViewStyle
+  followAnnotation: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -170,7 +172,7 @@ interface RelayProps {
     title: string | null,
     key: string | null,
     context: Array<boolean | number | string | null> | null,
-  },
+  }
 }
 interface RelayPropsWorkaround {
   rail: {

@@ -1,16 +1,12 @@
+import { storiesOf } from "@storybook/react-native"
 import * as moment from "moment"
 import * as React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
+import { ScrollView } from "react-native"
 
-import ConversationSnippet from "../conversation_snippet"
+import { Conversation, ConversationSnippet } from "../conversation_snippet"
 
-it("renders correctly", () => {
-  const tree = renderer.create(<ConversationSnippet conversation={conversation} />)
-  expect(tree).toMatchSnapshot()
-})
-
-const conversation = {
+const conversation: Conversation = {
   id: "582",
   inquiry_id: "59302144275b244a81d0f9c6",
   from_name: "Jean-Luc Collecteur",
@@ -18,7 +14,6 @@ const conversation = {
   to_name: "ACA Galleries",
   last_message: "Karl and Anna... Fab!",
   last_message_at: moment().subtract(30, "minutes").toISOString(),
-  created_at: "2017-06-01T14:14:35.538Z",
   artworks: [
     {
       id: "bradley-theodore-karl-and-anna-face-off-diptych",
@@ -35,3 +30,13 @@ const conversation = {
     },
   ],
 }
+
+storiesOf("Conversations - Snippet")
+  .add("Single row", () => <ConversationSnippet conversation={conversation} />)
+  .add("A few threads", () => (
+    <ScrollView>
+      <ConversationSnippet conversation={conversation} />
+      <ConversationSnippet conversation={conversation} />
+      <ConversationSnippet conversation={conversation} />
+    </ScrollView>
+  ))

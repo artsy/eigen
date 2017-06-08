@@ -1,13 +1,7 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  Dimensions,
-  ScrollView,
-  View,
-  ViewProperties,
-  ViewStyle,
-} from "react-native"
+import { Dimensions, ScrollView, View, ViewProperties, ViewStyle } from "react-native"
 
 import Headline from "../components/text/headline"
 
@@ -33,7 +27,7 @@ export class MyAccount extends React.Component<Props, {}> {
 }
 
 interface Styles {
-  tabView: ViewStyle,
+  tabView: ViewStyle
 }
 
 export default Relay.createContainer(MyAccount, {
@@ -49,5 +43,5 @@ export default Relay.createContainer(MyAccount, {
 interface RelayProps {
   me: {
     name: string | null,
-  },
+  }
 }

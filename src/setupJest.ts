@@ -1,5 +1,5 @@
 function mockedModule(path: string, moduleName: string) {
-  jest.mock(path, () => ({default: moduleName}))
+  jest.mock(path, () => ({ default: moduleName }))
 }
 
 jest.mock("./lib/metaphysics.ts")

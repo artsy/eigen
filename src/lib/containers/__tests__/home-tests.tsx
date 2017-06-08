@@ -32,7 +32,7 @@ describe("upon initialization", () => {
 
 describe("layout", () => {
   it("renders as expected", () => {
-    const homeComponent = renderer.create(<Home home={homeProps(3, 3, 3).home}/>).toJSON()
+    const homeComponent = renderer.create(<Home home={homeProps(3, 3, 3).home} />).toJSON()
     expect(homeComponent).toMatchSnapshot()
   })
 })
@@ -50,7 +50,7 @@ const homeProps = (nHeroUnits?: number, nArtistModules?: number, nArtworkModules
 const modulesOfType = (type: string, count: number) => {
   const modules = []
   for (let i = 0; i < count; i++) {
-    modules.push({ title: "Title", type, results: [{title: "Artwork"}]})
+    modules.push({ title: "Title", type, results: [{ title: "Artwork" }] })
   }
   return modules
 }

@@ -1,13 +1,15 @@
+import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
+import { RootContainer } from "react-relay"
+import StubContainer from "react-storybooks-relay-container"
 
-import Inbox from "../inbox"
+import Routes from "../../../../relay/routes"
+import Inbox from "../index"
 
-it("renders correctly", () => {
-  const tree = renderer.create(<Inbox me={meProps} />).toJSON()
-  expect(tree).toMatchSnapshot()
-})
+storiesOf("Conversations - Inbox")
+  .add("With live data", () => <RootContainer Component={Inbox} route={new Routes.MyAccount()} />)
+  .add("With dummy data", () => <StubContainer Component={Inbox} props={{ me: meProps }} />)
 
 const meProps = {
   conversations: {

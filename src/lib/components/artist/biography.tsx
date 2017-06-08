@@ -21,9 +21,9 @@ class Biography extends React.Component<Props, any> {
     }
 
     return (
-      <View style={{marginLeft: sideMargin, marginRight: sideMargin}}>
+      <View style={{ marginLeft: sideMargin, marginRight: sideMargin }}>
         <Headline style={{ marginBottom: 20 }}>Biography</Headline>
-        { this.blurb(artist) }
+        {this.blurb(artist)}
         <SerifText style={styles.bio} numberOfLines={0}>{this.bioText()}</SerifText>
       </View>
     )
@@ -69,5 +69,5 @@ interface RelayProps {
   artist: {
     bio: string | null,
     blurb: string | null,
-  },
+  }
 }

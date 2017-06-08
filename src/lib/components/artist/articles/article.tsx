@@ -1,28 +1,20 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  StyleSheet,
-  Text,
-  TextStyle,
-  TouchableWithoutFeedback,
-  View,
-  ViewProperties,
-  ViewStyle,
-} from "react-native"
+import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewProperties, ViewStyle } from "react-native"
 
 import SwitchBoard from "../../../native_modules/switch_board"
 import ImageView from "../../opaque_image_view"
 
 interface Props extends ViewProperties {
   article: {
-    href: string
+    href: string,
     author: {
       name,
-    }
+    },
     thumbnail_image: {
       url,
-    }
+    },
     thumbnail_title: string,
   }
 }
@@ -51,11 +43,11 @@ class Article extends React.Component<Props, {}> {
 }
 
 interface Styles {
-  container: ViewStyle,
-  touchableContent: ViewStyle,
-  image: ViewStyle,
-  sansSerifText: TextStyle,
-  serifText: TextStyle,
+  container: ViewStyle
+  touchableContent: ViewStyle
+  image: ViewStyle
+  sansSerifText: TextStyle
+  serifText: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -107,11 +99,15 @@ interface RelayProps {
   article: {
     thumbnail_title: string | null,
     href: string | null,
-    author: {
-      name: string | null,
-    } | null,
-    thumbnail_image: {
-      url: string | null,
-    } | null,
-  },
+    author:
+      | {
+        name: string | null,
+      }
+      | null,
+    thumbnail_image:
+      | {
+        url: string | null,
+      }
+      | null,
+  }
 }

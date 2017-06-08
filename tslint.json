@@ -27,10 +27,10 @@
       "ignore-bound-class-methods"
     ],
     "switch-default": false,
-    "trailing-comma": [
-      true,
-      { "multiline": "always", "singleline": "never" }
-    ],
-    "no-unused-variable": [true, {"ignore-pattern": "React" }]
+    "no-unused-variable": [true, {"ignore-pattern": "React" }],
+    "trailing-comma": [false],
+    "no-console": [
+      ["error",  ["warn", "error"]]
+    ]
   }
 }

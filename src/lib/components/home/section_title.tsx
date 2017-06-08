@@ -1,10 +1,6 @@
 import * as React from "react"
 
-import {
-  StyleSheet,
-  Text,
-  TextStyle,
-} from "react-native"
+import { StyleSheet, Text, TextStyle } from "react-native"
 
 export default class SectionTitle extends React.Component<any, any> {
   static propTypes = {
@@ -12,7 +8,7 @@ export default class SectionTitle extends React.Component<any, any> {
   }
 
   render() {
-    const { children, ...props } = this.props
+    const { children, props } = this.props
     return (
       <Text style={styles.headerText} numberOfLines={0} {...props}>
         {children}
@@ -22,7 +18,7 @@ export default class SectionTitle extends React.Component<any, any> {
 }
 
 interface Styles {
-  headerText: TextStyle,
+  headerText: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({

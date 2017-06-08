@@ -25,23 +25,26 @@ const Separator = styled.View`
 `
 
 export interface BottomAlignedProps {
-  onPress: () => void,
+  onPress: () => void
   children: any[]
 }
 
-const render = (props: BottomAlignedProps) =>
+const render = (props: BottomAlignedProps) => (
   <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={60} style={{ flex: 1 }}>
 
     {props.children}
 
-    <View key="space-eater" style={{flexGrow: 1}}/>
-    <Separator key="separator"/>
+    <View key="space-eater" style={{ flexGrow: 1 }} />
+    <Separator key="separator" />
     <Body key="button" onPress={props.onPress}>
       <ButtonText>DONE</ButtonText>
     </Body>
   </KeyboardAvoidingView>
+)
 
 // Export a pure component version
 export default class BottomAlignedButton extends React.PureComponent<BottomAlignedProps, null> {
-  render() { return render(this.props) }
+  render() {
+    return render(this.props)
+  }
 }

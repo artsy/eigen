@@ -1,15 +1,7 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  Animated,
-  Easing,
-  ScrollView,
-  StyleSheet,
-  View,
-  ViewProperties,
-  ViewStyle,
-} from "react-native"
+import { Animated, Easing, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
 import metaphysics from "../../../metaphysics"
 
@@ -28,7 +20,7 @@ const Animation = {
 }
 
 interface Props extends ViewProperties, RelayProps {
-  relay: Relay.RelayProp,
+  relay: Relay.RelayProp
 }
 
 interface State {
@@ -58,7 +50,7 @@ class ArtistRail extends React.Component<Props, State> {
   componentWillReceiveProps(nextProps) {
     if (nextProps.rail.results) {
       const artists = nextProps.rail.results
-      artists.forEach((artist) => {
+      artists.forEach(artist => {
         artist._animatedValues = {
           opacity: new Animated.Value(1),
           translateY: new Animated.Value(0),
@@ -74,7 +66,7 @@ class ArtistRail extends React.Component<Props, State> {
       const duration = Animation.duration.followedArtist
       const easing = Animation.easing
       Animated.parallel([
-        Animated.timing(opacity,    { duration, easing, toValue: 0 }),
+        Animated.timing(opacity, { duration, easing, toValue: 0 }),
         Animated.timing(translateY, { duration, easing, toValue: Animation.yDelta }),
       ]).start(resolve)
     })
@@ -86,7 +78,7 @@ class ArtistRail extends React.Component<Props, State> {
       const duration = Animation.duration.suggestedArtist
       const easing = Animation.easing
       Animated.parallel([
-        Animated.timing(opacity,    { duration, easing, toValue: 1 }),
+        Animated.timing(opacity, { duration, easing, toValue: 1 }),
         Animated.timing(translateY, { duration, easing, toValue: 0 }),
       ]).start(resolve)
     })
@@ -112,20 +104,22 @@ class ArtistRail extends React.Component<Props, State> {
   }
 
   handleFollowChange(followArtist, setFollowButtonStatus: ArtistFollowButtonStatusSetter) {
-      // Get a new suggested artist based on the followed artist.
-    return metaphysics<SuggestedArtistResponse>(suggestedArtistQuery(followArtist._id))
-      // Return the suggested artist or `undefined` if there is no suggestion.
-      .then(({ me: { suggested_artists }}) => suggested_artists[0])
-      // Return `undefined` if an error occurred.
-      .catch(error => console.error(error))
-      // Change the status of the follow button to ‘following’.
-      .then<SuggestedArtist>((suggestedArtist) => setFollowButtonStatus(true).then(() => suggestedArtist))
-      // Animate the followed artist card away.
-      .then((suggestedArtist) => this.followedArtistAnimation(followArtist).then(() => suggestedArtist))
-      // Replace the followed artist by the suggested one in the list of artists.
-      .then((suggestedArtist) => this.replaceFollowedArtist(followArtist, suggestedArtist).then(() => suggestedArtist))
-      // Finally animate the suggested artist card in, if there is a suggestion.
-      .then((suggestedArtist) => suggestedArtist && this.suggestedArtistAnimation(suggestedArtist))
+    // Get a new suggested artist based on the followed artist.
+    return (
+      metaphysics<SuggestedArtistResponse>(suggestedArtistQuery(followArtist._id))
+        // Return the suggested artist or `undefined` if there is no suggestion.
+        .then(({ me: { suggested_artists } }) => suggested_artists[0])
+        // Return `undefined` if an error occurred.
+        .catch(error => console.error(error))
+        // Change the status of the follow button to ‘following’.
+        .then<SuggestedArtist>(suggestedArtist => setFollowButtonStatus(true).then(() => suggestedArtist))
+        // Animate the followed artist card away.
+        .then(suggestedArtist => this.followedArtistAnimation(followArtist).then(() => suggestedArtist))
+        // Replace the followed artist by the suggested one in the list of artists.
+        .then(suggestedArtist => this.replaceFollowedArtist(followArtist, suggestedArtist).then(() => suggestedArtist))
+        // Finally animate the suggested artist card in, if there is a suggestion.
+        .then(suggestedArtist => suggestedArtist && this.suggestedArtistAnimation(suggestedArtist))
+    )
   }
 
   renderModuleResults() {
@@ -142,16 +136,18 @@ class ArtistRail extends React.Component<Props, State> {
         )
       })
       return (
-        <ScrollView style={styles.cardContainer}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    scrollsToTop={false}>
+        <ScrollView
+          style={styles.cardContainer}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          scrollsToTop={false}
+        >
           {cards}
           {
             // Adding a spacer view to have padding at the end of the rail
             // If you add marginRight, it will cut off the cards as you scroll through
           }
-          <View style={{width: 15}} />
+          <View style={{ width: 15 }} />
         </ScrollView>
       )
     } else {
@@ -177,17 +173,17 @@ class ArtistRail extends React.Component<Props, State> {
 
     return (
       <View>
-        <View style={styles.title}><SectionTitle>{ this.title() }</SectionTitle></View>
+        <View style={styles.title}><SectionTitle>{this.title()}</SectionTitle></View>
         {this.renderModuleResults()}
-      <Separator/>
+        <Separator />
       </View>
     )
   }
 }
 
 interface Styles {
-  cardContainer: ViewStyle,
-  title: ViewStyle,
+  cardContainer: ViewStyle
+  title: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -196,18 +192,18 @@ const styles = StyleSheet.create<Styles>({
     flexDirection: "row",
     marginTop: 10,
     minHeight: 330,
- },
+  },
   title: {
     marginLeft: 30,
     marginRight: 30,
     marginTop: 40,
     marginBottom: 10,
- },
+  },
 })
 
 interface SuggestedArtist extends ArtistCardResponse {
-  _id: string,
-  __id: string,
+  _id: string
+  __id: string
   _animatedValues?: {
     opacity: Animated.Value,
     translateY: Animated.Value,
@@ -261,9 +257,15 @@ interface RelayProps {
   rail: {
     __id: string,
     key: string | null,
-    results: Array<{
-      _id: string,
-      __id: string,
-    } | null> | null,
-  },
+    results:
+      | Array<
+
+          | {
+            _id: string,
+            __id: string,
+          }
+          | null
+      >
+      | null,
+  }
 }

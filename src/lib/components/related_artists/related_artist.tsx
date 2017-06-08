@@ -1,13 +1,7 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  StyleSheet,
-  Text,
-  TextStyle,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native"
+import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View } from "react-native"
 
 import colors from "../../../data/colors"
 import SwitchBoard from "../../native_modules/switch_board"
@@ -52,8 +46,8 @@ class RelatedArtist extends React.Component<any, any> {
 }
 
 interface Styles {
-  sansSerifText: TextStyle,
-  serifText: TextStyle,
+  sansSerifText: TextStyle
+  serifText: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -93,12 +87,16 @@ interface RelayProps {
   artist: {
     href: string | null,
     name: string | null,
-    counts: {
-      for_sale_artworks: boolean | number | string | null,
-      artworks: boolean | number | string | null,
-    } | null,
-    image: {
-      url: string | null,
-    } | null,
-  },
+    counts:
+      | {
+        for_sale_artworks: boolean | number | string | null,
+        artworks: boolean | number | string | null,
+      }
+      | null,
+    image:
+      | {
+        url: string | null,
+      }
+      | null,
+  }
 }

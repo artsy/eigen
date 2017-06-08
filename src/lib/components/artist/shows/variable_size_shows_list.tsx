@@ -1,13 +1,7 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  LayoutChangeEvent,
-  StyleSheet,
-  View,
-  ViewProperties,
-  ViewStyle,
-} from "react-native"
+import { LayoutChangeEvent, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
 import Show from "./show"
 
@@ -17,8 +11,8 @@ interface Props extends ViewProperties {
 }
 
 interface State {
-    width: number
-    height: number
+  width: number
+  height: number
 }
 
 class ShowsList extends React.Component<Props, State> {
@@ -37,16 +31,16 @@ class ShowsList extends React.Component<Props, State> {
     const showSize = this.props.showSize
 
     const marginSpace = 20 * this.numberOfColumns(isPad)
-    const imageWidth = isPad ? ((width - marginSpace) / this.numberOfColumns(isPad)) : (width - 20)
+    const imageWidth = isPad ? (width - marginSpace) / this.numberOfColumns(isPad) : width - 20
 
-    const aspectRatio = (showSize === "large") ? 1.6 : 1.4
+    const aspectRatio = showSize === "large" ? 1.6 : 1.4
     const imageHeight = Math.floor(imageWidth / aspectRatio)
     return { width: imageWidth, height: imageHeight }
   }
 
   numberOfColumns = (isPad: boolean) => {
     if (isPad) {
-      return (this.props.showSize === "large") ? 2 : 3
+      return this.props.showSize === "large" ? 2 : 3
     }
 
     return 1
@@ -62,7 +56,7 @@ class ShowsList extends React.Component<Props, State> {
     const showStyles = StyleSheet.create({
       container: {
         margin: 10,
-        marginBottom: (showSize === "medium") ? 30 : 10,
+        marginBottom: showSize === "medium" ? 30 : 10,
         width: this.state.width,
       },
       image: {
@@ -73,7 +67,7 @@ class ShowsList extends React.Component<Props, State> {
 
     return (
       <View style={styles.container} onLayout={this.onLayout}>
-        { this.props.shows.map(show => this.renderShow(show, showStyles)) }
+        {this.props.shows.map(show => this.renderShow(show, showStyles))}
       </View>
     )
   }
@@ -84,7 +78,7 @@ class ShowsList extends React.Component<Props, State> {
 }
 
 interface Styles {
-  container: ViewStyle,
+  container: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -110,7 +104,13 @@ export default Relay.createContainer(ShowsList, {
 })
 
 interface RelayProps {
-  shows: Array<{
-    __id: string,
-  } | null> | null,
+  shows:
+    | Array<
+
+        | {
+          __id: string,
+        }
+        | null
+    >
+    | null
 }

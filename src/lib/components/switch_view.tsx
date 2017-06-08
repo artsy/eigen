@@ -1,18 +1,12 @@
 import * as PropTypes from "prop-types"
 import * as React from "react"
-import {
-  NativeSyntheticEvent,
-  NativeTouchEvent,
-  requireNativeComponent,
-  ViewProperties,
-} from "react-native"
+import { NativeSyntheticEvent, NativeTouchEvent, requireNativeComponent, ViewProperties } from "react-native"
 
-export interface SwitchEvent extends NativeSyntheticEvent<NativeTouchEvent & { selectedIndex: number }> {
-}
+export interface SwitchEvent extends NativeSyntheticEvent<NativeTouchEvent & { selectedIndex: number }> {} // tslint:disable-line
 
 interface Props extends ViewProperties {
   titles: string[]
-  onSelectionChange: (event: SwitchEvent) => void,
+  onSelectionChange: (event: SwitchEvent) => void
   selectedIndex: number
 }
 
@@ -24,7 +18,7 @@ export default class SwitchView extends React.Component<Props, any> {
   }
 
   render() {
-    const { style, ...props } = this.props
+    const { style, props } = this.props
     // Height taken from ARSwitchView.m
     return <NativeSwitchView style={[{ height: 46 }, style]} {...props} />
   }

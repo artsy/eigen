@@ -15,7 +15,6 @@ const runTests = (title: string, storybook: AutoStory) => {
         const todo = renderer.create(<storybook.component {...state} />)
         expect(todo.toJSON()).toMatchSnapshot()
       })
-
     })
   })
 }

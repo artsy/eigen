@@ -1,14 +1,7 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  Dimensions,
-  StyleSheet,
-  TextStyle,
-  View,
-  ViewProperties,
-  ViewStyle,
-} from "react-native"
+import { Dimensions, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 
 import Separator from "../../separator"
 import SerifText from "../../text/serif"
@@ -19,8 +12,8 @@ const windowDimensions = Dimensions.get("window")
 
 interface Props extends ViewProperties {
   artist: {
-    past_shows: any[]
-    current_shows: any[]
+    past_shows: any[],
+    current_shows: any[],
     upcoming_shows: any[],
   }
 }
@@ -29,8 +22,8 @@ class Shows extends React.Component<Props, any> {
   render() {
     return (
       <View style={styles.container}>
-        { this.currentAndUpcomingList() }
-        { this.pastShows() }
+        {this.currentAndUpcomingList()}
+        {this.pastShows()}
       </View>
     )
   }
@@ -41,7 +34,7 @@ class Shows extends React.Component<Props, any> {
         <View>
           <Separator style={{ marginBottom: 20 }} />
           <SerifText style={styles.title}>Past Shows</SerifText>
-          { this.pastShowsList() }
+          {this.pastShowsList()}
         </View>
       )
     } else {
@@ -53,7 +46,7 @@ class Shows extends React.Component<Props, any> {
     if (windowDimensions.width > 700) {
       return <VariableSizeShowsList showSize={"medium"} shows={this.props.artist.past_shows} />
     } else {
-      return <SmallShowsList shows={this.props.artist.past_shows} style={{marginTop: -8, marginBottom: 50}} />
+      return <SmallShowsList shows={this.props.artist.past_shows} style={{ marginTop: -8, marginBottom: 50 }} />
     }
   }
 
@@ -71,8 +64,8 @@ class Shows extends React.Component<Props, any> {
 }
 
 interface Styles {
-  container: ViewStyle,
-  title: TextStyle,
+  container: ViewStyle
+  title: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -86,8 +79,9 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const pastShowsFragment = windowDimensions.width > 700 ?
-  VariableSizeShowsList.getFragment("shows") : SmallShowsList.getFragment("shows")
+const pastShowsFragment = windowDimensions.width > 700
+  ? VariableSizeShowsList.getFragment("shows")
+  : SmallShowsList.getFragment("shows")
 
 export default Relay.createContainer(Shows, {
   fragments: {
@@ -112,5 +106,5 @@ interface RelayProps {
     current_shows: Array<boolean | number | string | null> | null,
     upcoming_shows: Array<boolean | number | string | null> | null,
     past_shows: Array<boolean | number | string | null> | null,
-  },
+  }
 }

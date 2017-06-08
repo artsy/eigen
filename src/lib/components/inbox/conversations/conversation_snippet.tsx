@@ -2,17 +2,9 @@ import * as moment from "moment"
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  MetadataText,
-  PreviewText as P,
-  SmallHeadline,
-} from "../typography"
+import { MetadataText, PreviewText as P, SmallHeadline } from "../typography"
 
-import {
-  StyleSheet,
-  TouchableWithoutFeedback,
-  ViewStyle,
-} from "react-native"
+import { StyleSheet, TouchableWithoutFeedback, ViewStyle } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
@@ -24,6 +16,7 @@ const Card = styled.View`
     marginLeft: 20
     marginRight: 20
     marginTop: 20
+    minHeight: 80
 `
 
 const VerticalLayout = styled.View`
@@ -84,19 +77,21 @@ export interface Conversation {
   to_name: string | null
   last_message: string | null
   last_message_at: string | null
-  artworks: Array<{
-    id: string | null
-    href: string | null
-    title: string | null
-    date: string | null
-    artist: {
-      name: string | null,
+  artworks: Array<
+    {
+      id: string | null,
+      href: string | null,
+      title: string | null,
+      date: string | null,
+      artist: {
+        name: string | null,
+      },
+      image: {
+        url: string | null,
+        image_url: string | null,
+      },
     }
-    image: {
-      url: string | null
-      image_url: string | null,
-    },
-  }>
+  >
 }
 
 interface Props {
@@ -151,7 +146,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
 }
 
 interface Styles {
-  image: ViewStyle,
+  image: ViewStyle
 }
 
 // Need to keep the stylesheet for OpaqueImageView because it expects borderRadius to be an integer

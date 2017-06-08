@@ -32,12 +32,12 @@ describe("in a sale", () => {
   })
 })
 
-let artworkProps = (saleArtwork = null) => {
+const artworkProps = (saleArtwork = null) => {
   return {
     title: "Some Kind of Dinosaur",
     date: "2015",
     sale_message: "$875",
-    is_in_auction: (saleArtwork !== null),
+    is_in_auction: saleArtwork !== null,
     sale_artwork: saleArtwork,
     image: {
       url: "artsy.net/image-url",

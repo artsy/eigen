@@ -1,14 +1,7 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  View,
-  ViewProperties,
-  ViewStyle,
-} from "react-native"
+import { Dimensions, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
 import About from "../components/artist/about"
 import Artworks from "../components/artist/artworks"
@@ -84,19 +77,24 @@ export class Artist extends React.Component<Props, {}> {
 
   renderSelectedTab = () => {
     switch (this.selectedTabTitle()) {
-      case TABS.ABOUT: return <About artist={this.props.artist} />
-      case TABS.WORKS: return <Artworks artist={this.props.artist} />
-      case TABS.SHOWS: return <Shows artist={this.props.artist} />
+      case TABS.ABOUT:
+        return <About artist={this.props.artist} />
+      case TABS.WORKS:
+        return <Artworks artist={this.props.artist} />
+      case TABS.SHOWS:
+        return <Shows artist={this.props.artist} />
     }
   }
 
   renderTabView() {
     return (
-      <TabView titles={this.availableTabs()}
-               selectedIndex={this.state.selectedTabIndex}
-               onSelectionChange={this.tabSelectionDidChange}
-               style={styles.tabView}>
-        { this.renderSelectedTab() }
+      <TabView
+        titles={this.availableTabs()}
+        selectedIndex={this.state.selectedTabIndex}
+        onSelectionChange={this.tabSelectionDidChange}
+        style={styles.tabView}
+      >
+        {this.renderSelectedTab()}
       </TabView>
     )
   }
@@ -114,7 +112,7 @@ export class Artist extends React.Component<Props, {}> {
       <ScrollView scrollsToTop={true} automaticallyAdjustContentInsets={false}>
         <View style={{ paddingLeft: commonPadding, paddingRight: commonPadding }}>
           <Header artist={this.props.artist} />
-          { displayTabView ? this.renderTabView() : this.renderSingleTab() }
+          {displayTabView ? this.renderTabView() : this.renderSingleTab()}
         </View>
       </ScrollView>
     )
@@ -122,7 +120,7 @@ export class Artist extends React.Component<Props, {}> {
 }
 
 interface Styles {
-  tabView: ViewStyle,
+  tabView: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -161,11 +159,13 @@ interface RelayProps {
     _id: string,
     id: string,
     has_metadata: boolean | null,
-    counts: {
-      artworks: boolean | number | string | null,
-      partner_shows: boolean | number | string | null,
-      related_artists: boolean | number | string | null,
-      articles: boolean | number | string | null,
-    } | null,
-  },
+    counts:
+      | {
+        artworks: boolean | number | string | null,
+        partner_shows: boolean | number | string | null,
+        related_artists: boolean | number | string | null,
+        articles: boolean | number | string | null,
+      }
+      | null,
+  }
 }
