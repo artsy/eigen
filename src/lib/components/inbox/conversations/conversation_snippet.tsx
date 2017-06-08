@@ -1,3 +1,4 @@
+import * as moment from "moment"
 import * as React from "react"
 import * as Relay from "react-relay"
 
@@ -73,6 +74,7 @@ export interface Conversation {
   from_email: string | null
   to_name: string | null
   last_message: string | null
+  last_message_at: string | null
   artworks: Array<
     {
       id: string | null
@@ -104,7 +106,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
     const artworkDate = `${artwork.date}`
     const artworkArtist = `${artwork.artist.name} · `
     const conversationText = conversation.last_message.replace(/\n/g, " ")
-    const date = "11:00 AM"
+    const date = moment(conversation.last_message_at).fromNow(true)
     const imageURL = artwork.image.url
 
     return (
@@ -159,6 +161,7 @@ export default Relay.createContainer(ConversationSnippet, {
         from_email
         to_name
         last_message
+        last_message_at
         artworks {
           id
           href

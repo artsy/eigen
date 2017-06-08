@@ -173,7 +173,7 @@ exports[`looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    11:00 AM
+                    2 DAYS
                   </Text>
                   <View
                     style={
@@ -460,7 +460,7 @@ exports[`looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    11:00 AM
+                    5 DAYS
                   </Text>
                   <View
                     style={

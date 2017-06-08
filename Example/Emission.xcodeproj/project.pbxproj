@@ -643,7 +643,7 @@
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Emission/Emission.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				GCC_WARN_PEDANTIC = YES;
@@ -656,8 +656,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "23767ec5-72d8-401e-9dfd-e58dba5920e7";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.Emission";
+				PROVISIONING_PROFILE_SPECIFIER = "Artsy Dev Wildcard";
+				SWIFT_OBJC_BRIDGING_HEADER = "Emission/Emission-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -683,7 +683,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "23767ec5-72d8-401e-9dfd-e58dba5920e7";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.Emission";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -805,7 +804,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "23767ec5-72d8-401e-9dfd-e58dba5920e7";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.Emission";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

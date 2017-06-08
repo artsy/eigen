@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`For different states Looks right when Found four results 1`] = `
+exports[`Search states:  Looks right when Found four results 1`] = `
 <View>
   <View
     style={
@@ -272,86 +272,10 @@ exports[`For different states Looks right when Found four results 1`] = `
       </View>
     </View>
   </RCTScrollView>
-  <View
-    style={
-      Array [
-        Object {
-          "backgroundColor": "#e5e5e5",
-          "height": 1,
-        },
-        undefined,
-      ]
-    }
-  />
-  <View
-    style={
-      Object {
-        "height": 40,
-      }
-    }
-  >
-    <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
-      isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "rgba(0, 0, 0, 1)",
-            "flex": 1,
-            "justifyContent": "center",
-          },
-        ]
-      }
-      testID={undefined}
-      tvParallaxProperties={undefined}
-    >
-      <View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "fontSize": 12,
-              },
-              Object {
-                "color": "white",
-                "opacity": 1,
-              },
-              Object {
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
-              },
-            ]
-          }
-        >
-          DONE
-        </Text>
-      </View>
-    </View>
-  </View>
 </View>
 `;
 
-exports[`For different states Looks right when Found no results 1`] = `
+exports[`Search states:  Looks right when Found no results 1`] = `
 <View>
   <View
     style={
@@ -455,86 +379,10 @@ exports[`For different states Looks right when Found no results 1`] = `
       </Text>
     </View>
   </RCTScrollView>
-  <View
-    style={
-      Array [
-        Object {
-          "backgroundColor": "#e5e5e5",
-          "height": 1,
-        },
-        undefined,
-      ]
-    }
-  />
-  <View
-    style={
-      Object {
-        "height": 40,
-      }
-    }
-  >
-    <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
-      isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "rgba(0, 0, 0, 1)",
-            "flex": 1,
-            "justifyContent": "center",
-          },
-        ]
-      }
-      testID={undefined}
-      tvParallaxProperties={undefined}
-    >
-      <View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "fontSize": 12,
-              },
-              Object {
-                "color": "white",
-                "opacity": 1,
-              },
-              Object {
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
-              },
-            ]
-          }
-        >
-          DONE
-        </Text>
-      </View>
-    </View>
-  </View>
 </View>
 `;
 
-exports[`For different states Looks right when Found one result 1`] = `
+exports[`Search states:  Looks right when Found one result 1`] = `
 <View>
   <View
     style={
@@ -653,86 +501,10 @@ exports[`For different states Looks right when Found one result 1`] = `
       </View>
     </View>
   </RCTScrollView>
-  <View
-    style={
-      Array [
-        Object {
-          "backgroundColor": "#e5e5e5",
-          "height": 1,
-        },
-        undefined,
-      ]
-    }
-  />
-  <View
-    style={
-      Object {
-        "height": 40,
-      }
-    }
-  >
-    <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
-      isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "rgba(0, 0, 0, 1)",
-            "flex": 1,
-            "justifyContent": "center",
-          },
-        ]
-      }
-      testID={undefined}
-      tvParallaxProperties={undefined}
-    >
-      <View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "fontSize": 12,
-              },
-              Object {
-                "color": "white",
-                "opacity": 1,
-              },
-              Object {
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
-              },
-            ]
-          }
-        >
-          DONE
-        </Text>
-      </View>
-    </View>
-  </View>
 </View>
 `;
 
-exports[`For different states Looks right when Found one result, and searching 1`] = `
+exports[`Search states:  Looks right when Found one result, and searching 1`] = `
 <View>
   <View
     style={
@@ -851,86 +623,10 @@ exports[`For different states Looks right when Found one result, and searching 1
       </View>
     </View>
   </RCTScrollView>
-  <View
-    style={
-      Array [
-        Object {
-          "backgroundColor": "#e5e5e5",
-          "height": 1,
-        },
-        undefined,
-      ]
-    }
-  />
-  <View
-    style={
-      Object {
-        "height": 40,
-      }
-    }
-  >
-    <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
-      isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "rgba(0, 0, 0, 1)",
-            "flex": 1,
-            "justifyContent": "center",
-          },
-        ]
-      }
-      testID={undefined}
-      tvParallaxProperties={undefined}
-    >
-      <View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "fontSize": 12,
-              },
-              Object {
-                "color": "white",
-                "opacity": 1,
-              },
-              Object {
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
-              },
-            ]
-          }
-        >
-          DONE
-        </Text>
-      </View>
-    </View>
-  </View>
 </View>
 `;
 
-exports[`For different states Looks right when Found two results 1`] = `
+exports[`Search states:  Looks right when Found two results 1`] = `
 <View>
   <View
     style={
@@ -1100,86 +796,10 @@ exports[`For different states Looks right when Found two results 1`] = `
       </View>
     </View>
   </RCTScrollView>
-  <View
-    style={
-      Array [
-        Object {
-          "backgroundColor": "#e5e5e5",
-          "height": 1,
-        },
-        undefined,
-      ]
-    }
-  />
-  <View
-    style={
-      Object {
-        "height": 40,
-      }
-    }
-  >
-    <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
-      isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "rgba(0, 0, 0, 1)",
-            "flex": 1,
-            "justifyContent": "center",
-          },
-        ]
-      }
-      testID={undefined}
-      tvParallaxProperties={undefined}
-    >
-      <View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "fontSize": 12,
-              },
-              Object {
-                "color": "white",
-                "opacity": 1,
-              },
-              Object {
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
-              },
-            ]
-          }
-        >
-          DONE
-        </Text>
-      </View>
-    </View>
-  </View>
 </View>
 `;
 
-exports[`For different states Looks right when Looking for new results 1`] = `
+exports[`Search states:  Looks right when Looking for new results 1`] = `
 <View>
   <View
     style={
@@ -1246,86 +866,10 @@ exports[`For different states Looks right when Looking for new results 1`] = `
   >
     <View />
   </RCTScrollView>
-  <View
-    style={
-      Array [
-        Object {
-          "backgroundColor": "#e5e5e5",
-          "height": 1,
-        },
-        undefined,
-      ]
-    }
-  />
-  <View
-    style={
-      Object {
-        "height": 40,
-      }
-    }
-  >
-    <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
-      isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "rgba(0, 0, 0, 1)",
-            "flex": 1,
-            "justifyContent": "center",
-          },
-        ]
-      }
-      testID={undefined}
-      tvParallaxProperties={undefined}
-    >
-      <View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "fontSize": 12,
-              },
-              Object {
-                "color": "white",
-                "opacity": 1,
-              },
-              Object {
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
-              },
-            ]
-          }
-        >
-          DONE
-        </Text>
-      </View>
-    </View>
-  </View>
 </View>
 `;
 
-exports[`For different states Looks right when No query 1`] = `
+exports[`Search states:  Looks right when No query 1`] = `
 <View>
   <View
     style={
@@ -1392,81 +936,5 @@ exports[`For different states Looks right when No query 1`] = `
   >
     <View />
   </RCTScrollView>
-  <View
-    style={
-      Array [
-        Object {
-          "backgroundColor": "#e5e5e5",
-          "height": 1,
-        },
-        undefined,
-      ]
-    }
-  />
-  <View
-    style={
-      Object {
-        "height": 40,
-      }
-    }
-  >
-    <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
-      isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "rgba(0, 0, 0, 1)",
-            "flex": 1,
-            "justifyContent": "center",
-          },
-        ]
-      }
-      testID={undefined}
-      tvParallaxProperties={undefined}
-    >
-      <View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "fontSize": 12,
-              },
-              Object {
-                "color": "white",
-                "opacity": 1,
-              },
-              Object {
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
-              },
-            ]
-          }
-        >
-          DONE
-        </Text>
-      </View>
-    </View>
-  </View>
 </View>
 `;

@@ -16,6 +16,7 @@ const conversation = {
   from_email: "luc+messaging@artsymail.com",
   to_name: "ACA Galleries",
   last_message: "Karl and Anna... Fab!",
+  last_message_at: "2017-06-06T12:36:24.253Z",
   created_at: "2017-06-01T14:14:35.538Z",
   artworks: [
     {

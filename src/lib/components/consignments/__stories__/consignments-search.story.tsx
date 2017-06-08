@@ -1,10 +1,12 @@
 import * as React from "react"
 import { View } from "react-native"
 
-import { storiesOf } from "@storybook/react-native"
 import { camelCase } from "lodash"
 
 import Search, { ArtistQueryData } from "../components/artist-search-results"
+
+export const name = "Consignments - Search"
+export const component = Search
 
 const noQuery: ArtistQueryData = {
   query: null,
@@ -65,9 +67,9 @@ const query2Results: ArtistQueryData = {
   ],
 }
 
-const artistGen = (name: string) => ({
-  name,
-  id: camelCase(name),
+const artistGen = (artistName: string) => ({
+  name: artistName,
+  id: camelCase(artistName),
   image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
 })
 
@@ -91,13 +93,3 @@ export const allStates = [
   { "Found two results": query2Results },
   { "Found four results": query4Results },
 ]
-
-const stories = storiesOf("Consignments - Search")
-allStates.forEach(element => {
-  const name = Object.keys(element)[0]
-  stories.add(name, () =>
-    <View style={{ flex: 1, backgroundColor: "black", padding: 20, marginTop: 60 }}>
-      <Search {...element[name]} />
-    </View>
-  )
-})
