@@ -6,22 +6,22 @@ import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
 
 const ButtonText = styled.Text`
-  color: white
-  font-family: "${fonts["avant-garde-regular"]}"
-  flex: 1
-  text-align: center
-  font-size: 14
+  color: white;
+  font-family: "${fonts["avant-garde-regular"]}";
+  flex: 1;
+  text-align: center;
+  font-size: 14;
 `
 
 const Body = styled.TouchableOpacity`
-  height: 56
-  margin-bottom: 20
-  padding-top: 18
+  height: 56;
+  margin-bottom: 20;
+  padding-top: 18;
 `
 
 const Separator = styled.View`
-  background-color: ${colors["gray-regular"]}
-  height: 1
+  background-color: ${colors["gray-regular"]};
+  height: 1;
 `
 
 export interface BottomAlignedProps {
