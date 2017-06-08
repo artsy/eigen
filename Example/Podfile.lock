@@ -190,7 +190,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/artsy/Artsy-Authentication.git
 
 SPEC CHECKSUMS:
-  AppHub: '03788112dd48c42b60d51321c0ffff4ef15a4432'
+  AppHub: 03788112dd48c42b60d51321c0ffff4ef15a4432
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   Artsy+Authentication: 3bf11ceca61c52e9e31490535bf5798f625406fa
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
