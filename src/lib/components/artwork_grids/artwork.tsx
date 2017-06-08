@@ -20,10 +20,10 @@ class Artwork extends React.Component<RelayProps, any> {
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View>
           <ImageView style={styles.image} aspectRatio={artwork.image.aspect_ratio} imageURL={artwork.image.url} />
-          { this.artists() }
-          { this.artworkTitle() }
-          { partnerName && <SerifText style={styles.text}>{partnerName}</SerifText> }
-          { this.saleMessage() }
+          {this.artists()}
+          {this.artworkTitle()}
+          {partnerName && <SerifText style={styles.text}>{partnerName}</SerifText>}
+          {this.saleMessage()}
         </View>
       </TouchableWithoutFeedback>
     )
@@ -47,8 +47,8 @@ class Artwork extends React.Component<RelayProps, any> {
     if (artwork.title) {
       return (
         <SerifText style={styles.text}>
-          <SerifText style={[styles.text, styles.title]}>{ artwork.title }</SerifText>
-          { artwork.date ? (", " + artwork.date) : "" }
+          <SerifText style={[styles.text, styles.title]}>{artwork.title}</SerifText>
+          {artwork.date ? ", " + artwork.date : ""}
         </SerifText>
       )
     } else {
@@ -61,11 +61,11 @@ class Artwork extends React.Component<RelayProps, any> {
     if (artwork.is_in_auction) {
       const numberOfBids = artwork.sale_artwork.bidder_positions_count
       let text = artwork.sale_artwork.opening_bid.display
-      if (numberOfBids > 0 ) {
+      if (numberOfBids > 0) {
         text = `${artwork.sale_artwork.current_bid.display} (${numberOfBids} bid${numberOfBids === 1 ? "" : "s"})`
       }
       return (
-        <View style={{flexDirection: "row"}}>
+        <View style={{ flexDirection: "row" }}>
           <Image style={{ marginRight: 4 }} source={require("../../../../images/paddle.png")} />
           <SerifText style={styles.text}>{text}</SerifText>
         </View>
@@ -73,7 +73,7 @@ class Artwork extends React.Component<RelayProps, any> {
     } else {
       return artwork.sale_message && <SerifText style={styles.text}>{artwork.sale_message}</SerifText>
     }
-   }
+  }
 }
 
 const styles = StyleSheet.create({
@@ -123,29 +123,29 @@ export default Relay.createContainer(Artwork, {
 
 interface RelayProps {
   artwork: {
-    title: string | null,
-    date: string | null,
-    sale_message: string | null,
-    is_in_auction: boolean | null,
+    title: string | null
+    date: string | null
+    sale_message: string | null
+    is_in_auction: boolean | null
     sale_artwork: {
       opening_bid: {
-        display: string | null,
-      } | null,
+        display: string | null
+      } | null
       current_bid: {
-        display: string | null,
-      } | null,
-      bidder_positions_count: number | null,
-    } | null,
+        display: string | null
+      } | null
+      bidder_positions_count: number | null
+    } | null
     image: {
-      url: string | null,
-      aspect_ratio: number | null,
-    } | null,
+      url: string | null
+      aspect_ratio: number | null
+    } | null
     artists: Array<{
-      name: string | null,
-    } | null> | null,
+      name: string | null
+    } | null> | null
     partner: {
-      name: string | null,
-    } | null,
-    href: string | null,
-  },
+      name: string | null
+    } | null
+    href: string | null
+  }
 }

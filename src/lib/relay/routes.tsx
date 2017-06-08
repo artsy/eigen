@@ -5,7 +5,7 @@ class Artist extends Relay.Route {
     artist: (component, params) => Relay.QL`
       query {
         artist(id: $artistID) {
-          ${(component.getFragment("artist", params))}
+          ${component.getFragment("artist", params)}
         }
       }
     `,
@@ -23,7 +23,7 @@ class Home extends Relay.Route {
     home: (component, params) => Relay.QL`
       query {
         home_page {
-          ${(component.getFragment("home", params))}
+          ${component.getFragment("home", params)}
         }
       }
     `,
@@ -37,7 +37,7 @@ class Gene extends Relay.Route {
     gene: (component, params) => Relay.QL`
       query {
         gene(id: $geneID) {
-          ${(component.getFragment("gene", params))}
+          ${component.getFragment("gene", params)}
         }
       }
     `,
@@ -57,7 +57,7 @@ class WorksForYou extends Relay.Route {
     viewer: (component, params) => Relay.QL`
       query {
         viewer {
-          ${(component.getFragment("viewer", params))}
+          ${component.getFragment("viewer", params)}
         }
       }
     `,
@@ -75,7 +75,7 @@ class MyAccount extends Relay.Route {
     me: (component, params) => Relay.QL`
       query {
         me {
-          ${(component.getFragment("me", params))}
+          ${component.getFragment("me", params)}
         }
       }
     `,

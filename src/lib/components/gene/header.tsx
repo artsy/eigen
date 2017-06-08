@@ -1,15 +1,7 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  Dimensions,
-  NativeModules,
-  StyleSheet,
-  TextStyle,
-  View,
-  ViewProperties,
-  ViewStyle,
-} from "react-native"
+import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
 
 import Events from "../../native_modules/events"
@@ -69,13 +61,17 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   renderFollowButton() {
-    if (this.props.shortForm) { return null }
+    if (this.props.shortForm) {
+      return null
+    }
     if (this.state.following !== null) {
       return (
         <View style={styles.followButton}>
-            <InvertedButton text={this.state.following ? "Following" : "Follow"}
-                            selected={this.state.following}
-                            onPress={this.handleFollowChange} />
+          <InvertedButton
+            text={this.state.following ? "Following" : "Follow"}
+            selected={this.state.following}
+            onPress={this.handleFollowChange}
+          />
         </View>
       )
     } else {
@@ -91,9 +87,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 const isPad = Dimensions.get("window").width > 700
 
 interface Styles {
-  header: TextStyle,
-  headline: TextStyle,
-  followButton: ViewStyle,
+  header: TextStyle
+  headline: TextStyle
+  followButton: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -129,8 +125,8 @@ export default Relay.createContainer(Header, {
 
 interface RelayProps {
   gene: {
-    _id: string,
-    id: string,
-    name: string | null,
-  },
+    _id: string
+    id: string
+    name: string | null
+  }
 }

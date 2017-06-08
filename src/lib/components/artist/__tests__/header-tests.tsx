@@ -11,12 +11,12 @@ beforeAll(() => {
 
 it("renders properly", () => {
   const artist = {
-      name: "Marcel Duchamp",
-      nationality: "French",
-      birthday: "11/17/1992",
-      counts: {
-        follows: 22,
-      },
+    name: "Marcel Duchamp",
+    nationality: "French",
+    birthday: "11/17/1992",
+    counts: {
+      follows: 22,
+    },
   }
   const header = renderer.create(<Header artist={artist} />).toJSON()
   expect(header).toMatchSnapshot()

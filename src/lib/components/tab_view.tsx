@@ -14,10 +14,12 @@ export default class TabView extends React.Component<Props, any> {
     const { children } = this.props
     return (
       <View>
-        <SwitchView style={styles.switch}
-                    onSelectionChange={this.props.onSelectionChange}
-                    titles={this.props.titles}
-                    selectedIndex={this.props.selectedIndex} />
+        <SwitchView
+          style={styles.switch}
+          onSelectionChange={this.props.onSelectionChange}
+          titles={this.props.titles}
+          selectedIndex={this.props.selectedIndex}
+        />
         <View>
           {children}
         </View>

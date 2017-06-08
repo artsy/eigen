@@ -1,26 +1,18 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  LayoutChangeEvent,
-  StyleSheet,
-  TextStyle,
-  View,
-  ViewProperties,
-  ViewStyle,
-} from "react-native"
+import { LayoutChangeEvent, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 
 import SerifText from "../text/serif"
 import RelatedArtist from "./related_artist"
 
-interface Props extends ViewProperties, RelayProps {
-}
+interface Props extends ViewProperties, RelayProps {}
 
 interface State {
   columns: number
   imageSize: {
     width: number
-    height: number,
+    height: number
   }
 }
 
@@ -28,11 +20,11 @@ class RelatedArtists extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
-        columns: 0,
-        imageSize: {
-          width: 1,
-          height: 1,
-        },
+      columns: 0,
+      imageSize: {
+        width: 1,
+        height: 1,
+      },
     }
   }
 
@@ -69,7 +61,7 @@ class RelatedArtists extends React.Component<Props, State> {
       <View style={styles.container} onLayout={this.onLayout.bind(this)}>
         <SerifText style={styles.heading}>Related Artists</SerifText>
         <View style={styles.artistContainer}>
-          { this.renderArtists() }
+          {this.renderArtists()}
         </View>
       </View>
     )
@@ -94,9 +86,9 @@ class RelatedArtists extends React.Component<Props, State> {
 }
 
 interface Styles {
-  container: ViewStyle,
-  artistContainer: ViewStyle,
-  heading: TextStyle,
+  container: ViewStyle
+  artistContainer: ViewStyle
+  heading: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -130,6 +122,6 @@ export default Relay.createContainer(RelatedArtists, {
 
 interface RelayProps {
   artists: Array<{
-    __id: string,
-  } | null> | null,
+    __id: string
+  } | null> | null
 }

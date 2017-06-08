@@ -1,11 +1,7 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  StyleSheet,
-  View,
-  ViewStyle,
-} from "react-native"
+import { StyleSheet, View, ViewStyle } from "react-native"
 
 import Biography from "./biography"
 
@@ -16,8 +12,8 @@ class About extends React.Component<RelayPropsWorkaround, any> {
   render() {
     return (
       <View>
-        { this.biography() }
-        { this.relatedArtists() }
+        {this.biography()}
+        {this.relatedArtists()}
       </View>
     )
   }
@@ -33,13 +29,13 @@ class About extends React.Component<RelayPropsWorkaround, any> {
 
   relatedArtists() {
     return (this.props.gene.trending_artists || []).length
-      ? <RelatedArtists artists={this.props.gene.trending_artists}/>
+      ? <RelatedArtists artists={this.props.gene.trending_artists} />
       : null
   }
 }
 
 interface Styles {
-  sectionSeparator: ViewStyle,
+  sectionSeparator: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -63,11 +59,11 @@ export default Relay.createContainer(About, {
 
 interface RelayProps {
   gene: {
-    trending_artists: Array<boolean | number | string | null> | null,
-  },
+    trending_artists: Array<boolean | number | string | null> | null
+  }
 }
 interface RelayPropsWorkaround {
   gene: {
-    trending_artists: any[],
+    trending_artists: any[]
   }
 }

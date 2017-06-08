@@ -1,24 +1,19 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  LayoutChangeEvent,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from "react-native"
+import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 
 import Artwork from "./artwork"
 
 interface Props extends RelayProps {
-  sectionDirection: "column", // FIXME: We don’t actually support more options atm
-  sectionMargin: number,
-  itemMargin: number,
+  sectionDirection: "column" // FIXME: We don’t actually support more options atm
+  sectionMargin: number
+  itemMargin: number
 }
 
 interface State {
-  sectionDimension: number,
-  sectionCount: number,
+  sectionDimension: number
+  sectionCount: number
 }
 
 class GenericArtworksGrid extends React.Component<Props, State> {
@@ -88,7 +83,7 @@ class GenericArtworksGrid extends React.Component<Props, State> {
 
           // total section aspect ratio
           const aspectRatio = artwork.image.aspect_ratio || 1
-          sectionRatioSums[sectionIndex] += (1 / aspectRatio)
+          sectionRatioSums[sectionIndex] += 1 / aspectRatio
         }
       }
     })
@@ -114,13 +109,13 @@ class GenericArtworksGrid extends React.Component<Props, State> {
       }
 
       const sectionSpecificStlye = {
-          width: this.state.sectionDimension,
-          marginRight: (i === this.state.sectionCount - 1 ? 0 : this.props.sectionMargin),
+        width: this.state.sectionDimension,
+        marginRight: i === this.state.sectionCount - 1 ? 0 : this.props.sectionMargin,
       }
       sections.push(
         <View style={[styles.section, sectionSpecificStlye]} key={i} accessibilityLabel={"Section " + i}>
           {artworkComponents}
-        </View>,
+        </View>
       )
     }
     return sections
@@ -139,8 +134,8 @@ class GenericArtworksGrid extends React.Component<Props, State> {
 }
 
 interface Styles {
-  container: ViewStyle,
-  section: ViewStyle,
+  container: ViewStyle
+  section: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -160,7 +155,7 @@ const GenericArtworksGridContainer = Relay.createContainer(GenericArtworksGrid, 
         image {
           aspect_ratio
         }
-        ${(Artwork.getFragment("artwork"))}
+        ${Artwork.getFragment("artwork")}
       }
     `,
   },
@@ -170,9 +165,9 @@ export default GenericArtworksGridContainer
 
 interface RelayProps {
   artworks: Array<{
-    __id: string,
+    __id: string
     image: {
-      aspect_ratio: number | null,
-    } | null,
-  } | null> | null,
+      aspect_ratio: number | null
+    } | null
+  } | null> | null
 }

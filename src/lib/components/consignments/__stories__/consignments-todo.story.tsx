@@ -8,15 +8,13 @@ export const name = "Consignments - TODO"
 export const component = TODO
 
 interface States {
-  [name: string]: ConsignmentSetup;
+  [name: string]: ConsignmentSetup
 }
 
 const withArtist: ConsignmentSetup = { artist: { name: "Glenn Brown" } }
 const withOnePhoto: ConsignmentSetup = {
   ...withArtist,
-  photos: [
-    "https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg",
-  ],
+  photos: ["https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg"],
 }
 
 const withPhotos: ConsignmentSetup = {
@@ -54,8 +52,7 @@ const withProvenance: ConsignmentSetup = {
   provenance: "This work has seen many hands.",
 }
 
-const longProv =
-  "This is a long long long run on sentence that should break correctly."
+const longProv = "This is a long long long run on sentence that should break correctly."
 
 export const allStates: States[] = [
   { "Empty Metadata": {} },

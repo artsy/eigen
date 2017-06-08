@@ -65,7 +65,7 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
   componentDidMount() {
     if (this.props.relay) {
       this.props.relay.setVariables({ fetchContent: true }, readyState => {
-        let error = !!readyState.error
+        const error = !!readyState.error
         this.setState({
           didPerformFetch: readyState.done || readyState.ready || error,
           loadFailed: error,
@@ -118,19 +118,25 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
   }
 
   geneQueryLink(rail) {
-    if (!rail.context) { return "" }
+    if (!rail.context) {
+      return ""
+    }
     // Pull out any params, removing the first removing data ID
     // and any null values, turn that into a query string
     const relatedKeys = Object.keys(_.omit(rail.params, ["__dataID__"]))
 
-    return rail.context && rail.context.href + "?" +
-      relatedKeys.map(key =>
-        rail.params[key] && (encodeURIComponent(key) + "=" + encodeURIComponent(rail.params[key])),
-      ).join("&")
+    return (
+      rail.context &&
+      rail.context.href +
+        "?" +
+        relatedKeys
+          .map(key => rail.params[key] && encodeURIComponent(key) + "=" + encodeURIComponent(rail.params[key]))
+          .join("&")
+    )
   }
 
   onGridLayout(event) {
-    let { height } = event.nativeEvent.layout
+    const { height } = event.nativeEvent.layout
     // Non-expandable rails require a non-zero height for an initial render pass,
     // So that we can rely on their subsequent, accurate calls to this function.
     this.setState({ gridHeight: height > 0 ? height : 1 })
@@ -165,14 +171,16 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
     return (
       <View style={[styles.gridContainer, { height: this.gridContainerHeight() }]}>
         <View onLayout={this.onGridLayout.bind(this)}>
-          <Grid artworks={this.props.rail.results}/>
+          <Grid artworks={this.props.rail.results} />
         </View>
       </View>
     )
   }
 
   renderViewAllButton() {
-    if (this.expandable() && !this.state.expanded) { return }
+    if (this.expandable() && !this.state.expanded) {
+      return
+    }
 
     if (this.hasAdditionalContent()) {
       return (
@@ -190,7 +198,7 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
     if (this.expandable() && !this.state.expanded) {
       return (
         <TouchableHighlight style={styles.expansionButton} onPress={this.expand} underlayColor={"white"}>
-          <Image style={{height: 8, width: 15, alignSelf: "center", resizeMode: "center"}} source={chevron} />
+          <Image style={{ height: 8, width: 15, alignSelf: "center", resizeMode: "center" }} source={chevron} />
         </TouchableHighlight>
       )
     }
@@ -200,10 +208,10 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
     if (this.props.rail.results && this.props.rail.results.length) {
       return (
         <View style={[styles.container, { height: this.mainContainerHeight() }]}>
-          { this.renderGrid() }
-          { this.renderViewAllButton() }
+          {this.renderGrid()}
+          {this.renderViewAllButton()}
           <Separator />
-          { this.renderExpansionButton() }
+          {this.renderExpansionButton()}
         </View>
       )
     } else {
@@ -235,9 +243,9 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
 
     return (
       <View accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
-        <Header rail={this.props.rail} handleViewAll={this.handleViewAll}/>
+        <Header rail={this.props.rail} handleViewAll={this.handleViewAll} />
         <View style={this.railStyle()}>
-          { this.renderModuleResults() }
+          {this.renderModuleResults()}
         </View>
       </View>
     )
@@ -245,11 +253,11 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
 }
 
 interface Styles {
-  container: ViewStyle,
-  gridContainer: ViewStyle,
-  expansionButton: ViewStyle,
-  viewAllButton: ViewStyle,
-  viewAllText: TextStyle,
+  container: ViewStyle
+  gridContainer: ViewStyle
+  expansionButton: ViewStyle
+  viewAllButton: ViewStyle
+  viewAllText: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -319,17 +327,17 @@ export default Relay.createContainer(ArtworkRail, {
 interface RelayProps {
   relay?: any
   rail: {
-    key: string | null,
+    key: string | null
     params: {
-      medium: string | null,
-      price_range: string | null,
-    } | null,
-    context: Array<boolean | number | string | null> | null,
-    results: Array<boolean | number | string | null> | null,
-  },
+      medium: string | null
+      price_range: string | null
+    } | null
+    context: Array<boolean | number | string | null> | null
+    results: Array<boolean | number | string | null> | null
+  }
 }
 interface RelayPropsWorkaround {
   rail: {
-    context: any,
+    context: any
   }
 }

@@ -18,8 +18,8 @@ interface InvertedButtonProps extends React.Props<InvertedButton> {
 }
 
 interface InvertedButtonState {
-    textOpacity: Animated.Value
-    backgroundColor: Animated.Value
+  textOpacity: Animated.Value
+  backgroundColor: Animated.Value
 }
 
 export default class InvertedButton extends React.Component<InvertedButtonProps, InvertedButtonState> {
@@ -50,10 +50,10 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
   render() {
     const backgroundColor = this.state.backgroundColor.interpolate({
       inputRange: [0, 1],
-      outputRange: (["black", colors["purple-regular"]]),
+      outputRange: ["black", colors["purple-regular"]],
     })
     const styling = {
-      underlayColor: (this.props.selected ? "black" : colors["purple-regular"]),
+      underlayColor: this.props.selected ? "black" : colors["purple-regular"],
       style: [styles.button, { backgroundColor }],
     }
     let content: JSX.Element = null

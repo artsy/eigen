@@ -6,9 +6,7 @@ import Conversations from "../../lib/components/inbox/conversations"
 export class Inbox extends React.Component<any, any> {
   render() {
     // TODO: add live auction stuff before conversations
-    return (
-      <Conversations me={this.props.me} />
-    )
+    return <Conversations me={this.props.me} />
   }
 }
 

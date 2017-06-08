@@ -1,9 +1,6 @@
 import * as React from "react"
 
-import {
-  MetadataText,
-  SmallHeadline,
-} from "../components/inbox/typography"
+import { MetadataText, SmallHeadline } from "../components/inbox/typography"
 
 import { ImageURISource, ViewProperties } from "react-native"
 
@@ -47,12 +44,12 @@ const DottedBorder = styled.View`
 `
 
 interface Props extends ViewProperties {
-  id?: string,
-  inquiry_id?: string,
-  from_name?: string,
-  from_email?: string,
-  to_name?: string,
-  last_message?: string,
+  id?: string
+  inquiry_id?: string
+  from_name?: string
+  from_email?: string
+  to_name?: string
+  last_message?: string
 }
 
 export default class Conversation extends React.Component<Props, any> {

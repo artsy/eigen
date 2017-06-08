@@ -25,11 +25,11 @@ const modifiedAppFiles = modified.filter(p => includes(p, "lib/")).filter(p => f
 // Modified or Created can be treated the same a lot of the time
 const touchedFiles = modified.concat(danger.git.created_files).filter(p => filesOnly(p))
 
-const touchedAppOnlyFiles = touchedFiles.filter(p =>
-  includes(p, "src/lib/") && !includes(p, "__tests__") && typescriptOnly(p))
+const touchedAppOnlyFiles = touchedFiles.filter(
+  p => includes(p, "src/lib/") && !includes(p, "__tests__") && typescriptOnly(p)
+)
 
-const touchedComponents = touchedFiles.filter(p =>
-  includes(p, "src/lib/components") && !includes(p, "__tests__"))
+const touchedComponents = touchedFiles.filter(p => includes(p, "src/lib/components") && !includes(p, "__tests__"))
 
 // Rules
 
@@ -70,12 +70,12 @@ const correspondingTestsForAppFiles = touchedAppOnlyFiles.map(f => {
 // New app files should get new test files
 // Allow warning instead of failing if you say "Skip New Tests" inside the body, make it explicit.
 const testFilesThatDontExist = correspondingTestsForAppFiles
-                                 .filter(f => !f.includes("index-tests.tsx")) // skip indexes
-                                 .filter(f => !f.includes("__stories__")) // skip stories
-                                 .filter(f => !f.includes("app_registry")) // skip registry, kinda untestable
-                                 .filter(f => !f.includes("routes")) // skip routes, kinda untestable
-                                 .filter(f => !f.includes("native_modules")) // skip native_modules
-                                 .filter(f => !fs.existsSync(f))
+  .filter(f => !f.includes("index-tests.tsx")) // skip indexes
+  .filter(f => !f.includes("__stories__")) // skip stories
+  .filter(f => !f.includes("app_registry")) // skip registry, kinda untestable
+  .filter(f => !f.includes("routes")) // skip routes, kinda untestable
+  .filter(f => !f.includes("native_modules")) // skip native_modules
+  .filter(f => !fs.existsSync(f))
 
 if (testFilesThatDontExist.length > 0) {
   const callout = acceptedNoTests ? warn : fail
@@ -90,10 +90,12 @@ If these files are supposed to not exist, please update your PR body to include 
 // A component should have a corresponding story reference, so that we're consistent
 // with how the web create their components
 
-const reactComponentForPath = (filePath) => {
+const reactComponentForPath = filePath => {
   const content = fs.readFileSync(filePath).toString()
   const match = content.match(/class (.*) extends React.Component/)
-  if (!match || match.length === 0) { return null }
+  if (!match || match.length === 0) {
+    return null
+  }
   return match[1]
 }
 

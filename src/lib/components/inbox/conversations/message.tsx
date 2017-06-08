@@ -1,10 +1,6 @@
 import * as React from "react"
 
-import {
-  BodyText,
-  MetadataText,
-  SmallHeadline,
-} from "../typography"
+import { BodyText, MetadataText, SmallHeadline } from "../typography"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
@@ -53,14 +49,14 @@ export default class Message extends React.Component<any, any> {
 
     return (
       <Container>
-          <Avatar/>
-          <TextContainer>
-            <Header>
-              <SenderName>{senderName}</SenderName>
-              <MetadataText>{time}</MetadataText>
-            </Header>
-            <BodyText>{body}</BodyText>
-          </TextContainer>
+        <Avatar />
+        <TextContainer>
+          <Header>
+            <SenderName>{senderName}</SenderName>
+            <MetadataText>{time}</MetadataText>
+          </Header>
+          <BodyText>{body}</BodyText>
+        </TextContainer>
       </Container>
     )
   }

@@ -7,17 +7,17 @@ import SmallList from "../small_list"
 
 it("renders properly", () => {
   const show1 = showProps()
-  let show2 = showProps()
+  const show2 = showProps()
   show2.partner.name = "A Different Gallery"
   show2.kind = "fair"
 
-  const shows = [ show1, show2 ]
+  const shows = [show1, show2]
 
   const list = renderer.create(<SmallList shows={shows} />).toJSON()
   expect(list).toMatchSnapshot()
 })
 
-let showProps = () => {
+const showProps = () => {
   return {
     href: "artsy.net/show",
     cover_image: {

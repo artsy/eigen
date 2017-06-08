@@ -5,8 +5,8 @@ import { Story, StorySection } from "./"
 import { Background, BodyText, Separator, Title } from "./styles"
 
 interface Props extends ViewProperties {
-  navigator: NavigatorIOS,
-  route: Route,
+  navigator: NavigatorIOS
+  route: Route
   section: StorySection
 }
 
@@ -28,8 +28,9 @@ const render = (props: Props) => {
     )
   }
 
-  const storybookDS = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
-    .cloneWithRows(props.section.stories)
+  const storybookDS = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }).cloneWithRows(
+    props.section.stories
+  )
 
   return (
     <Background>
@@ -40,5 +41,7 @@ const render = (props: Props) => {
 
 // Export a pure component version
 export default class StorybookBrowser extends React.PureComponent<Props, null> {
-  render() { return render(this.props) }
+  render() {
+    return render(this.props)
+  }
 }

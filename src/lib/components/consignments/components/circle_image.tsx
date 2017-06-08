@@ -12,4 +12,4 @@ const imageStyle: ViewStyle = {
   alignItems: "center",
 }
 
-export default (props) => <View style={imageStyle}><Image source={props.source} /></View>
+export default props => <View style={imageStyle}><Image source={props.source} /></View>

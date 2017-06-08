@@ -18,7 +18,7 @@ const Container = styled.View`
   borderColor: ${colors["gray-regular"]}
   borderRadius: 3
   marginBottom: 20
-  backgroundColor: ${(p: ContainerProps) => p.active ? "white" : colors["gray-light"]}
+  backgroundColor: ${(p: ContainerProps) => (p.active ? "white" : colors["gray-light"])}
 `
 
 interface StyledSendButtonProps {
@@ -29,16 +29,16 @@ const SendButton = styled.Text`
   fontFamily: ${fonts["avant-garde-regular"]}
   fontSize: 12
   marginRight: 10
-  color: ${(p: StyledSendButtonProps) => p.containsText ? colors["purple-regular"] : colors["gray-regular"]}
+  color: ${(p: StyledSendButtonProps) => (p.containsText ? colors["purple-regular"] : colors["gray-regular"])}
 `
 
 interface Props {
-  onSubmit?: (text: string) => any,
+  onSubmit?: (text: string) => any
 }
 
 interface State {
-  active: boolean,
-  text: string,
+  active: boolean
+  text: string
 }
 
 export default class Composer extends React.Component<Props, State> {
@@ -76,18 +76,19 @@ export default class Composer extends React.Component<Props, State> {
     return (
       <KeyboardAvoidingView behavior={"padding"}>
         <Container active={this.state.active}>
-          <TextInput placeholder={"Reply..."}
-                  placeholderTextColor={colors["gray-semibold"]}
-                  keyboardAppearance={"dark"}
-                  onEndEditing={() => {
-                    this.input.clear()
-                    this.setState({active: false, text: null})
-                  }}
-                  onFocus={() => this.setState({active: this.input.isFocused()})}
-                  onChangeText={(text) => this.setState({text})}
-                  ref={input => this.input = input}
-                  style={inputStyles}
-                  multiline={true}
+          <TextInput
+            placeholder={"Reply..."}
+            placeholderTextColor={colors["gray-semibold"]}
+            keyboardAppearance={"dark"}
+            onEndEditing={() => {
+              this.input.clear()
+              this.setState({ active: false, text: null })
+            }}
+            onFocus={() => this.setState({ active: this.input.isFocused() })}
+            onChangeText={text => this.setState({ text })}
+            ref={input => (this.input = input)}
+            style={inputStyles}
+            multiline={true}
           />
           <TouchableWithoutFeedback onPress={this.submitText.bind(this)}>
             <SendButton containsText={!!(this.state.text && this.state.text.length)}>SEND</SendButton>

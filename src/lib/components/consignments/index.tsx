@@ -1,10 +1,7 @@
 import * as React from "react"
 import Welcome from "./setup/welcome"
 
-import {
-  NavigatorIOS,
-  ViewProperties,
-} from "react-native"
+import { NavigatorIOS, ViewProperties } from "react-native"
 
 /** The metadata for a consigned work */
 export interface ConsignmentMetadata {
@@ -15,7 +12,7 @@ export interface ConsignmentMetadata {
   width: number | null
   height: number | null
   depth: number | null
-  unit: "in" | "cm",
+  unit: "in" | "cm"
   displayString: string // This would look something like "1/5", "5/5"
 }
 
@@ -27,7 +24,7 @@ export interface ConsignmentSetup {
   provenance?: string
 }
 
-interface Props extends ViewProperties, ConsignmentSetup { }
+interface Props extends ViewProperties, ConsignmentSetup {}
 
 export default class Consignments extends React.Component<Props, any> {
   // constructor(props) {

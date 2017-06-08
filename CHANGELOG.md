@@ -2,6 +2,7 @@
 
 #### Emission
 
+- [dev] Applies prettier, and adds it to the webhooks + extension settings - orta
 - [dev] Adds stories for new messaging components - maxim
 - [Messaging] Adds Conversation, Composer, and Message components - sarah
 - [dev] Upgrades Sentry to 3.0, note Eigen integrator, this may require changes to Eigen - orta

@@ -10,7 +10,7 @@ import Containers from "./containers/index"
 import Routes from "./relay/routes"
 
 interface Props extends ViewProperties {
-  trigger1pxScrollHack?: boolean,
+  trigger1pxScrollHack?: boolean
 }
 
 class RootContainer extends React.Component<Props, {}> {
@@ -26,24 +26,26 @@ class RootContainer extends React.Component<Props, {}> {
 
   render() {
     // https://facebook.github.io/relay/docs/guides-root-container.html
-    return (<Relay.RootContainer
-             Component={this.component}
-             route={this.route}
-             renderFetched={this.renderFetched}
-             renderLoading={() => {
-               if (this.state.retrying) {
-                 // This will re-use the native view first created in the renderFailure callback, which means it can
-                 // continue its ‘retry’ animation.
-                 return <LoadFailureView style={{ flex: 1 }} />
-               } else {
-                 return <Spinner style={{ flex: 1 }} />
-               }
-             }}
-             renderFailure={(error, retry) => {
-               this.state.retrying = true
-               return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
-             }}
-           />)
+    return (
+      <Relay.RootContainer
+        Component={this.component}
+        route={this.route}
+        renderFetched={this.renderFetched}
+        renderLoading={() => {
+          if (this.state.retrying) {
+            // This will re-use the native view first created in the renderFailure callback, which means it can
+            // continue its ‘retry’ animation.
+            return <LoadFailureView style={{ flex: 1 }} />
+          } else {
+            return <Spinner style={{ flex: 1 }} />
+          }
+        }}
+        renderFailure={(error, retry) => {
+          this.state.retrying = true
+          return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
+        }}
+      />
+    )
   }
 }
 
@@ -87,8 +89,8 @@ class WorksForYou extends RootContainer {
 
     this.component = Containers.WorksForYou
     this.route = new Routes.WorksForYou({ selectedArtist: props.selectedArtist })
-    this.renderFetched = data => <Containers.WorksForYou {...data}
-                                    trigger1pxScrollHack={this.props.trigger1pxScrollHack} />
+    this.renderFetched = data =>
+      <Containers.WorksForYou {...data} trigger1pxScrollHack={this.props.trigger1pxScrollHack} />
   }
 }
 
