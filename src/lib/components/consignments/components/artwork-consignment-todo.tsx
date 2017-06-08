@@ -76,27 +76,24 @@ const ImageDarkener = styled.View`
 
 // Can't add TouchableHighlight yet, see https://github.com/styled-components/styled-components/issues/763
 
-const ToDoButton = () => (
+const ToDoButton = () =>
   <ImageBG>
     <Image source={require("../images/plus.png")} />
   </ImageBG>
-)
 
-const DoneButton = () => (
+const DoneButton = () =>
   <ImageBG style={{ backgroundColor: "white" }}>
     <Image source={require("../images/black-tick.png")} />
   </ImageBG>
-)
 
-const ImagePreview = images => (
+const ImagePreview = images =>
   <ImageStyle source={{ uri: images[0] }}>
     <ImageDarkener>
       <InlineCopy>{images.length}</InlineCopy>
     </ImageDarkener>
   </ImageStyle>
-)
 
-const render = (props: ConsignmentSetup) => (
+const render = (props: ConsignmentSetup) =>
   <Background>
     <Separator />
     <Button>
@@ -135,7 +132,6 @@ const render = (props: ConsignmentSetup) => (
 
     <Separator />
   </Background>
-)
 
 // Export a pure component version
 export default class ConsignmentTODO extends React.PureComponent<ConsignmentSetup, null> {

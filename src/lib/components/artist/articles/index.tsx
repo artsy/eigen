@@ -51,13 +51,7 @@ export default Relay.createContainer(Articles, {
 })
 
 interface RelayProps {
-  articles:
-    | Array<
-
-        | {
-          __id: string,
-        }
-        | null
-    >
-    | null
+  articles: Array<{
+    __id: string
+  } | null> | null
 }

@@ -13,13 +13,12 @@ export interface StorySection {
   stories: Story[]
 }
 
-const render = (props: any) => (
+const render = (props: any) =>
   <NavigatorIOS
     navigationBarHidden={true}
     initialRoute={{ component: Browser, title: "Welcome" }}
     style={{ flex: 1 }}
   />
-)
 
 export default class StorybookBrowser extends React.PureComponent<any, null> {
   render() {

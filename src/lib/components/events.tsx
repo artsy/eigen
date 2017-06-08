@@ -1,6 +1,6 @@
 export interface SwitchEvent {
   nativeEvent: {
-    selectedIndex: number,
+    selectedIndex: number
   }
 }
 

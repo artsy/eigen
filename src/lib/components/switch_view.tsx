@@ -18,7 +18,6 @@ export default class SwitchView extends React.Component<Props, any> {
   }
 
   render() {
-    // prettier-ignore
     const { style, ...props } = this.props
     // Height taken from ARSwitchView.m
     return <NativeSwitchView style={[{ height: 46 }, style]} {...props} />

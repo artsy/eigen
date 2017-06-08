@@ -59,11 +59,11 @@ export default Relay.createContainer(About, {
 
 interface RelayProps {
   gene: {
-    trending_artists: Array<boolean | number | string | null> | null,
+    trending_artists: Array<boolean | number | string | null> | null
   }
 }
 interface RelayPropsWorkaround {
   gene: {
-    trending_artists: any[],
+    trending_artists: any[]
   }
 }

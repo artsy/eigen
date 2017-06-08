@@ -79,17 +79,17 @@ export interface Conversation {
   last_message_at: string | null
   artworks: Array<
     {
-      id: string | null,
-      href: string | null,
-      title: string | null,
-      date: string | null,
+      id: string | null
+      href: string | null
+      title: string | null
+      date: string | null
       artist: {
-        name: string | null,
-      },
+        name: string | null
+      }
       image: {
-        url: string | null,
-        image_url: string | null,
-      },
+        url: string | null
+        image_url: string | null
+      }
     }
   >
 }

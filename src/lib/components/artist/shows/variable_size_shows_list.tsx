@@ -104,13 +104,7 @@ export default Relay.createContainer(ShowsList, {
 })
 
 interface RelayProps {
-  shows:
-    | Array<
-
-        | {
-          __id: string,
-        }
-        | null
-    >
-    | null
+  shows: Array<{
+    __id: string
+  } | null> | null
 }

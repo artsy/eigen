@@ -205,14 +205,14 @@ interface SuggestedArtist extends ArtistCardResponse {
   _id: string
   __id: string
   _animatedValues?: {
-    opacity: Animated.Value,
-    translateY: Animated.Value,
+    opacity: Animated.Value
+    translateY: Animated.Value
   }
 }
 
 interface SuggestedArtistResponse {
   me: {
-    suggested_artists: SuggestedArtist[],
+    suggested_artists: SuggestedArtist[]
   }
 }
 
@@ -255,17 +255,11 @@ export default Relay.createContainer(ArtistRail, {
 
 interface RelayProps {
   rail: {
-    __id: string,
-    key: string | null,
-    results:
-      | Array<
-
-          | {
-            _id: string,
-            __id: string,
-          }
-          | null
-      >
-      | null,
+    __id: string
+    key: string | null
+    results: Array<{
+      _id: string
+      __id: string
+    } | null> | null
   }
 }

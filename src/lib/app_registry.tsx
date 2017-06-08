@@ -89,9 +89,8 @@ class WorksForYou extends RootContainer {
 
     this.component = Containers.WorksForYou
     this.route = new Routes.WorksForYou({ selectedArtist: props.selectedArtist })
-    this.renderFetched = data => (
+    this.renderFetched = data =>
       <Containers.WorksForYou {...data} trigger1pxScrollHack={this.props.trigger1pxScrollHack} />
-    )
   }
 }
 

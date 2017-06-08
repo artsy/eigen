@@ -189,15 +189,13 @@ export default Relay.createContainer(Header, {
 
 interface RelayProps {
   artist: {
-    _id: string,
-    id: string,
-    name: string | null,
-    nationality: string | null,
-    birthday: string | null,
-    counts:
-      | {
-        follows: boolean | number | string | null,
-      }
-      | null,
+    _id: string
+    id: string
+    name: string | null
+    nationality: string | null
+    birthday: string | null
+    counts: {
+      follows: boolean | number | string | null
+    } | null
   }
 }

@@ -67,7 +67,7 @@ export default Relay.createContainer(Biography, {
 
 interface RelayProps {
   artist: {
-    bio: string | null,
-    blurb: string | null,
+    bio: string | null
+    blurb: string | null
   }
 }

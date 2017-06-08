@@ -106,7 +106,6 @@ export default class OpaqueImageView extends React.Component<Props, State> {
 
   render() {
     const isLaidOut = !!(this.state.width && this.state.height)
-    // prettier-ignore
     const { style, ...props } = this.props
 
     Object.assign(props, {

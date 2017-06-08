@@ -9,7 +9,7 @@ interface Props extends ViewProperties, RelayProps {}
 
 export class MyAccount extends React.Component<Props, {}> {
   state: {
-    selectedTabIndex: number,
+    selectedTabIndex: number
   }
 
   render() {
@@ -42,6 +42,6 @@ export default Relay.createContainer(MyAccount, {
 
 interface RelayProps {
   me: {
-    name: string | null,
+    name: string | null
   }
 }

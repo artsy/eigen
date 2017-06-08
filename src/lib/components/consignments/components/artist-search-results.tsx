@@ -57,16 +57,15 @@ const Separator = styled.View`
 export interface ArtistQueryData {
   query: string
   searching: boolean
-  results: Array<{ name: string, id: string, image: { url: string } }> | null
+  results: Array<{ name: string; id: string; image: { url: string } }> | null
   textDidChange?: (text: string) => void
 }
 
-const rowForResult = result => (
+const rowForResult = result =>
   <Result key={result.id}>
     <Image source={{ uri: result.image.url }} />
     <Text>{result.name}</Text>
   </Result>
-)
 
 const noResults = props => {
   if (!props.query || props.searching) {
@@ -79,7 +78,7 @@ const noResults = props => {
   )
 }
 
-const render = (props: ArtistQueryData) => (
+const render = (props: ArtistQueryData) =>
   <View>
 
     <View style={{ flexDirection: "row" }}>
@@ -104,7 +103,6 @@ const render = (props: ArtistQueryData) => (
       {props.results && props.results.length ? props.results.map(rowForResult) : noResults(props)}
     </ScrollView>
   </View>
-)
 
 // Export a pure component version
 export default class SearchResults extends React.PureComponent<ArtistQueryData, null> {

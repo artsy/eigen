@@ -11,8 +11,8 @@ interface Props extends ViewProperties, RelayProps {}
 interface State {
   columns: number
   imageSize: {
-    width: number,
-    height: number,
+    width: number
+    height: number
   }
 }
 
@@ -121,13 +121,7 @@ export default Relay.createContainer(RelatedArtists, {
 })
 
 interface RelayProps {
-  artists:
-    | Array<
-
-        | {
-          __id: string,
-        }
-        | null
-    >
-    | null
+  artists: Array<{
+    __id: string
+  } | null> | null
 }

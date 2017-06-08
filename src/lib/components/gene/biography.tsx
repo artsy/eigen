@@ -56,6 +56,6 @@ export default Relay.createContainer(Biography, {
 
 interface RelayProps {
   gene: {
-    description: string | null,
+    description: string | null
   }
 }

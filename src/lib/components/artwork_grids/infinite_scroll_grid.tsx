@@ -30,12 +30,10 @@ export const PageEndThreshold = 1000
 
 type Artworks = Array<
   {
-    __id: string,
-    image:
-      | {
-        aspect_ratio: number | null,
-      }
-      | null,
+    __id: string
+    image: {
+      aspect_ratio: number | null
+    } | null
   }
 >
 

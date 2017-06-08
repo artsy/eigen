@@ -123,45 +123,29 @@ export default Relay.createContainer(Artwork, {
 
 interface RelayProps {
   artwork: {
-    title: string | null,
-    date: string | null,
-    sale_message: string | null,
-    is_in_auction: boolean | null,
-    sale_artwork:
-      | {
-        opening_bid:
-          | {
-            display: string | null,
-          }
-          | null,
-        current_bid:
-          | {
-            display: string | null,
-          }
-          | null,
-        bidder_positions_count: number | null,
-      }
-      | null,
-    image:
-      | {
-        url: string | null,
-        aspect_ratio: number | null,
-      }
-      | null,
-    artists:
-      | Array<
-
-          | {
-            name: string | null,
-          }
-          | null
-      >
-      | null,
-    partner:
-      | {
-        name: string | null,
-      }
-      | null,
-    href: string | null,
+    title: string | null
+    date: string | null
+    sale_message: string | null
+    is_in_auction: boolean | null
+    sale_artwork: {
+      opening_bid: {
+        display: string | null
+      } | null
+      current_bid: {
+        display: string | null
+      } | null
+      bidder_positions_count: number | null
+    } | null
+    image: {
+      url: string | null
+      aspect_ratio: number | null
+    } | null
+    artists: Array<{
+      name: string | null
+    } | null> | null
+    partner: {
+      name: string | null
+    } | null
+    href: string | null
   }
 }

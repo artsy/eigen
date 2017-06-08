@@ -327,19 +327,17 @@ export default Relay.createContainer(ArtworkRail, {
 interface RelayProps {
   relay?: any
   rail: {
-    key: string | null,
-    params:
-      | {
-        medium: string | null,
-        price_range: string | null,
-      }
-      | null,
-    context: Array<boolean | number | string | null> | null,
-    results: Array<boolean | number | string | null> | null,
+    key: string | null
+    params: {
+      medium: string | null
+      price_range: string | null
+    } | null
+    context: Array<boolean | number | string | null> | null
+    results: Array<boolean | number | string | null> | null
   }
 }
 interface RelayPropsWorkaround {
   rail: {
-    context: any,
+    context: any
   }
 }

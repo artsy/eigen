@@ -19,11 +19,10 @@ export interface AutoStory {
 // Converts a set of state and a component type into a set of stories
 const autoStories: AutoStory[] = [search, bottomAlignedButton, todo]
 
-const Wrapper = props => (
+const Wrapper = props =>
   <View style={{ flex: 1, backgroundColor: "black", padding: 20, marginTop: 60 }}>
     {props.children}
   </View>
-)
 
 // Allows stories to strictly be about their state and the
 // component itself.
@@ -33,10 +32,10 @@ autoStories.forEach(storybook => {
 
   storybook.allStates.forEach(element => {
     const name = Object.keys(element)[0]
-    stories.add(name, () => (
+    stories.add(name, () =>
       <Wrapper>
         <storybook.component {...element[name]} />
       </Wrapper>
-    ))
+    )
   })
 })

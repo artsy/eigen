@@ -122,7 +122,7 @@
   "lint-staged": {
     "*.@(ts|tsx)": [
       "tslint --fix",
-      "yarn prettier-write --",
+      "npm run prettier-write --",
       "git add"
     ]
   }

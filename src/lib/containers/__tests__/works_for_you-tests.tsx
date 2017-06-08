@@ -84,27 +84,27 @@ interface NotificationsResponse {
     me: {
       notifications: {
         pageInfo: {
-          hasNextPage: boolean,
-        },
+          hasNextPage: boolean
+        }
         edges: Array<
           {
             node: {
-              artists: string,
-              date: string,
-              message: string,
-              artworks: [{ title: string }],
+              artists: string
+              date: string
+              message: string
+              artworks: [{ title: string }]
               image: {
                 resized: {
-                  url: string,
-                },
-              },
-            },
+                  url: string
+                }
+              }
+            }
           }
-        >,
-      },
-    },
+        >
+      }
+    }
 
-    selectedArtist?: any,
+    selectedArtist?: any
   }
 }
 

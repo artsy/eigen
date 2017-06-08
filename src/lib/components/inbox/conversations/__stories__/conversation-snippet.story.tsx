@@ -33,10 +33,10 @@ const conversation: Conversation = {
 
 storiesOf("Conversations - Snippet")
   .add("Single row", () => <ConversationSnippet conversation={conversation} />)
-  .add("A few threads", () => (
+  .add("A few threads", () =>
     <ScrollView>
       <ConversationSnippet conversation={conversation} />
       <ConversationSnippet conversation={conversation} />
       <ConversationSnippet conversation={conversation} />
     </ScrollView>
-  ))
+  )

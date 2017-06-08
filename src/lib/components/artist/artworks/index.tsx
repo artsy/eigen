@@ -11,11 +11,11 @@ import colors from "../../../../data/colors"
 interface Props extends ViewProperties {
   artist: {
     counts: {
-      for_sale_artworks: number,
-      artworks: number,
-    },
-    not_for_sale_artworks: any[],
-    for_sale_artworks: any[],
+      for_sale_artworks: number
+      artworks: number
+    }
+    not_for_sale_artworks: any[]
+    for_sale_artworks: any[]
   }
   relay: any
 }
@@ -121,13 +121,11 @@ export default Relay.createContainer(Artworks, {
 
 interface RelayProps {
   artist: {
-    counts:
-      | {
-        artworks: boolean | number | string | null,
-        for_sale_artworks: boolean | number | string | null,
-      }
-      | null,
-    for_sale_artworks: Array<boolean | number | string | null> | null,
-    not_for_sale_artworks: Array<boolean | number | string | null> | null,
+    counts: {
+      artworks: boolean | number | string | null
+      for_sale_artworks: boolean | number | string | null
+    } | null
+    for_sale_artworks: Array<boolean | number | string | null> | null
+    not_for_sale_artworks: Array<boolean | number | string | null> | null
   }
 }

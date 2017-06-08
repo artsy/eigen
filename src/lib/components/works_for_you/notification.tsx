@@ -133,18 +133,16 @@ export default Relay.createContainer(Notification, {
 
 interface RelayProps {
   notification: {
-    date: string,
-    message: string,
-    artists: string,
-    artworks: any[],
-    status: string,
-    image:
-      | {
-        resized: {
-          url: string,
-        },
+    date: string
+    message: string
+    artists: string
+    artworks: any[]
+    status: string
+    image: {
+      resized: {
+        url: string
       }
-      | null,
-    artistHref?: string | null,
+    } | null
+    artistHref?: string | null
   }
 }

@@ -8,7 +8,7 @@ export default class SectionTitle extends React.Component<any, any> {
   }
 
   render() {
-    const { children, props } = this.props
+    const { children, ...props } = this.props
     return (
       <Text style={styles.headerText} numberOfLines={0} {...props}>
         {children}

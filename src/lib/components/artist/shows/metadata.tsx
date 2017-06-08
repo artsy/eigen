@@ -8,17 +8,17 @@ import SerifText from "../../text/serif"
 
 interface Props extends ViewProperties {
   show: {
-    name: string,
-    kind: string,
-    exhibition_period: string,
+    name: string
+    kind: string
+    exhibition_period: string
     location?: {
-      city: string,
-    },
-    status_update?: string,
-    status: string,
+      city: string
+    }
+    status_update?: string
+    status: string
     partner?: {
-      name: string,
-    },
+      name: string
+    }
   }
 }
 
@@ -107,20 +107,16 @@ export default Relay.createContainer(Metadata, {
 
 interface RelayProps {
   show: {
-    kind: string | null,
-    name: string | null,
-    exhibition_period: string | null,
-    status_update: string | null,
-    status: string | null,
-    partner:
-      | {
-        name: string | null,
-      }
-      | null,
-    location:
-      | {
-        city: string | null,
-      }
-      | null,
+    kind: string | null
+    name: string | null
+    exhibition_period: string | null
+    status_update: string | null
+    status: string | null
+    partner: {
+      name: string | null
+    } | null
+    location: {
+      city: string | null
+    } | null
   }
 }

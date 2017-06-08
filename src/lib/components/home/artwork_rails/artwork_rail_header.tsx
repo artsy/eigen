@@ -169,13 +169,13 @@ export default Relay.createContainer(ArtworkRailHeader, {
 
 interface RelayProps {
   rail: {
-    title: string | null,
-    key: string | null,
-    context: Array<boolean | number | string | null> | null,
+    title: string | null
+    key: string | null
+    context: Array<boolean | number | string | null> | null
   }
 }
 interface RelayPropsWorkaround {
   rail: {
-    context: any,
+    context: any
   }
 }

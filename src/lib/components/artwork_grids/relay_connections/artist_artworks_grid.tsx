@@ -33,26 +33,20 @@ export default Relay.createContainer(InfiniteScrollArtworksGrid, {
 
 export interface ArtistRelayProps {
   artist: {
-    artworks_connection:
-      | {
-        pageInfo: {
-          hasNextPage: boolean,
-        },
-        edges: Array<
-          {
-            node:
-              | {
-                __id: string,
-                image:
-                  | {
-                    aspect_ratio: number | null,
-                  }
-                  | null,
-              }
-              | null,
-          }
-        >,
+    artworks_connection: {
+      pageInfo: {
+        hasNextPage: boolean
       }
-      | null,
+      edges: Array<
+        {
+          node: {
+            __id: string
+            image: {
+              aspect_ratio: number | null
+            } | null
+          } | null
+        }
+      >
+    } | null
   }
 }

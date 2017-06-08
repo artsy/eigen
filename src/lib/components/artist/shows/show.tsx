@@ -8,15 +8,15 @@ import ShowMetadata from "./metadata"
 
 interface Props extends ViewProperties {
   show: {
-    href: string,
+    href: string
     cover_image: {
-      url: string,
-    },
+      url: string
+    }
   }
   styles?: {
-    container?: any,
-    image?: any,
-    metadata?: any,
+    container?: any
+    image?: any
+    metadata?: any
   }
 }
 
@@ -59,11 +59,9 @@ export default Relay.createContainer(Show, {
 
 interface RelayProps {
   show: {
-    href: string | null,
-    cover_image:
-      | {
-        url: string | null,
-      }
-      | null,
+    href: string | null
+    cover_image: {
+      url: string | null
+    } | null
   }
 }

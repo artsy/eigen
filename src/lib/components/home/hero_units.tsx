@@ -100,18 +100,12 @@ export default Relay.createContainer(HeroUnits, {
 })
 
 interface RelayProps {
-  hero_units:
-    | Array<
-
-        | {
-          __id: string,
-          href: string | null,
-          title: string | null,
-          heading: string | null,
-          narrow_image_url: string | null,
-          wide_image_url: string | null,
-        }
-        | null
-    >
-    | null
+  hero_units: Array<{
+    __id: string
+    href: string | null
+    title: string | null
+    heading: string | null
+    narrow_image_url: string | null
+    wide_image_url: string | null
+  } | null> | null
 }

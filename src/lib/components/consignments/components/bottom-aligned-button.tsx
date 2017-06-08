@@ -29,7 +29,7 @@ export interface BottomAlignedProps {
   children: any[]
 }
 
-const render = (props: BottomAlignedProps) => (
+const render = (props: BottomAlignedProps) =>
   <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={60} style={{ flex: 1 }}>
 
     {props.children}
@@ -40,7 +40,6 @@ const render = (props: BottomAlignedProps) => (
       <ButtonText>DONE</ButtonText>
     </Body>
   </KeyboardAvoidingView>
-)
 
 // Export a pure component version
 export default class BottomAlignedButton extends React.PureComponent<BottomAlignedProps, null> {

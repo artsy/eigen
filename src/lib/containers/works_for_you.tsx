@@ -289,28 +289,24 @@ interface RelayProps {
     me: {
       notifications: {
         pageInfo: {
-          hasNextPage: boolean,
-        },
+          hasNextPage: boolean
+        }
         edges: Array<
           {
-            node: any | null,
+            node: any | null
           }
-        >,
-      },
-    },
-    selectedArtist?:
-      | {
-        name: string,
-        image:
-          | {
-            resized: {
-              url: string,
-            },
-          }
-          | null,
-        artworks: any[],
-        href: string,
+        >
       }
-      | null,
+    }
+    selectedArtist?: {
+      name: string
+      image: {
+        resized: {
+          url: string
+        }
+      } | null
+      artworks: any[]
+      href: string
+    } | null
   }
 }

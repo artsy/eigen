@@ -125,8 +125,8 @@ export default Relay.createContainer(Header, {
 
 interface RelayProps {
   gene: {
-    _id: string,
-    id: string,
-    name: string | null,
+    _id: string
+    id: string
+    name: string | null
   }
 }

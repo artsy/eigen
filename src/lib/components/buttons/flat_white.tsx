@@ -22,8 +22,8 @@ interface State {
 
 export default class WhiteButton extends React.Component<Props, State> {
   state: {
-    textOpacity: Animated.Value,
-    backgroundColor: Animated.Value,
+    textOpacity: Animated.Value
+    backgroundColor: Animated.Value
   }
 
   constructor(props: any) {

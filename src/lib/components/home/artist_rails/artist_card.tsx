@@ -233,7 +233,7 @@ export interface ArtistCardResponse {
   formatted_artworks_count: number
   formatted_nationality_and_birthday: string
   image: {
-    url: string,
+    url: string
   }
 }
 
@@ -257,16 +257,14 @@ export default ArtistCardContainer
 
 interface RelayProps {
   artist: {
-    id: string,
-    _id: string,
-    href: string | null,
-    name: string | null,
-    formatted_artworks_count: string | null,
-    formatted_nationality_and_birthday: string | null,
-    image:
-      | {
-        url: string | null,
-      }
-      | null,
+    id: string
+    _id: string
+    href: string | null
+    name: string | null
+    formatted_artworks_count: string | null
+    formatted_nationality_and_birthday: string | null
+    image: {
+      url: string | null
+    } | null
   }
 }

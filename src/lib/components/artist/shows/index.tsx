@@ -12,9 +12,9 @@ const windowDimensions = Dimensions.get("window")
 
 interface Props extends ViewProperties {
   artist: {
-    past_shows: any[],
-    current_shows: any[],
-    upcoming_shows: any[],
+    past_shows: any[]
+    current_shows: any[]
+    upcoming_shows: any[]
   }
 }
 
@@ -103,8 +103,8 @@ export default Relay.createContainer(Shows, {
 
 interface RelayProps {
   artist: {
-    current_shows: Array<boolean | number | string | null> | null,
-    upcoming_shows: Array<boolean | number | string | null> | null,
-    past_shows: Array<boolean | number | string | null> | null,
+    current_shows: Array<boolean | number | string | null> | null
+    upcoming_shows: Array<boolean | number | string | null> | null
+    past_shows: Array<boolean | number | string | null> | null
   }
 }

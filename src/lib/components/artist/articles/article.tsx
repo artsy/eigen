@@ -8,14 +8,14 @@ import ImageView from "../../opaque_image_view"
 
 interface Props extends ViewProperties {
   article: {
-    href: string,
+    href: string
     author: {
-      name,
-    },
+      name
+    }
     thumbnail_image: {
-      url,
-    },
-    thumbnail_title: string,
+      url
+    }
+    thumbnail_title: string
   }
 }
 
@@ -97,17 +97,13 @@ export default Relay.createContainer(Article, {
 
 interface RelayProps {
   article: {
-    thumbnail_title: string | null,
-    href: string | null,
-    author:
-      | {
-        name: string | null,
-      }
-      | null,
-    thumbnail_image:
-      | {
-        url: string | null,
-      }
-      | null,
+    thumbnail_title: string | null
+    href: string | null
+    author: {
+      name: string | null
+    } | null
+    thumbnail_image: {
+      url: string | null
+    } | null
   }
 }

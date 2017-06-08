@@ -152,24 +152,12 @@ export default Relay.createContainer(Home, {
 
 interface RelayProps {
   home: {
-    hero_units: Array<any | null> | null,
-    artwork_modules:
-      | Array<
-
-          | {
-            __id: string,
-          }
-          | null
-      >
-      | null,
-    artist_modules:
-      | Array<
-
-          | {
-            __id: string,
-          }
-          | null
-      >
-      | null,
+    hero_units: Array<any | null> | null
+    artwork_modules: Array<{
+      __id: string
+    } | null> | null
+    artist_modules: Array<{
+      __id: string
+    } | null> | null
   }
 }
