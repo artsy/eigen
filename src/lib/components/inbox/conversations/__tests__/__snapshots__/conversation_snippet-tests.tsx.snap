@@ -131,7 +131,7 @@ exports[`renders correctly 1`] = `
               ]
             }
           >
-            A DAY
+            30 MINUTES
           </Text>
           <View
             style={
