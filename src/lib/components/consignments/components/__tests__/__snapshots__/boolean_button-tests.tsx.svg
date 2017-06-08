@@ -11,17 +11,7 @@
 
      <g transform='translate(8, 9)'>
        <rect x="0" y="0" width="0" height="22" fill-opacity="0.1" stroke-width="1" stroke="black"/>
-
-       <g transform='translate(0, 0)'>
-         <rect x="0" y="0" width="0" height="0" fill-opacity="0.1" stroke-width="1" stroke="black"/>
-       </g>
-
        <rect x="304" y="0" width="0" height="22" fill-opacity="0.1" stroke-width="1" stroke="black"/>
-
-       <g transform='translate(304, 0)'>
-         <rect x="0" y="0" width="0" height="0" fill-opacity="0.1" stroke-width="1" stroke="black"/>
-       </g>
-
      </g>
 
      <rect x="0" y="31" width="320" height="24" fill-opacity="0.1" stroke-width="1" stroke="black"/>
