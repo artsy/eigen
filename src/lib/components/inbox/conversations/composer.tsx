@@ -6,6 +6,10 @@ import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
 
+interface ContainerProps {
+  active: boolean
+}
+
 const Container = styled.View`
   flexDirection: row
   justifyContent: space-between
@@ -14,16 +18,22 @@ const Container = styled.View`
   borderColor: ${colors["gray-regular"]}
   borderRadius: 3
   marginBottom: 20
+  backgroundColor: ${(p: ContainerProps) => p.active ? "white" : colors["gray-light"]}
 `
+
+interface StyledSendButtonProps {
+  containsText: boolean
+}
 
 const SendButton = styled.Text`
   fontFamily: ${fonts["avant-garde-regular"]}
   fontSize: 12
   marginRight: 10
+  color: ${(p: StyledSendButtonProps) => p.containsText ? colors["purple-regular"] : colors["gray-regular"]}
 `
 
 interface Props {
-  onSubmit: (text: string) => any,
+  onSubmit?: (text: string) => any,
 }
 
 interface State {
@@ -31,7 +41,7 @@ interface State {
   text: string,
 }
 
-export default class Composer extends React.Component<any, State> {
+export default class Composer extends React.Component<Props, State> {
   input?: TextInput | any
 
   constructor(props) {
@@ -63,11 +73,9 @@ export default class Composer extends React.Component<any, State> {
       paddingRight: 10,
     }
 
-    const sendButtonColor = this.state.text && this.state.text.length ?
-                              colors["purple-regular"] : colors["gray-regular"]
     return (
       <KeyboardAvoidingView behavior={"padding"}>
-        <Container style={{ backgroundColor: this.state.active ? "white" : colors["gray-light"] }}>
+        <Container active={this.state.active}>
           <TextInput placeholder={"Reply..."}
                   placeholderTextColor={colors["gray-semibold"]}
                   keyboardAppearance={"dark"}
@@ -82,7 +90,7 @@ export default class Composer extends React.Component<any, State> {
                   multiline={true}
           />
           <TouchableWithoutFeedback onPress={this.submitText.bind(this)}>
-            <SendButton style={{color: sendButtonColor}}>SEND</SendButton>
+            <SendButton containsText={!!(this.state.text && this.state.text.length)}>SEND</SendButton>
           </TouchableWithoutFeedback>
         </Container>
       </KeyboardAvoidingView>

@@ -118,15 +118,19 @@ exports[`looks correct when rendered 1`] = `
     style={
       Array [
         Object {
-          "alignSelf": "stretch",
-          "flexBasis": 0,
           "flexDirection": "row",
-          "flexGrow": 1,
-          "flexShrink": 1,
-          "marginBottom": 10,
-          "marginTop": 15,
         },
-        undefined,
+        Array [
+          Object {
+            "alignSelf": "stretch",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "marginBottom": 10,
+            "marginTop": 15,
+          },
+          undefined,
+        ],
       ]
     }
   >
@@ -151,9 +155,13 @@ exports[`looks correct when rendered 1`] = `
             "flexDirection": "column",
             "flexGrow": 1,
             "flexShrink": 1,
-            "marginLeft": 10,
           },
-          undefined,
+          Array [
+            Object {
+              "marginLeft": 10,
+            },
+            undefined,
+          ],
         ]
       }
     >
@@ -161,11 +169,15 @@ exports[`looks correct when rendered 1`] = `
         style={
           Array [
             Object {
-              "alignSelf": "stretch",
               "flexDirection": "row",
-              "marginBottom": 10,
             },
-            undefined,
+            Array [
+              Object {
+                "alignSelf": "stretch",
+                "marginBottom": 10,
+              },
+              undefined,
+            ],
           ]
         }
       >
@@ -181,9 +193,12 @@ exports[`looks correct when rendered 1`] = `
                 "fontSize": 11,
                 "textAlign": "left",
               },
-              Object {
-                "marginRight": 10,
-              },
+              Array [
+                Object {
+                  "marginRight": 10,
+                },
+                undefined,
+              ],
               Object {
                 "fontFamily": "Avant Garde Gothic ITCW01Dm",
               },
@@ -250,10 +265,12 @@ exports[`looks correct when rendered 1`] = `
     }
   >
     <View
+      active={false}
       style={
         Array [
           Object {
             "alignItems": "center",
+            "backgroundColor": "#f8f8f8",
             "borderColor": "#e5e5e5",
             "borderRadius": 3,
             "borderWidth": 1,
@@ -261,9 +278,7 @@ exports[`looks correct when rendered 1`] = `
             "justifyContent": "space-between",
             "marginBottom": 20,
           },
-          Object {
-            "backgroundColor": "#f8f8f8",
-          },
+          undefined,
         ]
       }
     >
@@ -293,6 +308,7 @@ exports[`looks correct when rendered 1`] = `
         accessibilityTraits={undefined}
         accessible={true}
         allowFontScaling={true}
+        containsText={false}
         disabled={false}
         ellipsizeMode="tail"
         hitSlop={undefined}
@@ -307,13 +323,12 @@ exports[`looks correct when rendered 1`] = `
         style={
           Array [
             Object {
+              "color": "#e5e5e5",
               "fontFamily": "Avant Garde Gothic ITCW01Dm",
               "fontSize": 12,
               "marginRight": 10,
             },
-            Object {
-              "color": "#e5e5e5",
-            },
+            undefined,
           ]
         }
         testID={undefined}

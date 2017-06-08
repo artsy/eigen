@@ -47,15 +47,15 @@ const DottedBorder = styled.View`
 `
 
 interface Props extends ViewProperties {
-  id: string | null,
-  inquiry_id: string | null,
-  from_name: string | null,
-  from_email: string | null,
-  to_name: string | null,
-  last_message: string | null,
+  id?: string,
+  inquiry_id?: string,
+  from_name?: string,
+  from_email?: string,
+  to_name?: string,
+  last_message?: string,
 }
 
-export default class Conversation extends React.Component<Props, {}> {
+export default class Conversation extends React.Component<Props, any> {
   render() {
     const partnerName = "Patrick Parrish Gallery"
 

@@ -18,7 +18,7 @@ const HorizontalLayout = styled.View`
   flex-direction: row
 `
 
-const Container = HorizontalLayout.extend`
+const Container = styled(HorizontalLayout)`
   flex: 1
   alignSelf: stretch
   marginTop: 15
@@ -32,13 +32,17 @@ const Avatar = styled.View`
   backgroundColor: ${colors["gray-regular"]}
 `
 
-const Header = HorizontalLayout.extend`
+const Header = styled(HorizontalLayout)`
   alignSelf: stretch
   marginBottom: 10
 `
 
-const TextContainer = VerticalLayout.extend`
+const TextContainer = styled(VerticalLayout)`
   marginLeft: 10
+`
+
+const SenderName = styled(SmallHeadline)`
+  marginRight: 10
 `
 
 export default class Message extends React.Component<any, any> {
@@ -52,7 +56,7 @@ export default class Message extends React.Component<any, any> {
           <Avatar/>
           <TextContainer>
             <Header>
-              <SmallHeadline style={{marginRight: 10}}>{senderName}</SmallHeadline>
+              <SenderName>{senderName}</SenderName>
               <MetadataText>{time}</MetadataText>
             </Header>
             <BodyText>{body}</BodyText>
