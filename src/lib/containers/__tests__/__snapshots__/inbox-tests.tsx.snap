@@ -63,6 +63,7 @@ exports[`renders correctly 1`] = `
                 "marginLeft": 20,
                 "marginRight": 20,
                 "marginTop": 20,
+                "minHeight": 80,
               },
               undefined,
             ]
@@ -364,6 +365,7 @@ exports[`renders correctly 1`] = `
                 "marginLeft": 20,
                 "marginRight": 20,
                 "marginTop": 20,
+                "minHeight": 80,
               },
               undefined,
             ]

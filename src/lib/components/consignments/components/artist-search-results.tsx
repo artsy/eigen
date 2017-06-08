@@ -6,52 +6,52 @@ import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
 
 const Input = styled.TextInput`
-  height: 40
-  backgroundColor: black
-  color: white
-  font-family: "${fonts["garamond-regular"]}"
-  font-size: 20
-  border-bottom-color: white
-  border-bottom-width: 1
-  flex: 1
+  height: 40;
+  background-color: black;
+  color: white;
+  font-family: "${fonts["garamond-regular"]}";
+  font-size: 20;
+  border-bottom-color: white;
+  border-bottom-width: 1;
+  flex: 1;
 `
 
 const Result = styled.View`
-  flex-direction: row
-  align-items: center
-  height: 40
-  margin-bottom: 10
+  flex-direction: row;
+  align-items: center;
+  height: 40;
+  margin-bottom: 10;
 `
 
 const Image = styled.Image`
-  height: 40
-  width: 40
-  border-radius: 20
+  height: 40;
+  width: 40;
+  border-radius: 20;
 `
 
 const Text = styled.Text`
-  font-family: "${fonts["garamond-regular"]}"
-  color: white
-  font-size: 20
-  padding-top: 8
-  margin-left: 13
+  font-family: "${fonts["garamond-regular"]}";
+  color: white;
+  font-size: 20;
+  padding-top: 8;
+  margin-left: 13;
 `
 
 const UnknownLabel = styled.Text`
-  font-family: "${fonts["garamond-regular"]}"
-  color: ${colors["gray-medium"]}
-  font-size: 17
+  font-family: "${fonts["garamond-regular"]}";
+  color: ${colors["gray-medium"]};
+  font-size: 17;
 `
 
 const UnknownName = styled.Text`
-  font-family: "${fonts["garamond-italic"]}"
-  color: ${colors["gray-medium"]}
-  font-size: 17
+  font-family: "${fonts["garamond-italic"]}";
+  color: ${colors["gray-medium"]};
+  font-size: 17;
 `
 
 const Separator = styled.View`
-  background-color: ${colors["gray-regular"]}
-  height: 1
+  background-color: ${colors["gray-regular"]};
+  height: 1;
 `
 
 export interface ArtistQueryData {
