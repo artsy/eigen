@@ -215,7 +215,7 @@ exports[`renders correctly 1`] = `
               ]
             }
           >
-            Bradley Theodore ·
+            Bradley Theodore · 
           </Text>
           <Text
             accessible={true}
@@ -240,7 +240,7 @@ exports[`renders correctly 1`] = `
               ]
             }
           >
-            Karl and Anna Face Off (Diptych),
+            Karl and Anna Face Off (Diptych), 
           </Text>
           <Text
             accessible={true}
