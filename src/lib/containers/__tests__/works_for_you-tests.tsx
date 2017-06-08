@@ -86,7 +86,7 @@ interface NotificationsResponse {
         pageInfo: {
           hasNextPage: boolean,
         },
-        edges: [
+        edges: Array<
           {
             node: {
               artists: string,
@@ -99,21 +99,8 @@ interface NotificationsResponse {
                 },
               },
             },
-          },
-          {
-            node: {
-              artists: string,
-              date: string,
-              message: string,
-              artworks: [{ title: string }, { title: string }],
-              image: {
-                resized: {
-                  url: string,
-                },
-              },
-            },
-          },
-        ],
+          }
+        >,
       },
     },
 
