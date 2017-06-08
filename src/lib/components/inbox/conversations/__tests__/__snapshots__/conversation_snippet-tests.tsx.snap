@@ -2,6 +2,19 @@
 
 exports[`renders correctly 1`] = `
 <View
+  accessibilityComponentType={undefined}
+  accessibilityLabel={undefined}
+  accessibilityTraits={undefined}
+  accessible={true}
+  hitSlop={undefined}
+  nativeID={undefined}
+  onLayout={undefined}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     Array [
       Object {
@@ -13,6 +26,7 @@ exports[`renders correctly 1`] = `
       undefined,
     ]
   }
+  testID={undefined}
 >
   <View
     style={
@@ -132,7 +146,7 @@ exports[`renders correctly 1`] = `
               ]
             }
           >
-            11:00 AM
+            30 MINUTES
           </Text>
           <View
             style={

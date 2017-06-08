@@ -158,5 +158,6 @@ const newBody = userBody + splitter + "\n" + bodyFooter
 // require Danger to submit a new body (and thus overwrite those changes.)
 const neuterMarkdownTicks = /- \[*.\]/g
 if (pr.body.replace(neuterMarkdownTicks, "-") !== newBody.replace(neuterMarkdownTicks, "-")) {
-  danger.github.api.pullRequests.update({...danger.github.thisPR, body: newBody })
+  // See https://github.com/artsy/emission/issues/589
+  // danger.github.api.pullRequests.update({...danger.github.thisPR, body: newBody })
 }
