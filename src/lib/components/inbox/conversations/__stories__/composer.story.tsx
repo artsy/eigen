@@ -4,4 +4,4 @@ import "react-native"
 import Composer from "../composer"
 
 storiesOf("Conversations - Composer")
-  .add("With no preexisting thread", () => <Composer />)
+  .add("With no pre-existing thread", () => <Composer />)
