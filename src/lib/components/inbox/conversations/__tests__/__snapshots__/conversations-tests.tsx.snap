@@ -44,6 +44,19 @@ exports[`looks correct when rendered 1`] = `
     >
       <View>
         <View
+          accessibilityComponentType={undefined}
+          accessibilityLabel={undefined}
+          accessibilityTraits={undefined}
+          accessible={true}
+          hitSlop={undefined}
+          nativeID={undefined}
+          onLayout={undefined}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
@@ -54,6 +67,7 @@ exports[`looks correct when rendered 1`] = `
               undefined,
             ]
           }
+          testID={undefined}
         >
           <View
             style={
@@ -173,7 +187,7 @@ exports[`looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    2 DAYS
+                    30 MINUTES
                   </Text>
                   <View
                     style={
@@ -331,6 +345,19 @@ exports[`looks correct when rendered 1`] = `
           />
         </View>
         <View
+          accessibilityComponentType={undefined}
+          accessibilityLabel={undefined}
+          accessibilityTraits={undefined}
+          accessible={true}
+          hitSlop={undefined}
+          nativeID={undefined}
+          onLayout={undefined}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
@@ -341,6 +368,7 @@ exports[`looks correct when rendered 1`] = `
               undefined,
             ]
           }
+          testID={undefined}
         >
           <View
             style={
@@ -460,7 +488,7 @@ exports[`looks correct when rendered 1`] = `
                       ]
                     }
                   >
-                    5 DAYS
+                    AN HOUR
                   </Text>
                   <View
                     style={

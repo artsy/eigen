@@ -4,11 +4,12 @@ import * as Relay from "react-relay"
 
 import { MetadataText, PreviewText as P, SmallHeadline } from "../typography"
 
-import { StyleSheet, ViewStyle } from "react-native"
+import { StyleSheet, TouchableWithoutFeedback, ViewStyle } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
+import SwitchBoard from "../../../native_modules/switch_board"
 import OpaqueImageView from "../../opaque_image_view"
 
 const Card = styled.View`
@@ -110,30 +111,36 @@ export class ConversationSnippet extends React.Component<Props, any> {
     const imageURL = artwork.image.url
 
     return (
-      <Card>
-        <CardContent>
-          <OpaqueImageView imageURL={imageURL} style={styles.image} />
-          <TextPreview>
-            <HorizontalLayout>
-              <SmallHeadline>{galleryName}</SmallHeadline>
-              <DateHeading>
-                <MetadataText>{date}</MetadataText>
-                <UnreadIndicator />
-              </DateHeading>
-            </HorizontalLayout>
-            <HorizontalLayout>
-              <P>
-                <ArtworkSubtitle>{artworkArtist}</ArtworkSubtitle>
-                <ArtworkTitle>{artworkTitle}</ArtworkTitle>
-                <ArtworkSubtitle>{artworkDate}</ArtworkSubtitle>
-              </P>
-            </HorizontalLayout>
-            <P>{conversationText}</P>
-          </TextPreview>
-        </CardContent>
-        <Separator />
-      </Card>
+      <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
+        <Card>
+          <CardContent>
+            <OpaqueImageView imageURL={imageURL} style={styles.image} />
+            <TextPreview>
+              <HorizontalLayout>
+                <SmallHeadline>{galleryName}</SmallHeadline>
+                <DateHeading>
+                  <MetadataText>{date}</MetadataText>
+                  <UnreadIndicator />
+                </DateHeading>
+              </HorizontalLayout>
+              <HorizontalLayout>
+                <P>
+                  <ArtworkSubtitle>{artworkArtist}</ArtworkSubtitle>
+                  <ArtworkTitle>{artworkTitle}</ArtworkTitle>
+                  <ArtworkSubtitle>{artworkDate}</ArtworkSubtitle>
+                </P>
+              </HorizontalLayout>
+              <P>{conversationText}</P>
+            </TextPreview>
+          </CardContent>
+          <Separator />
+        </Card>
+      </TouchableWithoutFeedback>
     )
+  }
+
+  handleTap() {
+    SwitchBoard.presentNavigationViewController(this, "/conversation/")
   }
 }
 

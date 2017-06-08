@@ -1,3 +1,4 @@
+import * as moment from "moment"
 import * as React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
@@ -20,7 +21,7 @@ const meProps = {
           from_email: "luc+messaging@artsymail.com",
           to_name: "ACA Galleries",
           last_message: "Karl and Anna... Fab!",
-          last_message_at: "2017-06-05T12:36:24.253Z",
+          last_message_at: moment().subtract(30, "minutes").toISOString(),
           created_at: "2017-06-01T14:14:35.538Z",
           artworks: [
             {
@@ -49,7 +50,7 @@ const meProps = {
           last_message:
             "Hi, I’m interested in purchasing this work. \
                     Could you please provide more information about the piece?",
-          last_message_at: "2017-06-02T12:26:36.502Z",
+          last_message_at: moment().subtract(1, "hours").toISOString(),
           created_at: "2017-06-01T14:12:19.155Z",
           artworks: [
             {

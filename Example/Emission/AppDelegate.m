@@ -16,6 +16,7 @@
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
+#import <Emission/ARConversationComponentViewController.h>
 
 #import <React/RCTUtils.h>
 #import <TargetConditionals.h>
@@ -247,6 +248,9 @@ randomBOOL(void)
     }
     viewController = [[ARGeneComponentViewController alloc] initWithGeneID:geneID refineSettings:params];
 
+  } else if ([route hasPrefix:@"/conversation/"] || [route hasPrefix:@"conversation/"]) {
+    NSString *conversationID = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARConversationComponentViewController alloc] initWithConversationID:conversationID];
   } else if ([route isEqualToString:@"/"]) {
     viewController = [[ARHomeComponentViewController alloc] initWithEmission:nil];
 
