@@ -1,4 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
+import * as moment from "moment"
 import * as React from "react"
 import "react-native"
 import {
@@ -14,6 +15,7 @@ const conversation: Conversation = {
     from_email: "luc+messaging@artsymail.com",
     to_name: "ACA Galleries",
     last_message: "Karl and Anna... Fab!",
+    last_message_at: moment().subtract(30, "minutes").toISOString(),
     artworks: [
     {
         id: "bradley-theodore-karl-and-anna-face-off-diptych",
