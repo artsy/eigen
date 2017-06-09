@@ -1,11 +1,9 @@
 import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import { View } from "react-native"
+import Toggle from "../components/toggle"
 import * as T from "../typography"
-
-import BooleanSelector from "../components/boolean_button"
-
-const Wrapper = p => <View style={{ backgroundColor: "black", flex: 1, paddingTop: 20 }}>{p.children}</View>
+import { Wrapper } from "./"
 
 storiesOf("Consignments - Styling")
   .add("Type Reference", () =>
@@ -22,7 +20,8 @@ storiesOf("Consignments - Styling")
   )
   .add("Boolean selector", () =>
     <Wrapper>
-      <BooleanSelector selected={true} left="YE" right="NO" />
-      <BooleanSelector selected={false} left="IN" right="WW" />
+      <Toggle selected={true} left="YES" right="NO" />
+      <View style={{ height: 20 }} />
+      <Toggle selected={false} left="IN" right="CM" />
     </Wrapper>
   )

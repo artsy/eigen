@@ -18,7 +18,7 @@ export interface AutoStory {
 // Converts a set of state and a component type into a set of stories
 const autoStories: AutoStory[] = [search, bottomAlignedButton, todo]
 
-const Wrapper = props =>
+export const Wrapper = props =>
   <View style={{ flex: 1, backgroundColor: "black", padding: 20, marginTop: 60 }}>
     {props.children}
   </View>

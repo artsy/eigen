@@ -7,6 +7,9 @@ const Title = styled.Text`
   color: white;
   font-family: "${fonts["avant-garde-regular"]}";
   font-size: 11;
+  letter-spacing: 0.75;
+  width: 24;
+  text-align: center;
 `
 
 const Background = styled.TouchableHighlight`
@@ -48,18 +51,18 @@ const WhiteCircle = styled.View`
 const CircleSpacer = styled.View`
   position: absolute;
   top: 4;
-  left: 0;
-  right: 0;
+  left: 6;
+  right: 6;
 `
 
-interface BooleanButton {
+interface ToggleProps {
   selected: boolean
   left: string
   right: string
   onPress?: () => void
 }
 
-const render = (props: BooleanButton) => {
+const render = (props: ToggleProps) => {
   const { selected } = props
   const mainBGColor = selected ? "white" : "black"
   const leftTextColor = selected ? "black" : "white"
@@ -73,7 +76,7 @@ const render = (props: BooleanButton) => {
       <View>
         <TextBackground>
           <Title style={{ color: leftTextColor }}>{props.left}</Title>
-          <Title style={{ textAlign: "right", color: rightTextColor }}>{props.right}</Title>
+          <Title style={{ color: rightTextColor }}>{props.right}</Title>
         </TextBackground>
         <CircleSpacer style={{ flexDirection: dotDirection }}>
           <Circle style={{ borderColor: dotBorder }} />
@@ -84,7 +87,7 @@ const render = (props: BooleanButton) => {
 }
 
 // Export a pure component version
-export default class ConsignmentTODO extends React.PureComponent<BooleanButton, null> {
+export default class Toggle extends React.PureComponent<ToggleProps, null> {
   render() {
     return render(this.props)
   }
