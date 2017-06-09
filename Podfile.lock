@@ -433,7 +433,7 @@ SPEC CHECKSUMS:
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
   Analytics: b342fb4f43fa4f97ca6f4358b44d3295217ba294
-  AppHub: '03788112dd48c42b60d51321c0ffff4ef15a4432'
+  AppHub: 03788112dd48c42b60d51321c0ffff4ef15a4432
   ARAnalytics: 96e23ba7f54298f4914de9e1ac999db7a15f3fdd
   ARCollectionViewMasonryLayout: 776730bdedd0c7570a5e904c370e4e120f98ea62
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
@@ -452,7 +452,7 @@ SPEC CHECKSUMS:
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FBSDKCoreKit: d2aaed5e9ab7d8d6301c533376a1fbff1cf3deb5
   FBSDKLoginKit: 699ff169080e3072de4b9b0faca90bf23dc36deb
-  FBSnapshotTestCase: '094f9f314decbabe373b87cc339bea235a63e07a'
+  FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb

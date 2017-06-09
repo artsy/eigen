@@ -29,10 +29,18 @@ class SaleStatusView: UIView {
         statusLabel.textColor = .artsyRedRegular()
         statusLabel.textAlignment = .center
         statusLabel.text = "Sale on Hold"
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(userDidTapStatusView))
+        addGestureRecognizer(tapGestureRecognizer)
     }
     
     required init?(coder aDecoder: NSCoder) {
         return nil
+    }
+
+    func userDidTapStatusView() {
+        // We're using NSNotificationCenter because setting up a delegate chain would be too cumbersome.
+        NotificationCenter.default.post(name: NSNotification.Name.ARAuctionSaleOnHoldBannerTapped, object: self)
     }
 
     class func barButtonItem(adjustedLeftMarginBy leftMargin: CGFloat = 0) -> UIBarButtonItem {

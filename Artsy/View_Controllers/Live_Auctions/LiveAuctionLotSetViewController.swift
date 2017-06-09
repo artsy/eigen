@@ -351,15 +351,6 @@ extension LiveAuctionLotSetViewController: AuctionTitleViewDelegate {
         let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
         self.present(viewController, animated: true) {}
     }
-    
-    func setSaleStatus(message: String?) {
-        guard let message = message else {
-            self.saleStatusView.isHidden = true
-            return
-        }
-        self.saleStatusView.isHidden = false
-        self.saleStatusView.setMessage(message)
-    }
 }
 
 private typealias HostScrollViewDelegate = LiveAuctionLotSetViewController

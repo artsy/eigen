@@ -89,6 +89,7 @@ class Test_SocketCommunicator: LiveAuctionSocketCommunicatorType {
     let postEventResponses = Observable<AnyObject>()
     let socketConnectionSignal = Observable<Bool>()
     let operatorConnectedSignal = Observable<AnyObject>()
+    let saleOnHoldSignal = Observable<AnyObject>()
     func bidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {}
     func leaveMaxBidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {}
 }
