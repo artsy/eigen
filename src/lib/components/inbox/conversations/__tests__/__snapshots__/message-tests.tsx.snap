@@ -92,7 +92,7 @@ exports[`looks correct when rendered 1`] = `
           ]
         }
       >
-        PATRICK PARRISH
+        SARAH SCOTT
       </Text>
       <Text
         accessible={true}
@@ -113,7 +113,7 @@ exports[`looks correct when rendered 1`] = `
           ]
         }
       >
-        11:32AM
+        11:00AM
       </Text>
     </View>
     <Text
@@ -135,7 +135,7 @@ exports[`looks correct when rendered 1`] = `
         ]
       }
     >
-      Hi Katarina, thanks for reaching out with your interest in this great piece by Ian Stell.
+      Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?
     </Text>
   </View>
 </View>
