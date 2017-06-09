@@ -7,14 +7,12 @@
 #import "ARTopMenuViewController.h"
 #import "ARSerifStatusMaintainer.h"
 @import Artsy_UILabels;
-@import FLKAutoLayout;
 @import ObjectiveSugar;
 
 
 @interface ARSerifNavigationBar : UINavigationBar
 /// Show/hides the underline from a navigation bar
 - (void)hideNavigationBarShadow:(BOOL)hide;
-@property (nonatomic, strong) UIView *alertView;
 @end
 
 
@@ -193,8 +191,6 @@
 
     self.translucent = NO;
     self.backgroundColor = [UIColor whiteColor];
-    _alertView = [[UIView alloc] init];
-    _alertView.backgroundColor = [UIColor redColor];
 
     return self;
 }
@@ -226,10 +222,6 @@
             object.backgroundColor = [UIColor artsyGraySemibold];
         }
     }];
-
-    if (self.alertView.superview == nil) {
-        [self addSubview: self.alertView];
-    }
 }
 
 - (void)verticallyCenterView:(id)viewOrArray

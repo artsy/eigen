@@ -156,7 +156,7 @@ extension PrivateFunctions {
             } else {
                 navigationItem.title = salesPerson.liveSaleName
                 // The ARSerifNavigationBar handles titles in its own custom way, this is a hack but it works for now.
-                (navigationController as? UINavigationControllerDelegate)!.navigationController!(navigationController!, willShow: self, animated: false)
+                (navigationController as? UINavigationControllerDelegate)?.navigationController!(navigationController!, willShow: self, animated: false)
             }
         }
     }

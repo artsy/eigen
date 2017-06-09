@@ -20,7 +20,7 @@ class SaleOnHoldOverlayViewTests: QuickSpec {
                 containerView.addSubview(subject)
                 subject.align(toView: containerView)
 
-                expect(containerView).to( recordSnapshot() )
+                expect(containerView).to( haveValidSnapshot() )
             }
         }
 
@@ -35,7 +35,7 @@ class SaleOnHoldOverlayViewTests: QuickSpec {
                 containerView.addSubview(subject)
                 subject.align(toView: containerView)
 
-                expect(containerView).to( recordSnapshot(usesDrawRect: true) )
+                expect(containerView).to( haveValidSnapshot() )
             }
         }
     }
