@@ -5,16 +5,7 @@ import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
 
-const Input = styled.TextInput`
-  height: 40;
-  background-color: black;
-  color: white;
-  font-family: "${fonts["garamond-regular"]}";
-  font-size: 20;
-  border-bottom-color: white;
-  border-bottom-width: 1;
-  flex: 1;
-`
+import TextInput, { TextInputProps } from "./text_input"
 
 const Result = styled.View`
   flex-direction: row;
@@ -49,16 +40,8 @@ const UnknownName = styled.Text`
   font-size: 17;
 `
 
-const Separator = styled.View`
-  background-color: ${colors["gray-regular"]};
-  height: 1;
-`
-
-export interface ArtistQueryData {
-  query: string
-  searching: boolean
+export interface ArtistQueryData extends TextInputProps {
   results: Array<{ name: string; id: string; image: { url: string } }> | null
-  textDidChange?: (text: string) => void
 }
 
 const rowForResult = result =>
@@ -81,23 +64,12 @@ const noResults = props => {
 const render = (props: ArtistQueryData) =>
   <View>
 
-    <View style={{ flexDirection: "row" }}>
-      <Input
-        autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
-        autoCorrect={false}
-        clearButtonMode="while-editing"
-        onChangeText={props.textDidChange}
-        defaultValue="Artist/Designer Name"
-        keyboardAppearance="dark"
-        placeholderTextColor={colors["gray-medium"]}
-        value={props.query}
-        returnKeyType="search"
-        selectionColor={colors["gray-medium"]}
-      />
-      <ActivityIndicator animating={props.searching} />
-    </View>
-
-    <Separator />
+    <TextInput
+      query={props.query}
+      searching={props.searching}
+      textDidChange={props.textDidChange}
+      placeholder="Artist/Designer Name"
+    />
 
     <ScrollView style={{ height: 182, paddingTop: 16 }} scrollEnabled={props.results && !!props.results.length}>
       {props.results && props.results.length ? props.results.map(rowForResult) : noResults(props)}

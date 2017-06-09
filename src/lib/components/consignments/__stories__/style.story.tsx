@@ -25,3 +25,9 @@ storiesOf("Consignments - Styling")
       <BooleanSelector selected={false} left="IN" right="CM" />
     </Wrapper>
   )
+  .add("Form of Textfields", () =>
+    <Wrapper>
+      <BooleanSelector selected={true} left="YES" right="NO" />
+      <View style={{ height: 20 }} />
+    </Wrapper>
+  )

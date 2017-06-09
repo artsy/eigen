@@ -114,60 +114,62 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
   }
 >
   <View>
-    <View
-      style={
-        Object {
-          "flexDirection": "row",
+    <View>
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+          }
         }
-      }
-    >
-      <TextInput
-        autoCorrect={false}
-        autoFocus={false}
-        clearButtonMode="while-editing"
-        defaultValue="Artist/Designer Name"
-        keyboardAppearance="dark"
-        onChangeText={undefined}
-        placeholderTextColor="#cccccc"
-        returnKeyType="search"
-        selectionColor="#cccccc"
+      >
+        <TextInput
+          autoCorrect={false}
+          autoFocus={false}
+          clearButtonMode="while-editing"
+          keyboardAppearance="dark"
+          onChangeText={undefined}
+          placeholder="Artist/Designer Name"
+          placeholderTextColor="#cccccc"
+          returnKeyType="search"
+          selectionColor="#cccccc"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "black",
+                "borderBottomColor": "white",
+                "borderBottomWidth": 1,
+                "color": "white",
+                "flexBasis": 0,
+                "flexGrow": 1,
+                "flexShrink": 1,
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 20,
+                "height": 40,
+              },
+              undefined,
+            ]
+          }
+          value="Banko"
+        />
+        <ActivityIndicator
+          animating={false}
+          color="#999999"
+          hidesWhenStopped={true}
+          size="small"
+        />
+      </View>
+      <View
         style={
           Array [
             Object {
-              "backgroundColor": "black",
-              "borderBottomColor": "white",
-              "borderBottomWidth": 1,
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 20,
-              "height": 40,
+              "backgroundColor": "#e5e5e5",
+              "height": 1,
             },
             undefined,
           ]
         }
-        value="Banko"
-      />
-      <ActivityIndicator
-        animating={false}
-        color="#999999"
-        hidesWhenStopped={true}
-        size="small"
       />
     </View>
-    <View
-      style={
-        Array [
-          Object {
-            "backgroundColor": "#e5e5e5",
-            "height": 1,
-          },
-          undefined,
-        ]
-      }
-    />
     <RCTScrollView
       scrollEnabled={null}
       style={
