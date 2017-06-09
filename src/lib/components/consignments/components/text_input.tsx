@@ -9,7 +9,7 @@ export interface TextInputProps {
   query: string
   searching?: boolean
   textDidChange?: (text: string) => void
-  placeholder: string
+  placeholder?: string
 }
 
 const Input = styled.TextInput`

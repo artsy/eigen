@@ -5,5 +5,5 @@ import BooleanButton from "../boolean_button"
 
 it("looks good as an svg", () => {
   const component = renderer.create(<BooleanButton selected={true} left="L" right="R" />).toJSON()
-  expect(component).toMatchSVGSnapshot(320, 480)
+  expect(component).toMatchSVGSnapshot(64, 40)
 })

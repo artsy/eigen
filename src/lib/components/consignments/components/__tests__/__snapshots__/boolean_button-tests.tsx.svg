@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<svg width="320" height="480" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg width="64" height="40" xmlns="http://www.w3.org/2000/svg" version="1.1">
 
- <rect x="0" y="0" width="320" height="480" fill-opacity="0.1" stroke-width="1" stroke="black"/>
+ <rect x="0" y="0" width="64" height="40" fill-opacity="0.1" stroke-width="1" stroke="black"/>
 
  <g transform='translate(0, 0)'>
-   <rect x="0" y="0" width="320" height="55" fill-opacity="0.1" stroke-width="1" stroke="black"/>
+   <rect x="0" y="0" width="64" height="55" fill-opacity="0.1" stroke-width="1" stroke="black"/>
 
    <g transform='translate(0, 0)'>
-     <rect x="8" y="9" width="304" height="22" fill-opacity="0.1" stroke-width="1" stroke="black"/>
+     <rect x="8" y="9" width="48" height="22" fill-opacity="0.1" stroke-width="1" stroke="black"/>
 
      <g transform='translate(8, 9)'>
        <rect x="0" y="0" width="24" height="22" fill-opacity="0.1" stroke-width="1" stroke="black"/>
@@ -16,18 +16,18 @@
          <rect x="0" y="0" width="24" height="0" fill-opacity="0.1" stroke-width="1" stroke="black"/>
        </g>
 
-       <rect x="280" y="0" width="24" height="22" fill-opacity="0.1" stroke-width="1" stroke="black"/>
+       <rect x="24" y="0" width="24" height="22" fill-opacity="0.1" stroke-width="1" stroke="black"/>
 
-       <g transform='translate(280, 0)'>
+       <g transform='translate(24, 0)'>
          <rect x="0" y="0" width="24" height="0" fill-opacity="0.1" stroke-width="1" stroke="black"/>
        </g>
 
      </g>
 
-     <rect x="0" y="31" width="320" height="24" fill-opacity="0.1" stroke-width="1" stroke="black"/>
+     <rect x="0" y="31" width="64" height="24" fill-opacity="0.1" stroke-width="1" stroke="black"/>
 
      <g transform='translate(0, 31)'>
-       <rect x="296" y="0" width="24" height="24" fill-opacity="0.1" stroke-width="1" stroke="black"/>
+       <rect x="40" y="0" width="24" height="24" fill-opacity="0.1" stroke-width="1" stroke="black"/>
      </g>
 
    </g>
