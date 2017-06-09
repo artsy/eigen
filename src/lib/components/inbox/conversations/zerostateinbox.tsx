@@ -31,7 +31,7 @@ const HorizontalLayout = styled.View`
 const Title = styled(LargeHeadline)`
   text-align: center;
   font-size: 30;
-  line-height: 36;
+  line-height: 32;
   width: 280;
   margin-top: 35;
   align-self: center;
