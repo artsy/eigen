@@ -75,7 +75,6 @@
     "@types/jest": "^19.2.2",
     "@types/lodash": "^4.14.64",
     "@types/react-native": "^0.44.0",
-    "@types/react-relay": "^0.9.10",
     "@types/react-test-renderer": "^15.5.0",
     "apphub": "^0.5.1",
     "awesome-typescript-loader": "^3.1.3",

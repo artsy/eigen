@@ -129,12 +129,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-relay@^0.9.10":
-  version "0.9.12"
-  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-0.9.12.tgz#a5fba413a2aae3536adbd5c873ac77269972a8bc"
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-test-renderer@^15.5.0":
   version "15.5.0"
   resolved "https://registry.yarnpkg.com/@types/react-test-renderer/-/react-test-renderer-15.5.0.tgz#2ef6052c483616b36c38b688a95a7f5da06223c3"
