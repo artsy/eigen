@@ -1,5 +1,5 @@
 import { NativeModules } from "react-native"
-import * as Relay from "react-relay"
+import * as Relay from "react-relay/classic"
 const { Emission } = NativeModules
 
 let metaphysicsURL

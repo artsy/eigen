@@ -1,6 +1,6 @@
 import * as React from "react"
 import { StyleSheet, View, ViewProperties } from "react-native"
-import * as Relay from "react-relay"
+import * as Relay from "react-relay/classic"
 
 import ArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistArtworksGrid"
 import Separator from "../../Separator"

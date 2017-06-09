@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Image, StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
-import * as Relay from "react-relay"
+import * as Relay from "react-relay/classic"
 
 import SwitchBoard from "../../NativeModules/SwitchBoard"
 import ArtworksGrid from "../ArtworkGrids/GenericGrid"

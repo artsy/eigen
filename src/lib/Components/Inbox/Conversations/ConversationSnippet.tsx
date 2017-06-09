@@ -1,6 +1,6 @@
 import * as moment from "moment"
 import * as React from "react"
-import * as Relay from "react-relay"
+import * as Relay from "react-relay/classic"
 
 import { MetadataText, PreviewText as P, SmallHeadline } from "../Typography"
 

@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import { View } from "react-native"
-import { RootContainer } from "react-relay"
+import * as Relay from "react-relay/classic"
 import StubContainer from "react-storybooks-relay-container"
 
 import Routes from "../../../relay/routes"
@@ -15,11 +15,11 @@ storiesOf("Artist/Header")
   )
   .add("Real Artist - Glenn Brown", () => {
     const artistRoute = new Routes.Artist({ artistID: "glenn-brown" })
-    return <RootContainer Component={ArtistHeader} route={artistRoute} />
+    return <Relay.RootContainer Component={ArtistHeader} route={artistRoute} />
   })
   .add("Real Artist - Leda Catunda", () => {
     const artistRoute = new Routes.Artist({ artistID: "leda-catunda" })
-    return <RootContainer Component={ArtistHeader} route={artistRoute} />
+    return <Relay.RootContainer Component={ArtistHeader} route={artistRoute} />
   })
   // Note that for these two, the follow button / count will remain the
   // same as it was from one of the above artists. Once they are in relay/graphQL

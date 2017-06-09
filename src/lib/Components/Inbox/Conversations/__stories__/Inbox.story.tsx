@@ -1,14 +1,14 @@
 import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import "react-native"
-import { RootContainer } from "react-relay"
+import * as Relay from "react-relay/classic"
 import StubContainer from "react-storybooks-relay-container"
 
 import Routes from "../../../../relay/routes"
 import Inbox from "../index"
 
 storiesOf("Conversations/Overview")
-  .add("With live data", () => <RootContainer Component={Inbox} route={new Routes.MyAccount()} />)
+  .add("With live data", () => <Relay.RootContainer Component={Inbox} route={new Routes.MyAccount()} />)
   .add("With dummy data", () => <StubContainer Component={Inbox} props={{ me: meProps }} />)
   .add("With no data", () => <StubContainer Component={Inbox} props={{ me: { conversations: { edges: [] } } }} />)
 

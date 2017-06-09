@@ -1,7 +1,7 @@
 import { map } from "lodash"
 import * as React from "react"
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
-import * as Relay from "react-relay"
+import * as Relay from "react-relay/classic"
 
 import colors from "../../../data/colors"
 import SwitchBoard from "../../NativeModules/SwitchBoard"
