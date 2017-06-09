@@ -92,15 +92,16 @@ export class Conversations extends React.Component<Props, State> {
   }
 
   renderZeroState() {
-    return (
-      <ZeroStateInbox />
-    )
+    return  <ZeroStateInbox />
   }
 
   render() {
+    const userHasConversations = this.props.me.conversations.edges.length > 0
     return (
-      <ZeroStateInbox />
-      )
+      <View>
+        {userHasConversations ? this.renderInbox() : this.renderZeroState()}
+      </View>
+    )
   }
 }
 
