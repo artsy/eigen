@@ -22,6 +22,7 @@ class LiveAuctionLotSetViewController: UIViewController {
 
     fileprivate var hasBeenSetup = false
     fileprivate var firstAppearance = true
+    fileprivate var saleIsOnHold = false
     fileprivate var pageViewScrollView: UIScrollView?
     fileprivate var saleAvailabilityObserver: ObserverToken<SaleAvailabilityState>?
     fileprivate var progressBarBottomConstraintAtRestConstant: CGFloat = -165
@@ -29,6 +30,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     fileprivate var progressBarBottomConstraint: NSLayoutConstraint?
     fileprivate let saleNetworkModel = AuctionSaleNetworkModel()
     fileprivate let biddersNetworkModel = AuctionBiddersNetworkModel()
+    fileprivate let saleStatusView = SaleStatusView()
 
     init(salesPerson: LiveAuctionsSalesPersonType, useCompactLayout: Bool) {
         self.salesPerson = salesPerson
@@ -132,7 +134,13 @@ class LiveAuctionLotSetViewController: UIViewController {
         // Lot collection view setup.
         view.addSubview(lotImageCollectionView)
         lotImageCollectionView.alignTop("0", leading: "0", bottom: "\(collectionViewBottomConstraint)", trailing: "0", toView: view)
-
+        
+        // Sale status view setup.
+        salesPerson.saleOnHoldSignal.subscribe { [weak self] onHold in
+            self?.saleIsOnHold = onHold
+            self?.updateTitle()
+        }
+        
         // Page view controller setup.
         ar_addModernChildViewController(pageController)
         pageController.delegate = self
@@ -202,10 +210,23 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func updateTitle() {
+        // Reset everything upfront.
+        navigationItem.title = nil
+        navigationItem.titleView = nil
+        navigationItem.leftBarButtonItem = nil
         // On iPhone, show the sale name, since we're taking up the full screen.
         // Otherwise, on iPad, show nothing (sale name is shown in the lot list).
         if traitCollection.horizontalSizeClass == .compact {
-            title = salesPerson.liveSaleName
+            if saleIsOnHold {
+                // Normally we would use `titleView` and not `leftBarButtonItem` but we want the view to be left-aligned instead of centred.
+                // 4 leading is for a strange horizontal offset from UIKit.
+                navigationItem.leftBarButtonItem = SaleStatusView.barButtonItem(adjustedLeftMarginBy: 4)
+                navigationController?.navigationBar.setNeedsLayout()
+            } else {
+                navigationItem.title = salesPerson.liveSaleName
+                // The ARSerifNavigationBar handles titles in its own custom way, this is a hack but it works for now.
+                (navigationController as? UINavigationControllerDelegate)?.navigationController?(navigationController!, willShow: self, animated: false)
+            }
         }
     }
 
@@ -329,6 +350,15 @@ extension LiveAuctionLotSetViewController: AuctionTitleViewDelegate {
         let registrationPath = "/auction-registration/\(self.salesPerson.liveSaleID)"
         let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
         self.present(viewController, animated: true) {}
+    }
+    
+    func setSaleStatus(message: String?) {
+        guard let message = message else {
+            self.saleStatusView.isHidden = true
+            return
+        }
+        self.saleStatusView.isHidden = false
+        self.saleStatusView.setMessage(message)
     }
 }
 
