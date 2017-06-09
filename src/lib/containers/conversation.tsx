@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { MetadataText, SmallHeadline } from "../components/inbox/typography"
 
-import { ImageURISource, ViewProperties } from "react-native"
+import { FlatList, ImageURISource, ViewProperties } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../data/colors"
@@ -36,11 +36,14 @@ const BackButtonPlaceholder = styled.Image`
 `
 
 const DottedBorder = styled.View`
-  marginTop: 30
   height: 1
   borderWidth: 1
   borderStyle: dotted
   borderColor: ${colors["gray-regular"]}
+`
+
+const MessagesList = styled(FlatList)`
+  marginTop: 30
 `
 
 interface Props extends ViewProperties {
@@ -55,6 +58,16 @@ interface Props extends ViewProperties {
 export default class Conversation extends React.Component<Props, any> {
   render() {
     const partnerName = "Patrick Parrish Gallery"
+    // tslint:disable-next-line:max-line-length
+    const messageBody =
+      "Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?"
+    // tslint:disable-next-line:max-line-length
+    const otherMessageBody =
+      "Hi Katarina, thanks for reaching out with your interest in this great piece by Ian Stell. Threestool is currently available at $3,600, please let me know if you have any other questions "
+    const data = [
+      { senderName: "Katarina Batina", key: 0, time: "11:00AM", body: messageBody },
+      { senderName: "Patrick Parrish", key: 1, time: "11:00AM", body: otherMessageBody },
+    ]
 
     return (
       <Container>
@@ -64,9 +77,12 @@ export default class Conversation extends React.Component<Props, any> {
             <SmallHeadline>{partnerName}</SmallHeadline>
             <MetadataText>Info</MetadataText>
           </HeaderTextContainer>
-          <DottedBorder />
         </Header>
-        <Message />
+        <MessagesList
+          data={data}
+          renderItem={messageProps => <Message message={messageProps.item} />}
+          ItemSeparatorComponent={DottedBorder}
+        />
         <Composer />
       </Container>
     )
