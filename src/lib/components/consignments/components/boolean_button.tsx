@@ -7,6 +7,9 @@ const Title = styled.Text`
   color: white;
   font-family: "${fonts["avant-garde-regular"]}";
   font-size: 11;
+  letter-spacing: 0.75;
+  width: 24;
+  text-align: center;
 `
 
 const Background = styled.TouchableHighlight`
@@ -48,8 +51,8 @@ const WhiteCircle = styled.View`
 const CircleSpacer = styled.View`
   position: absolute;
   top: 4;
-  left: 0;
-  right: 0;
+  left: 6;
+  right: 6;
 `
 
 interface BooleanButton {
@@ -73,7 +76,7 @@ const render = (props: BooleanButton) => {
       <View>
         <TextBackground>
           <Title style={{ color: leftTextColor }}>{props.left}</Title>
-          <Title style={{ textAlign: "right", color: rightTextColor }}>{props.right}</Title>
+          <Title style={{ color: rightTextColor }}>{props.right}</Title>
         </TextBackground>
         <CircleSpacer style={{ flexDirection: dotDirection }}>
           <Circle style={{ borderColor: dotBorder }} />
