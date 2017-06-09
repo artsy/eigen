@@ -17,27 +17,6 @@
           "-i"
         ],
         "cwd": "${workspaceRoot}"
-    },
-    {
-      "name": "Debug iOS",
-      "program": "${workspaceRoot}/.vscode/launchReactNative.js",
-      "type": "reactnative",
-      "request": "launch",
-      "platform": "ios",
-      "iosRelativeProjectPath": "Example",
-      "target": "iPhone 6",
-      "internalDebuggerPort": 9090,
-      "sourceMaps": true,
-      "outDir": "${workspaceRoot}/.vscode/.react"
-    },
-    {
-      "name": "Attach to running packager/app",
-      "program": "${workspaceRoot}/.vscode/launchReactNative.js",
-      "type": "reactnative",
-      "request": "attach",
-      "internalDebuggerPort": 9090,
-      "sourceMaps": true,
-      "outDir": "${workspaceRoot}/.vscode/.react"
     }
   ]
 }

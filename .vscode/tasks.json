@@ -7,11 +7,6 @@
   "suppressTaskName": true,
   "tasks": [
     {
-      "taskName": "Start Packager and Storybook Server",
-      "isBuildCommand": true,
-      "args": ["npm start"]
-    },
-    {
       "taskName": "Start Typescript Compiler",
       "isBuildCommand": true,
       "args": ["node_modules/.bin/tsc"],
