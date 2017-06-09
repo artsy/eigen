@@ -1,4 +1,8 @@
 {
-  "plugins": ["./data/schema"],
-  "presets": ["react-native"]
+  "plugins": [
+    ["relay", { "compat": true, "schema": "./data/schema.graphql" }]
+  ],
+  "presets": [
+    "react-native"
+  ]
 }

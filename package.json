@@ -28,7 +28,7 @@
     "test": "jest",
     "testing": "jest --watch",
     "tslint": "tslint",
-    "relay": "relay-compiler --src ./src --schema data/schema.graphql",
+    "relay": "relay-compiler --src ./src --schema data/schema.graphql --extensions ts tsx",
     "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
     "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && npm run dump-schema -- ../../data && rm -rf node_modules",
