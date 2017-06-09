@@ -1,0 +1,940 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search states:  Looks right when Found four results 1`] = `
+<View>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <TextInput
+      autoCorrect={false}
+      autoFocus={false}
+      clearButtonMode="while-editing"
+      defaultValue="Artist/Designer Name"
+      keyboardAppearance="dark"
+      onChangeText={undefined}
+      placeholderTextColor="#cccccc"
+      returnKeyType="search"
+      selectionColor="#cccccc"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "black",
+            "borderBottomColor": "white",
+            "borderBottomWidth": 1,
+            "color": "white",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 20,
+            "height": 40,
+          },
+          undefined,
+        ]
+      }
+      value="bank"
+    />
+    <ActivityIndicator
+      animating={false}
+      color="#999999"
+      hidesWhenStopped={true}
+      size="small"
+    />
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#e5e5e5",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <RCTScrollView
+    scrollEnabled={true}
+    style={
+      Object {
+        "height": 182,
+        "paddingTop": 16,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 40,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+            }
+          }
+          style={
+            Array [
+              Object {
+                "borderRadius": 20,
+                "height": 40,
+                "width": 40,
+              },
+              undefined,
+            ]
+          }
+        />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "white",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 20,
+                "marginLeft": 13,
+                "paddingTop": 8,
+              },
+              undefined,
+            ]
+          }
+        >
+          Ada Van Hoorebeke
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 40,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+            }
+          }
+          style={
+            Array [
+              Object {
+                "borderRadius": 20,
+                "height": 40,
+                "width": 40,
+              },
+              undefined,
+            ]
+          }
+        />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "white",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 20,
+                "marginLeft": 13,
+                "paddingTop": 8,
+              },
+              undefined,
+            ]
+          }
+        >
+          Kathleen Adair Brown
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 40,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+            }
+          }
+          style={
+            Array [
+              Object {
+                "borderRadius": 20,
+                "height": 40,
+                "width": 40,
+              },
+              undefined,
+            ]
+          }
+        />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "white",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 20,
+                "marginLeft": 13,
+                "paddingTop": 8,
+              },
+              undefined,
+            ]
+          }
+        >
+          Linda Adair
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 40,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+            }
+          }
+          style={
+            Array [
+              Object {
+                "borderRadius": 20,
+                "height": 40,
+                "width": 40,
+              },
+              undefined,
+            ]
+          }
+        />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "white",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 20,
+                "marginLeft": 13,
+                "paddingTop": 8,
+              },
+              undefined,
+            ]
+          }
+        >
+          Hector Adalid
+        </Text>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Search states:  Looks right when Found no results 1`] = `
+<View>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <TextInput
+      autoCorrect={false}
+      autoFocus={false}
+      clearButtonMode="while-editing"
+      defaultValue="Artist/Designer Name"
+      keyboardAppearance="dark"
+      onChangeText={undefined}
+      placeholderTextColor="#cccccc"
+      returnKeyType="search"
+      selectionColor="#cccccc"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "black",
+            "borderBottomColor": "white",
+            "borderBottomWidth": 1,
+            "color": "white",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 20,
+            "height": 40,
+          },
+          undefined,
+        ]
+      }
+      value="ba"
+    />
+    <ActivityIndicator
+      animating={false}
+      color="#999999"
+      hidesWhenStopped={true}
+      size="small"
+    />
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#e5e5e5",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <RCTScrollView
+    scrollEnabled={false}
+    style={
+      Object {
+        "height": 182,
+        "paddingTop": 16,
+      }
+    }
+  >
+    <View>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "#cccccc",
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 17,
+            },
+            undefined,
+          ]
+        }
+      >
+        Unfortunately we are not accepting consignments for works by 
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "#cccccc",
+                "fontFamily": "AGaramondPro-Italic",
+                "fontSize": 17,
+              },
+              undefined,
+            ]
+          }
+        >
+          ba
+        </Text>
+      </Text>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Search states:  Looks right when Found one result 1`] = `
+<View>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <TextInput
+      autoCorrect={false}
+      autoFocus={false}
+      clearButtonMode="while-editing"
+      defaultValue="Artist/Designer Name"
+      keyboardAppearance="dark"
+      onChangeText={undefined}
+      placeholderTextColor="#cccccc"
+      returnKeyType="search"
+      selectionColor="#cccccc"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "black",
+            "borderBottomColor": "white",
+            "borderBottomWidth": 1,
+            "color": "white",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 20,
+            "height": 40,
+          },
+          undefined,
+        ]
+      }
+      value="ban"
+    />
+    <ActivityIndicator
+      animating={false}
+      color="#999999"
+      hidesWhenStopped={true}
+      size="small"
+    />
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#e5e5e5",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <RCTScrollView
+    scrollEnabled={true}
+    style={
+      Object {
+        "height": 182,
+        "paddingTop": 16,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 40,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+            }
+          }
+          style={
+            Array [
+              Object {
+                "borderRadius": 20,
+                "height": 40,
+                "width": 40,
+              },
+              undefined,
+            ]
+          }
+        />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "white",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 20,
+                "marginLeft": 13,
+                "paddingTop": 8,
+              },
+              undefined,
+            ]
+          }
+        >
+          Banksy
+        </Text>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Search states:  Looks right when Found one result, and searching 1`] = `
+<View>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <TextInput
+      autoCorrect={false}
+      autoFocus={false}
+      clearButtonMode="while-editing"
+      defaultValue="Artist/Designer Name"
+      keyboardAppearance="dark"
+      onChangeText={undefined}
+      placeholderTextColor="#cccccc"
+      returnKeyType="search"
+      selectionColor="#cccccc"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "black",
+            "borderBottomColor": "white",
+            "borderBottomWidth": 1,
+            "color": "white",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 20,
+            "height": 40,
+          },
+          undefined,
+        ]
+      }
+      value="ban"
+    />
+    <ActivityIndicator
+      animating={true}
+      color="#999999"
+      hidesWhenStopped={true}
+      size="small"
+    />
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#e5e5e5",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <RCTScrollView
+    scrollEnabled={true}
+    style={
+      Object {
+        "height": 182,
+        "paddingTop": 16,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 40,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+            }
+          }
+          style={
+            Array [
+              Object {
+                "borderRadius": 20,
+                "height": 40,
+                "width": 40,
+              },
+              undefined,
+            ]
+          }
+        />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "white",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 20,
+                "marginLeft": 13,
+                "paddingTop": 8,
+              },
+              undefined,
+            ]
+          }
+        >
+          Banksy
+        </Text>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Search states:  Looks right when Found two results 1`] = `
+<View>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <TextInput
+      autoCorrect={false}
+      autoFocus={false}
+      clearButtonMode="while-editing"
+      defaultValue="Artist/Designer Name"
+      keyboardAppearance="dark"
+      onChangeText={undefined}
+      placeholderTextColor="#cccccc"
+      returnKeyType="search"
+      selectionColor="#cccccc"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "black",
+            "borderBottomColor": "white",
+            "borderBottomWidth": 1,
+            "color": "white",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 20,
+            "height": 40,
+          },
+          undefined,
+        ]
+      }
+      value="bank"
+    />
+    <ActivityIndicator
+      animating={false}
+      color="#999999"
+      hidesWhenStopped={true}
+      size="small"
+    />
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#e5e5e5",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <RCTScrollView
+    scrollEnabled={true}
+    style={
+      Object {
+        "height": 182,
+        "paddingTop": 16,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 40,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+            }
+          }
+          style={
+            Array [
+              Object {
+                "borderRadius": 20,
+                "height": 40,
+                "width": 40,
+              },
+              undefined,
+            ]
+          }
+        />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "white",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 20,
+                "marginLeft": 13,
+                "paddingTop": 8,
+              },
+              undefined,
+            ]
+          }
+        >
+          Banksy
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 40,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Image
+          source={
+            Object {
+              "uri": "https://d32dm0rphc51dk.cloudfront.net/zKBFBZPGN-V5TljXtsSuEg/square.jpg",
+            }
+          }
+          style={
+            Array [
+              Object {
+                "borderRadius": 20,
+                "height": 40,
+                "width": 40,
+              },
+              undefined,
+            ]
+          }
+        />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "white",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 20,
+                "marginLeft": 13,
+                "paddingTop": 8,
+              },
+              undefined,
+            ]
+          }
+        >
+          Banksy's Brother
+        </Text>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Search states:  Looks right when Looking for new results 1`] = `
+<View>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <TextInput
+      autoCorrect={false}
+      autoFocus={false}
+      clearButtonMode="while-editing"
+      defaultValue="Artist/Designer Name"
+      keyboardAppearance="dark"
+      onChangeText={undefined}
+      placeholderTextColor="#cccccc"
+      returnKeyType="search"
+      selectionColor="#cccccc"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "black",
+            "borderBottomColor": "white",
+            "borderBottomWidth": 1,
+            "color": "white",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 20,
+            "height": 40,
+          },
+          undefined,
+        ]
+      }
+      value="ba"
+    />
+    <ActivityIndicator
+      animating={true}
+      color="#999999"
+      hidesWhenStopped={true}
+      size="small"
+    />
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#e5e5e5",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <RCTScrollView
+    scrollEnabled={false}
+    style={
+      Object {
+        "height": 182,
+        "paddingTop": 16,
+      }
+    }
+  >
+    <View />
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Search states:  Looks right when No query 1`] = `
+<View>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <TextInput
+      autoCorrect={false}
+      autoFocus={false}
+      clearButtonMode="while-editing"
+      defaultValue="Artist/Designer Name"
+      keyboardAppearance="dark"
+      onChangeText={undefined}
+      placeholderTextColor="#cccccc"
+      returnKeyType="search"
+      selectionColor="#cccccc"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "black",
+            "borderBottomColor": "white",
+            "borderBottomWidth": 1,
+            "color": "white",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 20,
+            "height": 40,
+          },
+          undefined,
+        ]
+      }
+      value={null}
+    />
+    <ActivityIndicator
+      animating={false}
+      color="#999999"
+      hidesWhenStopped={true}
+      size="small"
+    />
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#e5e5e5",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <RCTScrollView
+    scrollEnabled={false}
+    style={
+      Object {
+        "height": 182,
+        "paddingTop": 16,
+      }
+    }
+  >
+    <View />
+  </RCTScrollView>
+</View>
+`;

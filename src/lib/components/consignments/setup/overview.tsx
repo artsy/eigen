@@ -2,7 +2,7 @@ import * as React from "react"
 import { NavigatorIOS, Route, View, ViewProperties } from "react-native"
 import { LargeHeadline, Subtitle } from "../typography"
 
-import TODO from "../components/artwork-consignment-todo"
+import TODO from "../components/artwork_consignment_todo"
 import Welcome from "./welcome"
 
 interface Props extends ViewProperties {

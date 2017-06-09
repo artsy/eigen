@@ -3,7 +3,7 @@ import { View } from "react-native"
 
 import { camelCase } from "lodash"
 
-import Search, { ArtistQueryData } from "../components/artist-search-results"
+import Search, { ArtistQueryData } from "../components/artist_search_results"
 
 export const name = "Consignments - Search"
 export const component = Search
