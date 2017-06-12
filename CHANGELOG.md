@@ -1,5 +1,7 @@
 ### Master
 
+- [dev] Moves native view controllers to use iOS7+ status bar api - ash
+
 ### 1.3.6
 
 - Fixes missing compiled bundle - alloy
