@@ -1,5 +1,7 @@
 ### Master
 
+- [dev] Moves native view controllers to use iOS7+ status bar api - ash
+
 #### Emission
 
 - [Messaging] Adds inbox zero state - maxim
