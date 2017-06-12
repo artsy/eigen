@@ -10,6 +10,8 @@ enum BlurredStatusOverlayViewCloseButtonState {
     case show(target: NSObject, selector: Selector)
 }
 
+// As of iOS7+, it is the responsibility of the view controller to maintain its preferred status bar style.
+// This style may change while the blurred overlay is present, but it's up to the view controller to do that.
 extension UIViewController {
 
     var blurredStatusOverlayView: UIView? {
