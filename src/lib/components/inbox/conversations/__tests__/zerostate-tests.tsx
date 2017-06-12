@@ -5,6 +5,6 @@ import * as renderer from "react-test-renderer"
 import Inbox from "../"
 
 it("looks correct when the user has no conversations", () => {
-  const tree = renderer.create(<Inbox me={{conversations: {edges: []}}} />).toJSON()
+  const tree = renderer.create(<Inbox me={{ conversations: { edges: [] } }} />).toJSON()
   expect(tree).toMatchSnapshot()
 })

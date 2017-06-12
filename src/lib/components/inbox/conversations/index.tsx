@@ -92,7 +92,7 @@ export class Conversations extends React.Component<Props, State> {
   }
 
   renderZeroState() {
-    return  <ZeroStateInbox />
+    return <ZeroStateInbox />
   }
 
   render() {

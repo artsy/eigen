@@ -10,7 +10,7 @@ import Inbox from "../index"
 storiesOf("Conversations - Inbox")
   .add("With live data", () => <RootContainer Component={Inbox} route={new Routes.MyAccount()} />)
   .add("With dummy data", () => <StubContainer Component={Inbox} props={{ me: meProps }} />)
-  .add("With no data", () => <StubContainer Component={Inbox} props={{ me: {conversations: {edges: []}} }} />)
+  .add("With no data", () => <StubContainer Component={Inbox} props={{ me: { conversations: { edges: [] } } }} />)
 
 const meProps = {
   conversations: {
