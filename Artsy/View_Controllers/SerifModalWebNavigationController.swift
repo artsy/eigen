@@ -2,15 +2,9 @@ import UIKit
 import Artsy_UIButtons
 
 class SerifModalWebNavigationController: UINavigationController, UINavigationControllerDelegate {
-
-    let statusMaintainer = ARSerifStatusMaintainer()
-    lazy var sharedApplication: UIApplication = {
-        return UIApplication.shared
-    }()
-
     override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
-        (rootViewController as? ARExternalWebBrowserViewController)?.ignoreStatusBar = true
+        (rootViewController as? ARExternalWebBrowserViewController)?.statusBarStyle = .lightContent
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -24,16 +18,11 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        statusMaintainer.viewWillAppear(animated, app: sharedApplication)
-
         view.layer.cornerRadius = 0
         view.superview?.layer.cornerRadius = 0
     }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        statusMaintainer.viewWillDisappear(animated, app: sharedApplication)
-    }
+    
+    // TODO: Add status bar style
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,6 +60,6 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
 
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         viewController.automaticallyAdjustsScrollViewInsets = false
-        (viewController as? ARExternalWebBrowserViewController)?.ignoreStatusBar = true
+        (viewController as? ARExternalWebBrowserViewController)?.statusBarStyle = .lightContent
     }
 }

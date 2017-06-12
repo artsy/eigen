@@ -274,7 +274,7 @@ extension AuctionViewController {
         properties["context"] = "auction"
         properties["slub"] = "/auction/\(saleViewModel.saleID)/refine"
         refineViewController.viewDidAppearAnalyticsOption = RefinementAnalyticsOption(name: "Sale Information", properties: properties)
-        refineViewController.changeStatusBar = self.traitCollection.horizontalSizeClass == .compact
+        refineViewController.statusBarStyle = (self.traitCollection.horizontalSizeClass == .compact) ? .`default` : .lightContent // TODO: Double check this
         present(refineViewController, animated: animated, completion: nil)
     }
 

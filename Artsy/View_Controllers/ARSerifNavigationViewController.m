@@ -5,7 +5,6 @@
 #import "UIImage+ImageFromColor.h"
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import "ARTopMenuViewController.h"
-#import "ARSerifStatusMaintainer.h"
 @import Artsy_UILabels;
 @import ObjectiveSugar;
 
@@ -19,9 +18,6 @@
 @interface ARSerifNavigationViewController () <UINavigationControllerDelegate>
 @property (nonatomic, strong) ARSerifToolbarButtonItem *exitButton;
 @property (nonatomic, strong) UIBarButtonItem *backButton;
-
-@property (nonatomic, strong) UIApplication *sharedApplication;
-@property (nonatomic, strong) ARSerifStatusMaintainer *statusMaintainer;
 
 @end
 
@@ -49,7 +45,6 @@
         return nil;
     }
 
-    self.statusMaintainer = [[ARSerifStatusMaintainer alloc] init];
     self.edgesForExtendedLayout = UIRectEdgeNone;
     _hideCloseButton = NO;
 
@@ -75,16 +70,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.statusMaintainer viewWillAppear:animated app:self.sharedApplication];
 
     self.view.layer.cornerRadius = 0;
     self.view.superview.layer.cornerRadius = 0;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.statusMaintainer viewWillDisappear:animated app:self.sharedApplication];
 }
 
 - (void)setHideCloseButton:(BOOL)hideCloseButton
@@ -167,11 +155,6 @@
 - (UIModalPresentationStyle)modalPresentationStyle
 {
     return UIModalPresentationFormSheet;
-}
-
-- (UIApplication *)sharedApplication
-{
-    return _sharedApplication ?: [UIApplication sharedApplication];
 }
 
 - (BOOL)shouldAutorotate

@@ -28,7 +28,6 @@
 #import "AFHTTPRequestOperation+JSON.h"
 
 #import "UIDevice-Hardware.h"
-#import "UIApplication+StatusBar.h"
 
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -118,8 +117,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [[UIApplication sharedApplication] ar_setStatusBarHidden:YES];
-
     if (self.state == AROnboardingStageSlideshow) {
         [self startSlideshow];
     } else if (self.state == AROnboardingStagePersonalizeArtists) {
@@ -138,19 +135,10 @@
                                                object:nil];
 }
 
-// TODO On iOS 9 the status bar is shown *after* viewWillAppear: is called and I have not yet found a better place to
-//      make sure it never shows. This way it is shown for a very short period, but that’s better than nothing.
-- (void)viewDidAppear:(BOOL)animated;
-{
-    [[UIApplication sharedApplication] ar_setStatusBarHidden:YES];
-    [super viewDidAppear:animated];
-}
-
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
 }
-
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {

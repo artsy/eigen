@@ -6,7 +6,7 @@
 @property (readonly, nonatomic, strong) WKWebView *webView;
 @property (readonly, nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, readonly, strong) NSURL *initialURL;
-@property (nonatomic, assign) BOOL ignoreStatusBar;
+@property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 
 - (instancetype)initWithURL:(NSURL *)url;
 

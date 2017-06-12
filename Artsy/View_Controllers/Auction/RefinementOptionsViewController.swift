@@ -39,7 +39,7 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
         }
     }
 
-    var changeStatusBar = false
+    var statusBarStyle = UIStatusBarStyle.default
 
     init(defaultSettings: R, initialSettings: R, currencySymbol: String, userDidCancelClosure: ((RefinementOptionsViewController) -> Void)?, userDidApplyClosure: ((R) -> Void)?) {
         self.defaultSettings = defaultSettings
@@ -97,10 +97,6 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
 
         // Removes our rounded corners
         presentationController?.presentedView?.layer.cornerRadius = 0
-
-        if changeStatusBar {
-            UIApplication.shared.ar_setStatusBarHidden(true, with: animated ? .slide : .none)
-        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -109,12 +105,8 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
         viewDidAppearAnalyticsOption?.sendAsPageView()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        if changeStatusBar {
-            UIApplication.shared.ar_setStatusBarHidden(false, with: animated ? .slide : .none)
-        }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return statusBarStyle
     }
 
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {

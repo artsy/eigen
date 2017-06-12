@@ -269,8 +269,8 @@ static ARAppDelegate *_sharedInstance = nil;
 
     // And set up emission
     [self startupApp];
-
-    [[UIApplication sharedApplication] ar_setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    
+    // TODO: Make sure onboarding has correct statys bar hidden value.
 
     ar_dispatch_main_queue(^{
         if ([User currentUser]) {
