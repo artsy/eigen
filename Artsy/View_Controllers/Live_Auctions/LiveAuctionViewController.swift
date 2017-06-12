@@ -22,6 +22,7 @@ class LiveAuctionViewController: UIViewController {
     fileprivate var offlineView: AROfflineView?
     fileprivate var saleOnHoldBanner: SaleOnHoldOverlayView?
     fileprivate var hasShownSaleOnHoldBanner = false
+    fileprivate var showingOverlay = false
 
     fileprivate var loadingView: LiveAuctionLoadingView?
     fileprivate var saleViewController: LiveAuctionSaleViewController?
@@ -201,11 +202,13 @@ class LiveAuctionViewController: UIViewController {
             $0.align(toView: view)
             $0.delegate = self
         }
+        showingOverlay = true
     }
 
     func dismissSaleOnHoldBanner() {
         saleOnHoldBanner?.removeFromSuperview()
         saleOnHoldBanner = nil
+        showingOverlay = false
     }
 
     override func viewWillDisappear(_ animated: Bool) {
