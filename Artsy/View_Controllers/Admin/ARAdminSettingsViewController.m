@@ -88,6 +88,11 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     self.tableView.contentInset = UIEdgeInsetsMake(88, 0, 0, 0);
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (ARCellData *)generateLogOut
 {
     ARCellData *onboardingData = [[ARCellData alloc] initWithIdentifier:AROptionCell];

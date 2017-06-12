@@ -92,6 +92,11 @@
     _webView = webView;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)viewWillLayoutSubviews
 {
     [self.webView constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];

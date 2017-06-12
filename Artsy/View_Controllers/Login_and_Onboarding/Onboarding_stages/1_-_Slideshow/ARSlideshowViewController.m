@@ -51,6 +51,11 @@
     [self runSlideshow];
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 - (void)runSlideshow
 {
     // devs get it fast

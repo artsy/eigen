@@ -81,11 +81,21 @@ class AuctionViewController: UIViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(AuctionViewController.registrationUpdated(_:)), name: NSNotification.Name.ARAuctionArtworkRegistrationUpdated, object: nil)
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // For reasons yet unknown, when re-appearing from auctions info or review view controllers, we need to call this manually. 
+        setNeedsStatusBarAppearanceUpdate()
+    }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         userActivity?.invalidate()
         showLiveInterfaceWhenAuctionOpensTimer?.invalidate()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -255,7 +265,7 @@ extension AuctionViewController {
             currencySymbol: saleViewModel.currencySymbol,
             userDidCancelClosure: { _ in
                 self.dismiss(animated: animated, completion: nil)
-        },
+            },
             userDidApplyClosure: { (settings: AuctionRefineSettings) in
                 self.refineSettings = settings
 
@@ -274,7 +284,7 @@ extension AuctionViewController {
         properties["context"] = "auction"
         properties["slub"] = "/auction/\(saleViewModel.saleID)/refine"
         refineViewController.viewDidAppearAnalyticsOption = RefinementAnalyticsOption(name: "Sale Information", properties: properties)
-        refineViewController.statusBarStyle = (self.traitCollection.horizontalSizeClass == .compact) ? .`default` : .lightContent // TODO: Double check this
+        refineViewController.statusBarStyle = (self.traitCollection.horizontalSizeClass == .compact) ? .`default` : .lightContent
         present(refineViewController, animated: animated, completion: nil)
     }
 

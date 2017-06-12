@@ -133,6 +133,13 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     _backButton.alpha = 0;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return self.topViewController.preferredStatusBarStyle;
+}
+
+// TODO: Hide status bar while search is visible.
+
 #pragma mark - Rotation
 
 - (BOOL)shouldAutorotate
@@ -187,6 +194,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     if (self.interactiveTransitionHandler == nil) {
         [self showBackButton:[self shouldShowBackButtonForViewController:viewController] animated:animated];
         [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:animated isHome:isHome];
+        [self setNeedsStatusBarAppearanceUpdate];
 
         BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
         [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:animated];

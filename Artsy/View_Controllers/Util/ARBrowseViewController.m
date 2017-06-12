@@ -65,6 +65,11 @@
     }
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (CGFloat)itemMargin
 {
     return [UIDevice isPad] ? 20 : 16;

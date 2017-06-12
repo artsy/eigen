@@ -53,6 +53,11 @@
     }];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)loadProfile
 {
     [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];

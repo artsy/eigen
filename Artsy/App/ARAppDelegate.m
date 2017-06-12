@@ -269,8 +269,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     // And set up emission
     [self startupApp];
-    
-    // TODO: Make sure onboarding has correct statys bar hidden value.
 
     ar_dispatch_main_queue(^{
         if ([User currentUser]) {
