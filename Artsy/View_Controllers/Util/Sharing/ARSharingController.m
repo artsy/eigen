@@ -70,44 +70,20 @@
         UIActivityTypePostToTencentWeibo
         ];
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-
-    // Declare it here so it can be accessed from the UIActivityViewController's completionHandler.
-    __block UIPopoverController *popover = nil;
-
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [[ARTopMenuViewController sharedController] presentViewController:activityVC animated:YES completion:nil];
     } else {
-        popover = [[UIPopoverController alloc] initWithContentViewController:activityVC];
-        [popover presentPopoverFromRect:frame
-                                 inView:view
-               permittedArrowDirections:UIPopoverArrowDirectionAny
-                               animated:YES];
+        activityVC.modalPresentationStyle = UIModalPresentationPopover;
+        [[ARTopMenuViewController sharedController] presentViewController:activityVC animated:YES completion:nil];
+        UIPopoverPresentationController *popoverController = activityVC.popoverPresentationController;
+        popoverController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        popoverController.sourceView = view;
+        popoverController.sourceRect = frame;
     }
-#pragma clang diagnostic pop
 
     activityVC.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
-        [popover dismissPopoverAnimated:YES];
-        // Set to `nil` to signal loop below that we're done.
-        popover = nil;
         [self handleActivityCompletion:activityType completed:completed];
     };
-
-    // This is so we don't need to retain the popover and have the caller retain us and then again having to
-    // tell the caller we're done (from e.g. a delegate).
-    //
-    // TODO It appears that on iOS 8 the popver is retained by the system? In which case this can be removed.
-    if (popover) {
-        // Extra hack to ensure the button doesn't remain highlighted during this loop.
-        if ([view isKindOfClass:UIButton.class]) {
-            [(UIButton *)view setHighlighted:NO];
-        }
-
-        while (popover != nil) {
-            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-        }
-    }
 }
 
 - (void)handleActivityCompletion:(NSString *)activityType completed:(BOOL)completed
