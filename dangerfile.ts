@@ -1,4 +1,4 @@
-import { danger, fail, markdown, warn } from "danger"
+import { danger, fail, markdown, schedule, warn } from "danger"
 import { compact, includes, uniq } from "lodash"
 
 // TypeScript thinks we're in React Native,
@@ -194,3 +194,7 @@ ${errors.join("\n")}
 `
   markdown(tslintMarkdown)
 }
+
+// Check for dependency changes
+import yarn from "danger-plugin-yarn"
+schedule(yarn())
