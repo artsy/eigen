@@ -1,11 +1,6 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import <Adjust/Adjust.h>
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-#import <UIAlertView_Blocks/UIAlertView+Blocks.h>
-#pragma clang diagnostic pop
-
 #import "ARAuctionWebViewController.h"
 #import "Artist.h"
 #import "Artwork.h"
@@ -101,10 +96,13 @@
 - (void)tappedContactGallery
 {
     if (ARIsRunningInDemoMode) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        [UIAlertView showWithTitle:nil message:@"Feature not enabled for this demo" cancelButtonTitle:@"OK" otherButtonTitles:nil tapBlock:nil];
-#pragma clang diagnostic pop
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"Feature not enabled for this demo" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okay = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }];
+        [alert addAction:okay];
+        [self presentViewController:alert animated:YES completion:nil];
+        
         return;
     }
 
