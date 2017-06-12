@@ -6844,6 +6844,10 @@ tslib@^1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.7.1.tgz#bc8004164691923a79fe8378bbeb3da2017538ec"
 
+tslint-config-prettier@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tslint-config-prettier/-/tslint-config-prettier-1.0.0.tgz#de1cd14fe8805f5f9aa5676a4760056d42e0738d"
+
 tslint@^5.4.3:
   version "5.4.3"
   resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.4.3.tgz#761c8402b80e347b7733a04390a757b253580467"

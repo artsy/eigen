@@ -4,8 +4,8 @@
   "description": "Artsy React(Native) components.",
   "main": "index.ios.js",
   "scripts": {
-    "bundle": "react-native bundle --config \"$(pwd)\"/rn-cli.config.js --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
-    "bundle-with-storybooks": "react-native bundle --config \"$(pwd)\"/rn-cli.config.js --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output Emission.js --assets-dest Pod/Assets",
+    "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
+    "bundle-with-storybooks": "react-native bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output Emission.js --assets-dest Pod/Assets",
     "clean-example": "cd Example && xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",
     "type-check": "tsc --noEmit --pretty",
     "lint": "npm run tslint 'src/**/*.{ts,tsx}'",
@@ -18,7 +18,7 @@
     "danger": "danger",
     "start": "npm run clean-example && npm run start-servers",
     "start-servers": "concurrently --kill-others 'npm run start-packager' 'npm run storybook'",
-    "start-packager": "node node_modules/react-native/local-cli/cli.js start --config \"$(pwd)\"/rn-cli.config.js",
+    "start-packager": "node node_modules/react-native/local-cli/cli.js start",
     "storybook": "storybook start -p 9001 -c .storybook --skip-packager",
     "rndebugger": "REACT_DEBUGGER=\"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\" npm start",
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
@@ -116,6 +116,7 @@
     "relay2ts": "^0.2.0",
     "ts-jest": "^20.0.3",
     "tslint": "^5.4.3",
+    "tslint-config-prettier": "^1.0.0",
     "typescript": "^2.3.2"
   },
   "peerDependencies": {
