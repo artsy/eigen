@@ -474,7 +474,6 @@
 		604166B116C1D47100CFBD2F /* ArtsyAPI+CurrentUserFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 604166B016C1D47000CFBD2F /* ArtsyAPI+CurrentUserFunctions.m */; };
 		60431FB818042A1E000118D7 /* ARAppNotificationsDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60431FB718042A1E000118D7 /* ARAppNotificationsDelegate.m */; };
 		60438F8A1782F8CC00C1B63B /* ArtsyAPI+Search.m in Sources */ = {isa = PBXBuildFile; fileRef = 60438F891782F8CC00C1B63B /* ArtsyAPI+Search.m */; };
-		6044B0901CFF59BB00077D53 /* ARSerifStatusMaintainerSpecs.m in Sources */ = {isa = PBXBuildFile; fileRef = 6044B08F1CFF59BB00077D53 /* ARSerifStatusMaintainerSpecs.m */; };
 		6044CFC4179D64F500CE4132 /* Theme.json in Resources */ = {isa = PBXBuildFile; fileRef = 6044CFC3179D64F500CE4132 /* Theme.json */; };
 		6044CFC8179DD3C200CE4132 /* ARTheme+HeightAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6044CFC7179DD3C200CE4132 /* ARTheme+HeightAdditions.m */; };
 		60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60476F4B1AD87DB200670502 /* UIKit.framework */; };
@@ -1526,7 +1525,6 @@
 		60431FB718042A1E000118D7 /* ARAppNotificationsDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppNotificationsDelegate.m; sourceTree = "<group>"; };
 		60438F881782F8CC00C1B63B /* ArtsyAPI+Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Search.h"; sourceTree = "<group>"; };
 		60438F891782F8CC00C1B63B /* ArtsyAPI+Search.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Search.m"; sourceTree = "<group>"; };
-		6044B08F1CFF59BB00077D53 /* ARSerifStatusMaintainerSpecs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSerifStatusMaintainerSpecs.m; sourceTree = "<group>"; };
 		6044CFC3179D64F500CE4132 /* Theme.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Theme.json; sourceTree = "<group>"; };
 		6044CFC6179DD3C200CE4132 /* ARTheme+HeightAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARTheme+HeightAdditions.h"; sourceTree = "<group>"; };
 		6044CFC7179DD3C200CE4132 /* ARTheme+HeightAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARTheme+HeightAdditions.m"; sourceTree = "<group>"; };
@@ -2964,7 +2962,6 @@
 				517201C51C6A239E007148B7 /* AuctionSaleNetworkModelTests.swift */,
 				5E7081D41E4D27A900F320C9 /* AuctionLotStandingsNetworkModelSpec.swift */,
 				51B4BA441C6A24490014A394 /* AuctionInformationViewControllerTests.swift */,
-				6044B08F1CFF59BB00077D53 /* ARSerifStatusMaintainerSpecs.m */,
 			);
 			path = Auction;
 			sourceTree = "<group>";
@@ -5619,7 +5616,6 @@
 				5E174F5C1CADB35800657743 /* LiveAuctionStateReconcilerSpec.swift in Sources */,
 				3C6BDCC318E0B8D50028EF5D /* ARInquireForArtworkViewControllerTests.m in Sources */,
 				5142071A1BB1B5D2000CC01C /* ARStubbedFavoritesNetworkModel.m in Sources */,
-				6044B0901CFF59BB00077D53 /* ARSerifStatusMaintainerSpecs.m in Sources */,
 				51B4BA451C6A24490014A394 /* AuctionInformationViewControllerTests.swift in Sources */,
 				6022F5AE1BDFAC3800D975F0 /* ARWebViewCacheHostSpec.m in Sources */,
 				3C205B59189000A5004280E0 /* ARAppNotificationsDelegateTests.m in Sources */,
