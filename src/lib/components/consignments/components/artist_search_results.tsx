@@ -42,6 +42,8 @@ const UnknownName = styled.Text`
 
 export interface ArtistQueryData extends TextInputProps {
   results: Array<{ name: string; id: string; image: { url: string } }> | null
+  query: string
+  onChangeText: (query: string) => void
 }
 
 const rowForResult = result =>
@@ -65,10 +67,13 @@ const render = (props: ArtistQueryData) =>
   <View>
 
     <TextInput
-      query={props.query}
       searching={props.searching}
-      textDidChange={props.textDidChange}
-      placeholder="Artist/Designer Name"
+      text={{
+        placeholder: "Artist/Designer Name",
+        returnKeyType: "search",
+        value: props.query,
+        onChangeText: props.onChangeText,
+      }}
     />
 
     <ScrollView style={{ height: 182, paddingTop: 16 }} scrollEnabled={props.results && !!props.results.length}>

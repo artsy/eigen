@@ -1,15 +1,13 @@
 import * as React from "react"
-import { ActivityIndicator, Text, TextInput, View } from "react-native"
+import { ActivityIndicator, Text, TextInput, TextInputProperties, View, ViewProperties } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
 
-export interface TextInputProps {
-  query: string
+export interface TextInputProps extends ViewProperties {
   searching?: boolean
-  textDidChange?: (text: string) => void
-  placeholder?: string
+  text?: TextInputProperties
 }
 
 const Input = styled.TextInput`
@@ -29,21 +27,17 @@ const Separator = styled.View`
 `
 
 const render = (props: TextInputProps) =>
-  <View>
+  <View style={{ flex: 1, ...props.style }}>
     <View style={{ flexDirection: "row" }}>
       <Input
-        autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
         autoCorrect={false}
         clearButtonMode="while-editing"
-        onChangeText={props.textDidChange}
-        placeholder={props.placeholder}
         keyboardAppearance="dark"
         placeholderTextColor={colors["gray-medium"]}
-        value={props.query}
-        returnKeyType="search"
         selectionColor={colors["gray-medium"]}
+        {...props.text}
       />
-      <ActivityIndicator animating={props.searching} />
+      {props.searching ? <ActivityIndicator animating={props.searching} /> : null}
     </View>
     <Separator />
   </View>
