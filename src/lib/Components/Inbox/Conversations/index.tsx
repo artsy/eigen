@@ -22,8 +22,6 @@ interface State {
 }
 
 export class Conversations extends React.Component<Props, State> {
-  currentScrollOffset?: number = 0
-
   constructor(props) {
     super(props)
 
@@ -92,13 +90,10 @@ export class Conversations extends React.Component<Props, State> {
 
   renderInbox() {
     return (
-      <ScrollView
-        onScroll={event => (this.currentScrollOffset = event.nativeEvent.contentOffset.y)}
-        scrollEventThrottle={10}
-      >
+      <View>
         <LargeHeadline style={{ marginTop: 10 }}>Messages</LargeHeadline>
         {this.renderConversations()}
-      </ScrollView>
+      </View>
     )
   }
 
