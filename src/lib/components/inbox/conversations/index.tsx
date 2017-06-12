@@ -5,7 +5,7 @@ import { ListView, ListViewDataSource, ScrollView, Text, View } from "react-nati
 import { LargeHeadline } from "../typography"
 
 import ConversationSnippet from "./conversation_snippet"
-import ZeroStateInbox from "./zerostateinbox"
+import ZeroStateInbox from "./zerostate_inbox"
 
 const PageSize = 10
 
