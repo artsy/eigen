@@ -21,8 +21,6 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
         view.layer.cornerRadius = 0
         view.superview?.layer.cornerRadius = 0
     }
-    
-    // TODO: Add status bar style
 
     override func viewDidLoad() {
         super.viewDidLoad()

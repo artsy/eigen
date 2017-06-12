@@ -415,17 +415,6 @@ static const CGFloat ARMenuButtonDimension = 50;
     return self.visibleViewController;
 }
 
-// TODO: Are these two functions needed, given we override the functions above?
-- (BOOL)prefersStatusBarHidden
-{
-    return self.childViewControllerForStatusBarHidden.prefersStatusBarHidden;
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return self.childViewControllerForStatusBarStyle.preferredStatusBarStyle;
-}
-
 #pragma mark - Pushing VCs
 
 - (void)pushViewController:(UIViewController *)viewController

@@ -113,6 +113,11 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     return self;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)presentFormWithInquiryURLRepresentation:(NSString *)inquiryURLRepresentation
 {
     NSParameterAssert(inquiryURLRepresentation);

@@ -64,12 +64,6 @@ static void *ARProgressContext = &ARProgressContext;
     [self.webView stopLoading];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    // TODO: This isn't working.
-    return UIStatusBarStyleLightContent;
-}
-
 - (void)loadURL:(NSURL *)URL
 {
     self.loaded = NO;
