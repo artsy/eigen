@@ -4,7 +4,6 @@
 #import "ARSwitchBoard+Eigen.h"
 #import "ARLogger.h"
 #import "ARExternalWebBrowserViewController.h"
-#import "UIApplication+StatusBar.h"
 
 #import "ARNavigationController.h"
 #import "ARScrollNavigationChief.h"
@@ -40,6 +39,7 @@
     // So we can separate init, from view loading
     _initialURL = url;
     self.automaticallyAdjustsScrollViewInsets = NO;
+    _statusBarStyle = UIStatusBarStyleDefault;
 
     return self;
 }
@@ -92,6 +92,11 @@
     _webView = webView;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)viewWillLayoutSubviews
 {
     [self.webView constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
@@ -99,13 +104,9 @@
     [self.webView alignBottomEdgeWithView:self.view predicate:@"0"];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (UIStatusBarStyle)statusBarStyle
 {
-    [super viewWillAppear:animated];
-
-    if (self.ignoreStatusBar == NO) {
-        [[UIApplication sharedApplication] ar_setStatusBarStyle:UIStatusBarStyleLightContent];
-    }
+    return self.statusBarStyle;
 }
 
 - (void)viewDidAppear:(BOOL)animated

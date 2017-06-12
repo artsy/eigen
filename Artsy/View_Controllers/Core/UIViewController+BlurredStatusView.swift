@@ -4,13 +4,14 @@ import Artsy_UIButtons
 import ORStackView
 
 private var statusViewAssociatedKey: Int = 0
-private var statusViewPreviousStatusBarStyle: UIStatusBarStyle = .default
 
 enum BlurredStatusOverlayViewCloseButtonState {
     case hide
     case show(target: NSObject, selector: Selector)
 }
 
+// As of iOS7+, it is the responsibility of the view controller to maintain its preferred status bar style.
+// This style may change while the blurred overlay is present, but it's up to the view controller to do that.
 extension UIViewController {
 
     var blurredStatusOverlayView: UIView? {
@@ -54,13 +55,6 @@ extension UIViewController {
                 imageView.addSubview(darkOverlay)
                 darkOverlay.align(toView: imageView)
 
-                // As the BG will be dark, we need to set the status bar to be white
-                // this should not affect the presentation, so if it's not showing,
-                // it's not going to show it.
-                let app = UIApplication.shared
-                statusViewPreviousStatusBarStyle = app.statusBarStyle
-                app.ar_setStatusBarStyle(.lightContent, animated: true)
-
                 // Optional X button in the top trailing edge
                 if case .show(let target, let selector) = buttonState {
                     let dimension = 40
@@ -100,8 +94,5 @@ extension UIViewController {
         guard let blurredStatusOverlayView = blurredStatusOverlayView else { return }
         blurredStatusOverlayView.removeFromSuperview()
         self.blurredStatusOverlayView = nil
-
-        UIApplication.shared.statusBarStyle = statusViewPreviousStatusBarStyle
     }
-
 }

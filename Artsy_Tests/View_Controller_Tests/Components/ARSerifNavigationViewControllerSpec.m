@@ -76,44 +76,6 @@ describe(@"", ^{
 
         expect(subject).to.haveValidSnapshot();
     });
-
-    describe(@"status bar", ^{
-        before(^{
-            UIApplication *app = [[ForgeriesApplication alloc] init];
-            UIViewController *insideVC = [[UIViewController alloc] init];
-
-            subject = [[ARSerifNavigationViewController alloc] initWithRootViewController:insideVC];
-            subject.sharedApplication = app;
-        });
-
-        it(@"sets the status bar to hidden", ^{
-            #pragma clang diagnostic push
-            #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            [subject.sharedApplication setStatusBarHidden:NO];
-            #pragma clang diagnostic pop
-
-            [subject beginAppearanceTransition:YES animated:NO];
-            [subject endAppearanceTransition];
-
-            expect(subject.sharedApplication.isStatusBarHidden).to.equal(NO);
-        });
-
-        it(@"returns the hidden back to the original value", ^{
-            BOOL originalHidden = YES;
-            #pragma clang diagnostic push
-            #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            [subject.sharedApplication setStatusBarHidden:originalHidden];
-            #pragma clang diagnostic pop
-
-            [subject beginAppearanceTransition:YES animated:NO];
-            [subject endAppearanceTransition];
-            expect(subject.sharedApplication.isStatusBarHidden).to.equal(NO);
-
-            [subject beginAppearanceTransition:NO animated:NO];
-            [subject endAppearanceTransition];
-            expect(subject.sharedApplication.isStatusBarHidden).to.equal(originalHidden);
-        });
-    });
 });
 
 SpecEnd

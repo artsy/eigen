@@ -29,7 +29,6 @@
 #import "UIImageView+AsyncImageLoading.h"
 #import "UIImage+ImageFromColor.h"
 #import "UIViewController+Popovers.h"
-#import "UIApplication+StatusBar.h"
 
 // Models.
 #import "Sale.h"
@@ -93,7 +92,6 @@
 #import "AROfflineView.h"
 #import "ARBidButton.h"
 #import "ARSystemTime.h"
-#import "ARSerifStatusMaintainer.h"
 #import "ARDeveloperOptions.h"
 
 #import "ORStackView+ArtsyViews.h"

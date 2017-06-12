@@ -23,7 +23,6 @@
 #import "UIImage+ImageFromColor.h"
 #import "UIImageView+AsyncImageLoading.h"
 #import "UIDevice-Hardware.h"
-#import "UIApplication+StatusBar.h"
 
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -114,6 +113,11 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     return self;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)presentFormWithInquiryURLRepresentation:(NSString *)inquiryURLRepresentation
 {
     NSParameterAssert(inquiryURLRepresentation);
@@ -128,7 +132,6 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 
 - (void)removeFromHostViewController
 {
-    [[UIApplication sharedApplication] ar_setStatusBarHidden:NO];
     [self hideMessage];
     [self hideFailureButtons];
     [self fadeBackgroundVisible:NO];
@@ -149,7 +152,6 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
 {
     self.view.backgroundColor = [UIColor clearColor];
 
-    [[UIApplication sharedApplication] ar_setStatusBarHidden:self.smallScreen];
     self.view.backgroundColor = [UIColor clearColor];
     _backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:self.backgroundView];
@@ -193,6 +195,10 @@ typedef NS_ENUM(NSInteger, ARInquireFormState) {
     [self.view layoutIfNeeded];
 
     [super viewDidLoad];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return self.smallScreen;
 }
 
 - (void)createMessages

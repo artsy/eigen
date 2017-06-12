@@ -97,6 +97,11 @@
     [super viewDidAppear:animated];
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 // Yes, this is deprecated, but it's the most straightforward way to change 2 values for iPad landscape
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {

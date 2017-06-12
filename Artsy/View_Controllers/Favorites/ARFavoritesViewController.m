@@ -149,6 +149,11 @@
     [self updateCellSizeForSize:self.view.frame.size layout:_artistsModule.moduleLayout];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (UICollectionView *)collectionView
 {
     return self.embeddedItemsVC.collectionView;

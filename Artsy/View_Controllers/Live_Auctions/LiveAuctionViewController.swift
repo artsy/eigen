@@ -22,6 +22,7 @@ class LiveAuctionViewController: UIViewController {
     fileprivate var offlineView: AROfflineView?
     fileprivate var saleOnHoldBanner: SaleOnHoldOverlayView?
     fileprivate var hasShownSaleOnHoldBanner = false
+    fileprivate var showingOverlay = false
 
     fileprivate var loadingView: LiveAuctionLoadingView?
     fileprivate var saleViewController: LiveAuctionSaleViewController?
@@ -37,9 +38,6 @@ class LiveAuctionViewController: UIViewController {
     /// with unpredictable connections
     fileprivate var showSocketDisconnectWarning = false
     fileprivate var waitingToShowDisconnect = false
-
-    // Status maintainer no longer working with refactor.
-    fileprivate var statusMaintainer = ARSerifStatusMaintainer()
 
     // These are injectable during tests.
     lazy var app = UIApplication.shared
@@ -62,7 +60,6 @@ class LiveAuctionViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        statusMaintainer.viewWillAppear(animated, app: app)
         app.isIdleTimerDisabled = true
 
         if waitingForInitialLoad {
@@ -75,6 +72,14 @@ class LiveAuctionViewController: UIViewController {
             showLoadingView()
             connectToNetwork()
             registrationStatusChanged = false
+        }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if showingOverlay {
+            return .lightContent
+        } else {
+            return .`default`
         }
     }
 
@@ -123,13 +128,17 @@ class LiveAuctionViewController: UIViewController {
 
     func actuallyShowDisconnectedOverlay(_ show: Bool) {
         if !show {
+            showingOverlay = false
             ar_removeBlurredOverlayWithTitle()
         } else {
+            showingOverlay = true
             let title = NSLocalizedString("Artsy has lost contact with the auction house.", comment: "Live websocket disconnect title")
             let subtitle = NSLocalizedString("Attempting to reconnect now", comment: "Live websocket disconnect subtitle")
             let menuButton = BlurredStatusOverlayViewCloseButtonState.show(target: self, selector: #selector(dismissLiveAuctionsModal))
-            ar_presentBlurredOverlayWithTitle(title, subtitle: subtitle, buttonState:menuButton)
+            ar_presentBlurredOverlayWithTitle(title, subtitle: subtitle, buttonState: menuButton)
         }
+        
+        setNeedsStatusBarAppearanceUpdate()
     }
 
     func showOfflineView() {
@@ -193,17 +202,18 @@ class LiveAuctionViewController: UIViewController {
             $0.align(toView: view)
             $0.delegate = self
         }
+        showingOverlay = true
     }
 
     func dismissSaleOnHoldBanner() {
         saleOnHoldBanner?.removeFromSuperview()
         saleOnHoldBanner = nil
+        showingOverlay = false
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        statusMaintainer.viewWillDisappear(animated, app: app)
         app.isIdleTimerDisabled = false
     }
 

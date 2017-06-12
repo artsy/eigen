@@ -14,7 +14,6 @@
 @property (readwrite, nonatomic, assign) BOOL animatesLayoverChanges;
 
 - (void)showBackButton:(BOOL)visible animated:(BOOL)animated;
-- (void)showStatusBar:(BOOL)visible animated:(BOOL)animated;
 - (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated isHome:(BOOL)isHome;
 
 - (IBAction)back:(id)sender;

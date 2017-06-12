@@ -270,8 +270,6 @@ static ARAppDelegate *_sharedInstance = nil;
     // And set up emission
     [self startupApp];
 
-    [[UIApplication sharedApplication] ar_setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-
     ar_dispatch_main_queue(^{
         if ([User currentUser]) {
             [self.remoteNotificationsDelegate fetchNotificationCounts];

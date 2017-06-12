@@ -17,7 +17,6 @@
 
 #import "ARMacros.h"
 #import "UIDevice-Hardware.h"
-#import "UIApplication+StatusBar.h"
 
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
@@ -187,8 +186,8 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     // ourselves. Otherwise, we'll leave it to the interactive transition.
     if (self.interactiveTransitionHandler == nil) {
         [self showBackButton:[self shouldShowBackButtonForViewController:viewController] animated:animated];
-        [self showStatusBar:!viewController.prefersStatusBarHidden animated:animated];
         [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:animated isHome:isHome];
+        [self setNeedsStatusBarAppearanceUpdate];
 
         BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
         [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:animated];
@@ -209,6 +208,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
     [self showBackButton:[self shouldShowBackButtonForViewController:viewController] animated:NO];
     [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:NO isHome:isHome];
+    [self setNeedsStatusBarAppearanceUpdate];
 
     BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
     [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:NO];
@@ -307,30 +307,17 @@ ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
     ChangeButtonVisibility(self.backButton, visible, animated);
 }
 
-- (void)showStatusBar:(BOOL)visible animated:(BOOL)animated
-{
-    if (animated) {
-        [[UIApplication sharedApplication] ar_setStatusBarHidden:!visible withAnimation:UIStatusBarAnimationSlide];
-    } else {
-        [[UIApplication sharedApplication] ar_setStatusBarHidden:!visible withAnimation:UIStatusBarAnimationNone];
-    }
-
-    [UIView animateIf:animated duration:ARAnimationDuration:^{
-        self.statusBarVerticalConstraint.constant = visible ? 20 : 0;
-
-        if (animated) [self.view layoutIfNeeded];
-    }];
-}
-
 - (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated isHome:(BOOL)isHome
 {
     CGFloat visibleAlpha = isHome ? 0.98 : 1;
-    UIStatusBarStyle statusBarStyle = isHome ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
-    [[UIApplication sharedApplication] ar_setStatusBarStyle:statusBarStyle];
 
     [UIView animateIf:animated duration:ARAnimationDuration:^{
         self.statusBarView.backgroundColor = isHome ? UIColor.whiteColor : UIColor.blackColor;
         self.statusBarView.alpha = visible ? visibleAlpha : 0;
+        
+        self.statusBarVerticalConstraint.constant = visible ? 20 : 0;
+        
+        if (animated) { [self.view setNeedsLayout]; }
     }];
 }
 
