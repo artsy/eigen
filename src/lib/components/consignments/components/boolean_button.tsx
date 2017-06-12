@@ -87,7 +87,7 @@ const render = (props: BooleanButton) => {
 }
 
 // Export a pure component version
-export default class ConsignmentTODO extends React.PureComponent<BooleanButton, null> {
+export default class ConsignmentTODO extends React.Component<BooleanButton, null> {
   render() {
     return render(this.props)
   }

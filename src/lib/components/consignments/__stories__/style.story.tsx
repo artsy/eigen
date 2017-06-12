@@ -14,11 +14,6 @@ storiesOf("Consignments - Styling")
       <T.Subtitle>Subtitle</T.Subtitle>
     </Wrapper>
   )
-  .add("blank", () =>
-    <Wrapper>
-      <T.Subtitle>Subtitle</T.Subtitle>
-    </Wrapper>
-  )
   .add("Boolean selector", () =>
     <Wrapper>
       <BooleanSelector selected={true} left="YES" right="NO" />

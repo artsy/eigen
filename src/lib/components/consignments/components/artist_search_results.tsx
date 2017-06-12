@@ -43,7 +43,7 @@ const UnknownName = styled.Text`
 export interface ArtistQueryData extends TextInputProps {
   results: Array<{ name: string; id: string; image: { url: string } }> | null
   query: string
-  onChangeText: (query: string) => void
+  onChangeText?: (query: string) => void
 }
 
 const rowForResult = result =>
@@ -65,7 +65,6 @@ const noResults = props => {
 
 const render = (props: ArtistQueryData) =>
   <View>
-
     <TextInput
       searching={props.searching}
       text={{
@@ -74,6 +73,7 @@ const render = (props: ArtistQueryData) =>
         value: props.query,
         onChangeText: props.onChangeText,
       }}
+      style={{ flex: 0 }}
     />
 
     <ScrollView style={{ height: 182, paddingTop: 16 }} scrollEnabled={props.results && !!props.results.length}>
@@ -82,7 +82,7 @@ const render = (props: ArtistQueryData) =>
   </View>
 
 // Export a pure component version
-export default class SearchResults extends React.PureComponent<ArtistQueryData, null> {
+export default class SearchResults extends React.Component<ArtistQueryData, null> {
   render() {
     return render(this.props)
   }

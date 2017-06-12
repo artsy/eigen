@@ -20,7 +20,7 @@ const render = (props: any) =>
     style={{ flex: 1 }}
   />
 
-export default class StorybookBrowser extends React.PureComponent<any, null> {
+export default class StorybookBrowser extends React.Component<any, null> {
   render() {
     return render(this.props)
   }
