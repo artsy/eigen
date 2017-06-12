@@ -138,8 +138,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     return self.topViewController.preferredStatusBarStyle;
 }
 
-// TODO: Hide status bar while search is visible.
-
 #pragma mark - Rotation
 
 - (BOOL)shouldAutorotate
@@ -321,6 +319,10 @@ ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
     [UIView animateIf:animated duration:ARAnimationDuration:^{
         self.statusBarView.backgroundColor = isHome ? UIColor.whiteColor : UIColor.blackColor;
         self.statusBarView.alpha = visible ? visibleAlpha : 0;
+        
+        self.statusBarVerticalConstraint.constant = visible ? 20 : 0;
+        
+        if (animated) { [self.view setNeedsLayout]; }
     }];
 }
 

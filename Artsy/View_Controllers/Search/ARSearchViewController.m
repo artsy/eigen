@@ -128,6 +128,11 @@
     [super viewDidLoad];
 }
 
+- (BOOL)hidesStatusBarBackground
+{
+    return YES;
+}
+
 - (BOOL)shouldAutorotate;
 {
     return [UIDevice isPad];
