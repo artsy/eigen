@@ -1,8 +1,8 @@
 import * as React from "react"
 import { Text, View } from "react-native"
 
-import Search from "../components/artist-search-results"
-import BottomAlignedButton, { BottomAlignedProps } from "../components/bottom-aligned-button"
+import Search from "../components/artist_search_results"
+import BottomAlignedButton, { BottomAlignedProps } from "../components/bottom_aligned_button"
 
 export const name = "Consignments - bottom aligned"
 export const component = BottomAlignedButton

@@ -41,21 +41,25 @@ const SenderName = styled(SmallHeadline)`
   marginRight: 10
 `
 
-export default class Message extends React.Component<any, any> {
-  render() {
-    const senderName = "Patrick Parrish"
-    const time = "11:32AM"
-    const body = "Hi Katarina, thanks for reaching out with your interest in this great piece by Ian Stell."
+interface Props {
+  message: {
+    senderName: string
+    time: string
+    body: string
+  }
+}
 
+export default class Message extends React.Component<Props, any> {
+  render() {
     return (
       <Container>
         <Avatar />
         <TextContainer>
           <Header>
-            <SenderName>{senderName}</SenderName>
-            <MetadataText>{time}</MetadataText>
+            <SenderName>{this.props.message.senderName}</SenderName>
+            <MetadataText>{this.props.message.time}</MetadataText>
           </Header>
-          <BodyText>{body}</BodyText>
+          <BodyText>{this.props.message.body}</BodyText>
         </TextContainer>
       </Container>
     )

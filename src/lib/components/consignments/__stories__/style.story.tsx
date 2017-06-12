@@ -1,11 +1,11 @@
 import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import { View } from "react-native"
+import Toggle from "../components/toggle"
 import * as T from "../typography"
+import { Wrapper } from "./"
 
-const Wrapper = p => <View style={{ backgroundColor: "black", flex: 1, paddingTop: 20 }}>{p.children}</View>
-
-storiesOf("Consignments - Type")
+storiesOf("Consignments - Styling")
   .add("Type Reference", () =>
     <Wrapper>
       <T.LargeHeadline>Large Headline</T.LargeHeadline>
@@ -16,5 +16,12 @@ storiesOf("Consignments - Type")
   .add("blank", () =>
     <Wrapper>
       <T.Subtitle>Subtitle</T.Subtitle>
+    </Wrapper>
+  )
+  .add("Boolean selector", () =>
+    <Wrapper>
+      <Toggle selected={true} left="YES" right="NO" />
+      <View style={{ height: 20 }} />
+      <Toggle selected={false} left="IN" right="CM" />
     </Wrapper>
   )

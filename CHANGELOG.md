@@ -3,6 +3,7 @@
 #### Emission
 
 - [Messaging] Adds inbox zero state - maxim
+- [Messaging] Adds a FlatList for Messages in Conversations - sarah
 - [dev] Applies prettier, and adds it to the webhooks + extension settings - orta
 - [dev] Adds stories for new messaging components - maxim
 - [Messaging] Adds Conversation, Composer, and Message components - sarah
@@ -20,6 +21,7 @@
 - [dev] Adds component for consignments todo  - orta
 - [dev] Adds a root component for the Consignments flow  - orta
 - [dev] Adds storybooks for consignments  - orta
+- [dev] Adds some form elements for consignments - orta
 - Added the Welcome/Overview screen for consignments - orta
 
 ### 1.3.6
