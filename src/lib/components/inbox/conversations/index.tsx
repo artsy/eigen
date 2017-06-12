@@ -1,10 +1,11 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import { ListView, ListViewDataSource, ScrollView } from "react-native"
+import { ListView, ListViewDataSource, ScrollView, Text, View } from "react-native"
 import { LargeHeadline } from "../typography"
 
 import ConversationSnippet from "./conversation_snippet"
+import ZeroStateInbox from "./zerostate_inbox"
 
 const PageSize = 10
 
@@ -78,7 +79,7 @@ export class Conversations extends React.Component<Props, State> {
     )
   }
 
-  render() {
+  renderInbox() {
     return (
       <ScrollView
         onScroll={event => (this.currentScrollOffset = event.nativeEvent.contentOffset.y)}
@@ -87,6 +88,19 @@ export class Conversations extends React.Component<Props, State> {
         <LargeHeadline style={{ marginTop: 10 }}>Messages</LargeHeadline>
         {this.renderConversations()}
       </ScrollView>
+    )
+  }
+
+  renderZeroState() {
+    return <ZeroStateInbox />
+  }
+
+  render() {
+    const userHasConversations = this.props.me.conversations.edges.length > 0
+    return (
+      <View>
+        {userHasConversations ? this.renderInbox() : this.renderZeroState()}
+      </View>
     )
   }
 }

@@ -2,6 +2,7 @@
 
 #### Emission
 
+- [Messaging] Adds inbox zero state - maxim
 - [Messaging] Adds a FlatList for Messages in Conversations - sarah
 - [dev] Applies prettier, and adds it to the webhooks + extension settings - orta
 - [dev] Adds stories for new messaging components - maxim
