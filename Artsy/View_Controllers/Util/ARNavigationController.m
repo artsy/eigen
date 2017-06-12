@@ -133,11 +133,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     _backButton.alpha = 0;
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return self.topViewController.preferredStatusBarStyle;
-}
-
 #pragma mark - Rotation
 
 - (BOOL)shouldAutorotate
