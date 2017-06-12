@@ -219,11 +219,8 @@
         default:
             break;
     }
-    
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    [self finaliseValuesForiPadWithInterfaceOrientation:self.interfaceOrientation];
-#pragma clang diagnostic pop
+
+    [self finaliseValuesForiPadWithInterfaceOrientation:UIApplication.sharedApplication.statusBarOrientation];
 }
 
 // Yes, this is deprecated, but it's the most straightforward way to change 2 values for iPad landscape
