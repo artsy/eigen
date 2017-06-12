@@ -100,6 +100,134 @@ exports[`looks correct when rendered 1`] = `
       </Text>
     </View>
   </View>
+  <View
+    style={
+      Array [
+        Object {
+          "borderColor": "#e5e5e5",
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "marginTop": 20,
+        },
+        undefined,
+      ]
+    }
+  >
+    <AROpaqueImageView
+      imageURL="https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg"
+      style={
+        Array [
+          Object {
+            "height": 55,
+            "marginBottom": 12,
+            "marginLeft": 12,
+            "marginTop": 12,
+            "width": 80,
+          },
+          undefined,
+        ]
+      }
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexDirection": "column",
+            "flexGrow": 1,
+            "flexShrink": 1,
+          },
+          Array [
+            Object {
+              "alignSelf": "center",
+              "marginLeft": 25,
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 16,
+              "textAlign": "left",
+            },
+            Array [
+              Object {
+                "fontSize": 14,
+              },
+              undefined,
+            ],
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        Adrian Piper
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 14,
+            },
+            Array [
+              Object {
+                "marginTop": 3,
+              },
+              undefined,
+            ],
+            Object {
+              "fontFamily": "AGaramondPro-Italic",
+            },
+          ]
+        }
+      >
+        The Mythic Being: Sol’s Drawing #1–5
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 16,
+                "textAlign": "left",
+              },
+              Array [
+                Object {
+                  "fontSize": 14,
+                },
+                undefined,
+              ],
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+              },
+            ]
+          }
+        >
+          , 1974
+        </Text>
+      </Text>
+    </View>
+  </View>
   <RCTScrollView
     ItemSeparatorComponent={[Function]}
     data={
@@ -111,7 +239,7 @@ exports[`looks correct when rendered 1`] = `
           "time": "11:00AM",
         },
         Object {
-          "body": "Hi Sarah, thanks for reaching out with your interest in this great piece by Ana Mendieta. Threestool is currently available at $3,600, please let me know if you have any other questions ",
+          "body": "Hi Sarah, thanks for reaching out with your interest in this great piece by Adrian Piper. The Mythic Being: Sol’s Drawing #1–5 is currently available at $3,600; please let me know if you have any other questions.",
           "key": 1,
           "senderName": "Kimberly Klark",
           "time": "11:00AM",
@@ -141,7 +269,7 @@ exports[`looks correct when rendered 1`] = `
     style={
       Array [
         Object {
-          "marginTop": 30,
+          "marginTop": 10,
         },
         undefined,
       ]
@@ -451,7 +579,7 @@ exports[`looks correct when rendered 1`] = `
                 ]
               }
             >
-              Hi Sarah, thanks for reaching out with your interest in this great piece by Ana Mendieta. Threestool is currently available at $3,600, please let me know if you have any other questions 
+              Hi Sarah, thanks for reaching out with your interest in this great piece by Adrian Piper. The Mythic Being: Sol’s Drawing #1–5 is currently available at $3,600; please let me know if you have any other questions.
             </Text>
           </View>
         </View>

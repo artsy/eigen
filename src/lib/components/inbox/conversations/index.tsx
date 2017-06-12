@@ -4,6 +4,7 @@ import * as Relay from "react-relay"
 import { ListView, ListViewDataSource, ScrollView, Text, View } from "react-native"
 import { LargeHeadline } from "../typography"
 
+import SwitchBoard from "../../../native_modules/switch_board"
 import ConversationSnippet from "./conversation_snippet"
 import ZeroStateInbox from "./zerostate_inbox"
 
@@ -72,7 +73,11 @@ export class Conversations extends React.Component<Props, State> {
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={data => <ConversationSnippet conversation={data} />}
+        renderRow={data =>
+          <ConversationSnippet
+            conversation={data}
+            onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${data.id}`)}
+          />}
         onEndReached={() => this.fetchNextPage()}
         scrollEnabled={false}
       />
@@ -118,6 +123,7 @@ export default Relay.createContainer(Conversations, {
           }
           edges {
             node {
+              id
               ${ConversationSnippet.getFragment("conversation")}
             }
           }
