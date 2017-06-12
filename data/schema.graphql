@@ -1910,6 +1910,12 @@ type Gene implements Node {
   trending_artists(sample: Int): [Artist]
 }
 
+type GeneFamily {
+  id: String!
+  name: String!
+  genes: [Gene]
+}
+
 type GeneItem implements Node {
   # A globally unique ID.
   __id: ID!
@@ -2631,6 +2637,12 @@ type Me implements Node {
     sale_id: String
   ): [BidderPosition]
   collector_profile: CollectorProfileType
+
+  # A conversation, usually between a user and a partner
+  conversation(
+    # The ID of the Conversation
+    id: String!
+  ): ConversationType
   conversations(after: String, first: Int, before: String, last: Int): ConversationTypeConnection
   created_at(
     convert_to_utc: Boolean
@@ -3406,6 +3418,10 @@ type RootQueryType {
     # The slug or ID of the Gene
     id: String!
   ): Gene
+
+  # A list of Gene Families
+  gene_families: [GeneFamily]
+  gene_family: GeneFamily
 
   # Home screen content
   home_page: HomePage
@@ -4259,6 +4275,10 @@ type Viewer {
     # The slug or ID of the Gene
     id: String!
   ): Gene
+
+  # A list of Gene Families
+  gene_families: [GeneFamily]
+  gene_family: GeneFamily
 
   # Home screen content
   home_page: HomePage
