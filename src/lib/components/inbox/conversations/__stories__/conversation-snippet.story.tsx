@@ -8,7 +8,6 @@ import { Conversation, ConversationSnippet } from "../conversation_snippet"
 
 const conversation: Conversation = {
   id: "582",
-  inquiry_id: "59302144275b244a81d0f9c6",
   from_name: "Jean-Luc Collecteur",
   from_email: "luc+messaging@artsymail.com",
   to_name: "ACA Galleries",

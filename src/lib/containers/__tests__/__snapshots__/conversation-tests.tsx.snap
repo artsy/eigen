@@ -75,7 +75,7 @@ exports[`looks correct when rendered 1`] = `
           ]
         }
       >
-        PATRICK PARRISH GALLERY
+        KIMBERLY KLARK
       </Text>
       <Text
         accessible={true}
@@ -105,15 +105,15 @@ exports[`looks correct when rendered 1`] = `
     data={
       Array [
         Object {
-          "body": "Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?",
+          "body": "Adoro! Por favor envie-me mais informações",
           "key": 0,
-          "senderName": "Katarina Batina",
+          "senderName": "Anita Garibaldi",
           "time": "11:00AM",
         },
         Object {
-          "body": "Hi Katarina, thanks for reaching out with your interest in this great piece by Ian Stell. Threestool is currently available at $3,600, please let me know if you have any other questions ",
+          "body": "Hi Sarah, thanks for reaching out with your interest in this great piece by Ana Mendieta. Threestool is currently available at $3,600, please let me know if you have any other questions ",
           "key": 1,
-          "senderName": "Patrick Parrish",
+          "senderName": "Kimberly Klark",
           "time": "11:00AM",
         },
       ]
@@ -244,7 +244,7 @@ exports[`looks correct when rendered 1`] = `
                   ]
                 }
               >
-                KATARINA BATINA
+                ANITA GARIBALDI
               </Text>
               <Text
                 accessible={true}
@@ -287,7 +287,7 @@ exports[`looks correct when rendered 1`] = `
                 ]
               }
             >
-              Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?
+              Adoro! Por favor envie-me mais informações
             </Text>
           </View>
         </View>
@@ -295,9 +295,9 @@ exports[`looks correct when rendered 1`] = `
           highlighted={false}
           leadingItem={
             Object {
-              "body": "Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?",
+              "body": "Adoro! Por favor envie-me mais informações",
               "key": 0,
-              "senderName": "Katarina Batina",
+              "senderName": "Anita Garibaldi",
               "time": "11:00AM",
             }
           }
@@ -408,7 +408,7 @@ exports[`looks correct when rendered 1`] = `
                   ]
                 }
               >
-                PATRICK PARRISH
+                KIMBERLY KLARK
               </Text>
               <Text
                 accessible={true}
@@ -451,7 +451,7 @@ exports[`looks correct when rendered 1`] = `
                 ]
               }
             >
-              Hi Katarina, thanks for reaching out with your interest in this great piece by Ian Stell. Threestool is currently available at $3,600, please let me know if you have any other questions 
+              Hi Sarah, thanks for reaching out with your interest in this great piece by Ana Mendieta. Threestool is currently available at $3,600, please let me know if you have any other questions 
             </Text>
           </View>
         </View>

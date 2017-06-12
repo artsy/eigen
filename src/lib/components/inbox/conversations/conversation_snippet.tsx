@@ -71,7 +71,6 @@ const ArtworkTitle = styled(ArtworkSubtitle)`
 
 export interface Conversation {
   id: string | null
-  inquiry_id: string | null
   from_name: string | null
   from_email: string | null
   to_name: string | null
@@ -103,7 +102,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
     const conversation = this.props.conversation
     const artwork = conversation.artworks[0]
 
-    const galleryName = conversation.to_name
+    const partnerName = conversation.to_name
     const artworkTitle = `${artwork.title.trim()}, `
     const artworkDate = `${artwork.date}`
     const artworkArtist = `${artwork.artist.name} · `
@@ -118,7 +117,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
             <OpaqueImageView imageURL={imageURL} style={styles.image} />
             <TextPreview>
               <HorizontalLayout>
-                <SmallHeadline>{galleryName}</SmallHeadline>
+                <SmallHeadline>{partnerName}</SmallHeadline>
                 <DateHeading>
                   <MetadataText>{date}</MetadataText>
                   <UnreadIndicator />
@@ -141,7 +140,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
   }
 
   handleTap() {
-    SwitchBoard.presentNavigationViewController(this, "/conversation/")
+    SwitchBoard.presentNavigationViewController(this, `/conversation/${this.props.conversation.id}`)
   }
 }
 
@@ -164,7 +163,6 @@ export default Relay.createContainer(ConversationSnippet, {
     conversation: () => Relay.QL`
       fragment on ConversationType {
         id
-        inquiry_id
         from_name
         from_email
         to_name

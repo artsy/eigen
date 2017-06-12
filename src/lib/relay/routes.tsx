@@ -18,6 +18,24 @@ class Artist extends Relay.Route {
   static routeName = "ArtistRoute"
 }
 
+class Conversation extends Relay.Route {
+  static queries = {
+    me: (component, params) => Relay.QL`
+      query {
+          me {
+            ${component.getFragment("me", params)}
+          }
+      }
+    `,
+  }
+
+  static paramDefinitions = {
+    conversationID: { required: true },
+  }
+
+  static routeName = "ConversationRoute"
+}
+
 class Home extends Relay.Route {
   static queries = {
     home: (component, params) => Relay.QL`
@@ -86,6 +104,7 @@ class MyAccount extends Relay.Route {
 
 export default {
   Artist,
+  Conversation,
   Home,
   Gene,
   WorksForYou,
