@@ -5,6 +5,7 @@ upcoming:
       - Removes compiler warnings and static analyzer warnings - ash
       - Fix analytics double fire in artwork pages - maxim
       - Moves to iOS7+ status bar APIs - ash
+      - Removes use of deprecated UIAlertView API - ash
     user_facing:
       - Adds timer for artwork view that refreshes UI when the associated live sale opens - ash
       - Fix crash where facebook email can be nil - maxim
