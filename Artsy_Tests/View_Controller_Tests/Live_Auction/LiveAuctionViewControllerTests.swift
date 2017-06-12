@@ -54,9 +54,11 @@ class LiveAuctionViewControllerTests: QuickSpec {
 
         it("handles splitting in an iPad") {
             setupViewControllerForPhone(false)
-            subject.view.frame = CGRect(x: 0, y: 0, width: 1024, height: 768)
+            ARTestContext.use(.pad) {
+                subject.view.frame = CGRect(x: 0, y: 0, width: 1024, height: 768)
 
-            expect(subject).to (haveValidSnapshot(named: nil, usesDrawRect: true))
+                expect(subject).to (haveValidSnapshot(usesDrawRect: true))
+            }
         }
 
         it("shows an error screen when static data fails") {
