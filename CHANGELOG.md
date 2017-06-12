@@ -2,6 +2,7 @@
 
 #### Emission
 
+- [Messaging] Adds inbox zero state - maxim
 - [dev] Applies prettier, and adds it to the webhooks + extension settings - orta
 - [dev] Adds stories for new messaging components - maxim
 - [Messaging] Adds Conversation, Composer, and Message components - sarah
