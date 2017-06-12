@@ -16,8 +16,6 @@
     return self;
 }
 
-
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -32,5 +30,9 @@
     RCTRootView *rootView = self.view.subviews.firstObject;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 
 @end
