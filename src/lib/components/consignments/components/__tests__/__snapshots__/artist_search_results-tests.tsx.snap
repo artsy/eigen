@@ -2,7 +2,13 @@
 
 exports[`Search states:  Looks right when Found four results 1`] = `
 <View>
-  <View>
+  <View
+    style={
+      Object {
+        "flex": 0,
+      }
+    }
+  >
     <View
       style={
         Object {
@@ -12,7 +18,6 @@ exports[`Search states:  Looks right when Found four results 1`] = `
     >
       <TextInput
         autoCorrect={false}
-        autoFocus={false}
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
         onChangeText={undefined}
@@ -38,12 +43,6 @@ exports[`Search states:  Looks right when Found four results 1`] = `
           ]
         }
         value="bank"
-      />
-      <ActivityIndicator
-        animating={false}
-        color="#999999"
-        hidesWhenStopped={true}
-        size="small"
       />
     </View>
     <View
@@ -279,7 +278,13 @@ exports[`Search states:  Looks right when Found four results 1`] = `
 
 exports[`Search states:  Looks right when Found no results 1`] = `
 <View>
-  <View>
+  <View
+    style={
+      Object {
+        "flex": 0,
+      }
+    }
+  >
     <View
       style={
         Object {
@@ -289,7 +294,6 @@ exports[`Search states:  Looks right when Found no results 1`] = `
     >
       <TextInput
         autoCorrect={false}
-        autoFocus={false}
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
         onChangeText={undefined}
@@ -315,12 +319,6 @@ exports[`Search states:  Looks right when Found no results 1`] = `
           ]
         }
         value="ba"
-      />
-      <ActivityIndicator
-        animating={false}
-        color="#999999"
-        hidesWhenStopped={true}
-        size="small"
       />
     </View>
     <View
@@ -388,7 +386,13 @@ exports[`Search states:  Looks right when Found no results 1`] = `
 
 exports[`Search states:  Looks right when Found one result 1`] = `
 <View>
-  <View>
+  <View
+    style={
+      Object {
+        "flex": 0,
+      }
+    }
+  >
     <View
       style={
         Object {
@@ -398,7 +402,6 @@ exports[`Search states:  Looks right when Found one result 1`] = `
     >
       <TextInput
         autoCorrect={false}
-        autoFocus={false}
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
         onChangeText={undefined}
@@ -424,12 +427,6 @@ exports[`Search states:  Looks right when Found one result 1`] = `
           ]
         }
         value="ban"
-      />
-      <ActivityIndicator
-        animating={false}
-        color="#999999"
-        hidesWhenStopped={true}
-        size="small"
       />
     </View>
     <View
@@ -512,7 +509,13 @@ exports[`Search states:  Looks right when Found one result 1`] = `
 
 exports[`Search states:  Looks right when Found one result, and searching 1`] = `
 <View>
-  <View>
+  <View
+    style={
+      Object {
+        "flex": 0,
+      }
+    }
+  >
     <View
       style={
         Object {
@@ -522,7 +525,6 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
     >
       <TextInput
         autoCorrect={false}
-        autoFocus={false}
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
         onChangeText={undefined}
@@ -636,7 +638,13 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
 
 exports[`Search states:  Looks right when Found two results 1`] = `
 <View>
-  <View>
+  <View
+    style={
+      Object {
+        "flex": 0,
+      }
+    }
+  >
     <View
       style={
         Object {
@@ -646,7 +654,6 @@ exports[`Search states:  Looks right when Found two results 1`] = `
     >
       <TextInput
         autoCorrect={false}
-        autoFocus={false}
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
         onChangeText={undefined}
@@ -672,12 +679,6 @@ exports[`Search states:  Looks right when Found two results 1`] = `
           ]
         }
         value="bank"
-      />
-      <ActivityIndicator
-        animating={false}
-        color="#999999"
-        hidesWhenStopped={true}
-        size="small"
       />
     </View>
     <View
@@ -811,7 +812,13 @@ exports[`Search states:  Looks right when Found two results 1`] = `
 
 exports[`Search states:  Looks right when Looking for new results 1`] = `
 <View>
-  <View>
+  <View
+    style={
+      Object {
+        "flex": 0,
+      }
+    }
+  >
     <View
       style={
         Object {
@@ -821,7 +828,6 @@ exports[`Search states:  Looks right when Looking for new results 1`] = `
     >
       <TextInput
         autoCorrect={false}
-        autoFocus={false}
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
         onChangeText={undefined}
@@ -883,7 +889,13 @@ exports[`Search states:  Looks right when Looking for new results 1`] = `
 
 exports[`Search states:  Looks right when No query 1`] = `
 <View>
-  <View>
+  <View
+    style={
+      Object {
+        "flex": 0,
+      }
+    }
+  >
     <View
       style={
         Object {
@@ -893,7 +905,6 @@ exports[`Search states:  Looks right when No query 1`] = `
     >
       <TextInput
         autoCorrect={false}
-        autoFocus={false}
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
         onChangeText={undefined}
@@ -919,12 +930,6 @@ exports[`Search states:  Looks right when No query 1`] = `
           ]
         }
         value={null}
-      />
-      <ActivityIndicator
-        animating={false}
-        color="#999999"
-        hidesWhenStopped={true}
-        size="small"
       />
     </View>
     <View

@@ -55,14 +55,14 @@ const CircleSpacer = styled.View`
   right: 6;
 `
 
-interface BooleanButton {
+interface ToggleProps {
   selected: boolean
   left: string
   right: string
   onPress?: () => void
 }
 
-const render = (props: BooleanButton) => {
+const render = (props: ToggleProps) => {
   const { selected } = props
   const mainBGColor = selected ? "white" : "black"
   const leftTextColor = selected ? "black" : "white"
@@ -87,7 +87,7 @@ const render = (props: BooleanButton) => {
 }
 
 // Export a pure component version
-export default class ConsignmentTODO extends React.Component<BooleanButton, null> {
+export default class Toggle extends React.Component<ToggleProps, null> {
   render() {
     return render(this.props)
   }

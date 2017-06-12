@@ -23,7 +23,7 @@ export default class Welcome extends React.Component<Props, null> {
     return (
       <ScrollView style={{ backgroundColor: "black" }}>
         <View style={{ flex: 1, paddingTop: 40, alignItems: "center" }}>
-          <LargeHeadline>Sel works from your collection through our partner network</LargeHeadline>
+          <LargeHeadline>Sell works from your collection through our partner network</LargeHeadline>
 
           <View style={{ width: 300, alignItems: "center", marginTop: 20 }}>
             <Circle source={require("../images/email.png")} />

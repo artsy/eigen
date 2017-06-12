@@ -1,9 +1,11 @@
 import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import { View } from "react-native"
-import BooleanSelector from "../components/boolean_button"
+
 import Text from "../components/text_input"
+import Toggle from "../components/toggle"
 import * as T from "../typography"
+
 import { Wrapper } from "./"
 
 storiesOf("Consignments - Styling")
@@ -16,9 +18,9 @@ storiesOf("Consignments - Styling")
   )
   .add("Boolean selector", () =>
     <Wrapper>
-      <BooleanSelector selected={true} left="YES" right="NO" />
+      <Toggle selected={true} left="YES" right="NO" />
       <View style={{ height: 20 }} />
-      <BooleanSelector selected={false} left="IN" right="CM" />
+      <Toggle selected={false} left="IN" right="CM" />
     </Wrapper>
   )
   .add("Form items", () =>
@@ -42,9 +44,8 @@ storiesOf("Consignments - Styling")
           <T.BodyText style={{ paddingLeft: 10, flex: 1, textAlign: "left" }}>
             Is this a toggle?
           </T.BodyText>
-          <BooleanSelector selected={false} left="NO" right="AYE" />
+          <Toggle selected={false} left="NO" right="AYE" />
         </View>
       </View>
-
     </Wrapper>
   )
