@@ -26,6 +26,8 @@ class LiveAuctionLotListViewController: UICollectionViewController {
     weak var delegate: LiveAuctionLotListViewControllerDelegate?
 
     fileprivate var currentLotSignalObserver: ObserverToken<LiveAuctionLotViewModelType?>!
+    fileprivate var saleIsOnHold = false
+    fileprivate let saleStatusView = SaleStatusView()
 
     init(salesPerson: LiveAuctionsSalesPersonType, currentLotSignal: Observable<LiveAuctionLotViewModelType?>, auctionViewModel: LiveAuctionViewModelType) {
         self.salesPerson = salesPerson
@@ -68,23 +70,36 @@ class LiveAuctionLotListViewController: UICollectionViewController {
 
         collectionView?.backgroundColor = .white
         collectionView?.register(LotListCollectionViewCell.self, forCellWithReuseIdentifier: LotListCollectionViewCell.CellIdentifier)
-
+        
+        // Sale status view setup.
+        salesPerson.saleOnHoldSignal.subscribe { [weak self] onHold in
+            self?.saleIsOnHold = onHold
+            self?.updateTitle()
+        }
+        
         let navController = (navigationController as? ARSerifNavigationViewController)
-
-        // On iPhone, show "lots" since we're taking up the full screen.
-        // Otherwise, on iPad, show the sale name (since users can see the lot list and the live interface).
         let isCompact = (UIScreen.main.traitCollection.horizontalSizeClass == .compact)
+        
         if isCompact {
-            title = "Lots"
             navController?.hideCloseButton = false
         } else {
-            title = salesPerson.liveSaleName
             navController?.hideCloseButton = true
         }
 
         if ARAppStatus.isBetaDevOrAdmin() {
             setupAdminTools(isCompact, navController: navController)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateTitle()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        updateTitle()
     }
 
     func setupAdminTools(_ isCompact: Bool, navController: ARSerifNavigationViewController?) {
@@ -118,6 +133,32 @@ class LiveAuctionLotListViewController: UICollectionViewController {
 
     func lotAtIndexPath(_ indexPath: IndexPath) -> LiveAuctionLotViewModelType {
         return salesPerson.lotViewModelForIndex(indexPath.item)
+    }
+}
+
+private typealias PrivateFunctions = LiveAuctionLotListViewController
+extension PrivateFunctions {
+    func updateTitle() {
+        navigationItem.title = nil
+        navigationItem.titleView = nil
+        navigationItem.leftBarButtonItem = nil
+        
+        let isCompact = (UIScreen.main.traitCollection.horizontalSizeClass == .compact)
+        
+        // On iPhone, show "lots" since we're taking up the full screen.
+        // Otherwise, on iPad, show the sale name (since users can see the lot list and the live interface).
+        if isCompact {
+            navigationItem.title = "Lots"
+        } else {
+            if saleIsOnHold {
+                // Normally we would use `titleView` and not `leftBarButtonItem` but we want the view to be left-aligned instead of centred.
+                navigationItem.leftBarButtonItem = SaleStatusView.barButtonItem()
+            } else {
+                navigationItem.title = salesPerson.liveSaleName
+                // The ARSerifNavigationBar handles titles in its own custom way, this is a hack but it works for now.
+                (navigationController as? UINavigationControllerDelegate)?.navigationController!(navigationController!, willShow: self, animated: false)
+            }
+        }
     }
 }
 

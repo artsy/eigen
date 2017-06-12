@@ -1,5 +1,6 @@
 #import "ARTestContext.h"
 #import "UIDevice-Hardware.h"
+@import UIKit;
 
 static OCMockObject *ARDeviceMock;
 static OCMockObject *ARPartialScreenMock;
@@ -49,8 +50,12 @@ static OCMockObject *ARPartialScreenMock;
 
     ARPartialScreenMock = [OCMockObject partialMockForObject:UIScreen.mainScreen];
     NSValue *phoneSize = [NSValue valueWithCGRect:(CGRect)CGRectMake(0, 0, size.width, size.height)];
+    UITraitCollection *traitCollection = [UITraitCollection traitCollectionWithHorizontalSizeClass: (
+        isClassedAsPhone ? UIUserInterfaceSizeClassCompact : UIUserInterfaceSizeClassRegular
+    )];
 
     [[[ARPartialScreenMock stub] andReturnValue:phoneSize] bounds];
+    [[[ARPartialScreenMock stub] andReturn:traitCollection] traitCollection];
     [[[[ARPartialScreenMock stub] andReturnValue:phoneSize] ignoringNonObjectArgs] _applicationFrameForInterfaceOrientation:0 usingStatusbarHeight:0 ignoreStatusBar:NO];
 }
 

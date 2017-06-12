@@ -18,6 +18,7 @@ NSString *const ARNetworkUnavailableNotification = @"network_unavailable_notific
 
 NSString *const ARAuctionArtworkBidUpdatedNotification = @"ARAuctionArtworkBidUpdated";
 NSString *const ARAuctionArtworkRegistrationUpdatedNotification = @"ARAuctionArtworkRegistrationUpdated";
+NSString *const ARAuctionSaleOnHoldBannerTappedNotification = @"ARAuctionSaleOnHoldBannerTappedNotification";
 NSString *const ARAuctionIDKey = @"ARAuctionID";
 NSString *const ARAuctionArtworkIDKey = @"ARAuctionArtworkID";
 

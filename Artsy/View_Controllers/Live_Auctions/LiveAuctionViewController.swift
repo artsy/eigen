@@ -20,11 +20,14 @@ class LiveAuctionViewController: UIViewController {
     /// This is the offline view when we cannot fetch metaphysics static data
     /// which means we can't connect to the server for JSON data
     fileprivate var offlineView: AROfflineView?
+    fileprivate var saleOnHoldBanner: SaleOnHoldOverlayView?
+    fileprivate var hasShownSaleOnHoldBanner = false
 
     fileprivate var loadingView: LiveAuctionLoadingView?
     fileprivate var saleViewController: LiveAuctionSaleViewController?
 
     fileprivate var overlaySubscription: ObserverToken<Bool>?
+    fileprivate var saleOnHoldSubscription: ObserverToken<Bool>?
     fileprivate var waitingForInitialLoad = true
     fileprivate var registrationStatusChanged = false
 
@@ -52,6 +55,8 @@ class LiveAuctionViewController: UIViewController {
         // Find out when we've updated registration status
         NotificationCenter.default
             .addObserver(self, selector: #selector(userHasChangedRegistrationStatus), name: NSNotification.Name.ARAuctionArtworkRegistrationUpdated, object: nil)
+        NotificationCenter.default
+            .addObserver(self, selector: #selector(showSaleOnHoldBanner), name: NSNotification.Name.ARAuctionSaleOnHoldBannerTapped, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -167,7 +172,32 @@ class LiveAuctionViewController: UIViewController {
 
     func dismissLiveAuctionsModal() {
         overlaySubscription?.unsubscribe()
+        saleOnHoldSubscription?.unsubscribe()
         self.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+
+    func updateSaleOnHoldOverlay(onHold: Bool) {
+        if onHold && !hasShownSaleOnHoldBanner {
+            // Present a sale-on-hold overlay
+            showSaleOnHoldBanner()
+            hasShownSaleOnHoldBanner = true
+        } else {
+            // Dismiss any sale-on-hold overlay
+            dismissSaleOnHoldBanner()
+        }
+    }
+
+    func showSaleOnHoldBanner() {
+        saleOnHoldBanner = SaleOnHoldOverlayView().then {
+            view.addSubview($0)
+            $0.align(toView: view)
+            $0.delegate = self
+        }
+    }
+
+    func dismissSaleOnHoldBanner() {
+        saleOnHoldBanner?.removeFromSuperview()
+        saleOnHoldBanner = nil
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -187,6 +217,12 @@ class LiveAuctionViewController: UIViewController {
 
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return traitDependentSupportedInterfaceOrientations
+    }
+}
+
+extension LiveAuctionViewController: SaleOnHoldOverlayViewDelegate {
+    func userDidTapDismiss(forSaleOnHoldOverlayView saleOnHoldOverlayView: SaleOnHoldOverlayView) {
+        dismissSaleOnHoldBanner()
     }
 }
 
@@ -221,6 +257,17 @@ extension PrivateFunctions {
             }
         }
 
+        // Wait for the initial state to load before removing the loading view.
+        salesPerson.initialStateLoadedSignal.subscribe { [weak self] _ in
+            self?.loadInitialState(salesPerson: salesPerson)
+        }
+    }
+
+    func loadInitialState(salesPerson: LiveAuctionsSalesPersonType) {
+        waitingForInitialLoad = false
+        loadingView?.removeFromSuperview()
+        loadingView = nil
+
         // Dispose of, then create a new overlay subscription for network connectivity issues.
         overlaySubscription?.unsubscribe()
         overlaySubscription = salesPerson.socketConnectionSignal
@@ -228,11 +275,9 @@ extension PrivateFunctions {
             .map { return $0.0 && $0.1 } // We are connected iff the socket is connected and the operator is connected.
             .subscribe(showSocketDisconnectedOverlay)
 
-        // Wait for the initial state to load before removing the loading view.
-        salesPerson.initialStateLoadedSignal.subscribe { [weak self] _ in
-            self?.waitingForInitialLoad = false
-            self?.loadingView?.removeFromSuperview()
-            self?.loadingView = nil
+        saleOnHoldSubscription?.unsubscribe()
+        saleOnHoldSubscription = salesPerson.saleOnHoldSignal.subscribe { [weak self] (onHold) in
+            self?.updateSaleOnHoldOverlay(onHold: onHold)
         }
     }
 
