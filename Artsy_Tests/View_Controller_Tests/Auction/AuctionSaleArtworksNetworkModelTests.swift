@@ -39,18 +39,6 @@ class AuctionSaleArtworksNetworkModelSpec: QuickSpec {
             expect(saleArtworks?.first?.saleArtworkID) == saleArtworkID
         }
 
-        it("caches the fetched sale artworks") {
-            OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/\(saleID)/sale_artworks", withResponse: saleArtworksJSON)
-
-            waitUntil { done in
-                subject.fetchSaleArtworks(saleID).subscribe { result in
-                    done()
-                }
-            }
-
-            expect(subject.saleArtworks?.first?.saleArtworkID) == saleArtworkID
-        }
-
         it("loads the second page, if necessary") {
             var callNumber = 0
             OHHTTPStubs.stubRequests(passingTest: { request in

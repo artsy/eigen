@@ -7,20 +7,16 @@ protocol AuctionSaleArtworksNetworkModelType {
 
 /// Network model responsible for fetching the SaleArtworks from the API.
 class AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType {
-
-    var saleArtworks: [SaleArtwork]?
-
     func fetchSaleArtworks(_ saleID: String) -> Observable<Result<[SaleArtwork]>> {
 
         let observable = Observable<Result<[SaleArtwork]>>()
 
         /// Fetches all the sale artworks associated with the sale.
         /// This serves as a trampoline for the actual recursive call.
-        fetchPage(1, forSaleID: saleID, alreadyFetched: []) { [weak self] result in
+        fetchPage(1, forSaleID: saleID, alreadyFetched: []) { result in
             switch result {
             case .success(let saleArtworks):
                 let filteredSaleArtworks = saleArtworks.filter { $0.artwork.published.boolValue }
-                self?.saleArtworks = filteredSaleArtworks
                 observable.update(.success(filteredSaleArtworks))
             case .error(let error):
                 observable.update(.error(error))
