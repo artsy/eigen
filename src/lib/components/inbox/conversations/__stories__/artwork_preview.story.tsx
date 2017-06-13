@@ -1,6 +1,7 @@
 import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import "react-native"
+import StubContainer from "react-storybooks-relay-container"
 
 import ArtworkPreview from "../artwork_preview"
 
@@ -10,8 +11,13 @@ const artwork = {
   date: "1997",
   artist_names: "Kara Walker",
   image: {
-    url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
+    url: "https://d32dm0rphc51dk.cloudfront.net/bUR0QklqLHJ4_mfIzeioIQ/normalized.jpg",
   },
 }
 
-storiesOf("Conversation - Artwork Preview").add("Alone", () => <ArtworkPreview artwork={artwork} />)
+storiesOf("Conversation - Artwork Preview")
+  .add("Basic", () => <StubContainer Component={ArtworkPreview} props={{ artwork }} />)
+  .add("With a long title", () => {
+    artwork.title = "Canisters Canisters Canisters Canisters Canisters Canisters"
+    return <StubContainer Component={ArtworkPreview} props={{ artwork }} />
+  })

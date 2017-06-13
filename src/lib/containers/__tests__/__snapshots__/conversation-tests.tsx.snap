@@ -22,6 +22,7 @@ exports[`looks correct when rendered 1`] = `
         Object {
           "alignSelf": "stretch",
           "flexDirection": "column",
+          "marginBottom": 20,
           "marginTop": 10,
         },
         undefined,
@@ -101,103 +102,78 @@ exports[`looks correct when rendered 1`] = `
     </View>
   </View>
   <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       Array [
         Object {
-          "borderColor": "#e5e5e5",
-          "borderWidth": 1,
-          "flexDirection": "row",
-          "marginTop": 20,
+          "backgroundColor": "transparent",
         },
         undefined,
       ]
     }
+    testID={undefined}
+    tvParallaxProperties={undefined}
   >
-    <AROpaqueImageView
-      imageURL="https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg"
-      style={
-        Array [
-          Object {
-            "height": 55,
-            "marginBottom": 12,
-            "marginLeft": 12,
-            "marginTop": 12,
-            "width": 80,
-          },
-          undefined,
-        ]
-      }
-    />
     <View
       style={
         Array [
           Object {
-            "flexBasis": 0,
-            "flexDirection": "column",
-            "flexGrow": 1,
-            "flexShrink": 1,
+            "borderColor": "#e5e5e5",
+            "borderWidth": 1,
+            "flexDirection": "row",
           },
-          Array [
-            Object {
-              "alignSelf": "center",
-              "marginLeft": 25,
-            },
-            undefined,
-          ],
+          undefined,
         ]
       }
     >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg"
         style={
           Array [
             Object {
-              "color": "black",
-              "fontSize": 16,
-              "textAlign": "left",
+              "height": 55,
+              "marginBottom": 12,
+              "marginLeft": 12,
+              "marginTop": 12,
+              "width": 80,
             },
-            Array [
-              Object {
-                "fontSize": 14,
-              },
-              undefined,
-            ],
-            Object {
-              "fontFamily": "AGaramondPro-Regular",
-            },
+            undefined,
           ]
         }
-      >
-        Adrian Piper
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      />
+      <View
         style={
           Array [
             Object {
-              "color": "black",
-              "fontSize": 14,
+              "flexBasis": 0,
+              "flexDirection": "column",
+              "flexGrow": 1,
+              "flexShrink": 1,
             },
             Array [
               Object {
-                "marginTop": 3,
+                "alignSelf": "center",
+                "marginLeft": 25,
               },
               undefined,
             ],
-            Object {
-              "fontFamily": "AGaramondPro-Italic",
-            },
           ]
         }
       >
-        The Mythic Being: Sol’s Drawing #1–5
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -223,9 +199,61 @@ exports[`looks correct when rendered 1`] = `
             ]
           }
         >
-          , 1974
+          Adrian Piper
         </Text>
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 14,
+              },
+              Array [
+                Object {
+                  "marginTop": 3,
+                },
+                undefined,
+              ],
+              Object {
+                "fontFamily": "AGaramondPro-Italic",
+              },
+            ]
+          }
+        >
+          The Mythic Being: Sol’s Drawing #1–5
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "color": "black",
+                  "fontSize": 16,
+                  "textAlign": "left",
+                },
+                Array [
+                  Object {
+                    "fontSize": 14,
+                  },
+                  undefined,
+                ],
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }
+          >
+            , 1974
+          </Text>
+        </Text>
+      </View>
     </View>
   </View>
   <RCTScrollView

@@ -10,6 +10,7 @@ import colors from "../../data/colors"
 import ArtworkPreview from "../components/inbox/conversations/artwork_preview"
 import Composer from "../components/inbox/conversations/composer"
 import Message from "../components/inbox/conversations/message"
+import ARSwitchBoard from "../native_modules/switch_board"
 
 // tslint:disable-next-line:no-var-requires
 const chevron: ImageURISource = require("../../../images/horizontal_chevron.png")
@@ -24,6 +25,7 @@ const Header = styled.View`
   alignSelf: stretch
   marginTop: 10
   flexDirection: column
+  marginBottom: 20
 `
 
 const HeaderTextContainer = styled.View`
@@ -78,7 +80,10 @@ export class Conversation extends React.Component<RelayProps, any> {
             <MetadataText>Info</MetadataText>
           </HeaderTextContainer>
         </Header>
-        <ArtworkPreview artwork={artwork} />
+        <ArtworkPreview
+          artwork={artwork}
+          onSelected={() => ARSwitchBoard.presentNavigationViewController(this, artwork.href)}
+        />
         <MessagesList
           data={data}
           renderItem={messageProps => <Message message={messageProps.item} />}
@@ -105,6 +110,7 @@ export default Relay.createContainer(Conversation, {
           artworks @relay (plural: true) {
             title
             artist_names
+            href
             ${ArtworkPreview.getFragment("artwork")}
           }
         }

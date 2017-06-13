@@ -1,6 +1,8 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
+import { TouchableHighlight } from "react-native"
+
 import { PreviewText as P, Subtitle } from "../typography"
 
 import styled from "styled-components/native"
@@ -11,7 +13,6 @@ import OpaqueImageView from "../../opaque_image_view"
 const Container = styled.View`
   borderWidth: 1
   borderColor: ${colors["gray-regular"]}
-  marginTop: 20
   flexDirection: row
 `
 
@@ -41,21 +42,27 @@ const TitleAndDate = styled(Subtitle)`
   marginTop: 3
 `
 
-export class ArtworkPreview extends React.Component<RelayProps, any> {
+interface Props extends RelayProps {
+  onSelected?: () => void
+}
+
+export class ArtworkPreview extends React.Component<Props, any> {
   render() {
     const artwork = this.props.artwork
 
     return (
-      <Container>
-        <Image imageURL={artwork.image.url} />
-        <TextContainer>
-          <SerifText>{artwork.artist_names}</SerifText>
-          <TitleAndDate>
-            {artwork.title}
-            {artwork.date && <SerifText>{`, ${artwork.date}`}</SerifText>}
-          </TitleAndDate>
-        </TextContainer>
-      </Container>
+      <TouchableHighlight underlayColor={colors["gray-light"]} onPress={this.props.onSelected}>
+        <Container>
+          <Image imageURL={artwork.image.url} />
+          <TextContainer>
+            <SerifText>{artwork.artist_names}</SerifText>
+            <TitleAndDate>
+              {artwork.title}
+              {artwork.date && <SerifText>{`, ${artwork.date}`}</SerifText>}
+            </TitleAndDate>
+          </TextContainer>
+        </Container>
+      </TouchableHighlight>
     )
   }
 }
