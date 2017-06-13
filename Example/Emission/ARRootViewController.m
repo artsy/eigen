@@ -4,15 +4,21 @@
 #import "ARAdminTableViewCell.h"
 #import <SAMKeychain/SAMKeychain.h>
 
+#import "AppDelegate.h"
 #import "ARDefaults.h"
 
 // See https://github.com/artsy/eigen/blob/master/Artsy/View_Controllers/Admin/ARAdminSettingsViewController.m
 // for examples of how to work with this.
 
+#import "ARRootViewController+AppHub.h"
+#import "ARRootViewController+PRs.h"
+
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
+#import <Emission/ARComponentViewController.h>
+#import <Emission/ARInboxComponentViewController.h>
 #import "ARStorybookComponentViewController.h"
 
 @implementation ARRootViewController
@@ -27,19 +33,28 @@
 
   ARSectionData *appData = [[ARSectionData alloc] init];
   [self setupSection:appData withTitle:[self titleForApp]];
+  [appData addCellData:self.emissionJSLocationDescription];
   [appData addCellData:self.generateStagingSwitch];
   [tableViewData addSectionData:appData];
-
-  ARSectionData *viewControllerSection = [self jumpToViewControllersSection];
-  [tableViewData addSectionData:viewControllerSection];
 
 #if TARGET_OS_SIMULATOR && defined(DEBUG)
   ARSectionData *developerSection = [self developersSection];
   [tableViewData addSectionData:developerSection];
 #endif
 
+  ARSectionData *reviewSection = [self prSectionData];
+  [tableViewData addSectionData:reviewSection];
+
   ARSectionData *userSection = [self userSection];
   [tableViewData addSectionData:userSection];
+
+  ARSectionData *viewControllerSection = [self jumpToViewControllersSection];
+  [tableViewData addSectionData:viewControllerSection];
+
+#if defined(DEPLOY)
+  ARSectionData *appHubSection = [self appHubSectionData];
+  [tableViewData addSectionData:appHubSection];
+#endif
 
   self.tableViewData = tableViewData;
 }
@@ -57,6 +72,8 @@
   [sectionData addCellData:self.jumpToGene];
   [sectionData addCellData:self.jumpToRefinedGene];
   [sectionData addCellData:self.jumpToWorksForYou];
+  [sectionData addCellData:self.jumpToConsignments];
+  [sectionData addCellData:self.jumpToInbox];
 
   return sectionData;
 }
@@ -67,6 +84,7 @@
   [self setupSection:sectionData withTitle:@"Developer"];
 
   [sectionData addCellData:self.jumpToStorybooks];
+
   return sectionData;
 }
 
@@ -75,8 +93,17 @@
 
 - (ARCellData *)jumpToStorybooks
 {
-  return [self tappableCellDataWithTitle:@"Open Storybooks" selection: ^{
+  return [self tappableCellDataWithTitle:@"Open Storybook" selection: ^{
     id viewController = [ARStorybookComponentViewController new];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+- (ARCellData *)jumpToEndUserStorybooks
+{
+  return [self tappableCellDataWithTitle:@"Open Storybook Browser" selection: ^{
+    id viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"StorybookBrowser" initialProperties: @{}];
+
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
@@ -147,6 +174,22 @@
   }];
 }
 
+- (ARCellData *)jumpToConsignments
+{
+  return [self tappableCellDataWithTitle:@"Start Consignment Flow" selection:^{
+    id viewController = [[ARComponentViewController alloc] initWithEmission: nil moduleName:@"Consignments" initialProperties: @{}];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+- (ARCellData *)jumpToInbox
+{
+  return [self tappableCellDataWithTitle:@"Inbox" selection:^{
+    id viewController = [[ARInboxComponentViewController alloc] initWithInbox];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
 - (ARCellData *)generateStagingSwitch
 {
   BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
@@ -168,11 +211,25 @@
   return crashCellData;
 }
 
+- (ARCellData *)emissionJSLocationDescription
+{
+  AppDelegate *appDelegate = (id)[UIApplication sharedApplication].delegate;
+
+  ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+  [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
+    cell.textLabel.text = [appDelegate emissionLoadedFromString];
+  }];
+
+  return crashCellData;
+}
+
+
 - (ARSectionData *)userSection
 {
   ARSectionData *sectionData = [[ARSectionData alloc] init];
   [self setupSection:sectionData withTitle:@"User"];
 
+  [sectionData addCellData:self.jumpToEndUserStorybooks];
   [sectionData addCellData:self.logOutButton];
   return sectionData;
 }

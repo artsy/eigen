@@ -2,7 +2,6 @@ source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '9.0'
-use_frameworks!
 # FIXME: Figure out why we are getting hit by this issue.
 install! 'cocoapods', :deterministic_uuids => false
 
@@ -15,16 +14,17 @@ target 'Emission' do
   pod 'Emission', :path => '../'
 
   # As this runs dev, we need the developer web socket
-  pod 'React', :path => react_path, :subspecs => %w(RCTWebSocket)
+  pod 'React', :path => react_path, :subspecs => %w(DevSupport BatchedBridge RCTAnimation)
   pod 'Yoga', :path => yoga_path
 
+  pod 'Sentry', :subspecs => ['Core', 'KSCrash']
   pod 'SentryReactNative', :path => sentry_path
 
   # Got to make it look right
   pod 'Artsy+UIFonts'
 
   # For easy updating of the JS
-  pod 'AppHub'
+  pod 'AppHub', :git => 'https://github.com/orta/apphub.git', :branch => "build_list"
 
   # Native UI tweaks
   pod 'FLKAutoLayout'
@@ -40,19 +40,12 @@ target 'Emission' do
                               :git => 'https://github.com/artsy/Artsy-Authentication.git',
                               :branch => 'fetch-user-details'
 
-  target 'EmissionTests' do
-    inherit! :search_paths
-
-    pod 'React', :path => react_path, :subspecs => %w(RCTTest)
-
-    pod 'Specta'
-    # pod 'Expecta'
-  end
-end
-
-post_install do |installer|
-  installer.pods_project.build_configurations.each do |config|
-    config.build_settings['SWIFT_VERSION'] = '3.0'
-    config.build_settings['ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES'] = 'YES'
-  end
+# target 'EmissionTests' do
+#    inherit! :search_paths
+#
+#    pod 'React', :path => react_path, :subspecs => %w(Core RCTTest)
+#
+#    pod 'Specta'
+#    pod 'Expecta'
+# end
 end

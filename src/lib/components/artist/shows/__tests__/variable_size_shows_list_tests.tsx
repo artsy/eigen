@@ -6,16 +6,16 @@ import ShowsList from "../variable_size_shows_list"
 
 it("renders properly", () => {
   const show1 = showProps(1)
-  let show2 = showProps(2)
+  const show2 = showProps(2)
   show2.partner.name = "A Very Nice Gallery"
   show2.location.city = "London"
 
-  const shows = [ show1, show2 ]
+  const shows = [show1, show2]
   const list = renderer.create(<ShowsList shows={shows} showSize={"medium"} />).toJSON()
   expect(list).toMatchSnapshot()
 })
 
-let showProps = (n) => {
+const showProps = n => {
   return {
     __id: `show-expansive-exhibition-${n}`,
     href: "artsy.net/show",

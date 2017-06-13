@@ -1,7 +1,7 @@
 import * as renderer from "react-test-renderer"
 
 /** Renders a React Component with specified layout using onLayout callback */
-export const renderWithLayout = (component: any, layout: { width?: number, height?: number }) => {
+export const renderWithLayout = (component: any, layout: { width?: number; height?: number }) => {
   // create the component with renderer
   component = renderer.create(component)
 

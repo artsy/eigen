@@ -19,7 +19,7 @@ describe("availableTabs", () => {
 
   it("returns About tab if artist has articles", () => {
     const artist = new Artist()
-    artist.props = artistProps(false, {articles: 1})
+    artist.props = artistProps(false, { articles: 1 })
     expect(artist.availableTabs()).toEqual(["ABOUT"])
   })
 
@@ -64,23 +64,25 @@ describe("after rendering", () => {
 
 describe("layout", () => {
   it("works as expected with no tabs", () => {
-    const artist = renderer.create(<Artist artist={artistProps(false).artist}/>)
+    const artist = renderer.create(<Artist artist={artistProps(false).artist} />)
     expect(artist.toJSON()).toMatchSnapshot()
- })
+  })
 
   it("works as expected with one tab", () => {
-    const artist = renderer.create(<Artist artist={artistProps(true).artist}/>)
+    const artist = renderer.create(<Artist artist={artistProps(true).artist} />)
     expect(artist.toJSON()).toMatchSnapshot()
   })
 
   it("works as expected with three tabs", () => {
-    const artist = renderer.create(<Artist artist={artistProps(true, { artworks: 2 , partner_shows: 1 }).artist}/>)
+    const artist = renderer.create(<Artist artist={artistProps(true, { artworks: 2, partner_shows: 1 }).artist} />)
     expect(artist.toJSON()).toMatchSnapshot()
   })
 })
 
-let artistProps = (hasMetadata: boolean, counts?: any) => {
-  if (!counts) { counts = { articles: 0, partner_shows: 0, artworks: 0 } }
+const artistProps = (hasMetadata: boolean, counts?: any) => {
+  if (!counts) {
+    counts = { articles: 0, partner_shows: 0, artworks: 0 }
+  }
   return {
     artist: {
       has_metadata: hasMetadata,

@@ -1,0 +1,703 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks correct when rendered 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexDirection": "column",
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "marginLeft": 20,
+        "marginRight": 20,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "alignSelf": "stretch",
+          "flexDirection": "column",
+          "marginBottom": 20,
+          "marginTop": 10,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+          },
+          undefined,
+        ]
+      }
+    >
+      <Image
+        source={1}
+        style={
+          Array [
+            Object {
+              "height": 12,
+              "transform": Array [
+                Object {
+                  "rotate": "180deg",
+                },
+              ],
+              "width": 7,
+            },
+            undefined,
+          ]
+        }
+      />
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 11,
+              "textAlign": "left",
+            },
+            Object {},
+            Object {
+              "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            },
+          ]
+        }
+      >
+        KIMBERLY KLARK
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "#cccccc",
+              "fontSize": 11,
+              "textAlign": "left",
+            },
+            Object {},
+            Object {
+              "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            },
+          ]
+        }
+      >
+        INFO
+      </Text>
+    </View>
+  </View>
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "borderColor": "#e5e5e5",
+            "borderWidth": 1,
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg"
+        style={
+          Array [
+            Object {
+              "height": 55,
+              "marginBottom": 12,
+              "marginLeft": 12,
+              "marginTop": 12,
+              "width": 80,
+            },
+            undefined,
+          ]
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "flexBasis": 0,
+              "flexDirection": "column",
+              "flexGrow": 1,
+              "flexShrink": 1,
+            },
+            Array [
+              Object {
+                "alignSelf": "center",
+                "marginLeft": 25,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 16,
+                "textAlign": "left",
+              },
+              Array [
+                Object {
+                  "fontSize": 14,
+                },
+                undefined,
+              ],
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+              },
+            ]
+          }
+        >
+          Adrian Piper
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 14,
+              },
+              Array [
+                Object {
+                  "marginTop": 3,
+                },
+                undefined,
+              ],
+              Object {
+                "fontFamily": "AGaramondPro-Italic",
+              },
+            ]
+          }
+        >
+          The Mythic Being: Sol’s Drawing #1–5
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "color": "black",
+                  "fontSize": 16,
+                  "textAlign": "left",
+                },
+                Array [
+                  Object {
+                    "fontSize": 14,
+                  },
+                  undefined,
+                ],
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }
+          >
+            , 1974
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
+  <RCTScrollView
+    ItemSeparatorComponent={[Function]}
+    data={
+      Array [
+        Object {
+          "body": "Adoro! Por favor envie-me mais informações",
+          "key": 0,
+          "senderName": "Anita Garibaldi",
+          "time": "11:00AM",
+        },
+        Object {
+          "body": "Hi Sarah, thanks for reaching out with your interest in this great piece by Adrian Piper. The Mythic Being: Sol’s Drawing #1–5 is currently available at $3,600; please let me know if you have any other questions.",
+          "key": 1,
+          "senderName": "Kimberly Klark",
+          "time": "11:00AM",
+        },
+      ]
+    }
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    onViewableItemsChanged={undefined}
+    renderItem={[Function]}
+    renderScrollComponent={[Function]}
+    scrollEventThrottle={50}
+    stickyHeaderIndices={Array []}
+    style={
+      Array [
+        Object {
+          "marginTop": 10,
+        },
+        undefined,
+      ]
+    }
+    updateCellsBatchingPeriod={50}
+    windowSize={21}
+  >
+    <View>
+      <View
+        onLayout={[Function]}
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "flexDirection": "row",
+              },
+              Array [
+                Object {
+                  "alignSelf": "stretch",
+                  "flexBasis": 0,
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "marginBottom": 10,
+                  "marginTop": 15,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#e5e5e5",
+                  "borderRadius": 20,
+                  "height": 20,
+                  "width": 20,
+                },
+                undefined,
+              ]
+            }
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "flexBasis": 0,
+                  "flexDirection": "column",
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                },
+                Array [
+                  Object {
+                    "marginLeft": 10,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "flexDirection": "row",
+                  },
+                  Array [
+                    Object {
+                      "alignSelf": "stretch",
+                      "marginBottom": 10,
+                    },
+                    undefined,
+                  ],
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "color": "black",
+                      "fontSize": 11,
+                      "textAlign": "left",
+                    },
+                    Array [
+                      Object {
+                        "marginRight": 10,
+                      },
+                      undefined,
+                    ],
+                    Object {
+                      "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                    },
+                  ]
+                }
+              >
+                ANITA GARIBALDI
+              </Text>
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "color": "#cccccc",
+                      "fontSize": 11,
+                      "textAlign": "left",
+                    },
+                    Object {},
+                    Object {
+                      "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                    },
+                  ]
+                }
+              >
+                11:00AM
+              </Text>
+            </View>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              disabled={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": "black",
+                    "fontSize": 16,
+                    "textAlign": "left",
+                  },
+                  Object {},
+                  Object {
+                    "fontFamily": "AGaramondPro-Regular",
+                  },
+                ]
+              }
+            >
+              Adoro! Por favor envie-me mais informações
+            </Text>
+          </View>
+        </View>
+        <View
+          highlighted={false}
+          leadingItem={
+            Object {
+              "body": "Adoro! Por favor envie-me mais informações",
+              "key": 0,
+              "senderName": "Anita Garibaldi",
+              "time": "11:00AM",
+            }
+          }
+          style={
+            Array [
+              Object {
+                "borderColor": "#e5e5e5",
+                "borderStyle": "dotted",
+                "borderWidth": 1,
+                "height": 1,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+      <View
+        onLayout={[Function]}
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "flexDirection": "row",
+              },
+              Array [
+                Object {
+                  "alignSelf": "stretch",
+                  "flexBasis": 0,
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "marginBottom": 10,
+                  "marginTop": 15,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#e5e5e5",
+                  "borderRadius": 20,
+                  "height": 20,
+                  "width": 20,
+                },
+                undefined,
+              ]
+            }
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "flexBasis": 0,
+                  "flexDirection": "column",
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                },
+                Array [
+                  Object {
+                    "marginLeft": 10,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "flexDirection": "row",
+                  },
+                  Array [
+                    Object {
+                      "alignSelf": "stretch",
+                      "marginBottom": 10,
+                    },
+                    undefined,
+                  ],
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "color": "black",
+                      "fontSize": 11,
+                      "textAlign": "left",
+                    },
+                    Array [
+                      Object {
+                        "marginRight": 10,
+                      },
+                      undefined,
+                    ],
+                    Object {
+                      "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                    },
+                  ]
+                }
+              >
+                KIMBERLY KLARK
+              </Text>
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "color": "#cccccc",
+                      "fontSize": 11,
+                      "textAlign": "left",
+                    },
+                    Object {},
+                    Object {
+                      "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                    },
+                  ]
+                }
+              >
+                11:00AM
+              </Text>
+            </View>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              disabled={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": "black",
+                    "fontSize": 16,
+                    "textAlign": "left",
+                  },
+                  Object {},
+                  Object {
+                    "fontFamily": "AGaramondPro-Regular",
+                  },
+                ]
+              }
+            >
+              Hi Sarah, thanks for reaching out with your interest in this great piece by Adrian Piper. The Mythic Being: Sol’s Drawing #1–5 is currently available at $3,600; please let me know if you have any other questions.
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+  <View
+    keyboardVerticalOffset={0}
+    onLayout={[Function]}
+    style={
+      Array [
+        undefined,
+        Object {
+          "paddingBottom": 0,
+        },
+      ]
+    }
+  >
+    <View
+      active={false}
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#f8f8f8",
+            "borderColor": "#e5e5e5",
+            "borderRadius": 3,
+            "borderWidth": 1,
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "marginBottom": 20,
+          },
+          undefined,
+        ]
+      }
+    >
+      <TextInput
+        keyboardAppearance="dark"
+        multiline={true}
+        onChangeText={[Function]}
+        onEndEditing={[Function]}
+        onFocus={[Function]}
+        placeholder="Reply..."
+        placeholderTextColor="#666666"
+        style={
+          Object {
+            "flex": 1,
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 12,
+            "paddingBottom": 10,
+            "paddingLeft": 10,
+            "paddingRight": 10,
+            "paddingTop": 10,
+          }
+        }
+      />
+      <Text
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        allowFontScaling={true}
+        containsText={false}
+        disabled={false}
+        ellipsizeMode="tail"
+        hitSlop={undefined}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "color": "#e5e5e5",
+              "fontFamily": "Avant Garde Gothic ITCW01Dm",
+              "fontSize": 12,
+              "marginRight": 10,
+            },
+            undefined,
+          ]
+        }
+        testID={undefined}
+      >
+        SEND
+      </Text>
+    </View>
+  </View>
+</View>
+`;

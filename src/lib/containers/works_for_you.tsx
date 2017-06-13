@@ -9,27 +9,23 @@ import {
   NativeModules,
   ScrollView,
   StyleSheet,
-  Text,
   TextStyle,
   View,
   ViewStyle,
 } from "react-native"
-const { ARTemporaryAPIModule, ARWorksForYouModule } = NativeModules
 
 import Events from "../native_modules/events"
 
 import ArtworksGrid from "../components/artwork_grids/generic_grid"
-import Headline from "../components/text/headline"
 import SerifText from "../components/text/serif"
 import Notification from "../components/works_for_you/notification"
 
 import colors from "../../data/colors"
 
 const PageSize = 10
-const PageEndThreshold = 1000
 
 interface Props extends RelayProps {
-  relay: any;
+  relay: any
 }
 
 interface State {
@@ -48,12 +44,13 @@ export class WorksForYou extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 
-    const notifications = this.props.viewer.me.notifications.edges.map((edge) => edge.node)
+    const notifications = this.props.viewer.me.notifications.edges.map(edge => edge.node)
     if (this.props.viewer.selectedArtist) {
       notifications.unshift(this.formattedSpecialNotification())
     }
 
-    const dataSource = notifications.length &&
+    const dataSource =
+      notifications.length &&
       new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }).cloneWithRows(notifications)
 
     this.state = {
@@ -67,7 +64,7 @@ export class WorksForYou extends React.Component<Props, State> {
 
   componentDidMount() {
     // Update read status in gravity
-    NativeModules.ARTemporaryAPIModule.markNotificationsRead((error) => {
+    NativeModules.ARTemporaryAPIModule.markNotificationsRead(error => {
       if (error) {
         console.error(error)
       } else {
@@ -113,26 +110,29 @@ export class WorksForYou extends React.Component<Props, State> {
       return
     }
     this.setState({ fetchingNextPage: true })
-    this.props.relay.setVariables({
-      totalSize: this.props.relay.variables.totalSize + PageSize,
-    }, (readyState) => {
-      if (readyState.done) {
-        let notifications = this.props.viewer.me.notifications.edges.map((edge) => edge.node)
+    this.props.relay.setVariables(
+      {
+        totalSize: this.props.relay.variables.totalSize + PageSize,
+      },
+      readyState => {
+        if (readyState.done) {
+          const notifications = this.props.viewer.me.notifications.edges.map(edge => edge.node)
 
-        // Make sure we maintain the special notification if it exists
-        if (this.props.viewer.selectedArtist) {
-          notifications.unshift(this.formattedSpecialNotification())
-        }
+          // Make sure we maintain the special notification if it exists
+          if (this.props.viewer.selectedArtist) {
+            notifications.unshift(this.formattedSpecialNotification())
+          }
 
-        this.setState({
-          fetchingNextPage: false,
-          dataSource: this.state.dataSource.cloneWithRows(notifications),
-        })
-        if (!this.props.viewer.me.notifications.pageInfo.hasNextPage) {
-          this.setState({ completed: true })
+          this.setState({
+            fetchingNextPage: false,
+            dataSource: this.state.dataSource.cloneWithRows(notifications),
+          })
+          if (!this.props.viewer.me.notifications.pageInfo.hasNextPage) {
+            this.setState({ completed: true })
+          }
         }
       }
-    })
+    )
   }
 
   componentDidUpdate() {
@@ -148,45 +148,47 @@ export class WorksForYou extends React.Component<Props, State> {
        otherwise, it should not use any flex growth.
     */
     return (
-      <ScrollView contentContainerStyle={ hasNotifications ? {} : styles.container}
-                  onLayout={this.onLayout.bind(this)}
-                  onScroll={event => this.currentScrollOffset = event.nativeEvent.contentOffset.y}
-                  scrollEventThrottle={100}
-                  ref={scrollView => this.scrollView = scrollView}
+      <ScrollView
+        contentContainerStyle={hasNotifications ? {} : styles.container}
+        onLayout={this.onLayout.bind(this)}
+        onScroll={event => (this.currentScrollOffset = event.nativeEvent.contentOffset.y)}
+        scrollEventThrottle={100}
+        ref={scrollView => (this.scrollView = scrollView)}
       >
         <SerifText style={[styles.title, containerMargins]}>Works by Artists you Follow</SerifText>
-        <View style={[containerMargins, {flex: 1}]}>
-          { hasNotifications ? this.renderNotifications() : this.renderEmptyState() }
+        <View style={[containerMargins, { flex: 1 }]}>
+          {hasNotifications ? this.renderNotifications() : this.renderEmptyState()}
         </View>
       </ScrollView>
     )
   }
 
   renderNotifications() {
-    return(
-      <ListView dataSource={this.state.dataSource}
-                renderRow={data => <Notification notification={data}/>}
-                renderSeparator={(sectionID, rowID) =>
-                  <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>
-                }
-                style={{marginTop: this.state.topMargin}}
-                onEndReached={ () => this.fetchNextPage()}
-                scrollEnabled={false}
-      />)
+    return (
+      <ListView
+        dataSource={this.state.dataSource}
+        renderRow={data => <Notification notification={data} />}
+        renderSeparator={(sectionID, rowID) =>
+          <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>}
+        style={{ marginTop: this.state.topMargin }}
+        onEndReached={() => this.fetchNextPage()}
+        scrollEnabled={false}
+      />
+    )
   }
 
   renderEmptyState() {
-    const border = <View style={{height: 1, backgroundColor: "black"}}/>
+    const border = <View style={{ height: 1, backgroundColor: "black" }} />
     const text = "Follow artists to get updates about new works that become available."
     return (
       <View style={styles.emptyStateContainer}>
-        <View style={{paddingBottom: 60}}>
-        { border }
-        <View style={styles.emptyStateText}>
-          <SerifText style={styles.emptyStateMainLabel}>You’re not following any artists yet</SerifText>
-          <SerifText style={styles.emptyStateSubLabel} numberOfLines={2}>{ text }</SerifText>
-        </View>
-        { border }
+        <View style={{ paddingBottom: 60 }}>
+          {border}
+          <View style={styles.emptyStateText}>
+            <SerifText style={styles.emptyStateMainLabel}>You’re not following any artists yet</SerifText>
+            <SerifText style={styles.emptyStateSubLabel} numberOfLines={2}>{text}</SerifText>
+          </View>
+          {border}
         </View>
       </View>
     )
@@ -194,13 +196,13 @@ export class WorksForYou extends React.Component<Props, State> {
 }
 
 interface Styles {
-  container: ViewStyle,
-  title: TextStyle,
-  emptyStateContainer: ViewStyle,
-  emptyStateText: ViewStyle,
-  emptyStateMainLabel: TextStyle,
-  emptyStateSubLabel: TextStyle,
-  separator: ViewStyle,
+  container: ViewStyle
+  title: TextStyle
+  emptyStateContainer: ViewStyle
+  emptyStateText: ViewStyle
+  emptyStateMainLabel: TextStyle
+  emptyStateSubLabel: TextStyle
+  separator: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -260,7 +262,7 @@ export default Relay.createContainer(WorksForYou, {
             }
             edges {
               node {
-                ${(Notification.getFragment("notification"))}
+                ${Notification.getFragment("notification")}
               }
             }
           }
@@ -275,7 +277,7 @@ export default Relay.createContainer(WorksForYou, {
             }
           }
           artworks(sort:published_at_desc, size: 6) {
-            ${(ArtworksGrid.getFragment("artworks"))}
+            ${ArtworksGrid.getFragment("artworks")}
           }
         }
       }`,
@@ -287,22 +289,24 @@ interface RelayProps {
     me: {
       notifications: {
         pageInfo: {
-          hasNextPage: boolean,
-        },
-        edges: Array<{
-          node: any | null,
-        }>,
-      },
-    },
+          hasNextPage: boolean
+        }
+        edges: Array<
+          {
+            node: any | null
+          }
+        >
+      }
+    }
     selectedArtist?: {
-      name: string,
+      name: string
       image: {
         resized: {
-          url: string,
-        },
-      } | null,
-      artworks: any[],
-      href: string,
-    } | null,
-  },
+          url: string
+        }
+      } | null
+      artworks: any[]
+      href: string
+    } | null
+  }
 }

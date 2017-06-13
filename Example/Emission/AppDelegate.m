@@ -16,14 +16,14 @@
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
+#import <Emission/ARConversationComponentViewController.h>
 
 #import <React/RCTUtils.h>
 #import <TargetConditionals.h>
 #import "AuthenticationManager.h"
-
-#ifdef DEPLOY
+#import "LoadingSpinner.h"
+#import "PRNetworkModel.h"
 #import <AppHub/AppHub.h>
-#endif
 
 // Disable this to force using the release JS bundle, note that you should really do so by running a Release build.
 //
@@ -42,17 +42,20 @@ randomBOOL(void)
 
 @interface AppDelegate ()
 @property (nonatomic, strong) UINavigationController *navigationController;
+@property (nonatomic, strong) LoadingSpinner *spinner;
 @end
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
 {
-
   BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
   NSString *service = useStaging? @"Emission-Staging" : @"Emission-Production";
 
+  BOOL usesPRBuild = [[NSUserDefaults standardUserDefaults] boolForKey:ARUsePREmissionDefault];
+
   AuthenticationManager *auth = [[AuthenticationManager alloc] initWithService:service];
+  self.spinner = [LoadingSpinner new];
 
   ARRootViewController *rootVC = [ARRootViewController new];
   rootVC.authenticationManager = auth;
@@ -64,22 +67,27 @@ randomBOOL(void)
   self.window.rootViewController = self.navigationController;
   [self.window makeKeyAndVisible];
 
-#ifdef DEPLOY
+#if defined(DEPLOY)
   // [AppHub setLogLevel: AHLogLevelDebug];
   [AppHub setApplicationID: @"Z6IwqK52JBXrKLI4kpvJ"];
   [[AppHub buildManager] setDebugBuildsEnabled:YES];
 #endif
 
-
   if ([auth isAuthenticated]) {
     NSString *accessToken = [auth token];
     if (accessToken) {
-      [self setupEmissionWithUserID:[auth userID] accessToken:accessToken keychainService:service];
+      if(usesPRBuild) {
+        [self downloadPRBuildAndLoginWithAuth:auth keychainService:service];
+      } else {
+        [self setupEmissionWithUserID:[auth userID] accessToken:accessToken keychainService:service];
+      }
     }
   } else {
-    [auth presentAuthenticationPromptOnViewController:rootVC completion:^{
-      NSLog(@"Logged in successfully :)");
-      [self setupEmissionWithUserID:[auth userID] accessToken:[auth token] keychainService:service];
+    [self.spinner presentSpinnerOnViewController:rootVC completion:^{
+      [auth presentAuthenticationPromptOnViewController:rootVC.presentedViewController completion:^{
+        NSLog(@"Logged in successfully :)");
+        [self setupEmissionWithUserID:[auth userID] accessToken:[auth token] keychainService:service];
+      }];
     }];
   }
 
@@ -92,32 +100,50 @@ randomBOOL(void)
 - (void)setupEmissionWithUserID:(NSString *)userID accessToken:(NSString *)accessToken keychainService:(NSString *)service;
 {
   AREmission *emission = nil;
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-  BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
+  BOOL useStaging = [defaults boolForKey:ARUseStagingDefault];
+  BOOL usePRBuild = [defaults boolForKey:ARUsePREmissionDefault];
+  BOOL useRNP = NO;
+  BOOL useAppHub = NO;
 
 #ifdef ENABLE_DEV_MODE
-  NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
-  emission = [[AREmission alloc] initWithUserID:userID
-                            authenticationToken:accessToken
-                                    packagerURL:packagerURL
-                          useStagingEnvironment:useStaging
-                                      sentryDSN:nil];
-#else
-#ifdef DEPLOY
-  AHBuild *build = [[AppHub buildManager] currentBuild];
-  NSURL *jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
-#else
-  NSURL *jsCodeLocation = nil;
+  useRNP = YES;
 #endif
+
+#if DEPLOY
+  useAppHub = YES;
+#endif
+
+  NSURL *jsCodeLocation = nil;
+  if (usePRBuild) {
+    PRNetworkModel *pr = [PRNetworkModel new];
+    jsCodeLocation = [pr fileURLForPRJavaScript];
+    NSInteger prNumber = [defaults integerForKey:ARPREmissionIDDefault];
+    self.emissionLoadedFromString = [NSString stringWithFormat:@"PR #%@", @(prNumber)];
+
+  } else if (useRNP) {
+    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
+    self.emissionLoadedFromString = [NSString stringWithFormat:@"Using RNP from %@", jsCodeLocation.host];
+
+  } else if (useAppHub) {
+    AHBuild *build = [[AppHub buildManager] currentBuild];
+    jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
+    self.emissionLoadedFromString = [NSString stringWithFormat:@"Using AppHub build %@", build.name];
+  }
+
+  // Fall back to the bundled Emission JS for release
   if (!jsCodeLocation) {
     NSBundle *emissionBundle = [NSBundle bundleForClass:AREmission.class];
     jsCodeLocation = [emissionBundle URLForResource:@"Emission" withExtension:@"js"];
+    self.emissionLoadedFromString = @"Using bundled JS";
   }
+
   emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken packagerURL:jsCodeLocation useStagingEnvironment:useStaging];
-#endif
   [AREmission setSharedInstance:emission];
 
-
+  ARRootViewController *controller = (id)self.navigationController.topViewController;
+  [controller.tableView reloadData];
 
   emission.APIModule.artistFollowStatusProvider = ^(NSString *artistID, RCTResponseSenderBlock block) {
     NSNumber *following = @(randomBOOL());
@@ -222,6 +248,9 @@ randomBOOL(void)
     }
     viewController = [[ARGeneComponentViewController alloc] initWithGeneID:geneID refineSettings:params];
 
+  } else if ([route hasPrefix:@"/conversation/"] || [route hasPrefix:@"conversation/"]) {
+    NSString *conversationID = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARConversationComponentViewController alloc] initWithConversationID:conversationID];
   } else if ([route isEqualToString:@"/"]) {
     viewController = [[ARHomeComponentViewController alloc] initWithEmission:nil];
 
@@ -236,6 +265,20 @@ randomBOOL(void)
 {
   UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
   [navigationController.visibleViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)downloadPRBuildAndLoginWithAuth:(AuthenticationManager *)auth keychainService:(NSString *)service
+{
+  PRNetworkModel *network = [PRNetworkModel new];
+  NSUInteger prNumber = [[NSUserDefaults standardUserDefaults] integerForKey:ARPREmissionIDDefault];
+
+  [self.spinner presentSpinnerOnViewController:self.navigationController completion:^{
+    [network downloadJavaScriptForPRNumber:prNumber completion:^(NSURL * _Nullable downloadedFileURL, NSError * _Nullable error) {
+      [self.navigationController dismissViewControllerAnimated:YES completion:^{
+        [self setupEmissionWithUserID:[auth userID] accessToken:[auth token] keychainService:service];
+      }];
+    }];
+  }];
 }
 
 @end

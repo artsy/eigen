@@ -1,3 +1,4 @@
+import * as PropTypes from "prop-types"
 import * as React from "react"
 
 import {
@@ -19,7 +20,7 @@ interface Props {
   imageURL?: string
 
   /** The background colour for the image view */
-  placeholderBackgroundColor?: string | number,
+  placeholderBackgroundColor?: string | number
 
   /** Any additional styling for the imageview */
   style?: any
@@ -47,9 +48,9 @@ interface State {
 export default class OpaqueImageView extends React.Component<Props, State> {
   // These are only needed because they are exposed to a native component.
   static propTypes: any = {
-    imageURL: React.PropTypes.string,
-    aspectRatio: React.PropTypes.number,
-    onLoad: React.PropTypes.func,
+    imageURL: PropTypes.string,
+    aspectRatio: PropTypes.number,
+    onLoad: PropTypes.func,
     placeholderBackgroundColor: ColorPropType,
   }
 
@@ -63,12 +64,14 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     // Unless `aspectRatio` was not specified at all, default the ratio to 1 to prevent illegal layout calculations.
     const ratio = props.aspectRatio
     this.state = {
-      aspectRatio: ratio === undefined ? undefined : (ratio || 1),
+      aspectRatio: ratio === undefined ? undefined : ratio || 1,
     }
 
     if (__DEV__) {
       const style = StyleSheet.flatten(props.style)
-      if (style == null) { return }
+      if (style == null) {
+        return
+      }
 
       if (!(this.state.aspectRatio || (style.width && style.height))) {
         console.error("[OpaqueImageView] Either an aspect ratio or specific dimensions should be specified.")
@@ -84,7 +87,9 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       const width = String(this.state.width)
       const height = String(this.state.height)
       // tslint:disable-next-line:max-line-length
-      return `https://${GeminiHost}/?resize_to=${type}&width=${width}&height=${height}&quality=${ImageQuality}&src=${encodeURIComponent(imageURL)}`
+      return `https://${GeminiHost}/?resize_to=${type}&width=${width}&height=${height}&quality=${ImageQuality}&src=${encodeURIComponent(
+        imageURL
+      )}`
     } else {
       return null
     }
@@ -113,7 +118,8 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     // that it shows immediately.
     let backgroundColorStyle = null
     if (this.props.imageURL) {
-      (props as any).placeholderBackgroundColor = processColor(props.placeholderBackgroundColor)
+      const anyProps = props as any
+      anyProps.placeholderBackgroundColor = processColor(props.placeholderBackgroundColor)
     } else {
       backgroundColorStyle = { backgroundColor: props.placeholderBackgroundColor }
     }

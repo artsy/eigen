@@ -7,9 +7,22 @@
         "*.js": "javascriptreact",
         "*.snap": "javascriptreact"
     },
+    "eslint.enable": false,
+    "flow.enabled": false,
+    "editor.formatOnSave": true,
+    "prettier.singleQuote": false,
+    "prettier.trailingComma": "es5",
+    "prettier.typescriptEnable": [
+        "typescript",
+        "typescriptreact"
+    ],
+    "prettier.semi": false,
+    "prettier.printWidth": 120,
     "files.trimTrailingWhitespace": true,
     "editor.renderWhitespace": "boundary",
-    "editor.rulers": [120],
+    "editor.rulers": [
+        120
+    ],
     "editor.tabSize": 2,
     "files.exclude": {
         "**/.git": true,
@@ -30,5 +43,24 @@
         ".vscode/.react/*": true
     },
     "clang.compilationDatabase": "${workspaceRoot}/Example/compile_commands.json",
-    "typescript.tsdk": "./node_modules/typescript/lib"
-  }
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "spellchecker.ignoreWordsList": [
+        "orta",
+        "sarah",
+        "luc",
+        "mzikherman",
+        "CHANGELOG",
+        "Eigen",
+        "scrollview",
+        "blankspace",
+        "ESLint",
+        "GeneVC",
+        "keychain",
+        "linting",
+        "inline",
+        "iPad",
+        "iPhone",
+        "ListView",
+        "ARTemporaryAPIModule"
+    ]
+}

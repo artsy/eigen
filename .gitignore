@@ -45,3 +45,10 @@ coverage
 # Use a custom, cached location for Jest to save transpiling
 # on every PR
 .jest/cache
+
+# A commit deploy using `yarn bundle-with-storybooks` generates these
+Emission.js
+Emission.js.meta
+
+# Danger artifacts
+tslint-errors.json

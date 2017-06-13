@@ -9,7 +9,9 @@ import { WorksForYou } from "../works_for_you"
 beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { markNotificationsRead: jest.fn() }
   NativeModules.ARWorksForYouModule = { updateNotificationsCount: jest.fn() }
-  WorksForYou.prototype.componentDidUpdate = () => { return null }
+  WorksForYou.prototype.componentDidUpdate = () => {
+    return null
+  }
 })
 
 describe("with notifications", () => {
@@ -20,26 +22,26 @@ describe("with notifications", () => {
 
   it("updates the notification count", () => {
     const viewer = notificationsResponse().viewer
-    const worksForYou = renderer.create(<WorksForYou viewer={viewer} relay={null}/>).toJSON()
+    renderer.create(<WorksForYou viewer={viewer} relay={null} />).toJSON()
     expect(NativeModules.ARTemporaryAPIModule.markNotificationsRead).toBeCalled()
   })
 
   it("lays out correctly on small screens", () => {
     const viewer = notificationsResponse().viewer
-    const component = renderWithLayout(<WorksForYou viewer={viewer} relay={null}/>, {width: 100})
+    const component = renderWithLayout(<WorksForYou viewer={viewer} relay={null} />, { width: 100 })
     expect(component).toMatchSnapshot()
   })
 
   it("lays out correctly on larger screens", () => {
     const viewer = notificationsResponse().viewer
-    const component = renderWithLayout(<WorksForYou viewer={viewer} relay={null}/>, {width: 700})
+    const component = renderWithLayout(<WorksForYou viewer={viewer} relay={null} />, { width: 700 })
     expect(component).toMatchSnapshot()
   })
 })
 
 describe("when it has a special notification", () => {
   it("properly formats it and adds it to the top of the dataSource blob", () => {
-    let response = selectedArtistResponse()
+    const response = selectedArtistResponse()
     const worksForYou = new WorksForYou(response)
     const expectedFormattedNotification = {
       date: moment().format("MMM DD"),
@@ -66,13 +68,13 @@ describe("without notifications", () => {
 
   it("lays out correctly on small screens", () => {
     const viewer = emptyStateResponse().viewer
-    const component = renderWithLayout(<WorksForYou viewer={viewer} relay={null}/>, {width: 100})
+    const component = renderWithLayout(<WorksForYou viewer={viewer} relay={null} />, { width: 100 })
     expect(component).toMatchSnapshot()
   })
 
   it("lays out correctly on larger screens", () => {
     const viewer = emptyStateResponse().viewer
-    const component = renderWithLayout(<WorksForYou viewer={viewer} relay={null}/>, { width: 700 })
+    const component = renderWithLayout(<WorksForYou viewer={viewer} relay={null} />, { width: 700 })
     expect(component).toMatchSnapshot()
   })
 })
@@ -82,43 +84,31 @@ interface NotificationsResponse {
     me: {
       notifications: {
         pageInfo: {
-          hasNextPage: boolean,
-        },
-        edges: [
+          hasNextPage: boolean
+        }
+        edges: Array<
           {
             node: {
-              artists: string,
-              date: string,
-              message: string,
-              artworks: [ { title: string } ],
+              artists: string
+              date: string
+              message: string
+              artworks: [{ title: string }]
               image: {
                 resized: {
-                  url: string,
-                },
-              },
-            },
-          },
-          {
-            node: {
-              artists: string,
-              date: string,
-              message: string,
-              artworks: [ { title: string }, { title: string } ],
-              image: {
-                resized: {
-                  url: string,
-                },
-              },
-            },
-          }],
-      },
-    },
+                  url: string
+                }
+              }
+            }
+          }
+        >
+      }
+    }
 
-    selectedArtist ?: any,
+    selectedArtist?: any
   }
 }
 
-let notificationsResponse = () => {
+const notificationsResponse = () => {
   return {
     viewer: {
       me: {
@@ -132,7 +122,7 @@ let notificationsResponse = () => {
                 artists: "Jean-Michel Basquiat",
                 date: "Mar 16",
                 message: "1 Work Added",
-                artworks: [ { title: "Anti-Product Postcard" } ],
+                artworks: [{ title: "Anti-Product Postcard" }],
                 image: {
                   resized: {
                     url: "cloudfront.url",
@@ -145,7 +135,7 @@ let notificationsResponse = () => {
                 artists: "Ana Mendieta",
                 date: "Mar 16",
                 message: "2 Works Added",
-                artworks: [ { title: "Corazón de Roca con Sangre" }, { title: "Butterfly" } ],
+                artworks: [{ title: "Corazón de Roca con Sangre" }, { title: "Butterfly" }],
                 image: {
                   resized: {
                     url: "cloudfront.url",
@@ -160,7 +150,7 @@ let notificationsResponse = () => {
   } as NotificationsResponse
 }
 
-let emptyStateResponse = () => {
+const emptyStateResponse = () => {
   return {
     viewer: {
       me: {
@@ -175,9 +165,9 @@ let emptyStateResponse = () => {
   }
 }
 
-let selectedArtistResponse = () => {
+const selectedArtistResponse = () => {
   {
-    let response = notificationsResponse()
+    const response = notificationsResponse()
     response.viewer.selectedArtist = {
       name: "Juliana Huxtable",
       href: "artist/juliana-huxtable",

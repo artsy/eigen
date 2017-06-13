@@ -38,7 +38,6 @@ it("shows trending artists correctly", () => {
         image: {
           url: "cloudfront.net/some-url",
         },
-
       },
     ],
   }

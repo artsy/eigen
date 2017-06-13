@@ -1,3 +1,4 @@
 import './index.storybooks'
-import 'emission';
+import '../../src/lib/components/storybooks/'
 
+import 'emission';

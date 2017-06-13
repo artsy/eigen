@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Image, StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewProperties, ViewStyle } from "react-native"
+import { Image, StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
 import * as Relay from "react-relay"
 
 import SwitchBoard from "../../native_modules/switch_board"
@@ -9,13 +9,13 @@ import SerifText from "../text/serif"
 
 import colors from "../../../data/colors"
 
-interface Props extends RelayProps {}
-
-export class Notification extends React.Component<Props, any> {
+export class Notification extends React.Component<RelayProps, any> {
   handleArtistTap() {
     // Special notifications will pass down an artistHref. Otherwise, grab it from the artworks
     const artistHref = this.props.notification.artistHref || this.props.notification.artworks[0].artists[0].href
-    if (!artistHref) { return }
+    if (!artistHref) {
+      return
+    }
     SwitchBoard.presentNavigationViewController(this, artistHref)
   }
 
@@ -31,18 +31,19 @@ export class Notification extends React.Component<Props, any> {
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this)}>
           <View style={styles.header}>
-            { notification.image && <Image source={{uri: notification.image.resized.url}} style={styles.artistAvatar}/>}
+            {notification.image &&
+              <Image source={{ uri: notification.image.resized.url }} style={styles.artistAvatar} />}
             <View style={styles.metadataContainer}>
               <View style={styles.nameAndStatusContainer}>
                 <Headline style={styles.artistName}>{notification.artists}</Headline>
-                { notification.status === "UNREAD" && <View style={styles.readStatus}/>}
+                {notification.status === "UNREAD" && <View style={styles.readStatus} />}
               </View>
               <SerifText style={styles.metadata}>{notification.message + " · " + notification.date}</SerifText>
             </View>
           </View>
         </TouchableWithoutFeedback>
         <View style={styles.gridContainer}>
-          <ArtworksGrid artworks={notification.artworks}/>
+          <ArtworksGrid artworks={notification.artworks} />
         </View>
       </View>
     )
@@ -50,15 +51,15 @@ export class Notification extends React.Component<Props, any> {
 }
 
 interface Styles {
-  container: ViewStyle,
-  header: ViewStyle,
-  artistAvatar: ViewStyle,
-  metadataContainer: ViewStyle,
-  nameAndStatusContainer: ViewStyle,
-  readStatus: ViewStyle,
-  artistName: TextStyle,
-  metadata: TextStyle,
-  gridContainer: ViewStyle,
+  container: ViewStyle
+  header: ViewStyle
+  artistAvatar: ViewStyle
+  metadataContainer: ViewStyle
+  nameAndStatusContainer: ViewStyle
+  readStatus: ViewStyle
+  artistName: TextStyle
+  metadata: TextStyle
+  gridContainer: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -117,7 +118,7 @@ export default Relay.createContainer(Notification, {
           artists(shallow: true) {
             href
           }
-          ${(ArtworksGrid.getFragment("artworks"))}
+          ${ArtworksGrid.getFragment("artworks")}
         }
         status
         image {
@@ -132,16 +133,16 @@ export default Relay.createContainer(Notification, {
 
 interface RelayProps {
   notification: {
-    date: string,
-    message: string,
-    artists: string,
-    artworks: any[],
-    status: string,
+    date: string
+    message: string
+    artists: string
+    artworks: any[]
+    status: string
     image: {
       resized: {
-        url: string,
-      },
-    } | null,
-    artistHref?: string | null,
-  },
+        url: string
+      }
+    } | null
+    artistHref?: string | null
+  }
 }

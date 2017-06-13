@@ -9,10 +9,10 @@ import InfiniteScrollArtworksGrid from "../artist_artworks_grid"
 it("renders properly", () => {
   const artist = {
     artworks: {
-      edges: [ artwork(), artwork(), artwork() ],
+      edges: [artwork(), artwork(), artwork()],
     },
   }
 
-  const grid = renderWithLayout(<InfiniteScrollArtworksGrid artist={artist} queryKey="artist" />, { width: 768})
+  const grid = renderWithLayout(<InfiniteScrollArtworksGrid artist={artist} queryKey="artist" />, { width: 768 })
   expect(grid).toMatchSnapshot()
 })

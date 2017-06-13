@@ -1,7 +1,8 @@
 {
   "extends": [
     "tslint:recommended",
-    "react"
+    "react",
+    "tslint-config-prettier"
   ],
   "rules": {
     "arrow-parens": false,
@@ -20,16 +21,21 @@
     // Disabled till there’s an auto-fixer for this.
     // https://github.com/palantir/tslint/blob/master/src/rules/objectLiteralSortKeysRule.ts
     "object-literal-sort-keys": false,
-    "semicolon": [
-      true,
-      "never",
-      "ignore-interfaces",
-      "ignore-bound-class-methods"
-    ],
     "switch-default": false,
-    "trailing-comma": [
+    "no-unused-variable": [
       true,
-      { "multiline": "always", "singleline": "never" }
+      {
+        "ignore-pattern": "React"
+      }
+    ],
+    "no-console": [
+      [
+        "error",
+        [
+          "warn",
+          "error"
+        ]
+      ]
     ]
   }
 }

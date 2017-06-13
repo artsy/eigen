@@ -1,14 +1,8 @@
+import * as PropTypes from "prop-types"
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import {
-  Dimensions,
-  NativeModules,
-  StyleSheet,
-  TextStyle,
-  View,
-  ViewStyle,
-} from "react-native"
+import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
 
 import Events from "../../native_modules/events"
@@ -21,22 +15,22 @@ import SerifText from "../text/serif"
 const isPad = Dimensions.get("window").width > 700
 
 interface HeaderProps extends React.Props<Header> {
-  artist: any,
+  artist: any
 }
 
 interface State {
-  following: boolean,
-  followersCount: number,
+  following: boolean
+  followersCount: number
 }
 
 class Header extends React.Component<HeaderProps, State> {
   static propTypes = {
-    artist: React.PropTypes.shape({
-      name: React.PropTypes.string,
-      nationality: React.PropTypes.string,
-      birthday: React.PropTypes.string,
-      counts: React.PropTypes.shape({
-        follows: React.PropTypes.number,
+    artist: PropTypes.shape({
+      name: PropTypes.string,
+      nationality: PropTypes.string,
+      birthday: PropTypes.string,
+      counts: PropTypes.shape({
+        follows: PropTypes.number,
       }),
     }),
   }
@@ -53,7 +47,7 @@ class Header extends React.Component<HeaderProps, State> {
   }
 
   handleFollowChange = () => {
-    const newFollowersCount = this.state.following ? (this.state.followersCount - 1) : (this.state.followersCount + 1)
+    const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
       if (error) {
         console.error(error)
@@ -74,7 +68,7 @@ class Header extends React.Component<HeaderProps, State> {
   render() {
     const artist = this.props.artist
     return (
-      <View style={{paddingTop: 20}}>
+      <View style={{ paddingTop: 20 }}>
         <Headline style={[styles.base, styles.headline]}>
           {artist.name}
         </Headline>
@@ -89,9 +83,11 @@ class Header extends React.Component<HeaderProps, State> {
     if (this.state.following !== null) {
       return (
         <View style={styles.followButton}>
-            <InvertedButton text={this.state.following ? "Following" : "Follow"}
-                            selected={this.state.following}
-                            onPress={this.handleFollowChange} />
+          <InvertedButton
+            text={this.state.following ? "Following" : "Follow"}
+            selected={this.state.following}
+            onPress={this.handleFollowChange}
+          />
         </View>
       )
     }
@@ -109,7 +105,7 @@ class Header extends React.Component<HeaderProps, State> {
 
   renderByline() {
     const artist = this.props.artist
-    const bylineRequired = (artist.nationality || artist.birthday)
+    const bylineRequired = artist.nationality || artist.birthday
     if (bylineRequired) {
       return (
         <View>
@@ -131,7 +127,9 @@ class Header extends React.Component<HeaderProps, State> {
 
   birthdayString() {
     const birthday = this.props.artist.birthday
-    if (!birthday) { return "" }
+    if (!birthday) {
+      return ""
+    }
 
     const leadingSubstring = this.props.artist.nationality ? ", b." : ""
 
@@ -146,10 +144,10 @@ class Header extends React.Component<HeaderProps, State> {
 }
 
 interface Styles {
-  base: TextStyle,
-  headline: TextStyle,
-  followCount: TextStyle,
-  followButton: ViewStyle,
+  base: TextStyle
+  headline: TextStyle
+  followCount: TextStyle
+  followButton: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -191,13 +189,13 @@ export default Relay.createContainer(Header, {
 
 interface RelayProps {
   artist: {
-    _id: string,
-    id: string,
-    name: string | null,
-    nationality: string | null,
-    birthday: string | null,
+    _id: string
+    id: string
+    name: string | null
+    nationality: string | null
+    birthday: string | null
     counts: {
-      follows: boolean | number | string | null,
-    } | null,
-  },
+      follows: boolean | number | string | null
+    } | null
+  }
 }

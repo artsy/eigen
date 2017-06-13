@@ -20,6 +20,9 @@
   [backButton alignLeadingEdgeWithView:self.view predicate:@"12"];
   [backButton constrainWidth:@"40" height:@"40"];
   _backButton = backButton;
+
+  UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:@" " modifierFlags:0 action:@selector(toggleNav)];
+  [self addKeyCommand: command];
 }
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -31,7 +34,14 @@
 
 - (void)pop
 {
-  [self popViewControllerAnimated:YES];
+  // Support popping inside NavigatorIOS before falling back to our navigation VC
+  UINavigationController *targetNav = self;
+  for (UIViewController *controller in self.topViewController.childViewControllers) {
+    if ([controller isKindOfClass:UINavigationController.class]) {
+      if (controller.childViewControllers.count > 1) { targetNav = (id)controller; }
+    }
+  }
+  [targetNav popViewControllerAnimated:YES];
 }
 
 - (UIButton *)createBackButton
@@ -58,6 +68,14 @@
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations;
 {
     return self.topViewController.supportedInterfaceOrientations;
+}
+
+- (void)toggleNav
+{
+  [UIView animateWithDuration:0.1 animations:^{
+    CGFloat alpha = [self.backButton alpha];
+    [self.backButton setAlpha:!alpha];
+  }];
 }
 
 @end

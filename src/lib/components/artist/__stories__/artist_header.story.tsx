@@ -1,4 +1,4 @@
-import { storiesOf } from "@kadira/react-native-storybook"
+import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import { View } from "react-native"
 import { RootContainer } from "react-relay"
@@ -8,16 +8,14 @@ import Routes from "../../../relay/routes"
 import ArtistHeader from "../header"
 
 storiesOf("Artist Header")
-  .addDecorator((story) => (
-    <View style={{marginLeft: 20, marginRight: 20}}>{story()}</View>
-  ))
+  .addDecorator(story => <View style={{ marginLeft: 20, marginRight: 20 }}>{story()}</View>)
   .add("Real Artist - Glenn Brown", () => {
     const artistRoute = new Routes.Artist({ artistID: "glenn-brown" })
     return <RootContainer Component={ArtistHeader} route={artistRoute} />
   })
   .add("Real Artist - Leda Catunda", () => {
     const artistRoute = new Routes.Artist({ artistID: "leda-catunda" })
-    return <RootContainer Component={ArtistHeader} route={artistRoute}/>
+    return <RootContainer Component={ArtistHeader} route={artistRoute} />
   })
   // Note that for these two, the follow button / count will remain the
   // same as it was from one of the above artists. Once they are in relay/graphQL
@@ -25,22 +23,21 @@ storiesOf("Artist Header")
   .add("No Birthday", () => {
     const props = {
       artist: {
-        name : "Example Data",
+        name: "Example Data",
         nationality: "UK",
-        counts : { follows: 12 },
-
+        counts: { follows: 12 },
       },
     }
-    return <StubContainer Component={ArtistHeader} props={props}/>
+    return <StubContainer Component={ArtistHeader} props={props} />
   })
   .add("Full Data", () => {
-    let api = {
+    const api = {
       artist: {
-        name : "Another Exmaple",
+        name: "Another Exmaple",
         nationality: "OK",
         birthday: "1999",
-        counts : { follows: 12 },
+        counts: { follows: 12 },
       },
     }
-    return <StubContainer Component={ArtistHeader} props={api}/>
+    return <StubContainer Component={ArtistHeader} props={api} />
   })

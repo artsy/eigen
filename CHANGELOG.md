@@ -1,7 +1,32 @@
 ### Master
 
+#### Emission
 
-### 1.3.8
+- [Messaging] Adds an ArtworkPreview to each Conversation - sarah
+- [Messaging] Adds inbox zero state - maxim
+- [Messaging] Relay support in Conversation container - sarah
+- [Messaging] Adds a FlatList for Messages in Conversations - sarah
+- [dev] Applies prettier, and adds it to the webhooks + extension settings - orta
+- [dev] Adds stories for new messaging components - maxim
+- [Messaging] Adds Conversation, Composer, and Message components - sarah
+- [dev] Upgrades Sentry to 3.0, note Eigen integrator, this may require changes to Eigen - orta
+- [Messaging] Adds Inbox view with real data - luc
+- [dev] Upgrades React Native to v0.45 - sarah
+- [dev] Allows toggling the back button by pressing space - orta
+- Users/Devs can run any PR from inside beta/sim - orta
+- Users now can access stories from inside the app - orta
+
+#### Consignments
+
+- [dev] Adds component for attaching buttons to the keyboard  - orta
+- [dev] Adds component for artist search  - orta
+- [dev] Adds component for consignments todo  - orta
+- [dev] Adds a root component for the Consignments flow  - orta
+- [dev] Adds storybooks for consignments  - orta
+- [dev] Adds some form elements for consignments - orta
+- Added the Welcome/Overview screen for consignments - orta
+
+### 1.3.8 & 1.3.9
 
 - [dev] Moves native view controllers to use iOS7+ status bar api - ash
 
@@ -12,8 +37,7 @@
 ### 1.3.5
 
 - Fixes pull-to-refresh scroll position bug on Home - sarah
-- Fixes an issue where the WFU component was fetching data for artworks itself rather than delegating that to the nested
-  artworks components - alloy
+- Fixes an issue where the WFU component was fetching data for artworks itself rather than delegating that to the nested artworks components - alloy
 
 ### 1.3.4
 
@@ -61,6 +85,7 @@
 - Replaced fetching in infinite artworks grid component with relay - cab
 
 ### 1.2.0
+
 - Gave ESLint, Flow and Danger the ability to fail the build - orta
 - Gene Refine button is enabled - orta
 - Fix extra blankspace in Artist Card when data is missing - luc
@@ -108,7 +133,7 @@
 ### 1.1.0-beta.4
 
 - GeneVC scrolls as expected, and can request data from Eigen - orta
-- Fix crash that would occur when tapping the ‘failed to load’ view retry button a second time - alloy
+- Fix crash that would occur when tapping the "failed to load" view retry button a second time - alloy
 - Make tapping the search bar open the search VC - sarah
 
 ### 1.1.0-beta.3
@@ -124,7 +149,7 @@
 - [dev] Turns on "keychain sharing" to fix a keychain bug in sim - orta
 - GeneVC now shows about information, and trending artists - orta
 - GeneVC now shows artworks for the gene - orta
-- Show ‘bid now’ call to action on artworks that are in an auction - alloy
+- Show "bid now" call to action on artworks that are in an auction - alloy
 
 ### 1.1.0-beta.2
 

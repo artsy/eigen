@@ -17,9 +17,9 @@ class About extends React.Component<Props, null> {
   render() {
     return (
       <View>
-        { this.biography() }
-        { this.articles() }
-        { this.relatedArtists() }
+        {this.biography()}
+        {this.articles()}
+        {this.relatedArtists()}
       </View>
     )
   }
@@ -29,7 +29,7 @@ class About extends React.Component<Props, null> {
       return (
         <View>
           <Biography artist={this.props.artist} />
-          { this.auctionResults() }
+          {this.auctionResults()}
           <Separator style={styles.sectionSeparator} />
         </View>
       )
@@ -41,7 +41,9 @@ class About extends React.Component<Props, null> {
       // Keeps the same margins as the bio text
       const sideMargin = Dimensions.get("window").width > 700 ? 50 : 20
       const url = `/artist/${this.props.artist.id}/auction-results`
-      return <NavButton title="Auction Results" href={url} style={{ marginLeft: sideMargin, marginRight: sideMargin }}/>
+      return (
+        <NavButton title="Auction Results" href={url} style={{ marginLeft: sideMargin, marginRight: sideMargin }} />
+      )
     }
   }
 
@@ -58,10 +60,9 @@ class About extends React.Component<Props, null> {
 
   relatedArtists() {
     return this.props.artist.related_artists.length
-      ? <RelatedArtists artists={this.props.artist.related_artists}/>
+      ? <RelatedArtists artists={this.props.artist.related_artists} />
       : null
   }
-
 }
 
 const styles = StyleSheet.create({

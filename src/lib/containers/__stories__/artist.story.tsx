@@ -1,4 +1,4 @@
-import { storiesOf } from "@kadira/react-native-storybook"
+import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import { RootContainer } from "react-relay"
 

@@ -2,7 +2,7 @@
 
 Emission is a collection of [React Native] Components which are consumed by [Eigen]. A writeup on how & why we made a lot of the repo decisions is on our [blog here].
 
-Inside here you will find:
+Inside Emission you will find:
 
 * An example app for building and running Emission's components with an Eigen-like API.
 * An NPM module that relies on React Native and manages the components.
@@ -29,15 +29,9 @@ Want to know more about Emission? Read the [mobile](http://artsy.github.io/blog/
    * `$ brew install watchman --HEAD`
 3. Install NPM modules: `$ yarn install`
 4. Install CocoaPods: `$ gem install cocoapods`
-5. Install Pods: `$ cd Example && ARTSY_STAFF_MEMBER=true pod install`
+5. Install Pods: `$ cd Example && pod install`
 
-Why Yarn? See [our JS glossary for Yarn][glossary-yarn],
-
-### Using VS Code as an IDE
-
-There is a comprehensive document covering [our setup here](docs/vscode.md).
-
-### Vanilla Commands
+### Running the project:
 
 1. Run `$ yarn start` from the top directory, which will:
    * Clean the example app’s Xcode build dir.
@@ -45,6 +39,22 @@ There is a comprehensive document covering [our setup here](docs/vscode.md).
    * Start the React Storybooks environment.
 
 2. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
+  * If you already have the app installed, you can run `open -a Simulator` to open the last sim, and then `xcrun simctl launch booted net.artsy.Emission` to open the app.
+
+### Daily Development
+
+If you like git hooks, you could setup the following:
+
+* Lint and auto-fix new changes on commit:
+  `$ echo -e "#!/bin/sh\nyarn run lint-staged\n" > .git/hooks/pre-commit; chmod +x .git/hooks/pre-commit`
+* Run type-checker before push:
+  `$ echo -e "#!/bin/sh\nyarn run type-check\n" > .git/hooks/pre-push; chmod +x .git/hooks/pre-push`
+
+---
+
+### Using VS Code as an IDE
+
+There is a comprehensive document covering [our setup here](docs/vscode.md).
 
 ### Debugging
 
@@ -57,31 +67,10 @@ There is a comprehensive document covering [the various options](docs/debugging.
    * The GraphQL schema of metaphysics that Relay uses to generate queries from: `$ yarn run sync-schema`
    * The colors defined in Artsy’s style-guide: `$ yarn run sync-colors`
 
-### Using Relay
 
-Some helpful Relay documentation is listed below, but the general workflow is:
+### Understanding Relay
 
-1. Build a fragment for each child component that specifies only the attributes used by the component itself (no
-   extraneous information).
-2. Ensure the parent component calls `getFragment` for each child component that uses Relay.
-3. Make sure to supply every child component’s `props` upon instantiation in the parent.
-
-----
-
-Another gotcha is around fragments that use variables. For this it is important to understand that whenever a Relay
-backed hierarchy is used, 2 trees will be rendered.
-
-1. A tree of all Relay query fragments is rendered into a single query.
-2. Once the query has been performed, the view component tree is rendered.
-
-What this means in practice, is that you will need to pass variables down _both_ those trees.
-1. Once from the [Relay route](https://facebook.github.io/relay/docs/api-reference-relay-route.html) down through all
-   `getFragment(name, variables)` calls.
-2. Second down through the props of all components.
-
-See:
-* https://github.com/artsy/emission/commit/e84940b8360b8c5b838045a619be5b8558d5fad7
-* https://github.com/facebook/relay/issues/309#issuecomment-140485321
+We have some debugging tip [when using Relay](docs/relay.md).
 
 ----
 
@@ -111,26 +100,27 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
   - https://github.com/facebook/relay/tree/master/examples
   - https://github.com/fbsamples/f8app/
 
+* TypeScript:
+  - https://www.typescriptlang.org
+  - https://github.com/basarat/typescript-book
+
 * Testing:
   - https://facebook.github.io/jest/
   - https://facebook.github.io/jest/docs/api.html#content
   - https://facebook.github.io/jest/blog/2016/07/27/jest-14.html
 
-* Flow:
-  - http://flowtype.org/docs/type-annotations.html
-  - http://flowtype.org/docs/react.html
-  - http://flowtype.org/docs/quick-reference.html (and the rest of the language reference)
-
 * Flexbox:
   - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
   - http://blog.krawaller.se/posts/a-react-app-demonstrating-css3-flexbox/
+  - https://egghead.io/courses/flexbox-fundamentals
 
 * React Native Storybooks:
-  - https://github.com/kadirahq/react-native-storybook
-  - https://github.com/kadirahq/react-storybook
+  - https://github.com/storybooks/storybook/
+  - https://github.com/storybooks/storybook/tree/master/app/react-native
 
 * React Native Debugger:
   - https://github.com/jhen0409/react-native-debugger
+
 
 [React Native]: http://facebook.github.io/react-native/
 [Eigen]: https://github.com/artsy/eigen
