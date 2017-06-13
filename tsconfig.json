@@ -2,12 +2,12 @@
     "compilerOptions": {
         "jsx": "react",
         "target": "es6",
-        "module": "commonjs",
+        "module": "es2015",
+        "moduleResolution": "node",
         "rootDir": "src",
         "outDir": "build",
         "allowJs": true,
         "pretty": true,
-        "moduleResolution": "node",
         "strictNullChecks": false
     },
     "include": [
