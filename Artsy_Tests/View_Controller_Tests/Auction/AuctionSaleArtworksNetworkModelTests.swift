@@ -10,7 +10,13 @@ import Artsy
 class AuctionSaleArtworksNetworkModelSpec: QuickSpec {
     override func spec() {
         let saleArtworkID = "sale_artwork_id"
-        let saleArtworksJSON: NSArray = [["id": saleArtworkID]]
+        let saleArtworksJSON: NSArray = [[
+            "id": saleArtworkID,
+            "artwork": [
+                "id": "some-artwork-id",
+                "published": true
+            ]
+            ]]
         let saleID = "the-fun-sale"
 
         var subject: AuctionSaleArtworksNetworkModel!
@@ -73,6 +79,27 @@ class AuctionSaleArtworksNetworkModelSpec: QuickSpec {
             }
 
             expect(callNumber) == 2
+        }
+        
+        it("filters out lots with unpublished artworks") {
+            let saleArtworksJSON: NSArray = [[
+                "id": saleArtworkID,
+                "artwork": [
+                    "id": "some-artwork-id",
+                    "published": false
+                ]
+            ]]
+            OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/\(saleID)/sale_artworks", withResponse: saleArtworksJSON)
+            
+            var saleArtworks: [SaleArtwork]?
+            waitUntil { done in
+                subject.fetchSaleArtworks(saleID).subscribe { result in
+                    if case .success(let a) = result { saleArtworks = a }
+                    done()
+                }
+            }
+            
+            expect(saleArtworks).to( beEmpty() )
         }
     }
 }

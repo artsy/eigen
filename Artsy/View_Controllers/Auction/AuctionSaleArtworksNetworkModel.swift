@@ -19,8 +19,9 @@ class AuctionSaleArtworksNetworkModel: AuctionSaleArtworksNetworkModelType {
         fetchPage(1, forSaleID: saleID, alreadyFetched: []) { [weak self] result in
             switch result {
             case .success(let saleArtworks):
-                self?.saleArtworks = saleArtworks
-                observable.update(.success(saleArtworks))
+                let filteredSaleArtworks = saleArtworks.filter { $0.artwork.published.boolValue }
+                self?.saleArtworks = filteredSaleArtworks
+                observable.update(.success(filteredSaleArtworks))
             case .error(let error):
                 observable.update(.error(error))
             }

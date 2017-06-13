@@ -12,6 +12,7 @@ upcoming:
       - Fixes a problem with auction information views now showing auction end time - ash
       - Fixes a problem with auction views not refreshing when live sales opened - ash
       - LAI indicates when a sale is on hold - ash and erik
+      - Auctions now filter out lots with unpublished artworks - ash
 
 releases:
   - version: 3.2.1
