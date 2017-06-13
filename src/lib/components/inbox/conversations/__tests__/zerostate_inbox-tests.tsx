@@ -12,5 +12,5 @@ it("looks correct when the user has no conversations", () => {
 
 it("renders correct when the user has no conversations", () => {
   const tree = renderer.create(<Inbox me={{ conversations: { edges: [] } }} />).toJSON()
-  expect(tree).toMatchSVGSnapshot(320, 520)
+  expect(tree).toMatchSVGSnapshot(480, 1024)
 })
