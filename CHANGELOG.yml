@@ -7,6 +7,7 @@ upcoming:
       - Moves to iOS7+ status bar APIs - ash
       - Removes use of deprecated UIAlertView API - ash
       - Removes use of deprecated UIPopoverController API - ash
+      - Updates Emission to use new status bar APIs - ash
     user_facing:
       - Adds timer for artwork view that refreshes UI when the associated live sale opens - ash
       - Fix crash where facebook email can be nil - maxim
