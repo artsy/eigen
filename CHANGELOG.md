@@ -1,5 +1,8 @@
 ### Master
 
+
+### 1.3.8
+
 - [dev] Moves native view controllers to use iOS7+ status bar api - ash
 
 ### 1.3.6
