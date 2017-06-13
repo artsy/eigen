@@ -6792,6 +6792,12 @@ regjsparser@^0.1.4:
   dependencies:
     jsesc "~0.5.0"
 
+relay-compiler-typescript@s-panferov/relay-compiler-typescript:
+  version "1.0.0"
+  resolved "https://codeload.github.com/s-panferov/relay-compiler-typescript/tar.gz/bf66a864726f52b73b872d58e769a80a815d8e6b"
+  dependencies:
+    typescript "^2.3.2"
+
 relay-compiler@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/relay-compiler/-/relay-compiler-1.0.0.tgz#c61438ef503f7e9aa6c25938923aa2143c7c6a49"
