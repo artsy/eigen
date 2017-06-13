@@ -6,7 +6,7 @@ import * as renderer from "react-test-renderer"
 import ConversationSnippet from "../conversation_snippet"
 
 it("renders correctly", () => {
-  const tree = renderer.create(<ConversationSnippet conversation={conversation} />)
+  const tree = renderer.create(<ConversationSnippet conversation={conversation} onSelected={null} />)
   expect(tree).toMatchSnapshot()
 })
 
@@ -25,9 +25,7 @@ const conversation = {
       href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
       title: "Karl and Anna Face Off (Diptych)",
       date: "2016",
-      artist: {
-        name: "Bradley Theodore",
-      },
+      artist_names: "Bradley Theodore",
       image: {
         url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
         image_url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/:version.jpg",

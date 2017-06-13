@@ -29,9 +29,7 @@ const meProps = {
               href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
               title: "Karl and Anna Face Off (Diptych)",
               date: "2016",
-              artist: {
-                name: "Bradley Theodore",
-              },
+              artist_names: "Bradley Theodore",
               image: {
                 url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
                 image_url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/:version.jpg",
@@ -58,9 +56,7 @@ const meProps = {
               href: "/artwork/aida-muluneh-darkness-give-way-to-light-1",
               title: "Darkness Give Way to Light",
               date: "2016",
-              artist: {
-                name: "Aida Muluneh",
-              },
+              artist_names: "Aida Muluneh",
               image: {
                 url: "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg",
                 image_url: "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/:version.jpg",

@@ -7,8 +7,10 @@ import { FlatList, ImageURISource, ViewProperties } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../data/colors"
+import ArtworkPreview from "../components/inbox/conversations/artwork_preview"
 import Composer from "../components/inbox/conversations/composer"
 import Message from "../components/inbox/conversations/message"
+import ARSwitchBoard from "../native_modules/switch_board"
 
 // tslint:disable-next-line:no-var-requires
 const chevron: ImageURISource = require("../../../images/horizontal_chevron.png")
@@ -23,6 +25,7 @@ const Header = styled.View`
   alignSelf: stretch
   marginTop: 10
   flexDirection: column
+  marginBottom: 20
 `
 
 const HeaderTextContainer = styled.View`
@@ -44,21 +47,23 @@ const DottedBorder = styled.View`
 `
 
 const MessagesList = styled(FlatList)`
-  marginTop: 30
+  marginTop: 10
 `
 
 export class Conversation extends React.Component<RelayProps, any> {
   render() {
     const conversation = this.props.me.conversation
     const partnerName = conversation.to_name
+    const artwork = conversation.artworks[0]
 
     /** These are the only messages we can access at the moment; eventually we will get an array of all messages in the
      *  conversation to use as `data`
      */
     const initialMessage = conversation.initial_message
     // tslint:disable-next-line:max-line-length
-    const partnerResponse =
-      "Hi Sarah, thanks for reaching out with your interest in this great piece by Ana Mendieta. Threestool is currently available at $3,600, please let me know if you have any other questions "
+    const partnerResponse = `Hi Sarah, thanks for reaching out with your interest in this great piece by ${artwork.artist_names +
+      ". " +
+      artwork.title} is currently available at $3,600; please let me know if you have any other questions.`
     const temporaryTimestamp = "11:00AM"
 
     const data = [
@@ -75,6 +80,10 @@ export class Conversation extends React.Component<RelayProps, any> {
             <MetadataText>Info</MetadataText>
           </HeaderTextContainer>
         </Header>
+        <ArtworkPreview
+          artwork={artwork}
+          onSelected={() => ARSwitchBoard.presentNavigationViewController(this, artwork.href)}
+        />
         <MessagesList
           data={data}
           renderItem={messageProps => <Message message={messageProps.item} />}
@@ -98,6 +107,12 @@ export default Relay.createContainer(Conversation, {
           from_name
           to_name
           initial_message
+          artworks @relay (plural: true) {
+            title
+            artist_names
+            href
+            ${ArtworkPreview.getFragment("artwork")}
+          }
         }
       }
     `,
@@ -111,6 +126,7 @@ interface RelayProps {
       from_name: string
       to_name: string
       initial_message: string
+      artworks: any[]
     }
   }
 }

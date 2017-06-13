@@ -9,7 +9,6 @@ import { StyleSheet, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
-import SwitchBoard from "../../../native_modules/switch_board"
 import OpaqueImageView from "../../opaque_image_view"
 
 const Card = styled.View`
@@ -82,12 +81,9 @@ export interface Conversation {
       href: string | null
       title: string | null
       date: string | null
-      artist: {
-        name: string | null
-      }
+      artist_names: string | null
       image: {
         url: string | null
-        image_url: string | null
       }
     }
   >
@@ -95,6 +91,7 @@ export interface Conversation {
 
 interface Props {
   conversation: Conversation
+  onSelected?: () => void
 }
 
 export class ConversationSnippet extends React.Component<Props, any> {
@@ -105,13 +102,13 @@ export class ConversationSnippet extends React.Component<Props, any> {
     const partnerName = conversation.to_name
     const artworkTitle = `${artwork.title.trim()}, `
     const artworkDate = `${artwork.date}`
-    const artworkArtist = `${artwork.artist.name} · `
+    const artworkArtist = `${artwork.artist_names} · `
     const conversationText = conversation.last_message.replace(/\n/g, " ")
     const date = moment(conversation.last_message_at).fromNow(true)
     const imageURL = artwork.image.url
 
     return (
-      <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
+      <TouchableWithoutFeedback onPress={this.props.onSelected}>
         <Card>
           <CardContent>
             <OpaqueImageView imageURL={imageURL} style={styles.image} />
@@ -137,10 +134,6 @@ export class ConversationSnippet extends React.Component<Props, any> {
         </Card>
       </TouchableWithoutFeedback>
     )
-  }
-
-  handleTap() {
-    SwitchBoard.presentNavigationViewController(this, `/conversation/${this.props.conversation.id}`)
   }
 }
 
@@ -173,12 +166,9 @@ export default Relay.createContainer(ConversationSnippet, {
           href
           title
           date
-          artist {
-            name
-          }
+          artist_names
           image {
             url
-            image_url
           }
         }
       }

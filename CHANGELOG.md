@@ -4,6 +4,7 @@
 
 #### Emission
 
+- [Messaging] Adds an ArtworkPreview to each Conversation - sarah
 - [Messaging] Adds inbox zero state - maxim
 - [Messaging] Relay support in Conversation container - sarah
 - [Messaging] Adds a FlatList for Messages in Conversations - sarah

@@ -79,7 +79,7 @@ const styles = StyleSheet.create<Styles>({
   },
 
   subtitleDefault: {
-    fontSize: 16,
+    fontSize: 14,
     color: "black",
   },
 
