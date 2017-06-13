@@ -1,7 +1,5 @@
 ### Master
 
-- [dev] Moves native view controllers to use iOS7+ status bar api - ash
-
 #### Emission
 
 - [Messaging] Adds an ArtworkPreview to each Conversation - sarah
@@ -28,6 +26,10 @@
 - [dev] Adds some form elements for consignments - orta
 - Added the Welcome/Overview screen for consignments - orta
 
+### 1.3.8 & 1.3.9
+
+- [dev] Moves native view controllers to use iOS7+ status bar api - ash
+
 ### 1.3.6
 
 - Fixes missing compiled bundle - alloy
@@ -35,8 +37,7 @@
 ### 1.3.5
 
 - Fixes pull-to-refresh scroll position bug on Home - sarah
-- Fixes an issue where the WFU component was fetching data for artworks itself rather than delegating that to the nested
-  artworks components - alloy
+- Fixes an issue where the WFU component was fetching data for artworks itself rather than delegating that to the nested artworks components - alloy
 
 ### 1.3.4
 
@@ -84,6 +85,7 @@
 - Replaced fetching in infinite artworks grid component with relay - cab
 
 ### 1.2.0
+
 - Gave ESLint, Flow and Danger the ability to fail the build - orta
 - Gene Refine button is enabled - orta
 - Fix extra blankspace in Artist Card when data is missing - luc
