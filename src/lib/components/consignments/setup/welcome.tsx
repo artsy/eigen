@@ -12,7 +12,7 @@ interface Props extends ViewProperties {
   route: Route
 }
 
-export default class Welcome extends React.Component<Props, any> {
+export default class Welcome extends React.Component<Props, null> {
   goTapped = () => {
     this.props.navigator.push({
       component: Overview,

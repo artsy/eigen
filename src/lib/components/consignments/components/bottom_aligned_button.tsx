@@ -42,7 +42,7 @@ const render = (props: BottomAlignedProps) =>
   </KeyboardAvoidingView>
 
 // Export a pure component version
-export default class BottomAlignedButton extends React.PureComponent<BottomAlignedProps, null> {
+export default class BottomAlignedButton extends React.Component<BottomAlignedProps, null> {
   render() {
     return render(this.props)
   }

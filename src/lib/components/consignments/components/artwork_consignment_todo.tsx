@@ -134,7 +134,7 @@ const render = (props: ConsignmentSetup) =>
   </Background>
 
 // Export a pure component version
-export default class ConsignmentTODO extends React.PureComponent<ConsignmentSetup, null> {
+export default class ConsignmentTODO extends React.Component<ConsignmentSetup, null> {
   render() {
     return render(this.props)
   }

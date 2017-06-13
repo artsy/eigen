@@ -87,7 +87,7 @@ const render = (props: ToggleProps) => {
 }
 
 // Export a pure component version
-export default class Toggle extends React.PureComponent<ToggleProps, null> {
+export default class Toggle extends React.Component<ToggleProps, null> {
   render() {
     return render(this.props)
   }
