@@ -12,7 +12,7 @@
 
 static void *ARProgressContext = &ARProgressContext;
 
-@interface ARInternalMobileWebViewController () <UIAlertViewDelegate, WKNavigationDelegate>
+@interface ARInternalMobileWebViewController () <WKNavigationDelegate>
 @property (nonatomic, assign) BOOL loaded;
 @property (nonatomic, strong) ARInternalShareValidator *shareValidator;
 @end

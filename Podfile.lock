@@ -263,7 +263,6 @@ PODS:
   - Starscream (2.0.4)
   - SwiftyJSON (3.1.4)
   - Then (2.1.0)
-  - UIAlertView+Blocks (0.8)
   - UICKeyChainStore (1.0.5)
   - UIView+BooleanAnimations (1.0.2)
   - VCRURLConnection (0.2.0)
@@ -336,7 +335,6 @@ DEPENDENCIES:
   - Starscream
   - SwiftyJSON
   - Then
-  - UIAlertView+Blocks
   - UICKeyChainStore
   - UIView+BooleanAnimations
   - VCRURLConnection
@@ -492,13 +490,12 @@ SPEC CHECKSUMS:
   Starscream: df5974ee928b157c8eda8af8de7c620276b7dfcc
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   Then: 8496793c8fcac95482b943909b440724c7d8d82c
-  UIAlertView+Blocks: 6b408d63507287b22c6e631a2b25ca26f96fb609
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 77f4e44e919b274504599a3536cdc90140fb58d8
 
-PODFILE CHECKSUM: a8aa200764a9cd051349edebee6c2f9130ad0658
+PODFILE CHECKSUM: 3d6786857a9d4e425e9e5b578658a8f99a389f5f
 
 COCOAPODS: 1.2.1

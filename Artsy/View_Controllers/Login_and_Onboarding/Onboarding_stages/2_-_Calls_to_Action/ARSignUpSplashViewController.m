@@ -212,10 +212,7 @@
     [label alignBottomEdgeWithView:self.view predicate:self.useLargeLayout ? @"-55" : @"-10"];
 
     [self hideControls];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    [self finaliseValuesForiPadWithInterfaceOrientation:self.interfaceOrientation];
-#pragma clang diagnostic pop
+    [self finaliseValuesForiPadWithInterfaceOrientation:UIApplication.sharedApplication.statusBarOrientation];
 }
 
 - (void)hideControls
