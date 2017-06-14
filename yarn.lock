@@ -4126,9 +4126,9 @@ jest-snapshot@^20.0.3:
     natural-compare "^1.4.0"
     pretty-format "^20.0.3"
 
-jest-snapshots-svg@^0.0.13:
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/jest-snapshots-svg/-/jest-snapshots-svg-0.0.13.tgz#9c7e7edb080c3d4b5f28bfeb60f3930c72a60230"
+jest-snapshots-svg@^0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/jest-snapshots-svg/-/jest-snapshots-svg-0.0.14.tgz#252b93a88e7d4782d06f5c691dcbbcfe0fb1be4f"
   dependencies:
     nbind "^0.3.12"
     yoga-layout "^1.5.0"
@@ -5124,7 +5124,15 @@ npm-which@^3.0.1:
     npm-path "^2.0.2"
     which "^1.2.10"
 
-"npmlog@0 || 1 || 2 || 3 || 4", npmlog@^4.0.2:
+"npmlog@0 || 1 || 2 || 3 || 4", npmlog@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-2.0.4.tgz#98b52530f2514ca90d09ec5b22c8846722375692"
+  dependencies:
+    ansi "~0.3.1"
+    are-we-there-yet "~1.1.2"
+    gauge "~1.2.5"
+
+npmlog@^4.0.2:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-4.1.0.tgz#dc59bee85f64f00ed424efb2af0783df25d1c0b5"
   dependencies:
@@ -5132,14 +5140,6 @@ npm-which@^3.0.1:
     console-control-strings "~1.1.0"
     gauge "~2.7.3"
     set-blocking "~2.0.0"
-
-npmlog@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-2.0.4.tgz#98b52530f2514ca90d09ec5b22c8846722375692"
-  dependencies:
-    ansi "~0.3.1"
-    are-we-there-yet "~1.1.2"
-    gauge "~1.2.5"
 
 nth-check@~1.0.1:
   version "1.0.1"
@@ -5909,15 +5909,6 @@ react-devtools-core@^2.1.8:
   dependencies:
     shell-quote "^1.6.1"
     ws "^2.0.3"
-
-react-dom@16.0.0-alpha.12:
-  version "16.0.0-alpha.12"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.0.0-alpha.12.tgz#c9894ccfd9600ef87952e05340903180b013171e"
-  dependencies:
-    fbjs "^0.8.9"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.6"
 
 react-inspector@^2.0.0:
   version "2.0.0"

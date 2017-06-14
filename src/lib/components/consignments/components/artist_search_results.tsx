@@ -81,7 +81,6 @@ const render = (props: ArtistQueryData) =>
     </ScrollView>
   </View>
 
-// Export a pure component version
 export default class SearchResults extends React.Component<ArtistQueryData, null> {
   render() {
     return render(this.props)

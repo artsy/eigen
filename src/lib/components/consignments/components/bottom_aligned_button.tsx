@@ -26,7 +26,7 @@ const Separator = styled.View`
 
 export interface BottomAlignedProps {
   onPress: () => void
-  children: any[]
+  children?: any[]
 }
 
 const render = (props: BottomAlignedProps) =>
@@ -41,7 +41,6 @@ const render = (props: BottomAlignedProps) =>
     </Body>
   </KeyboardAvoidingView>
 
-// Export a pure component version
 export default class BottomAlignedButton extends React.Component<BottomAlignedProps, null> {
   render() {
     return render(this.props)
