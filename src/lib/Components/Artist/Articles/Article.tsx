@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer, graphql } from "react-relay/compat"
 
 import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewProperties, ViewStyle } from "react-native"
 
@@ -84,10 +84,9 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(Article, {
-  fragments: {
-    article: () => Relay.QL`
-      fragment on Article {
+export default createFragmentContainer(Article, {
+  article: graphql`
+      fragment Article_article on Article {
         thumbnail_title
         href
         author {
@@ -98,7 +97,6 @@ export default Relay.createContainer(Article, {
         }
       }
     `,
-  },
 })
 
 interface RelayProps {
