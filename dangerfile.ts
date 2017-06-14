@@ -189,24 +189,3 @@ ${errors.join("\n")}
 // Check for dependency changes
 import yarn from "danger-plugin-yarn"
 schedule(yarn())
-
-// List available at https://github.com/artsy/emission/labels
-const labelMatches = {
-  Consignments: "Consignments",
-  MSG: "Messaging",
-  Messaging: "Messaging",
-  Auctions: "Auctions",
-}
-
-// If you include any of the above keys in a commit in [], e.g. `[Consignments]`
-// then the PR should be updated with the label providing context
-const commitLabels = danger.git.commits
-  .map(c => c.message)
-  .filter(m => m.startsWith("[") && m.includes("]"))
-  .map(m => m.match(/\[(.*)\]/)[1])
-
-const labels = compact(uniq(commitLabels).map(l => labelMatches[l]))
-
-const github = danger.github
-markdown(JSON.stringify(github.thisPR))
-// schedule(() => github.api.issues.addLabels({ ...github.thisPR, labels }))
