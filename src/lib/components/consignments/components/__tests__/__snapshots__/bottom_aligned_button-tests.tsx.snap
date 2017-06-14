@@ -15,26 +15,27 @@ exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
     ]
   }
 >
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    disabled={false}
-    ellipsizeMode="tail"
-    style={
-      Object {
-        "color": "white",
-      }
-    }
-  >
-    hi
-  </Text>
   <View
     style={
       Object {
         "flexGrow": 1,
       }
     }
-  />
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      style={
+        Object {
+          "color": "white",
+        }
+      }
+    >
+      hi
+    </Text>
+  </View>
   <View
     style={
       Array [
@@ -113,89 +114,80 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
     ]
   }
 >
-  <View>
-    <View
-      style={
-        Object {
-          "flex": 0,
-        }
+  <View
+    style={
+      Object {
+        "flexGrow": 1,
       }
-    >
+    }
+  >
+    <View>
       <View
         style={
           Object {
-            "flexDirection": "row",
+            "flex": 0,
           }
         }
       >
-        <TextInput
-          autoCorrect={false}
-          clearButtonMode="while-editing"
-          keyboardAppearance="dark"
-          onChangeText={undefined}
-          placeholder="Artist/Designer Name"
-          placeholderTextColor="#cccccc"
-          returnKeyType="search"
-          selectionColor="#cccccc"
+        <View
           style={
-            Array [
-              Object {
-                "backgroundColor": "black",
-                "borderBottomColor": "white",
-                "borderBottomWidth": 1,
-                "color": "white",
-                "flexBasis": 0,
-                "flexGrow": 1,
-                "flexShrink": 1,
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 20,
-                "height": 40,
-              },
-              undefined,
-            ]
-          }
-          value="Banko"
-        />
-      </View>
-      <View
-        style={
-          Array [
             Object {
-              "backgroundColor": "#e5e5e5",
-              "height": 1,
-            },
-            undefined,
-          ]
-        }
-      />
-    </View>
-    <RCTScrollView
-      scrollEnabled={null}
-      style={
-        Object {
-          "height": 182,
-          "paddingTop": 16,
-        }
-      }
-    >
-      <View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "color": "#cccccc",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 17,
-              },
-              undefined,
-            ]
+              "flexDirection": "row",
+            }
           }
         >
-          Unfortunately we are not accepting consignments for works by 
+          <TextInput
+            autoCorrect={false}
+            autoFocus={false}
+            clearButtonMode="while-editing"
+            keyboardAppearance="dark"
+            onChangeText={undefined}
+            placeholder="Artist/Designer Name"
+            placeholderTextColor="#cccccc"
+            returnKeyType="search"
+            selectionColor="#cccccc"
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "black",
+                  "borderBottomColor": "white",
+                  "borderBottomWidth": 1,
+                  "color": "white",
+                  "flexBasis": 0,
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 20,
+                  "height": 40,
+                },
+                undefined,
+              ]
+            }
+            value="Banko"
+          />
+        </View>
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#e5e5e5",
+                "height": 1,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+      <RCTScrollView
+        scrollEnabled={null}
+        style={
+          Object {
+            "height": 182,
+            "paddingTop": 16,
+          }
+        }
+      >
+        <View>
           <Text
             accessible={true}
             allowFontScaling={true}
@@ -205,26 +197,37 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
               Array [
                 Object {
                   "color": "#cccccc",
-                  "fontFamily": "AGaramondPro-Italic",
+                  "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 17,
                 },
                 undefined,
               ]
             }
           >
-            Banko
+            Unfortunately we are not accepting consignments for works by 
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              disabled={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": "#cccccc",
+                    "fontFamily": "AGaramondPro-Italic",
+                    "fontSize": 17,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Banko
+            </Text>
           </Text>
-        </Text>
-      </View>
-    </RCTScrollView>
+        </View>
+      </RCTScrollView>
+    </View>
   </View>
-  <View
-    style={
-      Object {
-        "flexGrow": 1,
-      }
-    }
-  />
   <View
     style={
       Array [

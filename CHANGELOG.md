@@ -31,6 +31,10 @@
 -   Adds storybooks for consignments  - orta
 -   Adds some form elements for consignments - orta
 
+### 1.3.8 & 1.3.9
+
+-   [dev] Moves native view controllers to use iOS7+ status bar api - ash
+
 ### 1.3.6
 
 -   Fixes missing compiled bundle - alloy
@@ -40,6 +44,8 @@
 -   Fixes pull-to-refresh scroll position bug on Home - sarah
 -   Fixes an issue where the WFU component was fetching data for artworks itself rather than delegating that to the nested
     artworks components - alloy
+-   Fixes pull-to-refresh scroll position bug on Home - sarah
+-   Fixes an issue where the WFU component was fetching data for artworks itself rather than delegating that to the nested artworks components - alloy
 
 ### 1.3.4
 
