@@ -11,7 +11,8 @@ interface States {
   [name: string]: ConsignmentSetup
 }
 
-const withArtist: ConsignmentSetup = { artist: { name: "Glenn Brown" } }
+const withArtist: ConsignmentSetup = { artist: { name: "Glenn Brown", id: "gb", image: { url: "" } } }
+
 const withOnePhoto: ConsignmentSetup = {
   ...withArtist,
   photos: ["https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg"],

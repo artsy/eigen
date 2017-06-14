@@ -3,6 +3,7 @@ import { NavigatorIOS, Route, View, ViewProperties } from "react-native"
 import { LargeHeadline, Subtitle } from "../typography"
 
 import TODO from "../components/artwork_consignment_todo"
+import { ArtistResult } from "../index"
 import Artist from "./artist"
 import Welcome from "./welcome"
 
@@ -12,11 +13,16 @@ interface Props extends ViewProperties {
 }
 
 export default class Info extends React.Component<Props, any> {
-  goToArtistTapped = () => this.props.navigator.push({ component: Artist, passProps: this.props })
+  goToArtistTapped = () =>
+    this.props.navigator.push({ component: Artist, passProps: { ...this.props, updateWithResult: this.updateArtist } })
   goToPhotosTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
   goToMetadataTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
   goToLocationTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
   goToProvenanceTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
+
+  updateArtist = (result: ArtistResult) => {
+    // this.state.artist = result
+  }
 
   render() {
     const title = "Complete work details to submit"

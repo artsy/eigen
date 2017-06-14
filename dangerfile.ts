@@ -209,4 +209,4 @@ const labels = compact(uniq(commitLabels).map(l => labelMatches[l]))
 
 const github = danger.github
 markdown(JSON.stringify(github.thisPR))
-schedule(() => github.api.issues.addLabels({ ...github.thisPR, labels }))
+// schedule(() => github.api.issues.addLabels({ ...github.thisPR, labels }))
