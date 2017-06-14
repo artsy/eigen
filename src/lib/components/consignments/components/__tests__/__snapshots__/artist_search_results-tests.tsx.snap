@@ -69,208 +69,336 @@ exports[`Search states:  Looks right when Found four results 1`] = `
   >
     <View>
       <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           Array [
             Object {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "height": 40,
-              "marginBottom": 10,
+              "backgroundColor": "transparent",
             },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={
-            Object {
-              "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-            }
-          }
-          style={
             Array [
               Object {
-                "borderRadius": 20,
                 "height": 40,
-                "width": 40,
+                "marginBottom": 10,
               },
               undefined,
-            ]
-          }
-        />
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
+            ],
+          ]
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <View
           style={
             Array [
               Object {
-                "color": "white",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 20,
-                "marginLeft": 13,
-                "paddingTop": 8,
+                "alignItems": "center",
+                "flexDirection": "row",
               },
               undefined,
             ]
           }
         >
-          Ada Van Hoorebeke
-        </Text>
+          <Image
+            source={
+              Object {
+                "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+              }
+            }
+            style={
+              Array [
+                Object {
+                  "borderRadius": 20,
+                  "height": 40,
+                  "width": 40,
+                },
+                undefined,
+              ]
+            }
+          />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "white",
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 20,
+                  "marginLeft": 13,
+                  "paddingTop": 8,
+                },
+                undefined,
+              ]
+            }
+          >
+            Ada Van Hoorebeke
+          </Text>
+        </View>
       </View>
       <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           Array [
             Object {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "height": 40,
-              "marginBottom": 10,
+              "backgroundColor": "transparent",
             },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={
-            Object {
-              "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-            }
-          }
-          style={
             Array [
               Object {
-                "borderRadius": 20,
                 "height": 40,
-                "width": 40,
+                "marginBottom": 10,
               },
               undefined,
-            ]
-          }
-        />
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
+            ],
+          ]
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <View
           style={
             Array [
               Object {
-                "color": "white",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 20,
-                "marginLeft": 13,
-                "paddingTop": 8,
+                "alignItems": "center",
+                "flexDirection": "row",
               },
               undefined,
             ]
           }
         >
-          Kathleen Adair Brown
-        </Text>
+          <Image
+            source={
+              Object {
+                "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+              }
+            }
+            style={
+              Array [
+                Object {
+                  "borderRadius": 20,
+                  "height": 40,
+                  "width": 40,
+                },
+                undefined,
+              ]
+            }
+          />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "white",
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 20,
+                  "marginLeft": 13,
+                  "paddingTop": 8,
+                },
+                undefined,
+              ]
+            }
+          >
+            Kathleen Adair Brown
+          </Text>
+        </View>
       </View>
       <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           Array [
             Object {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "height": 40,
-              "marginBottom": 10,
+              "backgroundColor": "transparent",
             },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={
-            Object {
-              "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-            }
-          }
-          style={
             Array [
               Object {
-                "borderRadius": 20,
                 "height": 40,
-                "width": 40,
+                "marginBottom": 10,
               },
               undefined,
-            ]
-          }
-        />
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
+            ],
+          ]
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <View
           style={
             Array [
               Object {
-                "color": "white",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 20,
-                "marginLeft": 13,
-                "paddingTop": 8,
+                "alignItems": "center",
+                "flexDirection": "row",
               },
               undefined,
             ]
           }
         >
-          Linda Adair
-        </Text>
+          <Image
+            source={
+              Object {
+                "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+              }
+            }
+            style={
+              Array [
+                Object {
+                  "borderRadius": 20,
+                  "height": 40,
+                  "width": 40,
+                },
+                undefined,
+              ]
+            }
+          />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "white",
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 20,
+                  "marginLeft": 13,
+                  "paddingTop": 8,
+                },
+                undefined,
+              ]
+            }
+          >
+            Linda Adair
+          </Text>
+        </View>
       </View>
       <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           Array [
             Object {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "height": 40,
-              "marginBottom": 10,
+              "backgroundColor": "transparent",
             },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={
-            Object {
-              "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-            }
-          }
-          style={
             Array [
               Object {
-                "borderRadius": 20,
                 "height": 40,
-                "width": 40,
+                "marginBottom": 10,
               },
               undefined,
-            ]
-          }
-        />
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
+            ],
+          ]
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <View
           style={
             Array [
               Object {
-                "color": "white",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 20,
-                "marginLeft": 13,
-                "paddingTop": 8,
+                "alignItems": "center",
+                "flexDirection": "row",
               },
               undefined,
             ]
           }
         >
-          Hector Adalid
-        </Text>
+          <Image
+            source={
+              Object {
+                "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+              }
+            }
+            style={
+              Array [
+                Object {
+                  "borderRadius": 20,
+                  "height": 40,
+                  "width": 40,
+                },
+                undefined,
+              ]
+            }
+          />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "white",
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 20,
+                  "marginLeft": 13,
+                  "paddingTop": 8,
+                },
+                undefined,
+              ]
+            }
+          >
+            Hector Adalid
+          </Text>
+        </View>
       </View>
     </View>
   </RCTScrollView>
@@ -455,55 +583,87 @@ exports[`Search states:  Looks right when Found one result 1`] = `
   >
     <View>
       <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           Array [
             Object {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "height": 40,
-              "marginBottom": 10,
+              "backgroundColor": "transparent",
             },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={
-            Object {
-              "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-            }
-          }
-          style={
             Array [
               Object {
-                "borderRadius": 20,
                 "height": 40,
-                "width": 40,
+                "marginBottom": 10,
               },
               undefined,
-            ]
-          }
-        />
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
+            ],
+          ]
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <View
           style={
             Array [
               Object {
-                "color": "white",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 20,
-                "marginLeft": 13,
-                "paddingTop": 8,
+                "alignItems": "center",
+                "flexDirection": "row",
               },
               undefined,
             ]
           }
         >
-          Banksy
-        </Text>
+          <Image
+            source={
+              Object {
+                "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+              }
+            }
+            style={
+              Array [
+                Object {
+                  "borderRadius": 20,
+                  "height": 40,
+                  "width": 40,
+                },
+                undefined,
+              ]
+            }
+          />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "white",
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 20,
+                  "marginLeft": 13,
+                  "paddingTop": 8,
+                },
+                undefined,
+              ]
+            }
+          >
+            Banksy
+          </Text>
+        </View>
       </View>
     </View>
   </RCTScrollView>
@@ -585,55 +745,87 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
   >
     <View>
       <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           Array [
             Object {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "height": 40,
-              "marginBottom": 10,
+              "backgroundColor": "transparent",
             },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={
-            Object {
-              "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-            }
-          }
-          style={
             Array [
               Object {
-                "borderRadius": 20,
                 "height": 40,
-                "width": 40,
+                "marginBottom": 10,
               },
               undefined,
-            ]
-          }
-        />
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
+            ],
+          ]
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <View
           style={
             Array [
               Object {
-                "color": "white",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 20,
-                "marginLeft": 13,
-                "paddingTop": 8,
+                "alignItems": "center",
+                "flexDirection": "row",
               },
               undefined,
             ]
           }
         >
-          Banksy
-        </Text>
+          <Image
+            source={
+              Object {
+                "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+              }
+            }
+            style={
+              Array [
+                Object {
+                  "borderRadius": 20,
+                  "height": 40,
+                  "width": 40,
+                },
+                undefined,
+              ]
+            }
+          />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "white",
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 20,
+                  "marginLeft": 13,
+                  "paddingTop": 8,
+                },
+                undefined,
+              ]
+            }
+          >
+            Banksy
+          </Text>
+        </View>
       </View>
     </View>
   </RCTScrollView>
@@ -709,106 +901,170 @@ exports[`Search states:  Looks right when Found two results 1`] = `
   >
     <View>
       <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           Array [
             Object {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "height": 40,
-              "marginBottom": 10,
+              "backgroundColor": "transparent",
             },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={
-            Object {
-              "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-            }
-          }
-          style={
             Array [
               Object {
-                "borderRadius": 20,
                 "height": 40,
-                "width": 40,
+                "marginBottom": 10,
               },
               undefined,
-            ]
-          }
-        />
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
+            ],
+          ]
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <View
           style={
             Array [
               Object {
-                "color": "white",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 20,
-                "marginLeft": 13,
-                "paddingTop": 8,
+                "alignItems": "center",
+                "flexDirection": "row",
               },
               undefined,
             ]
           }
         >
-          Banksy
-        </Text>
+          <Image
+            source={
+              Object {
+                "uri": "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
+              }
+            }
+            style={
+              Array [
+                Object {
+                  "borderRadius": 20,
+                  "height": 40,
+                  "width": 40,
+                },
+                undefined,
+              ]
+            }
+          />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "white",
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 20,
+                  "marginLeft": 13,
+                  "paddingTop": 8,
+                },
+                undefined,
+              ]
+            }
+          >
+            Banksy
+          </Text>
+        </View>
       </View>
       <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           Array [
             Object {
-              "alignItems": "center",
-              "flexDirection": "row",
-              "height": 40,
-              "marginBottom": 10,
+              "backgroundColor": "transparent",
             },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={
-            Object {
-              "uri": "https://d32dm0rphc51dk.cloudfront.net/zKBFBZPGN-V5TljXtsSuEg/square.jpg",
-            }
-          }
-          style={
             Array [
               Object {
-                "borderRadius": 20,
                 "height": 40,
-                "width": 40,
+                "marginBottom": 10,
               },
               undefined,
-            ]
-          }
-        />
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
+            ],
+          ]
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <View
           style={
             Array [
               Object {
-                "color": "white",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 20,
-                "marginLeft": 13,
-                "paddingTop": 8,
+                "alignItems": "center",
+                "flexDirection": "row",
               },
               undefined,
             ]
           }
         >
-          Banksy's Brother
-        </Text>
+          <Image
+            source={
+              Object {
+                "uri": "https://d32dm0rphc51dk.cloudfront.net/zKBFBZPGN-V5TljXtsSuEg/square.jpg",
+              }
+            }
+            style={
+              Array [
+                Object {
+                  "borderRadius": 20,
+                  "height": 40,
+                  "width": 40,
+                },
+                undefined,
+              ]
+            }
+          />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "white",
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 20,
+                  "marginLeft": 13,
+                  "paddingTop": 8,
+                },
+                undefined,
+              ]
+            }
+          >
+            Banksy's Brother
+          </Text>
+        </View>
       </View>
     </View>
   </RCTScrollView>
