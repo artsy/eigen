@@ -72,6 +72,7 @@ const render = (props: ArtistQueryData) =>
         returnKeyType: "search",
         value: props.query,
         onChangeText: props.onChangeText,
+        autoFocus: true,
       }}
       style={{ flex: 0 }}
     />

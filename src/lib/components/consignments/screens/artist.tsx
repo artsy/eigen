@@ -21,7 +21,11 @@ export default class Artist extends React.Component<Props, null> {
     return (
       <View style={{ backgroundColor: "black", flex: 1 }}>
         <DoneButton onPress={this.doneTapped}>
-          <ArtistSearch results={null} query={null} />
+          <View
+            style={{ alignContent: "center", justifyContent: "center", flexGrow: 1, marginLeft: 20, marginRight: 20 }}
+          >
+            <ArtistSearch results={null} query={null} />
+          </View>
         </DoneButton>
       </View>
     )
