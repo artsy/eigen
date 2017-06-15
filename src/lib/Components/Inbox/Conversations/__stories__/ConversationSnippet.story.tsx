@@ -8,9 +8,11 @@ import { Conversation, ConversationSnippet } from "../ConversationSnippet"
 
 const conversation: Conversation = {
   id: "582",
-  from_name: "Jean-Luc Collecteur",
-  from_email: "luc+messaging@artsymail.com",
-  to_name: "ACA Galleries",
+  from: {
+    name: "Jean-Luc Collecteur",
+    email: "luc+messaging@artsymail.com",
+  },
+  to: { name: "ACA Galleries" },
   last_message: "Karl and Anna... Fab!",
   last_message_at: moment().subtract(30, "minutes").toISOString(),
   artworks: [

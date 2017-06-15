@@ -70,9 +70,13 @@ const ArtworkTitle = styled(ArtworkSubtitle)`
 
 export interface Conversation {
   id: string | null
-  from_name: string | null
-  from_email: string | null
-  to_name: string | null
+  from: {
+    email: string | null
+    name: string | null
+  }
+  to: {
+    name: string | null
+  }
   last_message: string | null
   last_message_at: string | null
   artworks: Array<
@@ -99,7 +103,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
     const conversation = this.props.conversation
     const artwork = conversation.artworks[0]
 
-    const partnerName = conversation.to_name
+    const partnerName = conversation.to.name
     const artworkTitle = `${artwork.title.trim()}, `
     const artworkDate = `${artwork.date}`
     const artworkArtist = `${artwork.artist_names} · `
@@ -156,9 +160,13 @@ export default Relay.createContainer(ConversationSnippet, {
     conversation: () => Relay.QL`
       fragment on ConversationType {
         id
-        from_name
-        from_email
-        to_name
+        from {
+          name
+          email
+        }
+        to {
+          name
+        }
         last_message
         last_message_at
         artworks {

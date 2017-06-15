@@ -18,8 +18,6 @@ const chevron: ImageURISource = require("../../../images/horizontal_chevron.png"
 const Container = styled.View`
   flex: 1
   flexDirection: column
-  marginLeft: 20
-  marginRight: 20
 `
 const Header = styled.View`
   alignSelf: stretch
@@ -27,6 +25,9 @@ const Header = styled.View`
   flexDirection: column
   marginBottom: 20
 `
+
+// This makes it really easy to style the HeaderTextContainer with space-between
+const PlaceholderView = styled.View``
 
 const HeaderTextContainer = styled.View`
   flexDirection: row
@@ -44,32 +45,61 @@ const DottedBorder = styled.View`
   borderWidth: 1
   borderStyle: dotted
   borderColor: ${colors["gray-regular"]}
+  marginLeft: 20
+  marginRight: 20
+
 `
 
 const MessagesList = styled(FlatList)`
   marginTop: 10
 `
 
+const ComposerContainer = styled.View`
+  paddingTop: 5
+  marginRight: 20
+  marginLeft: 20
+`
+
 export class Conversation extends React.Component<RelayProps, any> {
+  isFromUser(message) {
+    /**
+     * this is a quick hacky way to alternate between user/partner messages; will be changed once we have actual email
+     * data
+     */
+    return message.from_email_address === this.props.me.conversation.from.email
+  }
+
+  renderMessage(message) {
+    const artwork = this.props.me.conversation.artworks[0]
+    return (
+      <Message
+        message={message.item}
+        artworkPreview={
+          !message.index &&
+          <ArtworkPreview
+            artwork={artwork}
+            onSelected={() => ARSwitchBoard.presentNavigationViewController(this, artwork.href)}
+          />
+        }
+      />
+    )
+  }
+
   render() {
     const conversation = this.props.me.conversation
-    const partnerName = conversation.to_name
+    const partnerName = conversation.to.name
     const artwork = conversation.artworks[0]
-
-    /** These are the only messages we can access at the moment; eventually we will get an array of all messages in the
-     *  conversation to use as `data`
-     */
-    const initialMessage = conversation.initial_message
-    // tslint:disable-next-line:max-line-length
-    const partnerResponse = `Hi Sarah, thanks for reaching out with your interest in this great piece by ${artwork.artist_names +
-      ". " +
-      artwork.title} is currently available at $3,600; please let me know if you have any other questions.`
     const temporaryTimestamp = "11:00AM"
 
-    const data = [
-      { senderName: conversation.from_name, key: 0, time: temporaryTimestamp, body: initialMessage },
-      { senderName: partnerName, key: 1, time: temporaryTimestamp, body: partnerResponse },
-    ]
+    // Ideally we will use a Relay fragment in the Message component, but for now this is good enough
+    const messageData = conversation.messages.edges.reverse().map(({ node }, index) => {
+      return {
+        senderName: this.isFromUser(node) ? conversation.from.name : partnerName,
+        key: index,
+        time: temporaryTimestamp,
+        body: node.snippet,
+      }
+    })
 
     return (
       <Container>
@@ -77,19 +107,15 @@ export class Conversation extends React.Component<RelayProps, any> {
           <HeaderTextContainer>
             <BackButtonPlaceholder source={chevron} />
             <SmallHeadline>{partnerName}</SmallHeadline>
-            <MetadataText>Info</MetadataText>
+            <PlaceholderView />
           </HeaderTextContainer>
         </Header>
-        <ArtworkPreview
-          artwork={artwork}
-          onSelected={() => ARSwitchBoard.presentNavigationViewController(this, artwork.href)}
-        />
         <MessagesList
-          data={data}
-          renderItem={messageProps => <Message message={messageProps.item} />}
+          data={messageData}
+          renderItem={this.renderMessage.bind(this)}
           ItemSeparatorComponent={DottedBorder}
         />
-        <Composer />
+        <ComposerContainer><Composer /></ComposerContainer>
       </Container>
     )
   }
@@ -104,9 +130,21 @@ export default Relay.createContainer(Conversation, {
       fragment on Me {
         conversation(id: $conversationID) {
           id
-          from_name
-          to_name
-          initial_message
+          from {
+            name
+            email
+          }
+          to {
+            name
+          }
+          messages(first: 10) {
+            edges {
+              node {
+                snippet
+                from_email_address
+              }
+            }
+          }
           artworks @relay (plural: true) {
             title
             artist_names
@@ -123,10 +161,24 @@ interface RelayProps {
   me: {
     conversation: {
       id: string
-      from_name: string
-      to_name: string
-      initial_message: string
+      from: {
+        name: string
+        email: string
+      }
+      to: {
+        name: string
+      }
       artworks: any[]
+      messages: {
+        pageInfo?: {
+          hasNextPage: boolean
+        }
+        edges: Array<
+          {
+            node: any | null
+          }
+        >
+      }
     }
   }
 }

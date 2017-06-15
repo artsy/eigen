@@ -19,9 +19,11 @@ const meProps = {
         node: {
           id: "582",
           inquiry_id: "59302144275b244a81d0f9c6",
-          from_name: "Jean-Luc Collecteur",
-          from_email: "luc+messaging@artsymail.com",
-          to_name: "ACA Galleries",
+          from: {
+            name: "Jean-Luc Collecteur",
+            email: "luc+messaging@artsymail.com",
+          },
+          to: { name: "ACA Galleries" },
           last_message: "Karl and Anna... Fab!",
           created_at: "2017-06-01T14:14:35.538Z",
           artworks: [
@@ -43,9 +45,11 @@ const meProps = {
         node: {
           id: "581",
           inquiry_id: "593020be8b3b814f9f86f2fd",
-          from_name: "Jean-Luc Collecteur",
-          from_email: "luc+messaging@artsymail.com",
-          to_name: "David Krut Projects",
+          from: {
+            name: "Jean-Luc Collecteur",
+            email: "luc+messaging@artsymail.com",
+          },
+          to: { name: "David Krut Projects" },
           last_message:
             "Hi, I’m interested in purchasing this work. \
                     Could you please provide more information about the piece?",

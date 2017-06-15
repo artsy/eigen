@@ -190,13 +190,13 @@ CHECKOUT OPTIONS:
     :git: https://github.com/artsy/Artsy-Authentication.git
 
 SPEC CHECKSUMS:
-  AppHub: '03788112dd48c42b60d51321c0ffff4ef15a4432'
+  AppHub: 03788112dd48c42b60d51321c0ffff4ef15a4432
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   Artsy+Authentication: 3bf11ceca61c52e9e31490535bf5798f625406fa
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   Artsy+UIFonts: e66afb5c40100e2fc5bba28feb7487e252f2d06f
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
-  Emission: d9abff24f4f02cdb8807c352a484103bd17faa7b
+  Emission: a18a9c0a0c4d2190cb6e968c46b0ac4cb1eb3a28
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c

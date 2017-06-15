@@ -11,10 +11,22 @@ it("looks correct when rendered", () => {
 const props = {
   conversation: {
     id: "420",
-    from_name: "Anita Garibaldi",
-    from_email: "anita@garibaldi.br",
-    to_name: "Kimberly Klark",
+    from: {
+      name: "Anita Garibaldi",
+      email: "anita@garibaldi.br",
+    },
+    to: { name: "Kimberly Klark" },
     initial_message: "Adoro! Por favor envie-me mais informações",
+    messages: {
+      edges: [
+        {
+          node: {
+            snippet: "Adoro! Por favor envie-me mais informações",
+            from_email_address: "anita@garibaldi.br",
+          },
+        },
+      ],
+    },
     artworks: [
       {
         id: "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
