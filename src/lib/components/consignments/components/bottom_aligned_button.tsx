@@ -35,6 +35,7 @@ const render = (props: BottomAlignedProps) =>
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {props.children}
     </View>
+
     <Separator key="separator" />
     <Body key="button" onPress={props.onPress}>
       <ButtonText>DONE</ButtonText>

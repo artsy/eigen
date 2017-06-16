@@ -1,4 +1,5 @@
 import "./consignments.story"
+import "./ImageSelection.story"
 import "./style.story"
 
 import { storiesOf } from "@storybook/react-native"
