@@ -12,60 +12,66 @@ import fonts from "../../../../data/fonts"
 import OpaqueImageView from "../../OpaqueImageView"
 
 const Card = styled.View`
-    marginLeft: 20
-    marginRight: 20
-    marginTop: 20
-    minHeight: 80
+  margin: 10px 20px 0;
+  minHeight: 80px;
 `
 
 const VerticalLayout = styled.View`
-    flex: 1
-    flex-direction: column
+  flex: 1;
+  flex-direction: column;
 `
 
 const HorizontalLayout = styled.View`
-    flex: 1
-    flex-direction: row
+  flex: 1;
+  flex-direction: row;
 `
 
 const CardContent = styled(HorizontalLayout)`
-    justify-content: space-between
+  justify-content: space-between;
 `
 
 const TextPreview = styled(VerticalLayout)`
-    margin-left: 15
+  margin-left: 15;
 `
 
 const DateHeading = styled(HorizontalLayout)`
-    justify-content: flex-end
-    margin-bottom: 4
+  justify-content: flex-end;
+  margin-bottom: 4;
 `
 
 const UnreadIndicator = styled.View`
-    height: 8
-    width: 8
-    borderRadius: 4
-    background-color: ${colors["purple-regular"]}
-    marginLeft: 4
-    marginVertical: 3
+  height: 8;
+  width: 8;
+  border-radius: 4;
+  background-color: ${colors["purple-regular"]};
+  marginLeft: 4;
+  marginVertical: 3;
 `
 
 const Separator = styled.View`
-    height: 1
-    width: 100%
-    background-color: ${colors["gray-regular"]}
-    marginTop: 20
+  height: 1;
+  width: 100%;
+  background-color: ${colors["gray-regular"]};
+  margin-top: 18px;
+  margin-bottom: 5px;
 `
+
 const ArtworkSubtitle = styled.Text`
-  font-family: ${fonts["garamond-regular"]}
-  fontSize: 16
-  color: black
-  marginTop: 6
-  marginBottom: 2
+  font-family: ${fonts["garamond-regular"]};
+  font-size: 16px;
+  color: black;
+  margin-top: 6;
+  margin-bottom: 2;
 `
 
 const ArtworkTitle = styled(ArtworkSubtitle)`
-  font-family: ${fonts["garamond-italic"]}
+  font-family: ${fonts["garamond-italic"]};
+`
+
+const ImageView = styled(OpaqueImageView)`
+  width: 58px;
+  height: 58px;
+  borderRadius: 4px;
 `
 
 export interface Conversation {
@@ -115,7 +121,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
       <TouchableWithoutFeedback onPress={this.props.onSelected}>
         <Card>
           <CardContent>
-            <OpaqueImageView imageURL={imageURL} style={styles.image} />
+            <ImageView imageURL={imageURL} />
             <TextPreview>
               <HorizontalLayout>
                 <SmallHeadline>{partnerName}</SmallHeadline>
@@ -140,20 +146,6 @@ export class ConversationSnippet extends React.Component<Props, any> {
     )
   }
 }
-
-interface Styles {
-  image: ViewStyle
-}
-
-// Need to keep the stylesheet for OpaqueImageView because it expects borderRadius to be an integer
-// whereas styled-components converts the value to a string
-const styles = StyleSheet.create<Styles>({
-  image: {
-    width: 58,
-    height: 58,
-    borderRadius: 4,
-  },
-})
 
 export default Relay.createContainer(ConversationSnippet, {
   fragments: {

@@ -1,5 +1,6 @@
 import * as React from "react"
 import * as Relay from "react-relay"
+import styled from "styled-components/native"
 
 import { ListView, ListViewDataSource, ScrollView, Text, View } from "react-native"
 import { LargeHeadline } from "../Typography"
@@ -9,6 +10,11 @@ import ConversationSnippet from "./ConversationSnippet"
 import ZeroStateInbox from "./ZerostateInbox"
 
 const PageSize = 10
+
+const Headline = styled(LargeHeadline)`
+  margin-top: 10px;
+  margin-bottom: 20px;
+`
 
 interface Props {
   me: any // we probably want to generate an interface for this
@@ -91,7 +97,7 @@ export class Conversations extends React.Component<Props, State> {
   renderInbox() {
     return (
       <View>
-        <LargeHeadline style={{ marginTop: 10 }}>Messages</LargeHeadline>
+        <Headline>Messages</Headline>
         {this.renderConversations()}
       </View>
     )
