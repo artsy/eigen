@@ -85,7 +85,11 @@ const render = (props: ArtistQueryData) => {
         style={{ flex: 0 }}
       />
 
-      <ScrollView style={{ height: 182, paddingTop: 16 }} scrollEnabled={props.results && !!props.results.length}>
+      <ScrollView
+        style={{ height: 182, paddingTop: 16 }}
+        scrollEnabled={props.results && !!props.results.length}
+        keyboardShouldPersistTaps={true}
+      >
         {props.results && props.results.length ? props.results.map(rowForResult) : noResults(props)}
       </ScrollView>
     </View>

@@ -17,7 +17,7 @@ storiesOf("Consignments")
     return <Welcome navigator={nav} route={route} />
   })
   .add("Overview Page", () => {
-    return <Overview navigator={nav} route={route} />
+    return <Overview navigator={nav} route={route} setup={{}} />
   })
   .add("Artist Page", () => {
     return <Artist navigator={nav} route={route} />

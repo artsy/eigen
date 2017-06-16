@@ -2,6 +2,7 @@ import * as React from "react"
 
 import ArtistSearch from "../components/artist_search_results"
 import DoneButton from "../components/bottom_aligned_button"
+import ConsignmentBG from "../components/ConsignmentBG"
 import { ArtistResult, ConsignmentSetup } from "../index"
 
 import { debounce } from "lodash"
@@ -65,7 +66,7 @@ export default class Artist extends React.Component<Props, State> {
 
   render() {
     return (
-      <View style={{ backgroundColor: "black", flex: 1 }}>
+      <ConsignmentBG>
         <DoneButton onPress={this.doneTapped}>
           <View
             style={{ alignContent: "center", justifyContent: "flex-end", flexGrow: 1, marginLeft: 20, marginRight: 20 }}
@@ -79,7 +80,7 @@ export default class Artist extends React.Component<Props, State> {
             />
           </View>
         </DoneButton>
-      </View>
+      </ConsignmentBG>
     )
   }
 }

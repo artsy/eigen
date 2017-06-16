@@ -1,27 +1,34 @@
 import * as React from "react"
-import { NavigatorIOS, Route, View, ViewProperties } from "react-native"
+import { NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
+import ConsignmentBG from "../components/ConsignmentBG"
 import { LargeHeadline, Subtitle } from "../typography"
 
 import TODO from "../components/artwork_consignment_todo"
-import { ArtistResult } from "../index"
+import { ArtistResult, ConsignmentSetup } from "../index"
 import Artist from "./artist"
 import Welcome from "./welcome"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route // this gets set by NavigatorIOS
+  setup: ConsignmentSetup
 }
 
-export default class Info extends React.Component<Props, any> {
+export default class Info extends React.Component<Props, ConsignmentSetup> {
+  constructor(props) {
+    super(props)
+    this.state = props.setup || {}
+  }
+
   goToArtistTapped = () =>
-    this.props.navigator.push({ component: Artist, passProps: { ...this.props, updateWithResult: this.updateArtist } })
+    this.props.navigator.push({ component: Artist, passProps: { ...this.state, updateWithResult: this.updateArtist } })
   goToPhotosTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
   goToMetadataTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
   goToLocationTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
   goToProvenanceTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
 
   updateArtist = (result: ArtistResult) => {
-    // this.state.artist = result
+    this.setState({ artist: result })
   }
 
   render() {
@@ -29,18 +36,24 @@ export default class Info extends React.Component<Props, any> {
     const subtitle = "Provide as much detail as possible so that our partners can best assess your work."
 
     return (
-      <View style={{ backgroundColor: "black", flex: 1 }}>
-        <LargeHeadline>{title}</LargeHeadline>
-        <Subtitle>{subtitle}</Subtitle>
+      <ConsignmentBG>
+        <ScrollView style={{ flex: 1 }}>
+          <View style={{ paddingTop: 40 }}>
 
-        <TODO
-          goToArtist={this.goToArtistTapped}
-          goToPhotos={this.goToPhotosTapped}
-          goToMetadata={this.goToMetadataTapped}
-          goToLocation={this.goToLocationTapped}
-          goToProvenance={this.goToProvenanceTapped}
-        />
-      </View>
+            <LargeHeadline>{title}</LargeHeadline>
+            <Subtitle>{subtitle}</Subtitle>
+
+            <TODO
+              goToArtist={this.goToArtistTapped}
+              goToPhotos={this.goToPhotosTapped}
+              goToMetadata={this.goToMetadataTapped}
+              goToLocation={this.goToLocationTapped}
+              goToProvenance={this.goToProvenanceTapped}
+              {...this.state}
+            />
+          </View>
+        </ScrollView>
+      </ConsignmentBG>
     )
   }
 }
