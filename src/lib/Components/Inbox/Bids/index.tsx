@@ -40,6 +40,6 @@ export default Relay.createContainer(ActiveBids, {
           ${ActiveBid.getFragment("bid")}
         }
       }
-    `
-  }
+    `,
+  },
 })
