@@ -48,15 +48,6 @@ if (pr.body.length === 0) {
   fail("Please add a description to your PR.")
 }
 
-// Warn if there are changes to package.json without changes to yarn.lock.
-const packageChanged = includes(modified, "package.json")
-const lockfileChanged = includes(modified, "yarn.lock")
-if (packageChanged && !lockfileChanged) {
-  const message = "Changes were made to package.json, but not to yarn.lock"
-  const idea = "Perhaps you need to run `yarn install`?"
-  warn(`${message} - <i>${idea}</i>`)
-}
-
 // Always ensure we assign someone, so that our Slackbot can do its work correctly
 if (pr.assignee === null) {
   const method = pr.title.includes("WIP") ? warn : fail

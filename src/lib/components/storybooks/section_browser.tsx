@@ -40,7 +40,6 @@ const render = (props: Props) => {
   )
 }
 
-// Export a pure component version
 export default class StorybookBrowser extends React.Component<Props, null> {
   render() {
     return render(this.props)

@@ -72,6 +72,7 @@ const render = (props: ArtistQueryData) =>
         returnKeyType: "search",
         value: props.query,
         onChangeText: props.onChangeText,
+        autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
       }}
       style={{ flex: 0 }}
     />
@@ -81,7 +82,6 @@ const render = (props: ArtistQueryData) =>
     </ScrollView>
   </View>
 
-// Export a pure component version
 export default class SearchResults extends React.Component<ArtistQueryData, null> {
   render() {
     return render(this.props)
