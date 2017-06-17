@@ -1,12 +1,12 @@
 // First things first.
-import "./src/lib/error_reporting"
+import "./src/lib/ErrorReporting"
 
-import Containers from "./src/lib/containers"
-import Components from "./src/lib/components"
+import Containers from "./src/lib/Containers"
+import Components from "./src/lib/Components"
 import Routes from "./src/lib/relay/routes"
 
 import "./src/lib/relay/config"
-import "./src/lib/app_registry"
+import "./src/lib/AppRegistry"
 
 export default {
   Containers,

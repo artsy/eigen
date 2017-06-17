@@ -1,7 +1,7 @@
-import "./lib/components/text/__stories__/typography.story"
-import "./lib/components/buttons/__stories__/buttons.story"
+import "./lib/Components/Text/__stories__/Typography.story"
+import "./lib/Components/Buttons/__stories__/Buttons.story"
 
-import "./lib/containers/__stories__"
-import "./lib/components/artist/__stories__"
-import "./lib/components/consignments/__stories__"
-import "./lib/components/inbox/conversations/__stories__"
+import "./lib/Containers/__stories__"
+import "./lib/Components/Artist/__stories__"
+import "./lib/Components/Consignments/__stories__"
+import "./lib/Components/Inbox/Conversations/__stories__"

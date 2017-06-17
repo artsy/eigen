@@ -1,6 +1,7 @@
 ### Master
 
 -   [dev] Moves native view controllers to use iOS7+ status bar api - ash
+-   [dev] Renamed files to reflect case in component/function names - alloy
 
 ###### Emission
 

@@ -4,17 +4,17 @@ function mockedModule(path: string, moduleName: string) {
 
 jest.mock("./lib/metaphysics.ts")
 
-mockedModule("./lib/components/switch_view.tsx", "SwitchView")
-mockedModule("./lib/components/spinner.tsx", "ARSpinner")
-mockedModule("./lib/components/opaque_image_view.tsx", "AROpaqueImageView")
-mockedModule("./lib/components/artwork_grids/infinite_scroll_grid.tsx", "ArtworksGrid")
+mockedModule("./lib/Components/SwitchView.tsx", "SwitchView")
+mockedModule("./lib/Components/Spinner.tsx", "ARSpinner")
+mockedModule("./lib/Components/OpaqueImageView.tsx", "AROpaqueImageView")
+mockedModule("./lib/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
 
 // Artist tests
-mockedModule("./lib/components/artist/shows/index.tsx", "Shows")
-mockedModule("./lib/components/artist/artworks/index.tsx", "Artworks")
-mockedModule("./lib/components/artist/header.tsx", "Header")
-mockedModule("./lib/components/artist/about.tsx", "About")
+mockedModule("./lib/Components/Artist/Shows/index.tsx", "Shows")
+mockedModule("./lib/Components/Artist/Artworks/index.tsx", "Artworks")
+mockedModule("./lib/Components/Artist/Header.tsx", "Header")
+mockedModule("./lib/Components/Artist/About.tsx", "About")
 
 // Gene tests
-mockedModule("./lib/components/gene/header.tsx", "Header")
-mockedModule("./lib/components/gene/artworks.tsx", "Artworks")
+mockedModule("./lib/Components/Gene/Header.tsx", "Header")
+mockedModule("./lib/Components/Gene/Artworks.tsx", "Artworks")
