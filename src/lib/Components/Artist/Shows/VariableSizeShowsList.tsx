@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer, graphql } from "react-relay/compat"
 
 import { LayoutChangeEvent, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
@@ -92,16 +92,15 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(ShowsList, {
-  fragments: {
-    shows: () => Relay.QL`
-      fragment on PartnerShow @relay(plural: true) {
-        __id
-        ${Show.getFragment("show")}
-      }
-    `,
-  },
-})
+export default createFragmentContainer(
+  ShowsList,
+  graphql`
+    fragment VariableSizeShowsList_shows on PartnerShow @relay(plural: true) {
+      __id
+      ...Show_show
+    }
+  `
+)
 
 interface RelayProps {
   shows: Array<{
