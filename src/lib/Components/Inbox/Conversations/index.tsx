@@ -45,7 +45,13 @@ export class Conversations extends React.Component<Props, State> {
   }
 
   get conversations() {
-    return this.props.me.conversations.edges.map(a => a.node) || []
+    // It's currently possible for a conversation to be message-less in impulse, in which case we shouldn't show it
+    const conversations = this.props.me.conversations.edges
+      .filter(({ node }) => {
+        return node.last_message
+      })
+      .map(edge => edge.node)
+    return conversations || []
   }
 
   fetchNextPage() {
@@ -124,6 +130,7 @@ export default Relay.createContainer(Conversations, {
           edges {
             node {
               id
+              last_message
               ${ConversationSnippet.getFragment("conversation")}
             }
           }

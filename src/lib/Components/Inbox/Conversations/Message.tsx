@@ -15,10 +15,12 @@ const HorizontalLayout = styled.View`
 `
 
 const Container = styled(HorizontalLayout)`
-  flex: 1
   alignSelf: stretch
   marginTop: 15
   marginBottom: 10
+  marginLeft: 20
+  marginRight: 20
+
 `
 
 const Avatar = styled.View`
@@ -41,12 +43,17 @@ const SenderName = styled(SmallHeadline)`
   marginRight: 10
 `
 
+const ArtworkPreviewContainer = styled.View`
+  marginBottom: 10
+`
+
 interface Props {
   message: {
     senderName: string
     time: string
     body: string
   }
+  artworkPreview?: JSX.Element
 }
 
 export default class Message extends React.Component<Props, any> {
@@ -59,7 +66,8 @@ export default class Message extends React.Component<Props, any> {
             <SenderName>{this.props.message.senderName}</SenderName>
             <MetadataText>{this.props.message.time}</MetadataText>
           </Header>
-          <BodyText>{this.props.message.body}</BodyText>
+          {this.props.artworkPreview && <ArtworkPreviewContainer>{this.props.artworkPreview}</ArtworkPreviewContainer>}
+          <BodyText>{this.props.message.body.split("\n\nAbout")[0]}</BodyText>
         </TextContainer>
       </Container>
     )

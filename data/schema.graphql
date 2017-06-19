@@ -15,6 +15,24 @@ type AggregationCount {
   sortable_id: String
 }
 
+input AppendConversationThreadInput {
+  # The id of the conversation to be updated
+  id: String!
+
+  # The email address of the message sender
+  from: String!
+
+  # An array of email addresses that the message should be sent to
+  to: [String]
+  message_body: String!
+  clientMutationId: String
+}
+
+type AppendConversationThreadPayload {
+  message: MessagePayloadType
+  clientMutationId: String
+}
+
 type Article implements Node {
   # A globally unique ID.
   __id: ID!
@@ -771,6 +789,14 @@ type ArtworkContextFair {
   location: Location
   name: String
   profile: Profile
+  shows_connection(
+    # Number of artworks to return
+    section: String
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
   start_at(
     convert_to_utc: Boolean
     format: String
@@ -1511,6 +1537,30 @@ type CollectorProfileType {
   ): String
 }
 
+# The participant who started the conversation, currently always a User
+type ConversationInitiatorType {
+  # Impulse id.
+  id: String!
+
+  # The type of participant, e.g. Partner or User
+  type: String!
+  name: String!
+  email: String!
+}
+
+# The participant responding to the conversation, currently always a Partner
+type ConversationResponderType {
+  # Impulse id.
+  id: String!
+
+  # The type of participant, e.g. Partner or User
+  type: String!
+  name: String!
+
+  # An array of Impulse IDs that correspond to all email addresses that messages should be sent to
+  reply_to_impulse_ids: [String]!
+}
+
 # A conversation.
 type ConversationType {
   # Impulse id.
@@ -1518,13 +1568,12 @@ type ConversationType {
 
   # Gravity inquiry id.
   inquiry_id: String
-  from_id: String!
-  from_type: String!
-  from_name: String!
-  from_email: String!
-  to_id: String!
-  to_type: String!
-  to_name: String!
+
+  # The participant who initiated the conversation
+  from: ConversationInitiatorType!
+
+  # The participant(s) responding to the conversation
+  to: ConversationResponderType!
   buyer_outcome: String
   buyer_outcome_at(
     convert_to_utc: Boolean
@@ -1541,8 +1590,8 @@ type ConversationType {
     timezone: String
   ): String
   purchase_request: Boolean
-  initial_message: String
-  last_message: String
+  initial_message: String!
+  last_message: String!
   last_message_at(
     convert_to_utc: Boolean
     format: String
@@ -1551,6 +1600,9 @@ type ConversationType {
     timezone: String
   ): String
   artworks: [Artwork]
+
+  # A connection for all messages in a single conversation
+  messages(after: String, first: Int, before: String, last: Int): MessageTypeConnection
 }
 
 # A connection to a list of items.
@@ -1670,6 +1722,14 @@ type Fair {
   location: Location
   name: String
   profile: Profile
+  shows_connection(
+    # Number of artworks to return
+    section: String
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
   start_at(
     convert_to_utc: Boolean
     format: String
@@ -2313,6 +2373,14 @@ type HomePageModuleContextFair {
   location: Location
   name: String
   profile: Profile
+  shows_connection(
+    # Number of artworks to return
+    section: String
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
   start_at(
     convert_to_utc: Boolean
     format: String
@@ -2716,6 +2784,44 @@ type Me implements Node {
     size: Int
   ): [Artist]
   type: String
+}
+
+# Expected payload from a successful message post
+type MessagePayloadType {
+  # Impulse id.
+  id: String!
+  radiation_message_id: String!
+}
+
+# A message in a conversation.
+type MessageType {
+  # Impulse id.
+  id: String!
+
+  # Email address of sender.
+  from_email_address: String!
+
+  # A snippet of the full message
+  snippet: String!
+  radiation_message_id: String!
+}
+
+# A connection to a list of items.
+type MessageTypeConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [MessageTypeEdge]
+}
+
+# An edge in a connection.
+type MessageTypeEdge {
+  # The item at the end of the edge
+  node: MessageType
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 input Near {
@@ -3239,6 +3345,7 @@ type Profile {
   icon: Image
   image: Image
   initials(length: Int = 3): String
+  is_followed: Boolean
   is_published: Boolean
   name: String
   is_publically_visible: Boolean
@@ -3268,6 +3375,7 @@ type ProfileSearchEntity {
   icon: Image
   image: Image
   initials(length: Int = 3): String
+  is_followed: Boolean
   is_published: Boolean
   name: String
   is_publically_visible: Boolean
@@ -3288,7 +3396,10 @@ enum Role {
 type RootMutationType {
   followArtist(input: FollowArtistInput!): FollowArtistPayload
   updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
-  updateConversation(input: UpdateConversationInput!): UpdateConversationPayload
+  updateBuyerOutcome(input: UpdateBuyerOutcomeInput!): UpdateBuyerOutcomePayload
+
+  # Appending a message to a conversation thread
+  appendConversationThread(input: AppendConversationThreadInput!): AppendConversationThreadPayload
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
 }
 
@@ -3966,6 +4077,21 @@ type Show implements Node {
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
   ): [Artwork]
+  artworks_connection(
+    # Number of artworks to return
+    size: Int = 25
+    published: Boolean = true
+    page: Int = 1
+    all: Boolean
+    for_sale: Boolean
+
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
   artists_without_artworks: [Artist]
   city: String
   cover_image: Image
@@ -4024,6 +4150,15 @@ type Show implements Node {
   type: String
 }
 
+# A connection to a list of items.
+type ShowConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ShowEdge]
+}
+
 type ShowCounts {
   artworks(
     # The slug or ID of an artist in the show.
@@ -4034,6 +4169,15 @@ type ShowCounts {
     format: String
     label: String
   ): FormattedNumber
+}
+
+# An edge in a connection.
+type ShowEdge {
+  # The item at the end of the edge
+  node: Show
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 type Status {
@@ -4089,6 +4233,17 @@ enum TrendingMetrics {
   ARTIST_SEARCH
 }
 
+input UpdateBuyerOutcomeInput {
+  buyer_outcome: BuyerOutcomeTypes!
+  ids: [String]
+  clientMutationId: String
+}
+
+type UpdateBuyerOutcomePayload {
+  conversations: [ConversationType]
+  clientMutationId: String
+}
+
 input UpdateCollectorProfileInput {
   loyalty_applicant: Boolean
   professional_buyer: Boolean
@@ -4134,17 +4289,6 @@ type UpdateCollectorProfilePayload {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
-  clientMutationId: String
-}
-
-input UpdateConversationInput {
-  buyer_outcome: BuyerOutcomeTypes!
-  ids: [String]
-  clientMutationId: String
-}
-
-type UpdateConversationPayload {
-  conversations: [ConversationType]
   clientMutationId: String
 }
 

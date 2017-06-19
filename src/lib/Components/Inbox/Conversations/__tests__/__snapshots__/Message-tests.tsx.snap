@@ -10,10 +10,9 @@ exports[`looks correct when rendered 1`] = `
       Array [
         Object {
           "alignSelf": "stretch",
-          "flexBasis": 0,
-          "flexGrow": 1,
-          "flexShrink": 1,
           "marginBottom": 10,
+          "marginLeft": 20,
+          "marginRight": 20,
           "marginTop": 15,
         },
         undefined,
