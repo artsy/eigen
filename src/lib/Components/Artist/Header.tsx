@@ -173,7 +173,7 @@ const styles = StyleSheet.create<Styles>({
 export default createFragmentContainer(
   Header,
   graphql`
-  fragment header_artist on Artist {
+  fragment Header_artist on Artist {
     _id
     id
     name
