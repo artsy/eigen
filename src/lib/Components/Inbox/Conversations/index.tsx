@@ -7,7 +7,6 @@ import { LargeHeadline } from "../Typography"
 
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import ConversationSnippet from "./ConversationSnippet"
-import ZeroStateInbox from "./ZerostateInbox"
 
 const PageSize = 10
 
@@ -94,24 +93,11 @@ export class Conversations extends React.Component<Props, State> {
     )
   }
 
-  renderInbox() {
+  render() {
     return (
       <View>
         <Headline>Messages</Headline>
         {this.renderConversations()}
-      </View>
-    )
-  }
-
-  renderZeroState() {
-    return <ZeroStateInbox />
-  }
-
-  render() {
-    const userHasConversations = this.props.me.conversations.edges.length > 0
-    return (
-      <View>
-        {userHasConversations ? this.renderInbox() : this.renderZeroState()}
       </View>
     )
   }
