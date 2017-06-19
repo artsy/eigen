@@ -84,20 +84,21 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(Article, {
-  article: graphql`
-      fragment Article_article on Article {
-        thumbnail_title
-        href
-        author {
-          name
-        }
-        thumbnail_image {
-          url(version: "large")
-        }
+export default createFragmentContainer(
+  Article,
+  graphql`
+    fragment Article_article on Article {
+      thumbnail_title
+      href
+      author {
+        name
       }
-    `,
-})
+      thumbnail_image {
+        url(version: "large")
+      }
+    }
+  `
+)
 
 interface RelayProps {
   article: {
