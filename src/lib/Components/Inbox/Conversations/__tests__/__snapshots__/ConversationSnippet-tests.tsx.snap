@@ -18,9 +18,10 @@ exports[`renders correctly 1`] = `
   style={
     Array [
       Object {
+        "marginBottom": 0,
         "marginLeft": 20,
         "marginRight": 20,
-        "marginTop": 20,
+        "marginTop": 10,
         "minHeight": 80,
       },
       undefined,
@@ -49,11 +50,14 @@ exports[`renders correctly 1`] = `
     <AROpaqueImageView
       imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
       style={
-        Object {
-          "borderRadius": 4,
-          "height": 58,
-          "width": 58,
-        }
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 58,
+            "width": 58,
+          },
+          undefined,
+        ]
       }
     />
     <View
@@ -295,7 +299,8 @@ exports[`renders correctly 1`] = `
         Object {
           "backgroundColor": "#e5e5e5",
           "height": 1,
-          "marginTop": 20,
+          "marginBottom": 5,
+          "marginTop": 18,
           "width": "100%",
         },
         undefined,

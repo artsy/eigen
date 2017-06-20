@@ -1,14 +1,19 @@
 import * as React from "react"
 import * as Relay from "react-relay"
+import styled from "styled-components/native"
 
 import { ListView, ListViewDataSource, ScrollView, Text, View } from "react-native"
 import { LargeHeadline } from "../Typography"
 
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import ConversationSnippet from "./ConversationSnippet"
-import ZeroStateInbox from "./ZerostateInbox"
 
 const PageSize = 10
+
+const Headline = styled(LargeHeadline)`
+  margin-top: 10px;
+  margin-bottom: 20px;
+`
 
 interface Props {
   me: any // we probably want to generate an interface for this
@@ -22,8 +27,6 @@ interface State {
 }
 
 export class Conversations extends React.Component<Props, State> {
-  currentScrollOffset?: number = 0
-
   constructor(props) {
     super(props)
 
@@ -90,27 +93,11 @@ export class Conversations extends React.Component<Props, State> {
     )
   }
 
-  renderInbox() {
-    return (
-      <ScrollView
-        onScroll={event => (this.currentScrollOffset = event.nativeEvent.contentOffset.y)}
-        scrollEventThrottle={10}
-      >
-        <LargeHeadline style={{ marginTop: 10 }}>Messages</LargeHeadline>
-        {this.renderConversations()}
-      </ScrollView>
-    )
-  }
-
-  renderZeroState() {
-    return <ZeroStateInbox />
-  }
-
   render() {
-    const userHasConversations = this.props.me.conversations.edges.length > 0
     return (
       <View>
-        {userHasConversations ? this.renderInbox() : this.renderZeroState()}
+        <Headline>Messages</Headline>
+        {this.renderConversations()}
       </View>
     )
   }

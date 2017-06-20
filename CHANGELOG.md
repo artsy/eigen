@@ -4,7 +4,6 @@
 -   [dev] Renamed files to reflect case in component/function names - alloy
 
 ###### Emission
-
 -   Users/Devs can run any PR from inside beta/sim - orta
 -   Users now can access stories from inside the app - orta
 -   [dev] Applies prettier, and adds it to the webhooks + extension settings - orta
@@ -14,7 +13,10 @@
 -   [dev] Allows toggling the back button by pressing space - orta
 
 ###### Messaging
-
+-   Adds snapshot tests for active bids - luc
+-   Update status label colors - luc
+-   Renders active bids before Messages - luc
+-   Adds active bids section on top of messages - luc
 -   Adds an `ArtworkPreview` to each Conversation - sarah
 -   Adds Inbox zero state - maxim
 -   Relay support in Conversation container - sarah
