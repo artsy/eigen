@@ -2,6 +2,8 @@ import * as React from "react"
 
 import { BodyText, MetadataText, SmallHeadline } from "../Typography"
 
+import Avatar from "./Avatar"
+
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 
@@ -21,13 +23,6 @@ const Container = styled(HorizontalLayout)`
   marginLeft: 20
   marginRight: 20
 
-`
-
-const Avatar = styled.View`
-  height: 20
-  width: 20
-  borderRadius: 20
-  backgroundColor: ${colors["gray-regular"]}
 `
 
 const Header = styled(HorizontalLayout)`
@@ -60,7 +55,7 @@ export default class Message extends React.Component<Props, any> {
   render() {
     return (
       <Container>
-        <Avatar />
+        <Avatar isUser={true} senderName={this.props.message.senderName} />
         <TextContainer>
           <Header>
             <SenderName>{this.props.message.senderName}</SenderName>
