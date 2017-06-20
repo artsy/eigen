@@ -104,6 +104,22 @@ const styles = StyleSheet.create({
   },
 })
 
+// export default Relay.createContainer(Artworks, {
+//   fragments: {
+//     artist: () => Relay.QL`
+//       fragment on Artist {
+//         counts {
+//           artworks
+//           for_sale_artworks
+//         }
+//         ${ArtworksGrid.getFragment("artist", { filter: ["IS_FOR_SALE"] })}
+//         ${ArtworksGrid.getFragment("artist", { filter: ["IS_NOT_FOR_SALE"] })}
+//       }
+//     `,
+//   },
+// })
+
+// FIXME: After migrating to modern mode, we need to re-add the second query for not for sale works
 export default Relay.createContainer(Artworks, {
   fragments: {
     artist: () => Relay.QL`
@@ -112,8 +128,7 @@ export default Relay.createContainer(Artworks, {
           artworks
           for_sale_artworks
         }
-        ${ArtworksGrid.getFragment("artist", { filter: "IS_FOR_SALE" })}
-        ${ArtworksGrid.getFragment("artist", { filter: "IS_NOT_FOR_SALE" })}
+        ${ArtworksGrid.getFragment("artist", { filter: ["IS_FOR_SALE"] })}
       }
     `,
   },

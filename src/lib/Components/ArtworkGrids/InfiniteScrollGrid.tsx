@@ -109,20 +109,27 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
       return
     }
     this.setState({ fetchingNextPage: true })
-    this.props.relay.setVariables(
-      {
-        totalSize: this.props.relay.variables.totalSize + PageSize,
-      },
-      readyState => {
-        if (readyState.done) {
-          this.setState({ fetchingNextPage: false })
-          if (!this.props[this.props.queryKey].artworks.pageInfo.hasNextPage && this.props.onComplete) {
-            this.props.onComplete()
-            this.setState({ completed: true })
-          }
-        }
+    this.props.relay.loadMore(PageSize, error => {
+      this.setState({ fetchingNextPage: false })
+      if (!this.props[this.props.queryKey].artworks.pageInfo.hasNextPage && this.props.onComplete) {
+        this.props.onComplete()
+        this.setState({ completed: true })
       }
-    )
+    })
+    // this.props.relay.setVariables(
+    //   {
+    //     totalSize: this.props.relay.variables.totalSize + PageSize,
+    //   },
+    //   readyState => {
+    //     if (readyState.done) {
+    //       this.setState({ fetchingNextPage: false })
+    //       if (!this.props[this.props.queryKey].artworks.pageInfo.hasNextPage && this.props.onComplete) {
+    //         this.props.onComplete()
+    //         this.setState({ completed: true })
+    //       }
+    //     }
+    //   }
+    // )
   }
 
   /** A simplified version of the Relay debugging logs for infinite scrolls */

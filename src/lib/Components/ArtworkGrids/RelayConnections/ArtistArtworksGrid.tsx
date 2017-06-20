@@ -1,18 +1,30 @@
-import * as Relay from "react-relay/classic"
-import Artwork from "../Artwork"
+import { createPaginationContainer, graphql } from "react-relay/compat"
 import InfiniteScrollArtworksGrid, { PageSize } from "../InfiniteScrollGrid"
 
-export default Relay.createContainer(InfiniteScrollArtworksGrid, {
-  initialVariables: {
-    totalSize: PageSize,
-    filter: null,
-  },
-  fragments: {
-    artist: () => Relay.QL`
-      fragment on Artist {
-        artworks: artworks_connection(sort: partner_updated_at_desc, filter: $filter, first: $totalSize) {
-          pageInfo {
+import Artwork from "../Artwork"
+// tslint:disable-next-line:no-unused-expression
+// This is so that TypeScript won’t remove the seemingly unused `Artwork` import. Relay depends on it to exist.
+Artwork
+
+const ArtistArtworksGrid = createPaginationContainer(
+  InfiniteScrollArtworksGrid,
+  {
+    artist: graphql.experimental`
+      fragment ArtistArtworksGrid_artist on Artist @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        after: { type: "String" }
+        filter: { type: "[ArtistArtworksFilters]" }
+      ) {
+        artworks: artworks_connection(
+          first: $count
+          after: $cursor
+          filter: $filter
+          sort: partner_updated_at_desc
+        ) @connection(key: "ArtistArtworksGrid_artworks") {
+          pageInfo{
             hasNextPage
+            startCursor
+            endCursor
           }
           edges {
             node {
@@ -20,14 +32,49 @@ export default Relay.createContainer(InfiniteScrollArtworksGrid, {
               image {
                 aspect_ratio
               }
-              ${Artwork.getFragment("artwork")}
+              ...Artwork_artwork
             }
           }
         }
       }
     `,
   },
-})
+  {
+    direction: "forward",
+    getConnectionFromProps(props) {
+      return props.artist && props.artist.artworks
+    },
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        count: totalCount,
+      }
+    },
+    getVariables(props, { count, cursor }, fragmentVariables) {
+      return {
+        // in most cases, for variables other than connection filters like
+        // `first`, `after`, etc. you may want to use the previous values.
+        ...fragmentVariables,
+        count,
+        cursor,
+      }
+    },
+    // FIXME: Replace hardcoded artistID
+    query: graphql`
+      query ArtistArtworksGridQuery(
+        $count: Int!
+        $cursor: String
+        $filter: [ArtistArtworksFilters]
+      ) {
+        artist(id: "david-shrigley") {
+          ...ArtistArtworksGrid_artist
+        }
+      }
+    `,
+  }
+)
+
+export default ArtistArtworksGrid
 
 export interface ArtistRelayProps {
   artist: {
