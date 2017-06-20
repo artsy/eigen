@@ -1,0 +1,226 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks correct for a gallery with lowercase initials 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#e5e5e5",
+        "borderRadius": 15,
+        "height": 30,
+        "width": 30,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    disabled={false}
+    ellipsizeMode="tail"
+    style={
+      Array [
+        Object {
+          "alignSelf": "center",
+          "color": "#666666",
+          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+          "fontSize": 10,
+          "marginTop": 8,
+        },
+        undefined,
+      ]
+    }
+  >
+    ALC
+  </Text>
+</View>
+`;
+
+exports[`looks correct for a gallery with many initials 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#e5e5e5",
+        "borderRadius": 15,
+        "height": 30,
+        "width": 30,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    disabled={false}
+    ellipsizeMode="tail"
+    style={
+      Array [
+        Object {
+          "alignSelf": "center",
+          "color": "#666666",
+          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+          "fontSize": 10,
+          "marginTop": 8,
+        },
+        undefined,
+      ]
+    }
+  >
+    BGE
+  </Text>
+</View>
+`;
+
+exports[`looks correct for a gallery with two initials 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#e5e5e5",
+        "borderRadius": 15,
+        "height": 30,
+        "width": 30,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    disabled={false}
+    ellipsizeMode="tail"
+    style={
+      Array [
+        Object {
+          "alignSelf": "center",
+          "color": "#666666",
+          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+          "fontSize": 10,
+          "marginTop": 8,
+        },
+        undefined,
+      ]
+    }
+  >
+    BG
+  </Text>
+</View>
+`;
+
+exports[`looks correct for a user with many initials 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#e5e5e5",
+        "borderRadius": 15,
+        "height": 30,
+        "width": 30,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    disabled={false}
+    ellipsizeMode="tail"
+    style={
+      Array [
+        Object {
+          "alignSelf": "center",
+          "color": "white",
+          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+          "fontSize": 10,
+          "marginTop": 8,
+        },
+        undefined,
+      ]
+    }
+    user={true}
+  >
+    APW
+  </Text>
+</View>
+`;
+
+exports[`looks correct for a user with three initials 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#e5e5e5",
+        "borderRadius": 15,
+        "height": 30,
+        "width": 30,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    disabled={false}
+    ellipsizeMode="tail"
+    style={
+      Array [
+        Object {
+          "alignSelf": "center",
+          "color": "white",
+          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+          "fontSize": 10,
+          "marginTop": 8,
+        },
+        undefined,
+      ]
+    }
+    user={true}
+  >
+    APN
+  </Text>
+</View>
+`;
+
+exports[`looks correct for a user with two initials 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#e5e5e5",
+        "borderRadius": 15,
+        "height": 30,
+        "width": 30,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    disabled={false}
+    ellipsizeMode="tail"
+    style={
+      Array [
+        Object {
+          "alignSelf": "center",
+          "color": "white",
+          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+          "fontSize": 10,
+          "marginTop": 8,
+        },
+        undefined,
+      ]
+    }
+    user={true}
+  >
+    MC
+  </Text>
+</View>
+`;
