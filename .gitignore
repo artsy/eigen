@@ -4,6 +4,7 @@
 build/
 DerivedData
 __generated__
+dist
 
 ## Various settings
 *.pbxuser
