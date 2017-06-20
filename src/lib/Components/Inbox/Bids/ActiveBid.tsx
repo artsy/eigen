@@ -97,7 +97,7 @@ class ActiveBid extends React.Component<any, State> {
     const bid = this.props.bid.active_bid
     const imageURL = bid.sale_artwork.artwork.image.url
     const lotNumber = bid.sale_artwork.lot_number
-    const artistName = bid.sale_artwork.artwork.artist.name
+    const artistName = bid.sale_artwork.artwork.artist_names
 
     const headline = `Lot ${lotNumber} · ${artistName} `
     const subtitle = `Current Bid: ${bid.max_bid.display} `
@@ -155,9 +155,7 @@ export default Relay.createContainer(ActiveBid, {
               image {
                 url
               }
-              artist {
-                name
-              }
+              artist_names
             }
           }
         }
