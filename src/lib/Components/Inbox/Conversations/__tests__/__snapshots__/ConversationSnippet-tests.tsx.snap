@@ -1,0 +1,311 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  accessibilityComponentType={undefined}
+  accessibilityLabel={undefined}
+  accessibilityTraits={undefined}
+  accessible={true}
+  hitSlop={undefined}
+  nativeID={undefined}
+  onLayout={undefined}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Object {
+        "marginBottom": 0,
+        "marginLeft": 20,
+        "marginRight": 20,
+        "marginTop": 10,
+        "minHeight": 80,
+      },
+      undefined,
+    ]
+  }
+  testID={undefined}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "flexBasis": 0,
+          "flexDirection": "row",
+          "flexGrow": 1,
+          "flexShrink": 1,
+        },
+        Array [
+          Object {
+            "justifyContent": "space-between",
+          },
+          undefined,
+        ],
+      ]
+    }
+  >
+    <AROpaqueImageView
+      imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 58,
+            "width": 58,
+          },
+          undefined,
+        ]
+      }
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexDirection": "column",
+            "flexGrow": 1,
+            "flexShrink": 1,
+          },
+          Array [
+            Object {
+              "marginLeft": 15,
+            },
+            undefined,
+          ],
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "flexBasis": 0,
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "flexShrink": 1,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 11,
+                "textAlign": "left",
+              },
+              Object {},
+              Object {
+                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+              },
+            ]
+          }
+        >
+          ACA GALLERIES
+        </Text>
+        <View
+          style={
+            Array [
+              Object {
+                "flexBasis": 0,
+                "flexDirection": "row",
+                "flexGrow": 1,
+                "flexShrink": 1,
+              },
+              Array [
+                Object {
+                  "justifyContent": "flex-end",
+                  "marginBottom": 4,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "#cccccc",
+                  "fontSize": 11,
+                  "textAlign": "left",
+                },
+                Object {},
+                Object {
+                  "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                },
+              ]
+            }
+          >
+            30 MINUTES
+          </Text>
+          <View
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#6e1fff",
+                  "borderRadius": 4,
+                  "height": 8,
+                  "marginLeft": 4,
+                  "marginVertical": 3,
+                  "width": 8,
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "flexBasis": 0,
+              "flexDirection": "row",
+              "flexGrow": 1,
+              "flexShrink": 1,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 16,
+                "textAlign": "left",
+              },
+              Object {},
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+              },
+            ]
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "black",
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 16,
+                  "marginBottom": 2,
+                  "marginTop": 6,
+                },
+                undefined,
+              ]
+            }
+          >
+            Bradley Theodore · 
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "black",
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 16,
+                  "marginBottom": 2,
+                  "marginTop": 6,
+                },
+                Array [
+                  Object {
+                    "fontFamily": "AGaramondPro-Italic",
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            Karl and Anna Face Off (Diptych), 
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "black",
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 16,
+                  "marginBottom": 2,
+                  "marginTop": 6,
+                },
+                undefined,
+              ]
+            }
+          >
+            2016
+          </Text>
+        </Text>
+      </View>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 16,
+              "textAlign": "left",
+            },
+            Object {},
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        Karl and Anna... Fab!
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#e5e5e5",
+          "height": 1,
+          "marginBottom": 5,
+          "marginTop": 18,
+          "width": "100%",
+        },
+        undefined,
+      ]
+    }
+  />
+</View>
+`;
