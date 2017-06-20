@@ -15,6 +15,7 @@
 
 ###### Messaging
 
+-   Adds avatar component - maxim
 -   Adds an `ArtworkPreview` to each Conversation - sarah
 -   Adds Inbox zero state - maxim
 -   Relay support in Conversation container - sarah
