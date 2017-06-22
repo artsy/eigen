@@ -17,6 +17,8 @@
 -   Update status label colors - luc
 -   Renders active bids before Messages - luc
 -   Adds active bids section on top of messages - luc
+
+-   Adds a mutatiom for appending messages to a thread - sarah
 -   Adds an `ArtworkPreview` to each Conversation - sarah
 -   Adds Inbox zero state - maxim
 -   Relay support in Conversation container - sarah

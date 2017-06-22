@@ -4,6 +4,7 @@ import * as Relay from "react-relay"
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
 import { FlatList, ImageURISource, ViewProperties } from "react-native"
+import ReversedFlatList from "react-native-reversed-flat-list"
 
 import styled from "styled-components/native"
 import colors from "../../data/colors"
@@ -60,7 +61,20 @@ const ComposerContainer = styled.View`
   marginLeft: 20
 `
 
-export class Conversation extends React.Component<RelayProps, any> {
+interface State {
+  messages?: any[]
+}
+
+export class Conversation extends React.Component<RelayProps, State> {
+  constructor(props) {
+    super(props)
+    this.state = { messages: [] }
+  }
+
+  componentDidMount() {
+    this.setState({ messages: this.formattedMessages() })
+  }
+
   isFromUser(message) {
     /**
      * this is a quick hacky way to alternate between user/partner messages; will be changed once we have actual email
@@ -71,11 +85,12 @@ export class Conversation extends React.Component<RelayProps, any> {
 
   renderMessage(message) {
     const artwork = this.props.me.conversation.artworks[0]
+    const isFirstMessage = message.index === this.state.messages.length - 1
     return (
       <Message
         message={message.item}
         artworkPreview={
-          !message.index &&
+          isFirstMessage &&
           <ArtworkPreview
             artwork={artwork}
             onSelected={() => ARSwitchBoard.presentNavigationViewController(this, artwork.href)}
@@ -85,21 +100,25 @@ export class Conversation extends React.Component<RelayProps, any> {
     )
   }
 
-  render() {
+  formattedMessages() {
+    // Ideally we will use a Relay fragment in the Message component, but for now this is good enough
     const conversation = this.props.me.conversation
-    const partnerName = conversation.to.name
-    const artwork = conversation.artworks[0]
     const temporaryTimestamp = "11:00AM"
 
-    // Ideally we will use a Relay fragment in the Message component, but for now this is good enough
-    const messageData = conversation.messages.edges.reverse().map(({ node }, index) => {
+    return conversation.messages.edges.map(({ node }, index) => {
       return {
-        senderName: this.isFromUser(node) ? conversation.from.name : partnerName,
+        senderName: this.isFromUser(node) ? conversation.from.name : this.props.me.conversation.to.name,
         key: index,
         time: temporaryTimestamp,
         body: node.snippet,
       }
     })
+  }
+
+  render() {
+    const conversation = this.props.me.conversation
+    const partnerName = conversation.to.name
+    const artwork = conversation.artworks[0]
 
     return (
       <Container>
@@ -110,19 +129,107 @@ export class Conversation extends React.Component<RelayProps, any> {
             <PlaceholderView />
           </HeaderTextContainer>
         </Header>
-        <MessagesList
-          data={messageData}
+        <ReversedFlatList
+          data={this.state.messages}
           renderItem={this.renderMessage.bind(this)}
           ItemSeparatorComponent={DottedBorder}
         />
-        <ComposerContainer><Composer /></ComposerContainer>
+        <ComposerContainer>
+          <Composer
+            onSubmit={text => {
+              this.props.relay.commitUpdate(
+                new AppendConversationThread({
+                  from: this.props.me.conversation.from.email,
+                  id: this.props.me.conversation.id,
+                  body_text: text,
+                })
+              )
+
+              /// This part is highly experimental; will be updated when we implement real pagination
+              this.props.relay.setVariables({ totalSize: this.props.relay.variables.totalSize + 1 }, readyState => {
+                if (readyState.done) {
+                  const messages = this.formattedMessages()
+                  messages.push({
+                    senderName: this.props.me.conversation.from.name,
+                    key: this.state.messages.length,
+                    time: "1:00PM",
+                    body: text,
+                  })
+                  this.setState({
+                    messages,
+                  })
+                }
+              })
+            }}
+          />
+        </ComposerContainer>
       </Container>
     )
   }
 }
 
+interface MutationProps {
+  from?: string
+  id?: string
+  body_text?: string
+}
+
+class AppendConversationThread extends Relay.Mutation<MutationProps, any> {
+  getMutation() {
+    return Relay.QL`mutation { appendConversationThread }`
+  }
+
+  getVariables() {
+    return {
+      id: this.props.id,
+      from: this.props.from,
+      body_text: this.props.body_text,
+    }
+  }
+
+  getFatQuery() {
+    return Relay.QL`
+      fragment on AppendConversationThreadMutationPayload {
+          messageEdge
+          conversation {
+            id
+            messages
+          }
+      }
+    `
+  }
+
+  getConfigs() {
+    return [
+      {
+        type: "RANGE_ADD",
+        parentName: "conversation",
+        parentID: this.props.id,
+        connectionName: "messages",
+        edgeName: "messageEdge",
+        rangeBehaviors: {
+          "": "append",
+        },
+      },
+    ]
+  }
+
+  getOptimisticResponse() {
+    return {
+      conversation: {
+        id: this.props.id,
+      },
+      messageEdge: {
+        body_text: this.props.body_text,
+        from: this.props.from,
+      },
+    }
+  }
+}
+
 export default Relay.createContainer(Conversation, {
   initialVariables: {
+    totalSize: 20,
     conversationID: null,
   },
   fragments: {
@@ -137,7 +244,7 @@ export default Relay.createContainer(Conversation, {
           to {
             name
           }
-          messages(first: 10) {
+          messages(first: $totalSize) {
             edges {
               node {
                 snippet
@@ -158,6 +265,7 @@ export default Relay.createContainer(Conversation, {
 })
 
 interface RelayProps {
+  relay: any
   me: {
     conversation: {
       id: string

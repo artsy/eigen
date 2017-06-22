@@ -86,6 +86,7 @@
     "react": "16.0.0-alpha.12",
     "react-native": "next",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
+    "react-native-reversed-flat-list": "^1.0.1",
     "react-native-sentry": "^0.11.8",
     "react-relay": "https://github.com/alloy/relay/releases/download/react-relay-0.9.3%2Breact-native-0.45-fix-2/react-relay-0.9.3.react-native-0.45-fix-2.tgz",
     "remove-markdown": "0.1.0",

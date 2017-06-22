@@ -21,15 +21,17 @@ input AppendConversationThreadInput {
 
   # The email address of the message sender
   from: String!
-
-  # An array of email addresses that the message should be sent to
-  to: [String]
-  message_body: String!
+  body_text: String!
   clientMutationId: String
 }
 
+type AppendConversationThreadMutationPayload {
+  conversation: ConversationType
+  messageEdge: MessageTypeEdge
+}
+
 type AppendConversationThreadPayload {
-  message: MessagePayloadType
+  payload: AppendConversationThreadMutationPayload
   clientMutationId: String
 }
 
@@ -2786,13 +2788,6 @@ type Me implements Node {
   type: String
 }
 
-# Expected payload from a successful message post
-type MessagePayloadType {
-  # Impulse id.
-  id: String!
-  radiation_message_id: String!
-}
-
 # A message in a conversation.
 type MessageType {
   # Impulse id.
@@ -3396,7 +3391,7 @@ enum Role {
 type RootMutationType {
   followArtist(input: FollowArtistInput!): FollowArtistPayload
   updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
-  updateBuyerOutcome(input: UpdateBuyerOutcomeInput!): UpdateBuyerOutcomePayload
+  updateConversation(input: UpdateConversationInput!): UpdateConversationPayload
 
   # Appending a message to a conversation thread
   appendConversationThread(input: AppendConversationThreadInput!): AppendConversationThreadPayload
@@ -4233,17 +4228,6 @@ enum TrendingMetrics {
   ARTIST_SEARCH
 }
 
-input UpdateBuyerOutcomeInput {
-  buyer_outcome: BuyerOutcomeTypes!
-  ids: [String]
-  clientMutationId: String
-}
-
-type UpdateBuyerOutcomePayload {
-  conversations: [ConversationType]
-  clientMutationId: String
-}
-
 input UpdateCollectorProfileInput {
   loyalty_applicant: Boolean
   professional_buyer: Boolean
@@ -4289,6 +4273,17 @@ type UpdateCollectorProfilePayload {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  clientMutationId: String
+}
+
+input UpdateConversationInput {
+  buyer_outcome: BuyerOutcomeTypes!
+  ids: [String]
+  clientMutationId: String
+}
+
+type UpdateConversationPayload {
+  conversations: [ConversationType]
   clientMutationId: String
 }
 

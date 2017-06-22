@@ -34555,7 +34555,7 @@
               "deprecationReason": null
             },
             {
-              "name": "updateBuyerOutcome",
+              "name": "updateConversation",
               "description": null,
               "args": [
                 {
@@ -34566,7 +34566,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "UpdateBuyerOutcomeInput",
+                      "name": "UpdateConversationInput",
                       "ofType": null
                     }
                   },
@@ -34575,7 +34575,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "UpdateBuyerOutcomePayload",
+                "name": "UpdateConversationPayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -35045,7 +35045,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "UpdateBuyerOutcomeInput",
+          "name": "UpdateConversationInput",
           "description": null,
           "fields": null,
           "inputFields": [
@@ -35147,7 +35147,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "UpdateBuyerOutcomePayload",
+          "name": "UpdateConversationPayload",
           "description": null,
           "fields": [
             {
@@ -35219,21 +35219,7 @@
               "defaultValue": null
             },
             {
-              "name": "to",
-              "description": "An array of email addresses that the message should be sent to",
-              "type": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "message_body",
+              "name": "body_text",
               "description": null,
               "type": {
                 "kind": "NON_NULL",
@@ -35267,12 +35253,12 @@
           "description": null,
           "fields": [
             {
-              "name": "message",
+              "name": "payload",
               "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "MessagePayloadType",
+                "name": "AppendConversationThreadMutationPayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -35298,37 +35284,29 @@
         },
         {
           "kind": "OBJECT",
-          "name": "MessagePayloadType",
-          "description": "Expected payload from a successful message post",
+          "name": "AppendConversationThreadMutationPayload",
+          "description": null,
           "fields": [
             {
-              "name": "id",
-              "description": "Impulse id.",
+              "name": "conversation",
+              "description": null,
               "args": [],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
+                "kind": "OBJECT",
+                "name": "ConversationType",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "radiation_message_id",
+              "name": "messageEdge",
               "description": null,
               "args": [],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
+                "kind": "OBJECT",
+                "name": "MessageTypeEdge",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
