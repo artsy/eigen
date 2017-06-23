@@ -61,14 +61,6 @@ const ComposerContainer = styled.View`
 `
 
 export class Conversation extends React.Component<RelayProps, any> {
-  isFromUser(message) {
-    /**
-     * this is a quick hacky way to alternate between user/partner messages; will be changed once we have actual email
-     * data
-     */
-    return message.from_email_address === this.props.me.conversation.from.email
-  }
-
   renderMessage(message) {
     const artwork = this.props.me.conversation.artworks[0]
     return (
@@ -92,12 +84,12 @@ export class Conversation extends React.Component<RelayProps, any> {
     const temporaryTimestamp = "11:00AM"
 
     // Ideally we will use a Relay fragment in the Message component, but for now this is good enough
-    const messageData = conversation.messages.edges.reverse().map(({ node }, index) => {
+    const messageData = conversation.messages.edges.map(({ node }, index) => {
       return {
-        senderName: this.isFromUser(node) ? conversation.from.name : partnerName,
+        senderName: node.is_from_user ? conversation.from.name : partnerName,
         key: index,
         time: temporaryTimestamp,
-        body: node.snippet,
+        body: node.raw_text,
       }
     })
 
@@ -140,8 +132,9 @@ export default Relay.createContainer(Conversation, {
           messages(first: 10) {
             edges {
               node {
-                snippet
-                from_email_address
+                raw_text
+                is_from_user
+
               }
             }
           }

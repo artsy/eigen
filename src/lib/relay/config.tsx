@@ -9,6 +9,8 @@ if (Emission && Emission.useStagingEnvironment) {
   metaphysicsURL = "https://metaphysics-production.artsy.net"
 }
 
+metaphysicsURL = "http://localhost:5001"
+
 export { metaphysicsURL }
 
 if (Emission) {
