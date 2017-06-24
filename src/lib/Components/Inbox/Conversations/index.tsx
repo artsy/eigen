@@ -2,13 +2,13 @@ import * as React from "react"
 import * as Relay from "react-relay"
 import styled from "styled-components/native"
 
-import { ListView, ListViewDataSource, ScrollView, Text, View } from "react-native"
+import { ListView, ListViewDataSource, RefreshControl, ScrollView, Text, View } from "react-native"
 import { LargeHeadline } from "../Typography"
 
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import ConversationSnippet from "./ConversationSnippet"
 
-const PageSize = 10
+const PageSize = 6
 
 const Headline = styled(LargeHeadline)`
   margin-top: 10px;
@@ -18,6 +18,7 @@ const Headline = styled(LargeHeadline)`
 interface Props {
   me: any // we probably want to generate an interface for this
   relay: Relay.RelayProp
+  headerView?: JSX.Element
 }
 
 interface State {
@@ -47,9 +48,20 @@ export class Conversations extends React.Component<Props, State> {
     })
   }
 
+  componentWillReceiveProps(newProps) {
+    console.log(newProps)
+
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.getConversationsFrom(newProps.me)),
+    })
+  }
+
   get conversations() {
-    // It's currently possible for a conversation to be message-less in impulse, in which case we shouldn't show it
-    const conversations = this.props.me.conversations.edges
+    return this.getConversationsFrom(this.props.me)
+  }
+
+  getConversationsFrom(me) {
+    const conversations = me.conversations.edges
       .filter(({ node }) => {
         return node.last_message
       })
@@ -64,7 +76,7 @@ export class Conversations extends React.Component<Props, State> {
     const totalSize = this.props.relay.variables.totalSize + PageSize
 
     this.setState({ fetchingNextPage: true })
-    this.props.relay.setVariables({ totalSize }, readyState => {
+    this.props.relay.forceFetch({ totalSize }, readyState => {
       if (readyState.done) {
         this.setState({
           fetchingNextPage: false,
@@ -78,27 +90,32 @@ export class Conversations extends React.Component<Props, State> {
     })
   }
 
-  renderConversations() {
+  render() {
     return (
       <ListView
         dataSource={this.state.dataSource}
+        initialListSize={10}
+        scrollEventThrottle={10}
+        onEndReachedThreshold={10}
+        refreshControl={
+          <RefreshControl refreshing={this.state.fetchingNextPage} onRefresh={this.fetchNextPage.bind(this)} />
+        }
+        renderHeader={() => {
+          return (
+            <View>
+              {this.props.headerView}
+              <Headline>Messages</Headline>
+            </View>
+          )
+        }}
         renderRow={data =>
           <ConversationSnippet
             conversation={data}
+            key={data.id}
             onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${data.id}`)}
           />}
         onEndReached={() => this.fetchNextPage()}
-        scrollEnabled={false}
       />
-    )
-  }
-
-  render() {
-    return (
-      <View>
-        <Headline>Messages</Headline>
-        {this.renderConversations()}
-      </View>
     )
   }
 }

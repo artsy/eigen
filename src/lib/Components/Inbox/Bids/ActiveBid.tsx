@@ -10,6 +10,7 @@ import OpaqueImageView from "../../OpaqueImageView"
 
 const Container = styled.View`
   margin: 17px 20px 0px;
+  height: 80px;
 `
 
 const Content = styled.View`
