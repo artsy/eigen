@@ -62,9 +62,9 @@ const ComposerContainer = styled.View`
 
 export class Conversation extends React.Component<RelayProps, any> {
   renderMessage(message) {
-    const artwork = this.props.me.conversation.artworks[0]
-    console.log(this.props.me.conversation.artworks[0])
-    const conversation = this.props.me.conversation
+    const artwork = this.props.viewer.me.conversation.artworks[0]
+    console.log(this.props.viewer.me.conversation.messages.edges[0])
+    const conversation = this.props.viewer.me.conversation
     const partnerName = conversation.to.name
     const senderName = message.is_from_user ? conversation.from.name : partnerName
     return (
@@ -83,10 +83,9 @@ export class Conversation extends React.Component<RelayProps, any> {
   }
 
   render() {
-    const temporaryTimestamp = "11:00AM"
-    const conversation = this.props.me.conversation
+    const conversation = this.props.viewer.me.conversation
     const partnerName = conversation.to.name
-    const messages = this.props.me.conversation.messages.edges.map(edge => edge.node)
+    const messages = this.props.viewer.me.conversation.messages.edges.map(edge => edge.node)
     return (
       <Container>
         <Header>
@@ -112,32 +111,34 @@ export default Relay.createContainer(Conversation, {
     conversationID: null,
   },
   fragments: {
-    me: () => Relay.QL`
-      fragment on Me {
-        conversation(id: $conversationID) {
-          id
-          from {
-            name
-            email
-          }
-          to {
-            name
-          }
-          messages(first: 10) {
-            pageInfo {
-              hasNextPage
+    viewer: () => Relay.QL`
+      fragment on Viewer {
+        me {
+          conversation(id: $conversationID) {
+            id
+            from {
+              name
+              email
             }
-            edges {
-              node {
-                ${Message.getFragment("message")}
+            to {
+              name
+            }
+            messages(first: 10) {
+              pageInfo {
+                hasNextPage
+              }
+              edges {
+                node {
+                  ${Message.getFragment("message")}
+                }
               }
             }
-          }
-          artworks @relay (plural: true) {
-            title
-            artist_names
-            href
-            ${ArtworkPreview.getFragment("artwork")}
+            artworks @relay (plural: true) {
+              title
+              artist_names
+              href
+              ${ArtworkPreview.getFragment("artwork")}
+            }
           }
         }
       }
@@ -146,26 +147,28 @@ export default Relay.createContainer(Conversation, {
 })
 
 interface RelayProps {
-  me: {
-    conversation: {
-      id: string
-      from: {
-        name: string
-        email: string
-      }
-      to: {
-        name: string
-      }
-      artworks: any[]
-      messages: {
-        pageInfo?: {
-          hasNextPage: boolean
+  viewer: {
+    me: {
+      conversation: {
+        id: string
+        from: {
+          name: string
+          email: string
         }
-        edges: Array<
-          {
-            node: any | null
+        to: {
+          name: string
+        }
+        artworks: any[]
+        messages: {
+          pageInfo?: {
+            hasNextPage: boolean
           }
-        >
+          edges: Array<
+            {
+              node: any | null
+            }
+          >
+        }
       }
     }
   }

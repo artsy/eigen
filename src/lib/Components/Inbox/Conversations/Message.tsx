@@ -72,7 +72,6 @@ export class Message extends React.Component<Props, any> {
 }
 
 export default Relay.createContainer(Message, {
-  initialVariables: {},
   fragments: {
     message: () => Relay.QL`
       fragment on MessageType {

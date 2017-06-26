@@ -20,11 +20,11 @@ class Artist extends Relay.Route {
 
 class Conversation extends Relay.Route {
   static queries = {
-    me: (component, params) => Relay.QL`
+    viewer: (component, params) => Relay.QL`
       query {
-          me {
-            ${component.getFragment("me", params)}
-          }
+        viewer {
+          ${component.getFragment("viewer", params)}
+        }
       }
     `,
   }
