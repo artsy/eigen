@@ -1,3 +1,4 @@
+import * as moment from "moment"
 import * as React from "react"
 import * as Relay from "react-relay"
 
@@ -55,13 +56,14 @@ interface Props extends RelayProps {
 
 export class Message extends React.Component<Props, any> {
   render() {
+    const date = moment(this.props.message.created_at).fromNow(true)
     return (
       <Container>
         <Avatar />
         <TextContainer>
           <Header>
             <SenderName>{this.props.senderName}</SenderName>
-            <MetadataText>{this.props.message.created_at}</MetadataText>
+            <MetadataText>{date}</MetadataText>
           </Header>
           {this.props.artworkPreview && <ArtworkPreviewContainer>{this.props.artworkPreview}</ArtworkPreviewContainer>}
           <BodyText>{this.props.message.raw_text.split("\n\nAbout")[0]}</BodyText>
@@ -77,6 +79,7 @@ export default Relay.createContainer(Message, {
       fragment on MessageType {
         raw_text
         created_at
+        is_from_user
       }
     `,
   },
@@ -84,7 +87,8 @@ export default Relay.createContainer(Message, {
 
 interface RelayProps {
   message: {
-    raw_text: string
-    created_at: string
+    raw_text: string | null
+    created_at: string | null
+    is_from_user: boolean
   }
 }

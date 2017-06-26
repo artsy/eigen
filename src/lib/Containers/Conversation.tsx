@@ -61,18 +61,17 @@ const ComposerContainer = styled.View`
 `
 
 export class Conversation extends React.Component<RelayProps, any> {
-  renderMessage(message) {
+  renderMessage({ item }) {
     const artwork = this.props.viewer.me.conversation.artworks[0]
-    console.log(this.props.viewer.me.conversation.messages.edges[0])
     const conversation = this.props.viewer.me.conversation
     const partnerName = conversation.to.name
-    const senderName = message.is_from_user ? conversation.from.name : partnerName
+    const senderName = item.is_from_user ? conversation.from.name : partnerName
     return (
       <Message
-        message={message}
+        message={item}
         senderName={senderName}
         artworkPreview={
-          !message.index &&
+          item.first_message &&
           <ArtworkPreview
             artwork={artwork}
             onSelected={() => ARSwitchBoard.presentNavigationViewController(this, artwork.href)}
@@ -85,7 +84,10 @@ export class Conversation extends React.Component<RelayProps, any> {
   render() {
     const conversation = this.props.viewer.me.conversation
     const partnerName = conversation.to.name
-    const messages = this.props.viewer.me.conversation.messages.edges.map(edge => edge.node)
+    const messages = this.props.viewer.me.conversation.messages.edges.map(({ node }, index) => {
+      node.first_message = index === 0
+      return node
+    })
     return (
       <Container>
         <Header>
@@ -129,7 +131,9 @@ export default Relay.createContainer(Conversation, {
               }
               edges {
                 node {
-                  ${Message.getFragment("message")}
+                  is_from_user
+                  raw_text
+                  created_at
                 }
               }
             }
