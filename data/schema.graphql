@@ -2807,7 +2807,10 @@ type MessagePayloadType {
 }
 
 # A message in a conversation.
-type MessageType {
+type MessageType implements Node {
+  # A globally unique ID.
+  __id: ID!
+
   # Impulse message id.
   id: String!
 
@@ -2818,6 +2821,13 @@ type MessageType {
   # Full unsanitized text.
   raw_text: String!
   attachments: [AttachmentType]
+  created_at(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
 }
 
 # A connection to a list of items.

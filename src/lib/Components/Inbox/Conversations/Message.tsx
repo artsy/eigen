@@ -1,4 +1,5 @@
 import * as React from "react"
+import * as Relay from "react-relay"
 
 import { BodyText, MetadataText, SmallHeadline } from "../Typography"
 
@@ -47,29 +48,44 @@ const ArtworkPreviewContainer = styled.View`
   marginBottom: 10
 `
 
-interface Props {
-  message: {
-    senderName: string
-    time: string
-    body: string
-  }
+interface Props extends RelayProps {
+  senderName: string
   artworkPreview?: JSX.Element
 }
 
-export default class Message extends React.Component<Props, any> {
+export class Message extends React.Component<Props, any> {
   render() {
     return (
       <Container>
         <Avatar />
         <TextContainer>
           <Header>
-            <SenderName>{this.props.message.senderName}</SenderName>
-            <MetadataText>{this.props.message.time}</MetadataText>
+            <SenderName>{this.props.senderName}</SenderName>
+            <MetadataText>{this.props.message.created_at}</MetadataText>
           </Header>
           {this.props.artworkPreview && <ArtworkPreviewContainer>{this.props.artworkPreview}</ArtworkPreviewContainer>}
-          <BodyText>{this.props.message.body.split("\n\nAbout")[0]}</BodyText>
+          <BodyText>{this.props.message.raw_text.split("\n\nAbout")[0]}</BodyText>
         </TextContainer>
       </Container>
     )
+  }
+}
+
+export default Relay.createContainer(Message, {
+  initialVariables: {},
+  fragments: {
+    message: () => Relay.QL`
+      fragment on MessageType {
+        raw_text
+        created_at
+      }
+    `,
+  },
+})
+
+interface RelayProps {
+  message: {
+    raw_text: string
+    created_at: string
   }
 }

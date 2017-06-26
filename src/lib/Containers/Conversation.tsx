@@ -63,9 +63,14 @@ const ComposerContainer = styled.View`
 export class Conversation extends React.Component<RelayProps, any> {
   renderMessage(message) {
     const artwork = this.props.me.conversation.artworks[0]
+    console.log(this.props.me.conversation.artworks[0])
+    const conversation = this.props.me.conversation
+    const partnerName = conversation.to.name
+    const senderName = message.is_from_user ? conversation.from.name : partnerName
     return (
       <Message
-        message={message.item}
+        message={message}
+        senderName={senderName}
         artworkPreview={
           !message.index &&
           <ArtworkPreview
@@ -78,21 +83,10 @@ export class Conversation extends React.Component<RelayProps, any> {
   }
 
   render() {
+    const temporaryTimestamp = "11:00AM"
     const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
-    const artwork = conversation.artworks[0]
-    const temporaryTimestamp = "11:00AM"
-
-    // Ideally we will use a Relay fragment in the Message component, but for now this is good enough
-    const messageData = conversation.messages.edges.map(({ node }, index) => {
-      return {
-        senderName: node.is_from_user ? conversation.from.name : partnerName,
-        key: index,
-        time: temporaryTimestamp,
-        body: node.raw_text,
-      }
-    })
-
+    const messages = this.props.me.conversation.messages.edges.map(edge => edge.node)
     return (
       <Container>
         <Header>
@@ -103,7 +97,7 @@ export class Conversation extends React.Component<RelayProps, any> {
           </HeaderTextContainer>
         </Header>
         <MessagesList
-          data={messageData}
+          data={messages}
           renderItem={this.renderMessage.bind(this)}
           ItemSeparatorComponent={DottedBorder}
         />
@@ -130,11 +124,12 @@ export default Relay.createContainer(Conversation, {
             name
           }
           messages(first: 10) {
+            pageInfo {
+              hasNextPage
+            }
             edges {
               node {
-                raw_text
-                is_from_user
-
+                ${Message.getFragment("message")}
               }
             }
           }
