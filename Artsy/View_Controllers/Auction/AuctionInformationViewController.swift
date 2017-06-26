@@ -109,6 +109,7 @@ class AuctionInformationViewController: UIViewController {
         stackView?.addSubview(auctionBeginsLabel, withTopMargin: "10", sideMargin: "40")
 
         if saleViewModel.saleIsClosed {
+            // Sale is closed.
             auctionBeginsHeaderLabel.text = "SALE CLOSED"
             if let endDate = saleViewModel.closingDate {
                 auctionBeginsLabel.text = formatter.string(from: endDate)
@@ -116,10 +117,17 @@ class AuctionInformationViewController: UIViewController {
                 auctionBeginsLabel.text = ""
             }
         } else {
+            // Sale is open.
             if let liveAuctionStartDate = saleViewModel.liveAuctionStartDate {
+                // Sale is a live sale.
                 auctionBeginsHeaderLabel.text = "LIVE BIDDING BEGINS"
                 auctionBeginsLabel.text = formatter.string(from: liveAuctionStartDate as Date)
+            } else if let endDate = saleViewModel.closingDate, ARSystemTime.date() > saleViewModel.startDate {
+                // Sale is online-only, has started.
+                auctionBeginsHeaderLabel.text = "AUCTION ENDS"
+                auctionBeginsLabel.text = formatter.string(from: endDate)
             } else {
+                // Sale is online-only, has yet to start.
                 auctionBeginsHeaderLabel.text = "AUCTION BEGINS"
                 auctionBeginsLabel.text = formatter.string(from: saleViewModel.startDate)
             }
