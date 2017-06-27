@@ -67,18 +67,13 @@ export class Conversation extends React.Component<RelayProps, any> {
     const conversation = this.props.viewer.me.conversation
     const partnerName = conversation.to.name
     const senderName = item.is_from_user ? conversation.from.name : partnerName
-    let imageAttachmentUrl
-    if (item.attachments.length > 0) {
-      if (item.attachments[0].content_type === "image/jpeg") {
-        imageAttachmentUrl = item.attachments[0].download_url
-      }
-    }
+    const hasImageAttachment = item.attachments.length > 0 && item.attachments[0].content_type === "image/jpeg"
 
     return (
       <Message
         message={item}
         senderName={senderName}
-        imagePreview={imageAttachmentUrl && <ImagePreview url={imageAttachmentUrl} />}
+        imagePreview={hasImageAttachment && <ImagePreview imageAttachment={item.attachments[0]} />}
         artworkPreview={
           item.first_message &&
           <ArtworkPreview
@@ -95,6 +90,7 @@ export class Conversation extends React.Component<RelayProps, any> {
     const partnerName = conversation.to.name
     const messages = this.props.viewer.me.conversation.messages.edges.map(({ node }, index) => {
       node.first_message = index === 0
+      node.key = node.id
       return node
     })
     return (
@@ -140,9 +136,8 @@ export default Relay.createContainer(Conversation, {
               }
               edges {
                 node {
-                  is_from_user
-                  raw_text
-                  created_at
+                  id
+                  ${Message.getFragment("message")}
                   attachments {
                     content_type
                     download_url
@@ -151,8 +146,6 @@ export default Relay.createContainer(Conversation, {
               }
             }
             artworks @relay (plural: true) {
-              title
-              artist_names
               href
               ${ArtworkPreview.getFragment("artwork")}
             }

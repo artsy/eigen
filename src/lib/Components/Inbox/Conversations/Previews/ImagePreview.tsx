@@ -27,19 +27,31 @@ const Image = styled(OpaqueImageView)`
   height: 55
 `
 
-interface Props {
-  url: string
-  onSelected?: () => void
-}
-
-export default class ImagePreview extends React.Component<Props, any> {
+export class ImagePreview extends React.Component<RelayProps, any> {
   render() {
     return (
       <TouchableHighlight underlayColor={colors["gray-light"]} onPress={this.props.onSelected}>
         <Container>
-          <Image skipGemini={true} imageURL={this.props.url} />
+          <Image skipGemini={true} imageURL={this.props.imageAttachment.download_url} />
         </Container>
       </TouchableHighlight>
     )
   }
+}
+
+export default Relay.createContainer(ImagePreview, {
+  fragments: {
+    imageAttachment: () => Relay.QL`
+      fragment on AttachmentType {
+        download_url
+      }
+    `,
+  },
+})
+
+interface RelayProps {
+  imageAttachment: {
+    download_url?: string
+  }
+  onSelected?: () => void
 }
