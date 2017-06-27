@@ -14,7 +14,7 @@ const Content = styled.View`
   flex: 1;
   flex-direction: row;
 
-  \: center;
+  align-items: center;
 `
 
 const ImageView = styled(OpaqueImageView)`
