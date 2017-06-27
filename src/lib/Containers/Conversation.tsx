@@ -98,7 +98,9 @@ export class Conversation extends React.Component<RelayProps, any> {
         <Header>
           <HeaderTextContainer>
             <BackButtonPlaceholder source={chevron} />
-            <SmallHeadline>{partnerName}</SmallHeadline>
+            <SmallHeadline>
+              {partnerName}
+            </SmallHeadline>
             <PlaceholderView />
           </HeaderTextContainer>
         </Header>
@@ -107,7 +109,9 @@ export class Conversation extends React.Component<RelayProps, any> {
           renderItem={this.renderMessage.bind(this)}
           ItemSeparatorComponent={DottedBorder}
         />
-        <ComposerContainer><Composer /></ComposerContainer>
+        <ComposerContainer>
+          <Composer />
+        </ComposerContainer>
       </Container>
     )
   }
@@ -170,11 +174,9 @@ interface RelayProps {
         pageInfo?: {
           hasNextPage: boolean
         }
-        edges: Array<
-          {
-            node: any | null
-          }
-        >
+        edges: Array<{
+          node: any | null
+        }>
       }
     }
   }

@@ -8,14 +8,13 @@ import { BodyText, MetadataText } from "../Typography"
 import colors from "../../../../data/colors"
 import OpaqueImageView from "../../OpaqueImageView"
 
-const Container = styled.View`
-  margin: 17px 20px 0px;
-`
+const Container = styled.View`margin: 17px 20px 0px;`
 
 const Content = styled.View`
   flex: 1;
   flex-direction: row;
-  align-items: center;
+
+  \: center;
 `
 
 const ImageView = styled(OpaqueImageView)`
@@ -108,10 +107,16 @@ class ActiveBid extends React.Component<any, State> {
           <Content>
             <ImageView imageURL={imageURL} />
             <MetadataContainer>
-              <BodyText>{headline}</BodyText>
-              <BodyText>{subtitle}</BodyText>
+              <BodyText>
+                {headline}
+              </BodyText>
+              <BodyText>
+                {subtitle}
+              </BodyText>
             </MetadataContainer>
-            <StatusLabel status={this.state.status}>{this.statusLabel}</StatusLabel>
+            <StatusLabel status={this.state.status}>
+              {this.statusLabel}
+            </StatusLabel>
           </Content>
           <Separator />
         </Container>

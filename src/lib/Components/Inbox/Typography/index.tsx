@@ -7,37 +7,61 @@ import fonts from "../../../../data/fonts"
 const LargeHeadline = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.largeDefault, props.style || {}, styles.largeRequired]
-  return <Text key={children} style={style}>{children}</Text>
+  return (
+    <Text key={children} style={style}>
+      {children}
+    </Text>
+  )
 }
 
 const SmallHeadline = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.smallDefault, props.style || {}, styles.smallRequired]
-  return <Text key={children} style={style}>{(children || "").toUpperCase()}</Text>
+  return (
+    <Text key={children} style={style}>
+      {(children || "").toUpperCase()}
+    </Text>
+  )
 }
 
 const Subtitle = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.subtitleDefault, props.style || {}, styles.subtitleRequired]
-  return <Text key={children} style={style}>{children}</Text>
+  return (
+    <Text key={children} style={style}>
+      {children}
+    </Text>
+  )
 }
 
 const MetadataText = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.metadataDefault, props.style || {}, styles.metadataRequired]
-  return <Text key={children} style={style}>{children.toUpperCase()}</Text>
+  return (
+    <Text key={children} style={style}>
+      {children.toUpperCase()}
+    </Text>
+  )
 }
 
 const PreviewText = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.bodyDefault, props.style || {}, styles.bodyRequired]
-  return <Text key={children} style={style} numberOfLines={1} ellipsizeMode={"tail"}>{children}</Text>
+  return (
+    <Text key={children} style={style} numberOfLines={1} ellipsizeMode={"tail"}>
+      {children}
+    </Text>
+  )
 }
 
 const BodyText = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.bodyDefault, props.style || {}, styles.bodyRequired]
-  return <Text key={children} style={style}>{children}</Text>
+  return (
+    <Text key={children} style={style}>
+      {children}
+    </Text>
+  )
 }
 
 export { LargeHeadline, SmallHeadline, Subtitle, MetadataText, PreviewText, BodyText }

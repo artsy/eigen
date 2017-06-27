@@ -22,7 +22,10 @@ class Artwork extends React.Component<RelayProps, any> {
           <ImageView style={styles.image} aspectRatio={artwork.image.aspect_ratio} imageURL={artwork.image.url} />
           {this.artists()}
           {this.artworkTitle()}
-          {partnerName && <SerifText style={styles.text}>{partnerName}</SerifText>}
+          {partnerName &&
+            <SerifText style={styles.text}>
+              {partnerName}
+            </SerifText>}
           {this.saleMessage()}
         </View>
       </TouchableWithoutFeedback>
@@ -47,7 +50,9 @@ class Artwork extends React.Component<RelayProps, any> {
     if (artwork.title) {
       return (
         <SerifText style={styles.text}>
-          <SerifText style={[styles.text, styles.title]}>{artwork.title}</SerifText>
+          <SerifText style={[styles.text, styles.title]}>
+            {artwork.title}
+          </SerifText>
           {artwork.date ? ", " + artwork.date : ""}
         </SerifText>
       )
@@ -67,11 +72,18 @@ class Artwork extends React.Component<RelayProps, any> {
       return (
         <View style={{ flexDirection: "row" }}>
           <Image style={{ marginRight: 4 }} source={require("../../../../images/paddle.png")} />
-          <SerifText style={styles.text}>{text}</SerifText>
+          <SerifText style={styles.text}>
+            {text}
+          </SerifText>
         </View>
       )
     } else {
-      return artwork.sale_message && <SerifText style={styles.text}>{artwork.sale_message}</SerifText>
+      return (
+        artwork.sale_message &&
+        <SerifText style={styles.text}>
+          {artwork.sale_message}
+        </SerifText>
+      )
     }
   }
 }

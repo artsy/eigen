@@ -49,7 +49,9 @@ export interface ArtistQueryData extends TextInputProps {
 const rowForResult = result =>
   <Result key={result.id}>
     <Image source={{ uri: result.image.url }} />
-    <Text>{result.name}</Text>
+    <Text>
+      {result.name}
+    </Text>
   </Result>
 
 const noResults = props => {

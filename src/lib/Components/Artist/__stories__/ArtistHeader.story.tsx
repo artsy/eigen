@@ -8,7 +8,11 @@ import Routes from "../../../relay/routes"
 import ArtistHeader from "../Header"
 
 storiesOf("Artist Header")
-  .addDecorator(story => <View style={{ marginLeft: 20, marginRight: 20 }}>{story()}</View>)
+  .addDecorator(story =>
+    <View style={{ marginLeft: 20, marginRight: 20 }}>
+      {story()}
+    </View>
+  )
   .add("Real Artist - Glenn Brown", () => {
     const artistRoute = new Routes.Artist({ artistID: "glenn-brown" })
     return <RootContainer Component={ArtistHeader} route={artistRoute} />
