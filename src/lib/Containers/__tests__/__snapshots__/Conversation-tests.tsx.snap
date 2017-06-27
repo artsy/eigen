@@ -91,10 +91,13 @@ exports[`looks correct when rendered 1`] = `
     data={
       Array [
         Object {
-          "body": "Adoro! Por favor envie-me mais informações",
-          "key": 0,
-          "senderName": "Anita Garibaldi",
-          "time": "11:00AM",
+          "attachments": Array [],
+          "created_at": "2017-06-27T08:09:32.183Z",
+          "first_message": true,
+          "from_email_address": "anita@garibaldi.br",
+          "id": 222,
+          "key": 222,
+          "raw_text": "Adoro! Por favor envie-me mais informações",
         },
       ]
     }
@@ -223,7 +226,7 @@ exports[`looks correct when rendered 1`] = `
                   ]
                 }
               >
-                ANITA GARIBALDI
+                KIMBERLY KLARK
               </Text>
               <Text
                 accessible={true}
@@ -244,7 +247,7 @@ exports[`looks correct when rendered 1`] = `
                   ]
                 }
               >
-                11:00AM
+                30 MINUTES
               </Text>
             </View>
             <View
