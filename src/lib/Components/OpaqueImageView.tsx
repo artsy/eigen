@@ -119,8 +119,6 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       onLayout: this.onLayout,
     })
 
-    console.log(this.imageURL())
-
     // If no imageURL is given at all, simply set the placeholder background color as a view backgroundColor style so
     // that it shows immediately.
     let backgroundColorStyle = null
