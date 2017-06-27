@@ -1,72 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Sets up the right view hierarchy 1`] = `
-<RCTScrollView
+<View
   style={
-    Object {
-      "backgroundColor": "black",
-    }
+    Array [
+      Object {
+        "backgroundColor": "black",
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+      },
+      undefined,
+    ]
   }
 >
-  <View>
-    <View
-      style={
-        Object {
-          "alignItems": "center",
-          "flex": 1,
-          "paddingTop": 40,
-        }
+  <RCTScrollView
+    style={
+      Object {
+        "flex": 1,
       }
-    >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "fontSize": 30,
-              "paddingLeft": 20,
-              "paddingRight": 20,
-              "textAlign": "center",
-            },
-            Object {},
-            Object {
-              "fontFamily": "AGaramondPro-Regular",
-            },
-          ]
-        }
-      >
-        Sell works from your collection through our partner network
-      </Text>
+    }
+  >
+    <View>
       <View
         style={
           Object {
             "alignItems": "center",
-            "marginTop": 20,
-            "width": 300,
+            "paddingTop": 40,
           }
         }
       >
-        <View
-          style={
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 40,
-              "borderWidth": 2,
-              "height": 80,
-              "justifyContent": "center",
-              "width": 80,
-            }
-          }
-        >
-          <Image
-            source={1}
-          />
-        </View>
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -75,12 +38,10 @@ exports[`Sets up the right view hierarchy 1`] = `
           style={
             Array [
               Object {
-                "color": "#cccccc",
-                "fontSize": 20,
-                "marginBottom": 18,
-                "marginTop": 18,
-                "paddingLeft": 25,
-                "paddingRight": 25,
+                "color": "white",
+                "fontSize": 30,
+                "paddingLeft": 20,
+                "paddingRight": 20,
                 "textAlign": "center",
               },
               Object {},
@@ -90,122 +51,174 @@ exports[`Sets up the right view hierarchy 1`] = `
             ]
           }
         >
-          Sell work from your collection through our partner network.
+          Sell works from your collection through our partner network
         </Text>
         <View
           style={
             Object {
               "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 40,
-              "borderWidth": 2,
-              "height": 80,
-              "justifyContent": "center",
-              "width": 80,
+              "marginTop": 20,
+              "width": 300,
             }
           }
         >
-          <Image
-            source={1}
-          />
-        </View>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "color": "#cccccc",
-                "fontSize": 20,
-                "marginBottom": 18,
-                "marginTop": 18,
-                "paddingLeft": 25,
-                "paddingRight": 25,
-                "textAlign": "center",
-              },
-              Object {},
-              Object {
-                "fontFamily": "AGaramondPro-Regular",
-              },
-            ]
-          }
-        >
-          Get your work placed in an upcoming sale.
-        </Text>
-      </View>
-      <View
-        style={
-          Object {
-            "height": 43,
-            "marginTop": 20,
-            "width": 320,
-          }
-        }
-      >
-        <View
-          accessibilityComponentType={undefined}
-          accessibilityLabel={undefined}
-          accessibilityTraits={undefined}
-          accessible={true}
-          hasTVPreferredFocus={undefined}
-          hitSlop={undefined}
-          isTVSelectable={true}
-          nativeID={undefined}
-          onLayout={undefined}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            Array [
-              Object {
-                "backgroundColor": "transparent",
-              },
+          <View
+            style={
               Object {
                 "alignItems": "center",
-                "backgroundColor": "rgba(255, 255, 255, 1)",
-                "borderColor": "#e5e5e5",
-                "borderWidth": 1,
-                "flex": 1,
+                "borderColor": "white",
+                "borderRadius": 40,
+                "borderWidth": 2,
+                "height": 80,
                 "justifyContent": "center",
-              },
-            ]
-          }
-          testID={undefined}
-          tvParallaxProperties={undefined}
-        >
-          <View>
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              style={
-                Array [
-                  Object {
-                    "fontSize": 12,
-                  },
-                  Object {
-                    "color": "black",
-                    "fontFamily": "AGaramondPro-Regular",
-                    "opacity": 1,
-                  },
-                  Object {
-                    "fontFamily": "Avant Garde Gothic ITCW01Dm",
-                  },
-                ]
+                "width": 80,
               }
-            >
-              GET STARTED
-            </Text>
+            }
+          >
+            <Image
+              source={1}
+            />
+          </View>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "#cccccc",
+                  "fontSize": 20,
+                  "marginBottom": 18,
+                  "marginTop": 18,
+                  "paddingLeft": 25,
+                  "paddingRight": 25,
+                  "textAlign": "center",
+                },
+                Object {},
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }
+          >
+            Sell work from your collection through our partner network.
+          </Text>
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "borderColor": "white",
+                "borderRadius": 40,
+                "borderWidth": 2,
+                "height": 80,
+                "justifyContent": "center",
+                "width": 80,
+              }
+            }
+          >
+            <Image
+              source={1}
+            />
+          </View>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "#cccccc",
+                  "fontSize": 20,
+                  "marginBottom": 18,
+                  "marginTop": 18,
+                  "paddingLeft": 25,
+                  "paddingRight": 25,
+                  "textAlign": "center",
+                },
+                Object {},
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+              ]
+            }
+          >
+            Get your work placed in an upcoming sale.
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "height": 43,
+              "marginTop": 20,
+              "width": 320,
+            }
+          }
+        >
+          <View
+            accessibilityComponentType={undefined}
+            accessibilityLabel={undefined}
+            accessibilityTraits={undefined}
+            accessible={true}
+            hasTVPreferredFocus={undefined}
+            hitSlop={undefined}
+            isTVSelectable={true}
+            nativeID={undefined}
+            onLayout={undefined}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                },
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "rgba(255, 255, 255, 1)",
+                  "borderColor": "#e5e5e5",
+                  "borderWidth": 1,
+                  "flex": 1,
+                  "justifyContent": "center",
+                },
+              ]
+            }
+            testID={undefined}
+            tvParallaxProperties={undefined}
+          >
+            <View>
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "fontSize": 12,
+                    },
+                    Object {
+                      "color": "black",
+                      "fontFamily": "AGaramondPro-Regular",
+                      "opacity": 1,
+                    },
+                    Object {
+                      "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                    },
+                  ]
+                }
+              >
+                GET STARTED
+              </Text>
+            </View>
           </View>
         </View>
       </View>
     </View>
-  </View>
-</RCTScrollView>
+  </RCTScrollView>
+</View>
 `;

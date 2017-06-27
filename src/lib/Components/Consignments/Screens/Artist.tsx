@@ -2,32 +2,86 @@ import * as React from "react"
 
 import ArtistSearch from "../Components/ArtistSearchResults"
 import DoneButton from "../Components/BottomAlignedButton"
-import { ConsignmentSetup } from "../index"
+import ConsignmentBG from "../components/ConsignmentBG"
 
+import { ArtistResult, ConsignmentSetup } from "../index"
+
+import { debounce } from "lodash"
 import { NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
+import metaphysics from "../../../metaphysics"
+
+interface ArtistSearchResponse {
+  match_artist: ArtistResult[]
+}
 
 interface Props extends ConsignmentSetup {
   navigator: NavigatorIOS
   route: Route
+  updateWithResult?: (result: ArtistResult) => void
 }
 
-export default class Artist extends React.Component<Props, null> {
+interface State {
+  query: string
+  searching: boolean
+  results: any | null
+}
+
+export default class Artist extends React.Component<Props, State> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      query: null,
+      searching: false,
+      results: null,
+    }
+  }
+
   doneTapped = () => {
-    // Update state
     this.props.navigator.pop()
+  }
+
+  artistSelected = (result: ArtistResult) => {
+    this.props.navigator.pop()
+    this.props.updateWithResult(result)
+  }
+
+  textChanged = async (text: string) => {
+    this.setState({ query: text, searching: text.length > 0 })
+    this.searchForQuery(text)
+  }
+
+  searchForQuery = async (query: string) => {
+    const results = await metaphysics<ArtistSearchResponse>(`
+      {
+        match_artist(term: "${query}") {
+          id
+          name
+          image {
+            url
+          }
+        }
+      }
+    `)
+    this.setState({ results: results.match_artist, searching: false })
   }
 
   render() {
     return (
-      <View style={{ backgroundColor: "black", flex: 1 }}>
+      <ConsignmentBG>
         <DoneButton onPress={this.doneTapped}>
           <View
-            style={{ alignContent: "center", justifyContent: "center", flexGrow: 1, marginLeft: 20, marginRight: 20 }}
+            style={{ alignContent: "center", justifyContent: "flex-end", flexGrow: 1, marginLeft: 20, marginRight: 20 }}
           >
-            <ArtistSearch results={null} query={null} />
+            <ArtistSearch
+              results={this.state.results}
+              query={this.state.query}
+              onChangeText={this.textChanged}
+              searching={this.state.searching}
+              resultSelected={this.artistSelected}
+            />
           </View>
         </DoneButton>
-      </View>
+      </ConsignmentBG>
     )
   }
 }

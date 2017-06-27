@@ -127,6 +127,9 @@ PODS:
   - React/jschelpers_legacy (0.45.0-rc.2)
   - React/RCTAnimation (0.45.0-rc.2):
     - React/Core
+  - React/RCTCameraRoll (0.45.0-rc.2):
+    - React/Core
+    - React/RCTImage
   - React/RCTImage (0.45.0-rc.2):
     - React/Core
     - React/RCTNetwork
@@ -159,6 +162,7 @@ DEPENDENCIES:
   - React/BatchedBridge (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
   - React/RCTAnimation (from `../node_modules/react-native`)
+  - React/RCTCameraRoll (from `../node_modules/react-native`)
   - SAMKeychain
   - Sentry/Core
   - Sentry/KSCrash
@@ -211,6 +215,6 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: d43165f478a090e7b603edc5796965a1de27d473
 
-PODFILE CHECKSUM: e4469b89c7780696fdd217fd34068fcbaab6fb25
+PODFILE CHECKSUM: 69cc9ba17f5e591f0c064557ae566ff812e6b1e9
 
 COCOAPODS: 1.2.1
