@@ -13,6 +13,8 @@
 -   [dev] Allows toggling the back button by pressing space - orta
 
 ###### Messaging
+
+-   Adds an `ImagePreview` to each Conversation, Relay-ified messages - matt
 -   Adds snapshot tests for active bids - luc
 -   Update status label colors - luc
 -   Renders active bids before Messages - luc

@@ -2,16 +2,16 @@
   "data": {
     "__schema": {
       "queryType": {
-        "name": "RootQueryType"
+        "name": "Query"
       },
       "mutationType": {
-        "name": "RootMutationType"
+        "name": "Mutation"
       },
       "subscriptionType": null,
       "types": [
         {
           "kind": "OBJECT",
-          "name": "RootQueryType",
+          "name": "Query",
           "description": null,
           "fields": [
             {
@@ -2369,6 +2369,11 @@
             {
               "kind": "OBJECT",
               "name": "Me",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "MessageType",
               "ofType": null
             },
             {
@@ -7378,6 +7383,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "sort",
+                  "description": "Sorts for shows in a fair",
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "ShowSort",
+                    "ofType": null
+                  },
+                  "defaultValue": "FEATURED_DESC"
+                },
+                {
                   "name": "after",
                   "description": null,
                   "type": {
@@ -8059,6 +8074,89 @@
           "inputFields": null,
           "interfaces": [],
           "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "ShowSort",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "START_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "START_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "END_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "END_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "UPDATED_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "UPDATED_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FEATURED_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FEATURED_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SORTABLE_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SORTABLE_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
           "possibleTypes": null
         },
         {
@@ -13618,6 +13716,16 @@
                     "ofType": null
                   },
                   "defaultValue": null
+                },
+                {
+                  "name": "sort",
+                  "description": "Sorts for shows in a fair",
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "ShowSort",
+                    "ofType": null
+                  },
+                  "defaultValue": "FEATURED_DESC"
                 },
                 {
                   "name": "after",
@@ -19442,6 +19550,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "sort",
+                  "description": "Sorts for shows in a fair",
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "ShowSort",
+                    "ofType": null
+                  },
+                  "defaultValue": "FEATURED_DESC"
+                },
+                {
                   "name": "after",
                   "description": null,
                   "type": {
@@ -24546,8 +24664,24 @@
           "description": "A message in a conversation.",
           "fields": [
             {
+              "name": "__id",
+              "description": "A globally unique ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "id",
-              "description": "Impulse id.",
+              "description": "Impulse message id.",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -24557,13 +24691,37 @@
                   "name": "String",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "is_from_user",
+              "description": "True if message is from the user to the partner.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
               "name": "from_email_address",
-              "description": "Email address of sender.",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "raw_text",
+              "description": "Full unsanitized text.",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -24578,8 +24736,84 @@
               "deprecationReason": null
             },
             {
-              "name": "snippet",
-              "description": "A snippet of the full message",
+              "name": "attachments",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "AttachmentType",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "created_at",
+              "description": null,
+              "args": [
+                {
+                  "name": "convert_to_utc",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "format",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "timezone",
+                  "description": "Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "AttachmentType",
+          "description": null,
+          "fields": [
+            {
+              "name": "id",
+              "description": "Attachment id.",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -24594,7 +24828,39 @@
               "deprecationReason": null
             },
             {
-              "name": "radiation_message_id",
+              "name": "content_type",
+              "description": "Content type of file.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "file_name",
+              "description": "File name.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "download_url",
               "description": null,
               "args": [],
               "type": {
@@ -34497,7 +34763,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "RootMutationType",
+          "name": "Mutation",
           "description": null,
           "fields": [
             {
@@ -34555,7 +34821,7 @@
               "deprecationReason": null
             },
             {
-              "name": "updateBuyerOutcome",
+              "name": "updateConversation",
               "description": null,
               "args": [
                 {
@@ -34566,7 +34832,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "UpdateBuyerOutcomeInput",
+                      "name": "UpdateConversationInput",
                       "ofType": null
                     }
                   },
@@ -34575,7 +34841,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "UpdateBuyerOutcomePayload",
+                "name": "UpdateConversationPayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -35045,7 +35311,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "UpdateBuyerOutcomeInput",
+          "name": "UpdateConversationInput",
           "description": null,
           "fields": null,
           "inputFields": [
@@ -35147,7 +35413,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "UpdateBuyerOutcomePayload",
+          "name": "UpdateConversationPayload",
           "description": null,
           "fields": [
             {
@@ -35219,21 +35485,7 @@
               "defaultValue": null
             },
             {
-              "name": "to",
-              "description": "An array of email addresses that the message should be sent to",
-              "type": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "message_body",
+              "name": "body_text",
               "description": null,
               "type": {
                 "kind": "NON_NULL",

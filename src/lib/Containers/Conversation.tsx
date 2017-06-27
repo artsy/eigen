@@ -7,9 +7,10 @@ import { FlatList, ImageURISource, ViewProperties } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../data/colors"
-import ArtworkPreview from "../Components/Inbox/Conversations/ArtworkPreview"
 import Composer from "../Components/Inbox/Conversations/Composer"
 import Message from "../Components/Inbox/Conversations/Message"
+import ArtworkPreview from "../Components/Inbox/Conversations/Previews/ArtworkPreview"
+import ImagePreview from "../Components/Inbox/Conversations/Previews/ImagePreview"
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 
 // tslint:disable-next-line:no-var-requires
@@ -61,21 +62,20 @@ const ComposerContainer = styled.View`
 `
 
 export class Conversation extends React.Component<RelayProps, any> {
-  isFromUser(message) {
-    /**
-     * this is a quick hacky way to alternate between user/partner messages; will be changed once we have actual email
-     * data
-     */
-    return message.from_email_address === this.props.me.conversation.from.email
-  }
-
-  renderMessage(message) {
+  renderMessage({ item }) {
     const artwork = this.props.me.conversation.artworks[0]
+    const conversation = this.props.me.conversation
+    const partnerName = conversation.to.name
+    const senderName = item.is_from_user ? conversation.from.name : partnerName
+    const hasImageAttachment = item.attachments.length > 0 && item.attachments[0].content_type === "image/jpeg"
+
     return (
       <Message
-        message={message.item}
+        message={item}
+        senderName={senderName}
+        imagePreview={hasImageAttachment && <ImagePreview imageAttachment={item.attachments[0]} />}
         artworkPreview={
-          !message.index &&
+          item.first_message &&
           <ArtworkPreview
             artwork={artwork}
             onSelected={() => ARSwitchBoard.presentNavigationViewController(this, artwork.href)}
@@ -88,19 +88,11 @@ export class Conversation extends React.Component<RelayProps, any> {
   render() {
     const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
-    const artwork = conversation.artworks[0]
-    const temporaryTimestamp = "11:00AM"
-
-    // Ideally we will use a Relay fragment in the Message component, but for now this is good enough
-    const messageData = conversation.messages.edges.reverse().map(({ node }, index) => {
-      return {
-        senderName: this.isFromUser(node) ? conversation.from.name : partnerName,
-        key: index,
-        time: temporaryTimestamp,
-        body: node.snippet,
-      }
+    const messages = this.props.me.conversation.messages.edges.map(({ node }, index) => {
+      node.first_message = index === 0
+      node.key = node.id
+      return node
     })
-
     return (
       <Container>
         <Header>
@@ -111,7 +103,7 @@ export class Conversation extends React.Component<RelayProps, any> {
           </HeaderTextContainer>
         </Header>
         <MessagesList
-          data={messageData}
+          data={messages}
           renderItem={this.renderMessage.bind(this)}
           ItemSeparatorComponent={DottedBorder}
         />
@@ -138,16 +130,21 @@ export default Relay.createContainer(Conversation, {
             name
           }
           messages(first: 10) {
+            pageInfo {
+              hasNextPage
+            }
             edges {
               node {
-                snippet
-                from_email_address
+                id
+                ${Message.getFragment("message")}
+                attachments {
+                  content_type
+                  download_url
+                }
               }
             }
           }
           artworks @relay (plural: true) {
-            title
-            artist_names
             href
             ${ArtworkPreview.getFragment("artwork")}
           }

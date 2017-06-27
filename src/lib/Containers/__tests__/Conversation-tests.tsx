@@ -1,3 +1,4 @@
+import * as moment from "moment"
 import * as React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
@@ -21,8 +22,11 @@ const props = {
       edges: [
         {
           node: {
-            snippet: "Adoro! Por favor envie-me mais informações",
+            id: 222,
+            raw_text: "Adoro! Por favor envie-me mais informações",
             from_email_address: "anita@garibaldi.br",
+            attachments: [],
+            created_at: "2017-06-26T14:14:35.538Z",
           },
         },
       ],
