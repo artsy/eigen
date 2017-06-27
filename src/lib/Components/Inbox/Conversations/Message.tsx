@@ -49,9 +49,14 @@ const ArtworkPreviewContainer = styled.View`
   marginBottom: 10
 `
 
+const ImagePreviewContainer = styled.View`
+  marginBottom: 10
+`
+
 interface Props extends RelayProps {
   senderName: string
   artworkPreview?: JSX.Element
+  imagePreview?: JSX.Element
 }
 
 export class Message extends React.Component<Props, any> {
@@ -66,6 +71,7 @@ export class Message extends React.Component<Props, any> {
             <MetadataText>{date}</MetadataText>
           </Header>
           {this.props.artworkPreview && <ArtworkPreviewContainer>{this.props.artworkPreview}</ArtworkPreviewContainer>}
+          {this.props.imagePreview && <ImagePreviewContainer>{this.props.imagePreview}</ImagePreviewContainer>}
           <BodyText>{this.props.message.raw_text.split("\n\nAbout")[0]}</BodyText>
         </TextContainer>
       </Container>

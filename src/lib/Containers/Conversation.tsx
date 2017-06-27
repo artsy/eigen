@@ -7,9 +7,10 @@ import { FlatList, ImageURISource, ViewProperties } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../data/colors"
-import ArtworkPreview from "../Components/Inbox/Conversations/ArtworkPreview"
 import Composer from "../Components/Inbox/Conversations/Composer"
 import Message from "../Components/Inbox/Conversations/Message"
+import ArtworkPreview from "../Components/Inbox/Conversations/Previews/ArtworkPreview"
+import ImagePreview from "../Components/Inbox/Conversations/Previews/ImagePreview"
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 
 // tslint:disable-next-line:no-var-requires
@@ -66,10 +67,18 @@ export class Conversation extends React.Component<RelayProps, any> {
     const conversation = this.props.viewer.me.conversation
     const partnerName = conversation.to.name
     const senderName = item.is_from_user ? conversation.from.name : partnerName
+    let imageAttachmentUrl
+    if (item.attachments.length > 0) {
+      if (item.attachments[0].content_type === "image/jpeg") {
+        imageAttachmentUrl = item.attachments[0].download_url
+      }
+    }
+
     return (
       <Message
         message={item}
         senderName={senderName}
+        imagePreview={imageAttachmentUrl && <ImagePreview url={imageAttachmentUrl} />}
         artworkPreview={
           item.first_message &&
           <ArtworkPreview
@@ -134,6 +143,10 @@ export default Relay.createContainer(Conversation, {
                   is_from_user
                   raw_text
                   created_at
+                  attachments {
+                    content_type
+                    download_url
+                  }
                 }
               }
             }
