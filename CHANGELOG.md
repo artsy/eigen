@@ -15,6 +15,7 @@
 
 ###### Messaging
 
+-   Adds an `ImagePreview` to each Conversation, Relay-ified messages - matt
 -   Adds an `ArtworkPreview` to each Conversation - sarah
 -   Adds Inbox zero state - maxim
 -   Relay support in Conversation container - sarah
