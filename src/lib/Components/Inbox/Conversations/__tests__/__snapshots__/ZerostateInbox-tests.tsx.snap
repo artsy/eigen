@@ -2,307 +2,47 @@
 
 exports[`looks correct when the user has no conversations 1`] = `
 <View>
-  <View
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    disabled={false}
+    ellipsizeMode="tail"
     style={
       Array [
         Object {
-          "alignItems": "center",
-          "backgroundColor": "#f8f8f8",
-          "height": "100%",
-          "width": "100%",
+          "color": "black",
+          "fontSize": 30,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "textAlign": "left",
         },
-        undefined,
+        Array [
+          Object {
+            "marginBottom": 20,
+            "marginTop": 10,
+          },
+          undefined,
+        ],
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
       ]
     }
   >
-    <View
-      style={
-        Array [
-          Object {
-            "flexBasis": 0,
-            "flexDirection": "column",
-            "flexGrow": 1,
-            "flexShrink": 1,
-            "minHeight": 400,
-          },
-          undefined,
-        ]
+    Messages
+  </Text>
+  <RCTScrollView
+    dataSource={
+      ListViewDataSource {
+        "items": 0,
       }
-    >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "black",
-              "fontSize": 30,
-              "paddingLeft": 20,
-              "paddingRight": 20,
-              "textAlign": "left",
-            },
-            Array [
-              Object {
-                "alignSelf": "center",
-                "fontSize": 30,
-                "lineHeight": 32,
-                "marginTop": 35,
-                "textAlign": "center",
-                "width": 280,
-              },
-              undefined,
-            ],
-            Object {
-              "fontFamily": "AGaramondPro-Regular",
-            },
-          ]
-        }
-      >
-        Buying Art on Artsy is Simple 
-      </Text>
-      <View
-        style={
-          Array [
-            Object {
-              "flexBasis": 0,
-              "flexDirection": "row",
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "marginBottom": 50,
-              "marginLeft": 20,
-              "marginTop": 50,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-          style={
-            Array [
-              Object {
-                "resizeMode": "contain",
-                "width": 40,
-              },
-              undefined,
-            ]
-          }
-        />
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "color": "black",
-                "fontSize": 30,
-                "paddingLeft": 20,
-                "paddingRight": 20,
-                "textAlign": "left",
-              },
-              Array [
-                Object {
-                  "color": "black",
-                  "fontSize": 18,
-                  "maxWidth": 280,
-                  "minHeight": 60,
-                },
-                undefined,
-              ],
-              Object {
-                "fontFamily": "AGaramondPro-Regular",
-              },
-            ]
-          }
-        >
-          Follow artists and find works you love
-        </Text>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "flexBasis": 0,
-              "flexDirection": "row",
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "marginBottom": 50,
-              "marginLeft": 20,
-              "marginTop": 50,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-          style={
-            Array [
-              Object {
-                "resizeMode": "contain",
-                "width": 40,
-              },
-              undefined,
-            ]
-          }
-        />
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "color": "black",
-                "fontSize": 30,
-                "paddingLeft": 20,
-                "paddingRight": 20,
-                "textAlign": "left",
-              },
-              Array [
-                Object {
-                  "color": "black",
-                  "fontSize": 18,
-                  "maxWidth": 280,
-                  "minHeight": 60,
-                },
-                undefined,
-              ],
-              Object {
-                "fontFamily": "AGaramondPro-Regular",
-              },
-            ]
-          }
-        >
-          Contact galleries or bid in auctions to purchase the work
-        </Text>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "flexBasis": 0,
-              "flexDirection": "row",
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "marginBottom": 50,
-              "marginLeft": 20,
-              "marginTop": 50,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-          style={
-            Array [
-              Object {
-                "resizeMode": "contain",
-                "width": 40,
-              },
-              undefined,
-            ]
-          }
-        />
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "color": "black",
-                "fontSize": 30,
-                "paddingLeft": 20,
-                "paddingRight": 20,
-                "textAlign": "left",
-              },
-              Array [
-                Object {
-                  "color": "black",
-                  "fontSize": 18,
-                  "maxWidth": 280,
-                  "minHeight": 60,
-                },
-                undefined,
-              ],
-              Object {
-                "fontFamily": "AGaramondPro-Regular",
-              },
-            ]
-          }
-        >
-          Find your ongoing conversations and bidding activity here
-        </Text>
-      </View>
-      <View
-        style={
-          Array [
-            Object {
-              "flexBasis": 0,
-              "flexDirection": "row",
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "marginBottom": 50,
-              "marginLeft": 20,
-              "marginTop": 50,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-          style={
-            Array [
-              Object {
-                "resizeMode": "contain",
-                "width": 40,
-              },
-              undefined,
-            ]
-          }
-        />
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "color": "black",
-                "fontSize": 30,
-                "paddingLeft": 20,
-                "paddingRight": 20,
-                "textAlign": "left",
-              },
-              Array [
-                Object {
-                  "color": "black",
-                  "fontSize": 18,
-                  "maxWidth": 280,
-                  "minHeight": 60,
-                },
-                undefined,
-              ],
-              Object {
-                "fontFamily": "AGaramondPro-Regular",
-              },
-            ]
-          }
-        >
-          Easily process payment through our secure platform
-        </Text>
-      </View>
-    </View>
-  </View>
+    }
+    onEndReached={[Function]}
+    renderRow={[Function]}
+    renderScrollComponent={[Function]}
+    scrollEnabled={false}
+  >
+    <View />
+  </RCTScrollView>
 </View>
 `;

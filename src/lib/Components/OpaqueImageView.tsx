@@ -43,8 +43,8 @@ interface Props {
 
 interface State {
   aspectRatio: number
-  width?: number
-  height?: number
+  width?: number | string
+  height?: number | string
 }
 
 export default class OpaqueImageView extends React.Component<Props, State> {

@@ -13,7 +13,7 @@ const LargeHeadline = (props: TextProperties) => {
 const SmallHeadline = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.smallDefault, props.style || {}, styles.smallRequired]
-  return <Text key={children} style={style}>{children.toUpperCase()}</Text>
+  return <Text key={children} style={style}>{(children || "").toUpperCase()}</Text>
 }
 
 const Subtitle = (props: TextProperties) => {
