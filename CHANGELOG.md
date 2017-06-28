@@ -14,6 +14,7 @@
 
 ###### Messaging
 
+-   Adds PDF Preview for attachments - matt
 -   Adds an `ImagePreview` to each Conversation, Relay-ified messages - matt
 -   Adds snapshot tests for active bids - luc
 -   Update status label colors - luc

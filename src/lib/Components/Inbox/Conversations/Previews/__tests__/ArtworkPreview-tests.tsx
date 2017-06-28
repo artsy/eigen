@@ -1,9 +1,8 @@
-import * as moment from "moment"
 import * as React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import ArtworkPreview from "../Previews/ArtworkPreview"
+import ArtworkPreview from "../../Previews/ArtworkPreview"
 
 it("renders correctly", () => {
   const tree = renderer.create(<ArtworkPreview artwork={artwork} />)

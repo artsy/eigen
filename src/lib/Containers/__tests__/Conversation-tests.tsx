@@ -26,7 +26,7 @@ const props = {
             raw_text: "Adoro! Por favor envie-me mais informações",
             from_email_address: "anita@garibaldi.br",
             attachments: [],
-            created_at: "2017-06-26T14:14:35.538Z",
+            created_at: moment().subtract(1, "days").toISOString(),
           },
         },
       ],

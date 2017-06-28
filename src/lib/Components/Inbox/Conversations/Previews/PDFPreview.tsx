@@ -19,7 +19,7 @@ const VerticalLayout = styled.View`
   flex-direction: column
 `
 
-const Image = styled(OpaqueImageView)`
+const PDF = styled.Text`
   marginTop: 12
   marginLeft: 12
   marginBottom: 12
@@ -31,30 +31,30 @@ interface Props extends RelayProps {
   onSelected?: () => void
 }
 
-export class ImagePreview extends React.Component<Props, any> {
+export class PDFPreview extends React.Component<Props, any> {
   render() {
     return (
       <TouchableHighlight underlayColor={colors["gray-light"]} onPress={this.props.onSelected}>
         <Container>
-          <Image skipGemini={true} imageURL={this.props.imageAttachment.download_url} />
+          <PDF>{this.props.pdfAttachment.file_name}</PDF>
         </Container>
       </TouchableHighlight>
     )
   }
 }
 
-export default Relay.createContainer(ImagePreview, {
+export default Relay.createContainer(PDFPreview, {
   fragments: {
-    imageAttachment: () => Relay.QL`
+    pdfAttachment: () => Relay.QL`
       fragment on AttachmentType {
-        download_url
+        file_name
       }
     `,
   },
 })
 
 interface RelayProps {
-  imageAttachment: {
-    download_url?: string
+  pdfAttachment: {
+    file_name?: string
   }
 }
