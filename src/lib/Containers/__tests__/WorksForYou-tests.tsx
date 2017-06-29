@@ -86,21 +86,19 @@ interface NotificationsResponse {
         pageInfo: {
           hasNextPage: boolean
         }
-        edges: Array<
-          {
-            node: {
-              artists: string
-              date: string
-              message: string
-              artworks: [{ title: string }]
-              image: {
-                resized: {
-                  url: string
-                }
+        edges: Array<{
+          node: {
+            artists: string
+            date: string
+            message: string
+            artworks: [{ title: string }]
+            image: {
+              resized: {
+                url: string
               }
             }
           }
-        >
+        }>
       }
     }
 

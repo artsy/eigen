@@ -15,9 +15,7 @@ const VerticalLayout = styled.View`
   flex: 1
 `
 
-const HorizontalLayout = styled.View`
-  flex-direction: row
-`
+const HorizontalLayout = styled.View`flex-direction: row;`
 
 const Container = styled(HorizontalLayout)`
   alignSelf: stretch
@@ -48,13 +46,9 @@ const SenderName = styled(SmallHeadline)`
   marginRight: 10
 `
 
-const ArtworkPreviewContainer = styled.View`
-  marginBottom: 10
-`
+const ArtworkPreviewContainer = styled.View`marginBottom: 10;`
 
-const ImagePreviewContainer = styled.View`
-  marginBottom: 10
-`
+const ImagePreviewContainer = styled.View`marginBottom: 10;`
 
 const PDFPreviewContainer = styled.View`
   marginBottom: 10
@@ -81,8 +75,12 @@ export class Message extends React.Component<Props, any> {
         <Avatar />
         <TextContainer>
           <Header>
-            <SenderName>{this.props.senderName}</SenderName>
-            <MetadataText>{date}</MetadataText>
+            <SenderName>
+              {this.props.senderName}
+            </SenderName>
+            <MetadataText>
+              {date}
+            </MetadataText>
           </Header>
           {this.props.artworkPreview && <ArtworkPreviewContainer>{this.props.artworkPreview}</ArtworkPreviewContainer>}
           {hasImageAttachment &&

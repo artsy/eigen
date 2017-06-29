@@ -19,7 +19,9 @@ export class MyAccount extends React.Component<Props, {}> {
     return (
       <ScrollView scrollsToTop={true} automaticallyAdjustContentInsets={false}>
         <View style={{ paddingLeft: commonPadding, paddingRight: commonPadding }}>
-          <Headline>{this.props.me.name}</Headline>
+          <Headline>
+            {this.props.me.name}
+          </Headline>
         </View>
       </ScrollView>
     )

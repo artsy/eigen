@@ -21,7 +21,9 @@ const render = (props: Props) => {
     return (
       <View key={item.name}>
         <TouchableHighlight onPress={showStory}>
-          <BodyText>{item.name}</BodyText>
+          <BodyText>
+            {item.name}
+          </BodyText>
         </TouchableHighlight>
         <Separator />
       </View>

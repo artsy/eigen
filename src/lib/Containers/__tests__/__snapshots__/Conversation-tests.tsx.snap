@@ -92,7 +92,6 @@ exports[`looks correct when rendered 1`] = `
       Array [
         Object {
           "attachments": Array [],
-          "created_at": "2017-06-28T16:37:30.967Z",
           "first_message": true,
           "from_email_address": "anita@garibaldi.br",
           "id": 222,
@@ -247,7 +246,7 @@ exports[`looks correct when rendered 1`] = `
                   ]
                 }
               >
-                A DAY
+                A FEW SECONDS
               </Text>
             </View>
             <View
@@ -541,4 +540,4 @@ exports[`looks correct when rendered 1`] = `
     </View>
   </View>
 </View>
-`;
+`

@@ -85,18 +85,16 @@ export interface Conversation {
   }
   last_message: string | null
   last_message_at: string | null
-  artworks: Array<
-    {
-      id: string | null
-      href: string | null
-      title: string | null
-      date: string | null
-      artist_names: string | null
-      image: {
-        url: string | null
-      }
+  artworks: Array<{
+    id: string | null
+    href: string | null
+    title: string | null
+    date: string | null
+    artist_names: string | null
+    image: {
+      url: string | null
     }
-  >
+  }>
 }
 
 interface Props {
@@ -124,20 +122,32 @@ export class ConversationSnippet extends React.Component<Props, any> {
             <ImageView imageURL={imageURL} />
             <TextPreview>
               <HorizontalLayout>
-                <SmallHeadline>{partnerName}</SmallHeadline>
+                <SmallHeadline>
+                  {partnerName}
+                </SmallHeadline>
                 <DateHeading>
-                  <MetadataText>{date}</MetadataText>
+                  <MetadataText>
+                    {date}
+                  </MetadataText>
                   <UnreadIndicator />
                 </DateHeading>
               </HorizontalLayout>
               <HorizontalLayout>
                 <P>
-                  <ArtworkSubtitle>{artworkArtist}</ArtworkSubtitle>
-                  <ArtworkTitle>{artworkTitle}</ArtworkTitle>
-                  <ArtworkSubtitle>{artworkDate}</ArtworkSubtitle>
+                  <ArtworkSubtitle>
+                    {artworkArtist}
+                  </ArtworkSubtitle>
+                  <ArtworkTitle>
+                    {artworkTitle}
+                  </ArtworkTitle>
+                  <ArtworkSubtitle>
+                    {artworkDate}
+                  </ArtworkSubtitle>
                 </P>
               </HorizontalLayout>
-              <P>{conversationText}</P>
+              <P>
+                {conversationText}
+              </P>
             </TextPreview>
           </CardContent>
           <Separator />

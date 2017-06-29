@@ -41,9 +41,7 @@ storiesOf("Consignments - Styling")
         </View>
 
         <View style={{ flexDirection: "row", paddingVertical: 6, alignItems: "center" }}>
-          <T.BodyText style={{ paddingLeft: 10, flex: 1, textAlign: "left" }}>
-            Is this a toggle?
-          </T.BodyText>
+          <T.BodyText style={{ paddingLeft: 10, flex: 1, textAlign: "left" }}>Is this a toggle?</T.BodyText>
           <Toggle selected={false} left="NO" right="AYE" />
         </View>
       </View>
