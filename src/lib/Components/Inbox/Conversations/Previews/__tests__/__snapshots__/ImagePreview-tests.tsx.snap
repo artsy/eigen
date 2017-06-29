@@ -32,8 +32,6 @@ exports[`renders correctly 1`] = `
     style={
       Array [
         Object {
-          "borderColor": "#e5e5e5",
-          "borderWidth": 1,
           "flexDirection": "row",
         },
         undefined,
@@ -42,15 +40,13 @@ exports[`renders correctly 1`] = `
   >
     <AROpaqueImageView
       imageURL="/path/to/cats.jpg"
-      skipGemini={true}
       style={
         Array [
           Object {
-            "height": 55,
-            "marginBottom": 12,
-            "marginLeft": 12,
-            "marginTop": 12,
-            "width": 80,
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "height": 150,
           },
           undefined,
         ]

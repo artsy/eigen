@@ -50,9 +50,7 @@ const ArtworkPreviewContainer = styled.View`marginBottom: 10;`
 
 const ImagePreviewContainer = styled.View`marginBottom: 10;`
 
-const PDFPreviewContainer = styled.View`
-  marginBottom: 10
-`
+const PDFPreviewContainer = styled.View`marginBottom: 10;`
 
 interface Props extends RelayProps {
   senderName: string
@@ -60,15 +58,27 @@ interface Props extends RelayProps {
 }
 
 export class Message extends React.Component<Props, any> {
+  renderAttachmentPreviews(attachments) {
+    return attachments.map(attachment => {
+      if (attachment.content_type.startsWith("image")) {
+        return (
+          <ImagePreviewContainer>
+            <ImagePreview imageAttachment={attachment} />
+          </ImagePreviewContainer>
+        )
+      }
+      if (attachment.content_type === "application/pdf") {
+        return (
+          <PDFPreviewContainer>
+            <PDFPreview pdfAttachment={attachment} />
+          </PDFPreviewContainer>
+        )
+      }
+    })
+  }
+
   render() {
     const date = moment(this.props.message.created_at).fromNow(true)
-    const attachments = this.props.message.attachments
-    let hasImageAttachment
-    let hasPDFAttachment
-    if (attachments.length > 0) {
-      hasImageAttachment = attachments[0].content_type === "image/jpeg"
-      hasPDFAttachment = attachments[0].content_type === "application/pdf"
-    }
 
     return (
       <Container>
@@ -82,16 +92,16 @@ export class Message extends React.Component<Props, any> {
               {date}
             </MetadataText>
           </Header>
-          {this.props.artworkPreview && <ArtworkPreviewContainer>{this.props.artworkPreview}</ArtworkPreviewContainer>}
-          {hasImageAttachment &&
-            <ImagePreviewContainer>
-              <ImagePreview imageAttachment={attachments[0]} />
-            </ImagePreviewContainer>}
-          {hasPDFAttachment &&
-            <PDFPreviewContainer>
-              <PDFPreview pdfAttachment={attachments[0]} />
-            </PDFPreviewContainer>}
-          <BodyText>{this.props.message.raw_text.split("\n\nAbout")[0]}</BodyText>
+          {this.props.artworkPreview &&
+            <ArtworkPreviewContainer>
+              {this.props.artworkPreview}
+            </ArtworkPreviewContainer>}
+
+          {this.renderAttachmentPreviews(this.props.message.attachments)}
+
+          <BodyText>
+            {this.props.message.raw_text.split("\n\nAbout")[0]}
+          </BodyText>
         </TextContainer>
       </Container>
     )

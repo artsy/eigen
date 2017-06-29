@@ -45,6 +45,9 @@ exports[`renders correctly 1`] = `
       style={
         Array [
           Object {
+            "marginBottom": 12,
+            "marginLeft": 12,
+            "marginTop": 12,
             "resizeMode": "contain",
             "width": 40,
           },
@@ -52,26 +55,34 @@ exports[`renders correctly 1`] = `
         ]
       }
     />
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
+    <View
       style={
         Array [
           Object {
-            "height": 55,
-            "marginBottom": 12,
-            "marginLeft": 12,
-            "marginTop": 12,
-            "width": 80,
+            "flexBasis": 0,
+            "flexDirection": "column",
+            "flexGrow": 1,
+            "flexShrink": 1,
           },
-          undefined,
+          Array [
+            Object {
+              "alignSelf": "center",
+              "marginLeft": 25,
+            },
+            undefined,
+          ],
         ]
       }
     >
-      This is a great PDF telling you all about cats
-    </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+      >
+        This is a great PDF telling you all about cats
+      </Text>
+    </View>
   </View>
 </View>
 `;
