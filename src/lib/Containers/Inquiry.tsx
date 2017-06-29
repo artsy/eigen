@@ -21,6 +21,7 @@ import BottomAlignedButton from "../Components/Consignments/Components/BottomAli
 
 import ArtworkPreview from "../Components/Inbox/Conversations/ArtworkPreview"
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
+import { gravityURL } from "../relay/config"
 
 const Container = styled.View`
   flex: 1
@@ -80,12 +81,36 @@ const ResponseRateLine = styled.View`
 `
 
 export class Inquiry extends React.Component<RelayProps, any> {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      text: this.props.inquiry.partner.contact_message,
+    }
+  }
+
   dismissModal() {
     ARSwitchBoard.dismissModalViewController(this)
   }
+
+  sendInquiry() {
+    fetch(gravityURL + "/api/v1/me/artwork_inquiry_request", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        artwork: this.props.inquiry.id,
+        message: this.state.text,
+      }),
+    })
+    this.dismissModal()
+  }
+
   render() {
-    const placeholderText = this.props.inquiry.partner.contact_message
-    // const partnerResponseRate = "2 DAY RESPONSE TIME"
+    const message = this.state.text
+    const partnerResponseRate = "2 DAY RESPONSE TIME"
     const artwork = this.props.inquiry
     console.log(this.props)
     const partnerName = this.props.inquiry.partner.name
@@ -99,23 +124,32 @@ export class Inquiry extends React.Component<RelayProps, any> {
 
     return (
       <Container>
-        <BottomAlignedButton onPress={} bodyStyle={doneButtonStyles} buttonText="SEND">
+        <BottomAlignedButton onPress={this.sendInquiry.bind(this)} bodyStyle={doneButtonStyles} buttonText="SEND">
           <Header>
             <HeaderTextContainer>
               <CancelButton onPress={this.dismissModal.bind(this)}><MetadataText>CANCEL</MetadataText></CancelButton>
               <TitleView>
                 <SmallHeadline>{partnerName}</SmallHeadline>
-                {/*<ResponseRateLine>*/}
-                {/*<ResponseIndicator />*/}
-                {/*<ResponseRate>{partnerResponseRate}</ResponseRate>*/}
-                {/*</ResponseRateLine>*/}
+                <ResponseRateLine>
+                  <ResponseIndicator />
+                  <ResponseRate>{partnerResponseRate}</ResponseRate>
+                </ResponseRateLine>
               </TitleView>
               <PlaceholderView>CANCEL</PlaceholderView>
             </HeaderTextContainer>
           </Header>
           <Content>
             <ArtworkPreview artwork={artwork} />
-            <InquiryTextInput value={placeholderText} keyboardAppearance={"dark"} multiline={true} autoFocus={true} />
+            <InquiryTextInput
+              value={message}
+              keyboardAppearance={"dark"}
+              multiline={true}
+              autoFocus={true}
+              onEndEditing={() => {
+                this.setState({ active: false, text: null })
+              }}
+              onChangeText={text => this.setState({ text })}
+            />
           </Content>
         </BottomAlignedButton>
       </Container>

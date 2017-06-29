@@ -3,13 +3,17 @@ import * as Relay from "react-relay"
 const { Emission } = NativeModules
 
 let metaphysicsURL
+let gravityURL
+
 if (Emission && Emission.useStagingEnvironment) {
   metaphysicsURL = "https://metaphysics-staging.artsy.net"
+  gravityURL = "https://stagingapi.artsy.net"
 } else {
   metaphysicsURL = "https://metaphysics-production.artsy.net"
+  gravityURL = "https://api.artsy.net"
 }
 
-export { metaphysicsURL }
+export { metaphysicsURL, gravityURL }
 
 if (Emission) {
   Relay.injectNetworkLayer(
