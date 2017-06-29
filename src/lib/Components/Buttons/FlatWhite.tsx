@@ -64,7 +64,9 @@ export default class WhiteButton extends React.Component<Props, State> {
     return (
       <AnimatedTouchable onPress={this.props.onPress} activeOpacity={1} {...styling}>
         <View>
-          <AnimatedHeadline style={headlineStyles}>{this.props.text}</AnimatedHeadline>
+          <AnimatedHeadline style={headlineStyles}>
+            {this.props.text}
+          </AnimatedHeadline>
         </View>
       </AnimatedTouchable>
     )

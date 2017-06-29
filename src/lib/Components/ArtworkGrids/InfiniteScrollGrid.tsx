@@ -28,14 +28,12 @@ export const PageEndThreshold = 1000
  *   - the calculation currently only takes into account the size of the image, not if e.g. the sale message is present
  */
 
-type Artworks = Array<
-  {
-    __id: string
-    image: {
-      aspect_ratio: number | null
-    } | null
-  }
->
+type Artworks = Array<{
+  __id: string
+  image: {
+    aspect_ratio: number | null
+  } | null
+}>
 
 interface Props extends ArtistRelayProps, GeneRelayProps {
   /** The direction for the grid, currently only 'column' is supported . */

@@ -55,7 +55,9 @@ export class ArtworkPreview extends React.Component<Props, any> {
         <Container>
           <Image imageURL={artwork.image.url} />
           <TextContainer>
-            <SerifText>{artwork.artist_names}</SerifText>
+            <SerifText>
+              {artwork.artist_names}
+            </SerifText>
             <TitleAndDate>
               {artwork.title}
               {artwork.date && <SerifText>{`, ${artwork.date}`}</SerifText>}

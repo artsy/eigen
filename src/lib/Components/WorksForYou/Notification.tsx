@@ -35,10 +35,14 @@ export class Notification extends React.Component<RelayProps, any> {
               <Image source={{ uri: notification.image.resized.url }} style={styles.artistAvatar} />}
             <View style={styles.metadataContainer}>
               <View style={styles.nameAndStatusContainer}>
-                <Headline style={styles.artistName}>{notification.artists}</Headline>
+                <Headline style={styles.artistName}>
+                  {notification.artists}
+                </Headline>
                 {notification.status === "UNREAD" && <View style={styles.readStatus} />}
               </View>
-              <SerifText style={styles.metadata}>{notification.message + " · " + notification.date}</SerifText>
+              <SerifText style={styles.metadata}>
+                {notification.message + " · " + notification.date}
+              </SerifText>
             </View>
           </View>
         </TouchableWithoutFeedback>

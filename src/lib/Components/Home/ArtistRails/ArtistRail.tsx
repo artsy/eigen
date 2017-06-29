@@ -173,7 +173,11 @@ class ArtistRail extends React.Component<Props, State> {
 
     return (
       <View>
-        <View style={styles.title}><SectionTitle>{this.title()}</SectionTitle></View>
+        <View style={styles.title}>
+          <SectionTitle>
+            {this.title()}
+          </SectionTitle>
+        </View>
         {this.renderModuleResults()}
         <Separator />
       </View>

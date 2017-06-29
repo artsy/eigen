@@ -258,11 +258,9 @@ export class Gene extends React.Component<Props, State> {
         parallaxHeaderHeight={this.foregroundHeight}
         parallaxHeaderContainerStyles={{ marginBottom: stickyTopMargin }}
       >
-
         <View style={{ marginTop: 20, paddingLeft: this.commonPadding, paddingRight: this.commonPadding }}>
           {this.renderSectionForTab()}
         </View>
-
       </ParallaxScrollView>
     )
   }

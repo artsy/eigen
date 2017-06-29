@@ -23,8 +23,8 @@ const VerticalLayout = styled.View`
 const HorizontalLayout = styled.View`
   flex: 1;
   flex-direction: row;
-  margin-left:20;
-  margin-top:50;
+  margin-left: 20;
+  margin-top: 50;
   margin-bottom: 50;
 `
 
