@@ -1,7 +1,7 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import { TouchableHighlight } from "react-native"
+import { Image, TouchableHighlight } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../../../../data/colors"
@@ -27,6 +27,11 @@ const PDF = styled.Text`
   height: 55
 `
 
+const Icon = styled(Image)`
+  resize-mode: contain;
+  width:40;
+`
+
 interface Props extends RelayProps {
   onSelected?: () => void
 }
@@ -36,6 +41,7 @@ export class PDFPreview extends React.Component<Props, any> {
     return (
       <TouchableHighlight underlayColor={colors["gray-light"]} onPress={this.props.onSelected}>
         <Container>
+          <Icon source={require("../../images/pdf.png")} />
           <PDF>{this.props.pdfAttachment.file_name}</PDF>
         </Container>
       </TouchableHighlight>
@@ -48,6 +54,7 @@ export default Relay.createContainer(PDFPreview, {
     pdfAttachment: () => Relay.QL`
       fragment on AttachmentType {
         file_name
+        download_url
       }
     `,
   },
@@ -56,5 +63,6 @@ export default Relay.createContainer(PDFPreview, {
 interface RelayProps {
   pdfAttachment: {
     file_name?: string
+    download_url?: string
   }
 }

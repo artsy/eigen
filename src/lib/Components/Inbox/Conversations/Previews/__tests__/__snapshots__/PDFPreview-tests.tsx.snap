@@ -40,6 +40,18 @@ exports[`renders correctly 1`] = `
       ]
     }
   >
+    <Image
+      source={1}
+      style={
+        Array [
+          Object {
+            "resizeMode": "contain",
+            "width": 40,
+          },
+          undefined,
+        ]
+      }
+    />
     <Text
       accessible={true}
       allowFontScaling={true}
