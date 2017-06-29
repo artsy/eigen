@@ -1,7 +1,7 @@
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import { SmallHeadline, MetadataText } from "../Components/Inbox/Typography"
+import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
 import {
   FlatList,
@@ -20,6 +20,7 @@ import fonts from "../../data/fonts"
 import BottomAlignedButton from "../Components/Consignments/Components/BottomAlignedButton"
 
 import ArtworkPreview from "../Components/Inbox/Conversations/ArtworkPreview"
+import ARSwitchBoard from "../NativeModules/SwitchBoard"
 
 const Container = styled.View`
   flex: 1
@@ -79,9 +80,12 @@ const ResponseRateLine = styled.View`
 `
 
 export class Inquiry extends React.Component<RelayProps, any> {
+  dismissModal() {
+    ARSwitchBoard.dismissModalViewController(this)
+  }
   render() {
     const placeholderText = this.props.inquiry.partner.contact_message
-    const partnerResponseRate = "2 DAY RESPONSE TIME"
+    // const partnerResponseRate = "2 DAY RESPONSE TIME"
     const artwork = this.props.inquiry
     console.log(this.props)
     const partnerName = this.props.inquiry.partner.name
@@ -98,13 +102,13 @@ export class Inquiry extends React.Component<RelayProps, any> {
         <BottomAlignedButton onPress={} bodyStyle={doneButtonStyles} buttonText="SEND">
           <Header>
             <HeaderTextContainer>
-              <CancelButton onPress={}><MetadataText>CANCEL</MetadataText></CancelButton>
+              <CancelButton onPress={this.dismissModal.bind(this)}><MetadataText>CANCEL</MetadataText></CancelButton>
               <TitleView>
                 <SmallHeadline>{partnerName}</SmallHeadline>
-                <ResponseRateLine>
-                  <ResponseIndicator />
-                  <ResponseRate>{partnerResponseRate}</ResponseRate>
-                </ResponseRateLine>
+                {/*<ResponseRateLine>*/}
+                {/*<ResponseIndicator />*/}
+                {/*<ResponseRate>{partnerResponseRate}</ResponseRate>*/}
+                {/*</ResponseRateLine>*/}
               </TitleView>
               <PlaceholderView>CANCEL</PlaceholderView>
             </HeaderTextContainer>
