@@ -84,7 +84,6 @@ const ResponseRateLine = styled.View`
 export class Inquiry extends React.Component<RelayProps, any> {
   constructor(props) {
     super(props)
-    console.log(props)
     this.state = {
       text: this.props.inquiryArtwork.contact_message,
       sending: false,
