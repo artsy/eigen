@@ -84,7 +84,7 @@ const ResponseRateLine = styled.View`
 export class Inquiry extends React.Component<RelayProps, any> {
   constructor(props) {
     super(props)
-
+    console.log(props)
     this.state = {
       text: this.props.inquiryArtwork.contact_message,
       sending: false,
@@ -97,9 +97,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
 
   sendInquiry() {
     // Using setState to trigger re-render for the button
-    this.setState(previousState => {
-      return { sending: true }
-    })
+    this.setState(() => ({ sending: true }))
     const { Emission } = NativeModules
     fetch(gravityURL + "/api/v1/me/artwork_inquiry_request", {
       method: "POST",
@@ -116,18 +114,14 @@ export class Inquiry extends React.Component<RelayProps, any> {
         if (response.status >= 200 && response.status < 300) {
           this.dismissModal()
         } else {
-          this.setState(previousState => {
-            return { sending: false }
-          })
+          this.setState(() => ({ sending: false }))
           const error = new NetworkError(response.statusText)
           error.response = response
           throw error
         }
       })
       .catch(error => {
-        this.setState(previousState => {
-          return { sending: false }
-        })
+        this.setState(() => ({ sending: false }))
         throw error
       })
   }
