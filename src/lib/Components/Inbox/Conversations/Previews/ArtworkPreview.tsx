@@ -11,9 +11,9 @@ import fonts from "../../../../../data/fonts"
 import OpaqueImageView from "../../../OpaqueImageView"
 
 const Container = styled.View`
-  borderWidth: 1
-  borderColor: ${colors["gray-regular"]}
-  flexDirection: row
+  borderWidth: 1;
+  borderColor: ${colors["gray-regular"]};
+  flexDirection: row;
 `
 
 const VerticalLayout = styled.View`
@@ -86,11 +86,11 @@ export default Relay.createContainer(ArtworkPreview, {
 
 interface RelayProps {
   artwork: {
-    title: string | null,
-    artist_names: string | null,
-    date: string | null,
+    title: string | null
+    artist_names: string | null
+    date: string | null
     image: {
-      url: string | null,
-    } | null,
-  },
+      url: string | null
+    } | null
+  }
 }
