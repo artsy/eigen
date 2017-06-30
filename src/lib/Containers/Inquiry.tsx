@@ -7,6 +7,7 @@ import {
   FlatList,
   ImageURISource,
   KeyboardAvoidingView,
+  NativeModules,
   Text,
   TextInput,
   TouchableOpacity,
@@ -22,6 +23,7 @@ import BottomAlignedButton from "../Components/Consignments/Components/BottomAli
 import ArtworkPreview from "../Components/Inbox/Conversations/ArtworkPreview"
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 import { gravityURL } from "../relay/config"
+import { NetworkError } from "../system/errors"
 
 const Container = styled.View`
   flex: 1
@@ -86,6 +88,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
 
     this.state = {
       text: this.props.inquiry.partner.contact_message,
+      sending: false,
     }
   }
 
@@ -94,26 +97,51 @@ export class Inquiry extends React.Component<RelayProps, any> {
   }
 
   sendInquiry() {
+    this.setState(previousState => {
+      return { sending: true }
+    })
+    const { Emission } = NativeModules
     fetch(gravityURL + "/api/v1/me/artwork_inquiry_request", {
       method: "POST",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
+        "X-ACCESS-TOKEN": Emission.authenticationToken,
       },
       body: JSON.stringify({
         artwork: this.props.inquiry.id,
         message: this.state.text,
       }),
     })
-    this.dismissModal()
+      .then(response => {
+        console.log(response)
+        if (response.status >= 200 && response.status < 300) {
+          this.dismissModal()
+        } else {
+          this.setState(previousState => {
+            return { sending: false }
+          })
+          const error = new NetworkError(response)
+          console.log(error.message)
+          error.response = response
+          throw error
+        }
+      })
+      .catch(error => {
+        this.setState(previousState => {
+          return { sending: false }
+        })
+        console.log(error.message)
+        console.log(error)
+        throw error
+      })
   }
 
   render() {
     const message = this.state.text
     const partnerResponseRate = "2 DAY RESPONSE TIME"
     const artwork = this.props.inquiry
-    console.log(this.props)
     const partnerName = this.props.inquiry.partner.name
+    const buttonText = this.state.sending ? "SENDING..." : "SEND"
 
     const doneButtonStyles = {
       backgroundColor: colors["purple-regular"],
@@ -124,7 +152,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
 
     return (
       <Container>
-        <BottomAlignedButton onPress={this.sendInquiry.bind(this)} bodyStyle={doneButtonStyles} buttonText="SEND">
+        <BottomAlignedButton onPress={this.sendInquiry.bind(this)} bodyStyle={doneButtonStyles} buttonText={buttonText}>
           <Header>
             <HeaderTextContainer>
               <CancelButton onPress={this.dismissModal.bind(this)}><MetadataText>CANCEL</MetadataText></CancelButton>
