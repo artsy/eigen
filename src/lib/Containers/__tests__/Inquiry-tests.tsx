@@ -13,6 +13,8 @@ it("renders correctly", () => {
 const inquiryProps = {
   inquiry: {
     id: "bradley-theodore-karl-and-anna-face-off-diptych",
+    contact_message:
+      "Hi, I'm interested in purchasing this work. Could you please provide me with more information about the piece?",
     href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
     title: "Karl and Anna Face Off (Diptych)",
     date: "2016",
@@ -22,8 +24,6 @@ const inquiryProps = {
     },
     partner: {
       name: "Other Criteria",
-      contact_message:
-        "Hi, I'm interested in purchasing this work. Could you please provide me with more information about the piece?",
     },
   },
 }
