@@ -27,6 +27,7 @@
 -   Adds a `FlatList` for Messages in Conversations - sarah
 -   Adds Conversation, Composer, and Message components - sarah
 -   Adds Inbox view with real data - luc
+-   Adds Inquiry modal - maxim
 
 ###### Consignments
 

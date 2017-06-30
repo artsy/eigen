@@ -21,6 +21,12 @@ RCT_EXPORT_METHOD(presentModalViewController:(nonnull NSNumber *)reactTag route:
   [self invokeCallback:self.presentModalViewController reactTag:reactTag route:route];
 }
 
+RCT_EXPORT_METHOD(dismissModalViewController:(nonnull NSNumber *)reactTag)
+{
+    [self invokeCallback:^(UIViewController *vc, NSString *_) { [vc dismissViewControllerAnimated:YES completion:nil]; } reactTag:reactTag];
+}
+
+
 - (dispatch_queue_t)methodQueue;
 {
   return dispatch_get_main_queue();
@@ -37,6 +43,12 @@ RCT_EXPORT_METHOD(presentModalViewController:(nonnull NSNumber *)reactTag route:
   UIViewController *viewController = rootView.reactViewController;
   NSParameterAssert(viewController);
   callback(viewController, route);
+}
+
+- (void)invokeCallback:(ARSwitchBoardPresentViewController)callback
+              reactTag:(nonnull NSNumber *)reactTag
+{
+    [self invokeCallback:callback reactTag:reactTag route:@""];
 }
 
 @end

@@ -23,7 +23,19 @@ function presentModalViewController(component: React.Component<any, any>, route:
   ARSwitchBoardModule.presentModalViewController(reactTag, route)
 }
 
+function dismissModalViewController(component: React.Component<any, any>) {
+  let reactTag
+  try {
+    reactTag = findNodeHandle(component)
+  } catch (err) {
+    return
+  }
+
+  ARSwitchBoardModule.dismissModalViewController(reactTag)
+}
+
 export default {
   presentNavigationViewController,
   presentModalViewController,
+  dismissModalViewController,
 }

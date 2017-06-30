@@ -11,14 +11,25 @@ interface States {
   [name: string]: BottomAlignedProps
 }
 
+const doneButtonStyles = {
+  backgroundColor: "black",
+  marginBottom: 20,
+  paddingTop: 18,
+  height: 56,
+}
+
 const withText = {
   children: [<Text style={{ color: "white" }}>hi</Text>],
   onPress: () => "",
+  bodyStyle: doneButtonStyles,
+  buttonText: "DONE",
 }
 
 const withSearchResults = {
   children: [<Search searching={false} query="Banko" results={null} />],
   onPress: () => "",
+  bodyStyle: doneButtonStyles,
+  buttonText: "DONE",
 }
 
 export const allStates: States[] = [
