@@ -16,6 +16,8 @@
 ###### Messaging
 
 -   Adds PDF Preview for attachments - matt
+-   Fixes pagination for Conversations - luc
+-   Adds pull to refresh support to Inbox view - luc
 -   Adds an `ImagePreview` to each Conversation, Relay-ified messages - matt
 -   Adds snapshot tests for active bids - luc
 -   Update status label colors - luc
