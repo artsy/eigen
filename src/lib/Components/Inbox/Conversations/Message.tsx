@@ -130,12 +130,10 @@ interface RelayProps {
     raw_text: string | null
     created_at: string | null
     is_from_user: boolean
-    attachments: Array<
-      {
-        content_type: string
-        download_url: string
-        file_name: string
-      }
-    >
+    attachments: Array<{
+      content_type: string
+      download_url: string
+      file_name: string
+    }>
   }
 }

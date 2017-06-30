@@ -8,9 +8,7 @@ import colors from "../../../../../data/colors"
 import fonts from "../../../../../data/fonts"
 import OpaqueImageView from "../../../OpaqueImageView"
 
-const Container = styled.View`
-  flexDirection: row
-`
+const Container = styled.View`flexDirection: row;`
 
 const VerticalLayout = styled.View`
   flex: 1
@@ -31,9 +29,7 @@ export class ImagePreview extends React.Component<Props, any> {
     return (
       <TouchableHighlight underlayColor={colors["gray-light"]} onPress={this.props.onSelected}>
         <Container>
-
           <Image imageURL={this.props.imageAttachment.download_url} />
-
         </Container>
       </TouchableHighlight>
     )

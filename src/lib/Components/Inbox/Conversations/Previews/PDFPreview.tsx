@@ -43,7 +43,9 @@ export class PDFPreview extends React.Component<Props, any> {
         <Container>
           <Icon source={require("../../images/pdf.png")} />
           <TextContainer>
-            <Text>{this.props.pdfAttachment.file_name}</Text>
+            <Text>
+              {this.props.pdfAttachment.file_name}
+            </Text>
           </TextContainer>
         </Container>
       </TouchableHighlight>

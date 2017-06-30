@@ -168,11 +168,9 @@ interface RelayProps {
         pageInfo?: {
           hasNextPage: boolean
         }
-        edges: Array<
-          {
-            node: any | null
-          }
-        >
+        edges: Array<{
+          node: any | null
+        }>
       }
     }
   }
