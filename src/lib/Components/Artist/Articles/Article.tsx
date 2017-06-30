@@ -26,14 +26,20 @@ class Article extends React.Component<Props, {}> {
 
   render() {
     const article = this.props.article
-    const author = article.author && <Text style={styles.sansSerifText}>{article.author.name.toUpperCase()}</Text>
+    const author =
+      article.author &&
+      <Text style={styles.sansSerifText}>
+        {article.author.name.toUpperCase()}
+      </Text>
 
     return (
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
           <View style={styles.touchableContent}>
             <ImageView style={styles.image} imageURL={article.thumbnail_image.url} />
-            <Text style={styles.serifText} numberOfLines={5}>{article.thumbnail_title}</Text>
+            <Text style={styles.serifText} numberOfLines={5}>
+              {article.thumbnail_title}
+            </Text>
             {author}
           </View>
         </TouchableWithoutFeedback>

@@ -34,7 +34,6 @@ export interface BottomAlignedProps {
 
 const render = (props: BottomAlignedProps) =>
   <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={60} style={{ flex: 1 }}>
-
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {props.children}
     </View>

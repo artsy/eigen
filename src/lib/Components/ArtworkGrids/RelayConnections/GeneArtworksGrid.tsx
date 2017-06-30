@@ -41,16 +41,14 @@ export interface GeneRelayProps {
       pageInfo: {
         hasNextPage: boolean
       }
-      edges: Array<
-        {
-          node: {
-            __id: string
-            image: {
-              aspect_ratio: number | null
-            } | null
+      edges: Array<{
+        node: {
+          __id: string
+          image: {
+            aspect_ratio: number | null
           } | null
-        }
-      >
+        } | null
+      }>
     } | null
   }
 }

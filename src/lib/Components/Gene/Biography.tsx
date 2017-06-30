@@ -26,7 +26,11 @@ class Biography extends React.Component<Props, any> {
 
   blurb(gene) {
     if (gene.description) {
-      return <SerifText style={styles.blurb} numberOfLines={0}>{removeMarkdown(gene.description)}</SerifText>
+      return (
+        <SerifText style={styles.blurb} numberOfLines={0}>
+          {removeMarkdown(gene.description)}
+        </SerifText>
+      )
     }
   }
 }
