@@ -104,10 +104,10 @@ class MyAccount extends Relay.Route {
 
 class Inquiry extends Relay.Route {
   static queries = {
-    inquiry: (component, params) => Relay.QL`
+    inquiryArtwork: (component, params) => Relay.QL`
       query {
         artwork(id: $artworkID) {
-          ${component.getFragment("inquiry", params)}
+          ${component.getFragment("inquiryArtwork", params)}
         }
       }
     `,

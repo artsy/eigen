@@ -88,7 +88,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
     super(props)
 
     this.state = {
-      text: this.props.inquiry.partner.contact_message,
+      text: this.props.inquiryArtwork.contact_message,
       sending: false,
     }
   }
@@ -98,6 +98,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
   }
 
   sendInquiry() {
+    // Using setState to trigger re-render for the button
     this.setState(previousState => {
       return { sending: true }
     })
@@ -109,7 +110,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
         "X-ACCESS-TOKEN": Emission.authenticationToken,
       },
       body: JSON.stringify({
-        artwork: this.props.inquiry.id,
+        artwork: this.props.inquiryArtwork.id,
         message: this.state.text,
       }),
     })
@@ -121,7 +122,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
           this.setState(previousState => {
             return { sending: false }
           })
-          const error = new NetworkError(response)
+          const error = new NetworkError(response.statusText)
           console.log(error.message)
           error.response = response
           throw error
@@ -139,9 +140,9 @@ export class Inquiry extends React.Component<RelayProps, any> {
 
   render() {
     const message = this.state.text
-    const partnerResponseRate = "2 DAY RESPONSE TIME"
-    const artwork = this.props.inquiry
-    const partnerName = this.props.inquiry.partner.name
+    const partnerResponseRate = "2 DAY RESPONSE TIME" // currently hardcoded
+    const inquiryArtwork = this.props.inquiryArtwork
+    const partnerName = this.props.inquiryArtwork.partner.name
     const buttonText = this.state.sending ? "SENDING..." : "SEND"
 
     const doneButtonStyles = {
@@ -174,7 +175,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
             </HeaderTextContainer>
           </Header>
           <Content>
-            <ArtworkPreview artwork={artwork} />
+            <ArtworkPreview artwork={inquiryArtwork} />
             <InquiryTextInput
               value={message}
               keyboardAppearance={"dark"}
@@ -194,13 +195,13 @@ export class Inquiry extends React.Component<RelayProps, any> {
 
 export default Relay.createContainer(Inquiry, {
   fragments: {
-    inquiry: () => Relay.QL`
+    inquiryArtwork: () => Relay.QL`
       fragment on Artwork {
         id
+        contact_message
         ${ArtworkPreview.getFragment("artwork")}
         partner {
           name
-          contact_message
         }
       }
     `,
@@ -208,11 +209,11 @@ export default Relay.createContainer(Inquiry, {
 })
 
 interface RelayProps {
-  inquiry: {
+  inquiryArtwork: {
     id: string
+    contact_message: string
     partner: {
       name: string
-      contact_message: string
     }
   }
 }

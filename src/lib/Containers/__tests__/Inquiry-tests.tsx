@@ -2,8 +2,8 @@ import * as React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import Inquiry from "../Inquiry"
 import StubContainer from "react-storybooks-relay-container"
+import Inquiry from "../Inquiry"
 
 it("renders correctly", () => {
   const tree = renderer.create(<StubContainer Component={Inquiry} props={inquiryProps} />).toJSON()

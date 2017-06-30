@@ -29,6 +29,7 @@ export interface BottomAlignedProps {
   children?: any[]
   bodyStyle: ButtonBodyStyle
   buttonText: string
+  disabled?: boolean
 }
 
 const render = (props: BottomAlignedProps) =>
@@ -38,7 +39,7 @@ const render = (props: BottomAlignedProps) =>
       {props.children}
     </View>
     <Separator key="separator" />
-    <TouchableOpacity key="button" onPress={props.onPress} style={props.bodyStyle}>
+    <TouchableOpacity key="button" onPress={props.onPress} style={props.bodyStyle} disabled={props.disabled}>
       <ButtonText>{props.buttonText}</ButtonText>
     </TouchableOpacity>
   </KeyboardAvoidingView>
