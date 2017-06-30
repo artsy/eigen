@@ -152,7 +152,12 @@ export class Inquiry extends React.Component<RelayProps, any> {
 
     return (
       <Container>
-        <BottomAlignedButton onPress={this.sendInquiry.bind(this)} bodyStyle={doneButtonStyles} buttonText={buttonText}>
+        <BottomAlignedButton
+          onPress={this.sendInquiry.bind(this)}
+          bodyStyle={doneButtonStyles}
+          buttonText={buttonText}
+          disabled={this.state.sending}
+        >
           <Header>
             <HeaderTextContainer>
               <CancelButton onPress={this.dismissModal.bind(this)}><MetadataText>CANCEL</MetadataText></CancelButton>
