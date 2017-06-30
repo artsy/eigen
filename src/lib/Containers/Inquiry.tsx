@@ -8,6 +8,7 @@ import {
   ImageURISource,
   KeyboardAvoidingView,
   NativeModules,
+  StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
@@ -152,6 +153,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
 
     return (
       <Container>
+        <StatusBar />
         <BottomAlignedButton
           onPress={this.sendInquiry.bind(this)}
           bodyStyle={doneButtonStyles}
