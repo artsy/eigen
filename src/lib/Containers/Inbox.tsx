@@ -12,11 +12,9 @@ interface State {
   hasMessages?: boolean
 }
 
-const Container = styled.View`
-  flex: 1;
-`
+const Container = styled.View`flex: 1;`
 
-export class Inbox extends React.Component<any, State> {
+export class Inbox extends React.Component<RelayProps, State> {
   constructor(props) {
     super(props)
 
@@ -35,7 +33,7 @@ export class Inbox extends React.Component<any, State> {
     }
 
     const shouldShowEmptyState = !this.state.hasBids && !this.state.hasMessages
-    const headerView = <ActiveBids me={this.props.me} onDataLoaded={updateBidsState} />
+    const headerView = <ActiveBids me={this.props.me as any} onDataLoaded={updateBidsState} />
     return (
       <Container>
         <Conversations me={this.props.me} headerView={headerView} onDataLoaded={updateMessagesState} />
