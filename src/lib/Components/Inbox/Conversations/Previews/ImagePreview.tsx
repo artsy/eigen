@@ -8,11 +8,7 @@ import colors from "../../../../../data/colors"
 import fonts from "../../../../../data/fonts"
 import OpaqueImageView from "../../../OpaqueImageView"
 
-const Container = styled.View`
-  borderWidth: 1
-  borderColor: ${colors["gray-regular"]}
-  flexDirection: row
-`
+const Container = styled.View`flexDirection: row;`
 
 const VerticalLayout = styled.View`
   flex: 1
@@ -20,19 +16,20 @@ const VerticalLayout = styled.View`
 `
 
 const Image = styled(OpaqueImageView)`
-  marginTop: 12
-  marginLeft: 12
-  marginBottom: 12
-  width: 80
-  height: 55
+  height: 150
+  flex: 1
 `
 
-export class ImagePreview extends React.Component<RelayProps, any> {
+interface Props extends RelayProps {
+  onSelected?: () => void
+}
+
+export class ImagePreview extends React.Component<Props, any> {
   render() {
     return (
       <TouchableHighlight underlayColor={colors["gray-light"]} onPress={this.props.onSelected}>
         <Container>
-          <Image skipGemini={true} imageURL={this.props.imageAttachment.download_url} />
+          <Image imageURL={this.props.imageAttachment.download_url} />
         </Container>
       </TouchableHighlight>
     )
@@ -53,5 +50,4 @@ interface RelayProps {
   imageAttachment: {
     download_url?: string
   }
-  onSelected?: () => void
 }

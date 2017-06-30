@@ -15,6 +15,7 @@ it("looks correct when rendered", () => {
     created_at: moment().subtract(30, "minutes").toISOString(),
     raw_text: messageBody,
     is_from_user: true,
+    attachments: [],
   }
   const tree = renderer.create(<Message senderName={senderName} message={props} />).toJSON()
   expect(tree).toMatchSnapshot()

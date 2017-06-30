@@ -10,7 +10,7 @@ import colors from "../../data/colors"
 import Composer from "../Components/Inbox/Conversations/Composer"
 import Message from "../Components/Inbox/Conversations/Message"
 import ArtworkPreview from "../Components/Inbox/Conversations/Previews/ArtworkPreview"
-import ImagePreview from "../Components/Inbox/Conversations/Previews/ImagePreview"
+
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 
 // tslint:disable-next-line:no-var-requires
@@ -67,13 +67,11 @@ export class Conversation extends React.Component<RelayProps, any> {
     const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
     const senderName = item.is_from_user ? conversation.from.name : partnerName
-    const hasImageAttachment = item.attachments.length > 0 && item.attachments[0].content_type === "image/jpeg"
 
     return (
       <Message
         message={item}
         senderName={senderName}
-        imagePreview={hasImageAttachment && <ImagePreview imageAttachment={item.attachments[0]} />}
         artworkPreview={
           item.first_message &&
           <ArtworkPreview
@@ -141,10 +139,6 @@ export default Relay.createContainer(Conversation, {
               node {
                 id
                 ${Message.getFragment("message")}
-                attachments {
-                  content_type
-                  download_url
-                }
               }
             }
           }
