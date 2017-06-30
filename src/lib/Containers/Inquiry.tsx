@@ -51,9 +51,7 @@ const HeaderTextContainer = styled.View`
   flex-direction: row
   justify-content: space-between
 `
-const CancelButton = styled.TouchableOpacity`
-  padding-left: 20
-`
+const CancelButton = styled.TouchableOpacity`padding-left: 20;`
 const Content = styled.View`
   margin-left: 20
   margin-right: 20
@@ -159,12 +157,18 @@ export class Inquiry extends React.Component<RelayProps, any> {
         >
           <Header>
             <HeaderTextContainer>
-              <CancelButton onPress={this.dismissModal.bind(this)}><MetadataText>CANCEL</MetadataText></CancelButton>
+              <CancelButton onPress={this.dismissModal.bind(this)}>
+                <MetadataText>CANCEL</MetadataText>
+              </CancelButton>
               <TitleView>
-                <SmallHeadline>{partnerName}</SmallHeadline>
+                <SmallHeadline>
+                  {partnerName}
+                </SmallHeadline>
                 <ResponseRateLine>
                   <ResponseIndicator />
-                  <ResponseRate>{partnerResponseRate}</ResponseRate>
+                  <ResponseRate>
+                    {partnerResponseRate}
+                  </ResponseRate>
                 </ResponseRateLine>
               </TitleView>
               <PlaceholderView>CANCEL</PlaceholderView>

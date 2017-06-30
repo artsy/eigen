@@ -39,7 +39,9 @@ const render = (props: BottomAlignedProps) =>
     </View>
     <Separator key="separator" />
     <TouchableOpacity key="button" onPress={props.onPress} style={props.bodyStyle} disabled={props.disabled}>
-      <ButtonText>{props.buttonText}</ButtonText>
+      <ButtonText>
+        {props.buttonText}
+      </ButtonText>
     </TouchableOpacity>
   </KeyboardAvoidingView>
 
