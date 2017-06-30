@@ -22,9 +22,9 @@ class Conversation extends Relay.Route {
   static queries = {
     me: (component, params) => Relay.QL`
       query {
-          me {
-            ${component.getFragment("me", params)}
-          }
+        me {
+          ${component.getFragment("me", params)}
+        }
       }
     `,
   }

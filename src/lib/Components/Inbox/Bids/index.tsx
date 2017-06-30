@@ -6,9 +6,7 @@ import { View } from "react-native"
 import { LargeHeadline } from "../Typography"
 import ActiveBid from "./ActiveBid"
 
-const Container = styled.View`
-  margin: 20px 0 40px;
-`
+const Container = styled.View`margin: 20px 0 40px;`
 
 interface Props extends RelayProps {
   onDataLoaded?: (hasData: boolean) => void

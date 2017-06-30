@@ -16,6 +16,7 @@ const Container = styled.View`
 const Content = styled.View`
   flex: 1;
   flex-direction: row;
+
   align-items: center;
 `
 
@@ -109,10 +110,16 @@ class ActiveBid extends React.Component<RelayProps, State> {
           <Content>
             <ImageView imageURL={imageURL} />
             <MetadataContainer>
-              <BodyText>{headline}</BodyText>
-              <BodyText>{subtitle}</BodyText>
+              <BodyText>
+                {headline}
+              </BodyText>
+              <BodyText>
+                {subtitle}
+              </BodyText>
             </MetadataContainer>
-            <StatusLabel status={this.state.status}>{this.statusLabel}</StatusLabel>
+            <StatusLabel status={this.state.status}>
+              {this.statusLabel}
+            </StatusLabel>
           </Content>
           <Separator />
         </Container>

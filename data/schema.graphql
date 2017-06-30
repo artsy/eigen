@@ -1,8 +1,3 @@
-schema {
-  query: RootQueryType
-  mutation: RootMutationType
-}
-
 # One item in an aggregation
 type AggregationCount {
   # A globally unique ID.
@@ -21,10 +16,7 @@ input AppendConversationThreadInput {
 
   # The email address of the message sender
   from: String!
-
-  # An array of email addresses that the message should be sent to
-  to: [String]
-  message_body: String!
+  body_text: String!
   clientMutationId: String
 }
 
@@ -792,6 +784,9 @@ type ArtworkContextFair {
   shows_connection(
     # Number of artworks to return
     section: String
+
+    # Sorts for shows in a fair
+    sort: ShowSort = FEATURED_DESC
     after: String
     first: Int
     before: String
@@ -1326,6 +1321,18 @@ enum ArtworkSorts {
   TITLE_DESC
 }
 
+type AttachmentType {
+  # Attachment id.
+  id: String!
+
+  # Content type of file.
+  content_type: String!
+
+  # File name.
+  file_name: String!
+  download_url: String!
+}
+
 type Author {
   # A globally unique ID.
   __id: ID!
@@ -1725,6 +1732,9 @@ type Fair {
   shows_connection(
     # Number of artworks to return
     section: String
+
+    # Sorts for shows in a fair
+    sort: ShowSort = FEATURED_DESC
     after: String
     first: Int
     before: String
@@ -2376,6 +2386,9 @@ type HomePageModuleContextFair {
   shows_connection(
     # Number of artworks to return
     section: String
+
+    # Sorts for shows in a fair
+    sort: ShowSort = FEATURED_DESC
     after: String
     first: Int
     before: String
@@ -2794,16 +2807,27 @@ type MessagePayloadType {
 }
 
 # A message in a conversation.
-type MessageType {
-  # Impulse id.
+type MessageType implements Node {
+  # A globally unique ID.
+  __id: ID!
+
+  # Impulse message id.
   id: String!
 
-  # Email address of sender.
-  from_email_address: String!
+  # True if message is from the user to the partner.
+  is_from_user: Boolean
+  from_email_address: String
 
-  # A snippet of the full message
-  snippet: String!
-  radiation_message_id: String!
+  # Full unsanitized text.
+  raw_text: String!
+  attachments: [AttachmentType]
+  created_at(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
 }
 
 # A connection to a list of items.
@@ -2822,6 +2846,16 @@ type MessageTypeEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+type Mutation {
+  followArtist(input: FollowArtistInput!): FollowArtistPayload
+  updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
+  updateConversation(input: UpdateConversationInput!): UpdateConversationPayload
+
+  # Appending a message to a conversation thread
+  appendConversationThread(input: AppendConversationThreadInput!): AppendConversationThreadPayload
+  saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
 }
 
 input Near {
@@ -3381,29 +3415,7 @@ type ProfileSearchEntity {
   is_publically_visible: Boolean
 }
 
-type ResizedImageUrl {
-  factor: Float
-  width: Int
-  height: Int
-  url: String
-}
-
-enum Role {
-  PARTICIPANT
-  OPERATOR
-}
-
-type RootMutationType {
-  followArtist(input: FollowArtistInput!): FollowArtistPayload
-  updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
-  updateBuyerOutcome(input: UpdateBuyerOutcomeInput!): UpdateBuyerOutcomePayload
-
-  # Appending a message to a conversation thread
-  appendConversationThread(input: AppendConversationThreadInput!): AppendConversationThreadPayload
-  saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
-}
-
-type RootQueryType {
+type Query {
   # An Article
   article(
     # The ID of the Article
@@ -3700,6 +3712,18 @@ type RootQueryType {
 
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
+}
+
+type ResizedImageUrl {
+  factor: Float
+  width: Int
+  height: Int
+  url: String
+}
+
+enum Role {
+  PARTICIPANT
+  OPERATOR
 }
 
 type Sale {
@@ -4180,6 +4204,21 @@ type ShowEdge {
   cursor: String!
 }
 
+enum ShowSort {
+  START_AT_ASC
+  START_AT_DESC
+  END_AT_ASC
+  END_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  NAME_ASC
+  NAME_DESC
+  FEATURED_ASC
+  FEATURED_DESC
+  SORTABLE_NAME_ASC
+  SORTABLE_NAME_DESC
+}
+
 type Status {
   gravity: StatusGravity
 
@@ -4233,17 +4272,6 @@ enum TrendingMetrics {
   ARTIST_SEARCH
 }
 
-input UpdateBuyerOutcomeInput {
-  buyer_outcome: BuyerOutcomeTypes!
-  ids: [String]
-  clientMutationId: String
-}
-
-type UpdateBuyerOutcomePayload {
-  conversations: [ConversationType]
-  clientMutationId: String
-}
-
 input UpdateCollectorProfileInput {
   loyalty_applicant: Boolean
   professional_buyer: Boolean
@@ -4289,6 +4317,17 @@ type UpdateCollectorProfilePayload {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  clientMutationId: String
+}
+
+input UpdateConversationInput {
+  buyer_outcome: BuyerOutcomeTypes!
+  ids: [String]
+  clientMutationId: String
+}
+
+type UpdateConversationPayload {
+  conversations: [ConversationType]
   clientMutationId: String
 }
 
