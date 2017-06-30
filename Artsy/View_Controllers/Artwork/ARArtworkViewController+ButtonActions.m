@@ -28,6 +28,7 @@
 #import "ARTopMenuViewController.h"
 #import "ARLogger.h"
 #import "Artsy-Swift.h"
+#import <Emission/ARInquiryComponentViewController.h>
 
 
 @implementation ARArtworkViewController (ButtonActions)
@@ -106,8 +107,8 @@
         return;
     }
 
-    ARInquireForArtworkViewController *inquireVC = [[ARInquireForArtworkViewController alloc] initWithPartnerInquiryForArtwork:self.artwork fair:self.fair];
-    [inquireVC presentFormWithInquiryURLRepresentation:[self inquiryURLRepresentation]];
+    ARInquireForArtworkViewController *inquireVC = [[ARInquiryComponentViewController alloc] initWithArtworkID:self.artwork.artworkID];
+    [[ARTopMenuViewController sharedController] presentViewController:inquireVC animated:YES completion:nil];
 }
 
 - (void)tappedAuctionInfo
