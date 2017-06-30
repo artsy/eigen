@@ -4,7 +4,6 @@
 
 - (instancetype)initWithArtworkID:(NSString *)artworkID
 {
-    // Use the metaphysics defaults for a nil refineSetting
     return [self initWithArtworkID:artworkID emission:nil];
 }
 

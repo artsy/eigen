@@ -178,7 +178,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
             <ArtworkPreview artwork={inquiryArtwork as any} />
             <InquiryTextInput
               value={message}
-              keyboardAppearance={"dark"}
+              keyboardAppearance="dark"
               multiline={true}
               autoFocus={true}
               onEndEditing={() => {
