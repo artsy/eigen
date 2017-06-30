@@ -84,11 +84,11 @@ export default Relay.createContainer(ArtworkPreview, {
 
 interface RelayProps {
   artwork: {
-    title: string
-    artist_names: string
-    date: string | null
+    title: string | null,
+    artist_names: string | null,
+    date: string | null,
     image: {
-      url: string
-    }
-  }
+      url: string | null,
+    } | null,
+  },
 }

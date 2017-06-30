@@ -16,14 +16,14 @@ import ARSwitchBoard from "../NativeModules/SwitchBoard"
 const chevron: ImageURISource = require("../../../images/horizontal_chevron.png")
 
 const Container = styled.View`
-  flex: 1
-  flexDirection: column
+  flex: 1;
+  flex-direction: column;
 `
 const Header = styled.View`
-  alignSelf: stretch
-  marginTop: 10
-  flexDirection: column
-  marginBottom: 20
+  align-self: stretch;
+  margin-top: 10px;
+  flex-direction: column;
+  margin-bottom: 20px;
 `
 
 // This makes it really easy to style the HeaderTextContainer with space-between

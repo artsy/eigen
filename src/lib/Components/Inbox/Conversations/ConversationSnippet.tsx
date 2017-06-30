@@ -175,3 +175,28 @@ export default Relay.createContainer(ConversationSnippet, {
     `,
   },
 })
+
+interface RelayProps {
+  conversation: {
+    id: string | null,
+    from: {
+      name: string,
+      email: string,
+    },
+    to: {
+      name: string,
+    },
+    last_message: string,
+    last_message_at: string | null,
+    artworks: Array<{
+      id: string,
+      href: string | null,
+      title: string | null,
+      date: string | null,
+      artist_names: string | null,
+      image: {
+        url: string | null,
+      } | null,
+    } | null> | null,
+  },
+}

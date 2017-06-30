@@ -2,20 +2,46 @@ import * as React from "react"
 import * as Relay from "react-relay"
 import styled from "styled-components/native"
 
-import { ScrollView } from "react-native"
+import { ScrollView, View } from "react-native"
 import ActiveBids from "../Components/Inbox/Bids"
 import Conversations from "../Components/Inbox/Conversations"
 import ZeroStateInbox from "../Components/Inbox/Conversations/ZerostateInbox"
 
-export class Inbox extends React.Component<any, any> {
-  hasNoContent() {
-    const userHasConversations = this.props.me.conversations.edges.length > 0
-    return !userHasConversations
+interface State {
+  hasBids?: boolean
+  hasMessages?: boolean
+}
+
+const Container = styled.View`
+  flex: 1;
+`
+
+export class Inbox extends React.Component<any, State> {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      hasBids: false,
+      hasMessages: false,
+    }
   }
 
   render() {
-    const headerView = <ActiveBids me={this.props.me} />
-    return this.hasNoContent() ? <ZeroStateInbox /> : <Conversations me={this.props.me} headerView={headerView} />
+    const updateBidsState = hasBids => {
+      this.setState({ hasBids })
+    }
+    const updateMessagesState = hasMessages => {
+      this.setState({ hasMessages })
+    }
+
+    const shouldShowEmptyState = !this.state.hasBids && !this.state.hasMessages
+    const headerView = <ActiveBids me={this.props.me} onDataLoaded={updateBidsState} />
+    return (
+      <Container>
+        <Conversations me={this.props.me} headerView={headerView} onDataLoaded={updateMessagesState} />
+        {shouldShowEmptyState ? <ZeroStateInbox /> : null}
+      </Container>
+    )
   }
 }
 
@@ -25,15 +51,6 @@ export default Relay.createContainer(Inbox, {
       fragment on Me {
         ${Conversations.getFragment("me")}
         ${ActiveBids.getFragment("me")}
-
-        conversations(first: 10) {
-          edges {
-            node {
-              id
-            }
-          }
-        }
-
       }
     `,
   },
