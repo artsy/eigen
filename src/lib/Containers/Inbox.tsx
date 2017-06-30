@@ -55,3 +55,7 @@ export default Relay.createContainer(Inbox, {
     `,
   },
 })
+
+interface RelayProps {
+  me: {}
+}

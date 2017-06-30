@@ -8,7 +8,7 @@ import { LargeHeadline } from "../Typography"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import ConversationSnippet from "./ConversationSnippet"
 
-const PageSize = 6
+const PageSize = 10
 
 const Headline = styled(LargeHeadline)`
   margin-top: 10px;

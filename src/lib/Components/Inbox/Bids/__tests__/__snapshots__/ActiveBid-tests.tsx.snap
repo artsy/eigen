@@ -18,6 +18,7 @@ exports[`renders correctly 1`] = `
   style={
     Array [
       Object {
+        "height": 80,
         "marginBottom": 0,
         "marginLeft": 20,
         "marginRight": 20,
