@@ -115,7 +115,6 @@ export class Inquiry extends React.Component<RelayProps, any> {
       }),
     })
       .then(response => {
-        console.log(response)
         if (response.status >= 200 && response.status < 300) {
           this.dismissModal()
         } else {
@@ -123,7 +122,6 @@ export class Inquiry extends React.Component<RelayProps, any> {
             return { sending: false }
           })
           const error = new NetworkError(response.statusText)
-          console.log(error.message)
           error.response = response
           throw error
         }
@@ -132,8 +130,6 @@ export class Inquiry extends React.Component<RelayProps, any> {
         this.setState(previousState => {
           return { sending: false }
         })
-        console.log(error.message)
-        console.log(error)
         throw error
       })
   }
@@ -175,7 +171,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
             </HeaderTextContainer>
           </Header>
           <Content>
-            <ArtworkPreview artwork={inquiryArtwork} />
+            <ArtworkPreview artwork={inquiryArtwork as any} />
             <InquiryTextInput
               value={message}
               keyboardAppearance={"dark"}

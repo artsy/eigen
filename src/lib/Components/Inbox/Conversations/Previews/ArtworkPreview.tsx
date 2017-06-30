@@ -46,7 +46,7 @@ interface Props extends RelayProps {
   onSelected?: () => void
 }
 
-export class ArtworkPreview extends React.Component<any, any> {
+export class ArtworkPreview extends React.Component<Props, any> {
   render() {
     const artwork = this.props.artwork
 
