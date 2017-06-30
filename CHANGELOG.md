@@ -15,6 +15,7 @@
 
 ###### Messaging
 
+-   Adds multiple attachment support - matt
 -   Adds PDF Preview for attachments - matt
 -   Fixes pagination for Conversations - luc
 -   Adds pull to refresh support to Inbox view - luc
