@@ -17,6 +17,9 @@ input AppendConversationThreadInput {
   # The email address of the message sender
   from: String!
   body_text: String!
+
+  # The message being replied to
+  reply_to_message_id: String!
   clientMutationId: String
 }
 
@@ -3413,33 +3416,7 @@ type ProfileSearchEntity {
   is_publically_visible: Boolean
 }
 
-<<<<<<< HEAD
-type ResizedImageUrl {
-  factor: Float
-  width: Int
-  height: Int
-  url: String
-}
-
-enum Role {
-  PARTICIPANT
-  OPERATOR
-}
-
-type RootMutationType {
-  followArtist(input: FollowArtistInput!): FollowArtistPayload
-  updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
-  updateConversation(input: UpdateConversationInput!): UpdateConversationPayload
-
-  # Appending a message to a conversation thread
-  appendConversationThread(input: AppendConversationThreadInput!): AppendConversationThreadPayload
-  saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
-}
-
-type RootQueryType {
-=======
 type Query {
->>>>>>> master
   # An Article
   article(
     # The ID of the Article
