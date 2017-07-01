@@ -10,7 +10,11 @@ const smallButton = { height: 26, width: 320, marginBottom: 20 }
 const largeButton = { height: 26, width: 320, marginBottom: 20 }
 
 storiesOf("Artsy Buttons")
-  .addDecorator(story => <View style={{ marginTop: 60, marginLeft: 20, marginRight: 20 }}>{story()}</View>)
+  .addDecorator(story =>
+    <View style={{ marginTop: 60, marginLeft: 20, marginRight: 20 }}>
+      {story()}
+    </View>
+  )
   .add("Flat White", () => {
     return [
       <FlatWhite text="Default" style={smallButton} />,

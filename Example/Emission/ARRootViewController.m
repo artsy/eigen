@@ -19,6 +19,7 @@
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
+#import <Emission/ARInquiryComponentViewController.h>
 #import "ARStorybookComponentViewController.h"
 
 @implementation ARRootViewController
@@ -74,7 +75,8 @@
   [sectionData addCellData:self.jumpToWorksForYou];
   [sectionData addCellData:self.jumpToConsignments];
   [sectionData addCellData:self.jumpToInbox];
-
+  [sectionData addCellData:self.jumpToInquiry];
+  
   return sectionData;
 }
 
@@ -189,6 +191,15 @@
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
+
+- (ARCellData *)jumpToInquiry
+{
+  return [self tappableCellDataWithTitle:@"Inquiry" selection: ^{
+    id viewController = [[ARInquiryComponentViewController alloc] initWithArtworkID:@"damien-hirst-for-the-love-of-god-lenticular-6"];
+    [self.navigationController presentViewController:viewController animated:YES completion:nil];
+  }];
+}
+
 
 - (ARCellData *)generateStagingSwitch
 {

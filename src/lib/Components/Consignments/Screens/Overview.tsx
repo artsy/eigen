@@ -24,8 +24,12 @@ export default class Info extends React.Component<Props, any> {
 
     return (
       <View style={{ backgroundColor: "black", flex: 1 }}>
-        <LargeHeadline>{title}</LargeHeadline>
-        <Subtitle>{subtitle}</Subtitle>
+        <LargeHeadline>
+          {title}
+        </LargeHeadline>
+        <Subtitle>
+          {subtitle}
+        </Subtitle>
 
         <TODO
           goToArtist={this.goToArtistTapped}

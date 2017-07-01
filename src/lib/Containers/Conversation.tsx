@@ -8,23 +8,24 @@ import ReversedFlatList from "react-native-reversed-flat-list"
 
 import styled from "styled-components/native"
 import colors from "../../data/colors"
-import ArtworkPreview from "../Components/Inbox/Conversations/ArtworkPreview"
 import Composer from "../Components/Inbox/Conversations/Composer"
 import Message from "../Components/Inbox/Conversations/Message"
+import ArtworkPreview from "../Components/Inbox/Conversations/Previews/ArtworkPreview"
+
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 
 // tslint:disable-next-line:no-var-requires
 const chevron: ImageURISource = require("../../../images/horizontal_chevron.png")
 
 const Container = styled.View`
-  flex: 1
-  flexDirection: column
+  flex: 1;
+  flex-direction: column;
 `
 const Header = styled.View`
-  alignSelf: stretch
-  marginTop: 10
-  flexDirection: column
-  marginBottom: 20
+  align-self: stretch;
+  margin-top: 10px;
+  flex-direction: column;
+  margin-bottom: 20px;
 `
 
 // This makes it really easy to style the HeaderTextContainer with space-between
@@ -72,25 +73,24 @@ export class Conversation extends React.Component<RelayProps, State> {
   }
 
   componentDidMount() {
-    this.setState({ messages: this.formattedMessages() })
+    this.setState({
+      messages: this.props.me.conversation.messages.edges.map(edge => {
+        return edge.node
+      }),
+    })
   }
 
-  isFromUser(message) {
-    /**
-     * this is a quick hacky way to alternate between user/partner messages; will be changed once we have actual email
-     * data
-     */
-    return message.from_email_address === this.props.me.conversation.from.email
-  }
-
-  renderMessage(message) {
+  renderMessage({ item }) {
     const artwork = this.props.me.conversation.artworks[0]
-    const isFirstMessage = message.index === this.state.messages.length - 1
+    const conversation = this.props.me.conversation
+    const partnerName = conversation.to.name
     return (
       <Message
-        message={message.item}
+        message={item}
+        partnerName={partnerName}
+        userName={conversation.from.name}
         artworkPreview={
-          isFirstMessage &&
+          item.first_message &&
           <ArtworkPreview
             artwork={artwork}
             onSelected={() => ARSwitchBoard.presentNavigationViewController(this, artwork.href)}
@@ -100,37 +100,29 @@ export class Conversation extends React.Component<RelayProps, State> {
     )
   }
 
-  formattedMessages() {
-    // Ideally we will use a Relay fragment in the Message component, but for now this is good enough
-    const conversation = this.props.me.conversation
-    const temporaryTimestamp = "11:00AM"
-
-    return conversation.messages.edges.map(({ node }, index) => {
-      return {
-        senderName: this.isFromUser(node) ? conversation.from.name : this.props.me.conversation.to.name,
-        key: index,
-        time: temporaryTimestamp,
-        body: node.snippet,
-      }
-    })
-  }
-
   render() {
     const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
     const artwork = conversation.artworks[0]
-
+    const messages = this.props.me.conversation.messages.edges.map(({ node }, index) => {
+      node.first_message = index === 0
+      node.key = node.id
+      return node
+    })
+    const lastMessage = messages[messages.length - 1]
     return (
       <Container>
         <Header>
           <HeaderTextContainer>
             <BackButtonPlaceholder source={chevron} />
-            <SmallHeadline>{partnerName}</SmallHeadline>
+            <SmallHeadline>
+              {partnerName}
+            </SmallHeadline>
             <PlaceholderView />
           </HeaderTextContainer>
         </Header>
         <ReversedFlatList
-          data={this.state.messages}
+          data={messages}
           renderItem={this.renderMessage.bind(this)}
           ItemSeparatorComponent={DottedBorder}
         />
@@ -142,22 +134,24 @@ export class Conversation extends React.Component<RelayProps, State> {
                   from: this.props.me.conversation.from.email,
                   id: this.props.me.conversation.id,
                   body_text: text,
+                  reply_to_message_id: lastMessage.key,
                 })
               )
 
               /// This part is highly experimental; will be updated when we implement real pagination
               this.props.relay.setVariables({ totalSize: this.props.relay.variables.totalSize + 1 }, readyState => {
-                if (readyState.done) {
-                  const messages = this.formattedMessages()
-                  messages.push({
-                    senderName: this.props.me.conversation.from.name,
+                {
+                  /*if (readyState.done) {
+                  const existingMessages = this.state.messages
+                  existingMessages.push({
                     key: this.state.messages.length,
                     time: "1:00PM",
-                    body: text,
+                    raw_text: text,
                   })
                   this.setState({
-                    messages,
+                    messages: existingMessages as any,
                   })
+                }*/
                 }
               })
             }}
@@ -169,9 +163,10 @@ export class Conversation extends React.Component<RelayProps, State> {
 }
 
 interface MutationProps {
-  from?: string
-  id?: string
-  body_text?: string
+  from: string
+  id: string
+  body_text: string
+  reply_to_message_id: string
 }
 
 class AppendConversationThread extends Relay.Mutation<MutationProps, any> {
@@ -184,6 +179,7 @@ class AppendConversationThread extends Relay.Mutation<MutationProps, any> {
       id: this.props.id,
       from: this.props.from,
       body_text: this.props.body_text,
+      reply_to_message_id: this.props.reply_to_message_id,
     }
   }
 
@@ -245,16 +241,17 @@ export default Relay.createContainer(Conversation, {
             name
           }
           messages(first: $totalSize) {
+            pageInfo {
+              hasNextPage
+            }
             edges {
               node {
-                snippet
-                from_email_address
+                id
+                ${Message.getFragment("message")}
               }
             }
           }
           artworks @relay (plural: true) {
-            title
-            artist_names
             href
             ${ArtworkPreview.getFragment("artwork")}
           }
@@ -281,11 +278,9 @@ interface RelayProps {
         pageInfo?: {
           hasNextPage: boolean
         }
-        edges: Array<
-          {
-            node: any | null
-          }
-        >
+        edges: Array<{
+          node: any | null
+        }>
       }
     }
   }

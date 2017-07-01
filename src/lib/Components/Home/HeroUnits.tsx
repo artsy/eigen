@@ -54,8 +54,12 @@ class HeroUnits extends React.Component<Props, State> {
           />
           <View style={{ position: "absolute", top: 0, width, height, backgroundColor: "black", opacity: 0.3 }} />
           <View style={{ marginLeft: margin, backgroundColor: "transparent" }}>
-            <Headline style={{ color: "white", fontSize: 12 }}>{heroUnit.heading}</Headline>
-            <Headline style={{ color: "white", fontSize: this.state.fontSize }}>{heroUnit.title}</Headline>
+            <Headline style={{ color: "white", fontSize: 12 }}>
+              {heroUnit.heading}
+            </Headline>
+            <Headline style={{ color: "white", fontSize: this.state.fontSize }}>
+              {heroUnit.title}
+            </Headline>
           </View>
         </View>
       </TouchableHighlight>
@@ -80,7 +84,11 @@ class HeroUnits extends React.Component<Props, State> {
   }
 
   render() {
-    return <View onLayout={this.handleLayout}>{this.renderHeroUnits()}</View>
+    return (
+      <View onLayout={this.handleLayout}>
+        {this.renderHeroUnits()}
+      </View>
+    )
   }
 }
 

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { KeyboardAvoidingView, View } from "react-native"
+import { KeyboardAvoidingView, TouchableOpacity, View } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
@@ -13,32 +13,36 @@ const ButtonText = styled.Text`
   font-size: 14;
 `
 
-const Body = styled.TouchableOpacity`
-  height: 56;
-  margin-bottom: 20;
-  padding-top: 18;
-`
-
 const Separator = styled.View`
   background-color: ${colors["gray-regular"]};
   height: 1;
 `
+export interface ButtonBodyStyle {
+  backgroundColor: string
+  height: number
+  marginBottom: number
+  paddingTop: number
+}
 
 export interface BottomAlignedProps {
   onPress: () => void
   children?: any[]
+  bodyStyle: ButtonBodyStyle
+  buttonText: string
+  disabled?: boolean
 }
 
 const render = (props: BottomAlignedProps) =>
   <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={60} style={{ flex: 1 }}>
-
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {props.children}
     </View>
     <Separator key="separator" />
-    <Body key="button" onPress={props.onPress}>
-      <ButtonText>DONE</ButtonText>
-    </Body>
+    <TouchableOpacity key="button" onPress={props.onPress} style={props.bodyStyle} disabled={props.disabled}>
+      <ButtonText>
+        {props.buttonText}
+      </ButtonText>
+    </TouchableOpacity>
   </KeyboardAvoidingView>
 
 export default class BottomAlignedButton extends React.Component<BottomAlignedProps, null> {
