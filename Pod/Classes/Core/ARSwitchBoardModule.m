@@ -1,4 +1,5 @@
 #import "ARSwitchBoardModule.h"
+#import "ARMediaPreviewController.h"
 
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
@@ -26,6 +27,19 @@ RCT_EXPORT_METHOD(dismissModalViewController:(nonnull NSNumber *)reactTag)
     [self invokeCallback:^(UIViewController *vc, NSString *_) { [vc dismissViewControllerAnimated:YES completion:nil]; } reactTag:reactTag];
 }
 
+RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag route:(nonnull NSURL *)route cacheKey:(nullable NSString *)cacheKey fileExtension:(nullable NSString *)fileExtension)
+{
+    [self invokeCallback:^(UIViewController *fromViewController, id _) {
+        ARMediaPreviewController *previewController = [[ARMediaPreviewController alloc] initWithRemoteURL:route
+                                                                                                 cacheKey:cacheKey
+                                                                                            fileExtension:fileExtension];
+        if (fromViewController.navigationController) {
+            [fromViewController.navigationController pushViewController:previewController animated:YES];
+        } else {
+            [fromViewController presentViewController:previewController animated:YES completion:nil];
+        }
+    } reactTag:reactTag];
+}
 
 - (dispatch_queue_t)methodQueue;
 {

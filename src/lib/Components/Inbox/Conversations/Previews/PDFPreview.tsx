@@ -33,13 +33,19 @@ const Icon = styled(Image)`
 `
 
 interface Props extends RelayProps {
-  onSelected?: () => void
+  onSelected?: (attachmentID: string) => void
 }
 
 export class PDFPreview extends React.Component<Props, any> {
+  onSelected() {
+    if (this.props.onSelected) {
+      this.props.onSelected(this.props.pdfAttachment.id)
+    }
+  }
+
   render() {
     return (
-      <TouchableHighlight underlayColor={colors["gray-light"]} onPress={this.props.onSelected}>
+      <TouchableHighlight underlayColor={colors["gray-light"]} onPress={this.onSelected.bind(this)}>
         <Container>
           <Icon source={require("../../images/pdf.png")} />
           <TextContainer>
@@ -57,8 +63,8 @@ export default Relay.createContainer(PDFPreview, {
   fragments: {
     pdfAttachment: () => Relay.QL`
       fragment on AttachmentType {
+        id
         file_name
-        download_url
       }
     `,
   },
@@ -66,7 +72,7 @@ export default Relay.createContainer(PDFPreview, {
 
 interface RelayProps {
   pdfAttachment: {
+    id: string
     file_name?: string
-    download_url?: string
   }
 }

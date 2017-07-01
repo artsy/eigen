@@ -10,6 +10,8 @@ import PDFPreview from "./Previews/PDFPreview"
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 
+import SwitchBoard from "../../../NativeModules/SwitchBoard"
+
 const VerticalLayout = styled.View`
   flex-direction: column
   flex: 1
@@ -58,19 +60,29 @@ interface Props extends RelayProps {
 }
 
 export class Message extends React.Component<Props, any> {
-  renderAttachmentPreviews(attachments) {
+  renderAttachmentPreviews(attachments: Props["message"]["attachments"]) {
+    const previewAttachment = attachmentID => {
+      const attachment = attachments.find(({ id }) => id === attachmentID)
+      SwitchBoard.presentMediaPreviewController(
+        this,
+        attachment.download_url,
+        attachment.id,
+        attachment.file_name.split(".").reverse()[0]
+      )
+    }
+
     return attachments.map(attachment => {
       if (attachment.content_type.startsWith("image")) {
         return (
-          <ImagePreviewContainer>
-            <ImagePreview imageAttachment={attachment} />
+          <ImagePreviewContainer key={attachment.id}>
+            <ImagePreview imageAttachment={attachment} onSelected={previewAttachment} />
           </ImagePreviewContainer>
         )
       }
       if (attachment.content_type === "application/pdf") {
         return (
-          <PDFPreviewContainer>
-            <PDFPreview pdfAttachment={attachment} />
+          <PDFPreviewContainer key={attachment.id}>
+            <PDFPreview pdfAttachment={attachment} onSelected={previewAttachment} />
           </PDFPreviewContainer>
         )
       }
@@ -119,6 +131,9 @@ export default Relay.createContainer(Message, {
           content_type
           download_url
           file_name
+          id
+          ${ImagePreview.getFragment("imageAttachment")}
+          ${PDFPreview.getFragment("pdfAttachment")}
         }
       }
     `,
@@ -131,6 +146,7 @@ interface RelayProps {
     created_at: string | null
     is_from_user: boolean
     attachments: Array<{
+      id: string
       content_type: string
       download_url: string
       file_name: string
