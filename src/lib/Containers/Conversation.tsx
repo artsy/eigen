@@ -1,3 +1,4 @@
+import * as moment from "moment"
 import * as React from "react"
 import * as Relay from "react-relay"
 
@@ -104,10 +105,10 @@ export class Conversation extends React.Component<RelayProps, State> {
     const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
     const artwork = conversation.artworks[0]
-    const messages = this.props.me.conversation.messages.edges.map(({ node }, index) => {
-      node.first_message = index === 0
-      node.key = node.id
-      return node
+    const messages = this.state.messages.map((message, index) => {
+      message.first_message = index === 0
+      message.key = message.id
+      return message
     })
     const lastMessage = messages[messages.length - 1]
     return (
@@ -141,17 +142,19 @@ export class Conversation extends React.Component<RelayProps, State> {
               /// This part is highly experimental; will be updated when we implement real pagination
               this.props.relay.setVariables({ totalSize: this.props.relay.variables.totalSize + 1 }, readyState => {
                 {
-                  /*if (readyState.done) {
-                  const existingMessages = this.state.messages
-                  existingMessages.push({
-                    key: this.state.messages.length,
-                    time: "1:00PM",
-                    raw_text: text,
-                  })
-                  this.setState({
-                    messages: existingMessages as any,
-                  })
-                }*/
+                  if (readyState.done) {
+                    const existingMessages = this.state.messages
+                    existingMessages.push({
+                      key: this.state.messages.length,
+                      created_at: moment().format(),
+                      is_from_user: true,
+                      raw_text: text,
+                      attachments: [],
+                    })
+                    this.setState({
+                      messages: existingMessages,
+                    })
+                  }
                 }
               })
             }}
