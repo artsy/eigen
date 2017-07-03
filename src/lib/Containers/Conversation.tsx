@@ -63,36 +63,15 @@ const ComposerContainer = styled.View`
   marginLeft: 20
 `
 
-interface State {
-  messages?: any[]
-}
-
 const PAGE_SIZE = 10
 
-export class Conversation extends React.Component<RelayProps, State> {
-  constructor(props) {
-    super(props)
-    this.state = { messages: [] }
-  }
-
-  componentDidMount() {
-    this.setState({
-      messages: this.props.me.conversation.messages.edges.map(edge => {
-        return edge.node
-      }),
-    })
-  }
-
+export class Conversation extends React.Component<RelayProps, any> {
   renderMessage({ item }) {
     // End of the list reached. Increase page size. Relay
     // will fetch only the required data to fill the new
     // page size.
-    if (item.key === this.state.messages.length - 1) {
-      this.props.relay.setVariables({ pageSize: this.state.messages.length + PAGE_SIZE }, readyState => {
-        if (readyState.done) {
-          debugger
-        }
-      })
+    if (item.key === this.props.me.conversation.messages.edges.length - 1) {
+      this.props.relay.setVariables({ pageSize: this.props.me.conversation.messages.edges.length + PAGE_SIZE })
     }
     const artwork = this.props.me.conversation.artworks[0]
     const conversation = this.props.me.conversation
@@ -117,7 +96,8 @@ export class Conversation extends React.Component<RelayProps, State> {
     const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
     const artwork = conversation.artworks[0]
-    const messages = this.state.messages.map((message, index) => {
+    const messages = conversation.messages.edges.map((edge, index) => {
+      const message = edge.node
       message.first_message = index === 0
       message.key = index
       return message
@@ -149,28 +129,12 @@ export class Conversation extends React.Component<RelayProps, State> {
                   from: this.props.me.conversation.from.email,
                   id: this.props.me.conversation.id,
                   body_text: text,
-                  reply_to_message_id: lastMessage.key,
+                  reply_to_message_id: lastMessage.id,
                 })
               )
 
-              /// This part is highly experimental; will be updated when we implement real pagination
-              this.props.relay.setVariables({ totalSize: this.props.relay.variables.totalSize + 1 }, readyState => {
-                {
-                  if (readyState.done) {
-                    const existingMessages = this.state.messages
-                    existingMessages.push({
-                      key: this.state.messages.length,
-                      created_at: moment().format(),
-                      is_from_user: true,
-                      raw_text: text,
-                      attachments: [],
-                    })
-                    this.setState({
-                      messages: existingMessages,
-                    })
-                  }
-                }
-              })
+              /// Not sure how to get optimistic re-render?
+              this.props.relay.setVariables({ pageSize: this.props.me.conversation.messages.edges.length + 1 })
             }}
           />
         </ComposerContainer>
@@ -204,6 +168,7 @@ class AppendConversationThread extends Relay.Mutation<MutationProps, any> {
     return Relay.QL`
       fragment on AppendConversationThreadMutationPayload {
         messageEdge
+        __id
         conversation { messages }
       }
     `

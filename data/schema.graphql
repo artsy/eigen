@@ -25,6 +25,9 @@ input AppendConversationThreadInput {
 
 type AppendConversationThreadMutationPayload {
   conversation: ConversationType
+
+  # A globally unique ID.
+  __id: ID!
   messageEdge: MessageTypeEdge
 }
 
