@@ -67,6 +67,8 @@ interface State {
   messages?: any[]
 }
 
+const PAGE_SIZE = 10
+
 export class Conversation extends React.Component<RelayProps, State> {
   constructor(props) {
     super(props)
@@ -82,6 +84,16 @@ export class Conversation extends React.Component<RelayProps, State> {
   }
 
   renderMessage({ item }) {
+    // End of the list reached. Increase page size. Relay
+    // will fetch only the required data to fill the new
+    // page size.
+    if (item.key === this.state.messages.length - 1) {
+      this.props.relay.setVariables({ pageSize: this.state.messages.length + PAGE_SIZE }, readyState => {
+        if (readyState.done) {
+          debugger
+        }
+      })
+    }
     const artwork = this.props.me.conversation.artworks[0]
     const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
@@ -107,10 +119,11 @@ export class Conversation extends React.Component<RelayProps, State> {
     const artwork = conversation.artworks[0]
     const messages = this.state.messages.map((message, index) => {
       message.first_message = index === 0
-      message.key = message.id
+      message.key = index
       return message
     })
     const lastMessage = messages[messages.length - 1]
+
     return (
       <Container>
         <Header>
@@ -125,6 +138,7 @@ export class Conversation extends React.Component<RelayProps, State> {
         <ReversedFlatList
           data={messages}
           renderItem={this.renderMessage.bind(this)}
+          length={messages.length}
           ItemSeparatorComponent={DottedBorder}
         />
         <ComposerContainer>
@@ -189,11 +203,8 @@ class AppendConversationThread extends Relay.Mutation<MutationProps, any> {
   getFatQuery() {
     return Relay.QL`
       fragment on AppendConversationThreadMutationPayload {
-          messageEdge
-          conversation {
-            id
-            messages
-          }
+        messageEdge
+        conversation { messages }
       }
     `
   }
@@ -228,7 +239,7 @@ class AppendConversationThread extends Relay.Mutation<MutationProps, any> {
 
 export default Relay.createContainer(Conversation, {
   initialVariables: {
-    totalSize: 20,
+    pageSize: PAGE_SIZE,
     conversationID: null,
   },
   fragments: {
@@ -243,7 +254,7 @@ export default Relay.createContainer(Conversation, {
           to {
             name
           }
-          messages(first: $totalSize) {
+          messages(first: $pageSize) {
             pageInfo {
               hasNextPage
             }
