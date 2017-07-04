@@ -7,7 +7,7 @@
 #import <React/RCTRootView.h>
 
 // Invoked on the main thread.
-typedef void(^ARSwitchBoardPresentInternalViewController)(UIViewController * _Nonnull fromViewController);
+typedef void(^ARSwitchBoardPresentInternalViewController)(UIViewController * _Nonnull fromViewController, UIView * _Nonnull originatingView);
 
 @implementation ARSwitchBoardModule
 
@@ -27,22 +27,19 @@ RCT_EXPORT_METHOD(presentModalViewController:(nonnull NSNumber *)reactTag route:
 
 RCT_EXPORT_METHOD(dismissModalViewController:(nonnull NSNumber *)reactTag)
 {
-    [self invokeCallback:^(UIViewController *fromViewController) {
+    [self invokeCallback:^(UIViewController *fromViewController, id _) {
       [fromViewController dismissViewControllerAnimated:YES completion:nil];
     } reactTag:reactTag];
 }
 
 RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag route:(nonnull NSURL *)route mimeType:(nonnull NSString *)mimeType cacheKey:(nullable NSString *)cacheKey)
 {
-    [self invokeCallback:^(UIViewController *fromViewController) {
-        ARMediaPreviewController *previewController = [[ARMediaPreviewController alloc] initWithRemoteURL:route
-                                                                                                 mimeType:mimeType
-                                                                                                 cacheKey:cacheKey];
-        if (fromViewController.navigationController) {
-            [fromViewController.navigationController pushViewController:previewController animated:YES];
-        } else {
-            [fromViewController presentViewController:previewController animated:YES completion:nil];
-        }
+    [self invokeCallback:^(UIViewController *fromViewController, UIView *originatingView) {
+        [[ARMediaPreviewController mediaPreviewControllerWithRemoteURL:route
+                                                              mimeType:mimeType
+                                                              cacheKey:cacheKey
+                                                    hostViewController:fromViewController
+                                                       originatingView:originatingView] presentPreviewAnimated:YES];
     } reactTag:reactTag];
 }
 
@@ -55,7 +52,7 @@ RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag rou
               reactTag:(nonnull NSNumber *)reactTag
                  route:(nonnull NSString *)route;
 {
-  [self invokeCallback:^(UIViewController * _Nonnull fromViewController) {
+  [self invokeCallback:^(UIViewController * _Nonnull fromViewController, id _) {
     callback(fromViewController, route);
   } reactTag:reactTag];
 }
@@ -63,13 +60,14 @@ RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag rou
 - (void)invokeCallback:(ARSwitchBoardPresentInternalViewController)callback
               reactTag:(nonnull NSNumber *)reactTag
 {
-    UIView *rootView = [self.bridge.uiManager viewForReactTag:reactTag];
+    UIView *originatingView = [self.bridge.uiManager viewForReactTag:reactTag];
+    UIView *rootView = originatingView;
     while (rootView.superview && ![rootView isKindOfClass:RCTRootView.class]) {
         rootView = rootView.superview;
     }
     UIViewController *viewController = rootView.reactViewController;
     NSParameterAssert(viewController);
-    callback(viewController);
+    callback(viewController, originatingView);
 }
 
 @end
