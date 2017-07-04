@@ -4,8 +4,8 @@ import * as Relay from "react-relay"
 
 import { BodyText, MetadataText, SmallHeadline } from "../Typography"
 
-import ImagePreview from "./Previews/ImagePreview"
-import PDFPreview from "./Previews/PDFPreview"
+import ImagePreview from "./Preview/Attachment/ImagePreview"
+import PDFPreview from "./Preview/Attachment/PDFPreview"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
@@ -75,14 +75,14 @@ export class Message extends React.Component<Props, any> {
       if (attachment.content_type.startsWith("image")) {
         return (
           <ImagePreviewContainer key={attachment.id}>
-            <ImagePreview imageAttachment={attachment} onSelected={previewAttachment} />
+            <ImagePreview attachment={attachment as any} onSelected={previewAttachment} />
           </ImagePreviewContainer>
         )
       }
       if (attachment.content_type === "application/pdf") {
         return (
           <PDFPreviewContainer key={attachment.id}>
-            <PDFPreview pdfAttachment={attachment} onSelected={previewAttachment} />
+            <PDFPreview attachment={attachment as any} onSelected={previewAttachment} />
           </PDFPreviewContainer>
         )
       }
@@ -132,8 +132,8 @@ export default Relay.createContainer(Message, {
           download_url
           file_name
           id
-          ${ImagePreview.getFragment("imageAttachment")}
-          ${PDFPreview.getFragment("pdfAttachment")}
+          ${ImagePreview.getFragment("attachment")}
+          ${PDFPreview.getFragment("attachment")}
         }
       }
     `,
