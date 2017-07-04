@@ -1,25 +1,25 @@
 #import "ARMediaPreviewController.h"
 #import "ARSpinner.h"
 
+@import MobileCoreServices;
 @import QuickLook;
 
 @interface ARMediaPreviewController () <QLPreviewControllerDataSource>
 @property (copy, nonatomic, readonly) NSURL *remoteURL;
 @property (copy, nonatomic, readonly) NSString *cacheKey;
-@property (copy, nonatomic, readonly) NSString *fileExtension;
+@property (copy, nonatomic, readonly) NSString *mimeType;
 @end
 
 @implementation ARMediaPreviewController
 
-- (instancetype)initWithRemoteURL:(NSURL *)remoteURL
-                         cacheKey:(NSString *)cacheKey
-                    fileExtension:(NSString *)fileExtension;
+- (instancetype)initWithRemoteURL:(nonnull NSURL *)remoteURL
+                         mimeType:(nonnull NSString *)mimeType
+                         cacheKey:(nullable NSString *)cacheKey;
 {
     if ((self = [super init])) {
         _remoteURL = remoteURL;
+        _mimeType = mimeType;
         _cacheKey = cacheKey ?: [remoteURL.absoluteString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet alphanumericCharacterSet]];
-        _fileExtension = fileExtension ?: remoteURL.absoluteString.pathExtension;
-        NSParameterAssert(_fileExtension);
     }
     return self;
 }
@@ -88,7 +88,11 @@
 
 - (NSURL *)cachedFileURL;
 {
-    NSString *filename = [self.cacheKey stringByAppendingPathExtension:self.fileExtension];
+    CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, (__bridge CFStringRef)self.mimeType, NULL);
+    NSString *fileExt = (NSString *)CFBridgingRelease(UTTypeCopyPreferredTagWithClass(uti, kUTTagClassFilenameExtension));
+    CFRelease(uti);
+    NSParameterAssert(fileExt);
+    NSString *filename = [self.cacheKey stringByAppendingPathExtension:fileExt];
     return [NSURL fileURLWithPath:[self.class.cacheDir stringByAppendingPathComponent:filename]];
 }
 

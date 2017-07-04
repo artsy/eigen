@@ -26,8 +26,8 @@ function presentModalViewController(component: React.Component<any, any>, route:
 function presentMediaPreviewController(
   component: React.Component<any, any>,
   route: string,
-  cacheKey?: string,
-  fileExtension?: string
+  mimeType: string,
+  cacheKey?: string
 ) {
   let reactTag
   try {
@@ -36,7 +36,7 @@ function presentMediaPreviewController(
     return
   }
 
-  ARSwitchBoardModule.presentMediaPreviewController(reactTag, route, cacheKey, fileExtension)
+  ARSwitchBoardModule.presentMediaPreviewController(reactTag, route, mimeType, cacheKey)
 }
 
 function dismissModalViewController(component: React.Component<any, any>) {

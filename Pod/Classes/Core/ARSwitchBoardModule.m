@@ -32,12 +32,12 @@ RCT_EXPORT_METHOD(dismissModalViewController:(nonnull NSNumber *)reactTag)
     } reactTag:reactTag];
 }
 
-RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag route:(nonnull NSURL *)route cacheKey:(nullable NSString *)cacheKey fileExtension:(nullable NSString *)fileExtension)
+RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag route:(nonnull NSURL *)route mimeType:(nonnull NSString *)mimeType cacheKey:(nullable NSString *)cacheKey)
 {
     [self invokeCallback:^(UIViewController *fromViewController) {
         ARMediaPreviewController *previewController = [[ARMediaPreviewController alloc] initWithRemoteURL:route
-                                                                                                 cacheKey:cacheKey
-                                                                                            fileExtension:fileExtension];
+                                                                                                 mimeType:mimeType
+                                                                                                 cacheKey:cacheKey];
         if (fromViewController.navigationController) {
             [fromViewController.navigationController pushViewController:previewController animated:YES];
         } else {

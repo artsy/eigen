@@ -63,12 +63,7 @@ export class Message extends React.Component<Props, any> {
   renderAttachmentPreviews(attachments: Props["message"]["attachments"]) {
     const previewAttachment = attachmentID => {
       const attachment = attachments.find(({ id }) => id === attachmentID)
-      SwitchBoard.presentMediaPreviewController(
-        this,
-        attachment.download_url,
-        attachment.id,
-        attachment.file_name.split(".").reverse()[0]
-      )
+      SwitchBoard.presentMediaPreviewController(this, attachment.download_url, attachment.content_type, attachment.id)
     }
 
     return attachments.map(attachment => {
@@ -130,7 +125,6 @@ export default Relay.createContainer(Message, {
         attachments {
           content_type
           download_url
-          file_name
           id
           ${ImagePreview.getFragment("attachment")}
           ${PDFPreview.getFragment("attachment")}
@@ -149,7 +143,6 @@ interface RelayProps {
       id: string
       content_type: string
       download_url: string
-      file_name: string
     }>
   }
 }
