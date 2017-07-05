@@ -18,9 +18,17 @@ export default class Artist extends React.Component<Props, null> {
   }
 
   render() {
+    // This might become a higher order component for reuse, if used more elsewhere
+    const doneButtonStyles = {
+      backgroundColor: "black",
+      marginBottom: 20,
+      paddingTop: 18,
+      height: 56,
+    }
+
     return (
       <View style={{ backgroundColor: "black", flex: 1 }}>
-        <DoneButton onPress={this.doneTapped}>
+        <DoneButton onPress={this.doneTapped} bodyStyle={doneButtonStyles} buttonText="DONE">
           <View
             style={{ alignContent: "center", justifyContent: "center", flexGrow: 1, marginLeft: 20, marginRight: 20 }}
           >

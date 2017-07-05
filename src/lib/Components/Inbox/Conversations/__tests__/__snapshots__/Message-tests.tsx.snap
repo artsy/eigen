@@ -113,7 +113,7 @@ exports[`looks correct when rendered 1`] = `
           ]
         }
       >
-        SARAH SCOTT
+        SARAH
       </Text>
       <Text
         accessible={true}
@@ -134,7 +134,7 @@ exports[`looks correct when rendered 1`] = `
           ]
         }
       >
-        11:00AM
+        30 MINUTES
       </Text>
     </View>
     <Text

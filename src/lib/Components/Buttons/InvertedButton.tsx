@@ -61,11 +61,17 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
       content = <Spinner spinnerColor="white" style={{ backgroundColor: "transparent" }} />
     } else {
       const headlineStyles = [styles.text, { opacity: this.state.textOpacity }]
-      content = <AnimatedHeadline style={headlineStyles}>{this.props.text}</AnimatedHeadline>
+      content = (
+        <AnimatedHeadline style={headlineStyles}>
+          {this.props.text}
+        </AnimatedHeadline>
+      )
     }
     return (
       <AnimatedTouchable onPress={this.props.onPress} activeOpacity={1} disabled={this.props.inProgress} {...styling}>
-        <View>{content}</View>
+        <View>
+          {content}
+        </View>
       </AnimatedTouchable>
     )
   }

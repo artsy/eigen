@@ -100,7 +100,11 @@ export class Artist extends React.Component<Props, {}> {
   }
 
   renderSingleTab() {
-    return <View style={{ paddingTop: 30 }}>{this.renderSelectedTab()}</View>
+    return (
+      <View style={{ paddingTop: 30 }}>
+        {this.renderSelectedTab()}
+      </View>
+    )
   }
 
   render() {

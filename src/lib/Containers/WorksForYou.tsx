@@ -186,7 +186,9 @@ export class WorksForYou extends React.Component<Props, State> {
           {border}
           <View style={styles.emptyStateText}>
             <SerifText style={styles.emptyStateMainLabel}>You’re not following any artists yet</SerifText>
-            <SerifText style={styles.emptyStateSubLabel} numberOfLines={2}>{text}</SerifText>
+            <SerifText style={styles.emptyStateSubLabel} numberOfLines={2}>
+              {text}
+            </SerifText>
           </View>
           {border}
         </View>
@@ -291,11 +293,9 @@ interface RelayProps {
         pageInfo: {
           hasNextPage: boolean
         }
-        edges: Array<
-          {
-            node: any | null
-          }
-        >
+        edges: Array<{
+          node: any | null
+        }>
       }
     }
     selectedArtist?: {

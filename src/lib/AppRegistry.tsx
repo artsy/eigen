@@ -118,6 +118,14 @@ class Conversation extends RootContainer {
   }
 }
 
+class Inquiry extends RootContainer {
+  constructor(props) {
+    super(props)
+    this.component = Containers.Inquiry
+    this.route = new Routes.Inquiry({ artworkID: props.artworkID })
+  }
+}
+
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Home", () => Home)
@@ -126,3 +134,4 @@ AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
 AppRegistry.registerComponent("MyAccount", () => MyAccount)
 AppRegistry.registerComponent("Inbox", () => Inbox)
 AppRegistry.registerComponent("Conversation", () => Conversation)
+AppRegistry.registerComponent("Inquiry", () => Inquiry)
