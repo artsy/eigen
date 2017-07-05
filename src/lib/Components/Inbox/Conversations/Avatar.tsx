@@ -13,8 +13,12 @@ const BackgroundCircle = styled.View`
   border-radius: 15;
 `
 
+interface NameProps {
+  user: boolean
+}
+
 const Name = styled.Text`
-  color: ${props => (props.user ? "white" : colors["gray-semibold"])};
+  color: ${(props: NameProps) => (props.user ? "white" : colors["gray-semibold"])};
   font-family: ${fonts["avant-garde-regular"]};
   font-size: 10;
   align-self: center;
@@ -29,10 +33,12 @@ interface Props {
 export default class Avatar extends React.Component<Props, any> {
   render() {
     const initials = this.props.initials
-    if (this.props.isUser) {
-      return <BackgroundCircle><Name user>{initials}</Name></BackgroundCircle>
-    } else {
-      return <BackgroundCircle><Name>{initials}</Name></BackgroundCircle>
-    }
+    return (
+      <BackgroundCircle>
+        <Name user={this.props.isUser}>
+          {initials}
+        </Name>
+      </BackgroundCircle>
+    )
   }
 }

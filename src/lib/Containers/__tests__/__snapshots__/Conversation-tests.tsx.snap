@@ -185,9 +185,7 @@ exports[`looks correct when rendered 1`] = `
                 ]
               }
               user={true}
-            >
-              AG
-            </Text>
+            />
           </View>
           <View
             style={
@@ -562,4 +560,4 @@ exports[`looks correct when rendered 1`] = `
     </View>
   </View>
 </View>
-`
+`;

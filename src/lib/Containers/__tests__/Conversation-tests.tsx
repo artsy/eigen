@@ -10,6 +10,7 @@ it("looks correct when rendered", () => {
 })
 
 const props = {
+  initials: "JC",
   conversation: {
     id: "420",
     from: {

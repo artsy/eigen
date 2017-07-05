@@ -51,9 +51,7 @@ exports[`looks correct when rendered 1`] = `
         ]
       }
       user={true}
-    >
-      SS
-    </Text>
+    />
   </View>
   <View
     style={

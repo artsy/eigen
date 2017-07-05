@@ -51,7 +51,7 @@ const DottedBorder = styled.View`
 
 `
 
-const MessagesList = styled(FlatList) `
+const MessagesList = styled(FlatList)`
   marginTop: 10
 `
 
