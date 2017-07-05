@@ -21,7 +21,7 @@ import fonts from "../../data/fonts"
 
 import BottomAlignedButton from "../Components/Consignments/Components/BottomAlignedButton"
 
-import ArtworkPreview from "../Components/Inbox/Conversations/Previews/ArtworkPreview"
+import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 import { gravityURL } from "../relay/config"
 import { NetworkError } from "../system/errors"

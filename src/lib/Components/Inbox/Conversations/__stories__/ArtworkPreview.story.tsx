@@ -3,7 +3,7 @@ import * as React from "react"
 import "react-native"
 import StubContainer from "react-storybooks-relay-container"
 
-import ArtworkPreview from "../Previews/ArtworkPreview"
+import ArtworkPreview from "../Preview/ArtworkPreview"
 
 const artwork = {
   id: "kara-walker-canisters-1",

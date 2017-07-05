@@ -1,9 +1,13 @@
 #import "ARSwitchBoardModule.h"
+#import "ARMediaPreviewController.h"
 
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 #import <React/UIView+React.h>
 #import <React/RCTRootView.h>
+
+// Invoked on the main thread.
+typedef void(^ARSwitchBoardPresentInternalViewController)(UIViewController * _Nonnull fromViewController, UIView * _Nonnull originatingView);
 
 @implementation ARSwitchBoardModule
 
@@ -23,9 +27,21 @@ RCT_EXPORT_METHOD(presentModalViewController:(nonnull NSNumber *)reactTag route:
 
 RCT_EXPORT_METHOD(dismissModalViewController:(nonnull NSNumber *)reactTag)
 {
-    [self invokeCallback:^(UIViewController *vc, NSString *_) { [vc dismissViewControllerAnimated:YES completion:nil]; } reactTag:reactTag];
+    [self invokeCallback:^(UIViewController *fromViewController, id _) {
+      [fromViewController dismissViewControllerAnimated:YES completion:nil];
+    } reactTag:reactTag];
 }
 
+RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag route:(nonnull NSURL *)route mimeType:(nonnull NSString *)mimeType cacheKey:(nullable NSString *)cacheKey)
+{
+    [self invokeCallback:^(UIViewController *fromViewController, UIView *originatingView) {
+        [[ARMediaPreviewController mediaPreviewControllerWithRemoteURL:route
+                                                              mimeType:mimeType
+                                                              cacheKey:cacheKey
+                                                    hostViewController:fromViewController
+                                                       originatingView:originatingView] presentPreviewAnimated:YES];
+    } reactTag:reactTag];
+}
 
 - (dispatch_queue_t)methodQueue;
 {
@@ -36,19 +52,22 @@ RCT_EXPORT_METHOD(dismissModalViewController:(nonnull NSNumber *)reactTag)
               reactTag:(nonnull NSNumber *)reactTag
                  route:(nonnull NSString *)route;
 {
-  UIView *rootView = [self.bridge.uiManager viewForReactTag:reactTag];
-  while (rootView.superview && ![rootView isKindOfClass:RCTRootView.class]) {
-    rootView = rootView.superview;
-  }
-  UIViewController *viewController = rootView.reactViewController;
-  NSParameterAssert(viewController);
-  callback(viewController, route);
+  [self invokeCallback:^(UIViewController * _Nonnull fromViewController, id _) {
+    callback(fromViewController, route);
+  } reactTag:reactTag];
 }
 
-- (void)invokeCallback:(ARSwitchBoardPresentViewController)callback
+- (void)invokeCallback:(ARSwitchBoardPresentInternalViewController)callback
               reactTag:(nonnull NSNumber *)reactTag
 {
-    [self invokeCallback:callback reactTag:reactTag route:@""];
+    UIView *originatingView = [self.bridge.uiManager viewForReactTag:reactTag];
+    UIView *rootView = originatingView;
+    while (rootView.superview && ![rootView isKindOfClass:RCTRootView.class]) {
+        rootView = rootView.superview;
+    }
+    UIViewController *viewController = rootView.reactViewController;
+    NSParameterAssert(viewController);
+    callback(viewController, originatingView);
 }
 
 @end
