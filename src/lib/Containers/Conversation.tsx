@@ -9,7 +9,7 @@ import styled from "styled-components/native"
 import colors from "../../data/colors"
 import Composer from "../Components/Inbox/Conversations/Composer"
 import Message from "../Components/Inbox/Conversations/Message"
-import ArtworkPreview from "../Components/Inbox/Conversations/Previews/ArtworkPreview"
+import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
 
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 

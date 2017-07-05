@@ -2,13 +2,14 @@ import * as React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import ImagePreview from "../../Previews/ImagePreview"
+import PDFPreview from "../PDFPreview"
 
 it("renders correctly", () => {
-  const tree = renderer.create(<ImagePreview imageAttachment={attachment} />)
+  const tree = renderer.create(<PDFPreview attachment={attachment} />)
   expect(tree).toMatchSnapshot()
 })
 
 const attachment = {
-  download_url: "/path/to/cats.jpg",
+  id: "cats",
+  file_name: "This is a great PDF telling you all about cats",
 }

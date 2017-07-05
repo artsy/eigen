@@ -5,11 +5,13 @@ import * as Relay from "react-relay"
 import { BodyText, MetadataText, SmallHeadline } from "../Typography"
 
 import Avatar from "./Avatar"
-import ImagePreview from "./Previews/ImagePreview"
-import PDFPreview from "./Previews/PDFPreview"
+import ImagePreview from "./Preview/Attachment/ImagePreview"
+import PDFPreview from "./Preview/Attachment/PDFPreview"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
+
+import SwitchBoard from "../../../NativeModules/SwitchBoard"
 
 const VerticalLayout = styled.View`
   flex-direction: column
@@ -18,7 +20,7 @@ const VerticalLayout = styled.View`
 
 const HorizontalLayout = styled.View`flex-direction: row;`
 
-const Container = styled(HorizontalLayout)`
+const Container = styled(HorizontalLayout) `
   alignSelf: stretch
   marginTop: 15
   marginBottom: 10
@@ -27,16 +29,16 @@ const Container = styled(HorizontalLayout)`
 
 `
 
-const Header = styled(HorizontalLayout)`
+const Header = styled(HorizontalLayout) `
   alignSelf: stretch
   marginBottom: 10
 `
 
-const TextContainer = styled(VerticalLayout)`
+const TextContainer = styled(VerticalLayout) `
   marginLeft: 10
 `
 
-const SenderName = styled(SmallHeadline)`
+const SenderName = styled(SmallHeadline) `
   marginRight: 10
 `
 
@@ -53,19 +55,24 @@ interface Props extends RelayProps {
 }
 
 export class Message extends React.Component<Props, any> {
-  renderAttachmentPreviews(attachments) {
+  renderAttachmentPreviews(attachments: Props["message"]["attachments"]) {
+    const previewAttachment = attachmentID => {
+      const attachment = attachments.find(({ id }) => id === attachmentID)
+      SwitchBoard.presentMediaPreviewController(this, attachment.download_url, attachment.content_type, attachment.id)
+    }
+
     return attachments.map(attachment => {
       if (attachment.content_type.startsWith("image")) {
         return (
-          <ImagePreviewContainer>
-            <ImagePreview imageAttachment={attachment} />
+          <ImagePreviewContainer key={attachment.id}>
+            <ImagePreview attachment={attachment as any} onSelected={previewAttachment} />
           </ImagePreviewContainer>
         )
       }
       if (attachment.content_type === "application/pdf") {
         return (
-          <PDFPreviewContainer>
-            <PDFPreview pdfAttachment={attachment} />
+          <PDFPreviewContainer key={attachment.id}>
+            <PDFPreview attachment={attachment as any} onSelected={previewAttachment} />
           </PDFPreviewContainer>
         )
       }
@@ -113,7 +120,9 @@ export default Relay.createContainer(Message, {
         attachments {
           content_type
           download_url
-          file_name
+          id
+          ${ImagePreview.getFragment("attachment")}
+          ${PDFPreview.getFragment("attachment")}
         }
       }
     `,
@@ -126,9 +135,9 @@ interface RelayProps {
     created_at: string | null
     is_from_user: boolean
     attachments: Array<{
+      id: string
       content_type: string
       download_url: string
-      file_name: string
     }>
   }
 }
