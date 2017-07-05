@@ -51,7 +51,7 @@ const DottedBorder = styled.View`
 
 `
 
-const MessagesList = styled(FlatList)`
+const MessagesList = styled(FlatList) `
   marginTop: 10
 `
 
@@ -68,12 +68,13 @@ export class Conversation extends React.Component<RelayProps, any> {
     const conversation = me.conversation
     const partnerName = conversation.to.name
     const senderName = item.is_from_user ? conversation.from.name : partnerName
+    const initials = item.is_from_user ? conversation.from.initials : conversation.to.initials
 
     return (
       <Message
         message={item}
         senderName={senderName}
-        initials={me.initials}
+        initials={initials}
         artworkPreview={
           item.first_message &&
           <ArtworkPreview
@@ -124,15 +125,16 @@ export default Relay.createContainer(Conversation, {
   fragments: {
     me: () => Relay.QL`
       fragment on Me {
-        initials
         conversation(id: $conversationID) {
           id
           from {
             name
             email
+            initials
           }
           to {
             name
+            initials
           }
           messages(first: 10) {
             pageInfo {
@@ -141,6 +143,7 @@ export default Relay.createContainer(Conversation, {
             edges {
               node {
                 id
+                is_from_user
                 ${Message.getFragment("message")}
               }
             }
@@ -163,9 +166,11 @@ interface RelayProps {
       from: {
         name: string
         email: string
+        initials: string
       }
       to: {
         name: string
+        initials: string
       }
       artworks: any[]
       messages: {
