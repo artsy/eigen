@@ -71,9 +71,8 @@ const ImageViewCouplet = (props: ImageViewCoupletProps) =>
     {props.first
       ? <ImageForURI image={props.first} onPressItem={props.onPressItem} selected={props.firstSelected} />
       : <TakePhotoImage onPressNewPhoto={props.onPressNewPhoto} />}
-    {props.second
-      ? <ImageForURI image={props.second} onPressItem={props.onPressItem} selected={props.secondSelected} />
-      : null}
+    {props.second &&
+      <ImageForURI image={props.second} onPressItem={props.onPressItem} selected={props.secondSelected} />}
   </View>
 
 interface Props {

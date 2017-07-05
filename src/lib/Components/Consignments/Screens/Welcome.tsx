@@ -2,7 +2,7 @@ import * as React from "react"
 
 import Button from "../../Buttons/FlatWhite"
 import Circle from "../Components/CircleImage"
-import ConsignmentBG from "../components/ConsignmentBG"
+import ConsignmentBG from "../Components/ConsignmentBG"
 import { BodyText as P, LargeHeadline } from "../Typography"
 import Overview from "./Overview"
 

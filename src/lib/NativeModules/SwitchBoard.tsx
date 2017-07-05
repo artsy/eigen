@@ -23,7 +23,36 @@ function presentModalViewController(component: React.Component<any, any>, route:
   ARSwitchBoardModule.presentModalViewController(reactTag, route)
 }
 
+function presentMediaPreviewController(
+  component: React.Component<any, any>,
+  route: string,
+  mimeType: string,
+  cacheKey?: string
+) {
+  let reactTag
+  try {
+    reactTag = findNodeHandle(component)
+  } catch (err) {
+    return
+  }
+
+  ARSwitchBoardModule.presentMediaPreviewController(reactTag, route, mimeType, cacheKey)
+}
+
+function dismissModalViewController(component: React.Component<any, any>) {
+  let reactTag
+  try {
+    reactTag = findNodeHandle(component)
+  } catch (err) {
+    return
+  }
+
+  ARSwitchBoardModule.dismissModalViewController(reactTag)
+}
+
 export default {
   presentNavigationViewController,
+  presentMediaPreviewController,
   presentModalViewController,
+  dismissModalViewController,
 }

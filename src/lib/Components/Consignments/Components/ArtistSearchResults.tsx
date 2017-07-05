@@ -66,8 +66,10 @@ const render = (props: ArtistQueryData) => {
   const rowForResult = result =>
     <Result key={result.id} onPress={() => props.resultSelected(result)}>
       <ResultContainers>
-        {result.image ? <Image source={{ uri: result.image.url }} /> : null}
-        <Text>{result.name}</Text>
+        {result.image && <Image source={{ uri: result.image.url }} />}
+        <Text>
+          {result.name}
+        </Text>
       </ResultContainers>
     </Result>
 

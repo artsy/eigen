@@ -1,6 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
-import ImageSelection from "../components/ImageSelection"
+import ImageSelection from "../Components/ImageSelection"
 import { Wrapper } from "./"
 
 const nav = {} as any

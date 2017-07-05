@@ -86,13 +86,17 @@ const DoneButton = () =>
 
 const Button = (props: TouchableHighlightProperties) =>
   <TouchableHighlight {...props}>
-    <ButtonView>{(props as any).children}</ButtonView>
+    <ButtonView>
+      {(props as any).children}
+    </ButtonView>
   </TouchableHighlight>
 
 const ImagePreview = images =>
   <ImageStyle source={{ uri: images[0] }}>
     <ImageDarkener>
-      <InlineCopy>{images.length}</InlineCopy>
+      <InlineCopy>
+        {images.length}
+      </InlineCopy>
     </ImageDarkener>
   </ImageStyle>
 
@@ -110,7 +114,9 @@ const render = (props: TODOProps) =>
     <Button onPress={props.goToArtist}>
       {props.artist ? DoneButton() : ToDoButton()}
       <Title>ARTIST/DESIGNER</Title>
-      <Subtitle>{props.artist ? props.artist.name : ""}</Subtitle>
+      <Subtitle>
+        {props.artist ? props.artist.name : ""}
+      </Subtitle>
     </Button>
 
     <Separator />
@@ -124,21 +130,27 @@ const render = (props: TODOProps) =>
     <Button onPress={props.goToMetadata}>
       {props.metadata ? DoneButton() : ToDoButton()}
       <Title>METADATA</Title>
-      <Subtitle>{props.metadata ? props.metadata.displayString : ""}</Subtitle>
+      <Subtitle>
+        {props.metadata ? props.metadata.displayString : ""}
+      </Subtitle>
     </Button>
 
     <Separator />
     <Button onPress={props.goToLocation}>
       {props.location ? DoneButton() : ToDoButton()}
       <Title>LOCATION</Title>
-      <Subtitle>{props.location ? props.location : ""}</Subtitle>
+      <Subtitle>
+        {props.location ? props.location : ""}
+      </Subtitle>
     </Button>
 
     <Separator />
     <Button onPress={props.goToProvenance}>
       {props.provenance ? DoneButton() : ToDoButton()}
       <Title>PROVENANCE</Title>
-      <Subtitle numberOfLines={1}>{props.provenance ? props.provenance : ""}</Subtitle>
+      <Subtitle numberOfLines={1}>
+        {props.provenance ? props.provenance : ""}
+      </Subtitle>
     </Button>
 
     <Separator />

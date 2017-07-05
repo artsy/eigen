@@ -33,6 +33,7 @@ playground.xcworkspace
 
 .DS_Store
 node_modules
+npm-debug.log
 Example/Pods
 Example/compile_commands.json
 Example/Emission/Configuration.h

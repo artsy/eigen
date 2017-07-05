@@ -3,6 +3,7 @@ import * as React from "react"
 import { View } from "react-native"
 
 import "./Consignments.story"
+import "./ImageSelection.story"
 import "./Style.story"
 
 import * as bottomAlignedButton from "./BottomAligned.story"

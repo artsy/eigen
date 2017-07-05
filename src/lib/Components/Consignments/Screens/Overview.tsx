@@ -1,8 +1,8 @@
 import * as React from "react"
 
 import { NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
-import ConsignmentBG from "../components/ConsignmentBG"
-import { LargeHeadline, Subtitle } from "../typography"
+import ConsignmentBG from "../Components/ConsignmentBG"
+import { LargeHeadline, Subtitle } from "../Typography"
 
 import { ArtistResult, ConsignmentSetup } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
@@ -40,9 +40,12 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
       <ConsignmentBG>
         <ScrollView style={{ flex: 1 }}>
           <View style={{ paddingTop: 40 }}>
-
-            <LargeHeadline>{title}</LargeHeadline>
-            <Subtitle>{subtitle}</Subtitle>
+            <LargeHeadline>
+              {title}
+            </LargeHeadline>
+            <Subtitle>
+              {subtitle}
+            </Subtitle>
 
             <TODO
               goToArtist={this.goToArtistTapped}

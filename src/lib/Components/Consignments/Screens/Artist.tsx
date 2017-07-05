@@ -2,7 +2,7 @@ import * as React from "react"
 
 import ArtistSearch from "../Components/ArtistSearchResults"
 import DoneButton from "../Components/BottomAlignedButton"
-import ConsignmentBG from "../components/ConsignmentBG"
+import ConsignmentBG from "../Components/ConsignmentBG"
 
 import { ArtistResult, ConsignmentSetup } from "../index"
 
@@ -66,9 +66,17 @@ export default class Artist extends React.Component<Props, State> {
   }
 
   render() {
+    // This might become a higher order component for reuse, if used more elsewhere
+    const doneButtonStyles = {
+      backgroundColor: "black",
+      marginBottom: 20,
+      paddingTop: 18,
+      height: 56,
+    }
+
     return (
       <ConsignmentBG>
-        <DoneButton onPress={this.doneTapped}>
+        <DoneButton onPress={this.doneTapped} bodyStyle={doneButtonStyles} buttonText="DONE">
           <View
             style={{ alignContent: "center", justifyContent: "flex-end", flexGrow: 1, marginLeft: 20, marginRight: 20 }}
           >

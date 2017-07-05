@@ -22,9 +22,9 @@ class Conversation extends Relay.Route {
   static queries = {
     me: (component, params) => Relay.QL`
       query {
-          me {
-            ${component.getFragment("me", params)}
-          }
+        me {
+          ${component.getFragment("me", params)}
+        }
       }
     `,
   }
@@ -102,6 +102,24 @@ class MyAccount extends Relay.Route {
   static routeName = "MyAccountRoute"
 }
 
+class Inquiry extends Relay.Route {
+  static queries = {
+    inquiryArtwork: (component, params) => Relay.QL`
+      query {
+        artwork(id: $artworkID) {
+          ${component.getFragment("inquiryArtwork", params)}
+        }
+      }
+    `,
+  }
+
+  static paramDefinitions = {
+    artworkID: { required: true },
+  }
+
+  static routeName = "InquiryRoute"
+}
+
 export default {
   Artist,
   Conversation,
@@ -109,4 +127,5 @@ export default {
   Gene,
   WorksForYou,
   MyAccount,
+  Inquiry,
 }

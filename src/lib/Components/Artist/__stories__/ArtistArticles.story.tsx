@@ -6,7 +6,11 @@ import StubContainer from "react-storybooks-relay-container"
 import ArtistArticles from "../Articles"
 
 storiesOf("Artist Articles")
-  .addDecorator(story => <View style={{ marginTop: 20, marginLeft: 20, marginRight: 20 }}>{story()}</View>)
+  .addDecorator(story =>
+    <View style={{ marginTop: 20, marginLeft: 20, marginRight: 20 }}>
+      {story()}
+    </View>
+  )
   .add("Single Item", () => {
     const props = {
       articles: [

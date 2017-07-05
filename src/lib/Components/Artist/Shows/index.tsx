@@ -79,9 +79,8 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const pastShowsFragment = windowDimensions.width > 700
-  ? VariableSizeShowsList.getFragment("shows")
-  : SmallShowsList.getFragment("shows")
+const pastShowsFragment =
+  windowDimensions.width > 700 ? VariableSizeShowsList.getFragment("shows") : SmallShowsList.getFragment("shows")
 
 export default Relay.createContainer(Shows, {
   fragments: {

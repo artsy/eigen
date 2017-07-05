@@ -2,7 +2,7 @@ import * as React from "react"
 import * as Relay from "react-relay"
 import styled from "styled-components/native"
 
-import { ListView, ListViewDataSource, ScrollView, Text, View } from "react-native"
+import { ListView, ListViewDataSource, RefreshControl, ScrollView, Text, View } from "react-native"
 import { LargeHeadline } from "../Typography"
 
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
@@ -15,9 +15,10 @@ const Headline = styled(LargeHeadline)`
   margin-bottom: 20px;
 `
 
-interface Props {
-  me: any // we probably want to generate an interface for this
+interface Props extends RelayProps {
   relay: Relay.RelayProp
+  headerView?: JSX.Element
+  onDataLoaded?: (hasData: boolean) => void
 }
 
 interface State {
@@ -45,11 +46,37 @@ export class Conversations extends React.Component<Props, State> {
     this.setState({
       dataSource: this.state.dataSource,
     })
+
+    if (this.props.onDataLoaded) {
+      this.props.onDataLoaded(this.conversations.length > 0)
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    const conversations = this.getConversationsFrom(newProps.me)
+
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(conversations),
+    })
+  }
+
+  hasContent() {
+    if (!this.props.me) {
+      return false
+    }
+
+    return this.props.me.conversations.edges.length > 0
   }
 
   get conversations() {
-    // It's currently possible for a conversation to be message-less in impulse, in which case we shouldn't show it
-    const conversations = this.props.me.conversations.edges
+    return this.getConversationsFrom(this.props.me)
+  }
+
+  getConversationsFrom(me) {
+    if (!me) {
+      return []
+    }
+    const conversations = me.conversations.edges
       .filter(({ node }) => {
         return node.last_message
       })
@@ -57,14 +84,14 @@ export class Conversations extends React.Component<Props, State> {
     return conversations || []
   }
 
-  fetchNextPage() {
+  fetchData(nextPage: boolean = true) {
     if (this.state.fetchingNextPage || this.state.completed) {
       return
     }
-    const totalSize = this.props.relay.variables.totalSize + PageSize
+    const totalSize = this.props.relay.variables.totalSize + (nextPage ? PageSize : 0)
 
     this.setState({ fetchingNextPage: true })
-    this.props.relay.setVariables({ totalSize }, readyState => {
+    this.props.relay.forceFetch({ totalSize }, readyState => {
       if (readyState.done) {
         this.setState({
           fetchingNextPage: false,
@@ -78,27 +105,32 @@ export class Conversations extends React.Component<Props, State> {
     })
   }
 
-  renderConversations() {
+  render() {
     return (
       <ListView
         dataSource={this.state.dataSource}
+        initialListSize={10}
+        scrollEventThrottle={10}
+        onEndReachedThreshold={10}
+        refreshControl={
+          <RefreshControl refreshing={this.state.fetchingNextPage} onRefresh={() => this.fetchData(false)} />
+        }
+        renderHeader={() => {
+          return (
+            <View>
+              {this.props.headerView}
+              {this.hasContent() ? <Headline>Messages</Headline> : null}
+            </View>
+          )
+        }}
         renderRow={data =>
           <ConversationSnippet
             conversation={data}
+            key={data.id}
             onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${data.id}`)}
           />}
-        onEndReached={() => this.fetchNextPage()}
-        scrollEnabled={false}
+        onEndReached={() => this.fetchData()}
       />
-    )
-  }
-
-  render() {
-    return (
-      <View>
-        <Headline>Messages</Headline>
-        {this.renderConversations()}
-      </View>
     )
   }
 }
@@ -126,3 +158,19 @@ export default Relay.createContainer(Conversations, {
     `,
   },
 })
+
+interface RelayProps {
+  me: {
+    conversations: {
+      pageInfo: {
+        hasNextPage: boolean
+      }
+      edges: Array<{
+        node: {
+          id: string | null
+          last_message: string
+        } | null
+      } | null> | null
+    } | null
+  }
+}

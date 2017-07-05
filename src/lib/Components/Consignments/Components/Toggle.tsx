@@ -75,8 +75,12 @@ const render = (props: ToggleProps) => {
     <Background style={{ backgroundColor: mainBGColor }} onPress={props.onPress}>
       <View>
         <TextBackground>
-          <Title style={{ color: leftTextColor }}>{props.left}</Title>
-          <Title style={{ color: rightTextColor }}>{props.right}</Title>
+          <Title style={{ color: leftTextColor }}>
+            {props.left}
+          </Title>
+          <Title style={{ color: rightTextColor }}>
+            {props.right}
+          </Title>
         </TextBackground>
         <CircleSpacer style={{ flexDirection: dotDirection }}>
           <Circle style={{ borderColor: dotBorder }} />

@@ -1,48 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`looks correct when the user has no conversations 1`] = `
-<View>
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    disabled={false}
-    ellipsizeMode="tail"
-    style={
-      Array [
-        Object {
-          "color": "black",
-          "fontSize": 30,
-          "paddingLeft": 20,
-          "paddingRight": 20,
-          "textAlign": "left",
-        },
-        Array [
-          Object {
-            "marginBottom": 20,
-            "marginTop": 10,
-          },
-          undefined,
-        ],
-        Object {
-          "fontFamily": "AGaramondPro-Regular",
-        },
-      ]
+<RCTScrollView
+  dataSource={
+    ListViewDataSource {
+      "items": 0,
     }
-  >
-    Messages
-  </Text>
-  <RCTScrollView
-    dataSource={
-      ListViewDataSource {
-        "items": 0,
-      }
-    }
-    onEndReached={[Function]}
-    renderRow={[Function]}
-    renderScrollComponent={[Function]}
-    scrollEnabled={false}
-  >
+  }
+  initialListSize={10}
+  onEndReached={[Function]}
+  onEndReachedThreshold={10}
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={false}
+    />
+  }
+  renderHeader={[Function]}
+  renderRow={[Function]}
+  renderScrollComponent={[Function]}
+  scrollEventThrottle={10}
+>
+  <RCTRefreshControl />
+  <View>
     <View />
-  </RCTScrollView>
-</View>
+  </View>
+</RCTScrollView>
 `;

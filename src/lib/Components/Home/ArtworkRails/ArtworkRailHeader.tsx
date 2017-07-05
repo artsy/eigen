@@ -64,7 +64,11 @@ class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, St
   followAnnotation() {
     if (this.props.rail.key === "related_artists") {
       const name = this.props.rail.context.based_on.name
-      return <SerifText style={styles.followAnnotation}>{"Based on " + name}</SerifText>
+      return (
+        <SerifText style={styles.followAnnotation}>
+          {"Based on " + name}
+        </SerifText>
+      )
     }
   }
 
@@ -75,7 +79,11 @@ class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, St
 
   actionButton() {
     if (this.hasAdditionalContent()) {
-      return <Text style={styles.viewAllButton}> {"View All".toUpperCase()} </Text>
+      return (
+        <Text style={styles.viewAllButton}>
+          {" "}{"View All".toUpperCase()}{" "}
+        </Text>
+      )
     } else if (this.props.rail.key === "related_artists" || this.props.rail.key === "followed_artist") {
       return (
         <View style={styles.followButton}>
