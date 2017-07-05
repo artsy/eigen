@@ -84,7 +84,7 @@ export class Message extends React.Component<Props, any> {
 
     return (
       <Container>
-        <Avatar isUser={true} initials={this.props.initials} />
+        <Avatar isUser={this.props.message.is_from_user} initials={this.props.initials} />
         <TextContainer>
           <Header>
             <SenderName>

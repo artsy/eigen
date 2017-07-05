@@ -176,7 +176,7 @@ exports[`looks correct when rendered 1`] = `
                 Array [
                   Object {
                     "alignSelf": "center",
-                    "color": "white",
+                    "color": "#666666",
                     "fontFamily": "Avant Garde Gothic ITCW01Dm",
                     "fontSize": 10,
                     "marginTop": 8,
@@ -184,7 +184,7 @@ exports[`looks correct when rendered 1`] = `
                   undefined,
                 ]
               }
-              user={true}
+              user={undefined}
             >
               KK
             </Text>
