@@ -185,7 +185,9 @@ exports[`looks correct when rendered 1`] = `
                 ]
               }
               user={true}
-            />
+            >
+              KK
+            </Text>
           </View>
           <View
             style={

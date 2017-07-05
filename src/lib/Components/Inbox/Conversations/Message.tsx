@@ -20,7 +20,7 @@ const VerticalLayout = styled.View`
 
 const HorizontalLayout = styled.View`flex-direction: row;`
 
-const Container = styled(HorizontalLayout) `
+const Container = styled(HorizontalLayout)`
   alignSelf: stretch
   marginTop: 15
   marginBottom: 10
@@ -29,16 +29,16 @@ const Container = styled(HorizontalLayout) `
 
 `
 
-const Header = styled(HorizontalLayout) `
+const Header = styled(HorizontalLayout)`
   alignSelf: stretch
   marginBottom: 10
 `
 
-const TextContainer = styled(VerticalLayout) `
+const TextContainer = styled(VerticalLayout)`
   marginLeft: 10
 `
 
-const SenderName = styled(SmallHeadline) `
+const SenderName = styled(SmallHeadline)`
   marginRight: 10
 `
 

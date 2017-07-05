@@ -16,8 +16,9 @@ const props = {
     from: {
       name: "Anita Garibaldi",
       email: "anita@garibaldi.br",
+      initials: "AG",
     },
-    to: { name: "Kimberly Klark" },
+    to: { name: "Kimberly Klark", initials: "KK" },
     initial_message: "Adoro! Por favor envie-me mais informações",
     messages: {
       edges: [
