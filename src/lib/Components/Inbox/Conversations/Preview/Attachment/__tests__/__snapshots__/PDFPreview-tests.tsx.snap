@@ -32,56 +32,66 @@ exports[`renders correctly 1`] = `
     style={
       Array [
         Object {
-          "borderColor": "#e5e5e5",
-          "borderWidth": 1,
           "flexDirection": "row",
         },
         undefined,
       ]
     }
   >
-    <Image
-      source={1}
-      style={
-        Array [
-          Object {
-            "marginBottom": 12,
-            "marginLeft": 12,
-            "marginTop": 12,
-            "resizeMode": "contain",
-            "width": 40,
-          },
-          undefined,
-        ]
-      }
-    />
     <View
       style={
         Array [
           Object {
+            "borderColor": "#e5e5e5",
+            "borderWidth": 1,
             "flexBasis": 0,
-            "flexDirection": "column",
+            "flexDirection": "row",
             "flexGrow": 1,
             "flexShrink": 1,
           },
-          Array [
-            Object {
-              "alignSelf": "center",
-              "marginLeft": 25,
-            },
-            undefined,
-          ],
+          undefined,
         ]
       }
     >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <Image
+        source={1}
+        style={
+          Array [
+            Object {
+              "marginBottom": 12,
+              "marginLeft": 12,
+              "marginTop": 12,
+              "resizeMode": "contain",
+              "width": 40,
+            },
+            undefined,
+          ]
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "alignSelf": "center",
+              "flexBasis": 0,
+              "flexDirection": "column",
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "marginLeft": 25,
+            },
+            undefined,
+          ]
+        }
       >
-        This is a great PDF telling you all about cats
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+        >
+          This is a great PDF telling you all about cats
+        </Text>
+      </View>
     </View>
   </View>
 </View>

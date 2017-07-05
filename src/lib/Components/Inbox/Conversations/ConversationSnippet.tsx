@@ -107,6 +107,12 @@ export class ConversationSnippet extends React.Component<Props, any> {
     const conversation = this.props.conversation
     const artwork = conversation.artworks[0]
 
+    // TODO We need to make artworks available even if they are unpublished.
+    if (!artwork) {
+      console.warn(`Unable to load artwork for conversation with ID ${conversation.id}`)
+      return null
+    }
+
     const partnerName = conversation.to.name
     const artworkTitle = `${artwork.title.trim()}, `
     const artworkDate = `${artwork.date}`
