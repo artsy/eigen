@@ -22523,6 +22523,29 @@
               "deprecationReason": null
             },
             {
+              "name": "initials",
+              "description": null,
+              "args": [
+                {
+                  "name": "length",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": "3"
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "notifications_connection",
               "description": "A list of feed items, indicating published artworks (grouped by date and artists).",
               "args": [

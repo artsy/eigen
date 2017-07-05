@@ -2758,6 +2758,7 @@ type Me implements Node {
     sale_id: String
   ): [LotStanding]
   name: String
+  initials(length: Int = 3): String
 
   # A list of feed items, indicating published artworks (grouped by date and artists).
   notifications_connection(after: String, first: Int, before: String, last: Int): NotificationsFeedItemConnection
