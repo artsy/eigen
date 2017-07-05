@@ -42,6 +42,7 @@
 -   Adds component for consignments todo  - orta
 -   Adds storybooks for consignments  - orta
 -   Adds some form elements for consignments - orta
+-   Adds a component for choosing from a sets of images  - orta
 
 ### 1.3.8 & 1.3.9
 
