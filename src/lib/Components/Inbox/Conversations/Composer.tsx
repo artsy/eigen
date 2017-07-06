@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Keyboard, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback, View } from "react-native"
+import { Keyboard, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
@@ -9,12 +9,6 @@ import fonts from "../../../../data/fonts"
 interface ContainerProps {
   active: boolean
 }
-
-const ComposerContainer = styled.View`
-  padding-top: 5px;
-  margin-right: 20px;
-  margin-left: 20px;
-`
 
 const Container = styled.View`
   flex-direction: row;
