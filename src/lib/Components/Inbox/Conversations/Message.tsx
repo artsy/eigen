@@ -58,6 +58,7 @@ interface Props extends RelayProps {
   partnerName: string
   userName: string
   artworkPreview?: JSX.Element
+  relay: Relay.RelayProp
 }
 
 export class Message extends React.Component<Props, any> {
@@ -86,28 +87,31 @@ export class Message extends React.Component<Props, any> {
   }
 
   render() {
-    const date = moment(this.props.message.created_at).fromNow(true)
+    const { artworkPreview, message, userName, partnerName } = this.props
+    const isSent = !this.props.relay.hasOptimisticUpdate(message)
+
     return (
       <Container>
         <Avatar />
         <TextContainer>
           <Header>
             <SenderName>
-              {this.props.message.is_from_user ? this.props.userName : this.props.partnerName}
+              {message.is_from_user ? userName : partnerName}
             </SenderName>
-            <MetadataText>
-              {date}
-            </MetadataText>
+            {isSent &&
+              <MetadataText>
+                {moment(message.created_at).fromNow(true)}
+              </MetadataText>}
           </Header>
-          {this.props.artworkPreview &&
+          {artworkPreview &&
             <ArtworkPreviewContainer>
-              {this.props.artworkPreview}
+              {artworkPreview}
             </ArtworkPreviewContainer>}
 
-          {this.renderAttachmentPreviews(this.props.message.attachments)}
+          {this.renderAttachmentPreviews(message.attachments)}
 
-          <BodyText>
-            {this.props.message.raw_text.split("\n\nAbout")[0]}
+          <BodyText disabled={!isSent}>
+            {message.raw_text.split("\n\nAbout")[0]}
           </BodyText>
         </TextContainer>
       </Container>
