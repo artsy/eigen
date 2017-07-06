@@ -203,6 +203,18 @@ class SendConversationMessageMutation extends Relay.Mutation<MutationProps, any>
     ]
   }
 
+  getOptimisticResponse() {
+    return {
+      messageEdge: {
+        node: {
+          raw_text: this.props.body_text,
+          is_from_user: true,
+          created_at: new Date().toISOString(),
+          attachments: [],
+        },
+      },
+    }
+  }
 }
 
 export default Relay.createContainer(Conversation, {
