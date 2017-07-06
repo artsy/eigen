@@ -49,11 +49,11 @@ exports[`looks correct when rendered 1`] = `
         Object {
           "flex": 1,
           "fontFamily": "AGaramondPro-Regular",
-          "fontSize": 12,
+          "fontSize": 13,
           "paddingBottom": 10,
           "paddingLeft": 10,
           "paddingRight": 10,
-          "paddingTop": 10,
+          "paddingTop": 13,
         }
       }
     />
