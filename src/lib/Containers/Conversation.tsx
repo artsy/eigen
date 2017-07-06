@@ -97,10 +97,7 @@ export class Conversation extends React.Component<RelayProps, any> {
     const partnerName = conversation.to.name
     const artwork = conversation.artworks[0]
     const messages = conversation.messages.edges.map((edge, index) => {
-      const message = edge.node
-      message.first_message = index === 0
-      message.key = index
-      return message
+      return { first_message: index === 0, key: index, ...edge.node }
     })
     const lastMessage = messages[messages.length - 1]
 
@@ -125,11 +122,10 @@ export class Conversation extends React.Component<RelayProps, any> {
           <Composer
             onSubmit={text => {
               this.props.relay.commitUpdate(
-                new AppendConversationThread({
-                  from: this.props.me.conversation.from.email,
-                  id: this.props.me.conversation.id,
+                new SendConversationMessageMutation({
                   body_text: text,
-                  reply_to_message_id: lastMessage.id,
+                  reply_to_message_id: lastMessage.impulse_id,
+                  conversation: this.props.me.conversation as any,
                 })
               )
 
@@ -144,21 +140,38 @@ export class Conversation extends React.Component<RelayProps, any> {
 }
 
 interface MutationProps {
-  from: string
-  id: string
   body_text: string
   reply_to_message_id: string
+  conversation: {
+    __id: string
+    id: string
+    from: {
+      email: string
+    }
+  }
 }
 
-class AppendConversationThread extends Relay.Mutation<MutationProps, any> {
+class SendConversationMessageMutation extends Relay.Mutation<MutationProps, any> {
+  static fragments = {
+    conversation: () => Relay.QL`
+      fragment on Conversation {
+        __id
+        id
+        from {
+          email
+        }
+      }
+    `,
+  }
+
   getMutation() {
-    return Relay.QL`mutation { appendConversationThread }`
+    return Relay.QL`mutation { sendConversationMessage }`
   }
 
   getVariables() {
     return {
-      id: this.props.id,
-      from: this.props.from,
+      id: this.props.conversation.id,
+      from: this.props.conversation.from.email,
       body_text: this.props.body_text,
       reply_to_message_id: this.props.reply_to_message_id,
     }
@@ -166,10 +179,11 @@ class AppendConversationThread extends Relay.Mutation<MutationProps, any> {
 
   getFatQuery() {
     return Relay.QL`
-      fragment on AppendConversationThreadMutationPayload {
+      fragment on SendConversationMessageMutationPayload {
         messageEdge
-        __id
-        conversation { messages }
+        conversation {
+          messages
+        }
       }
     `
   }
@@ -179,7 +193,7 @@ class AppendConversationThread extends Relay.Mutation<MutationProps, any> {
       {
         type: "RANGE_ADD",
         parentName: "conversation",
-        parentID: this.props.id,
+        parentID: this.props.conversation.__id,
         connectionName: "messages",
         edgeName: "messageEdge",
         rangeBehaviors: {
@@ -189,17 +203,6 @@ class AppendConversationThread extends Relay.Mutation<MutationProps, any> {
     ]
   }
 
-  getOptimisticResponse() {
-    return {
-      conversation: {
-        id: this.props.id,
-      },
-      messageEdge: {
-        body_text: this.props.body_text,
-        from: this.props.from,
-      },
-    }
-  }
 }
 
 export default Relay.createContainer(Conversation, {
@@ -211,10 +214,8 @@ export default Relay.createContainer(Conversation, {
     me: () => Relay.QL`
       fragment on Me {
         conversation(id: $conversationID) {
-          id
           from {
             name
-            email
           }
           to {
             name
@@ -225,15 +226,16 @@ export default Relay.createContainer(Conversation, {
             }
             edges {
               node {
-                id
+                impulse_id
                 ${Message.getFragment("message")}
               }
             }
           }
-          artworks @relay (plural: true) {
+          artworks {
             href
             ${ArtworkPreview.getFragment("artwork")}
           }
+          ${SendConversationMessageMutation.getFragment("conversation")}
         }
       }
     `,
@@ -244,10 +246,8 @@ interface RelayProps {
   relay: any
   me: {
     conversation: {
-      id: string
       from: {
         name: string
-        email: string
       }
       to: {
         name: string
@@ -258,7 +258,7 @@ interface RelayProps {
           hasNextPage: boolean
         }
         edges: Array<{
-          node: any | null
+          node: { impulse_id: string } | null
         }>
       }
     }
