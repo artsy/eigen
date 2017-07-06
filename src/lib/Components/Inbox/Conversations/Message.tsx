@@ -58,7 +58,7 @@ interface Props extends RelayProps {
   partnerName: string
   userName: string
   artworkPreview?: JSX.Element
-  relay: Relay.RelayProp
+  relay?: Relay.RelayProp
 }
 
 export class Message extends React.Component<Props, any> {
@@ -88,7 +88,7 @@ export class Message extends React.Component<Props, any> {
 
   render() {
     const { artworkPreview, message, userName, partnerName } = this.props
-    const isSent = !this.props.relay.hasOptimisticUpdate(message)
+    const isSent = this.props.relay ? !this.props.relay.hasOptimisticUpdate(message) : true
 
     return (
       <Container>

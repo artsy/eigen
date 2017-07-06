@@ -87,30 +87,6 @@ exports[`looks correct when rendered 1`] = `
     </View>
   </View>
   <RCTScrollView
-<<<<<<< HEAD
-=======
-    ItemSeparatorComponent={[Function]}
-    data={
-      Array [
-        Object {
-          "attachments": Array [],
-          "first_message": true,
-          "from_email_address": "anita@garibaldi.br",
-          "id": 222,
-          "key": 222,
-          "raw_text": "Adoro! Por favor envie-me mais informações",
-        },
-      ]
-    }
-    disableVirtualization={false}
-    getItem={[Function]}
-    getItemCount={[Function]}
-    horizontal={false}
-    initialNumToRender={10}
-    keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    numColumns={1}
->>>>>>> master
     onContentSizeChange={[Function]}
     onLayout={[Function]}
     onMomentumScrollEnd={[Function]}
@@ -213,7 +189,6 @@ exports[`looks correct when rendered 1`] = `
                   ]
                 }
               >
-<<<<<<< HEAD
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -238,7 +213,7 @@ exports[`looks correct when rendered 1`] = `
                     ]
                   }
                 >
-                  ANITA GARIBALDI
+                  KIMBERLY KLARK
                 </Text>
                 <Text
                   accessible={true}
@@ -259,45 +234,9 @@ exports[`looks correct when rendered 1`] = `
                     ]
                   }
                 >
-                  11:00AM
+                  A FEW SECONDS
                 </Text>
               </View>
-=======
-                KIMBERLY KLARK
-              </Text>
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                disabled={false}
-                ellipsizeMode="tail"
-                style={
-                  Array [
-                    Object {
-                      "color": "#cccccc",
-                      "fontSize": 11,
-                      "textAlign": "left",
-                    },
-                    Object {},
-                    Object {
-                      "fontFamily": "Avant Garde Gothic ITCW01Dm",
-                    },
-                  ]
-                }
-              >
-                A FEW SECONDS
-              </Text>
-            </View>
-            <View
-              style={
-                Array [
-                  Object {
-                    "marginBottom": 10,
-                  },
-                  undefined,
-                ]
-              }
-            >
->>>>>>> master
               <View
                 style={
                   Array [
@@ -476,6 +415,7 @@ exports[`looks correct when rendered 1`] = `
                       "fontSize": 16,
                       "textAlign": "left",
                     },
+                    false,
                     Object {},
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -534,6 +474,7 @@ exports[`looks correct when rendered 1`] = `
         }
       >
         <TextInput
+          editable={true}
           keyboardAppearance="dark"
           multiline={true}
           onChangeText={[Function]}
@@ -590,4 +531,4 @@ exports[`looks correct when rendered 1`] = `
     </View>
   </View>
 </View>
-`
+`;

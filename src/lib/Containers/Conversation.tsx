@@ -66,7 +66,7 @@ const ComposerContainer = styled.View`
 const PAGE_SIZE = 100
 
 interface Props extends RelayProps {
-  relay: Relay.RelayProp
+  relay?: Relay.RelayProp
 }
 
 interface State {
