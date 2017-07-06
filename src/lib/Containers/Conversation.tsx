@@ -65,7 +65,22 @@ const ComposerContainer = styled.View`
 
 const PAGE_SIZE = 10
 
-export class Conversation extends React.Component<RelayProps, any> {
+interface Props extends RelayProps {
+  relay: Relay.RelayProp
+}
+
+interface State {
+  sendingMessage: boolean
+}
+
+export class Conversation extends React.Component<Props, State> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      sendingMessage: false,
+    }
+  }
+
   renderMessage({ item }) {
     // End of the list reached. Increase page size. Relay
     // will fetch only the required data to fill the new
@@ -120,17 +135,26 @@ export class Conversation extends React.Component<RelayProps, any> {
         />
         <ComposerContainer>
           <Composer
+            disabled={this.state.sendingMessage}
             onSubmit={text => {
               this.props.relay.commitUpdate(
                 new SendConversationMessageMutation({
                   body_text: text,
                   reply_to_message_id: lastMessage.impulse_id,
                   conversation: this.props.me.conversation as any,
-                })
+                }),
+                {
+                  onFailure: transaction => {
+                    // TODO Actually handle errors
+                    console.error(transaction.getError())
+                    this.setState({ sendingMessage: false })
+                  },
+                  onSuccess: () => {
+                    this.setState({ sendingMessage: false })
+                  },
+                }
               )
-
-              /// Not sure how to get optimistic re-render?
-              this.props.relay.setVariables({ pageSize: this.props.me.conversation.messages.edges.length + 1 })
+              this.setState({ sendingMessage: true })
             }}
           />
         </ComposerContainer>
