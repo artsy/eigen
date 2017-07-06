@@ -111,7 +111,7 @@ exports[`looks correct when rendered 1`] = `
           ]
         }
       >
-        
+        SARAH
       </Text>
       <Text
         accessible={true}
