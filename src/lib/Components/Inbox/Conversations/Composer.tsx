@@ -32,6 +32,9 @@ const SendButton = styled.Text`
   color: ${(p: StyledSendButtonProps) => (p.containsText ? colors["purple-regular"] : colors["gray-regular"])}
 `
 
+const Input = styled.TextInput`
+`
+
 interface Props {
   disabled?: boolean
   onSubmit?: (text: string) => any
@@ -67,9 +70,9 @@ export default class Composer extends React.Component<Props, State> {
     const inputStyles = {
       flex: 1,
       fontFamily: fonts["garamond-regular"],
-      fontSize: 12,
+      fontSize: 13,
       paddingLeft: 10,
-      paddingTop: 10,
+      paddingTop: 13,
       paddingBottom: 10,
       paddingRight: 10,
     }
