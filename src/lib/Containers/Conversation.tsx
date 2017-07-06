@@ -57,12 +57,6 @@ const MessagesList = styled(FlatList)`
   marginTop: 10
 `
 
-const ComposerContainer = styled.View`
-  paddingTop: 5
-  marginRight: 20
-  marginLeft: 20
-`
-
 const PAGE_SIZE = 100
 
 interface Props extends RelayProps {
@@ -115,48 +109,47 @@ export class Conversation extends React.Component<Props, State> {
     const lastMessage = messages[messages.length - 1]
 
     return (
-      <Container>
-        <Header>
-          <HeaderTextContainer>
-            <BackButtonPlaceholder source={chevron} />
-            <SmallHeadline>
-              {partnerName}
-            </SmallHeadline>
-            <PlaceholderView />
-          </HeaderTextContainer>
-        </Header>
-        <ReversedFlatList
-          data={messages}
-          renderItem={this.renderMessage.bind(this)}
-          length={messages.length}
-          ItemSeparatorComponent={DottedBorder}
-        />
-        <ComposerContainer>
-          <Composer
-            disabled={this.state.sendingMessage}
-            onSubmit={text => {
-              this.props.relay.commitUpdate(
-                new SendConversationMessageMutation({
-                  body_text: text,
-                  reply_to_message_id: lastMessage.impulse_id,
-                  conversation: this.props.me.conversation as any,
-                }),
-                {
-                  onFailure: transaction => {
-                    // TODO Actually handle errors
-                    console.error(transaction.getError())
-                    this.setState({ sendingMessage: false })
-                  },
-                  onSuccess: () => {
-                    this.setState({ sendingMessage: false })
-                  },
-                }
-              )
-              this.setState({ sendingMessage: true })
-            }}
+      <Composer
+        disabled={this.state.sendingMessage}
+        onSubmit={text => {
+          this.props.relay.commitUpdate(
+            new SendConversationMessageMutation({
+              body_text: text,
+              reply_to_message_id: lastMessage.impulse_id,
+              conversation: this.props.me.conversation as any,
+            }),
+            {
+              onFailure: transaction => {
+                // TODO Actually handle errors
+                console.error(transaction.getError())
+                this.setState({ sendingMessage: false })
+              },
+              onSuccess: () => {
+                this.setState({ sendingMessage: false })
+              },
+            }
+          )
+          this.setState({ sendingMessage: true })
+        }}
+      >
+        <Container>
+          <Header>
+            <HeaderTextContainer>
+              <BackButtonPlaceholder source={chevron} />
+              <SmallHeadline>
+                {partnerName}
+              </SmallHeadline>
+              <PlaceholderView />
+            </HeaderTextContainer>
+          </Header>
+          <ReversedFlatList
+            data={messages}
+            renderItem={this.renderMessage.bind(this)}
+            length={messages.length}
+            ItemSeparatorComponent={DottedBorder}
           />
-        </ComposerContainer>
-      </Container>
+        </Container>
+      </Composer>
     )
   }
 }
