@@ -63,7 +63,7 @@ const ComposerContainer = styled.View`
   marginLeft: 20
 `
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 100
 
 interface Props extends RelayProps {
   relay: Relay.RelayProp
@@ -82,12 +82,6 @@ export class Conversation extends React.Component<Props, State> {
   }
 
   renderMessage({ item }) {
-    // End of the list reached. Increase page size. Relay
-    // will fetch only the required data to fill the new
-    // page size.
-    if (item.key === this.props.me.conversation.messages.edges.length - 1) {
-      this.props.relay.setVariables({ pageSize: this.props.me.conversation.messages.edges.length + PAGE_SIZE })
-    }
     const artwork = this.props.me.conversation.artworks[0]
     const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
