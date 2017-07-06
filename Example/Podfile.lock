@@ -11,7 +11,7 @@ PODS:
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
     - UIView+BooleanAnimations
-  - Emission (1.3.9):
+  - Emission (1.4.0-beta.1):
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
     - React/Core (= 0.45.0-rc.2)
@@ -196,7 +196,7 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   Artsy+UIFonts: e66afb5c40100e2fc5bba28feb7487e252f2d06f
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
-  Emission: a18a9c0a0c4d2190cb6e968c46b0ac4cb1eb3a28
+  Emission: 4c3d5349047fa869c339556b6c122108d7192614
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
