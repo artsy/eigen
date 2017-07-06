@@ -2,11 +2,13 @@
 
 exports[`looks correct when rendered 1`] = `
 <View
-  keyboardVerticalOffset={0}
+  keyboardVerticalOffset={20}
   onLayout={[Function]}
   style={
     Array [
-      undefined,
+      Object {
+        "flex": 1,
+      },
       Object {
         "paddingBottom": 0,
       },
@@ -26,6 +28,9 @@ exports[`looks correct when rendered 1`] = `
           "flexDirection": "row",
           "justifyContent": "space-between",
           "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 0,
         },
         undefined,
       ]
