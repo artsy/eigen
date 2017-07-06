@@ -51,14 +51,8 @@ const DottedBorder = styled.View`
 
 `
 
-const MessagesList = styled(FlatList) `
+const MessagesList = styled(FlatList)`
   marginTop: 10
-`
-
-const ComposerContainer = styled.View`
-  paddingTop: 5
-  marginRight: 20
-  marginLeft: 20
 `
 
 export class Conversation extends React.Component<RelayProps, any> {
