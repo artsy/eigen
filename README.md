@@ -28,8 +28,7 @@ Want to know more about Emission? Read the [mobile](http://artsy.github.io/blog/
    * `$ brew link pcre`
    * `$ brew install watchman --HEAD`
 3. Install NPM modules: `$ yarn install`
-4. Install CocoaPods: `$ gem install cocoapods`
-5. Install Pods: `$ cd Example && pod install`
+4. Install Pods: `$ cd Example && bundle && bundle exec pod install`
 
 ### Running the project:
 
