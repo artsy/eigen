@@ -32,9 +32,6 @@ const SendButton = styled.Text`
   color: ${(p: StyledSendButtonProps) => (p.containsText ? colors["purple-regular"] : colors["gray-regular"])}
 `
 
-const Input = styled.TextInput`
-`
-
 interface Props {
   disabled?: boolean
   onSubmit?: (text: string) => any
