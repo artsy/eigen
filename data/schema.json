@@ -2373,7 +2373,12 @@
             },
             {
               "kind": "OBJECT",
-              "name": "MessageType",
+              "name": "Conversation",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "Message",
               "ofType": null
             },
             {
@@ -22212,7 +22217,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "ConversationType",
+                "name": "Conversation",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -22265,7 +22270,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "ConversationTypeConnection",
+                "name": "ConversationConnection",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -24126,9 +24131,25 @@
         },
         {
           "kind": "OBJECT",
-          "name": "ConversationType",
+          "name": "Conversation",
           "description": "A conversation.",
           "fields": [
+            {
+              "name": "__id",
+              "description": "A globally unique ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
             {
               "name": "id",
               "description": "Impulse id.",
@@ -24162,7 +24183,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "ConversationInitiatorType",
+                  "name": "ConversationInitiator",
                   "ofType": null
                 }
               },
@@ -24178,7 +24199,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "ConversationResponderType",
+                  "name": "ConversationResponder",
                   "ofType": null
                 }
               },
@@ -24433,7 +24454,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "MessageTypeConnection",
+                "name": "MessageConnection",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -24441,13 +24462,19 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [],
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
           "enumValues": null,
           "possibleTypes": null
         },
         {
           "kind": "OBJECT",
-          "name": "ConversationInitiatorType",
+          "name": "ConversationInitiator",
           "description": "The participant who started the conversation, currently always a User",
           "fields": [
             {
@@ -24545,7 +24572,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "ConversationResponderType",
+          "name": "ConversationResponder",
           "description": "The participant responding to the conversation, currently always a Partner",
           "fields": [
             {
@@ -24647,7 +24674,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "MessageTypeConnection",
+          "name": "MessageConnection",
           "description": "A connection to a list of items.",
           "fields": [
             {
@@ -24675,7 +24702,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "MessageTypeEdge",
+                  "name": "MessageEdge",
                   "ofType": null
                 }
               },
@@ -24690,7 +24717,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "MessageTypeEdge",
+          "name": "MessageEdge",
           "description": "An edge in a connection.",
           "fields": [
             {
@@ -24699,7 +24726,7 @@
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "MessageType",
+                "name": "Message",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -24729,7 +24756,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "MessageType",
+          "name": "Message",
           "description": "A message in a conversation.",
           "fields": [
             {
@@ -24750,6 +24777,22 @@
             },
             {
               "name": "id",
+              "description": "Impulse message id.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "impulse_id",
               "description": "Impulse message id.",
               "args": [],
               "type": {
@@ -24813,7 +24856,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "AttachmentType",
+                  "name": "Attachment",
                   "ofType": null
                 }
               },
@@ -24877,7 +24920,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "AttachmentType",
+          "name": "Attachment",
           "description": null,
           "fields": [
             {
@@ -24952,7 +24995,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "ConversationTypeConnection",
+          "name": "ConversationConnection",
           "description": "A connection to a list of items.",
           "fields": [
             {
@@ -24980,7 +25023,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "ConversationTypeEdge",
+                  "name": "ConversationEdge",
                   "ofType": null
                 }
               },
@@ -24995,7 +25038,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "ConversationTypeEdge",
+          "name": "ConversationEdge",
           "description": "An edge in a connection.",
           "fields": [
             {
@@ -25004,7 +25047,7 @@
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "ConversationType",
+                "name": "Conversation",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -34901,7 +34944,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "UpdateConversationInput",
+                      "name": "UpdateConversationMutationInput",
                       "ofType": null
                     }
                   },
@@ -34910,14 +34953,14 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "UpdateConversationPayload",
+                "name": "UpdateConversationMutationPayload",
                 "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "appendConversationThread",
+              "name": "sendConversationMessage",
               "description": "Appending a message to a conversation thread",
               "args": [
                 {
@@ -34928,7 +34971,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "AppendConversationThreadInput",
+                      "name": "SendConversationMessageMutationInput",
                       "ofType": null
                     }
                   },
@@ -34937,7 +34980,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "AppendConversationThreadPayload",
+                "name": "SendConversationMessageMutationPayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -35380,7 +35423,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "UpdateConversationInput",
+          "name": "UpdateConversationMutationInput",
           "description": null,
           "fields": null,
           "inputFields": [
@@ -35482,7 +35525,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "UpdateConversationPayload",
+          "name": "UpdateConversationMutationPayload",
           "description": null,
           "fields": [
             {
@@ -35494,7 +35537,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "ConversationType",
+                  "name": "Conversation",
                   "ofType": null
                 }
               },
@@ -35521,7 +35564,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "AppendConversationThreadInput",
+          "name": "SendConversationMessageMutationInput",
           "description": null,
           "fields": null,
           "inputFields": [
@@ -35568,6 +35611,20 @@
               "defaultValue": null
             },
             {
+              "name": "reply_to_message_id",
+              "description": "The message being replied to",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
               "name": "clientMutationId",
               "description": null,
               "type": {
@@ -35584,16 +35641,28 @@
         },
         {
           "kind": "OBJECT",
-          "name": "AppendConversationThreadPayload",
+          "name": "SendConversationMessageMutationPayload",
           "description": null,
           "fields": [
             {
-              "name": "message",
+              "name": "conversation",
               "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "MessagePayloadType",
+                "name": "Conversation",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "messageEdge",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "MessageEdge",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -35607,49 +35676,6 @@
                 "kind": "SCALAR",
                 "name": "String",
                 "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
-          "name": "MessagePayloadType",
-          "description": "Expected payload from a successful message post",
-          "fields": [
-            {
-              "name": "id",
-              "description": "Impulse id.",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "radiation_message_id",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
               },
               "isDeprecated": false,
               "deprecationReason": null

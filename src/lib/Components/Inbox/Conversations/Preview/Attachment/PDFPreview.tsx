@@ -47,7 +47,7 @@ export const PDFPreview: React.SFC<Props> = ({ attachment, onSelected }) =>
 export default Relay.createContainer(PDFPreview, {
   fragments: {
     attachment: () => Relay.QL`
-      fragment on AttachmentType {
+      fragment on Attachment {
         file_name
         ${AttachmentPreview.getFragment("attachment")}
       }

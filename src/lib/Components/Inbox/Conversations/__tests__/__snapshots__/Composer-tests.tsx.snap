@@ -32,6 +32,7 @@ exports[`looks correct when rendered 1`] = `
     }
   >
     <TextInput
+      editable={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}

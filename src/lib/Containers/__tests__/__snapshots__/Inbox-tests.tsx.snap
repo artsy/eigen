@@ -157,6 +157,7 @@ exports[`renders correctly 1`] = `
                         "fontSize": 16,
                         "textAlign": "left",
                       },
+                      undefined,
                       Object {},
                       Object {
                         "fontFamily": "AGaramondPro-Regular",
@@ -178,6 +179,7 @@ exports[`renders correctly 1`] = `
                         "fontSize": 16,
                         "textAlign": "left",
                       },
+                      undefined,
                       Object {},
                       Object {
                         "fontFamily": "AGaramondPro-Regular",
@@ -314,6 +316,7 @@ exports[`renders correctly 1`] = `
                         "fontSize": 16,
                         "textAlign": "left",
                       },
+                      undefined,
                       Object {},
                       Object {
                         "fontFamily": "AGaramondPro-Regular",
@@ -335,6 +338,7 @@ exports[`renders correctly 1`] = `
                         "fontSize": 16,
                         "textAlign": "left",
                       },
+                      undefined,
                       Object {},
                       Object {
                         "fontFamily": "AGaramondPro-Regular",
@@ -471,6 +475,7 @@ exports[`renders correctly 1`] = `
                         "fontSize": 16,
                         "textAlign": "left",
                       },
+                      undefined,
                       Object {},
                       Object {
                         "fontFamily": "AGaramondPro-Regular",
@@ -492,6 +497,7 @@ exports[`renders correctly 1`] = `
                         "fontSize": 16,
                         "textAlign": "left",
                       },
+                      undefined,
                       Object {},
                       Object {
                         "fontFamily": "AGaramondPro-Regular",

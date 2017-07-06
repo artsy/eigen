@@ -13,6 +13,8 @@ if (Emission && Emission.useStagingEnvironment) {
   gravityURL = "https://api.artsy.net"
 }
 
+metaphysicsURL = "http://localhost:5001"
+
 export { metaphysicsURL, gravityURL }
 
 if (Emission) {

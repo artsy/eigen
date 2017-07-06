@@ -1,9 +1,11 @@
+import * as moment from "moment"
 import * as React from "react"
 import * as Relay from "react-relay"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
 import { FlatList, ImageURISource, ViewProperties } from "react-native"
+import ReversedFlatList from "react-native-reversed-flat-list"
 
 import styled from "styled-components/native"
 import colors from "../../data/colors"
@@ -61,7 +63,24 @@ const ComposerContainer = styled.View`
   marginLeft: 20
 `
 
-export class Conversation extends React.Component<RelayProps, any> {
+const PAGE_SIZE = 100
+
+interface Props extends RelayProps {
+  relay?: Relay.RelayProp
+}
+
+interface State {
+  sendingMessage: boolean
+}
+
+export class Conversation extends React.Component<Props, State> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      sendingMessage: false,
+    }
+  }
+
   renderMessage({ item }) {
     const me = this.props.me
     const artwork = me.conversation.artworks[0]
@@ -89,11 +108,12 @@ export class Conversation extends React.Component<RelayProps, any> {
   render() {
     const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
-    const messages = this.props.me.conversation.messages.edges.map(({ node }, index) => {
-      node.first_message = index === 0
-      node.key = node.id
-      return node
+    const artwork = conversation.artworks[0]
+    const messages = conversation.messages.edges.map((edge, index) => {
+      return { first_message: index === 0, key: index, ...edge.node }
     })
+    const lastMessage = messages[messages.length - 1]
+
     return (
       <Container>
         <Header>
@@ -105,28 +125,129 @@ export class Conversation extends React.Component<RelayProps, any> {
             <PlaceholderView />
           </HeaderTextContainer>
         </Header>
-        <MessagesList
+        <ReversedFlatList
           data={messages}
           renderItem={this.renderMessage.bind(this)}
+          length={messages.length}
           ItemSeparatorComponent={DottedBorder}
         />
         <ComposerContainer>
-          <Composer />
+          <Composer
+            disabled={this.state.sendingMessage}
+            onSubmit={text => {
+              this.props.relay.commitUpdate(
+                new SendConversationMessageMutation({
+                  body_text: text,
+                  reply_to_message_id: lastMessage.impulse_id,
+                  conversation: this.props.me.conversation as any,
+                }),
+                {
+                  onFailure: transaction => {
+                    // TODO Actually handle errors
+                    console.error(transaction.getError())
+                    this.setState({ sendingMessage: false })
+                  },
+                  onSuccess: () => {
+                    this.setState({ sendingMessage: false })
+                  },
+                }
+              )
+              this.setState({ sendingMessage: true })
+            }}
+          />
         </ComposerContainer>
       </Container>
     )
   }
 }
 
+interface MutationProps {
+  body_text: string
+  reply_to_message_id: string
+  conversation: {
+    __id: string
+    id: string
+    from: {
+      email: string
+    }
+  }
+}
+
+class SendConversationMessageMutation extends Relay.Mutation<MutationProps, any> {
+  static fragments = {
+    conversation: () => Relay.QL`
+      fragment on Conversation {
+        __id
+        id
+        from {
+          email
+        }
+      }
+    `,
+  }
+
+  getMutation() {
+    return Relay.QL`mutation { sendConversationMessage }`
+  }
+
+  getVariables() {
+    return {
+      id: this.props.conversation.id,
+      from: this.props.conversation.from.email,
+      body_text: this.props.body_text,
+      reply_to_message_id: this.props.reply_to_message_id,
+    }
+  }
+
+  getFatQuery() {
+    return Relay.QL`
+      fragment on SendConversationMessageMutationPayload {
+        messageEdge
+        conversation {
+          messages
+        }
+      }
+    `
+  }
+
+  getConfigs() {
+    return [
+      {
+        type: "RANGE_ADD",
+        parentName: "conversation",
+        parentID: this.props.conversation.__id,
+        connectionName: "messages",
+        edgeName: "messageEdge",
+        rangeBehaviors: {
+          "": "append",
+        },
+      },
+    ]
+  }
+
+  getOptimisticResponse() {
+    return {
+      messageEdge: {
+        node: {
+          raw_text: this.props.body_text,
+          is_from_user: true,
+          created_at: new Date().toISOString(),
+          attachments: [],
+        },
+      },
+    }
+  }
+}
+
 export default Relay.createContainer(Conversation, {
   initialVariables: {
+    pageSize: PAGE_SIZE,
     conversationID: null,
   },
   fragments: {
     me: () => Relay.QL`
       fragment on Me {
         conversation(id: $conversationID) {
-          id
           from {
             name
             email
@@ -136,22 +257,23 @@ export default Relay.createContainer(Conversation, {
             name
             initials
           }
-          messages(first: 10) {
+          messages(first: $pageSize) {
             pageInfo {
               hasNextPage
             }
             edges {
               node {
-                id
+                impulse_id
                 is_from_user
                 ${Message.getFragment("message")}
               }
             }
           }
-          artworks @relay (plural: true) {
+          artworks {
             href
             ${ArtworkPreview.getFragment("artwork")}
           }
+          ${SendConversationMessageMutation.getFragment("conversation")}
         }
       }
     `,
@@ -162,7 +284,6 @@ interface RelayProps {
   me: {
     initials: string
     conversation: {
-      id: string
       from: {
         name: string
         email: string
@@ -172,13 +293,18 @@ interface RelayProps {
         name: string
         initials: string
       }
-      artworks: any[]
+      artworks: {
+        href: string
+      }
       messages: {
         pageInfo?: {
           hasNextPage: boolean
         }
         edges: Array<{
-          node: any | null
+          node: {
+            impulse_id: string
+            is_from_user: boolean
+          } | null
         }>
       }
     }
