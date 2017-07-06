@@ -51,7 +51,7 @@ const DottedBorder = styled.View`
 
 `
 
-const MessagesList = styled(FlatList)`
+const MessagesList = styled(FlatList) `
   marginTop: 10
 `
 
@@ -95,25 +95,24 @@ export class Conversation extends React.Component<RelayProps, any> {
       return node
     })
     return (
-      <Container>
-        <Header>
-          <HeaderTextContainer>
-            <BackButtonPlaceholder source={chevron} />
-            <SmallHeadline>
-              {partnerName}
-            </SmallHeadline>
-            <PlaceholderView />
-          </HeaderTextContainer>
-        </Header>
-        <MessagesList
-          data={messages}
-          renderItem={this.renderMessage.bind(this)}
-          ItemSeparatorComponent={DottedBorder}
-        />
-        <ComposerContainer>
-          <Composer />
-        </ComposerContainer>
-      </Container>
+      <Composer>
+        <Container>
+          <Header>
+            <HeaderTextContainer>
+              <BackButtonPlaceholder source={chevron} />
+              <SmallHeadline>
+                {partnerName}
+              </SmallHeadline>
+              <PlaceholderView />
+            </HeaderTextContainer>
+          </Header>
+          <MessagesList
+            data={messages}
+            renderItem={this.renderMessage.bind(this)}
+            ItemSeparatorComponent={DottedBorder}
+          />
+        </Container>
+      </Composer>
     )
   }
 }

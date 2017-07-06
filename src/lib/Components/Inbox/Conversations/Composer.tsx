@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Keyboard, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback } from "react-native"
+import { Keyboard, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback, View } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
@@ -10,15 +10,21 @@ interface ContainerProps {
   active: boolean
 }
 
+const ComposerContainer = styled.View`
+  padding-top: 5px;
+  margin-right: 20px;
+  margin-left: 20px;
+`
+
 const Container = styled.View`
-  flexDirection: row
-  justifyContent: space-between
-  alignItems: center
-  borderWidth: 1
-  borderColor: ${colors["gray-regular"]}
-  borderRadius: 3
-  marginBottom: 20
-  backgroundColor: ${(p: ContainerProps) => (p.active ? "white" : colors["gray-light"])}
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-width: 1;
+  border-color: ${colors["gray-regular"]};
+  border-radius: 3;
+  margin: 0 20px 20px;
+  background-color: ${(p: ContainerProps) => (p.active ? "white" : colors["gray-light"])};
 `
 
 interface StyledSendButtonProps {
@@ -74,7 +80,8 @@ export default class Composer extends React.Component<Props, State> {
     }
 
     return (
-      <KeyboardAvoidingView behavior={"padding"}>
+      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={20} style={{ flex: 1 }}>
+        {this.props.children}
         <Container active={this.state.active}>
           <TextInput
             placeholder={"Reply..."}
