@@ -33,6 +33,7 @@
 -   Adds Conversation, Composer, and Message components - sarah
 -   Adds Inbox view with real data - luc
 -   Adds Inquiry modal - maxim
+-   Fixes composer to stay above keyboard - luc
 
 ###### Consignments
 
