@@ -82,14 +82,18 @@ export class Conversation extends React.Component<Props, State> {
   }
 
   renderMessage({ item }) {
-    const artwork = this.props.me.conversation.artworks[0]
-    const conversation = this.props.me.conversation
+    const me = this.props.me
+    const artwork = me.conversation.artworks[0]
+    const conversation = me.conversation
     const partnerName = conversation.to.name
+    const senderName = item.is_from_user ? conversation.from.name : partnerName
+    const initials = item.is_from_user ? conversation.from.initials : conversation.to.initials
+
     return (
       <Message
         message={item}
-        partnerName={partnerName}
-        userName={conversation.from.name}
+        senderName={senderName}
+        initials={initials}
         artworkPreview={
           item.first_message &&
           <ArtworkPreview
@@ -246,9 +250,12 @@ export default Relay.createContainer(Conversation, {
         conversation(id: $conversationID) {
           from {
             name
+            email
+            initials
           }
           to {
             name
+            initials
           }
           messages(first: $pageSize) {
             pageInfo {
@@ -257,6 +264,7 @@ export default Relay.createContainer(Conversation, {
             edges {
               node {
                 impulse_id
+                is_from_user
                 ${Message.getFragment("message")}
               }
             }
@@ -273,22 +281,30 @@ export default Relay.createContainer(Conversation, {
 })
 
 interface RelayProps {
-  relay: any
   me: {
+    initials: string
     conversation: {
       from: {
         name: string
+        email: string
+        initials: string
       }
       to: {
         name: string
+        initials: string
       }
-      artworks: any[]
+      artworks: {
+        href: string
+      }
       messages: {
         pageInfo?: {
           hasNextPage: boolean
         }
         edges: Array<{
-          node: { impulse_id: string } | null
+          node: {
+            impulse_id: string
+            is_from_user: boolean
+          } | null
         }>
       }
     }

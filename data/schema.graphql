@@ -1529,6 +1529,32 @@ type CollectorProfileType {
   ): String
 }
 
+# The participant who started the conversation, currently always a User
+type ConversationInitiatorType {
+  # Impulse id.
+  id: String!
+
+  # The type of participant, e.g. Partner or User
+  type: String!
+  name: String!
+  email: String!
+  initials(length: Int = 3): String
+}
+
+# The participant responding to the conversation, currently always a Partner
+type ConversationResponderType {
+  # Impulse id.
+  id: String!
+
+  # The type of participant, e.g. Partner or User
+  type: String!
+  name: String!
+
+  # An array of Impulse IDs that correspond to all email addresses that messages should be sent to
+  reply_to_impulse_ids: [String]!
+  initials(length: Int = 3): String
+}
+
 # A conversation.
 type Conversation implements Node {
   # A globally unique ID.
@@ -2746,6 +2772,7 @@ type Me implements Node {
     sale_id: String
   ): [LotStanding]
   name: String
+  initials(length: Int = 3): String
 
   # A list of feed items, indicating published artworks (grouped by date and artists).
   notifications_connection(after: String, first: Int, before: String, last: Int): NotificationsFeedItemConnection
@@ -3017,7 +3044,7 @@ type PartnerCategory {
     #
     #         Only return partners of the specified partner categories.
     #         Accepts list of slugs.
-    #       
+    #
     partner_categories: [String]
     size: Int
     sort: PartnersSortType
@@ -3476,7 +3503,7 @@ type Query {
     #
     #         Only return partners of the specified partner categories.
     #         Accepts list of slugs.
-    #       
+    #
     partner_categories: [String]
     size: Int
     sort: PartnersSortType
@@ -3620,7 +3647,7 @@ type Query {
     #
     #         Only return partners of the specified partner categories.
     #         Accepts list of slugs.
-    #       
+    #
     partner_categories: [String]
     size: Int
     sort: PartnersSortType
@@ -4412,7 +4439,7 @@ type Viewer {
     #
     #         Only return partners of the specified partner categories.
     #         Accepts list of slugs.
-    #       
+    #
     partner_categories: [String]
     size: Int
     sort: PartnersSortType
@@ -4556,7 +4583,7 @@ type Viewer {
     #
     #         Only return partners of the specified partner categories.
     #         Accepts list of slugs.
-    #       
+    #
     partner_categories: [String]
     size: Int
     sort: PartnersSortType

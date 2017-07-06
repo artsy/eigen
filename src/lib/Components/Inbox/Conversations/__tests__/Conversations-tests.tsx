@@ -11,6 +11,7 @@ it("looks correct when rendered", () => {
 })
 
 const meProps = {
+  initials: "JC",
   conversations: {
     edges: [
       {
