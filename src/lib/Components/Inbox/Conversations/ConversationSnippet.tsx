@@ -166,7 +166,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
 export default Relay.createContainer(ConversationSnippet, {
   fragments: {
     conversation: () => Relay.QL`
-      fragment on ConversationType {
+      fragment on Conversation {
         id
         from {
           name

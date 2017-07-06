@@ -118,7 +118,7 @@ export class Message extends React.Component<Props, any> {
 export default Relay.createContainer(Message, {
   fragments: {
     message: () => Relay.QL`
-      fragment on MessageType {
+      fragment on Message {
         raw_text
         created_at
         is_from_user

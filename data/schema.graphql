@@ -10,32 +10,6 @@ type AggregationCount {
   sortable_id: String
 }
 
-input AppendConversationThreadInput {
-  # The id of the conversation to be updated
-  id: String!
-
-  # The email address of the message sender
-  from: String!
-  body_text: String!
-
-  # The message being replied to
-  reply_to_message_id: String!
-  clientMutationId: String
-}
-
-type AppendConversationThreadMutationPayload {
-  conversation: ConversationType
-
-  # A globally unique ID.
-  __id: ID!
-  messageEdge: MessageTypeEdge
-}
-
-type AppendConversationThreadPayload {
-  payload: AppendConversationThreadMutationPayload
-  clientMutationId: String
-}
-
 type Article implements Node {
   # A globally unique ID.
   __id: ID!
@@ -1332,7 +1306,7 @@ enum ArtworkSorts {
   TITLE_DESC
 }
 
-type AttachmentType {
+type Attachment {
   # Attachment id.
   id: String!
 
@@ -1555,32 +1529,11 @@ type CollectorProfileType {
   ): String
 }
 
-# The participant who started the conversation, currently always a User
-type ConversationInitiatorType {
-  # Impulse id.
-  id: String!
-
-  # The type of participant, e.g. Partner or User
-  type: String!
-  name: String!
-  email: String!
-}
-
-# The participant responding to the conversation, currently always a Partner
-type ConversationResponderType {
-  # Impulse id.
-  id: String!
-
-  # The type of participant, e.g. Partner or User
-  type: String!
-  name: String!
-
-  # An array of Impulse IDs that correspond to all email addresses that messages should be sent to
-  reply_to_impulse_ids: [String]!
-}
-
 # A conversation.
-type ConversationType {
+type Conversation implements Node {
+  # A globally unique ID.
+  __id: ID!
+
   # Impulse id.
   id: String
 
@@ -1588,10 +1541,10 @@ type ConversationType {
   inquiry_id: String
 
   # The participant who initiated the conversation
-  from: ConversationInitiatorType!
+  from: ConversationInitiator!
 
   # The participant(s) responding to the conversation
-  to: ConversationResponderType!
+  to: ConversationResponder!
   buyer_outcome: String
   buyer_outcome_at(
     convert_to_utc: Boolean
@@ -1620,25 +1573,49 @@ type ConversationType {
   artworks: [Artwork]
 
   # A connection for all messages in a single conversation
-  messages(after: String, first: Int, before: String, last: Int): MessageTypeConnection
+  messages(after: String, first: Int, before: String, last: Int): MessageConnection
 }
 
 # A connection to a list of items.
-type ConversationTypeConnection {
+type ConversationConnection {
   # Information to aid in pagination.
   pageInfo: PageInfo!
 
   # A list of edges.
-  edges: [ConversationTypeEdge]
+  edges: [ConversationEdge]
 }
 
 # An edge in a connection.
-type ConversationTypeEdge {
+type ConversationEdge {
   # The item at the end of the edge
-  node: ConversationType
+  node: Conversation
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+# The participant who started the conversation, currently always a User
+type ConversationInitiator {
+  # Impulse id.
+  id: String!
+
+  # The type of participant, e.g. Partner or User
+  type: String!
+  name: String!
+  email: String!
+}
+
+# The participant responding to the conversation, currently always a Partner
+type ConversationResponder {
+  # Impulse id.
+  id: String!
+
+  # The type of participant, e.g. Partner or User
+  type: String!
+  name: String!
+
+  # An array of Impulse IDs that correspond to all email addresses that messages should be sent to
+  reply_to_impulse_ids: [String]!
 }
 
 type coordinates {
@@ -2734,8 +2711,8 @@ type Me implements Node {
   conversation(
     # The ID of the Conversation
     id: String!
-  ): ConversationType
-  conversations(after: String, first: Int, before: String, last: Int): ConversationTypeConnection
+  ): Conversation
+  conversations(after: String, first: Int, before: String, last: Int): ConversationConnection
   created_at(
     convert_to_utc: Boolean
     format: String
@@ -2811,12 +2788,15 @@ type Me implements Node {
 }
 
 # A message in a conversation.
-type MessageType implements Node {
+type Message implements Node {
   # A globally unique ID.
   __id: ID!
 
   # Impulse message id.
   id: String!
+
+  # Impulse message id.
+  impulse_id: String!
 
   # True if message is from the user to the partner.
   is_from_user: Boolean
@@ -2824,7 +2804,7 @@ type MessageType implements Node {
 
   # Full unsanitized text.
   raw_text: String!
-  attachments: [AttachmentType]
+  attachments: [Attachment]
   created_at(
     convert_to_utc: Boolean
     format: String
@@ -2835,18 +2815,18 @@ type MessageType implements Node {
 }
 
 # A connection to a list of items.
-type MessageTypeConnection {
+type MessageConnection {
   # Information to aid in pagination.
   pageInfo: PageInfo!
 
   # A list of edges.
-  edges: [MessageTypeEdge]
+  edges: [MessageEdge]
 }
 
 # An edge in a connection.
-type MessageTypeEdge {
+type MessageEdge {
   # The item at the end of the edge
-  node: MessageType
+  node: Message
 
   # A cursor for use in pagination
   cursor: String!
@@ -2855,10 +2835,10 @@ type MessageTypeEdge {
 type Mutation {
   followArtist(input: FollowArtistInput!): FollowArtistPayload
   updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
-  updateConversation(input: UpdateConversationInput!): UpdateConversationPayload
+  updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
 
   # Appending a message to a conversation thread
-  appendConversationThread(input: AppendConversationThreadInput!): AppendConversationThreadPayload
+  sendConversationMessage(input: SendConversationMessageMutationInput!): SendConversationMessageMutationPayload
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
 }
 
@@ -4083,6 +4063,25 @@ type SearchResult {
   type: String
 }
 
+input SendConversationMessageMutationInput {
+  # The id of the conversation to be updated
+  id: String!
+
+  # The email address of the message sender
+  from: String!
+  body_text: String!
+
+  # The message being replied to
+  reply_to_message_id: String!
+  clientMutationId: String
+}
+
+type SendConversationMessageMutationPayload {
+  conversation: Conversation
+  messageEdge: MessageEdge
+  clientMutationId: String
+}
+
 type Show implements Node {
   # A globally unique ID.
   __id: ID!
@@ -4324,14 +4323,14 @@ type UpdateCollectorProfilePayload {
   clientMutationId: String
 }
 
-input UpdateConversationInput {
+input UpdateConversationMutationInput {
   buyer_outcome: BuyerOutcomeTypes!
   ids: [String]
   clientMutationId: String
 }
 
-type UpdateConversationPayload {
-  conversations: [ConversationType]
+type UpdateConversationMutationPayload {
+  conversations: [Conversation]
   clientMutationId: String
 }
 

@@ -24,7 +24,7 @@ export const ImagePreview: React.SFC<Props> = ({ attachment, onSelected }) =>
 export default Relay.createContainer(ImagePreview, {
   fragments: {
     attachment: () => Relay.QL`
-      fragment on AttachmentType {
+      fragment on Attachment {
         download_url
         ${AttachmentPreview.getFragment("attachment")}
       }
