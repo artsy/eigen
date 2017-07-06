@@ -52,6 +52,7 @@ interface Props extends RelayProps {
   senderName: string
   initials?: string
   artworkPreview?: JSX.Element
+  relay?: Relay.RelayProp
 }
 
 export class Message extends React.Component<Props, any> {
@@ -80,29 +81,31 @@ export class Message extends React.Component<Props, any> {
   }
 
   render() {
-    const date = moment(this.props.message.created_at).fromNow(true)
+    const { artworkPreview, initials, message, senderName } = this.props
+    const isSent = this.props.relay ? !this.props.relay.hasOptimisticUpdate(message) : true
 
     return (
       <Container>
-        <Avatar isUser={this.props.message.is_from_user} initials={this.props.initials} />
+        <Avatar isUser={message.is_from_user} initials={initials} />
         <TextContainer>
           <Header>
             <SenderName>
-              {this.props.senderName}
+              {senderName}
             </SenderName>
-            <MetadataText>
-              {date}
-            </MetadataText>
+            {isSent &&
+              <MetadataText>
+                {moment(message.created_at).fromNow(true)}
+              </MetadataText>}
           </Header>
-          {this.props.artworkPreview &&
+          {artworkPreview &&
             <ArtworkPreviewContainer>
-              {this.props.artworkPreview}
+              {artworkPreview}
             </ArtworkPreviewContainer>}
 
-          {this.renderAttachmentPreviews(this.props.message.attachments)}
+          {this.renderAttachmentPreviews(message.attachments)}
 
-          <BodyText>
-            {this.props.message.raw_text.split("\n\nAbout")[0]}
+          <BodyText disabled={!isSent}>
+            {message.raw_text.split("\n\nAbout")[0]}
           </BodyText>
         </TextContainer>
       </Container>
@@ -113,14 +116,15 @@ export class Message extends React.Component<Props, any> {
 export default Relay.createContainer(Message, {
   fragments: {
     message: () => Relay.QL`
-      fragment on MessageType {
+      fragment on Message {
         raw_text
         created_at
         is_from_user
         attachments {
+          id
           content_type
           download_url
-          id
+          file_name
           ${ImagePreview.getFragment("attachment")}
           ${PDFPreview.getFragment("attachment")}
         }

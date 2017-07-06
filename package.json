@@ -18,9 +18,8 @@
     "danger": "danger",
     "start": "npm run clean-example && npm run start-servers",
     "start-servers": "concurrently --kill-others 'npm run start-packager' 'npm run storybook'",
-    "start-packager": "node node_modules/react-native/local-cli/cli.js start",
+    "start-packager": "env REACT_DEBUGGER=\"$([ -d '/Applications/React Native Debugger.app' ] && echo \"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\")\" node node_modules/react-native/local-cli/cli.js start",
     "storybook": "storybook start -p 9001 -c .storybook --skip-packager",
-    "rndebugger": "REACT_DEBUGGER=\"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\" npm start",
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
     "open-sim": "open -a Simulator",
     "open-emission": "xcrun simctl launch booted net.artsy.Emission",
@@ -36,23 +35,14 @@
   },
   "jest": {
     "preset": "react-native",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "/__tests__/.*-tests.(ts|tsx|js)$",
-    "testPathIgnorePatterns": [
-      "\\.snap$",
-      "<rootDir>/node_modules/"
-    ],
-    "setupFiles": [
-      "./src/setupJest.ts"
-    ],
+    "testPathIgnorePatterns": ["\\.snap$", "<rootDir>/node_modules/"],
+    "setupFiles": ["./src/setupJest.ts"],
     "cacheDirectory": ".jest/cache"
   },
   "graphql": {
@@ -63,22 +53,14 @@
     "type": "git",
     "url": "git+https://github.com/artsy/emission.git"
   },
-  "keywords": [
-    "artsy",
-    "react",
-    "react-native"
-  ],
+  "keywords": ["artsy", "react", "react-native"],
   "author": "Eloy Durán",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/artsy/emission/issues"
   },
   "homepage": "https://github.com/artsy/emission#readme",
-  "files": [
-    "index.js",
-    "data",
-    "lib"
-  ],
+  "files": ["index.js", "data", "lib"],
   "dependencies": {
     "lodash": "^4.17.4",
     "moment": "latest",
@@ -86,6 +68,7 @@
     "react": "16.0.0-alpha.12",
     "react-native": "next",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
+    "react-native-reversed-flat-list": "^1.0.1",
     "react-native-sentry": "^0.11.8",
     "react-relay": "https://github.com/alloy/relay/releases/download/react-relay-0.9.3%2Breact-native-0.45-fix-2/react-relay-0.9.3.react-native-0.45-fix-2.tgz",
     "remove-markdown": "0.1.0",
@@ -126,10 +109,6 @@
     "babel-relay-plugin": "^0.9.0"
   },
   "lint-staged": {
-    "*.@(ts|tsx)": [
-      "tslint --fix",
-      "npm run prettier-write --",
-      "git add"
-    ]
+    "*.@(ts|tsx)": ["tslint --fix", "npm run prettier-write --", "git add"]
   }
 }

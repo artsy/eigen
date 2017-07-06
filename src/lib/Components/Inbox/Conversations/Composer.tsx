@@ -33,6 +33,7 @@ const SendButton = styled.Text`
 `
 
 interface Props {
+  disabled?: boolean
   onSubmit?: (text: string) => any
 }
 
@@ -90,6 +91,7 @@ export default class Composer extends React.Component<Props, State> {
             ref={input => (this.input = input)}
             style={inputStyles}
             multiline={true}
+            editable={!this.props.disabled}
           />
           <TouchableWithoutFeedback onPress={this.submitText.bind(this)}>
             <SendButton containsText={!!(this.state.text && this.state.text.length)}>SEND</SendButton>

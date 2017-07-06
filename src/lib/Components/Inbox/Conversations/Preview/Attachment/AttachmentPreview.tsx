@@ -25,7 +25,7 @@ export const AttachmentPreview: React.SFC<Props> = ({ attachment, children, onSe
 export default Relay.createContainer(AttachmentPreview, {
   fragments: {
     attachment: () => Relay.QL`
-      fragment on AttachmentType {
+      fragment on Attachment {
         id
       }
     `,

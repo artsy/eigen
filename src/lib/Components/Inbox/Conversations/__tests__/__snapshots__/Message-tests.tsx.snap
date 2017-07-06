@@ -147,6 +147,7 @@ exports[`looks correct when rendered 1`] = `
             "fontSize": 16,
             "textAlign": "left",
           },
+          false,
           Object {},
           Object {
             "fontFamily": "AGaramondPro-Regular",
