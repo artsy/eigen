@@ -1553,6 +1553,7 @@ type ConversationInitiatorType {
   type: String!
   name: String!
   email: String!
+  initials(length: Int = 3): String
 }
 
 # The participant responding to the conversation, currently always a Partner
@@ -1566,6 +1567,7 @@ type ConversationResponderType {
 
   # An array of Impulse IDs that correspond to all email addresses that messages should be sent to
   reply_to_impulse_ids: [String]!
+  initials(length: Int = 3): String
 }
 
 # A conversation.
@@ -2758,6 +2760,7 @@ type Me implements Node {
     sale_id: String
   ): [LotStanding]
   name: String
+  initials(length: Int = 3): String
 
   # A list of feed items, indicating published artworks (grouped by date and artists).
   notifications_connection(after: String, first: Int, before: String, last: Int): NotificationsFeedItemConnection

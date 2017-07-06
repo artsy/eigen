@@ -4,6 +4,7 @@ import * as Relay from "react-relay"
 
 import { BodyText, MetadataText, SmallHeadline } from "../Typography"
 
+import Avatar from "./Avatar"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
 import PDFPreview from "./Preview/Attachment/PDFPreview"
 
@@ -28,13 +29,6 @@ const Container = styled(HorizontalLayout)`
 
 `
 
-const Avatar = styled.View`
-  height: 20
-  width: 20
-  borderRadius: 20
-  backgroundColor: ${colors["gray-regular"]}
-`
-
 const Header = styled(HorizontalLayout)`
   alignSelf: stretch
   marginBottom: 10
@@ -56,6 +50,7 @@ const PDFPreviewContainer = styled.View`marginBottom: 10;`
 
 interface Props extends RelayProps {
   senderName: string
+  initials?: string
   artworkPreview?: JSX.Element
 }
 
@@ -89,7 +84,7 @@ export class Message extends React.Component<Props, any> {
 
     return (
       <Container>
-        <Avatar />
+        <Avatar isUser={this.props.message.is_from_user} initials={this.props.initials} />
         <TextContainer>
           <Header>
             <SenderName>

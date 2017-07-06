@@ -25,14 +25,34 @@ exports[`looks correct when rendered 1`] = `
       Array [
         Object {
           "backgroundColor": "#e5e5e5",
-          "borderRadius": 20,
-          "height": 20,
-          "width": 20,
+          "borderRadius": 15,
+          "height": 30,
+          "width": 30,
         },
         undefined,
       ]
     }
-  />
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "alignSelf": "center",
+            "color": "white",
+            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontSize": 10,
+            "marginTop": 8,
+          },
+          undefined,
+        ]
+      }
+      user={true}
+    />
+  </View>
   <View
     style={
       Array [

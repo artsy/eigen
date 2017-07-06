@@ -16,6 +16,7 @@
 
 ###### Messaging
 
+-   Adds avatar component - maxim
 -   Adds multiple attachment support - matt
 -   Adds PDF Preview for attachments - matt
 -   Fixes pagination for Conversations - luc
