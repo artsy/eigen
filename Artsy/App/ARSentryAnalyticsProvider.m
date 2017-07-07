@@ -25,10 +25,13 @@
 
 - (void)identifyUserWithID:(NSString *)userID andEmailAddress:(NSString *)email
 {
-    SentryUser *user = [[SentryUser alloc] initWithUserId:userID];
-    user.email = email;
-    user.username = email;
-    SentryClient.sharedClient.user = user;
+    if (userID) {
+        NSParameterAssert(email);
+        SentryUser *user = [[SentryUser alloc] initWithUserId:userID];
+        user.email = email;
+        user.username = email;
+        SentryClient.sharedClient.user = user;
+    }
 }
 
 // An event in Sentry terms is a crash, so in this case we're sending along events from analytics as breadcrumbs
