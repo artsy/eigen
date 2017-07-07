@@ -1,5 +1,5 @@
 upcoming:
-    version: 3.2.2
+    version: 3.3.0
     details: Scope not known yet
     dev:
       - Removes compiler warnings and static analyzer warnings - ash
