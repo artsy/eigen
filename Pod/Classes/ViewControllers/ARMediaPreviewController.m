@@ -1,5 +1,7 @@
 #import "ARMediaPreviewController.h"
 
+#import <Artsy+UIColors/UIColor+ArtsyColors.h>
+
 @import MobileCoreServices;
 @import QuickLook;
 @import ObjectiveC;
@@ -56,6 +58,7 @@ static char kARMediaPreviewControllerAssociatedObject;
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         UIProgressView *progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+        progressView.tintColor = [UIColor artsyPurpleRegular];
         self.progressView = progressView;
         CGRect frame = progressView.bounds;
         frame.size.width = CGRectGetWidth(self.originatingView.bounds);
