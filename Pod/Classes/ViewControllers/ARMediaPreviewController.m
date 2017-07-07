@@ -1,6 +1,10 @@
 #import "ARMediaPreviewController.h"
 
+#if __has_include(<Artsy+UIColors/UIColor+ArtsyColors.h>)
 #import <Artsy+UIColors/UIColor+ArtsyColors.h>
+#else
+@import Artsy_UIColors;
+#endif
 
 @import MobileCoreServices;
 @import QuickLook;

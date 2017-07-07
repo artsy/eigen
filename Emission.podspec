@@ -25,6 +25,7 @@ Pod::Spec.new do |s|
   s.source_files   = 'Pod/Classes/**/*.{h,m}'
   s.resources      = 'Pod/Assets/{Emission.js,assets}'
 
+  s.dependency 'Artsy+UIColors'
   s.dependency 'Artsy+UIFonts', '>= 3.0.0'
   s.dependency 'Extraction', '>= 1.2.1'
 
