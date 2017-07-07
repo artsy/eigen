@@ -20,14 +20,22 @@
 {
     [super viewWillAppear:animated];
 
+    int somevar __attribute__((unused));
+
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-variable"
     RCTRootView *rootView = self.view.subviews.firstObject;
+    #pragma clang diagnostic pop
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
 
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-variable"
     RCTRootView *rootView = self.view.subviews.firstObject;
+    #pragma clang diagnostic pop
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
