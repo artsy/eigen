@@ -3,6 +3,9 @@
 ###### Messaging
 
 -   Show progress indicator during downloading of attachment - alloy
+-   Force fetch conversation on each load - alloy
+-   Make pull to refresh in the Inbox work - luc
+-   Don’t show pull to refresh control when loading the Inbox view - luc
 
 ### 1.4.0-beta.1
 
