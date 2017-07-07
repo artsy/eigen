@@ -57,7 +57,9 @@ interface Props extends RelayProps {
 
 export class Message extends React.Component<Props, any> {
   renderAttachmentPreviews(attachments: Props["message"]["attachments"]) {
-    const previewAttachment = attachmentID => {
+    // This function does not use the arrow syntax, because it shouldn’t be force bound to this component. Instead, it
+    // gets bound to the AttachmentPreview component instance that’s touched, so we can pass `this` to `findNodeHandle`.
+    const previewAttachment = function(attachmentID) {
       const attachment = attachments.find(({ id }) => id === attachmentID)
       SwitchBoard.presentMediaPreviewController(this, attachment.download_url, attachment.content_type, attachment.id)
     }

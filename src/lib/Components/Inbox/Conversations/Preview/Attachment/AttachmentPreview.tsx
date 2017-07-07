@@ -10,17 +10,30 @@ import fonts from "../../../../../../data/fonts"
 const Container = styled.View`flex-direction: row;`
 
 export interface AttachmentProps {
+  /**
+   * This callback is bound to the attachment preview component, meaning that `this` refers to the instance you can pass
+   * to e.g. `findNodeHandle`.
+   */
   onSelected?: (attachmentID: string) => void
 }
 
 interface Props extends AttachmentProps, RelayProps {}
 
-export const AttachmentPreview: React.SFC<Props> = ({ attachment, children, onSelected }) =>
-  <TouchableHighlight underlayColor={colors["gray-light"]} onPress={() => onSelected && onSelected(attachment.id)}>
-    <Container>
-      {children}
-    </Container>
-  </TouchableHighlight>
+export class AttachmentPreview extends React.Component<Props, null> {
+  render() {
+    const { attachment, children, onSelected } = this.props
+    return (
+      <TouchableHighlight
+        underlayColor={colors["gray-light"]}
+        onPress={onSelected && onSelected.bind(this, attachment.id)}
+      >
+        <Container>
+          {children}
+        </Container>
+      </TouchableHighlight>
+    )
+  }
+}
 
 export default Relay.createContainer(AttachmentPreview, {
   fragments: {
