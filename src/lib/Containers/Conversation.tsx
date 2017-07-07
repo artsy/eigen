@@ -102,7 +102,9 @@ export class Conversation extends React.Component<Props, State> {
   //       messages. However, with a cold Relay cache this leads to an initial double fetch, because Relay will also
   //       fetch the data before rendering the initial load.
   componentDidMount() {
-    this.props.relay.forceFetch({})
+    if (this.props.relay) {
+      this.props.relay.forceFetch({})
+    }
   }
 
   render() {
