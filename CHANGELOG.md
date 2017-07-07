@@ -1,3 +1,9 @@
+### 1.4.0-beta.2
+
+###### Messaging
+
+-   Show progress indicator during downloading of attachment - alloy
+
 ### 1.4.0-beta.1
 
 -   [dev] Moves native view controllers to use iOS7+ status bar api - ash

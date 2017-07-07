@@ -1,19 +1,20 @@
 #import "ARMediaPreviewController.h"
 
+#import <Artsy+UIColors/UIColor+ArtsyColors.h>
+
 @import MobileCoreServices;
 @import QuickLook;
 @import ObjectiveC;
 
 static char kARMediaPreviewControllerAssociatedObject;
 
-@interface ARMediaPreviewController () <UIDocumentInteractionControllerDelegate>
+@interface ARMediaPreviewController () <UIDocumentInteractionControllerDelegate, NSURLSessionDataDelegate>
 @property (copy, nonatomic, readonly) NSURL *remoteURL;
 @property (copy, nonatomic, readonly) NSString *cacheKey;
 @property (copy, nonatomic, readonly) NSString *mimeType;
-
 @property (weak, nonatomic, readonly) UIViewController *hostViewController;
 @property (weak, nonatomic, readonly) UIView *originatingView;
-
+@property (weak, nonatomic, readwrite) UIProgressView *progressView;
 @property (strong, nonatomic, readwrite) UIDocumentInteractionController *documentController;
 @end
 
@@ -35,46 +36,45 @@ static char kARMediaPreviewControllerAssociatedObject;
     return self;
 }
 
-- (void)presentPreviewAnimated:(BOOL)animated;
+- (void)presentPreview;
 {
-    __weak typeof(self) weakSelf = self;
-    dispatch_block_t showPreview = ^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        if (strongSelf) {
-            NSURL *fileURL = strongSelf.cachedFileURL;
-            strongSelf.documentController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
-            strongSelf.documentController.delegate = strongSelf;
-            [strongSelf.documentController presentPreviewAnimated:animated];
-        }
-    };
-    
     if (self.isCached) {
-        showPreview();
+        [self _presentPreview];
     } else {
-        [self downloadItem:showPreview];
+        [self downloadItemAndShowPreview];
     }
 }
 
-- (void)downloadItem:(dispatch_block_t)completion;
+- (void)_presentPreview;
 {
-    NSURL *cachedFileURL = self.cachedFileURL;
-    NSURLSessionDownloadTask *task = [[NSURLSession sharedSession] downloadTaskWithURL:self.remoteURL
-                                                                     completionHandler:^(NSURL * _Nullable location,
-                                                                                         id _,
-                                                                                         NSError * _Nullable error) {
-        if (location) {
-            StoreCacheFile(location, cachedFileURL);
-            dispatch_async(dispatch_get_main_queue(), completion);
-        } else if (error) {
-            // TODO present error
-            NSLog(@"ERROR: %@", error);
-        } else {
-            NSCAssert(NO, @"TODO: generate an error ourselves?");
-        }
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.documentController = [UIDocumentInteractionController interactionControllerWithURL:self.cachedFileURL];
+        self.documentController.delegate = self;
+        [self.documentController presentPreviewAnimated:YES];
+    });
+}
+
+- (void)downloadItemAndShowPreview;
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIProgressView *progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+        progressView.tintColor = [UIColor artsyPurpleRegular];
+        self.progressView = progressView;
+        CGRect frame = progressView.bounds;
+        frame.size.width = CGRectGetWidth(self.originatingView.bounds);
+        self.progressView.frame = frame;
+        [self.originatingView addSubview:progressView];
+    });
     
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration
+                                                          delegate:self
+                                                     delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDownloadTask *task = [session downloadTaskWithURL:self.remoteURL];
     [task resume];
 }
+
+#pragma mark - UIDocumentInteractionControllerDelegate
 
 - (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller;
 {
@@ -84,6 +84,39 @@ static char kARMediaPreviewControllerAssociatedObject;
 - (UIView *)documentInteractionControllerViewForPreview:(UIDocumentInteractionController *)controller;
 {
     return self.originatingView;
+}
+
+#pragma mark - NSURLSessionDelegate
+
+- (void)URLSession:(NSURLSession *)session
+      downloadTask:(NSURLSessionDownloadTask *)downloadTask
+      didWriteData:(int64_t)bytesWritten
+ totalBytesWritten:(int64_t)totalBytesWritten
+totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite;
+{
+    self.progressView.progress = (double)totalBytesWritten / (double)totalBytesExpectedToWrite;
+}
+
+- (void)URLSession:(NSURLSession *)session
+      downloadTask:(NSURLSessionDownloadTask *)downloadTask
+didFinishDownloadingToURL:(NSURL *)location;
+{
+    StoreCacheFile(location, self.cachedFileURL);
+}
+
+- (void)URLSession:(NSURLSession *)session
+              task:(NSURLSessionTask *)task
+didCompleteWithError:(NSError *)error;
+{
+    if (error) {
+        // TODO Present error to user?
+        NSLog(@"Failed to download attachment: %@", error);
+    }
+    
+    [self.progressView removeFromSuperview];
+    if (self.isCached) {
+        [self _presentPreview];
+    }
 }
 
 #pragma mark - associated object
