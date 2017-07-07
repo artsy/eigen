@@ -97,11 +97,12 @@ export class Conversations extends React.Component<Props, State> {
       if (readyState.done) {
         this.setState({
           fetchingNextPage: false,
+          initialLoadDone: true,
           dataSource: this.state.dataSource.cloneWithRows(this.conversations),
         })
 
         if (!this.props.me.conversations.pageInfo.hasNextPage) {
-          this.setState({ completed: true, initialLoadDone: true })
+          this.setState({ completed: true })
         }
       }
     })
