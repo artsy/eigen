@@ -1,6 +1,6 @@
 {
   "name": "emission",
-  "version": "1.4.0-beta.2",
+  "version": "1.4.0-beta.1",
   "description": "Artsy React(Native) components.",
   "main": "index.ios.js",
   "scripts": {
