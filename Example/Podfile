@@ -41,3 +41,10 @@ target 'Emission' do
                               :git => 'https://github.com/artsy/Artsy-Authentication.git',
                               :branch => 'fetch-user-details'
 end
+
+post_install do |installer|
+  emission = installer.pods_project.targets.find { |target| target.name == 'Emission' }
+  emission.build_configurations.each do |config|
+    config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = "YES"
+  end
+end
