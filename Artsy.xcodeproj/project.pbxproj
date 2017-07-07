@@ -1667,6 +1667,7 @@
 		609A82FA17A1147800AFDF13 /* ARNavigationTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTransition.m; sourceTree = "<group>"; };
 		609B3C071761F80C00953CB2 /* ARSiteHeroUnitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSiteHeroUnitView.h; sourceTree = "<group>"; };
 		609B3C081761F80C00953CB2 /* ARSiteHeroUnitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSiteHeroUnitView.m; sourceTree = "<group>"; };
+		609E03841F03FAD300CD8DB2 /* ARRootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARRootViewController.h; sourceTree = "<group>"; };
 		609F985D1AC1054D0079FE21 /* PartnerShowCoordinates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartnerShowCoordinates.h; sourceTree = "<group>"; };
 		609F985E1AC1054D0079FE21 /* PartnerShowCoordinates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartnerShowCoordinates.m; sourceTree = "<group>"; };
 		60A0AD481797FD2E00E976B7 /* ARThemedFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARThemedFactory.h; sourceTree = "<group>"; };
@@ -1808,7 +1809,6 @@
 		66A43C651CE470C400FFD6ED /* Hash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hash@2x.png"; sourceTree = "<group>"; };
 		66A43C661CE470C400FFD6ED /* Hash@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hash@3x.png"; sourceTree = "<group>"; };
 		66A43C6A1CE48FA800FFD6ED /* SearchButtonWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchButtonWhite@2x.png"; sourceTree = "<group>"; };
-		83282D751EB0D9F1006F30C2 /* ARRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRootViewController.h; sourceTree = "<group>"; };
 		833768891C80DEC700611262 /* ARWorksForYouNetworkModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouNetworkModelTests.m; sourceTree = "<group>"; };
 		833D53C51C75DFA900D63ADB /* ARWorksForYouNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWorksForYouNetworkModel.h; sourceTree = "<group>"; };
 		833D53C61C75DFA900D63ADB /* ARWorksForYouNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouNetworkModel.m; sourceTree = "<group>"; };
@@ -2095,40 +2095,40 @@
 		342F91DD9B57A51A8352877C /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				3C12144A18FD6AA9003CDC74 /* Sharing */,
+				342F9D63C266DC8B9A46A4F5 /* Emumerations */,
+				342F949FC80594AFFBBE1017 /* Errors */,
 				E667F12318EC827B00503F50 /* Logging */,
-				49473F3717C192AE004BF082 /* ARTextFieldWithPlaceholder.h */,
-				49473F3817C192AE004BF082 /* ARTextFieldWithPlaceholder.m */,
-				3CAA412D18D88F2E000EE867 /* UIViewController+InnermostTopViewController.h */,
-				3CAA412E18D88F2E000EE867 /* UIViewController+InnermostTopViewController.m */,
-				603B3AE91774A0FA00BA5BD3 /* ARNavigationController.h */,
-				603B3AEA1774A0FA00BA5BD3 /* ARNavigationController.m */,
-				54AD031F18A4FCCE0055F2D2 /* ARMenuAwareViewController.h */,
+				3C12144A18FD6AA9003CDC74 /* Sharing */,
 				60F1C50C17C0EC6A000938F7 /* ARBrowseCategoriesViewController.h */,
 				60F1C50D17C0EC6A000938F7 /* ARBrowseCategoriesViewController.m */,
 				D3F3FA1D1AAE1BFC00E88359 /* ARBrowseViewController.h */,
 				D3F3FA1E1AAE1BFC00E88359 /* ARBrowseViewController.m */,
-				83282D751EB0D9F1006F30C2 /* ARRootViewController.h */,
-				342F9D63C266DC8B9A46A4F5 /* Emumerations */,
-				342F949FC80594AFFBBE1017 /* Errors */,
-				342F9BBA54BBCF5FE29C8684 /* ARParallaxEffect.h */,
-				342F9A7210CFDD1C15CFBE3C /* ARParallaxEffect.m */,
-				342F955C47585DAE288DCC7F /* ARScrollNavigationChief.h */,
-				342F98A73E2E1162514B5A24 /* ARScrollNavigationChief.m */,
-				342F9737E2E62CEC8B68D181 /* ARFileUtils.h */,
-				342F9FEFF4A1B56EE307467B /* ARFileUtils.m */,
-				342F9B2379536051BE35B6D4 /* ARValueTransformer.h */,
-				342F90BFE6268BEBC0E7BB2E /* ARValueTransformer.m */,
-				342F94A8E1109ABC367CB751 /* ARStandardDateFormatter.h */,
-				342F9F3E8A0C15DD0DB437D1 /* ARStandardDateFormatter.m */,
-				5EBA3E811DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.h */,
-				5EBA3E821DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.m */,
 				342F96255EEC90B05A4FF213 /* ARFeedImageLoader.h */,
 				342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */,
-				342F9B088114B9396356A2FC /* ARSplitStackView.h */,
-				342F91131CCE3110E3E44E19 /* ARSplitStackView.m */,
+				342F9737E2E62CEC8B68D181 /* ARFileUtils.h */,
+				342F9FEFF4A1B56EE307467B /* ARFileUtils.m */,
+				54AD031F18A4FCCE0055F2D2 /* ARMenuAwareViewController.h */,
+				603B3AE91774A0FA00BA5BD3 /* ARNavigationController.h */,
+				603B3AEA1774A0FA00BA5BD3 /* ARNavigationController.m */,
+				342F9BBA54BBCF5FE29C8684 /* ARParallaxEffect.h */,
+				342F9A7210CFDD1C15CFBE3C /* ARParallaxEffect.m */,
+				609E03841F03FAD300CD8DB2 /* ARRootViewController.h */,
+				342F955C47585DAE288DCC7F /* ARScrollNavigationChief.h */,
+				342F98A73E2E1162514B5A24 /* ARScrollNavigationChief.m */,
 				3CFB078918EB417F00792024 /* ARSecureTextFieldWithPlaceholder.h */,
 				3CFB078A18EB417F00792024 /* ARSecureTextFieldWithPlaceholder.m */,
+				342F9B088114B9396356A2FC /* ARSplitStackView.h */,
+				342F91131CCE3110E3E44E19 /* ARSplitStackView.m */,
+				342F94A8E1109ABC367CB751 /* ARStandardDateFormatter.h */,
+				342F9F3E8A0C15DD0DB437D1 /* ARStandardDateFormatter.m */,
+				49473F3717C192AE004BF082 /* ARTextFieldWithPlaceholder.h */,
+				49473F3817C192AE004BF082 /* ARTextFieldWithPlaceholder.m */,
+				5EBA3E811DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.h */,
+				5EBA3E821DFF4CCB005B4BEE /* ARTwoWayDictionaryTransformer.m */,
+				342F9B2379536051BE35B6D4 /* ARValueTransformer.h */,
+				342F90BFE6268BEBC0E7BB2E /* ARValueTransformer.m */,
+				3CAA412D18D88F2E000EE867 /* UIViewController+InnermostTopViewController.h */,
+				3CAA412E18D88F2E000EE867 /* UIViewController+InnermostTopViewController.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
