@@ -77,11 +77,11 @@ target 'Artsy' do
   # Artsy Spec repo stuff
   pod 'Artsy+UIFonts'
   pod 'Artsy-UIButtons'
-  pod 'Artsy+UIColors' 
+  pod 'Artsy+UIColors'
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission'
+  pod 'Emission', '~> 1.4.0-beta.1'
   pod 'React/Core'
 
 
