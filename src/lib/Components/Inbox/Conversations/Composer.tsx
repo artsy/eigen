@@ -11,14 +11,14 @@ interface ContainerProps {
 }
 
 const Container = styled.View`
-  flexDirection: row
-  justifyContent: space-between
-  alignItems: center
-  borderWidth: 1
-  borderColor: ${colors["gray-regular"]}
-  borderRadius: 3
-  marginBottom: 20
-  backgroundColor: ${(p: ContainerProps) => (p.active ? "white" : colors["gray-light"])}
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-width: 1;
+  border-color: ${colors["gray-regular"]};
+  border-radius: 3;
+  margin: 0 20px 20px;
+  background-color: ${(p: ContainerProps) => (p.active ? "white" : colors["gray-light"])};
 `
 
 interface StyledSendButtonProps {
@@ -33,6 +33,7 @@ const SendButton = styled.Text`
 `
 
 interface Props {
+  disabled?: boolean
   onSubmit?: (text: string) => any
 }
 
@@ -66,15 +67,16 @@ export default class Composer extends React.Component<Props, State> {
     const inputStyles = {
       flex: 1,
       fontFamily: fonts["garamond-regular"],
-      fontSize: 12,
+      fontSize: 13,
       paddingLeft: 10,
-      paddingTop: 10,
+      paddingTop: 13,
       paddingBottom: 10,
       paddingRight: 10,
     }
 
     return (
-      <KeyboardAvoidingView behavior={"padding"}>
+      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={20} style={{ flex: 1 }}>
+        {this.props.children}
         <Container active={this.state.active}>
           <TextInput
             placeholder={"Reply..."}
@@ -89,6 +91,7 @@ export default class Composer extends React.Component<Props, State> {
             ref={input => (this.input = input)}
             style={inputStyles}
             multiline={true}
+            editable={!this.props.disabled}
           />
           <TouchableWithoutFeedback onPress={this.submitText.bind(this)}>
             <SendButton containsText={!!(this.state.text && this.state.text.length)}>SEND</SendButton>

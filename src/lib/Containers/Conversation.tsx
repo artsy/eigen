@@ -1,9 +1,11 @@
+import * as moment from "moment"
 import * as React from "react"
 import * as Relay from "react-relay"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
 import { FlatList, ImageURISource, ViewProperties } from "react-native"
+import ReversedFlatList from "react-native-reversed-flat-list"
 
 import styled from "styled-components/native"
 import colors from "../../data/colors"
@@ -55,23 +57,37 @@ const MessagesList = styled(FlatList)`
   marginTop: 10
 `
 
-const ComposerContainer = styled.View`
-  paddingTop: 5
-  marginRight: 20
-  marginLeft: 20
-`
+const PAGE_SIZE = 100
 
-export class Conversation extends React.Component<RelayProps, any> {
+interface Props extends RelayProps {
+  relay?: Relay.RelayProp
+}
+
+interface State {
+  sendingMessage: boolean
+}
+
+export class Conversation extends React.Component<Props, State> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      sendingMessage: false,
+    }
+  }
+
   renderMessage({ item }) {
-    const artwork = this.props.me.conversation.artworks[0]
-    const conversation = this.props.me.conversation
+    const me = this.props.me
+    const artwork = me.conversation.artworks[0]
+    const conversation = me.conversation
     const partnerName = conversation.to.name
     const senderName = item.is_from_user ? conversation.from.name : partnerName
+    const initials = item.is_from_user ? conversation.from.initials : conversation.to.initials
 
     return (
       <Message
         message={item}
         senderName={senderName}
+        initials={initials}
         artworkPreview={
           item.first_message &&
           <ArtworkPreview
@@ -86,66 +102,171 @@ export class Conversation extends React.Component<RelayProps, any> {
   render() {
     const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
-    const messages = this.props.me.conversation.messages.edges.map(({ node }, index) => {
-      node.first_message = index === 0
-      node.key = node.id
-      return node
+    const artwork = conversation.artworks[0]
+    const messages = conversation.messages.edges.map((edge, index) => {
+      return { first_message: index === 0, key: index, ...edge.node }
     })
+    const lastMessage = messages[messages.length - 1]
+
     return (
-      <Container>
-        <Header>
-          <HeaderTextContainer>
-            <BackButtonPlaceholder source={chevron} />
-            <SmallHeadline>
-              {partnerName}
-            </SmallHeadline>
-            <PlaceholderView />
-          </HeaderTextContainer>
-        </Header>
-        <MessagesList
-          data={messages}
-          renderItem={this.renderMessage.bind(this)}
-          ItemSeparatorComponent={DottedBorder}
-        />
-        <ComposerContainer>
-          <Composer />
-        </ComposerContainer>
-      </Container>
+      <Composer
+        disabled={this.state.sendingMessage}
+        onSubmit={text => {
+          this.props.relay.commitUpdate(
+            new SendConversationMessageMutation({
+              body_text: text,
+              reply_to_message_id: lastMessage.impulse_id,
+              conversation: this.props.me.conversation as any,
+            }),
+            {
+              onFailure: transaction => {
+                // TODO Actually handle errors
+                console.error(transaction.getError())
+                this.setState({ sendingMessage: false })
+              },
+              onSuccess: () => {
+                this.setState({ sendingMessage: false })
+              },
+            }
+          )
+          this.setState({ sendingMessage: true })
+        }}
+      >
+        <Container>
+          <Header>
+            <HeaderTextContainer>
+              <BackButtonPlaceholder source={chevron} />
+              <SmallHeadline>
+                {partnerName}
+              </SmallHeadline>
+              <PlaceholderView />
+            </HeaderTextContainer>
+          </Header>
+          <ReversedFlatList
+            data={messages}
+            renderItem={this.renderMessage.bind(this)}
+            length={messages.length}
+            ItemSeparatorComponent={DottedBorder}
+          />
+        </Container>
+      </Composer>
     )
+  }
+}
+
+interface MutationProps {
+  body_text: string
+  reply_to_message_id: string
+  conversation: {
+    __id: string
+    id: string
+    from: {
+      email: string
+    }
+  }
+}
+
+class SendConversationMessageMutation extends Relay.Mutation<MutationProps, any> {
+  static fragments = {
+    conversation: () => Relay.QL`
+      fragment on Conversation {
+        __id
+        id
+        from {
+          email
+        }
+      }
+    `,
+  }
+
+  getMutation() {
+    return Relay.QL`mutation { sendConversationMessage }`
+  }
+
+  getVariables() {
+    return {
+      id: this.props.conversation.id,
+      from: this.props.conversation.from.email,
+      body_text: this.props.body_text,
+      reply_to_message_id: this.props.reply_to_message_id,
+    }
+  }
+
+  getFatQuery() {
+    return Relay.QL`
+      fragment on SendConversationMessageMutationPayload {
+        messageEdge
+        conversation {
+          messages
+        }
+      }
+    `
+  }
+
+  getConfigs() {
+    return [
+      {
+        type: "RANGE_ADD",
+        parentName: "conversation",
+        parentID: this.props.conversation.__id,
+        connectionName: "messages",
+        edgeName: "messageEdge",
+        rangeBehaviors: {
+          "": "append",
+        },
+      },
+    ]
+  }
+
+  getOptimisticResponse() {
+    return {
+      messageEdge: {
+        node: {
+          raw_text: this.props.body_text,
+          is_from_user: true,
+          created_at: new Date().toISOString(),
+          attachments: [],
+        },
+      },
+    }
   }
 }
 
 export default Relay.createContainer(Conversation, {
   initialVariables: {
+    pageSize: PAGE_SIZE,
     conversationID: null,
   },
   fragments: {
     me: () => Relay.QL`
       fragment on Me {
         conversation(id: $conversationID) {
-          id
           from {
             name
             email
+            initials
           }
           to {
             name
+            initials
           }
-          messages(first: 10) {
+          messages(first: $pageSize) {
             pageInfo {
               hasNextPage
             }
             edges {
               node {
-                id
+                impulse_id
+                is_from_user
                 ${Message.getFragment("message")}
               }
             }
           }
-          artworks @relay (plural: true) {
+          artworks {
             href
             ${ArtworkPreview.getFragment("artwork")}
           }
+          ${SendConversationMessageMutation.getFragment("conversation")}
         }
       }
     `,
@@ -154,22 +275,29 @@ export default Relay.createContainer(Conversation, {
 
 interface RelayProps {
   me: {
+    initials: string
     conversation: {
-      id: string
       from: {
         name: string
         email: string
+        initials: string
       }
       to: {
         name: string
+        initials: string
       }
-      artworks: any[]
+      artworks: {
+        href: string
+      }
       messages: {
         pageInfo?: {
           hasNextPage: boolean
         }
         edges: Array<{
-          node: any | null
+          node: {
+            impulse_id: string
+            is_from_user: boolean
+          } | null
         }>
       }
     }

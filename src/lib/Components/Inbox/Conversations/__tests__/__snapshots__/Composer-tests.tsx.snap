@@ -2,11 +2,13 @@
 
 exports[`looks correct when rendered 1`] = `
 <View
-  keyboardVerticalOffset={0}
+  keyboardVerticalOffset={20}
   onLayout={[Function]}
   style={
     Array [
-      undefined,
+      Object {
+        "flex": 1,
+      },
       Object {
         "paddingBottom": 0,
       },
@@ -26,12 +28,16 @@ exports[`looks correct when rendered 1`] = `
           "flexDirection": "row",
           "justifyContent": "space-between",
           "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 0,
         },
         undefined,
       ]
     }
   >
     <TextInput
+      editable={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -43,11 +49,11 @@ exports[`looks correct when rendered 1`] = `
         Object {
           "flex": 1,
           "fontFamily": "AGaramondPro-Regular",
-          "fontSize": 12,
+          "fontSize": 13,
           "paddingBottom": 10,
           "paddingLeft": 10,
           "paddingRight": 10,
-          "paddingTop": 10,
+          "paddingTop": 13,
         }
       }
     />

@@ -54,9 +54,9 @@ const PreviewText = (props: TextProperties) => {
   )
 }
 
-const BodyText = (props: TextProperties) => {
+const BodyText = (props: TextProperties & { disabled?: boolean }) => {
   const children: string = (props as any).children
-  const style = [styles.bodyDefault, props.style || {}, styles.bodyRequired]
+  const style = [styles.bodyDefault, props.disabled && styles.disabled, props.style || {}, styles.bodyRequired]
   return (
     <Text key={children} style={style}>
       {children}
@@ -77,6 +77,7 @@ interface Styles {
   metadataDefault: TextStyle
   bodyRequired: TextStyle
   bodyDefault: TextStyle
+  disabled: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -129,5 +130,9 @@ const styles = StyleSheet.create<Styles>({
 
   bodyRequired: {
     fontFamily: fonts["garamond-regular"],
+  },
+
+  disabled: {
+    color: colors["gray-medium"],
   },
 })

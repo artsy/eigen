@@ -1,8 +1,7 @@
-### Master
+### 1.4.0-beta.1
 
 -   [dev] Moves native view controllers to use iOS7+ status bar api - ash
 -   [dev] Renamed files to reflect case in component/function names - alloy
--   Adds a media preview controller that can show remote document files - alloy
 
 ###### Emission
 
@@ -16,6 +15,7 @@
 
 ###### Messaging
 
+-   Adds avatar component - maxim
 -   Adds multiple attachment support - matt
 -   Adds PDF Preview for attachments - matt
 -   Fixes pagination for Conversations - luc
@@ -25,6 +25,7 @@
 -   Update status label colors - luc
 -   Renders active bids before Messages - luc
 -   Adds active bids section on top of messages - luc
+-   Adds a mutation for appending messages to a thread - alloy, matt, sarah
 -   Adds an `ArtworkPreview` to each Conversation - sarah
 -   Adds Inbox zero state - maxim
 -   Relay support in Conversation container - sarah
@@ -32,6 +33,8 @@
 -   Adds Conversation, Composer, and Message components - sarah
 -   Adds Inbox view with real data - luc
 -   Adds Inquiry modal - maxim
+-   Fixes composer to stay above keyboard - luc
+-   Adds a media preview controller that can show remote document files - alloy
 
 ###### Consignments
 
