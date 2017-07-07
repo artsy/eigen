@@ -25,6 +25,7 @@ interface State {
   dataSource: ListViewDataSource | null
   fetchingNextPage: boolean
   completed: boolean
+  initialLoadDone: boolean
 }
 
 export class Conversations extends React.Component<Props, State> {
@@ -39,6 +40,7 @@ export class Conversations extends React.Component<Props, State> {
       dataSource,
       completed: false,
       fetchingNextPage: false,
+      initialLoadDone: false,
     }
   }
 
@@ -85,7 +87,7 @@ export class Conversations extends React.Component<Props, State> {
   }
 
   fetchData(nextPage: boolean = true) {
-    if (this.state.fetchingNextPage || this.state.completed) {
+    if (this.state.fetchingNextPage) {
       return
     }
     const totalSize = this.props.relay.variables.totalSize + (nextPage ? PageSize : 0)
@@ -99,7 +101,7 @@ export class Conversations extends React.Component<Props, State> {
         })
 
         if (!this.props.me.conversations.pageInfo.hasNextPage) {
-          this.setState({ completed: true })
+          this.setState({ completed: true, initialLoadDone: true })
         }
       }
     })
@@ -112,8 +114,12 @@ export class Conversations extends React.Component<Props, State> {
         initialListSize={10}
         scrollEventThrottle={10}
         onEndReachedThreshold={10}
+        enableEmptySections={true}
         refreshControl={
-          <RefreshControl refreshing={this.state.fetchingNextPage} onRefresh={() => this.fetchData(false)} />
+          <RefreshControl
+            refreshing={this.state.fetchingNextPage && this.state.initialLoadDone}
+            onRefresh={() => this.fetchData(false)}
+          />
         }
         renderHeader={() => {
           return (
