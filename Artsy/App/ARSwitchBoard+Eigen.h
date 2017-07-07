@@ -23,6 +23,10 @@
 
 @interface ARSwitchBoard (Eigen)
 
+- (UIViewController *)loadConversationWithID:(NSString *)conversationID;
+
+#pragma mark - Artworks
+
 /// Provide a simple API to load an ArtworkVC from a lot of different inputs
 - (ARArtworkSetViewController *)loadArtworkSet:(NSArray *)artworkSet inFair:(Fair *)fair atIndex:(NSInteger)index;
 - (ARArtworkSetViewController *)loadArtwork:(Artwork *)artwork inFair:(Fair *)fair;
