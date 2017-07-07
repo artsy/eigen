@@ -14,6 +14,7 @@ PODS:
   - Emission (1.4.0-beta.1):
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
+    - React/BatchedBridge (= 0.45.0-rc.2)
     - React/Core (= 0.45.0-rc.2)
     - React/RCTImage (= 0.45.0-rc.2)
     - React/RCTNetwork (= 0.45.0-rc.2)
@@ -156,7 +157,6 @@ DEPENDENCIES:
   - Artsy+UIFonts
   - Emission (from `../`)
   - FLKAutoLayout
-  - React/BatchedBridge (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
   - React/RCTAnimation (from `../node_modules/react-native`)
   - SAMKeychain
@@ -196,7 +196,7 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   Artsy+UIFonts: e66afb5c40100e2fc5bba28feb7487e252f2d06f
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
-  Emission: 4c3d5349047fa869c339556b6c122108d7192614
+  Emission: 87924188d3d2b22aa7cea130ea58afa424040ac6
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
@@ -211,6 +211,6 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: d43165f478a090e7b603edc5796965a1de27d473
 
-PODFILE CHECKSUM: e4469b89c7780696fdd217fd34068fcbaab6fb25
+PODFILE CHECKSUM: aac924619d818c85d3038bb7e51b7da2db2cfd4a
 
 COCOAPODS: 1.2.1
