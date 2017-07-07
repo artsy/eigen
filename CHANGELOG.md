@@ -22,7 +22,7 @@
 -   Adds pull to refresh support to Inbox view - luc
 -   Adds an `ImagePreview` to each Conversation, Relay-ified messages - matt
 -   Adds snapshot tests for active bids - luc
--   Update status label colors - luc
+-   Updates status label colors - luc
 -   Renders active bids before Messages - luc
 -   Adds active bids section on top of messages - luc
 -   Adds a mutation for appending messages to a thread - alloy, matt, sarah
@@ -35,6 +35,7 @@
 -   Adds Inquiry modal - maxim
 -   Fixes composer to stay above keyboard - luc
 -   Adds a media preview controller that can show remote document files - alloy
+-   Updates initial load state for Inbox - luc
 
 ###### Consignments
 

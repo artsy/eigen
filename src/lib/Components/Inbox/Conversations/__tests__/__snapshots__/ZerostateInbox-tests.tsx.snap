@@ -7,6 +7,7 @@ exports[`looks correct when the user has no conversations 1`] = `
       "items": 0,
     }
   }
+  enableEmptySections={true}
   initialListSize={10}
   onEndReached={[Function]}
   onEndReachedThreshold={10}

@@ -19,6 +19,7 @@ exports[`renders correctly 1`] = `
         "items": 2,
       }
     }
+    enableEmptySections={true}
     initialListSize={10}
     onEndReached={[Function]}
     onEndReachedThreshold={10}
