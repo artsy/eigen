@@ -17,6 +17,7 @@
 
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
+#import <Emission/ARConversationComponentViewController.h>
 
 #import "ARArtistViewController.h"
 // TODO This does not use the new React based VC yet.
@@ -33,6 +34,11 @@
 
 
 @implementation ARSwitchBoard (Eigen)
+
+- (UIViewController *)loadConversationWithID:(NSString *)conversationID;
+{
+    return [[ARConversationComponentViewController alloc] initWithConversationID:conversationID];
+}
 
 #pragma mark -
 #pragma mark Artworks
