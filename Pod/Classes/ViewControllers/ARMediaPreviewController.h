@@ -15,6 +15,6 @@
                        hostViewController:(nonnull UIViewController *)hostViewController
                           originatingView:(nonnull UIView *)originatingView;
 
-- (void)presentPreviewAnimated:(BOOL)animated;
+- (void)presentPreview;
 
 @end
