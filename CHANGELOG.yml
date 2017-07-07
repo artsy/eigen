@@ -1,6 +1,15 @@
 upcoming:
-    version: 3.2.2
-    details: Scope not known yet
+    version: 3.3.0
+    details: Messaging
+    dev:
+      - Emission updated to 1.4.0 - alloy
+    user_facing:
+      - Adds new routing for inquiries - maxim
+
+releases:
+  - version: 3.2.2
+    date: Jun 26, 2017
+    details: Big fixes for Auctions mainly
     dev:
       - Removes compiler warnings and static analyzer warnings - ash
       - Fix analytics double fire in artwork pages - maxim
@@ -17,7 +26,7 @@ upcoming:
       - Auctions now filter out lots with unpublished artworks - ash
       - Fixes an issue with the status bar appearence returning from LAI modals - ash
 
-releases:
+
   - version: 3.2.1
     details: Scope not know yet
     date: May 22, 2017
