@@ -3,9 +3,11 @@ import * as Relay from "react-relay"
 import styled from "styled-components/native"
 
 import { TouchableWithoutFeedback } from "react-native"
+
 import { BodyText, MetadataText } from "../Typography"
 
 import colors from "../../../../data/colors"
+import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import OpaqueImageView from "../../OpaqueImageView"
 
 const Container = styled.View`
@@ -66,6 +68,8 @@ class ActiveBid extends React.Component<RelayProps, State> {
     this.state = {
       status: "losing",
     }
+
+    this.handleTap = this.handleTap.bind(this)
   }
 
   componentDidMount() {
@@ -95,6 +99,10 @@ class ActiveBid extends React.Component<RelayProps, State> {
     }
   }
 
+  handleTap() {
+    SwitchBoard.presentNavigationViewController(this, this.props.bid.active_bid.sale_artwork.artwork.href)
+  }
+
   render() {
     const bid = this.props.bid.active_bid
     const imageURL = bid.sale_artwork.artwork.image.url
@@ -105,7 +113,7 @@ class ActiveBid extends React.Component<RelayProps, State> {
     const subtitle = `Current Bid: ${bid.max_bid.display} `
 
     return (
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={this.handleTap}>
         <Container>
           <Content>
             <ImageView imageURL={imageURL} />
@@ -141,6 +149,7 @@ export default Relay.createContainer(ActiveBid, {
             lot_number
             reserve_status
             artwork {
+              href
               image {
                 url
               }
@@ -164,6 +173,7 @@ interface RelayProps {
         lot_number: string | null
         reserve_status: string | null
         artwork: {
+          href: string | null
           image: {
             url: string | null
           } | null
