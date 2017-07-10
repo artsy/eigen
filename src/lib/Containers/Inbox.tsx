@@ -12,7 +12,6 @@ interface Props extends RelayProps {
 }
 
 interface State {
-  hasMessages: boolean
   fetchingData: boolean
 }
 
@@ -23,7 +22,6 @@ export class Inbox extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      hasMessages: false,
       fetchingData: false,
     }
 
