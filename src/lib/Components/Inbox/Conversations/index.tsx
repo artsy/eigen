@@ -19,7 +19,6 @@ interface Props extends RelayProps {
   relay: Relay.RelayProp
   headerView?: JSX.Element
   onRefresh?: () => any
-  onDataLoaded?: (hasData: boolean) => any
 }
 
 interface State {
@@ -45,10 +44,6 @@ export class Conversations extends React.Component<Props, State> {
     this.setState({
       dataSource: this.state.dataSource,
     })
-
-    if (this.props.onDataLoaded) {
-      this.props.onDataLoaded(this.conversations.length > 0)
-    }
   }
 
   componentWillReceiveProps(newProps) {

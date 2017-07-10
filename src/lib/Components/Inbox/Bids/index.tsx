@@ -8,17 +8,7 @@ import ActiveBid from "./ActiveBid"
 
 const Container = styled.View`margin: 20px 0 40px;`
 
-interface Props extends RelayProps {
-  onDataLoaded?: (hasData: boolean) => void
-}
-
-class ActiveBids extends React.Component<Props, null> {
-  componentDidMount() {
-    if (this.props.onDataLoaded) {
-      this.props.onDataLoaded(this.props.me.lot_standings.length > 0)
-    }
-  }
-
+class ActiveBids extends React.Component<RelayProps, null> {
   hasContent() {
     if (!this.props.me) {
       return false
