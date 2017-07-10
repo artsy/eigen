@@ -2,6 +2,12 @@
 
 ###### Messaging
 
+- Remove statusbar in inquiry modal view - maxim
+
+### 1.4.0-beta.2
+
+###### Messaging
+
 -   Show progress indicator during downloading of attachment - alloy
 -   Force fetch conversation on each load - alloy
 -   Make pull to refresh in the Inbox work - luc
