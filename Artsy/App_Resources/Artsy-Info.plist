@@ -158,6 +158,8 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 	<key>UIViewEdgeAntialiasing</key>
 	<true/>
 	<key>UTExportedTypeDeclarations</key>
