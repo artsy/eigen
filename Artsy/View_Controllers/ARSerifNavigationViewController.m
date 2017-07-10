@@ -89,11 +89,7 @@
 
 - (void)closeModal
 {
-    // For reasons yet unknown, when re-appearing from some (eg live auctions) view controllers, we need to call this manually.
-    id presentingViewController = self.presentingViewController;
-    [presentingViewController dismissViewControllerAnimated:YES completion:^{
-        [presentingViewController setNeedsStatusBarAppearanceUpdate];
-    }];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
