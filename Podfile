@@ -84,7 +84,6 @@ target 'Artsy' do
   pod 'Emission', '~> 1.4.0-beta.1'
   pod 'React/Core'
 
-
   # Facebook
   pod 'FBSDKCoreKit', '~> 4.9'
   pod 'FBSDKLoginKit', '~> 4.9'
@@ -135,7 +134,6 @@ target 'Artsy' do
     pod 'Nimble-Snapshots'
   end
 end
-
 
 post_install do |installer|
   # Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
