@@ -185,6 +185,11 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
         return [sself loadShowWithID:parameters[@"id"]];
     }];
 
+    [self.routes addRoute:@"/conversation/:id" handler:JLRouteParams {
+        __strong typeof (wself) sself = wself;
+        return [sself loadConversationWithID:parameters[@"id"]];
+    }];
+
     // We don't show a native fairs UI for iPad
     if (![UIDevice isPad]) {
         [self registerEchoRouteForKey:@"ARFairProfileForYouRoute" handler:JLRouteParams {
@@ -227,7 +232,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
         [self registerPathCallbackForDomain:route.path callback:presentNativeAuctionsViewControllerBlock];
         [self registerPathCallbackForDomain:stagingDomain callback:presentNativeAuctionsViewControllerBlock];
     }
-
+    
     // This route will match any single path component and thus should be added last.
     // It doesn't need to run through echo, as it's pretty much here to stay forever.
     [self.routes addRoute:@"/:slug" priority:0 handler:JLRouteParams {
