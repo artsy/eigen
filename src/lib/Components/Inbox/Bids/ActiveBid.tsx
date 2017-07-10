@@ -3,9 +3,11 @@ import * as Relay from "react-relay"
 import styled from "styled-components/native"
 
 import { TouchableWithoutFeedback } from "react-native"
+
 import { BodyText, MetadataText } from "../Typography"
 
 import colors from "../../../../data/colors"
+import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import OpaqueImageView from "../../OpaqueImageView"
 
 const Container = styled.View`
@@ -66,6 +68,8 @@ class ActiveBid extends React.Component<RelayProps, State> {
     this.state = {
       status: "losing",
     }
+
+    this.handleTap = this.handleTap.bind(this)
   }
 
   componentDidMount() {
@@ -95,6 +99,10 @@ class ActiveBid extends React.Component<RelayProps, State> {
     }
   }
 
+  handleTap() {
+    SwitchBoard.presentNavigationViewController(this, this.props.bid.active_bid.sale_artwork.artwork.href)
+  }
+
   render() {
     const bid = this.props.bid.active_bid
     const imageURL = bid.sale_artwork.artwork.image.url
@@ -105,7 +113,7 @@ class ActiveBid extends React.Component<RelayProps, State> {
     const subtitle = `Current Bid: ${bid.max_bid.display} `
 
     return (
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={this.handleTap}>
         <Container>
           <Content>
             <ImageView imageURL={imageURL} />
@@ -134,32 +142,14 @@ export default Relay.createContainer(ActiveBid, {
       fragment on LotStanding {
         is_leading_bidder
         active_bid {
-          id
           max_bid {
-            cents
             display
           }
           sale_artwork {
-            lot_label
             lot_number
-            position
             reserve_status
-            counts {
-              bidder_positions
-            }
-            sale {
-              live_start_at
-              end_at
-              is_live_open
-              is_closed
-            }
-            highest_bid {
-              cents
-              display
-            }
             artwork {
-              id
-              title
+              href
               image {
                 url
               }
@@ -176,32 +166,14 @@ interface RelayProps {
   bid: {
     is_leading_bidder: boolean | null
     active_bid: {
-      id: string
       max_bid: {
-        cents: number | null
         display: string | null
       } | null
       sale_artwork: {
-        lot_label: string | null
         lot_number: string | null
-        position: number | null
         reserve_status: string | null
-        counts: {
-          bidder_positions: boolean | number | string | null
-        } | null
-        sale: {
-          live_start_at: string | null
-          end_at: string | null
-          is_live_open: boolean | null
-          is_closed: boolean | null
-        } | null
-        highest_bid: {
-          cents: number | null
-          display: string | null
-        } | null
         artwork: {
-          id: string
-          title: string | null
+          href: string | null
           image: {
             url: string | null
           } | null

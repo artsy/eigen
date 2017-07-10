@@ -18,13 +18,18 @@ class RootContainer extends React.Component<Props, {}> {
   component: Relay.RelayContainerClass<any>
   route: Relay.Route
   renderFetched?: Relay.RootContainerProps["renderFetched"]
+  forceFetch: boolean
 
   constructor(props) {
     super(props)
     this.state = { retrying: false }
+    this.forceFetch = false
   }
 
   render() {
+    // FIXME: These props are missing from the DefinitelyTyped package.
+    const untypedProps: any = { forceFetch: this.forceFetch }
+
     // https://facebook.github.io/relay/docs/guides-root-container.html
     return (
       <Relay.RootContainer
@@ -44,6 +49,7 @@ class RootContainer extends React.Component<Props, {}> {
           this.state.retrying = true
           return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
         }}
+        {...untypedProps}
       />
     )
   }
@@ -107,6 +113,7 @@ class Inbox extends RootContainer {
     super(props)
     this.component = Containers.Inbox
     this.route = new Routes.MyAccount()
+    this.forceFetch = true
   }
 }
 

@@ -4,7 +4,6 @@
  <rect type="RCTScrollView" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="480" height="1024"/>
 
  <g transform='translate(0, 0)'>
-   <rect type="RCTRefreshControl" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="480" height="0"/>
    <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="480" height="0"/>
 
    <g transform='translate(0, 0)'>

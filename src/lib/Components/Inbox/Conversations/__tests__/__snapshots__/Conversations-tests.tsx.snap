@@ -11,18 +11,11 @@ exports[`looks correct when rendered 1`] = `
   initialListSize={10}
   onEndReached={[Function]}
   onEndReachedThreshold={10}
-  refreshControl={
-    <RefreshControlMock
-      onRefresh={[Function]}
-      refreshing={false}
-    />
-  }
   renderHeader={[Function]}
   renderRow={[Function]}
   renderScrollComponent={[Function]}
   scrollEventThrottle={10}
 >
-  <RCTRefreshControl />
   <View>
     <View>
       <Text

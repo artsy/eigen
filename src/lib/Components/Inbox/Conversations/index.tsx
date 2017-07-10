@@ -2,7 +2,7 @@ import * as React from "react"
 import * as Relay from "react-relay"
 import styled from "styled-components/native"
 
-import { ListView, ListViewDataSource, RefreshControl, ScrollView, Text, View } from "react-native"
+import { ListView, ListViewDataSource, View } from "react-native"
 import { LargeHeadline } from "../Typography"
 
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
@@ -18,14 +18,12 @@ const Headline = styled(LargeHeadline)`
 interface Props extends RelayProps {
   relay: Relay.RelayProp
   headerView?: JSX.Element
-  onDataLoaded?: (hasData: boolean) => void
+  onRefresh?: () => any
 }
 
 interface State {
   dataSource: ListViewDataSource | null
   fetchingNextPage: boolean
-  completed: boolean
-  initialLoadDone: boolean
 }
 
 export class Conversations extends React.Component<Props, State> {
@@ -38,9 +36,7 @@ export class Conversations extends React.Component<Props, State> {
 
     this.state = {
       dataSource,
-      completed: false,
       fetchingNextPage: false,
-      initialLoadDone: false,
     }
   }
 
@@ -48,10 +44,6 @@ export class Conversations extends React.Component<Props, State> {
     this.setState({
       dataSource: this.state.dataSource,
     })
-
-    if (this.props.onDataLoaded) {
-      this.props.onDataLoaded(this.conversations.length > 0)
-    }
   }
 
   componentWillReceiveProps(newProps) {
@@ -86,24 +78,19 @@ export class Conversations extends React.Component<Props, State> {
     return conversations || []
   }
 
-  fetchData(nextPage: boolean = true) {
+  fetchData() {
     if (this.state.fetchingNextPage) {
       return
     }
-    const totalSize = this.props.relay.variables.totalSize + (nextPage ? PageSize : 0)
+    const totalSize = this.props.relay.variables.totalSize + PageSize
 
     this.setState({ fetchingNextPage: true })
     this.props.relay.forceFetch({ totalSize }, readyState => {
       if (readyState.done) {
         this.setState({
           fetchingNextPage: false,
-          initialLoadDone: true,
           dataSource: this.state.dataSource.cloneWithRows(this.conversations),
         })
-
-        if (!this.props.me.conversations.pageInfo.hasNextPage) {
-          this.setState({ completed: true })
-        }
       }
     })
   }
@@ -116,12 +103,6 @@ export class Conversations extends React.Component<Props, State> {
         scrollEventThrottle={10}
         onEndReachedThreshold={10}
         enableEmptySections={true}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.fetchingNextPage && this.state.initialLoadDone}
-            onRefresh={() => this.fetchData(false)}
-          />
-        }
         renderHeader={() => {
           return (
             <View>

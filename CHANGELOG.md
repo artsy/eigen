@@ -1,3 +1,11 @@
+### 1.4.0-beta.3
+
+###### Messaging
+
+-   Reload active bids on pull-to-refresh - alloy
+-   Make active bids link to their artworks - alloy
+-   Make zero inbox state hide on load if bids or conversations exist - alloy
+
 ### 1.4.0-beta.2
 
 ###### Messaging
