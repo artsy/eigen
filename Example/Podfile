@@ -15,7 +15,7 @@ target 'Emission' do
   pod 'Emission', :path => '../', :inhibit_warnings => false
 
   # As this runs dev, we need the developer web socket
-  pod 'React', :path => react_path, :subspecs => %w(DevSupport RCTAnimation)
+  pod 'React', :path => react_path, :subspecs => %w(DevSupport)
   pod 'Yoga', :path => yoga_path
 
   pod 'Sentry', :subspecs => ['Core', 'KSCrash']

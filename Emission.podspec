@@ -34,6 +34,7 @@ Pod::Spec.new do |s|
   s.dependency 'React/RCTText', react_native_version
   s.dependency 'React/RCTImage', react_native_version
   s.dependency 'React/RCTNetwork', react_native_version
+  s.dependency 'React/RCTAnimation', react_native_version
   s.dependency 'React/BatchedBridge', react_native_version
 
   s.dependency 'SDWebImage', '>= 3.7.2', '< 4'
