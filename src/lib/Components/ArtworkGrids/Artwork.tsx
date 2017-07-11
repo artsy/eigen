@@ -63,7 +63,7 @@ class Artwork extends React.Component<RelayProps, any> {
 
   saleMessage() {
     const artwork = this.props.artwork
-    if (artwork.is_in_auction) {
+    if (artwork.is_in_auction && artwork.sale_artwork.sale.is_open) {
       const numberOfBids = artwork.sale_artwork.bidder_positions_count
       let text = artwork.sale_artwork.opening_bid.display
       if (numberOfBids > 0) {
@@ -116,6 +116,9 @@ export default Relay.createContainer(Artwork, {
           opening_bid { display }
           current_bid { display }
           bidder_positions_count
+          sale {
+            is_open
+          }
         }
         image {
           url(version: "large")
@@ -144,10 +147,13 @@ interface RelayProps {
         display: string | null
       } | null
       current_bid: {
-        display: string | null
-      } | null
-      bidder_positions_count: number | null
-    } | null
+        display: string | null,
+      } | null,
+      bidder_positions_count: number | null,
+      sale: {
+        is_open: boolean | null,
+      } | null,
+    } | null,
     image: {
       url: string | null
       aspect_ratio: number | null
