@@ -1,5 +1,8 @@
 ### Master
 
+### 1.3.10
+
+- No longer display bid/price info for artworks in sales that are closed.
 
 ### 1.3.8
 
