@@ -7,6 +7,7 @@ upcoming:
 releases:
   - version: 3.2.2
     details: Scope not known yet
+    date: Jun 26, 2017
     dev:
       - Removes compiler warnings and static analyzer warnings - ash
       - Fix analytics double fire in artwork pages - maxim
