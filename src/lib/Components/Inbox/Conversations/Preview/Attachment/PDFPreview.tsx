@@ -35,7 +35,7 @@ interface Props extends AttachmentProps, RelayProps {}
 export const PDFPreview: React.SFC<Props> = ({ attachment, onSelected }) =>
   <AttachmentPreview attachment={attachment as any} onSelected={onSelected}>
     <Container>
-      <Icon source={require("../../../images/pdf.png")} />
+      <Icon source={require("../../../../../../../images/pdf.png")} />
       <TextContainer>
         <Text>
           {attachment.file_name}

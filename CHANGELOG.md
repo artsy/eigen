@@ -6,6 +6,7 @@
 -   Make active bids link to their artworks - alloy
 -   Make zero inbox state hide on load if bids or conversations exist - alloy
 -   Fix crash on Gene view, when integrated into Eigen, due to missing RCTAnimation dependency - alloy
+-   Fix issue with missing icons - alloy
 
 ### 1.4.0-beta.2
 

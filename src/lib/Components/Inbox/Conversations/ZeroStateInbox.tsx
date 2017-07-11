@@ -54,19 +54,19 @@ export default () =>
     <VerticalLayout>
       <Title>Buying Art on Artsy is Simple </Title>
       <HorizontalLayout>
-        <Icon source={require("../images/find.png")} />
+        <Icon source={require("../../../../../images/find.png")} />
         <SmallHeadline>Follow artists and find works you love</SmallHeadline>
       </HorizontalLayout>
       <HorizontalLayout>
-        <Icon source={require("../images/contact.png")} />
+        <Icon source={require("../../../../../images/contact.png")} />
         <SmallHeadline>Contact galleries or bid in auctions to purchase the work</SmallHeadline>
       </HorizontalLayout>
       <HorizontalLayout>
-        <Icon source={require("../images/message.png")} />
+        <Icon source={require("../../../../../images/message.png")} />
         <SmallHeadline>Find your ongoing conversations and bidding activity here</SmallHeadline>
       </HorizontalLayout>
       <HorizontalLayout>
-        <Icon source={require("../images/pay.png")} />
+        <Icon source={require("../../../../../images/pay.png")} />
         <SmallHeadline>Easily process payment through our secure platform</SmallHeadline>
       </HorizontalLayout>
     </VerticalLayout>

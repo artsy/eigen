@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 import { RefreshControl, ScrollView, View } from "react-native"
 import ActiveBids from "../Components/Inbox/Bids"
 import Conversations from "../Components/Inbox/Conversations"
-import ZeroStateInbox from "../Components/Inbox/Conversations/ZerostateInbox"
+import ZeroStateInbox from "../Components/Inbox/Conversations/ZeroStateInbox"
 
 interface Props extends RelayProps {
   relay?: Relay.RelayProp
