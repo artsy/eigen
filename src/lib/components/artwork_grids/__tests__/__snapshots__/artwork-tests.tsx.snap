@@ -1,6 +1,155 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`in a sale renders with current bid 1`] = `
+exports[`in a closed sale renders without any price information 1`] = `
+<View
+  accessibilityComponentType={undefined}
+  accessibilityLabel={undefined}
+  accessibilityTraits={undefined}
+  accessible={true}
+  hitSlop={undefined}
+  onLayout={undefined}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={undefined}
+  testID={undefined}
+>
+  <AROpaqueImageView
+    aspectRatio={0.74}
+    imageURL="artsy.net/image-url"
+    style={
+      Object {
+        "marginBottom": 10,
+      }
+    }
+  />
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Array [
+          Object {
+            "color": "#666666",
+            "fontSize": 12,
+          },
+          Object {
+            "fontWeight": "bold",
+          },
+        ],
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Mikael Olson
+  </Text>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "color": "#666666",
+          "fontSize": 12,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Array [
+          Object {
+            "fontSize": 17,
+          },
+          Array [
+            Object {
+              "color": "#666666",
+              "fontSize": 12,
+            },
+            Object {
+              "fontStyle": "italic",
+            },
+          ],
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+          },
+        ]
+      }
+    >
+      Some Kind of Dinosaur
+    </Text>
+    , 2015
+  </Text>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "color": "#666666",
+          "fontSize": 12,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Gallery 1261
+  </Text>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "fontSize": 17,
+        },
+        Object {
+          "color": "#666666",
+          "fontSize": 12,
+        },
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+        },
+      ]
+    }
+  >
+    Contact Gallery
+  </Text>
+</View>
+`;
+
+exports[`in an open sale renders with current bid 1`] = `
 <View
   accessibilityComponentType={undefined}
   accessibilityLabel={undefined}
@@ -165,7 +314,7 @@ exports[`in a sale renders with current bid 1`] = `
 </View>
 `;
 
-exports[`in a sale renders with starting bid 1`] = `
+exports[`in an open sale renders with starting bid 1`] = `
 <View
   accessibilityComponentType={undefined}
   accessibilityLabel={undefined}
@@ -474,7 +623,7 @@ exports[`renders properly 1`] = `
       ]
     }
   >
-    $875
+    Contact Gallery
   </Text>
 </View>
 `;
