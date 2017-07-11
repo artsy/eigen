@@ -3,7 +3,7 @@ import * as TestUtils from "react-dom/test-utils"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import ZeroStateInbox from "../../Components/Inbox/Conversations/ZerostateInbox"
+import ZeroStateInbox from "../../Components/Inbox/Conversations/ZeroStateInbox"
 import Inbox from "../Inbox"
 
 it("renders correctly", () => {

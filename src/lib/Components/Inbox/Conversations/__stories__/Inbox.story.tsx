@@ -7,7 +7,7 @@ import StubContainer from "react-storybooks-relay-container"
 import Routes from "../../../../relay/routes"
 import Inbox from "../index"
 
-storiesOf("Conversations - Inbox")
+storiesOf("Conversations - Overview")
   .add("With live data", () => <RootContainer Component={Inbox} route={new Routes.MyAccount()} />)
   .add("With dummy data", () => <StubContainer Component={Inbox} props={{ me: meProps }} />)
   .add("With no data", () => <StubContainer Component={Inbox} props={{ me: { conversations: { edges: [] } } }} />)
