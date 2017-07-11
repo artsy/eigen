@@ -1,5 +1,11 @@
 upcoming:
-    version: 3.2.2
+    version: 3.2.3
+    details: Auction price data fix
+    user_facing:
+      - Updates Emission to 1.3.10 which includes a fix for not showing pricing data for closed sales - ash
+
+releases:
+  - version: 3.2.2
     details: Scope not known yet
     dev:
       - Removes compiler warnings and static analyzer warnings - ash
@@ -17,7 +23,6 @@ upcoming:
       - Auctions now filter out lots with unpublished artworks - ash
       - Fixes an issue with the status bar appearence returning from LAI modals - ash
 
-releases:
   - version: 3.2.1
     details: Scope not know yet
     date: May 22, 2017
