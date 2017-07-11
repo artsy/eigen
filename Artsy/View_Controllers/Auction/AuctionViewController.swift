@@ -82,12 +82,6 @@ class AuctionViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(AuctionViewController.registrationUpdated(_:)), name: NSNotification.Name.ARAuctionArtworkRegistrationUpdated, object: nil)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        // For reasons yet unknown, when re-appearing from auctions info or review view controllers, we need to call this manually. 
-        setNeedsStatusBarAppearanceUpdate()
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         userActivity?.invalidate()
@@ -284,7 +278,7 @@ extension AuctionViewController {
         properties["context"] = "auction"
         properties["slub"] = "/auction/\(saleViewModel.saleID)/refine"
         refineViewController.viewDidAppearAnalyticsOption = RefinementAnalyticsOption(name: "Sale Information", properties: properties)
-        refineViewController.statusBarStyle = (self.traitCollection.horizontalSizeClass == .compact) ? .`default` : .lightContent
+        refineViewController.statusBarHidden = (self.traitCollection.horizontalSizeClass == .compact)
         present(refineViewController, animated: animated, completion: nil)
     }
 
