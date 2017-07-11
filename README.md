@@ -22,14 +22,15 @@ Want to know more about Emission? Read the [mobile](http://artsy.github.io/blog/
 
 ### Installation
 
+1. Make sure to check out submodules with `git submodules update --init`
 1. Install [Node.js][node], and [Yarn][yarn]: `$ brew install node yarn`
-2. Install file watcher used by React Native:
+1. Install file watcher used by React Native:
    * `$ brew install pcre`
    * `$ brew link pcre`
    * `$ brew install watchman --HEAD`
-3. Install NPM modules: `$ yarn install`
-4. Install CocoaPods: `$ gem install cocoapods`
-5. Install Pods: `$ cd Example && pod install`
+1. Install NPM modules: `$ yarn install`
+1. Install CocoaPods: `$ gem install cocoapods`
+1. Install Pods: `$ cd Example && pod install`
 
 ### Running the project:
 
