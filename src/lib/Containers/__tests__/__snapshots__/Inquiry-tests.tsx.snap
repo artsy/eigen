@@ -338,30 +338,38 @@ exports[`renders correctly 1`] = `
               >
                 Bradley Theodore
               </Text>
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                disabled={false}
-                ellipsizeMode="tail"
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "black",
-                      "fontSize": 14,
+                      "flexDirection": "row",
+                      "marginTop": 3,
                     },
-                    Array [
-                      Object {
-                        "marginTop": 3,
-                      },
-                      undefined,
-                    ],
-                    Object {
-                      "fontFamily": "AGaramondPro-Italic",
-                    },
+                    undefined,
                   ]
                 }
               >
-                Karl and Anna Face Off (Diptych)
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "flexBasis": 0,
+                        "flexGrow": 3,
+                        "flexShrink": 1,
+                        "fontFamily": "AGaramondPro-Italic",
+                        "fontSize": 14,
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  Karl and Anna Face Off (Diptych)
+                </Text>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -379,7 +387,14 @@ exports[`renders correctly 1`] = `
                         Object {
                           "fontSize": 14,
                         },
-                        undefined,
+                        Array [
+                          Object {
+                            "flexBasis": 0,
+                            "flexGrow": 1,
+                            "flexShrink": 1,
+                          },
+                          undefined,
+                        ],
                       ],
                       Object {
                         "fontFamily": "AGaramondPro-Regular",
@@ -389,7 +404,7 @@ exports[`renders correctly 1`] = `
                 >
                   , 2016
                 </Text>
-              </Text>
+              </View>
             </View>
           </View>
         </View>
