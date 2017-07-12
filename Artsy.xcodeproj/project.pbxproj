@@ -22,6 +22,7 @@
 		1C09DFA71E53BAAD003F7BA7 /* onboardingspinner.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C09DFA51E53BAAD003F7BA7 /* onboardingspinner.png */; };
 		1C09DFA81E53BAAD003F7BA7 /* onboardingspinner@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C09DFA61E53BAAD003F7BA7 /* onboardingspinner@2x.png */; };
 		1C40C19F1DF8B1B7003F454F /* ArtsyRecordedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C40C19E1DF8B1B7003F454F /* ArtsyRecordedTests.m */; };
+		1C50D39E1F162B6E00848627 /* ARInboxComponentMenuAwareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C50D39D1F162B6E00848627 /* ARInboxComponentMenuAwareViewController.m */; };
 		1C5AAEB11CD7D42E00515B73 /* BackArrowBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB01CD7D42E00515B73 /* BackArrowBlack@2x.png */; };
 		1C5AAEB51CD87D9B00515B73 /* SearchButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB21CD87D9B00515B73 /* SearchButton.png */; };
 		1C5AAEB61CD87D9B00515B73 /* SearchButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C5AAEB31CD87D9B00515B73 /* SearchButton@2x.png */; };
@@ -823,6 +824,8 @@
 		1C40C19C1DF8B1B7003F454F /* ArtsyRecordedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArtsyRecordedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C40C19E1DF8B1B7003F454F /* ArtsyRecordedTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArtsyRecordedTests.m; sourceTree = "<group>"; };
 		1C40C1A01DF8B1B7003F454F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1C50D39C1F162B6E00848627 /* ARInboxComponentMenuAwareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInboxComponentMenuAwareViewController.h; sourceTree = "<group>"; };
+		1C50D39D1F162B6E00848627 /* ARInboxComponentMenuAwareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInboxComponentMenuAwareViewController.m; sourceTree = "<group>"; };
 		1C5AAEB01CD7D42E00515B73 /* BackArrowBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrowBlack@2x.png"; sourceTree = "<group>"; };
 		1C5AAEB21CD87D9B00515B73 /* SearchButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SearchButton.png; sourceTree = "<group>"; };
 		1C5AAEB31CD87D9B00515B73 /* SearchButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchButton@2x.png"; sourceTree = "<group>"; };
@@ -3947,6 +3950,8 @@
 				60F9B0901D83314F00DBAC8C /* ARAdminLoadReactComponentViewController.h */,
 				60F9B0911D83314F00DBAC8C /* ARAdminLoadReactComponentViewController.m */,
 				60F9B0921D83314F00DBAC8C /* ARAdminLoadReactComponentViewController.xib */,
+				1C50D39C1F162B6E00848627 /* ARInboxComponentMenuAwareViewController.h */,
+				1C50D39D1F162B6E00848627 /* ARInboxComponentMenuAwareViewController.m */,
 			);
 			path = Admin;
 			sourceTree = "<group>";
@@ -5415,6 +5420,7 @@
 				3C205ACD1908041700B3C2B4 /* ARSearchResultsDataSource.m in Sources */,
 				4938742917BD512700724795 /* ARSignUpSplashViewController.m in Sources */,
 				60327DCD1987AD240075B399 /* ARDispatchManager.m in Sources */,
+				1C50D39E1F162B6E00848627 /* ARInboxComponentMenuAwareViewController.m in Sources */,
 				60B7604617C9FBEA00073A14 /* ARArtworkActionsView.m in Sources */,
 				4938743617BDB2CD00724795 /* ARCrossfadingImageView.m in Sources */,
 				60FC2CBB1C8DF29900ACD78F /* LiveEvent.m in Sources */,
