@@ -2,7 +2,12 @@ upcoming:
     version: 3.3.0
     details: Messaging
     dev:
-      - Emission updated to 1.4.0 - alloy
+      - Reload active bids on pull-to-refresh - alloy
+      - Make active bids link to their artworks - alloy
+      - Make zero inbox state hide on load if bids or conversations exist - alloy
+      - Fix crash on Gene view, when integrated into Eigen, due to missing RCTAnimation dependency - alloy
+      - Fix issue with missing icons - alloy
+
     user_facing:
       - Adds new routing for inquiries - maxim
       - Removes "Contact for Price" on related works in auction list - ash
