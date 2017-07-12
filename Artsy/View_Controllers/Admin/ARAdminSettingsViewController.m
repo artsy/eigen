@@ -24,7 +24,7 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AppHub/AppHub.h>
 #import <Emission/AREmission.h>
-#import <Emission/ARInboxComponentViewController.h>
+#import "ARInboxComponentMenuAwareViewController.h"
 #import "ARAdminLoadReactComponentViewController.h"
 
 #if DEBUG
@@ -171,7 +171,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 }
 
 
-
 - (ARCellData *)generateRestart
 {
     ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
@@ -223,9 +222,9 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
         cell.textLabel.text = @"Show Inbox";
     }];
-    
+
     [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-        ARInboxComponentViewController *controller = [[ARInboxComponentViewController alloc] initWithInbox];
+        ARInboxComponentMenuAwareViewController *controller = [[ARInboxComponentMenuAwareViewController alloc] initWithInbox];
         [self.navigationController pushViewController:controller animated:YES];
     }];
     return crashCellData;
@@ -275,7 +274,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
             cell.textLabel.text = @"Show Red Dot for Martsy Views";
         }
     }];
-    
+
     [martsyCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
         BOOL current = [AROptions boolForOption:AROptionsShowMartsyOnScreen];
         [AROptions setBool:!current forOption:AROptionsShowMartsyOnScreen];
@@ -520,7 +519,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     ARCellData *stagingMetaphysics = [self cellDataWithName:@"Metaphysics" defaultKey:ARStagingMetaphysicsURLDefault];
     ARCellData *stagingSocket = [self cellDataWithName:@"Live Auctions Socket" defaultKey:ARStagingLiveAuctionSocketURLDefault];
 
-    [labsSectionData addCellDataFromArray:@[stagingAPI, stagingWeb, stagingMetaphysics, stagingSocket]];
+    [labsSectionData addCellDataFromArray:@[ stagingAPI, stagingWeb, stagingMetaphysics, stagingSocket ]];
     return labsSectionData;
 }
 

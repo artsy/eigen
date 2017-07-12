@@ -7,6 +7,7 @@ upcoming:
       - Adds new routing for inquiries - maxim
       - Removes "Contact for Price" on related works in auction list - ash
       - Fixes problem with status bar on refine options view - ash
+      - Removes back button from inbox view - maxim
 
 releases:
   - version: 3.2.3
