@@ -39,7 +39,7 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
         }
     }
 
-    var statusBarStyle = UIStatusBarStyle.default
+    var statusBarHidden = false
 
     init(defaultSettings: R, initialSettings: R, currencySymbol: String, userDidCancelClosure: ((RefinementOptionsViewController) -> Void)?, userDidApplyClosure: ((R) -> Void)?) {
         self.defaultSettings = defaultSettings
@@ -105,8 +105,8 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
         viewDidAppearAnalyticsOption?.sendAsPageView()
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return statusBarStyle
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
 
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {

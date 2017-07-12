@@ -57,7 +57,7 @@ begin
   # Ensure that our version number is consistent with the upcoming version
   upcoming_version = readme_data["upcoming"]["version"]
   plist_contents = File.read "Artsy/App_Resources/Artsy-Info.plist"
-  fail("You need to set the App's plist version to #{upcoming_version}") unless plist_contents.include? upcoming_version
+  fail("You need to set the App's plist version to #{upcoming_version} - use `make update_bundle_version`") unless plist_contents.include? upcoming_version
 
 rescue StandardError
   # YAML could not be parsed, fail the build.

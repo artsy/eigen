@@ -76,16 +76,18 @@ PODS:
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
   - EDColor (1.0.0)
-  - Emission (1.3.9):
+  - Emission (1.4.0-beta.2):
+    - Artsy+UIColors
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
-    - React/Core (= 0.42.0)
-    - React/RCTImage (= 0.42.0)
-    - React/RCTNetwork (= 0.42.0)
-    - React/RCTText (= 0.42.0)
+    - React/BatchedBridge (= 0.45.0-rc.2)
+    - React/Core (= 0.45.0-rc.2)
+    - React/RCTImage (= 0.45.0-rc.2)
+    - React/RCTNetwork (= 0.45.0-rc.2)
+    - React/RCTText (= 0.45.0-rc.2)
     - SDWebImage (< 4, >= 3.7.2)
-    - SentryReactNative (= 0.8.3)
-    - Yoga (= 0.42.0.React)
+    - SentryReactNative (= 0.14.5)
+    - Yoga (= 0.45.0-rc.2.React)
   - Expecta (1.0.5)
   - Expecta+Snapshots (3.0.0):
     - Expecta (~> 1.0)
@@ -138,69 +140,16 @@ PODS:
   - JSDecoupledAppDelegate (1.2.0)
   - JWTDecode (2.0.0)
   - Keys (1.0.0)
-  - KSCrash (1.15.8):
-    - KSCrash/Installations (= 1.15.8)
-  - KSCrash/Installations (1.15.8):
-    - KSCrash/Recording
-    - KSCrash/Reporting
-  - KSCrash/Recording (1.15.8):
-    - KSCrash/Recording/Tools (= 1.15.8)
-  - KSCrash/Recording/Tools (1.15.8)
-  - KSCrash/Reporting (1.15.8):
-    - KSCrash/Recording
-    - KSCrash/Reporting/Filters (= 1.15.8)
-    - KSCrash/Reporting/MessageUI (= 1.15.8)
-    - KSCrash/Reporting/Sinks (= 1.15.8)
-    - KSCrash/Reporting/Tools (= 1.15.8)
-  - KSCrash/Reporting/Filters (1.15.8):
-    - KSCrash/Recording
-    - KSCrash/Reporting/Filters/Alert (= 1.15.8)
-    - KSCrash/Reporting/Filters/AppleFmt (= 1.15.8)
-    - KSCrash/Reporting/Filters/Base (= 1.15.8)
-    - KSCrash/Reporting/Filters/Basic (= 1.15.8)
-    - KSCrash/Reporting/Filters/GZip (= 1.15.8)
-    - KSCrash/Reporting/Filters/JSON (= 1.15.8)
-    - KSCrash/Reporting/Filters/Sets (= 1.15.8)
-    - KSCrash/Reporting/Filters/Stringify (= 1.15.8)
-    - KSCrash/Reporting/Filters/Tools (= 1.15.8)
-  - KSCrash/Reporting/Filters/Alert (1.15.8):
-    - KSCrash/Recording
-    - KSCrash/Reporting/Filters/Base
-  - KSCrash/Reporting/Filters/AppleFmt (1.15.8):
-    - KSCrash/Recording
-    - KSCrash/Reporting/Filters/Base
-  - KSCrash/Reporting/Filters/Base (1.15.8):
-    - KSCrash/Recording
-  - KSCrash/Reporting/Filters/Basic (1.15.8):
-    - KSCrash/Recording
-    - KSCrash/Reporting/Filters/Base
-  - KSCrash/Reporting/Filters/GZip (1.15.8):
-    - KSCrash/Recording
-    - KSCrash/Reporting/Filters/Base
-  - KSCrash/Reporting/Filters/JSON (1.15.8):
-    - KSCrash/Recording
-    - KSCrash/Reporting/Filters/Base
-  - KSCrash/Reporting/Filters/Sets (1.15.8):
-    - KSCrash/Recording
-    - KSCrash/Reporting/Filters/AppleFmt
-    - KSCrash/Reporting/Filters/Base
+  - KSCrash/Core (1.15.11):
     - KSCrash/Reporting/Filters/Basic
-    - KSCrash/Reporting/Filters/GZip
-    - KSCrash/Reporting/Filters/JSON
-    - KSCrash/Reporting/Filters/Stringify
-  - KSCrash/Reporting/Filters/Stringify (1.15.8):
+  - KSCrash/Recording (1.15.11):
+    - KSCrash/Recording/Tools (= 1.15.11)
+  - KSCrash/Recording/Tools (1.15.11)
+  - KSCrash/Reporting/Filters/Base (1.15.11):
+    - KSCrash/Recording
+  - KSCrash/Reporting/Filters/Basic (1.15.11):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters/Base
-  - KSCrash/Reporting/Filters/Tools (1.15.8):
-    - KSCrash/Recording
-  - KSCrash/Reporting/MessageUI (1.15.8):
-    - KSCrash/Recording
-  - KSCrash/Reporting/Sinks (1.15.8):
-    - KSCrash/Recording
-    - KSCrash/Reporting/Filters
-    - KSCrash/Reporting/Tools
-  - KSCrash/Reporting/Tools (1.15.8):
-    - KSCrash/Recording
   - KSDeferred (0.2.0)
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
@@ -226,20 +175,22 @@ PODS:
   - ORStackView (2.0.3):
     - FLKAutoLayout
   - Quick (0.10.0)
-  - React (0.42.0):
-    - React/Core (= 0.42.0)
-  - React/Core (0.42.0):
-    - React/cxxreact
-    - Yoga (= 0.42.0.React)
-  - React/cxxreact (0.42.0):
-    - React/jschelpers
-  - React/jschelpers (0.42.0)
-  - React/RCTImage (0.42.0):
+  - React (0.45.0-rc.2):
+    - React/Core (= 0.45.0-rc.2)
+  - React/BatchedBridge (0.45.0-rc.2):
+    - React/Core
+    - React/cxxreact_legacy
+  - React/Core (0.45.0-rc.2):
+    - Yoga (= 0.45.0-rc.2.React)
+  - React/cxxreact_legacy (0.45.0-rc.2):
+    - React/jschelpers_legacy
+  - React/jschelpers_legacy (0.45.0-rc.2)
+  - React/RCTImage (0.45.0-rc.2):
     - React/Core
     - React/RCTNetwork
-  - React/RCTNetwork (0.42.0):
+  - React/RCTNetwork (0.45.0-rc.2):
     - React/Core
-  - React/RCTText (0.42.0):
+  - React/RCTText (0.45.0-rc.2):
     - React/Core
   - ReactiveCocoa (2.5):
     - ReactiveCocoa/UI (= 2.5)
@@ -252,12 +203,15 @@ PODS:
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
-  - Sentry (2.1.9):
-    - KSCrash (~> 1.15.5)
-  - SentryReactNative (0.8.3):
+  - Sentry (3.1.2):
+    - Sentry/Core (= 3.1.2)
+  - Sentry/Core (3.1.2)
+  - Sentry/KSCrash (3.1.2):
+    - KSCrash/Core (~> 1.15.9)
+  - SentryReactNative (0.14.5):
     - React
-    - RSSwizzle (~> 0.1.0)
-    - Sentry (~> 2.1.9)
+    - Sentry (~> 3.1.2)
+    - Sentry/KSCrash (~> 3.1.2)
   - Specta (1.0.5)
   - SSFadingScrollView (1.1.0)
   - Starscream (2.0.4)
@@ -268,7 +222,7 @@ PODS:
   - VCRURLConnection (0.2.0)
   - XCTest+OHHTTPStubSuiteCleanUp (1.0.0):
     - OHHTTPStubs
-  - Yoga (0.42.0.React)
+  - Yoga (0.45.0-rc.2.React)
 
 DEPENDENCIES:
   - Aerodramus
@@ -292,7 +246,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission
+  - Emission (~> 1.4.0-beta.1)
   - Expecta
   - Expecta+Snapshots
   - Extraction
@@ -444,7 +398,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: d9abff24f4f02cdb8807c352a484103bd17faa7b
+  Emission: aabd3024cb3e83b84f22befe7c10b1361d8bd57d
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
@@ -463,7 +417,7 @@ SPEC CHECKSUMS:
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   Keys: 9c35bf00f612ee1d48556f4a4b9b4551e224e90f
-  KSCrash: 4acb0f9cdb0b1ce7155c608dc175d91d750a8c3a
+  KSCrash: 7bd106ca4a2247774deeeb587c740ce0207de8f3
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   MARKRangeSlider: dbf0878b03e921b52e4ef1e7766c1a8affb0c577
@@ -479,12 +433,12 @@ SPEC CHECKSUMS:
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
-  React: 8ec97f0d79ba31892c526cf56425937926cc9b48
+  React: c30b44eb8e84d2071fb78cd1ed58e1512a822a57
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
-  Sentry: 0025c374b2f9fb0da8185a45199de985408a40b2
-  SentryReactNative: 0642e75b4a35a81627fa8e98a8fffe5523ac8a08
+  Sentry: 5a578891f177e994d89d57effc70adb97bfb29db
+  SentryReactNative: a8704684dd30ae618db4bfab0748b72c0a0caf78
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   SSFadingScrollView: a2f142312afad23585e354a41a6ed337045e1aa3
   Starscream: df5974ee928b157c8eda8af8de7c620276b7dfcc
@@ -494,8 +448,8 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
-  Yoga: 77f4e44e919b274504599a3536cdc90140fb58d8
+  Yoga: 1e50dc4765b92b34be298433613630076a27dc6b
 
-PODFILE CHECKSUM: 3d6786857a9d4e425e9e5b578658a8f99a389f5f
+PODFILE CHECKSUM: 4de6e316aee7fe216bb7e495cd9ff7763c57c5c1
 
 COCOAPODS: 1.2.1
