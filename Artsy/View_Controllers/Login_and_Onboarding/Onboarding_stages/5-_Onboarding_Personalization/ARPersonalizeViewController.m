@@ -510,7 +510,7 @@
 
 - (BOOL)validPassword:(NSString *)password
 {
-    if (password.length < 7) {
+    if (password.length < 6) {
         return NO;
     } else {
         return YES;

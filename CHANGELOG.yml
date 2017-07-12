@@ -6,6 +6,7 @@ upcoming:
     user_facing:
       - Adds new routing for inquiries - maxim
       - Fixes problem with status bar on refine options view - ash
+      - Fixes login for users with short passwords - ash
 
 releases:
   - version: 3.2.2
