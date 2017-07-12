@@ -8,6 +8,10 @@
 -   Fix crash on Gene view, when integrated into Eigen, due to missing RCTAnimation dependency - alloy
 -   Fix issue with missing icons - alloy
 
+### 1.3.10
+
+-   No longer display bid/price info for artworks in sales that are closed.
+
 ### 1.4.0-beta.2
 
 ###### Messaging

@@ -10,12 +10,15 @@ it("renders properly", () => {
   expect(artwork).toMatchSnapshot()
 })
 
-describe("in a sale", () => {
+describe("in an open sale", () => {
   it("renders with starting bid", () => {
     const saleArtwork = {
       opening_bid: { display: "$100" },
       current_bid: null,
       bidder_positions_count: 0,
+      sale: {
+        is_open: true,
+      },
     }
     const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork)} />).toJSON()
     expect(artwork).toMatchSnapshot()
@@ -26,6 +29,24 @@ describe("in a sale", () => {
       opening_bid: { display: "$100" },
       current_bid: { display: "$200" },
       bidder_positions_count: 1,
+      sale: {
+        is_open: true,
+      },
+    }
+    const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork)} />).toJSON()
+    expect(artwork).toMatchSnapshot()
+  })
+})
+
+describe("in a closed sale", () => {
+  it("renders without any price information", () => {
+    const saleArtwork = {
+      opening_bid: { display: "$100" },
+      current_bid: { display: "$200" },
+      bidder_positions_count: 1,
+      sale: {
+        is_open: false,
+      },
     }
     const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork)} />).toJSON()
     expect(artwork).toMatchSnapshot()
@@ -36,8 +57,8 @@ const artworkProps = (saleArtwork = null) => {
   return {
     title: "Some Kind of Dinosaur",
     date: "2015",
-    sale_message: "$875",
     is_in_auction: saleArtwork !== null,
+    sale_message: "Contact Gallery",
     sale_artwork: saleArtwork,
     image: {
       url: "artsy.net/image-url",
