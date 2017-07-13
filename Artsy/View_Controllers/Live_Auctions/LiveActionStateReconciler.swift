@@ -138,6 +138,10 @@ private extension PrivateFunctions {
 
             lot.updateBiddingStatus(biddingStatus, wasPassed: passed)
         }
+
+        if let onlineBidCount = derivedState["onlineBidCount"] as? Int {
+            lot.updateOnlineBidCount(onlineBidCount)
+        }
     }
 
     func updateLotWithEvents(_ lot: LiveAuctionLotViewModel, lotEvents: [[String: AnyObject]], fullEventOrder: [String]? = nil) {
