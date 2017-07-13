@@ -9,6 +9,8 @@
 		"djabraham.vscode-yaml-validation",
 		"vsmobile.vscode-react-native",
 		"Orta.vscode-react-native-storybooks",
-		"esbenp.prettier-vscode"
+		"esbenp.prettier-vscode",
+		"mrmlnc.vscode-stylefmt",
+		"shinnn.stylelint"
 	]
 }
