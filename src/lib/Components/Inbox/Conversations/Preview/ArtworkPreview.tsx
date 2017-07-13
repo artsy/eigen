@@ -38,8 +38,19 @@ const SerifText = styled(P)`
   fontSize: 14
 `
 
-const TitleAndDate = styled(Subtitle)`
+const TitleAndDate = styled.View`
   marginTop: 3
+  flex-direction: row
+`
+
+const Title = styled.Text`
+  font-family: ${fonts["garamond-italic"]}
+  flex: 3
+  font-size: 14
+`
+
+const Date = styled(SerifText)`
+  flex: 1
 `
 
 interface Props extends RelayProps {
@@ -59,8 +70,10 @@ export class ArtworkPreview extends React.Component<Props, any> {
               {artwork.artist_names}
             </SerifText>
             <TitleAndDate>
-              {artwork.title}
-              {artwork.date && <SerifText>{`, ${artwork.date}`}</SerifText>}
+              <Title numberOfLines={1}>
+                {artwork.title}
+              </Title>
+              {artwork.date && <Date>{`, ${artwork.date}`}</Date>}
             </TitleAndDate>
           </TextContainer>
         </Container>

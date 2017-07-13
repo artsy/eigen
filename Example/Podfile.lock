@@ -11,11 +11,14 @@ PODS:
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
     - UIView+BooleanAnimations
-  - Emission (1.4.0-beta.1):
+  - Emission (1.4.0-beta.3):
+    - Artsy+UIColors
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
     - React/BatchedBridge (= 0.45.0-rc.2)
     - React/Core (= 0.45.0-rc.2)
+    - React/RCTAnimation (= 0.45.0-rc.2)
+    - React/RCTCameraRoll (= 0.45.0-rc.2)
     - React/RCTImage (= 0.45.0-rc.2)
     - React/RCTNetwork (= 0.45.0-rc.2)
     - React/RCTText (= 0.45.0-rc.2)
@@ -111,8 +114,6 @@ DEPENDENCIES:
   - Emission (from `../`)
   - FLKAutoLayout
   - React/DevSupport (from `../node_modules/react-native`)
-  - React/RCTAnimation (from `../node_modules/react-native`)
-  - React/RCTCameraRoll (from `../node_modules/react-native`)
   - SAMKeychain
   - Sentry/Core
   - Sentry/KSCrash
@@ -150,7 +151,7 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   Artsy+UIFonts: e66afb5c40100e2fc5bba28feb7487e252f2d06f
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
-  Emission: bfc64bfedf22076bc0c549429028bf6b261c0af6
+  Emission: 2ef69730ce35dc7fd2b88004a77254041a6ae8d8
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
@@ -161,10 +162,10 @@ SPEC CHECKSUMS:
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   Sentry: 5a578891f177e994d89d57effc70adb97bfb29db
-  SentryReactNative: a8704684dd30ae618db4bfab0748b72c0a0caf78
+  SentryReactNative: 8f251df76f03c5ee42e702f37a41803709632217
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: d43165f478a090e7b603edc5796965a1de27d473
 
-PODFILE CHECKSUM: aac924619d818c85d3038bb7e51b7da2db2cfd4a
+PODFILE CHECKSUM: 81fa55023c9115777509729f1d7490b881688e37
 
 COCOAPODS: 1.2.1

@@ -1,3 +1,32 @@
+### 1.4.0-beta.3
+
+###### Messaging
+
+-   Reload active bids on pull-to-refresh - alloy
+-   Make active bids link to their artworks - alloy
+-   Make zero inbox state hide on load if bids or conversations exist - alloy
+-   Fix crash on Gene view, when integrated into Eigen, due to missing RCTAnimation dependency - alloy
+-   Fix issue with missing icons - alloy
+
+### 1.3.10
+
+-   No longer display bid/price info for artworks in sales that are closed.
+
+### 1.4.0-beta.2
+
+###### Messaging
+
+- Remove statusbar in inquiry modal view - maxim
+
+### 1.4.0-beta.2
+
+###### Messaging
+
+-   Show progress indicator during downloading of attachment - alloy
+-   Force fetch conversation on each load - alloy
+-   Make pull to refresh in the Inbox work - luc
+-   Don’t show pull to refresh control when loading the Inbox view - luc
+
 ### 1.4.0-beta.1
 
 -   [dev] Moves native view controllers to use iOS7+ status bar api - ash
@@ -22,7 +51,7 @@
 -   Adds pull to refresh support to Inbox view - luc
 -   Adds an `ImagePreview` to each Conversation, Relay-ified messages - matt
 -   Adds snapshot tests for active bids - luc
--   Update status label colors - luc
+-   Updates status label colors - luc
 -   Renders active bids before Messages - luc
 -   Adds active bids section on top of messages - luc
 -   Adds a mutation for appending messages to a thread - alloy, matt, sarah
@@ -35,6 +64,7 @@
 -   Adds Inquiry modal - maxim
 -   Fixes composer to stay above keyboard - luc
 -   Adds a media preview controller that can show remote document files - alloy
+-   Updates initial load state for Inbox - luc
 
 ###### Consignments
 

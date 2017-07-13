@@ -25,16 +25,18 @@ Pod::Spec.new do |s|
   s.source_files   = 'Pod/Classes/**/*.{h,m}'
   s.resources      = 'Pod/Assets/{Emission.js,assets}'
 
+  s.dependency 'Artsy+UIColors'
   s.dependency 'Artsy+UIFonts', '>= 3.0.0'
   s.dependency 'Extraction', '>= 1.2.1'
 
   s.dependency 'Yoga', "#{react_native_version}.React"
   s.dependency 'React/Core', react_native_version
-  s.dependency 'React/RCTText', react_native_version
-  s.dependency 'React/RCTImage', react_native_version
-  s.dependency 'React/RCTNetwork', react_native_version
   s.dependency 'React/BatchedBridge', react_native_version
+  s.dependency 'React/RCTAnimation', react_native_version
   s.dependency 'React/RCTCameraRoll', react_native_version
+  s.dependency 'React/RCTImage', react_native_version
+  s.dependency 'React/RCTText', react_native_version
+  s.dependency 'React/RCTNetwork', react_native_version
 
   s.dependency 'SDWebImage', '>= 3.7.2', '< 4'
   # This needs to be locked down because we’re including this specific version’s JS in our bundle, so it needs to match

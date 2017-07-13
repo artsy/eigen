@@ -7,6 +7,12 @@ Some helpful Relay documentation is listed below, but the general workflow is:
 2. Ensure the parent component calls `getFragment` for each child component that uses Relay.
 3. Make sure to supply every child component’s `props` upon instantiation in the parent.
 
+To update the `RelayProps` after modifying the GraphQL fragment, run the following command:
+
+```sh
+yarn relay2ts -- path/to/file.tsx --update
+```
+
 ----
 
 Another gotcha is around fragments that use variables. For this it is important to understand that whenever a Relay

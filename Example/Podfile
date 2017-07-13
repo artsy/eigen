@@ -1,6 +1,7 @@
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
+inhibit_all_warnings!
 platform :ios, '9.0'
 # FIXME: Figure out why we are getting hit by this issue.
 install! 'cocoapods', :deterministic_uuids => false
@@ -11,10 +12,10 @@ yoga_path = File.join(react_path, 'ReactCommon/yoga')
 sentry_path = File.join(node_modules_path, 'react-native-sentry')
 
 target 'Emission' do
-  pod 'Emission', :path => '../'
+  pod 'Emission', :path => '../', :inhibit_warnings => false
 
   # As this runs dev, we need the developer web socket
-  pod 'React', :path => react_path, :subspecs => %w(DevSupport RCTAnimation)
+  pod 'React', :path => react_path, :subspecs => %w(DevSupport)
   pod 'Yoga', :path => yoga_path
 
   pod 'Sentry', :subspecs => ['Core', 'KSCrash']
@@ -39,13 +40,11 @@ target 'Emission' do
   pod 'Artsy+Authentication', :subspecs => %w(email),
                               :git => 'https://github.com/artsy/Artsy-Authentication.git',
                               :branch => 'fetch-user-details'
+end
 
-# target 'EmissionTests' do
-#    inherit! :search_paths
-#
-#    pod 'React', :path => react_path, :subspecs => %w(Core RCTTest)
-#
-#    pod 'Specta'
-#    pod 'Expecta'
-# end
+post_install do |installer|
+  emission = installer.pods_project.targets.find { |target| target.name == 'Emission' }
+  emission.build_configurations.each do |config|
+    config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = "YES"
+  end
 end

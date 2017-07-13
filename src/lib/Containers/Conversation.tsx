@@ -50,7 +50,6 @@ const DottedBorder = styled.View`
   borderColor: ${colors["gray-regular"]}
   marginLeft: 20
   marginRight: 20
-
 `
 
 const MessagesList = styled(FlatList)`
@@ -97,6 +96,15 @@ export class Conversation extends React.Component<Props, State> {
         }
       />
     )
+  }
+
+  // FIXME This will perform a network request after initially rendering the component and thus always fetch the latest
+  //       messages. However, with a cold Relay cache this leads to an initial double fetch, because Relay will also
+  //       fetch the data before rendering the initial load.
+  componentDidMount() {
+    if (this.props.relay) {
+      this.props.relay.forceFetch({})
+    }
   }
 
   render() {

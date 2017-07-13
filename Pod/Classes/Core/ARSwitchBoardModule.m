@@ -39,7 +39,7 @@ RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag rou
                                                               mimeType:mimeType
                                                               cacheKey:cacheKey
                                                     hostViewController:fromViewController
-                                                       originatingView:originatingView] presentPreviewAnimated:YES];
+                                                       originatingView:originatingView] presentPreview];
     } reactTag:reactTag];
 }
 

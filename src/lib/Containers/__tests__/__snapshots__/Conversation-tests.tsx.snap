@@ -383,30 +383,38 @@ exports[`looks correct when rendered 1`] = `
                         >
                           Adrian Piper
                         </Text>
-                        <Text
-                          accessible={true}
-                          allowFontScaling={true}
-                          disabled={false}
-                          ellipsizeMode="tail"
+                        <View
                           style={
                             Array [
                               Object {
-                                "color": "black",
-                                "fontSize": 14,
+                                "flexDirection": "row",
+                                "marginTop": 3,
                               },
-                              Array [
-                                Object {
-                                  "marginTop": 3,
-                                },
-                                undefined,
-                              ],
-                              Object {
-                                "fontFamily": "AGaramondPro-Italic",
-                              },
+                              undefined,
                             ]
                           }
                         >
-                          The Mythic Being: Sol’s Drawing #1–5
+                          <Text
+                            accessible={true}
+                            allowFontScaling={true}
+                            disabled={false}
+                            ellipsizeMode="tail"
+                            numberOfLines={1}
+                            style={
+                              Array [
+                                Object {
+                                  "flexBasis": 0,
+                                  "flexGrow": 3,
+                                  "flexShrink": 1,
+                                  "fontFamily": "AGaramondPro-Italic",
+                                  "fontSize": 14,
+                                },
+                                undefined,
+                              ]
+                            }
+                          >
+                            The Mythic Being: Sol’s Drawing #1–5
+                          </Text>
                           <Text
                             accessible={true}
                             allowFontScaling={true}
@@ -424,7 +432,14 @@ exports[`looks correct when rendered 1`] = `
                                   Object {
                                     "fontSize": 14,
                                   },
-                                  undefined,
+                                  Array [
+                                    Object {
+                                      "flexBasis": 0,
+                                      "flexGrow": 1,
+                                      "flexShrink": 1,
+                                    },
+                                    undefined,
+                                  ],
                                 ],
                                 Object {
                                   "fontFamily": "AGaramondPro-Regular",
@@ -434,7 +449,7 @@ exports[`looks correct when rendered 1`] = `
                           >
                             , 1974
                           </Text>
-                        </Text>
+                        </View>
                       </View>
                     </View>
                   </View>
