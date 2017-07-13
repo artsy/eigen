@@ -1,17 +1,21 @@
 import * as React from "react"
-import { ActivityIndicator, ScrollView, View } from "react-native"
+import { ActivityIndicator, ScrollView, TouchableHighlight, View } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
 
+import { ArtistResult } from "../"
 import TextInput, { TextInputProps } from "./TextInput"
 
-const Result = styled.View`
-  flex-direction: row;
-  align-items: center;
+const Result = styled.TouchableHighlight`
   height: 40;
   margin-bottom: 10;
+`
+
+const ResultContainers = styled.View`
+  flex-direction: row;
+  align-items: center;
 `
 
 const Image = styled.Image`
@@ -41,18 +45,11 @@ const UnknownName = styled.Text`
 `
 
 export interface ArtistQueryData extends TextInputProps {
-  results: Array<{ name: string; id: string; image: { url: string } }> | null
+  results: ArtistResult[] | null
   query: string
   onChangeText?: (query: string) => void
+  resultSelected?: (result: ArtistResult) => void
 }
-
-const rowForResult = result =>
-  <Result key={result.id}>
-    <Image source={{ uri: result.image.url }} />
-    <Text>
-      {result.name}
-    </Text>
-  </Result>
 
 const noResults = props => {
   if (!props.query || props.searching) {
@@ -65,24 +62,41 @@ const noResults = props => {
   )
 }
 
-const render = (props: ArtistQueryData) =>
-  <View>
-    <TextInput
-      searching={props.searching}
-      text={{
-        placeholder: "Artist/Designer Name",
-        returnKeyType: "search",
-        value: props.query,
-        onChangeText: props.onChangeText,
-        autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
-      }}
-      style={{ flex: 0 }}
-    />
+const render = (props: ArtistQueryData) => {
+  const rowForResult = result =>
+    <Result key={result.id} onPress={() => props.resultSelected(result)}>
+      <ResultContainers>
+        {result.image && <Image source={{ uri: result.image.url }} />}
+        <Text>
+          {result.name}
+        </Text>
+      </ResultContainers>
+    </Result>
 
-    <ScrollView style={{ height: 182, paddingTop: 16 }} scrollEnabled={props.results && !!props.results.length}>
-      {props.results && props.results.length ? props.results.map(rowForResult) : noResults(props)}
-    </ScrollView>
-  </View>
+  return (
+    <View>
+      <TextInput
+        searching={props.searching}
+        text={{
+          placeholder: "Artist/Designer Name",
+          returnKeyType: "search",
+          value: props.query,
+          onChangeText: props.onChangeText,
+          autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
+        }}
+        style={{ flex: 0 }}
+      />
+
+      <ScrollView
+        style={{ height: 182, paddingTop: 16 }}
+        scrollEnabled={props.results && !!props.results.length}
+        keyboardShouldPersistTaps={true}
+      >
+        {props.results && props.results.length ? props.results.map(rowForResult) : noResults(props)}
+      </ScrollView>
+    </View>
+  )
+}
 
 export default class SearchResults extends React.Component<ArtistQueryData, null> {
   render() {

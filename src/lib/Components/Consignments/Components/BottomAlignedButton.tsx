@@ -37,6 +37,7 @@ const render = (props: BottomAlignedProps) =>
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {props.children}
     </View>
+
     <Separator key="separator" />
     <TouchableOpacity key="button" onPress={props.onPress} style={props.bodyStyle} disabled={props.disabled}>
       <ButtonText>

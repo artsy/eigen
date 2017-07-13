@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg width="375" height="667" xmlns="http://www.w3.org/2000/svg" version="1.1">
+
+ <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="375" height="667"/>
+
+ <g transform='translate(0, 0)'>
+   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="375" height="0"/>
+
+   <g transform='translate(0, 0)'>
+     <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="375" height="0"/>
+   </g>
+
+   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="375" height="1"/>
+   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="1" width="375" height="56"/>
+
+   <g transform='translate(0, 1)'>
+     <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="18" width="375" height="28"/>
+   </g>
+
+ </g>
+
+</svg>

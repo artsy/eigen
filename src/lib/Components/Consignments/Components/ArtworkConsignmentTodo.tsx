@@ -74,8 +74,6 @@ const ImageDarkener = styled.View`
   padding-top: 2;
 `
 
-// Can't add TouchableHighlight yet, see https://github.com/styled-components/styled-components/issues/763
-
 const ToDoButton = () =>
   <ImageBG>
     <Image source={require("../images/plus.png")} />

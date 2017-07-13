@@ -18,6 +18,7 @@ PODS:
     - React/BatchedBridge (= 0.45.0-rc.2)
     - React/Core (= 0.45.0-rc.2)
     - React/RCTAnimation (= 0.45.0-rc.2)
+    - React/RCTCameraRoll (= 0.45.0-rc.2)
     - React/RCTImage (= 0.45.0-rc.2)
     - React/RCTNetwork (= 0.45.0-rc.2)
     - React/RCTText (= 0.45.0-rc.2)
@@ -77,6 +78,9 @@ PODS:
   - React/jschelpers_legacy (0.45.0-rc.2)
   - React/RCTAnimation (0.45.0-rc.2):
     - React/Core
+  - React/RCTCameraRoll (0.45.0-rc.2):
+    - React/Core
+    - React/RCTImage
   - React/RCTImage (0.45.0-rc.2):
     - React/Core
     - React/RCTNetwork
@@ -141,13 +145,13 @@ CHECKOUT OPTIONS:
     :git: https://github.com/artsy/Artsy-Authentication.git
 
 SPEC CHECKSUMS:
-  AppHub: 03788112dd48c42b60d51321c0ffff4ef15a4432
+  AppHub: '03788112dd48c42b60d51321c0ffff4ef15a4432'
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   Artsy+Authentication: 3bf11ceca61c52e9e31490535bf5798f625406fa
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   Artsy+UIFonts: e66afb5c40100e2fc5bba28feb7487e252f2d06f
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
-  Emission: be8d0e76662b0211b528752146a94da41ed9ab34
+  Emission: 2ef69730ce35dc7fd2b88004a77254041a6ae8d8
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
@@ -162,6 +166,6 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: d43165f478a090e7b603edc5796965a1de27d473
 
-PODFILE CHECKSUM: 81fa55023c9115777509729f1d7490b881688e37
+PODFILE CHECKSUM: 0c385e9313daa3b7b7130176793f59f9c6ee2778
 
 COCOAPODS: 1.2.1
