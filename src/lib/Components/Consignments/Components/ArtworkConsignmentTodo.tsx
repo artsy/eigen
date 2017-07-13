@@ -30,14 +30,11 @@ const InlineCopy = styled.Text`
 const Background = styled.View`
   background-color: black;
   flex: 1;
-  padding-top: 20;
-  padding-bottom: 20;
-  padding-left: 20;
-  padding-right: 20;
+  padding: 20;
 `
 
 const Separator = styled.View`
-  background-color: ${colors["gray-regular"]}
+  background-color: ${colors["gray-regular"]};
   height: 1;
 `
 

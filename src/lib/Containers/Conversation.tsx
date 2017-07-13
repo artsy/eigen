@@ -4,7 +4,7 @@ import * as Relay from "react-relay"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
-import { FlatList, ImageURISource, ViewProperties } from "react-native"
+import { FlatList, ImageURISource, View, ViewProperties } from "react-native"
 import ReversedFlatList from "react-native-reversed-flat-list"
 
 import styled from "styled-components/native"
@@ -30,30 +30,30 @@ const Header = styled.View`
 `
 
 // This makes it really easy to style the HeaderTextContainer with space-between
-const PlaceholderView = styled.View``
+const PlaceholderView = View
 
 const HeaderTextContainer = styled.View`
-  flexDirection: row
-  justifyContent: space-between
+  flex-direction: row;
+  justify-content: space-between;
 `
 
 const BackButtonPlaceholder = styled.Image`
-  height: 12
-  width: 7
-  transform: rotate(180deg)
+  height: 12;
+  width: 7;
+  transform: rotate(180deg);
 `
 
 const DottedBorder = styled.View`
-  height: 1
-  borderWidth: 1
-  borderStyle: dotted
-  borderColor: ${colors["gray-regular"]}
-  marginLeft: 20
-  marginRight: 20
+  height: 1;
+  border-width: 1;
+  border-style: dotted;
+  border-color: ${colors["gray-regular"]};
+  margin-left: 20;
+  margin-right: 20;
 `
 
 const MessagesList = styled(FlatList)`
-  marginTop: 10
+  margin-top: 10;
 `
 
 const PAGE_SIZE = 100

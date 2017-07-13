@@ -11,46 +11,46 @@ import fonts from "../../../../../data/fonts"
 import OpaqueImageView from "../../../OpaqueImageView"
 
 const Container = styled.View`
-  borderWidth: 1;
-  borderColor: ${colors["gray-regular"]};
-  flexDirection: row;
+  border-width: 1;
+  border-color: ${colors["gray-regular"]};
+  flex-direction: row;
 `
 
 const VerticalLayout = styled.View`
-  flex: 1
-  flex-direction: column
+  flex: 1;
+  flex-direction: column;
 `
 
 const Image = styled(OpaqueImageView)`
-  marginTop: 12
-  marginLeft: 12
-  marginBottom: 12
-  width: 80
-  height: 55
+  margin-top: 12;
+  margin-left: 12;
+  margin-bottom: 12;
+  width: 80;
+  height: 55;
 `
 
 const TextContainer = styled(VerticalLayout)`
-  marginLeft: 25
-  alignSelf: center
+  margin-left: 25;
+  align-self: center;
 `
 
 const SerifText = styled(P)`
-  fontSize: 14
+  font-size: 14;
 `
 
 const TitleAndDate = styled.View`
-  marginTop: 3
-  flex-direction: row
+  margin-top: 3;
+  flex-direction: row;
 `
 
 const Title = styled.Text`
-  font-family: ${fonts["garamond-italic"]}
-  flex: 3
-  font-size: 14
+  font-family: ${fonts["garamond-italic"]};
+  flex: 3;
+  font-size: 14;
 `
 
 const Date = styled(SerifText)`
-  flex: 1
+  flex: 1;
 `
 
 interface Props extends RelayProps {

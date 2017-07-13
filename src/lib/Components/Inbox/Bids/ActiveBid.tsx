@@ -11,14 +11,13 @@ import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import OpaqueImageView from "../../OpaqueImageView"
 
 const Container = styled.View`
-  margin: 17px 20px 0px;
+  margin: 17px 20px 0;
   height: 80px;
 `
 
 const Content = styled.View`
   flex: 1;
   flex-direction: row;
-
   align-items: center;
 `
 
