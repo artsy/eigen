@@ -3,6 +3,7 @@
 int main(int argc, char * argv[]) {
   @autoreleasepool {
     NSString *delegate = @"AppDelegate";
+#ifdef DEBUG
     if (NSClassFromString(@"XCTestCase")) {
       delegate = @"TestHelper";
       if (NSClassFromString(delegate) == nil) {
@@ -11,6 +12,7 @@ int main(int argc, char * argv[]) {
         NSCParameterAssert([[NSBundle bundleWithPath:testBundlePath] load]);
       }
     }
+#endif
     return UIApplicationMain(argc, argv, nil, delegate);
   }
 }
