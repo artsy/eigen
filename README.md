@@ -22,6 +22,10 @@ Want to know more about Emission? Read the [mobile](http://artsy.github.io/blog/
 
 ### Installation
 
+*Automated install*: `git clone https://github.com/artsy/emission.git; cd emission; make oss`.
+
+*Manual install*
+
 1. Make sure to check out submodules with `git submodule update --init`
 1. Install [Node.js][node], and [Yarn][yarn]: `$ brew install node yarn`
 1. Install file watcher used by React Native:
