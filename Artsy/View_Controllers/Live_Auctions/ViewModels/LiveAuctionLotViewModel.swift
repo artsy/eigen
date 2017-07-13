@@ -157,7 +157,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     }
 
     var numberOfBids: Int {
-        return fullEventList.filter { $0.isBid }.count
+        return model.onlineBidCount
     }
 
     var urlForThumbnail: URL {
@@ -300,6 +300,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         if updated {
             biddingStatusSignal.update((status: model.biddingStatus, wasPassed: wasPassed, isHighestBidder: self.userIsWinning))
         }
+    }
+
+    func updateOnlineBidCount(_ onlineBidCount: Int) {
+        model.onlineBidCount = onlineBidCount
     }
 
     func updateSellingToBidder(_ sellingToBidderID: String?) {

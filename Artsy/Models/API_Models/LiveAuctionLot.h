@@ -36,8 +36,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) NSInteger position;
 @property (nonatomic, assign, readonly) NSString *_Nullable lotLabel;
 
-// Note: Not parsed from JSON, stored locally.
+// Note: These are not parsed from JSON, stored locally.
 @property (nonatomic, copy, readonly) NSArray<NSString *> *eventIDs;
+@property (nonatomic, assign) NSInteger onlineBidCount;
 
 @property (nonatomic, assign, readonly) ARReserveStatus reserveStatus;
 @property (nonatomic, assign, readonly) ARLiveBiddingStatus biddingStatus;
