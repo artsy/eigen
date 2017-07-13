@@ -8,10 +8,6 @@
 -   Fix crash on Gene view, when integrated into Eigen, due to missing RCTAnimation dependency - alloy
 -   Fix issue with missing icons - alloy
 
-### 1.3.10
-
--   No longer display bid/price info for artworks in sales that are closed.
-
 ### 1.4.0-beta.2
 
 ###### Messaging
@@ -75,6 +71,10 @@
 -   Adds component for consignments todo  - orta
 -   Adds storybooks for consignments  - orta
 -   Adds some form elements for consignments - orta
+
+### 1.3.10
+
+-   No longer display bid/price info for artworks in sales that are closed.
 
 ### 1.3.8 & 1.3.9
 
