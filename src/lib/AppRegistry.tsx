@@ -1,6 +1,6 @@
 import * as _ from "lodash"
 import * as React from "react"
-import { AppRegistry, ViewProperties } from "react-native"
+import { AppRegistry, Text, ViewProperties } from "react-native"
 import * as Relay from "react-relay"
 
 import Consignments from "./Components/Consignments"
@@ -18,6 +18,7 @@ class RootContainer extends React.Component<Props, {}> {
   component: Relay.RelayContainerClass<any>
   route: Relay.Route
   renderFetched?: Relay.RootContainerProps["renderFetched"]
+  renderFailure?: Relay.RootContainerProps["renderFailure"]
   forceFetch: boolean
 
   constructor(props) {
@@ -45,10 +46,13 @@ class RootContainer extends React.Component<Props, {}> {
             return <Spinner style={{ flex: 1 }} />
           }
         }}
-        renderFailure={(error, retry) => {
-          this.state.retrying = true
-          return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
-        }}
+        renderFailure={
+          this.renderFailure ||
+          ((error, retry) => {
+            this.state.retrying = true
+            return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
+          })
+        }
         {...untypedProps}
       />
     )
@@ -122,6 +126,11 @@ class Conversation extends RootContainer {
     super(props)
     this.component = Containers.Conversation
     this.route = new Routes.Conversation({ conversationID: props.conversationID })
+
+    this.renderFailure = (error, retry) => {
+      console.error(error)
+      return <Text>NO CONNECTIVITY</Text>
+    }
   }
 }
 
