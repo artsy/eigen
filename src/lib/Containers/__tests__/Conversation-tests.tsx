@@ -1,12 +1,43 @@
 import * as moment from "moment"
 import * as React from "react"
+
 import "react-native"
 import * as renderer from "react-test-renderer"
 import Conversation from "../Conversation"
 
+jest.mock("NetInfo", () => {
+  return {
+    addEventListener: jest.fn(),
+    isConnected: {
+      fetch: () => {
+        return new Promise((accept, resolve) => {
+          accept(false)
+        })
+      },
+      addEventListener: jest.fn(),
+    },
+  }
+})
+
 it("looks correct when rendered", () => {
-  const tree = renderer.create(<Conversation me={props} />).toJSON()
-  expect(tree).toMatchSnapshot()
+  const conversation = renderer.create(<Conversation me={props} />) as any
+  const instance = conversation.getInstance()
+
+  // Assumes decent connectivity
+  instance.handleConnectivityChange(true)
+
+  expect(conversation).toMatchSnapshot()
+})
+
+it("displays a connectivity banner when network is down", () => {
+  const conversation = renderer.create(<Conversation me={props} />) as any
+
+  const instance = conversation.getInstance()
+
+  // Network goes down
+  instance.handleConnectivityChange(false)
+
+  expect(conversation).toMatchSnapshot()
 })
 
 const props = {
