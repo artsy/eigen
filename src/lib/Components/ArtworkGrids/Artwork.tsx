@@ -63,7 +63,7 @@ class Artwork extends React.Component<RelayProps, any> {
 
   saleMessage() {
     const artwork = this.props.artwork
-    if (artwork.is_in_auction) {
+    if (artwork.is_in_auction && artwork.sale_artwork) {
       if (artwork.sale_artwork.sale.is_open) {
         const numberOfBids = artwork.sale_artwork.bidder_positions_count
         let text = artwork.sale_artwork.opening_bid.display
