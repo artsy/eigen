@@ -510,11 +510,19 @@
 
 - (BOOL)validPassword:(NSString *)password
 {
-    if (password.length < 7) {
-        return NO;
+    // If the user is logging in, allow any non-empty password.
+    if (self.state == AROnboardingStagePersonalizeLogin) {
+        if (password.length > 0) {
+            return YES;
+        }
     } else {
-        return YES;
+        // Otherwise, new users signing up require passwords at least 7 chars long.
+        if (password.length >= 7) {
+            return YES;
+        }
     }
+
+    return NO;
 }
 
 - (void)showErrorWithMessage:(NSString *)errorMessage
