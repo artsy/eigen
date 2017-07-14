@@ -4,11 +4,12 @@ import * as Relay from "react-relay"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
-import { FlatList, ImageURISource, View, ViewProperties } from "react-native"
+import { FlatList, ImageURISource, NetInfo, View, ViewProperties } from "react-native"
 import ReversedFlatList from "react-native-reversed-flat-list"
 
 import styled from "styled-components/native"
 import colors from "../../data/colors"
+import fonts from "../../data/fonts"
 import Composer from "../Components/Inbox/Conversations/Composer"
 import Message from "../Components/Inbox/Conversations/Message"
 import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
@@ -56,6 +57,22 @@ const MessagesList = styled(FlatList)`
   margin-top: 10;
 `
 
+const ConnectivityBanner = styled.View`
+  height: 30
+  background-color: ${colors["yellow-regular"]}
+  justify-content: center
+  align-items: center
+`
+
+const ConnectivityMessage = styled.Text`
+  color: ${colors["yellow-bold"]}
+  text-align: center
+  font-family: ${fonts["garamond-regular"]}
+  font-size: 16
+  padding-top: 5
+
+`
+
 const PAGE_SIZE = 100
 
 interface Props extends RelayProps {
@@ -64,14 +81,20 @@ interface Props extends RelayProps {
 
 interface State {
   sendingMessage: boolean
+  isConnected: boolean
 }
 
 export class Conversation extends React.Component<Props, State> {
   constructor(props) {
     super(props)
+
+    // Assume if the component loads, connection exists (this way the banner won't flash unnecessarily)
     this.state = {
       sendingMessage: false,
+      isConnected: true,
     }
+
+    this.handleConnectivityChange = this.handleConnectivityChange.bind(this)
   }
 
   renderMessage({ item }) {
@@ -105,6 +128,16 @@ export class Conversation extends React.Component<Props, State> {
     if (this.props.relay) {
       this.props.relay.forceFetch({})
     }
+
+    NetInfo.isConnected.addEventListener("change", this.handleConnectivityChange)
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener("change", this.handleConnectivityChange)
+  }
+
+  handleConnectivityChange(isConnected) {
+    this.setState({ isConnected })
   }
 
   render() {
@@ -150,6 +183,10 @@ export class Conversation extends React.Component<Props, State> {
               <PlaceholderView />
             </HeaderTextContainer>
           </Header>
+          {!this.state.isConnected &&
+            <ConnectivityBanner>
+              <ConnectivityMessage> No Internet Connection</ConnectivityMessage>
+            </ConnectivityBanner>}
           <ReversedFlatList
             data={messages}
             renderItem={this.renderMessage.bind(this)}
