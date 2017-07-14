@@ -10,15 +10,11 @@ const Container = styled.View`margin: 20px 0 40px;`
 
 class ActiveBids extends React.Component<RelayProps, null> {
   hasContent() {
-    if (!this.props.me) {
-      return false
-    }
     return this.props.me.lot_standings.length > 0
   }
 
   renderRows() {
-    const me = this.props.me || { lot_standings: [] }
-    const bids = me.lot_standings.map(bidData => {
+    const bids = this.props.me.lot_standings.map(bidData => {
       return <ActiveBid key={bidData.active_bid.__id} bid={bidData} />
     })
     return bids
