@@ -165,7 +165,7 @@
         case AROnboardingStagePersonalizePassword:
             [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Create a password" withLargeLayout:self.useLargeLayout];
-            [self.headerView addHelpText:@"Must be 7 characters or longer" withLargeLayout:self.useLargeLayout];
+            [self.headerView addHelpText:@"Must be 6 characters or longer" withLargeLayout:self.useLargeLayout];
             [self addTextFields];
             [self.onboardingTextFields setupForPasswordWithLargeLayout:self.useLargeLayout];
             [self.onboardingTextFields.passwordField becomeFirstResponder];
@@ -516,8 +516,8 @@
             return YES;
         }
     } else {
-        // Otherwise, new users signing up require passwords at least 7 chars long.
-        if (password.length >= 7) {
+        // Otherwise, new users signing up require passwords at least 6 chars long.
+        if (password.length >= 6) {
             return YES;
         }
     }
