@@ -1,3 +1,9 @@
+### Master
+
+###### Dev
+
+-   Adds stylint to the dev-experience, not validated on CI yet - orta
+
 ### 1.4.0-beta.3
 
 ###### Messaging

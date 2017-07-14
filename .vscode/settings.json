@@ -5,7 +5,8 @@
         "Podfile": "ruby",
         "*.h": "objective-c",
         "*.js": "javascriptreact",
-        "*.snap": "javascriptreact"
+        "*.snap": "javascriptreact",
+        ".stylelintrc": "json"
     },
     "eslint.enable": false,
     "flow.enabled": false,
