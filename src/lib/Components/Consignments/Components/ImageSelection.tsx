@@ -1,5 +1,16 @@
 import * as React from "react"
-import { ButtonProperties, FlatList, Image, Text, TouchableHighlight, View } from "react-native"
+import {
+  ButtonProperties,
+  FlatList,
+  Image,
+  ListView,
+  ListViewDataSource,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from "react-native"
 
 import { chunk } from "lodash"
 
@@ -83,14 +94,18 @@ interface Props {
 interface State {
   selected: Map<string, boolean>
   data: ImageData[][] // because it gets chopped into pairs
+  dataSource: ListViewDataSource
 }
 
 export default class ImageSelection extends React.Component<Props, State> {
   constructor(props) {
     super(props)
+
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
     this.state = {
       selected: new Map(),
       data: chunk([null, ...props.data], 2),
+      dataSource: ds.cloneWithRows(props.data),
     }
   }
 
@@ -114,14 +129,43 @@ export default class ImageSelection extends React.Component<Props, State> {
       onPressNewPhoto={this.props.onPressNewPhoto}
     />
 
+  renderRow = d =>
+    d && d.image
+      ? <ImageForURI selected={false} image={d.image} onPressItem={() => ""} />
+      : <TakePhotoImage onPressNewPhoto={() => ""} />
+
   render() {
     return (
-      <FlatList
-        data={this.state.data}
-        extraData={this.state}
-        keyExtractor={this.keyExtractor}
-        renderItem={this.renderItem}
-      />
+      <ListView contentContainerStyle={styles.list} dataSource={this.state.dataSource} renderRow={this.renderRow} />
     )
   }
 }
+
+const styles = StyleSheet.create({
+  list: {
+    justifyContent: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  row: {
+    justifyContent: "center",
+    padding: 5,
+    margin: 10,
+    width: 100,
+    height: 100,
+    backgroundColor: "#F6F6F6",
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: "#CCC",
+  },
+  thumb: {
+    width: 64,
+    height: 64,
+  },
+  text: {
+    flex: 1,
+    marginTop: 5,
+    fontWeight: "bold",
+  },
+})
