@@ -39,7 +39,8 @@ const TextContainer = styled(VerticalLayout)`
 `
 
 const SenderName = styled(SmallHeadline)`
-  marginRight: 10
+  marginRight: 3
+  font-size: 11.5
 `
 
 const ArtworkPreviewContainer = styled.View`marginBottom: 10;`
@@ -140,10 +141,12 @@ interface RelayProps {
     raw_text: string | null
     created_at: string | null
     is_from_user: boolean
-    attachments: Array<{
-      id: string
-      content_type: string
-      download_url: string
-    }>
+    attachments: Array<
+      {
+        id: string
+        content_type: string
+        download_url: string
+      }
+    >
   }
 }
