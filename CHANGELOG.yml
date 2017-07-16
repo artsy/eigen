@@ -1,6 +1,5 @@
 upcoming:
     version: 3.3.0
-    details: Scope not known yet
     details: Messaging
     dev:
       - Reload active bids on pull-to-refresh - alloy
