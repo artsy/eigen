@@ -104,7 +104,11 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
     ArtsyKeys *keys = [ArtsyKeys new];
     NSString *sentryDSN = [ARAppStatus isBetaOrDev] ? [keys sentryStagingDSN] : [keys sentryProductionDSN];
-
+    
+    // Don't let the JS raise an error about Sentry's DSN being a stub on OSS builds
+    if ([sentryDSN isEqualToString:@"-"]) {
+        sentryDSN = nil;
+    }
     AREmission *emission = [[AREmission alloc] initWithUserID:userID
                                           authenticationToken:authenticationToken
                                                   packagerURL:packagerURL
