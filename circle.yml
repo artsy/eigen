@@ -41,3 +41,4 @@ test:
     - bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
   post:
     - make deploy_if_beta_branch
+    - cp -r derived_data/Logs $CIRCLE_ARTIFACTS/

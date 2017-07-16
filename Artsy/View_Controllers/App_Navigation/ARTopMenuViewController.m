@@ -279,11 +279,6 @@ static const CGFloat ARMenuButtonDimension = 50;
     }];
 }
 
-- (UIViewController *)visibleViewController;
-{
-    return self.presentedViewController ?: self.rootNavigationController.visibleViewController;
-}
-
 - (ARNavigationController *)rootNavigationController;
 {
     return (ARNavigationController *)[self.tabContentView currentNavigationController];
@@ -407,12 +402,12 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 - (UIViewController *)childViewControllerForStatusBarHidden
 {
-    return self.visibleViewController;
+    return self.rootNavigationController;
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle
 {
-    return self.visibleViewController;
+    return self.rootNavigationController;
 }
 
 #pragma mark - Pushing VCs
