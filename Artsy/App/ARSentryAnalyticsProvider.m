@@ -12,9 +12,6 @@
     self = [super init];
     if (!self) { return nil; }
 
-    // For OSS builds
-    if ([DSN isEqualToString:@"-"]) { return self; }
-
     NSError *error = nil;
     SentryClient *client = [[SentryClient alloc] initWithDsn:DSN didFailWithError:&error];
     NSAssert(error == nil, @"Unable to initialize a SentryClient SDK: %@", error);

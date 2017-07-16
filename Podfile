@@ -67,7 +67,7 @@ target 'Artsy' do
   pod 'Aerodramus'
 
   # Custom CollectionView Layouts
-  pod 'ARCollectionViewMasonryLayout', :git => 'https://github.com/ashfurrow/ARCollectionViewMasonryLayout', :branch => "modern"
+  pod 'ARCollectionViewMasonryLayout', :git => 'https://github.com/ashfurrow/ARCollectionViewMasonryLayout'
 
   # Language Enhancements
   pod 'KSDeferred'

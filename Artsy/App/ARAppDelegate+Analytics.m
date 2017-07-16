@@ -108,8 +108,11 @@
         [ARAnalytics setupProvider:visualizer];
     }
 
-    id sentry = [[ARSentryAnalyticsProvider alloc] initWithDSN:sentryEnv];
-    [ARAnalytics setupProvider:sentry];
+    // For OSS builds don't ship the sentry env
+    if (![sentryEnv isEqualToString:@"-"]) {
+        id sentry = [[ARSentryAnalyticsProvider alloc] initWithDSN:sentryEnv];
+        [ARAnalytics setupProvider:sentry];
+    }
 
     BITHockeyManager *hockey = [BITHockeyManager sharedHockeyManager];
     hockey.disableCrashManager = YES;
