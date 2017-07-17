@@ -63,6 +63,8 @@
 
 - (void)prepareForReuse
 {
+    [super prepareForReuse];
+    
     _thumbnail.image = nil;
     _title.text = nil;
     _follow.image = nil;
