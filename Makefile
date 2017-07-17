@@ -52,6 +52,8 @@ oss:
 	bundle exec pod keys set "SegmentDevWriteKey" "-"
 	bundle exec pod keys set "AdjustProductionAppToken" "-"
 	bundle exec pod keys set "ArtsyEchoProductionToken" "-"
+	bundle exec pod keys set "SentryProductionDSN" "-"
+	bundle exec pod keys set "SentryStagingDSN" "-"
 
 artsy:
 	git submodule update --init
