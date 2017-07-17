@@ -7,6 +7,7 @@ upcoming:
       - Make zero inbox state hide on load if bids or conversations exist - alloy
       - Fix crash on Gene view, when integrated into Eigen, due to missing RCTAnimation dependency - alloy
       - Fix issue with missing icons - alloy
+      - Fix crash in analytics probably due to the show VC being deallocated and thus queried values being `nil` - alloy
 
     user_facing:
       - Adds new routing for inquiries - maxim
