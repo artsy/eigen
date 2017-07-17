@@ -14,6 +14,7 @@ upcoming:
       - Fixes problem with status bar on refine options view - ash
       - Fixes login for users with short passwords - ash
       - Fixes inconsistencies in bid counts of online sales - ash
+      - Fixes a minor problem displaying lots in past auctions - ash
 
 releases:
   - version: 3.2.3

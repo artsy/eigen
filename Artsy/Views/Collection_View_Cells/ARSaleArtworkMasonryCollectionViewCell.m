@@ -120,6 +120,7 @@
     self.artistNameLabel.text = saleArtworkViewModel.artistName;
     [self.artworkNameLabel setTitle:saleArtworkViewModel.artworkName date:saleArtworkViewModel.artworkDate];
     self.currentOrStartingBidLabel.text = [saleArtworkViewModel currentOrStartingBidWithNumberOfBids:YES];
+    self.paddleImageView.hidden = (self.currentOrStartingBidLabel.text.length == 0);
     if (saleArtworkViewModel.lotLabel.length) {
         self.lotNumberLabel.text = [@"LOT " stringByAppendingString:saleArtworkViewModel.lotLabel];
     }
