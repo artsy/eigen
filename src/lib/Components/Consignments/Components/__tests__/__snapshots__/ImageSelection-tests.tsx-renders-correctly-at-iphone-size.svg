@@ -4,51 +4,31 @@
  <rect type="RCTScrollView" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="375" height="667"/>
 
  <g transform='translate(0, 0)'>
-   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="375" height="316"/>
+   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="375" height="632"/>
 
    <g transform='translate(0, 0)'>
-     <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="375" height="158"/>
+     <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="158" height="158"/>
 
      <g transform='translate(0, 0)'>
-       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="375" height="158"/>
-
-       <g transform='translate(0, 0)'>
-         <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="158" height="158"/>
-
-         <g transform='translate(0, 0)'>
-           <rect type="Image" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="158" height="158"/>
-         </g>
-
-         <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="158" y="0" width="158" height="158"/>
-
-         <g transform='translate(158, 0)'>
-           <rect type="Image" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="158" height="158"/>
-         </g>
-
-       </g>
-
+       <rect type="Image" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="158" height="158"/>
      </g>
 
-     <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="158" width="375" height="158"/>
+     <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="158" width="158" height="158"/>
 
      <g transform='translate(0, 158)'>
-       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="375" height="158"/>
+       <rect type="Image" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="158" height="158"/>
+     </g>
 
-       <g transform='translate(0, 0)'>
-         <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="158" height="158"/>
+     <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="316" width="158" height="158"/>
 
-         <g transform='translate(0, 0)'>
-           <rect type="Image" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="158" height="158"/>
-         </g>
+     <g transform='translate(0, 316)'>
+       <rect type="Image" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="158" height="158"/>
+     </g>
 
-         <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="158" y="0" width="158" height="158"/>
+     <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="474" width="158" height="158"/>
 
-         <g transform='translate(158, 0)'>
-           <rect type="Image" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="158" height="158"/>
-         </g>
-
-       </g>
-
+     <g transform='translate(0, 474)'>
+       <rect type="Image" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="158" height="158"/>
      </g>
 
    </g>

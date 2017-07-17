@@ -33,7 +33,7 @@ interface ImageData {
 }
 
 interface ImagePreviewProps {
-  image: ImageData
+  data: ImageData
   selected: boolean
   onPressItem: (uri: string) => void
 }
@@ -49,14 +49,18 @@ const TakePhotoImage = (props: TakePhotoImageProps) =>
       backgroundColor: "white",
       height: 158,
       width: 158,
+      justifyContent: "center",
+      padding: 5,
+      margin: 10,
+      alignItems: "center",
     }}
   >
-    <Image source={{ uri: "" }} style={{ height: 158, width: 158 }} />
+    <Image source={require("../../../../../images/consignments/hammer.png")} style={{ height: 158, width: 158 }} />
   </TouchableHighlight>
 
 const ImageForURI = (props: ImagePreviewProps) =>
   <TouchableHighlight
-    onPress={() => props.onPressItem(props.image.image.uri)}
+    onPress={() => props.onPressItem(props.data.image.uri)}
     style={{
       backgroundColor: colors["gray-regular"],
       height: 158,
@@ -65,26 +69,8 @@ const ImageForURI = (props: ImagePreviewProps) =>
       borderWidth: 2,
     }}
   >
-    <Image source={{ uri: props.image.image.uri }} style={{ height: 158, width: 158 }} />
+    <Image source={{ uri: props.data.image.uri }} style={{ height: 158, width: 158 }} />
   </TouchableHighlight>
-
-interface ImageViewCoupletProps {
-  first: ImageData
-  second: ImageData
-  firstSelected: boolean
-  secondSelected: boolean
-  onPressItem: (uri: string) => void
-  onPressNewPhoto: () => void
-}
-
-const ImageViewCouplet = (props: ImageViewCoupletProps) =>
-  <View style={{ flexDirection: "row" }}>
-    {props.first
-      ? <ImageForURI image={props.first} onPressItem={props.onPressItem} selected={props.firstSelected} />
-      : <TakePhotoImage onPressNewPhoto={props.onPressNewPhoto} />}
-    {props.second &&
-      <ImageForURI image={props.second} onPressItem={props.onPressItem} selected={props.secondSelected} />}
-  </View>
 
 interface Props {
   data: ImageData[]
@@ -93,7 +79,6 @@ interface Props {
 
 interface State {
   selected: Map<string, boolean>
-  data: ImageData[][] // because it gets chopped into pairs
   dataSource: ListViewDataSource
 }
 
@@ -104,12 +89,9 @@ export default class ImageSelection extends React.Component<Props, State> {
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
     this.state = {
       selected: new Map(),
-      data: chunk([null, ...props.data], 2),
-      dataSource: ds.cloneWithRows(props.data),
+      dataSource: ds.cloneWithRows([null, ...props.data]),
     }
   }
-
-  keyExtractor = (item, index) => (item[0] ? item[0].image.uri : item[1] ? item[1].image.uri : "")
 
   onPressItem = (id: string) => {
     this.setState(state => {
@@ -119,20 +101,15 @@ export default class ImageSelection extends React.Component<Props, State> {
     })
   }
 
-  renderItem = ({ item }) =>
-    <ImageViewCouplet
-      first={item[0]}
-      firstSelected={item[0] && !!this.state.selected.get(item[0].image.uri)}
-      second={item[1]}
-      secondSelected={item[1] && !!this.state.selected.get(item[1].image.uri)}
-      onPressItem={this.onPressItem}
-      onPressNewPhoto={this.props.onPressNewPhoto}
-    />
-
-  renderRow = d =>
-    d && d.image
-      ? <ImageForURI selected={false} image={d.image} onPressItem={() => ""} />
-      : <TakePhotoImage onPressNewPhoto={() => ""} />
+  renderRow = (d: ImageData | null) =>
+    d
+      ? <ImageForURI
+          key={d.image.uri}
+          selected={!!this.state.selected.get(d.image.uri)}
+          data={d}
+          onPressItem={this.onPressItem}
+        />
+      : <TakePhotoImage onPressNewPhoto={this.props.onPressNewPhoto} />
 
   render() {
     return (
