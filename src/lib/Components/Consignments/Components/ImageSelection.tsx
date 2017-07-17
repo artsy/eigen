@@ -47,15 +47,17 @@ const TakePhotoImage = (props: TakePhotoImageProps) =>
     onPress={props.onPressNewPhoto}
     style={{
       backgroundColor: "white",
+      borderWidth: 2,
+      borderColor: null,
+
       height: 158,
       width: 158,
+      margin: 4,
       justifyContent: "center",
-      padding: 5,
-      margin: 10,
       alignItems: "center",
     }}
   >
-    <Image source={require("../../../../../images/consignments/hammer.png")} style={{ height: 158, width: 158 }} />
+    <Image source={require("../images/camera-black@2x.png")} />
   </TouchableHighlight>
 
 const ImageForURI = (props: ImagePreviewProps) =>
@@ -65,11 +67,12 @@ const ImageForURI = (props: ImagePreviewProps) =>
       backgroundColor: colors["gray-regular"],
       height: 158,
       width: 158,
+      margin: 4,
       borderColor: props.selected ? "white" : null,
       borderWidth: 2,
     }}
   >
-    <Image source={{ uri: props.data.image.uri }} style={{ height: 158, width: 158 }} />
+    <Image source={{ uri: props.data.image.uri }} style={{ height: 154, width: 154 }} />
   </TouchableHighlight>
 
 interface Props {
@@ -97,7 +100,12 @@ export default class ImageSelection extends React.Component<Props, State> {
     this.setState(state => {
       const selected = new Map(state.selected)
       selected.set(id, !selected.get(id))
-      return { selected }
+
+      // This is probably inefficient, but it works.
+      const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+      const dataSource = ds.cloneWithRows([null, ...this.props.data])
+
+      return { selected, dataSource }
     })
   }
 
@@ -120,29 +128,11 @@ export default class ImageSelection extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
   list: {
-    justifyContent: "center",
     flexDirection: "row",
     flexWrap: "wrap",
   },
   row: {
-    justifyContent: "center",
-    padding: 5,
-    margin: 10,
-    width: 100,
-    height: 100,
-    backgroundColor: "#F6F6F6",
-    alignItems: "center",
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: "#CCC",
-  },
-  thumb: {
-    width: 64,
-    height: 64,
-  },
-  text: {
-    flex: 1,
-    marginTop: 5,
-    fontWeight: "bold",
+    height: 158,
+    width: 158,
   },
 })
