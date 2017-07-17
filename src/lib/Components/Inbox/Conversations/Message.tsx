@@ -22,7 +22,10 @@ const HorizontalLayout = styled.View`flex-direction: row;`
 
 const Container = styled(HorizontalLayout)`
   align-self: stretch;
-  margin: 15 20 10;
+  margin-top: 15;
+  margin-bottom: 10;
+  margin-left: 20;
+  margin-right: 20;
 `
 
 const Header = styled(HorizontalLayout)`

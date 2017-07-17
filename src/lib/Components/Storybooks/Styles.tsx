@@ -12,7 +12,10 @@ export const Title = styled.Text`
 export const BodyText = styled.Text`
   font-family: "${fonts["garamond-regular"]}";
   font-size: 18;
-  padding: 18 20 16;
+  padding-top: 18;
+  padding-bottom: 16;
+  padding-left: 20;
+  padding-right: 20;
 `
 
 export const Background = styled.View`

@@ -2,13 +2,13 @@
 
 ###### Dev
 
--   Adds stylint to the dev-experience, not validated on CI yet - orta
+-   Adds stylelint to the dev-experience, not validated on CI yet - orta
 
 ### 1.4.0-beta.3
 
 ###### Messaging
 
--   Fix for bug in ArtworkPreview related to the falsiness of an empty string - sarah
+-   Fix for bug in `ArtworkPreview` related to the falsiness of an empty string - sarah
 -   Adds a banner on Conversations when network connectivity is lost - sarah
 -   Reload active bids on pull-to-refresh - alloy
 -   Make active bids link to their artworks - alloy

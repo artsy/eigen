@@ -62,7 +62,9 @@
         "iPad",
         "iPhone",
         "ListView",
-        "ARTemporaryAPIModule"
+        "ARTemporaryAPIModule",
+        "Inbox",
+        "matt"
     ],
     "stylelint.additionalDocumentSelectors": [
         "typescript",

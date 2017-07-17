@@ -58,19 +58,18 @@ const MessagesList = styled(FlatList)`
 `
 
 const ConnectivityBanner = styled.View`
-  height: 30
-  background-color: ${colors["yellow-regular"]}
-  justify-content: center
-  align-items: center
+  height: 30;
+  background-color: ${colors["yellow-regular"]};
+  justify-content: center;
+  align-items: center;
 `
 
 const ConnectivityMessage = styled.Text`
-  color: ${colors["yellow-bold"]}
-  text-align: center
-  font-family: ${fonts["garamond-regular"]}
-  font-size: 16
-  padding-top: 5
-
+  color: ${colors["yellow-bold"]};
+  text-align: center;
+  font-family: ${fonts["garamond-regular"]};
+  font-size: 16;
+  padding-top: 5;
 `
 
 const PAGE_SIZE = 100
