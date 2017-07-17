@@ -37,7 +37,7 @@ const Background = styled.View`
 `
 
 const Separator = styled.View`
-  background-color: ${colors["gray-regular"]}
+  background-color: ${colors["gray-regular"]};
   height: 1;
 `
 

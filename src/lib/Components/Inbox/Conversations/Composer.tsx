@@ -26,10 +26,10 @@ interface StyledSendButtonProps {
 }
 
 const SendButton = styled.Text`
-  fontFamily: ${fonts["avant-garde-regular"]}
-  fontSize: 12
-  marginRight: 10
-  color: ${(p: StyledSendButtonProps) => (p.containsText ? colors["purple-regular"] : colors["gray-regular"])}
+  font-family: ${fonts["avant-garde-regular"]};
+  font-size: 12;
+  margin-right: 10;
+  color: ${(p: StyledSendButtonProps) => (p.containsText ? colors["purple-regular"] : colors["gray-regular"])};
 `
 
 interface Props {
