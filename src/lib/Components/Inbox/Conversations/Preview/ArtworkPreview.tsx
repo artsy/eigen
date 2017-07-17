@@ -73,7 +73,7 @@ export class ArtworkPreview extends React.Component<Props, any> {
               <Title numberOfLines={1}>
                 {artwork.title}
               </Title>
-              {artwork.date && <Date>{`, ${artwork.date}`}</Date>}
+              {!!artwork.date && <Date>{`, ${artwork.date}`}</Date>}
             </TitleAndDate>
           </TextContainer>
         </Container>

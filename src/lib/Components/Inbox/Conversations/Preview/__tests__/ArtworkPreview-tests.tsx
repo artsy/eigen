@@ -9,6 +9,14 @@ it("renders correctly", () => {
   expect(tree).toMatchSnapshot()
 })
 
+it("handles dateless artworks", () => {
+  const dateless = artwork
+  dateless.date = ""
+  const tree = renderer.create(<ArtworkPreview artwork={dateless} />)
+
+  expect(tree).toMatchSnapshot()
+})
+
 const artwork = {
   id: "bradley-theodore-karl-and-anna-face-off-diptych",
   href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
