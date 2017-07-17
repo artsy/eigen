@@ -13,7 +13,7 @@ import OpaqueImageView from "../../OpaqueImageView"
 
 const Card = styled.View`
   margin: 10px 20px 0;
-  minHeight: 80px;
+  min-height: 80px;
 `
 
 const VerticalLayout = styled.View`
@@ -44,8 +44,9 @@ const UnreadIndicator = styled.View`
   width: 8;
   border-radius: 4;
   background-color: ${colors["purple-regular"]};
-  marginLeft: 4;
-  marginVertical: 3;
+  margin-left: 4;
+  margin-top: 3;
+  margin-bottom: 3;
 `
 
 const Separator = styled.View`
@@ -71,7 +72,7 @@ const ArtworkTitle = styled(ArtworkSubtitle)`
 const ImageView = styled(OpaqueImageView)`
   width: 58px;
   height: 58px;
-  borderRadius: 4px;
+  border-radius: 4px;
 `
 
 export interface Conversation {
