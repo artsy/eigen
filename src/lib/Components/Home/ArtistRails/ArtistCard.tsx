@@ -62,6 +62,7 @@ export class ArtistCard extends React.Component<Props, State> {
           artist_slug: this.props.artist.id,
           // TODO At some point, this component might be on other screens.
           source_screen: "home page",
+          context_module: "artist rail",
         })
         this.props.onFollow(this.setFollowStatus.bind(this))
       }

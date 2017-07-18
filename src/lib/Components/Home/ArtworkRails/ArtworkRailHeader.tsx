@@ -107,7 +107,8 @@ class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, St
           name: following ? "Follow artist" : "Unfollow artist",
           artist_id: context.artist.id,
           artist_slug: context.artist.id,
-          source_screen: "artist page",
+          source_screen: "home page",
+          context_module: "random suggested artist",
         })
       }
       this.setState({ following })
