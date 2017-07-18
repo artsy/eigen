@@ -185,16 +185,18 @@ export class Gene extends React.Component<Props, State> {
     // to write tests with the resolved state
     return Refine.triggerRefine(this, initialSettings, currentSettings)
       .then(newSettings => {
-        this.setState({
-          selectedMedium: newSettings.medium,
-          selectedPriceRange: newSettings.selectedPrice,
-          sort: newSettings.sort,
-        })
-        this.props.relay.setVariables({
-          medium: newSettings.medium,
-          price_range: newSettings.selectedPrice,
-          sort: newSettings.sort,
-        })
+        if (newSettings) {
+          this.setState({
+            selectedMedium: newSettings.medium,
+            selectedPriceRange: newSettings.selectedPrice,
+            sort: newSettings.sort,
+          })
+          this.props.relay.setVariables({
+            medium: newSettings.medium,
+            price_range: newSettings.selectedPrice,
+            sort: newSettings.sort,
+          })
+        }
       })
       .catch(error => {
         console.error(error)

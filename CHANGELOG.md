@@ -17,6 +17,7 @@
 
 -   Fix for bug in ArtworkPreview related to the falsiness of an empty string - sarah
 -   Attempt to fix a crash by not assuming a work in auction has a `sale_artwork` - alloy
+-   Expect `null` to indicate that no settings were refined - alloy
 
 ### 1.4.0-beta.3
 
