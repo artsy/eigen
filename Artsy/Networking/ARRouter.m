@@ -236,6 +236,9 @@ static NSString *hostFromString(NSString *string)
 
 + (void)setAuthToken:(NSString *)token
 {
+    if (token) {
+        [self setXappToken:nil];
+    }
     [self setHTTPHeader:ARAuthHeader value:token];
 }
 
