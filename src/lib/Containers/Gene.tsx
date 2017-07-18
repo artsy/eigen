@@ -199,7 +199,7 @@ export class Gene extends React.Component<Props, State> {
         }
       })
       .catch(error => {
-        console.error(error)
+        console.warn(error)
       })
   }
 

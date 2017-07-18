@@ -53,7 +53,7 @@ export class ArtistCard extends React.Component<Props, State> {
 
     ARTemporaryAPIModule.setFollowArtistStatus(true, this.props.artist._id, (error, following) => {
       if (error) {
-        console.error(error)
+        console.warn(error)
         this.setState({ processingChange: false })
       } else {
         Events.postEvent(this, {
