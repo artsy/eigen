@@ -337,6 +337,18 @@
     _saleArtworkUpdateDeferred = nil;
 }
 
+- (SaleArtwork *)mostRecentSaleArtwork
+{
+    __block SaleArtwork *saleArtwork;
+    KSDeferred *deferred = [self deferredSaleArtworkUpdate];
+    [deferred.promise then:^id(id value) {
+        saleArtwork = value;
+        return self;
+    } error:nil];
+
+    return saleArtwork;
+}
+
 - (void)updateSaleArtwork
 {
     __weak typeof(self) wself = self;

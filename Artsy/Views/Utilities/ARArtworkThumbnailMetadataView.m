@@ -84,7 +84,7 @@ static CGFloat ARMetadataFontSize;
     }
 }
 
-- (void)configureWithArtwork:(Artwork *)artwork showPriceLabel:(BOOL)showPrice
+- (void)configureWithArtwork:(Artwork *)artwork priceInfoMode:(ARArtworkWithMetadataThumbnailCellPriceInfoMode)mode
 {
     self.primaryLabel.text = artwork.artist.name;
     [self.secondaryLabel setTitle:artwork.title date:artwork.date];
@@ -93,10 +93,26 @@ static CGFloat ARMetadataFontSize;
     self.secondaryLabel.adjustsFontSizeToFitWidth = NO;
     self.secondaryLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 
-    if (showPrice) {
-        self.priceLabel.text = artwork.saleMessage;
+    switch (mode) {
+        case ARArtworkWithMetadataThumbnailCellPriceInfoModeAuctionInfo: {
+            SaleArtwork *saleArtwork = [artwork mostRecentSaleArtwork];
+            NSAssert(saleArtwork, @"Tried to display auction info but sale artwork was missing.");
+            if (artwork.auction.saleState == SaleStateClosed) {
+                self.priceLabel.text = @"Auction closed";
+            } else {
+                // TODO: Show paddle, current/starting bid, etc.
+            }
+            break;
+        }
+        case ARArtworkWithMetadataThumbnailCellPriceInfoModeSaleMessage:
+            self.priceLabel.text = artwork.saleMessage;
+            break;
+        case ARArtworkWithMetadataThumbnailCellPriceInfoModeNone:
+            // nop
+            break;
     }
-    self.showPrice = showPrice;
+
+    self.showPrice = (mode != ARArtworkWithMetadataThumbnailCellPriceInfoModeNone);
 }
 
 - (void)resetLabels
