@@ -1,11 +1,12 @@
 #import "ARPostAttachment.h"
 #import "ARCustomEigenLabels.h"
+#import "ARArtworkWithMetadataThumbnailCell.h"
 
 @class Artwork;
 
 @interface ARArtworkThumbnailMetadataView : UIView
 
-- (void)configureWithArtwork:(Artwork *)artwork showPriceLabel:(BOOL)showPrice;
+- (void)configureWithArtwork:(Artwork *)artwork priceInfoMode:(ARArtworkWithMetadataThumbnailCellPriceInfoMode)mode;
 - (void)resetLabels;
 
 @property (nonatomic, readonly) ARSerifLabel *primaryLabel;

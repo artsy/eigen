@@ -94,6 +94,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) Image *defaultImage;
 
+/// Returns the most recent sale artwork returned by one of the `updateSaleArtwork` methods, if any.
+- (SaleArtwork *)mostRecentSaleArtwork;
+
 - (ARHeartStatus)heartStatus;
 
 - (AFHTTPRequestOperation *)getRelatedArtworks:(void (^)(NSArray *artworks))success;
