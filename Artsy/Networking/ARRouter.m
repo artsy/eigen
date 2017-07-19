@@ -3,6 +3,7 @@
 #import "Artist.h"
 #import "Artwork.h"
 #import "ArtsyAPI+SiteFunctions.h"
+#import "ARRouter+GraphQL.h"
 #import "ARDefaults.h"
 #import "ARNetworkConstants.h"
 #import "ARUserManager.h"
@@ -1074,71 +1075,10 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" URLString:url parameters:nil];
 }
 
-+ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role
++ (NSURLRequest *)graphQLRequestForQuery:(NSString *)query
 {
     // Note that we're relying on the host to specify the domain for the request.
     NSString *url = [self baseMetaphysicsApiURLString];
-
-    NSString *accessType = role ? [NSString stringWithFormat:@"role: %@,", [role uppercaseString]] : @"";
-    NSString *causalityRole = [NSString stringWithFormat:@"causality_jwt(%@ sale_id: \"%@\")", accessType, saleID];
-
-    // Ending spaces are to avoid stripping newlines characters later on.
-    NSString *query = [NSString stringWithFormat:@"\
-{\
-  %@\
-  me {\
-    paddle_number\
-    bidders(sale_id: \"%@\") {\
-      id\
-      qualified_for_bidding\
-    }\
-  }\
-  sale(id: \"%@\") {\
-    _id\
-    id\
-    start_at\
-    bid_increments {\
-      from\
-      amount\
-    }\
-    end_at\
-    registration_ends_at\
-    name\
-    is_with_buyers_premium\
-    description\
-    sale_artworks(all: true) {\
-      _id\
-      position\
-      currency\
-      symbol\
-      reserve_status\
-      low_estimate_cents\
-      high_estimate_cents\
-      lot_label\
-      currency\
-      estimate\
-      artwork {\
-        title\
-        blurb: description\
-        medium\
-        dimensions {\
-          in\
-          cm\
-        }\
-        artist {\
-          name\
-          blurb\
-        }\
-        image {\
-          aspect_ratio\
-          large: url(version: \"large\")\
-          thumb: url(version: \"thumb\")\
-        }\
-      }\
-    }\
-  }\
-}",
-                                                 causalityRole, saleID, saleID];
 
     // Makes a copy of the request serializer, one that will encode HTTP body as JSON instead of URL-encoded params.
     AFJSONRequestSerializer *jsonSerializer = [[AFJSONRequestSerializer alloc] init];
@@ -1154,6 +1094,17 @@ static NSString *hostFromString(NSString *string)
     }
 
     return request;
+}
+
++ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role
+{
+    NSString *accessType = role ? [NSString stringWithFormat:@"role: %@,", [role uppercaseString]] : @"";
+    NSString *causalityRole = [NSString stringWithFormat:@"causality_jwt(%@ sale_id: \"%@\")", accessType, saleID];
+
+    // Ending spaces are to avoid stripping newlines characters later on.
+    NSString *query = [self graphQLQueryForLiveSaleStaticData:saleID role:causalityRole];
+
+    return [self graphQLRequestForQuery:query];
 }
 
 + (NSURLRequest *)biddersRequest
