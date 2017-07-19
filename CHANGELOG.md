@@ -4,6 +4,10 @@
 
 -   Adds stylelint to the dev-experience, not validated on CI yet - orta
 
+###### Messaging
+
+-   Small composer UI tweaks - maxim
+
 ### 1.4.0-beta.3
 
 ###### Messaging
