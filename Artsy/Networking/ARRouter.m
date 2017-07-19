@@ -556,6 +556,7 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newArtworksFromUsersFavoritesRequestWithID:(NSString *)userID page:(NSInteger)page
 {
+    // TODO: migrate this request to GraphQL
     NSDictionary *params = @{
         @"size" : @15,
         @"page" : @(page),

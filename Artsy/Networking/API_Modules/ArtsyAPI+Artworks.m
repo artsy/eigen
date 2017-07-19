@@ -35,6 +35,7 @@
 
 + (AFHTTPRequestOperation *)getArtworkFromUserFavorites:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
+    // TODO: Replace request with GraphQL request, parse out the artworks+saleartworks+sale
     NSURLRequest *request = [ARRouter newArtworksFromUsersFavoritesRequestWithID:userID page:page];
     return [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
 }
