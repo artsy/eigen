@@ -46,7 +46,7 @@ const SmallHeadline = styled(LargeHeadline)`
 
 const Icon = styled(Image)`
   resize-mode: contain;
-  width:40;
+  width: 40;
 `
 
 export default () =>

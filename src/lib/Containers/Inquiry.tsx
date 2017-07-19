@@ -26,58 +26,60 @@ import { gravityURL } from "../relay/config"
 import { NetworkError } from "../system/errors"
 
 const Container = styled.View`
-  flex: 1
-  flex-direction: column
+  flex: 1;
+  flex-direction: column;
 `
 const Header = styled.View`
-  alignSelf: stretch
-  margin-top: 10
-  flex-direction: column
-  margin-bottom: 30
+  align-self: stretch;
+  margin-top: 10;
+  flex-direction: column;
+  margin-bottom: 30;
 `
 // This is really rubbish, but I basically have to create an equally sized element
 // on the top right, to get the title in the middle
 const PlaceholderView = styled(SmallHeadline)`
-  padding-right: 20
-  color: white
+  padding-right: 20;
+  color: white;
 `
 const TitleView = styled.View`
-  align-self: center
-  align-items: center
-  margin-top: 6
+  align-self: center;
+  align-items: center;
+  margin-top: 6;
 `
 const HeaderTextContainer = styled.View`
-  flex-direction: row
-  justify-content: space-between
+  flex-direction: row;
+  justify-content: space-between;
 `
 const CancelButton = styled.TouchableOpacity`padding-left: 20;`
+
 const Content = styled.View`
-  margin-left: 20
-  margin-right: 20
+  margin-left: 20;
+  margin-right: 20;
 `
+
 const InquiryTextInput = styled.TextInput`
-  font-size: 16
-  margin-top:20
-  font-family: ${fonts["garamond-regular"]}
+  font-size: 16;
+  margin-top: 20;
+  font-family: ${fonts["garamond-regular"]};
 `
 const ResponseRate = styled(SmallHeadline)`
-  color: ${colors["yellow-bold"]}
-  marginTop: 5
+  color: ${colors["yellow-bold"]};
+  margin-top: 5;
 `
 const ResponseIndicator = styled.View`
-  width: 8
-  height: 8
-  border-radius: 4
-  margin-top: 5
-  margin-right: 5
-  background-color: ${colors["yellow-bold"]}
+  width: 8;
+  height: 8;
+  border-radius: 4;
+  margin-top: 5;
+  margin-right: 5;
+  background-color: ${colors["yellow-bold"]};
 `
 const ResponseRateLine = styled.View`
-  flex: 1
-  flex-direction: row
-  align-items: center
-  min-height: 12
-  margin-top: 5
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  min-height: 12;
+  margin-top: 5;
 `
 
 export class Inquiry extends React.Component<RelayProps, any> {

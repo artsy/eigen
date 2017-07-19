@@ -14,43 +14,43 @@ import colors from "../../../../data/colors"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 
 const VerticalLayout = styled.View`
-  flex-direction: column
-  flex: 1
+  flex-direction: column;
+  flex: 1;
 `
 
 const HorizontalLayout = styled.View`flex-direction: row;`
 
 const Container = styled(HorizontalLayout)`
-  alignSelf: stretch
-  marginTop: 15
-  marginBottom: 10
-  marginLeft: 20
-  marginRight: 20
-
+  align-self: stretch;
+  margin-top: 15;
+  margin-bottom: 10;
+  margin-left: 20;
+  margin-right: 20;
 `
 
 const Header = styled(HorizontalLayout)`
-  alignSelf: stretch
-  marginBottom: 10
+  align-self: stretch;
+  margin-bottom: 10;
 `
 
 const TextContainer = styled(VerticalLayout)`
-  marginLeft: 10
+  margin-left: 10;
 `
 
 const SenderName = styled(SmallHeadline)`
   marginRight: 3
   font-size: 11.5
 `
+
 const TimeStamp = styled(MetadataText)`
   font-size: 11.5
 `
 
-const ArtworkPreviewContainer = styled.View`marginBottom: 10;`
+const ArtworkPreviewContainer = styled.View`margin-bottom: 10;`
 
-const ImagePreviewContainer = styled.View`marginBottom: 10;`
+const ImagePreviewContainer = styled.View`margin-bottom: 10;`
 
-const PDFPreviewContainer = styled.View`marginBottom: 10;`
+const PDFPreviewContainer = styled.View`margin-bottom: 10;`
 
 interface Props extends RelayProps {
   senderName: string

@@ -24,7 +24,7 @@ const TextContainer = styled.View`
 
 const Icon = styled(Image)`
   resize-mode: contain;
-  width:40;
+  width: 40;
   margin-top: 12;
   margin-left: 12;
   margin-bottom: 12;

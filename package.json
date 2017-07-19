@@ -13,6 +13,8 @@
     "prettier": "prettier",
     "prettier-write": "npm run prettier -- --parser typescript --no-semi --trailing-comma es5 --write --print-width 120 ",
     "prettier-project": "npm run prettier-write -- 'src/**/*.{ts,tsx}'",
+    "stylelint": "stylelint",
+    "stylelint-project": "npm run stylelint -- 'src/**/*.{ts,tsx}'",
     "lint-staged": "lint-staged",
     "ci": "npm run type-check && npm run lint && npm run prettier-project -- -l && npm run test",
     "danger": "danger",
@@ -35,23 +37,14 @@
   },
   "jest": {
     "preset": "react-native",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "/__tests__/.*-tests.(ts|tsx|js)$",
-    "testPathIgnorePatterns": [
-      "\\.snap$",
-      "<rootDir>/node_modules/"
-    ],
-    "setupFiles": [
-      "./src/setupJest.ts"
-    ],
+    "testPathIgnorePatterns": ["\\.snap$", "<rootDir>/node_modules/"],
+    "setupFiles": ["./src/setupJest.ts"],
     "cacheDirectory": ".jest/cache"
   },
   "graphql": {
@@ -62,22 +55,14 @@
     "type": "git",
     "url": "git+https://github.com/artsy/emission.git"
   },
-  "keywords": [
-    "artsy",
-    "react",
-    "react-native"
-  ],
+  "keywords": ["artsy", "react", "react-native"],
   "author": "Eloy Durán",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/artsy/emission/issues"
   },
   "homepage": "https://github.com/artsy/emission#readme",
-  "files": [
-    "index.js",
-    "data",
-    "lib"
-  ],
+  "files": ["index.js", "data", "lib"],
   "dependencies": {
     "lodash": "^4.17.4",
     "moment": "latest",
@@ -111,12 +96,15 @@
     "jest-react-native": "18.0.0",
     "jest-snapshots-svg": "^0.0.14",
     "lint-staged": "^3.4.1",
-    "prettier": "^1.5.0",
+    "prettier": "^1.5.2",
     "react-dom": "16.0.0-alpha.12",
     "react-storybooks-relay-container": "^1.0.0",
     "react-test-renderer": "16.0.0-alpha.12",
     "recursive-readdir-sync": "^1.0.6",
     "relay2ts": "^0.2.0",
+    "stylelint": "^7.13.0",
+    "stylelint-config-standard": "^16.0.0",
+    "stylelint-processor-styled-components": "^0.1.2",
     "ts-jest": "^20.0.3",
     "tslint": "^5.4.3",
     "tslint-config-prettier": "^1.0.0",
@@ -126,10 +114,6 @@
     "babel-relay-plugin": "^0.9.0"
   },
   "lint-staged": {
-    "*.@(ts|tsx)": [
-      "tslint --fix",
-      "npm run prettier-write --",
-      "git add"
-    ]
+    "*.@(ts|tsx)": ["tslint --fix", "npm run prettier-write --", "git add"]
   }
 }
