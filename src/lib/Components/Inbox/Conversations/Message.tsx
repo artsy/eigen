@@ -144,12 +144,10 @@ interface RelayProps {
     raw_text: string | null
     created_at: string | null
     is_from_user: boolean
-    attachments: Array<
-      {
-        id: string
-        content_type: string
-        download_url: string
-      }
-    >
+    attachments: Array<{
+      id: string
+      content_type: string
+      download_url: string
+    }>
   }
 }
