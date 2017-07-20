@@ -10,6 +10,7 @@ upcoming:
       - Fix crash in analytics probably due to the show VC being deallocated and thus queried values being `nil` - alloy
       - Fix crash in onboarding artist search due to query text possibly being `nil` - alloy
       - Fix unneeded SIGABRT, if it actually happened at all, by not needlessly using a RN reject block - alloy
+      - Add switchboard route to open admin menu through Universal Links with https://artsy.net/admin route - alloy
 
     user_facing:
       - Adds new routing for inquiries - maxim
