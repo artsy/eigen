@@ -35,6 +35,10 @@ extension PublicComputedProperties {
         return saleArtwork.lotLabel ?? ""
     }
 
+    var isAuctionOpen: Bool {
+        return saleArtwork.auction?.saleState == SaleStateOpen
+    }
+
     var numberOfBids: String {
         return saleArtwork.numberOfBidsString()
     }

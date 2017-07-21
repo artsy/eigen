@@ -24,6 +24,7 @@
 @property (nonatomic, strong) ARSerifLabel *artworkNameLabel;
 @property (nonatomic, strong) ARSerifLabel *currentOrStartingBidLabel;
 @property (nonatomic, strong) ARSerifLabel *numberOfBidsLabel;
+@property (nonatomic, strong) ARSerifLabel *auctionClosedLabel;
 
 @end
 
@@ -70,6 +71,14 @@
     self.currentOrStartingBidLabel.textColor = lightGrey;
     [self.contentView addSubview:self.currentOrStartingBidLabel];
 
+    // Overlay the auctionClosedLabel with the currentbid label (only one of the two will be visible)
+    self.auctionClosedLabel = [[ARSerifLabel alloc] init];
+    self.auctionClosedLabel.text = @"Auction Closed";
+    self.auctionClosedLabel.font = serifFont;
+    self.auctionClosedLabel.textColor = darkGrey;
+    [self.contentView addSubview:self.auctionClosedLabel];
+    [self.auctionClosedLabel alignToView:self.currentOrStartingBidLabel];
+
     self.numberOfBidsLabel = [[ARSerifLabel alloc] init];
     self.numberOfBidsLabel.font = serifFont;
     self.numberOfBidsLabel.textColor = lightGrey;
@@ -107,8 +116,18 @@
 
     self.artistNameLabel.text = saleArtworkViewModel.artistName;
     self.artworkNameLabel.text = saleArtworkViewModel.artworkName;
-    self.currentOrStartingBidLabel.text = [self currentOrStartingBidLabelTextForSaleArtwork:saleArtworkViewModel];
     self.numberOfBidsLabel.text = saleArtworkViewModel.numberOfBids;
+
+    if (saleArtworkViewModel.isAuctionOpen) {
+        self.auctionClosedLabel.hidden = YES;
+        self.currentOrStartingBidLabel.hidden = NO;
+        self.numberOfBidsLabel.hidden = NO;
+        self.currentOrStartingBidLabel.text = [self currentOrStartingBidLabelTextForSaleArtwork:saleArtworkViewModel];
+    } else {
+        self.auctionClosedLabel.hidden = NO;
+        self.currentOrStartingBidLabel.hidden = YES;
+        self.numberOfBidsLabel.hidden = YES;
+    }
 
     if (saleArtworkViewModel.lotLabel.length) {
         self.lotNumberLabel.text = [@"LOT " stringByAppendingString:saleArtworkViewModel.lotLabel];
