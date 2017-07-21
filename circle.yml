@@ -32,10 +32,6 @@ dependencies:
     - make ci
 
 test:
-  pre:
-    # See https://discuss.circleci.com/t/xcode-exit-code-65/4284/13 
-    - xcrun instruments -w '547B1B63-3F66-4E5B-8001-F78F2F1CDEA7' || true
-    - sleep 15
   override:
     - make test
     - bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
