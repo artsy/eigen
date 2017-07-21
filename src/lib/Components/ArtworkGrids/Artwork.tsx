@@ -79,11 +79,7 @@ class Artwork extends React.Component<RelayProps, any> {
           </View>
         )
       } else {
-        return (
-          <SerifText style={styles.text}>
-            Auction Closed
-          </SerifText>
-        )
+        return <SerifText style={styles.text}>Auction Closed</SerifText>
       }
     } else {
       return (
