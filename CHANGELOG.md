@@ -3,6 +3,7 @@
 ###### Dev
 
 -   Adds stylelint to the dev-experience, not validated on CI yet - orta
+-   Changes post-sale supplementary artwork info - ash
 
 ### 1.4.0-beta.3
 
