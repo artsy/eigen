@@ -1,0 +1,27 @@
+{
+  me {
+    saved_artworks {
+      artworks_connection(private: true, %@) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        edges {
+          node {
+            id
+            title
+            artist {
+              id
+              name
+            }
+            image {
+              id
+              aspect_ratio
+              thumb: url(version: "thumb")
+            }
+          }
+        }
+      }
+    }
+  }
+}

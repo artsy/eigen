@@ -1,64 +1,42 @@
 #import "ARRouter+GraphQL.h"
 
+// Required to use stringWithFormat on non-literal strings (we load them from the bundle, so it should be secure).
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
+#pragma clang diagnostic ignored "-Wformat"
+
 @implementation ARRouter(GraphQL)
+
+#pragma mark - Private Functions
+
++ (NSString *)graphQLFileNamed:(NSString *)filename
+{
+    NSURL *url = [[NSBundle bundleForClass:self] URLForResource:filename withExtension:@"graphql"];
+    return [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+}
+
++ (NSString *)graphQLQueryForFavoriteArtworksAndPositionParam:(NSString *)pageString
+{
+    return [NSString stringWithFormat:[self graphQLFileNamed:@"favorites"], pageString];
+}
+
+#pragma mark - Public Functions
+
++ (NSString *)graphQueryForFavorites
+{
+    return [self graphQLQueryForFavoriteArtworksAndPositionParam:@"first: 15"];
+}
+
++ (NSString *)graphQueryForFavoritesAfter:(NSString *)cursor
+{
+    return [self graphQLQueryForFavoriteArtworksAndPositionParam:[NSString stringWithFormat:@"first: 15, after: %@", cursor]];
+}
 
 + (NSString *)graphQLQueryForLiveSaleStaticData:(NSString *)saleID role:(NSString *)causalityRole
 {
-    return [NSString stringWithFormat:@"\
-{\
-  %@\
-  me {\
-    paddle_number\
-    bidders(sale_id: \"%@\") {\
-      id\
-      qualified_for_bidding\
-    }\
-  }\
-  sale(id: \"%@\") {\
-    _id\
-    id\
-    start_at\
-    bid_increments {\
-      from\
-      amount\
-    }\
-    end_at\
-    registration_ends_at\
-    name\
-    is_with_buyers_premium\
-    description\
-    sale_artworks(all: true) {\
-      _id\
-      position\
-      currency\
-      symbol\
-      reserve_status\
-      low_estimate_cents\
-      high_estimate_cents\
-      lot_label\
-      currency\
-      estimate\
-      artwork {\
-        title\
-        blurb: description\
-        medium\
-        dimensions {\
-          in\
-          cm\
-        }\
-        artist {\
-          name\
-          blurb\
-        }\
-        image {\
-          aspect_ratio\
-          large: url(version: \"large\")\
-          thumb: url(version: \"thumb\")\
-        }\
-      }\
-    }\
-  }\
-}", causalityRole, saleID, saleID];
+    return [NSString stringWithFormat:[self graphQLFileNamed:@"static_sale_data"], causalityRole, saleID, saleID];
 }
 
 @end
+
+#pragma clang dianostic pop
