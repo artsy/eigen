@@ -9,6 +9,16 @@
 #import "MTLModel+JSON.h"
 #import "AFHTTPRequestOperation+JSON.h"
 
+static NSString *
+EnsureQuery(NSString *query) {
+    if (query) {
+        NSString *trimmed = [query stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if (trimmed.length > 0) {
+            return trimmed;
+        }
+    }
+    return nil;
+}
 
 @implementation ArtsyAPI (Search)
 
@@ -19,9 +29,14 @@
 
 + (AFHTTPRequestOperation *)searchWithFairID:(NSString *)fairID andQuery:(NSString *)query success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
+    NSString *_query = EnsureQuery(query);
+    if (!_query) {
+        return nil;
+    }
+
     NSParameterAssert(success);
 
-    NSURLRequest *request = fairID ? [ARRouter newSearchRequestWithFairID:fairID andQuery:query] : [ARRouter newSearchRequestWithQuery:query];
+    NSURLRequest *request = fairID ? [ARRouter newSearchRequestWithFairID:fairID andQuery:_query] : [ARRouter newSearchRequestWithQuery:_query];
     AFHTTPRequestOperation *searchOperation = nil;
     searchOperation = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         NSArray *jsonDictionaries = JSON;
@@ -53,9 +68,14 @@
 
 + (AFHTTPRequestOperation *)artistSearchWithQuery:(NSString *)query excluding:(NSArray *)artistsToExclude success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
+    NSString *_query = EnsureQuery(query);
+    if (!_query) {
+        return nil;
+    }
+    
     NSParameterAssert(success);
 
-    NSURLRequest *request = [ARRouter newArtistSearchRequestWithQuery:query excluding:artistsToExclude];
+    NSURLRequest *request = [ARRouter newArtistSearchRequestWithQuery:_query excluding:artistsToExclude];
     AFHTTPRequestOperation *searchOperation = nil;
     searchOperation = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         NSArray *jsonDictionaries = JSON;
@@ -85,9 +105,14 @@
 
 + (AFHTTPRequestOperation *)geneSearchWithQuery:(NSString *)query excluding:(NSArray *)genesToExclude success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
+    NSString *_query = EnsureQuery(query);
+    if (!_query) {
+        return nil;
+    }
+
     NSParameterAssert(success);
 
-    NSURLRequest *request = [ARRouter newGeneSearchRequestWithQuery:query excluding:genesToExclude];
+    NSURLRequest *request = [ARRouter newGeneSearchRequestWithQuery:_query excluding:genesToExclude];
     AFHTTPRequestOperation *searchOperation = nil;
     searchOperation = [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         NSArray *jsonDictionaries = JSON;
