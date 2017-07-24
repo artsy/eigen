@@ -37,7 +37,6 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
 
 + (ARArtworkWithMetadataThumbnailCellPriceInfoMode)priceInfoModeForArtwork:(Artwork *)artwork
 {
-    // TODO: Verify this information is set on the models.
     if (artwork.auction) {
         return ARArtworkWithMetadataThumbnailCellPriceInfoModeAuctionInfo;
     } else {

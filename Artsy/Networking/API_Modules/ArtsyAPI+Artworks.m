@@ -37,7 +37,7 @@
 {
     NSURLRequest *request = [ARRouter newArtworksFromUsersFavoritesRequestWithCursor:cursor];
     return [self performRequest:request success:^(id json) {
-        // TODO: parse out the artworks+saleartworks+sale as well as cursor
+        // Parse out metadata from GraphQL response.
         id artworksConnection = json[@"data"][@"me"][@"saved_artworks"][@"artworks_connection"];
         NSDictionary *pageInfo = artworksConnection[@"pageInfo"];
         NSArray *artworksJson = [artworksConnection[@"edges"] valueForKey:@"node"];
