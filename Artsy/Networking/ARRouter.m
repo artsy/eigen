@@ -1055,8 +1055,7 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID
 {
-    NSString *url = [NSString stringWithFormat:ARSaleArtworksURLFormat, saleID];
-    return [self requestWithMethod:@"GET" path:url parameters:nil];
+    return [self graphQLRequestForQuery:[self graphQueryForArtworksInSale:saleID]];
 }
 
 + (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID page:(NSInteger)page pageSize:(NSInteger)pageSize
