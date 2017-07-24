@@ -189,6 +189,10 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
         __strong typeof (wself) sself = wself;
         return [sself loadConversationWithID:parameters[@"id"]];
     }];
+    
+    [self.routes addRoute:@"/admin" handler:JLRouteParams {
+        return [wself loadAdminMenu];
+    }];
 
     // We don't show a native fairs UI for iPad
     if (![UIDevice isPad]) {

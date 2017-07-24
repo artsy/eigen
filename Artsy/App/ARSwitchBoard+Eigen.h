@@ -23,6 +23,12 @@
 
 @interface ARSwitchBoard (Eigen)
 
+#pragma mark - Dev
+
+- (UIViewController *)loadAdminMenu;
+
+#pragma mark - Messaging
+
 - (UIViewController *)loadConversationWithID:(NSString *)conversationID;
 
 #pragma mark - Artworks

@@ -1,6 +1,9 @@
 #import "ARSwitchBoard+Eigen.h"
 
+#import "ARAppStatus.h"
+
 // View Controllers
+#import "ARAdminSettingsViewController.h"
 #import "ARArtworkSetViewController.h"
 #import "ARShowViewController.h"
 #import "ARGeneViewController.h"
@@ -32,8 +35,19 @@
 @property (nonatomic, strong) Aerodramus *echo;
 @end
 
-
 @implementation ARSwitchBoard (Eigen)
+
+#pragma mark - Dev
+
+- (UIViewController *)loadAdminMenu;
+{
+    if (!ARAppStatus.isBetaDevOrAdmin) {
+        return nil;
+    }
+    return [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+}
+
+#pragma mark - Messaging
 
 - (UIViewController *)loadConversationWithID:(NSString *)conversationID;
 {

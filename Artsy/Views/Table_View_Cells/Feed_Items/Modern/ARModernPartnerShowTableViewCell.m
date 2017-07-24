@@ -99,6 +99,8 @@ static CGFloat ARPartnerShowCellSideMargin;
 
 - (void)prepareForReuse
 {
+    [super prepareForReuse];
+
     _titleLabel.text = nil;
     _ausstellungsdauerLabel.text = nil;
     _show = nil;

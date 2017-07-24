@@ -7,6 +7,11 @@ upcoming:
       - Make zero inbox state hide on load if bids or conversations exist - alloy
       - Fix crash on Gene view, when integrated into Eigen, due to missing RCTAnimation dependency - alloy
       - Fix issue with missing icons - alloy
+      - Hopefully fix crashes in analytics, which were probably due to the VCs being deallocated before ARAnalytics
+        would invoke the DSL block and thus queried values being `nil` - alloy
+      - Fix crash in onboarding artist search due to query text possibly being `nil` - alloy
+      - Fix unneeded SIGABRT, if it actually happened at all, by not needlessly using a RN reject block - alloy
+      - Add switchboard route to open admin menu through Universal Links with https://artsy.net/admin route - alloy
 
     user_facing:
       - Adds new routing for inquiries - maxim

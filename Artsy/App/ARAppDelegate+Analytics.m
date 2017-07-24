@@ -1265,7 +1265,7 @@
                                 NSDictionary *basics =  @{
                                                           @"owner_type": @"partner_show",
                                                           @"owner_id": controller.show.showUUID,
-                                                          @"owner_slug": controller.show.showID
+                                                          @"owner_slug": controller.show.showID,
                                 };
 
                                 if (controller.show.fair.fairID) {
