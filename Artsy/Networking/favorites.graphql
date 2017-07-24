@@ -19,6 +19,19 @@
               aspect_ratio
               thumb: url(version: "thumb")
             }
+            sale_artwork {
+              id
+              bidder_positions_count
+              opening_bid_cents
+              highest_bid {
+                id
+                amount_cents
+              }
+              sale {
+                id
+                auction_state: status
+              }
+            }
           }
         }
       }
