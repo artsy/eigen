@@ -161,7 +161,7 @@ export class Conversation extends React.Component<Props, State> {
             {
               onFailure: transaction => {
                 // TODO Actually handle errors
-                console.error(transaction.getError())
+                console.warn(transaction.getError())
                 this.setState({ sendingMessage: false })
               },
               onSuccess: () => {

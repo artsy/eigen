@@ -110,7 +110,7 @@ class ArtistRail extends React.Component<Props, State> {
         // Return the suggested artist or `undefined` if there is no suggestion.
         .then(({ me: { suggested_artists } }) => suggested_artists[0])
         // Return `undefined` if an error occurred.
-        .catch(error => console.error(error))
+        .catch(error => console.warn(error))
         // Change the status of the follow button to ‘following’.
         .then<SuggestedArtist>(suggestedArtist => setFollowButtonStatus(true).then(() => suggestedArtist))
         // Animate the followed artist card away.
