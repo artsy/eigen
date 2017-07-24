@@ -76,13 +76,14 @@ PODS:
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
   - EDColor (1.0.0)
-  - Emission (1.4.0-beta.3):
+  - Emission (1.4.0-beta.4):
     - Artsy+UIColors
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
     - React/BatchedBridge (= 0.45.0-rc.2)
     - React/Core (= 0.45.0-rc.2)
     - React/RCTAnimation (= 0.45.0-rc.2)
+    - React/RCTCameraRoll (= 0.45.0-rc.2)
     - React/RCTImage (= 0.45.0-rc.2)
     - React/RCTNetwork (= 0.45.0-rc.2)
     - React/RCTText (= 0.45.0-rc.2)
@@ -188,6 +189,9 @@ PODS:
   - React/jschelpers_legacy (0.45.0-rc.2)
   - React/RCTAnimation (0.45.0-rc.2):
     - React/Core
+  - React/RCTCameraRoll (0.45.0-rc.2):
+    - React/Core
+    - React/RCTImage
   - React/RCTImage (0.45.0-rc.2):
     - React/Core
     - React/RCTNetwork
@@ -394,7 +398,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: be8d0e76662b0211b528752146a94da41ed9ab34
+  Emission: 6fc77205363e5070b0d4a99bf38a0763ea87b543
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
