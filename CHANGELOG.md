@@ -1,24 +1,17 @@
-### Master
+### 1.4.0-beta.4
 
 ###### Dev
 
 -   Adds stylelint to the dev-experience, not validated on CI yet - orta
 -   Changes post-sale supplementary artwork info - ash
-
-### 1.4.0-beta.3
+-   Attempt to fix a crash by not assuming a work in auction has a `sale_artwork` - alloy
+-   Expect `null` to indicate that no settings were refined - alloy
+-   Only use `console.warn` level when reporting connectivity issues, otherwise Sentry shows these as ‘fatal’ - alloy
 
 ###### Messaging
 
 -   Fix for bug in `ArtworkPreview` related to the falsiness of an empty string - sarah
 -   Adds a banner on Conversations when network connectivity is lost - sarah
-### Next
-
-###### Messaging
-
--   Fix for bug in ArtworkPreview related to the falsiness of an empty string - sarah
--   Attempt to fix a crash by not assuming a work in auction has a `sale_artwork` - alloy
--   Expect `null` to indicate that no settings were refined - alloy
--   Only use `console.warn` level when reporting connectivity issues, otherwise Sentry shows these as ‘fatal’ - alloy
 
 ### 1.4.0-beta.3
 
