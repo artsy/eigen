@@ -1,0 +1,33 @@
+{
+  sale(id: "%@") {
+    sale_artworks {
+      id
+      bidder_positions_count
+      opening_bid_cents
+      highest_bid {
+        id
+        amount_cents
+      }
+      auction: sale {
+        id
+        auction_state: status
+        is_auction
+      }
+      artwork {
+        id
+        title
+        artist {
+          id
+          name
+        }
+        images {
+          id
+          aspect_ratio
+          is_default
+          image_versions
+          image_url
+        }
+      }
+    }
+  }
+}

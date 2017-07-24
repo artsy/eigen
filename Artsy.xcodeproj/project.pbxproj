@@ -409,6 +409,7 @@
 		5EF9E1141C56CEDB00CD80DB /* AuctionRefineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */; };
 		5EF9E1171C56D0B900CD80DB /* AuctionRefineCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */; };
 		5EF9E1181C56D0B900CD80DB /* AuctionRefineCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */; };
+		5EFABE231F26934900662FEC /* artworks_in_sale.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 5EFABE221F26934900662FEC /* artworks_in_sale.graphql */; };
 		5EFB45721F2280CE00328A6B /* favorites.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 5EFB45711F2280CE00328A6B /* favorites.graphql */; };
 		5EFB45741F22831000328A6B /* static_sale_data.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 5EFB45731F22830F00328A6B /* static_sale_data.graphql */; };
 		5EFE2BE41910FC81003B5EEA /* ARAppDelegate+Analytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EFE2BE31910FC81003B5EEA /* ARAppDelegate+Analytics.m */; };
@@ -1409,6 +1410,7 @@
 		5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AuctionRefineCheck.png; sourceTree = "<group>"; };
 		5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AuctionRefineCheck@2x.png"; sourceTree = "<group>"; };
 		5EFABE211F26816000662FEC /* ARFavoritesNetworkModel+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARFavoritesNetworkModel+Private.h"; sourceTree = "<group>"; };
+		5EFABE221F26934900662FEC /* artworks_in_sale.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = artworks_in_sale.graphql; sourceTree = "<group>"; };
 		5EFB45711F2280CE00328A6B /* favorites.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = favorites.graphql; sourceTree = "<group>"; };
 		5EFB45731F22830F00328A6B /* static_sale_data.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = static_sale_data.graphql; sourceTree = "<group>"; };
 		5EFE2BE21910FC81003B5EEA /* ARAppDelegate+Analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Analytics.h"; sourceTree = "<group>"; };
@@ -3105,6 +3107,7 @@
 			children = (
 				5EFB45711F2280CE00328A6B /* favorites.graphql */,
 				5EFB45731F22830F00328A6B /* static_sale_data.graphql */,
+				5EFABE221F26934900662FEC /* artworks_in_sale.graphql */,
 			);
 			name = Queries;
 			sourceTree = "<group>";
@@ -4860,6 +4863,7 @@
 				600B8B451C4FCEEC00776F84 /* CHANGELOG.yml in Resources */,
 				1CC9EBA61CC76CDD00A74E3C /* followButtonChecked@3x.png in Resources */,
 				608B707B17D4A1C80088A56C /* FooterBackground@2x.png in Resources */,
+				5EFABE231F26934900662FEC /* artworks_in_sale.graphql in Resources */,
 				3C4AE99319094F96009C0E8B /* ViewInRoom_BaseNoBench@2x.png in Resources */,
 				E6FFEAB019C7925600A0D7DE /* onboard_1@2x~iphone.jpg in Resources */,
 				3C4AE96A19094969009C0E8B /* SearchThumb_HeavyGrey@2x.png in Resources */,

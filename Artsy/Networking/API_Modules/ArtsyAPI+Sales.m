@@ -2,6 +2,9 @@
 #import "ArtsyAPI+Private.h"
 #import "ARRouter.h"
 
+#import "MTLModel+JSON.h"
+
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 @implementation ArtsyAPI (Sales)
 
@@ -18,7 +21,27 @@
                                        failure:(void (^)(NSError *))failure
 {
     NSURLRequest *request = [ARRouter artworksForSaleRequest:saleID];
-    return [self getRequest:request parseIntoAnArrayOfClass:[Artwork class] withKey:@"artwork" success:success failure:failure];
+    return [self performRequest:request success:^(id json) {
+        NSArray *saleArtworksJSON = json[@"data"][@"sale"][@"sale_artworks"];
+
+        NSArray *artworks = [saleArtworksJSON map:^id(id json) {
+            // This is messy, sorry. We need to fill those back references from artwork -> sale artwork
+            // without creating a reference cycle. So we inflate two models with JSON.
+            SaleArtwork *saleArtwork = [SaleArtwork modelWithJSON:json];
+            Artwork *artwork = [Artwork modelWithJSON:json[@"artwork"]];
+            artwork.auction = saleArtwork.auction;
+            artwork.saleArtwork = saleArtwork;
+            return artwork;
+        }];
+        
+        if (success) {
+            success(artworks);
+        }
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 + (void)getSaleWithID:(NSString *)saleID
