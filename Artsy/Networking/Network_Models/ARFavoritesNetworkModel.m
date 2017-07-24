@@ -1,12 +1,6 @@
 #import "ARFavoritesNetworkModel.h"
 #import <AFNetworking/AFNetworking.h>
-
-
-@interface ARFavoritesNetworkModel ()
-@property (readwrite, nonatomic, assign) BOOL allDownloaded;
-@property (atomic, weak) AFHTTPRequestOperation *currentRequest;
-@property (readwrite, nonatomic, assign) NSInteger currentPage;
-@end
+#import "ARFavoritesNetworkModel+Private.h"
 
 
 @implementation ARFavoritesNetworkModel
@@ -17,7 +11,7 @@
     if (!self) {
         return nil;
     }
-    _currentPage = 1;
+    self->_currentPage = 1;
     return self;
 }
 

@@ -11,7 +11,7 @@
 
 // TODO: Add support ARFollowable for following status
 
-@class Artist, Partner, Profile, Sale, Fair, PartnerShow;
+@class Artist, Partner, Profile, Sale, SaleArtwork, Fair, PartnerShow;
 
 typedef NS_ENUM(NSInteger, ARArtworkAvailability) {
     ARArtworkAvailabilityNotForSale,
@@ -94,8 +94,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) Image *defaultImage;
 
-/// Returns the most recent sale artwork returned by one of the `updateSaleArtwork` methods, if any.
-- (SaleArtwork *)mostRecentSaleArtwork;
+/// Note this property is not parsed from JSON but has be to set explicitly, otherwise is assumed to be nil.
+@property (nonatomic, strong) SaleArtwork *saleArtwork;
 
 - (ARHeartStatus)heartStatus;
 

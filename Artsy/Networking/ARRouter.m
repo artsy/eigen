@@ -554,19 +554,16 @@ static NSString *hostFromString(NSString *string)
 }
 
 
-+ (NSURLRequest *)newArtworksFromUsersFavoritesRequestWithID:(NSString *)userID page:(NSInteger)page
++ (NSURLRequest *)newArtworksFromUsersFavoritesRequestWithCursor:(NSString *)cursor
 {
-    // TODO: migrate this request to GraphQL
-    NSDictionary *params = @{
-        @"size" : @15,
-        @"page" : @(page),
-        @"sort" : @"-position",
-        @"total_count" : @1,
-        @"user_id" : userID ?: @"",
-        @"private" : ARIsRunningInDemoMode ? @"false" : @"true"
-    };
+    NSString *query;
+    if ([cursor length] > 0) {
+        query = [self graphQueryForFavoritesAfter:cursor];
+    } else {
+        query = [self graphQueryForFavorites];
+    }
 
-    return [self requestWithMethod:@"GET" path:ARFavoritesURL parameters:params];
+    return [self graphQLRequestForQuery:query];
 }
 
 + (NSURLRequest *)newCheckFavoriteStatusRequestForArtwork:(Artwork *)artwork
@@ -1087,6 +1084,11 @@ static NSString *hostFromString(NSString *string)
         id value = staticHTTPClient.requestSerializer.HTTPRequestHeaders[key];
         [jsonSerializer setValue:value forHTTPHeaderField:key];
     }
+    if (ARIsRunningInDemoMode) {
+        [jsonSerializer setValue:@"502d15746e721400020006fa" forHTTPHeaderField:@"X-User-ID"];
+    } else {
+        [jsonSerializer setValue:[User currentUser].userID forHTTPHeaderField:@"X-User-ID"];
+    }
     NSError *error;
     NSMutableURLRequest *request = [jsonSerializer requestWithMethod:@"POST" URLString:url parameters:@{ @"query" : query } error:&error];
 
@@ -1102,9 +1104,7 @@ static NSString *hostFromString(NSString *string)
     NSString *accessType = role ? [NSString stringWithFormat:@"role: %@,", [role uppercaseString]] : @"";
     NSString *causalityRole = [NSString stringWithFormat:@"causality_jwt(%@ sale_id: \"%@\")", accessType, saleID];
 
-    // Ending spaces are to avoid stripping newlines characters later on.
     NSString *query = [self graphQLQueryForLiveSaleStaticData:saleID role:causalityRole];
-
     return [self graphQLRequestForQuery:query];
 }
 

@@ -1408,6 +1408,7 @@
 		5EF9E1131C56CEDB00CD80DB /* AuctionRefineSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuctionRefineSettings.swift; path = Auction/AuctionRefineSettings.swift; sourceTree = "<group>"; };
 		5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AuctionRefineCheck.png; sourceTree = "<group>"; };
 		5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AuctionRefineCheck@2x.png"; sourceTree = "<group>"; };
+		5EFABE211F26816000662FEC /* ARFavoritesNetworkModel+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARFavoritesNetworkModel+Private.h"; sourceTree = "<group>"; };
 		5EFB45711F2280CE00328A6B /* favorites.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = favorites.graphql; sourceTree = "<group>"; };
 		5EFB45731F22830F00328A6B /* static_sale_data.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = static_sale_data.graphql; sourceTree = "<group>"; };
 		5EFE2BE21910FC81003B5EEA /* ARAppDelegate+Analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Analytics.h"; sourceTree = "<group>"; };
@@ -2215,6 +2216,7 @@
 				E61446A4195A1CDC00BFB7C3 /* ARFairFavoritesNetworkModel.m */,
 				E61446A5195A1CDC00BFB7C3 /* ARFairFavoritesNetworkModel+Private.h */,
 				E61446A6195A1CDC00BFB7C3 /* ARFavoritesNetworkModel.h */,
+				5EFABE211F26816000662FEC /* ARFavoritesNetworkModel+Private.h */,
 				E61446A7195A1CDC00BFB7C3 /* ARFavoritesNetworkModel.m */,
 				E61446A8195A1CDC00BFB7C3 /* ARFollowableNetworkModel.h */,
 				E61446A9195A1CDC00BFB7C3 /* ARFollowableNetworkModel.m */,
