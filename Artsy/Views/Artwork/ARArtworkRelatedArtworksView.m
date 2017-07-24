@@ -172,7 +172,7 @@
     [self addRelatedArtworkRequest:[auction getArtworks:^(NSArray *artworks) {
         __strong typeof (wself) sself = wself;
         // We need to explicitly set this here, for the ArtworkThumbnailMetadataView to display everything correctly.
-        // TODO: We need to get the sale artworks too.
+        // TODO: We need to get the sale artworks too. Need to change this request to GraphQL
         [artworks each:^(id object) {
             [object setAuction:auction];
         }];
