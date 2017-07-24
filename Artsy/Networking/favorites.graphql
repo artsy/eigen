@@ -14,10 +14,12 @@
               id
               name
             }
-            image {
+            images {
               id
               aspect_ratio
-              thumb: url(version: "thumb")
+              is_default
+              image_versions
+              image_url
             }
             sale_artwork {
               id
@@ -27,9 +29,10 @@
                 id
                 amount_cents
               }
-              sale {
+              auction: sale {
                 id
                 auction_state: status
+                is_auction
               }
             }
           }

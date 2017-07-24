@@ -1,5 +1,6 @@
 #import "SaleArtwork.h"
 
+#import "Sale.h"
 #import "Artwork.h"
 
 #import "ARMacros.h"
@@ -42,6 +43,11 @@ static NSNumberFormatter *currencyFormatter;
         ar_keypath(SaleArtwork.new, lotLabel) : @"lot_label",
         ar_keypath(SaleArtwork.new, bidCount) : @"bidder_positions_count"
     };
+}
+
++ (NSValueTransformer *)auctionJSONTransformer
+{
+    return [MTLValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[Sale class]];
 }
 
 - (ARAuctionState)auctionState
