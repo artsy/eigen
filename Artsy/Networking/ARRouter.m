@@ -236,6 +236,9 @@ static NSString *hostFromString(NSString *string)
 
 + (void)setAuthToken:(NSString *)token
 {
+    // XApp tokens are only needed during onboarding and only valid for a week. Clearing it when we obtain an access
+    // token, after onboarding is completed, ensures the app doesn’t get into a state where including an old invalid
+    // XApp token leads to API requests to fail.
     if (token) {
         [self setXappToken:nil];
     }
@@ -709,9 +712,9 @@ static NSString *hostFromString(NSString *string)
 {
     // we guard against delta not being able to provide us the current popular artists
     // by having a backup list on S3
-    
+
     NSString *stringURL = @"https://s3.amazonaws.com/eigen-production/json/eigen_popularartists.json";
-    
+
     return [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:stringURL]];
 }
 
