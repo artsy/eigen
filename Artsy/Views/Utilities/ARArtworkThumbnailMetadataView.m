@@ -95,7 +95,7 @@ static CGFloat ARMetadataFontSize;
 
     switch (mode) {
         case ARArtworkWithMetadataThumbnailCellPriceInfoModeAuctionInfo: {
-            SaleArtwork *saleArtwork = [artwork mostRecentSaleArtwork];
+            SaleArtwork *saleArtwork = [artwork saleArtwork];
             NSAssert(saleArtwork, @"Tried to display auction info but sale artwork was missing.");
             if (artwork.auction.saleState == SaleStateClosed) {
                 self.priceLabel.text = @"Auction closed";
