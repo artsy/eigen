@@ -26,7 +26,7 @@ const Photo = styled.TouchableHighlight`
   flex: 1;
 `
 
-interface ImageData {
+export interface ImageData {
   image: {
     uri: string
   }
@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
   list: {
     flexDirection: "row",
     flexWrap: "wrap",
+    justifyContent: "flex-start",
   },
   row: {
     height: 158,

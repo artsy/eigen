@@ -7,6 +7,7 @@ import { LargeHeadline, Subtitle } from "../Typography"
 import { ArtistResult, ConsignmentSetup } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import Artist from "./Artist"
+import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
 import Welcome from "./Welcome"
 
 interface Props extends ViewProperties {
@@ -18,12 +19,16 @@ interface Props extends ViewProperties {
 export default class Info extends React.Component<Props, ConsignmentSetup> {
   constructor(props) {
     super(props)
-    this.state = props.setup || {}
+    this.state = props.setup || ({} as ConsignmentSetup)
   }
 
   goToArtistTapped = () =>
-    this.props.navigator.push({ component: Artist, passProps: { ...this.state, updateWithResult: this.updateArtist } })
-  goToPhotosTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
+    this.props.navigator.push({
+      component: Artist as any,
+      passProps: { ...this.state, updateWithResult: this.updateArtist },
+    })
+
+  goToPhotosTapped = () => this.props.navigator.push({ component: SelectFromPhotoLibrary, passProps: this.props })
   goToMetadataTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
   goToLocationTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
   goToProvenanceTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
