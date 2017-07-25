@@ -1,6 +1,8 @@
 import * as PropTypes from "prop-types"
 import * as React from "react"
 import * as Relay from "react-relay"
+import track from "react-tracking"
+// import { TrackingPropType } from "react-tracking"
 
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
@@ -23,6 +25,7 @@ interface State {
   followersCount: number
 }
 
+@track()
 class Header extends React.Component<HeaderProps, State> {
   static propTypes = {
     artist: PropTypes.shape({
@@ -46,7 +49,8 @@ class Header extends React.Component<HeaderProps, State> {
     })
   }
 
-  handleFollowChange = () => {
+  @track({ test: "yo" })
+  handleFollowChange() {
     const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
       if (error) {
@@ -86,7 +90,7 @@ class Header extends React.Component<HeaderProps, State> {
           <InvertedButton
             text={this.state.following ? "Following" : "Follow"}
             selected={this.state.following}
-            onPress={this.handleFollowChange}
+            onPress={this.handleFollowChange.bind(this)}
           />
         </View>
       )
