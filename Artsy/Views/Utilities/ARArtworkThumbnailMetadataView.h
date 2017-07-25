@@ -12,6 +12,5 @@
 @property (nonatomic, readonly) ARSerifLabel *primaryLabel;
 @property (nonatomic, readonly) ARArtworkTitleLabel *secondaryLabel;
 @property (nonatomic, readonly) ARSerifLabel *priceLabel;
-@property (nonatomic, assign) BOOL showPrice;
 
 @end
