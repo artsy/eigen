@@ -3,6 +3,12 @@
 ###### Dev
 
 -   Adds stylelint to the dev-experience, not validated on CI yet - orta
+
+###### Messaging
+
+-   Small composer UI tweaks - maxim
+
+### 1.4.0-beta.3
 -   Changes post-sale supplementary artwork info - ash
 -   Attempt to fix a crash by not assuming a work in auction has a `sale_artwork` - alloy
 -   Expect `null` to indicate that no settings were refined - alloy

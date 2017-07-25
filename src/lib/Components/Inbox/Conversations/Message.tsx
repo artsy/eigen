@@ -38,7 +38,12 @@ const TextContainer = styled(VerticalLayout)`
 `
 
 const SenderName = styled(SmallHeadline)`
-  margin-right: 10;
+  marginRight: 3
+  font-size: 11.5
+`
+
+const TimeStamp = styled(MetadataText)`
+  font-size: 11.5
 `
 
 const ArtworkPreviewContainer = styled.View`margin-bottom: 10;`
@@ -94,9 +99,9 @@ export class Message extends React.Component<Props, any> {
               {senderName}
             </SenderName>
             {isSent &&
-              <MetadataText>
+              <TimeStamp>
                 {moment(message.created_at).fromNow(true)}
-              </MetadataText>}
+              </TimeStamp>}
           </Header>
           {artworkPreview &&
             <ArtworkPreviewContainer>
