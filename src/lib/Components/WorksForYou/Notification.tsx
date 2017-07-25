@@ -1,9 +1,9 @@
 import * as React from "react"
 import { Image, StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer, graphql } from "react-relay/compat"
 
 import SwitchBoard from "../../NativeModules/SwitchBoard"
-import ArtworksGrid from "../ArtworkGrids/GenericGrid"
+import GenericGrid from "../ArtworkGrids/GenericGrid"
 import Headline from "../Text/Headline"
 import SerifText from "../Text/Serif"
 
@@ -47,7 +47,7 @@ export class Notification extends React.Component<RelayProps, any> {
           </View>
         </TouchableWithoutFeedback>
         <View style={styles.gridContainer}>
-          <ArtworksGrid artworks={notification.artworks} />
+          <GenericGrid artworks={notification.artworks} />
         </View>
       </View>
     )
@@ -111,29 +111,28 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(Notification, {
-  fragments: {
-    notification: () => Relay.QL`
-      fragment on NotificationsFeedItem {
-        date(format: "MMM D")
-        message
-        artists
-        artworks {
-          artists(shallow: true) {
-            href
-          }
-          ${ArtworksGrid.getFragment("artworks")}
+export default createFragmentContainer(
+  Notification,
+  graphql`
+    fragment Notification_notification on NotificationsFeedItem {
+      date(format: "MMM D")
+      message
+      artists
+      artworks {
+        artists(shallow: true) {
+          href
         }
-        status
-        image {
-          resized(height: 80, width: 80) {
-            url
-          }
+        ...GenericGrid_artworks
+      }
+      status
+      image {
+        resized(height: 80, width: 80) {
+          url
         }
       }
-    `,
-  },
-})
+    }
+  `
+)
 
 interface RelayProps {
   notification: {

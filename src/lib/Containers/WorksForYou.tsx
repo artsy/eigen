@@ -1,6 +1,6 @@
 import moment from "moment"
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createPaginationContainer, graphql } from "react-relay/compat"
 
 import {
   LayoutChangeEvent,
@@ -16,7 +16,10 @@ import {
 
 import Events from "../NativeModules/Events"
 
-import ArtworksGrid from "../Components/ArtworkGrids/GenericGrid"
+import GenericGrid from "../Components/ArtworkGrids/GenericGrid"
+// tslint:disable-next-line:no-unused-expression
+GenericGrid
+
 import SerifText from "../Components/Text/Serif"
 import Notification from "../Components/WorksForYou/Notification"
 
@@ -110,29 +113,22 @@ export class WorksForYou extends React.Component<Props, State> {
       return
     }
     this.setState({ fetchingNextPage: true })
-    this.props.relay.setVariables(
-      {
-        totalSize: this.props.relay.variables.totalSize + PageSize,
-      },
-      readyState => {
-        if (readyState.done) {
-          const notifications = this.props.viewer.me.notifications.edges.map(edge => edge.node)
+    this.props.relay.loadMore(PageSize, error => {
+      const notifications = this.props.viewer.me.notifications.edges.map(edge => edge.node)
 
-          // Make sure we maintain the special notification if it exists
-          if (this.props.viewer.selectedArtist) {
-            notifications.unshift(this.formattedSpecialNotification())
-          }
-
-          this.setState({
-            fetchingNextPage: false,
-            dataSource: this.state.dataSource.cloneWithRows(notifications),
-          })
-          if (!this.props.viewer.me.notifications.pageInfo.hasNextPage) {
-            this.setState({ completed: true })
-          }
-        }
+      // Make sure we maintain the special notification if it exists
+      if (this.props.viewer.selectedArtist) {
+        notifications.unshift(this.formattedSpecialNotification())
       }
-    )
+
+      this.setState({
+        fetchingNextPage: false,
+        dataSource: this.state.dataSource.cloneWithRows(notifications),
+      })
+      if (!this.props.viewer.me.notifications.pageInfo.hasNextPage) {
+        this.setState({ completed: true })
+      }
+    })
   }
 
   componentDidUpdate() {
@@ -242,29 +238,29 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(WorksForYou, {
-  initialVariables: {
-    totalSize: PageSize,
-    selectedArtist: null,
-    showSpecialNotification: false,
-  },
-  prepareVariables: prevVariables => {
-    return {
-      ...prevVariables,
-      showSpecialNotification: !!prevVariables.selectedArtist,
-    }
-  },
-  fragments: {
-    viewer: () => Relay.QL`
-      fragment on Viewer {
+const WorksForYouContainer = createPaginationContainer(
+  WorksForYou,
+  {
+    viewer: graphql.experimental`
+      fragment WorksForYou_viewer on Viewer @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        after: { type: "String" }
+        selectedArtist: { type: "String!", defaultValue: "" }
+        showSpecialNotification: { type: "Boolean" }
+      ) {
         me {
-          notifications: notifications_connection(first: $totalSize) {
+          notifications: notifications_connection(
+            first: $count
+            after: $cursor
+          ) @connection(key: "WorksForYou_notifications") {
             pageInfo {
               hasNextPage
+              endCursor
             }
             edges {
               node {
-                ${Notification.getFragment("notification")}
+                __id
+                ...Notification_notification
               }
             }
           }
@@ -279,12 +275,46 @@ export default Relay.createContainer(WorksForYou, {
             }
           }
           artworks(sort:published_at_desc, size: 6) {
-            ${ArtworksGrid.getFragment("artworks")}
+            ...GenericGrid_artworks
           }
         }
-      }`,
+      }
+    `,
   },
-})
+  {
+    direction: "forward",
+    getConnectionFromProps(props) {
+      return props.viewer.me.notifications
+    },
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        count: totalCount,
+      }
+    },
+    getVariables(props, { count, cursor }, fragmentVariables) {
+      return {
+        // in most cases, for variables other than connection filters like
+        // `first`, `after`, etc. you may want to use the previous values.
+        ...fragmentVariables,
+        count,
+        cursor,
+      }
+    },
+    query: graphql`
+      query WorksForYouQuery(
+        $count: Int!
+        $cursor: String
+      ) {
+        viewer {
+          ...WorksForYou_viewer
+        }
+      }
+    `,
+  }
+)
+
+export default WorksForYouContainer
 
 interface RelayProps {
   viewer: {
