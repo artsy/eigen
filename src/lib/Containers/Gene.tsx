@@ -1,6 +1,6 @@
 import * as _ from "lodash"
 import * as React from "react"
-import * as ParallaxScrollView from "react-native-parallax-scroll-view"
+import ParallaxScrollView from "react-native-parallax-scroll-view"
 import * as Relay from "react-relay/classic"
 
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
