@@ -66,7 +66,7 @@ export class WorksForYou extends React.Component<Props, State> {
     // Update read status in gravity
     NativeModules.ARTemporaryAPIModule.markNotificationsRead(error => {
       if (error) {
-        console.error(error)
+        console.warn(error)
       } else {
         Events.postEvent(this, {
           name: "Notifications read",

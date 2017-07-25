@@ -1,4 +1,4 @@
-### Master
+### 1.4.0-beta.4
 
 ###### Dev
 
@@ -9,11 +9,20 @@
 -   Small composer UI tweaks - maxim
 
 ### 1.4.0-beta.3
+-   Changes post-sale supplementary artwork info - ash
+-   Attempt to fix a crash by not assuming a work in auction has a `sale_artwork` - alloy
+-   Expect `null` to indicate that no settings were refined - alloy
+-   Only use `console.warn` level when reporting connectivity issues, otherwise Sentry shows these as ‘fatal’ - alloy
 
 ###### Messaging
 
 -   Fix for bug in `ArtworkPreview` related to the falsiness of an empty string - sarah
 -   Adds a banner on Conversations when network connectivity is lost - sarah
+
+### 1.4.0-beta.3
+
+###### Messaging
+
 -   Reload active bids on pull-to-refresh - alloy
 -   Make active bids link to their artworks - alloy
 -   Make zero inbox state hide on load if bids or conversations exist - alloy
