@@ -25,6 +25,8 @@ interface State {
   followersCount: number
 }
 
+// IMPORTANT: Have to decorate the whole component with a @track
+// In order to add the tracking props to this component (via a HOC)
 @track()
 class Header extends React.Component<HeaderProps, State> {
   static propTypes = {
@@ -49,24 +51,30 @@ class Header extends React.Component<HeaderProps, State> {
     })
   }
 
-  @track({ test: "yo" })
+  @track({ action: "press follow/unfollow button" })
   handleFollowChange() {
     const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
       if (error) {
         console.error(error)
       } else {
-        Events.postEvent(this, {
-          name: following ? "Follow artist" : "Unfollow artist",
-          artist_id: this.props.artist._id,
-          artist_slug: this.props.artist.id,
-          // TODO At some point, this component might be on other screens.
-          source_screen: "artist page",
-        })
+        this.successfulFollowChange()
       }
       this.setState({ following, followersCount: newFollowersCount })
     })
     this.setState({ following: !this.state.following, followersCount: newFollowersCount })
+  }
+
+  // currently you can't get state yet, but leaving this in as desired usage
+  @track((props, state) => ({ name: state.following, artist_id: props.artist._id, artist_slug: props.artist.id }))
+  successfulFollowChange() {
+    Events.postEvent(this, {
+      name: this.state.following ? "Follow artist" : "Unfollow artist",
+      artist_id: this.props.artist._id,
+      artist_slug: this.props.artist.id,
+      // TODO At some point, this component might be on other screens.
+      source_screen: "artist page",
+    })
   }
 
   render() {

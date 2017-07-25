@@ -14,6 +14,9 @@ interface Props extends ViewProperties {
   trigger1pxScrollHack?: boolean
 }
 
+// Seeing as we're wrapping relay containers, we strip e.g. "Relay(Artist)" to be "Artist"
+// Probably move these methods to their own place
+// TODO: Add segment, add dev toggle between console and segement
 @track(props => ({ page: props.component.displayName.match("\\((.*?)\\)")[1] }), {
   dispatch: data => console.log(data),
 })
