@@ -99,25 +99,6 @@ describe(@"getFavorites", ^{
             expect(networkModel.allDownloaded).will.beTruthy();
         });
     });
-
-    describe(@"useSampleFavorites", ^{
-        it(@"uses sample user id if YES", ^{
-            id mock = [OCMockObject mockForClass:[ArtsyAPI class]];
-            [[[mock expect] classMethod] getArtworkFromUserFavorites:@"502d15746e721400020006fa" page:1 success:OCMOCK_ANY failure:OCMOCK_ANY];
-            networkModel.useSampleFavorites = YES;
-            [networkModel getFavorites:nil failure:nil];
-            [mock verify];
-            [mock stopMocking];
-        });
-
-        it(@"uses current user id by default", ^{
-            id mock = [OCMockObject mockForClass:[ArtsyAPI class]];
-            [[[mock expect] classMethod] getArtworkFromUserFavorites:[User currentUser].userID page:1 success:OCMOCK_ANY failure:OCMOCK_ANY];
-            [networkModel getFavorites:nil failure:nil];
-            [mock verify];
-            [mock stopMocking];
-        });
-    });
 });
 
 
