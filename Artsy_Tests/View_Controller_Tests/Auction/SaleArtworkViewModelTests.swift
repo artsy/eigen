@@ -6,14 +6,19 @@ import Artsy
 
 class SaleArtworkViewModelTests: QuickSpec {
     override func spec() {
+
+        var artistJSON: NSDictionary!
+        var imagesJSON: NSArray!
+        var artworkJSON: NSDictionary!
+        var saleArtwork: SaleArtwork!
         var subject: SaleArtworkViewModel!
 
         beforeEach {
-            let artistJSON: NSDictionary = [
+            artistJSON = [
                 "id": "artist_id",
                 "name": "Artist name"
             ]
-            let imagesJSON: NSArray = [
+            imagesJSON = [
                 [
                     "id": "image_1_id",
                     "is_default": true,
@@ -21,13 +26,13 @@ class SaleArtworkViewModelTests: QuickSpec {
                     "image_versions": ["large"]
                 ]
             ]
-            let artworkJSON: NSDictionary = [
+            artworkJSON = [
                 "id": "artwork_id",
                 "artist": artistJSON,
                 "title": "roly poly",
                 "images": imagesJSON,
             ]
-            let saleArtwork = SaleArtwork(json:
+            saleArtwork = SaleArtwork(json:
                 [
                     "id": "sale",
                     "artwork": artworkJSON,
@@ -39,6 +44,10 @@ class SaleArtworkViewModelTests: QuickSpec {
             )
 
             subject = SaleArtworkViewModel(saleArtwork: saleArtwork!)
+        }
+
+        it("assumes the sale is closed if not present on the sale artwork model") {
+            expect(subject.isAuctionOpen) == false
         }
 
         it("returns thumnail url") {
@@ -71,6 +80,26 @@ class SaleArtworkViewModelTests: QuickSpec {
 
         it("returns artwork ID") {
             expect(subject.artworkID) == "artwork_id"
+        }
+
+        describe("a closed sale") {
+            beforeEach {
+                saleArtwork.auction = Sale(json: ["auction_state": "closed"])
+            }
+
+            it("returns isAuctionOpen as false") {
+                expect(subject.isAuctionOpen) == false
+            }
+        }
+
+        describe("an open sale") {
+            beforeEach {
+                saleArtwork.auction = Sale(json: ["auction_state": "open"])
+            }
+
+            it("returns isAuctionOpen as true") {
+                expect(subject.isAuctionOpen) == true
+            }
         }
     }
 }
