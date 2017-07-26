@@ -16,7 +16,13 @@
         @"availability" : @"sold",
         @"sold" : @YES,
         @"price" : @"$5,000",
-        @"acquireable" : @NO
+        @"acquireable" : @NO,
+        @"sale_artwork": @{
+            @"id": @"stubbed",
+            @"auction": @{
+                @"id": @"stubbed"
+            }
+        }
     };
 }
 
