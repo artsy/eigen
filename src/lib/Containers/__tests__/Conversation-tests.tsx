@@ -59,6 +59,10 @@ const props = {
             raw_text: "Adoro! Por favor envie-me mais informações",
             from_email_address: "anita@garibaldi.br",
             attachments: [],
+            from: {
+              name: "Percy",
+              email: "percy@cat.com",
+            },
           },
         },
       ],

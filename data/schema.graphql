@@ -2823,7 +2823,8 @@ type Message implements Node {
 
   # True if message is from the user to the partner.
   is_from_user: Boolean
-  from_email_address: String
+  from_email_address: String @deprecated(reason: "Prefer to use the structured `from` field.")
+  from: MessageInitiator
 
   # Full unsanitized text.
   raw_text: String!
@@ -2856,6 +2857,12 @@ type MessageEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+# The participant who sent the message.
+type MessageInitiator {
+  name: String
+  email: String
 }
 
 type Mutation {

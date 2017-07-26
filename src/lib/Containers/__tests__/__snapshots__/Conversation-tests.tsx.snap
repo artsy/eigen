@@ -509,6 +509,28 @@ exports[`displays a connectivity banner when network is down 1`] = `
                 >
                   Adoro! Por favor envie-me mais informações
                 </Text>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "#cccccc",
+                        "fontFamily": "AGaramondPro-Regular",
+                      },
+                      Array [
+                        Object {
+                          "marginTop": 10,
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  Percy · percy@cat.com
+                </Text>
               </View>
             </View>
           </View>
@@ -1069,6 +1091,28 @@ exports[`looks correct when rendered 1`] = `
                   }
                 >
                   Adoro! Por favor envie-me mais informações
+                </Text>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "#cccccc",
+                        "fontFamily": "AGaramondPro-Regular",
+                      },
+                      Array [
+                        Object {
+                          "marginTop": 10,
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  Percy · percy@cat.com
                 </Text>
               </View>
             </View>

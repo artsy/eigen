@@ -34,6 +34,16 @@ const Subtitle = (props: TextProperties) => {
   )
 }
 
+const FromSignatureText = (props: TextProperties) => {
+  const children: string = (props as any).children
+  const style = [styles.fromSignatureDefault, props.style || {}]
+  return (
+    <Text key={children} style={style}>
+      {children}
+    </Text>
+  )
+}
+
 const MetadataText = (props: TextProperties) => {
   const children: string = (props as any).children
   const style = [styles.metadataDefault, props.style || {}, styles.metadataRequired]
@@ -64,7 +74,7 @@ const BodyText = (props: TextProperties & { disabled?: boolean }) => {
   )
 }
 
-export { LargeHeadline, SmallHeadline, Subtitle, MetadataText, PreviewText, BodyText }
+export { LargeHeadline, SmallHeadline, Subtitle, FromSignatureText, MetadataText, PreviewText, BodyText }
 
 interface Styles {
   largeRequired: TextStyle
@@ -73,6 +83,7 @@ interface Styles {
   smallDefault: TextStyle
   subtitleRequired: TextStyle
   subtitleDefault: TextStyle
+  fromSignatureDefault: TextStyle
   metadataRequired: TextStyle
   metadataDefault: TextStyle
   bodyRequired: TextStyle
@@ -110,6 +121,11 @@ const styles = StyleSheet.create<Styles>({
 
   subtitleRequired: {
     fontFamily: fonts["garamond-italic"],
+  },
+
+  fromSignatureDefault: {
+    fontFamily: fonts["garamond-regular"],
+    color: colors["gray-medium"],
   },
 
   metadataDefault: {

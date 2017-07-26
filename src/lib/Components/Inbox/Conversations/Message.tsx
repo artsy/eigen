@@ -2,7 +2,7 @@ import * as moment from "moment"
 import * as React from "react"
 import * as Relay from "react-relay"
 
-import { BodyText, MetadataText, SmallHeadline } from "../Typography"
+import { BodyText, FromSignatureText, MetadataText, SmallHeadline } from "../Typography"
 
 import Avatar from "./Avatar"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
@@ -40,6 +40,10 @@ const TextContainer = styled(VerticalLayout)`
 const SenderName = styled(SmallHeadline)`
   marginRight: 3
   font-size: 11.5
+`
+
+const FromSignature = styled(FromSignatureText)`
+  marginTop: 10
 `
 
 const TimeStamp = styled(MetadataText)`
@@ -91,6 +95,10 @@ export class Message extends React.Component<Props, any> {
     const { artworkPreview, initials, message, senderName, showPreview } = this.props
     const isSent = this.props.relay ? !this.props.relay.hasOptimisticUpdate(message) : true
 
+    const fromName = message.from.name
+    const fromEmail = message.from.email
+
+    const fromSignature = fromName ? `${fromName} · ${fromEmail}` : fromEmail
     return (
       <Container>
         <Avatar isUser={message.is_from_user} initials={initials} />
@@ -119,6 +127,11 @@ export class Message extends React.Component<Props, any> {
           <BodyText disabled={!isSent}>
             {message.raw_text.split("\n\nAbout")[0]}
           </BodyText>
+
+          {!message.is_from_user &&
+            <FromSignature>
+              {fromSignature}
+            </FromSignature>}
         </TextContainer>
       </Container>
     )
@@ -132,6 +145,10 @@ export default Relay.createContainer(Message, {
         raw_text
         created_at
         is_from_user
+        from {
+          name
+          email
+        }
         attachments {
           id
           content_type
@@ -150,6 +167,10 @@ interface RelayProps {
     raw_text: string | null
     created_at: string | null
     is_from_user: boolean
+    from: {
+      name: string | null
+      email: string
+    }
     attachments: Array<{
       id: string
       content_type: string
