@@ -251,6 +251,7 @@ describe(@"before a live auction", ^{
         stubEmptyBidderPositions();
         stubBidder(NO);
         stubSaleArtwork();
+        stubEmptySaleArtworks();
     });
     
     it(@"sets up an internal timer", ^{
@@ -278,7 +279,7 @@ pending(@"at a fair");
 SpecEnd;
 
 void stubEmptySaleArtworks() {
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sale/some-auction/sale_artworks" withResponse:@[]];
+    [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:@{}];
 }
 
 void stubEmptyBidderPositions() {
