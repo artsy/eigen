@@ -50,7 +50,7 @@ class Header extends React.Component<HeaderProps, State> {
     const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
       if (error) {
-        console.error(error)
+        console.warn(error)
       } else {
         Events.postEvent(this, {
           name: following ? "Follow artist" : "Unfollow artist",

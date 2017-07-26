@@ -266,7 +266,8 @@ exports[`displays a connectivity banner when network is down 1`] = `
                         },
                         Array [
                           Object {
-                            "marginRight": 10,
+                            "fontSize": 11.5,
+                            "marginRight": 3,
                           },
                           undefined,
                         ],
@@ -290,7 +291,12 @@ exports[`displays a connectivity banner when network is down 1`] = `
                           "fontSize": 11,
                           "textAlign": "left",
                         },
-                        Object {},
+                        Array [
+                          Object {
+                            "fontSize": 11.5,
+                          },
+                          undefined,
+                        ],
                         Object {
                           "fontFamily": "Avant Garde Gothic ITCW01Dm",
                         },
@@ -821,7 +827,8 @@ exports[`looks correct when rendered 1`] = `
                         },
                         Array [
                           Object {
-                            "marginRight": 10,
+                            "fontSize": 11.5,
+                            "marginRight": 3,
                           },
                           undefined,
                         ],
@@ -845,7 +852,12 @@ exports[`looks correct when rendered 1`] = `
                           "fontSize": 11,
                           "textAlign": "left",
                         },
-                        Object {},
+                        Array [
+                          Object {
+                            "fontSize": 11.5,
+                          },
+                          undefined,
+                        ],
                         Object {
                           "fontFamily": "Avant Garde Gothic ITCW01Dm",
                         },

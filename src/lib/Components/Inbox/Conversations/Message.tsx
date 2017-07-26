@@ -38,7 +38,12 @@ const TextContainer = styled(VerticalLayout)`
 `
 
 const SenderName = styled(SmallHeadline)`
-  margin-right: 10;
+  marginRight: 3
+  font-size: 11.5
+`
+
+const TimeStamp = styled(MetadataText)`
+  font-size: 11.5
 `
 
 const ArtworkPreviewContainer = styled.View`margin-bottom: 10;`
@@ -51,6 +56,7 @@ interface Props extends RelayProps {
   senderName: string
   initials?: string
   artworkPreview?: JSX.Element
+  showPreview?: JSX.Element
   relay?: Relay.RelayProp
 }
 
@@ -82,7 +88,7 @@ export class Message extends React.Component<Props, any> {
   }
 
   render() {
-    const { artworkPreview, initials, message, senderName } = this.props
+    const { artworkPreview, initials, message, senderName, showPreview } = this.props
     const isSent = this.props.relay ? !this.props.relay.hasOptimisticUpdate(message) : true
 
     return (
@@ -94,13 +100,18 @@ export class Message extends React.Component<Props, any> {
               {senderName}
             </SenderName>
             {isSent &&
-              <MetadataText>
+              <TimeStamp>
                 {moment(message.created_at).fromNow(true)}
-              </MetadataText>}
+              </TimeStamp>}
           </Header>
           {artworkPreview &&
             <ArtworkPreviewContainer>
               {artworkPreview}
+            </ArtworkPreviewContainer>}
+
+          {showPreview &&
+            <ArtworkPreviewContainer>
+              {showPreview}
             </ArtworkPreviewContainer>}
 
           {this.renderAttachmentPreviews(message.attachments)}

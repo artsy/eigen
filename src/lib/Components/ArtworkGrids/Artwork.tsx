@@ -63,20 +63,24 @@ class Artwork extends React.Component<RelayProps, any> {
 
   saleMessage() {
     const artwork = this.props.artwork
-    if (artwork.is_in_auction && artwork.sale_artwork.sale.is_open) {
-      const numberOfBids = artwork.sale_artwork.bidder_positions_count
-      let text = artwork.sale_artwork.opening_bid.display
-      if (numberOfBids > 0) {
-        text = `${artwork.sale_artwork.current_bid.display} (${numberOfBids} bid${numberOfBids === 1 ? "" : "s"})`
+    if (artwork.is_in_auction && artwork.sale_artwork) {
+      if (artwork.sale_artwork.sale.is_open) {
+        const numberOfBids = artwork.sale_artwork.bidder_positions_count
+        let text = artwork.sale_artwork.opening_bid.display
+        if (numberOfBids > 0) {
+          text = `${artwork.sale_artwork.current_bid.display} (${numberOfBids} bid${numberOfBids === 1 ? "" : "s"})`
+        }
+        return (
+          <View style={{ flexDirection: "row" }}>
+            <Image style={{ marginRight: 4 }} source={require("../../../../images/paddle.png")} />
+            <SerifText style={styles.text}>
+              {text}
+            </SerifText>
+          </View>
+        )
+      } else {
+        return <SerifText style={styles.text}>Auction Closed</SerifText>
       }
-      return (
-        <View style={{ flexDirection: "row" }}>
-          <Image style={{ marginRight: 4 }} source={require("../../../../images/paddle.png")} />
-          <SerifText style={styles.text}>
-            {text}
-          </SerifText>
-        </View>
-      )
     } else {
       return (
         artwork.sale_message &&

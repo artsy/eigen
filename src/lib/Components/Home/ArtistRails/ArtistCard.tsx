@@ -53,7 +53,7 @@ export class ArtistCard extends React.Component<Props, State> {
 
     ARTemporaryAPIModule.setFollowArtistStatus(true, this.props.artist._id, (error, following) => {
       if (error) {
-        console.error(error)
+        console.warn(error)
         this.setState({ processingChange: false })
       } else {
         Events.postEvent(this, {
@@ -62,6 +62,7 @@ export class ArtistCard extends React.Component<Props, State> {
           artist_slug: this.props.artist.id,
           // TODO At some point, this component might be on other screens.
           source_screen: "home page",
+          context_module: "artist rail",
         })
         this.props.onFollow(this.setFollowStatus.bind(this))
       }
