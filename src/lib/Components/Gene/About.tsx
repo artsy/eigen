@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer, graphql } from "react-relay/compat"
 
 import { StyleSheet, View, ViewStyle } from "react-native"
 
@@ -44,18 +44,17 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(About, {
-  fragments: {
-    gene: () => Relay.QL`
-      fragment on Gene {
-        ${Biography.getFragment("gene")}
-        trending_artists {
-          ${RelatedArtists.getFragment("artists")}
-        }
+export default createFragmentContainer(
+  About,
+  graphql`
+    fragment About_gene on Gene {
+      ...Biography_gene
+      trending_artists {
+        ...RelatedArtists_artists
       }
-    `,
-  },
-})
+    }
+  `
+)
 
 interface RelayProps {
   gene: {

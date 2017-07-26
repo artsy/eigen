@@ -1,7 +1,7 @@
 import * as _ from "lodash"
 import * as React from "react"
 import ParallaxScrollView from "react-native-parallax-scroll-view"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer, graphql } from "react-relay/compat"
 
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
@@ -12,7 +12,7 @@ import SerifText from "../Components/Text/Serif"
 import About from "../Components/Gene/About"
 import Header from "../Components/Gene/Header"
 
-import Artworks from "../Components/ArtworkGrids/RelayConnections/GeneArtworksGrid"
+import GeneArtworksGrid from "../Components/ArtworkGrids/RelayConnections/GeneArtworksGrid"
 
 import SwitchView, { SwitchEvent } from "../Components/SwitchView"
 
@@ -111,7 +111,7 @@ export class Gene extends React.Component<Props, State> {
         return <About gene={this.props.gene} />
       case TABS.WORKS:
         return (
-          <Artworks
+          <GeneArtworksGrid
             gene={this.props.gene}
             medium={this.state.selectedMedium}
             priceRange={this.state.selectedPriceRange}
@@ -337,38 +337,35 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(Gene, {
-  // fallbacks for when no medium/price_range is set
-  initialVariables: {
-    medium: "*",
-    price_range: "*-*",
-    sort: "-partner_updated_at",
-  },
-  fragments: {
-    gene: () => Relay.QL`
-      fragment on Gene {
-        _id
-        id
-        ${Header.getFragment("gene")}
-        ${About.getFragment("gene")}
-        ${Artworks.getFragment("gene")}
-        filtered_artworks(medium: $medium,
-                          price_range: $price_range,
-                          sort: $sort,
-                          aggregations: [MEDIUM, PRICE_RANGE, TOTAL],
-                          page: 1,
-                          for_sale: true) {
-          total
-          aggregations {
-            slice
-            counts {
-              id
-              name
-              count
-            }
+export default createFragmentContainer(
+  Gene,
+  graphql.experimental`
+    fragment Gene_gene on Gene @argumentDefinitions(
+      sort: { type: "String", defaultValue: "-partner_updated_at" }
+      medium: { type: "String", defaultValue: "*" }
+      price_range: { type: "String", defaultValue: "*-*" }
+    ) {
+      ...Header_gene
+      ...About_gene
+      ...GeneArtworksGrid_gene
+      filtered_artworks(
+        medium: $medium,
+        price_range: $price_range,
+        sort: $sort,
+        aggregations: [MEDIUM, PRICE_RANGE, TOTAL],
+        page: 1,
+        for_sale: true
+      ) {
+        total
+        aggregations {
+          slice
+          counts {
+            id
+            name
+            count
           }
         }
       }
-    `,
-  },
-})
+    }
+  `
+)
