@@ -1,10 +1,13 @@
-// Type definitions for react-relay 0.9.2
+// Type definitions for react-relay 1.0.0
 // Project: https://github.com/facebook/relay
 // Definitions by: Johannes Schickling <https://github.com/graphcool>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.1
 
-// import * as Relay from "react-relay"
+declare module "react-relay/compat" {
+    import * as modern from "react-relay/modern"
+    export = modern
+}
 
 declare module "react-relay/modern" {
     import * as React from "react";
@@ -40,7 +43,7 @@ declare module "react-relay/modern" {
     ): React.ComponentClass<T>
 
     function createPaginationContainer<T>(
-        ComponentClass: React.ComponentClass<T> | React.StatelessComponent<T>, fragmentSpec: GraphQLTaggedNode | GeneratedNodeMap, 
+        ComponentClass: React.ComponentClass<T> | React.StatelessComponent<T>, fragmentSpec: GraphQLTaggedNode | GeneratedNodeMap,
         connectionConfig: ConnectionConfig
     ): React.ComponentClass<T>
 
@@ -233,7 +236,7 @@ declare module "react-relay/modern" {
 
     interface RelayRefetchProp extends RelayProp {
         refetch: (
-            refetchVariables: Variables | ((fragmentVariables: Variables) => Variables), 
+            refetchVariables: Variables | ((fragmentVariables: Variables) => Variables),
             renderVaiables: Variables | null,
             // The example code has this optional but in the flow type it's not
             callback?: ((error: Error | null) => void) | null,
