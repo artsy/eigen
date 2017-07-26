@@ -75,7 +75,7 @@
 
 + (NSURLRequest *)newArtworkFavoritesRequestWithFair:(Fair *)fair;
 + (NSURLRequest *)newSetArtworkFavoriteRequestForArtwork:(Artwork *)artwork status:(BOOL)status;
-+ (NSURLRequest *)newArtworksFromUsersFavoritesRequestWithID:(NSString *)userID page:(NSInteger)page;
++ (NSURLRequest *)newArtworksFromUsersFavoritesRequestWithCursor:(NSString *)cursor;
 + (NSURLRequest *)newCheckFavoriteStatusRequestForArtwork:(Artwork *)artwork;
 + (NSURLRequest *)newCheckFavoriteStatusRequestForArtworks:(NSArray *)artworks;
 + (NSURLRequest *)newFairsRequestForArtwork:(Artwork *)artwork;

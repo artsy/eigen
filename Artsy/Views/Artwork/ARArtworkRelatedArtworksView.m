@@ -171,10 +171,6 @@
     __weak typeof(self) wself = self;
     [self addRelatedArtworkRequest:[auction getArtworks:^(NSArray *artworks) {
         __strong typeof (wself) sself = wself;
-        // We need to explicitly set this here, for the ArtworkThumbnailMetadataView to display everything correctly.
-        [artworks each:^(id object) {
-            [object setAuction:auction];
-        }];
         [sself addSectionWithTag:ARRelatedArtworksSameAuction artworks:artworks heading:@"Other works in auction"];
     }]];
 }

@@ -3,6 +3,7 @@
 #import "Artist.h"
 #import "Artwork.h"
 #import "ArtsyAPI+SiteFunctions.h"
+#import "ARRouter+GraphQL.h"
 #import "ARDefaults.h"
 #import "ARNetworkConstants.h"
 #import "ARUserManager.h"
@@ -559,18 +560,16 @@ static NSString *hostFromString(NSString *string)
 }
 
 
-+ (NSURLRequest *)newArtworksFromUsersFavoritesRequestWithID:(NSString *)userID page:(NSInteger)page
++ (NSURLRequest *)newArtworksFromUsersFavoritesRequestWithCursor:(NSString *)cursor
 {
-    NSDictionary *params = @{
-        @"size" : @15,
-        @"page" : @(page),
-        @"sort" : @"-position",
-        @"total_count" : @1,
-        @"user_id" : userID ?: @"",
-        @"private" : ARIsRunningInDemoMode ? @"false" : @"true"
-    };
+    NSString *query;
+    if ([cursor length] > 0) {
+        query = [self graphQueryForFavoritesAfter:cursor];
+    } else {
+        query = [self graphQueryForFavorites];
+    }
 
-    return [self requestWithMethod:@"GET" path:ARFavoritesURL parameters:params];
+    return [self graphQLRequestForQuery:query];
 }
 
 + (NSURLRequest *)newCheckFavoriteStatusRequestForArtwork:(Artwork *)artwork
@@ -1062,8 +1061,7 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID
 {
-    NSString *url = [NSString stringWithFormat:ARSaleArtworksURLFormat, saleID];
-    return [self requestWithMethod:@"GET" path:url parameters:nil];
+    return [self graphQLRequestForQuery:[self graphQueryForArtworksInSale:saleID]];
 }
 
 + (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID page:(NSInteger)page pageSize:(NSInteger)pageSize
@@ -1080,77 +1078,21 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" URLString:url parameters:nil];
 }
 
-+ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role
++ (NSURLRequest *)graphQLRequestForQuery:(NSString *)query
 {
     // Note that we're relying on the host to specify the domain for the request.
     NSString *url = [self baseMetaphysicsApiURLString];
-
-    NSString *accessType = role ? [NSString stringWithFormat:@"role: %@,", [role uppercaseString]] : @"";
-    NSString *causalityRole = [NSString stringWithFormat:@"causality_jwt(%@ sale_id: \"%@\")", accessType, saleID];
-
-    // Ending spaces are to avoid stripping newlines characters later on.
-    NSString *query = [NSString stringWithFormat:@"\
-{\
-  %@\
-  me {\
-    paddle_number\
-    bidders(sale_id: \"%@\") {\
-      id\
-      qualified_for_bidding\
-    }\
-  }\
-  sale(id: \"%@\") {\
-    _id\
-    id\
-    start_at\
-    bid_increments {\
-      from\
-      amount\
-    }\
-    end_at\
-    registration_ends_at\
-    name\
-    is_with_buyers_premium\
-    description\
-    sale_artworks(all: true) {\
-      _id\
-      position\
-      currency\
-      symbol\
-      reserve_status\
-      low_estimate_cents\
-      high_estimate_cents\
-      lot_label\
-      currency\
-      estimate\
-      artwork {\
-        title\
-        blurb: description\
-        medium\
-        dimensions {\
-          in\
-          cm\
-        }\
-        artist {\
-          name\
-          blurb\
-        }\
-        image {\
-          aspect_ratio\
-          large: url(version: \"large\")\
-          thumb: url(version: \"thumb\")\
-        }\
-      }\
-    }\
-  }\
-}",
-                                                 causalityRole, saleID, saleID];
 
     // Makes a copy of the request serializer, one that will encode HTTP body as JSON instead of URL-encoded params.
     AFJSONRequestSerializer *jsonSerializer = [[AFJSONRequestSerializer alloc] init];
     for (NSString *key in staticHTTPClient.requestSerializer.HTTPRequestHeaders.allKeys) {
         id value = staticHTTPClient.requestSerializer.HTTPRequestHeaders[key];
         [jsonSerializer setValue:value forHTTPHeaderField:key];
+    }
+    if (ARIsRunningInDemoMode) {
+        [jsonSerializer setValue:@"502d15746e721400020006fa" forHTTPHeaderField:@"X-User-ID"];
+    } else {
+        [jsonSerializer setValue:[User currentUser].userID forHTTPHeaderField:@"X-User-ID"];
     }
     NSError *error;
     NSMutableURLRequest *request = [jsonSerializer requestWithMethod:@"POST" URLString:url parameters:@{ @"query" : query } error:&error];
@@ -1160,6 +1102,15 @@ static NSString *hostFromString(NSString *string)
     }
 
     return request;
+}
+
++ (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role
+{
+    NSString *accessType = role ? [NSString stringWithFormat:@"role: %@,", [role uppercaseString]] : @"";
+    NSString *causalityRole = [NSString stringWithFormat:@"causality_jwt(%@ sale_id: \"%@\")", accessType, saleID];
+
+    NSString *query = [self graphQLQueryForLiveSaleStaticData:saleID role:causalityRole];
+    return [self graphQLRequestForQuery:query];
 }
 
 + (NSURLRequest *)biddersRequest

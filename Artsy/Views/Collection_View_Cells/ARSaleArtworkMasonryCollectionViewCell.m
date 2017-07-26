@@ -22,6 +22,7 @@
 @property (nonatomic, strong) ARArtworkTitleLabel *artworkNameLabel;
 @property (nonatomic, strong) ARSerifLabel *currentOrStartingBidLabel;
 @property (nonatomic, strong) UIImageView *paddleImageView;
+@property (nonatomic, strong) ARSerifLabel *auctionClosedLabel;
 
 @end
 
@@ -68,6 +69,12 @@
     self.paddleImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paddle"]];
     [self.paddleImageView constrainWidth:@"6" height:@"9"];
     [self.contentView addSubview:self.paddleImageView];
+
+    self.auctionClosedLabel = [[ARSerifLabel alloc] init];
+    self.auctionClosedLabel.text = @"Auction Closed";
+    self.auctionClosedLabel.font = serifFont;
+    self.auctionClosedLabel.textColor = darkGrey;
+    [self.contentView addSubview:self.auctionClosedLabel];
 }
 
 - (void)constrainViewsWithLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
@@ -98,6 +105,11 @@
     [self.paddleImageView alignLeadingEdgeWithView:self.contentView predicate:@"1"];
     [self.paddleImageView constrainTrailingSpaceToView:self.currentOrStartingBidLabel predicate:@"-2"];
     [self.currentOrStartingBidLabel alignTrailingEdgeWithView:self.contentView predicate:@"0"];
+
+    // Overlay the auctionClosedLabel with the paddle+currentbid label (only one of the two will be visible)
+    [self.auctionClosedLabel alignLeadingEdgeWithView:self.paddleImageView predicate:@"0"];
+    [self.auctionClosedLabel alignTrailingEdgeWithView:self.currentOrStartingBidLabel predicate:@"0"];
+    [self.auctionClosedLabel alignAttribute:NSLayoutAttributeTop toAttribute:NSLayoutAttributeBottom ofView:self.artworkNameLabel predicate:@"0"];
 }
 
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
@@ -119,8 +131,16 @@
 
     self.artistNameLabel.text = saleArtworkViewModel.artistName;
     [self.artworkNameLabel setTitle:saleArtworkViewModel.artworkName date:saleArtworkViewModel.artworkDate];
-    self.currentOrStartingBidLabel.text = [saleArtworkViewModel currentOrStartingBidWithNumberOfBids:YES];
-    self.paddleImageView.hidden = (self.currentOrStartingBidLabel.text.length == 0);
+
+    if (saleArtworkViewModel.isAuctionOpen) {
+        self.currentOrStartingBidLabel.text = [saleArtworkViewModel currentOrStartingBidWithNumberOfBids:YES];
+        self.paddleImageView.hidden = (self.currentOrStartingBidLabel.text.length == 0);
+        self.auctionClosedLabel.hidden = YES;
+    } else {
+        self.paddleImageView.hidden = YES;
+        self.auctionClosedLabel.hidden = NO;
+    }
+
     if (saleArtworkViewModel.lotLabel.length) {
         self.lotNumberLabel.text = [@"LOT " stringByAppendingString:saleArtworkViewModel.lotLabel];
     }

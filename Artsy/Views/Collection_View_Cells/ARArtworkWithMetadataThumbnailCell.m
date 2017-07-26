@@ -22,7 +22,8 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
 
 + (CGFloat)heightForMetadataWithArtwork:(Artwork *)artwork
 {
-    return [self heightIncludingPriceLabel:[self showPriceLabelWithArtwork:artwork]] + ARArtworkCellMetadataMargin;
+    BOOL includePriceLabel = ([self priceInfoModeForArtwork:artwork] != ARArtworkWithMetadataThumbnailCellPriceInfoModeNone);
+    return [self heightIncludingPriceLabel:includePriceLabel] + ARArtworkCellMetadataMargin;
 }
 
 + (CGFloat)heightIncludingPriceLabel:(BOOL)includePriceLabel
@@ -34,9 +35,17 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
     }
 }
 
-+ (BOOL)showPriceLabelWithArtwork:(Artwork *)artwork
++ (ARArtworkWithMetadataThumbnailCellPriceInfoMode)priceInfoModeForArtwork:(Artwork *)artwork
 {
-    return artwork.saleMessage.length && !artwork.auction;
+    if (artwork.auction) {
+        return ARArtworkWithMetadataThumbnailCellPriceInfoModeAuctionInfo;
+    } else {
+        if (artwork.saleMessage.length > 0) {
+            return ARArtworkWithMetadataThumbnailCellPriceInfoModeSaleMessage;
+        } else {
+            return ARArtworkWithMetadataThumbnailCellPriceInfoModeNone;
+        }
+    }
 }
 
 - (void)prepareForReuse
@@ -63,19 +72,19 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
         self.imageView = imageView;
     }
 
-    BOOL showPrice = [self.class showPriceLabelWithArtwork:artwork];
+    ARArtworkWithMetadataThumbnailCellPriceInfoMode mode = [self.class priceInfoModeForArtwork:artwork];
 
     if (!self.metadataView) {
         ARArtworkThumbnailMetadataView *metaData = [[ARArtworkThumbnailMetadataView alloc] init];
-        [metaData configureWithArtwork:artwork showPriceLabel:showPrice];
+        [metaData configureWithArtwork:artwork priceInfoMode:mode];
         [self.contentView addSubview:metaData];
         self.metadataView = metaData;
     } else {
-        [self.metadataView configureWithArtwork:artwork showPriceLabel:showPrice];
+        [self.metadataView configureWithArtwork:artwork priceInfoMode:mode];
     }
 
     NSString *marginFormat = [NSString stringWithFormat:@"%0.f", ARArtworkCellMetadataMargin];
-    NSString *heightFormat = [NSString stringWithFormat:@"%0.f", [self.class heightIncludingPriceLabel:showPrice]];
+    NSString *heightFormat = [NSString stringWithFormat:@"%0.f", [self.class heightIncludingPriceLabel:(mode != ARArtworkWithMetadataThumbnailCellPriceInfoModeNone)]];
 
     [self.metadataView constrainTopSpaceToView:self.imageView predicate:marginFormat];
     [self.metadataView alignBottomEdgeWithView:self.contentView predicate:@"0"];

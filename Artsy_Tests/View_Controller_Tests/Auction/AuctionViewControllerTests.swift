@@ -265,6 +265,36 @@ class AuctionViewControllerTests: QuickSpec {
                     }
                 }
             }
+
+            describe("a closed sale") {
+                var subject: AuctionViewController!
+
+                beforeEach {
+                    saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [
+                        test_saleArtworkWithLotNumber(1, artistName: "Ash", bidCount: 0, highestBidCents: 100_00, saleState: "closed"),
+                        test_saleArtworkWithLotNumber(2, artistName: "Orta", bidCount: 4, highestBidCents: 1000_00, saleState: "closed"),
+                        test_saleArtworkWithLotNumber(3, artistName: "Sarah", bidCount: 2, highestBidCents: 50_00, saleState: "closed"),
+                        test_saleArtworkWithLotNumber(4, artistName: "Eloy", bidCount: 17, highestBidCents: 1000_000_00, saleState: "closed"),
+                        test_saleArtworkWithLotNumber(5, artistName: "Maxim", bidCount: 6, highestBidCents: 5011_00, saleState: "closed"),
+                        ], bidders: [qualifiedBidder])
+                    saleViewModel.stubbedAuctionState.insert(.userIsRegistered)
+
+                    subject = AuctionViewController(saleID: sale.saleID)
+                    subject.allowAnimations = false
+                    subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel, bidders: [qualifiedBidder])
+                }
+
+                it("looks correct") {
+                    let subject = AuctionViewController(saleID: sale.saleID)
+                    subject.allowAnimations = false
+                    subject.networkModel = Test_AuctionNetworkModel(saleViewModel: saleViewModel)
+                    subject.stubHorizontalSizeClass(horizontalSizeClass)
+
+                    ARTestContext.use(device) {
+                        expect(subject).to( haveValidSnapshot(usesDrawRect: true) )
+                    }
+                }
+            }
         }
 
 
@@ -493,7 +523,7 @@ class Test_AuctionNetworkModel: AuctionNetworkModelType {
     }
 }
 
-func test_saleArtworkWithLotNumber(_ lotNumber: Int, artistName: String, bidCount: Int, highestBidCents: Int) -> SaleArtwork {
+func test_saleArtworkWithLotNumber(_ lotNumber: Int, artistName: String, bidCount: Int, highestBidCents: Int, saleState: String = "open") -> SaleArtwork {
 
     let artistJSON: NSDictionary = [
         "id": "artist_id",
@@ -524,7 +554,11 @@ func test_saleArtworkWithLotNumber(_ lotNumber: Int, artistName: String, bidCoun
             "low_estimate_cents": 1_000_000_00,
             "highest_bid": ["id": "bid-id", "amount_cents": highestBidCents],
             "opening_bid_cents": 100_00,
-            "symbol": "$"
+            "symbol": "$",
+            "auction": [
+                "id": "sale-id",
+                "auction_state": saleState
+            ]
         ]
     )
 

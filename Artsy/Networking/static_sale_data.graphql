@@ -1,0 +1,54 @@
+{
+  %@
+  me {
+    paddle_number
+    bidders(sale_id: "%@") {
+      id
+      qualified_for_bidding
+    }
+  }
+  sale(id: "%@") {
+    _id
+    id
+    start_at
+    bid_increments {
+      from
+      amount
+    }
+    end_at
+    registration_ends_at
+    name
+    is_with_buyers_premium
+    description
+    sale_artworks(all: true) {
+      _id
+      position
+      currency
+      symbol
+      reserve_status
+      low_estimate_cents
+      high_estimate_cents
+      lot_label
+      currency
+      estimate
+      artwork {
+        title
+        blurb: description
+        medium
+        dimensions {
+          in
+          cm
+        }
+        artist {
+          name
+          blurb
+        }
+        image {
+          aspect_ratio
+          large: url(version: "large")
+          thumb: url(version: "thumb")
+        }
+      }
+    }
+  }
+}

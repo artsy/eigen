@@ -20,6 +20,7 @@ upcoming:
       - Fixes login for users with short passwords - ash
       - Fixes inconsistencies in bid counts of online sales - ash
       - Fixes a minor problem displaying lots in past auctions - ash
+      - Fixes inconsistencies in post-sale artwork supplementary info - ash
 
 releases:
   - version: 3.2.3

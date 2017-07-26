@@ -6,6 +6,13 @@
 @class Artwork, ARArtworkThumbnailMetadataView;
 
 
+typedef enum : NSUInteger {
+    ARArtworkWithMetadataThumbnailCellPriceInfoModeAuctionInfo,
+    ARArtworkWithMetadataThumbnailCellPriceInfoModeSaleMessage,
+    ARArtworkWithMetadataThumbnailCellPriceInfoModeNone,
+} ARArtworkWithMetadataThumbnailCellPriceInfoMode;
+
+
 @interface ARArtworkWithMetadataThumbnailCell : ARItemThumbnailViewCell
 
 + (CGFloat)heightForMetadataWithArtwork:(Artwork *)artwork;
