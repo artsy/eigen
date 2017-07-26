@@ -165,6 +165,7 @@ describe(@"at a closed auction", ^{
         stubEmptyBidderPositions();
         stubEmptySaleArtworks();
         stubSaleArtwork();
+        stubEmptySaleArtworks();
     });
 
     it(@"displays artwork on iPhone", ^{

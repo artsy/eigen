@@ -36,7 +36,10 @@ extension PublicComputedProperties {
     }
 
     var isAuctionOpen: Bool {
-        return saleArtwork.auction?.saleState == SaleStateOpen
+        // If we have no sale state, assume auction is closed to prevent leaking info post-sale.
+        guard let saleState = saleArtwork.auction?.saleState else { return false }
+        // For our purposes, an auction is "open" if its sale state is open or in preview.
+        return [SaleStateOpen, SaleStatePreview].contains(saleState)
     }
 
     var numberOfBids: String {
