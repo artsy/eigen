@@ -7,7 +7,6 @@
 #import "ARTopMenuViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "UIApplicationStateEnum.h"
-#import "ARWorksForYouReloadingHostViewController.h"
 
 
 static NSDictionary *
@@ -54,21 +53,6 @@ describe(@"receiveRemoteNotification", ^{
             [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
             [mockAnalytics verify];
-        });
-
-        it(@"(p)reloads the works-for-you controller", ^{
-            id hostViewControllerMock = [OCMockObject mockForClass:ARWorksForYouReloadingHostViewController.class];
-
-            id switchBoardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
-            [[[switchBoardMock stub] andReturn:hostViewControllerMock] loadPath:notification[@"url"]];
-
-            [[hostViewControllerMock expect] reloadData];
-            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
-
-            [hostViewControllerMock verify];
-
-            [hostViewControllerMock stopMocking];
-            [switchBoardMock stopMocking];
         });
     });
 

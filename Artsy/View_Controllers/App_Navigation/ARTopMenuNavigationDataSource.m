@@ -10,7 +10,6 @@
 #import "ARFeedSubclasses.h"
 #import "FeaturedLink.h"
 #import "ARNavigationController.h"
-#import "ARWorksForYouReloadingHostViewController.h"
 #import "AROptions.h"
 #import "ARSwitchBoard.h"
 
