@@ -50,6 +50,7 @@ static CGFloat ARMetadataFontSize;
     _secondaryLabel.lineHeight = 1;
     _secondaryLabel.numberOfLines = 1;
     _priceLabel = [[ARSerifLabel alloc] init];
+    _showPaddle = NO;
 
     _paddleImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paddle"]];
     [self addSubview:_paddleImageView];
