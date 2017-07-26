@@ -21,7 +21,7 @@ const ArtistArtworksGrid = createPaginationContainer(
           filter: $filter
           sort: partner_updated_at_desc
         ) @connection(key: "ArtistArtworksGrid_artworks") {
-          pageInfo{
+          pageInfo {
             hasNextPage
             startCursor
             endCursor
@@ -62,11 +62,12 @@ const ArtistArtworksGrid = createPaginationContainer(
     // FIXME: Replace hardcoded artistID
     query: graphql`
       query ArtistArtworksGridQuery(
+        $artistID: String!
         $count: Int!
         $cursor: String
         $filter: [ArtistArtworksFilters]
       ) {
-        artist(id: "david-shrigley") {
+        artist(id: $artistID) {
           ...ArtistArtworksGrid_artist
         }
       }

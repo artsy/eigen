@@ -173,17 +173,17 @@ const styles = StyleSheet.create<Styles>({
 export default createFragmentContainer(
   Header,
   graphql`
-  fragment Header_artist on Artist {
-    _id
-    id
-    name
-    nationality
-    birthday
-    counts {
-      follows
+    fragment Header_artist on Artist {
+      _id
+      id
+      name
+      nationality
+      birthday
+      counts {
+        follows
+      }
     }
-  }
-`
+  `
 )
 
 interface RelayProps {
