@@ -23,16 +23,20 @@ const meProps = {
           last_message: "Karl and Anna... Fab!",
           last_message_at: moment().subtract(30, "minutes").toISOString(),
           created_at: "2017-06-01T14:14:35.538Z",
-          artworks: [
+          items: [
             {
-              id: "bradley-theodore-karl-and-anna-face-off-diptych",
-              href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
               title: "Karl and Anna Face Off (Diptych)",
-              date: "2016",
-              artist_names: "Bradley Theodore",
-              image: {
-                url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
-                image_url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/:version.jpg",
+              item: {
+                __typename: "Artwork",
+                id: "bradley-theodore-karl-and-anna-face-off-diptych",
+                href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
+                title: "Karl and Anna Face Off (Diptych)",
+                date: "2016",
+                artist_names: "Bradley Theodore",
+                image: {
+                  url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
+                  image_url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/:version.jpg",
+                },
               },
             },
           ],
@@ -49,16 +53,20 @@ const meProps = {
                     Could you please provide more information about the piece?",
           last_message_at: moment().subtract(1, "hours").toISOString(),
           created_at: "2017-06-01T14:12:19.155Z",
-          artworks: [
+          items: [
             {
-              id: "aida-muluneh-darkness-give-way-to-light-1",
-              href: "/artwork/aida-muluneh-darkness-give-way-to-light-1",
               title: "Darkness Give Way to Light",
-              date: "2016",
-              artist_names: "Aida Muluneh",
-              image: {
-                url: "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg",
-                image_url: "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/:version.jpg",
+              item: {
+                __typename: "Artwork",
+                id: "aida-muluneh-darkness-give-way-to-light-1",
+                href: "/artwork/aida-muluneh-darkness-give-way-to-light-1",
+                title: "Darkness Give Way to Light",
+                date: "2016",
+                artist_names: "Aida Muluneh",
+                image: {
+                  url: "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg",
+                  image_url: "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/:version.jpg",
+                },
               },
             },
           ],

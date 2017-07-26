@@ -56,6 +56,7 @@ interface Props extends RelayProps {
   senderName: string
   initials?: string
   artworkPreview?: JSX.Element
+  showPreview?: JSX.Element
   relay?: Relay.RelayProp
 }
 
@@ -87,7 +88,7 @@ export class Message extends React.Component<Props, any> {
   }
 
   render() {
-    const { artworkPreview, initials, message, senderName } = this.props
+    const { artworkPreview, initials, message, senderName, showPreview } = this.props
     const isSent = this.props.relay ? !this.props.relay.hasOptimisticUpdate(message) : true
 
     return (
@@ -106,6 +107,11 @@ export class Message extends React.Component<Props, any> {
           {artworkPreview &&
             <ArtworkPreviewContainer>
               {artworkPreview}
+            </ArtworkPreviewContainer>}
+
+          {showPreview &&
+            <ArtworkPreviewContainer>
+              {showPreview}
             </ArtworkPreviewContainer>}
 
           {this.renderAttachmentPreviews(message.attachments)}

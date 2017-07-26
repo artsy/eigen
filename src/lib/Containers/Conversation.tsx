@@ -13,6 +13,7 @@ import fonts from "../../data/fonts"
 import Composer from "../Components/Inbox/Conversations/Composer"
 import Message from "../Components/Inbox/Conversations/Message"
 import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
+import ShowPreview from "../Components/Inbox/Conversations/Preview/ShowPreview"
 
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 
@@ -98,12 +99,11 @@ export class Conversation extends React.Component<Props, State> {
 
   renderMessage({ item }) {
     const me = this.props.me
-    const artwork = me.conversation.artworks[0]
+    const conversationItem = me.conversation.items[0].item
     const conversation = me.conversation
     const partnerName = conversation.to.name
     const senderName = item.is_from_user ? conversation.from.name : partnerName
     const initials = item.is_from_user ? conversation.from.initials : conversation.to.initials
-
     return (
       <Message
         message={item}
@@ -111,9 +111,18 @@ export class Conversation extends React.Component<Props, State> {
         initials={initials}
         artworkPreview={
           item.first_message &&
+          conversationItem.__typename === "Artwork" &&
           <ArtworkPreview
-            artwork={artwork}
-            onSelected={() => ARSwitchBoard.presentNavigationViewController(this, artwork.href)}
+            artwork={conversationItem}
+            onSelected={() => ARSwitchBoard.presentNavigationViewController(this, conversationItem.href)}
+          />
+        }
+        showPreview={
+          item.first_message &&
+          conversationItem.__typename === "Show" &&
+          <ShowPreview
+            show={conversationItem}
+            onSelected={() => ARSwitchBoard.presentNavigationViewController(this, conversationItem.href)}
           />
         }
       />
@@ -142,7 +151,6 @@ export class Conversation extends React.Component<Props, State> {
   render() {
     const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
-    const artwork = conversation.artworks[0]
     const messages = conversation.messages.edges.map((edge, index) => {
       return { first_message: index === 0, key: index, ...edge.node }
     })
@@ -306,9 +314,19 @@ export default Relay.createContainer(Conversation, {
               }
             }
           }
-          artworks {
-            href
-            ${ArtworkPreview.getFragment("artwork")}
+          items {
+            item {
+              ... on Artwork {
+                __typename
+                href
+                ${ArtworkPreview.getFragment("artwork")}
+              }
+              ... on Show {
+                __typename
+                href
+                ${ShowPreview.getFragment("show")}
+              }
+            }
           }
           ${SendConversationMessageMutation.getFragment("conversation")}
         }
@@ -330,9 +348,9 @@ interface RelayProps {
         name: string
         initials: string
       }
-      artworks: {
-        href: string
-      }
+      items: Array<{
+        item: any
+      }>
       messages: {
         pageInfo?: {
           hasNextPage: boolean

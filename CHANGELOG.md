@@ -16,6 +16,7 @@
 
 ###### Messaging
 
+-   Create `ShowPreview` and support show inquiries, plus refactor to use more generic conversation item schema - matt
 -   Fix for bug in `ArtworkPreview` related to the falsiness of an empty string - sarah
 -   Adds a banner on Conversations when network connectivity is lost - sarah
 

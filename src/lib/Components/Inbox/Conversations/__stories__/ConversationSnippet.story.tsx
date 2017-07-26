@@ -8,22 +8,21 @@ import { Conversation, ConversationSnippet } from "../ConversationSnippet"
 
 const conversation: Conversation = {
   id: "582",
-  from: {
-    name: "Jean-Luc Collecteur",
-    email: "luc+messaging@artsymail.com",
-  },
   to: { name: "ACA Galleries" },
   last_message: "Karl and Anna... Fab!",
   last_message_at: moment().subtract(30, "minutes").toISOString(),
-  artworks: [
+  items: [
     {
-      id: "bradley-theodore-karl-and-anna-face-off-diptych",
-      href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
-      title: "Karl and Anna Face Off (Diptych)",
-      date: "2016",
-      artist_names: "Bradley Theodore",
-      image: {
-        url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
+      item: {
+        __typename: "Artwork",
+        id: "bradley-theodore-karl-and-anna-face-off-diptych",
+        href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
+        title: "Karl and Anna Face Off (Diptych)",
+        date: "2016",
+        artist_names: "Bradley Theodore",
+        image: {
+          url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
+        },
       },
     },
   ],
