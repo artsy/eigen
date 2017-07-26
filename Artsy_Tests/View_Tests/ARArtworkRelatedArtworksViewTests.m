@@ -166,8 +166,21 @@ describe(@"concerning an artwork at an auction", ^{
         };
         otherSaleArtwork = [Artwork modelWithJSON:otherSaleArtworkJSON];
 
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/sale/los-angeles-modern-auctions-march-2015/sale_artworks"
-                               withResponse:@[@{ @"artwork": artworkJSON }, @{ @"artwork": otherSaleArtworkJSON }]];
+        [OHHTTPStubs stubJSONResponseAtPath:@""
+                               withResponse:@{
+            @"data": @{
+                @"sale": @{
+                    @"sale_artworks": @[
+                        @{
+                            @"artwork": artworkJSON
+                        },
+                        @{
+                            @"artwork": otherSaleArtworkJSON
+                        },
+                    ]
+                }
+            }
+        }];
 
         // The main artwork fixture is not actually on sale at this auction, but such is life :)
         Sale *auction = [Sale modelWithJSON: @{
