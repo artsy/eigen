@@ -29,7 +29,7 @@
 
 + (NSString *)graphQueryForFavoritesAfter:(NSString *)cursor
 {
-    return [self graphQLQueryForFavoriteArtworksAndPositionParam:[NSString stringWithFormat:@"first: 15, after: %@", cursor]];
+    return [self graphQLQueryForFavoriteArtworksAndPositionParam:[NSString stringWithFormat:@"first: 15, after: \"%@\"", cursor]];
 }
 
 + (NSString *)graphQueryForArtworksInSale:(NSString *)saleID
