@@ -44,9 +44,11 @@ export default class Welcome extends React.Component<Props, State> {
       })
     })
   }
+
   doneTapped = () => {
     this.props.navigator.pop()
   }
+
   onPressNewPhoto = () => {
     console.log("OK")
   }

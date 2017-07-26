@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
+  TouchableOpacity,
   View,
 } from "react-native"
 
@@ -43,7 +44,7 @@ interface TakePhotoImageProps {
 }
 
 const TakePhotoImage = (props: TakePhotoImageProps) =>
-  <TouchableHighlight
+  <TouchableOpacity
     onPress={props.onPressNewPhoto}
     style={{
       backgroundColor: "white",
@@ -58,7 +59,7 @@ const TakePhotoImage = (props: TakePhotoImageProps) =>
     }}
   >
     <Image source={require("../images/camera-black@2x.png")} />
-  </TouchableHighlight>
+  </TouchableOpacity>
 
 const ImageForURI = (props: ImagePreviewProps) =>
   <TouchableHighlight

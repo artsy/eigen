@@ -4,6 +4,10 @@
 
 -   Adds stylelint to the dev-experience, not validated on CI yet - orta
 
+###### Consignments
+
+-   Adds a camera roll screen for getting photos for consignments - orta
+
 ### 1.4.0-beta.3
 
 ###### Messaging

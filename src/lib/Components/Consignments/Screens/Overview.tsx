@@ -24,7 +24,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
 
   goToArtistTapped = () =>
     this.props.navigator.push({
-      component: Artist as any,
+      component: Artist,
       passProps: { ...this.state, updateWithResult: this.updateArtist },
     })
 

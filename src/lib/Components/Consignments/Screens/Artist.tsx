@@ -14,7 +14,7 @@ interface ArtistSearchResponse {
   match_artist: ArtistResult[]
 }
 
-interface Props extends ConsignmentSetup {
+interface Props extends ConsignmentSetup, ViewProperties {
   navigator: NavigatorIOS
   route: Route
   updateWithResult?: (result: ArtistResult) => void
