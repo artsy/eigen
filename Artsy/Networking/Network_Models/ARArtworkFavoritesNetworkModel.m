@@ -25,15 +25,15 @@
     }
 
     __weak typeof(self) wself = self;
-    self.currentRequest = [self requestOperationAfterCursor:self.nextPageCursor withSuccess:^(NSString *nextPageCursor, NSArray *artists) {
+    self.currentRequest = [self requestOperationAfterCursor:self.nextPageCursor withSuccess:^(NSString *nextPageCursor, BOOL hasNextPage, NSArray *artists) {
         __strong typeof (wself) sself = wself;
+
+        sself.nextPageCursor = nextPageCursor;
+        sself.allDownloaded = !hasNextPage;
 
         if (success) {
             success(artists);
         }
-
-        sself.nextPageCursor = nextPageCursor;
-        sself.allDownloaded = ([self.nextPageCursor length] == 0);
     } failure:^(NSError *error) {
         __strong typeof (wself) sself = wself;
 
@@ -46,7 +46,7 @@
 
 #pragma mark - Private functions
 
-- (AFHTTPRequestOperation *)requestOperationAfterCursor:(NSString *)cursor withSuccess:(void (^)(NSString *nextPageCursor, NSArray *artists))success failure:(void (^)(NSError *error))failure
+- (AFHTTPRequestOperation *)requestOperationAfterCursor:(NSString *)cursor withSuccess:(void (^)(NSString *nextPageCursor, BOOL hasNextPage, NSArray *artists))success failure:(void (^)(NSError *error))failure
 {
     return [ArtsyAPI getArtworkFromUserFavorites:cursor success:success failure:failure];
 }

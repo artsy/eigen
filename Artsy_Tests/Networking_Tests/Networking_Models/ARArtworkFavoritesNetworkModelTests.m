@@ -60,7 +60,8 @@ describe(@"getFavorites", ^{
                         @"saved_artworks": @{
                             @"artworks_connection": @{
                                 @"pageInfo": @{
-                                    @"endCursor": @"some-cursor"
+                                    @"endCursor": @"some-cursor",
+                                    @"hasNextPage": @(NO)
                                 },
                                 @"edges": @[
                                     @{ @"node": [Artwork stubbedArtworkJSON] },
@@ -78,9 +79,9 @@ describe(@"getFavorites", ^{
             expect(networkModel.nextPageCursor).will.equal(@"some-cursor");
         });
 
-        it(@"does not set allDownloaded", ^{
+        it(@"sets allDownloaded", ^{
             [networkModel getFavorites:nil failure:nil];
-            expect(networkModel.allDownloaded).will.beFalsy();
+            expect(networkModel.allDownloaded).will.beTruthy();
         });
     });
 

@@ -33,7 +33,7 @@
     return [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
 }
 
-+ (AFHTTPRequestOperation *)getArtworkFromUserFavorites:(NSString *)cursor success:(void (^)(NSString *nextPageCursor, NSArray *artworks))success failure:(void (^)(NSError *error))failure
++ (AFHTTPRequestOperation *)getArtworkFromUserFavorites:(NSString *)cursor success:(void (^)(NSString *nextPageCursor, BOOL hasNextPage, NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newArtworksFromUsersFavoritesRequestWithCursor:cursor];
     return [self performRequest:request success:^(id json) {
@@ -56,7 +56,7 @@
         }];
 
         if (success) {
-            success(pageInfo[@"endCursor"], artworks);
+            success(pageInfo[@"endCursor"], [pageInfo[@"hasNextPage"] boolValue], artworks);
         }
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         if (failure) {
