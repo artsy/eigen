@@ -17,7 +17,7 @@
 // Other subclasses of ARFavoritesNetworkModel use an integer page-based system for requests.
 // We use a string cursor instead, so we can't rely on the superclass' implementation and need
 // to provide one from scratch.
-- (void)getFavorites:(void (^)(NSArray *genes))success failure:(void (^)(NSError *error))failure
+- (void)getFavorites:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
     if (self.currentRequest) {
         // Not the best API, to just return silently, but we need to adhere to the contract in our superclass.
@@ -51,7 +51,7 @@
     return [ArtsyAPI getArtworkFromUserFavorites:cursor success:success failure:failure];
 }
 
-#pragma mark - Do no use
+#pragma mark - Do not use
 
 - (AFHTTPRequestOperation *)requestOperationAtPage:(NSInteger)page withSuccess:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure
 {
