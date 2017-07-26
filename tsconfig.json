@@ -11,12 +11,7 @@
     "strictNullChecks": false,
     "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "typings/index.d.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "dangerfile.ts"
-  ],
+  "include": ["typings/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "dangerfile.ts"],
   "exclude": [
     "dangerfile.ts",
     "node_modules",
