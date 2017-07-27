@@ -58,7 +58,7 @@ const TakePhotoImage = (props: TakePhotoImageProps) =>
       alignItems: "center",
     }}
   >
-    <Image source={require("../images/camera-black@2x.png")} />
+    <Image source={require("../images/camera-black.png")} />
   </TouchableOpacity>
 
 const ImageForURI = (props: ImagePreviewProps) =>

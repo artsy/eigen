@@ -9,7 +9,16 @@ import ConsignmentBG from "../Components/ConsignmentBG"
 import ImageSelection, { ImageData } from "../Components/ImageSelection"
 import { BodyText as P } from "../Typography"
 
-import { CameraRoll, GetPhotosReturnType, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
+import {
+  CameraRoll,
+  GetPhotosParamType,
+  GetPhotosReturnType,
+  NavigatorIOS,
+  Route,
+  ScrollView,
+  View,
+  ViewProperties,
+} from "react-native"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -18,7 +27,11 @@ interface Props extends ViewProperties {
 
 interface State {
   cameraImages: ImageData[]
+  lastCursor: string
+  loadingMore: boolean
+  noMorePhotos: boolean
 }
+
 const doneButtonStyles = {
   backgroundColor: "black",
   marginBottom: 20,
@@ -34,15 +47,73 @@ export default class Welcome extends React.Component<Props, State> {
     super()
     this.state = {
       cameraImages: [],
+      loadingMore: false,
+      lastCursor: "",
+      noMorePhotos: false,
     }
 
-    CameraRoll.getPhotos({ first: 5, assetType: "Photos" }).then(photos => {
-      this.setState(() => {
-        return {
-          cameraImages: photos.edges.map(e => e.node),
-        }
+    // if (CameraRoll) {
+    //   CameraRoll.getPhotos({ first: 5, assetType: "Photos" }).then(photos => {
+    //     this.setState(() => {
+    //       return {
+    //         cameraImages: photos.edges.map(e => e.node),
+    //       }
+    //     })
+    //   })
+    // }
+    this.tryPhotoLoad()
+  }
+
+  tryPhotoLoad() {
+    if (!this.state.loadingMore) {
+      this.setState({ loadingMore: true }, () => {
+        this.loadPhotos()
       })
-    })
+    }
+  }
+
+  loadPhotos() {
+    const fetchParams: GetPhotosParamType = {
+      first: 35,
+      groupTypes: "SavedPhotos",
+      assetType: "Photos",
+      after: null,
+    }
+
+    if (this.state.lastCursor) {
+      fetchParams.after = this.state.lastCursor
+    }
+
+    CameraRoll.getPhotos(fetchParams)
+      .then(data => {
+        this.appendAssets(data)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
+
+  appendAssets(data) {
+    const assets = data.edges
+    const nextState = {
+      loadingMore: false,
+      noMorePhotos: !data.page_info.has_next_page,
+    }
+
+    if (assets.length > 0) {
+      console.log(assets)
+      // nextState.lastCursor = data.page_info.end_cursor
+      // nextState.assets = this.state.assets.concat(assets)
+      // nextState.dataSource = this.state.dataSource.cloneWithRows(_.chunk(nextState.assets, 3))
+    }
+
+    this.setState(nextState)
+  }
+
+  endReached() {
+    if (!this.state.noMorePhotos) {
+      this.tryPhotoLoad()
+    }
   }
 
   doneTapped = () => {
