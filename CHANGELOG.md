@@ -7,6 +7,7 @@
 ###### Consignments
 
 -   Adds a camera roll screen for getting photos for consignments - orta
+
 ###### Messaging
 
 -   Small composer UI tweaks - maxim
