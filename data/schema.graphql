@@ -2827,7 +2827,10 @@ type Message implements Node {
   from: MessageInitiator
 
   # Full unsanitized text.
-  raw_text: String!
+  raw_text: String! @deprecated(reason: "Prefer to use the parsed/cleaned-up `body`.")
+
+  # Text which has been parsed/sanitized of quoted replies (among other things).
+  body: String
   attachments: [Attachment]
 
   # True if message is an invoice message

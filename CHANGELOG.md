@@ -16,6 +16,7 @@
 
 ###### Messaging
 
+-   Update `Message` to use `body` over `raw_text` to take advantage of some parsing. - matt
 -   Update `Message` to also show an informative signature when the message is not from the user. - matt
 -   Create `ShowPreview` and support show inquiries, plus refactor to use more generic conversation item schema - matt
 -   Fix for bug in `ArtworkPreview` related to the falsiness of an empty string - sarah

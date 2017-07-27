@@ -13,7 +13,7 @@ it("looks correct when rendered", () => {
   const props = {
     key: 0,
     created_at: moment().subtract(30, "minutes").toISOString(),
-    raw_text: messageBody,
+    body: messageBody,
     is_from_user: true,
     attachments: [],
     from: {

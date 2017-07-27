@@ -56,7 +56,7 @@ const props = {
         {
           node: {
             id: 222,
-            raw_text: "Adoro! Por favor envie-me mais informações",
+            body: "Adoro! Por favor envie-me mais informações",
             from_email_address: "anita@garibaldi.br",
             attachments: [],
             from: {
