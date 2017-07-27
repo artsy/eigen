@@ -16,6 +16,10 @@ it("looks correct when rendered", () => {
     raw_text: messageBody,
     is_from_user: true,
     attachments: [],
+    from: {
+      name: "Percy",
+      email: "percy@cat.com",
+    },
   }
   const tree = renderer.create(<Message senderName={senderName} message={props} />).toJSON()
   expect(tree).toMatchSnapshot()
