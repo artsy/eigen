@@ -125,7 +125,7 @@ export class Message extends React.Component<Props, any> {
           {this.renderAttachmentPreviews(message.attachments)}
 
           <BodyText disabled={!isSent}>
-            {message.raw_text.split("\n\nAbout")[0]}
+            {message.body.split("\n\nAbout")[0]}
           </BodyText>
 
           {!message.is_from_user &&
@@ -142,7 +142,7 @@ export default Relay.createContainer(Message, {
   fragments: {
     message: () => Relay.QL`
       fragment on Message {
-        raw_text
+        body
         created_at
         is_from_user
         from {
@@ -164,7 +164,7 @@ export default Relay.createContainer(Message, {
 
 interface RelayProps {
   message: {
-    raw_text: string | null
+    body: string | null
     created_at: string | null
     is_from_user: boolean
     from: {
