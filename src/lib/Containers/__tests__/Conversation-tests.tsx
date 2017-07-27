@@ -59,20 +59,28 @@ const props = {
             raw_text: "Adoro! Por favor envie-me mais informações",
             from_email_address: "anita@garibaldi.br",
             attachments: [],
+            from: {
+              name: "Percy",
+              email: "percy@cat.com",
+            },
           },
         },
       ],
     },
-    artworks: [
+    items: [
       {
-        id: "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
-        href: "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
         title: "The Mythic Being: Sol’s Drawing #1–5",
-        date: "1974",
-        artist_names: "Adrian Piper",
-        image: {
-          url: "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
-          image_url: "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+        item: {
+          __typename: "Artwork",
+          id: "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+          href: "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+          title: "The Mythic Being: Sol’s Drawing #1–5",
+          date: "1974",
+          artist_names: "Adrian Piper",
+          image: {
+            url: "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+            image_url: "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+          },
         },
       },
     ],

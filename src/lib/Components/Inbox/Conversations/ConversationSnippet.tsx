@@ -57,7 +57,7 @@ const Separator = styled.View`
   margin-bottom: 5px;
 `
 
-const ArtworkSubtitle = styled.Text`
+const Subtitle = styled.Text`
   font-family: ${fonts["garamond-regular"]};
   font-size: 16px;
   color: black;
@@ -65,7 +65,7 @@ const ArtworkSubtitle = styled.Text`
   margin-bottom: 2;
 `
 
-const ArtworkTitle = styled(ArtworkSubtitle)`
+const Title = styled(Subtitle)`
   font-family: ${fonts["garamond-italic"]};
 `
 
@@ -77,24 +77,13 @@ const ImageView = styled(OpaqueImageView)`
 
 export interface Conversation {
   id: string | null
-  from: {
-    email: string | null
-    name: string | null
-  }
   to: {
     name: string | null
   }
   last_message: string | null
   last_message_at: string | null
-  artworks: Array<{
-    id: string | null
-    href: string | null
-    title: string | null
-    date: string | null
-    artist_names: string | null
-    image: {
-      url: string | null
-    }
+  items: Array<{
+    item: any
   }>
 }
 
@@ -104,23 +93,67 @@ interface Props {
 }
 
 export class ConversationSnippet extends React.Component<Props, any> {
+  renderTitleForItem(item) {
+    if (item.__typename === "Artwork") {
+      const artworkTitle = `${item.title.trim()}, `
+      const artworkDate = `${item.date}`
+      const artworkArtist = `${item.artist_names} · `
+
+      return (
+        <HorizontalLayout>
+          <P>
+            <Subtitle>
+              {artworkArtist}
+            </Subtitle>
+            <Title>
+              {artworkTitle}
+            </Title>
+            <Subtitle>
+              {artworkDate}
+            </Subtitle>
+          </P>
+        </HorizontalLayout>
+      )
+    }
+
+    if (item.__typename === "Show") {
+      const name = item.fair ? item.fair.name : item.name
+      return (
+        <HorizontalLayout>
+          <P>
+            <Subtitle>
+              {name}
+            </Subtitle>
+          </P>
+        </HorizontalLayout>
+      )
+    }
+  }
+
   render() {
     const conversation = this.props.conversation
-    const artwork = conversation.artworks[0]
 
-    // TODO We need to make artworks available even if they are unpublished.
-    if (!artwork) {
-      console.warn(`Unable to load artwork for conversation with ID ${conversation.id}`)
+    // If we cannot resolve items in the conversation, such as deleted fair booths
+    // prior to snapshotting them at time of inquiry (generally older conversations),
+    // just skip over the entire conversation.
+    if (conversation.items.length === 0) {
+      console.warn(`Unable to load items for conversation with ID ${conversation.id}`)
       return null
     }
 
+    const item = conversation.items[0].item
+
+    let imageURL
+    if (item.__typename === "Artwork") {
+      imageURL = item.image.url
+    } else if (item.__typename === "Show") {
+      imageURL = item.cover_image.url
+    }
+
     const partnerName = conversation.to.name
-    const artworkTitle = `${artwork.title.trim()}, `
-    const artworkDate = `${artwork.date}`
-    const artworkArtist = `${artwork.artist_names} · `
+
     const conversationText = conversation.last_message.replace(/\n/g, " ")
     const date = moment(conversation.last_message_at).fromNow(true)
-    const imageURL = artwork.image.url
 
     return (
       <TouchableWithoutFeedback onPress={this.props.onSelected}>
@@ -139,19 +172,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
                   <UnreadIndicator />
                 </DateHeading>
               </HorizontalLayout>
-              <HorizontalLayout>
-                <P>
-                  <ArtworkSubtitle>
-                    {artworkArtist}
-                  </ArtworkSubtitle>
-                  <ArtworkTitle>
-                    {artworkTitle}
-                  </ArtworkTitle>
-                  <ArtworkSubtitle>
-                    {artworkDate}
-                  </ArtworkSubtitle>
-                </P>
-              </HorizontalLayout>
+              {this.renderTitleForItem(item)}
               <P>
                 {conversationText}
               </P>
@@ -169,23 +190,31 @@ export default Relay.createContainer(ConversationSnippet, {
     conversation: () => Relay.QL`
       fragment on Conversation {
         id
-        from {
-          name
-          email
-        }
         to {
           name
         }
         last_message
         last_message_at
-        artworks {
-          id
-          href
-          title
-          date
-          artist_names
-          image {
-            url
+        items {
+          item {
+            __typename
+            ... on Artwork {
+              date
+              title
+              artist_names
+              image {
+                url
+              }
+            }
+            ... on Show {
+              fair {
+                name
+              }
+              name
+              cover_image {
+                url
+              }
+            }
           }
         }
       }
@@ -196,24 +225,14 @@ export default Relay.createContainer(ConversationSnippet, {
 interface RelayProps {
   conversation: {
     id: string | null
-    from: {
-      name: string
-      email: string
-    }
     to: {
       name: string
     }
     last_message: string
     last_message_at: string | null
-    artworks: Array<{
-      id: string
-      href: string | null
-      title: string | null
-      date: string | null
-      artist_names: string | null
-      image: {
-        url: string | null
-      } | null
+    __typename: string
+    items: Array<{
+      item: any
     } | null> | null
   }
 }

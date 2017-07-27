@@ -101,13 +101,14 @@ class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, St
     const context = this.props.rail.context
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, context.artist.id, (error, following) => {
       if (error) {
-        console.error(error)
+        console.warn(error)
       } else {
         Events.postEvent(this, {
           name: following ? "Follow artist" : "Unfollow artist",
           artist_id: context.artist.id,
           artist_slug: context.artist.id,
-          source_screen: "artist page",
+          source_screen: "home page",
+          context_module: "random suggested artist",
         })
       }
       this.setState({ following })

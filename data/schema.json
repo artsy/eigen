@@ -16674,6 +16674,26 @@
                     "ofType": null
                   },
                   "defaultValue": null
+                },
+                {
+                  "name": "private",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "false"
+                },
+                {
+                  "name": "sort",
+                  "description": null,
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "CollectionSorts",
+                    "ofType": null
+                  },
+                  "defaultValue": null
                 }
               ],
               "type": {
@@ -16774,6 +16794,29 @@
             }
           ],
           "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "CollectionSorts",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "POSITION_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "POSITION_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
           "possibleTypes": null
         },
         {
@@ -22225,7 +22268,7 @@
             },
             {
               "name": "conversations",
-              "description": null,
+              "description": "Conversations, usually between a user and partner.",
               "args": [
                 {
                   "name": "after",
@@ -24393,7 +24436,7 @@
             },
             {
               "name": "artworks",
-              "description": null,
+              "description": "Only the artworks discussed in the conversation.",
               "args": [],
               "type": {
                 "kind": "LIST",
@@ -24401,6 +24444,22 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "Artwork",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "items",
+              "description": "The artworks and/or partner shows discussed in the conversation.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "ConversationItem",
                   "ofType": null
                 }
               },
@@ -24674,6 +24733,74 @@
         },
         {
           "kind": "OBJECT",
+          "name": "ConversationItem",
+          "description": null,
+          "fields": [
+            {
+              "name": "item",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "UNION",
+                "name": "ConversationItemType",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "title",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "permalink",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "UNION",
+          "name": "ConversationItemType",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": [
+            {
+              "kind": "OBJECT",
+              "name": "Artwork",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "Show",
+              "ofType": null
+            }
+          ]
+        },
+        {
+          "kind": "OBJECT",
           "name": "MessageConnection",
           "description": "A connection to a list of items.",
           "fields": [
@@ -24828,6 +24955,18 @@
                 "name": "String",
                 "ofType": null
               },
+              "isDeprecated": true,
+              "deprecationReason": "Prefer to use the structured `from` field."
+            },
+            {
+              "name": "from",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "MessageInitiator",
+                "ofType": null
+              },
               "isDeprecated": false,
               "deprecationReason": null
             },
@@ -24859,6 +24998,18 @@
                   "name": "Attachment",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "is_invoice",
+              "description": "True if message is an invoice message",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -24915,6 +25066,41 @@
               "ofType": null
             }
           ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "MessageInitiator",
+          "description": "The participant who sent the message.",
+          "fields": [
+            {
+              "name": "name",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "email",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
           "enumValues": null,
           "possibleTypes": null
         },
@@ -34934,7 +35120,7 @@
             },
             {
               "name": "updateConversation",
-              "description": null,
+              "description": "Updating buyer outcome of a conversation.",
               "args": [
                 {
                   "name": "input",

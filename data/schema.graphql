@@ -1481,12 +1481,17 @@ type Collection implements Node {
   # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
-  artworks_connection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworks_connection(after: String, first: Int, before: String, last: Int, private: Boolean = false, sort: CollectionSorts): ArtworkConnection
   description: String!
   default: Boolean!
   name: String!
   private: Boolean!
   slug: String!
+}
+
+enum CollectionSorts {
+  POSITION_ASC
+  POSITION_DESC
 }
 
 type CollectorProfileType {
@@ -1570,7 +1575,12 @@ type Conversation implements Node {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # Only the artworks discussed in the conversation.
   artworks: [Artwork]
+
+  # The artworks and/or partner shows discussed in the conversation.
+  items: [ConversationItem]
 
   # A connection for all messages in a single conversation
   messages(after: String, first: Int, before: String, last: Int): MessageConnection
@@ -1605,6 +1615,14 @@ type ConversationInitiator {
   email: String!
   initials(length: Int = 3): String
 }
+
+type ConversationItem {
+  item: ConversationItemType
+  title: String
+  permalink: String
+}
+
+union ConversationItemType = Artwork | Show
 
 # The participant responding to the conversation, currently always a Partner
 type ConversationResponder {
@@ -2714,6 +2732,8 @@ type Me implements Node {
     # The ID of the Conversation
     id: String!
   ): Conversation
+
+  # Conversations, usually between a user and partner.
   conversations(after: String, first: Int, before: String, last: Int): ConversationConnection
   created_at(
     convert_to_utc: Boolean
@@ -2803,11 +2823,15 @@ type Message implements Node {
 
   # True if message is from the user to the partner.
   is_from_user: Boolean
-  from_email_address: String
+  from_email_address: String @deprecated(reason: "Prefer to use the structured `from` field.")
+  from: MessageInitiator
 
   # Full unsanitized text.
   raw_text: String!
   attachments: [Attachment]
+
+  # True if message is an invoice message
+  is_invoice: Boolean
   created_at(
     convert_to_utc: Boolean
     format: String
@@ -2835,9 +2859,17 @@ type MessageEdge {
   cursor: String!
 }
 
+# The participant who sent the message.
+type MessageInitiator {
+  name: String
+  email: String
+}
+
 type Mutation {
   followArtist(input: FollowArtistInput!): FollowArtistPayload
   updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
+
+  # Updating buyer outcome of a conversation.
   updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
 
   # Appending a message to a conversation thread

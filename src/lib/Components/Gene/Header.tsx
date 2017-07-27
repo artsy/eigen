@@ -46,7 +46,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   handleFollowChange = () => {
     ARTemporaryAPIModule.setFollowGeneStatus(!this.state.following, this.props.gene._id, (error, following) => {
       if (error) {
-        console.error(error)
+        console.warn(error)
       } else {
         Events.postEvent(this, {
           name: following ? "Follow gene" : "Unfollow gene",

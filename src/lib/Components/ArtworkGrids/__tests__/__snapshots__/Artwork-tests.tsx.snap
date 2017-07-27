@@ -150,7 +150,7 @@ exports[`in a closed sale renders without any price information 1`] = `
       ]
     }
   >
-    Contact Gallery
+    Auction Closed
   </Text>
 </View>
 `;

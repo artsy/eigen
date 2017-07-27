@@ -266,7 +266,8 @@ exports[`displays a connectivity banner when network is down 1`] = `
                         },
                         Array [
                           Object {
-                            "marginRight": 10,
+                            "fontSize": 11.5,
+                            "marginRight": 3,
                           },
                           undefined,
                         ],
@@ -290,7 +291,12 @@ exports[`displays a connectivity banner when network is down 1`] = `
                           "fontSize": 11,
                           "textAlign": "left",
                         },
-                        Object {},
+                        Array [
+                          Object {
+                            "fontSize": 11.5,
+                          },
+                          undefined,
+                        ],
                         Object {
                           "fontFamily": "Avant Garde Gothic ITCW01Dm",
                         },
@@ -502,6 +508,28 @@ exports[`displays a connectivity banner when network is down 1`] = `
                   }
                 >
                   Adoro! Por favor envie-me mais informações
+                </Text>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "#cccccc",
+                        "fontFamily": "AGaramondPro-Regular",
+                      },
+                      Array [
+                        Object {
+                          "marginTop": 10,
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  Percy · percy@cat.com
                 </Text>
               </View>
             </View>
@@ -821,7 +849,8 @@ exports[`looks correct when rendered 1`] = `
                         },
                         Array [
                           Object {
-                            "marginRight": 10,
+                            "fontSize": 11.5,
+                            "marginRight": 3,
                           },
                           undefined,
                         ],
@@ -845,7 +874,12 @@ exports[`looks correct when rendered 1`] = `
                           "fontSize": 11,
                           "textAlign": "left",
                         },
-                        Object {},
+                        Array [
+                          Object {
+                            "fontSize": 11.5,
+                          },
+                          undefined,
+                        ],
                         Object {
                           "fontFamily": "Avant Garde Gothic ITCW01Dm",
                         },
@@ -1057,6 +1091,28 @@ exports[`looks correct when rendered 1`] = `
                   }
                 >
                   Adoro! Por favor envie-me mais informações
+                </Text>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "#cccccc",
+                        "fontFamily": "AGaramondPro-Regular",
+                      },
+                      Array [
+                        Object {
+                          "marginTop": 10,
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  Percy · percy@cat.com
                 </Text>
               </View>
             </View>
