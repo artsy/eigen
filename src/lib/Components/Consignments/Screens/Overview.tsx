@@ -28,17 +28,21 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
       component: Artist,
       passProps: { ...this.state, updateWithResult: this.updateArtist },
     })
+  goToProvenanceTapped = () =>
+    this.props.navigator.push({
+      component: Provenance,
+      passProps: { ...this.state, updateWithProvenance: this.updateProvenance },
+    })
 
   goToPhotosTapped = () => this.props.navigator.push({ component: SelectFromPhotoLibrary, passProps: this.props })
   goToMetadataTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
   goToLocationTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
-  goToProvenanceTapped = () => this.props.navigator.push({ component: Provenance, passProps: this.props })
 
   updateArtist = (result: ArtistResult) => {
     this.setState({ artist: result })
   }
 
-  updateProvenace = (result: string) => {
+  updateProvenance = (result: string) => {
     this.setState({ provenance: result })
   }
 

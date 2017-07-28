@@ -27,7 +27,6 @@ const render = (props: TextAreaProps) =>
         placeholderTextColor={colors["gray-medium"]} // TODO: Placeholder isn't multiline.
         selectionColor={colors["gray-medium"]}
         multiline={true}
-        numberOfLines={4} // TODO: How to scroll multiline text area?
         {...props.text}
       />
     </View>

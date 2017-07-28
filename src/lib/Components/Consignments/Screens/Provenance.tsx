@@ -26,7 +26,12 @@ export default class Provenance extends React.Component<Props, State> {
   }
 
   doneTapped = () => {
+    this.props.updateWithProvenance(this.state.provenance)
     this.props.navigator.pop()
+  }
+
+  textChanged = text => {
+    this.setState({ provenance: text })
   }
 
   render() {
@@ -45,6 +50,7 @@ export default class Provenance extends React.Component<Props, State> {
           >
             <TextArea
               text={{
+                onChangeText: this.textChanged,
                 placeholder:
                   "Add notes about how you aquired the work. If you’re not sure add any details about how long you’ve had the work.",
                 autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
