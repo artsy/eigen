@@ -1,6 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
-import { RootContainer } from "react-relay"
+import { RootContainer } from "react-relay/classic"
 
 import Routes from "../../relay/routes"
 import Inquiry from "../Inquiry"

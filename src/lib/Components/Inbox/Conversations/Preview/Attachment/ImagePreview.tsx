@@ -1,6 +1,6 @@
 import * as React from "react"
 import { TouchableHighlight } from "react-native"
-import * as Relay from "react-relay"
+import * as Relay from "react-relay/classic"
 import styled from "styled-components/native"
 
 import colors from "../../../../../../data/colors"
