@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay/compat"
 
 import { Animated, Easing, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
@@ -20,7 +20,7 @@ const Animation = {
 }
 
 interface Props extends ViewProperties, RelayProps {
-  relay: Relay.RelayProp
+  relay?: RelayRefetchProp
 }
 
 interface State {
@@ -39,8 +39,8 @@ class ArtistRail extends React.Component<Props, State> {
 
   componentDidMount() {
     if (this.props.relay) {
-      this.props.relay.setVariables({ fetchContent: true }, readyState => {
-        if (readyState.error) {
+      this.props.relay.refetch({ __id: this.props.rail.__id, fetchContent: true }, null, error => {
+        if (error) {
           this.setState({ loadFailed: true })
         }
       })
@@ -237,25 +237,32 @@ function suggestedArtistQuery(artistID: string): string {
   `
 }
 
-export default Relay.createContainer(ArtistRail, {
-  initialVariables: {
-    fetchContent: false,
-  },
-
-  fragments: {
-    rail: () => Relay.QL`
-      fragment on HomePageArtistModule {
+export default createRefetchContainer(
+  ArtistRail,
+  graphql.experimental`
+    fragment ArtistRail_rail on HomePageArtistModule  @argumentDefinitions(
+      fetchContent: { type: "Boolean", defaultValue: false }
+    ) {
+      __id
+      key
+      results @include(if: $fetchContent) {
+        _id
         __id
-        key
-        results @include(if: $fetchContent) {
-          _id
-          __id
-          ${ArtistCard.getFragment("artist")}
-        }
+        ...ArtistCard_artist
       }
-    `,
-  },
-})
+    }
+  `,
+  graphql.experimental`
+    query ArtistRailRefetchQuery(
+      $__id: ID!
+      $fetchContent: Boolean
+    ) {
+      node(__id: $__id) {
+        ...ArtistRail_rail @arguments(fetchContent: $fetchContent)
+      }
+    }
+  `
+)
 
 interface RelayProps {
   rail: {

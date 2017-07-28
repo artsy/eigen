@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer, graphql } from "react-relay/compat"
 
 import {
   Dimensions,
@@ -20,7 +20,6 @@ import colors from "../../../../data/colors"
 import Button from "../../Buttons/InvertedButton"
 import SerifText from "../../Text/Serif"
 import SectionTitle from "../SectionTitle"
-import fragments from "./RelayFragments"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -158,23 +157,25 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(ArtworkRailHeader, {
-  fragments: {
-    rail: () => Relay.QL`
-      fragment on HomePageArtworkModule {
-        title
-        key
-        context {
-          ${fragments.relatedArtistFragment}
-          ${fragments.geneFragment}
-          ${fragments.auctionFragment}
-          ${fragments.fairFragment}
-          ${fragments.followedArtistFragment}
+export default createFragmentContainer(
+  ArtworkRailHeader,
+  graphql`
+    fragment ArtworkRailHeader_rail on HomePageArtworkModule {
+      title
+      key
+      context {
+        ... on HomePageModuleContextRelatedArtist {
+          artist {
+            id
+          }
+          based_on {
+            name
+          }
         }
       }
-    `,
-  },
-})
+    }
+  `
+)
 
 interface RelayProps {
   rail: {

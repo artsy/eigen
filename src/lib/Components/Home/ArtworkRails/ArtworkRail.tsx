@@ -1,6 +1,6 @@
 import * as _ from "lodash"
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay/compat"
 
 import {
   Dimensions,
@@ -18,11 +18,10 @@ import {
 
 import colors from "../../../../data/colors"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
-import Grid from "../../ArtworkGrids/GenericGrid"
+import GenericGrid from "../../ArtworkGrids/GenericGrid"
 import Separator from "../../Separator"
 import Spinner from "../../Spinner"
-import Header from "./ArtworkRailHeader"
-import fragments from "./RelayFragments"
+import ArtworkRailHeader from "./ArtworkRailHeader"
 
 // tslint:disable-next-line:no-var-requires
 const chevron: ImageURISource = require("../../../../../images/chevron.png")
@@ -41,7 +40,9 @@ const additionalContentRails = [
 
 export const minRailHeight = 400
 
-interface Props extends ViewProperties, RelayProps {}
+interface Props extends ViewProperties, RelayProps {
+  relay?: RelayRefetchProp
+}
 
 interface State {
   expanded: boolean
@@ -64,11 +65,10 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
 
   componentDidMount() {
     if (this.props.relay) {
-      this.props.relay.setVariables({ fetchContent: true }, readyState => {
-        const error = !!readyState.error
+      this.props.relay.refetch({ __id: this.props.rail.__id, fetchContent: true }, null, error => {
         this.setState({
-          didPerformFetch: readyState.done || readyState.ready || error,
-          loadFailed: error,
+          didPerformFetch: true,
+          loadFailed: !!error,
         })
       })
     }
@@ -171,7 +171,7 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
     return (
       <View style={[styles.gridContainer, { height: this.gridContainerHeight() }]}>
         <View onLayout={this.onGridLayout.bind(this)}>
-          <Grid artworks={this.props.rail.results} />
+          <GenericGrid artworks={this.props.rail.results} />
         </View>
       </View>
     )
@@ -243,7 +243,7 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
 
     return (
       <View accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
-        <Header rail={this.props.rail} handleViewAll={this.handleViewAll} />
+        <ArtworkRailHeader rail={this.props.rail} handleViewAll={this.handleViewAll} />
         <View style={this.railStyle()}>
           {this.renderModuleResults()}
         </View>
@@ -295,38 +295,60 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(ArtworkRail, {
-  initialVariables: {
-    fetchContent: false,
-  },
-
-  fragments: {
-    rail: () => Relay.QL`
-      fragment on HomePageArtworkModule {
-        ${Header.getFragment("rail")}
-        key
-        params {
-          medium
-          price_range
+export default createRefetchContainer(
+  ArtworkRail,
+  graphql.experimental`
+    fragment ArtworkRail_rail on HomePageArtworkModule @argumentDefinitions(
+      fetchContent: { type: "Boolean", defaultValue: false }
+    ) {
+      ...ArtworkRailHeader_rail
+      __id
+      key
+      params {
+        medium
+        price_range
+      }
+      context {
+        ... on HomePageModuleContextFollowedArtist {
+          artist {
+            href
+          }
         }
-        context {
-          ${fragments.relatedArtistFragment}
-          ${fragments.geneFragment}
-          ${fragments.auctionFragment}
-          ${fragments.fairFragment}
-          ${fragments.followedArtistFragment}
+        ... on HomePageModuleContextRelatedArtist {
+          artist {
+            href
+          }
         }
-        results @include(if: $fetchContent) {
-          ${Grid.getFragment("artworks")}
+        ... on HomePageModuleContextFair {
+          href
+        }
+        ... on HomePageModuleContextGene {
+          href
+        }
+        ... on HomePageModuleContextSale {
+          href
         }
       }
-    `,
-  },
-})
+      results @include(if: $fetchContent) {
+        ...GenericGrid_artworks
+      }
+    }
+  `,
+  graphql.experimental`
+    query ArtworkRailRefetchQuery(
+      $__id: ID!
+      $fetchContent: Boolean
+    ) {
+      node(__id: $__id) {
+        ...ArtworkRail_rail @arguments(fetchContent: $fetchContent)
+      }
+    }
+  `
+)
 
 interface RelayProps {
-  relay?: any
   rail: {
+    __id: string
     key: string | null
     params: {
       medium: string | null
