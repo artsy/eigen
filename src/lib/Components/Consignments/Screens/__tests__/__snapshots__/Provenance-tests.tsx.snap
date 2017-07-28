@@ -61,19 +61,39 @@ exports[`Sets up the right view hierarchy 1`] = `
               }
             }
           >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              disabled={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": "#cccccc",
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 20,
+                    "marginTop": 5,
+                    "position": "absolute",
+                    "width": "100%",
+                    "zIndex": -1,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Add notes about how you aquired the work. If you’re not sure add any details about how long you’ve had the work.
+            </Text>
             <TextInput
               autoCapitalize="sentences"
               autoFocus={false}
               keyboardAppearance="dark"
               multiline={true}
               onChangeText={[Function]}
-              placeholder="Add notes about how you aquired the work. If you’re not sure add any details about how long you’ve had the work."
-              placeholderTextColor="#cccccc"
               selectionColor="#cccccc"
               style={
                 Array [
                   Object {
-                    "backgroundColor": "black",
+                    "backgroundColor": "transparent",
                     "color": "white",
                     "flexBasis": 0,
                     "flexGrow": 1,
@@ -223,13 +243,11 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
               keyboardAppearance="dark"
               multiline={true}
               onChangeText={[Function]}
-              placeholder="Add notes about how you aquired the work. If you’re not sure add any details about how long you’ve had the work."
-              placeholderTextColor="#cccccc"
               selectionColor="#cccccc"
               style={
                 Array [
                   Object {
-                    "backgroundColor": "black",
+                    "backgroundColor": "transparent",
                     "color": "white",
                     "flexBasis": 0,
                     "flexGrow": 1,
