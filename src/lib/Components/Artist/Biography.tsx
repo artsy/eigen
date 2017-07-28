@@ -63,11 +63,11 @@ const styles = StyleSheet.create({
 export default createFragmentContainer(
   Biography,
   graphql`
-  fragment Biography_artist on Artist {
-    bio
-    blurb
-  }
-`
+    fragment Biography_artist on Artist {
+      bio
+      blurb
+    }
+  `
 )
 
 interface RelayProps {
