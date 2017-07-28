@@ -1,7 +1,7 @@
 import * as _ from "lodash"
 import * as React from "react"
 import ParallaxScrollView from "react-native-parallax-scroll-view"
-import { createFragmentContainer, graphql } from "react-relay/compat"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay/compat"
 
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
@@ -33,7 +33,7 @@ interface Props extends ViewProperties {
   medium: string
   price_range: string
   gene: any
-  relay?: Relay.RelayProp
+  relay?: RelayRefetchProp
 }
 
 interface State {
@@ -191,11 +191,15 @@ export class Gene extends React.Component<Props, State> {
             selectedPriceRange: newSettings.selectedPrice,
             sort: newSettings.sort,
           })
-          this.props.relay.setVariables({
-            medium: newSettings.medium,
-            price_range: newSettings.selectedPrice,
-            sort: newSettings.sort,
-          })
+          this.props.relay.refetch(
+            {
+              medium: newSettings.medium,
+              price_range: newSettings.selectedPrice,
+              sort: newSettings.sort,
+            },
+            // TODO is this param really required?
+            null
+          )
         }
       })
       .catch(error => {
@@ -337,7 +341,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(
+export default createRefetchContainer(
   Gene,
   graphql.experimental`
     fragment Gene_gene on Gene @argumentDefinitions(
@@ -365,6 +369,18 @@ export default createFragmentContainer(
             count
           }
         }
+      }
+    }
+  `,
+  graphql.experimental`
+    query GeneRefetchQuery(
+      $geneID: String!
+      $sort: String
+      $medium: String
+      $price_range: String
+    ) {
+      gene(id: $geneID) {
+        ...Gene_gene @arguments(sort: $sort, medium: $medium, price_range: $price_range)
       }
     }
   `
