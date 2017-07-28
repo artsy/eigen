@@ -34,7 +34,14 @@ export default class Provenance extends React.Component<Props, State> {
       <ConsignmentBG>
         <DoneButton onPress={this.doneTapped}>
           <View
-            style={{ alignContent: "center", justifyContent: "flex-end", flexGrow: 1, marginLeft: 20, marginRight: 20 }}
+            style={{
+              alignContent: "center",
+              justifyContent: "flex-end",
+              flexGrow: 1,
+              marginLeft: 20,
+              marginRight: 20,
+              marginTop: 20,
+            }}
           >
             <TextArea
               text={{
