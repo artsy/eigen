@@ -10,7 +10,7 @@ export interface DoneButtonProps {
 const render = (props: DoneButtonProps) => {
   const doneButtonStyles = {
     backgroundColor: "black",
-    marginBottom: 20,
+    marginBottom: 0,
     paddingTop: 18,
     height: 56,
   }
