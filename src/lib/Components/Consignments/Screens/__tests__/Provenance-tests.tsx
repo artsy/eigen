@@ -1,3 +1,6 @@
+import * as React from "react"
+import "react-native"
+import * as renderer from "react-test-renderer"
 import Provenance from "../Provenance"
 
 const emptyProps = { navigator: {} as any, route: {} as any }
@@ -37,5 +40,25 @@ describe("state", () => {
     provenance.textChanged("Acquired by my father somewhere")
 
     expect(provenance.setState).toHaveBeenCalledWith({ provenance: "Acquired by my father somewhere" })
+  })
+})
+
+it("Sets up the right view hierarchy", () => {
+  const nav = {} as any
+  const route = {} as any
+
+  const tree = renderer.create(<Provenance navigator={nav} route={route} />).toJSON()
+  expect(tree).toMatchSnapshot()
+})
+
+describe("with an existing state", () => {
+  it("Sets up the right view hierarchy", () => {
+    const nav = {} as any
+    const route = {} as any
+
+    const tree = renderer
+      .create(<Provenance navigator={nav} route={route} provenance="Acquired by my father somewhere" />)
+      .toJSON()
+    expect(tree).toMatchSnapshot()
   })
 })

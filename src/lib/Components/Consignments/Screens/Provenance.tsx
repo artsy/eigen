@@ -51,6 +51,7 @@ export default class Provenance extends React.Component<Props, State> {
             <TextArea
               text={{
                 onChangeText: this.textChanged,
+                value: this.props.provenance,
                 placeholder:
                   "Add notes about how you aquired the work. If you’re not sure add any details about how long you’ve had the work.",
                 autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
