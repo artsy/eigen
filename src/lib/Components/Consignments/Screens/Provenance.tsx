@@ -3,11 +3,11 @@ import * as React from "react"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
 
-import { NavigatorIOS, Route, View } from "react-native"
+import { NavigatorIOS, Route, View, ViewProperties } from "react-native"
 import TextArea, { TextAreaProps } from "../Components/TextArea"
 import { ConsignmentSetup } from "../index"
 
-interface Props extends ConsignmentSetup {
+interface Props extends ConsignmentSetup, ViewProperties {
   navigator: NavigatorIOS
   route: Route
   updateWithProvenance?: (provenance: string) => void
