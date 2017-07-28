@@ -4,6 +4,7 @@ import BottomAlignedButton from "./BottomAlignedButton"
 
 export interface DoneButtonProps {
   onPress: () => void
+  children?: any[]
 }
 
 const render = (props: DoneButtonProps) => {
@@ -13,7 +14,11 @@ const render = (props: DoneButtonProps) => {
     paddingTop: 18,
     height: 56,
   }
-  return <BottomAlignedButton onPress={props.onPress} bodyStyle={doneButtonStyles} buttonText="DONE" />
+  return (
+    <BottomAlignedButton onPress={props.onPress} bodyStyle={doneButtonStyles} buttonText="DONE">
+      {props.children}
+    </BottomAlignedButton>
+  )
 }
 
 export default class DoneButton extends React.Component<DoneButtonProps, null> {
