@@ -1,8 +1,8 @@
 import * as React from "react"
 import { StyleSheet, View, ViewProperties } from "react-native"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer, graphql } from "react-relay/compat"
 
-import ArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistArtworksGrid"
+import ArtistArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistArtworksGrid"
 import Separator from "../../Separator"
 import SerifText from "../../Text/Serif"
 
@@ -79,7 +79,7 @@ class Artworks extends React.Component<Props, State> {
         <SerifText style={styles.heading}>
           <SerifText style={styles.text}>{title}</SerifText> <SerifText style={countStyles}>({count})</SerifText>
         </SerifText>
-        <ArtworksGrid artist={this.props.artist} filter={filter} onComplete={onComplete} queryKey="artist" />
+        <ArtistArtworksGrid artist={this.props.artist} filter={filter} onComplete={onComplete} queryKey="artist" />
       </View>
     )
   }
@@ -120,19 +120,20 @@ const styles = StyleSheet.create({
 // })
 
 // FIXME: After migrating to modern mode, we need to re-add the second query for not for sale works
-export default Relay.createContainer(Artworks, {
-  fragments: {
-    artist: () => Relay.QL`
-      fragment on Artist {
-        counts {
-          artworks
-          for_sale_artworks
-        }
-        ${ArtworksGrid.getFragment("artist", { filter: ["IS_FOR_SALE"] })}
+export default createFragmentContainer(
+  Artworks,
+  graphql.experimental`
+    fragment Artworks_artist on Artist @argumentDefinitions(
+      forSaleArtworksFilter: { type: "[ArtistArtworksFilters]", defaultValue: [IS_FOR_SALE] }
+    ) {
+      counts {
+        artworks
+        for_sale_artworks
       }
-    `,
-  },
-})
+      ...ArtistArtworksGrid_artist @arguments(filter: $forSaleArtworksFilter)
+    }
+  `
+)
 
 interface RelayProps {
   artist: {
