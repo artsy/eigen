@@ -1,7 +1,7 @@
 import * as React from "react"
 
-import DoneButton from "../Components/BottomAlignedButton"
 import ConsignmentBG from "../Components/ConsignmentBG"
+import DoneButton from "../Components/DoneButton"
 
 import { NavigatorIOS, Route, View } from "react-native"
 import TextArea, { TextAreaProps } from "../Components/TextArea"
@@ -30,18 +30,9 @@ export default class Provenance extends React.Component<Props, State> {
   }
 
   render() {
-    // TODO: Move this and occurence in Artist.tsx to its own file.
-    // This might become a higher order component for reuse, if used more elsewhere
-    const doneButtonStyles = {
-      backgroundColor: "black",
-      marginBottom: 20,
-      paddingTop: 18,
-      height: 56,
-    }
-
     return (
       <ConsignmentBG>
-        <DoneButton onPress={this.doneTapped} bodyStyle={doneButtonStyles} buttonText="DONE">
+        <DoneButton onPress={this.doneTapped}>
           <View
             style={{ alignContent: "center", justifyContent: "flex-end", flexGrow: 1, marginLeft: 20, marginRight: 20 }}
           >
