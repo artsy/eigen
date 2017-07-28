@@ -97,6 +97,17 @@ export default class ImageSelection extends React.Component<Props, State> {
     }
   }
 
+  // Whenever props changes we need to be able to set a new version of the datasource
+  // see: https://github.com/facebook/react-native/issues/4104
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data !== this.props.data) {
+      const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+      this.setState({
+        dataSource: ds.cloneWithRows([null, ...nextProps.data]),
+      })
+    }
+  }
+
   onPressItem = (id: string) => {
     this.setState(state => {
       const selected = new Map(state.selected)

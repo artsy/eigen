@@ -36,6 +36,9 @@ exports[`Sets up the right view hierarchy 1`] = `
       }
     >
       <RCTScrollView
+        onScroll={[Function]}
+        scrollEventThrottle={50}
+        scrollsToTop={true}
         style={
           Object {
             "flex": 1,
