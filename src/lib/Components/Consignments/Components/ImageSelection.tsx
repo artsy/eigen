@@ -1,5 +1,17 @@
 import * as React from "react"
-import { ButtonProperties, FlatList, Image, Text, TouchableHighlight, View } from "react-native"
+import {
+  ButtonProperties,
+  FlatList,
+  Image,
+  ListView,
+  ListViewDataSource,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from "react-native"
 
 import { chunk } from "lodash"
 
@@ -15,14 +27,14 @@ const Photo = styled.TouchableHighlight`
   flex: 1;
 `
 
-interface ImageData {
+export interface ImageData {
   image: {
     uri: string
   }
 }
 
 interface ImagePreviewProps {
-  image: ImageData
+  data: ImageData
   selected: boolean
   onPressItem: (uri: string) => void
 }
@@ -32,48 +44,37 @@ interface TakePhotoImageProps {
 }
 
 const TakePhotoImage = (props: TakePhotoImageProps) =>
-  <TouchableHighlight
+  <TouchableOpacity
     onPress={props.onPressNewPhoto}
     style={{
       backgroundColor: "white",
+      borderWidth: 2,
+      borderColor: null,
+
       height: 158,
       width: 158,
+      margin: 4,
+      justifyContent: "center",
+      alignItems: "center",
     }}
   >
-    <Image source={{ uri: "" }} style={{ height: 158, width: 158 }} />
-  </TouchableHighlight>
+    <Image source={require("../images/camera-black.png")} />
+  </TouchableOpacity>
 
 const ImageForURI = (props: ImagePreviewProps) =>
   <TouchableHighlight
-    onPress={() => props.onPressItem(props.image.image.uri)}
+    onPress={() => props.onPressItem(props.data.image.uri)}
     style={{
       backgroundColor: colors["gray-regular"],
       height: 158,
       width: 158,
+      margin: 4,
       borderColor: props.selected ? "white" : null,
       borderWidth: 2,
     }}
   >
-    <Image source={{ uri: props.image.image.uri }} style={{ height: 158, width: 158 }} />
+    <Image source={{ uri: props.data.image.uri }} style={{ height: 154, width: 154 }} />
   </TouchableHighlight>
-
-interface ImageViewCoupletProps {
-  first: ImageData
-  second: ImageData
-  firstSelected: boolean
-  secondSelected: boolean
-  onPressItem: (uri: string) => void
-  onPressNewPhoto: () => void
-}
-
-const ImageViewCouplet = (props: ImageViewCoupletProps) =>
-  <View style={{ flexDirection: "row" }}>
-    {props.first
-      ? <ImageForURI image={props.first} onPressItem={props.onPressItem} selected={props.firstSelected} />
-      : <TakePhotoImage onPressNewPhoto={props.onPressNewPhoto} />}
-    {props.second &&
-      <ImageForURI image={props.second} onPressItem={props.onPressItem} selected={props.secondSelected} />}
-  </View>
 
 interface Props {
   data: ImageData[]
@@ -82,46 +83,58 @@ interface Props {
 
 interface State {
   selected: Map<string, boolean>
-  data: ImageData[][] // because it gets chopped into pairs
+  dataSource: ListViewDataSource
 }
 
 export default class ImageSelection extends React.Component<Props, State> {
   constructor(props) {
     super(props)
+
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
     this.state = {
       selected: new Map(),
-      data: chunk([null, ...props.data], 2),
+      dataSource: ds.cloneWithRows([null, ...props.data]),
     }
   }
-
-  keyExtractor = (item, index) => (item[0] ? item[0].image.uri : item[1] ? item[1].image.uri : "")
 
   onPressItem = (id: string) => {
     this.setState(state => {
       const selected = new Map(state.selected)
       selected.set(id, !selected.get(id))
-      return { selected }
+
+      // This is probably inefficient, but it works.
+      const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+      const dataSource = ds.cloneWithRows([null, ...this.props.data])
+
+      return { selected, dataSource }
     })
   }
 
-  renderItem = ({ item }) =>
-    <ImageViewCouplet
-      first={item[0]}
-      firstSelected={item[0] && !!this.state.selected.get(item[0].image.uri)}
-      second={item[1]}
-      secondSelected={item[1] && !!this.state.selected.get(item[1].image.uri)}
-      onPressItem={this.onPressItem}
-      onPressNewPhoto={this.props.onPressNewPhoto}
-    />
+  renderRow = (d: ImageData | null) =>
+    d
+      ? <ImageForURI
+          key={d.image.uri}
+          selected={!!this.state.selected.get(d.image.uri)}
+          data={d}
+          onPressItem={this.onPressItem}
+        />
+      : <TakePhotoImage onPressNewPhoto={this.props.onPressNewPhoto} />
 
   render() {
     return (
-      <FlatList
-        data={this.state.data}
-        extraData={this.state}
-        keyExtractor={this.keyExtractor}
-        renderItem={this.renderItem}
-      />
+      <ListView contentContainerStyle={styles.list} dataSource={this.state.dataSource} renderRow={this.renderRow} />
     )
   }
 }
+
+const styles = StyleSheet.create({
+  list: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+  },
+  row: {
+    height: 158,
+    width: 158,
+  },
+})

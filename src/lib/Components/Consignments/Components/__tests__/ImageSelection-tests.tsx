@@ -1,6 +1,3 @@
-import "jest-snapshots-svg"
-import "react-native"
-
 import * as React from "react"
 import * as renderer from "react-test-renderer"
 
@@ -12,5 +9,5 @@ it("renders correctly at iPhone size", () => {
   const root = <ImageSelection data={[{ image: { uri } }, { image: { uri } }, { image: { uri } }]} />
 
   const bg = renderer.create(root).toJSON()
-  expect(bg).toMatchSVGSnapshot(375, 667)
+  expect(bg).toMatchSnapshot()
 })
