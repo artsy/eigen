@@ -7,6 +7,7 @@ import { LargeHeadline, Subtitle } from "../Typography"
 import { ArtistResult, ConsignmentSetup } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import Artist from "./Artist"
+import Provenance from "./Provenance"
 import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
 import Welcome from "./Welcome"
 
@@ -27,14 +28,22 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
       component: Artist,
       passProps: { ...this.state, updateWithResult: this.updateArtist },
     })
+  goToProvenanceTapped = () =>
+    this.props.navigator.push({
+      component: Provenance,
+      passProps: { ...this.state, updateWithProvenance: this.updateProvenance },
+    })
 
   goToPhotosTapped = () => this.props.navigator.push({ component: SelectFromPhotoLibrary, passProps: this.props })
   goToMetadataTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
   goToLocationTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
-  goToProvenanceTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
 
   updateArtist = (result: ArtistResult) => {
     this.setState({ artist: result })
+  }
+
+  updateProvenance = (result: string) => {
+    this.setState({ provenance: result })
   }
 
   render() {

@@ -7,12 +7,14 @@
 ###### Consignments
 
 -   Adds a camera roll screen for getting photos for consignments - orta
+-   Adds a provenance screen - ash
 
 ###### Messaging
 
 -   Small composer UI tweaks - maxim
 
 ### 1.4.0-beta.3
+
 -   Changes post-sale supplementary artwork info - ash
 -   Attempt to fix a crash by not assuming a work in auction has a `sale_artwork` - alloy
 -   Expect `null` to indicate that no settings were refined - alloy
@@ -40,7 +42,7 @@
 
 ###### Messaging
 
-- Remove statusbar in inquiry modal view - maxim
+-   Remove statusbar in inquiry modal view - maxim
 
 ### 1.4.0-beta.2
 

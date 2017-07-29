@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`doesn't show placeholder when initial text is present 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <TextInput
+      autoCapitalize="sentences"
+      keyboardAppearance="dark"
+      multiline={true}
+      onChangeText={[Function]}
+      selectionColor="#cccccc"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "color": "white",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 20,
+            "height": "100%",
+          },
+          undefined,
+        ]
+      }
+      value="any text at all"
+    />
+  </View>
+</View>
+`;
+
+exports[`shows the placeholder when text is empty 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "color": "#cccccc",
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 20,
+            "marginTop": 5,
+            "position": "absolute",
+            "width": "100%",
+            "zIndex": -1,
+          },
+          undefined,
+        ]
+      }
+    >
+      some placeholder text
+    </Text>
+    <TextInput
+      autoCapitalize="sentences"
+      keyboardAppearance="dark"
+      multiline={true}
+      onChangeText={[Function]}
+      selectionColor="#cccccc"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "color": "white",
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 20,
+            "height": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+</View>
+`;
