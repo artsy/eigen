@@ -11,7 +11,7 @@ import Welcome from "../Screens/Welcome"
 const nav = {} as any
 const route = {} as any
 
-storiesOf("Consignments")
+storiesOf("Consignments/_Screens")
   .add("Full Nav", () => {
     return <Nav />
   })

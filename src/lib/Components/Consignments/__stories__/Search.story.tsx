@@ -5,7 +5,7 @@ import { camelCase } from "lodash"
 
 import Search, { ArtistQueryData } from "../Components/ArtistSearchResults"
 
-export const name = "Consignments - Search"
+export const name = "Consignments/Search"
 export const component = Search
 
 const noQuery: ArtistQueryData = {

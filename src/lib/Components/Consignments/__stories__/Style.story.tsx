@@ -8,7 +8,7 @@ import * as T from "../Typography"
 
 import { Wrapper } from "./"
 
-storiesOf("Consignments - Styling")
+storiesOf("Consignments/Styling")
   .add("Type Reference", () =>
     <Wrapper>
       <T.LargeHeadline>Large Headline</T.LargeHeadline>
