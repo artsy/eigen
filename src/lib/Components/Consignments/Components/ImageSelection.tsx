@@ -1,6 +1,7 @@
 import * as React from "react"
 import {
   ButtonProperties,
+  Dimensions,
   FlatList,
   Image,
   ListView,
@@ -26,6 +27,7 @@ const Photo = styled.TouchableHighlight`
   font-family: "${fonts["avant-garde-regular"]}";
   flex: 1;
 `
+const isPad = Dimensions.get("window").width > 700
 
 export interface ImageData {
   image: {
@@ -86,14 +88,16 @@ interface State {
   dataSource: ListViewDataSource
 }
 
+const TakePhotoID = "take_photo"
+const BlankImageID = "blank"
+
 export default class ImageSelection extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
     this.state = {
       selected: new Map(),
-      dataSource: ds.cloneWithRows([null, ...props.data]),
+      dataSource: this.dataSourceFromData(props.data, isPad),
     }
   }
 
@@ -101,11 +105,17 @@ export default class ImageSelection extends React.Component<Props, State> {
   // see: https://github.com/facebook/react-native/issues/4104
   componentWillReceiveProps(nextProps) {
     if (nextProps.data !== this.props.data) {
-      const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
       this.setState({
-        dataSource: ds.cloneWithRows([null, ...nextProps.data]),
+        dataSource: this.dataSourceFromData(nextProps.data, isPad),
       })
     }
+  }
+
+  // Standardized way to create a datasource
+  dataSourceFromData = (data, isLargeWidth) => {
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+    const rows = isLargeWidth ? [TakePhotoID, ...data] : [TakePhotoID, ...data, BlankImageID]
+    return ds.cloneWithRows(rows)
   }
 
   onPressItem = (id: string) => {
@@ -115,21 +125,27 @@ export default class ImageSelection extends React.Component<Props, State> {
 
       // This is probably inefficient, but it works.
       const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
-      const dataSource = ds.cloneWithRows([null, ...this.props.data])
-
+      const dataSource = this.dataSourceFromData(this.props.data, isPad)
       return { selected, dataSource }
     })
   }
 
-  renderRow = (d: ImageData | null) =>
-    d
-      ? <ImageForURI
+  renderRow = (d: ImageData & string) => {
+    if (d === TakePhotoID) {
+      return <TakePhotoImage onPressNewPhoto={this.props.onPressNewPhoto} />
+    } else if (d === BlankImageID) {
+      return <View style={{ width: 158, height: 158 }} />
+    } else {
+      return (
+        <ImageForURI
           key={d.image.uri}
           selected={!!this.state.selected.get(d.image.uri)}
           data={d}
           onPressItem={this.onPressItem}
         />
-      : <TakePhotoImage onPressNewPhoto={this.props.onPressNewPhoto} />
+      )
+    }
+  }
 
   render() {
     return (
@@ -142,7 +158,7 @@ const styles = StyleSheet.create({
   list: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "flex-start",
+    justifyContent: "center",
   },
   row: {
     height: 158,

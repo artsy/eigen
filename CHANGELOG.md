@@ -7,6 +7,7 @@
 ###### Consignments
 
 -   Adds a camera roll screen for getting photos for consignments - orta
+-   Infinite loop through all photos, and look good on both iPhone + iPad - orta
 
 ###### Messaging
 

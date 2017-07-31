@@ -67,7 +67,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
 
   loadPhotos() {
     const fetchParams: GetPhotosParamType = {
-      first: 4,
+      first: 20,
       groupTypes: "SavedPhotos",
       assetType: "Photos",
     }
@@ -149,7 +149,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
             onScroll={this.onScroll.bind(this)}
             scrollEventThrottle={50}
           >
-            <View style={{ paddingTop: 40, alignItems: "center" }}>
+            <View style={{ paddingTop: 40 }}>
               <P>We suggest adding a few photos of the work including the front and back as well as the signature.</P>
               <ImageSelection data={this.state.cameraImages} onPressNewPhoto={this.onPressNewPhoto} />
             </View>

@@ -6,7 +6,7 @@ exports[`renders correctly at iPhone size 1`] = `
     Object {
       "flexDirection": "row",
       "flexWrap": "wrap",
-      "justifyContent": "flex-start",
+      "justifyContent": "center",
     }
   }
   dataSource={
