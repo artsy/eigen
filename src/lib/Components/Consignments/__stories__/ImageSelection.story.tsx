@@ -10,7 +10,7 @@ const uri1 = "https://d32dm0rphc51dk.cloudfront.net/Vq62IJMLbG1TuUjs-2fZCg/large
 const uri2 = "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg"
 const uri3 = "https://d32dm0rphc51dk.cloudfront.net/8BuMWBuUOBtKVBsGRUoDKw/large.jpg"
 
-storiesOf("Consignments - Image Selection")
+storiesOf("Consignments/Image Selection")
   .add("With some images", () =>
     <Wrapper>
       <ImageSelection data={[{ image: { uri: uri1 } }, { image: { uri: uri2 } }, { image: { uri: uri3 } }]} />

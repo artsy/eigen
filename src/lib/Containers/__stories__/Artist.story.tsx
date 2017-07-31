@@ -5,7 +5,7 @@ import { RootContainer } from "react-relay"
 import Routes from "../../relay/routes"
 import Artist from "../Artist"
 
-storiesOf("Artist")
+storiesOf("Artist/Relay")
   .add("Glenn Brown", () => {
     const artistRoute = new Routes.Artist({ artistID: "glenn-brown" })
     return <RootContainer Component={Artist} route={artistRoute} />

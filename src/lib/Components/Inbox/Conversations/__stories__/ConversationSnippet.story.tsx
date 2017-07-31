@@ -28,7 +28,7 @@ const conversation: Conversation = {
   ],
 }
 
-storiesOf("Conversations - Snippet")
+storiesOf("Conversations/Snippet")
   .add("Single row", () => <ConversationSnippet conversation={conversation} />)
   .add("A few threads", () =>
     <ScrollView>

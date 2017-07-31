@@ -4,7 +4,7 @@ import { Text, View } from "react-native"
 import Search from "../Components/ArtistSearchResults"
 import BottomAlignedButton, { BottomAlignedProps } from "../Components/BottomAlignedButton"
 
-export const name = "Consignments - bottom aligned"
+export const name = "Consignments/BottomButton"
 export const component = BottomAlignedButton
 
 interface States {

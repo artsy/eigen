@@ -15,7 +15,7 @@ const artwork = {
   },
 }
 
-storiesOf("Conversation - Artwork Preview")
+storiesOf("Conversations/Artwork Preview")
   .add("Basic", () => <StubContainer Component={ArtworkPreview} props={{ artwork }} />)
   .add("With a long title", () => {
     artwork.title = "Canisters Canisters Canisters Canisters Canisters Canisters"
