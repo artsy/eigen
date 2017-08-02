@@ -1,7 +1,6 @@
 import UIKit
 import Interstellar
 
-
 class LiveAuctionHistoryCell: UITableViewCell {
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -22,10 +21,10 @@ class LiveAuctionHistoryCell: UITableViewCell {
     }
 }
 
+
 class LiveAuctionBidHistoryViewController: UITableViewController {
 
     let lotViewModel: LiveAuctionLotViewModelType
-
     var newEventsSubscription: ObserverToken<[LiveAuctionEventViewModel]>!
 
     init(lotViewModel: LiveAuctionLotViewModelType) {
@@ -43,7 +42,13 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
             guard let `self` = self else { return }
 
             self.tableView.reloadData()
-//
+
+            // Support haptic feedback during an auction
+            if(AROptions.bool(forOption: AROptionFeedbackLiveAuction)) {
+                self.provideHapticFeedbackForEvents(events: newEvents)
+            }
+
+            //
 //            let currentCellCount = self.tableView.numberOfRowsInSection(0)
 //            guard newEvents.reloadCondition(currentCellCount, lotViewModel: self.lotViewModel) == .Update else {
 //                return self.tableView.reloadData()
@@ -94,6 +99,27 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
         let event = lotViewModel.derivedEventAtPresentationIndex(indexPath.row)
         cell.updateWithEventViewModel(event)
         cell.drawBottomDottedBorder(with: UIColor.artsyGrayMedium())
+    }
+
+    func provideHapticFeedbackForEvents(events: [LiveAuctionEventViewModel]) {
+        if #available(iOS 10.0, *) {
+            var feedbackWeight: UIImpactFeedbackStyle? = nil
+            events.forEach { event in
+                if event.isBid && feedbackWeight == nil {
+                    feedbackWeight = .light
+                }
+                if event.isFairWarning {
+                    feedbackWeight = .medium
+                }
+                if event.isFinalCall {
+                    feedbackWeight = .heavy
+                }
+            }
+
+            guard let feedbackStyle = feedbackWeight else { return }
+            let feedback = UIImpactFeedbackGenerator(style: feedbackStyle)
+            feedback.impactOccurred()
+        }
     }
 }
 

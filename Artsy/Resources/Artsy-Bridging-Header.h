@@ -21,6 +21,7 @@
 #import "ARSwitchBoard.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARDefaults.h"
+#import "AROptions.h"
 #import "ARAppConstants.h"
 #import "ARRouter.h" // Required for +baseCausalitySocketURLString in the LiveAuctionSalesPerson.
 
