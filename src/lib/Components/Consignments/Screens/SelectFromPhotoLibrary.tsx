@@ -1,5 +1,7 @@
 import * as React from "react"
 
+import * as _ from "lodash"
+
 import Button from "../../Buttons/FlatWhite"
 import DoneButton from "../Components/BottomAlignedButton"
 
@@ -11,6 +13,7 @@ import { BodyText as P } from "../Typography"
 
 import {
   CameraRoll,
+  Dimensions,
   GetPhotosParamType,
   GetPhotosReturnType,
   NavigatorIOS,
@@ -39,10 +42,7 @@ const doneButtonStyles = {
   height: 56,
 }
 
-const uri1 = "https://d32dm0rphc51dk.cloudfront.net/Vq62IJMLbG1TuUjs-2fZCg/large.jpg"
-const uri2 = "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg"
-
-export default class Welcome extends React.Component<Props, State> {
+export default class SelectFromPhotoLibrary extends React.Component<Props, State> {
   constructor() {
     super()
     this.state = {
@@ -51,16 +51,9 @@ export default class Welcome extends React.Component<Props, State> {
       lastCursor: "",
       noMorePhotos: false,
     }
+  }
 
-    // if (CameraRoll) {
-    //   CameraRoll.getPhotos({ first: 5, assetType: "Photos" }).then(photos => {
-    //     this.setState(() => {
-    //       return {
-    //         cameraImages: photos.edges.map(e => e.node),
-    //       }
-    //     })
-    //   })
-    // }
+  componentDidMount() {
     this.tryPhotoLoad()
   }
 
@@ -74,14 +67,21 @@ export default class Welcome extends React.Component<Props, State> {
 
   loadPhotos() {
     const fetchParams: GetPhotosParamType = {
-      first: 35,
+      first: 20,
       groupTypes: "SavedPhotos",
       assetType: "Photos",
-      after: null,
     }
 
     if (this.state.lastCursor) {
       fetchParams.after = this.state.lastCursor
+    }
+
+    // This isn't optimal, but CameraRoll isn't provided in
+    // the React Native mock from Jest. This means that it
+    // can't be tested, and it will be undefined.
+    const inTesting = typeof jest !== "undefined"
+    if (inTesting) {
+      return
     }
 
     CameraRoll.getPhotos(fetchParams)
@@ -100,14 +100,29 @@ export default class Welcome extends React.Component<Props, State> {
       noMorePhotos: !data.page_info.has_next_page,
     }
 
-    if (assets.length > 0) {
-      console.log(assets)
-      // nextState.lastCursor = data.page_info.end_cursor
-      // nextState.assets = this.state.assets.concat(assets)
-      // nextState.dataSource = this.state.dataSource.cloneWithRows(_.chunk(nextState.assets, 3))
+    if (assets.length === 0) {
+      this.setState({
+        loadingMore: false,
+        noMorePhotos: !data.page_info.has_next_page,
+      })
+    } else {
+      this.setState({
+        loadingMore: false,
+        noMorePhotos: !data.page_info.has_next_page,
+        lastCursor: data.page_info.end_cursor,
+        cameraImages: this.state.cameraImages.concat(assets.map(a => a.node)),
+      })
     }
+  }
 
-    this.setState(nextState)
+  onScroll(e) {
+    const windowHeight = Dimensions.get("window").height
+    const height = e.nativeEvent.contentSize.height
+    const offset = e.nativeEvent.contentOffset.y
+
+    if (windowHeight + offset >= height) {
+      this.tryPhotoLoad()
+    }
   }
 
   endReached() {
@@ -128,8 +143,13 @@ export default class Welcome extends React.Component<Props, State> {
     return (
       <ConsignmentBG>
         <DoneButton onPress={this.doneTapped} bodyStyle={doneButtonStyles} buttonText="DONE">
-          <ScrollView style={{ flex: 1 }}>
-            <View style={{ paddingTop: 40, alignItems: "center" }}>
+          <ScrollView
+            style={{ flex: 1 }}
+            scrollsToTop={true}
+            onScroll={this.onScroll.bind(this)}
+            scrollEventThrottle={50}
+          >
+            <View style={{ paddingTop: 40 }}>
               <P>We suggest adding a few photos of the work including the front and back as well as the signature.</P>
               <ImageSelection data={this.state.cameraImages} onPressNewPhoto={this.onPressNewPhoto} />
             </View>

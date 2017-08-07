@@ -36,6 +36,9 @@ exports[`Sets up the right view hierarchy 1`] = `
       }
     >
       <RCTScrollView
+        onScroll={[Function]}
+        scrollEventThrottle={50}
+        scrollsToTop={true}
         style={
           Object {
             "flex": 1,
@@ -46,7 +49,6 @@ exports[`Sets up the right view hierarchy 1`] = `
           <View
             style={
               Object {
-                "alignItems": "center",
                 "paddingTop": 40,
               }
             }
@@ -81,7 +83,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                 Object {
                   "flexDirection": "row",
                   "flexWrap": "wrap",
-                  "justifyContent": "flex-start",
+                  "justifyContent": "center",
                 }
               }
               dataSource={
