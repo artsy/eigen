@@ -191,7 +191,6 @@ randomBOOL(void)
     });
   };
 
-
   emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
                                                                  NSString * _Nonnull route) {
     if ([fromViewController isKindOfClass:ARStorybookComponentViewController.class]) {
