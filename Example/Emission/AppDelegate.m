@@ -11,6 +11,7 @@
 #import <Emission/AREventsModule.h>
 #import <Emission/ARRefineOptionsModule.h>
 #import <Emission/ARWorksForYouModule.h>
+#import <Emission/ARTakeCameraPhotoModule.h>
 
 #import "ARStorybookComponentViewController.h"
 #import <Emission/ARArtistComponentViewController.h>
@@ -227,6 +228,10 @@ randomBOOL(void)
   emission.worksForYouModule.setNotificationsCount = ^(NSInteger count) {
     sleep(1);
     NSLog(@"Set notifications count: %ld", (long)count);
+  };
+
+  emission.cameraModule.triggerCreatingACameraPhoto = ^(UIViewController * _Nonnull controller, RCTPromiseResolveBlock  _Nonnull resolve, RCTPromiseRejectBlock  _Nonnull reject) {
+    resolve(@{});
   };
 }
 

@@ -12,4 +12,4 @@ async function triggerCamera(component: React.Component<any, any>): Promise<any>
   return ARTakeCameraModule.triggerCameraModal(reactTag)
 }
 
-export default { triggerCamera }
+export default triggerCamera
