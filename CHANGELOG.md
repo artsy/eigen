@@ -4,6 +4,7 @@
 
 -   Adds stylelint to the dev-experience, not validated on CI yet - orta
 -   Updates Storybooks to 3.2 - orta
+-   CocoaPods/Danger updates - orta
 
 ###### Consignments
 
