@@ -68,7 +68,7 @@ const testFilesThatDontExist = correspondingTestsForAppFiles
   .filter(f => !f.includes("__stories__")) // skip stories
   .filter(f => !f.includes("AppRegistry")) // skip registry, kinda untestable
   .filter(f => !f.includes("Routes")) // skip routes, kinda untestable
-  .filter(f => !f.includes("NativeNodules")) // skip native_modules
+  .filter(f => !f.includes("NativeModules")) // skip modules that are native, they are untestable
   .filter(f => !fs.existsSync(f))
 
 if (testFilesThatDontExist.length > 0) {
