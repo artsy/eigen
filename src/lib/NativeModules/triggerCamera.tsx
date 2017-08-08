@@ -6,7 +6,7 @@ async function triggerCamera(component: React.Component<any, any>): Promise<any>
   try {
     reactTag = findNodeHandle(component)
   } catch (err) {
-    console.error("could not find tag for the component calling ARTakeCameraModule.triggerCameraModal")
+    console.error("could not find tag for the component calling ARTakeCameraPhotoModule.triggerCameraModal")
     return
   }
   return ARTakeCameraPhotoModule.triggerCameraModal(reactTag)

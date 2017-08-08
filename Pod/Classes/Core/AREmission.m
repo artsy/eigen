@@ -98,7 +98,7 @@ static AREmission *_sharedInstance = nil;
     _configurationModule.useStagingEnvironment = useStagingEnvironment;
     _configurationModule.sentryDSN = sentryDSN;
 
-    NSArray *modules = @[_APIModule, _configurationModule, _eventsModule, _switchBoardModule, _refineModule, _worksForYouModule];
+    NSArray *modules = @[_APIModule, _configurationModule, _eventsModule, _switchBoardModule, _refineModule, _worksForYouModule, _cameraModule];
 
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
                                     moduleProvider:^{ return modules; }

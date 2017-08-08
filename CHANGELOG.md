@@ -9,6 +9,7 @@
 ###### Consignments
 
 -   Adds a camera roll screen for getting photos for consignments - orta
+-   Adds the native functionality for taking photos of a consignment - orta
 -   Infinite loop through all photos, and look good on both iPhone + iPad - orta
 -   Adds a provenance screen - ash
 

@@ -11,14 +11,13 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(triggerCameraModal:(nonnull NSNumber *)reactTag initialSettings:(nonnull NSDictionary *)initial currentSettings:(nonnull NSDictionary *)current resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(triggerCameraModal:(nonnull NSNumber *)reactTag resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         UIView *rootView = [self.bridge.uiManager viewForReactTag:reactTag];
         while (rootView.superview && ![rootView isKindOfClass:RCTRootView.class]) {
             rootView = rootView.superview;
         }
-
         self.triggerCreatingACameraPhoto(rootView.reactViewController, resolve, reject);
     });
 }

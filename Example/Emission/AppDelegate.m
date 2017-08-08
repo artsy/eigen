@@ -26,6 +26,8 @@
 #import "PRNetworkModel.h"
 #import <AppHub/AppHub.h>
 
+#import "TakePhotoPromisable.h"
+
 // Disable this to force using the release JS bundle, note that you should really do so by running a Release build.
 //
 // To do this, hold down the alt key when clicking the run button and select the Release configuration. Remember to
@@ -44,6 +46,8 @@ randomBOOL(void)
 @interface AppDelegate ()
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, strong) LoadingSpinner *spinner;
+@property (nonatomic, strong) TakePhotoPromisable *takePhotoPromisable;
+
 @end
 
 @implementation AppDelegate
@@ -230,8 +234,9 @@ randomBOOL(void)
     NSLog(@"Set notifications count: %ld", (long)count);
   };
 
+  self.takePhotoPromisable = [TakePhotoPromisable new];
   emission.cameraModule.triggerCreatingACameraPhoto = ^(UIViewController * _Nonnull controller, RCTPromiseResolveBlock  _Nonnull resolve, RCTPromiseRejectBlock  _Nonnull reject) {
-    resolve(@{});
+    [self.takePhotoPromisable showCameraModal:controller resolver:resolve rejecter:reject];
   };
 }
 
@@ -286,3 +291,4 @@ randomBOOL(void)
 }
 
 @end
+

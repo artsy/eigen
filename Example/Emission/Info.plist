@@ -24,6 +24,8 @@
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Using Camera Roll for Consignments Photos</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Using Camera to take photos for Consignments</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
