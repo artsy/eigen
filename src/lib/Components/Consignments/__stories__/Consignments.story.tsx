@@ -3,6 +3,7 @@ import * as React from "react"
 
 import Nav from "../index"
 import Artist from "../Screens/Artist"
+import FinalSubmissionQuestions from "../Screens/FinalSubmissionQuestions"
 import Overview from "../Screens/Overview"
 import Provenance from "../Screens/Provenance"
 import SelectFromPhotoLibrary from "../Screens/SelectFromPhotoLibrary"
@@ -29,4 +30,7 @@ storiesOf("Consignments/_Screens")
   })
   .add("SelectFromPhotoLibrary Page", () => {
     return <SelectFromPhotoLibrary navigator={nav} route={route} />
+  })
+  .add("FinalSubmissionQuestions Page", () => {
+    return <FinalSubmissionQuestions navigator={nav} route={route} setup={{}} />
   })

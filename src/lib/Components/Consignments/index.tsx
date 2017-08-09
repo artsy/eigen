@@ -30,6 +30,12 @@ export interface ConsignmentSetup {
   metadata?: ConsignmentMetadata
   location?: string
   provenance?: string
+  editionInfo?: {
+    size?: string
+    number?: string
+  }
+  signed?: boolean
+  certificateOfAuth?: boolean
 }
 
 interface Props extends ViewProperties, ConsignmentSetup {}

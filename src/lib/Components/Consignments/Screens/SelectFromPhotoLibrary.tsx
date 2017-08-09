@@ -11,17 +11,7 @@ import ConsignmentBG from "../Components/ConsignmentBG"
 import ImageSelection, { ImageData } from "../Components/ImageSelection"
 import { BodyText as P } from "../Typography"
 
-import {
-  CameraRoll,
-  Dimensions,
-  GetPhotosParamType,
-  GetPhotosReturnType,
-  NavigatorIOS,
-  Route,
-  ScrollView,
-  View,
-  ViewProperties,
-} from "react-native"
+import { Dimensions, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
 
 import triggerCamera from "../../../NativeModules/triggerCamera"
 
