@@ -20,18 +20,23 @@ interface Props extends ViewProperties {
 @track(props => ({ page: props.component.displayName.match("\\((.*?)\\)")[1] }), {
   dispatch: data => console.log(data),
 })
-class RootContainer extends React.Component<Props, {}> {
+class RootContainer extends React.Component<{}, null> {
   state: { retrying: boolean }
   component: Relay.RelayContainerClass<any>
   route: Relay.Route
   renderFetched?: Relay.RootContainerProps["renderFetched"]
+  forceFetch: boolean
 
   constructor(props) {
     super(props)
     this.state = { retrying: false }
+    this.forceFetch = false
   }
 
   render() {
+    // FIXME: These props are missing from the DefinitelyTyped package.
+    const untypedProps: any = { forceFetch: this.forceFetch }
+
     // https://facebook.github.io/relay/docs/guides-root-container.html
     return (
       <Relay.RootContainer
@@ -51,12 +56,13 @@ class RootContainer extends React.Component<Props, {}> {
           this.state.retrying = true
           return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
         }}
+        {...untypedProps}
       />
     )
   }
 }
 
-class Artist extends React.Component<Props, {}> {
+class Artist extends React.Component<{}, {}> {
   constructor(props) {
     super(props)
     this.component = Containers.Artist
@@ -67,7 +73,7 @@ class Artist extends React.Component<Props, {}> {
   }
 }
 
-class Gene extends React.Component<Props, {}> {
+class Gene extends React.Component<{}, {}> {
   constructor(props) {
     super(props)
     this.component = Containers.Gene
@@ -87,6 +93,7 @@ class Gene extends React.Component<Props, {}> {
   }
 }
 
+// Use Props interface here for scrollhack
 class Home extends React.Component<Props, {}> {
   constructor(props) {
     super(props)
@@ -99,7 +106,7 @@ class Home extends React.Component<Props, {}> {
   }
 }
 
-class WorksForYou extends React.Component<Props, {}> {
+class WorksForYou extends React.Component<{}, {}> {
   constructor(props) {
     super(props)
 
@@ -113,7 +120,7 @@ class WorksForYou extends React.Component<Props, {}> {
   }
 }
 
-class MyAccount extends React.Component<Props, {}> {
+class MyAccount extends React.Component<{}, {}> {
   constructor(props) {
     super(props)
     this.component = Containers.MyAccount
@@ -124,7 +131,7 @@ class MyAccount extends React.Component<Props, {}> {
   }
 }
 
-class Inbox extends React.Component<Props, {}> {
+class Inbox extends React.Component<{}, {}> {
   constructor(props) {
     super(props)
     this.component = Containers.Inbox
@@ -135,7 +142,7 @@ class Inbox extends React.Component<Props, {}> {
   }
 }
 
-class Conversation extends React.Component<Props, {}> {
+class Conversation extends React.Component<{}, {}> {
   constructor(props) {
     super(props)
     this.component = Containers.Conversation
@@ -154,3 +161,4 @@ AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
 AppRegistry.registerComponent("MyAccount", () => MyAccount)
 AppRegistry.registerComponent("Inbox", () => Inbox)
 AppRegistry.registerComponent("Conversation", () => Conversation)
+AppRegistry.registerComponent("Inquiry", () => Inquiry)
