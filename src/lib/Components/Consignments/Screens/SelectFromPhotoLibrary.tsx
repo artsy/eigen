@@ -23,6 +23,8 @@ import {
   ViewProperties,
 } from "react-native"
 
+import triggerCamera from "../../../NativeModules/triggerCamera"
+
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route
@@ -136,7 +138,14 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
   }
 
   onPressNewPhoto = () => {
-    console.log("OK")
+    triggerCamera(this).then(photo => {
+      if (photo) {
+        console.log("Got photo back")
+        console.log(photo)
+      } else {
+        console.log("Cancelled")
+      }
+    })
   }
 
   render() {

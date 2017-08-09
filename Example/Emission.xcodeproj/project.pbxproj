@@ -24,6 +24,7 @@
 		6011C24E1DAF697B00CE54E5 /* EigenLikeAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C24D1DAF697B00CE54E5 /* EigenLikeAdminViewController.m */; };
 		6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */; };
 		6011C2561DAF835900CE54E5 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6011C2551DAF835900CE54E5 /* logo@2x.png */; };
+		605E32A51F3A0F0C00CFFE21 /* TakePhotoPromisable.m in Sources */ = {isa = PBXBuildFile; fileRef = 605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */; };
 		60A1A77E1DA3A23C005E3357 /* BackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */; };
 		60A1A77F1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77C1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png */; };
 		60A1A7801DA3A23C005E3357 /* BackArrowBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77D1DA3A23C005E3357 /* BackArrowBlack@2x.png */; };
@@ -91,6 +92,8 @@
 		6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnroutedViewController.m; sourceTree = "<group>"; };
 		6011C2551DAF835900CE54E5 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		60204ADD1D9D590900204628 /* Emission.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Emission.entitlements; sourceTree = "<group>"; };
+		605E32A31F3A0F0C00CFFE21 /* TakePhotoPromisable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TakePhotoPromisable.h; path = Modules/TakePhotoPromisable.h; sourceTree = "<group>"; };
+		605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TakePhotoPromisable.m; path = Modules/TakePhotoPromisable.m; sourceTree = "<group>"; };
 		607673A21ECC4C9F005848B5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6077F28F1EE56723004F054D /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrow@2x.png"; sourceTree = "<group>"; };
@@ -215,6 +218,15 @@
 			name = Launch;
 			sourceTree = "<group>";
 		};
+		605E32A21F3A0EED00CFFE21 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				605E32A31F3A0F0C00CFFE21 /* TakePhotoPromisable.h */,
+				605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */,
+			);
+			name = Modules;
+			sourceTree = "<group>";
+		};
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
@@ -309,6 +321,7 @@
 		60F61A881DAF849700A72101 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				605E32A21F3A0EED00CFFE21 /* Modules */,
 				60A1A7841DA3A879005E3357 /* ARMacros.h */,
 				6011C2491DAF63C000CE54E5 /* ARDefaults.h */,
 				6011C24A1DAF63C000CE54E5 /* ARDefaults.m */,
@@ -585,6 +598,7 @@
 			files = (
 				60E02A681ECB39630010F5D5 /* ARRootViewController+AppHub.m in Sources */,
 				6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */,
+				605E32A51F3A0F0C00CFFE21 /* TakePhotoPromisable.m in Sources */,
 				6011C2451DAF61AF00CE54E5 /* ARAdminTableViewCell.m in Sources */,
 				60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */,
 				51F3E9A41CF3B8A4004A2013 /* EigenLikeNavigationController.m in Sources */,

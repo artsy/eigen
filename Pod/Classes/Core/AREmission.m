@@ -4,6 +4,7 @@
 #import "ARTemporaryAPIModule.h"
 #import "ARRefineOptionsModule.h"
 #import "ARWorksForYouModule.h"
+#import "ARTakeCameraPhotoModule.h"
 
 #import <React/RCTBridge.h>
 #import <React/RCTBridgeModule.h>
@@ -89,6 +90,7 @@ static AREmission *_sharedInstance = nil;
     _APIModule = [ARTemporaryAPIModule new];
     _refineModule = [ARRefineOptionsModule new];
     _worksForYouModule = [ARWorksForYouModule new];
+    _cameraModule = [ARTakeCameraPhotoModule new];
 
     _configurationModule = [AREmissionConfiguration new];
     _configurationModule.userID = userID;
@@ -96,7 +98,7 @@ static AREmission *_sharedInstance = nil;
     _configurationModule.useStagingEnvironment = useStagingEnvironment;
     _configurationModule.sentryDSN = sentryDSN;
 
-    NSArray *modules = @[_APIModule, _configurationModule, _eventsModule, _switchBoardModule, _refineModule, _worksForYouModule];
+    NSArray *modules = @[_APIModule, _configurationModule, _eventsModule, _switchBoardModule, _refineModule, _worksForYouModule, _cameraModule];
 
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
                                     moduleProvider:^{ return modules; }
