@@ -1,8 +1,39 @@
 #import <Foundation/Foundation.h>
+#import <React/RCTBridge.h>
+#import <React/RCTBridgeModule.h>
 
 @class AREventsModule, ARSwitchBoardModule, ARTemporaryAPIModule, ARRefineOptionsModule, ARWorksForYouModule, ARTakeCameraPhotoModule, RCTBridge;
 
 NS_ASSUME_NONNULL_BEGIN
+
+/// A configuration object for running Emission
+@interface AREmissionConfiguration : NSObject <RCTBridgeModule>
+
+// Pre-requisites for Emission to work
+@property (nonatomic, copy, readonly) NSString *userID;
+@property (nonatomic, copy, readonly) NSString *authenticationToken;
+
+// ENV Variables
+@property (nonatomic, copy, readonly, nullable) NSString *sentryDSN;
+@property (nonatomic, copy, readonly, nullable) NSString *googleMapsAPIKey;
+
+// Server configuration
+@property (nonatomic, copy, readonly) NSString *gravityAPIHost;
+@property (nonatomic, copy, readonly) NSString *metaphysicsAPIHost;
+
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
+
+// Forces us to always include all properties
+- (instancetype)initWithUserID:(NSString *)userID
+           authenticationToken:(NSString *)token
+                     sentryDSN:(nullable NSString *)sentryDSN
+              googleMapsAPIKey:(nullable NSString *)googleAPIKey
+                   gravityHost:(NSString *)gravity
+               metaphysicsHost:(NSString *)metaphysics;
+@end
+
 
 @interface AREmission : NSObject
 
@@ -17,19 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)sharedInstance;
 + (void)setSharedInstance:(AREmission *)instance;
 
-- (instancetype)initWithUserID:(NSString *)userID
-           authenticationToken:(NSString *)authenticationToken;
-
-- (instancetype)initWithUserID:(NSString *)userID
-           authenticationToken:(NSString *)authenticationToken
-                   packagerURL:(nullable NSURL *)packagerURL
-         useStagingEnvironment:(BOOL)useStagingEnvironmen;
-
-- (instancetype)initWithUserID:(NSString *)userID
-           authenticationToken:(NSString *)authenticationToken
-                   packagerURL:(nullable NSURL *)packagerURL
-         useStagingEnvironment:(BOOL)useStagingEnvironment
-                     sentryDSN:(nullable NSString *)sentryDSN NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConfiguration:(AREmissionConfiguration *)config packagerURL:(nullable NSURL *)packagerURL NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 

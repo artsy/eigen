@@ -5,9 +5,9 @@ const { Emission } = NativeModules
 let metaphysicsURL
 let gravityURL
 
-if (Emission && Emission.useStagingEnvironment) {
-  metaphysicsURL = "https://metaphysics-staging.artsy.net"
-  gravityURL = "https://stagingapi.artsy.net"
+if (Emission && Emission.gravityAPIHost && Emission.metaphysicsAPIHost) {
+  metaphysicsURL = Emission.metaphysicsAPIHost
+  gravityURL = Emission.gravityAPIHost
 } else {
   metaphysicsURL = "https://metaphysics-production.artsy.net"
   gravityURL = "https://api.artsy.net"

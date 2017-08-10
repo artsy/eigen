@@ -5,6 +5,9 @@
 -   Adds stylelint to the dev-experience, not validated on CI yet - orta
 -   Updates Storybooks to 3.2 - orta
 -   CocoaPods/Danger updates - orta
+-   AREmission bridging updates which require integration work in Eigen - orta
+-   You can choose any URL for gravity/metaphysics - orta
+-   Adds an env var for google maps API - orta
 
 ###### Consignments
 
