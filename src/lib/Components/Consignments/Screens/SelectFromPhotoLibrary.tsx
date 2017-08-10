@@ -11,9 +11,17 @@ import ConsignmentBG from "../Components/ConsignmentBG"
 import ImageSelection, { ImageData } from "../Components/ImageSelection"
 import { BodyText as P } from "../Typography"
 
-import { Dimensions, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
-
-import triggerCamera from "../../../NativeModules/triggerCamera"
+import {
+  CameraRoll,
+  Dimensions,
+  GetPhotosParamType,
+  GetPhotosReturnType,
+  NavigatorIOS,
+  Route,
+  ScrollView,
+  View,
+  ViewProperties,
+} from "react-native"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -128,14 +136,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
   }
 
   onPressNewPhoto = () => {
-    triggerCamera(this).then(photo => {
-      if (photo) {
-        console.log("Got photo back")
-        console.log(photo)
-      } else {
-        console.log("Cancelled")
-      }
-    })
+    console.log("OK")
   }
 
   render() {

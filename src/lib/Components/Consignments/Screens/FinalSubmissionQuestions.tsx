@@ -62,8 +62,8 @@ export default class FinalSubmissionQuestions extends React.Component<Props, Con
 
             {this.state.editionInfo
               ? <View style={{ flexDirection: "row", paddingVertical: 6 }}>
-                  <Text text={{ placeholder: "Edition Size" }} style={{ margin: 10 }} />
-                  <Text text={{ placeholder: "Edition Number" }} style={{ margin: 10 }} />
+                  <Text text={{ placeholder: "Edition Size", keyboardType: "phone-pad" }} style={{ margin: 10 }} />
+                  <Text text={{ placeholder: "Edition Number", keyboardType: "phone-pad" }} style={{ margin: 10 }} />
                 </View>
               : null}
 
