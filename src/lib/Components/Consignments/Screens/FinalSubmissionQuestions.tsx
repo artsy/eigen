@@ -6,6 +6,7 @@ import { BodyText, LargeHeadline, Subtitle } from "../Typography"
 
 import { ArtistResult, ConsignmentSetup } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
+import { Form, Label, Row } from "../Components/FormElements"
 import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
 import Artist from "./Artist"
@@ -44,42 +45,31 @@ export default class FinalSubmissionQuestions extends React.Component<Props, Con
   updateCert = () => this.setState({ certificateOfAuth: !this.state.certificateOfAuth })
 
   render() {
-    const title = "Answer a few questions about the work"
-
     return (
       <ConsignmentBG>
-        <ScrollView style={{ flex: 1 }}>
-          <View style={{ paddingTop: 40 }}>
-            <LargeHeadline>
-              {title}
-            </LargeHeadline>
-          </View>
-          <View style={{ padding: 10 }}>
-            <View style={{ flexDirection: "row", paddingVertical: 6, alignItems: "center" }}>
-              <BodyText style={{ paddingLeft: 10, flex: 1, textAlign: "left" }}>Is this an edition?</BodyText>
-              <Toggle selected={!!this.state.editionInfo} left="NO" right="YES" onPress={this.updateEdition} />
-            </View>
+        <Form title="Answer a few questions about the work">
+          <Row>
+            <Label>Is this an edition?</Label>
+            <Toggle selected={!!this.state.editionInfo} left="NO" right="YES" onPress={this.updateEdition} />
+          </Row>
 
-            {this.state.editionInfo
-              ? <View style={{ flexDirection: "row", paddingVertical: 6 }}>
-                  <Text text={{ placeholder: "Edition Size", keyboardType: "phone-pad" }} style={{ margin: 10 }} />
-                  <Text text={{ placeholder: "Edition Number" }} style={{ margin: 10 }} />
-                </View>
-              : null}
+          {this.state.editionInfo
+            ? <Row>
+                <Text text={{ placeholder: "Edition Size", keyboardType: "phone-pad" }} style={{ margin: 10 }} />
+                <Text text={{ placeholder: "Edition Number" }} style={{ margin: 10 }} />
+              </Row>
+            : null}
 
-            <View style={{ flexDirection: "row", paddingVertical: 6, alignItems: "center" }}>
-              <BodyText style={{ paddingLeft: 10, flex: 1, textAlign: "left" }}>Is this work signed?</BodyText>
-              <Toggle selected={this.state.signed} left="NO" right="YES" onPress={this.updateSigned} />
-            </View>
+          <Row>
+            <Label>Is this work signed?</Label>
+            <Toggle selected={this.state.signed} left="NO" right="YES" onPress={this.updateSigned} />
+          </Row>
 
-            <View style={{ flexDirection: "row", paddingVertical: 6, alignItems: "center" }}>
-              <BodyText style={{ paddingLeft: 10, flex: 1, textAlign: "left" }}>
-                Do you have a certificate of authenticity?
-              </BodyText>
-              <Toggle selected={this.state.certificateOfAuth} left="NO" right="YES" onPress={this.updateCert} />
-            </View>
-          </View>
-        </ScrollView>
+          <Row>
+            <Label>Do you have a certificate of authenticity?</Label>
+            <Toggle selected={this.state.certificateOfAuth} left="NO" right="YES" onPress={this.updateCert} />
+          </Row>
+        </Form>
       </ConsignmentBG>
     )
   }
