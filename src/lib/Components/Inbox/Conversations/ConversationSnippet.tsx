@@ -82,6 +82,8 @@ export interface Conversation {
   }
   last_message: string | null
   last_message_at: string | null
+  is_last_message_to_user: boolean
+  last_message_open: string | null
   items: Array<{
     item: any
   }>
@@ -132,7 +134,6 @@ export class ConversationSnippet extends React.Component<Props, any> {
 
   render() {
     const conversation = this.props.conversation
-
     // If we cannot resolve items in the conversation, such as deleted fair booths
     // prior to snapshotting them at time of inquiry (generally older conversations),
     // just skip over the entire conversation.
@@ -154,7 +155,6 @@ export class ConversationSnippet extends React.Component<Props, any> {
 
     const conversationText = conversation.last_message.replace(/\n/g, " ")
     const date = moment(conversation.last_message_at).fromNow(true)
-
     return (
       <TouchableWithoutFeedback onPress={this.props.onSelected}>
         <Card>
@@ -169,7 +169,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
                   <MetadataText>
                     {date}
                   </MetadataText>
-                  <UnreadIndicator />
+                  {conversation.is_last_message_to_user && !conversation.last_message_open && <UnreadIndicator />}
                 </DateHeading>
               </HorizontalLayout>
               {this.renderTitleForItem(item)}
@@ -195,6 +195,8 @@ export default Relay.createContainer(ConversationSnippet, {
         }
         last_message
         last_message_at
+        is_last_message_to_user
+        last_message_open
         items {
           item {
             __typename
@@ -230,6 +232,8 @@ interface RelayProps {
     }
     last_message: string
     last_message_at: string | null
+    is_last_message_to_user: boolean
+    last_message_open: string | null
     __typename: string
     items: Array<{
       item: any

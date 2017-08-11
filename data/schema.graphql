@@ -1567,6 +1567,8 @@ type Conversation implements Node {
   ): String
   purchase_request: Boolean
   initial_message: String!
+
+  # This is a snippet of text from the last message.
   last_message: String!
   last_message_at(
     convert_to_utc: Boolean
@@ -1575,6 +1577,12 @@ type Conversation implements Node {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # True if user/conversation initiator is a recipient.
+  is_last_message_to_user: Boolean
+
+  # Timestamp if the user opened the last message, null in all other cases
+  last_message_open: String
 
   # Only the artworks discussed in the conversation.
   artworks: [Artwork]
@@ -1671,6 +1679,42 @@ type DeepZoomImage {
 type DeepZoomImageSize {
   Width: Int
   Height: Int
+}
+
+type Delivery {
+  # Delivery id.
+  id: String!
+
+  # Masked email w/ display name.
+  full_transformed_email: String!
+  delivered_at(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  bounced_at(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  opened_at(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  clicked_at(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
 }
 
 type dimensions {
@@ -2831,6 +2875,7 @@ type Message implements Node {
 
   # Text which has been parsed/sanitized of quoted replies (among other things).
   body: String
+  deliveries: [Delivery]
   attachments: [Attachment]
 
   # True if message is an invoice message

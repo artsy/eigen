@@ -199,22 +199,6 @@ exports[`looks correct when rendered 1`] = `
               >
                 30 MINUTES
               </Text>
-              <View
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "#6e1fff",
-                      "borderRadius": 4,
-                      "height": 8,
-                      "marginBottom": 3,
-                      "marginLeft": 4,
-                      "marginTop": 3,
-                      "width": 8,
-                    },
-                    undefined,
-                  ]
-                }
-              />
             </View>
           </View>
           <View
@@ -507,22 +491,6 @@ exports[`looks correct when rendered 1`] = `
               >
                 AN HOUR
               </Text>
-              <View
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "#6e1fff",
-                      "borderRadius": 4,
-                      "height": 8,
-                      "marginBottom": 3,
-                      "marginLeft": 4,
-                      "marginTop": 3,
-                      "width": 8,
-                    },
-                    undefined,
-                  ]
-                }
-              />
             </View>
           </View>
           <View

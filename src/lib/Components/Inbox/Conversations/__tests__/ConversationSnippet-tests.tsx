@@ -46,6 +46,8 @@ const artworkConversation = {
   to: { name: "ACA Galleries" },
   last_message: "Karl and Anna... Fab!",
   last_message_at: moment().subtract(30, "minutes").toISOString(),
+  is_last_message_to_user: true,
+  last_message_open: null,
   created_at: "2017-06-01T14:14:35.538Z",
   items: [
     {
@@ -61,6 +63,8 @@ const showConversation = {
   to: { name: "ACA Galleries" },
   last_message: "Karl and Anna... Fab!",
   last_message_at: moment().subtract(30, "minutes").toISOString(),
+  is_last_message_to_user: true,
+  last_message_open: null,
   created_at: "2017-06-01T14:14:35.538Z",
   items: [
     {
