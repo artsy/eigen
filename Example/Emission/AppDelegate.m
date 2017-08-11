@@ -107,7 +107,15 @@ randomBOOL(void)
   AREmission *emission = nil;
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
+  NSString *gravityURL = @"https://api.artsy.net";
+  NSString *metaphysicsURL = @"https://metaphysics-production.artsy.net";
+
   BOOL useStaging = [defaults boolForKey:ARUseStagingDefault];
+  if (useStaging) {
+    gravityURL = @"https://stagingapi.artsy.net";
+    metaphysicsURL = @"https://metaphysics-staging.artsy.net";
+  }
+
   BOOL usePRBuild = [defaults boolForKey:ARUsePREmissionDefault];
   BOOL useRNP = NO;
   BOOL useAppHub = NO;
@@ -144,7 +152,9 @@ randomBOOL(void)
     self.emissionLoadedFromString = @"Using bundled JS";
   }
 
-  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken packagerURL:jsCodeLocation useStagingEnvironment:useStaging];
+  AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID authenticationToken:accessToken sentryDSN:nil googleMapsAPIKey:nil gravityHost:gravityURL metaphysicsHost:metaphysicsURL];
+
+  emission = [[AREmission alloc] initWithConfiguration:config packagerURL:jsCodeLocation];
   [AREmission setSharedInstance:emission];
 
   ARRootViewController *controller = (id)self.navigationController.topViewController;
