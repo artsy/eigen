@@ -11,6 +11,8 @@ const conversation: Conversation = {
   to: { name: "ACA Galleries" },
   last_message: "Karl and Anna... Fab!",
   last_message_at: moment().subtract(30, "minutes").toISOString(),
+  is_last_message_to_user: true,
+  last_message_open: null,
   items: [
     {
       item: {
