@@ -121,14 +121,17 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     // If no imageURL is given at all, simply set the placeholder background color as a view backgroundColor style so
     // that it shows immediately.
     let backgroundColorStyle = null
+    let remainderProps = props
     if (this.props.imageURL) {
       const anyProps = props as any
       anyProps.placeholderBackgroundColor = processColor(props.placeholderBackgroundColor)
     } else {
+      const { placeholderBackgroundColor, ...remainder } = props
+      remainderProps = remainder
       backgroundColorStyle = { backgroundColor: props.placeholderBackgroundColor }
     }
 
-    return <NativeOpaqueImageView style={[style, backgroundColorStyle]} {...props} />
+    return <NativeOpaqueImageView style={[style, backgroundColorStyle]} {...remainderProps} />
   }
 }
 
