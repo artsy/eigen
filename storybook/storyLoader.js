@@ -19,6 +19,7 @@ function loadStories() {
   require('../src/lib/Components/Inbox/Conversations/__stories__/Inbox.story.tsx');
   require('../src/lib/Components/Inbox/Conversations/__stories__/ZeroStateInbox.story.tsx');
   require('../src/lib/Components/Text/__stories__/Typography.story.tsx');
+  require('../src/lib/Components/__stories__/DottedLine.story.tsx');
   require('../src/lib/Containers/__stories__/Artist.story.tsx');
   require('../src/lib/Containers/__stories__/Gene.story.tsx');
   require('../src/lib/Containers/__stories__/Inquiry.story.tsx');
