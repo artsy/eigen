@@ -186,7 +186,3 @@ ${errors.join("\n")}
 `
   markdown(tslintMarkdown)
 }
-
-// Check for dependency changes
-import yarn from "danger-plugin-yarn"
-schedule(yarn())

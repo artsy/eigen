@@ -40,14 +40,22 @@
     "type": "git",
     "url": "git+https://github.com/artsy/emission.git"
   },
-  "keywords": ["artsy", "react", "react-native"],
+  "keywords": [
+    "artsy",
+    "react",
+    "react-native"
+  ],
   "author": "Eloy Durán",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/artsy/emission/issues"
   },
   "homepage": "https://github.com/artsy/emission#readme",
-  "files": ["index.js", "data", "lib"],
+  "files": [
+    "index.js",
+    "data",
+    "lib"
+  ],
   "dependencies": {
     "lodash": "^4.17.4",
     "moment": "latest",
@@ -76,7 +84,6 @@
     "babel-relay-plugin": "https://github.com/alloy/relay/releases/download/v0.9.3/babel-relay-plugin-0.9.3.tgz",
     "concurrently": "^2.2.0",
     "danger": "^1.2.0",
-    "danger-plugin-yarn": "^0.2.10",
     "jest": "^20.0.4",
     "jest-react-native": "18.0.0",
     "jest-snapshots-svg": "^0.0.14",
@@ -101,14 +108,23 @@
   },
   "jest": {
     "preset": "react-native",
-    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "/__tests__/.*-tests.(ts|tsx|js)$",
-    "testPathIgnorePatterns": ["\\.snap$", "<rootDir>/node_modules/"],
-    "setupFiles": ["./src/setupJest.ts"],
+    "testPathIgnorePatterns": [
+      "\\.snap$",
+      "<rootDir>/node_modules/"
+    ],
+    "setupFiles": [
+      "./src/setupJest.ts"
+    ],
     "cacheDirectory": ".jest/cache"
   },
   "graphql": {
@@ -116,11 +132,17 @@
     "tsInterfaceName": "RelayProps"
   },
   "lint-staged": {
-    "*.@(ts|tsx)": ["tslint --fix", "npm run prettier-write --", "git add"]
+    "*.@(ts|tsx)": [
+      "tslint --fix",
+      "npm run prettier-write --",
+      "git add"
+    ]
   },
   "config": {
     "react-native-storybook-loader": {
-      "searchDir": ["./src"],
+      "searchDir": [
+        "./src"
+      ],
       "pattern": "**/*.story.tsx",
       "outputFile": "./storybook/storyLoader.js"
     }
