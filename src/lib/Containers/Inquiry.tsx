@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer, graphql } from "react-relay/compat"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
@@ -186,20 +186,19 @@ export class Inquiry extends React.Component<RelayProps, any> {
   }
 }
 
-export default Relay.createContainer(Inquiry, {
-  fragments: {
-    inquiryArtwork: () => Relay.QL`
-      fragment on Artwork {
-        id
-        contact_message
-        ${ArtworkPreview.getFragment("artwork")}
-        partner {
-          name
-        }
+export default createFragmentContainer(
+  Inquiry,
+  graphql`
+    fragment Inquiry_inquiryArtwork on Artwork {
+      id
+      contact_message
+      partner {
+        name
       }
-    `,
-  },
-})
+      ...ArtworkPreview_artwork
+    }
+  `
+)
 
 interface RelayProps {
   inquiryArtwork: {

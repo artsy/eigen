@@ -79,6 +79,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
+// TODO How do we dynamicall determine what component to use?
 const pastShowsFragment =
   windowDimensions.width > 700 ? VariableSizeShowsList.getFragment("shows") : SmallShowsList.getFragment("shows")
 
