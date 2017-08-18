@@ -8,12 +8,7 @@ script:
   - scripts/deploy_commit.sh
   - yarn ci
   - yarn danger
-
-deploy:
-  provider: script
-  script: scripts/deploy_apphub.sh
-  on:
-    branch: master
+  - scripts/deploy_apphub.sh
 
 cache:
   yarn: true
