@@ -12,7 +12,7 @@ export interface ConsignmentMetadata {
   width: string | null
   height: string | null
   depth: number | null
-  unit: "in" | "cm" | null
+  unit: string | null
   displayString: string | null // This would look something like "1/5", "5/5"
 }
 
