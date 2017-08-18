@@ -9,11 +9,11 @@ export interface ConsignmentMetadata {
   year: string | null
   category: string | null
   materials: string | null
-  width: number | null
-  height: number | null
+  width: string | null
+  height: string | null
   depth: number | null
-  unit: "in" | "cm"
-  displayString: string // This would look something like "1/5", "5/5"
+  unit: "in" | "cm" | null
+  displayString: string | null // This would look something like "1/5", "5/5"
 }
 
 export interface ArtistResult {

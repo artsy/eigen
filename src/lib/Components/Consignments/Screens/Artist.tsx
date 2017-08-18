@@ -17,7 +17,7 @@ interface ArtistSearchResponse {
 interface Props extends ConsignmentSetup, ViewProperties {
   navigator: NavigatorIOS
   route: Route
-  updateWithResult?: (result: ArtistResult) => void
+  updateWithArtist?: (result: ArtistResult) => void
 }
 
 interface State {
@@ -41,8 +41,8 @@ export default class Artist extends React.Component<Props, State> {
   }
 
   artistSelected = (result: ArtistResult) => {
+    this.props.updateWithArtist(result)
     this.props.navigator.pop()
-    this.props.updateWithResult(result)
   }
 
   textChanged = async (text: string) => {

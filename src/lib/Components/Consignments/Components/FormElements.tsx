@@ -5,12 +5,14 @@ import { BodyText, LargeHeadline } from "../Typography/index"
 import Text from "./TextInput"
 
 /** A re-usable full-screen form with a scrollview */
-export const Form = (props: { title: string }) =>
+export const Form = (props: { title?: string }) =>
   <ScrollView style={{ flex: 1 }}>
     <View style={{ paddingTop: 40 }}>
-      <LargeHeadline>
-        {props.title}
-      </LargeHeadline>
+      {props.title
+        ? <LargeHeadline>
+            {props.title}
+          </LargeHeadline>
+        : null}
       <View style={{ padding: 10 }}>
         {(props as any).children}
       </View>
