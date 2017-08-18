@@ -52,6 +52,14 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
         return event.eventType() == .undo
     }
 
+    var isFairWarning: Bool {
+        return event.eventType() == .warning
+    }
+
+    var isFinalCall: Bool {
+        return event.eventType() == .finalCall
+    }
+
     var undoLiveEventID: String? {
         if !isUndo { return nil }
         return event.hostedEventID
