@@ -76,10 +76,10 @@ const render = (props: ToggleProps) => {
       <View>
         <TextBackground>
           <Title style={{ color: leftTextColor }}>
-            {props.left}
+            {selected ? props.left : ""}
           </Title>
           <Title style={{ color: rightTextColor }}>
-            {props.right}
+            {selected ? "" : props.right}
           </Title>
         </TextBackground>
         <CircleSpacer style={{ flexDirection: dotDirection }}>

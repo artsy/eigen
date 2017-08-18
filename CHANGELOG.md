@@ -15,6 +15,7 @@
 -   Adds the native functionality for taking photos of a consignment - orta
 -   Infinite loop through all photos, and look good on both iPhone + iPad - orta
 -   Adds a provenance screen - ash
+-   Adds a final submission screen - orta
 
 ###### Messaging
 
