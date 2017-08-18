@@ -1,4 +1,8 @@
 {
-  "plugins": ["./data/schema"],
-  "presets": ["react-native"]
+  "plugins": [
+    "./data/schema"
+  ],
+  "presets": [
+    "react-native"
+  ]
 }

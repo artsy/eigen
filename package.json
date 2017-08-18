@@ -90,7 +90,7 @@
     "react-native-reversed-flat-list": "^1.0.1",
     "react-native-sentry": "^0.14.5",
     "react-relay": "https://github.com/alloy/relay/releases/download/react-relay-0.9.3%2Breact-native-0.45-fix-2/react-relay-0.9.3.react-native-0.45-fix-2.tgz",
-    "react-tracking": "^4.2.1",
+    "react-tracking": "file:../../external/react-tracking/",
     "remove-markdown": "0.1.0",
     "styled-components": "^2.0.0"
   },

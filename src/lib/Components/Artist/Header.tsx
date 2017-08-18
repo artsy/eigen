@@ -1,7 +1,7 @@
 import * as PropTypes from "prop-types"
 import * as React from "react"
 import * as Relay from "react-relay"
-import track from "react-tracking"
+import track from "../../react-tracking"
 
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
