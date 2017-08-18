@@ -17,6 +17,7 @@
 
 + (void)setupUserAgent;
 + (BOOL)isWebURL:(NSURL *)url;
++ (BOOL)isTelURL:(NSURL *)url;
 
 + (BOOL)isInternalURL:(NSURL *)url;
 

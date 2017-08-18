@@ -25,6 +25,7 @@
 #import <Emission/ARArtistComponentViewController.h>
 #import "Artsy-Swift.h"
 
+
 @interface ARSwitchBoard (Tests)
 - (NSURL *)resolveRelativeUrl:(NSString *)path;
 - (id)routeInternalURL:(NSURL *)url fair:(Fair *)fair;
@@ -119,11 +120,13 @@ describe(@"ARSwitchboard", ^{
             });
 
             it(@"opens with the OS for non-http links", ^{
-                NSURL *internalURL = [[NSURL alloc] initWithString:@"tel:111111"];
-                [[switchboardMock expect] openURLInExternalService:OCMOCK_ANY];
+                id sharedAppMock = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
+                [[sharedAppMock expect] openURL:OCMOCK_ANY];
 
-                [switchboard loadURL:internalURL];
-                [switchboardMock verify];
+                NSURL *telephoneURL = [[NSURL alloc] initWithString:@"tel:111111"];
+
+                [switchboard loadURL:telephoneURL];
+                [sharedAppMock verify];
             });
         });
 

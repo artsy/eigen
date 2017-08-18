@@ -183,6 +183,12 @@ static NSString *hostFromString(NSString *string)
     return (!url.scheme || ([url.scheme isEqual:@"http"] || [url.scheme isEqual:@"https"]));
 }
 
++ (BOOL)isTelURL:(NSURL *)url
+{
+
+    return (!url.scheme || [url.scheme isEqual:@"tel"]);
+}
+
 /// TODO: don't allow Special Apple URLs? iTMS / maps.apple?
 
 + (BOOL)isInternalURL:(NSURL *)url
