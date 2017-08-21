@@ -51,7 +51,7 @@ const meProps = {
           last_message:
             "Hi, I’m interested in purchasing this work. \
                     Could you please provide more information about the piece?",
-          last_message_at: moment().subtract(1, "hours").toISOString(),
+          last_message_at: moment().subtract(1, "year").toISOString(),
           created_at: "2017-06-01T14:12:19.155Z",
           items: [
             {
