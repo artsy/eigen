@@ -142,7 +142,7 @@ randomBOOL(void)
   } else if (useAppHub) {
     AHBuild *build = [[AppHub buildManager] currentBuild];
     jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
-    self.emissionLoadedFromString = [NSString stringWithFormat:@"Using AppHub build %@", build.name];
+    self.emissionLoadedFromString = [NSString stringWithFormat:@"Using AppHub %@", build.name];
   }
 
   // Fall back to the bundled Emission JS for release
