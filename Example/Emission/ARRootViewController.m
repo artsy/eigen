@@ -19,6 +19,8 @@
 #import <Emission/ARInquiryComponentViewController.h>
 #import "ARStorybookComponentViewController.h"
 
+#import "InternalWebViewController.h"
+
 @implementation ARRootViewController
 
 - (void)viewDidLoad
@@ -119,6 +121,16 @@
   return [self tappableCellDataWithTitle:@"Open Storybook Browser" selection: ^{
     id viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"StorybookBrowser" initialProperties: @{}];
 
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+
+- (ARCellData *)jumpToUserDocs
+{
+  return [self tappableCellDataWithTitle:@"Open Emission beta Docs" selection: ^{
+    NSURL *url = [NSURL URLWithString:@"https://github.com/artsy/emission/blob/master/docs/using_the_beta.md"];
+    id viewController = [[InternalWebViewController alloc] initWithURL:url];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
@@ -251,7 +263,11 @@
 {
   ARSectionData *sectionData = [[ARSectionData alloc] init];
   [self setupSection:sectionData withTitle:@"User"];
+
   [sectionData addCellData:self.jumpToEndUserStorybooks];
+#if defined(DEPLOY)
+  [sectionData addCellData:self.jumpToUserDocs];
+#endif
   return sectionData;
 }
 

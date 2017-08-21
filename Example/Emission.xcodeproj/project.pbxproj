@@ -35,6 +35,7 @@
 		60DA49AB1EE7D219001FE871 /* EmissionPRChooseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60DA49AA1EE7D219001FE871 /* EmissionPRChooseViewController.m */; };
 		60E02A681ECB39630010F5D5 /* ARRootViewController+AppHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E02A671ECB39630010F5D5 /* ARRootViewController+AppHub.m */; };
 		60E4ABF71EE7D85000E8C3B1 /* LoadingSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E4ABF61EE7D85000E8C3B1 /* LoadingSpinner.m */; };
+		60EDA5731F4B2944007A6100 /* InternalWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60EDA5721F4B2944007A6100 /* InternalWebViewController.m */; };
 		60F61A8B1DAF982B00A72101 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F61A8A1DAF982B00A72101 /* AuthenticationManager.m */; };
 /* End PBXBuildFile section */
 
@@ -114,6 +115,8 @@
 		60E02A671ECB39630010F5D5 /* ARRootViewController+AppHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARRootViewController+AppHub.m"; sourceTree = "<group>"; };
 		60E4ABF51EE7D85000E8C3B1 /* LoadingSpinner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingSpinner.h; sourceTree = "<group>"; };
 		60E4ABF61EE7D85000E8C3B1 /* LoadingSpinner.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingSpinner.m; sourceTree = "<group>"; };
+		60EDA5711F4B2944007A6100 /* InternalWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InternalWebViewController.h; sourceTree = "<group>"; };
+		60EDA5721F4B2944007A6100 /* InternalWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InternalWebViewController.m; sourceTree = "<group>"; };
 		60F61A891DAF982A00A72101 /* AuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationManager.h; sourceTree = "<group>"; };
 		60F61A8A1DAF982B00A72101 /* AuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationManager.m; sourceTree = "<group>"; };
 		9AB72C7CDF8351EF0ADB2E4D /* Pods-Emission.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.release.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.release.xcconfig"; sourceTree = "<group>"; };
@@ -314,6 +317,8 @@
 				6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */,
 				60DA49A91EE7D219001FE871 /* EmissionPRChooseViewController.h */,
 				60DA49AA1EE7D219001FE871 /* EmissionPRChooseViewController.m */,
+				60EDA5711F4B2944007A6100 /* InternalWebViewController.h */,
+				60EDA5721F4B2944007A6100 /* InternalWebViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -612,6 +617,7 @@
 				510DCB151CCA69EC0075E8CB /* AppDelegate.m in Sources */,
 				60DA49A81EE7CF70001FE871 /* ARRootViewController+PRs.m in Sources */,
 				6011C24B1DAF63C000CE54E5 /* ARDefaults.m in Sources */,
+				60EDA5731F4B2944007A6100 /* InternalWebViewController.m in Sources */,
 				510DCB121CCA69EC0075E8CB /* main.m in Sources */,
 				6011C24E1DAF697B00CE54E5 /* EigenLikeAdminViewController.m in Sources */,
 				6011C23B1DAF5DD900CE54E5 /* ARRootViewController.m in Sources */,

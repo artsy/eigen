@@ -8,7 +8,7 @@
 -   AREmission bridging updates which require integration work in Eigen - orta
 -   You can choose any URL for gravity/metaphysics - orta
 -   Adds an env var for google maps API - orta
--   Updates the beta/dev UI - orta
+-   Updates the beta/dev UI, and with docs - orta
 
 ###### Consignments
 
