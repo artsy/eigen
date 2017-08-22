@@ -185,8 +185,7 @@ static NSString *hostFromString(NSString *string)
 
 + (BOOL)isTelURL:(NSURL *)url
 {
-
-    return (!url.scheme || [url.scheme isEqual:@"tel"]);
+    return (url.scheme && [url.scheme isEqual:@"tel"]);
 }
 
 /// TODO: don't allow Special Apple URLs? iTMS / maps.apple?
