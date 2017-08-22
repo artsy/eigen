@@ -22,6 +22,7 @@ upcoming:
       - Fixes inconsistencies in bid counts of online sales - ash
       - Fixes a minor problem displaying lots in past auctions - ash
       - Fixes inconsistencies in post-sale artwork supplementary info - ash
+      - Do not intercept tel links with our custom dialog modal - isac
 
 releases:
   - version: 3.2.3

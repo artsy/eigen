@@ -189,7 +189,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
         __strong typeof (wself) sself = wself;
         return [sself loadConversationWithID:parameters[@"id"]];
     }];
-    
+
     [self.routes addRoute:@"/admin" handler:JLRouteParams {
         return [wself loadAdminMenu];
     }];
@@ -236,7 +236,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
         [self registerPathCallbackForDomain:route.path callback:presentNativeAuctionsViewControllerBlock];
         [self registerPathCallbackForDomain:stagingDomain callback:presentNativeAuctionsViewControllerBlock];
     }
-    
+
     // This route will match any single path component and thus should be added last.
     // It doesn't need to run through echo, as it's pretty much here to stay forever.
     [self.routes addRoute:@"/:slug" priority:0 handler:JLRouteParams {
@@ -342,6 +342,10 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
         } else {
             return [self viewControllerForUnroutedDomain:url];
         }
+    } else if ([ARRouter isTelURL:url]) {
+        // Handle via OS telephony service
+        [[UIApplication sharedApplication] openURL:url];
+        return nil;
     }
 
     /// It's probably an app link, offer to jump out
