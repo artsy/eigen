@@ -118,8 +118,10 @@ describe(@"ARSwitchboard", ^{
                 [switchboard loadURL:internalURL];
                 [sharedAppMock verify];
             });
+        });
 
-            it(@"opens with the OS for non-http links", ^{
+        describe(@"with tel schemed url", ^{
+            it(@"opens with the OS for tel schemed links", ^{
                 id sharedAppMock = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
                 [[sharedAppMock expect] openURL:OCMOCK_ANY];
 
