@@ -41,7 +41,11 @@ const categoryOptions = [
   "Other",
 ]
 
-export default class Metadata extends React.Component<Props, ConsignmentMetadata> {
+interface State extends ConsignmentMetadata {
+  showSelector?: boolean
+}
+
+export default class Metadata extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = props
@@ -52,14 +56,23 @@ export default class Metadata extends React.Component<Props, ConsignmentMetadata
     this.props.navigator.pop()
   }
 
-  updateSigned = () => this.setState({ unit: this.state.unit === "cm" ? "in" : "cm" })
+  updateUnit = () => this.setState({ unit: this.state.unit === "cm" ? "in" : "cm" })
   updateTitle = title => this.setState({ title })
   updateYear = year => this.setState({ year })
   updateCategory = category => this.setState({ category })
-  updateMaterials = materials => this.setState({ materials })
+  updateMedium = medium => this.setState({ medium })
   updateWidth = width => this.setState({ width })
   updateHeight = height => this.setState({ height })
   updateDepth = depth => this.setState({ depth })
+
+  animateStateChange = newState => {
+    const animate = LayoutAnimation.easeInEaseOut as any
+    animate()
+    this.setState(newState)
+  }
+
+  showCategorySelection = () => this.animateStateChange({ showSelector: true })
+  hideCategorySelection = () => this.animateStateChange({ showSelector: false })
 
   render() {
     return (
@@ -83,14 +96,28 @@ export default class Metadata extends React.Component<Props, ConsignmentMetadata
 
               <Row>
                 <Text
-                  text={{ placeholder: "Category", onChangeText: this.updateCategory, value: this.state.category }}
+                  text={{
+                    placeholder: "Category",
+                    onChangeText: this.updateCategory,
+                    onFocus: this.showCategorySelection,
+                    value: this.state.category,
+                  }}
                   style={{ margin: 10 }}
                 />
               </Row>
 
+              {this.state.showSelector &&
+                <Picker
+                  style={{ backgroundColor: "white" }}
+                  selectedValue={this.state.category}
+                  onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue })}
+                >
+                  {categoryOptions.map(category => <Picker.Item label={category} value={category} />)}
+                </Picker>}
+
               <Row>
                 <Text
-                  text={{ placeholder: "Materials", onChangeText: this.updateMaterials, value: this.state.materials }}
+                  text={{ placeholder: "Medium", onChangeText: this.updateMedium, value: this.state.medium }}
                   style={{ margin: 10 }}
                 />
               </Row>
@@ -110,19 +137,11 @@ export default class Metadata extends React.Component<Props, ConsignmentMetadata
                 />
               </Row>
 
-              <Picker
-                style={{ backgroundColor: "white" }}
-                selectedValue={this.state.category}
-                onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue })}
-              >
-                {categoryOptions.map(category => <Picker.Item label={category} value={category} />)}
-              </Picker>
-
               <Row>
                 <Text text={{ placeholder: "Depth" }} style={{ margin: 10 }} />
                 <View style={{ flex: 1, flexDirection: "row", alignContent: "center", margin: 10 }}>
                   <Label>Units</Label>
-                  <Toggle selected={this.state.unit === "cm"} left="CM" right="IN" onPress={this.updateSigned} />
+                  <Toggle selected={this.state.unit === "cm"} left="CM" right="IN" onPress={this.updateUnit} />
                 </View>
               </Row>
             </View>

@@ -8,7 +8,7 @@ export interface ConsignmentMetadata {
   title: string | null
   year: string | null
   category: string | null
-  materials: string | null
+  medium: string | null
   width: string | null
   height: string | null
   depth: number | null

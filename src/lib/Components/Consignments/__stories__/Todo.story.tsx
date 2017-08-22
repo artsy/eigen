@@ -30,7 +30,7 @@ const metadata: ConsignmentMetadata = {
   title: "My Work",
   year: "1983",
   category: "Design",
-  materials: "Wood",
+  medium: "Wood",
   width: "100",
   height: "100",
   depth: null,

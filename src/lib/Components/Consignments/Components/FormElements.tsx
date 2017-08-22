@@ -8,11 +8,10 @@ import Text from "./TextInput"
 export const Form = (props: { title?: string }) =>
   <ScrollView style={{ flex: 1 }}>
     <View style={{ paddingTop: 40 }}>
-      {props.title
-        ? <LargeHeadline>
-            {props.title}
-          </LargeHeadline>
-        : null}
+      {props.title &&
+        <LargeHeadline>
+          {props.title}
+        </LargeHeadline>}
       <View style={{ padding: 10 }}>
         {(props as any).children}
       </View>

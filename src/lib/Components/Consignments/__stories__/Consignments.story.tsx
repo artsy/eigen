@@ -34,7 +34,7 @@ storiesOf("Consignments/_Screens")
       title: null,
       year: null,
       category: null,
-      materials: null,
+      medium: null,
       width: null,
       height: null,
       depth: null,

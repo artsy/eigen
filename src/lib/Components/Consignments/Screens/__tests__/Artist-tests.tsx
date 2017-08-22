@@ -12,13 +12,13 @@ describe("callbacks", () => {
 
   it("calls nav.pop & updateWithResult when a result is tapped", () => {
     const navigator: any = { pop: jest.fn() }
-    const updateWithResult = jest.fn()
-    const artist = new Artist({ navigator, route: {}, updateWithResult })
+    const updateWithArtist = jest.fn()
+    const artist = new Artist({ navigator, route: {}, updateWithArtist })
 
     artist.artistSelected({} as any)
 
     expect(navigator.pop).toHaveBeenCalled()
-    expect(updateWithResult).toHaveBeenCalled()
+    expect(updateWithArtist).toHaveBeenCalled()
   })
 })
 
