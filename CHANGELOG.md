@@ -20,6 +20,7 @@
 
 ###### Messaging
 
+-   Removed hard-coded sanitization of message body - sarah
 -   Small composer UI tweaks - maxim
 
 ### 1.4.0-beta.3
