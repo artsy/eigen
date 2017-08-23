@@ -125,7 +125,7 @@ export class Message extends React.Component<Props, any> {
           {this.renderAttachmentPreviews(message.attachments)}
 
           <BodyText disabled={!isSent}>
-            {message.body.split("\n\nAbout")[0]}
+            {message.body}
           </BodyText>
 
           {!message.is_from_user &&
