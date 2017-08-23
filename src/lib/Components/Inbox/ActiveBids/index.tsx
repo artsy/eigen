@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer, graphql } from "react-relay/compat"
 import styled from "styled-components/native"
 
 import { View } from "react-native"
@@ -30,20 +30,19 @@ class ActiveBids extends React.Component<RelayProps, null> {
   }
 }
 
-export default Relay.createContainer(ActiveBids, {
-  fragments: {
-    me: () => Relay.QL`
-      fragment on Me {
-        lot_standings(active_positions: true) {
-          active_bid {
-            __id
-          }
-          ${ActiveBid.getFragment("bid")}
+export default createFragmentContainer(
+  ActiveBids,
+  graphql`
+    fragment ActiveBids_me on Me {
+      lot_standings(active_positions: true) {
+        active_bid {
+          __id
         }
+        ...ActiveBid_bid
       }
-    `,
-  },
-})
+    }
+  `
+)
 
 interface RelayProps {
   me: {

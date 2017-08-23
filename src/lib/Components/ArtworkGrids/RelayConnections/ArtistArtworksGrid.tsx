@@ -10,17 +10,14 @@ const ArtistArtworksGrid = createPaginationContainer(
   InfiniteScrollArtworksGrid,
   {
     artist: graphql.experimental`
-      fragment ArtistArtworksGrid_artist on Artist @argumentDefinitions(
-        count: { type: "Int", defaultValue: 10 }
-        after: { type: "String" }
-        filter: { type: "[ArtistArtworksFilters]" }
-      ) {
-        artworks: artworks_connection(
-          first: $count
-          after: $cursor
-          filter: $filter
-          sort: partner_updated_at_desc
-        ) @connection(key: "ArtistArtworksGrid_artworks") {
+      fragment ArtistArtworksGrid_artist on Artist
+        @argumentDefinitions(
+          count: { type: "Int", defaultValue: 10 }
+          after: { type: "String" }
+          filter: { type: "[ArtistArtworksFilters]" }
+        ) {
+        artworks: artworks_connection(first: $count, after: $cursor, filter: $filter, sort: partner_updated_at_desc)
+          @connection(key: "ArtistArtworksGrid_artworks") {
           pageInfo {
             hasNextPage
             startCursor

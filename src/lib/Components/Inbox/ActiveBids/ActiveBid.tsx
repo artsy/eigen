@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer, graphql } from "react-relay/compat"
 import styled from "styled-components/native"
 
 import { TouchableWithoutFeedback } from "react-native"
@@ -135,31 +135,30 @@ class ActiveBid extends React.Component<RelayProps, State> {
   }
 }
 
-export default Relay.createContainer(ActiveBid, {
-  fragments: {
-    bid: () => Relay.QL`
-      fragment on LotStanding {
-        is_leading_bidder
-        active_bid {
-          max_bid {
-            display
-          }
-          sale_artwork {
-            lot_number
-            reserve_status
-            artwork {
-              href
-              image {
-                url
-              }
-              artist_names
+export default createFragmentContainer(
+  ActiveBid,
+  graphql`
+    fragment ActiveBid_bid on LotStanding {
+      is_leading_bidder
+      active_bid {
+        max_bid {
+          display
+        }
+        sale_artwork {
+          lot_number
+          reserve_status
+          artwork {
+            href
+            image {
+              url
             }
+            artist_names
           }
         }
       }
-    `,
-  },
-})
+    }
+  `
+)
 
 interface RelayProps {
   bid: {

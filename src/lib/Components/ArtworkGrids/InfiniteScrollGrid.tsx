@@ -7,6 +7,7 @@
 // 4. Update height of grid to encompass all items.
 
 import * as React from "react"
+import { RelayPaginationProp } from "react-relay/compat"
 
 import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
 
@@ -70,7 +71,7 @@ interface Props extends ArtistRelayProps, GeneRelayProps {
   sort: any
 
   /** Relay */
-  relay: any
+  relay?: RelayPaginationProp
 
   /** A callback that is called once all artworks have been queried. */
   onComplete?: () => void

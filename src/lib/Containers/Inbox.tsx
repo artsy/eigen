@@ -1,14 +1,14 @@
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay/compat"
 import styled from "styled-components/native"
 
 import { RefreshControl, ScrollView, View } from "react-native"
-import ActiveBids from "../Components/Inbox/Bids"
+import ActiveBids from "../Components/Inbox/ActiveBids"
 import Conversations from "../Components/Inbox/Conversations"
 import ZeroStateInbox from "../Components/Inbox/Conversations/ZeroStateInbox"
 
 interface Props extends RelayProps {
-  relay?: Relay.RelayProp
+  relay?: RelayRefetchProp
 }
 
 interface State {
@@ -34,16 +34,12 @@ export class Inbox extends React.Component<Props, State> {
     }
 
     this.setState({ fetchingData: true })
-    this.props.relay.forceFetch({}, readyState => {
-      if (readyState.done) {
-        this.setState({ fetchingData: false })
-      }
-    })
+    this.props.relay.refetch({}, null, () => this.setState({ fetchingData: false }), { force: true })
   }
 
   render() {
     const hasBids = this.props.me.lot_standings.length > 0
-    const hasConversations = this.props.me.conversations.edges.length > 0
+    const hasConversations = this.props.me.conversations_existence_check.edges.length > 0
     return hasBids || hasConversations
       ? <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
           <ActiveBids me={this.props.me as any} />
@@ -59,28 +55,41 @@ export class Inbox extends React.Component<Props, State> {
 //
 //       The same applies to the `conversations` snippet.
 //
-export default Relay.createContainer(Inbox, {
-  fragments: {
-    me: () => Relay.QL`
-      fragment on Me {
+// TODO  After switch to modern, we can use the following stopgap instead:
+//
+//        ...Conversations_me @relay(mask: false)
+//        ...ActiveBids_me @relay(mask: false)
+//
+export default createRefetchContainer(
+  Inbox,
+  {
+    me: graphql`
+      fragment Inbox_me on Me {
         lot_standings(active_positions: true) {
           active_bid {
             __id
           }
         }
-        conversations(first: 10) {
+        conversations_existence_check: conversations(first: 1) {
           edges {
             node {
               id
             }
           }
         }
-        ${Conversations.getFragment("me")}
-        ${ActiveBids.getFragment("me")}
+        ...Conversations_me
+        ...ActiveBids_me
       }
     `,
   },
-})
+  graphql`
+    query InboxRefetchQuery {
+      me {
+        ...Inbox_me
+      }
+    }
+  `
+)
 
 interface RelayProps {
   me: {
@@ -89,7 +98,7 @@ interface RelayProps {
         __id: string
       } | null
     } | null> | null
-    conversations: {
+    conversations_existence_check: {
       edges: Array<{
         node: {
           id: string | null

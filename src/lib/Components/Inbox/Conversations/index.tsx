@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay/compat"
 import styled from "styled-components/native"
 
 import { ListView, ListViewDataSource, View } from "react-native"
@@ -16,7 +16,7 @@ const Headline = styled(LargeHeadline)`
 `
 
 interface Props extends RelayProps {
-  relay: Relay.RelayProp
+  relay?: RelayPaginationProp
   headerView?: JSX.Element
   onRefresh?: () => any
 }
@@ -82,16 +82,13 @@ export class Conversations extends React.Component<Props, State> {
     if (this.state.fetchingNextPage) {
       return
     }
-    const totalSize = this.props.relay.variables.totalSize + PageSize
-
     this.setState({ fetchingNextPage: true })
-    this.props.relay.forceFetch({ totalSize }, readyState => {
-      if (readyState.done) {
-        this.setState({
-          fetchingNextPage: false,
-          dataSource: this.state.dataSource.cloneWithRows(this.conversations),
-        })
-      }
+    this.props.relay.loadMore(PageSize, error => {
+      // TODO Not performing any error handling here
+      this.setState({
+        fetchingNextPage: false,
+        dataSource: this.state.dataSource.cloneWithRows(this.conversations),
+      })
     })
   }
 
@@ -123,14 +120,13 @@ export class Conversations extends React.Component<Props, State> {
   }
 }
 
-export default Relay.createContainer(Conversations, {
-  initialVariables: {
-    totalSize: PageSize,
-  },
-  fragments: {
-    me: () => Relay.QL`
-      fragment on Me {
-        conversations(first: $totalSize) {
+export default createPaginationContainer(
+  Conversations,
+  {
+    me: graphql.experimental`
+      fragment Conversations_me on Me
+        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String", defaultValue: "" }) {
+        conversations(first: $count, after: $cursor) @connection(key: "Conversations_conversations") {
           pageInfo {
             hasNextPage
           }
@@ -138,14 +134,42 @@ export default Relay.createContainer(Conversations, {
             node {
               id
               last_message
-              ${ConversationSnippet.getFragment("conversation")}
+              ...ConversationSnippet_conversation
             }
           }
         }
       }
     `,
   },
-})
+  {
+    direction: "forward",
+    getConnectionFromProps(props) {
+      return props.me && props.me.conversations
+    },
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        count: totalCount,
+      }
+    },
+    getVariables(props, { count, cursor }, fragmentVariables) {
+      return {
+        // in most cases, for variables other than connection filters like
+        // `first`, `after`, etc. you may want to use the previous values.
+        ...fragmentVariables,
+        count,
+        cursor,
+      }
+    },
+    query: graphql.experimental`
+      query ConversationsQuery($count: Int!, $after: String) {
+        me {
+          ...Conversations_me @arguments(count: $count, after: $after)
+        }
+      }
+    `,
+  }
+)
 
 interface RelayProps {
   me: {
