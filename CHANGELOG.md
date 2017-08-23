@@ -18,6 +18,7 @@
 -   Infinite loop through all photos, and look good on both iPhone + iPad - orta
 -   Adds a provenance screen - ash
 -   Adds a final submission screen - orta
+-   Looks better on iPads - orta
 
 ###### Messaging
 
