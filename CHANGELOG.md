@@ -21,6 +21,7 @@
 
 ###### Messaging
 
+-   Added inline rendering for invoices - matt
 -   Removed hard-coded sanitization of message body - sarah
 -   Small composer UI tweaks - maxim
 
