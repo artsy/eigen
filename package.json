@@ -71,6 +71,7 @@
     "styled-components": "^2.0.0"
   },
   "devDependencies": {
+    "@playlyfe/gql": "^2.3.2",
     "@storybook/react-native": "^3.2.0",
     "@types/jest": "^19.2.2",
     "@types/lodash": "^4.14.64",
