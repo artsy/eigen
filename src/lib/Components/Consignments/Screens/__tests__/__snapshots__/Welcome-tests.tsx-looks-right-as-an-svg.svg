@@ -4,22 +4,22 @@
  <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="1334" height="750"/>
 
  <g transform='translate(0, 0)'>
-   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="1334" height="750"/>
+   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="397" y="0" width="540" height="750"/>
 
-   <g transform='translate(0, 0)'>
-     <rect type="RCTScrollView" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="1334" height="750"/>
+   <g transform='translate(397, 0)'>
+     <rect type="RCTScrollView" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="750"/>
 
      <g transform='translate(0, 0)'>
-       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="1334" height="495"/>
+       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="495"/>
 
        <g transform='translate(0, 0)'>
-         <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="1334" height="495"/>
+         <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="495"/>
 
          <g transform='translate(0, 0)'>
-           <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="647" y="40" width="40" height="60"/>
-           <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="517" y="120" width="300" height="312"/>
+           <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="250" y="40" width="40" height="60"/>
+           <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="120" y="120" width="300" height="312"/>
 
-           <g transform='translate(517, 120)'>
+           <g transform='translate(120, 120)'>
              <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="110" y="0" width="80" height="80"/>
 
              <g transform='translate(110, 0)'>
@@ -36,9 +36,9 @@
              <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="125" y="254" width="50" height="40"/>
            </g>
 
-           <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="507" y="452" width="320" height="43"/>
+           <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="110" y="452" width="320" height="43"/>
 
-           <g transform='translate(507, 452)'>
+           <g transform='translate(110, 452)'>
              <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="320" height="43"/>
 
              <g transform='translate(0, 0)'>

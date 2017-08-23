@@ -86,7 +86,7 @@
     "danger": "^1.2.0",
     "jest": "^20.0.4",
     "jest-react-native": "18.0.0",
-    "jest-snapshots-svg": "^0.0.16",
+    "jest-snapshots-svg": "^0.0.17",
     "lint-staged": "^3.4.1",
     "prettier": "^1.5.2",
     "react-dom": "16.0.0-alpha.12",

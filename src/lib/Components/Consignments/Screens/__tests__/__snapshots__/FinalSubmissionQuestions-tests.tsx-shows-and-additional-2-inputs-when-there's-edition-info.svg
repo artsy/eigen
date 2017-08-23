@@ -4,29 +4,29 @@
  <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="750" height="1334"/>
 
  <g transform='translate(0, 0)'>
-   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="750" height="1334"/>
+   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="105" y="0" width="540" height="1334"/>
 
-   <g transform='translate(0, 0)'>
-     <rect type="RCTScrollView" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="750" height="1334"/>
+   <g transform='translate(105, 0)'>
+     <rect type="RCTScrollView" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="1334"/>
 
      <g transform='translate(0, 0)'>
-       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="750" height="417"/>
+       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="417"/>
 
        <g transform='translate(0, 0)'>
-         <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="750" height="417"/>
+         <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="417"/>
 
          <g transform='translate(0, 0)'>
-           <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="750" height="60"/>
-           <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="100" width="750" height="317"/>
+           <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="540" height="60"/>
+           <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="100" width="540" height="317"/>
 
            <g transform='translate(0, 100)'>
-             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="750" height="88"/>
+             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="88"/>
 
              <g transform='translate(0, 0)'>
-               <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="24" width="686" height="40"/>
-               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="686" y="27" width="64" height="34"/>
+               <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="24" width="476" height="40"/>
+               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="476" y="27" width="64" height="34"/>
 
-               <g transform='translate(686, 27)'>
+               <g transform='translate(476, 27)'>
                  <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="64" height="31"/>
 
                  <g transform='translate(0, 0)'>
@@ -49,42 +49,42 @@
 
              </g>
 
-             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="88" width="750" height="53"/>
+             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="88" width="540" height="53"/>
 
              <g transform='translate(0, 88)'>
-               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="6" width="375" height="41"/>
+               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="6" width="270" height="41"/>
 
                <g transform='translate(0, 6)'>
-                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="375" height="40"/>
+                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="270" height="40"/>
 
                  <g transform='translate(0, 0)'>
-                   <rect type="TextInput" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="375" height="40"/>
+                   <rect type="TextInput" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="270" height="40"/>
                  </g>
 
-                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="375" height="1"/>
+                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="270" height="1"/>
                </g>
 
-               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="375" y="6" width="375" height="41"/>
+               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="270" y="6" width="270" height="41"/>
 
-               <g transform='translate(375, 6)'>
-                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="375" height="40"/>
+               <g transform='translate(270, 6)'>
+                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="270" height="40"/>
 
                  <g transform='translate(0, 0)'>
-                   <rect type="TextInput" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="375" height="40"/>
+                   <rect type="TextInput" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="270" height="40"/>
                  </g>
 
-                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="375" height="1"/>
+                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="270" height="1"/>
                </g>
 
              </g>
 
-             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="141" width="750" height="88"/>
+             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="141" width="540" height="88"/>
 
              <g transform='translate(0, 141)'>
-               <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="24" width="686" height="40"/>
-               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="686" y="27" width="64" height="34"/>
+               <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="24" width="476" height="40"/>
+               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="476" y="27" width="64" height="34"/>
 
-               <g transform='translate(686, 27)'>
+               <g transform='translate(476, 27)'>
                  <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="64" height="31"/>
 
                  <g transform='translate(0, 0)'>
@@ -107,13 +107,13 @@
 
              </g>
 
-             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="229" width="750" height="88"/>
+             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="229" width="540" height="88"/>
 
              <g transform='translate(0, 229)'>
-               <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="24" width="686" height="40"/>
-               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="686" y="27" width="64" height="34"/>
+               <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="24" width="476" height="40"/>
+               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="476" y="27" width="64" height="34"/>
 
-               <g transform='translate(686, 27)'>
+               <g transform='translate(476, 27)'>
                  <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="64" height="31"/>
 
                  <g transform='translate(0, 0)'>
