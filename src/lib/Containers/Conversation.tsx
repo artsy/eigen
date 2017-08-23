@@ -9,6 +9,8 @@ import ReversedFlatList from "react-native-reversed-flat-list"
 import styled from "styled-components/native"
 import colors from "../../data/colors"
 import fonts from "../../data/fonts"
+import ConnectivityBanner from "../Components/ConnectivityBanner"
+
 import Composer from "../Components/Inbox/Conversations/Composer"
 import Message from "../Components/Inbox/Conversations/Message"
 import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
@@ -57,21 +59,6 @@ const MessagesList = styled(FlatList)`
   margin-top: 10;
 `
 
-const ConnectivityBanner = styled.View`
-  height: 30;
-  background-color: ${colors["yellow-regular"]};
-  justify-content: center;
-  align-items: center;
-`
-
-const ConnectivityMessage = styled.Text`
-  color: ${colors["yellow-bold"]};
-  text-align: center;
-  font-family: ${fonts["garamond-regular"]};
-  font-size: 16;
-  padding-top: 5;
-`
-
 const PAGE_SIZE = 100
 
 interface Props extends RelayProps {
@@ -92,7 +79,6 @@ export class Conversation extends React.Component<Props, State> {
       sendingMessage: false,
       isConnected: true,
     }
-
     this.handleConnectivityChange = this.handleConnectivityChange.bind(this)
   }
 
@@ -189,10 +175,7 @@ export class Conversation extends React.Component<Props, State> {
               <PlaceholderView />
             </HeaderTextContainer>
           </Header>
-          {!this.state.isConnected &&
-            <ConnectivityBanner>
-              <ConnectivityMessage> No Internet Connection</ConnectivityMessage>
-            </ConnectivityBanner>}
+          {!this.state.isConnected && <ConnectivityBanner />}
           <ReversedFlatList
             data={messages}
             renderItem={this.renderMessage.bind(this)}
