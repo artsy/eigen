@@ -4337,9 +4337,9 @@ jest-snapshot@^20.0.3:
     natural-compare "^1.4.0"
     pretty-format "^20.0.3"
 
-jest-snapshots-svg@^0.0.17:
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/jest-snapshots-svg/-/jest-snapshots-svg-0.0.17.tgz#7844db7edb0eaeb3265fe2b563e629ea7f233ca2"
+jest-snapshots-svg@^0.0.18:
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/jest-snapshots-svg/-/jest-snapshots-svg-0.0.18.tgz#7c72bbb4ca754f0da431f984383313a47b9e2713"
   dependencies:
     nbind "^0.3.12"
     yoga-layout "^1.5.0"
