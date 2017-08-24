@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer, graphql } from "react-relay/compat"
 
 import { TouchableHighlight } from "react-native"
 import styled from "styled-components/native"
@@ -35,15 +35,14 @@ export class AttachmentPreview extends React.Component<Props, null> {
   }
 }
 
-export default Relay.createContainer(AttachmentPreview, {
-  fragments: {
-    attachment: () => Relay.QL`
-      fragment on Attachment {
-        id
-      }
-    `,
-  },
-})
+export default createFragmentContainer(
+  AttachmentPreview,
+  graphql`
+    fragment AttachmentPreview_attachment on Attachment {
+      id
+    }
+  `
+)
 
 interface RelayProps {
   attachment: {

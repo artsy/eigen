@@ -1,5 +1,12 @@
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import {
+  commitMutation,
+  createRefetchContainer,
+  Environment,
+  graphql,
+  MutationConfig,
+  RelayRefetchProp,
+} from "react-relay/compat"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
@@ -62,7 +69,7 @@ const MessagesList = styled(FlatList) `
 const PAGE_SIZE = 100
 
 interface Props extends RelayProps {
-  relay?: Relay.RelayProp
+  relay?: RelayRefetchProp
 }
 
 interface State {
@@ -83,9 +90,8 @@ export class Conversation extends React.Component<Props, State> {
   }
 
   renderMessage({ item }) {
-    const me = this.props.me
-    const conversationItem = me.conversation.items[0].item
-    const conversation = me.conversation
+    const conversationItem = this.props.me.conversation.items[0].item
+    const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
     const senderName = item.is_from_user ? conversation.from.name : partnerName
     const initials = item.is_from_user ? conversation.from.initials : conversation.to.initials
@@ -119,7 +125,7 @@ export class Conversation extends React.Component<Props, State> {
   //       fetch the data before rendering the initial load.
   componentDidMount() {
     if (this.props.relay) {
-      this.props.relay.forceFetch({})
+      this.props.relay.refetch({ conversationID: this.props.me.conversation.id }, null)
     }
 
     NetInfo.isConnected.addEventListener("connectionChange", this.handleConnectivityChange)
@@ -145,24 +151,19 @@ export class Conversation extends React.Component<Props, State> {
       <Composer
         disabled={this.state.sendingMessage}
         onSubmit={text => {
-          this.props.relay.commitUpdate(
-            new SendConversationMessageMutation({
-              body_text: text,
-              reply_to_message_id: lastMessage.impulse_id,
-              conversation: this.props.me.conversation as any,
-            }),
-            {
-              onFailure: transaction => {
-                // TODO Actually handle errors
-                console.warn(transaction.getError())
-                this.setState({ sendingMessage: false })
-              },
-              onSuccess: () => {
-                this.setState({ sendingMessage: false })
-              },
+          this.setState({ sendingMessage: true })
+          sendConversationMessage(
+            this.props.relay.environment,
+            conversation,
+            text,
+            response => {
+              this.setState({ sendingMessage: false })
+            },
+            error => {
+              console.warn(error)
+              this.setState({ sendingMessage: false })
             }
           )
-          this.setState({ sendingMessage: true })
         }}
       >
         <Container>
@@ -188,139 +189,136 @@ export class Conversation extends React.Component<Props, State> {
   }
 }
 
-interface MutationProps {
-  body_text: string
-  reply_to_message_id: string
-  conversation: {
-    __id: string
-    id: string
-    from: {
-      email: string
-    }
-  }
-}
+// TODO update UI after sending a message based on this info https://github.com/facebook/relay/issues/1701#issuecomment-301012344
+function sendConversationMessage(
+  environment: Environment,
+  conversation: RelayProps["me"]["conversation"],
+  text: string,
+  onCompleted: MutationConfig["onCompleted"],
+  onError: MutationConfig["onError"]
+) {
+  const lastMessage = conversation.messages.edges[conversation.messages.edges.length - 1].node
 
-class SendConversationMessageMutation extends Relay.Mutation<MutationProps, any> {
-  static fragments = {
-    conversation: () => Relay.QL`
-      fragment on Conversation {
-        __id
-        id
-        from {
-          email
+  return commitMutation(environment, {
+    onCompleted,
+    onError,
+
+    mutation: graphql`
+      mutation ConversationSendMessageMutation($input: SendConversationMessageMutationInput!) {
+        sendConversationMessage(input: $input) {
+          messageEdge {
+            node {
+              impulse_id
+              is_from_user
+              ...Message_message
+            }
+          }
         }
       }
     `,
-  }
 
-  getMutation() {
-    return Relay.QL`mutation { sendConversationMessage }`
-  }
+    variables: {
+      input: {
+        id: conversation.id,
+        from: conversation.from.email,
+        body_text: text,
+        // Reply to the last message
+        reply_to_message_id: lastMessage.impulse_id,
+      },
+    },
 
-  getVariables() {
-    return {
-      id: this.props.conversation.id,
-      from: this.props.conversation.from.email,
-      body_text: this.props.body_text,
-      reply_to_message_id: this.props.reply_to_message_id,
-    }
-  }
+    optimisticResponse: {
+      sendConversationMessage: {
+        messageEdge: {
+          node: {
+            body: text,
+            is_from_user: true,
+            created_at: null,
+            attachments: [],
+          },
+        },
+      },
+    },
 
-  getFatQuery() {
-    return Relay.QL`
-      fragment on SendConversationMessageMutationPayload {
-        messageEdge
-        conversation {
-          messages
-        }
-      }
-    `
-  }
-
-  getConfigs() {
-    return [
+    configs: [
       {
         type: "RANGE_ADD",
-        parentName: "conversation",
-        parentID: this.props.conversation.__id,
-        connectionName: "messages",
-        edgeName: "messageEdge",
-        rangeBehaviors: {
-          "": "append",
-        },
+        // parentName: "conversation",
+        // parentID: "id",
+        // connectionName: "messages",
+        // edgeName: "messageEdge",
+        // rangeBehaviors: {
+        //   "": "append",
+        // },
+        connectionInfo: [
+          {
+            key: "Conversation_messages",
+            rangeBehavior: "append",
+          },
+        ],
       },
-    ]
-  }
-
-  getOptimisticResponse() {
-    return {
-      messageEdge: {
-        node: {
-          body: this.props.body_text,
-          is_from_user: true,
-          created_at: new Date().toISOString(),
-          attachments: [],
-        },
-      },
-    }
-  }
+    ],
+  })
 }
 
-export default Relay.createContainer(Conversation, {
-  initialVariables: {
-    pageSize: PAGE_SIZE,
-    conversationID: null,
-  },
-  fragments: {
-    me: () => Relay.QL`
-      fragment on Me {
-        conversation(id: $conversationID) {
-          from {
-            name
-            email
-            initials
+// TODO Make this a pagination container instead of fetching 100 messages
+export default createRefetchContainer(
+  Conversation,
+  graphql`
+    fragment Conversation_me on Me {
+      conversation(id: $conversationID) {
+        id
+        from {
+          name
+          email
+          initials
+        }
+        to {
+          name
+          initials
+        }
+        messages(first: 100) @connection(key: "Conversation_messages") {
+          pageInfo {
+            hasNextPage
           }
-          to {
-            name
-            initials
-          }
-          messages(first: $pageSize) {
-            pageInfo {
-              hasNextPage
-            }
-            edges {
-              node {
-                impulse_id
-                is_from_user
-                ${Message.getFragment("message")}
-              }
+          edges {
+            node {
+              impulse_id
+              is_from_user
+              ...Message_message
             }
           }
-          items {
-            item {
-              ... on Artwork {
-                __typename
-                href
-                ${ArtworkPreview.getFragment("artwork")}
-              }
-              ... on Show {
-                __typename
-                href
-                ${ShowPreview.getFragment("show")}
-              }
+        }
+        items {
+          item {
+            ... on Artwork {
+              __typename
+              href
+              ...ArtworkPreview_artwork
+            }
+            ... on Show {
+              __typename
+              href
+              ...ShowPreview_show
             }
           }
-          ${SendConversationMessageMutation.getFragment("conversation")}
         }
       }
-    `,
-  },
-})
+    }
+  `,
+  graphql`
+    query ConversationRefetchQuery($conversationID: String!) {
+      me {
+        ...Conversation_me
+      }
+    }
+  `
+)
 
 interface RelayProps {
   me: {
-    initials: string
     conversation: {
+      id: string
       from: {
         name: string
         email: string

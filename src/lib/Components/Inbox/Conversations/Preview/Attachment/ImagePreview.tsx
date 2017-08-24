@@ -1,6 +1,6 @@
 import * as React from "react"
 import { TouchableHighlight } from "react-native"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer, graphql } from "react-relay/compat"
 import styled from "styled-components/native"
 
 import colors from "../../../../../../data/colors"
@@ -21,16 +21,15 @@ export const ImagePreview: React.SFC<Props> = ({ attachment, onSelected }) =>
     <Image imageURL={attachment.download_url} />
   </AttachmentPreview>
 
-export default Relay.createContainer(ImagePreview, {
-  fragments: {
-    attachment: () => Relay.QL`
-      fragment on Attachment {
-        download_url
-        ${AttachmentPreview.getFragment("attachment")}
-      }
-    `,
-  },
-})
+export default createFragmentContainer(
+  ImagePreview,
+  graphql`
+    fragment ImagePreview_attachment on Attachment {
+      download_url
+      ...AttachmentPreview_attachment
+    }
+  `
+)
 
 interface RelayProps {
   attachment: {
