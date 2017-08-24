@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer, graphql } from "react-relay/compat"
 
 import { Dimensions, ScrollView, View, ViewProperties, ViewStyle } from "react-native"
 
@@ -32,15 +32,14 @@ interface Styles {
   tabView: ViewStyle
 }
 
-export default Relay.createContainer(MyAccount, {
-  fragments: {
-    me: () => Relay.QL`
-      fragment on Me {
-        name
-      }
-    `,
-  },
-})
+export default createFragmentContainer(
+  MyAccount,
+  graphql`
+    fragment MyAccount_me on Me {
+      name
+    }
+  `
+)
 
 interface RelayProps {
   me: {
