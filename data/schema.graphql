@@ -2702,6 +2702,38 @@ type Image {
   versions: [String]
 }
 
+type Invoice {
+  # Impulse's invoice id.
+  id: String!
+
+  # Lewitt's invoice id.
+  lewitt_invoice_id: String!
+
+  # Link to public checkout page.
+  payment_url: String
+
+  # Current state of invoice.
+  state: InvoiceState
+
+  # A formatted price with various currency formatting options.
+  total(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+}
+
+enum InvoiceState {
+  UNPAID
+  PAID
+  VOID
+  REFUNDED
+}
+
 union Item = ArtistItem | ArtworkItem | FeaturedLinkItem | GeneItem
 
 type Location {
@@ -2877,6 +2909,7 @@ type Message implements Node {
   body: String
   deliveries: [Delivery]
   attachments: [Attachment]
+  invoice: Invoice
 
   # True if message is an invoice message
   is_invoice: Boolean

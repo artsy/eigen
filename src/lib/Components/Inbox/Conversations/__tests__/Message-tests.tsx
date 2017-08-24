@@ -20,6 +20,11 @@ it("looks correct when rendered", () => {
       name: "Percy",
       email: "percy@cat.com",
     },
+    invoice: {
+      state: "UNPAID",
+      total: "$420",
+      payment_url: "https://www.adopt-cats.org/pay-here",
+    },
   }
   const tree = renderer.create(<Message senderName={senderName} message={props} />).toJSON()
   expect(tree).toMatchSnapshot()
