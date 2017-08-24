@@ -16,16 +16,16 @@ export interface ConsignmentMetadata {
   displayString: string // This would look something like "1/5", "5/5"
 }
 
-export interface ArtistResult {
+export interface SearchResult {
   id: string
   name: string
-  image: {
+  image?: {
     url: string
   }
 }
 
 export interface ConsignmentSetup {
-  artist?: ArtistResult
+  artist?: SearchResult
   photos?: string[]
   metadata?: ConsignmentMetadata
   location?: string

@@ -4,9 +4,10 @@ import { NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-nat
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { LargeHeadline, Subtitle } from "../Typography"
 
-import { ArtistResult, ConsignmentSetup } from "../"
+import { ConsignmentSetup, SearchResult } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import Artist from "./Artist"
+import Location from "./Location"
 import Provenance from "./Provenance"
 import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
 import Welcome from "./Welcome"
@@ -36,9 +37,9 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
 
   goToPhotosTapped = () => this.props.navigator.push({ component: SelectFromPhotoLibrary, passProps: this.props })
   goToMetadataTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
-  goToLocationTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
+  goToLocationTapped = () => this.props.navigator.push({ component: Location, passProps: this.props })
 
-  updateArtist = (result: ArtistResult) => {
+  updateArtist = (result: SearchResult) => {
     this.setState({ artist: result })
   }
 

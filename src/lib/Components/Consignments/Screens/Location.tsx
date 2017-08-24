@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import ArtistSearch from "../Components/ArtistSearchResults"
+import Search from "../Components/ArtistSearchResults"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
 
@@ -9,6 +9,11 @@ import { ConsignmentSetup, SearchResult } from "../index"
 import { debounce } from "lodash"
 import { NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
 import metaphysics from "../../../metaphysics"
+
+import { stringify } from "qs"
+
+import { NativeModules } from "react-native"
+const { Emission } = NativeModules
 
 interface ArtistSearchResponse {
   match_artist: SearchResult[]
@@ -26,7 +31,7 @@ interface State {
   results: any | null
 }
 
-export default class Artist extends React.Component<Props, State> {
+export default class Location extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
@@ -40,7 +45,7 @@ export default class Artist extends React.Component<Props, State> {
     this.props.navigator.pop()
   }
 
-  artistSelected = (result: SearchResult) => {
+  locationSelected = (result: SearchResult) => {
     this.props.navigator.pop()
     this.props.updateWithResult(result)
   }
@@ -51,19 +56,28 @@ export default class Artist extends React.Component<Props, State> {
   }
 
   searchForQuery = async (query: string) => {
-    const results = await metaphysics<ArtistSearchResponse>(`
-      {
-        match_artist(term: "${query}") {
-          id
-          name
-          image {
-            url
-          }
-        }
-      }
-    `)
-    this.setState({ results: results.match_artist, searching: false })
+    // The 2nd is a throw-away key on a throw-away account
+    const apiKey = Emission.googleMapsAPIKey || "AIzaSyBJRIy_zCXQ7XYt9Ubn8bpUIEAxEOKUmx8"
+    const queryString = stringify({
+      key: apiKey,
+      language: "en",
+      types: "(cities)",
+      input: query,
+    })
+
+    const response = await fetch("https://maps.googleapis.com/maps/api/place/autocomplete/json?" + queryString)
+    const results = await response.json()
+
+    this.setState({
+      results: results.predictions && results.predictions.map(this.predictionToResult),
+      searching: false,
+    })
   }
+
+  predictionToResult = prediction => ({
+    id: prediction.place_id,
+    name: prediction.description,
+  })
 
   render() {
     return (
@@ -72,14 +86,14 @@ export default class Artist extends React.Component<Props, State> {
           <View
             style={{ alignContent: "center", justifyContent: "flex-end", flexGrow: 1, marginLeft: 20, marginRight: 20 }}
           >
-            <ArtistSearch
+            <Search
               results={this.state.results}
               query={this.state.query}
-              placeholder="Artist/Designer Name"
-              noResultsMessage="Unfortunately we are not accepting consignments for works by"
               onChangeText={this.textChanged}
               searching={this.state.searching}
-              resultSelected={this.artistSelected}
+              resultSelected={this.locationSelected}
+              placeholder="Artist/Designer Name"
+              noResultsMessage="Unfortunately we are not accepting consignments for works by"
             />
           </View>
         </DoneButton>

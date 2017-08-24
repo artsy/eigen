@@ -4,6 +4,7 @@ import * as React from "react"
 import Nav from "../index"
 import Artist from "../Screens/Artist"
 import FinalSubmissionQuestions from "../Screens/FinalSubmissionQuestions"
+import Location from "../Screens/Location"
 import Overview from "../Screens/Overview"
 import Provenance from "../Screens/Provenance"
 import SelectFromPhotoLibrary from "../Screens/SelectFromPhotoLibrary"
@@ -13,7 +14,7 @@ const nav = {} as any
 const route = {} as any
 
 storiesOf("Consignments/_Screens")
-  .add("Full Nav", () => {
+  .add("Consignments", () => {
     return <Nav />
   })
   .add("Welcome Page", () => {
@@ -30,6 +31,9 @@ storiesOf("Consignments/_Screens")
   })
   .add("SelectFromPhotoLibrary Page", () => {
     return <SelectFromPhotoLibrary navigator={nav} route={route} />
+  })
+  .add("Location Page", () => {
+    return <Location navigator={nav} route={route} />
   })
   .add("FinalSubmissionQuestions Page", () => {
     return <FinalSubmissionQuestions navigator={nav} route={route} setup={{}} />

@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
 
-import { ArtistResult } from "../"
+import { SearchResult } from "../"
 import TextInput, { TextInputProps } from "./TextInput"
 
 const Result = styled.TouchableHighlight`
@@ -45,10 +45,12 @@ const UnknownName = styled.Text`
 `
 
 export interface ArtistQueryData extends TextInputProps {
-  results: ArtistResult[] | null
+  results: SearchResult[] | null
   query: string
+  placeholder: string
+  noResultsMessage: string
   onChangeText?: (query: string) => void
-  resultSelected?: (result: ArtistResult) => void
+  resultSelected?: (result: SearchResult) => void
 }
 
 const noResults = props => {
@@ -57,7 +59,7 @@ const noResults = props => {
   }
   return (
     <UnknownLabel>
-      Unfortunately we are not accepting consignments for works by <UnknownName>{props.query}</UnknownName>
+      {props.noResultsMessage} <UnknownName>{props.query}</UnknownName>
     </UnknownLabel>
   )
 }
@@ -78,7 +80,7 @@ const render = (props: ArtistQueryData) => {
       <TextInput
         searching={props.searching}
         text={{
-          placeholder: "Artist/Designer Name",
+          placeholder: props.placeholder,
           returnKeyType: "search",
           value: props.query,
           onChangeText: props.onChangeText,

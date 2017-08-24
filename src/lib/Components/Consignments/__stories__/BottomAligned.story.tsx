@@ -26,7 +26,7 @@ const withText = {
 }
 
 const withSearchResults = {
-  children: [<Search searching={false} query="Banko" results={null} />],
+  children: [<Search placeholder="Example" noResultsMessage="> " searching={false} query="Banko" results={null} />],
   onPress: () => "",
   bodyStyle: doneButtonStyles,
   buttonText: "DONE",
