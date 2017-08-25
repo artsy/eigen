@@ -344,20 +344,21 @@ const styles = StyleSheet.create<Styles>({
 export default createRefetchContainer(
   Gene,
   graphql.experimental`
-    fragment Gene_gene on Gene @argumentDefinitions(
-      sort: { type: "String", defaultValue: "-partner_updated_at" }
-      medium: { type: "String", defaultValue: "*" }
-      price_range: { type: "String", defaultValue: "*-*" }
-    ) {
+    fragment Gene_gene on Gene
+      @argumentDefinitions(
+        sort: { type: "String", defaultValue: "-partner_updated_at" }
+        medium: { type: "String", defaultValue: "*" }
+        price_range: { type: "String", defaultValue: "*-*" }
+      ) {
       ...Header_gene
       ...About_gene
       ...GeneArtworksGrid_gene
       filtered_artworks(
-        medium: $medium,
-        price_range: $price_range,
-        sort: $sort,
-        aggregations: [MEDIUM, PRICE_RANGE, TOTAL],
-        page: 1,
+        medium: $medium
+        price_range: $price_range
+        sort: $sort
+        aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
+        page: 1
         for_sale: true
       ) {
         total
@@ -373,12 +374,7 @@ export default createRefetchContainer(
     }
   `,
   graphql.experimental`
-    query GeneRefetchQuery(
-      $geneID: String!
-      $sort: String
-      $medium: String
-      $price_range: String
-    ) {
+    query GeneRefetchQuery($geneID: String!, $sort: String, $medium: String, $price_range: String) {
       gene(id: $geneID) {
         ...Gene_gene @arguments(sort: $sort, medium: $medium, price_range: $price_range)
       }
