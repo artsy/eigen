@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<svg width="750" height="1334" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg width="1536" height="2048" xmlns="http://www.w3.org/2000/svg" version="1.1">
 
- <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="750" height="1334"/>
+ <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="1536" height="2048"/>
 
  <g transform='translate(0, 0)'>
-   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="105" y="0" width="540" height="1334"/>
+   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="498" y="0" width="540" height="2048"/>
 
-   <g transform='translate(105, 0)'>
-     <rect type="RCTScrollView" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="1334"/>
+   <g transform='translate(498, 0)'>
+     <rect type="RCTScrollView" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="2048"/>
 
      <g transform='translate(0, 0)'>
-       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="417"/>
+       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="364"/>
 
        <g transform='translate(0, 0)'>
-         <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="417"/>
+         <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="364"/>
 
          <g transform='translate(0, 0)'>
            <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="0" y="40" width="540" height="60"><body xmlns="http://www.w3.org/1999/xhtml"><p>Answer a few questions about the work</p></body></foreignObject>
-           <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="100" width="540" height="317"/>
+           <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="100" width="540" height="264"/>
 
            <g transform='translate(0, 100)'>
              <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="88"/>
@@ -33,14 +33,14 @@
                    <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="8" y="9" width="48" height="22"/>
 
                    <g transform='translate(8, 9)'>
-                     <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="0" y="0" width="24" height="22"><body xmlns="http://www.w3.org/1999/xhtml"><p>NO</p></body></foreignObject>
-                     <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="24" y="0" width="24" height="22"/>
+                     <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="24" height="22"/>
+                     <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="24" y="0" width="24" height="22"><body xmlns="http://www.w3.org/1999/xhtml"><p>YES</p></body></foreignObject>
                    </g>
 
                    <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="6" y="4" width="52" height="24"/>
 
                    <g transform='translate(6, 4)'>
-                     <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="28" y="0" width="24" height="24"/>
+                     <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="24" height="24"/>
                    </g>
 
                  </g>
@@ -49,38 +49,9 @@
 
              </g>
 
-             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="88" width="540" height="53"/>
+             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="88" width="540" height="88"/>
 
              <g transform='translate(0, 88)'>
-               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="6" width="270" height="41"/>
-
-               <g transform='translate(0, 6)'>
-                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="270" height="40"/>
-
-                 <g transform='translate(0, 0)'>
-                   <rect type="TextInput" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="270" height="40"/>
-                 </g>
-
-                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="270" height="1"/>
-               </g>
-
-               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="270" y="6" width="270" height="41"/>
-
-               <g transform='translate(270, 6)'>
-                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="270" height="40"/>
-
-                 <g transform='translate(0, 0)'>
-                   <rect type="TextInput" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="270" height="40"/>
-                 </g>
-
-                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="270" height="1"/>
-               </g>
-
-             </g>
-
-             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="141" width="540" height="88"/>
-
-             <g transform='translate(0, 141)'>
                <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="0" y="24" width="476" height="40"><body xmlns="http://www.w3.org/1999/xhtml"><p>Is this work signed?</p></body></foreignObject>
                <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="476" y="27" width="64" height="34"/>
 
@@ -107,9 +78,9 @@
 
              </g>
 
-             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="229" width="540" height="88"/>
+             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="176" width="540" height="88"/>
 
-             <g transform='translate(0, 229)'>
+             <g transform='translate(0, 176)'>
                <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="0" y="24" width="476" height="40"><body xmlns="http://www.w3.org/1999/xhtml"><p>Do you have a certificate of authenticity?</p></body></foreignObject>
                <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="476" y="27" width="64" height="34"/>
 
