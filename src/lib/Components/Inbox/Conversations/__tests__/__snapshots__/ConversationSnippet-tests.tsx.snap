@@ -150,7 +150,7 @@ exports[`renders correctly with a show 1`] = `
               ]
             }
           >
-            30 MINUTES
+            A YEAR
           </Text>
           <View
             style={
@@ -416,7 +416,7 @@ exports[`renders correctly with an artwork 1`] = `
               ]
             }
           >
-            30 MINUTES
+            A YEAR
           </Text>
           <View
             style={

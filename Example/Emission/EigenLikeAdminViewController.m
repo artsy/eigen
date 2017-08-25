@@ -22,10 +22,8 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 - (NSString *)titleForApp
 {
   NSDictionary *metadata = [[NSBundle mainBundle] infoDictionary];
-  NSString *name = [metadata objectForKey:@"CFBundleIdentifier"];
   NSString *build = [metadata objectForKey:@"CFBundleVersion"];
-  NSString *version = [metadata objectForKey:@"CFBundleShortVersionString"];
-  return [NSString stringWithFormat:@"%@ v%@, build %@", name, version, build];
+  return [NSString stringWithFormat:@"Emission build %@", build];
 }
 
 - (void)setupSection:(ARSectionData *)section withTitle:(NSString *)title

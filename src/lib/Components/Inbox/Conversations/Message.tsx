@@ -8,6 +8,8 @@ import Avatar from "./Avatar"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
 import PDFPreview from "./Preview/Attachment/PDFPreview"
 
+import InvoicePreview from "./Preview/InvoicePreview"
+
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 
@@ -55,6 +57,8 @@ const ArtworkPreviewContainer = styled.View`margin-bottom: 10;`
 const ImagePreviewContainer = styled.View`margin-bottom: 10;`
 
 const PDFPreviewContainer = styled.View`margin-bottom: 10;`
+
+const InvoicePreviewContainer = styled.View`margin-bottom: 10;`
 
 interface Props extends RelayProps {
   senderName: string
@@ -122,10 +126,15 @@ export class Message extends React.Component<Props, any> {
               {showPreview}
             </ArtworkPreviewContainer>}
 
+          {message.invoice &&
+            <InvoicePreviewContainer>
+              <InvoicePreview invoice={message.invoice} />
+            </InvoicePreviewContainer>}
+
           {this.renderAttachmentPreviews(message.attachments)}
 
           <BodyText disabled={!isSent}>
-            {message.body.split("\n\nAbout")[0]}
+            {message.body}
           </BodyText>
 
           {!message.is_from_user &&
@@ -149,6 +158,9 @@ export default Relay.createContainer(Message, {
           name
           email
         }
+        invoice {
+          ${InvoicePreview.getFragment("invoice")}
+        }
         attachments {
           id
           content_type
@@ -167,6 +179,7 @@ interface RelayProps {
     body: string | null
     created_at: string | null
     is_from_user: boolean
+    invoice: any | null
     from: {
       name: string | null
       email: string

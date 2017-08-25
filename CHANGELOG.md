@@ -2,12 +2,15 @@
 
 ###### Dev
 
+-   Extracts connectivity banner into its own component - sarah
 -   Adds stylelint to the dev-experience, not validated on CI yet - orta
 -   Updates Storybooks to 3.2 - orta
 -   CocoaPods/Danger updates - orta
 -   AREmission bridging updates which require integration work in Eigen - orta
 -   You can choose any URL for gravity/metaphysics - orta
 -   Adds an env var for google maps API - orta
+-   Updates the beta/dev UI, and with docs - orta
+-   Some testing stability work - orta
 
 ###### Consignments
 
@@ -16,10 +19,14 @@
 -   Infinite loop through all photos, and look good on both iPhone + iPad - orta
 -   Adds a provenance screen - ash
 -   Adds a final submission screen - orta
--   [WIP] Adds a screen for metadata editing - orta
+-   Adds a screen for metadata editing - orta
+-   Looks better on iPads - orta
 
 ###### Messaging
 
+-   Fixed incorrect use of Attachment props in invoice component - matt
+-   Added inline rendering for invoices - matt
+-   Removed hard-coded sanitization of message body - sarah
 -   Small composer UI tweaks - maxim
 
 ### 1.4.0-beta.3

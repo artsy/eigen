@@ -12,13 +12,18 @@ it("looks correct when rendered", () => {
   const senderName = "Sarah"
   const props = {
     key: 0,
-    created_at: moment().subtract(30, "minutes").toISOString(),
+    created_at: moment().subtract(1, "year").toISOString(),
     body: messageBody,
     is_from_user: true,
     attachments: [],
     from: {
       name: "Percy",
       email: "percy@cat.com",
+    },
+    invoice: {
+      state: "UNPAID",
+      total: "$420",
+      payment_url: "https://www.adopt-cats.org/pay-here",
     },
   }
   const tree = renderer.create(<Message senderName={senderName} message={props} />).toJSON()

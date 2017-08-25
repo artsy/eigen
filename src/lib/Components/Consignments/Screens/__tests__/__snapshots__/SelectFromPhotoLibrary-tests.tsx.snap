@@ -15,187 +15,202 @@ exports[`Sets up the right view hierarchy 1`] = `
   }
 >
   <View
-    keyboardVerticalOffset={60}
-    onLayout={[Function]}
     style={
       Array [
         Object {
-          "flex": 1,
+          "alignSelf": "center",
+          "backgroundColor": "black",
+          "height": "100%",
+          "maxWidth": 540,
+          "width": "100%",
         },
-        Object {
-          "paddingBottom": 0,
-        },
+        undefined,
       ]
     }
   >
     <View
-      style={
-        Object {
-          "flexGrow": 1,
-        }
-      }
-    >
-      <RCTScrollView
-        onScroll={[Function]}
-        scrollEventThrottle={50}
-        scrollsToTop={true}
-        style={
-          Object {
-            "flex": 1,
-          }
-        }
-      >
-        <View>
-          <View
-            style={
-              Object {
-                "paddingTop": 40,
-              }
-            }
-          >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              style={
-                Array [
-                  Object {
-                    "color": "#cccccc",
-                    "fontSize": 20,
-                    "marginBottom": 18,
-                    "marginTop": 18,
-                    "paddingLeft": 25,
-                    "paddingRight": 25,
-                    "textAlign": "center",
-                  },
-                  Object {},
-                  Object {
-                    "fontFamily": "AGaramondPro-Regular",
-                  },
-                ]
-              }
-            >
-              We suggest adding a few photos of the work including the front and back as well as the signature.
-            </Text>
-            <RCTScrollView
-              contentContainerStyle={
-                Object {
-                  "flexDirection": "row",
-                  "flexWrap": "wrap",
-                  "justifyContent": "center",
-                }
-              }
-              dataSource={
-                ListViewDataSource {
-                  "items": 1,
-                }
-              }
-              renderRow={[Function]}
-              renderScrollComponent={[Function]}
-            >
-              <View>
-                <View
-                  accessibilityComponentType={undefined}
-                  accessibilityLabel={undefined}
-                  accessibilityTraits={undefined}
-                  accessible={true}
-                  hitSlop={undefined}
-                  isTVSelectable={true}
-                  nativeID={undefined}
-                  onLayout={undefined}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
-                  style={
-                    Object {
-                      "alignItems": "center",
-                      "backgroundColor": "white",
-                      "borderColor": null,
-                      "borderWidth": 2,
-                      "height": 158,
-                      "justifyContent": "center",
-                      "margin": 4,
-                      "opacity": 1,
-                      "width": 158,
-                    }
-                  }
-                  testID={undefined}
-                  tvParallaxProperties={undefined}
-                >
-                  <Image
-                    source={1}
-                  />
-                </View>
-              </View>
-            </RCTScrollView>
-          </View>
-        </View>
-      </RCTScrollView>
-    </View>
-    <View
+      keyboardVerticalOffset={60}
+      onLayout={[Function]}
       style={
         Array [
           Object {
-            "backgroundColor": "#e5e5e5",
-            "height": 1,
+            "flex": 1,
           },
-          undefined,
+          Object {
+            "paddingBottom": 0,
+          },
         ]
       }
-    />
-    <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      hitSlop={undefined}
-      isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "backgroundColor": "black",
-          "height": 56,
-          "marginBottom": 20,
-          "opacity": 1,
-          "paddingTop": 18,
-        }
-      }
-      testID={undefined}
-      tvParallaxProperties={undefined}
     >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
+        style={
+          Object {
+            "flexGrow": 1,
+          }
+        }
+      >
+        <RCTScrollView
+          onScroll={[Function]}
+          scrollEventThrottle={50}
+          scrollsToTop={true}
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+        >
+          <View>
+            <View
+              style={
+                Object {
+                  "paddingTop": 40,
+                }
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "color": "#cccccc",
+                      "fontSize": 20,
+                      "marginBottom": 18,
+                      "marginTop": 18,
+                      "paddingLeft": 25,
+                      "paddingRight": 25,
+                      "textAlign": "center",
+                    },
+                    Object {},
+                    Object {
+                      "fontFamily": "AGaramondPro-Regular",
+                    },
+                  ]
+                }
+              >
+                We suggest adding a few photos of the work including the front and back as well as the signature.
+              </Text>
+              <RCTScrollView
+                contentContainerStyle={
+                  Object {
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "center",
+                  }
+                }
+                dataSource={
+                  ListViewDataSource {
+                    "items": 1,
+                  }
+                }
+                renderRow={[Function]}
+                renderScrollComponent={[Function]}
+              >
+                <View>
+                  <View
+                    accessibilityComponentType={undefined}
+                    accessibilityLabel={undefined}
+                    accessibilityTraits={undefined}
+                    accessible={true}
+                    hitSlop={undefined}
+                    isTVSelectable={true}
+                    nativeID={undefined}
+                    onLayout={undefined}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "backgroundColor": "white",
+                        "borderColor": null,
+                        "borderWidth": 2,
+                        "height": 158,
+                        "justifyContent": "center",
+                        "margin": 4,
+                        "opacity": 1,
+                        "width": 158,
+                      }
+                    }
+                    testID={undefined}
+                    tvParallaxProperties={undefined}
+                  >
+                    <Image
+                      source={1}
+                    />
+                  </View>
+                </View>
+              </RCTScrollView>
+            </View>
+          </View>
+        </RCTScrollView>
+      </View>
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "Avant Garde Gothic ITCW01Dm",
-              "fontSize": 14,
-              "textAlign": "center",
+              "backgroundColor": "#e5e5e5",
+              "height": 1,
             },
             undefined,
           ]
         }
+      />
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "backgroundColor": "black",
+            "height": 56,
+            "marginBottom": 20,
+            "opacity": 1,
+            "paddingTop": 18,
+          }
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
       >
-        DONE
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "white",
+                "flexBasis": 0,
+                "flexGrow": 1,
+                "flexShrink": 1,
+                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontSize": 14,
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          DONE
+        </Text>
+      </View>
     </View>
   </View>
 </View>

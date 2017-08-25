@@ -21,7 +21,7 @@ const meProps = {
           from: { name: "Jean-Luc Collecteur", email: "luc+messaging@artsymail.com" },
           to: { name: "ACA Galleries" },
           last_message: "Karl and Anna... Fab!",
-          last_message_at: moment().subtract(30, "minutes").toISOString(),
+          last_message_at: moment().subtract(1, "year").toISOString(),
           created_at: "2017-06-01T14:14:35.538Z",
           items: [
             {
@@ -51,7 +51,7 @@ const meProps = {
           last_message:
             "Hi, I’m interested in purchasing this work. \
                     Could you please provide more information about the piece?",
-          last_message_at: moment().subtract(1, "hours").toISOString(),
+          last_message_at: moment().subtract(1, "year").toISOString(),
           created_at: "2017-06-01T14:12:19.155Z",
           items: [
             {
