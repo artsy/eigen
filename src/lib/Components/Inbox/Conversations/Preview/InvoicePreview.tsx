@@ -10,8 +10,6 @@ import SerifText from "../../../Text/Serif"
 
 import InvertedButton from "../../../Buttons/InvertedButton"
 
-import AttachmentPreview, { AttachmentProps } from "../Preview/Attachment/AttachmentPreview"
-
 const Container = styled.View`
   border-width: 1;
   border-color: ${colors["gray-regular"]};
@@ -53,7 +51,9 @@ const PaymentRequest = styled.Text`
   font-size: 14;
 `
 
-interface Props extends AttachmentProps, RelayProps {}
+interface Props extends RelayProps {
+  onSelected?: () => void
+}
 
 interface InvoiceStateButtonProps {
   state: string | null
@@ -79,7 +79,7 @@ const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ state }) => {
 }
 
 export const InvoicePreview: React.SFC<Props> = ({ invoice, onSelected }) =>
-  <AttachmentPreview attachment={invoice as any} onSelected={onSelected}>
+  <TouchableHighlight onPress={onSelected} underlayColor={colors["gray-light"]}>
     <Container>
       <Icon source={require("../../../../../../images/payment_request.png")} />
       <TextContainer>
@@ -92,7 +92,7 @@ export const InvoicePreview: React.SFC<Props> = ({ invoice, onSelected }) =>
         {InvoiceStateButton(invoice)}
       </TextContainer>
     </Container>
-  </AttachmentPreview>
+  </TouchableHighlight>
 
 export default Relay.createContainer(InvoicePreview, {
   fragments: {
