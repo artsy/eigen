@@ -1,16 +1,45 @@
 import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import "react-native"
-import * as Relay from "react-relay/classic"
-import StubContainer from "react-storybooks-relay-container"
+// import StubContainer from "react-storybooks-relay-container"
 
-import Routes from "../../../../relay/routes"
 import Inbox from "../index"
 
-storiesOf("Conversations/Overview")
-  .add("With live data", () => <Relay.RootContainer Component={Inbox} route={new Routes.MyAccount()} />)
-  .add("With dummy data", () => <StubContainer Component={Inbox} props={{ me: meProps }} />)
-  .add("With no data", () => <StubContainer Component={Inbox} props={{ me: { conversations: { edges: [] } } }} />)
+// TODO Move to metametaphysics after Relay Modern migration
+import { graphql, QueryRenderer } from "react-relay/compat"
+import createEnvironment from "../../../../relay/createEnvironment"
+// TODO This fails due to Relay trying to request `id` for the Node interface. Probably because we need to switch from
+//      compat to modern?
+//
+// Question: Why do we need to define a `after` variable, but don’t need to specify anything for it?
+const RootContainer: React.SFC<any> = ({ Component }) => {
+  return (
+    <QueryRenderer
+      environment={createEnvironment()}
+      query={graphql.experimental`
+        query InboxQuery($cursor: String) {
+          me {
+            ...Inbox_me @arguments(after: $cursor)
+          }
+        }
+      `}
+      variables={{}}
+      render={({ error, props }) => {
+        if (error) {
+          console.error(error)
+        } else if (props) {
+          return <Component {...props} />
+        }
+        return null
+      }}
+    />
+  )
+}
+
+storiesOf("Conversations/Overview").add("With live data", () => <RootContainer Component={Inbox} />)
+// TODO Move to metametaphysics after Relay Modern migration
+// .add("With dummy data", () => <StubContainer Component={Inbox} props={{ me: meProps }} />)
+// .add("With no data", () => <StubContainer Component={Inbox} props={{ me: { conversations: { edges: [] } } }} />)
 
 const meProps = {
   conversations: {
