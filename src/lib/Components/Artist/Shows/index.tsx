@@ -1,11 +1,11 @@
 import * as React from "react"
-import * as Relay from "react-relay/classic"
+import { createFragmentContainer, graphql } from "react-relay/compat"
 
 import { Dimensions, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 
 import Separator from "../../Separator"
 import SerifText from "../../Text/Serif"
-import SmallShowsList from "./SmallList"
+import SmallList from "./SmallList"
 import VariableSizeShowsList from "./VariableSizeShowsList"
 
 const windowDimensions = Dimensions.get("window")
@@ -43,11 +43,11 @@ class Shows extends React.Component<Props, any> {
   }
 
   pastShowsList() {
-    if (windowDimensions.width > 700) {
-      return <VariableSizeShowsList showSize={"medium"} shows={this.props.artist.past_shows} />
-    } else {
-      return <SmallShowsList shows={this.props.artist.past_shows} style={{ marginTop: -8, marginBottom: 50 }} />
-    }
+    // if (windowDimensions.width > 700) {
+    //   return <VariableSizeShowsList showSize={"medium"} shows={this.props.artist.past_shows} />
+    // } else {
+    return <SmallList shows={this.props.artist.past_shows} style={{ marginTop: -8, marginBottom: 50 }} />
+    // }
   }
 
   currentAndUpcomingList() {
@@ -79,27 +79,26 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-// TODO How do we dynamicall determine what component to use?
-const pastShowsFragment =
-  windowDimensions.width > 700 ? VariableSizeShowsList.getFragment("shows") : SmallShowsList.getFragment("shows")
+// TODO How do we dynamically determine what component to use? Needs to be fixed after Relay Modern migration.
+// const pastShowsFragment =
+//   windowDimensions.width > 700 ? VariableSizeShowsList.getFragment("shows") : SmallShowsList.getFragment("shows")
 
-export default Relay.createContainer(Shows, {
-  fragments: {
-    artist: () => Relay.QL`
-      fragment on Artist {
-        current_shows: partner_shows(status: "running") {
-          ${VariableSizeShowsList.getFragment("shows")}
-        }
-        upcoming_shows: partner_shows(status: "upcoming") {
-          ${VariableSizeShowsList.getFragment("shows")}
-        }
-        past_shows: partner_shows(status: "closed", size: 20) {
-          ${pastShowsFragment}
-        }
+export default createFragmentContainer(
+  Shows,
+  graphql`
+    fragment Shows_artist on Artist {
+      current_shows: partner_shows(status: "running") {
+        ...VariableSizeShowsList_shows
       }
-    `,
-  },
-})
+      upcoming_shows: partner_shows(status: "upcoming") {
+        ...VariableSizeShowsList_shows
+      }
+      past_shows: partner_shows(status: "closed", size: 20) {
+        ...SmallList_shows
+      }
+    }
+  `
+)
 
 interface RelayProps {
   artist: {
