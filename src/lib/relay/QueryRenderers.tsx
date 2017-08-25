@@ -1,6 +1,4 @@
 import * as React from "react"
-
-import { Store } from "react-relay/classic"
 import { graphql, QueryRenderer, QueryRendererProps } from "react-relay/compat"
 
 // tslint:disable:no-unused-expression
@@ -29,6 +27,9 @@ import Inbox from "../Containers/Inbox"
 Inbox
 // tslint:enable:no-unused-expression
 
+import createEnvironment from "./createEnvironment"
+const environment = createEnvironment()
+
 export type RenderCallback = QueryRendererProps["render"]
 
 interface RendererProps {
@@ -42,7 +43,7 @@ interface ArtistRendererProps extends RendererProps {
 export const ArtistRenderer: React.SFC<ArtistRendererProps> = ({ render, artistID }) => {
   return (
     <QueryRenderer
-      environment={Store}
+      environment={environment}
       query={graphql`
         query QueryRenderersArtistQuery($artistID: String!) {
           artist(id: $artistID) {
@@ -65,7 +66,7 @@ interface ConversationRendererProps extends RendererProps {
 export const ConversationRenderer: React.SFC<ConversationRendererProps> = ({ render, conversationID }) => {
   return (
     <QueryRenderer
-      environment={Store}
+      environment={environment}
       query={graphql`
         query QueryRenderersConversationQuery($conversationID: String!) {
           me {
@@ -84,7 +85,7 @@ export const ConversationRenderer: React.SFC<ConversationRendererProps> = ({ ren
 export const HomeRenderer: React.SFC<RendererProps> = ({ render }) => {
   return (
     <QueryRenderer
-      environment={Store}
+      environment={environment}
       query={graphql`
         query QueryRenderersHomeQuery {
           home: home_page {
@@ -107,7 +108,7 @@ interface GeneRendererProps extends RendererProps {
 export const GeneRenderer: React.SFC<GeneRendererProps> = ({ render, geneID, medium, price_range }) => {
   return (
     <QueryRenderer
-      environment={Store}
+      environment={environment}
       query={graphql`
         query QueryRenderersGeneQuery($geneID: String!) {
           gene(id: $geneID) {
@@ -132,7 +133,7 @@ interface WorksForYouRendererProps extends RendererProps {
 export const WorksForYouRenderer: React.SFC<WorksForYouRendererProps> = ({ render, selectedArtist }) => {
   return (
     <QueryRenderer
-      environment={Store}
+      environment={environment}
       query={graphql`
         query QueryRenderersWorksForYouQuery($selectedArtist: String!) {
           viewer {
@@ -155,7 +156,7 @@ interface InquiryRendererProps extends RendererProps {
 export const InquiryRenderer: React.SFC<InquiryRendererProps> = ({ render, artworkID }) => {
   return (
     <QueryRenderer
-      environment={Store}
+      environment={environment}
       query={graphql`
         query QueryRenderersInquiryQuery($artworkID: String!) {
           artwork(id: $artworkID) {
@@ -174,7 +175,7 @@ export const InquiryRenderer: React.SFC<InquiryRendererProps> = ({ render, artwo
 export const InboxRenderer: React.SFC<RendererProps> = ({ render }) => {
   return (
     <QueryRenderer
-      environment={Store}
+      environment={environment}
       query={graphql`
         query QueryRenderersInboxQuery {
           me {
@@ -191,7 +192,7 @@ export const InboxRenderer: React.SFC<RendererProps> = ({ render }) => {
 export const MyAccountRenderer: React.SFC<RendererProps> = ({ render }) => {
   return (
     <QueryRenderer
-      environment={Store}
+      environment={environment}
       query={graphql`
         query QueryRenderersMyAccountQuery {
           me {
