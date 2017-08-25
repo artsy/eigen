@@ -22,6 +22,7 @@
 
 ###### Messaging
 
+-   Fixed incorrect use of Attachment props in invoice component - matt
 -   Added inline rendering for invoices - matt
 -   Removed hard-coded sanitization of message body - sarah
 -   Small composer UI tweaks - maxim
