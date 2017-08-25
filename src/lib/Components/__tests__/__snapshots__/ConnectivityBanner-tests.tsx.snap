@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks like expected 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#fdefd1",
+        "height": 30,
+        "justifyContent": "center",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    disabled={false}
+    ellipsizeMode="tail"
+    style={
+      Array [
+        Object {
+          "color": "#f1af1b",
+          "fontFamily": "AGaramondPro-Regular",
+          "fontSize": 16,
+          "paddingTop": 5,
+          "textAlign": "center",
+        },
+        undefined,
+      ]
+    }
+  >
+     No Internet Connection
+  </Text>
+</View>
+`
