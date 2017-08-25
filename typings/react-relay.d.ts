@@ -4,7 +4,7 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.1
 
-declare module "react-relay/compat" {
+declare module "react-relay" {
   import * as modern from "react-relay/modern"
   export = modern
 }
@@ -12,7 +12,7 @@ declare module "react-relay/compat" {
 declare module "react-relay/modern" {
   import * as React from "react"
 
-  interface QueryRendererProp {
+  interface QueryRendererProps {
     cacheConfig?: any
     environment: Environment | ClassicEnvironment
     query: GraphQLTaggedNode
@@ -21,12 +21,12 @@ declare module "react-relay/modern" {
   }
 
   interface ReadyState {
-    error: any
-    props: any
-    retry: any
+    error: Error | null
+    props: object | null
+    retry: () => void | null
   }
 
-  class QueryRenderer extends React.Component<QueryRendererProp, ReadyState> {}
+  class QueryRenderer extends React.Component<QueryRendererProps, ReadyState> {}
 
   export type GraphQLTaggedNode = (() => ConcreteFragment | ConcreteBatch)
   export interface GeneratedNodeMap {
