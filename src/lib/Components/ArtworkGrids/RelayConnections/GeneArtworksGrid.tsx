@@ -1,4 +1,4 @@
-import { createPaginationContainer, graphql } from "react-relay/compat"
+import { createPaginationContainer, graphql } from "react-relay"
 import InfiniteScrollArtworksGrid, { PageSize } from "../InfiniteScrollGrid"
 
 import Artwork from "../Artwork"

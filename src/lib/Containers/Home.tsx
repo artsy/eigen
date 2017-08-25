@@ -1,5 +1,5 @@
 import * as React from "react"
-import { createFragmentContainer, graphql } from "react-relay/compat"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { ListView, ListViewDataSource, RefreshControl, ScrollView, ScrollViewProps, ViewProperties } from "react-native"
 

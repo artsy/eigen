@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Image, StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay/compat"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import SwitchBoard from "../../NativeModules/SwitchBoard"
 import GenericGrid from "../ArtworkGrids/GenericGrid"

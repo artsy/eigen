@@ -1,7 +1,7 @@
 import * as _ from "lodash"
 import * as React from "react"
 import ParallaxScrollView from "react-native-parallax-scroll-view"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay/compat"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 

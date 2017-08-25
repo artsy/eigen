@@ -7,7 +7,7 @@
 // 4. Update height of grid to encompass all items.
 
 import * as React from "react"
-import { RelayPaginationProp } from "react-relay/compat"
+import { RelayPaginationProp } from "react-relay"
 
 import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
 

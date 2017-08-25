@@ -1,5 +1,5 @@
 import * as React from "react"
-import { createFragmentContainer, graphql } from "react-relay/compat"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { TouchableHighlight } from "react-native"
 import styled from "styled-components/native"

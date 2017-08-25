@@ -6,7 +6,7 @@ import {
   graphql,
   MutationConfig,
   RelayRefetchProp,
-} from "react-relay/compat"
+} from "react-relay"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 

@@ -1,6 +1,6 @@
 import * as React from "react"
 import { StyleSheet, View, ViewProperties } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay/compat"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import ArtistArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistArtworksGrid"
 import Separator from "../../Separator"

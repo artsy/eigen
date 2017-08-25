@@ -1,6 +1,6 @@
 import * as PropTypes from "prop-types"
 import * as React from "react"
-import { createFragmentContainer, graphql } from "react-relay/compat"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules

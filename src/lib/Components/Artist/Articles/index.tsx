@@ -1,6 +1,6 @@
 import * as React from "react"
 import { ScrollView, StyleSheet, View, ViewProperties } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay/compat"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import SerifText from "../../Text/Serif"
 import Article from "./Article"

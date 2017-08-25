@@ -7,7 +7,7 @@ import { Environment, Network, RecordSource, Store } from "relay-runtime"
 import Header from "../Header"
 
 // TODO Move to metametaphysics after Relay Modern migration
-import { graphql, QueryRenderer } from "react-relay/compat"
+import { graphql, QueryRenderer } from "react-relay"
 import createEnvironment from "../../../relay/createEnvironment"
 const RootContainer: React.SFC<any> = ({ Component, artistID }) => {
   return (

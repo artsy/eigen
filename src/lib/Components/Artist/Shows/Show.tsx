@@ -1,6 +1,6 @@
 import * as React from "react"
 import { TouchableWithoutFeedback, View, ViewProperties } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay/compat"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import OpaqueImageView from "../../OpaqueImageView"

@@ -1,6 +1,6 @@
 import moment from "moment"
 import * as React from "react"
-import { createFragmentContainer, graphql } from "react-relay/compat"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { MetadataText, PreviewText as P, SmallHeadline } from "../Typography"
 

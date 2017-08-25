@@ -1,7 +1,7 @@
 import { map } from "lodash"
 import * as React from "react"
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay/compat"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import colors from "../../../data/colors"
 import SwitchBoard from "../../NativeModules/SwitchBoard"

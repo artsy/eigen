@@ -6,7 +6,7 @@ import "react-native"
 import Inbox from "../index"
 
 // TODO Move to metametaphysics after Relay Modern migration
-import { graphql, QueryRenderer } from "react-relay/compat"
+import { graphql, QueryRenderer } from "react-relay"
 import createEnvironment from "../../../../relay/createEnvironment"
 // TODO This fails due to Relay trying to request `id` for the Node interface. Probably because we need to switch from
 //      compat to modern?

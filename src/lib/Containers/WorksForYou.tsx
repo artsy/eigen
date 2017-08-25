@@ -1,6 +1,6 @@
 import moment from "moment"
 import * as React from "react"
-import { createPaginationContainer, graphql } from "react-relay/compat"
+import { createPaginationContainer, graphql } from "react-relay"
 
 import {
   LayoutChangeEvent,

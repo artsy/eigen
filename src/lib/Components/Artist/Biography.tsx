@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay/compat"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import removeMarkdown from "remove-markdown"
 
