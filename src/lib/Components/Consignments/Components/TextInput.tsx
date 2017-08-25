@@ -1,5 +1,14 @@
 import * as React from "react"
-import { ActivityIndicator, Text, TextInput, TextInputProperties, View, ViewProperties } from "react-native"
+import {
+  ActivityIndicator,
+  Image,
+  ImageURISource,
+  Text,
+  TextInput,
+  TextInputProperties,
+  View,
+  ViewProperties,
+} from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
@@ -8,6 +17,7 @@ import fonts from "../../../../data/fonts"
 export interface TextInputProps extends ViewProperties {
   searching?: boolean
   text?: TextInputProperties
+  preImage?: ImageURISource | ImageURISource[]
 }
 
 const Input = styled.TextInput`
@@ -29,6 +39,7 @@ const Separator = styled.View`
 const render = (props: TextInputProps) =>
   <View style={{ flex: 1, ...props.style }}>
     <View style={{ flexDirection: "row" }}>
+      {props.preImage && <Image source={props.preImage} style={{ marginRight: 6, marginTop: 12 }} />}
       <Input
         autoCorrect={false}
         clearButtonMode="while-editing"

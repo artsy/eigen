@@ -1,8 +1,8 @@
 import * as React from "react"
 
-import ArtistSearch from "../Components/ArtistSearchResults"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
+import ArtistSearch from "../Components/SearchResults"
 
 import { ConsignmentSetup, SearchResult } from "../index"
 

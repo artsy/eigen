@@ -1,8 +1,8 @@
 import * as React from "react"
 
-import Search from "../Components/ArtistSearchResults"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
+import Search from "../Components/SearchResults"
 
 import { ConsignmentSetup, SearchResult } from "../index"
 
@@ -92,8 +92,9 @@ export default class Location extends React.Component<Props, State> {
               onChangeText={this.textChanged}
               searching={this.state.searching}
               resultSelected={this.locationSelected}
-              placeholder="Artist/Designer Name"
-              noResultsMessage="Unfortunately we are not accepting consignments for works by"
+              preImage={require("../images/map-pin.png")}
+              placeholder="City, Country"
+              noResultsMessage="Could not find"
             />
           </View>
         </DoneButton>

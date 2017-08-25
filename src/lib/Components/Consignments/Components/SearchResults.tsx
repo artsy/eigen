@@ -44,7 +44,7 @@ const UnknownName = styled.Text`
   font-size: 17;
 `
 
-export interface ArtistQueryData extends TextInputProps {
+export interface SearchQueryProps extends TextInputProps {
   results: SearchResult[] | null
   query: string
   placeholder: string
@@ -64,7 +64,7 @@ const noResults = props => {
   )
 }
 
-const render = (props: ArtistQueryData) => {
+const render = (props: SearchQueryProps) => {
   const rowForResult = result =>
     <Result key={result.id} onPress={() => props.resultSelected(result)}>
       <ResultContainers>
@@ -79,6 +79,7 @@ const render = (props: ArtistQueryData) => {
     <View>
       <TextInput
         searching={props.searching}
+        preImage={props.preImage}
         text={{
           placeholder: props.placeholder,
           returnKeyType: "search",
@@ -100,7 +101,7 @@ const render = (props: ArtistQueryData) => {
   )
 }
 
-export default class SearchResults extends React.Component<ArtistQueryData, null> {
+export default class SearchResults extends React.Component<SearchQueryProps, null> {
   render() {
     return render(this.props)
   }
