@@ -1,5 +1,5 @@
 # This one runs on Travis CI runnning on a linux box
-# There is another in DanDangerfile.circle.rb
+# There is another in Dangerfile.circle.rb
 
 # Sometimes its a README fix, or something like that - which isn't relevant for
 # including in a CHANGELOG for example
