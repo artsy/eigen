@@ -491,7 +491,8 @@ exports[`Search states:  Looks right when Found no results 1`] = `
           ]
         }
       >
-        Unfortunately we are not accepting consignments for works by 
+        Unfortunately we are not accepting consignments for works by
+         
         <Text
           accessible={true}
           allowFontScaling={true}

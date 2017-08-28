@@ -141,6 +141,211 @@ exports[`looks correct when rendered 1`] = `
         A YEAR
       </Text>
     </View>
+    <View
+      style={
+        Array [
+          Object {
+            "marginBottom": 10,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+            },
+            undefined,
+          ]
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "borderColor": "#e5e5e5",
+                "borderWidth": 1,
+                "flexBasis": 0,
+                "flexDirection": "row",
+                "flexGrow": 1,
+                "flexShrink": 1,
+              },
+              undefined,
+            ]
+          }
+        >
+          <Image
+            source={1}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 12,
+                  "marginLeft": 12,
+                  "marginTop": 12,
+                  "resizeMode": "contain",
+                  "width": 40,
+                },
+                undefined,
+              ]
+            }
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "alignSelf": "center",
+                  "flexBasis": 0,
+                  "flexDirection": "column",
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "marginLeft": 25,
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              disabled={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 14,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Payment request
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              disabled={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 14,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              $420
+            </Text>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignSelf": "center",
+                  "flexBasis": 0,
+                  "flexDirection": "column",
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                  "marginLeft": 25,
+                },
+                undefined,
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "height": 25,
+                    "width": 71,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <View
+                accessibilityComponentType={undefined}
+                accessibilityLabel={undefined}
+                accessibilityTraits={undefined}
+                accessible={true}
+                hasTVPreferredFocus={undefined}
+                hitSlop={undefined}
+                isTVSelectable={true}
+                nativeID={undefined}
+                onLayout={undefined}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                    },
+                    Object {
+                      "alignItems": "center",
+                      "backgroundColor": "rgba(0, 0, 0, 1)",
+                      "flex": 1,
+                      "justifyContent": "center",
+                    },
+                  ]
+                }
+                testID={undefined}
+                tvParallaxProperties={undefined}
+              >
+                <View>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 12,
+                        },
+                        Object {
+                          "color": "white",
+                          "opacity": 1,
+                        },
+                        Object {
+                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        },
+                      ]
+                    }
+                  >
+                    PAY
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
     <Text
       accessible={true}
       allowFontScaling={true}

@@ -4,10 +4,12 @@ import { NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-nat
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { LargeHeadline, Subtitle } from "../Typography"
 
-import { ConsignmentSetup, SearchResult } from "../"
+import { ConsignmentMetadata, ConsignmentSetup, SearchResult } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import Artist from "./Artist"
 import Location from "./Location"
+import Metadata from "./Metadata"
+
 import Provenance from "./Provenance"
 import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
 import Welcome from "./Welcome"
@@ -27,8 +29,9 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   goToArtistTapped = () =>
     this.props.navigator.push({
       component: Artist,
-      passProps: { ...this.state, updateWithResult: this.updateArtist },
+      passProps: { ...this.state, updateWithArtist: this.updateArtist },
     })
+
   goToProvenanceTapped = () =>
     this.props.navigator.push({
       component: Provenance,
@@ -36,16 +39,21 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
     })
 
   goToPhotosTapped = () => this.props.navigator.push({ component: SelectFromPhotoLibrary, passProps: this.props })
-  goToMetadataTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.props })
-  goToLocationTapped = () => this.props.navigator.push({ component: Location, passProps: this.props })
 
   updateArtist = (result: SearchResult) => {
     this.setState({ artist: result })
   }
 
-  updateProvenance = (result: string) => {
-    this.setState({ provenance: result })
-  }
+  goToMetadataTapped = () =>
+    this.props.navigator.push({
+      component: Metadata,
+      passProps: { ...this.state, updateWithMetadata: this.updateMetadata },
+    })
+
+  goToLocationTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.state.metadata })
+
+  updateMetadata = (result: ConsignmentMetadata) => this.setState({ metadata: result })
+  updateProvenance = (result: string) => this.setState({ provenance: result })
 
   render() {
     const title = "Complete work details to submit"
@@ -58,6 +66,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
             <LargeHeadline>
               {title}
             </LargeHeadline>
+
             <Subtitle>
               {subtitle}
             </Subtitle>
