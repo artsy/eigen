@@ -1,6 +1,7 @@
 import { action, storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import { View } from "react-native"
+import colors from "../../../data/colors"
 
 import DottedLine from "../DottedLine"
 
@@ -10,6 +11,12 @@ storiesOf("App Style/Dotted Line")
       {story()}
     </View>
   )
-  .add("Flat White", () => {
+  .add("Default", () => {
     return <DottedLine />
+  })
+  .add("With scaled dots", () => {
+    return <DottedLine scale={5} />
+  })
+  .add("With custom color", () => {
+    return <DottedLine color={colors["purple-regular"]} />
   })

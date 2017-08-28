@@ -11,6 +11,8 @@ import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
 import OpaqueImageView from "../../OpaqueImageView"
 
+import DottedLine from "../../../Components/DottedLine"
+
 const Card = styled.View`
   margin: 10px 20px 0;
   min-height: 80px;
@@ -49,13 +51,13 @@ const UnreadIndicator = styled.View`
   margin-bottom: 3;
 `
 
-const Separator = styled.View`
-  height: 1;
-  width: 100%;
-  background-color: ${colors["gray-regular"]};
-  margin-top: 18px;
-  margin-bottom: 5px;
-`
+// const Separator = styled.View`
+//   height: 1;
+//   width: 100%;
+//   background-color: ${colors["gray-regular"]};
+//   margin-top: 18px;
+//   margin-bottom: 5px;
+// `
 
 const Subtitle = styled.Text`
   font-family: ${fonts["garamond-regular"]};
@@ -178,7 +180,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
               </P>
             </TextPreview>
           </CardContent>
-          <Separator />
+          <DottedLine backgroundColor="white" />
         </Card>
       </TouchableWithoutFeedback>
     )
