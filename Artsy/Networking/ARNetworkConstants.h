@@ -2,8 +2,7 @@ extern NSString *const ARBaseWebURL;
 extern NSString *const ARBaseDeprecatedMobileWebURL;
 extern NSString *const ARBaseApiURL;
 extern NSString *const ARBaseMetaphysicsApiURL;
-extern NSString *const ARCausalityBidderSocketURL;
-extern NSString *const ARCausalityObserverSocketURL;
+extern NSString *const ARCausalitySocketURL;
 extern NSString *const ARStagingBaseDeprecatedMobileWebURL;
 
 extern NSString *const ARPersonalizePath;

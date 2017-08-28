@@ -176,8 +176,7 @@
 + (NSURLRequest *)saleArtworkRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID;
 + (NSURLRequest *)requestForSaleID:(NSString *)saleID;
 
-+ (NSString *)baseObserverCausalitySocketURLString;
-+ (NSString *)baseBidderCausalitySocketURLString;
++ (NSString *)baseCausalitySocketURLString;
 
 #pragma mark - Ordered Sets
 

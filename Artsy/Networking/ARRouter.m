@@ -83,14 +83,9 @@ static NSString *hostFromString(NSString *string)
     }
 }
 
-+ (NSString *)baseObserverCausalitySocketURLString
++ (NSString *)baseCausalitySocketURLString
 {
-    return [self causalitySocketURLStringWithProduction:ARCausalityObserverSocketURL];
-}
-
-+ (NSString *)baseBidderCausalitySocketURLString
-{
-    return [self causalitySocketURLStringWithProduction:ARCausalityBidderSocketURL];
+    return [self causalitySocketURLStringWithProduction:ARCausalitySocketURL];
 }
 
 + (NSString *)causalitySocketURLStringWithProduction:(NSString *)productionURL;
