@@ -4,6 +4,7 @@ import * as React from "react"
 import Nav from "../index"
 import Artist from "../Screens/Artist"
 import FinalSubmissionQuestions from "../Screens/FinalSubmissionQuestions"
+import Metadata from "../Screens/Metadata"
 import Overview from "../Screens/Overview"
 import Provenance from "../Screens/Provenance"
 import SelectFromPhotoLibrary from "../Screens/SelectFromPhotoLibrary"
@@ -25,11 +26,25 @@ storiesOf("Consignments/_Screens")
   .add("Artist Page", () => {
     return <Artist navigator={nav} route={route} />
   })
-  .add("Provenance", () => {
-    return <Provenance navigator={nav} route={route} />
-  })
   .add("SelectFromPhotoLibrary Page", () => {
     return <SelectFromPhotoLibrary navigator={nav} route={route} />
+  })
+  .add("Metadata Page", () => {
+    const blank = {
+      title: null,
+      year: null,
+      category: null,
+      medium: null,
+      width: null,
+      height: null,
+      depth: null,
+      unit: "in",
+      displayString: null,
+    }
+    return <Metadata navigator={nav} route={route} metadata={blank} />
+  })
+  .add("Provenance", () => {
+    return <Provenance navigator={nav} route={route} />
   })
   .add("FinalSubmissionQuestions Page", () => {
     return <FinalSubmissionQuestions navigator={nav} route={route} setup={{}} />
