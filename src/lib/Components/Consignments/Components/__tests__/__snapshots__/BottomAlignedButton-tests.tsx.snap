@@ -143,7 +143,7 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
             clearButtonMode="while-editing"
             keyboardAppearance="dark"
             onChangeText={undefined}
-            placeholder="Artist/Designer Name"
+            placeholder="Example"
             placeholderTextColor="#cccccc"
             returnKeyType="search"
             selectionColor="#cccccc"
@@ -206,7 +206,8 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
               ]
             }
           >
-            Unfortunately we are not accepting consignments for works by 
+            &gt; 
+             
             <Text
               accessible={true}
               allowFontScaling={true}

@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
 
-import { ArtistResult } from "../"
+import { SearchResult } from "../"
 import TextInput, { TextInputProps } from "./TextInput"
 
 const Result = styled.TouchableHighlight`
@@ -44,11 +44,13 @@ const UnknownName = styled.Text`
   font-size: 17;
 `
 
-export interface ArtistQueryData extends TextInputProps {
-  results: ArtistResult[] | null
+export interface SearchQueryProps extends TextInputProps {
+  results: SearchResult[] | null
   query: string
+  placeholder: string
+  noResultsMessage: string
   onChangeText?: (query: string) => void
-  resultSelected?: (result: ArtistResult) => void
+  resultSelected?: (result: SearchResult) => void
 }
 
 const noResults = props => {
@@ -57,12 +59,12 @@ const noResults = props => {
   }
   return (
     <UnknownLabel>
-      Unfortunately we are not accepting consignments for works by <UnknownName>{props.query}</UnknownName>
+      {props.noResultsMessage} <UnknownName>{props.query}</UnknownName>
     </UnknownLabel>
   )
 }
 
-const render = (props: ArtistQueryData) => {
+const render = (props: SearchQueryProps) => {
   const rowForResult = result =>
     <Result key={result.id} onPress={() => props.resultSelected(result)}>
       <ResultContainers>
@@ -77,8 +79,9 @@ const render = (props: ArtistQueryData) => {
     <View>
       <TextInput
         searching={props.searching}
+        preImage={props.preImage}
         text={{
-          placeholder: "Artist/Designer Name",
+          placeholder: props.placeholder,
           returnKeyType: "search",
           value: props.query,
           onChangeText: props.onChangeText,
@@ -98,7 +101,7 @@ const render = (props: ArtistQueryData) => {
   )
 }
 
-export default class SearchResults extends React.Component<ArtistQueryData, null> {
+export default class SearchResults extends React.Component<SearchQueryProps, null> {
   render() {
     return render(this.props)
   }

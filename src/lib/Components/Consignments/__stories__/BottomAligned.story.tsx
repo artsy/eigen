@@ -1,8 +1,8 @@
 import * as React from "react"
 import { Text, View } from "react-native"
 
-import Search from "../Components/ArtistSearchResults"
 import BottomAlignedButton, { BottomAlignedProps } from "../Components/BottomAlignedButton"
+import Search from "../Components/SearchResults"
 
 export const name = "Consignments/BottomButton"
 export const component = BottomAlignedButton
@@ -26,7 +26,7 @@ const withText = {
 }
 
 const withSearchResults = {
-  children: [<Search searching={false} query="Banko" results={null} />],
+  children: [<Search placeholder="Example" noResultsMessage="> " searching={false} query="Banko" results={null} />],
   onPress: () => "",
   bodyStyle: doneButtonStyles,
   buttonText: "DONE",

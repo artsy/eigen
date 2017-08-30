@@ -21,6 +21,7 @@
 -   Adds a final submission screen - orta
 -   Adds a screen for metadata editing - orta
 -   Looks better on iPads - orta
+-   Adds a screen for setting the location - orta
 
 ###### Messaging
 

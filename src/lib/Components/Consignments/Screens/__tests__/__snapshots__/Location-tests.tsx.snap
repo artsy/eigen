@@ -1,0 +1,208 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sets up the right view hierarchy 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "backgroundColor": "black",
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "alignSelf": "center",
+          "backgroundColor": "black",
+          "height": "100%",
+          "maxWidth": 540,
+          "width": "100%",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      keyboardVerticalOffset={60}
+      onLayout={[Function]}
+      style={
+        Array [
+          Object {
+            "flex": 1,
+          },
+          Object {
+            "paddingBottom": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flexGrow": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignContent": "center",
+              "flexGrow": 1,
+              "justifyContent": "flex-end",
+              "marginLeft": 20,
+              "marginRight": 20,
+            }
+          }
+        >
+          <View>
+            <View
+              style={
+                Object {
+                  "flex": 0,
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Image
+                  source={1}
+                  style={
+                    Object {
+                      "marginRight": 6,
+                      "marginTop": 12,
+                    }
+                  }
+                />
+                <TextInput
+                  autoCorrect={false}
+                  autoFocus={false}
+                  clearButtonMode="while-editing"
+                  keyboardAppearance="dark"
+                  onChangeText={[Function]}
+                  placeholder="City, Country"
+                  placeholderTextColor="#cccccc"
+                  returnKeyType="search"
+                  selectionColor="#cccccc"
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "black",
+                        "borderBottomColor": "white",
+                        "borderBottomWidth": 1,
+                        "color": "white",
+                        "flexBasis": 0,
+                        "flexGrow": 1,
+                        "flexShrink": 1,
+                        "fontFamily": "AGaramondPro-Regular",
+                        "fontSize": 20,
+                        "height": 40,
+                      },
+                      undefined,
+                    ]
+                  }
+                  value={null}
+                />
+              </View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "#e5e5e5",
+                      "height": 1,
+                    },
+                    undefined,
+                  ]
+                }
+              />
+            </View>
+            <RCTScrollView
+              keyboardShouldPersistTaps={true}
+              scrollEnabled={null}
+              style={
+                Object {
+                  "height": 182,
+                  "paddingTop": 16,
+                }
+              }
+            >
+              <View />
+            </RCTScrollView>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#e5e5e5",
+              "height": 1,
+            },
+            undefined,
+          ]
+        }
+      />
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "backgroundColor": "black",
+            "height": 56,
+            "marginBottom": 0,
+            "opacity": 1,
+            "paddingTop": 18,
+          }
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "white",
+                "flexBasis": 0,
+                "flexGrow": 1,
+                "flexShrink": 1,
+                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontSize": 14,
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          DONE
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

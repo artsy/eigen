@@ -17,6 +17,7 @@ const Separator = styled.View`
   background-color: ${colors["gray-regular"]};
   height: 1;
 `
+
 export interface ButtonBodyStyle {
   backgroundColor: string
   height: number

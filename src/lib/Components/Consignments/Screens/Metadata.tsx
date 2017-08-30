@@ -4,7 +4,7 @@ import { LayoutAnimation, NavigatorIOS, Picker, Route, ScrollView, View, ViewPro
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { BodyText, LargeHeadline, Subtitle } from "../Typography"
 
-import { ArtistResult, ConsignmentMetadata } from "../"
+import { ConsignmentMetadata, SearchResult } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import DoneButton from "../Components/DoneButton"
 import { Form, Label, Row } from "../Components/FormElements"
