@@ -2,11 +2,6 @@
 # See: https://github.com/joshuapinter/apphubdeploy
 #
 
-if [ "$TRAVIS_BRANCH" != "master" ] ; then
-    echo "Skipping deploy of the commit"
-    exit 0
-fi
-
 # Set up our npm environment again
 npm install --global apphubdeploy
 
