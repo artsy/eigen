@@ -4,7 +4,7 @@ import * as React from "react"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import { ConsignmentMetadata, ConsignmentSetup } from "../index"
 
-export const name = "Consignments/TODO"
+export const name = "Consignments/TODO Component"
 export const component = TODO
 
 interface States {
