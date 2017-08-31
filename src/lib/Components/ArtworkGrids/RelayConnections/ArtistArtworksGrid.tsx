@@ -13,9 +13,10 @@ const ArtistArtworksGrid = createPaginationContainer(
       fragment ArtistArtworksGrid_artist on Artist
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
-          after: { type: "String" }
+          cursor: { type: "String" }
           filter: { type: "[ArtistArtworksFilters]" }
         ) {
+        __id
         artworks: artworks_connection(first: $count, after: $cursor, filter: $filter, sort: partner_updated_at_desc)
           @connection(key: "ArtistArtworksGrid_artworks") {
           pageInfo {
@@ -47,25 +48,20 @@ const ArtistArtworksGrid = createPaginationContainer(
         count: totalCount,
       }
     },
-    getVariables(props, { count, cursor }, fragmentVariables) {
+    getVariables(props, { count, cursor }, { filter }) {
       return {
-        // in most cases, for variables other than connection filters like
-        // `first`, `after`, etc. you may want to use the previous values.
-        ...fragmentVariables,
+        __id: props.artist.__id,
         count,
         cursor,
+        filter,
       }
     },
-    // FIXME: Replace hardcoded artistID
-    query: graphql`
-      query ArtistArtworksGridQuery(
-        $artistID: String!
-        $count: Int!
-        $cursor: String
-        $filter: [ArtistArtworksFilters]
-      ) {
-        artist(id: $artistID) {
-          ...ArtistArtworksGrid_artist
+    query: graphql.experimental`
+      query ArtistArtworksGridQuery($__id: ID!, $count: Int!, $cursor: String, $filter: [ArtistArtworksFilters]) {
+        node(__id: $__id) {
+          ... on Artist {
+            ...ArtistArtworksGrid_artist @arguments(count: $count, cursor: $cursor, filter: $filter)
+          }
         }
       }
     `,

@@ -123,14 +123,16 @@ const styles = StyleSheet.create({
 export default createFragmentContainer(
   Artworks,
   graphql.experimental`
-    fragment Artworks_artist on Artist @argumentDefinitions(
-      forSaleArtworksFilter: { type: "[ArtistArtworksFilters]", defaultValue: [IS_FOR_SALE] }
-    ) {
+    fragment Artworks_artist on Artist
+      @argumentDefinitions(
+        forSaleArtworksFilters: { type: "[ArtistArtworksFilters]", defaultValue: [IS_FOR_SALE] }
+        notForSaleArtworksFilters: { type: "[ArtistArtworksFilters]", defaultValue: [IS_NOT_FOR_SALE] }
+      ) {
       counts {
         artworks
         for_sale_artworks
       }
-      ...ArtistArtworksGrid_artist @arguments(filter: $forSaleArtworksFilter)
+      ...ArtistArtworksGrid_artist @arguments(filter: $forSaleArtworksFilters)
     }
   `
 )
