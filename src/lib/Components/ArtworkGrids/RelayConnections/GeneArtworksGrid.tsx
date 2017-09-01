@@ -10,13 +10,15 @@ const GeneArtworksGrid = createPaginationContainer(
   InfiniteScrollArtworksGrid,
   {
     gene: graphql.experimental`
-      fragment GeneArtworksGrid_gene on Gene @argumentDefinitions(
-        count: { type: "Int", defaultValue: 10 }
-        after: { type: "String" }
-        sort: { type: "String", defaultValue: "-partner_updated_at" }
-        medium: { type: "String", defaultValue: "*" }
-        priceRange: { type: "String", defaultValue: "*-*" }
-      ) {
+      fragment GeneArtworksGrid_gene on Gene
+        @argumentDefinitions(
+          count: { type: "Int", defaultValue: 10 }
+          cursor: { type: "String" }
+          sort: { type: "String", defaultValue: "-partner_updated_at" }
+          medium: { type: "String", defaultValue: "*" }
+          priceRange: { type: "String", defaultValue: "*-*" }
+        ) {
+        __id
         artworks: artworks_connection(
           first: $count
           after: $cursor
@@ -56,24 +58,26 @@ const GeneArtworksGrid = createPaginationContainer(
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
-        // in most cases, for variables other than connection filters like
-        // `first`, `after`, etc. you may want to use the previous values.
         ...fragmentVariables,
+        __id: props.gene.__id,
         count,
         cursor,
       }
     },
-    query: graphql`
+    query: graphql.experimental`
       query GeneArtworksGridQuery(
-        $geneID: String!
+        $__id: ID!
         $count: Int!
         $cursor: String
         $sort: String
         $medium: String
         $priceRange: String
       ) {
-        gene(id: $geneID) {
-          ...GeneArtworksGrid_gene
+        node(__id: $__id) {
+          ... on Gene {
+            ...GeneArtworksGrid_gene
+              @arguments(count: $count, cursor: $cursor, sort: $sort, medium: $medium, priceRange: $priceRange)
+          }
         }
       }
     `,
