@@ -2,7 +2,8 @@ import * as React from "react"
 import { StyleSheet, View, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import ArtistArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistArtworksGrid"
+import ArtistForSaleArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistForSaleArtworksGrid"
+import ArtistNotForSaleArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistNotForSaleArtworksGrid"
 import Separator from "../../Separator"
 import SerifText from "../../Text/Serif"
 
@@ -41,6 +42,8 @@ class Artworks extends React.Component<Props, State> {
         count: otherCount,
         filter: "IS_NOT_FOR_SALE",
         onComplete: null,
+        Component: ArtistNotForSaleArtworksGrid,
+        queryKey: "notForSaleArtworks",
       })
     } else {
       const otherWorks: any[] = []
@@ -53,6 +56,8 @@ class Artworks extends React.Component<Props, State> {
             count: otherCount,
             filter: "IS_NOT_FOR_SALE",
             onComplete: null,
+            Component: ArtistNotForSaleArtworksGrid,
+            queryKey: "notForSaleArtworks",
           })
         )
       }
@@ -65,6 +70,8 @@ class Artworks extends React.Component<Props, State> {
             onComplete: () => {
               this.setState({ completedForSaleWorks: true })
             },
+            Component: ArtistForSaleArtworksGrid,
+            queryKey: "forSaleArtworks",
           })}
           {otherWorks}
         </View>
@@ -72,14 +79,14 @@ class Artworks extends React.Component<Props, State> {
     }
   }
 
-  renderSection({ title, count, filter, onComplete }) {
+  renderSection({ title, count, filter, onComplete, Component, queryKey }) {
     const countStyles = [styles.text, styles.count]
     return (
       <View key={title}>
         <SerifText style={styles.heading}>
           <SerifText style={styles.text}>{title}</SerifText> <SerifText style={countStyles}>({count})</SerifText>
         </SerifText>
-        <ArtistArtworksGrid artist={this.props.artist} filter={filter} onComplete={onComplete} queryKey="artist" />
+        <Component artist={this.props.artist} filter={filter} onComplete={onComplete} queryKey={`artist.${queryKey}`} />
       </View>
     )
   }
@@ -123,16 +130,13 @@ const styles = StyleSheet.create({
 export default createFragmentContainer(
   Artworks,
   graphql.experimental`
-    fragment Artworks_artist on Artist
-      @argumentDefinitions(
-        forSaleArtworksFilters: { type: "[ArtistArtworksFilters]", defaultValue: [IS_FOR_SALE] }
-        notForSaleArtworksFilters: { type: "[ArtistArtworksFilters]", defaultValue: [IS_NOT_FOR_SALE] }
-      ) {
+    fragment Artworks_artist on Artist {
       counts {
         artworks
         for_sale_artworks
       }
-      ...ArtistArtworksGrid_artist @arguments(filter: $forSaleArtworksFilters)
+      ...ArtistForSaleArtworksGrid_artist
+      ...ArtistNotForSaleArtworksGrid_artist
     }
   `
 )

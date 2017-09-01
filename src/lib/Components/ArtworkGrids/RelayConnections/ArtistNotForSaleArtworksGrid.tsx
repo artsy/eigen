@@ -6,19 +6,23 @@ import Artwork from "../Artwork"
 // This is so that TypeScript won’t remove the seemingly unused `Artwork` import. Relay depends on it to exist.
 Artwork
 
-const ArtistArtworksGrid = createPaginationContainer(
+const ArtistNotForSaleArtworksGrid = createPaginationContainer(
   InfiniteScrollArtworksGrid,
   {
     artist: graphql.experimental`
-      fragment ArtistArtworksGrid_artist on Artist
+      fragment ArtistNotForSaleArtworksGrid_artist on Artist
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
           cursor: { type: "String" }
-          filter: { type: "[ArtistArtworksFilters]" }
+          filter: { type: "[ArtistArtworksFilters]", defaultValue: [IS_NOT_FOR_SALE] }
         ) {
         __id
-        artworks: artworks_connection(first: $count, after: $cursor, filter: $filter, sort: partner_updated_at_desc)
-          @connection(key: "ArtistArtworksGrid_artworks") {
+        notForSaleArtworks: artworks_connection(
+          first: $count
+          after: $cursor
+          filter: $filter
+          sort: partner_updated_at_desc
+        ) @connection(key: "ArtistNotForSaleArtworksGrid_notForSaleArtworks") {
           pageInfo {
             hasNextPage
             startCursor
@@ -40,7 +44,7 @@ const ArtistArtworksGrid = createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.artist && props.artist.artworks
+      return props.artist && props.artist.notForSaleArtworks
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -57,10 +61,15 @@ const ArtistArtworksGrid = createPaginationContainer(
       }
     },
     query: graphql.experimental`
-      query ArtistArtworksGridQuery($__id: ID!, $count: Int!, $cursor: String, $filter: [ArtistArtworksFilters]) {
+      query ArtistNotForSaleArtworksGridQuery(
+        $__id: ID!
+        $count: Int!
+        $cursor: String
+        $filter: [ArtistArtworksFilters]
+      ) {
         node(__id: $__id) {
           ... on Artist {
-            ...ArtistArtworksGrid_artist @arguments(count: $count, cursor: $cursor, filter: $filter)
+            ...ArtistNotForSaleArtworksGrid_artist @arguments(count: $count, cursor: $cursor, filter: $filter)
           }
         }
       }
@@ -68,7 +77,7 @@ const ArtistArtworksGrid = createPaginationContainer(
   }
 )
 
-export default ArtistArtworksGrid
+export default ArtistNotForSaleArtworksGrid
 
 export interface ArtistRelayProps {
   artist: {
