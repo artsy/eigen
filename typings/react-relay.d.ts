@@ -9,6 +9,11 @@ declare module "react-relay" {
   export = modern
 }
 
+declare module "react-relay/compat" {
+  import * as modern from "react-relay/modern"
+  export = modern
+}
+
 declare module "react-relay/modern" {
   import * as React from "react"
 
