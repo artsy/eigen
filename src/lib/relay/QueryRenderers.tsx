@@ -134,15 +134,15 @@ export const WorksForYouRenderer: React.SFC<WorksForYouRendererProps> = ({ rende
   return (
     <QueryRenderer
       environment={environment}
-      query={graphql`
+      query={graphql.experimental`
         query QueryRenderersWorksForYouQuery($selectedArtist: String!) {
           viewer {
-            ...WorksForYou_viewer
+            ...WorksForYou_viewer @arguments(selectedArtist: $selectedArtist)
           }
         }
       `}
       variables={{
-        selectedArtist,
+        selectedArtist: selectedArtist || "",
       }}
       render={render}
     />

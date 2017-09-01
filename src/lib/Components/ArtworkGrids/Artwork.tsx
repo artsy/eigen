@@ -117,8 +117,12 @@ export default createFragmentContainer(
       sale_message
       is_in_auction
       sale_artwork {
-        opening_bid { display }
-        current_bid { display }
+        opening_bid {
+          display
+        }
+        current_bid {
+          display
+        }
         bidder_positions_count
         sale {
           is_open
@@ -128,7 +132,7 @@ export default createFragmentContainer(
         url(version: "large")
         aspect_ratio
       }
-      artists {
+      artists(shallow: true) {
         name
       }
       partner {

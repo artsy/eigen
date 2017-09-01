@@ -242,17 +242,15 @@ const WorksForYouContainer = createPaginationContainer(
   WorksForYou,
   {
     viewer: graphql.experimental`
-      fragment WorksForYou_viewer on Viewer @argumentDefinitions(
-        count: { type: "Int", defaultValue: 10 }
-        after: { type: "String" }
-        selectedArtist: { type: "String!", defaultValue: "" }
-        showSpecialNotification: { type: "Boolean" }
-      ) {
+      fragment WorksForYou_viewer on Viewer
+        @argumentDefinitions(
+          count: { type: "Int", defaultValue: 10 }
+          cursor: { type: "String" }
+          selectedArtist: { type: "String!", defaultValue: "" }
+        ) {
         me {
-          notifications: notifications_connection(
-            first: $count
-            after: $cursor
-          ) @connection(key: "WorksForYou_notifications") {
+          notifications: notifications_connection(first: $count, after: $cursor)
+            @connection(key: "WorksForYou_notifications") {
             pageInfo {
               hasNextPage
               endCursor
@@ -265,8 +263,7 @@ const WorksForYouContainer = createPaginationContainer(
             }
           }
         }
-        selectedArtist: artist(id: $selectedArtist)
-                          @include(if: $showSpecialNotification) {
+        selectedArtist: artist(id: $selectedArtist) {
           href
           name
           image {
@@ -274,7 +271,7 @@ const WorksForYouContainer = createPaginationContainer(
               url
             }
           }
-          artworks(sort:published_at_desc, size: 6) {
+          artworks(sort: published_at_desc, size: 6) {
             ...GenericGrid_artworks
           }
         }
@@ -301,13 +298,10 @@ const WorksForYouContainer = createPaginationContainer(
         cursor,
       }
     },
-    query: graphql`
-      query WorksForYouQuery(
-        $count: Int!
-        $cursor: String
-      ) {
+    query: graphql.experimental`
+      query WorksForYouQuery($count: Int!, $cursor: String) {
         viewer {
-          ...WorksForYou_viewer
+          ...WorksForYou_viewer @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
