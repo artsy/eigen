@@ -31,12 +31,21 @@ export const PageEndThreshold = 1000
  *   - the calculation currently only takes into account the size of the image, not if e.g. the sale message is present
  */
 
-type Artworks = Array<{
+interface Artwork {
   __id: string
   image: {
     aspect_ratio: number | null
   } | null
-}>
+}
+
+type Artworks = Artwork[]
+
+interface ArtworksConnection {
+  pageInfo: { hasNextPage: boolean }
+  edges: Array<{
+    node: Artwork
+  }>
+}
 
 interface Props extends ArtistRelayProps, GeneRelayProps {
   /** The direction for the grid, currently only 'column' is supported . */
@@ -107,7 +116,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     this.sentEndForContentLength = null
   }
 
-  artworksConnection(): { pageInfo: { hasNextPage: boolean }; edges: Array<{ node: any }> } {
+  artworksConnection(): ArtworksConnection {
     return get(this.props, this.props.queryKey) as any
   }
 
