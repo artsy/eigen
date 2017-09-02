@@ -49,13 +49,17 @@ class ArtistRail extends React.Component<Props, State> {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.rail.results) {
-      const artists = nextProps.rail.results
-      artists.forEach(artist => {
-        artist._animatedValues = {
-          opacity: new Animated.Value(1),
-          translateY: new Animated.Value(0),
-        }
-      })
+      const artists = nextProps.rail.results.map(artist =>
+        Object.assign(
+          {
+            _animatedValues: {
+              opacity: new Animated.Value(1),
+              translateY: new Animated.Value(0),
+            },
+          },
+          artist
+        )
+      )
       this.setState({ artists })
     }
   }
@@ -240,9 +244,8 @@ function suggestedArtistQuery(artistID: string): string {
 export default createRefetchContainer(
   ArtistRail,
   graphql.experimental`
-    fragment ArtistRail_rail on HomePageArtistModule  @argumentDefinitions(
-      fetchContent: { type: "Boolean", defaultValue: false }
-    ) {
+    fragment ArtistRail_rail on HomePageArtistModule
+      @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: false }) {
       __id
       key
       results @include(if: $fetchContent) {
@@ -253,10 +256,7 @@ export default createRefetchContainer(
     }
   `,
   graphql.experimental`
-    query ArtistRailRefetchQuery(
-      $__id: ID!
-      $fetchContent: Boolean
-    ) {
+    query ArtistRailRefetchQuery($__id: ID!, $fetchContent: Boolean!) {
       node(__id: $__id) {
         ...ArtistRail_rail @arguments(fetchContent: $fetchContent)
       }
