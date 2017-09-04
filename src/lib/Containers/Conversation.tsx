@@ -5,6 +5,7 @@ import {
   Environment,
   graphql,
   MutationConfig,
+  RecordSourceSelectorProxy,
   RelayRefetchProp,
 } from "react-relay"
 import { ConnectionHandler } from "relay-runtime"
@@ -183,7 +184,6 @@ export class Conversation extends React.Component<Props, State> {
   }
 }
 
-// TODO update UI after sending a message based on this info https://github.com/facebook/relay/issues/1701#issuecomment-301012344
 function sendConversationMessage(
   environment: Environment,
   conversation: RelayProps["me"]["conversation"],
@@ -193,9 +193,19 @@ function sendConversationMessage(
 ) {
   const lastMessage = conversation.messages.edges[conversation.messages.edges.length - 1].node
 
+  const storeUpdater = (store: RecordSourceSelectorProxy) => {
+    const mutationPayload = store.getRootField("sendConversationMessage")
+    const newMessageEdge = mutationPayload.getLinkedRecord("messageEdge")
+    const connection = ConnectionHandler.getConnection(store.get(conversation.__id), "Conversation_messages")
+    ConnectionHandler.insertEdgeAfter(connection, newMessageEdge)
+  }
+
   return commitMutation(environment, {
     onCompleted,
     onError,
+
+    optimisticUpdater: storeUpdater,
+    updater: storeUpdater,
 
     // TODO See if we can extract the field selections into a fragment and share it with the normal pagination fragment.
     //      Also looks like we can get rid of the `body` selection.
@@ -225,20 +235,9 @@ function sendConversationMessage(
       },
     },
 
-    // optimisticResponse: {
-    //   sendConversationMessage: {
-    //     messageEdge: {
-    //       node: {
-    //         body: text,
-    //         is_from_user: true,
-    //         created_at: null,
-    //         attachments: [],
-    //       },
-    //     },
-    //   },
-    // },
-
     // TODO Figure out which of these keys is *actually* required for Relay Modern and update the typings to reflect that.
+    //      And if it’s really true that this config isn’t enough to update the connection and we really need the updater
+    //      functions.
     configs: [
       {
         type: "RANGE_ADD",
@@ -258,11 +257,21 @@ function sendConversationMessage(
       },
     ],
 
-    updater: store => {
-      const mutationPayload = store.getRootField("sendConversationMessage")
-      const newMessageEdge = mutationPayload.getLinkedRecord("messageEdge")
-      const connection = ConnectionHandler.getConnection(store.get(conversation.__id), "Conversation_messages")
-      ConnectionHandler.insertEdgeAfter(connection, newMessageEdge)
+    optimisticResponse: {
+      sendConversationMessage: {
+        messageEdge: {
+          node: {
+            body: text,
+            from: {
+              email: conversation.from.email,
+              name: null,
+            },
+            is_from_user: true,
+            created_at: null, // Intentionally left blank so Message can recognize this as an optimistic response.
+            attachments: [],
+          },
+        },
+      },
     },
   })
 }
@@ -284,7 +293,7 @@ export default createRefetchContainer(
           name
           initials
         }
-        messages(first: 100) @connection(key: "Conversation_messages") {
+        messages(first: 200) @connection(key: "Conversation_messages") {
           pageInfo {
             hasNextPage
           }
