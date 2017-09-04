@@ -55,7 +55,7 @@ const DottedBorder = styled.View`
   margin-right: 20;
 `
 
-const MessagesList = styled(FlatList)`
+const MessagesList = styled(FlatList) `
   margin-top: 10;
 `
 
@@ -122,11 +122,11 @@ export class Conversation extends React.Component<Props, State> {
       this.props.relay.forceFetch({})
     }
 
-    NetInfo.isConnected.addEventListener("change", this.handleConnectivityChange)
+    NetInfo.isConnected.addEventListener("connectionChange", this.handleConnectivityChange)
   }
 
   componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener("change", this.handleConnectivityChange)
+    NetInfo.isConnected.removeEventListener("connectionChange", this.handleConnectivityChange)
   }
 
   handleConnectivityChange(isConnected) {
