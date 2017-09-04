@@ -134,9 +134,11 @@ declare module "react-relay/modern" {
     variables: Variables
     onCompleted?: ((response: T, errors: RelayNetworkTypes.PayloadError[] | null) => void) | null
     onError?: ((error: Error) => void) | null
-    optimisticResponse?: (() => Object) | null
+    // FIXME This appears to be incorrect, because Relay complains about it being a function.
+    // optimisticResponse?: (() => Object) | null
+    optimisticResponse?: Object | null
     optimisticUpdater?: ((store: RecordSourceSelectorProxy) => void) | null
-    updater?: ((store: RecordSourceSelectorProxy) => void) | null
+    updater?: ((store: RecordSourceSelectorProxy, data: T) => void) | null
     configs?: RelayMutationConfig[]
   }
   export type RecordSourceSelectorProxy = any // Todo: add proper types
