@@ -32,88 +32,67 @@
 
 
 @interface RCTDescendantScrollEvent : RCTScrollEvent
+@property (nonatomic, strong, readonly) NSDictionary *body;
 @end
 
 @implementation RCTDescendantScrollEvent
-{
-  UIScrollView *_enclosingScrollView;
-  CGPoint _scrollViewContentOffset;
-  UIEdgeInsets _scrollViewContentInset;
-  CGSize _scrollViewContentSize;
-  CGRect _scrollViewFrame;
-  CGFloat _scrollViewZoomScale;
-  NSDictionary *_userData;
-  uint16_t _coalescingKey;
-}
 
-@synthesize viewTag = _viewTag;
-@synthesize eventName = _eventName;
+@synthesize body = _body;
 
 - (instancetype)initWithEventName:(NSString *)eventName
                          reactTag:(NSNumber *)reactTag
-              enclosingScrollView:(UIScrollView *)enclosingScrollView
           scrollViewContentOffset:(CGPoint)scrollViewContentOffset
            scrollViewContentInset:(UIEdgeInsets)scrollViewContentInset
             scrollViewContentSize:(CGSize)scrollViewContentSize
-                  scrollViewFrame:(CGRect)scrollViewFrame
               scrollViewZoomScale:(CGFloat)scrollViewZoomScale
+         enclosingScrollViewFrame:(CGRect)enclosingScrollViewFrame
                          userData:(NSDictionary *)userData
                     coalescingKey:(uint16_t)coalescingKey
 {
-    if ((self = [super initWithEventName:(NSString *)eventName
-                         reactTag:(NSNumber *)reactTag
-          scrollViewContentOffset:(CGPoint)scrollViewContentOffset
-           scrollViewContentInset:(UIEdgeInsets)scrollViewContentInset
-            scrollViewContentSize:(CGSize)scrollViewContentSize
-                  scrollViewFrame:(CGRect)scrollViewFrame
-              scrollViewZoomScale:(CGFloat)scrollViewZoomScale
-                         userData:(NSDictionary *)userData
-                    coalescingKey:(uint16_t)coalescingKey
-])) {
-    _enclosingScrollView = enclosingScrollView;
-    _scrollViewContentOffset = scrollViewContentOffset;
-    _scrollViewContentInset = scrollViewContentInset;
-    _scrollViewContentSize = scrollViewContentSize;
-    _scrollViewFrame = scrollViewFrame;
-    _scrollViewZoomScale = scrollViewZoomScale;
-    _userData = userData;
-    _coalescingKey = coalescingKey;
+  // Use the enclosing scrollview’s dimensions for `scrollViewFrame``, because it is likely that the receiver wants to
+  // do calculations based on the location of the content in the enclosing scrollview.
+  if ((self = [super initWithEventName:(NSString *)eventName
+                              reactTag:(NSNumber *)reactTag
+               scrollViewContentOffset:(CGPoint)scrollViewContentOffset
+                scrollViewContentInset:(UIEdgeInsets)scrollViewContentInset
+                 scrollViewContentSize:(CGSize)scrollViewContentSize
+                       scrollViewFrame:(CGRect)enclosingScrollViewFrame
+                   scrollViewZoomScale:(CGFloat)scrollViewZoomScale
+                              userData:(NSDictionary *)userData
+                         coalescingKey:(uint16_t)coalescingKey])) {
+    // Theoretically it’s probably better to calculate this once `body` is actually used (which is what the superclass
+    // does) but that probably works in conjunction with coalescing, something we don’t do atm anyways.
+    NSDictionary *body = @{
+      @"contentOffset": @{
+        @"x": @(scrollViewContentOffset.x),
+        @"y": @(scrollViewContentOffset.y)
+      },
+      @"contentInset": @{
+        @"top": @(scrollViewContentInset.top),
+        @"left": @(scrollViewContentInset.left),
+        @"bottom": @(scrollViewContentInset.bottom),
+        @"right": @(scrollViewContentInset.right)
+      },
+      @"contentSize": @{
+        @"width": @(scrollViewContentSize.width),
+        @"height": @(scrollViewContentSize.height)
+      },
+      @"layoutMeasurement": @{
+        @"width": @(enclosingScrollViewFrame.size.width),
+        @"height": @(enclosingScrollViewFrame.size.height)
+      },
+      @"zoomScale": @(scrollViewZoomScale ?: 1),
+    };
+
+    if (userData) {
+      NSMutableDictionary *mutableBody = [body mutableCopy];
+      [mutableBody addEntriesFromDictionary:userData];
+      body = [mutableBody copy];
+    }
+    
+    _body = body;
   }
   return self;
-}
-
-- (NSDictionary *)body
-{
-  NSDictionary *body = @{
-    @"contentOffset": @{
-      @"x": @(_scrollViewContentOffset.x),
-      @"y": @(_scrollViewContentOffset.y)
-    },
-    @"contentInset": @{
-      @"top": @(_scrollViewContentInset.top),
-      @"left": @(_scrollViewContentInset.left),
-      @"bottom": @(_scrollViewContentInset.bottom),
-      @"right": @(_scrollViewContentInset.right)
-    },
-    @"contentSize": @{
-      @"width": @(_scrollViewContentSize.width),
-      @"height": @(_scrollViewContentSize.height)
-    },
-    @"layoutMeasurement": @{
-      @"width": @(_scrollViewFrame.size.width),
-      @"height": @(_scrollViewFrame.size.height)
-    },
-    @"zoomScale": @(_scrollViewZoomScale ?: 1),
-  };
-
-
-  if (_userData) {
-    NSMutableDictionary *mutableBody = [body mutableCopy];
-    [mutableBody addEntriesFromDictionary:_userData];
-    body = mutableBody;
-  }
-
-  return body;
 }
 
 @end
@@ -121,18 +100,25 @@
 
 @implementation RCTScrollEvent (RCTEnclosingScrollView)
 
-- (RCTDescendantScrollEvent *)scrollEventRelativeToDescendant:(UIScrollView *)descendantScrollView
-                                                     reactTag:(NSNumber *)reactTag
-                                                coalescingKey:(uint16_t)coalescingKey
+- (RCTDescendantScrollEvent *)scrollEventForScrollView:(UIScrollView *)scrollView
+                       relativeFromEnclosingScrollView:(UIScrollView *)enclosingScrollView
+                                              reactTag:(NSNumber *)reactTag
+                                         coalescingKey:(uint16_t)coalescingKey
 {
+  // TODO: Is this not simply scrollView.frame.origin ?
+  CGPoint originOffset = [scrollView convertPoint:CGPointZero toView:enclosingScrollView];
+  CGPoint contentOffset = enclosingScrollView.contentOffset;
+  // TODO: contentOffset.x -= originOffset.x;
+  contentOffset.x = scrollView.contentOffset.x;
+  contentOffset.y -= originOffset.y;
+  
   return [[RCTDescendantScrollEvent alloc] initWithEventName:self.eventName
                                                     reactTag:reactTag
-                                         enclosingScrollView:[self valueForKey:@"_scrollView"]
-                                     scrollViewContentOffset:descendantScrollView.contentOffset
-                                      scrollViewContentInset:descendantScrollView.contentInset
-                                       scrollViewContentSize:descendantScrollView.contentSize
-                                             scrollViewFrame:descendantScrollView.frame
-                                         scrollViewZoomScale:descendantScrollView.zoomScale
+                                     scrollViewContentOffset:contentOffset
+                                      scrollViewContentInset:scrollView.contentInset
+                                       scrollViewContentSize:scrollView.contentSize
+                                         scrollViewZoomScale:scrollView.zoomScale
+                                    enclosingScrollViewFrame:enclosingScrollView.frame
                                                     userData:[self valueForKey:@"_userData"]
                                                coalescingKey:coalescingKey];
     
@@ -170,14 +156,14 @@
   }
 
   RCTScrollEvent *scrollEvent = [[RCTScrollEvent alloc] initWithEventName:eventName
-                                                          reactTag:self.reactTag
-                                            scrollViewContentOffset:self.scrollView.contentOffset
-                                            scrollViewContentInset:self.contentInset
-                                              scrollViewContentSize:self.contentSize
-                                                    scrollViewFrame:self.frame
-                                                scrollViewZoomScale:self.scrollView.zoomScale
-                                                          userData:userData
-                                                      coalescingKey:coalescingKey];
+                                                                 reactTag:self.reactTag
+                                                  scrollViewContentOffset:self.scrollView.contentOffset
+                                                   scrollViewContentInset:self.contentInset
+                                                    scrollViewContentSize:self.contentSize
+                                                          scrollViewFrame:self.frame
+                                                      scrollViewZoomScale:self.scrollView.zoomScale
+                                                                 userData:userData
+                                                            coalescingKey:coalescingKey];
   [[self valueForKey:@"_eventDispatcher"] sendEvent:scrollEvent];
 
   // TODO: This doesn’t coalesce, which is something that’s done by the event dispatcher
@@ -191,9 +177,9 @@
   //       I was not able to find a great place in RN where the ancestor view hierarchy
   //       is guaranteed to exist.
   //
-  RCTScrollView *scrollView = notification.object;
+  RCTScrollView *enclosingScrollView = notification.object;
   // Only handle events of scrollviews that actually enclose this scrollview.
-  if (scrollView == self || ![self isDescendantOfView:scrollView]) {
+  if (enclosingScrollView == self || ![self isDescendantOfView:enclosingScrollView]) {
     return;
   }
 
@@ -201,8 +187,8 @@
   //       The enclosing scroll view *must* have a throttle amount set or
   //       it won’t send more scroll move events.
   //
-  if (scrollView.scrollEventThrottle == 0) {
-    scrollView.scrollEventThrottle = self.scrollEventThrottle;
+  if (enclosingScrollView.scrollEventThrottle == 0) {
+    enclosingScrollView.scrollEventThrottle = self.scrollEventThrottle;
   }
 
   RCTScrollEvent *scrollEvent = notification.userInfo[@"event"];
@@ -215,9 +201,10 @@
     [self setValue:scrollEvent.eventName forKey:@"_lastEmittedEventName"];
   }
 
-  scrollEvent = [scrollEvent scrollEventRelativeToDescendant:self.scrollView
-                                                    reactTag:self.reactTag
-                                               coalescingKey:coalescingKey];
+  scrollEvent = [scrollEvent scrollEventForScrollView:self.scrollView
+                      relativeFromEnclosingScrollView:enclosingScrollView.scrollView
+                                             reactTag:self.reactTag
+                                        coalescingKey:coalescingKey];
   [[self valueForKey:@"_eventDispatcher"] sendEvent:scrollEvent];
 }
 
