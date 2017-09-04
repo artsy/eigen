@@ -7,6 +7,7 @@ import {
   MutationConfig,
   RelayRefetchProp,
 } from "react-relay"
+import { ConnectionHandler } from "relay-runtime"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
@@ -62,7 +63,7 @@ const DottedBorder = styled.View`
   margin-right: 20;
 `
 
-const MessagesList = styled(FlatList) `
+const MessagesList = styled(FlatList)`
   margin-top: 10;
 `
 
@@ -120,14 +121,7 @@ export class Conversation extends React.Component<Props, State> {
     )
   }
 
-  // FIXME This will perform a network request after initially rendering the component and thus always fetch the latest
-  //       messages. However, with a cold Relay cache this leads to an initial double fetch, because Relay will also
-  //       fetch the data before rendering the initial load.
   componentDidMount() {
-    if (this.props.relay) {
-      this.props.relay.refetch({ conversationID: this.props.me.conversation.id }, null)
-    }
-
     NetInfo.isConnected.addEventListener("connectionChange", this.handleConnectivityChange)
   }
 
@@ -203,6 +197,8 @@ function sendConversationMessage(
     onCompleted,
     onError,
 
+    // TODO See if we can extract the field selections into a fragment and share it with the normal pagination fragment.
+    //      Also looks like we can get rid of the `body` selection.
     mutation: graphql`
       mutation ConversationSendMessageMutation($input: SendConversationMessageMutationInput!) {
         sendConversationMessage(input: $input) {
@@ -210,6 +206,8 @@ function sendConversationMessage(
             node {
               impulse_id
               is_from_user
+              body
+              __id
               ...Message_message
             }
           }
@@ -227,29 +225,30 @@ function sendConversationMessage(
       },
     },
 
-    optimisticResponse: {
-      sendConversationMessage: {
-        messageEdge: {
-          node: {
-            body: text,
-            is_from_user: true,
-            created_at: null,
-            attachments: [],
-          },
-        },
-      },
-    },
+    // optimisticResponse: {
+    //   sendConversationMessage: {
+    //     messageEdge: {
+    //       node: {
+    //         body: text,
+    //         is_from_user: true,
+    //         created_at: null,
+    //         attachments: [],
+    //       },
+    //     },
+    //   },
+    // },
 
+    // TODO Figure out which of these keys is *actually* required for Relay Modern and update the typings to reflect that.
     configs: [
       {
         type: "RANGE_ADD",
-        // parentName: "conversation",
-        // parentID: "id",
-        // connectionName: "messages",
-        // edgeName: "messageEdge",
-        // rangeBehaviors: {
-        //   "": "append",
-        // },
+        parentName: "conversation",
+        parentID: "__id",
+        connectionName: "messages",
+        edgeName: "messageEdge",
+        rangeBehaviors: {
+          "": "append",
+        },
         connectionInfo: [
           {
             key: "Conversation_messages",
@@ -258,6 +257,13 @@ function sendConversationMessage(
         ],
       },
     ],
+
+    updater: store => {
+      const mutationPayload = store.getRootField("sendConversationMessage")
+      const newMessageEdge = mutationPayload.getLinkedRecord("messageEdge")
+      const connection = ConnectionHandler.getConnection(store.get(conversation.__id), "Conversation_messages")
+      ConnectionHandler.insertEdgeAfter(connection, newMessageEdge)
+    },
   })
 }
 
@@ -267,6 +273,7 @@ export default createRefetchContainer(
   graphql`
     fragment Conversation_me on Me {
       conversation(id: $conversationID) {
+        __id
         id
         from {
           name
@@ -285,6 +292,7 @@ export default createRefetchContainer(
             node {
               impulse_id
               is_from_user
+              body
               ...Message_message
             }
           }
@@ -318,6 +326,7 @@ export default createRefetchContainer(
 interface RelayProps {
   me: {
     conversation: {
+      __id: string
       id: string
       from: {
         name: string
