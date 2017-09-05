@@ -41,22 +41,14 @@
     "type": "git",
     "url": "git+https://github.com/artsy/emission.git"
   },
-  "keywords": [
-    "artsy",
-    "react",
-    "react-native"
-  ],
+  "keywords": ["artsy", "react", "react-native"],
   "author": "Eloy Durán",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/artsy/emission/issues"
   },
   "homepage": "https://github.com/artsy/emission#readme",
-  "files": [
-    "index.js",
-    "data",
-    "lib"
-  ],
+  "files": ["index.js", "data", "lib"],
   "dependencies": {
     "lodash": "^4.17.4",
     "moment": "latest",
@@ -66,7 +58,8 @@
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
     "react-native-reversed-flat-list": "^1.0.1",
     "react-native-sentry": "^0.14.5",
-    "react-relay": "^1.0.0",
+    "react-relay": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/react-relay-1.3.0-artsy.1.tgz",
+    "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/relay-runtime-artsy.1.tgz",
     "remove-markdown": "0.1.0",
     "styled-components": "^2.0.0"
   },
@@ -80,8 +73,8 @@
     "apphub": "^0.5.1",
     "awesome-typescript-loader": "^3.1.3",
     "babel-jest": "^18.0.0",
-    "babel-plugin-relay": "^1.0.1",
     "babel-polyfill": "^6.13.0",
+    "babel-plugin-relay": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/babel-plugin-relay-1.3.0-artsy.1.tgz",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-native": "^1.9.1",
@@ -98,8 +91,8 @@
     "react-storybooks-relay-container": "^1.0.0",
     "react-test-renderer": "16.0.0-alpha.12",
     "recursive-readdir-sync": "^1.0.6",
-    "relay-compiler": "^1.0.0",
-    "relay-debugger-react-native-runtime": "^0.0.10",
+    "relay-compiler": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/relay-compiler-1.3.0-artsy.1.tgz",
+    "relay-debugger-react-native-runtime": "^0.0.9",
     "relay2ts": "^0.2.0",
     "stylelint": "^7.13.0",
     "stylelint-config-standard": "^16.0.0",
@@ -111,37 +104,22 @@
   },
   "jest": {
     "preset": "react-native",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "/__tests__/.*-tests.(ts|tsx|js)$",
-    "testPathIgnorePatterns": [
-      "\\.snap$",
-      "<rootDir>/node_modules/"
-    ],
-    "setupFiles": [
-      "./src/setupJest.ts"
-    ],
+    "testPathIgnorePatterns": ["\\.snap$", "<rootDir>/node_modules/"],
+    "setupFiles": ["./src/setupJest.ts"],
     "cacheDirectory": ".jest/cache"
   },
   "lint-staged": {
-    "*.@(ts|tsx)": [
-      "tslint --fix",
-      "npm run prettier-write --",
-      "git add"
-    ]
+    "*.@(ts|tsx)": ["tslint --fix", "npm run prettier-write --", "git add"]
   },
   "config": {
     "react-native-storybook-loader": {
-      "searchDir": [
-        "./src"
-      ],
+      "searchDir": ["./src"],
       "pattern": "**/*.story.tsx",
       "outputFile": "./storybook/storyLoader.js"
     }
