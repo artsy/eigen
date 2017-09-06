@@ -50,7 +50,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
       passProps: { ...this.state, updateWithMetadata: this.updateMetadata },
     })
 
-  goToLocationTapped = () => this.props.navigator.push({ component: Welcome, passProps: this.state.metadata })
+  goToLocationTapped = () => this.props.navigator.push({ component: Location })
 
   updateMetadata = (result: ConsignmentMetadata) => this.setState({ metadata: result })
   updateProvenance = (result: string) => this.setState({ provenance: result })
