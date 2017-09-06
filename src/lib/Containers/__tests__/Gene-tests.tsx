@@ -51,7 +51,7 @@ describe("state", () => {
     const gene = new Gene({
       medium: "glitch",
       price_range: "*-*",
-      relay: { setVariables: jest.fn(), variables: {}, refetch: (a, b, c) => c && c() } as any,
+      relay: { variables: {}, refetch: jest.fn() } as any,
       gene: { filtered_artworks: { aggregations: [] } },
     })
     gene.setState = jest.fn()
@@ -78,11 +78,14 @@ describe("state", () => {
       })
 
       // As well as trigger new state for Relay ( triggering a new call to metaphysics )
-      expect(gene.props.relay.setVariables).lastCalledWith({
-        medium: "porcupines",
-        price_range: "1000-80000",
-        sort: "-desc",
-      })
+      expect(gene.props.relay.refetch).lastCalledWith(
+        {
+          medium: "porcupines",
+          price_range: "1000-80000",
+          sort: "-desc",
+        },
+        null
+      )
     })
   })
 })
