@@ -13,8 +13,8 @@ console.error = (message?: any, ...optionalParams: any[]) => {
   }
 }
 
-function mockedModule(path: string, moduleName: string) {
-  jest.mock(path, () => ({ default: moduleName }))
+function mockedModule(path: string, mockModuleName: string) {
+  jest.mock(path, () => mockModuleName)
 }
 
 jest.mock("./lib/metaphysics.ts")

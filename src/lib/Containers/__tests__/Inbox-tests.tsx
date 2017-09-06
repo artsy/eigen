@@ -85,6 +85,7 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
     ? [
         {
           active_bid: {
+            __id: "594934048b3b8174796e285a",
             id: "594934048b3b8174796e285a",
             display_max_bid_amount_dollars: "$1,100",
             max_bid: {
@@ -114,6 +115,7 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
         },
         {
           active_bid: {
+            __id: "594933e6275b244305851e9c",
             id: "594933e6275b244305851e9c",
             display_max_bid_amount_dollars: "$10,000",
             max_bid: {
@@ -143,6 +145,7 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
         },
         {
           active_bid: {
+            __id: "594932d0275b244305851e99",
             id: "594932d0275b244305851e99",
             display_max_bid_amount_dollars: "$5,000",
             max_bid: {
@@ -175,6 +178,7 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
 
   return {
     conversations,
+    conversations_existence_check: conversations,
     lot_standings: lotStandings,
   }
 }

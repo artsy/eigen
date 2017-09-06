@@ -2,7 +2,7 @@ import * as React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import InvoicePreview from "../InvoicePreview"
+import { InvoicePreview } from "../InvoicePreview"
 
 it("renders correctly", () => {
   const tree = renderer.create(<InvoicePreview invoice={invoice} />)

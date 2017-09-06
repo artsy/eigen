@@ -4,7 +4,7 @@ import * as React from "react"
 import { renderWithLayout } from "../../../../tests/renderWithLayout"
 
 import artwork from "../../__tests__/__fixtures__/artwork"
-import InfiniteScrollArtworksGrid from "../ArtistArtworksGrid"
+import ArtistForSaleArtworksGrid from "../ArtistForSaleArtworksGrid"
 
 it("renders properly", () => {
   const artist = {
@@ -13,6 +13,6 @@ it("renders properly", () => {
     },
   }
 
-  const grid = renderWithLayout(<InfiniteScrollArtworksGrid artist={artist} queryKey="artist" />, { width: 768 })
+  const grid = renderWithLayout(<ArtistForSaleArtworksGrid artist={artist} queryKey="artist" />, { width: 768 })
   expect(grid).toMatchSnapshot()
 })

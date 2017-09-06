@@ -144,9 +144,9 @@ export default createFragmentContainer(
       id
       has_metadata
       counts {
-        artworks,
-        partner_shows,
-        related_artists,
+        artworks
+        partner_shows
+        related_artists
         articles
       }
       ...Header_artist

@@ -4,7 +4,7 @@ import { NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import { renderWithLayout } from "../../tests/renderWithLayout"
-import { WorksForYou } from "../WorksForYou"
+import WorksForYou from "../WorksForYou"
 
 beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { markNotificationsRead: jest.fn() }

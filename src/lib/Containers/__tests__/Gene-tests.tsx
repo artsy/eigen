@@ -1,17 +1,14 @@
 import * as React from "react"
 import * as renderer from "react-test-renderer"
 
-let refineCallbackPromise = () => Promise.resolve({})
-jest.mock("../../NativeModules/triggerRefine", () => ({ default: { triggerRefine: () => refineCallbackPromise() } }))
+let mockRefineCallbackPromise = () => Promise.resolve({})
+jest.mock("../../NativeModules/triggerRefine", () => ({
+  triggerRefine: () => mockRefineCallbackPromise(),
+}))
 
 // Stub out these views for simplicity sake
 jest.mock("../../Components/Gene/Header", () => "Header")
 jest.mock("../../Components/Gene/Artworks", () => "Artworks")
-
-// Native view the Gene references
-jest.mock("../../Components/OpaqueImageView", () => "AROpaqueImageView")
-jest.mock("../../Components/Spinner", () => "ARSpinner")
-jest.mock("../../Components/SwitchView", () => "ARSwitchView")
 
 import { Gene } from "../Gene"
 
@@ -54,14 +51,14 @@ describe("state", () => {
     const gene = new Gene({
       medium: "glitch",
       price_range: "*-*",
-      relay: { setVariables: jest.fn(), variables: {} } as any,
+      relay: { setVariables: jest.fn(), variables: {}, refetch: (a, b, c) => c && c() } as any,
       gene: { filtered_artworks: { aggregations: [] } },
     })
     gene.setState = jest.fn()
 
     // The data we expect back from Eigen when you've hit the refine button,
     // this is a promise that Eigen would normally resolve (via the modal)
-    refineCallbackPromise = () =>
+    mockRefineCallbackPromise = () =>
       Promise.resolve({
         medium: "porcupines",
         selectedPrice: "1000-80000",
