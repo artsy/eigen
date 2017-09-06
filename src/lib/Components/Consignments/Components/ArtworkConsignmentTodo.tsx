@@ -100,6 +100,8 @@ const ImagePreview = images =>
     </ImageDarkener>
   </ImageStyle>
 
+const locationDisplayString = ({ city, state, country }) => [city, state, country].filter(Boolean).join(", ")
+
 interface TODOProps extends ConsignmentSetup {
   goToArtist?: () => void
   goToPhotos?: () => void
@@ -128,7 +130,9 @@ const render = (props: TODOProps) =>
 
     <Separator />
     <Button onPress={props.goToMetadata}>
-      {props.metadata ? DoneButton() : ToDoButton()}
+      {props.metadata && props.metadata.category && props.metadata.title && props.metadata.year
+        ? DoneButton()
+        : ToDoButton()}
       <Title>METADATA</Title>
       <Subtitle>
         {props.metadata ? props.metadata.displayString : ""}
@@ -140,7 +144,7 @@ const render = (props: TODOProps) =>
       {props.location ? DoneButton() : ToDoButton()}
       <Title>LOCATION</Title>
       <Subtitle>
-        {props.location ? props.location : ""}
+        {props.location ? locationDisplayString(props.location) : ""}
       </Subtitle>
     </Button>
 

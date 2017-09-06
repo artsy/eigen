@@ -30,7 +30,7 @@ describe("Opening the right page", () => {
 
   it("pushes a Location when you tap on Locations", () => {
     overview.goToLocationTapped()
-    expect(navigator.push).toBeCalledWith({ component: Location })
+    expect(navigator.push).toBeCalledWith({ component: Location, passProps: expect.anything() })
   })
 
   it("pushes a Artist when you tap on Artist", () => {
@@ -52,4 +52,59 @@ describe("Opening the right page", () => {
     overview.goToPhotosTapped()
     expect(navigator.push).toBeCalledWith({ component: SelectFromPhotoLibrary, passProps: expect.anything() })
   })
+})
+
+describe("Updating State", () => {
+  let overview: Overview
+  let stateMock: jest.Mock<any>
+
+  beforeEach(() => {
+    overview = new Overview({ navigator, route, setup: {} })
+    overview.setState = jest.fn()
+    stateMock = overview.setState as any
+  })
+
+  it("updates Location", () => {
+    overview.updateLocation("Huddersfield", "Yorkshire", "UK")
+    expect(stateMock).toBeCalledWith({ location: { city: "Huddersfield", country: "UK", state: "Yorkshire" } })
+  })
+
+  it("updates Artist", () => {
+    overview.updateArtist({ id: "banksy", name: "Banksy" })
+    expect(stateMock).toBeCalledWith({ artist: { id: "banksy", name: "Banksy" } })
+  })
+
+  it("updates work metadata", () => {
+    overview.updateMetadata({
+      title: "OK",
+      year: "1983",
+      category: "Painting",
+      medium: "Oil on Canvas",
+      width: "100",
+      height: "200",
+      depth: 20,
+      unit: "cm",
+      displayString: "Paint on canvas",
+    })
+    expect(stateMock).toBeCalledWith({
+      metadata: {
+        category: "Painting",
+        depth: 20,
+        displayString: "Paint on canvas",
+        height: "200",
+        medium: "Oil on Canvas",
+        title: "OK",
+        unit: "cm",
+        width: "100",
+        year: "1983",
+      },
+    })
+  })
+
+  it("updates Provenance", () => {
+    overview.updateProvenance("This is my provenance")
+    expect(stateMock).toBeCalledWith({ provenance: "This is my provenance" })
+  })
+
+  it.skip("updates Photos")
 })

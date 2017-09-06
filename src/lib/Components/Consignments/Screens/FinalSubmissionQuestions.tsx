@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { LayoutAnimation, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
+import Button from "../../Buttons/FlatWhite"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { BodyText, LargeHeadline, Subtitle } from "../Typography"
 
@@ -68,6 +69,11 @@ export default class FinalSubmissionQuestions extends React.Component<Props, Con
           <Row>
             <Label>Do you have a certificate of authenticity?</Label>
             <Toggle selected={this.state.certificateOfAuth} left="NO" right="YES" onPress={this.updateCert} />
+          </Row>
+          <Row style={{ justifyContent: "center" }}>
+            <View style={{ height: 43, width: 320, marginTop: 20 }}>
+              <Button text="NEXT" onPress={this.submitWork} style={{ flex: 1 }} />
+            </View>
           </Row>
         </Form>
       </ConsignmentBG>
