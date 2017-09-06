@@ -4926,16 +4926,17 @@ jest-snapshot@^21.0.0:
     natural-compare "^1.4.0"
     pretty-format "^21.0.0"
 
-jest-snapshots-svg@^0.0.14:
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/jest-snapshots-svg/-/jest-snapshots-svg-0.0.14.tgz#252b93a88e7d4782d06f5c691dcbbcfe0fb1be4f"
+jest-snapshots-svg@^0.0.21:
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/jest-snapshots-svg/-/jest-snapshots-svg-0.0.21.tgz#c997d9973f1deb67c448db8f3fdb8136fcb1a0a4"
   dependencies:
     nbind "^0.3.12"
+    string-pixel-width "^1.1.1"
     yoga-layout "^1.5.0"
 
-jest-styled-components@^4.4.1:
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/jest-styled-components/-/jest-styled-components-4.4.1.tgz#beade9388f74aec5ccff3b980265ed96220ee1ba"
+jest-styled-components@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/jest-styled-components/-/jest-styled-components-4.5.0.tgz#dca25e4e4dc1b7ed6d1f69b49b41e4ff8fe197e8"
   dependencies:
     css "^2.2.1"
 
@@ -5371,6 +5372,10 @@ lodash.assign@^4.0.3, lodash.assign@^4.0.6, lodash.assign@^4.2.0:
 lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
+
+lodash.deburr@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/lodash.deburr/-/lodash.deburr-4.1.0.tgz#ddb1bbb3ef07458c0177ba07de14422cb033ff9b"
 
 lodash.escape@^3.0.0:
   version "3.2.0"
@@ -6056,15 +6061,7 @@ npm-which@^3.0.1:
     npm-path "^2.0.2"
     which "^1.2.10"
 
-"npmlog@0 || 1 || 2 || 3 || 4", npmlog@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-2.0.4.tgz#98b52530f2514ca90d09ec5b22c8846722375692"
-  dependencies:
-    ansi "~0.3.1"
-    are-we-there-yet "~1.1.2"
-    gauge "~1.2.5"
-
-npmlog@^4.0.2:
+"npmlog@0 || 1 || 2 || 3 || 4", npmlog@^4.0.2:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-4.1.0.tgz#dc59bee85f64f00ed424efb2af0783df25d1c0b5"
   dependencies:
@@ -6072,6 +6069,14 @@ npmlog@^4.0.2:
     console-control-strings "~1.1.0"
     gauge "~2.7.3"
     set-blocking "~2.0.0"
+
+npmlog@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-2.0.4.tgz#98b52530f2514ca90d09ec5b22c8846722375692"
+  dependencies:
+    ansi "~0.3.1"
+    are-we-there-yet "~1.1.2"
+    gauge "~1.2.5"
 
 num2fraction@^1.2.2:
   version "1.2.2"
@@ -8163,6 +8168,12 @@ string-length@^1.0.1:
   resolved "https://registry.yarnpkg.com/string-length/-/string-length-1.0.1.tgz#56970fb1c38558e9e70b728bf3de269ac45adfac"
   dependencies:
     strip-ansi "^3.0.0"
+
+string-pixel-width@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/string-pixel-width/-/string-pixel-width-1.1.1.tgz#c9d243f79849b4e6d75214de8702fc88db9ee508"
+  dependencies:
+    lodash.deburr "^4.1.0"
 
 string-width@^1.0.1, string-width@^1.0.2:
   version "1.0.2"
