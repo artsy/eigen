@@ -9,7 +9,6 @@
 #import "ARNotificationView.h"
 #import "ARSwitchBoard.h"
 #import "ARTopMenuViewController.h"
-#import "ARWorksForYouReloadingHostViewController.h"
 #import "ARLogger.h"
 #import "ARDefaults.h"
 #import "AROptions.h"
@@ -223,9 +222,6 @@
 - (void)receivedNotification:(NSDictionary *)notificationInfo viewController:(UIViewController *)viewController;
 {
     [ARAnalytics event:ARAnalyticsNotificationReceived withProperties:notificationInfo];
-    if ([viewController isKindOfClass:ARWorksForYouReloadingHostViewController.class]) {
-        [(ARWorksForYouReloadingHostViewController *)viewController reloadData];
-    }
 }
 
 - (void)tappedNotification:(NSDictionary *)notificationInfo viewController:(UIViewController *)viewController;

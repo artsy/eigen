@@ -1,5 +1,26 @@
 upcoming:
     version: 3.2.3
+    version: 3.3.0
+    details: Messaging
+    dev:
+      - Reload active bids on pull-to-refresh - alloy
+      - Make active bids link to their artworks - alloy
+      - Make zero inbox state hide on load if bids or conversations exist - alloy
+      - Fix crash on Gene view, when integrated into Eigen, due to missing RCTAnimation dependency - alloy
+      - Fix issue with missing icons - alloy
+
+    user_facing:
+      - Adds new routing for inquiries - maxim
+      - Removes "Contact for Price" on related works in auction list - ash
+      - Fixes problem with status bar on refine options view - ash
+      - Fixes login for users with short passwords - ash
+      - Fixes inconsistencies in bid counts of online sales - ash
+      - Fixes a minor problem displaying lots in past auctions - ash
+      - Fixes inconsistencies in post-sale artwork supplementary info - ash
+
+releases:
+  - version: 3.2.3
+    date: Jul 11, 2017
     details: Auction price data fix
     user_facing:
       - Updates Emission to 1.3.10 which includes a fix for not showing pricing data for closed sales - ash

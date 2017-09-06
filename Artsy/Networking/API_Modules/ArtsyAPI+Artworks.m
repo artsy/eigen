@@ -33,10 +33,36 @@
     return [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
 }
 
-+ (AFHTTPRequestOperation *)getArtworkFromUserFavorites:(NSString *)userID page:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
++ (AFHTTPRequestOperation *)getArtworkFromUserFavorites:(NSString *)cursor success:(void (^)(NSString *nextPageCursor, BOOL hasNextPage, NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
-    NSURLRequest *request = [ARRouter newArtworksFromUsersFavoritesRequestWithID:userID page:page];
-    return [self getRequest:request parseIntoAnArrayOfClass:Artwork.class success:success failure:failure];
+    NSURLRequest *request = [ARRouter newArtworksFromUsersFavoritesRequestWithCursor:cursor];
+    return [self performRequest:request success:^(id json) {
+        // Parse out metadata from GraphQL response.
+        id artworksConnection = json[@"data"][@"me"][@"saved_artworks"][@"artworks_connection"];
+        NSDictionary *pageInfo = artworksConnection[@"pageInfo"];
+        NSArray *artworksJson = [artworksConnection[@"edges"] valueForKey:@"node"];
+
+        // Parse artworks, sale artworks, and make manual connection between the two if appropritate.
+        NSArray *artworks = [artworksJson map:^id(id json) {
+            Artwork *artwork = [Artwork modelWithJSON:json];
+
+            id saleArtworkJSON = json[@"sale_artwork"];
+            if (saleArtworkJSON != [NSNull null]) {
+                SaleArtwork *saleArtwork = [SaleArtwork modelWithJSON:saleArtworkJSON];
+                artwork.auction = saleArtwork.auction;
+                artwork.saleArtwork = saleArtwork;
+            }
+            return artwork;
+        }];
+
+        if (success) {
+            success(pageInfo[@"endCursor"], [pageInfo[@"hasNextPage"] boolValue], artworks);
+        }
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 + (AFHTTPRequestOperation *)getArtworksForGene:(Gene *)gene atPage:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
