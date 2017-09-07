@@ -9,8 +9,8 @@ import { StyleSheet, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
-import OpaqueImageView from "../../OpaqueImageView"
 import DottedLine from "../../../Components/DottedLine"
+import OpaqueImageView from "../../OpaqueImageView"
 
 const Card = styled.View`
   margin: 10px 20px 0;
