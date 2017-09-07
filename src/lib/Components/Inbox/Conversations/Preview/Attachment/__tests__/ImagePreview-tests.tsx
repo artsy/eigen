@@ -2,7 +2,7 @@ import * as React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import ImagePreview from "../ImagePreview"
+import { ImagePreview } from "../ImagePreview"
 
 it("renders correctly", () => {
   const tree = renderer.create(<ImagePreview attachment={attachment} />)

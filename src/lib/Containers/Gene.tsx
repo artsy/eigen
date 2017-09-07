@@ -191,6 +191,7 @@ export class Gene extends React.Component<Props, State> {
             selectedPriceRange: newSettings.selectedPrice,
             sort: newSettings.sort,
           })
+
           this.props.relay.refetch(
             {
               medium: newSettings.medium,

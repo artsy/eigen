@@ -151,7 +151,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   /** A simplified version of the Relay debugging logs for infinite scrolls */
   debugLog(query: string, response?: any, error?: any) {
     // tslint:disable:no-console
-    if (__DEV__ && (global as any).originalXMLHttpRequest !== undefined) {
+    if (__DEV__ && originalXMLHttpRequest !== undefined) {
       const groupName = "Infinite scroll request"
       const c: any = console
       c.groupCollapsed(groupName, "color:" + (response ? "black" : "red") + ";")

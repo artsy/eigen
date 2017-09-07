@@ -43,8 +43,8 @@ export default createFragmentContainer(
   Articles,
   graphql`
     fragment Articles_articles on Article @relay(plural: true) {
-        __id
-        ...Article_article
+      __id
+      ...Article_article
     }
   `
 )

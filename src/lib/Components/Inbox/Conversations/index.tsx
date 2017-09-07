@@ -177,7 +177,7 @@ interface RelayProps {
     conversations: {
       pageInfo: {
         hasNextPage: boolean
-      }
+      } | null
       edges: Array<{
         node: {
           id: string | null

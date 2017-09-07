@@ -2,12 +2,11 @@ import * as React from "react"
 
 import BottomAlignedButton from "./BottomAlignedButton"
 
-export interface DoneButtonProps {
+export interface DoneButtonProps extends React.Props<JSX.Element> {
   onPress: () => void
-  children?: any[]
 }
 
-const render = (props: DoneButtonProps) => {
+const DoneButton: React.SFC<DoneButtonProps> = props => {
   const doneButtonStyles = {
     backgroundColor: "black",
     marginBottom: 0,
@@ -21,8 +20,4 @@ const render = (props: DoneButtonProps) => {
   )
 }
 
-export default class DoneButton extends React.Component<DoneButtonProps, null> {
-  render() {
-    return render(this.props)
-  }
-}
+export default DoneButton
