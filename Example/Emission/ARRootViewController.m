@@ -65,7 +65,7 @@
   ARSectionData *adminSection = [self adminSection];
   [tableViewData addSectionData:adminSection];
 
-#if TARGET_OS_SIMULATOR && defined(DEBUG)
+#if defined(DEBUG)
   // These were nice quick for getting bootstrapped, but they should be storybooks
   // so that they can be controlled in JS and deployed with PRs.
   ARSectionData *viewControllerSection = [self jumpToViewControllersSection];

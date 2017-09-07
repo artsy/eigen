@@ -11,6 +11,8 @@ import ConsignmentBG from "../Components/ConsignmentBG"
 import ImageSelection, { ImageData } from "../Components/ImageSelection"
 import { BodyText as P } from "../Typography"
 
+import triggerCamera from "../../../NativeModules/triggerCamera"
+
 import {
   CameraRoll,
   Dimensions,
@@ -136,7 +138,14 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
   }
 
   onPressNewPhoto = () => {
-    console.log("OK")
+    triggerCamera(this).then(photo => {
+      if (photo) {
+        console.log("Cancelled")
+      } else {
+        console.log("Got photo back")
+        console.log(photo)
+      }
+    })
   }
 
   render() {
