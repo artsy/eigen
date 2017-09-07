@@ -4,7 +4,6 @@
 
 @interface ARDottedLine : UIView
 @property (nonatomic, strong, readwrite) UIColor *color;
-@property (nonatomic, strong, readwrite) UIColor *processedBackgroundColor;
 @end
 
 
@@ -14,13 +13,13 @@
 {
     [super drawRect:rect];
     
-    [self.processedBackgroundColor setFill];
+    [UIColor.whiteColor setFill];
     [self.color setStroke];
     
     CGContextFillRect(UIGraphicsGetCurrentContext(), rect);
     
     const CGFloat dotDiameter = rect.size.height / 2;
-    const CGFloat gapSize = dotDiameter * 5;
+    const CGFloat gapSize = dotDiameter * 4;
     CGFloat pattern[4];
     pattern[0] = 0.0;
     pattern[1] = gapSize;
@@ -43,11 +42,9 @@
 RCT_CUSTOM_VIEW_PROPERTY(color, NSNumber, ARDottedLine)
 {
     view.color = [RCTConvert UIColor:json];
+    [view setNeedsDisplay];
 }
-RCT_CUSTOM_VIEW_PROPERTY(processedBackgroundColor, NSNumber, ARDottedLine)
-{
-    view.processedBackgroundColor = [RCTConvert UIColor:json];
-}
+
 RCT_EXPORT_MODULE();
 
 - (UIView *)view

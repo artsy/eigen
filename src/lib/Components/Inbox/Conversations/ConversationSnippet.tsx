@@ -34,6 +34,7 @@ const CardContent = styled(HorizontalLayout)`
 
 const TextPreview = styled(VerticalLayout)`
   margin-left: 15;
+  margin-bottom: 3;
 `
 
 const DateHeading = styled(HorizontalLayout)`
@@ -50,14 +51,6 @@ const UnreadIndicator = styled.View`
   margin-top: 3;
   margin-bottom: 3;
 `
-
-// const Separator = styled.View`
-//   height: 1;
-//   width: 100%;
-//   background-color: ${colors["gray-regular"]};
-//   margin-top: 18px;
-//   margin-bottom: 5px;
-// `
 
 const Subtitle = styled.Text`
   font-family: ${fonts["garamond-regular"]};
