@@ -19,9 +19,9 @@ export const Form: React.SFC<{ title?: string }> = props =>
   </ScrollView>
 
 /** An individual row inside the form */
-export const Row: React.SFC<ViewProperties> = props =>
-  <View style={[props.style, { flexDirection: "row", paddingVertical: 6, alignItems: "center" }]}>
-    {props.children}
+export const Row: React.SFC<ViewProperties> = ({ children, ...props }) =>
+  <View {...props} style={[props.style, { flexDirection: "row", paddingVertical: 6, alignItems: "center" }]}>
+    {children}
   </View>
 
 /** A label for form element */

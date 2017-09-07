@@ -54,19 +54,26 @@ exports[`state is set up with empty consignment metadata 1`] = `
             <View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "paddingVertical": 6,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "paddingVertical": 6,
+                    },
+                  ]
                 }
               >
                 <View
                   style={
-                    Object {
-                      "flex": 1,
-                      "margin": 10,
-                    }
+                    Array [
+                      Object {
+                        "margin": 10,
+                      },
+                      Object {
+                        "flex": 1,
+                      },
+                    ]
                   }
                 >
                   <View
@@ -119,19 +126,26 @@ exports[`state is set up with empty consignment metadata 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "paddingVertical": 6,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "paddingVertical": 6,
+                    },
+                  ]
                 }
               >
                 <View
                   style={
-                    Object {
-                      "flex": 1,
-                      "margin": 10,
-                    }
+                    Array [
+                      Object {
+                        "margin": 10,
+                      },
+                      Object {
+                        "flex": 1,
+                      },
+                    ]
                   }
                 >
                   <View
@@ -184,19 +198,26 @@ exports[`state is set up with empty consignment metadata 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "paddingVertical": 6,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "paddingVertical": 6,
+                    },
+                  ]
                 }
               >
                 <View
                   style={
-                    Object {
-                      "flex": 1,
-                      "margin": 10,
-                    }
+                    Array [
+                      Object {
+                        "margin": 10,
+                      },
+                      Object {
+                        "flex": 1,
+                      },
+                    ]
                   }
                 >
                   <View
@@ -250,19 +271,26 @@ exports[`state is set up with empty consignment metadata 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "paddingVertical": 6,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "paddingVertical": 6,
+                    },
+                  ]
                 }
               >
                 <View
                   style={
-                    Object {
-                      "flex": 1,
-                      "margin": 10,
-                    }
+                    Array [
+                      Object {
+                        "margin": 10,
+                      },
+                      Object {
+                        "flex": 1,
+                      },
+                    ]
                   }
                 >
                   <View
@@ -315,19 +343,26 @@ exports[`state is set up with empty consignment metadata 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "paddingVertical": 6,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "paddingVertical": 6,
+                    },
+                  ]
                 }
               >
                 <View
                   style={
-                    Object {
-                      "flex": 1,
-                      "margin": 10,
-                    }
+                    Array [
+                      Object {
+                        "margin": 10,
+                      },
+                      Object {
+                        "flex": 1,
+                      },
+                    ]
                   }
                 >
                   <View
@@ -379,10 +414,14 @@ exports[`state is set up with empty consignment metadata 1`] = `
                 </View>
                 <View
                   style={
-                    Object {
-                      "flex": 1,
-                      "margin": 10,
-                    }
+                    Array [
+                      Object {
+                        "margin": 10,
+                      },
+                      Object {
+                        "flex": 1,
+                      },
+                    ]
                   }
                 >
                   <View
@@ -435,19 +474,26 @@ exports[`state is set up with empty consignment metadata 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "paddingVertical": 6,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "paddingVertical": 6,
+                    },
+                  ]
                 }
               >
                 <View
                   style={
-                    Object {
-                      "flex": 1,
-                      "margin": 10,
-                    }
+                    Array [
+                      Object {
+                        "margin": 10,
+                      },
+                      Object {
+                        "flex": 1,
+                      },
+                    ]
                   }
                 >
                   <View
@@ -798,19 +844,26 @@ exports[`state is set up with filled consignment metadata 1`] = `
             <View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "paddingVertical": 6,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "paddingVertical": 6,
+                    },
+                  ]
                 }
               >
                 <View
                   style={
-                    Object {
-                      "flex": 1,
-                      "margin": 10,
-                    }
+                    Array [
+                      Object {
+                        "margin": 10,
+                      },
+                      Object {
+                        "flex": 1,
+                      },
+                    ]
                   }
                 >
                   <View
@@ -863,19 +916,26 @@ exports[`state is set up with filled consignment metadata 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "paddingVertical": 6,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "paddingVertical": 6,
+                    },
+                  ]
                 }
               >
                 <View
                   style={
-                    Object {
-                      "flex": 1,
-                      "margin": 10,
-                    }
+                    Array [
+                      Object {
+                        "margin": 10,
+                      },
+                      Object {
+                        "flex": 1,
+                      },
+                    ]
                   }
                 >
                   <View
@@ -928,19 +988,26 @@ exports[`state is set up with filled consignment metadata 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "paddingVertical": 6,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "paddingVertical": 6,
+                    },
+                  ]
                 }
               >
                 <View
                   style={
-                    Object {
-                      "flex": 1,
-                      "margin": 10,
-                    }
+                    Array [
+                      Object {
+                        "margin": 10,
+                      },
+                      Object {
+                        "flex": 1,
+                      },
+                    ]
                   }
                 >
                   <View
@@ -994,19 +1061,26 @@ exports[`state is set up with filled consignment metadata 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "paddingVertical": 6,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "paddingVertical": 6,
+                    },
+                  ]
                 }
               >
                 <View
                   style={
-                    Object {
-                      "flex": 1,
-                      "margin": 10,
-                    }
+                    Array [
+                      Object {
+                        "margin": 10,
+                      },
+                      Object {
+                        "flex": 1,
+                      },
+                    ]
                   }
                 >
                   <View
@@ -1059,19 +1133,26 @@ exports[`state is set up with filled consignment metadata 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "paddingVertical": 6,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "paddingVertical": 6,
+                    },
+                  ]
                 }
               >
                 <View
                   style={
-                    Object {
-                      "flex": 1,
-                      "margin": 10,
-                    }
+                    Array [
+                      Object {
+                        "margin": 10,
+                      },
+                      Object {
+                        "flex": 1,
+                      },
+                    ]
                   }
                 >
                   <View
@@ -1123,10 +1204,14 @@ exports[`state is set up with filled consignment metadata 1`] = `
                 </View>
                 <View
                   style={
-                    Object {
-                      "flex": 1,
-                      "margin": 10,
-                    }
+                    Array [
+                      Object {
+                        "margin": 10,
+                      },
+                      Object {
+                        "flex": 1,
+                      },
+                    ]
                   }
                 >
                   <View
@@ -1179,19 +1264,26 @@ exports[`state is set up with filled consignment metadata 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "paddingVertical": 6,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "paddingVertical": 6,
+                    },
+                  ]
                 }
               >
                 <View
                   style={
-                    Object {
-                      "flex": 1,
-                      "margin": 10,
-                    }
+                    Array [
+                      Object {
+                        "margin": 10,
+                      },
+                      Object {
+                        "flex": 1,
+                      },
+                    ]
                   }
                 >
                   <View

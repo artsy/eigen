@@ -20,8 +20,8 @@ export { metaphysicsURL, gravityURL }
 // It will be `undefined` unless running inside Chrome.
 //
 declare var global: any
-if (__DEV__ && originalXMLHttpRequest !== undefined) {
-  global.XMLHttpRequest = originalXMLHttpRequest
+if (__DEV__ && global.originalXMLHttpRequest !== undefined) {
+  global.XMLHttpRequest = global.originalXMLHttpRequest
   // tslint:disable-next-line:no-var-requires
   require("react-relay/lib/RelayNetworkDebug").init()
 }

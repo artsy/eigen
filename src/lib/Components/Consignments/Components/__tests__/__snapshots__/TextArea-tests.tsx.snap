@@ -3,9 +3,12 @@
 exports[`doesn't show placeholder when initial text is present 1`] = `
 <View
   style={
-    Object {
-      "flex": 1,
-    }
+    Array [
+      undefined,
+      Object {
+        "flex": 1,
+      },
+    ]
   }
 >
   <View
@@ -45,9 +48,12 @@ exports[`doesn't show placeholder when initial text is present 1`] = `
 exports[`shows the placeholder when text is empty 1`] = `
 <View
   style={
-    Object {
-      "flex": 1,
-    }
+    Array [
+      undefined,
+      Object {
+        "flex": 1,
+      },
+    ]
   }
 >
   <View

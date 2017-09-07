@@ -63,9 +63,14 @@ exports[`Sets up the right view hierarchy 1`] = `
           <View>
             <View
               style={
-                Object {
-                  "flex": 0,
-                }
+                Array [
+                  Object {
+                    "flex": 0,
+                  },
+                  Object {
+                    "flex": 1,
+                  },
+                ]
               }
             >
               <View
