@@ -80,7 +80,7 @@
     "babel-preset-react-native": "^1.9.1",
     "babel-preset-stage-0": "^6.24.1",
     "concurrently": "^2.2.0",
-    "danger": "^1.2.0",
+    "danger": "2.0.0-alpha-14",
     "jest": "^21.0.1",
     "jest-react-native": "18.0.0",
     "jest-snapshots-svg": "^0.0.21",
@@ -121,7 +121,8 @@
     "cacheDirectory": ".jest/cache"
   },
   "lint-staged": {
-    "*.@(ts|tsx)": ["tslint --fix", "npm run prettier-write --", "git add"]
+    "*.@(ts|tsx)": ["tslint --fix", "npm run prettier-write --", "git add"],
+    "*.json": ["npm run prettier-write --"]
   },
   "config": {
     "react-native-storybook-loader": {
