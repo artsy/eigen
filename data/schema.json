@@ -36824,6 +36824,7 @@
               "defaultValue": null
             },
             {
+<<<<<<< HEAD
               "name": "state",
               "description": "The internal state of the work, e.g. draft/submitted",
               "type": {
@@ -36834,6 +36835,8 @@
               "defaultValue": null
             },
             {
+=======
+>>>>>>> [Messaging] WIP on launching webview when tapping on unpaid invoice
               "name": "width",
               "description": "The width of the work",
               "type": {
@@ -36993,6 +36996,7 @@
           "possibleTypes": null
         },
         {
+<<<<<<< HEAD
           "kind": "ENUM",
           "name": "SubmissionStateAggregation",
           "description": null,
@@ -37016,6 +37020,8 @@
           "possibleTypes": null
         },
         {
+=======
+>>>>>>> [Messaging] WIP on launching webview when tapping on unpaid invoice
           "kind": "OBJECT",
           "name": "CreateSubmissionMutationPayload",
           "description": null,
@@ -37268,6 +37274,7 @@
               "deprecationReason": null
             },
             {
+<<<<<<< HEAD
               "name": "state",
               "description": "The internal state of the work, e.g. draft/submitted",
               "args": [],
@@ -37280,6 +37287,8 @@
               "deprecationReason": null
             },
             {
+=======
+>>>>>>> [Messaging] WIP on launching webview when tapping on unpaid invoice
               "name": "width",
               "description": "The width of the work",
               "args": [],

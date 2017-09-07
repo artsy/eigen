@@ -133,6 +133,13 @@ export class Message extends React.Component<Props, any> {
     const fromEmail = message.from.email
 
     const fromSignature = fromName ? `${fromName} · ${fromEmail}` : fromEmail
+
+    let previewInvoice
+    if (message.invoice) {
+      previewInvoice = () => {
+        SwitchBoard.presentNavigationViewController(this, message.invoice.payment_url)
+      }
+    }
     return (
       <Container>
         <Content>
@@ -160,7 +167,7 @@ export class Message extends React.Component<Props, any> {
 
             {message.invoice &&
               <PreviewContainer>
-                <InvoicePreview invoice={message.invoice} />
+                <InvoicePreview invoice={message.invoice} onSelected={previewInvoice} />
               </PreviewContainer>}
 
             {this.renderAttachmentPreviews(message.attachments)}
@@ -191,6 +198,7 @@ export default createFragmentContainer(
         email
       }
       invoice {
+        payment_url
         ...InvoicePreview_invoice
       }
       attachments {
