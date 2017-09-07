@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { TouchableHighlight } from "react-native"
 
@@ -71,26 +71,25 @@ export class ShowPreview extends React.Component<Props, any> {
   }
 }
 
-export default Relay.createContainer(ShowPreview, {
-  fragments: {
-    show: () => Relay.QL`
-      fragment on Show {
+export default createFragmentContainer(
+  ShowPreview,
+  graphql`
+    fragment ShowPreview_show on Show {
+      name
+      cover_image {
+        url
+      }
+      fair {
         name
-        cover_image {
-          url
-        }
-        fair {
+      }
+      partner {
+        ... on Partner {
           name
         }
-        partner {
-          ... on Partner {
-            name
-          }
-        }
       }
-    `,
-  },
-})
+    }
+  `
+)
 
 interface RelayProps {
   show: {

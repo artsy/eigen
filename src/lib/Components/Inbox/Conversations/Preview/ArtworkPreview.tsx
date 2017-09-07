@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { TouchableHighlight } from "react-native"
 
@@ -82,20 +82,19 @@ export class ArtworkPreview extends React.Component<Props, any> {
   }
 }
 
-export default Relay.createContainer(ArtworkPreview, {
-  fragments: {
-    artwork: () => Relay.QL`
-      fragment on Artwork {
-        title
-        artist_names
-        date
-        image {
-          url
-        }
+export default createFragmentContainer(
+  ArtworkPreview,
+  graphql`
+    fragment ArtworkPreview_artwork on Artwork {
+      title
+      artist_names
+      date
+      image {
+        url
       }
-    `,
-  },
-})
+    }
+  `
+)
 
 interface RelayProps {
   artwork: {

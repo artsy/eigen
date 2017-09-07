@@ -128,14 +128,6 @@ exports[`displays a connectivity banner when network is down 1`] = `
       </Text>
     </View>
     <RCTScrollView
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
       style={
         Array [
           undefined,
@@ -152,6 +144,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
       <View>
         <View
           onLayout={[Function]}
+          style={null}
         >
           <View
             style={
@@ -278,32 +271,6 @@ exports[`displays a connectivity banner when network is down 1`] = `
                     }
                   >
                     KIMBERLY KLARK
-                  </Text>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "color": "#cccccc",
-                          "fontSize": 11,
-                          "textAlign": "left",
-                        },
-                        Array [
-                          Object {
-                            "fontSize": 11.5,
-                          },
-                          undefined,
-                        ],
-                        Object {
-                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
-                        },
-                      ]
-                    }
-                  >
-                    A FEW SECONDS
                   </Text>
                 </View>
                 <View
@@ -499,7 +466,9 @@ exports[`displays a connectivity banner when network is down 1`] = `
                         "fontSize": 16,
                         "textAlign": "left",
                       },
-                      false,
+                      Object {
+                        "color": "#cccccc",
+                      },
                       Object {},
                       Object {
                         "fontFamily": "AGaramondPro-Regular",
@@ -711,14 +680,6 @@ exports[`looks correct when rendered 1`] = `
       </View>
     </View>
     <RCTScrollView
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
       style={
         Array [
           undefined,
@@ -735,6 +696,7 @@ exports[`looks correct when rendered 1`] = `
       <View>
         <View
           onLayout={[Function]}
+          style={null}
         >
           <View
             style={
@@ -861,32 +823,6 @@ exports[`looks correct when rendered 1`] = `
                     }
                   >
                     KIMBERLY KLARK
-                  </Text>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "color": "#cccccc",
-                          "fontSize": 11,
-                          "textAlign": "left",
-                        },
-                        Array [
-                          Object {
-                            "fontSize": 11.5,
-                          },
-                          undefined,
-                        ],
-                        Object {
-                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
-                        },
-                      ]
-                    }
-                  >
-                    A FEW SECONDS
                   </Text>
                 </View>
                 <View
@@ -1082,7 +1018,9 @@ exports[`looks correct when rendered 1`] = `
                         "fontSize": 16,
                         "textAlign": "left",
                       },
-                      false,
+                      Object {
+                        "color": "#cccccc",
+                      },
                       Object {},
                       Object {
                         "fontFamily": "AGaramondPro-Regular",

@@ -1,6 +1,6 @@
-import * as moment from "moment"
+import moment from "moment"
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { MetadataText, PreviewText as P, SmallHeadline } from "../Typography"
 
@@ -185,44 +185,43 @@ export class ConversationSnippet extends React.Component<Props, any> {
   }
 }
 
-export default Relay.createContainer(ConversationSnippet, {
-  fragments: {
-    conversation: () => Relay.QL`
-      fragment on Conversation {
-        id
-        to {
-          name
-        }
-        last_message
-        last_message_at
-        is_last_message_to_user
-        last_message_open
-        items {
-          item {
-            __typename
-            ... on Artwork {
-              date
-              title
-              artist_names
-              image {
-                url
-              }
+export default createFragmentContainer(
+  ConversationSnippet,
+  graphql`
+    fragment ConversationSnippet_conversation on Conversation {
+      id
+      to {
+        name
+      }
+      last_message
+      last_message_at
+      last_message_open
+      is_last_message_to_user
+      items {
+        item {
+          __typename
+          ... on Artwork {
+            date
+            title
+            artist_names
+            image {
+              url
             }
-            ... on Show {
-              fair {
-                name
-              }
+          }
+          ... on Show {
+            fair {
               name
-              cover_image {
-                url
-              }
+            }
+            name
+            cover_image {
+              url
             }
           }
         }
       }
-    `,
-  },
-})
+    }
+  `
+)
 
 interface RelayProps {
   conversation: {

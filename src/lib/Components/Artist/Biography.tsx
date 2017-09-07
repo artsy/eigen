@@ -1,8 +1,8 @@
 import * as React from "react"
 import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
-import * as removeMarkdown from "remove-markdown"
+import removeMarkdown from "remove-markdown"
 
 import Headline from "../Text/Headline"
 import SerifText from "../Text/Serif"
@@ -60,16 +60,15 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Relay.createContainer(Biography, {
-  fragments: {
-    artist: () => Relay.QL`
-      fragment on Artist {
-        bio
-        blurb
-      }
-    `,
-  },
-})
+export default createFragmentContainer(
+  Biography,
+  graphql`
+    fragment Biography_artist on Artist {
+      bio
+      blurb
+    }
+  `
+)
 
 interface RelayProps {
   artist: {

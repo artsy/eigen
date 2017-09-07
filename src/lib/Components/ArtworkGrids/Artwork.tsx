@@ -1,7 +1,7 @@
 import { map } from "lodash"
 import * as React from "react"
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import colors from "../../../data/colors"
 import SwitchBoard from "../../NativeModules/SwitchBoard"
@@ -108,37 +108,40 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Relay.createContainer(Artwork, {
-  fragments: {
-    artwork: () => Relay.QL`
-      fragment on Artwork {
-        title
-        date
-        sale_message
-        is_in_auction
-        sale_artwork {
-          opening_bid { display }
-          current_bid { display }
-          bidder_positions_count
-          sale {
-            is_open
-          }
+export default createFragmentContainer(
+  Artwork,
+  graphql`
+    fragment Artwork_artwork on Artwork {
+      title
+      date
+      sale_message
+      is_in_auction
+      sale_artwork {
+        opening_bid {
+          display
         }
-        image {
-          url(version: "large")
-          aspect_ratio
+        current_bid {
+          display
         }
-        artists {
-          name
+        bidder_positions_count
+        sale {
+          is_open
         }
-        partner {
-          name
-        }
-        href
       }
-    `,
-  },
-})
+      image {
+        url(version: "large")
+        aspect_ratio
+      }
+      artists(shallow: true) {
+        name
+      }
+      partner {
+        name
+      }
+      href
+    }
+  `
+)
 
 interface RelayProps {
   artwork: {

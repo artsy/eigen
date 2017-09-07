@@ -19,7 +19,7 @@
     "ci": "npm run type-check && npm run lint && npm run prettier-project -- -l && npm run test",
     "danger": "danger",
     "start": "npm run clean-example && npm run start-servers",
-    "start-servers": "concurrently --kill-others 'npm run start-packager' 'npm run storybook'",
+    "start-servers": "concurrently --kill-others 'npm run start-packager' 'npm run relay -- --watch' 'npm run storybook'",
     "start-packager": "env REACT_DEBUGGER=\"$([ -d '/Applications/React Native Debugger.app' ] && echo \"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\")\" node node_modules/react-native/local-cli/cli.js start",
     "storybook": "storybook start -p 9001 -c .storybook --skip-packager",
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
@@ -28,6 +28,7 @@
     "test": "jest",
     "testing": "jest --watch",
     "tslint": "tslint",
+    "relay": "relay-compiler --src ./src --schema data/schema.graphql --extensions ts tsx",
     "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
     "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && npm run dump-schema -- ../../data && rm -rf node_modules",
@@ -40,47 +41,58 @@
     "type": "git",
     "url": "git+https://github.com/artsy/emission.git"
   },
-  "keywords": ["artsy", "react", "react-native"],
+  "keywords": [
+    "artsy",
+    "react",
+    "react-native"
+  ],
   "author": "Eloy Durán",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/artsy/emission/issues"
   },
   "homepage": "https://github.com/artsy/emission#readme",
-  "files": ["index.js", "data", "lib"],
+  "files": [
+    "index.js",
+    "data",
+    "lib"
+  ],
   "dependencies": {
     "lodash": "^4.17.4",
     "moment": "latest",
     "prop-types": "^15.5.10",
-    "qs": "*",
     "react": "16.0.0-alpha.12",
-    "react-native": "next",
+    "react-native": "0.48.0",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
     "react-native-reversed-flat-list": "^1.0.1",
     "react-native-sentry": "^0.14.5",
-    "react-relay": "https://github.com/alloy/relay/releases/download/react-relay-0.9.3%2Breact-native-0.45-fix-2/react-relay-0.9.3.react-native-0.45-fix-2.tgz",
+    "react-relay": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/react-relay-1.3.0-artsy.1.tgz",
+    "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/relay-runtime-artsy.1.tgz",
     "remove-markdown": "0.1.0",
     "styled-components": "^2.0.0"
   },
   "devDependencies": {
+    "@playlyfe/gql": "^2.3.2",
     "@storybook/react-native": "^3.2.0",
-    "@types/jest": "^19.2.2",
+    "@types/jest": "^20.0.8",
     "@types/lodash": "^4.14.64",
-    "@types/qs": "^6.5.0",
-    "@types/react-native": "^0.44.0",
-    "@types/react-relay": "^0.9.10",
-    "@types/react-test-renderer": "^15.5.0",
+    "@types/react": "^16.0.5",
+    "@types/react-native": "^0.48.0",
     "apphub": "^0.5.1",
     "awesome-typescript-loader": "^3.1.3",
     "babel-jest": "^18.0.0",
+    "babel-plugin-relay": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/babel-plugin-relay-1.3.0-artsy.1.tgz",
     "babel-polyfill": "^6.13.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "babel-preset-react-native": "^1.9.1",
-    "babel-relay-plugin": "https://github.com/alloy/relay/releases/download/v0.9.3/babel-relay-plugin-0.9.3.tgz",
+    "babel-preset-stage-0": "^6.24.1",
     "concurrently": "^2.2.0",
     "danger": "2.0.0-alpha-14",
-    "jest": "^20.0.4",
+    "jest": "^21.0.1",
     "jest-react-native": "18.0.0",
-    "jest-snapshots-svg": "^0.0.18",
+    "jest-snapshots-svg": "^0.0.21",
+    "jest-styled-components": "^4.5.0",
     "lint-staged": "^3.4.1",
     "prettier": "^1.5.2",
     "react-dom": "16.0.0-alpha.12",
@@ -88,41 +100,57 @@
     "react-storybooks-relay-container": "^1.0.0",
     "react-test-renderer": "16.0.0-alpha.12",
     "recursive-readdir-sync": "^1.0.6",
+    "relay-compiler": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/relay-compiler-1.3.0-artsy.1.tgz",
     "relay2ts": "^0.2.0",
     "stylelint": "^7.13.0",
     "stylelint-config-standard": "^16.0.0",
     "stylelint-processor-styled-components": "^0.1.2",
-    "ts-jest": "^20.0.3",
+    "ts-jest": "^21.0.0",
     "tslint": "^5.4.3",
     "tslint-config-prettier": "^1.0.0",
     "typescript": "^2.3.2"
   },
-  "peerDependencies": {
-    "babel-relay-plugin": "^0.9.0"
-  },
   "jest": {
     "preset": "react-native",
-    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "globals": {
+      "ts-jest": {
+        "useBabelrc": true
+      }
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "/__tests__/.*-tests.(ts|tsx|js)$",
-    "testPathIgnorePatterns": ["\\.snap$", "<rootDir>/node_modules/"],
-    "setupFiles": ["./src/setupJest.ts"],
+    "testPathIgnorePatterns": [
+      "\\.snap$",
+      "<rootDir>/node_modules/"
+    ],
+    "setupFiles": [
+      "./src/setupJest.ts"
+    ],
     "cacheDirectory": ".jest/cache"
   },
-  "graphql": {
-    "file": "data/schema.json",
-    "tsInterfaceName": "RelayProps"
-  },
   "lint-staged": {
-    "*.@(ts|tsx)": ["tslint --fix", "npm run prettier-write --", "git add"],
-    "*.json": ["npm run prettier-write --"]
+    "*.@(ts|tsx)": [
+      "tslint --fix",
+      "npm run prettier-write --",
+      "git add"
+    ],
+    "*.json": [
+      "npm run prettier-write --"
+    ]
   },
   "config": {
     "react-native-storybook-loader": {
-      "searchDir": ["./src"],
+      "searchDir": [
+        "./src"
+      ],
       "pattern": "**/*.story.tsx",
       "outputFile": "./storybook/storyLoader.js"
     }

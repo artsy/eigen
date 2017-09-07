@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
@@ -111,17 +111,16 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(Header, {
-  fragments: {
-    gene: () => Relay.QL`
-      fragment on Gene {
-        _id
-        id
-        name
-      }
-    `,
-  },
-})
+export default createFragmentContainer(
+  Header,
+  graphql`
+    fragment Header_gene on Gene {
+      _id
+      id
+      name
+    }
+  `
+)
 
 interface RelayProps {
   gene: {

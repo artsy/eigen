@@ -63,9 +63,12 @@ exports[`Sets up the right view hierarchy 1`] = `
         >
           <View
             style={
-              Object {
-                "flex": 1,
-              }
+              Array [
+                undefined,
+                Object {
+                  "flex": 1,
+                },
+              ]
             }
           >
             <View
@@ -141,6 +144,7 @@ exports[`Sets up the right view hierarchy 1`] = `
         accessibilityLabel={undefined}
         accessibilityTraits={undefined}
         accessible={true}
+        collapsable={undefined}
         hitSlop={undefined}
         isTVSelectable={true}
         nativeID={undefined}
@@ -254,9 +258,12 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
         >
           <View
             style={
-              Object {
-                "flex": 1,
-              }
+              Array [
+                undefined,
+                Object {
+                  "flex": 1,
+                },
+              ]
             }
           >
             <View
@@ -310,6 +317,7 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
         accessibilityLabel={undefined}
         accessibilityTraits={undefined}
         accessible={true}
+        collapsable={undefined}
         hitSlop={undefined}
         isTVSelectable={true}
         nativeID={undefined}

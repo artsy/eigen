@@ -84,10 +84,10 @@ const DoneButton = () =>
     <Image source={require("../images/black-tick.png")} />
   </ImageBG>
 
-const Button = (props: TouchableHighlightProperties) =>
+const Button: React.SFC<TouchableHighlightProperties> = ({ children, ...props }) =>
   <TouchableHighlight {...props}>
     <ButtonView>
-      {(props as any).children}
+      {children}
     </ButtonView>
   </TouchableHighlight>
 

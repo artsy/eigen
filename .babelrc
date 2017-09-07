@@ -1,4 +1,4 @@
 {
-  "plugins": ["./data/schema"],
+  "plugins": ["relay"],
   "presets": ["react-native"]
 }

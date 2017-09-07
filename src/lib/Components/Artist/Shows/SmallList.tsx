@@ -1,6 +1,6 @@
 import * as React from "react"
 import { ListView, ListViewDataSource, StyleSheet, View, ViewProperties } from "react-native"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import Show from "./Show"
 
@@ -63,15 +63,14 @@ const showStyles = StyleSheet.create({
   },
 })
 
-export default Relay.createContainer(SmallList, {
-  fragments: {
-    shows: () => Relay.QL`
-      fragment on PartnerShow @relay(plural: true) {
-        ${Show.getFragment("show")}
-      }
-    `,
-  },
-})
+export default createFragmentContainer(
+  SmallList,
+  graphql`
+    fragment SmallList_shows on PartnerShow @relay(plural: true) {
+      ...Show_show
+    }
+  `
+)
 
 interface RelayProps {
   shows: Array<{} | null> | null

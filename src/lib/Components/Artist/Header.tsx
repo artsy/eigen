@@ -1,6 +1,6 @@
 import * as PropTypes from "prop-types"
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
@@ -170,22 +170,21 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(Header, {
-  fragments: {
-    artist: () => Relay.QL`
-      fragment on Artist {
-        _id
-        id
-        name
-        nationality
-        birthday
-        counts {
-          follows
-        }
+export default createFragmentContainer(
+  Header,
+  graphql`
+    fragment Header_artist on Artist {
+      _id
+      id
+      name
+      nationality
+      birthday
+      counts {
+        follows
       }
-    `,
-  },
-})
+    }
+  `
+)
 
 interface RelayProps {
   artist: {

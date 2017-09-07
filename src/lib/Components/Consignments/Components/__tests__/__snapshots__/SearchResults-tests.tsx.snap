@@ -4,9 +4,14 @@ exports[`Search states:  Looks right when Found four results 1`] = `
 <View>
   <View
     style={
-      Object {
-        "flex": 0,
-      }
+      Array [
+        Object {
+          "flex": 0,
+        },
+        Object {
+          "flex": 1,
+        },
+      ]
     }
   >
     <View
@@ -410,9 +415,14 @@ exports[`Search states:  Looks right when Found no results 1`] = `
 <View>
   <View
     style={
-      Object {
-        "flex": 0,
-      }
+      Array [
+        Object {
+          "flex": 0,
+        },
+        Object {
+          "flex": 1,
+        },
+      ]
     }
   >
     <View
@@ -521,9 +531,14 @@ exports[`Search states:  Looks right when Found one result 1`] = `
 <View>
   <View
     style={
-      Object {
-        "flex": 0,
-      }
+      Array [
+        Object {
+          "flex": 0,
+        },
+        Object {
+          "flex": 1,
+        },
+      ]
     }
   >
     <View
@@ -678,9 +693,14 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
 <View>
   <View
     style={
-      Object {
-        "flex": 0,
-      }
+      Array [
+        Object {
+          "flex": 0,
+        },
+        Object {
+          "flex": 1,
+        },
+      ]
     }
   >
     <View
@@ -841,9 +861,14 @@ exports[`Search states:  Looks right when Found two results 1`] = `
 <View>
   <View
     style={
-      Object {
-        "flex": 0,
-      }
+      Array [
+        Object {
+          "flex": 0,
+        },
+        Object {
+          "flex": 1,
+        },
+      ]
     }
   >
     <View
@@ -1081,9 +1106,14 @@ exports[`Search states:  Looks right when Looking for new results 1`] = `
 <View>
   <View
     style={
-      Object {
-        "flex": 0,
-      }
+      Array [
+        Object {
+          "flex": 0,
+        },
+        Object {
+          "flex": 1,
+        },
+      ]
     }
   >
     <View
@@ -1160,9 +1190,14 @@ exports[`Search states:  Looks right when No query 1`] = `
 <View>
   <View
     style={
-      Object {
-        "flex": 0,
-      }
+      Array [
+        Object {
+          "flex": 0,
+        },
+        Object {
+          "flex": 1,
+        },
+      ]
     }
   >
     <View

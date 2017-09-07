@@ -3,9 +3,12 @@
 exports[`does not have an activity when searching  1`] = `
 <View
   style={
-    Object {
-      "flex": 1,
-    }
+    Array [
+      undefined,
+      Object {
+        "flex": 1,
+      },
+    ]
   }
 >
   <View
@@ -64,9 +67,12 @@ exports[`does not have an activity when searching  1`] = `
 exports[`shows an activity indicator when searching  1`] = `
 <View
   style={
-    Object {
-      "flex": 1,
-    }
+    Array [
+      undefined,
+      Object {
+        "flex": 1,
+      },
+    ]
   }
 >
   <View

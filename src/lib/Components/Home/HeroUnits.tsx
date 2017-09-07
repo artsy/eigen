@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { LayoutChangeEvent, ScrollView, TouchableHighlight, View, ViewProperties } from "react-native"
 
@@ -92,20 +92,19 @@ class HeroUnits extends React.Component<Props, State> {
   }
 }
 
-export default Relay.createContainer(HeroUnits, {
-  fragments: {
-    hero_units: () => Relay.QL`
-      fragment on HomePageHeroUnit @relay(plural: true) {
-        __id
-        href
-        title
-        heading
-        narrow_image_url: background_image_url(version: NARROW)
-        wide_image_url: background_image_url(version: WIDE)
-      }
-    `,
-  },
-})
+export default createFragmentContainer(
+  HeroUnits,
+  graphql`
+    fragment HeroUnits_hero_units on HomePageHeroUnit @relay(plural: true) {
+      __id
+      href
+      title
+      heading
+      narrow_image_url: background_image_url(version: NARROW)
+      wide_image_url: background_image_url(version: WIDE)
+    }
+  `
+)
 
 interface RelayProps {
   hero_units: Array<{

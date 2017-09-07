@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
@@ -86,7 +86,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
   constructor(props) {
     super(props)
     this.state = {
-      text: this.props.inquiryArtwork.contact_message,
+      text: this.props.artwork.contact_message,
       sending: false,
     }
   }
@@ -106,7 +106,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
         "X-ACCESS-TOKEN": Emission.authenticationToken,
       },
       body: JSON.stringify({
-        artwork: this.props.inquiryArtwork.id,
+        artwork: this.props.artwork.id,
         message: this.state.text,
       }),
     })
@@ -129,8 +129,8 @@ export class Inquiry extends React.Component<RelayProps, any> {
   render() {
     const message = this.state.text
     const partnerResponseRate = "2 DAY RESPONSE TIME" // currently hardcoded
-    const inquiryArtwork = this.props.inquiryArtwork
-    const partnerName = this.props.inquiryArtwork.partner.name
+    const artwork = this.props.artwork
+    const partnerName = this.props.artwork.partner.name
     const buttonText = this.state.sending ? "SENDING..." : "SEND"
 
     const doneButtonStyles = {
@@ -168,7 +168,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
             </HeaderTextContainer>
           </Header>
           <Content>
-            <ArtworkPreview artwork={inquiryArtwork as any} />
+            <ArtworkPreview artwork={artwork as any} />
             <InquiryTextInput
               value={message}
               keyboardAppearance="dark"
@@ -186,23 +186,22 @@ export class Inquiry extends React.Component<RelayProps, any> {
   }
 }
 
-export default Relay.createContainer(Inquiry, {
-  fragments: {
-    inquiryArtwork: () => Relay.QL`
-      fragment on Artwork {
-        id
-        contact_message
-        ${ArtworkPreview.getFragment("artwork")}
-        partner {
-          name
-        }
+export default createFragmentContainer(
+  Inquiry,
+  graphql`
+    fragment Inquiry_artwork on Artwork {
+      id
+      contact_message
+      partner {
+        name
       }
-    `,
-  },
-})
+      ...ArtworkPreview_artwork
+    }
+  `
+)
 
 interface RelayProps {
-  inquiryArtwork: {
+  artwork: {
     id: string
     contact_message: string
     partner: {

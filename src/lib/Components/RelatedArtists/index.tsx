@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { LayoutChangeEvent, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 
@@ -109,16 +109,15 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(RelatedArtists, {
-  fragments: {
-    artists: () => Relay.QL`
-      fragment on Artist @relay(plural: true) {
-        __id
-        ${RelatedArtist.getFragment("artist")}
-      }
-    `,
-  },
-})
+export default createFragmentContainer(
+  RelatedArtists,
+  graphql`
+    fragment RelatedArtists_artists on Artist @relay(plural: true) {
+      __id
+      ...RelatedArtist_artist
+    }
+  `
+)
 
 interface RelayProps {
   artists: Array<{
