@@ -10,9 +10,12 @@ interface Props extends ViewProperties {
   section: StorySection
 }
 
-const Headline = () => <Title>Stories</Title>
-
 const render = (props: Props) => {
+  const Headline = () =>
+    <Title>
+      {props.section.kind}
+    </Title>
+
   const ListViewItem = (item: Story) => {
     const showStory = () => {
       props.navigator.push({ title: item.name, component: item.render as any })
