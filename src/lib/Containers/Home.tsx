@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { ListView, ListViewDataSource, RefreshControl, ScrollView, ScrollViewProps, ViewProperties } from "react-native"
 
@@ -118,37 +118,39 @@ export class Home extends React.Component<Props, State> {
   }
 }
 
-export default Relay.createContainer(Home, {
-  fragments: {
-    home: () => Relay.QL`
-      fragment on HomePage {
-        hero_units(platform: MOBILE) {
-          ${HeroUnits.getFragment("hero_units")}
-        }
-        artwork_modules(max_rails: -1,
-                        max_followed_gene_rails: -1,
-                        order: [
-                          ACTIVE_BIDS,
-                          RECOMMENDED_WORKS,
-                          FOLLOWED_ARTISTS,
-                          RELATED_ARTISTS,
-                          FOLLOWED_GALLERIES,
-                          SAVED_WORKS,
-                          LIVE_AUCTIONS,
-                          CURRENT_FAIRS,
-                          FOLLOWED_GENES,
-                          GENERIC_GENES]) {
-          __id
-          ${ArtworkRail.getFragment("rail")}
-        }
-        artist_modules {
-          __id
-          ${ArtistRail.getFragment("rail")}
-        }
+export default createFragmentContainer(
+  Home,
+  graphql`
+    fragment Home_home on HomePage {
+      hero_units(platform: MOBILE) {
+        ...HeroUnits_hero_units
       }
-    `,
-  },
-})
+      artwork_modules(
+        max_rails: -1
+        max_followed_gene_rails: -1
+        order: [
+          ACTIVE_BIDS
+          RECOMMENDED_WORKS
+          FOLLOWED_ARTISTS
+          RELATED_ARTISTS
+          FOLLOWED_GALLERIES
+          SAVED_WORKS
+          LIVE_AUCTIONS
+          CURRENT_FAIRS
+          FOLLOWED_GENES
+          GENERIC_GENES
+        ]
+      ) {
+        __id
+        ...ArtworkRail_rail
+      }
+      artist_modules {
+        __id
+        ...ArtistRail_rail
+      }
+    }
+  `
+)
 
 interface RelayProps {
   home: {

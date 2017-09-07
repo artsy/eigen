@@ -54,7 +54,7 @@ export default class TextArea extends React.Component<TextAreaProps, State> {
     delete this.props.text.placeholder
 
     return (
-      <View style={{ flex: 1, ...this.props.style }}>
+      <View style={[this.props.style, { flex: 1 }]}>
         <View style={{ flexDirection: "row" }}>
           {displayPlaceholder
             ? <Placeholder>

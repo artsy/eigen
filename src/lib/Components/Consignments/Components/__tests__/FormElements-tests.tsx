@@ -9,8 +9,7 @@ describe("Row", () => {
     const tree = renderer.create(<Row renderToHardwareTextureAndroid={true} style={{ scaleX: 23 }} />).toJSON()
     expect(tree.props.renderToHardwareTextureAndroid).toBeTruthy()
 
-    const styles = Object.keys(tree.props.style)
-    expect(styles.length).not.toEqual(1)
+    const styles = Object.keys(tree.props.style[0])
     expect(styles).toContain("scaleX")
   })
 })

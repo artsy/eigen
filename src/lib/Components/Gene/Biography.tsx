@@ -1,6 +1,6 @@
 import * as React from "react"
-import * as Relay from "react-relay"
-import * as removeMarkdown from "remove-markdown"
+import { createFragmentContainer, graphql } from "react-relay"
+import removeMarkdown from "remove-markdown"
 
 import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
 
@@ -48,15 +48,14 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Relay.createContainer(Biography, {
-  fragments: {
-    gene: () => Relay.QL`
-      fragment on Gene {
-        description
-      }
-    `,
-  },
-})
+export default createFragmentContainer(
+  Biography,
+  graphql`
+    fragment Biography_gene on Gene {
+      description
+    }
+  `
+)
 
 interface RelayProps {
   gene: {

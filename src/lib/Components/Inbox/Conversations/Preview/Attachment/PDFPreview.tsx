@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Image, Text, TouchableHighlight } from "react-native"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import colors from "../../../../../../data/colors"
@@ -44,16 +44,15 @@ export const PDFPreview: React.SFC<Props> = ({ attachment, onSelected }) =>
     </Container>
   </AttachmentPreview>
 
-export default Relay.createContainer(PDFPreview, {
-  fragments: {
-    attachment: () => Relay.QL`
-      fragment on Attachment {
-        file_name
-        ${AttachmentPreview.getFragment("attachment")}
-      }
-    `,
-  },
-})
+export default createFragmentContainer(
+  PDFPreview,
+  graphql`
+    fragment PDFPreview_attachment on Attachment {
+      file_name
+      ...AttachmentPreview_attachment
+    }
+  `
+)
 
 interface RelayProps {
   attachment: {

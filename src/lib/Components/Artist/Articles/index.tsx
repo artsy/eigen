@@ -1,6 +1,6 @@
 import * as React from "react"
 import { ScrollView, StyleSheet, View, ViewProperties } from "react-native"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import SerifText from "../../Text/Serif"
 import Article from "./Article"
@@ -39,16 +39,15 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Relay.createContainer(Articles, {
-  fragments: {
-    articles: () => Relay.QL`
-      fragment on Article @relay(plural: true) {
-          __id
-          ${Article.getFragment("article")}
-      }
-    `,
-  },
-})
+export default createFragmentContainer(
+  Articles,
+  graphql`
+    fragment Articles_articles on Article @relay(plural: true) {
+      __id
+      ...Article_article
+    }
+  `
+)
 
 interface RelayProps {
   articles: Array<{

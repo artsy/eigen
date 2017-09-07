@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import {
   Animated,
@@ -208,23 +208,22 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const ArtistCardContainer = Relay.createContainer<Props>(ArtistCard, {
-  fragments: {
-    artist: () => Relay.QL`
-      fragment on Artist {
-        id
-        _id
-        href
-        name
-        formatted_artworks_count
-        formatted_nationality_and_birthday
-        image {
-          url(version: "large")
-        }
+const ArtistCardContainer = createFragmentContainer(
+  ArtistCard,
+  graphql`
+    fragment ArtistCard_artist on Artist {
+      id
+      _id
+      href
+      name
+      formatted_artworks_count
+      formatted_nationality_and_birthday
+      image {
+        url(version: "large")
       }
-    `,
-  },
-})
+    }
+  `
+)
 
 export interface ArtistCardResponse {
   id: string

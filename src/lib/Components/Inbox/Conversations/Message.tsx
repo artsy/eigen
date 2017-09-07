@@ -1,6 +1,6 @@
-import * as moment from "moment"
+import moment from "moment"
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { BodyText, FromSignatureText, MetadataText, SmallHeadline } from "../Typography"
 
@@ -65,7 +65,6 @@ interface Props extends RelayProps {
   initials?: string
   artworkPreview?: JSX.Element
   showPreview?: JSX.Element
-  relay?: Relay.RelayProp
 }
 
 export class Message extends React.Component<Props, any> {
@@ -97,7 +96,7 @@ export class Message extends React.Component<Props, any> {
 
   render() {
     const { artworkPreview, initials, message, senderName, showPreview } = this.props
-    const isSent = this.props.relay ? !this.props.relay.hasOptimisticUpdate(message) : true
+    const isSent = !!message.created_at
 
     const fromName = message.from.name
     const fromEmail = message.from.email
@@ -147,32 +146,31 @@ export class Message extends React.Component<Props, any> {
   }
 }
 
-export default Relay.createContainer(Message, {
-  fragments: {
-    message: () => Relay.QL`
-      fragment on Message {
-        body
-        created_at
-        is_from_user
-        from {
-          name
-          email
-        }
-        invoice {
-          ${InvoicePreview.getFragment("invoice")}
-        }
-        attachments {
-          id
-          content_type
-          download_url
-          file_name
-          ${ImagePreview.getFragment("attachment")}
-          ${PDFPreview.getFragment("attachment")}
-        }
+export default createFragmentContainer(
+  Message,
+  graphql`
+    fragment Message_message on Message {
+      body
+      created_at
+      is_from_user
+      from {
+        name
+        email
       }
-    `,
-  },
-})
+      invoice {
+        ...InvoicePreview_invoice
+      }
+      attachments {
+        id
+        content_type
+        download_url
+        file_name
+        ...ImagePreview_attachment
+        ...PDFPreview_attachment
+      }
+    }
+  `
+)
 
 interface RelayProps {
   message: {

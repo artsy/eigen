@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { Dimensions, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
@@ -136,27 +136,26 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(Artist, {
-  fragments: {
-    artist: () => Relay.QL`
-      fragment on Artist {
-        _id
-        id
-        has_metadata
-        counts {
-          artworks,
-          partner_shows,
-          related_artists,
-          articles
-        }
-        ${Header.getFragment("artist")}
-        ${About.getFragment("artist")}
-        ${Shows.getFragment("artist")}
-        ${Artworks.getFragment("artist")}
+export default createFragmentContainer(
+  Artist,
+  graphql`
+    fragment Artist_artist on Artist {
+      _id
+      id
+      has_metadata
+      counts {
+        artworks
+        partner_shows
+        related_artists
+        articles
       }
-    `,
-  },
-})
+      ...Header_artist
+      ...About_artist
+      ...Shows_artist
+      ...Artworks_artist
+    }
+  `
+)
 
 interface RelayProps {
   artist: {

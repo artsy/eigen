@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 
@@ -147,21 +147,20 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const GenericArtworksGridContainer = Relay.createContainer(GenericArtworksGrid, {
-  fragments: {
-    artworks: () => Relay.QL`
-      fragment on Artwork @relay(plural: true) {
-        __id
-        image {
-          aspect_ratio
-        }
-        ${Artwork.getFragment("artwork")}
+const GenericGrid = createFragmentContainer(
+  GenericArtworksGrid,
+  graphql`
+    fragment GenericGrid_artworks on Artwork @relay(plural: true) {
+      __id
+      image {
+        aspect_ratio
       }
-    `,
-  },
-})
+      ...Artwork_artwork
+    }
+  `
+)
 
-export default GenericArtworksGridContainer
+export default GenericGrid
 
 interface RelayProps {
   artworks: Array<{

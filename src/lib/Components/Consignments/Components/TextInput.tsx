@@ -37,7 +37,7 @@ const Separator = styled.View`
 `
 
 const render = (props: TextInputProps) =>
-  <View style={{ flex: 1, ...props.style }}>
+  <View style={[props.style, { flex: 1 }]}>
     <View style={{ flexDirection: "row" }}>
       {props.preImage && <Image source={props.preImage} style={{ marginRight: 6, marginTop: 12 }} />}
       <Input

@@ -75,11 +75,14 @@ exports[`Sets up the right view hierarchy 1`] = `
           >
             <View
               style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "paddingVertical": 6,
-                }
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
               }
             >
               <Text
@@ -251,11 +254,14 @@ exports[`Sets up the right view hierarchy 1`] = `
             </View>
             <View
               style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "paddingVertical": 6,
-                }
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
               }
             >
               <Text
@@ -427,11 +433,14 @@ exports[`Sets up the right view hierarchy 1`] = `
             </View>
             <View
               style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "paddingVertical": 6,
-                }
+                Array [
+                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
               }
             >
               <Text

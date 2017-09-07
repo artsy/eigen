@@ -4,7 +4,10 @@ const Emission = NativeModules.Emission || {}
 import { metaphysicsURL } from "./relay/config"
 import { NetworkError } from "./system/errors"
 
-export default function metaphysics<T>(query: string): Promise<T> {
+export function metaphysics<T>(
+  payload: { query: string; variables?: object },
+  checkStatus: boolean = true
+): Promise<T> {
   return fetch(metaphysicsURL, {
     method: "POST",
     headers: {
@@ -12,10 +15,10 @@ export default function metaphysics<T>(query: string): Promise<T> {
       "X-USER-ID": Emission.userID,
       "X-ACCESS-TOKEN": Emission.authenticationToken,
     },
-    body: JSON.stringify({ query }),
+    body: JSON.stringify(payload),
   })
     .then(response => {
-      if (response.status >= 200 && response.status < 300) {
+      if (!checkStatus || (response.status >= 200 && response.status < 300)) {
         return response
       } else {
         const error = new NetworkError(response.statusText)
@@ -23,6 +26,9 @@ export default function metaphysics<T>(query: string): Promise<T> {
         throw error
       }
     })
-    .then<{ data: T }>(response => response.json())
-    .then(({ data }) => data)
+    .then<T>(response => response.json())
+}
+
+export default function query<T>(query: string): Promise<T> {
+  return metaphysics<{ data: T }>({ query }).then(({ data }) => data)
 }

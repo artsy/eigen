@@ -1,18 +1,22 @@
-import * as moment from "moment"
+import "jest-styled-components"
+import moment from "moment"
 import * as React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import Inbox from "../"
+import { Conversations } from "../"
 
 it("looks correct when rendered", () => {
-  const tree = renderer.create(<Inbox me={meProps} />).toJSON()
+  const tree = renderer.create(<Conversations me={meProps} />).toJSON()
   expect(tree).toMatchSnapshot()
 })
 
 const meProps = {
   initials: "JC",
   conversations: {
+    pageInfo: {
+      hasNextPage: false,
+    },
     edges: [
       {
         node: {

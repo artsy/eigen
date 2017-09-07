@@ -7,13 +7,16 @@
 // 4. Update height of grid to encompass all items.
 
 import * as React from "react"
+import { RelayPaginationProp } from "react-relay"
+
+import { get } from "lodash"
 
 import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
 
 import Spinner from "../Spinner"
 import Artwork from "./Artwork"
 
-import { ArtistRelayProps } from "./RelayConnections/ArtistArtworksGrid"
+import { ArtistRelayProps } from "./RelayConnections/ArtistForSaleArtworksGrid"
 import { GeneRelayProps } from "./RelayConnections/GeneArtworksGrid"
 
 export const PageSize = 10
@@ -28,12 +31,21 @@ export const PageEndThreshold = 1000
  *   - the calculation currently only takes into account the size of the image, not if e.g. the sale message is present
  */
 
-type Artworks = Array<{
+interface Artwork {
   __id: string
   image: {
     aspect_ratio: number | null
   } | null
-}>
+}
+
+type Artworks = Artwork[]
+
+interface ArtworksConnection {
+  pageInfo: { hasNextPage: boolean }
+  edges: Array<{
+    node: Artwork
+  }>
+}
 
 interface Props extends ArtistRelayProps, GeneRelayProps {
   /** The direction for the grid, currently only 'column' is supported . */
@@ -70,7 +82,7 @@ interface Props extends ArtistRelayProps, GeneRelayProps {
   sort: any
 
   /** Relay */
-  relay: any
+  relay?: RelayPaginationProp
 
   /** A callback that is called once all artworks have been queried. */
   onComplete?: () => void
@@ -104,31 +116,42 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     this.sentEndForContentLength = null
   }
 
+  artworksConnection(): ArtworksConnection {
+    return get(this.props, this.props.queryKey) as any
+  }
+
   fetchNextPage() {
     if (this.state.fetchingNextPage || this.state.completed) {
       return
     }
     this.setState({ fetchingNextPage: true })
-    this.props.relay.setVariables(
-      {
-        totalSize: this.props.relay.variables.totalSize + PageSize,
-      },
-      readyState => {
-        if (readyState.done) {
-          this.setState({ fetchingNextPage: false })
-          if (!this.props[this.props.queryKey].artworks.pageInfo.hasNextPage && this.props.onComplete) {
-            this.props.onComplete()
-            this.setState({ completed: true })
-          }
-        }
+    this.props.relay.loadMore(PageSize, error => {
+      this.setState({ fetchingNextPage: false })
+      if (!this.artworksConnection().pageInfo.hasNextPage && this.props.onComplete) {
+        this.props.onComplete()
+        this.setState({ completed: true })
       }
-    )
+    })
+    // this.props.relay.setVariables(
+    //   {
+    //     totalSize: this.props.relay.variables.totalSize + PageSize,
+    //   },
+    //   readyState => {
+    //     if (readyState.done) {
+    //       this.setState({ fetchingNextPage: false })
+    //       if (!this.props[this.props.queryKey].artworks.pageInfo.hasNextPage && this.props.onComplete) {
+    //         this.props.onComplete()
+    //         this.setState({ completed: true })
+    //       }
+    //     }
+    //   }
+    // )
   }
 
   /** A simplified version of the Relay debugging logs for infinite scrolls */
   debugLog(query: string, response?: any, error?: any) {
     // tslint:disable:no-console
-    if (__DEV__ && (global as any).originalXMLHttpRequest !== undefined) {
+    if (__DEV__ && originalXMLHttpRequest !== undefined) {
       const groupName = "Infinite scroll request"
       const c: any = console
       c.groupCollapsed(groupName, "color:" + (response ? "black" : "red") + ";")
@@ -158,10 +181,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   sectionedArtworks() {
     const sectionedArtworks: Artworks[] = []
     const sectionRatioSums: number[] = []
-    const queryKey = this.props.queryKey
-    const artworks: Artworks = this.props[queryKey].artworks
-      ? this.props[queryKey].artworks.edges.map(({ node }) => node)
-      : []
+    const artworks: Artworks = this.artworksConnection() ? this.artworksConnection().edges.map(({ node }) => node) : []
 
     for (let i = 0; i < this.props.sectionCount; i++) {
       sectionedArtworks.push([])
@@ -203,8 +223,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
       height: this.props.itemMargin,
     }
 
-    const queryKey = this.props.queryKey
-    const artworks = this.props[queryKey].artworks ? this.props[queryKey].artworks.edges : []
+    const artworks = this.artworksConnection() ? this.artworksConnection().edges : []
     const sectionedArtworks = this.sectionedArtworks()
     const sections: JSX.Element[] = []
     for (let i = 0; i < this.props.sectionCount; i++) {
