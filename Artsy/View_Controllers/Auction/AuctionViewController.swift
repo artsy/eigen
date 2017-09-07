@@ -49,8 +49,12 @@ class AuctionViewController: UIViewController {
         super.viewWillAppear(animated)
 
         if appeared {
-            // Re-appearing, so re-fetch lot standings and update.
-            fetchLotStandingsAndUpdate()
+            // Re-appearing, so: check if Live has launched, and if not, re-fetch lot standings and update.
+            if saleViewModel.shouldShowLiveInterface {
+                setupLiveInterfaceAndPop()
+            } else {
+                fetchLotStandingsAndUpdate()
+            }
         }
 
         guard appeared == false else { return }
