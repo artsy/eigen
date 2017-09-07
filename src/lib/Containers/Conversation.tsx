@@ -20,7 +20,6 @@ import colors from "../../data/colors"
 import fonts from "../../data/fonts"
 import ConnectivityBanner from "../Components/ConnectivityBanner"
 
-import DottedLine from "../Components/DottedLine"
 import Composer from "../Components/Inbox/Conversations/Composer"
 import Message from "../Components/Inbox/Conversations/Message"
 import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
@@ -54,6 +53,15 @@ const BackButtonPlaceholder = styled.Image`
   height: 12;
   width: 7;
   transform: rotate(180deg);
+`
+
+const DottedBorder = styled.View`
+  height: 1;
+  border-width: 1;
+  border-style: dotted;
+  border-color: ${colors["gray-regular"]};
+  margin-left: 20;
+  margin-right: 20;
 `
 
 const MessagesList = styled(FlatList)`
@@ -168,7 +176,7 @@ export class Conversation extends React.Component<Props, State> {
             data={messages}
             renderItem={this.renderMessage.bind(this)}
             length={messages.length}
-            ItemSeparatorComponent={DottedLine}
+            ItemSeparatorComponent={DottedBorder}
           />
         </Container>
       </Composer>

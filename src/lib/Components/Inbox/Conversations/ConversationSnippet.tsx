@@ -10,7 +10,6 @@ import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
 import OpaqueImageView from "../../OpaqueImageView"
-
 import DottedLine from "../../../Components/DottedLine"
 
 const Card = styled.View`
@@ -173,7 +172,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
               </P>
             </TextPreview>
           </CardContent>
-          <DottedLine backgroundColor="white" />
+          <DottedLine />
         </Card>
       </TouchableWithoutFeedback>
     )

@@ -14,9 +14,6 @@ storiesOf("App Style/Dotted Line")
   .add("Default", () => {
     return <DottedLine />
   })
-  .add("With scaled dots", () => {
-    return <DottedLine />
-  })
   .add("With custom color", () => {
     return <DottedLine color={colors["purple-regular"]} />
   })
