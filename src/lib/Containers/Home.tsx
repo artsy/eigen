@@ -126,18 +126,18 @@ export default createFragmentContainer(
         ...HeroUnits_hero_units
       }
       artwork_modules(
-        max_rails: -1,
-        max_followed_gene_rails: -1,
+        max_rails: -1
+        max_followed_gene_rails: -1
         order: [
-          ACTIVE_BIDS,
-          RECOMMENDED_WORKS,
-          FOLLOWED_ARTISTS,
-          RELATED_ARTISTS,
-          FOLLOWED_GALLERIES,
-          SAVED_WORKS,
-          LIVE_AUCTIONS,
-          CURRENT_FAIRS,
-          FOLLOWED_GENES,
+          ACTIVE_BIDS
+          RECOMMENDED_WORKS
+          FOLLOWED_ARTISTS
+          RELATED_ARTISTS
+          FOLLOWED_GALLERIES
+          SAVED_WORKS
+          LIVE_AUCTIONS
+          CURRENT_FAIRS
+          FOLLOWED_GENES
           GENERIC_GENES
         ]
       ) {

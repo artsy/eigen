@@ -1,11 +1,11 @@
 import * as React from "react"
 
-import { ScrollView, TextProperties, View, ViewProperties } from "react-native"
+import { ScrollView, TextProperties, View, ViewProperties, ViewStyle } from "react-native"
 import { BodyText, LargeHeadline } from "../Typography/index"
 import Text from "./TextInput"
 
 /** A re-usable full-screen form with a scrollview */
-export const Form = (props: { title?: string }) =>
+export const Form: React.SFC<{ title?: string }> = props =>
   <ScrollView style={{ flex: 1 }}>
     <View style={{ paddingTop: 40 }}>
       {props.title &&
@@ -19,9 +19,9 @@ export const Form = (props: { title?: string }) =>
   </ScrollView>
 
 /** An individual row inside the form */
-export const Row = (props: ViewProperties) =>
-  <View {...props} style={{ flexDirection: "row", paddingVertical: 6, alignItems: "center", ...props.style }}>
-    {(props as any).children}
+export const Row: React.SFC<ViewProperties> = props =>
+  <View style={[props.style, { flexDirection: "row", paddingVertical: 6, alignItems: "center" }]}>
+    {props.children}
   </View>
 
 /** A label for form element */

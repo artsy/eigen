@@ -70,7 +70,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     }
 
     if (__DEV__) {
-      const style = StyleSheet.flatten(props.style)
+      const style: React.CSSProperties = StyleSheet.flatten(props.style)
       if (style == null) {
         return
       }

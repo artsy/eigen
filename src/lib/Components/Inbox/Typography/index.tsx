@@ -4,7 +4,7 @@ import { StyleSheet, Text, TextProperties, TextStyle } from "react-native"
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
 
-const LargeHeadline = (props: TextProperties) => {
+const LargeHeadline: React.SFC<TextProperties> = props => {
   const children: string = (props as any).children
   const style = [styles.largeDefault, props.style || {}, styles.largeRequired]
   return (
@@ -14,7 +14,7 @@ const LargeHeadline = (props: TextProperties) => {
   )
 }
 
-const SmallHeadline = (props: TextProperties) => {
+const SmallHeadline: React.SFC<TextProperties> = props => {
   const children: string = (props as any).children
   const style = [styles.smallDefault, props.style || {}, styles.smallRequired]
   return (
@@ -24,7 +24,7 @@ const SmallHeadline = (props: TextProperties) => {
   )
 }
 
-const Subtitle = (props: TextProperties) => {
+const Subtitle: React.SFC<TextProperties> = props => {
   const children: string = (props as any).children
   const style = [styles.subtitleDefault, props.style || {}, styles.subtitleRequired]
   return (
@@ -34,7 +34,7 @@ const Subtitle = (props: TextProperties) => {
   )
 }
 
-const FromSignatureText = (props: TextProperties) => {
+const FromSignatureText: React.SFC<TextProperties> = props => {
   const children: string = (props as any).children
   const style = [styles.fromSignatureDefault, props.style || {}]
   return (
@@ -44,7 +44,7 @@ const FromSignatureText = (props: TextProperties) => {
   )
 }
 
-const MetadataText = (props: TextProperties) => {
+const MetadataText: React.SFC<TextProperties> = props => {
   const children: string = (props as any).children
   const style = [styles.metadataDefault, props.style || {}, styles.metadataRequired]
   return (
@@ -54,7 +54,7 @@ const MetadataText = (props: TextProperties) => {
   )
 }
 
-const PreviewText = (props: TextProperties) => {
+const PreviewText: React.SFC<TextProperties> = props => {
   const children: string = (props as any).children
   const style = [styles.bodyDefault, props.style || {}, styles.bodyRequired]
   return (
@@ -64,7 +64,7 @@ const PreviewText = (props: TextProperties) => {
   )
 }
 
-const BodyText = (props: TextProperties & { disabled?: boolean }) => {
+const BodyText: React.SFC<TextProperties & { disabled?: boolean }> = props => {
   const children: string = (props as any).children
   const style = [styles.bodyDefault, props.disabled && styles.disabled, props.style || {}, styles.bodyRequired]
   return (
