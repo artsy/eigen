@@ -27,7 +27,7 @@
 
 - (NSURL *)urlForRoute:(NSString *)route
 {
-  if ([route containsString:@"https"]) {
+  if ([route containsString:@"http"]) {
     return [NSURL URLWithString:route];
   }
 
