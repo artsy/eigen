@@ -45,6 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) ARWorksForYouModule *worksForYouModule;
 @property (nonatomic, strong, readonly) ARTakeCameraPhotoModule *cameraModule;
 
+@property (nonatomic, strong, readwrite) AREmissionConfiguration *configurationModule;
+
 + (instancetype)sharedInstance;
 + (void)setSharedInstance:(AREmission *)instance;
 
