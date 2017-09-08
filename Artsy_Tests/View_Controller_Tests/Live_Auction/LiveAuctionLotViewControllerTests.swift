@@ -111,7 +111,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 subject.loadViewProgrammatically()
 
                 lotViewModel.numberOfBids = 2
-                lotViewModel.newEventsSignal.update([])
+                lotViewModel.numberOfBidsSignal.update(2)
 
                 expect(subject) == snapshot()
             }
@@ -180,6 +180,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
 
     let askingPrice: UInt64 = 5_000_00
     let askingPriceSignal = Observable<UInt64>(5_000_00)
+    let numberOfBidsSignal = Observable<Int>()
     let reserveStatusSignal = Observable<ARReserveStatus>(.noReserve)
     let newEventsSignal = Observable<[LiveAuctionEventViewModel]>()
 
