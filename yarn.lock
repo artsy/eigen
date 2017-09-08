@@ -2622,9 +2622,9 @@ d@1:
   dependencies:
     es5-ext "^0.10.9"
 
-danger@2.0.0-alpha-14:
-  version "2.0.0-alpha.14"
-  resolved "https://registry.yarnpkg.com/danger/-/danger-2.0.0-alpha.14.tgz#16b1988dab4d226f8dd72cc369d66e63f15a00e0"
+danger@alpha:
+  version "2.0.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/danger/-/danger-2.0.0-alpha.15.tgz#e04586197977663f6e9b510c2d38cfb715da317d"
   dependencies:
     babel-polyfill "7.0.0-alpha.19"
     chalk "^2.0.0"

@@ -88,7 +88,7 @@
     "babel-preset-react-native": "^1.9.1",
     "babel-preset-stage-0": "^6.24.1",
     "concurrently": "^2.2.0",
-    "danger": "2.0.0-alpha-14",
+    "danger": "alpha",
     "jest": "^21.0.1",
     "jest-react-native": "18.0.0",
     "jest-snapshots-svg": "^0.0.21",
