@@ -24,6 +24,7 @@ upcoming:
       - Fixes a minor problem displaying lots in past auctions - ash
       - Fixes inconsistencies in post-sale artwork supplementary info - ash
       - Do not intercept tel links with our custom dialog modal - isac
+      - Presents live bidding interface when sale has opened and UI reappearing from an artwork VC - ash
 
 releases:
   - version: 3.2.3
