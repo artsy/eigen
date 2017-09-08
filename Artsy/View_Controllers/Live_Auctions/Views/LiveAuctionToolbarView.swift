@@ -75,8 +75,7 @@ class LiveAuctionToolbarView: UIView {
                 guard self.numberOfBidsObserver == nil else { return }
 
                 self.numberOfBidsObserver = self.lotViewModel
-                    .newEventsSignal
-                    .map { [weak self] _ in self?.lotViewModel.numberOfBids ?? 0 }
+                    .numberOfBidsSignal
                     .subscribe { [weak self] numberOfBids in
                         label.attributedText = self?.attributify(String(numberOfBids)) ?? NSAttributedString()
                 }

@@ -55,6 +55,7 @@ protocol LiveAuctionLotViewModelType: class {
     var reserveStatusSignal: Observable<ARReserveStatus> { get }
     var lotStateSignal: Observable<LotState> { get }
     var askingPriceSignal: Observable<UInt64> { get }
+    var numberOfBidsSignal: Observable<Int> { get }
     var currentBidSignal: Observable<CurrentBid> { get }
     var newEventsSignal: Observable<[LiveAuctionEventViewModel]> { get }
 }
@@ -106,6 +107,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     let reserveStatusSignal = Observable<ARReserveStatus>()
     let lotStateSignal: Observable<LotState>
     let askingPriceSignal = Observable<UInt64>()
+    let numberOfBidsSignal = Observable<Int>()
 
     let newEventsSignal = Observable<[LiveAuctionEventViewModel]>()
 
@@ -304,6 +306,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     func updateOnlineBidCount(_ onlineBidCount: Int) {
         model.onlineBidCount = onlineBidCount
+        numberOfBidsSignal.update(onlineBidCount)
     }
 
     func updateSellingToBidder(_ sellingToBidderID: String?) {
