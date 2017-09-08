@@ -20,11 +20,10 @@
     
     const CGFloat dotDiameter = rect.size.height / 2;
     const CGFloat gapSize = dotDiameter * 4;
-    CGFloat pattern[4];
+    CGFloat pattern[2];
     pattern[0] = 0.0;
     pattern[1] = gapSize;
 
-    
     UIBezierPath *path = [UIBezierPath bezierPath];
     path.lineWidth = dotDiameter;
     path.lineCapStyle = kCGLineCapRound;
@@ -49,7 +48,6 @@ RCT_EXPORT_MODULE();
 
 - (UIView *)view
 {
-    
     ARDottedLine *line = [ARDottedLine new];
     return line;
 }
