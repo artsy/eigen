@@ -26,6 +26,7 @@
 
 ###### Messaging
 
+-   Updated styling on bottom dotted border of ConversationSnippet - erik
 -   Fixed incorrect use of Attachment props in invoice component - matt
 -   Added inline rendering for invoices - matt
 -   Removed hard-coded sanitization of message body - sarah

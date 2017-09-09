@@ -71,6 +71,7 @@ exports[`renders correctly with a show 1`] = `
           },
           Array [
             Object {
+              "marginBottom": 3,
               "marginLeft": 15,
             },
             undefined,
@@ -249,18 +250,12 @@ exports[`renders correctly with a show 1`] = `
       </Text>
     </View>
   </View>
-  <View
+  <ARDottedLine
+    color={4291611852}
     style={
-      Array [
-        Object {
-          "backgroundColor": "#e5e5e5",
-          "height": 1,
-          "marginBottom": 5,
-          "marginTop": 18,
-          "width": "100%",
-        },
-        undefined,
-      ]
+      Object {
+        "height": 2,
+      }
     }
   />
 </View>
@@ -337,6 +332,7 @@ exports[`renders correctly with an artwork 1`] = `
           },
           Array [
             Object {
+              "marginBottom": 3,
               "marginLeft": 15,
             },
             undefined,
@@ -560,18 +556,12 @@ exports[`renders correctly with an artwork 1`] = `
       </Text>
     </View>
   </View>
-  <View
+  <ARDottedLine
+    color={4291611852}
     style={
-      Array [
-        Object {
-          "backgroundColor": "#e5e5e5",
-          "height": 1,
-          "marginBottom": 5,
-          "marginTop": 18,
-          "width": "100%",
-        },
-        undefined,
-      ]
+      Object {
+        "height": 2,
+      }
     }
   />
 </View>
