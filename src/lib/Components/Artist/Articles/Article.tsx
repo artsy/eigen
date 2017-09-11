@@ -57,7 +57,7 @@ interface Styles {
 }
 
 const styles = StyleSheet.create<Styles>({
-  // TODO The outer wrapping view is currently only there because setting `marginRight: 20` on the Article from the
+  // TODO: The outer wrapping view is currently only there because setting `marginRight: 20` on the Article from the
   //      Articles component isn’t working.
   container: {
     width: 320,

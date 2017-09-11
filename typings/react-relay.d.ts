@@ -75,12 +75,12 @@ declare module "react-relay/modern" {
     }
   }
 
-  // TODO put these in sections of the files they come from too
+  // TODO: put these in sections of the files they come from too
 
   export type DataID = string
   export type RelayConcreteNode = Object
 
-  export type RangeBehaviors = any // TODO add proper typing
+  export type RangeBehaviors = any // TODO: add proper typing
 
   export type RelayMutationConfig =
     | {

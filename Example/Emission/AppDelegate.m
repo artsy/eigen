@@ -274,6 +274,7 @@ randomBOOL(void)
     viewController = [[ARHomeComponentViewController alloc] initWithEmission:nil];
 
   } else {
+
     viewController = [[UnroutedViewController alloc] initWithRoute:route];
   }
 

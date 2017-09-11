@@ -9,6 +9,7 @@ import { StyleSheet, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"
+import DottedLine from "../../../Components/DottedLine"
 import OpaqueImageView from "../../OpaqueImageView"
 
 const Card = styled.View`
@@ -32,6 +33,7 @@ const CardContent = styled(HorizontalLayout)`
 
 const TextPreview = styled(VerticalLayout)`
   margin-left: 15;
+  margin-bottom: 3;
 `
 
 const DateHeading = styled(HorizontalLayout)`
@@ -47,14 +49,6 @@ const UnreadIndicator = styled.View`
   margin-left: 4;
   margin-top: 3;
   margin-bottom: 3;
-`
-
-const Separator = styled.View`
-  height: 1;
-  width: 100%;
-  background-color: ${colors["gray-regular"]};
-  margin-top: 18px;
-  margin-bottom: 5px;
 `
 
 const Subtitle = styled.Text`
@@ -178,7 +172,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
               </P>
             </TextPreview>
           </CardContent>
-          <Separator />
+          <DottedLine />
         </Card>
       </TouchableWithoutFeedback>
     )

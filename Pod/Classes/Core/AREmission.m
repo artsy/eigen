@@ -46,9 +46,6 @@ RCT_EXPORT_MODULE(Emission);
 @end
 
 
-@interface AREmission ()
-@property (nonatomic, strong, readwrite) AREmissionConfiguration *configurationModule;
-@end
 
 @implementation AREmission
 

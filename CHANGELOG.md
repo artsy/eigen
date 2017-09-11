@@ -2,6 +2,8 @@
 
 ###### Dev
 
+-   Conditionally use different past artist show fragments for iPad vs iPhone - alloy
+-   Upgrades Relay to ‘modern’ (v1.3.0) - alloy
 -   Upgrades React Native to v0.48.0 - sarah
 -   Extracts connectivity banner into its own component - sarah
 -   Adds stylelint to the dev-experience, not validated on CI yet - orta
@@ -27,6 +29,7 @@
 
 ###### Messaging
 
+-   Updated styling on bottom dotted border of ConversationSnippet - erik
 -   Fixed incorrect use of Attachment props in invoice component - matt
 -   Added inline rendering for invoices - matt
 -   Removed hard-coded sanitization of message body - sarah

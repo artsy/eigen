@@ -3,7 +3,7 @@ import * as React from "react"
 
 import Artist from "../Artist"
 
-// TODO Move to metametaphysics after Relay Modern migration
+// TODO: Move to metametaphysics after Relay Modern migration
 import { graphql, QueryRenderer } from "react-relay"
 import createEnvironment from "../../relay/createEnvironment"
 const RootContainer: React.SFC<any> = ({ Component, artistID }) => {
