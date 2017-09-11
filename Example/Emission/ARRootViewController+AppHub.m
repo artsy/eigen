@@ -80,7 +80,10 @@
   };
   cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
     [AppHub presentSelectorOnViewController:self withBuildHandler:^(AHBuild *build, NSError *error) {
-      [self.tableView reloadData];
+      [self showAlertViewWithTitle:@"Restarting for the new beta build" message:@"This will update your build" actionTitle:@"Do it" actionHandler:^{
+        exit(0);
+      }];
+
     }];
   };
   return cellData;

@@ -87,7 +87,6 @@ const render = (props: SearchQueryProps) => {
           onChangeText: props.onChangeText,
           autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
         }}
-        style={{ flex: 0 }}
       />
 
       <ScrollView

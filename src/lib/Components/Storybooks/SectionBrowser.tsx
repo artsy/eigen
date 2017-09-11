@@ -1,4 +1,3 @@
-import * as storybook from "@storybook/react-native"
 import * as React from "react"
 import { ListView, NavigatorIOS, Route, TouchableHighlight, View, ViewProperties } from "react-native"
 
@@ -9,14 +8,22 @@ import { Background, BodyText, Separator, Title } from "./Styles"
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route
+  section: StorySection
 }
 
-const Headline = () => <Title>Stories</Title>
-
 const render = (props: Props) => {
+  const Headline = () =>
+    <Title>
+      {props.section.kind}
+    </Title>
+
   const ListViewItem = (item: StorySection) => {
     const showStoriesForSection = () => {
-      props.navigator.push({ title: item.kind, component: StoryBrowser, passProps: { section: item } })
+      if (item.stories) {
+        props.navigator.push({ title: item.kind, component: StoryBrowser, passProps: { section: item } })
+      } else {
+        props.navigator.push({ title: item.kind, component: StorybookBrowser, passProps: { section: item } })
+      }
     }
 
     return (
@@ -32,7 +39,7 @@ const render = (props: Props) => {
   }
 
   const storybookDS = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }).cloneWithRows(
-    storybook.getStorybook()
+    props.section.sections
   )
 
   return (
