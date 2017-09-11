@@ -163,9 +163,9 @@ export default createPaginationContainer(
       }
     },
     query: graphql.experimental`
-      query ConversationsQuery($count: Int!, $after: String) {
+      query ConversationsQuery($count: Int!, $cursor: String) {
         me {
-          ...Conversations_me @arguments(count: $count, after: $after)
+          ...Conversations_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
