@@ -1,10 +1,38 @@
 upcoming:
-    version: 3.2.5
+    version: 3.3.0
     details: Messaging
+    dev:
+      - Reload active bids on pull-to-refresh - alloy
+      - Make active bids link to their artworks - alloy
+      - Make zero inbox state hide on load if bids or conversations exist - alloy
+      - Fix crash on Gene view, when integrated into Eigen, due to missing RCTAnimation dependency - alloy
+      - Fix issue with missing icons - alloy
+      - Hopefully fix crashes in analytics, which were probably due to the VCs being deallocated before ARAnalytics
+        would invoke the DSL block and thus queried values being `nil` - alloy
+      - Fix crash in onboarding artist search due to query text possibly being `nil` - alloy
+      - Fix unneeded SIGABRT, if it actually happened at all, by not needlessly using a RN reject block - alloy
+      - Add switchboard route to open admin menu through Universal Links with https://artsy.net/admin route - alloy
+      - Adds an admin flag for haptic feedback during a live Auction - orta
+      - Removes bifurcation of bidders/observers for causality websocket connections - ash
+
+    user_facing:
+      - Adds new routing for inquiries - maxim
+      - Removes "Contact for Price" on related works in auction list - ash
+      - Fixes problem with status bar on refine options view - ash
+      - Fixes login for users with short passwords - ash
+      - Fixes inconsistencies in bid counts of online sales - ash
+      - Fixes a minor problem displaying lots in past auctions - ash
+      - Do not intercept tel links with our custom dialog modal - isac
+      - Presents live bidding interface when sale has opened and UI reappearing from an artwork VC - ash
+      - Updates bid count UI after model has been updated - ash
+
+releases:
+  - version: 3.2.5
+    details: Crash fix
+    date: Sep 11, 2017
     user_facing:
       - Fixes a crash related to users with no favourited artworks - ash
 
-releases:
   - version: 3.2.4
     date: Sep 8, 2017
     details: Bug fixes
@@ -20,6 +48,8 @@ releases:
   - version: 3.2.2
     details: Bug fixes for Auctions mostly
     date: Jun 26, 2017
+    date: Jun 26, 2017
+    details: Big fixes for Auctions mainly
     dev:
       - Removes compiler warnings and static analyzer warnings - ash
       - Fix analytics double fire in artwork pages - maxim
@@ -35,6 +65,7 @@ releases:
       - LAI indicates when a sale is on hold - ash and erik
       - Auctions now filter out lots with unpublished artworks - ash
       - Fixes an issue with the status bar appearence returning from LAI modals - ash
+
 
   - version: 3.2.1
     details: Scope not know yet

@@ -185,6 +185,15 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
         return [sself loadShowWithID:parameters[@"id"]];
     }];
 
+    [self.routes addRoute:@"/conversation/:id" handler:JLRouteParams {
+        __strong typeof (wself) sself = wself;
+        return [sself loadConversationWithID:parameters[@"id"]];
+    }];
+
+    [self.routes addRoute:@"/admin" handler:JLRouteParams {
+        return [wself loadAdminMenu];
+    }];
+
     // We don't show a native fairs UI for iPad
     if (![UIDevice isPad]) {
         [self registerEchoRouteForKey:@"ARFairProfileForYouRoute" handler:JLRouteParams {
@@ -333,6 +342,10 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
         } else {
             return [self viewControllerForUnroutedDomain:url];
         }
+    } else if ([ARRouter isTelURL:url]) {
+        // Handle via OS telephony service
+        [[UIApplication sharedApplication] openURL:url];
+        return nil;
     }
 
     /// It's probably an app link, offer to jump out

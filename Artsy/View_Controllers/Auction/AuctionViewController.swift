@@ -49,8 +49,12 @@ class AuctionViewController: UIViewController {
         super.viewWillAppear(animated)
 
         if appeared {
-            // Re-appearing, so re-fetch lot standings and update.
-            fetchLotStandingsAndUpdate()
+            // Re-appearing, so: check if Live has launched, and if not, re-fetch lot standings and update.
+            if saleViewModel.shouldShowLiveInterface {
+                setupLiveInterfaceAndPop()
+            } else {
+                fetchLotStandingsAndUpdate()
+            }
         }
 
         guard appeared == false else { return }
@@ -82,12 +86,6 @@ class AuctionViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(AuctionViewController.registrationUpdated(_:)), name: NSNotification.Name.ARAuctionArtworkRegistrationUpdated, object: nil)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        // For reasons yet unknown, when re-appearing from auctions info or review view controllers, we need to call this manually. 
-        setNeedsStatusBarAppearanceUpdate()
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         userActivity?.invalidate()
@@ -284,7 +282,7 @@ extension AuctionViewController {
         properties["context"] = "auction"
         properties["slub"] = "/auction/\(saleViewModel.saleID)/refine"
         refineViewController.viewDidAppearAnalyticsOption = RefinementAnalyticsOption(name: "Sale Information", properties: properties)
-        refineViewController.statusBarStyle = (self.traitCollection.horizontalSizeClass == .compact) ? .`default` : .lightContent
+        refineViewController.statusBarHidden = (self.traitCollection.horizontalSizeClass == .compact)
         present(refineViewController, animated: animated, completion: nil)
     }
 

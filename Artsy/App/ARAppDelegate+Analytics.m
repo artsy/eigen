@@ -108,8 +108,11 @@
         [ARAnalytics setupProvider:visualizer];
     }
 
-    id sentry = [[ARSentryAnalyticsProvider alloc] initWithDSN:sentryEnv];
-    [ARAnalytics setupProvider:sentry];
+    // For OSS builds don't ship the sentry env
+    if (![sentryEnv isEqualToString:@"-"]) {
+        id sentry = [[ARSentryAnalyticsProvider alloc] initWithDSN:sentryEnv];
+        [ARAnalytics setupProvider:sentry];
+    }
 
     BITHockeyManager *hockey = [BITHockeyManager sharedHockeyManager];
     hockey.disableCrashManager = YES;
@@ -1262,7 +1265,7 @@
                                 NSDictionary *basics =  @{
                                                           @"owner_type": @"partner_show",
                                                           @"owner_id": controller.show.showUUID,
-                                                          @"owner_slug": controller.show.showID
+                                                          @"owner_slug": controller.show.showID,
                                 };
 
                                 if (controller.show.fair.fairID) {

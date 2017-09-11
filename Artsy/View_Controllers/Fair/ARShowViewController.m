@@ -243,7 +243,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
 
         if (!sself.fair) { sself->_fair = show.fair; }
 
-        [self showDidLoad];
+        [sself showDidLoad];
     } failure:^(NSError *error) {
         __strong typeof (wself) sself = wself;
         [sself showDidLoad];

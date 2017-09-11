@@ -24,6 +24,7 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AppHub/AppHub.h>
 #import <Emission/AREmission.h>
+#import <Emission/ARInboxComponentViewController.h>
 #import "ARAdminLoadReactComponentViewController.h"
 
 #if DEBUG
@@ -60,6 +61,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [self generateRestart],
         [self generateStagingSwitch],
         [self generateQuicksilver],
+        [self generateShowInbox],
         [self generateShowAllLiveAuctions],
         [self generateOnScreenAnalytics],
         [self generateOnScreenMartsy],
@@ -211,6 +213,20 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
         ARQuicksilverViewController *quicksilver = [[ARQuicksilverViewController alloc] init];
         [self.navigationController pushViewController:quicksilver animated:YES];
+    }];
+    return crashCellData;
+}
+
+- (ARCellData *)generateShowInbox
+{
+    ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
+        cell.textLabel.text = @"Show Inbox";
+    }];
+    
+    [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+        ARInboxComponentViewController *controller = [[ARInboxComponentViewController alloc] initWithInbox];
+        [self.navigationController pushViewController:controller animated:YES];
     }];
     return crashCellData;
 }

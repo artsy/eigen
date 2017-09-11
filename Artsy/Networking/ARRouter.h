@@ -17,6 +17,7 @@
 
 + (void)setupUserAgent;
 + (BOOL)isWebURL:(NSURL *)url;
++ (BOOL)isTelURL:(NSURL *)url;
 
 + (BOOL)isInternalURL:(NSURL *)url;
 
@@ -175,8 +176,7 @@
 + (NSURLRequest *)saleArtworkRequestForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID;
 + (NSURLRequest *)requestForSaleID:(NSString *)saleID;
 
-+ (NSString *)baseObserverCausalitySocketURLString;
-+ (NSString *)baseBidderCausalitySocketURLString;
++ (NSString *)baseCausalitySocketURLString;
 
 #pragma mark - Ordered Sets
 

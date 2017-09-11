@@ -1,6 +1,9 @@
 #import "ARSwitchBoard+Eigen.h"
 
+#import "ARAppStatus.h"
+
 // View Controllers
+#import "ARAdminSettingsViewController.h"
 #import "ARArtworkSetViewController.h"
 #import "ARShowViewController.h"
 #import "ARGeneViewController.h"
@@ -17,6 +20,7 @@
 
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
+#import <Emission/ARConversationComponentViewController.h>
 
 #import "ARArtistViewController.h"
 // TODO This does not use the new React based VC yet.
@@ -31,8 +35,24 @@
 @property (nonatomic, strong) Aerodramus *echo;
 @end
 
-
 @implementation ARSwitchBoard (Eigen)
+
+#pragma mark - Dev
+
+- (UIViewController *)loadAdminMenu;
+{
+    if (!ARAppStatus.isBetaDevOrAdmin) {
+        return nil;
+    }
+    return [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+}
+
+#pragma mark - Messaging
+
+- (UIViewController *)loadConversationWithID:(NSString *)conversationID;
+{
+    return [[ARConversationComponentViewController alloc] initWithConversationID:conversationID];
+}
 
 #pragma mark -
 #pragma mark Artworks

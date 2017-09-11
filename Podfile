@@ -67,7 +67,7 @@ target 'Artsy' do
   pod 'Aerodramus'
 
   # Custom CollectionView Layouts
-  pod 'ARCollectionViewMasonryLayout', :git => 'https://github.com/ashfurrow/ARCollectionViewMasonryLayout', :branch => "modern"
+  pod 'ARCollectionViewMasonryLayout', :git => 'https://github.com/ashfurrow/ARCollectionViewMasonryLayout'
 
   # Language Enhancements
   pod 'KSDeferred'
@@ -77,13 +77,12 @@ target 'Artsy' do
   # Artsy Spec repo stuff
   pod 'Artsy+UIFonts'
   pod 'Artsy-UIButtons'
-  pod 'Artsy+UIColors' 
+  pod 'Artsy+UIColors'
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission'
+  pod 'Emission', '~> 1.4.0-beta.1'
   pod 'React/Core'
-
 
   # Facebook
   pod 'FBSDKCoreKit', '~> 4.9'
@@ -91,7 +90,7 @@ target 'Artsy' do
 
   # Analytics
   pod 'Analytics'
-  pod 'ARAnalytics', :git=> "https://github.com/orta/ARAnalytics.git", :commit => "6f31b5c7bcbd59d4dac7e92e215d3c2c22f3400e", :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
+  pod 'ARAnalytics', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
   # Required as a workaround for https://github.com/bitstadium/HockeySDK-iOS/pull/421
   pod 'HockeySDK-Source', git: 'https://github.com/bitstadium/HockeySDK-iOS.git'
 
@@ -135,7 +134,6 @@ target 'Artsy' do
     pod 'Nimble-Snapshots'
   end
 end
-
 
 post_install do |installer|
   # Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.

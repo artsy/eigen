@@ -6,7 +6,8 @@ APP_PLIST = Artsy/App_Resources/Artsy-Info.plist
 STICKER_PLIST = Artsy\ Stickers/Info.plist
 PLIST_BUDDY = /usr/libexec/PlistBuddy
 DEVICE_HOST = platform='iOS Simulator',OS='9.0',name='iPhone 6'
-OTHER_CFLAGS = OTHER_CFLAGS="\$$(inherited) -Werror"
+# Disable warnings as errors for now, because we’re currently not getting the same errors during dev as deploy.
+# OTHER_CFLAGS = OTHER_CFLAGS="\$$(inherited) -Werror"
 
 
 GIT_COMMIT_REV = $(shell git log -n1 --format='%h')
@@ -52,6 +53,8 @@ oss:
 	bundle exec pod keys set "SegmentDevWriteKey" "-"
 	bundle exec pod keys set "AdjustProductionAppToken" "-"
 	bundle exec pod keys set "ArtsyEchoProductionToken" "-"
+	bundle exec pod keys set "SentryProductionDSN" "-"
+	bundle exec pod keys set "SentryStagingDSN" "-"
 
 artsy:
 	git submodule update --init
