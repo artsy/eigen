@@ -99,8 +99,8 @@ export class Message extends React.Component<Props, any> {
   renderBody() {
     const { message, firstMessage, initialText } = this.props
     const isSent = !!message.created_at
-
     const body = firstMessage ? initialText : message.body
+
     return (
       <BodyText disabled={!isSent}>
         {body}
