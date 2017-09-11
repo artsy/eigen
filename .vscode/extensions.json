@@ -1,16 +1,17 @@
 {
-	// See http://go.microsoft.com/fwlink/?LinkId=827846
-	// for the documentation about the extensions.json format
-	"recommendations": [
-		"jpoissonnier.vscode-styled-components",
-		"Orta.vscode-danger",
-		"christian-kohler.npm-intellisense",
-		"eg2.tslint",
-		"djabraham.vscode-yaml-validation",
-		"vsmobile.vscode-react-native",
-		"Orta.vscode-react-native-storybooks",
-		"esbenp.prettier-vscode",
-		"mrmlnc.vscode-stylefmt",
-		"shinnn.stylelint"
-	]
+  // See http://go.microsoft.com/fwlink/?LinkId=827846
+  // for the documentation about the extensions.json format
+  "recommendations": [
+    "jpoissonnier.vscode-styled-components",
+    "Orta.vscode-danger",
+    "christian-kohler.npm-intellisense",
+    "eg2.tslint",
+    "djabraham.vscode-yaml-validation",
+    "vsmobile.vscode-react-native",
+    "Orta.vscode-react-native-storybooks",
+    "esbenp.prettier-vscode",
+    "mrmlnc.vscode-stylefmt",
+    "shinnn.stylelint",
+    "wayou.vscode-todo-highlight"
+  ]
 }

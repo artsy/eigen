@@ -80,7 +80,7 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, void (^ca
     return;
   }
 
-  // TODO Setting decompress to NO, because Eigen sets it to YES.
+  // TODO: Setting decompress to NO, because Eigen sets it to YES.
   //      We need to send a PR to SDWebImage to disable decoding
   //      with an option to the download method.
   //

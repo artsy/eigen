@@ -5,10 +5,10 @@ import "react-native"
 
 import Inbox from "../index"
 
-// TODO Move to metametaphysics after Relay Modern migration
+// TODO: Move to metametaphysics after Relay Modern migration
 import { graphql, QueryRenderer } from "react-relay"
 import createEnvironment from "../../../../relay/createEnvironment"
-// TODO This fails due to Relay trying to request `id` for the Node interface. Probably because we need to switch from
+// TODO: This fails due to Relay trying to request `id` for the Node interface. Probably because we need to switch from
 //      compat to modern?
 //
 // Question: Why do we need to define a `after` variable, but don’t need to specify anything for it?
@@ -37,7 +37,7 @@ const RootContainer: React.SFC<any> = ({ Component }) => {
 }
 
 storiesOf("Conversations/Overview").add("With live data", () => <RootContainer Component={Inbox} />)
-// TODO Move to metametaphysics after Relay Modern migration
+// TODO: Move to metametaphysics after Relay Modern migration
 // .add("With dummy data", () => <StubContainer Component={Inbox} props={{ me: meProps }} />)
 // .add("With no data", () => <StubContainer Component={Inbox} props={{ me: { conversations: { edges: [] } } }} />)
 

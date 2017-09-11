@@ -84,7 +84,7 @@ export class Conversations extends React.Component<Props, State> {
     }
     this.setState({ fetchingNextPage: true })
     this.props.relay.loadMore(PageSize, error => {
-      // TODO Not performing any error handling here
+      // TODO: Not performing any error handling here
       this.setState({
         fetchingNextPage: false,
         dataSource: this.state.dataSource.cloneWithRows(this.conversations),
