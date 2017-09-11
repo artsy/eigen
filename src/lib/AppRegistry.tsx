@@ -47,7 +47,7 @@ const renderWithLoadProgress = (Component: React.ReactType, initialProps: object
   }
 }
 
-const Artist: React.SFC<{ artistID: string }> = props =>
+const Artist: React.SFC<{ artistID: string; isPad: boolean }> = props =>
   <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />
 
 const Inbox: React.SFC<{}> = () => <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />

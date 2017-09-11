@@ -10,15 +10,7 @@ import VariableSizeShowsList from "./VariableSizeShowsList"
 
 const windowDimensions = Dimensions.get("window")
 
-interface Props extends ViewProperties {
-  artist: {
-    past_shows: any[]
-    current_shows: any[]
-    upcoming_shows: any[]
-  }
-}
-
-class Shows extends React.Component<Props, any> {
+class Shows extends React.Component<RelayProps, any> {
   render() {
     return (
       <View style={styles.container}>
@@ -29,7 +21,8 @@ class Shows extends React.Component<Props, any> {
   }
 
   pastShows() {
-    if (this.props.artist.past_shows.length > 0) {
+    const pastShows = this.props.artist.past_large_shows || this.props.artist.past_small_shows
+    if (pastShows.length) {
       return (
         <View>
           <Separator style={{ marginBottom: 20 }} />
@@ -43,11 +36,12 @@ class Shows extends React.Component<Props, any> {
   }
 
   pastShowsList() {
-    // if (windowDimensions.width > 700) {
-    //   return <VariableSizeShowsList showSize={"medium"} shows={this.props.artist.past_shows} />
-    // } else {
-    return <SmallList shows={this.props.artist.past_shows} style={{ marginTop: -8, marginBottom: 50 }} />
-    // }
+    // TODO: Use `this.props.relay.getVariables().isPad` when this gets merged: https://github.com/facebook/relay/pull/1868
+    if (this.props.artist.past_large_shows) {
+      return <VariableSizeShowsList showSize={"medium"} shows={this.props.artist.past_large_shows} />
+    } else {
+      return <SmallList shows={this.props.artist.past_small_shows} style={{ marginTop: -8, marginBottom: 50 }} />
+    }
   }
 
   currentAndUpcomingList() {
@@ -79,10 +73,6 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-// TODO How do we dynamically determine what component to use? Needs to be fixed after Relay Modern migration.
-// const pastShowsFragment =
-//   windowDimensions.width > 700 ? VariableSizeShowsList.getFragment("shows") : SmallShowsList.getFragment("shows")
-
 export default createFragmentContainer(
   Shows,
   graphql`
@@ -93,8 +83,11 @@ export default createFragmentContainer(
       upcoming_shows: partner_shows(status: "upcoming") {
         ...VariableSizeShowsList_shows
       }
-      past_shows: partner_shows(status: "closed", size: 20) {
+      past_small_shows: partner_shows(status: "closed", size: 20) @skip(if: $isPad) {
         ...SmallList_shows
+      }
+      past_large_shows: partner_shows(status: "closed", size: 20) @include(if: $isPad) {
+        ...VariableSizeShowsList_shows
       }
     }
   `
@@ -104,6 +97,7 @@ interface RelayProps {
   artist: {
     current_shows: Array<boolean | number | string | null> | null
     upcoming_shows: Array<boolean | number | string | null> | null
-    past_shows: Array<boolean | number | string | null> | null
+    past_small_shows: Array<boolean | number | string | null> | null
+    past_large_shows: Array<boolean | number | string | null> | null
   }
 }
