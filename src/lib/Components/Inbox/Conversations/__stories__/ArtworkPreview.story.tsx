@@ -1,4 +1,4 @@
-// TODO Move to metametaphysics after Relay Modern migration.
+// TODO: Move to metametaphysics after Relay Modern migration.
 
 // import { storiesOf } from "@storybook/react-native"
 // import * as React from "react"

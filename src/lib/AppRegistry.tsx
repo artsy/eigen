@@ -29,7 +29,7 @@ const renderWithLoadProgress = (Component: React.ReactType, initialProps: object
     if (error) {
       if (retrying) {
         retrying = false
-        // TODO Even though this code path is reached, the retry button keeps spinning. iirc it _should_ disappear when
+        // TODO: Even though this code path is reached, the retry button keeps spinning. iirc it _should_ disappear when
         //      `onRetry` on the instance is unset.
         //
         // This will re-use the native view first created in the renderFailure callback, which means it can
@@ -47,7 +47,7 @@ const renderWithLoadProgress = (Component: React.ReactType, initialProps: object
   }
 }
 
-const Artist: React.SFC<{ artistID: string }> = props =>
+const Artist: React.SFC<{ artistID: string; isPad: boolean }> = props =>
   <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />
 
 const Inbox: React.SFC<{}> = () => <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />
@@ -60,12 +60,12 @@ const Gene: React.SFC<{ geneID: string; refineSettings: { medium: string; price_
   return <GeneRenderer {...initialProps} render={renderWithLoadProgress(Containers.Gene, initialProps)} />
 }
 
-// TODO This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
+// TODO: This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
 //
 //     this.renderFetched = data => <Containers.Home {...data} trigger1pxScrollHack={this.props.trigger1pxScrollHack} />
 const Home: React.SFC<{}> = () => <HomeRenderer render={renderWithLoadProgress(Containers.Home)} />
 
-// TODO This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
+// TODO: This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
 //
 //     this.renderFetched = data => <Containers.WorksForYou {...data} trigger1pxScrollHack={this.props.trigger1pxScrollHack} />
 const WorksForYou: React.SFC<{ selectedArtist: string }> = props =>

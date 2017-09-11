@@ -207,7 +207,7 @@ function sendConversationMessage(
     optimisticUpdater: storeUpdater,
     updater: storeUpdater,
 
-    // TODO See if we can extract the field selections into a fragment and share it with the normal pagination fragment.
+    // TODO: See if we can extract the field selections into a fragment and share it with the normal pagination fragment.
     //      Also looks like we can get rid of the `body` selection.
     mutation: graphql`
       mutation ConversationSendMessageMutation($input: SendConversationMessageMutationInput!) {
@@ -235,7 +235,7 @@ function sendConversationMessage(
       },
     },
 
-    // TODO Figure out which of these keys is *actually* required for Relay Modern and update the typings to reflect that.
+    // TODO: Figure out which of these keys is *actually* required for Relay Modern and update the typings to reflect that.
     //      And if it’s really true that this config isn’t enough to update the connection and we really need the updater
     //      functions.
     configs: [
@@ -276,7 +276,7 @@ function sendConversationMessage(
   })
 }
 
-// TODO Make this a pagination container instead of fetching 100 messages
+// TODO: Make this a pagination container instead of fetching 100 messages
 export default createRefetchContainer(
   Conversation,
   graphql`

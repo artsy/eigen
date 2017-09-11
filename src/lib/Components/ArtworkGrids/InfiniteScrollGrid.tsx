@@ -23,7 +23,7 @@ export const PageSize = 10
 export const PageEndThreshold = 1000
 
 /**
- * TODOs:
+ * TODO:
  * - currently all the code assumes column layout
  *   - do no invert aspect ratios in row layout
  * - deal with edge-cases when calculating in which section an artwork should go

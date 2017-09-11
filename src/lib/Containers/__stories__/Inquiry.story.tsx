@@ -1,4 +1,4 @@
-// TODO make this work again after Relay Modern migration
+// TODO: make this work again after Relay Modern migration
 
 // import { storiesOf } from "@storybook/react-native"
 // import * as React from "react"

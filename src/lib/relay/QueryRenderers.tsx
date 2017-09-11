@@ -38,22 +38,21 @@ interface RendererProps {
 
 interface ArtistRendererProps extends RendererProps {
   artistID: string
+  isPad: boolean
 }
 
-export const ArtistRenderer: React.SFC<ArtistRendererProps> = ({ render, artistID }) => {
+export const ArtistRenderer: React.SFC<ArtistRendererProps> = ({ render, artistID, isPad }) => {
   return (
     <QueryRenderer
       environment={environment}
       query={graphql`
-        query QueryRenderersArtistQuery($artistID: String!) {
+        query QueryRenderersArtistQuery($artistID: String!, $isPad: Boolean!) {
           artist(id: $artistID) {
             ...Artist_artist
           }
         }
       `}
-      variables={{
-        artistID,
-      }}
+      variables={{ artistID, isPad }}
       render={render}
     />
   )

@@ -6,7 +6,7 @@ import { Environment, Network, RecordSource, Store } from "relay-runtime"
 
 import Header from "../Header"
 
-// TODO Move to metametaphysics after Relay Modern migration
+// TODO: Move to metametaphysics after Relay Modern migration
 import { graphql, QueryRenderer } from "react-relay"
 import createEnvironment from "../../../relay/createEnvironment"
 const RootContainer: React.SFC<any> = ({ Component, artistID }) => {
@@ -47,7 +47,7 @@ storiesOf("Artist/Header")
   .add("Real Artist - Leda Catunda", () => {
     return <RootContainer Component={Header} artistID="leda-catunda" />
   })
-// TODO Move to metametaphysics after Relay Modern migration
+// TODO: Move to metametaphysics after Relay Modern migration
 //
 // Note that for these two, the follow button / count will remain the
 // same as it was from one of the above artists. Once they are in relay/graphQL
