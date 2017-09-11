@@ -5,11 +5,10 @@ exports[`Search states:  Looks right when Found four results 1`] = `
   <View
     style={
       Array [
-        Object {
-          "flex": 0,
-        },
+        undefined,
         Object {
           "flex": 1,
+          "maxHeight": 40,
         },
       ]
     }
@@ -18,6 +17,7 @@ exports[`Search states:  Looks right when Found four results 1`] = `
       style={
         Object {
           "flexDirection": "row",
+          "height": 40,
         }
       }
     >
@@ -35,8 +35,6 @@ exports[`Search states:  Looks right when Found four results 1`] = `
           Array [
             Object {
               "backgroundColor": "black",
-              "borderBottomColor": "white",
-              "borderBottomWidth": 1,
               "color": "white",
               "flexBasis": 0,
               "flexGrow": 1,
@@ -56,7 +54,7 @@ exports[`Search states:  Looks right when Found four results 1`] = `
         Array [
           Object {
             "backgroundColor": "#e5e5e5",
-            "height": 1,
+            "height": 2,
           },
           undefined,
         ]
@@ -416,11 +414,10 @@ exports[`Search states:  Looks right when Found no results 1`] = `
   <View
     style={
       Array [
-        Object {
-          "flex": 0,
-        },
+        undefined,
         Object {
           "flex": 1,
+          "maxHeight": 40,
         },
       ]
     }
@@ -429,6 +426,7 @@ exports[`Search states:  Looks right when Found no results 1`] = `
       style={
         Object {
           "flexDirection": "row",
+          "height": 40,
         }
       }
     >
@@ -446,8 +444,6 @@ exports[`Search states:  Looks right when Found no results 1`] = `
           Array [
             Object {
               "backgroundColor": "black",
-              "borderBottomColor": "white",
-              "borderBottomWidth": 1,
               "color": "white",
               "flexBasis": 0,
               "flexGrow": 1,
@@ -467,7 +463,7 @@ exports[`Search states:  Looks right when Found no results 1`] = `
         Array [
           Object {
             "backgroundColor": "#e5e5e5",
-            "height": 1,
+            "height": 2,
           },
           undefined,
         ]
@@ -532,11 +528,10 @@ exports[`Search states:  Looks right when Found one result 1`] = `
   <View
     style={
       Array [
-        Object {
-          "flex": 0,
-        },
+        undefined,
         Object {
           "flex": 1,
+          "maxHeight": 40,
         },
       ]
     }
@@ -545,6 +540,7 @@ exports[`Search states:  Looks right when Found one result 1`] = `
       style={
         Object {
           "flexDirection": "row",
+          "height": 40,
         }
       }
     >
@@ -562,8 +558,6 @@ exports[`Search states:  Looks right when Found one result 1`] = `
           Array [
             Object {
               "backgroundColor": "black",
-              "borderBottomColor": "white",
-              "borderBottomWidth": 1,
               "color": "white",
               "flexBasis": 0,
               "flexGrow": 1,
@@ -583,7 +577,7 @@ exports[`Search states:  Looks right when Found one result 1`] = `
         Array [
           Object {
             "backgroundColor": "#e5e5e5",
-            "height": 1,
+            "height": 2,
           },
           undefined,
         ]
@@ -694,11 +688,10 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
   <View
     style={
       Array [
-        Object {
-          "flex": 0,
-        },
+        undefined,
         Object {
           "flex": 1,
+          "maxHeight": 40,
         },
       ]
     }
@@ -707,6 +700,7 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
       style={
         Object {
           "flexDirection": "row",
+          "height": 40,
         }
       }
     >
@@ -724,8 +718,6 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
           Array [
             Object {
               "backgroundColor": "black",
-              "borderBottomColor": "white",
-              "borderBottomWidth": 1,
               "color": "white",
               "flexBasis": 0,
               "flexGrow": 1,
@@ -751,7 +743,7 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
         Array [
           Object {
             "backgroundColor": "#e5e5e5",
-            "height": 1,
+            "height": 2,
           },
           undefined,
         ]
@@ -862,11 +854,10 @@ exports[`Search states:  Looks right when Found two results 1`] = `
   <View
     style={
       Array [
-        Object {
-          "flex": 0,
-        },
+        undefined,
         Object {
           "flex": 1,
+          "maxHeight": 40,
         },
       ]
     }
@@ -875,6 +866,7 @@ exports[`Search states:  Looks right when Found two results 1`] = `
       style={
         Object {
           "flexDirection": "row",
+          "height": 40,
         }
       }
     >
@@ -892,8 +884,6 @@ exports[`Search states:  Looks right when Found two results 1`] = `
           Array [
             Object {
               "backgroundColor": "black",
-              "borderBottomColor": "white",
-              "borderBottomWidth": 1,
               "color": "white",
               "flexBasis": 0,
               "flexGrow": 1,
@@ -913,7 +903,7 @@ exports[`Search states:  Looks right when Found two results 1`] = `
         Array [
           Object {
             "backgroundColor": "#e5e5e5",
-            "height": 1,
+            "height": 2,
           },
           undefined,
         ]
@@ -1107,11 +1097,10 @@ exports[`Search states:  Looks right when Looking for new results 1`] = `
   <View
     style={
       Array [
-        Object {
-          "flex": 0,
-        },
+        undefined,
         Object {
           "flex": 1,
+          "maxHeight": 40,
         },
       ]
     }
@@ -1120,6 +1109,7 @@ exports[`Search states:  Looks right when Looking for new results 1`] = `
       style={
         Object {
           "flexDirection": "row",
+          "height": 40,
         }
       }
     >
@@ -1137,8 +1127,6 @@ exports[`Search states:  Looks right when Looking for new results 1`] = `
           Array [
             Object {
               "backgroundColor": "black",
-              "borderBottomColor": "white",
-              "borderBottomWidth": 1,
               "color": "white",
               "flexBasis": 0,
               "flexGrow": 1,
@@ -1164,7 +1152,7 @@ exports[`Search states:  Looks right when Looking for new results 1`] = `
         Array [
           Object {
             "backgroundColor": "#e5e5e5",
-            "height": 1,
+            "height": 2,
           },
           undefined,
         ]
@@ -1191,11 +1179,10 @@ exports[`Search states:  Looks right when No query 1`] = `
   <View
     style={
       Array [
-        Object {
-          "flex": 0,
-        },
+        undefined,
         Object {
           "flex": 1,
+          "maxHeight": 40,
         },
       ]
     }
@@ -1204,6 +1191,7 @@ exports[`Search states:  Looks right when No query 1`] = `
       style={
         Object {
           "flexDirection": "row",
+          "height": 40,
         }
       }
     >
@@ -1221,8 +1209,6 @@ exports[`Search states:  Looks right when No query 1`] = `
           Array [
             Object {
               "backgroundColor": "black",
-              "borderBottomColor": "white",
-              "borderBottomWidth": 1,
               "color": "white",
               "flexBasis": 0,
               "flexGrow": 1,
@@ -1242,7 +1228,7 @@ exports[`Search states:  Looks right when No query 1`] = `
         Array [
           Object {
             "backgroundColor": "#e5e5e5",
-            "height": 1,
+            "height": 2,
           },
           undefined,
         ]

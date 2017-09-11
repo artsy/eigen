@@ -68,10 +68,12 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
   }
 
   loadPhotos() {
-    const fetchParams: GetPhotosParamType = {
+    // TODO: Need to update the RN 0.48 types on DT
+    // const fetchParams: GetPhotosParamType = {
+    const fetchParams: any = {
       first: 20,
-      groupTypes: "SavedPhotos",
-      assetType: "Photos",
+      groupTypes: "all",
+      assetType: "photos",
     }
 
     if (this.state.lastCursor) {
@@ -85,10 +87,11 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
     if (inTesting) {
       return
     }
-
+    console.log(fetchParams)
     CameraRoll.getPhotos(fetchParams)
       .then(data => {
         this.appendAssets(data)
+        console.log(data)
       })
       .catch(e => {
         console.log(e)

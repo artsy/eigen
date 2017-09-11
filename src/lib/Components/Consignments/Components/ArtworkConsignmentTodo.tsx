@@ -76,12 +76,12 @@ const ImageDarkener = styled.View`
 
 const ToDoButton = () =>
   <ImageBG>
-    <Image source={require("../images/plus.png")} />
+    <Image source={require("../../../../../images/consignments/plus.png")} />
   </ImageBG>
 
 const DoneButton = () =>
   <ImageBG style={{ backgroundColor: "white" }}>
-    <Image source={require("../images/black-tick.png")} />
+    <Image source={require("../../../../../images/consignments/black-tick.png")} />
   </ImageBG>
 
 const Button: React.SFC<TouchableHighlightProperties> = ({ children, ...props }) =>

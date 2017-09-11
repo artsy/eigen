@@ -29,7 +29,7 @@ exports[`Sets up the right view hierarchy 1`] = `
     }
   >
     <View
-      keyboardVerticalOffset={60}
+      keyboardVerticalOffset={15}
       onLayout={[Function]}
       style={
         Array [
@@ -64,11 +64,10 @@ exports[`Sets up the right view hierarchy 1`] = `
             <View
               style={
                 Array [
-                  Object {
-                    "flex": 0,
-                  },
+                  undefined,
                   Object {
                     "flex": 1,
+                    "maxHeight": 40,
                   },
                 ]
               }
@@ -77,6 +76,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                 style={
                   Object {
                     "flexDirection": "row",
+                    "height": 40,
                   }
                 }
               >
@@ -103,8 +103,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "black",
-                        "borderBottomColor": "white",
-                        "borderBottomWidth": 1,
                         "color": "white",
                         "flexBasis": 0,
                         "flexGrow": 1,
@@ -124,7 +122,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                   Array [
                     Object {
                       "backgroundColor": "#e5e5e5",
-                      "height": 1,
+                      "height": 2,
                     },
                     undefined,
                   ]

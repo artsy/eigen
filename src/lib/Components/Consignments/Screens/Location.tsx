@@ -108,7 +108,7 @@ export default class Location extends React.Component<Props, State> {
               onChangeText={this.textChanged}
               searching={this.state.searching}
               resultSelected={this.locationSelected}
-              preImage={require("../images/map-pin.png")}
+              preImage={require("../../../../../images/consignments/map-pin.png")}
               placeholder="City, Country"
               noResultsMessage="Could not find"
             />

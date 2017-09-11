@@ -20,6 +20,7 @@
 #import "ARStorybookComponentViewController.h"
 
 #import "InternalWebViewController.h"
+#import "EigenLikeNavigationController.h"
 
 @implementation ARRootViewController
 
@@ -204,6 +205,7 @@
 - (ARCellData *)jumpToConsignments
 {
   return [self tappableCellDataWithTitle:@"Start Consignment Flow" selection:^{
+    [[(EigenLikeNavigationController *)self.navigationController backButton] setHidden:YES];
     id viewController = [[ARComponentViewController alloc] initWithEmission: nil moduleName:@"Consignments" initialProperties: @{}];
     [self.navigationController pushViewController:viewController animated:YES];
   }];

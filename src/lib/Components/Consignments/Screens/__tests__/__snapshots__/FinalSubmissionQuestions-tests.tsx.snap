@@ -213,7 +213,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                         ]
                       }
                     >
-                      YES
+                      NO
                     </Text>
                   </View>
                   <View
@@ -392,7 +392,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                         ]
                       }
                     >
-                      YES
+                      NO
                     </Text>
                   </View>
                   <View
@@ -571,7 +571,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                         ]
                       }
                     >
-                      YES
+                      NO
                     </Text>
                   </View>
                   <View
@@ -612,12 +612,16 @@ exports[`Sets up the right view hierarchy 1`] = `
             </View>
             <View
               style={
-                Object {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                  "justifyContent": "center",
-                  "paddingVertical": 6,
-                }
+                Array [
+                  Object {
+                    "justifyContent": "center",
+                  },
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "paddingVertical": 6,
+                  },
+                ]
               }
             >
               <View
@@ -685,7 +689,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                         ]
                       }
                     >
-                      NEXT
+                      SUBMIT TO ARTSY
                     </Text>
                   </View>
                 </View>

@@ -23,6 +23,7 @@
 -   Adds a screen for metadata editing - orta
 -   Looks better on iPads - orta
 -   Adds a screen for setting the location - orta
+-   Adds a spinner at the end of submission - orta
 
 ###### Messaging
 

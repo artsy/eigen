@@ -15,7 +15,7 @@ exports[`renders correctly 1`] = `
   }
 >
   <View
-    keyboardVerticalOffset={60}
+    keyboardVerticalOffset={15}
     onLayout={[Function]}
     style={
       Array [

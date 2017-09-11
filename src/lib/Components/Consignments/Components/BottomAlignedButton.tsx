@@ -33,7 +33,7 @@ export interface BottomAlignedProps extends React.Props<JSX.Element> {
 }
 
 const BottomAlignedButton: React.SFC<BottomAlignedProps> = props =>
-  <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={60} style={{ flex: 1 }}>
+  <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={15} style={{ flex: 1 }}>
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {props.children}
     </View>
