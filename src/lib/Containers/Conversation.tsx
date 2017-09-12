@@ -1,12 +1,13 @@
+import { MarkdownString } from "danger/distribution/dsl/Aliases"
 import * as React from "react"
 import {
   commitMutation,
-  createRefetchContainer,
+  createPaginationContainer,
   Environment,
   graphql,
   MutationConfig,
   RecordSourceSelectorProxy,
-  RelayRefetchProp,
+  RelayPaginationProp,
 } from "react-relay"
 import { ConnectionHandler } from "relay-runtime"
 
@@ -71,7 +72,7 @@ const MessagesList = styled(FlatList)`
 const PAGE_SIZE = 100
 
 interface Props extends RelayProps {
-  relay?: RelayRefetchProp
+  relay?: RelayPaginationProp
 }
 
 interface State {
@@ -134,6 +135,16 @@ export class Conversation extends React.Component<Props, State> {
     this.setState({ isConnected })
   }
 
+  loadMore() {
+    // if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
+    //   return
+    // }
+
+    this.props.relay.loadMore(10, e => {
+      console.log(e)
+    })
+  }
+
   render() {
     const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
@@ -172,10 +183,11 @@ export class Conversation extends React.Component<Props, State> {
             </HeaderTextContainer>
           </Header>
           {!this.state.isConnected && <ConnectivityBanner />}
-          <ReversedFlatList
+          <FlatList
             data={messages}
             renderItem={this.renderMessage.bind(this)}
-            length={messages.length}
+            onEndReached={this.loadMore.bind(this)}
+            onEndReachedThreshold={0.2}
             ItemSeparatorComponent={DottedBorder}
           />
         </Container>
@@ -277,59 +289,84 @@ function sendConversationMessage(
 }
 
 // TODO Make this a pagination container instead of fetching 100 messages
-export default createRefetchContainer(
+export default createPaginationContainer(
   Conversation,
-  graphql`
-    fragment Conversation_me on Me {
-      conversation(id: $conversationID) {
-        __id
-        id
-        from {
-          name
-          email
-          initials
-        }
-        to {
-          name
-          initials
-        }
-        messages(first: 200) @connection(key: "Conversation_messages") {
-          pageInfo {
-            hasNextPage
+  {
+    me: graphql.experimental`
+      fragment Conversation_me on Me {
+        conversation(id: $conversationID) @connection(key: "Conversation_messages") {
+          __id
+          id
+          from {
+            name
+            email
+            initials
           }
-          edges {
-            node {
-              impulse_id
-              is_from_user
-              body
-              ...Message_message
+          to {
+            name
+            initials
+          }
+          messages(first: $count, after: $cursor) {
+            pageInfo {
+              startCursor
+              endCursor
+              hasPreviousPage
+              hasNextPage
+            }
+            edges {
+              cursor
+              node {
+                impulse_id
+                is_from_user
+                body
+                ...Message_message
+              }
             }
           }
-        }
-        items {
-          item {
-            ... on Artwork {
-              __typename
-              href
-              ...ArtworkPreview_artwork
-            }
-            ... on Show {
-              __typename
-              href
-              ...ShowPreview_show
+          items {
+            item {
+              ... on Artwork {
+                __typename
+                href
+                ...ArtworkPreview_artwork
+              }
+              ... on Show {
+                __typename
+                href
+                ...ShowPreview_show
+              }
             }
           }
         }
       }
-    }
-  `,
-  graphql`
-    query ConversationRefetchQuery($conversationID: String!) {
-      me {
-        ...Conversation_me
+    `,
+  },
+  {
+    direction: "forward",
+    getConnectionFromProps(props) {
+      return props.me && props.me.conversation
+    },
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        count: totalCount,
       }
-    }
-  `
+    },
+    getVariables(props, { count, cursor }, fragmentVariables) {
+      return {
+        ...fragmentVariables,
+        count,
+        cursor,
+      }
+    },
+    query: graphql.experimental`
+      query ConversationPaginationQuery($conversationID: String!, $count: Int!, $cursor: String) {
+        me {
+          ...Conversation_me
+        }
+      }
+    `,
+  }
 )
 
 interface RelayProps {
@@ -346,9 +383,6 @@ interface RelayProps {
         name: string
         initials: string
       }
-      items: Array<{
-        item: any
-      }>
       messages: {
         pageInfo?: {
           hasNextPage: boolean
@@ -360,6 +394,9 @@ interface RelayProps {
           } | null
         }>
       }
+      items: Array<{
+        item: any
+      }>
     }
   }
 }
