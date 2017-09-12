@@ -23,6 +23,7 @@
                                        failure:(void (^)(NSError *))failure
 {
     NSURLRequest *request = [ARRouter artworksForSaleRequest:saleID];
+<<<<<<< HEAD
     return [self performRequest:request success:^(id json) {
         NSArray *errors = json[@"errors"];
         if (errors) {
@@ -33,6 +34,9 @@
             }
             return;
         }
+=======
+    return [self performGraphQLRequest:request success:^(id json) {
+>>>>>>> 0436a858... Consolidates GraphQL response error-handling.
         NSArray *saleArtworksJSON = json[@"data"][@"sale"][@"sale_artworks"];
 
         if (!saleArtworksJSON) {
@@ -62,11 +66,7 @@
         if (success) {
             success(artworks);
         }
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    } failure:failure];
 }
 
 + (void)getSaleWithID:(NSString *)saleID
