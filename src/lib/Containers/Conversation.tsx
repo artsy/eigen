@@ -100,6 +100,8 @@ export class Conversation extends React.Component<Props, State> {
     return (
       <Message
         message={item}
+        firstMessage={item.first_message}
+        initialText={conversation.initial_message}
         senderName={senderName}
         initials={initials}
         artworkPreview={
@@ -293,6 +295,7 @@ export default createRefetchContainer(
           name
           initials
         }
+        initial_message
         messages(first: 200) @connection(key: "Conversation_messages") {
           pageInfo {
             hasNextPage
@@ -349,6 +352,7 @@ interface RelayProps {
       items: Array<{
         item: any
       }>
+      initial_message: string
       messages: {
         pageInfo?: {
           hasNextPage: boolean

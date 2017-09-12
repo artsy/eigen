@@ -1,3 +1,20 @@
+input AddAssetToConsignmentSubmissionInput {
+  # The type of the asset
+  asset_type: String!
+
+  # The token provided by Gemini for your asset
+  gemini_token: String!
+
+  # The id of the submission you want to attach an asset to
+  submission_id: String!
+  clientMutationId: String
+}
+
+type AddAssetToConsignmentSubmissionPayload {
+  asset: Asset
+  clientMutationId: String
+}
+
 # One item in an aggregation
 type AggregationCount {
   # A globally unique ID.
@@ -1306,6 +1323,21 @@ enum ArtworkSorts {
   TITLE_DESC
 }
 
+# An asset which is assigned to a consignment submission
+type Asset {
+  # Convection asset ID.
+  id: String!
+
+  # The convection submission ID
+  submission_id: String
+
+  # The gemini token for the asset
+  gemini_token: String
+
+  # The type of the asset
+  asset_type: String
+}
+
 type Attachment {
   # Attachment id.
   id: String!
@@ -1649,6 +1681,67 @@ type ConversationResponder {
 type coordinates {
   lat: Float
   lng: Float
+}
+
+input CreateSubmissionMutationInput {
+  artist_id: String!
+
+  # Does the artwork come with an certificate of authenticity?
+  authenticity_certificate: Boolean
+
+  # The set in which to put the work
+  category: SubmissionCategoryAggregation
+
+  # The depth of the work
+  depth: String
+
+  # A string, either CM or IN
+  dimensions_metric: SubmissionDimensionAggregation
+
+  # The version of individual work if from a set
+  edition: String
+
+  # The number of the individual work if in a set
+  edition_number: String
+
+  # The whole size of the set of works
+  edition_size: String
+
+  # The height of the work
+  height: String
+
+  # The city where the work currently resides
+  location_city: String
+
+  # The country where the work currently resides
+  location_country: String
+
+  # The state where the work currently resides
+  location_state: String
+
+  # The materials in which the work is created
+  medium: String
+
+  # The history of an work
+  provenance: String
+
+  # Is this work signed?
+  signature: Boolean
+
+  # The name of the work
+  title: String
+
+  # The width of the work
+  width: String
+
+  # The year the work was created
+  year: String
+  clientMutationId: String
+}
+
+type CreateSubmissionMutationPayload {
+  submission: Submission
+  clientMutationId: String
 }
 
 type CroppedImageUrl {
@@ -2905,7 +2998,7 @@ type Message implements Node {
   # Full unsanitized text.
   raw_text: String! @deprecated(reason: "Prefer to use the parsed/cleaned-up `body`.")
 
-  # Text which has been parsed/sanitized of quoted replies (among other things).
+  # Unaltered text if possible, otherwise `body`: a parsed/sanitized version from Sendgrid.
   body: String
   deliveries: [Delivery]
   attachments: [Attachment]
@@ -2956,6 +3049,15 @@ type Mutation {
   # Appending a message to a conversation thread
   sendConversationMessage(input: SendConversationMessageMutationInput!): SendConversationMessageMutationPayload
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
+
+  # Create a new consignment submission using Convection
+  createConsignmentSubmission(input: CreateSubmissionMutationInput!): CreateSubmissionMutationPayload
+
+  # Update a consigment using Convection
+  updateConsignmentSubmission(input: UpdateSubmissionMutationInput!): UpdateSubmissionMutationPayload
+
+  # Attach an gemini asset to a consignment submission
+  addAssetToConsignmentSubmission(input: AddAssetToConsignmentSubmissionInput!): AddAssetToConsignmentSubmissionPayload
 }
 
 input Near {
@@ -4350,6 +4452,87 @@ type StatusGravity {
   ping: Boolean
 }
 
+# A work to be consigned to the user
+type Submission {
+  # Convection id.
+  id: String!
+  artist_id: String!
+
+  # Does the artwork come with an certificate of authenticity?
+  authenticity_certificate: Boolean
+
+  # The set in which to put the work
+  category: SubmissionCategoryAggregation
+
+  # The depth of the work
+  depth: String
+
+  # A string, either CM or IN
+  dimensions_metric: SubmissionDimensionAggregation
+
+  # The version of individual work if from a set
+  edition: String
+
+  # The number of the individual work if in a set
+  edition_number: String
+
+  # The whole size of the set of works
+  edition_size: String
+
+  # The height of the work
+  height: String
+
+  # The city where the work currently resides
+  location_city: String
+
+  # The country where the work currently resides
+  location_country: String
+
+  # The state where the work currently resides
+  location_state: String
+
+  # The materials in which the work is created
+  medium: String
+
+  # The history of an work
+  provenance: String
+
+  # Is this work signed?
+  signature: Boolean
+
+  # The name of the work
+  title: String
+
+  # The width of the work
+  width: String
+
+  # The year the work was created
+  year: String
+}
+
+enum SubmissionCategoryAggregation {
+  PAINTING
+  SCULPTURE
+  PHOTOGRAPHY
+  PRINT
+  DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER
+  MIXED_MEDIA
+  PERFORMANCE_ART
+  INSTALLATION
+  VIDEO_FILM_ANIMATION
+  ARCHITECTURE
+  FASHION_DESIGN_AND_WEARABLE_ART
+  JEWELRY
+  DESIGN_DECORATIVE_ART
+  TEXTILE_ARTS
+  OTHER
+}
+
+enum SubmissionDimensionAggregation {
+  CM
+  IN
+}
+
 type Tag {
   # A globally unique ID.
   __id: ID!
@@ -4447,6 +4630,69 @@ input UpdateConversationMutationInput {
 
 type UpdateConversationMutationPayload {
   conversations: [Conversation]
+  clientMutationId: String
+}
+
+input UpdateSubmissionMutationInput {
+  # Convection id.
+  id: String!
+  artist_id: String!
+
+  # Does the artwork come with an certificate of authenticity?
+  authenticity_certificate: Boolean
+
+  # The set in which to put the work
+  category: SubmissionCategoryAggregation
+
+  # The depth of the work
+  depth: String
+
+  # A string, either CM or IN
+  dimensions_metric: SubmissionDimensionAggregation
+
+  # The version of individual work if from a set
+  edition: String
+
+  # The number of the individual work if in a set
+  edition_number: String
+
+  # The whole size of the set of works
+  edition_size: String
+
+  # The height of the work
+  height: String
+
+  # The city where the work currently resides
+  location_city: String
+
+  # The country where the work currently resides
+  location_country: String
+
+  # The state where the work currently resides
+  location_state: String
+
+  # The materials in which the work is created
+  medium: String
+
+  # The history of an work
+  provenance: String
+
+  # Is this work signed?
+  signature: Boolean
+
+  # The name of the work
+  title: String
+
+  # The width of the work
+  width: String
+
+  # The year the work was created
+  year: String
+  clientMutationId: String
+}
+
+type UpdateSubmissionMutationPayload {
+  submission: Submission
   clientMutationId: String
 }
 
