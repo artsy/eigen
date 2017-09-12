@@ -1616,6 +1616,9 @@ type Conversation implements Node {
   # Timestamp if the user opened the last message, null in all other cases
   last_message_open: String
 
+  # Delivery id if the user is a recipient of the last message, null otherwise.
+  last_message_delivery_id: String
+
   # Only the artworks discussed in the conversation.
   artworks: [Artwork]
 
@@ -2864,6 +2867,20 @@ type LotStanding {
   sale_artwork: SaleArtwork
 }
 
+input MarkReadMessageMutationInput {
+  # The id of the conversation to be updated
+  conversationId: String!
+
+  # The delivery object that is marked as read
+  deliveryId: String!
+  clientMutationId: String
+}
+
+type MarkReadMessageMutationPayload {
+  delivery: Delivery
+  clientMutationId: String
+}
+
 type Me implements Node {
   # A globally unique ID.
   __id: ID!
@@ -3048,6 +3065,9 @@ type Mutation {
 
   # Appending a message to a conversation thread
   sendConversationMessage(input: SendConversationMessageMutationInput!): SendConversationMessageMutationPayload
+
+  # Marking a message as read
+  markReadMessage(input: MarkReadMessageMutationInput!): MarkReadMessageMutationPayload
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
 
   # Create a new consignment submission using Convection

@@ -77,6 +77,7 @@ interface Props extends RelayProps {
 interface State {
   sendingMessage: boolean
   isConnected: boolean
+  markedMessageAsRead: boolean
 }
 
 export class Conversation extends React.Component<Props, State> {
@@ -87,6 +88,7 @@ export class Conversation extends React.Component<Props, State> {
     this.state = {
       sendingMessage: false,
       isConnected: true,
+      markedMessageAsRead: false,
     }
     this.handleConnectivityChange = this.handleConnectivityChange.bind(this)
   }
@@ -144,6 +146,21 @@ export class Conversation extends React.Component<Props, State> {
     })
     const lastMessage = messages[messages.length - 1]
 
+    // Better way of marking a message as read?
+    if (conversation.is_last_message_to_user && !conversation.last_message_open && !this.state.markedMessageAsRead) {
+      markLastMessageRead(
+        this.props.relay.environment,
+        conversation.id,
+        conversation.last_message_delivery_id,
+        response => {
+          this.setState({ markedMessageAsRead: true })
+        },
+        error => {
+          console.warn(error)
+          this.setState({ markedMessageAsRead: true })
+        }
+      )
+    }
     return (
       <Composer
         disabled={this.state.sendingMessage}
@@ -184,6 +201,35 @@ export class Conversation extends React.Component<Props, State> {
       </Composer>
     )
   }
+}
+
+function markLastMessageRead(
+  environment: Environment,
+  conversationId: string,
+  deliveryId: string,
+  onCompleted: MutationConfig["onCompleted"],
+  onError: MutationConfig["onError"]
+) {
+  return commitMutation(environment, {
+    onCompleted,
+    onError,
+    mutation: graphql`
+      mutation ConversationMarkReadMessageMutation($input: MarkReadMessageMutationInput!) {
+        markReadMessage(input: $input) {
+          delivery {
+            id
+            opened_at
+          }
+        }
+      }
+    `,
+    variables: {
+      input: {
+        conversationId,
+        deliveryId,
+      },
+    },
+  })
 }
 
 function sendConversationMessage(
@@ -296,6 +342,9 @@ export default createRefetchContainer(
           initials
         }
         initial_message
+        is_last_message_to_user
+        last_message_open
+        last_message_delivery_id
         messages(first: 200) @connection(key: "Conversation_messages") {
           pageInfo {
             hasNextPage
@@ -353,6 +402,9 @@ interface RelayProps {
         item: any
       }>
       initial_message: string
+      is_last_message_to_user: boolean
+      last_message_open: string | null
+      last_message_delivery_id: string | null
       messages: {
         pageInfo?: {
           hasNextPage: boolean
