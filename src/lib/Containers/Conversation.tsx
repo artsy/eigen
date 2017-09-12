@@ -1,14 +1,6 @@
 import { MarkdownString } from "danger/distribution/dsl/Aliases"
 import * as React from "react"
-import {
-  commitMutation,
-  createPaginationContainer,
-  Environment,
-  graphql,
-  MutationConfig,
-  RecordSourceSelectorProxy,
-  RelayPaginationProp,
-} from "react-relay"
+import { createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import { ConnectionHandler } from "relay-runtime"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
@@ -22,9 +14,8 @@ import fonts from "../../data/fonts"
 import ConnectivityBanner from "../Components/ConnectivityBanner"
 
 import Composer from "../Components/Inbox/Conversations/Composer"
-import Message from "../Components/Inbox/Conversations/Message"
-import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
-import ShowPreview from "../Components/Inbox/Conversations/Preview/ShowPreview"
+import Messages from "../Components/Inbox/Conversations/Messages"
+import { sendConversationMessage } from "../Components/Inbox/Conversations/SendConversationMessage"
 
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 
@@ -92,37 +83,6 @@ export class Conversation extends React.Component<Props, State> {
     this.handleConnectivityChange = this.handleConnectivityChange.bind(this)
   }
 
-  renderMessage({ item }) {
-    const conversationItem = this.props.me.conversation.items[0].item
-    const conversation = this.props.me.conversation
-    const partnerName = conversation.to.name
-    const senderName = item.is_from_user ? conversation.from.name : partnerName
-    const initials = item.is_from_user ? conversation.from.initials : conversation.to.initials
-    return (
-      <Message
-        message={item}
-        senderName={senderName}
-        initials={initials}
-        artworkPreview={
-          item.first_message &&
-          conversationItem.__typename === "Artwork" &&
-          <ArtworkPreview
-            artwork={conversationItem}
-            onSelected={() => ARSwitchBoard.presentNavigationViewController(this, conversationItem.href)}
-          />
-        }
-        showPreview={
-          item.first_message &&
-          conversationItem.__typename === "Show" &&
-          <ShowPreview
-            show={conversationItem}
-            onSelected={() => ARSwitchBoard.presentNavigationViewController(this, conversationItem.href)}
-          />
-        }
-      />
-    )
-  }
-
   componentDidMount() {
     NetInfo.isConnected.addEventListener("connectionChange", this.handleConnectivityChange)
   }
@@ -135,23 +95,9 @@ export class Conversation extends React.Component<Props, State> {
     this.setState({ isConnected })
   }
 
-  loadMore() {
-    // if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
-    //   return
-    // }
-
-    this.props.relay.loadMore(10, e => {
-      console.log(e)
-    })
-  }
-
   render() {
     const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
-    const messages = conversation.messages.edges.map((edge, index) => {
-      return { first_message: index === 0, key: index, ...edge.node }
-    })
-    const lastMessage = messages[messages.length - 1]
 
     return (
       <Composer
@@ -183,191 +129,26 @@ export class Conversation extends React.Component<Props, State> {
             </HeaderTextContainer>
           </Header>
           {!this.state.isConnected && <ConnectivityBanner />}
-          <FlatList
-            data={messages}
-            renderItem={this.renderMessage.bind(this)}
-            onEndReached={this.loadMore.bind(this)}
-            onEndReachedThreshold={0.2}
-            ItemSeparatorComponent={DottedBorder}
-          />
+          <Messages conversation={conversation} />
         </Container>
       </Composer>
     )
   }
 }
 
-function sendConversationMessage(
-  environment: Environment,
-  conversation: RelayProps["me"]["conversation"],
-  text: string,
-  onCompleted: MutationConfig["onCompleted"],
-  onError: MutationConfig["onError"]
-) {
-  const lastMessage = conversation.messages.edges[conversation.messages.edges.length - 1].node
-
-  const storeUpdater = (store: RecordSourceSelectorProxy) => {
-    const mutationPayload = store.getRootField("sendConversationMessage")
-    const newMessageEdge = mutationPayload.getLinkedRecord("messageEdge")
-    const connection = ConnectionHandler.getConnection(store.get(conversation.__id), "Conversation_messages")
-    ConnectionHandler.insertEdgeAfter(connection, newMessageEdge)
-  }
-
-  return commitMutation(environment, {
-    onCompleted,
-    onError,
-
-    optimisticUpdater: storeUpdater,
-    updater: storeUpdater,
-
-    // TODO: See if we can extract the field selections into a fragment and share it with the normal pagination fragment.
-    //      Also looks like we can get rid of the `body` selection.
-    mutation: graphql`
-      mutation ConversationSendMessageMutation($input: SendConversationMessageMutationInput!) {
-        sendConversationMessage(input: $input) {
-          messageEdge {
-            node {
-              impulse_id
-              is_from_user
-              body
-              __id
-              ...Message_message
-            }
-          }
+export default createFragmentContainer(Conversation, {
+  me: graphql`
+    fragment Conversation_me on Me {
+      conversation(id: $conversationID) {
+        to {
+          name
+          initials
         }
+        ...Messages_conversation
       }
-    `,
-
-    variables: {
-      input: {
-        id: conversation.id,
-        from: conversation.from.email,
-        body_text: text,
-        // Reply to the last message
-        reply_to_message_id: lastMessage.impulse_id,
-      },
-    },
-
-    // TODO: Figure out which of these keys is *actually* required for Relay Modern and update the typings to reflect that.
-    //      And if it’s really true that this config isn’t enough to update the connection and we really need the updater
-    //      functions.
-    configs: [
-      {
-        type: "RANGE_ADD",
-        parentName: "conversation",
-        parentID: "__id",
-        connectionName: "messages",
-        edgeName: "messageEdge",
-        rangeBehaviors: {
-          "": "append",
-        },
-        connectionInfo: [
-          {
-            key: "Conversation_messages",
-            rangeBehavior: "append",
-          },
-        ],
-      },
-    ],
-
-    optimisticResponse: {
-      sendConversationMessage: {
-        messageEdge: {
-          node: {
-            body: text,
-            from: {
-              email: conversation.from.email,
-              name: null,
-            },
-            is_from_user: true,
-            created_at: null, // Intentionally left blank so Message can recognize this as an optimistic response.
-            attachments: [],
-          },
-        },
-      },
-    },
-  })
-}
-
-// TODO Make this a pagination container instead of fetching 100 messages
-export default createPaginationContainer(
-  Conversation,
-  {
-    me: graphql.experimental`
-      fragment Conversation_me on Me {
-        conversation(id: $conversationID) @connection(key: "Conversation_messages") {
-          __id
-          id
-          from {
-            name
-            email
-            initials
-          }
-          to {
-            name
-            initials
-          }
-          messages(first: $count, after: $cursor) {
-            pageInfo {
-              startCursor
-              endCursor
-              hasPreviousPage
-              hasNextPage
-            }
-            edges {
-              cursor
-              node {
-                impulse_id
-                is_from_user
-                body
-                ...Message_message
-              }
-            }
-          }
-          items {
-            item {
-              ... on Artwork {
-                __typename
-                href
-                ...ArtworkPreview_artwork
-              }
-              ... on Show {
-                __typename
-                href
-                ...ShowPreview_show
-              }
-            }
-          }
-        }
-      }
-    `,
-  },
-  {
-    direction: "forward",
-    getConnectionFromProps(props) {
-      return props.me && props.me.conversation
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
-    },
-    getVariables(props, { count, cursor }, fragmentVariables) {
-      return {
-        ...fragmentVariables,
-        count,
-        cursor,
-      }
-    },
-    query: graphql.experimental`
-      query ConversationPaginationQuery($conversationID: String!, $count: Int!, $cursor: String) {
-        me {
-          ...Conversation_me
-        }
-      }
-    `,
-  }
-)
+    }
+  `,
+})
 
 interface RelayProps {
   me: {

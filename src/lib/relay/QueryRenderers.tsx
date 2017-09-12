@@ -68,15 +68,16 @@ export const ConversationRenderer: React.SFC<ConversationRendererProps> = ({ ren
   return (
     <QueryRenderer
       environment={environment}
-      query={graphql`
-        query QueryRenderersConversationQuery($conversationID: String!) {
+      query={graphql.experimental`
+        query QueryRenderersConversationQuery($conversationID: String!, $count: Int!, $after: String) {
           me {
-            ...Conversation_me
+            ...Conversation_me @arguments(count: $count, after: $after)
           }
         }
       `}
       variables={{
         conversationID,
+        count: 10,
       }}
       render={render}
     />
