@@ -4,7 +4,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong) NSString *emissionLoadedFromString;
 
-// TODO abstract into a switchboard?
+// TODO: abstract into a switchboard?
 - (UIViewController *)viewControllerForRoute:(NSString *)route;
 
 @end

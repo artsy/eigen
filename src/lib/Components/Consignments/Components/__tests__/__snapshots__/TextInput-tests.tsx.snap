@@ -7,6 +7,7 @@ exports[`does not have an activity when searching  1`] = `
       undefined,
       Object {
         "flex": 1,
+        "maxHeight": 40,
       },
     ]
   }
@@ -15,6 +16,7 @@ exports[`does not have an activity when searching  1`] = `
     style={
       Object {
         "flexDirection": "row",
+        "height": 40,
       }
     }
   >
@@ -28,8 +30,6 @@ exports[`does not have an activity when searching  1`] = `
         Array [
           Object {
             "backgroundColor": "black",
-            "borderBottomColor": "white",
-            "borderBottomWidth": 1,
             "color": "white",
             "flexBasis": 0,
             "flexGrow": 1,
@@ -55,7 +55,7 @@ exports[`does not have an activity when searching  1`] = `
       Array [
         Object {
           "backgroundColor": "#e5e5e5",
-          "height": 1,
+          "height": 2,
         },
         undefined,
       ]
@@ -71,6 +71,7 @@ exports[`shows an activity indicator when searching  1`] = `
       undefined,
       Object {
         "flex": 1,
+        "maxHeight": 40,
       },
     ]
   }
@@ -79,6 +80,7 @@ exports[`shows an activity indicator when searching  1`] = `
     style={
       Object {
         "flexDirection": "row",
+        "height": 40,
       }
     }
   >
@@ -92,8 +94,6 @@ exports[`shows an activity indicator when searching  1`] = `
         Array [
           Object {
             "backgroundColor": "black",
-            "borderBottomColor": "white",
-            "borderBottomWidth": 1,
             "color": "white",
             "flexBasis": 0,
             "flexGrow": 1,
@@ -119,7 +119,7 @@ exports[`shows an activity indicator when searching  1`] = `
       Array [
         Object {
           "backgroundColor": "#e5e5e5",
-          "height": 1,
+          "height": 2,
         },
         undefined,
       ]

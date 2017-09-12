@@ -56,13 +56,13 @@ export class Inbox extends React.Component<Props, State> {
   }
 }
 
-// FIXME The `lot_standings` snippet is copy-pasted from the `ActiveBids` component so it doesn’t fetch data that’s not
-//       really needed, MP should really just expose something like `has_active_bids` and ensure that it doesn’t perform
-//       extra backend reuqests to determine if it has active bids and resolve the `ActiveBids` query.
+// FIXME: The `lot_standings` snippet is copy-pasted from the `ActiveBids` component so it doesn’t fetch data that’s not
+//        really needed MP should really just expose something like `has_active_bids` and ensure that it doesn’t perform
+//        extra backend reuqests to determine if it has active bids and resolve the `ActiveBids` query.
 //
-//       The same applies to the `conversations` snippet.
+//        The same applies to the `conversations` snippet.
 //
-// TODO  After switch to modern, we can use the following stopgap instead:
+// TODO:  After switch to modern, we can use the following stopgap instead:
 //
 //        ...Conversations_me @relay(mask: false)
 //        ...ActiveBids_me @relay(mask: false)

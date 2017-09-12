@@ -1,10 +1,12 @@
 import * as React from "react"
 
 import { LayoutAnimation, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
+import Button from "../../Buttons/FlatWhite"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { BodyText, LargeHeadline, Subtitle } from "../Typography"
 
 import { ConsignmentSetup, SearchResult } from "../"
+import Spinner from "../../Spinner"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import { Form, Label, Row } from "../Components/FormElements"
 import Text from "../Components/TextInput"
@@ -20,6 +22,8 @@ interface Props extends ViewProperties {
   setup: ConsignmentSetup
 }
 
+const Loader = (p, c) => <Spinner style={{ flex: 1 }} />
+
 export default class FinalSubmissionQuestions extends React.Component<Props, ConsignmentSetup> {
   constructor(props) {
     super(props)
@@ -27,7 +31,9 @@ export default class FinalSubmissionQuestions extends React.Component<Props, Con
   }
 
   submitWork = () => {
-    // OK
+    this.props.navigator.push({
+      component: Loader,
+    })
   }
 
   updateEdition = () => {
@@ -50,7 +56,7 @@ export default class FinalSubmissionQuestions extends React.Component<Props, Con
         <Form title="Answer a few questions about the work">
           <Row>
             <Label>Is this an edition?</Label>
-            <Toggle selected={!!this.state.editionInfo} left="NO" right="YES" onPress={this.updateEdition} />
+            <Toggle selected={!!this.state.editionInfo} left="YES" right="NO" onPress={this.updateEdition} />
           </Row>
 
           {this.state.editionInfo
@@ -62,12 +68,17 @@ export default class FinalSubmissionQuestions extends React.Component<Props, Con
 
           <Row>
             <Label>Is this work signed?</Label>
-            <Toggle selected={this.state.signed} left="NO" right="YES" onPress={this.updateSigned} />
+            <Toggle selected={this.state.signed} left="YES" right="NO" onPress={this.updateSigned} />
           </Row>
 
           <Row>
             <Label>Do you have a certificate of authenticity?</Label>
-            <Toggle selected={this.state.certificateOfAuth} left="NO" right="YES" onPress={this.updateCert} />
+            <Toggle selected={this.state.certificateOfAuth} left="YES" right="NO" onPress={this.updateCert} />
+          </Row>
+          <Row style={{ justifyContent: "center" }}>
+            <View style={{ height: 43, width: 320, marginTop: 20 }}>
+              <Button text="SUBMIT TO ARTSY" onPress={this.submitWork} style={{ flex: 1 }} />
+            </View>
           </Row>
         </Form>
       </ConsignmentBG>

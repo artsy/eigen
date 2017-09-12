@@ -15,14 +15,10 @@ import { stringify } from "qs"
 import { NativeModules } from "react-native"
 const { Emission } = NativeModules
 
-interface ArtistSearchResponse {
-  match_artist: SearchResult[]
-}
-
 interface Props extends ConsignmentSetup, ViewProperties {
   navigator: NavigatorIOS
   route: Route
-  updateWithResult?: (result: SearchResult) => void
+  updateWithResult?: (city: string, state: string, country: string) => void
 }
 
 interface State {
@@ -45,9 +41,27 @@ export default class Location extends React.Component<Props, State> {
     this.props.navigator.pop()
   }
 
-  locationSelected = (result: SearchResult) => {
+  locationSelected = async (result: SearchResult) => {
+    const apiKey = Emission.googleMapsAPIKey || "AIzaSyBJRIy_zCXQ7XYt9Ubn8bpUIEAxEOKUmx8"
+    const queryString = stringify({
+      key: apiKey,
+      placeid: result.id,
+    })
+
+    const response = await fetch("https://maps.googleapis.com/maps/api/place/details/json?" + queryString)
+    const results = await response.json()
+
+    const { address_components } = results.result
+    const cityPlace = address_components.find(comp => comp.types[0] === "locality")
+    const statePlace = address_components.find(comp => comp.types[0] === "administrative_area_level_1")
+    const countryPlace = address_components.find(comp => comp.types[0] === "country")
+
+    const city = cityPlace && cityPlace.long_name
+    const country = countryPlace && countryPlace.long_name
+    const state = statePlace && statePlace.long_name
+
+    this.props.updateWithResult(city, state, country)
     this.props.navigator.pop()
-    this.props.updateWithResult(result)
   }
 
   textChanged = async (text: string) => {
@@ -55,6 +69,8 @@ export default class Location extends React.Component<Props, State> {
     this.searchForQuery(text)
   }
 
+  // https://developers.google.com/places/
+  // https://developers.google.com/places/web-service/details
   searchForQuery = async (query: string) => {
     // The 2nd is a throw-away key on a throw-away account
     const apiKey = Emission.googleMapsAPIKey || "AIzaSyBJRIy_zCXQ7XYt9Ubn8bpUIEAxEOKUmx8"
@@ -92,7 +108,7 @@ export default class Location extends React.Component<Props, State> {
               onChangeText={this.textChanged}
               searching={this.state.searching}
               resultSelected={this.locationSelected}
-              preImage={require("../images/map-pin.png")}
+              preImage={require("../../../../../images/consignments/map-pin.png")}
               placeholder="City, Country"
               noResultsMessage="Could not find"
             />

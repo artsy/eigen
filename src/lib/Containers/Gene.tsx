@@ -198,7 +198,7 @@ export class Gene extends React.Component<Props, State> {
               price_range: newSettings.selectedPrice,
               sort: newSettings.sort,
             },
-            // TODO is this param really required?
+            // TODO: is this param really required?
             null
           )
         }

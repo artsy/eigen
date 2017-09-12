@@ -11,6 +11,8 @@ import ConsignmentBG from "../Components/ConsignmentBG"
 import ImageSelection, { ImageData } from "../Components/ImageSelection"
 import { BodyText as P } from "../Typography"
 
+import triggerCamera from "../../../NativeModules/triggerCamera"
+
 import {
   CameraRoll,
   Dimensions,
@@ -66,10 +68,12 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
   }
 
   loadPhotos() {
-    const fetchParams: GetPhotosParamType = {
+    // TODO: Need to update the RN 0.48 types on DT
+    // const fetchParams: GetPhotosParamType = {
+    const fetchParams: any = {
       first: 20,
-      groupTypes: "SavedPhotos",
-      assetType: "Photos",
+      groupTypes: "all",
+      assetType: "photos",
     }
 
     if (this.state.lastCursor) {
@@ -83,10 +87,11 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
     if (inTesting) {
       return
     }
-
+    console.log(fetchParams)
     CameraRoll.getPhotos(fetchParams)
       .then(data => {
         this.appendAssets(data)
+        console.log(data)
       })
       .catch(e => {
         console.log(e)
@@ -136,7 +141,14 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
   }
 
   onPressNewPhoto = () => {
-    console.log("OK")
+    triggerCamera(this).then(photo => {
+      if (photo) {
+        console.log("Cancelled")
+      } else {
+        console.log("Got photo back")
+        console.log(photo)
+      }
+    })
   }
 
   render() {

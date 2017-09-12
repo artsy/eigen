@@ -2,7 +2,7 @@
 
 exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
 <View
-  keyboardVerticalOffset={60}
+  keyboardVerticalOffset={15}
   onLayout={[Function]}
   style={
     Array [
@@ -103,7 +103,7 @@ exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
 
 exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results Component 1`] = `
 <View
-  keyboardVerticalOffset={60}
+  keyboardVerticalOffset={15}
   onLayout={[Function]}
   style={
     Array [
@@ -127,11 +127,10 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
       <View
         style={
           Array [
-            Object {
-              "flex": 0,
-            },
+            undefined,
             Object {
               "flex": 1,
+              "maxHeight": 40,
             },
           ]
         }
@@ -140,6 +139,7 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
           style={
             Object {
               "flexDirection": "row",
+              "height": 40,
             }
           }
         >
@@ -157,8 +157,6 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
               Array [
                 Object {
                   "backgroundColor": "black",
-                  "borderBottomColor": "white",
-                  "borderBottomWidth": 1,
                   "color": "white",
                   "flexBasis": 0,
                   "flexGrow": 1,
@@ -178,7 +176,7 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
             Array [
               Object {
                 "backgroundColor": "#e5e5e5",
-                "height": 1,
+                "height": 2,
               },
               undefined,
             ]

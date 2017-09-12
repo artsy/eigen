@@ -8695,7 +8695,7 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
-"vm2@github:patriksimek/vm2":
+vm2@patriksimek/vm2:
   version "3.5.0"
   resolved "https://codeload.github.com/patriksimek/vm2/tar.gz/4099c15efa36e9ff9076ed42a4bad25a8243eeba"
 

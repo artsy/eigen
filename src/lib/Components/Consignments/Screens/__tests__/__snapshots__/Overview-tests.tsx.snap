@@ -671,6 +671,92 @@ exports[`Sets up the right view hierarchy 1`] = `
               }
             />
           </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "justifyContent": "center",
+                },
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "paddingVertical": 6,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "height": 43,
+                  "marginTop": 20,
+                  "opacity": 0.3,
+                  "width": 320,
+                }
+              }
+            >
+              <View
+                accessibilityComponentType={undefined}
+                accessibilityLabel={undefined}
+                accessibilityTraits={undefined}
+                accessible={true}
+                hasTVPreferredFocus={undefined}
+                hitSlop={undefined}
+                isTVSelectable={true}
+                nativeID={undefined}
+                onLayout={undefined}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                    },
+                    Object {
+                      "alignItems": "center",
+                      "backgroundColor": "rgba(255, 255, 255, 1)",
+                      "borderColor": "#e5e5e5",
+                      "borderWidth": 1,
+                      "flex": 1,
+                      "justifyContent": "center",
+                    },
+                  ]
+                }
+                testID={undefined}
+                tvParallaxProperties={undefined}
+              >
+                <View>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 12,
+                        },
+                        Object {
+                          "color": "black",
+                          "fontFamily": "AGaramondPro-Regular",
+                          "opacity": 1,
+                        },
+                        Object {
+                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        },
+                      ]
+                    }
+                  >
+                    NEXT
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
         </View>
       </View>
     </RCTScrollView>

@@ -34,7 +34,7 @@
 {
 
   // The photo needs to get saved into the Photo roll, so do that first
-  UIImage *takenImage= info[UIImagePickerControllerOriginalImage];
+  UIImage *takenImage = info[UIImagePickerControllerOriginalImage];
   UIImageWriteToSavedPhotosAlbum(takenImage, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
 }
 

@@ -45,7 +45,11 @@ const withMetadata: ConsignmentSetup = {
 
 const withLocation: ConsignmentSetup = {
   ...withMetadata,
-  location: "Huddersfield, UK",
+  location: {
+    city: "Huddersfield",
+    state: "Yorkshire",
+    country: "UK",
+  },
 }
 
 const withProvenance: ConsignmentSetup = {

@@ -56,7 +56,7 @@ class Header extends React.Component<HeaderProps, State> {
           name: following ? "Follow artist" : "Unfollow artist",
           artist_id: this.props.artist._id,
           artist_slug: this.props.artist.id,
-          // TODO At some point, this component might be on other screens.
+          // TODO: At some point, this component might be on other screens.
           source_screen: "artist page",
         })
       }

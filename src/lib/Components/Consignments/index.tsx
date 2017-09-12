@@ -28,7 +28,6 @@ export interface ConsignmentSetup {
   artist?: SearchResult
   photos?: string[]
   metadata?: ConsignmentMetadata
-  location?: string
   provenance?: string
   editionInfo?: {
     size?: string
@@ -36,6 +35,11 @@ export interface ConsignmentSetup {
   }
   signed?: boolean
   certificateOfAuth?: boolean
+  location?: {
+    city: string
+    state: string
+    country: string
+  }
 }
 
 interface Props extends ViewProperties, ConsignmentSetup {}

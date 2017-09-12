@@ -29,7 +29,7 @@ exports[`Sets up the right view hierarchy 1`] = `
     }
   >
     <View
-      keyboardVerticalOffset={60}
+      keyboardVerticalOffset={15}
       onLayout={[Function]}
       style={
         Array [
@@ -224,7 +224,7 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
     }
   >
     <View
-      keyboardVerticalOffset={60}
+      keyboardVerticalOffset={15}
       onLayout={[Function]}
       style={
         Array [

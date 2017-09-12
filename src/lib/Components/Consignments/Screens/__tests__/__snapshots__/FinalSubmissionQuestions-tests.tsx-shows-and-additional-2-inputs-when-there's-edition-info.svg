@@ -10,14 +10,14 @@
      <rect type="RCTScrollView" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="1334"/>
 
      <g transform='translate(0, 0)'>
-       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="417"/>
+       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="491"/>
 
        <g transform='translate(0, 0)'>
-         <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="417"/>
+         <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="491"/>
 
          <g transform='translate(0, 0)'>
            <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="0" y="40" width="474" height="60"><body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;"><p style="font-family:'undefined','Times New Roman';font-size:14px">Answer a few questions about the work</p></body></foreignObject>
-           <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="100" width="540" height="317"/>
+           <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="100" width="540" height="391"/>
 
            <g transform='translate(0, 100)'>
              <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="88"/>
@@ -33,7 +33,7 @@
                    <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="8" y="9" width="48" height="22"/>
 
                    <g transform='translate(8, 9)'>
-                     <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="0" y="0" width="24" height="22"><body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;"><p style="font-family:'undefined','Times New Roman';font-size:14px">NO</p></body></foreignObject>
+                     <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="0" y="0" width="24" height="22"><body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;"><p style="font-family:'undefined','Times New Roman';font-size:14px">YES</p></body></foreignObject>
                      <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="24" y="0" width="24" height="22"/>
                    </g>
 
@@ -49,10 +49,10 @@
 
              </g>
 
-             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="88" width="540" height="53"/>
+             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="88" width="540" height="52"/>
 
              <g transform='translate(0, 88)'>
-               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="6" width="270" height="41"/>
+               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="6" width="270" height="40"/>
 
                <g transform='translate(0, 6)'>
                  <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="270" height="40"/>
@@ -61,10 +61,10 @@
                    <rect type="TextInput" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="270" height="40"/>
                  </g>
 
-                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="270" height="1"/>
+                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="270" height="2"/>
                </g>
 
-               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="270" y="6" width="270" height="41"/>
+               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="270" y="6" width="270" height="40"/>
 
                <g transform='translate(270, 6)'>
                  <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="270" height="40"/>
@@ -73,14 +73,14 @@
                    <rect type="TextInput" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="270" height="40"/>
                  </g>
 
-                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="270" height="1"/>
+                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="270" height="2"/>
                </g>
 
              </g>
 
-             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="141" width="540" height="88"/>
+             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="140" width="540" height="88"/>
 
-             <g transform='translate(0, 141)'>
+             <g transform='translate(0, 140)'>
                <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="0" y="24" width="476" height="40"><body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;"><p style="font-family:'undefined','Times New Roman';font-size:14px">Is this work signed?</p></body></foreignObject>
                <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="476" y="27" width="64" height="34"/>
 
@@ -92,7 +92,7 @@
 
                    <g transform='translate(8, 9)'>
                      <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="24" height="22"/>
-                     <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="24" y="0" width="24" height="22"><body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;"><p style="font-family:'undefined','Times New Roman';font-size:14px">YES</p></body></foreignObject>
+                     <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="24" y="0" width="24" height="22"><body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;"><p style="font-family:'undefined','Times New Roman';font-size:14px">NO</p></body></foreignObject>
                    </g>
 
                    <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="6" y="4" width="52" height="24"/>
@@ -107,9 +107,9 @@
 
              </g>
 
-             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="229" width="540" height="88"/>
+             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="228" width="540" height="88"/>
 
-             <g transform='translate(0, 229)'>
+             <g transform='translate(0, 228)'>
                <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="0" y="24" width="476" height="40"><body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;"><p style="font-family:'undefined','Times New Roman';font-size:14px">Do you have a certificate of authenticity?</p></body></foreignObject>
                <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="476" y="27" width="64" height="34"/>
 
@@ -121,13 +121,34 @@
 
                    <g transform='translate(8, 9)'>
                      <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="24" height="22"/>
-                     <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="24" y="0" width="24" height="22"><body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;"><p style="font-family:'undefined','Times New Roman';font-size:14px">YES</p></body></foreignObject>
+                     <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="24" y="0" width="24" height="22"><body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;"><p style="font-family:'undefined','Times New Roman';font-size:14px">NO</p></body></foreignObject>
                    </g>
 
                    <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="6" y="4" width="52" height="24"/>
 
                    <g transform='translate(6, 4)'>
                      <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="24" height="24"/>
+                   </g>
+
+                 </g>
+
+               </g>
+
+             </g>
+
+             <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="316" width="540" height="75"/>
+
+             <g transform='translate(0, 316)'>
+               <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="110" y="26" width="320" height="43"/>
+
+               <g transform='translate(110, 26)'>
+                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="320" height="43"/>
+
+                 <g transform='translate(0, 0)'>
+                   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="107" y="10" width="107" height="24"/>
+
+                   <g transform='translate(107, 10)'>
+                     <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="0" y="0" width="107" height="24"><body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;"><p style="font-family:'undefined','Times New Roman';font-size:14px">SUBMIT TO ARTSY</p></body></foreignObject>
                    </g>
 
                  </g>

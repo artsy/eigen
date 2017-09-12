@@ -60,7 +60,7 @@ export class ArtistCard extends React.Component<Props, State> {
           name: "Follow artist",
           artist_id: this.props.artist._id,
           artist_slug: this.props.artist.id,
-          // TODO At some point, this component might be on other screens.
+          // TODO: At some point, this component might be on other screens.
           source_screen: "home page",
           context_module: "artist rail",
         })
@@ -151,7 +151,7 @@ interface Styles {
 }
 
 const styles = StyleSheet.create<Styles>({
-  // TODO The outer wrapping view is currently only there because setting `marginLeft: 16` on the Artist card from the
+  // TODO: The outer wrapping view is currently only there because setting `marginLeft: 16` on the Artist card from the
   //      ArtistRail component isn’t working.
   container: {
     width: 236,
@@ -237,7 +237,7 @@ export interface ArtistCardResponse {
   }
 }
 
-// TODO Until we figure out how to use Relay to fetch/render suggested artists and replace initially suggested cards,
+// TODO: Until we figure out how to use Relay to fetch/render suggested artists and replace initially suggested cards,
 //      this query is duplicated so we can fetch the data manually.
 export const ArtistCardQuery = `
   ... on Artist {
