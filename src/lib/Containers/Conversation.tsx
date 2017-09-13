@@ -25,6 +25,8 @@ import Message from "../Components/Inbox/Conversations/Message"
 import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
 import ShowPreview from "../Components/Inbox/Conversations/Preview/ShowPreview"
 
+import { markLastMessageRead } from "../Components/Inbox/Conversations/MarkReadMessage"
+
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 
 // tslint:disable-next-line:no-var-requires
@@ -126,8 +128,27 @@ export class Conversation extends React.Component<Props, State> {
     )
   }
 
+  maybeMarkLastMessageAsRead() {
+    const conversation = this.props.me.conversation
+    if (conversation.is_last_message_to_user && !conversation.last_message_open && !this.state.markedMessageAsRead) {
+      markLastMessageRead(
+        this.props.relay.environment,
+        conversation,
+        conversation.last_message_delivery_id,
+        response => {
+          this.setState({ markedMessageAsRead: true })
+        },
+        error => {
+          console.warn(error)
+          this.setState({ markedMessageAsRead: true })
+        }
+      )
+    }
+  }
+
   componentDidMount() {
     NetInfo.isConnected.addEventListener("connectionChange", this.handleConnectivityChange)
+    this.maybeMarkLastMessageAsRead()
   }
 
   componentWillUnmount() {
@@ -146,21 +167,6 @@ export class Conversation extends React.Component<Props, State> {
     })
     const lastMessage = messages[messages.length - 1]
 
-    // Better way of marking a message as read?
-    if (conversation.is_last_message_to_user && !conversation.last_message_open && !this.state.markedMessageAsRead) {
-      markLastMessageRead(
-        this.props.relay.environment,
-        conversation.id,
-        conversation.last_message_delivery_id,
-        response => {
-          this.setState({ markedMessageAsRead: true })
-        },
-        error => {
-          console.warn(error)
-          this.setState({ markedMessageAsRead: true })
-        }
-      )
-    }
     return (
       <Composer
         disabled={this.state.sendingMessage}
@@ -201,35 +207,6 @@ export class Conversation extends React.Component<Props, State> {
       </Composer>
     )
   }
-}
-
-function markLastMessageRead(
-  environment: Environment,
-  conversationId: string,
-  deliveryId: string,
-  onCompleted: MutationConfig["onCompleted"],
-  onError: MutationConfig["onError"]
-) {
-  return commitMutation(environment, {
-    onCompleted,
-    onError,
-    mutation: graphql`
-      mutation ConversationMarkReadMessageMutation($input: MarkReadMessageMutationInput!) {
-        markReadMessage(input: $input) {
-          delivery {
-            id
-            opened_at
-          }
-        }
-      }
-    `,
-    variables: {
-      input: {
-        conversationId,
-        deliveryId,
-      },
-    },
-  })
 }
 
 function sendConversationMessage(
@@ -384,7 +361,7 @@ export default createRefetchContainer(
   `
 )
 
-interface RelayProps {
+export interface RelayProps {
   me: {
     conversation: {
       __id: string

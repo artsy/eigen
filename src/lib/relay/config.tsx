@@ -12,8 +12,6 @@ if (Emission && Emission.gravityAPIHost && Emission.metaphysicsAPIHost) {
   gravityURL = "https://api.artsy.net"
 }
 
-metaphysicsURL = "http://localhost:5001"
-
 export { metaphysicsURL, gravityURL }
 
 // Disable the native polyfill during development, which will make network requests show-up in the Chrome dev-tools.
