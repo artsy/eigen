@@ -61,7 +61,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   updateLocation = (city: string, state: string, country: string) =>
     this.setState({ location: { city, state, country } })
 
-  createSubmission = () =>
+  submitFinalSubmission = () =>
     this.props.navigator.push({ component: FinalSubmissionQuestions, passProps: { setup: this.state } })
 
   render() {
@@ -101,7 +101,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
 
             <Row style={{ justifyContent: "center" }}>
               <View style={{ height: 43, width: 320, marginTop: 20, opacity: canSubmit ? 1 : 0.3 }}>
-                <Button text="NEXT" onPress={canSubmit && this.createSubmission} style={{ flex: 1 }} />
+                <Button text="NEXT" onPress={canSubmit && this.submitFinalSubmission} style={{ flex: 1 }} />
               </View>
             </Row>
           </View>
