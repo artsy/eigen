@@ -103,7 +103,7 @@ class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, St
       if (error) {
         console.error(error)
       } else {
-        Events.postEvent(this, {
+        Events.postEvent({
           name: following ? "Follow artist" : "Unfollow artist",
           artist_id: context.artist.id,
           artist_slug: context.artist.id,

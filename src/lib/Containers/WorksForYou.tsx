@@ -68,7 +68,7 @@ export class WorksForYou extends React.Component<Props, State> {
       if (error) {
         console.error(error)
       } else {
-        Events.postEvent(this, {
+        Events.postEvent({
           name: "Notifications read",
           source_screen: "works for you page",
         })

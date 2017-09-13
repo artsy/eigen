@@ -10,6 +10,8 @@ import Spinner from "./Components/Spinner"
 import Containers from "./Containers/index"
 import Routes from "./relay/routes"
 
+import Events from "./NativeModules/Events"
+
 interface Props extends ViewProperties {
   trigger1pxScrollHack?: boolean
 }
@@ -18,7 +20,7 @@ interface Props extends ViewProperties {
 // Probably move these methods to their own place
 // TODO: Add segment, add dev toggle between console and segement
 @track(props => ({ page: props.component.displayName.match("\\((.*?)\\)")[1] }), {
-  dispatch: data => console.log(data),
+  dispatch: data => Events.postEvent(data),
 })
 class RootContainer extends React.Component<{}, null> {
   state: { retrying: boolean }

@@ -67,7 +67,7 @@ export class Artist extends React.Component<Props, {}> {
 
   // This is *not* called on the initial render, thus it will only post events for when the user actually taps a tab.
   componentDidUpdate(previousProps, previousState) {
-    Events.postEvent(this, {
+    Events.postEvent({
       name: "Tapped artist view tab",
       tab: this.selectedTabTitle().toLowerCase(),
       artist_id: this.props.artist._id,

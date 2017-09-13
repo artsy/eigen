@@ -65,14 +65,13 @@ class Header extends React.Component<HeaderProps, State> {
   // currently you can't get state yet, but leaving this in as desired usage
   @track((props, state) => ({ name: state.following, artist_id: props.artist._id, artist_slug: props.artist.id }))
   successfulFollowChange() {
-    Events.postEvent(this, {
+    Events.postEvent({
       name: this.state.following ? "Follow artist" : "Unfollow artist",
       artist_id: this.props.artist._id,
       artist_slug: this.props.artist.id,
       // TODO At some point, this component might be on other screens.
       source_screen: "artist page",
     })
-  }
 
   render() {
     const artist = this.props.artist
