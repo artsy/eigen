@@ -2,7 +2,7 @@ import * as _ from "lodash"
 import * as React from "react"
 import { AppRegistry, ViewProperties } from "react-native"
 import * as Relay from "react-relay"
-import track from "./react-tracking"
+import track from "react-tracking"
 
 import Consignments from "./Components/Consignments"
 import LoadFailureView from "./Components/LoadFailureView"
@@ -17,9 +17,8 @@ interface Props extends ViewProperties {
 }
 
 // Seeing as we're wrapping relay containers, we strip e.g. "Relay(Artist)" to be "Artist"
-// Probably move these methods to their own place
-// TODO: Add segment, add dev toggle between console and segement
 @track(props => ({ page: props.component.displayName.match("\\((.*?)\\)")[1] }), {
+  // Here we're hooking into Eigen to post analytics events to Adjust and Segement
   dispatch: data => Events.postEvent(data),
 })
 class RootContainer extends React.Component<{}, null> {
