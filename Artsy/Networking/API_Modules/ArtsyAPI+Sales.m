@@ -21,7 +21,7 @@
                                        failure:(void (^)(NSError *))failure
 {
     NSURLRequest *request = [ARRouter artworksForSaleRequest:saleID];
-    return [self performRequest:request success:^(id json) {
+    return [self performGraphQLRequest:request success:^(id json) {
         NSArray *saleArtworksJSON = json[@"data"][@"sale"][@"sale_artworks"];
 
         NSArray *artworks = [saleArtworksJSON map:^id(id json) {
@@ -37,11 +37,7 @@
         if (success) {
             success(artworks);
         }
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    } failure:failure];
 }
 
 + (void)getSaleWithID:(NSString *)saleID

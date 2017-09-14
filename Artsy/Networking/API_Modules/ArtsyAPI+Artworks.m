@@ -36,17 +36,7 @@
 + (AFHTTPRequestOperation *)getArtworkFromUserFavorites:(NSString *)cursor success:(void (^)(NSString *nextPageCursor, BOOL hasNextPage, NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newArtworksFromUsersFavoritesRequestWithCursor:cursor];
-    return [self performRequest:request success:^(id json) {
-        // Parse out metadata from GraphQL response.
-        NSArray *errors = json[@"errors"];
-        if (errors) {
-            // GraphQL queries that fail can return 200s but indicate failures with the "errors" key. We need to check them.
-            NSLog(@"Failure fetching GraphQL query: %@", errors);
-            if (failure) {
-                failure([NSError errorWithDomain:@"GraphQL" code:0 userInfo:json]);
-            }
-            return;
-        }
+    return [self performGraphQLRequest:request success:^(id json) {
         id artworksConnection = json[@"data"][@"me"][@"saved_artworks"][@"artworks_connection"];
         NSDictionary *pageInfo = artworksConnection[@"pageInfo"];
         NSArray *artworksJson = [artworksConnection[@"edges"] valueForKey:@"node"];
@@ -67,11 +57,7 @@
         if (success) {
             success(pageInfo[@"endCursor"], [pageInfo[@"hasNextPage"] boolValue], artworks);
         }
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    } failure:failure];
 }
 
 + (AFHTTPRequestOperation *)getArtworksForGene:(Gene *)gene atPage:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure

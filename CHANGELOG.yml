@@ -14,6 +14,7 @@ upcoming:
       - Add switchboard route to open admin menu through Universal Links with https://artsy.net/admin route - alloy
       - Adds an admin flag for haptic feedback during a live Auction - orta
       - Removes bifurcation of bidders/observers for causality websocket connections - ash
+      - Consolidates GraphQL error-handling - ash
 
     user_facing:
       - Adds new routing for inquiries - maxim
