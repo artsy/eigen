@@ -6862,10 +6862,6 @@ react-modal@^1.7.7:
   version "0.18.2"
   resolved "https://github.com/orta/react-native-parallax-scroll-view#4e20440f9cd0b6280303b57124c0348c0e63b7c0"
 
-react-native-reversed-flat-list@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-reversed-flat-list/-/react-native-reversed-flat-list-1.0.1.tgz#ff9a5f2a22e087a2bea1348720135536c45869ca"
-
 react-native-sentry@^0.14.5:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/react-native-sentry/-/react-native-sentry-0.14.5.tgz#477aeca99a4c36326a64ca575e2b3718a3fb05a6"
