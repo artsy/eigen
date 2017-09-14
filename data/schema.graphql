@@ -1626,7 +1626,7 @@ type Conversation implements Node {
   items: [ConversationItem]
 
   # A connection for all messages in a single conversation
-  messages(after: String, first: Int, before: String, last: Int): MessageConnection
+  messages(sort: sort, after: String, first: Int, before: String, last: Int): MessageConnection
 }
 
 # A connection to a list of items.
@@ -4458,6 +4458,11 @@ enum ShowSort {
   FEATURED_DESC
   SORTABLE_NAME_ASC
   SORTABLE_NAME_DESC
+}
+
+enum sort {
+  DESC
+  ASC
 }
 
 type Status {
