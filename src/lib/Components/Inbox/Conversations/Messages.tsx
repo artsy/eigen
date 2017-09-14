@@ -114,7 +114,7 @@ export class Messages extends React.Component<Props, State> {
     const edges = (this.props.conversation.messages || { edges: [] }).edges
     const messageCount = edges.length
     const messages = edges.map((edge, index) => {
-      const isFirstMessage = !this.props.relay.hasMore() && index === messageCount - 1
+      const isFirstMessage = this.props.relay && !this.props.relay.hasMore() && index === messageCount - 1
       return { first_message: isFirstMessage, key: index, ...edge.node }
     })
     const refreshControl = <RefreshControl refreshing={this.state.reloadingData} onRefresh={this.reload.bind(this)} />
