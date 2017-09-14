@@ -48,7 +48,7 @@ interface State extends ConsignmentMetadata {
 export default class Metadata extends React.Component<Props, State> {
   constructor(props) {
     super(props)
-    this.state = props
+    this.state = props.metadata || {}
   }
 
   doneTapped = () => {

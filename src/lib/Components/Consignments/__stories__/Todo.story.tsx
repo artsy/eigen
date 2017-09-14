@@ -1,6 +1,8 @@
 import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 
+import { metadata, withArtist, withLocation, withMetadata, withOnePhoto, withPhotos } from "./consignmentSetups"
+
 import TODO from "../Components/ArtworkConsignmentTodo"
 import { ConsignmentMetadata, ConsignmentSetup } from "../index"
 
@@ -9,47 +11,6 @@ export const component = TODO
 
 interface States {
   [name: string]: ConsignmentSetup
-}
-
-const withArtist: ConsignmentSetup = { artist: { name: "Glenn Brown", id: "gb", image: { url: "" } } }
-
-const withOnePhoto: ConsignmentSetup = {
-  ...withArtist,
-  photos: ["https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg"],
-}
-
-const withPhotos: ConsignmentSetup = {
-  ...withArtist,
-  photos: [
-    "https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg",
-    "https://d32dm0rphc51dk.cloudfront.net/UivXcEE-GMQuBqBiHmvdcg/small_square.jpg",
-  ],
-}
-
-const metadata: ConsignmentMetadata = {
-  title: "My Work",
-  year: "1983",
-  category: "Design",
-  medium: "Wood",
-  width: "100",
-  height: "100",
-  depth: null,
-  unit: "cm",
-  displayString: "5/5",
-}
-
-const withMetadata: ConsignmentSetup = {
-  ...withPhotos,
-  metadata,
-}
-
-const withLocation: ConsignmentSetup = {
-  ...withMetadata,
-  location: {
-    city: "Huddersfield",
-    state: "Yorkshire",
-    country: "UK",
-  },
 }
 
 const withProvenance: ConsignmentSetup = {

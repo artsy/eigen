@@ -898,7 +898,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           undefined,
                         ]
                       }
-                      value={undefined}
+                      value="My Work"
                     />
                   </View>
                   <View
@@ -970,7 +970,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           undefined,
                         ]
                       }
-                      value={undefined}
+                      value="1983"
                     />
                   </View>
                   <View
@@ -1043,7 +1043,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           undefined,
                         ]
                       }
-                      value={undefined}
+                      value="Design"
                     />
                   </View>
                   <View
@@ -1115,7 +1115,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           undefined,
                         ]
                       }
-                      value={undefined}
+                      value="Wood"
                     />
                   </View>
                   <View
@@ -1187,7 +1187,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           undefined,
                         ]
                       }
-                      value={undefined}
+                      value="100"
                     />
                   </View>
                   <View
@@ -1246,7 +1246,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           undefined,
                         ]
                       }
-                      value={undefined}
+                      value="100"
                     />
                   </View>
                   <View
@@ -1402,7 +1402,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                             "width": 64,
                           },
                           Object {
-                            "backgroundColor": "black",
+                            "backgroundColor": "white",
                           },
                         ],
                       ]
@@ -1441,12 +1441,12 @@ exports[`state is set up with filled consignment metadata 1`] = `
                                 "width": 24,
                               },
                               Object {
-                                "color": "white",
+                                "color": "black",
                               },
                             ]
                           }
                         >
-                          
+                          CM
                         </Text>
                         <Text
                           accessible={true}
@@ -1464,12 +1464,12 @@ exports[`state is set up with filled consignment metadata 1`] = `
                                 "width": 24,
                               },
                               Object {
-                                "color": "white",
+                                "color": "black",
                               },
                             ]
                           }
                         >
-                          IN
+                          
                         </Text>
                       </View>
                       <View
@@ -1482,7 +1482,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                               "top": 4,
                             },
                             Object {
-                              "flexDirection": "row",
+                              "flexDirection": "row-reverse",
                             },
                           ]
                         }
@@ -1492,7 +1492,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "black",
-                                "borderColor": "white",
+                                "borderColor": "black",
                                 "borderRadius": 12,
                                 "borderWidth": 1,
                                 "height": 24,
