@@ -6,7 +6,6 @@ import { ConnectionHandler } from "relay-runtime"
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
 import { ActivityIndicator, FlatList, ImageURISource, NetInfo, View, ViewProperties } from "react-native"
-import ReversedFlatList from "react-native-reversed-flat-list"
 
 import styled from "styled-components/native"
 import colors from "../../data/colors"
