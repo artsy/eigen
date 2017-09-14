@@ -15,27 +15,29 @@ import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
 import RelayProps from "./relayInterfaces"
 
-import { FlatList, ImageURISource, NetInfo, View, ViewProperties } from "react-native"
+import {
+  ActivityIndicator,
+  FlatList,
+  ImageURISource,
+  NetInfo,
+  RefreshControl,
+  View,
+  ViewProperties,
+} from "react-native"
 import colors from "../../../../data/colors"
+import DottedLine from "../../../Components/DottedLine"
 
 import ARSwitchBoard from "../../../NativeModules/SwitchBoard"
-
-const DottedBorder = styled.View`
-  height: 1;
-  border-width: 1;
-  border-style: dotted;
-  border-color: ${colors["gray-regular"]};
-  margin-left: 20;
-  margin-right: 20;
-`
 
 interface Props {
   conversation?: RelayProps["me"]["conversation"]
   relay?: RelayPaginationProp
+  onDataFetching?: (loading: boolean) => void
 }
 
 interface State {
-  showIndicator: boolean
+  fetchingMoreData: boolean
+  reloadingData: boolean
 }
 
 export class Messages extends React.Component<Props, State> {
@@ -43,7 +45,8 @@ export class Messages extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      showIndicator: false,
+      fetchingMoreData: false,
+      reloadingData: false,
     }
   }
 
@@ -81,22 +84,40 @@ export class Messages extends React.Component<Props, State> {
   }
 
   loadMore() {
-    // if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
-    //   return
-    // }
+    if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
+      return
+    }
 
-    // TODO show loading indicator
+    const updateState = (loading: boolean) => {
+      this.setState({ fetchingMoreData: loading })
+      if (this.props.onDataFetching) {
+        this.props.onDataFetching(loading)
+      }
+    }
 
+    updateState(true)
     this.props.relay.loadMore(10, e => {
-      // TODO hide loading indicator
-      console.log(e)
+      updateState(false)
+    })
+  }
+
+  reload() {
+    const count = this.props.conversation.messages.edges.length
+
+    this.setState({ reloadingData: true })
+    this.props.relay.refetchConnection(count, e => {
+      this.setState({ reloadingData: false })
     })
   }
 
   render() {
-    const messages = (this.props.conversation.messages || { edges: [] }).edges.map((edge, index) => {
-      return { first_message: index === 0, key: index, ...edge.node }
+    const edges = (this.props.conversation.messages || { edges: [] }).edges
+    const messageCount = edges.length
+    const messages = edges.map((edge, index) => {
+      const isFirstMessage = !this.props.relay.hasMore() && index === messageCount - 1
+      return { first_message: isFirstMessage, key: index, ...edge.node }
     })
+    const refreshControl = <RefreshControl refreshing={this.state.reloadingData} onRefresh={this.reload.bind(this)} />
 
     return (
       <FlatList
@@ -105,7 +126,8 @@ export class Messages extends React.Component<Props, State> {
         renderItem={this.renderMessage.bind(this)}
         onEndReached={this.loadMore.bind(this)}
         onEndReachedThreshold={0.2}
-        ItemSeparatorComponent={DottedBorder}
+        refreshControl={refreshControl}
+        ItemSeparatorComponent={DottedLine}
       />
     )
   }
@@ -127,7 +149,7 @@ export default createPaginationContainer(
           name
           initials
         }
-        messages(first: $count, after: $after) @connection(key: "Messages_messages") {
+        messages(first: $count, after: $after, sort: DESC) @connection(key: "Messages_messages") {
           pageInfo {
             startCursor
             endCursor

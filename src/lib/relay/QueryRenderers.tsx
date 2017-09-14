@@ -60,8 +60,8 @@ export const ArtistRenderer: React.SFC<ArtistRendererProps> = ({ render, artistI
 
 interface ConversationRendererProps extends RendererProps {
   conversationID: string
-  cursor: string
-  count: number
+  cursor?: string
+  count?: number
 }
 
 export const ConversationRenderer: React.SFC<ConversationRendererProps> = ({ render, conversationID }) => {

@@ -5,7 +5,7 @@ import { ConnectionHandler } from "relay-runtime"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
-import { FlatList, ImageURISource, NetInfo, View, ViewProperties } from "react-native"
+import { ActivityIndicator, FlatList, ImageURISource, NetInfo, View, ViewProperties } from "react-native"
 import ReversedFlatList from "react-native-reversed-flat-list"
 
 import styled from "styled-components/native"
@@ -62,7 +62,9 @@ const MessagesList = styled(FlatList)`
   margin-top: 10;
 `
 
-const PAGE_SIZE = 100
+const LoadingIndicator = styled(ActivityIndicator)`
+  margin-top: 20;
+`
 
 interface Props extends RelayProps {
   relay?: RelayPaginationProp
@@ -72,6 +74,7 @@ interface State {
   sendingMessage: boolean
   isConnected: boolean
   markedMessageAsRead: boolean
+  fetchingData: boolean
 }
 
 export class Conversation extends React.Component<Props, State> {
@@ -83,6 +86,7 @@ export class Conversation extends React.Component<Props, State> {
       sendingMessage: false,
       isConnected: true,
       markedMessageAsRead: false,
+      fetchingData: false,
     }
     this.handleConnectivityChange = this.handleConnectivityChange.bind(this)
   }
@@ -150,9 +154,15 @@ export class Conversation extends React.Component<Props, State> {
               </SmallHeadline>
               <PlaceholderView />
             </HeaderTextContainer>
+            <LoadingIndicator animating={this.state.fetchingData} hidesWhenStopped />
           </Header>
           {!this.state.isConnected && <ConnectivityBanner />}
-          <Messages conversation={conversation} />
+          <Messages
+            conversation={conversation}
+            onDataFetching={loading => {
+              this.setState({ fetchingData: loading })
+            }}
+          />
         </Container>
       </Composer>
     )
