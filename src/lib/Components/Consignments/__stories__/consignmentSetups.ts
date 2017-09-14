@@ -1,4 +1,4 @@
-import { ConsignmentMetadata, ConsignmentSetup } from "../../index"
+import { ConsignmentMetadata, ConsignmentSetup } from "../index"
 
 export const withArtist: ConsignmentSetup = { artist: { name: "Glenn Brown", id: "gb", image: { url: "" } } }
 

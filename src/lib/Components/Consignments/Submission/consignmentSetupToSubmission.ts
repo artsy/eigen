@@ -8,6 +8,8 @@ export const consignmentSetupToMutationInput = (submission: ConsignmentSetup): s
       clientMutationId: typeof jest === "undefined" ? Math.random().toString(36).slice(2) : "ID",
       // Required fields by metaphysics
       artist_id: submission.artist && submission.artist.id,
+      // Required for updating a submission
+      id: submission.submission_id,
       // Optional
       authenticity_certificate: submission.certificateOfAuth,
       category: submission.metadata && submission.metadata.category,

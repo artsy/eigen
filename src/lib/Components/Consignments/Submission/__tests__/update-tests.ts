@@ -1,7 +1,7 @@
 jest.mock("../../../../metaphysics", () => ({ metaphysics: jest.fn() }))
 
 import { metaphysics } from "../../../../metaphysics"
-import { withLocation } from "../../__tests__/fixtures/consignmentSetups"
+import { withLocation } from "../../__stories__/consignmentSetups"
 
 import update from "../update"
 

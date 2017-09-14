@@ -26,6 +26,7 @@
 -   Looks better on iPads - orta
 -   Adds a screen for setting the location - orta
 -   Adds a spinner at the end of submission - orta
+-   Submit draft metadata to convection - orta
 
 ###### Messaging
 

@@ -14,7 +14,7 @@ const updateASubmission = async (submission: ConsignmentSetup, id: string) => {
   const query = `mutation {
     updateConsignmentSubmission(input:${input}) {
       submission {
-       id
+        id
       }
     }
   }`

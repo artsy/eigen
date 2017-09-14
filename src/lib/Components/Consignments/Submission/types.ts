@@ -36,6 +36,7 @@ export interface MetaphysicsSubmission {
   width?: string
   year?: string
   clientMutationId: string
+  id?: string
 }
 
 export interface CreateSubmissionResponse {

@@ -14,7 +14,7 @@ export const createADraftSubmission = async (submission: ConsignmentSetup) => {
   const query = `mutation {
     createConsignmentSubmission(input:${input}) {
       submission {
-        ${Object.keys(submission).join("\n        ")}
+        id
       }
     }
   }`

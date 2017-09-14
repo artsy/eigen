@@ -17,6 +17,9 @@ import Provenance from "./Provenance"
 import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
 import Welcome from "./Welcome"
 
+import createSubmission from "../Submission/create"
+import updateSubmission from "../Submission/update"
+
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route // this gets set by NavigatorIOS
@@ -43,10 +46,6 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
 
   goToPhotosTapped = () => this.props.navigator.push({ component: SelectFromPhotoLibrary, passProps: this.props })
 
-  updateArtist = (result: SearchResult) => {
-    this.setState({ artist: result })
-  }
-
   goToMetadataTapped = () =>
     this.props.navigator.push({
       component: Metadata,
@@ -56,10 +55,22 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   goToLocationTapped = () =>
     this.props.navigator.push({ component: Location, passProps: { updateWithResult: this.updateLocation } })
 
-  updateMetadata = (result: ConsignmentMetadata) => this.setState({ metadata: result })
-  updateProvenance = (result: string) => this.setState({ provenance: result })
+  updateArtist = (result: SearchResult) => this.updateStateAndMetaphysics({ artist: result })
+  updateMetadata = (result: ConsignmentMetadata) => this.updateStateAndMetaphysics({ metadata: result })
+  updateProvenance = (result: string) => this.updateStateAndMetaphysics({ provenance: result })
   updateLocation = (city: string, state: string, country: string) =>
-    this.setState({ location: { city, state, country } })
+    this.updateStateAndMetaphysics({ location: { city, state, country } })
+
+  updateStateAndMetaphysics = (state: any) => this.setState(state, this.updateMetaphysics)
+
+  updateMetaphysics = async () => {
+    if (this.state.submission_id) {
+      updateSubmission(this.state, this.state.submission_id)
+    } else if (this.state.artist) {
+      const submission = await createSubmission(this.state)
+      this.setState({ submission_id: submission.id })
+    }
+  }
 
   submitFinalSubmission = () =>
     this.props.navigator.push({ component: FinalSubmissionQuestions, passProps: { setup: this.state } })
@@ -68,6 +79,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
     const title = "Complete work details to submit"
     const subtitle = "Provide as much detail as possible so that our partners can best assess your work."
     const state = this.state
+
     // See https://github.com/artsy/convection/blob/master/app/models/submission.rb for list
     const canSubmit = !!(
       state.artist &&
