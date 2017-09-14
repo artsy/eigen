@@ -65,6 +65,8 @@ interface Props extends RelayProps {
   initials?: string
   artworkPreview?: JSX.Element
   showPreview?: JSX.Element
+  firstMessage: boolean
+  initialText: string
 }
 
 export class Message extends React.Component<Props, any> {
@@ -92,6 +94,18 @@ export class Message extends React.Component<Props, any> {
         )
       }
     })
+  }
+
+  renderBody() {
+    const { message, firstMessage, initialText } = this.props
+    const isSent = !!message.created_at
+    const body = firstMessage ? initialText : message.body
+
+    return (
+      <BodyText disabled={!isSent}>
+        {body}
+      </BodyText>
+    )
   }
 
   render() {
@@ -132,9 +146,7 @@ export class Message extends React.Component<Props, any> {
 
           {this.renderAttachmentPreviews(message.attachments)}
 
-          <BodyText disabled={!isSent}>
-            {message.body}
-          </BodyText>
+          {this.renderBody()}
 
           {!message.is_from_user &&
             <FromSignature>

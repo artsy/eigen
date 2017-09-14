@@ -26,6 +26,8 @@ it("looks correct when rendered", () => {
       payment_url: "https://www.adopt-cats.org/pay-here",
     },
   }
-  const tree = renderer.create(<Message senderName={senderName} message={props} />).toJSON()
+  const tree = renderer
+    .create(<Message initialText="" firstMessage={false} senderName={senderName} message={props} />)
+    .toJSON()
   expect(tree).toMatchSnapshot()
 })

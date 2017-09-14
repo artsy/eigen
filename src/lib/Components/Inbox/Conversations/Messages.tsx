@@ -34,7 +34,19 @@ interface Props {
   relay?: RelayPaginationProp
 }
 
-export class Messages extends React.Component<Props, null> {
+interface State {
+  showIndicator: boolean
+}
+
+export class Messages extends React.Component<Props, State> {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      showIndicator: false,
+    }
+  }
+
   renderMessage({ item }) {
     const conversationItem = this.props.conversation.items[0].item
     const conversation = this.props.conversation
@@ -43,6 +55,8 @@ export class Messages extends React.Component<Props, null> {
     const initials = item.is_from_user ? conversation.from.initials : conversation.to.initials
     return (
       <Message
+        firstMessage={item.firstMessage}
+        initialText={item}
         message={item}
         senderName={senderName}
         initials={initials}
@@ -83,8 +97,10 @@ export class Messages extends React.Component<Props, null> {
     const messages = (this.props.conversation.messages || { edges: [] }).edges.map((edge, index) => {
       return { first_message: index === 0, key: index, ...edge.node }
     })
+
     return (
       <FlatList
+        inverted
         data={messages}
         renderItem={this.renderMessage.bind(this)}
         onEndReached={this.loadMore.bind(this)}

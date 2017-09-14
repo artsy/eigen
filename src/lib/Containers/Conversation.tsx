@@ -17,6 +17,8 @@ import Composer from "../Components/Inbox/Conversations/Composer"
 import Messages from "../Components/Inbox/Conversations/Messages"
 import { sendConversationMessage } from "../Components/Inbox/Conversations/SendConversationMessage"
 
+import { markLastMessageRead } from "../Components/Inbox/Conversations/MarkReadMessage"
+
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 
 // tslint:disable-next-line:no-var-requires
@@ -69,6 +71,7 @@ interface Props extends RelayProps {
 interface State {
   sendingMessage: boolean
   isConnected: boolean
+  markedMessageAsRead: boolean
 }
 
 export class Conversation extends React.Component<Props, State> {
@@ -79,12 +82,14 @@ export class Conversation extends React.Component<Props, State> {
     this.state = {
       sendingMessage: false,
       isConnected: true,
+      markedMessageAsRead: false,
     }
     this.handleConnectivityChange = this.handleConnectivityChange.bind(this)
   }
 
   componentDidMount() {
     NetInfo.isConnected.addEventListener("connectionChange", this.handleConnectivityChange)
+    this.maybeMarkLastMessageAsRead()
   }
 
   componentWillUnmount() {
@@ -93,6 +98,24 @@ export class Conversation extends React.Component<Props, State> {
 
   handleConnectivityChange(isConnected) {
     this.setState({ isConnected })
+  }
+
+  maybeMarkLastMessageAsRead() {
+    const conversation = this.props.me.conversation
+    if (conversation.is_last_message_to_user && !conversation.last_message_open && !this.state.markedMessageAsRead) {
+      markLastMessageRead(
+        this.props.relay.environment,
+        conversation,
+        conversation.last_message_delivery_id,
+        response => {
+          this.setState({ markedMessageAsRead: true })
+        },
+        error => {
+          console.warn(error)
+          this.setState({ markedMessageAsRead: true })
+        }
+      )
+    }
   }
 
   render() {
@@ -145,12 +168,16 @@ export default createFragmentContainer(Conversation, {
           initials
         }
         ...Messages_conversation
+        initial_message
+        is_last_message_to_user
+        last_message_open
+        last_message_delivery_id
       }
     }
   `,
 })
 
-interface RelayProps {
+export interface RelayProps {
   me: {
     conversation: {
       __id: string
@@ -164,6 +191,10 @@ interface RelayProps {
         name: string
         initials: string
       }
+      initial_message: string
+      is_last_message_to_user: boolean
+      last_message_open: string | null
+      last_message_delivery_id: string | null
       messages: {
         pageInfo?: {
           hasNextPage: boolean
