@@ -31,7 +31,6 @@ it("looks correct when rendered", () => {
 
 it("displays a connectivity banner when network is down", () => {
   const conversation = renderer.create(<Conversation me={props} />) as any
-
   const instance = conversation.getInstance()
 
   // Network goes down

@@ -56,7 +56,6 @@
     "react": "16.0.0-alpha.12",
     "react-native": "0.48.0",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
-    "react-native-reversed-flat-list": "^1.0.1",
     "react-native-sentry": "^0.14.5",
     "react-relay": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/react-relay-1.3.0-artsy.1.tgz",
     "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/relay-runtime-artsy.1.tgz",

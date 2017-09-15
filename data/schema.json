@@ -24507,6 +24507,16 @@
               "description": "A connection for all messages in a single conversation",
               "args": [
                 {
+                  "name": "sort",
+                  "description": null,
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "sort",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "after",
                   "description": null,
                   "type": {
@@ -24834,6 +24844,29 @@
               "ofType": null
             }
           ]
+        },
+        {
+          "kind": "ENUM",
+          "name": "sort",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
         },
         {
           "kind": "OBJECT",

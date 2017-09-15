@@ -60,13 +60,15 @@ export const ArtistRenderer: React.SFC<ArtistRendererProps> = ({ render, artistI
 
 interface ConversationRendererProps extends RendererProps {
   conversationID: string
+  cursor?: string
+  count?: number
 }
 
 export const ConversationRenderer: React.SFC<ConversationRendererProps> = ({ render, conversationID }) => {
   return (
     <QueryRenderer
       environment={environment}
-      query={graphql`
+      query={graphql.experimental`
         query QueryRenderersConversationQuery($conversationID: String!) {
           me {
             ...Conversation_me
@@ -75,6 +77,7 @@ export const ConversationRenderer: React.SFC<ConversationRendererProps> = ({ ren
       `}
       variables={{
         conversationID,
+        count: 10,
       }}
       render={render}
     />

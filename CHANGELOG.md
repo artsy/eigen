@@ -30,6 +30,8 @@
 
 ###### Messaging
 
+-   Fixede pagination on conversation component - luc
+-   Added ability to sort messages in ascending and descending order - luc
 -   Added capability to mark a message as read by the user - matt
 -   Updated logic to render purch requests and invoices better - matt
 -   Updated styling on bottom dotted border of ConversationSnippet - erik
