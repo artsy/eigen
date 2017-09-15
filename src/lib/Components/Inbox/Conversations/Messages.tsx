@@ -137,7 +137,8 @@ export default createPaginationContainer(
   Messages,
   {
     conversation: graphql.experimental`
-      fragment Messages_conversation on Conversation {
+      fragment Messages_conversation on Conversation
+        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
         __id
         id
         from {
@@ -201,11 +202,11 @@ export default createPaginationContainer(
         after: paginationInfo.cursor,
       }
     },
-    query: graphql`
+    query: graphql.experimental`
       query MessagesPaginationQuery($conversationID: String!, $count: Int!, $after: String) {
         me {
           conversation(id: $conversationID) {
-            ...Messages_conversation
+            ...Messages_conversation @arguments(count: $count, after: $after)
           }
         }
       }
