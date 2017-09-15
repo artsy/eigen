@@ -1,5 +1,7 @@
 #import "Artwork.h"
 #import "ArtsyAPI+Private.h"
+#import "ArtsyAPI+Sales.h"
+#import "OrNil.h"
 #import "ARRouter.h"
 
 #import "MTLModel+JSON.h"
@@ -22,13 +24,27 @@
 {
     NSURLRequest *request = [ARRouter artworksForSaleRequest:saleID];
     return [self performRequest:request success:^(id json) {
-        NSArray *saleArtworksJSON = json[@"data"][@"sale"][@"sale_artworks"];
+        // We need to guard against possible null JSON values surfacing as NSNull.
+        id data = [json[@"data"] orNil];
+        id sale = [data[@"sale"] orNil];
+        id saleArtworksJSON = [sale[@"sale_artworks"] orNil];
+
+        if (!saleArtworksJSON) {
+            if (failure) {
+                failure([NSError errorWithDomain:@"JSON parsing" code:0 userInfo:json]);
+            }
+            return;
+        }
 
         NSArray *artworks = [saleArtworksJSON map:^id(id json) {
+            if (json == [NSNull null]) { return nil; }
+            id artworkJSON = [json[@"artwork"] orNil];
+            if (!artworkJSON) { return nil;}
+
             // This is messy, sorry. We need to fill those back references from artwork -> sale artwork
             // without creating a reference cycle. So we inflate two models with JSON.
             SaleArtwork *saleArtwork = [SaleArtwork modelWithJSON:json];
-            Artwork *artwork = [Artwork modelWithJSON:json[@"artwork"]];
+            Artwork *artwork = [Artwork modelWithJSON:artworkJSON];
             artwork.auction = saleArtwork.auction;
             artwork.saleArtwork = saleArtwork;
             return artwork;

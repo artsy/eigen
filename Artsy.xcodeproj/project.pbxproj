@@ -389,6 +389,7 @@
 		5EBDC95319794DF10082C514 /* ARPendingOperationViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBDC95219794DF10082C514 /* ARPendingOperationViewControllerTests.m */; };
 		5EC27DCF1F6C476100D2A794 /* OrNil.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC27DCE1F6C476100D2A794 /* OrNil.m */; };
 		5EC27DD11F6C480300D2A794 /* OrNilTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC27DD01F6C480300D2A794 /* OrNilTests.m */; };
+		5EC27DD31F6C5EA800D2A794 /* ArtsyAPI+SalesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC27DD21F6C5EA800D2A794 /* ArtsyAPI+SalesTests.m */; };
 		5EC883241B1CBA8E000374C9 /* ARArtworkPreviewActionsViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC883231B1CBA8E000374C9 /* ARArtworkPreviewActionsViewTests.m */; };
 		5EC8C6801CA5C5FC00571B21 /* LiveActionStateReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC8C67F1CA5C5FC00571B21 /* LiveActionStateReconciler.swift */; };
 		5EC929891C5FEAD10015133E /* UIViewController+Traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */; };
@@ -1381,6 +1382,7 @@
 		5EC27DCD1F6C476100D2A794 /* OrNil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrNil.h; sourceTree = "<group>"; };
 		5EC27DCE1F6C476100D2A794 /* OrNil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrNil.m; sourceTree = "<group>"; };
 		5EC27DD01F6C480300D2A794 /* OrNilTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrNilTests.m; sourceTree = "<group>"; };
+		5EC27DD21F6C5EA800D2A794 /* ArtsyAPI+SalesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ArtsyAPI+SalesTests.m"; path = "Artsy_Tests/Networking_Tests/Networking_Models/ArtsyAPI+SalesTests.m"; sourceTree = SOURCE_ROOT; };
 		5EC883231B1CBA8E000374C9 /* ARArtworkPreviewActionsViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkPreviewActionsViewTests.m; sourceTree = "<group>"; };
 		5EC8C67F1CA5C5FC00571B21 /* LiveActionStateReconciler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveActionStateReconciler.swift; path = Live_Auctions/LiveActionStateReconciler.swift; sourceTree = "<group>"; };
 		5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Traits.swift"; sourceTree = "<group>"; };
@@ -2585,6 +2587,7 @@
 				3C6BDCBC18E0AEF60028EF5D /* ArtsyAPI+PrivateTests.m */,
 				3CF144AA18E460BE00B1A764 /* ArtsyAPI+SystemTimeTests.m */,
 				3CB37D981922483100089A1D /* ArtsyAPI+ErrorHandlers.m */,
+				5EC27DD21F6C5EA800D2A794 /* ArtsyAPI+SalesTests.m */,
 			);
 			name = "API Modules";
 			path = API_Modules;
@@ -5684,6 +5687,7 @@
 				E611847018D78068000FE4C9 /* ARMessageItemProviderTests.m in Sources */,
 				51B4BA4A1C6A2BC50014A394 /* AuctionNetworkModelTests.swift in Sources */,
 				5EACFAC71C750B22004112FF /* ARSaleArtworkFlowCollectionViewCellTests.m in Sources */,
+				5EC27DD31F6C5EA800D2A794 /* ArtsyAPI+SalesTests.m in Sources */,
 				E612BC3F19D1B9DE00585CD6 /* ARFollowableButtonTests.m in Sources */,
 				5EE9A3E31D1213D60014A3C9 /* LiveSalesPersonSpecs.swift in Sources */,
 				B3ECE83C1819D1FD009F5C5B /* SaleArtworkTests.m in Sources */,

@@ -1,6 +1,8 @@
 upcoming:
     version: 3.2.5
     details: Messaging
+    dev:
+      - Adds more stringent JSON-parsing - ash
     user_facing:
       - Fixes a crash related to users with no favourited artworks - ash
 

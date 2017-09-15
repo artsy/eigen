@@ -60,8 +60,8 @@
         if (!artworksJson) {
             if (failure) {
                 failure([NSError errorWithDomain:@"JSON parsing" code:0 userInfo:json]);
-                return;
             }
+            return;
         }
 
         // Parse artworks, sale artworks, and make manual connection between the two if appropritate.
