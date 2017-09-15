@@ -1,9 +1,13 @@
 import { commitMutation, Environment, graphql, MutationConfig, RecordSourceSelectorProxy } from "react-relay"
-import { RelayProps } from "../../../Containers/Conversation"
+
+interface Conversation {
+  __id: string
+  id: string
+}
 
 export function markLastMessageRead(
   environment: Environment,
-  conversation: RelayProps["me"]["conversation"],
+  conversation: Conversation,
   deliveryId: string,
   onCompleted: MutationConfig["onCompleted"],
   onError: MutationConfig["onError"]

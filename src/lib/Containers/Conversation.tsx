@@ -173,10 +173,15 @@ export default createFragmentContainer(Conversation, {
     fragment Conversation_me on Me {
       conversation(id: $conversationID) {
         id
+        __id
         to {
           name
           initials
         }
+        from {
+          email
+        }
+        last_message_id
         ...Messages_conversation
         initial_message
         is_last_message_to_user
@@ -187,38 +192,23 @@ export default createFragmentContainer(Conversation, {
   `,
 })
 
-export interface RelayProps {
+interface RelayProps {
   me: {
     conversation: {
-      __id: string
       id: string
-      from: {
-        name: string
-        email: string
-        initials: string
-      }
+      __id: string
       to: {
         name: string
         initials: string
       }
+      from: {
+        email: string
+      }
+      last_message_id: string
       initial_message: string
       is_last_message_to_user: boolean
       last_message_open: string | null
       last_message_delivery_id: string | null
-      messages: {
-        pageInfo?: {
-          hasNextPage: boolean
-        }
-        edges: Array<{
-          node: {
-            impulse_id: string
-            is_from_user: boolean
-          } | null
-        }>
-      }
-      items: Array<{
-        item: any
-      }>
     }
   }
 }

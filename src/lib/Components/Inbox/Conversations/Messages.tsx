@@ -13,7 +13,6 @@ import styled from "styled-components/native"
 import Message from "./Message"
 import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
-import RelayProps from "./relayInterfaces"
 
 import {
   ActivityIndicator,
@@ -150,7 +149,7 @@ export default createPaginationContainer(
           name
           initials
         }
-        messages(first: $count, after: $after, sort: DESC) @connection(key: "Messages_messages") {
+        messages(first: $count, after: $after, sort: DESC) @connection(key: "Messages_messages", filters: []) {
           pageInfo {
             startCursor
             endCursor
@@ -203,7 +202,7 @@ export default createPaginationContainer(
       }
     },
     query: graphql.experimental`
-      query MessagesPaginationQuery($conversationID: String!, $count: Int!, $after: String) {
+      query MessagesQuery($conversationID: String!, $count: Int!, $after: String) {
         me {
           conversation(id: $conversationID) {
             ...Messages_conversation @arguments(count: $count, after: $after)
@@ -213,3 +212,35 @@ export default createPaginationContainer(
     `,
   }
 )
+
+interface RelayProps {
+  me: {
+    conversation: {
+      id: string
+      __id: string
+      to: {
+        name: string
+        initials: string
+      }
+      from: {
+        name: string
+        email: string
+        initials: string
+      }
+      messages: {
+        pageInfo?: {
+          hasNextPage: boolean
+        }
+        edges: Array<{
+          node: {
+            impulse_id: string
+            is_from_user: boolean
+          } | null
+        }>
+      }
+      items: Array<{
+        item: any
+      }>
+    }
+  }
+}
