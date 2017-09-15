@@ -1,6 +1,7 @@
 /**
  * This is represented somewhere in the graphQL schema, could that be used?
  */
+
 export interface MetaphysicsSubmission {
   artist_id: string
   authenticity_certificate?: boolean
@@ -32,6 +33,7 @@ export interface MetaphysicsSubmission {
   medium?: string
   provenance?: string
   signature?: boolean
+  state?: "DRAFT" | "SUBMITTED"
   title?: string
   width?: string
   year?: string

@@ -26,6 +26,7 @@ export interface SearchResult {
 
 export interface ConsignmentSetup {
   submission_id?: string
+  state?: "DRAFT" | "SUBMITTED"
   artist?: SearchResult
   photos?: string[]
   metadata?: ConsignmentMetadata

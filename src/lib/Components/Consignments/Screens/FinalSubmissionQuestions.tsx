@@ -20,6 +20,7 @@ interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route // this gets set by NavigatorIOS
   setup: ConsignmentSetup
+  submitFinalSubmission: (setup: ConsignmentSetup) => void
 }
 
 const Loader = (p, c) => <Spinner style={{ flex: 1 }} />
@@ -31,9 +32,7 @@ export default class FinalSubmissionQuestions extends React.Component<Props, Con
   }
 
   submitWork = () => {
-    this.props.navigator.push({
-      component: Loader,
-    })
+    this.setState({ state: "SUBMITTED" }, () => this.props.submitFinalSubmission(this.state))
   }
 
   updateEdition = () => {
@@ -50,6 +49,9 @@ export default class FinalSubmissionQuestions extends React.Component<Props, Con
   updateSigned = () => this.setState({ signed: !this.state.signed })
   updateCert = () => this.setState({ certificateOfAuth: !this.state.certificateOfAuth })
 
+  updateEditionSize = text => this.setState({ editionInfo: { ...this.state.editionInfo, size: text } })
+  updateEditionNumber = text => this.setState({ editionInfo: { ...this.state.editionInfo, number: text } })
+
   render() {
     return (
       <ConsignmentBG>
@@ -61,8 +63,23 @@ export default class FinalSubmissionQuestions extends React.Component<Props, Con
 
           {this.state.editionInfo
             ? <Row>
-                <Text text={{ placeholder: "Edition Size", keyboardType: "phone-pad" }} style={{ margin: 10 }} />
-                <Text text={{ placeholder: "Edition Number" }} style={{ margin: 10 }} />
+                <Text
+                  text={{
+                    placeholder: "Edition Size",
+                    keyboardType: "phone-pad",
+                    onChangeText: this.updateEditionSize,
+                    value: this.state.editionInfo && this.state.editionInfo.size,
+                  }}
+                  style={{ margin: 10 }}
+                />
+                <Text
+                  text={{
+                    placeholder: "Edition Number",
+                    onChangeText: this.updateEditionNumber,
+                    value: this.state.editionInfo && this.state.editionInfo.number,
+                  }}
+                  style={{ margin: 10 }}
+                />
               </Row>
             : null}
 
