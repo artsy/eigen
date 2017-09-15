@@ -172,6 +172,7 @@ export default createFragmentContainer(Conversation, {
   me: graphql`
     fragment Conversation_me on Me {
       conversation(id: $conversationID) {
+        id
         to {
           name
           initials
