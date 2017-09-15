@@ -1,6 +1,6 @@
 import * as React from "react"
-
 import { Keyboard, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback } from "react-native"
+import { RelayRefetchProp } from "react-relay"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
@@ -35,6 +35,7 @@ const SendButton = styled.Text`
 interface Props {
   disabled?: boolean
   onSubmit?: (text: string) => any
+  value?: string
 }
 
 interface State {
@@ -74,6 +75,11 @@ export default class Composer extends React.Component<Props, State> {
       paddingRight: 10,
     }
 
+    const containsText = !!(this.state.text && this.state.text.length)
+    if (this.props.value) {
+      console.log(`value prop: ${this.props.value}`)
+    }
+
     return (
       <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={20} style={{ flex: 1 }}>
         {this.props.children}
@@ -92,9 +98,10 @@ export default class Composer extends React.Component<Props, State> {
             style={inputStyles}
             multiline={true}
             editable={!this.props.disabled}
+            value={this.state.text || this.props.value}
           />
-          <TouchableWithoutFeedback onPress={this.submitText.bind(this)}>
-            <SendButton containsText={!!(this.state.text && this.state.text.length)}>SEND</SendButton>
+          <TouchableWithoutFeedback disabled={!containsText} onPress={this.submitText.bind(this)}>
+            <SendButton containsText={containsText}>SEND</SendButton>
           </TouchableWithoutFeedback>
         </Container>
       </KeyboardAvoidingView>

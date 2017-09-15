@@ -75,6 +75,7 @@ interface State {
   isConnected: boolean
   markedMessageAsRead: boolean
   fetchingData: boolean
+  submissionError?: any
 }
 
 export class Conversation extends React.Component<Props, State> {
@@ -131,7 +132,11 @@ export class Conversation extends React.Component<Props, State> {
     return (
       <Composer
         disabled={this.state.sendingMessage}
+<<<<<<< HEAD
         ref={composer => (this.composer = composer)}
+=======
+        value={this.state.submissionError}
+>>>>>>> [msg] update value of composer upon network failure
         onSubmit={text => {
           this.setState({ sendingMessage: true })
 
@@ -140,15 +145,19 @@ export class Conversation extends React.Component<Props, State> {
             conversation,
             text,
             response => {
+<<<<<<< HEAD
               this.setState({ sendingMessage: false })
 
               if (this.props.onMessageSent) {
                 this.props.onMessageSent(text)
               }
+=======
+              this.setState({ sendingMessage: false, submissionError: null })
+>>>>>>> [msg] update value of composer upon network failure
             },
             error => {
               console.warn(error)
-              this.setState({ sendingMessage: false })
+              this.setState({ sendingMessage: false, submissionError: text })
             }
           )
         }}
