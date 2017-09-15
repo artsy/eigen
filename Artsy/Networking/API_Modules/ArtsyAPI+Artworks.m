@@ -9,6 +9,7 @@
 #import "PartnerShow.h"
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
+#import "OrNil.h"
 
 #import "MTLModel+JSON.h"
 
@@ -47,16 +48,29 @@
             }
             return;
         }
-        id artworksConnection = json[@"data"][@"me"][@"saved_artworks"][@"artworks_connection"];
-        NSDictionary *pageInfo = artworksConnection[@"pageInfo"];
-        NSArray *artworksJson = [artworksConnection[@"edges"] valueForKey:@"node"];
+
+        // We need to guard against possible null JSON values surfacing as NSNull.
+        id data = [json[@"data"] orNil];
+        id me = [data[@"me"] orNil];
+        id savedArtworks = [me[@"saved_artworks"] orNil];
+        id artworksConnection = [savedArtworks[@"artworks_connection"] orNil];
+        id pageInfo = [artworksConnection[@"pageInfo"] orNil];
+        NSArray *artworksJson = [[[artworksConnection[@"edges"] orNil] valueForKey:@"node"] orNil];
+
+        if (!artworksJson) {
+            if (failure) {
+                failure([NSError errorWithDomain:@"JSON parsing" code:0 userInfo:json]);
+                return;
+            }
+        }
 
         // Parse artworks, sale artworks, and make manual connection between the two if appropritate.
         NSArray *artworks = [artworksJson map:^id(id json) {
+            if (json == [NSNull null]) { return nil; }
             Artwork *artwork = [Artwork modelWithJSON:json];
 
-            id saleArtworkJSON = json[@"sale_artwork"];
-            if (saleArtworkJSON != [NSNull null]) {
+            id saleArtworkJSON = [json[@"sale_artwork"] orNil];
+            if (saleArtworkJSON) {
                 SaleArtwork *saleArtwork = [SaleArtwork modelWithJSON:saleArtworkJSON];
                 artwork.auction = saleArtwork.auction;
                 artwork.saleArtwork = saleArtwork;

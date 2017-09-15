@@ -387,6 +387,8 @@
 		5EBDC94E19792C3A0082C514 /* ARNavigationControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBDC94D19792C3A0082C514 /* ARNavigationControllerTests.m */; };
 		5EBDC95119794D840082C514 /* ARSearchFieldButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBDC95019794D840082C514 /* ARSearchFieldButtonTests.m */; };
 		5EBDC95319794DF10082C514 /* ARPendingOperationViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EBDC95219794DF10082C514 /* ARPendingOperationViewControllerTests.m */; };
+		5EC27DCF1F6C476100D2A794 /* OrNil.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC27DCE1F6C476100D2A794 /* OrNil.m */; };
+		5EC27DD11F6C480300D2A794 /* OrNilTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC27DD01F6C480300D2A794 /* OrNilTests.m */; };
 		5EC883241B1CBA8E000374C9 /* ARArtworkPreviewActionsViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC883231B1CBA8E000374C9 /* ARArtworkPreviewActionsViewTests.m */; };
 		5EC8C6801CA5C5FC00571B21 /* LiveActionStateReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC8C67F1CA5C5FC00571B21 /* LiveActionStateReconciler.swift */; };
 		5EC929891C5FEAD10015133E /* UIViewController+Traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */; };
@@ -1376,6 +1378,9 @@
 		5EBDC94D19792C3A0082C514 /* ARNavigationControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationControllerTests.m; sourceTree = "<group>"; };
 		5EBDC95019794D840082C514 /* ARSearchFieldButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSearchFieldButtonTests.m; sourceTree = "<group>"; };
 		5EBDC95219794DF10082C514 /* ARPendingOperationViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPendingOperationViewControllerTests.m; sourceTree = "<group>"; };
+		5EC27DCD1F6C476100D2A794 /* OrNil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrNil.h; sourceTree = "<group>"; };
+		5EC27DCE1F6C476100D2A794 /* OrNil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrNil.m; sourceTree = "<group>"; };
+		5EC27DD01F6C480300D2A794 /* OrNilTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrNilTests.m; sourceTree = "<group>"; };
 		5EC883231B1CBA8E000374C9 /* ARArtworkPreviewActionsViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtworkPreviewActionsViewTests.m; sourceTree = "<group>"; };
 		5EC8C67F1CA5C5FC00571B21 /* LiveActionStateReconciler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveActionStateReconciler.swift; path = Live_Auctions/LiveActionStateReconciler.swift; sourceTree = "<group>"; };
 		5EC929881C5FEAD10015133E /* UIViewController+Traits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Traits.swift"; sourceTree = "<group>"; };
@@ -2274,6 +2279,8 @@
 				6002C25F1CC5125200E249B2 /* UIViewController+TopMenuViewController.m */,
 				5E257E311ECDEB3900C62008 /* UIViewController+Popovers.h */,
 				5E257E321ECDEB6600C62008 /* UIViewController+Popovers.m */,
+				5EC27DCD1F6C476100D2A794 /* OrNil.h */,
+				5EC27DCE1F6C476100D2A794 /* OrNil.m */,
 			);
 			path = Apple;
 			sourceTree = "<group>";
@@ -2353,6 +2360,7 @@
 				0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */,
 				6022F5AD1BDFAC3800D975F0 /* ARWebViewCacheHostSpec.m */,
 				60F63AB31C58D98E00DCFF2A /* ARSwitchboard+EchoSpec.m */,
+				5EC27DD01F6C480300D2A794 /* OrNilTests.m */,
 			);
 			name = "App Tests";
 			path = App_Tests;
@@ -5558,6 +5566,7 @@
 				E676B2F218D224000057B4E1 /* ARMessageItemProvider.m in Sources */,
 				342F95D6D6422286C9F5A33A /* ARStandardDateFormatter.m in Sources */,
 				342F9061CC93426E7F8579A2 /* ARFeedImageLoader.m in Sources */,
+				5EC27DCF1F6C476100D2A794 /* OrNil.m in Sources */,
 				342F906FD605E75158D32876 /* ARSharingController.m in Sources */,
 				342F91E3124D3E5EA18AB301 /* ARSplitStackView.m in Sources */,
 				342F9D9D248E4024524174E8 /* ARFairMapViewController.m in Sources */,
@@ -5762,6 +5771,7 @@
 				342F9715E899AC7D24E70734 /* ORStackViewArtsyCategoriesTests.m in Sources */,
 				342F925E34CAC3E5DB8E5F52 /* ARFairMapViewControllerTests.m in Sources */,
 				342F99FA4B25031ABC0613DA /* ARTiledImageDataSourceWithImageTests.m in Sources */,
+				5EC27DD11F6C480300D2A794 /* OrNilTests.m in Sources */,
 				342F9276A48EA339833228D8 /* ARArtworkDetailViewTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
