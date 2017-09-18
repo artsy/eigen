@@ -63,11 +63,14 @@
 
         // Parse artworks, sale artworks, and make manual connection between the two if appropritate.
         NSArray *artworks = [artworksJson map:^id(id json) {
+            // AFNetworking will remove keys from dictionaries that contain null values, but not arrays that contain *only* nulls.
+            // Once https://github.com/AFNetworking/AFNetworking/pull/4052 is merged, we can update AFNetworking and remove this NSNull check.
+            // So we need to do some additional checking, just to be safe.
             if (json == [NSNull null]) { return nil; }
             Artwork *artwork = [Artwork modelWithJSON:json];
 
             id saleArtworkJSON = json[@"sale_artwork"];
-            if (saleArtworkJSON) {
+            if (saleArtworkJSON && saleArtworkJSON != [NSNull null]) {
                 SaleArtwork *saleArtwork = [SaleArtwork modelWithJSON:saleArtworkJSON];
                 artwork.auction = saleArtwork.auction;
                 artwork.saleArtwork = saleArtwork;

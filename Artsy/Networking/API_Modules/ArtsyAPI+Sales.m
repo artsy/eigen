@@ -44,6 +44,7 @@
 
         NSArray *artworks = [saleArtworksJSON map:^id(id json) {
             // AFNetworking will remove keys from dictionaries that contain null values, but not arrays that contain *only* nulls.
+            // Once https://github.com/AFNetworking/AFNetworking/pull/4052 is merged, we can update AFNetworking and remove this NSNull check.
             // So we need to do some additional checking, just to be safe.
             if (json == [NSNull null]) { return nil; }
             id artworkJSON = json[@"artwork"];
