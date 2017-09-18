@@ -55,11 +55,11 @@ export default class Composer extends React.Component<Props, State> {
   }
 
   submitText() {
-    Keyboard.dismiss()
-    this.input.clear()
     if (this.props.onSubmit) {
       this.props.onSubmit(this.state.text)
     }
+    Keyboard.dismiss()
+    this.input.clear()
   }
 
   render() {

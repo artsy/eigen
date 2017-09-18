@@ -67,6 +67,7 @@ const LoadingIndicator = styled(ActivityIndicator)`
 
 interface Props extends RelayProps {
   relay?: RelayPaginationProp
+  onMessageSent?: (text: string) => void
 }
 
 interface State {
@@ -77,6 +78,8 @@ interface State {
 }
 
 export class Conversation extends React.Component<Props, State> {
+  composer: Composer
+
   constructor(props) {
     super(props)
 
@@ -128,14 +131,20 @@ export class Conversation extends React.Component<Props, State> {
     return (
       <Composer
         disabled={this.state.sendingMessage}
+        ref={composer => (this.composer = composer)}
         onSubmit={text => {
           this.setState({ sendingMessage: true })
+
           sendConversationMessage(
             this.props.relay.environment,
             conversation,
             text,
             response => {
               this.setState({ sendingMessage: false })
+
+              if (this.props.onMessageSent) {
+                this.props.onMessageSent(text)
+              }
             },
             error => {
               console.warn(error)
@@ -173,10 +182,15 @@ export default createFragmentContainer(Conversation, {
     fragment Conversation_me on Me {
       conversation(id: $conversationID) {
         id
+        __id
         to {
           name
           initials
         }
+        from {
+          email
+        }
+        last_message_id
         ...Messages_conversation
         initial_message
         is_last_message_to_user
@@ -187,38 +201,23 @@ export default createFragmentContainer(Conversation, {
   `,
 })
 
-export interface RelayProps {
+interface RelayProps {
   me: {
     conversation: {
-      __id: string
       id: string
-      from: {
-        name: string
-        email: string
-        initials: string
-      }
+      __id: string
       to: {
         name: string
         initials: string
       }
+      from: {
+        email: string
+      }
+      last_message_id: string
       initial_message: string
       is_last_message_to_user: boolean
       last_message_open: string | null
       last_message_delivery_id: string | null
-      messages: {
-        pageInfo?: {
-          hasNextPage: boolean
-        }
-        edges: Array<{
-          node: {
-            impulse_id: string
-            is_from_user: boolean
-          } | null
-        }>
-      }
-      items: Array<{
-        item: any
-      }>
     }
   }
 }

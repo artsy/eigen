@@ -1,21 +1,30 @@
 import { commitMutation, Environment, graphql, MutationConfig, RecordSourceSelectorProxy } from "react-relay"
 import { ConnectionHandler } from "relay-runtime"
-import RelayProps from "./relayInterfaces"
+
+interface Conversation {
+  last_message_id: string
+  id: string
+  __id: string
+  from: {
+    email: string
+  }
+}
 
 export function sendConversationMessage(
   environment: Environment,
-  conversation: RelayProps["me"]["conversation"],
+  conversation: Conversation,
   text: string,
   onCompleted: MutationConfig["onCompleted"],
   onError: MutationConfig["onError"]
 ) {
-  const lastMessage = conversation.messages.edges[conversation.messages.edges.length - 1].node
-
   const storeUpdater = (store: RecordSourceSelectorProxy) => {
     const mutationPayload = store.getRootField("sendConversationMessage")
     const newMessageEdge = mutationPayload.getLinkedRecord("messageEdge")
-    const connection = ConnectionHandler.getConnection(store.get(conversation.__id), "Conversation_messages")
-    ConnectionHandler.insertEdgeAfter(connection, newMessageEdge)
+    const conversationStore = store.get(conversation.__id)
+
+    // TODO: Why is this not working?
+    const connection = ConnectionHandler.getConnection(conversationStore, "Messages_messages")
+    ConnectionHandler.insertEdgeBefore(connection, newMessageEdge)
   }
 
   return commitMutation(environment, {
@@ -49,7 +58,7 @@ export function sendConversationMessage(
         from: conversation.from.email,
         body_text: text,
         // Reply to the last message
-        reply_to_message_id: lastMessage.impulse_id,
+        reply_to_message_id: conversation.last_message_id,
       },
     },
 
@@ -68,7 +77,7 @@ export function sendConversationMessage(
         },
         connectionInfo: [
           {
-            key: "Conversation_messages",
+            key: "Messages_messages",
             rangeBehavior: "append",
           },
         ],

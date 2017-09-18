@@ -1610,6 +1610,9 @@ type Conversation implements Node {
     timezone: String
   ): String
 
+  # Impulse id of the last message.
+  last_message_id: String
+
   # True if user/conversation initiator is a recipient.
   is_last_message_to_user: Boolean
 
@@ -1733,6 +1736,9 @@ input CreateSubmissionMutationInput {
 
   # The name of the work
   title: String
+
+  # The internal state of the work, e.g. draft/submitted
+  state: SubmissionStateAggregation
 
   # The width of the work
   width: String
@@ -4528,6 +4534,9 @@ type Submission {
   # The name of the work
   title: String
 
+  # The internal state of the work, e.g. draft/submitted
+  state: SubmissionStateAggregation
+
   # The width of the work
   width: String
 
@@ -4556,6 +4565,11 @@ enum SubmissionCategoryAggregation {
 enum SubmissionDimensionAggregation {
   CM
   IN
+}
+
+enum SubmissionStateAggregation {
+  DRAFT
+  SUBMITTED
 }
 
 type Tag {
@@ -4707,6 +4721,9 @@ input UpdateSubmissionMutationInput {
 
   # The name of the work
   title: String
+
+  # The internal state of the work, e.g. draft/submitted
+  state: SubmissionStateAggregation
 
   # The width of the work
   width: String
