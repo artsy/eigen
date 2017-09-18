@@ -22,14 +22,14 @@ const Container = styled.View`
 `
 
 interface StyledSendButtonProps {
-  containsText: boolean
+  disabled: boolean
 }
 
 const SendButton = styled.Text`
   font-family: ${fonts["avant-garde-regular"]};
   font-size: 12;
   margin-right: 10;
-  color: ${(p: StyledSendButtonProps) => (p.containsText ? colors["purple-regular"] : colors["gray-regular"])};
+  color: ${(p: StyledSendButtonProps) => (p.disabled ? colors["gray-regular"] : colors["purple-regular"])};
 `
 
 interface Props {
@@ -56,8 +56,16 @@ export default class Composer extends React.Component<Props, State> {
   }
 
   submitText() {
+    Keyboard.dismiss()
     if (this.props.onSubmit) {
       this.props.onSubmit(this.state.text)
+      this.setState({ text: null })
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.value && this.state.text === null) {
+      this.setState({ text: this.props.value })
     }
     Keyboard.dismiss()
     this.input.clear()
@@ -75,10 +83,7 @@ export default class Composer extends React.Component<Props, State> {
       paddingRight: 10,
     }
 
-    const containsText = !!(this.state.text && this.state.text.length)
-    if (this.props.value) {
-      console.log(`value prop: ${this.props.value}`)
-    }
+    const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
 
     return (
       <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={20} style={{ flex: 1 }}>
@@ -89,19 +94,17 @@ export default class Composer extends React.Component<Props, State> {
             placeholderTextColor={colors["gray-semibold"]}
             keyboardAppearance={"dark"}
             onEndEditing={() => {
-              this.input.clear()
-              this.setState({ active: false, text: null })
+              this.setState({ active: false })
             }}
             onFocus={() => this.setState({ active: this.input.isFocused() })}
             onChangeText={text => this.setState({ text })}
             ref={input => (this.input = input)}
             style={inputStyles}
             multiline={true}
-            editable={!this.props.disabled}
-            value={this.state.text || this.props.value}
+            value={this.state.text}
           />
-          <TouchableWithoutFeedback disabled={!containsText} onPress={this.submitText.bind(this)}>
-            <SendButton containsText={containsText}>SEND</SendButton>
+          <TouchableWithoutFeedback disabled={disableSendButton} onPress={this.submitText.bind(this)}>
+            <SendButton disabled={disableSendButton}>SEND</SendButton>
           </TouchableWithoutFeedback>
         </Container>
       </KeyboardAvoidingView>

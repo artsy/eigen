@@ -37,7 +37,6 @@ exports[`looks correct when rendered 1`] = `
     }
   >
     <TextInput
-      editable={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -56,6 +55,7 @@ exports[`looks correct when rendered 1`] = `
           "paddingTop": 13,
         }
       }
+      value={null}
     />
     <Text
       accessibilityComponentType={undefined}
@@ -63,8 +63,7 @@ exports[`looks correct when rendered 1`] = `
       accessibilityTraits={undefined}
       accessible={true}
       allowFontScaling={true}
-      containsText={false}
-      disabled={false}
+      disabled={true}
       ellipsizeMode="tail"
       hitSlop={undefined}
       nativeID={undefined}
