@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <svg width="480" height="1024" xmlns="http://www.w3.org/2000/svg" version="1.1">
 
- <rect type="RCTScrollView" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="480" height="1024"/>
+ <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="480" height="1024"/>
 
  <g transform='translate(0, 0)'>
-   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="480" height="0"/>
+   <rect type="RCTScrollView" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="480" height="0"/>
 
    <g transform='translate(0, 0)'>
      <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="480" height="0"/>
+
+     <g transform='translate(0, 0)'>
+       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="480" height="0"/>
+     </g>
+
    </g>
 
  </g>
