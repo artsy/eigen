@@ -8,6 +8,8 @@ import { LargeHeadline } from "../Typography"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import ConversationSnippet from "./ConversationSnippet"
 
+import Spinner from "../../Spinner"
+
 const PageSize = 10
 
 const Headline = styled(LargeHeadline)`
@@ -94,28 +96,28 @@ export class Conversations extends React.Component<Props, State> {
 
   render() {
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        initialListSize={10}
-        scrollEventThrottle={10}
-        onEndReachedThreshold={10}
-        enableEmptySections={true}
-        renderHeader={() => {
-          return (
+      <View>
+        <ListView
+          dataSource={this.state.dataSource}
+          initialListSize={10}
+          scrollEventThrottle={10}
+          onEndReachedThreshold={10}
+          enableEmptySections={true}
+          renderHeader={() =>
             <View>
               {this.props.headerView}
               {this.hasContent() ? <Headline>Messages</Headline> : null}
-            </View>
-          )
-        }}
-        renderRow={data =>
-          <ConversationSnippet
-            conversation={data}
-            key={data.id}
-            onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${data.id}`)}
-          />}
-        onEndReached={() => this.fetchData()}
-      />
+            </View>}
+          renderRow={data =>
+            <ConversationSnippet
+              conversation={data}
+              key={data.id}
+              onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${data.id}`)}
+            />}
+          onEndReached={() => this.fetchData()}
+        />
+        {this.state.fetchingNextPage && <Spinner />}
+      </View>
     )
   }
 }

@@ -1,165 +1,132 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`looks correct when rendered 1`] = `
-<RCTScrollView
-  dataSource={
-    ListViewDataSource {
-      "items": 2,
+<View>
+  <RCTScrollView
+    dataSource={
+      ListViewDataSource {
+        "items": 2,
+      }
     }
-  }
-  enableEmptySections={true}
-  initialListSize={10}
-  onEndReached={[Function]}
-  onEndReachedThreshold={10}
-  renderHeader={[Function]}
-  renderRow={[Function]}
-  renderScrollComponent={[Function]}
-  scrollEventThrottle={10}
->
-  <View>
+    enableEmptySections={true}
+    initialListSize={10}
+    onEndReached={[Function]}
+    onEndReachedThreshold={10}
+    renderHeader={[Function]}
+    renderRow={[Function]}
+    renderScrollComponent={[Function]}
+    scrollEventThrottle={10}
+  >
     <View>
-      <Text
+      <View>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 30,
+                "paddingLeft": 20,
+                "paddingRight": 20,
+                "textAlign": "left",
+              },
+              Array [
+                Object {
+                  "marginBottom": 20,
+                  "marginTop": 10,
+                },
+                undefined,
+              ],
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+              },
+            ]
+          }
+        >
+          Messages
+        </Text>
+      </View>
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
         accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+        hitSlop={undefined}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           Array [
             Object {
-              "color": "black",
-              "fontSize": 30,
-              "paddingLeft": 20,
-              "paddingRight": 20,
-              "textAlign": "left",
+              "marginBottom": 0,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "marginTop": 10,
+              "minHeight": 80,
             },
-            Array [
-              Object {
-                "marginBottom": 20,
-                "marginTop": 10,
-              },
-              undefined,
-            ],
-            Object {
-              "fontFamily": "AGaramondPro-Regular",
-            },
+            undefined,
           ]
         }
+        testID={undefined}
       >
-        Messages
-      </Text>
-    </View>
-    <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      hitSlop={undefined}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "marginBottom": 0,
-            "marginLeft": 20,
-            "marginRight": 20,
-            "marginTop": 10,
-            "minHeight": 80,
-          },
-          undefined,
-        ]
-      }
-      testID={undefined}
-    >
-      <View
-        style={
-          Array [
-            Object {
-              "flexBasis": 0,
-              "flexDirection": "row",
-              "flexGrow": 1,
-              "flexShrink": 1,
-            },
-            Array [
-              Object {
-                "justifyContent": "space-between",
-              },
-              undefined,
-            ],
-          ]
-        }
-      >
-        <AROpaqueImageView
-          imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
-          style={
-            Array [
-              Object {
-                "borderRadius": 4,
-                "height": 58,
-                "width": 58,
-              },
-              undefined,
-            ]
-          }
-        />
         <View
           style={
             Array [
               Object {
                 "flexBasis": 0,
-                "flexDirection": "column",
+                "flexDirection": "row",
                 "flexGrow": 1,
                 "flexShrink": 1,
               },
               Array [
                 Object {
-                  "marginBottom": 3,
-                  "marginLeft": 15,
+                  "justifyContent": "space-between",
                 },
                 undefined,
               ],
             ]
           }
         >
+          <AROpaqueImageView
+            imageURL="https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg"
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 58,
+                  "width": 58,
+                },
+                undefined,
+              ]
+            }
+          />
           <View
             style={
               Array [
                 Object {
                   "flexBasis": 0,
-                  "flexDirection": "row",
+                  "flexDirection": "column",
                   "flexGrow": 1,
                   "flexShrink": 1,
                 },
-                undefined,
+                Array [
+                  Object {
+                    "marginBottom": 3,
+                    "marginLeft": 15,
+                  },
+                  undefined,
+                ],
               ]
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              style={
-                Array [
-                  Object {
-                    "color": "black",
-                    "fontSize": 11,
-                    "textAlign": "left",
-                  },
-                  Object {},
-                  Object {
-                    "fontFamily": "Avant Garde Gothic ITCW01Dm",
-                  },
-                ]
-              }
-            >
-              ACA GALLERIES
-            </Text>
             <View
               style={
                 Array [
@@ -169,13 +136,7 @@ exports[`looks correct when rendered 1`] = `
                     "flexGrow": 1,
                     "flexShrink": 1,
                   },
-                  Array [
-                    Object {
-                      "justifyContent": "flex-end",
-                      "marginBottom": 4,
-                    },
-                    undefined,
-                  ],
+                  undefined,
                 ]
               }
             >
@@ -187,7 +148,7 @@ exports[`looks correct when rendered 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "#cccccc",
+                      "color": "black",
                       "fontSize": 11,
                       "textAlign": "left",
                     },
@@ -198,23 +159,150 @@ exports[`looks correct when rendered 1`] = `
                   ]
                 }
               >
-                A YEAR
+                ACA GALLERIES
+              </Text>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "flexBasis": 0,
+                      "flexDirection": "row",
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                    },
+                    Array [
+                      Object {
+                        "justifyContent": "flex-end",
+                        "marginBottom": 4,
+                      },
+                      undefined,
+                    ],
+                  ]
+                }
+              >
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "#cccccc",
+                        "fontSize": 11,
+                        "textAlign": "left",
+                      },
+                      Object {},
+                      Object {
+                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                      },
+                    ]
+                  }
+                >
+                  A YEAR
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  Object {
+                    "flexBasis": 0,
+                    "flexDirection": "row",
+                    "flexGrow": 1,
+                    "flexShrink": 1,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "color": "black",
+                      "fontSize": 16,
+                      "textAlign": "left",
+                    },
+                    Object {},
+                    Object {
+                      "fontFamily": "AGaramondPro-Regular",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "black",
+                        "fontFamily": "AGaramondPro-Regular",
+                        "fontSize": 16,
+                        "marginBottom": 2,
+                        "marginTop": 6,
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  Bradley Theodore · 
+                </Text>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "black",
+                        "fontFamily": "AGaramondPro-Regular",
+                        "fontSize": 16,
+                        "marginBottom": 2,
+                        "marginTop": 6,
+                      },
+                      Array [
+                        Object {
+                          "fontFamily": "AGaramondPro-Italic",
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  Karl and Anna Face Off (Diptych), 
+                </Text>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "black",
+                        "fontFamily": "AGaramondPro-Regular",
+                        "fontSize": 16,
+                        "marginBottom": 2,
+                        "marginTop": 6,
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  2016
+                </Text>
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "flexBasis": 0,
-                  "flexDirection": "row",
-                  "flexGrow": 1,
-                  "flexShrink": 1,
-                },
-                undefined,
-              ]
-            }
-          >
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -235,218 +323,97 @@ exports[`looks correct when rendered 1`] = `
                 ]
               }
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                disabled={false}
-                ellipsizeMode="tail"
-                style={
-                  Array [
-                    Object {
-                      "color": "black",
-                      "fontFamily": "AGaramondPro-Regular",
-                      "fontSize": 16,
-                      "marginBottom": 2,
-                      "marginTop": 6,
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                Bradley Theodore · 
-              </Text>
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                disabled={false}
-                ellipsizeMode="tail"
-                style={
-                  Array [
-                    Object {
-                      "color": "black",
-                      "fontFamily": "AGaramondPro-Regular",
-                      "fontSize": 16,
-                      "marginBottom": 2,
-                      "marginTop": 6,
-                    },
-                    Array [
-                      Object {
-                        "fontFamily": "AGaramondPro-Italic",
-                      },
-                      undefined,
-                    ],
-                  ]
-                }
-              >
-                Karl and Anna Face Off (Diptych), 
-              </Text>
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                disabled={false}
-                ellipsizeMode="tail"
-                style={
-                  Array [
-                    Object {
-                      "color": "black",
-                      "fontFamily": "AGaramondPro-Regular",
-                      "fontSize": 16,
-                      "marginBottom": 2,
-                      "marginTop": 6,
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                2016
-              </Text>
+              Karl and Anna... Fab!
             </Text>
           </View>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            disabled={false}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "black",
-                  "fontSize": 16,
-                  "textAlign": "left",
-                },
-                Object {},
-                Object {
-                  "fontFamily": "AGaramondPro-Regular",
-                },
-              ]
-            }
-          >
-            Karl and Anna... Fab!
-          </Text>
         </View>
-      </View>
-      <ARDottedLine
-        color={4291611852}
-        style={
-          Object {
-            "height": 2,
+        <ARDottedLine
+          color={4291611852}
+          style={
+            Object {
+              "height": 2,
+            }
           }
-        }
-      />
-    </View>
-    <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      hitSlop={undefined}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "marginBottom": 0,
-            "marginLeft": 20,
-            "marginRight": 20,
-            "marginTop": 10,
-            "minHeight": 80,
-          },
-          undefined,
-        ]
-      }
-      testID={undefined}
-    >
+        />
+      </View>
       <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hitSlop={undefined}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
           Array [
             Object {
-              "flexBasis": 0,
-              "flexDirection": "row",
-              "flexGrow": 1,
-              "flexShrink": 1,
+              "marginBottom": 0,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "marginTop": 10,
+              "minHeight": 80,
             },
-            Array [
-              Object {
-                "justifyContent": "space-between",
-              },
-              undefined,
-            ],
+            undefined,
           ]
         }
+        testID={undefined}
       >
-        <AROpaqueImageView
-          imageURL="https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg"
-          style={
-            Array [
-              Object {
-                "borderRadius": 4,
-                "height": 58,
-                "width": 58,
-              },
-              undefined,
-            ]
-          }
-        />
         <View
           style={
             Array [
               Object {
                 "flexBasis": 0,
-                "flexDirection": "column",
+                "flexDirection": "row",
                 "flexGrow": 1,
                 "flexShrink": 1,
               },
               Array [
                 Object {
-                  "marginBottom": 3,
-                  "marginLeft": 15,
+                  "justifyContent": "space-between",
                 },
                 undefined,
               ],
             ]
           }
         >
+          <AROpaqueImageView
+            imageURL="https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg"
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 58,
+                  "width": 58,
+                },
+                undefined,
+              ]
+            }
+          />
           <View
             style={
               Array [
                 Object {
                   "flexBasis": 0,
-                  "flexDirection": "row",
+                  "flexDirection": "column",
                   "flexGrow": 1,
                   "flexShrink": 1,
                 },
-                undefined,
+                Array [
+                  Object {
+                    "marginBottom": 3,
+                    "marginLeft": 15,
+                  },
+                  undefined,
+                ],
               ]
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              style={
-                Array [
-                  Object {
-                    "color": "black",
-                    "fontSize": 11,
-                    "textAlign": "left",
-                  },
-                  Object {},
-                  Object {
-                    "fontFamily": "Avant Garde Gothic ITCW01Dm",
-                  },
-                ]
-              }
-            >
-              DAVID KRUT PROJECTS
-            </Text>
             <View
               style={
                 Array [
@@ -456,13 +423,7 @@ exports[`looks correct when rendered 1`] = `
                     "flexGrow": 1,
                     "flexShrink": 1,
                   },
-                  Array [
-                    Object {
-                      "justifyContent": "flex-end",
-                      "marginBottom": 4,
-                    },
-                    undefined,
-                  ],
+                  undefined,
                 ]
               }
             >
@@ -474,7 +435,7 @@ exports[`looks correct when rendered 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "#cccccc",
+                      "color": "black",
                       "fontSize": 11,
                       "textAlign": "left",
                     },
@@ -485,23 +446,150 @@ exports[`looks correct when rendered 1`] = `
                   ]
                 }
               >
-                A YEAR
+                DAVID KRUT PROJECTS
+              </Text>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "flexBasis": 0,
+                      "flexDirection": "row",
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                    },
+                    Array [
+                      Object {
+                        "justifyContent": "flex-end",
+                        "marginBottom": 4,
+                      },
+                      undefined,
+                    ],
+                  ]
+                }
+              >
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "#cccccc",
+                        "fontSize": 11,
+                        "textAlign": "left",
+                      },
+                      Object {},
+                      Object {
+                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                      },
+                    ]
+                  }
+                >
+                  A YEAR
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  Object {
+                    "flexBasis": 0,
+                    "flexDirection": "row",
+                    "flexGrow": 1,
+                    "flexShrink": 1,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "color": "black",
+                      "fontSize": 16,
+                      "textAlign": "left",
+                    },
+                    Object {},
+                    Object {
+                      "fontFamily": "AGaramondPro-Regular",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "black",
+                        "fontFamily": "AGaramondPro-Regular",
+                        "fontSize": 16,
+                        "marginBottom": 2,
+                        "marginTop": 6,
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  Aida Muluneh · 
+                </Text>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "black",
+                        "fontFamily": "AGaramondPro-Regular",
+                        "fontSize": 16,
+                        "marginBottom": 2,
+                        "marginTop": 6,
+                      },
+                      Array [
+                        Object {
+                          "fontFamily": "AGaramondPro-Italic",
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  Darkness Give Way to Light, 
+                </Text>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "black",
+                        "fontFamily": "AGaramondPro-Regular",
+                        "fontSize": 16,
+                        "marginBottom": 2,
+                        "marginTop": 6,
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  2016
+                </Text>
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "flexBasis": 0,
-                  "flexDirection": "row",
-                  "flexGrow": 1,
-                  "flexShrink": 1,
-                },
-                undefined,
-              ]
-            }
-          >
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -522,106 +610,20 @@ exports[`looks correct when rendered 1`] = `
                 ]
               }
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                disabled={false}
-                ellipsizeMode="tail"
-                style={
-                  Array [
-                    Object {
-                      "color": "black",
-                      "fontFamily": "AGaramondPro-Regular",
-                      "fontSize": 16,
-                      "marginBottom": 2,
-                      "marginTop": 6,
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                Aida Muluneh · 
-              </Text>
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                disabled={false}
-                ellipsizeMode="tail"
-                style={
-                  Array [
-                    Object {
-                      "color": "black",
-                      "fontFamily": "AGaramondPro-Regular",
-                      "fontSize": 16,
-                      "marginBottom": 2,
-                      "marginTop": 6,
-                    },
-                    Array [
-                      Object {
-                        "fontFamily": "AGaramondPro-Italic",
-                      },
-                      undefined,
-                    ],
-                  ]
-                }
-              >
-                Darkness Give Way to Light, 
-              </Text>
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                disabled={false}
-                ellipsizeMode="tail"
-                style={
-                  Array [
-                    Object {
-                      "color": "black",
-                      "fontFamily": "AGaramondPro-Regular",
-                      "fontSize": 16,
-                      "marginBottom": 2,
-                      "marginTop": 6,
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                2016
-              </Text>
+              Hi, I’m interested in purchasing this work.                     Could you please provide more information about the piece?
             </Text>
           </View>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            disabled={false}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "color": "black",
-                  "fontSize": 16,
-                  "textAlign": "left",
-                },
-                Object {},
-                Object {
-                  "fontFamily": "AGaramondPro-Regular",
-                },
-              ]
-            }
-          >
-            Hi, I’m interested in purchasing this work.                     Could you please provide more information about the piece?
-          </Text>
         </View>
-      </View>
-      <ARDottedLine
-        color={4291611852}
-        style={
-          Object {
-            "height": 2,
+        <ARDottedLine
+          color={4291611852}
+          style={
+            Object {
+              "height": 2,
+            }
           }
-        }
-      />
+        />
+      </View>
     </View>
-  </View>
-</RCTScrollView>
+  </RCTScrollView>
+</View>
 `;
