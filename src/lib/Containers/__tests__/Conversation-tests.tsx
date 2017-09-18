@@ -39,6 +39,47 @@ it("displays a connectivity banner when network is down", () => {
   expect(conversation).toMatchSnapshot()
 })
 
+it("looks correct when rendered", () => {
+  const conversation = renderer.create(<Conversation me={props} />) as any
+  const instance = conversation.getInstance()
+
+  // Assumes decent connectivity
+  instance.handleConnectivityChange(true)
+
+  expect(conversation).toMatchSnapshot()
+})
+
+it("sends message when composer is submitted", async () => {
+  function sendMessage() {
+    return new Promise((resolve, reject) => {
+      const onMessageSent = text => {
+        expect(text).toEqual("Hello world")
+        resolve(true)
+      }
+
+      setTimeout(reject, 1000)
+
+      const conversation = renderer.create(
+        <Conversation
+          me={props}
+          onMessageSent={onMessageSent}
+          relay={{
+            environment: {},
+          }}
+        />
+      ) as any
+
+      const instance = conversation.getInstance()
+      instance.composer.setState({ text: "Hello world" })
+      instance.composer.submitText()
+    })
+  }
+
+  return sendMessage().then(successful => {
+    expect(successful).toBeTruthy()
+  })
+})
+
 const props = {
   initials: "JC",
   conversation: {

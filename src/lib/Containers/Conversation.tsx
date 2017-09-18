@@ -67,6 +67,7 @@ const LoadingIndicator = styled(ActivityIndicator)`
 
 interface Props extends RelayProps {
   relay?: RelayPaginationProp
+  onMessageSent?: (text: string) => void
 }
 
 interface State {
@@ -77,6 +78,8 @@ interface State {
 }
 
 export class Conversation extends React.Component<Props, State> {
+  composer: Composer
+
   constructor(props) {
     super(props)
 
@@ -128,14 +131,20 @@ export class Conversation extends React.Component<Props, State> {
     return (
       <Composer
         disabled={this.state.sendingMessage}
+        ref={composer => (this.composer = composer)}
         onSubmit={text => {
           this.setState({ sendingMessage: true })
+
           sendConversationMessage(
             this.props.relay.environment,
             conversation,
             text,
             response => {
               this.setState({ sendingMessage: false })
+
+              if (this.props.onMessageSent) {
+                this.props.onMessageSent(text)
+              }
             },
             error => {
               console.warn(error)
