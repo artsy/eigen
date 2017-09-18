@@ -1,6 +1,5 @@
 import * as React from "react"
 import { Keyboard, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback } from "react-native"
-import { RelayRefetchProp } from "react-relay"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
@@ -64,7 +63,7 @@ export default class Composer extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    if (this.props.value && this.state.text === null) {
+    if (this.props.value && !this.state.text) {
       this.setState({ text: this.props.value })
     }
     Keyboard.dismiss()
