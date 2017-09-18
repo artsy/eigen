@@ -9,12 +9,12 @@
 #import "PartnerShow.h"
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
-#import "OrNil.h"
 
 #import "MTLModel+JSON.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
+#import <ARAnalytics/ARAnalytics.h>
 
 
 @implementation ArtsyAPI (Artworks)
@@ -43,19 +43,16 @@
         if (errors) {
             // GraphQL queries that fail can return 200s but indicate failures with the "errors" key. We need to check them.
             NSLog(@"Failure fetching GraphQL query: %@", errors);
+            [ARAnalytics event:@"Failure parsing GraphQL query" withProperties:@{@"response": json}];
             if (failure) {
                 failure([NSError errorWithDomain:@"GraphQL" code:0 userInfo:json]);
             }
             return;
         }
 
-        // We need to guard against possible null JSON values surfacing as NSNull.
-        id data = [json[@"data"] orNil];
-        id me = [data[@"me"] orNil];
-        id savedArtworks = [me[@"saved_artworks"] orNil];
-        id artworksConnection = [savedArtworks[@"artworks_connection"] orNil];
-        id pageInfo = [artworksConnection[@"pageInfo"] orNil];
-        NSArray *artworksJson = [[[artworksConnection[@"edges"] orNil] valueForKey:@"node"] orNil];
+        id artworksConnection = json[@"data"][@"me"][@"saved_artworks"][@"artworks_connection"];
+        NSDictionary *pageInfo = artworksConnection[@"pageInfo"];
+        NSArray *artworksJson = [artworksConnection[@"edges"] valueForKey:@"node"];
 
         if (!artworksJson) {
             if (failure) {
@@ -69,7 +66,7 @@
             if (json == [NSNull null]) { return nil; }
             Artwork *artwork = [Artwork modelWithJSON:json];
 
-            id saleArtworkJSON = [json[@"sale_artwork"] orNil];
+            id saleArtworkJSON = json[@"sale_artwork"];
             if (saleArtworkJSON) {
                 SaleArtwork *saleArtwork = [SaleArtwork modelWithJSON:saleArtworkJSON];
                 artwork.auction = saleArtwork.auction;

@@ -1,12 +1,12 @@
 #import "Artwork.h"
 #import "ArtsyAPI+Private.h"
 #import "ArtsyAPI+Sales.h"
-#import "OrNil.h"
 #import "ARRouter.h"
 
 #import "MTLModel+JSON.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
+#import <ARAnalytics/ARAnalytics.h>
 
 @implementation ArtsyAPI (Sales)
 
@@ -24,10 +24,16 @@
 {
     NSURLRequest *request = [ARRouter artworksForSaleRequest:saleID];
     return [self performRequest:request success:^(id json) {
-        // We need to guard against possible null JSON values surfacing as NSNull.
-        id data = [json[@"data"] orNil];
-        id sale = [data[@"sale"] orNil];
-        id saleArtworksJSON = [sale[@"sale_artworks"] orNil];
+        NSArray *errors = json[@"errors"];
+        if (errors) {
+            NSLog(@"Failure fetching GraphQL query: %@", errors);
+            [ARAnalytics event:@"Failure parsing GraphQL query" withProperties:@{@"response": json}];
+            if (failure) {
+                failure([NSError errorWithDomain:@"JSON parsing" code:0 userInfo:json]);
+            }
+            return;
+        }
+        NSArray *saleArtworksJSON = json[@"data"][@"sale"][@"sale_artworks"];
 
         if (!saleArtworksJSON) {
             if (failure) {
@@ -37,9 +43,11 @@
         }
 
         NSArray *artworks = [saleArtworksJSON map:^id(id json) {
+            // AFNetworking will remove keys from dictionaries that contain null values, but not arrays that contain *only* nulls.
+            // So we need to do some additional checking, just to be safe.
             if (json == [NSNull null]) { return nil; }
-            id artworkJSON = [json[@"artwork"] orNil];
-            if (!artworkJSON) { return nil;}
+            id artworkJSON = json[@"artwork"];
+            if (!artworkJSON || artworkJSON == [NSNull null]) { return nil;}
 
             // This is messy, sorry. We need to fill those back references from artwork -> sale artwork
             // without creating a reference cycle. So we inflate two models with JSON.
