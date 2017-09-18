@@ -5029,6 +5029,12 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
+linkify-it@^1.2.0:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/linkify-it/-/linkify-it-1.2.4.tgz#0773526c317c8fd13bd534ee1d180ff88abf881a"
+  dependencies:
+    uc.micro "^1.0.1"
+
 lint-staged@^3.4.1:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-3.4.1.tgz#96cd1cf7a1ac92d81662643c37d1cca28b91b046"
@@ -6858,6 +6864,12 @@ react-modal@^1.7.7:
     prop-types "^15.5.7"
     react-dom-factories "^1.0.0"
 
+react-native-hyperlink@0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/react-native-hyperlink/-/react-native-hyperlink-0.0.11.tgz#26e2b37d48759545289ad9c8cbec7cf46f1ef482"
+  dependencies:
+    linkify-it "^1.2.0"
+
 "react-native-parallax-scroll-view@https://github.com/orta/react-native-parallax-scroll-view":
   version "0.18.2"
   resolved "https://github.com/orta/react-native-parallax-scroll-view#4e20440f9cd0b6280303b57124c0348c0e63b7c0"
@@ -8474,6 +8486,10 @@ typescript@^2.1.5, typescript@^2.3.2, typescript@~2.3.2:
 ua-parser-js@^0.7.9:
   version "0.7.12"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.12.tgz#04c81a99bdd5dc52263ea29d24c6bf8d4818a4bb"
+
+uc.micro@^1.0.1:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/uc.micro/-/uc.micro-1.0.3.tgz#7ed50d5e0f9a9fb0a573379259f2a77458d50192"
 
 uglify-js@2.7.5:
   version "2.7.5"

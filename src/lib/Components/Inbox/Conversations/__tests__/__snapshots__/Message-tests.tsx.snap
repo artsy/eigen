@@ -346,28 +346,38 @@ exports[`looks correct when rendered 1`] = `
         </View>
       </View>
     </View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      style={
-        Array [
-          Object {
-            "color": "black",
-            "fontSize": 16,
-            "textAlign": "left",
-          },
-          false,
-          Object {},
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
-        ]
+    <View
+      linkStyle={
+        Object {
+          "color": "#0645ad",
+        }
       }
+      onPress={[Function]}
+      style={undefined}
     >
-      Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?
-    </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 16,
+              "textAlign": "left",
+            },
+            false,
+            Object {},
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?
+      </Text>
+    </View>
   </View>
 </View>
 `;
