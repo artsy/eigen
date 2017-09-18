@@ -1,23 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`looks correct when the user has no conversations 1`] = `
-<RCTScrollView
-  dataSource={
-    ListViewDataSource {
-      "items": 0,
+<View>
+  <RCTScrollView
+    dataSource={
+      ListViewDataSource {
+        "items": 0,
+      }
     }
-  }
-  enableEmptySections={true}
-  initialListSize={10}
-  onEndReached={[Function]}
-  onEndReachedThreshold={10}
-  renderHeader={[Function]}
-  renderRow={[Function]}
-  renderScrollComponent={[Function]}
-  scrollEventThrottle={10}
->
-  <View>
-    <View />
-  </View>
-</RCTScrollView>
+    enableEmptySections={true}
+    initialListSize={10}
+    onEndReached={[Function]}
+    onEndReachedThreshold={10}
+    renderHeader={[Function]}
+    renderRow={[Function]}
+    renderScrollComponent={[Function]}
+    scrollEventThrottle={10}
+  >
+    <View>
+      <View />
+    </View>
+  </RCTScrollView>
+</View>
 `;

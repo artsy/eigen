@@ -24435,6 +24435,18 @@
               "deprecationReason": null
             },
             {
+              "name": "last_message_id",
+              "description": "Impulse id of the last message.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "is_last_message_to_user",
               "description": "True if user/conversation initiator is a recipient.",
               "args": [],
@@ -36800,6 +36812,16 @@
               "defaultValue": null
             },
             {
+              "name": "state",
+              "description": "The internal state of the work, e.g. draft/submitted",
+              "type": {
+                "kind": "ENUM",
+                "name": "SubmissionStateAggregation",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "width",
               "description": "The width of the work",
               "type": {
@@ -36951,6 +36973,29 @@
             },
             {
               "name": "IN",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "SubmissionStateAggregation",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "DRAFT",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SUBMITTED",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -37211,6 +37256,18 @@
               "deprecationReason": null
             },
             {
+              "name": "state",
+              "description": "The internal state of the work, e.g. draft/submitted",
+              "args": [],
+              "type": {
+                "kind": "ENUM",
+                "name": "SubmissionStateAggregation",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "width",
               "description": "The width of the work",
               "args": [],
@@ -37420,6 +37477,16 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "state",
+              "description": "The internal state of the work, e.g. draft/submitted",
+              "type": {
+                "kind": "ENUM",
+                "name": "SubmissionStateAggregation",
                 "ofType": null
               },
               "defaultValue": null

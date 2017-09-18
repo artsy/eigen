@@ -30,7 +30,9 @@
 
 ###### Messaging
 
--   Fixede pagination on conversation component - luc
+-   Added spinner and 'no more' message when paginating thru inbox - matt
+-   Refactored messaging-related interfaces, fixed mutations, added tests - luc + matt
+-   Fixed pagination on conversation component - luc
 -   Added ability to sort messages in ascending and descending order - luc
 -   Added capability to mark a message as read by the user - matt
 -   Updated logic to render purch requests and invoices better - matt
