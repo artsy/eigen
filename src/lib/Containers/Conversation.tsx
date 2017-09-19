@@ -132,6 +132,7 @@ export class Conversation extends React.Component<Props, State> {
     return (
       <Composer
         disabled={this.state.sendingMessage || !this.state.isConnected}
+        ref={composer => (this.composer = composer)}
         value={this.state.failedMessageText}
         onSubmit={text => {
           this.setState({ sendingMessage: true, failedMessageText: null })

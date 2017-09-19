@@ -91,7 +91,7 @@ exports[`looks correct when rendered 1`] = `
     </Text>
   </View>
 </View>
-`;
+`
 
 exports[`regarding the send button disables it even if it contains text if the disabled prop is true 1`] = `
 <View
@@ -184,7 +184,7 @@ exports[`regarding the send button disables it even if it contains text if the d
     </Text>
   </View>
 </View>
-`;
+`
 
 exports[`regarding the send button disables it when there is no text 1`] = `
 <View
@@ -277,4 +277,4 @@ exports[`regarding the send button disables it when there is no text 1`] = `
     </Text>
   </View>
 </View>
-`;
+`

@@ -66,8 +66,6 @@ export default class Composer extends React.Component<Props, State> {
     if (this.props.value && !this.state.text) {
       this.setState({ text: this.props.value })
     }
-    Keyboard.dismiss()
-    this.input.clear()
   }
 
   render() {
