@@ -27,7 +27,7 @@ it("looks correct when rendered", () => {
     },
   }
   const tree = renderer
-    .create(<Message initialText="" firstMessage={false} senderName={senderName} message={props} />)
+    .create(<Message initialText="" firstMessage={false} index={0} senderName={senderName} message={props} />)
     .toJSON()
   expect(tree).toMatchSnapshot()
 })

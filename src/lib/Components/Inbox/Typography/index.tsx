@@ -1,5 +1,6 @@
 import * as React from "react"
 import { StyleSheet, Text, TextProperties, TextStyle } from "react-native"
+import styled from "styled-components"
 
 import colors from "../../../../data/colors"
 import fonts from "../../../../data/fonts"

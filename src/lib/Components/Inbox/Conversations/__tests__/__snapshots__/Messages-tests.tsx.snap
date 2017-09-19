@@ -2,7 +2,6 @@
 
 exports[`looks correct when rendered 1`] = `
 <RCTScrollView
-  ItemSeparatorComponent={[Function]}
   ListFooterComponent={
     <ActivityIndicator
       animating={false}
@@ -87,18 +86,10 @@ exports[`looks correct when rendered 1`] = `
         style={
           Array [
             Object {
-              "flexDirection": "row",
+              "paddingLeft": 20,
+              "paddingRight": 20,
             },
-            Array [
-              Object {
-                "alignSelf": "stretch",
-                "marginBottom": 10,
-                "marginLeft": 20,
-                "marginRight": 20,
-                "marginTop": 15,
-              },
-              undefined,
-            ],
+            undefined,
           ]
         }
       >
@@ -106,49 +97,13 @@ exports[`looks correct when rendered 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#e5e5e5",
-                "borderRadius": 15,
-                "height": 30,
-                "width": 30,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            disabled={false}
-            ellipsizeMode="tail"
-            style={
-              Array [
-                Object {
-                  "alignSelf": "center",
-                  "color": "#666666",
-                  "fontFamily": "Avant Garde Gothic ITCW01Dm",
-                  "fontSize": 10,
-                  "marginTop": 8,
-                },
-                undefined,
-              ]
-            }
-            user={undefined}
-          >
-            KK
-          </Text>
-        </View>
-        <View
-          style={
-            Array [
-              Object {
-                "flexBasis": 0,
-                "flexDirection": "column",
-                "flexGrow": 1,
-                "flexShrink": 1,
+                "flexDirection": "row",
               },
               Array [
                 Object {
-                  "marginLeft": 10,
+                  "alignSelf": "stretch",
+                  "marginBottom": 10,
+                  "marginTop": 15,
                 },
                 undefined,
               ],
@@ -159,15 +114,12 @@ exports[`looks correct when rendered 1`] = `
             style={
               Array [
                 Object {
-                  "flexDirection": "row",
+                  "backgroundColor": "#e5e5e5",
+                  "borderRadius": 15,
+                  "height": 30,
+                  "width": 30,
                 },
-                Array [
-                  Object {
-                    "alignSelf": "stretch",
-                    "marginBottom": 10,
-                  },
-                  undefined,
-                ],
+                undefined,
               ]
             }
           >
@@ -179,72 +131,129 @@ exports[`looks correct when rendered 1`] = `
               style={
                 Array [
                   Object {
-                    "color": "black",
-                    "fontSize": 11,
-                    "textAlign": "left",
-                  },
-                  Array [
-                    Object {
-                      "fontSize": 11.5,
-                      "marginRight": 3,
-                    },
-                    undefined,
-                  ],
-                  Object {
+                    "alignSelf": "center",
+                    "color": "#666666",
                     "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                    "fontSize": 10,
+                    "marginTop": 8,
                   },
+                  undefined,
                 ]
               }
+              user={undefined}
             >
-              KIMBERLY KLARK
+              KK
             </Text>
           </View>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            disabled={false}
-            ellipsizeMode="tail"
+          <View
             style={
               Array [
                 Object {
-                  "color": "black",
-                  "fontSize": 16,
-                  "textAlign": "left",
-                },
-                Object {
-                  "color": "#cccccc",
-                },
-                Object {},
-                Object {
-                  "fontFamily": "AGaramondPro-Regular",
-                },
-              ]
-            }
-          >
-            Adoro! Por favor envie-me mais informações
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            disabled={false}
-            ellipsizeMode="tail"
-            style={
-              Array [
-                Object {
-                  "color": "#cccccc",
-                  "fontFamily": "AGaramondPro-Regular",
+                  "flexBasis": 0,
+                  "flexDirection": "column",
+                  "flexGrow": 1,
+                  "flexShrink": 1,
                 },
                 Array [
                   Object {
-                    "marginTop": 10,
+                    "marginLeft": 10,
                   },
                   undefined,
                 ],
               ]
             }
           >
-            Percy · percy@cat.com
-          </Text>
+            <View
+              style={
+                Array [
+                  Object {
+                    "flexDirection": "row",
+                  },
+                  Array [
+                    Object {
+                      "alignSelf": "stretch",
+                      "marginBottom": 10,
+                    },
+                    undefined,
+                  ],
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "color": "black",
+                      "fontSize": 11,
+                      "textAlign": "left",
+                    },
+                    Array [
+                      Object {
+                        "fontSize": 11.5,
+                        "marginRight": 3,
+                      },
+                      undefined,
+                    ],
+                    Object {
+                      "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                    },
+                  ]
+                }
+              >
+                KIMBERLY KLARK
+              </Text>
+            </View>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              disabled={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": "black",
+                    "fontSize": 16,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#cccccc",
+                  },
+                  Object {},
+                  Object {
+                    "fontFamily": "AGaramondPro-Regular",
+                  },
+                ]
+              }
+            >
+              Adoro! Por favor envie-me mais informações
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              disabled={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": "#cccccc",
+                    "fontFamily": "AGaramondPro-Regular",
+                  },
+                  Array [
+                    Object {
+                      "marginTop": 10,
+                    },
+                    undefined,
+                  ],
+                ]
+              }
+            >
+              Percy · percy@cat.com
+            </Text>
+          </View>
         </View>
       </View>
     </View>
