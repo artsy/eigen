@@ -92,20 +92,6 @@ exports[`displays a connectivity banner when network is down 1`] = `
         </Text>
         <View />
       </View>
-      <ActivityIndicator
-        animating={false}
-        color="#999999"
-        hidesWhenStopped={true}
-        size="small"
-        style={
-          Array [
-            Object {
-              "marginTop": 20,
-            },
-            undefined,
-          ]
-        }
-      />
     </View>
     <View
       style={
@@ -143,6 +129,14 @@ exports[`displays a connectivity banner when network is down 1`] = `
     </View>
     <RCTScrollView
       ItemSeparatorComponent={[Function]}
+      ListFooterComponent={
+        <ActivityIndicator
+          animating={false}
+          color="#999999"
+          hidesWhenStopped={true}
+          size="small"
+        />
+      }
       data={
         Array [
           Object {
@@ -379,6 +373,25 @@ exports[`displays a connectivity banner when network is down 1`] = `
               </Text>
             </View>
           </View>
+        </View>
+        <View
+          onLayout={[Function]}
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scaleY": -1,
+                },
+              ],
+            }
+          }
+        >
+          <ActivityIndicator
+            animating={false}
+            color="#999999"
+            hidesWhenStopped={true}
+            size="small"
+          />
         </View>
       </View>
     </RCTScrollView>
@@ -554,23 +567,17 @@ exports[`looks correct when rendered 1`] = `
         </Text>
         <View />
       </View>
-      <ActivityIndicator
-        animating={false}
-        color="#999999"
-        hidesWhenStopped={true}
-        size="small"
-        style={
-          Array [
-            Object {
-              "marginTop": 20,
-            },
-            undefined,
-          ]
-        }
-      />
     </View>
     <RCTScrollView
       ItemSeparatorComponent={[Function]}
+      ListFooterComponent={
+        <ActivityIndicator
+          animating={false}
+          color="#999999"
+          hidesWhenStopped={true}
+          size="small"
+        />
+      }
       data={
         Array [
           Object {
@@ -808,6 +815,25 @@ exports[`looks correct when rendered 1`] = `
             </View>
           </View>
         </View>
+        <View
+          onLayout={[Function]}
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scaleY": -1,
+                },
+              ],
+            }
+          }
+        >
+          <ActivityIndicator
+            animating={false}
+            color="#999999"
+            hidesWhenStopped={true}
+            size="small"
+          />
+        </View>
       </View>
     </RCTScrollView>
   </View>
@@ -982,23 +1008,17 @@ exports[`looks correct when rendered 2`] = `
         </Text>
         <View />
       </View>
-      <ActivityIndicator
-        animating={false}
-        color="#999999"
-        hidesWhenStopped={true}
-        size="small"
-        style={
-          Array [
-            Object {
-              "marginTop": 20,
-            },
-            undefined,
-          ]
-        }
-      />
     </View>
     <RCTScrollView
       ItemSeparatorComponent={[Function]}
+      ListFooterComponent={
+        <ActivityIndicator
+          animating={false}
+          color="#999999"
+          hidesWhenStopped={true}
+          size="small"
+        />
+      }
       data={
         Array [
           Object {
@@ -1235,6 +1255,25 @@ exports[`looks correct when rendered 2`] = `
               </Text>
             </View>
           </View>
+        </View>
+        <View
+          onLayout={[Function]}
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scaleY": -1,
+                },
+              ],
+            }
+          }
+        >
+          <ActivityIndicator
+            animating={false}
+            color="#999999"
+            hidesWhenStopped={true}
+            size="small"
+          />
         </View>
       </View>
     </RCTScrollView>
