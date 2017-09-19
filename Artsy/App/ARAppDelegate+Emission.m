@@ -201,13 +201,13 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 #pragma mark - Native Module: Events/Analytics
 
-    emission.eventsModule.eventOccurred = ^(UIViewController *_Nonnull fromViewController, NSDictionary *_Nonnull info) {
+    emission.eventsModule.eventOccurred = ^(NSDictionary *_Nonnull info) {
         NSMutableDictionary *properties = [info mutableCopy];
         [properties removeObjectForKey:@"name"];
         [ARAnalytics event:info[@"name"] withProperties:[properties copy]];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([info[@"name"] isEqual:@"Follow artist"] && [fromViewController isKindOfClass:[ARArtistComponentViewController class]]) {
+            if ([info[@"name"] isEqual:@"Follow artist"] && [info[@"page"] isEqualToString:@"Artist"]) {
                 ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
                 [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
             }
