@@ -331,30 +331,40 @@ exports[`displays a connectivity banner when network is down 1`] = `
                   KIMBERLY KLARK
                 </Text>
               </View>
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                disabled={false}
-                ellipsizeMode="tail"
-                style={
-                  Array [
-                    Object {
-                      "color": "black",
-                      "fontSize": 16,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#cccccc",
-                    },
-                    Object {},
-                    Object {
-                      "fontFamily": "AGaramondPro-Regular",
-                    },
-                  ]
+              <View
+                linkStyle={
+                  Object {
+                    "color": "#0645ad",
+                  }
                 }
+                onPress={[Function]}
+                style={undefined}
               >
-                Adoro! Por favor envie-me mais informações
-              </Text>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "black",
+                        "fontSize": 16,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#cccccc",
+                      },
+                      Object {},
+                      Object {
+                        "fontFamily": "AGaramondPro-Regular",
+                      },
+                    ]
+                  }
+                >
+                  Adoro! Por favor envie-me mais informações
+                </Text>
+              </View>
               <Text
                 accessible={true}
                 allowFontScaling={true}
@@ -758,30 +768,40 @@ exports[`looks correct when rendered 1`] = `
                   KIMBERLY KLARK
                 </Text>
               </View>
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                disabled={false}
-                ellipsizeMode="tail"
-                style={
-                  Array [
-                    Object {
-                      "color": "black",
-                      "fontSize": 16,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#cccccc",
-                    },
-                    Object {},
-                    Object {
-                      "fontFamily": "AGaramondPro-Regular",
-                    },
-                  ]
+              <View
+                linkStyle={
+                  Object {
+                    "color": "#0645ad",
+                  }
                 }
+                onPress={[Function]}
+                style={undefined}
               >
-                Adoro! Por favor envie-me mais informações
-              </Text>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "black",
+                        "fontSize": 16,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#cccccc",
+                      },
+                      Object {},
+                      Object {
+                        "fontFamily": "AGaramondPro-Regular",
+                      },
+                    ]
+                  }
+                >
+                  Adoro! Por favor envie-me mais informações
+                </Text>
+              </View>
               <Text
                 accessible={true}
                 allowFontScaling={true}
@@ -1185,30 +1205,40 @@ exports[`looks correct when rendered 2`] = `
                   KIMBERLY KLARK
                 </Text>
               </View>
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                disabled={false}
-                ellipsizeMode="tail"
-                style={
-                  Array [
-                    Object {
-                      "color": "black",
-                      "fontSize": 16,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#cccccc",
-                    },
-                    Object {},
-                    Object {
-                      "fontFamily": "AGaramondPro-Regular",
-                    },
-                  ]
+              <View
+                linkStyle={
+                  Object {
+                    "color": "#0645ad",
+                  }
                 }
+                onPress={[Function]}
+                style={undefined}
               >
-                Adoro! Por favor envie-me mais informações
-              </Text>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "black",
+                        "fontSize": 16,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#cccccc",
+                      },
+                      Object {},
+                      Object {
+                        "fontFamily": "AGaramondPro-Regular",
+                      },
+                    ]
+                  }
+                >
+                  Adoro! Por favor envie-me mais informações
+                </Text>
+              </View>
               <Text
                 accessible={true}
                 allowFontScaling={true}

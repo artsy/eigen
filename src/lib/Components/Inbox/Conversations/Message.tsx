@@ -4,6 +4,8 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { BodyText, FromSignatureText, MetadataText, SmallHeadline } from "../Typography"
 
+import Hyperlink from "react-native-hyperlink"
+
 import Avatar from "./Avatar"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
 import PDFPreview from "./Preview/Attachment/PDFPreview"
@@ -101,10 +103,20 @@ export class Message extends React.Component<Props, any> {
     const isSent = !!message.created_at
     const body = firstMessage ? initialText : message.body
 
+    const onLinkPress = url => {
+      return SwitchBoard.presentNavigationViewController(this, url)
+    }
+
+    const linkStyle = {
+      color: "#0645ad",
+    }
+
     return (
-      <BodyText disabled={!isSent}>
-        {body}
-      </BodyText>
+      <Hyperlink onPress={onLinkPress} linkStyle={linkStyle}>
+        <BodyText disabled={!isSent}>
+          {body}
+        </BodyText>
+      </Hyperlink>
     )
   }
 

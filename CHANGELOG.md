@@ -30,6 +30,7 @@
 
 ###### Messaging
 
+-   Initial spike on adding some link detection - maxim + matt
 -   Initial message now sticks to the top of the scrollview - luc
 -   Added spinner and 'no more' message when paginating thru inbox - matt
 -   Refactored messaging-related interfaces, fixed mutations, added tests - luc + matt
