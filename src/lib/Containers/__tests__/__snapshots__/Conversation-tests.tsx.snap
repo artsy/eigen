@@ -405,7 +405,6 @@ exports[`displays a connectivity banner when network is down 1`] = `
     }
   >
     <TextInput
-      editable={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -424,6 +423,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
           "paddingTop": 13,
         }
       }
+      value={null}
     />
     <Text
       accessibilityComponentType={undefined}
@@ -431,8 +431,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
       accessibilityTraits={undefined}
       accessible={true}
       allowFontScaling={true}
-      containsText={false}
-      disabled={false}
+      disabled={true}
       ellipsizeMode="tail"
       hitSlop={undefined}
       nativeID={undefined}
@@ -833,7 +832,6 @@ exports[`looks correct when rendered 1`] = `
     }
   >
     <TextInput
-      editable={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -852,6 +850,7 @@ exports[`looks correct when rendered 1`] = `
           "paddingTop": 13,
         }
       }
+      value={null}
     />
     <Text
       accessibilityComponentType={undefined}
@@ -859,8 +858,7 @@ exports[`looks correct when rendered 1`] = `
       accessibilityTraits={undefined}
       accessible={true}
       allowFontScaling={true}
-      containsText={false}
-      disabled={false}
+      disabled={true}
       ellipsizeMode="tail"
       hitSlop={undefined}
       nativeID={undefined}
@@ -1261,7 +1259,6 @@ exports[`looks correct when rendered 2`] = `
     }
   >
     <TextInput
-      editable={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -1280,6 +1277,7 @@ exports[`looks correct when rendered 2`] = `
           "paddingTop": 13,
         }
       }
+      value={null}
     />
     <Text
       accessibilityComponentType={undefined}
@@ -1287,8 +1285,7 @@ exports[`looks correct when rendered 2`] = `
       accessibilityTraits={undefined}
       accessible={true}
       allowFontScaling={true}
-      containsText={false}
-      disabled={false}
+      disabled={true}
       ellipsizeMode="tail"
       hitSlop={undefined}
       nativeID={undefined}
