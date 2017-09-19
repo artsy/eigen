@@ -1,5 +1,6 @@
 import moment from "moment"
 import * as React from "react"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { BodyText, FromSignatureText, MetadataText, SmallHeadline } from "../Typography"
@@ -14,6 +15,7 @@ import styled from "styled-components/native"
 import colors from "../../../../data/colors"
 
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
+import DottedLine from "../../DottedLine"
 
 const VerticalLayout = styled.View`
   flex-direction: column;
@@ -22,12 +24,15 @@ const VerticalLayout = styled.View`
 
 const HorizontalLayout = styled.View`flex-direction: row;`
 
-const Container = styled(HorizontalLayout)`
+const Container = styled(View)`
+  padding-left: 20;
+  padding-right: 20;
+`
+
+const Content = styled(HorizontalLayout)`
   align-self: stretch;
   margin-top: 15;
   margin-bottom: 10;
-  margin-left: 20;
-  margin-right: 20;
 `
 
 const Header = styled(HorizontalLayout)`
@@ -52,6 +57,11 @@ const TimeStamp = styled(MetadataText)`
   font-size: 11.5
 `
 
+const Seperator = styled(DottedLine)`
+  padding-left: 20;
+  padding-right: 20;
+`
+
 const ArtworkPreviewContainer = styled.View`margin-bottom: 10;`
 
 const ImagePreviewContainer = styled.View`margin-bottom: 10;`
@@ -66,6 +76,7 @@ interface Props extends RelayProps {
   artworkPreview?: JSX.Element
   showPreview?: JSX.Element
   firstMessage: boolean
+  index: number
   initialText: string
 }
 
@@ -118,41 +129,44 @@ export class Message extends React.Component<Props, any> {
     const fromSignature = fromName ? `${fromName} · ${fromEmail}` : fromEmail
     return (
       <Container>
-        <Avatar isUser={message.is_from_user} initials={initials} />
-        <TextContainer>
-          <Header>
-            <SenderName>
-              {senderName}
-            </SenderName>
-            {isSent &&
-              <TimeStamp>
-                {moment(message.created_at).fromNow(true)}
-              </TimeStamp>}
-          </Header>
-          {artworkPreview &&
-            <ArtworkPreviewContainer>
-              {artworkPreview}
-            </ArtworkPreviewContainer>}
+        <Content>
+          <Avatar isUser={message.is_from_user} initials={initials} />
+          <TextContainer>
+            <Header>
+              <SenderName>
+                {senderName}
+              </SenderName>
+              {isSent &&
+                <TimeStamp>
+                  {moment(message.created_at).fromNow(true)}
+                </TimeStamp>}
+            </Header>
+            {artworkPreview &&
+              <ArtworkPreviewContainer>
+                {artworkPreview}
+              </ArtworkPreviewContainer>}
 
-          {showPreview &&
-            <ArtworkPreviewContainer>
-              {showPreview}
-            </ArtworkPreviewContainer>}
+            {showPreview &&
+              <ArtworkPreviewContainer>
+                {showPreview}
+              </ArtworkPreviewContainer>}
 
-          {message.invoice &&
-            <InvoicePreviewContainer>
-              <InvoicePreview invoice={message.invoice} />
-            </InvoicePreviewContainer>}
+            {message.invoice &&
+              <InvoicePreviewContainer>
+                <InvoicePreview invoice={message.invoice} />
+              </InvoicePreviewContainer>}
 
-          {this.renderAttachmentPreviews(message.attachments)}
+            {this.renderAttachmentPreviews(message.attachments)}
 
-          {this.renderBody()}
+            {this.renderBody()}
 
-          {!message.is_from_user &&
-            <FromSignature>
-              {fromSignature}
-            </FromSignature>}
-        </TextContainer>
+            {!message.is_from_user &&
+              <FromSignature>
+                {fromSignature}
+              </FromSignature>}
+          </TextContainer>
+        </Content>
+        {this.props.index !== 0 && <Seperator />}
       </Container>
     )
   }
