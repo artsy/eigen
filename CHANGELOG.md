@@ -38,6 +38,7 @@
 -   Added ability to sort messages in ascending and descending order - luc
 -   Added capability to mark a message as read by the user - matt
 -   Updated logic to render purch requests and invoices better - matt
+-   If a message fails to send, display it again in the Composer so the user can retry - sarah
 -   Updated styling on bottom dotted border of ConversationSnippet - erik
 -   Fixed incorrect use of Attachment props in invoice component - matt
 -   Added inline rendering for invoices - matt
