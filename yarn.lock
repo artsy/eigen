@@ -7042,9 +7042,9 @@ react-timer-mixin@^0.13.2:
   version "0.13.3"
   resolved "https://registry.yarnpkg.com/react-timer-mixin/-/react-timer-mixin-0.13.3.tgz#0da8b9f807ec07dc3e854d082c737c65605b3d22"
 
-react-tracking@^4.2.1:
+"react-tracking@https://github.com/mennenia/react-tracking#artsy-reacttracking-messaging":
   version "4.2.1"
-  resolved "https://registry.yarnpkg.com/react-tracking/-/react-tracking-4.2.1.tgz#c34619ddd205609ea46281a6c8c8e1243e910e81"
+  resolved "https://github.com/mennenia/react-tracking#9f68f3cf585156e1622b3088d157ad3886b80cc9"
   dependencies:
     lodash.merge "^4.6.0"
 

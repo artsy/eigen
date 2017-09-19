@@ -59,7 +59,7 @@
     "react-native-reversed-flat-list": "^1.0.1",
     "react-native-sentry": "^0.14.5",
     "react-relay": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/react-relay-1.3.0-artsy.1.tgz",
-    "react-tracking": "^4.2.1",
+    "react-tracking": "https://github.com/mennenia/react-tracking#artsy-reacttracking-messaging",
     "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/relay-runtime-artsy.1.tgz",
     "remove-markdown": "0.1.0",
     "styled-components": "^2.0.0"
