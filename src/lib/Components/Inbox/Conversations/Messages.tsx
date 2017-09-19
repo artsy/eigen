@@ -16,6 +16,7 @@ import ShowPreview from "./Preview/ShowPreview"
 
 import {
   ActivityIndicator,
+  Dimensions,
   FlatList,
   ImageURISource,
   NetInfo,
@@ -37,6 +38,7 @@ interface Props {
 interface State {
   fetchingMoreData: boolean
   reloadingData: boolean
+  shouldStickFirstMessageToTop: boolean
 }
 
 export class Messages extends React.Component<Props, State> {
@@ -46,6 +48,7 @@ export class Messages extends React.Component<Props, State> {
     this.state = {
       fetchingMoreData: false,
       reloadingData: false,
+      shouldStickFirstMessageToTop: false,
     }
   }
 
@@ -120,11 +123,21 @@ export class Messages extends React.Component<Props, State> {
 
     return (
       <FlatList
-        inverted
-        data={messages}
+        inverted={!this.state.shouldStickFirstMessageToTop}
+        data={this.state.shouldStickFirstMessageToTop ? messages.reverse() : messages}
         renderItem={this.renderMessage.bind(this)}
         onEndReached={this.loadMore.bind(this)}
         onEndReachedThreshold={0.2}
+        onContentSizeChange={(width, height) => {
+          // If there aren't enough items to scroll through
+          // display messages from the top
+          const windowHeight = Dimensions.get("window").height
+          const containerHeight = windowHeight - 100
+
+          this.setState({
+            shouldStickFirstMessageToTop: height < containerHeight,
+          })
+        }}
         refreshControl={refreshControl}
         ItemSeparatorComponent={DottedLine}
       />
