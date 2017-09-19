@@ -44,6 +44,8 @@ Example/Emission/Configuration.h
 typings
 .apphub
 coverage
+package-lock.json
+yarn-error.log
 
 # Use a custom, cached location for Jest to save transpiling
 # on every PR
