@@ -49,7 +49,6 @@ class Header extends React.Component<HeaderProps, State> {
     })
   }
 
-
   render() {
     const artist = this.props.artist
     return (
@@ -141,8 +140,11 @@ class Header extends React.Component<HeaderProps, State> {
     this.setState({ following: !this.state.following, followersCount: newFollowersCount })
   }
 
-  // currently you can't get state yet, but leaving this in as desired usage
-  @track((props, state) => ({ following_artist: state.following, artist_id: props.artist._id, artist_slug: props.artist.id }))
+  @track((props, state) => ({
+    following_artist: state.following,
+    artist_id: props.artist._id,
+    artist_slug: props.artist.id,
+  }))
   successfulFollowChange() {
     Events.postEvent({
       name: this.state.following ? "Follow artist" : "Unfollow artist",
@@ -151,7 +153,7 @@ class Header extends React.Component<HeaderProps, State> {
       // TODO At some point, this component might be on other screens.
       source_screen: "artist page",
     })
-
+  }
 }
 
 interface Styles {

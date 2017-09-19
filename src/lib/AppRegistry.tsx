@@ -50,19 +50,19 @@ const renderWithLoadProgress = (Component: React.ReactType, initialProps: object
   }
 }
 
-@track(props => ({ page: props }), {
-  // Here we're hooking into Eigen to post analytics events to Adjust and Segement
-  // dispatch: data => Events.postEvent(data),
-  // !!!! Leaving the log in for now
-  dispatch: data => console.log(data),
-})
-class AppBase<P> extends React.Component<P, null> {}
-
-class Artist extends AppBase<{ artistID: string; isPad: boolean }> {
-  render() {
-    return <ArtistRenderer {...this.props} render={renderWithLoadProgress(Containers.Artist, this.props)} />
-  }
+// Analytics wrapper for all of our top level React components
+function AddTrack(pageName: string) {
+  return track(
+    // Here we assign the source screen to all subsequent events fired from that component
+    { page: pageName },
+    // Here we're hooking into Eigen to post analytics events to Adjust and Segement
+    { dispatch: data => Events.postEvent(data) }
+  )
 }
+
+const Artist: React.SFC<{ artistID: string; isPad: boolean }> = AddTrack("Artist")(props =>
+  <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />
+)
 
 const Inbox: React.SFC<{}> = () => <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />
 
