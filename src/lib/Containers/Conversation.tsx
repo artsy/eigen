@@ -5,7 +5,7 @@ import { ConnectionHandler } from "relay-runtime"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
-import { ActivityIndicator, FlatList, ImageURISource, NetInfo, View, ViewProperties } from "react-native"
+import { FlatList, ImageURISource, NetInfo, View, ViewProperties } from "react-native"
 
 import styled from "styled-components/native"
 import colors from "../../data/colors"
@@ -59,10 +59,6 @@ const DottedBorder = styled.View`
 
 const MessagesList = styled(FlatList)`
   margin-top: 10;
-`
-
-const LoadingIndicator = styled(ActivityIndicator)`
-  margin-top: 20;
 `
 
 interface Props extends RelayProps {
@@ -162,7 +158,6 @@ export class Conversation extends React.Component<Props, State> {
               </SmallHeadline>
               <PlaceholderView />
             </HeaderTextContainer>
-            <LoadingIndicator animating={this.state.fetchingData} hidesWhenStopped />
           </Header>
           {!this.state.isConnected && <ConnectivityBanner />}
           <Messages

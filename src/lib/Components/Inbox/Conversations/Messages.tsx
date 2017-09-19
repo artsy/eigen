@@ -140,6 +140,7 @@ export class Messages extends React.Component<Props, State> {
         }}
         refreshControl={refreshControl}
         ItemSeparatorComponent={DottedLine}
+        ListFooterComponent={<ActivityIndicator animating={this.state.fetchingMoreData} hidesWhenStopped />}
       />
     )
   }
