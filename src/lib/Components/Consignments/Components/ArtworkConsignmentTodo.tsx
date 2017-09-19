@@ -76,18 +76,18 @@ const ImageDarkener = styled.View`
 
 const ToDoButton = () =>
   <ImageBG>
-    <Image source={require("../images/plus.png")} />
+    <Image source={require("../../../../../images/consignments/plus.png")} />
   </ImageBG>
 
 const DoneButton = () =>
   <ImageBG style={{ backgroundColor: "white" }}>
-    <Image source={require("../images/black-tick.png")} />
+    <Image source={require("../../../../../images/consignments/black-tick.png")} />
   </ImageBG>
 
-const Button = (props: TouchableHighlightProperties) =>
+const Button: React.SFC<TouchableHighlightProperties> = ({ children, ...props }) =>
   <TouchableHighlight {...props}>
     <ButtonView>
-      {(props as any).children}
+      {children}
     </ButtonView>
   </TouchableHighlight>
 
@@ -99,6 +99,8 @@ const ImagePreview = images =>
       </InlineCopy>
     </ImageDarkener>
   </ImageStyle>
+
+const locationDisplayString = ({ city, state, country }) => [city, state, country].filter(Boolean).join(", ")
 
 interface TODOProps extends ConsignmentSetup {
   goToArtist?: () => void
@@ -128,7 +130,9 @@ const render = (props: TODOProps) =>
 
     <Separator />
     <Button onPress={props.goToMetadata}>
-      {props.metadata ? DoneButton() : ToDoButton()}
+      {props.metadata && props.metadata.category && props.metadata.title && props.metadata.year
+        ? DoneButton()
+        : ToDoButton()}
       <Title>METADATA</Title>
       <Subtitle>
         {props.metadata ? props.metadata.displayString : ""}
@@ -140,7 +144,7 @@ const render = (props: TODOProps) =>
       {props.location ? DoneButton() : ToDoButton()}
       <Title>LOCATION</Title>
       <Subtitle>
-        {props.location ? props.location : ""}
+        {props.location ? locationDisplayString(props.location) : ""}
       </Subtitle>
     </Button>
 

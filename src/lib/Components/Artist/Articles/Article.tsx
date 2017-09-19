@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewProperties, ViewStyle } from "react-native"
 
@@ -57,7 +57,7 @@ interface Styles {
 }
 
 const styles = StyleSheet.create<Styles>({
-  // TODO The outer wrapping view is currently only there because setting `marginRight: 20` on the Article from the
+  // TODO: The outer wrapping view is currently only there because setting `marginRight: 20` on the Article from the
   //      Articles component isn’t working.
   container: {
     width: 320,
@@ -84,22 +84,21 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(Article, {
-  fragments: {
-    article: () => Relay.QL`
-      fragment on Article {
-        thumbnail_title
-        href
-        author {
-          name
-        }
-        thumbnail_image {
-          url(version: "large")
-        }
+export default createFragmentContainer(
+  Article,
+  graphql`
+    fragment Article_article on Article {
+      thumbnail_title
+      href
+      author {
+        name
       }
-    `,
-  },
-})
+      thumbnail_image {
+        url(version: "large")
+      }
+    }
+  `
+)
 
 interface RelayProps {
   article: {

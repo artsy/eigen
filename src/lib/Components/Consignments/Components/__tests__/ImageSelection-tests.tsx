@@ -1,6 +1,3 @@
-import "jest-snapshots-svg"
-import "react-native"
-
 import * as React from "react"
 import * as renderer from "react-test-renderer"
 
@@ -12,5 +9,35 @@ it("renders correctly at iPhone size", () => {
   const root = <ImageSelection data={[{ image: { uri } }, { image: { uri } }, { image: { uri } }]} />
 
   const bg = renderer.create(root).toJSON()
-  expect(bg).toMatchSVGSnapshot(375, 667)
+  expect(bg).toMatchSnapshot()
+})
+
+describe("data source items", () => {
+  it("includes the camera image", () => {
+    const data = []
+    const selection = new ImageSelection({ data })
+    const ds = selection.dataSourceFromData(data, true)
+    expect(ds.getRowData(0, 0)).toEqual("take_photo")
+  })
+
+  it("adds an extra trailing element for iPhone", () => {
+    const data = []
+    const selection = new ImageSelection({ data })
+    const ds = selection.dataSourceFromData(data, false)
+    expect(ds.getRowCount()).toEqual(2)
+  })
+
+  it("only adds the photo element for iPad", () => {
+    const data = []
+    const selection = new ImageSelection({ data })
+    const ds = selection.dataSourceFromData(data, true)
+    expect(ds.getRowCount()).toEqual(1)
+  })
+})
+
+it("updates state on selection", () => {
+  const selection = new ImageSelection({ data: [] })
+  selection.setState = jest.fn()
+  selection.onPressItem("")
+  expect(selection.setState).toBeCalled()
 })

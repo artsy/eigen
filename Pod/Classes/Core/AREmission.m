@@ -4,18 +4,9 @@
 #import "ARTemporaryAPIModule.h"
 #import "ARRefineOptionsModule.h"
 #import "ARWorksForYouModule.h"
+#import "ARTakeCameraPhotoModule.h"
 
-#import <React/RCTBridge.h>
-#import <React/RCTBridgeModule.h>
 #import <SentryReactNative/RNSentry.h>
-
-
-@interface AREmissionConfiguration : NSObject <RCTBridgeModule>
-@property (nonatomic, copy, readwrite) NSString *userID;
-@property (nonatomic, copy, readwrite) NSString *authenticationToken;
-@property (nonatomic, copy, readwrite) NSString *sentryDSN;
-@property (nonatomic, assign, readwrite) BOOL useStagingEnvironment;
-@end
 
 @implementation AREmissionConfiguration
 
@@ -26,17 +17,35 @@ RCT_EXPORT_MODULE(Emission);
   return @{
     @"userID": self.userID,
     @"authenticationToken": self.authenticationToken,
-    @"useStagingEnvironment": @(self.useStagingEnvironment),
-    @"sentryDSN": self.sentryDSN ?: @"", // Empty is falsy in JS, so this is fine too.
+
+    @"gravityAPIHost": self.gravityAPIHost,
+    @"metaphysicsAPIHost": self.metaphysicsAPIHost,
+
+    // Empty is falsy in JS, so these are fine too.
+    @"googleMapsAPIKey": self.googleMapsAPIKey ?: @"",
+    @"sentryDSN": self.sentryDSN ?: @"",
   };
 }
 
+- (instancetype)initWithUserID:(NSString *)userID
+           authenticationToken:(NSString *)token
+                     sentryDSN:(NSString *)sentryDSN
+              googleMapsAPIKey:(NSString *)googleAPIKey
+                   gravityHost:(NSString *)gravity
+               metaphysicsHost:(NSString *)metaphysics
+{
+    self = [super init];
+    _userID = userID.copy;
+    _authenticationToken = token.copy;
+    _sentryDSN = sentryDSN.copy;
+    _googleMapsAPIKey = googleAPIKey.copy;
+    _gravityAPIHost = gravity.copy;
+    _metaphysicsAPIHost = metaphysics.copy;
+    return self;
+}
 @end
 
 
-@interface AREmission ()
-@property (nonatomic, strong, readwrite) AREmissionConfiguration *configurationModule;
-@end
 
 @implementation AREmission
 
@@ -53,56 +62,33 @@ static AREmission *_sharedInstance = nil;
   return _sharedInstance;
 }
 
-- (instancetype)initWithUserID:(NSString *)userID
-           authenticationToken:(NSString *)authenticationToken;
+- (instancetype)initWithConfiguration:(AREmissionConfiguration *)config packagerURL:(nullable NSURL *)packagerURL
 {
-  return [self initWithUserID:userID
-          authenticationToken:authenticationToken
-                  packagerURL:nil
-        useStagingEnvironment:NO];
-}
-
-- (instancetype)initWithUserID:(NSString *)userID
-           authenticationToken:(NSString *)authenticationToken
-                   packagerURL:(nullable NSURL *)packagerURL
-         useStagingEnvironment:(BOOL)useStagingEnvironment;
-{
-  return [self initWithUserID:userID
-          authenticationToken:authenticationToken
-                  packagerURL:packagerURL
-        useStagingEnvironment:useStagingEnvironment
-                    sentryDSN:nil];
-}
-
-- (instancetype)initWithUserID:(NSString *)userID
-           authenticationToken:(NSString *)authenticationToken
-                   packagerURL:(nullable NSURL *)packagerURL
-         useStagingEnvironment:(BOOL)useStagingEnvironment
-                     sentryDSN:(nullable NSString *)sentryDSN;
-{
-  NSParameterAssert(userID);
-  NSParameterAssert(authenticationToken);
+  NSParameterAssert(config);
+  NSParameterAssert(config.userID);
+  NSParameterAssert(config.authenticationToken);
+  NSParameterAssert(config.gravityAPIHost);
+  NSParameterAssert(config.metaphysicsAPIHost);
 
   if ((self = [super init])) {
+    // When adding a new native module, remember to add it
+    // to the array of modules below.
     _eventsModule = [AREventsModule new];
     _switchBoardModule = [ARSwitchBoardModule new];
     _APIModule = [ARTemporaryAPIModule new];
     _refineModule = [ARRefineOptionsModule new];
     _worksForYouModule = [ARWorksForYouModule new];
+    _cameraModule = [ARTakeCameraPhotoModule new];
 
-    _configurationModule = [AREmissionConfiguration new];
-    _configurationModule.userID = userID;
-    _configurationModule.authenticationToken = authenticationToken;
-    _configurationModule.useStagingEnvironment = useStagingEnvironment;
-    _configurationModule.sentryDSN = sentryDSN;
+    _configurationModule = config;
 
-    NSArray *modules = @[_APIModule, _configurationModule, _eventsModule, _switchBoardModule, _refineModule, _worksForYouModule];
+    NSArray *modules = @[_APIModule, _configurationModule, _eventsModule, _switchBoardModule, _refineModule, _worksForYouModule, _cameraModule];
 
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
                                     moduleProvider:^{ return modules; }
                                      launchOptions:nil];
     
-    if (sentryDSN) {
+    if (config.sentryDSN) {
       [RNSentry installWithBridge:_bridge];
     }
   }

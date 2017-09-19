@@ -1,7 +1,10 @@
 import * as React from "react"
 import { AppRegistry, NavigatorIOS } from "react-native"
 
+import * as storybook from "@storybook/react-native"
+
 import Browser from "./SectionBrowser"
+import { storiesToTree } from "./utils"
 
 export interface Story {
   name: string
@@ -10,13 +13,17 @@ export interface Story {
 
 export interface StorySection {
   kind: string
-  stories: Story[]
+  sections?: StorySection[]
+  stories?: Story[]
 }
+
+const stories = storybook.getStorybook()
+const root = storiesToTree(stories)
 
 const render = (props: any) =>
   <NavigatorIOS
     navigationBarHidden={true}
-    initialRoute={{ component: Browser, title: "Welcome" }}
+    initialRoute={{ component: Browser, title: "Welcome", passProps: { section: root } }}
     style={{ flex: 1 }}
   />
 

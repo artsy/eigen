@@ -1,10 +1,8 @@
-var blacklist = require("react-native/packager/blacklist")
+const blacklist = require("metro-bundler/src/blacklist")
 
 var config = {
   getBlacklistRE(platform) {
-    return blacklist(platform, [
-      /coverage\/.*/
-    ])
+    return blacklist(platform, [/coverage\/.*/])
   },
 
   getSourceExts() {

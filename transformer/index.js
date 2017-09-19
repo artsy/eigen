@@ -8,7 +8,7 @@ const { File } = require("babel-core/lib/transformation/file")
 const { SourceMapConsumer } = require("source-map")
 
 const upstream = require("./upstream")
-const { compactMapping } = require("react-native/packager/src/Bundler/source-map")
+const { compactMapping } = require("metro-bundler/src/Bundler/source-map")
 
 /**
  * This is a copy of upstream.transform, but modified to:
@@ -21,7 +21,7 @@ function transformTypeScript(src, filename, options) {
   options = options || {};
 
   const OLD_BABEL_ENV = process.env.BABEL_ENV;
-  process.env.BABEL_ENV = options.dev ? 'development' : 'production';
+  process.env.BABEL_ENV = options.dev ? "development" : "production";
 
   try {
     const compilerOptions = buildTSCompilerOptionsConfig()
@@ -30,13 +30,17 @@ function transformTypeScript(src, filename, options) {
     const babelConfig = buildBabelConfig(filename, options);
     const transformResult = babel.transform(tsResult.outputText, babelConfig);
 
-    const generateResult = generate(transformResult.ast, {
-      comments: false,
-      compact: false,
-      filename,
-      sourceFileName: filename,
-      sourceMaps: true,
-    }, src);
+    const generateResult = generate(
+      transformResult.ast,
+      {
+        comments: false,
+        compact: false,
+        filename,
+        sourceFileName: filename,
+        sourceMaps: true,
+      },
+      src
+    );
 
     // Translate generated source-map back to transformed JS source-map, which maps back to original TS code.
     generateResult.map = mergeSourceMaps(transformResult.map, generateResult.map)
@@ -103,17 +107,17 @@ function extractRawMappings(sourceMap) {
   return rawMappings
 }
 
-function transform(sourceCode, fileName, options) {
-    try {
-      let src = sourceCode
-      if (path.extname(fileName) == ".tsx" || path.extname(fileName) == ".ts") {
-        src = transformTypeScript(src, fileName, options)
-      } else {
-        src = upstream.transform(src, fileName, options)
-      }
-      return src
-    } catch(e) {
-      console.error(e)
+function transform({ filename, localPath, options, src }) {
+  try {
+    let sourceCode = src
+    if (filename && (path.extname(filename) == ".tsx" || path.extname(filename) == ".ts")) {
+      sourceCode = transformTypeScript(sourceCode, filename, options)
+    } else {
+      sourceCode = upstream.transform(sourceCode, filename, options)
     }
+    return sourceCode
+  } catch (e) {
+    console.error(e)
+  }
 }
 module.exports.transform = transform;

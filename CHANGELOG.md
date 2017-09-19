@@ -1,15 +1,61 @@
-### Master
+### 1.4.0-beta.4
 
 ###### Dev
 
+-   Conditionally use different past artist show fragments for iPad vs iPhone - alloy
+-   Upgrades Relay to ‘modern’ (v1.3.0) - alloy
+-   Upgrades React Native to v0.48.0 - sarah
+-   Extracts connectivity banner into its own component - sarah
 -   Adds stylelint to the dev-experience, not validated on CI yet - orta
+-   Updates Storybooks to 3.2 - orta
+-   CocoaPods/Danger updates - orta
+-   AREmission bridging updates which require integration work in Eigen - orta
+-   You can choose any URL for gravity/metaphysics - orta
+-   Adds an env var for google maps API - orta
+-   Updates the beta/dev UI, and with docs - orta
+-   Some testing stability work - orta
+
+###### Consignments
+
+-   Adds a camera roll screen for getting photos for consignments - orta
+-   Adds the native functionality for taking photos of a consignment - orta
+-   Infinite loop through all photos, and look good on both iPhone + iPad - orta
+-   Adds a provenance screen - ash
+-   Adds a final submission screen - orta
+-   Adds a screen for metadata editing - orta
+-   Looks better on iPads - orta
+-   Adds a screen for setting the location - orta
+-   Adds a spinner at the end of submission - orta
+
+###### Messaging
+
+-   Updated logic to render purch requests and invoices better - matt
+-   Updated styling on bottom dotted border of ConversationSnippet - erik
+-   Fixed incorrect use of Attachment props in invoice component - matt
+-   Added inline rendering for invoices - matt
+-   Removed hard-coded sanitization of message body - sarah
+-   Small composer UI tweaks - maxim
+
+### 1.4.0-beta.3
+
+-   Changes post-sale supplementary artwork info - ash
+-   Attempt to fix a crash by not assuming a work in auction has a `sale_artwork` - alloy
+-   Expect `null` to indicate that no settings were refined - alloy
+-   Only use `console.warn` level when reporting connectivity issues, otherwise Sentry shows these as ‘fatal’ - alloy
+
+###### Messaging
+
+-   Display unread indicator in Inbox based on Metaphysics response. - matt
+-   Update `Message` to use `body` over `raw_text` to take advantage of some parsing. - matt
+-   Update `Message` to also show an informative signature when the message is not from the user. - matt
+-   Create `ShowPreview` and support show inquiries, plus refactor to use more generic conversation item schema - matt
+-   Fix for bug in `ArtworkPreview` related to the falsiness of an empty string - sarah
+-   Adds a banner on Conversations when network connectivity is lost - sarah
 
 ### 1.4.0-beta.3
 
 ###### Messaging
 
--   Fix for bug in `ArtworkPreview` related to the falsiness of an empty string - sarah
--   Adds a banner on Conversations when network connectivity is lost - sarah
 -   Reload active bids on pull-to-refresh - alloy
 -   Make active bids link to their artworks - alloy
 -   Make zero inbox state hide on load if bids or conversations exist - alloy
@@ -20,7 +66,7 @@
 
 ###### Messaging
 
-- Remove statusbar in inquiry modal view - maxim
+-   Remove statusbar in inquiry modal view - maxim
 
 ### 1.4.0-beta.2
 

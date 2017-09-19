@@ -22,10 +22,8 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 - (NSString *)titleForApp
 {
   NSDictionary *metadata = [[NSBundle mainBundle] infoDictionary];
-  NSString *name = [metadata objectForKey:@"CFBundleIdentifier"];
   NSString *build = [metadata objectForKey:@"CFBundleVersion"];
-  NSString *version = [metadata objectForKey:@"CFBundleShortVersionString"];
-  return [NSString stringWithFormat:@"%@ v%@, build %@", name, version, build];
+  return [NSString stringWithFormat:@"Emission build %@", build];
 }
 
 - (void)setupSection:(ARSectionData *)section withTitle:(NSString *)title
@@ -44,7 +42,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
   section.headerHeight = 28;
 }
 
-- (void)showAlertViewWithTitle:(NSString *)title message:(NSString *)message actionTitle:(NSString *)actionTitle actionHandler:(void (^)())handler
+- (void)showAlertViewWithTitle:(NSString *)title message:(NSString *)message actionTitle:(NSString *)actionTitle actionHandler:(void (^)(void))handler
 {
   UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
 

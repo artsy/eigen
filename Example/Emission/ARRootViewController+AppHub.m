@@ -11,9 +11,14 @@
   ARSectionData *section = [[ARSectionData alloc] initWithCellDataArray:@[
     [self appHubBuildChooser],
     [self appHubMetadata],
-    [self showPRForBuild]
   ]];
-  [self setupSection:section withTitle:@"AppHub"];
+
+  id prInfo = [self showPRForBuild];
+  if (prInfo) {
+    [section addCellData:prInfo];
+  }
+
+  [self setupSection:section withTitle:@"Beta Versioning"];
   return section;
 }
 
@@ -45,11 +50,16 @@
     pr = [[build.buildDescription componentsSeparatedByString:@"- #"] lastObject];
   }
 
+  // Hide this button if we can't get a useful PR link
+  if (build && [pr isEqualToString:build.buildDescription]) {
+    return nil;
+  }
+
   cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
     if (!pr) {
       cell.textLabel.text = @"Not on an AppHub build...";
     } else {
-      cell.textLabel.text = [NSString stringWithFormat:@"Link to PR %@", pr];
+      cell.textLabel.text = [NSString stringWithFormat:@"Last PR %@", pr];
     }
   };
 
@@ -66,11 +76,14 @@
 {
   ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
   cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
-    cell.textLabel.text = @"Choose an RN build";
+    cell.textLabel.text = @"Choose a beta build";
   };
   cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
     [AppHub presentSelectorOnViewController:self withBuildHandler:^(AHBuild *build, NSError *error) {
-      [self.tableView reloadData];
+      [self showAlertViewWithTitle:@"Restarting for the new beta build" message:@"This will update your build" actionTitle:@"Do it" actionHandler:^{
+        exit(0);
+      }];
+
     }];
   };
   return cellData;

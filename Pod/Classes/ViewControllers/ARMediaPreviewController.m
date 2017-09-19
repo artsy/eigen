@@ -69,7 +69,7 @@ static char kARMediaPreviewControllerAssociatedObject;
         self.progressView.frame = frame;
         [self.originatingView addSubview:progressView];
     });
-    
+
     NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration
                                                           delegate:self
@@ -113,10 +113,10 @@ didFinishDownloadingToURL:(NSURL *)location;
 didCompleteWithError:(NSError *)error;
 {
     if (error) {
-        // TODO Present error to user?
+        // TODO: Present error to user?
         NSLog(@"Failed to download attachment: %@", error);
     }
-    
+
     [self.progressView removeFromSuperview];
     if (self.isCached) {
         [self _presentPreview];
@@ -140,7 +140,7 @@ didCompleteWithError:(NSError *)error;
                              &kARMediaPreviewControllerAssociatedObject,
                              controller,
                              OBJC_ASSOCIATION_RETAIN);
-    
+
     return controller;
 }
 

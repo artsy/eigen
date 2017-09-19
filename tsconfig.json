@@ -1,30 +1,26 @@
 {
-    "compilerOptions": {
-        "jsx": "react",
-        "target": "es6",
-        "module": "commonjs",
-        "rootDir": "src",
-        "outDir": "build",
-        "allowJs": true,
-        "pretty": true,
-        "moduleResolution": "node",
-        "strictNullChecks": false,
-        "experimentalDecorators": true
-    },
-    "include": [
-        "typings/index.d.ts",
-        "src/**/*.ts",
-        "src/**/*.tsx",
-        "dangerfile.ts"
-    ],
-    "exclude": [
-        "dangerfile.ts",
-        "node_modules",
-        "Pod/Assets",
-        "Example/Build",
-        "externals",
-        "build",
-        "index.ios.js",
-        "**/__mocks__"
-    ]
+  "compilerOptions": {
+    "jsx": "react",
+    "target": "es6",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "outDir": "build",
+    "allowJs": true,
+    "pretty": true,
+    "strictNullChecks": false,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true
+  },
+  "include": ["typings/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "dangerfile.ts"],
+  "exclude": [
+    "dangerfile.ts",
+    "node_modules",
+    "Pod/Assets",
+    "Example/Build",
+    "externals",
+    "build",
+    "index.ios.js",
+    "**/__mocks__"
+  ]
 }

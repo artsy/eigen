@@ -1,7 +1,8 @@
 import * as PropTypes from "prop-types"
 import * as React from "react"
-import * as Relay from "react-relay"
 import track from "react-tracking"
+
+import { createFragmentContainer, graphql } from "react-relay"
 
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
@@ -48,30 +49,6 @@ class Header extends React.Component<HeaderProps, State> {
     })
   }
 
-  @track({ action: "press follow/unfollow button" })
-  handleFollowChange() {
-    const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
-    ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
-      if (error) {
-        console.error(error)
-      } else {
-        this.successfulFollowChange()
-      }
-      this.setState({ following, followersCount: newFollowersCount })
-    })
-    this.setState({ following: !this.state.following, followersCount: newFollowersCount })
-  }
-
-  // currently you can't get state yet, but leaving this in as desired usage
-  @track((props, state) => ({ name: state.following, artist_id: props.artist._id, artist_slug: props.artist.id }))
-  successfulFollowChange() {
-    Events.postEvent({
-      name: this.state.following ? "Follow artist" : "Unfollow artist",
-      artist_id: this.props.artist._id,
-      artist_slug: this.props.artist.id,
-      // TODO At some point, this component might be on other screens.
-      source_screen: "artist page",
-    })
 
   render() {
     const artist = this.props.artist
@@ -149,6 +126,32 @@ class Header extends React.Component<HeaderProps, State> {
 
     return leadingSubstring + " " + birthday
   }
+
+  @track({ action: "press follow/unfollow button" })
+  handleFollowChange() {
+    const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
+    ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
+      if (error) {
+        console.warn(error)
+      } else {
+        this.successfulFollowChange()
+      }
+      this.setState({ following, followersCount: newFollowersCount })
+    })
+    this.setState({ following: !this.state.following, followersCount: newFollowersCount })
+  }
+
+  // currently you can't get state yet, but leaving this in as desired usage
+  @track((props, state) => ({ name: state.following, artist_id: props.artist._id, artist_slug: props.artist.id }))
+  successfulFollowChange() {
+    Events.postEvent({
+      name: this.state.following ? "Follow artist" : "Unfollow artist",
+      artist_id: this.props.artist._id,
+      artist_slug: this.props.artist.id,
+      // TODO At some point, this component might be on other screens.
+      source_screen: "artist page",
+    })
+
 }
 
 interface Styles {
@@ -178,22 +181,21 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(Header, {
-  fragments: {
-    artist: () => Relay.QL`
-      fragment on Artist {
-        _id
-        id
-        name
-        nationality
-        birthday
-        counts {
-          follows
-        }
+export default createFragmentContainer(
+  Header,
+  graphql`
+    fragment Header_artist on Artist {
+      _id
+      id
+      name
+      nationality
+      birthday
+      counts {
+        follows
       }
-    `,
-  },
-})
+    }
+  `
+)
 
 interface RelayProps {
   artist: {

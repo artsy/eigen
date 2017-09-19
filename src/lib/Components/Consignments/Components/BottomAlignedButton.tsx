@@ -17,6 +17,7 @@ const Separator = styled.View`
   background-color: ${colors["gray-regular"]};
   height: 1;
 `
+
 export interface ButtonBodyStyle {
   backgroundColor: string
   height: number
@@ -24,16 +25,15 @@ export interface ButtonBodyStyle {
   paddingTop: number
 }
 
-export interface BottomAlignedProps {
+export interface BottomAlignedProps extends React.Props<JSX.Element> {
   onPress: () => void
-  children?: any[]
   bodyStyle: ButtonBodyStyle
   buttonText: string
   disabled?: boolean
 }
 
-const render = (props: BottomAlignedProps) =>
-  <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={60} style={{ flex: 1 }}>
+const BottomAlignedButton: React.SFC<BottomAlignedProps> = props =>
+  <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={15} style={{ flex: 1 }}>
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {props.children}
     </View>
@@ -46,8 +46,4 @@ const render = (props: BottomAlignedProps) =>
     </TouchableOpacity>
   </KeyboardAvoidingView>
 
-export default class BottomAlignedButton extends React.Component<BottomAlignedProps, null> {
-  render() {
-    return render(this.props)
-  }
-}
+export default BottomAlignedButton

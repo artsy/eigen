@@ -1,12 +1,14 @@
-import * as moment from "moment"
+import moment from "moment"
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
-import { BodyText, MetadataText, SmallHeadline } from "../Typography"
+import { BodyText, FromSignatureText, MetadataText, SmallHeadline } from "../Typography"
 
 import Avatar from "./Avatar"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
 import PDFPreview from "./Preview/Attachment/PDFPreview"
+
+import InvoicePreview from "./Preview/InvoicePreview"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
@@ -38,7 +40,16 @@ const TextContainer = styled(VerticalLayout)`
 `
 
 const SenderName = styled(SmallHeadline)`
-  margin-right: 10;
+  marginRight: 3
+  font-size: 11.5
+`
+
+const FromSignature = styled(FromSignatureText)`
+  marginTop: 10
+`
+
+const TimeStamp = styled(MetadataText)`
+  font-size: 11.5
 `
 
 const ArtworkPreviewContainer = styled.View`margin-bottom: 10;`
@@ -47,11 +58,15 @@ const ImagePreviewContainer = styled.View`margin-bottom: 10;`
 
 const PDFPreviewContainer = styled.View`margin-bottom: 10;`
 
+const InvoicePreviewContainer = styled.View`margin-bottom: 10;`
+
 interface Props extends RelayProps {
   senderName: string
   initials?: string
   artworkPreview?: JSX.Element
-  relay?: Relay.RelayProp
+  showPreview?: JSX.Element
+  firstMessage: boolean
+  initialText: string
 }
 
 export class Message extends React.Component<Props, any> {
@@ -81,10 +96,26 @@ export class Message extends React.Component<Props, any> {
     })
   }
 
-  render() {
-    const { artworkPreview, initials, message, senderName } = this.props
-    const isSent = this.props.relay ? !this.props.relay.hasOptimisticUpdate(message) : true
+  renderBody() {
+    const { message, firstMessage, initialText } = this.props
+    const isSent = !!message.created_at
+    const body = firstMessage ? initialText : message.body
 
+    return (
+      <BodyText disabled={!isSent}>
+        {body}
+      </BodyText>
+    )
+  }
+
+  render() {
+    const { artworkPreview, initials, message, senderName, showPreview } = this.props
+    const isSent = !!message.created_at
+
+    const fromName = message.from.name
+    const fromEmail = message.from.email
+
+    const fromSignature = fromName ? `${fromName} · ${fromEmail}` : fromEmail
     return (
       <Container>
         <Avatar isUser={message.is_from_user} initials={initials} />
@@ -94,51 +125,75 @@ export class Message extends React.Component<Props, any> {
               {senderName}
             </SenderName>
             {isSent &&
-              <MetadataText>
+              <TimeStamp>
                 {moment(message.created_at).fromNow(true)}
-              </MetadataText>}
+              </TimeStamp>}
           </Header>
           {artworkPreview &&
             <ArtworkPreviewContainer>
               {artworkPreview}
             </ArtworkPreviewContainer>}
 
+          {showPreview &&
+            <ArtworkPreviewContainer>
+              {showPreview}
+            </ArtworkPreviewContainer>}
+
+          {message.invoice &&
+            <InvoicePreviewContainer>
+              <InvoicePreview invoice={message.invoice} />
+            </InvoicePreviewContainer>}
+
           {this.renderAttachmentPreviews(message.attachments)}
 
-          <BodyText disabled={!isSent}>
-            {message.raw_text.split("\n\nAbout")[0]}
-          </BodyText>
+          {this.renderBody()}
+
+          {!message.is_from_user &&
+            <FromSignature>
+              {fromSignature}
+            </FromSignature>}
         </TextContainer>
       </Container>
     )
   }
 }
 
-export default Relay.createContainer(Message, {
-  fragments: {
-    message: () => Relay.QL`
-      fragment on Message {
-        raw_text
-        created_at
-        is_from_user
-        attachments {
-          id
-          content_type
-          download_url
-          file_name
-          ${ImagePreview.getFragment("attachment")}
-          ${PDFPreview.getFragment("attachment")}
-        }
+export default createFragmentContainer(
+  Message,
+  graphql`
+    fragment Message_message on Message {
+      body
+      created_at
+      is_from_user
+      from {
+        name
+        email
       }
-    `,
-  },
-})
+      invoice {
+        ...InvoicePreview_invoice
+      }
+      attachments {
+        id
+        content_type
+        download_url
+        file_name
+        ...ImagePreview_attachment
+        ...PDFPreview_attachment
+      }
+    }
+  `
+)
 
 interface RelayProps {
   message: {
-    raw_text: string | null
+    body: string | null
     created_at: string | null
     is_from_user: boolean
+    invoice: any | null
+    from: {
+      name: string | null
+      email: string
+    }
     attachments: Array<{
       id: string
       content_type: string

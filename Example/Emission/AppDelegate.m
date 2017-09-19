@@ -11,6 +11,7 @@
 #import <Emission/AREventsModule.h>
 #import <Emission/ARRefineOptionsModule.h>
 #import <Emission/ARWorksForYouModule.h>
+#import <Emission/ARTakeCameraPhotoModule.h>
 
 #import "ARStorybookComponentViewController.h"
 #import <Emission/ARArtistComponentViewController.h>
@@ -24,6 +25,8 @@
 #import "LoadingSpinner.h"
 #import "PRNetworkModel.h"
 #import <AppHub/AppHub.h>
+
+#import "TakePhotoPromisable.h"
 
 // Disable this to force using the release JS bundle, note that you should really do so by running a Release build.
 //
@@ -43,6 +46,8 @@ randomBOOL(void)
 @interface AppDelegate ()
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, strong) LoadingSpinner *spinner;
+@property (nonatomic, strong) TakePhotoPromisable *takePhotoPromisable;
+
 @end
 
 @implementation AppDelegate
@@ -102,7 +107,15 @@ randomBOOL(void)
   AREmission *emission = nil;
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
+  NSString *gravityURL = @"https://api.artsy.net";
+  NSString *metaphysicsURL = @"https://metaphysics-production.artsy.net";
+
   BOOL useStaging = [defaults boolForKey:ARUseStagingDefault];
+  if (useStaging) {
+    gravityURL = @"https://stagingapi.artsy.net";
+    metaphysicsURL = @"https://metaphysics-staging.artsy.net";
+  }
+
   BOOL usePRBuild = [defaults boolForKey:ARUsePREmissionDefault];
   BOOL useRNP = NO;
   BOOL useAppHub = NO;
@@ -129,7 +142,7 @@ randomBOOL(void)
   } else if (useAppHub) {
     AHBuild *build = [[AppHub buildManager] currentBuild];
     jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
-    self.emissionLoadedFromString = [NSString stringWithFormat:@"Using AppHub build %@", build.name];
+    self.emissionLoadedFromString = [NSString stringWithFormat:@"Using AppHub %@", build.name];
   }
 
   // Fall back to the bundled Emission JS for release
@@ -139,7 +152,9 @@ randomBOOL(void)
     self.emissionLoadedFromString = @"Using bundled JS";
   }
 
-  emission = [[AREmission alloc] initWithUserID:userID authenticationToken:accessToken packagerURL:jsCodeLocation useStagingEnvironment:useStaging];
+  AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID authenticationToken:accessToken sentryDSN:nil googleMapsAPIKey:nil gravityHost:gravityURL metaphysicsHost:metaphysicsURL];
+
+  emission = [[AREmission alloc] initWithConfiguration:config packagerURL:jsCodeLocation];
   [AREmission setSharedInstance:emission];
 
   ARRootViewController *controller = (id)self.navigationController.topViewController;
@@ -191,7 +206,6 @@ randomBOOL(void)
     });
   };
 
-
   emission.switchBoardModule.presentNavigationViewController = ^(UIViewController * _Nonnull fromViewController,
                                                                  NSString * _Nonnull route) {
     if ([fromViewController isKindOfClass:ARStorybookComponentViewController.class]) {
@@ -216,8 +230,8 @@ randomBOOL(void)
     [fromViewController.navigationController presentViewController:navigationController animated:YES completion:nil];
   };
 
-  emission.eventsModule.eventOccurred = ^(UIViewController * _Nonnull fromViewController, NSDictionary * _Nonnull info) {
-    NSLog(@"[Event] %@ - %@", fromViewController.class, info);
+  emission.eventsModule.eventOccurred = ^(NSDictionary * _Nonnull info) {
+    NSLog(@"[Event] - %@", info);
   };
 
   emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull initial, NSDictionary *_Nonnull current, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
@@ -228,6 +242,11 @@ randomBOOL(void)
   emission.worksForYouModule.setNotificationsCount = ^(NSInteger count) {
     sleep(1);
     NSLog(@"Set notifications count: %ld", (long)count);
+  };
+
+  self.takePhotoPromisable = [TakePhotoPromisable new];
+  emission.cameraModule.triggerCreatingACameraPhoto = ^(UIViewController * _Nonnull controller, RCTPromiseResolveBlock  _Nonnull resolve, RCTPromiseRejectBlock  _Nonnull reject) {
+    [self.takePhotoPromisable showCameraModal:controller resolver:resolve rejecter:reject];
   };
 }
 
@@ -255,6 +274,7 @@ randomBOOL(void)
     viewController = [[ARHomeComponentViewController alloc] initWithEmission:nil];
 
   } else {
+
     viewController = [[UnroutedViewController alloc] initWithRoute:route];
   }
 
@@ -282,3 +302,4 @@ randomBOOL(void)
 }
 
 @end
+

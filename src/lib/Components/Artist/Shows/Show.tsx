@@ -1,10 +1,10 @@
 import * as React from "react"
 import { TouchableWithoutFeedback, View, ViewProperties } from "react-native"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import OpaqueImageView from "../../OpaqueImageView"
-import ShowMetadata from "./Metadata"
+import Metadata from "./Metadata"
 
 interface Props extends ViewProperties {
   show: {
@@ -36,26 +36,25 @@ class Show extends React.Component<Props, {}> {
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View style={styles && styles.container}>
           <OpaqueImageView imageURL={imageURL} style={styles && styles.image} />
-          <ShowMetadata show={show as any} style={styles && styles.metadata} />
+          <Metadata show={show as any} style={styles && styles.metadata} />
         </View>
       </TouchableWithoutFeedback>
     )
   }
 }
 
-export default Relay.createContainer(Show, {
-  fragments: {
-    show: () => Relay.QL`
-      fragment on PartnerShow {
-        href
-        cover_image {
-          url(version: "large")
-        }
-        ${ShowMetadata.getFragment("show")}
+export default createFragmentContainer(
+  Show,
+  graphql`
+    fragment Show_show on PartnerShow {
+      href
+      cover_image {
+        url(version: "large")
       }
-    `,
-  },
-})
+      ...Metadata_show
+    }
+  `
+)
 
 interface RelayProps {
   show: {

@@ -1,49 +1,106 @@
 #import "UnroutedViewController.h"
 #import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
+#import <Emission/AREmission.h>
+#import <Emission/ARSwitchBoardModule.h>
 
-@interface UnroutedViewController()
-@property NSString *route;
+#import "ARDefaults.h"
+
+@import WebKit;
+
+@interface UnroutedViewController() <WKNavigationDelegate>
+@property (readonly, nonatomic, strong) WKWebView *webView;
+@property (nonatomic, readonly, strong) NSURL *initialURL;
 @end
 
 @implementation UnroutedViewController
 
-- (instancetype)initWithRoute:(NSString *)title
+- (instancetype)initWithRoute:(NSString *)route
 {
   if ((self = [super init])) {
-    self.route = title;
+    _initialURL = [self urlForRoute:route];
+    self.automaticallyAdjustsScrollViewInsets = NO;
   }
-  return  self;
+
+  return self;
+}
+
+- (NSURL *)urlForRoute:(NSString *)route
+{
+  if ([route containsString:@"https"]) {
+    return [NSURL URLWithString:route];
+  }
+
+  BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
+  NSURL *url = [NSURL URLWithString: useStaging ? @"https://staging.artsy.net" : @"https://artsy.net"];
+  return [url URLByAppendingPathComponent:route];
+}
+
+- (void)loadURL:(NSURL *)URL;
+{
+  AREmission *emission = [AREmission sharedInstance];
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+  NSString *agentString = [NSString stringWithFormat:@"Mozilla/5.0 Artsy-Mobile/3.3.0 Eigen/2017.07.07.13/3.3.0 (iPhone; iOS 9.0; Scale/2.00) AppleWebKit/601.1.46 (KHTML, like Gecko) Emission/1.x"];
+
+  [request addValue:agentString forHTTPHeaderField:@"UserAgent"];
+  [request addValue:emission.configurationModule.userID forHTTPHeaderField:@"X-User-ID"];
+  [request addValue:emission.configurationModule.authenticationToken forHTTPHeaderField:@"X-Access-Token"];
+
+  [self.webView loadRequest:request];
 }
 
 - (void)viewDidLoad
 {
-  UILabel *label = [UILabel new];
-  label.text = self.route;
-  label.font = [UIFont serifFontWithSize:18];
-  label.textAlignment = NSTextAlignmentCenter;
-  label.numberOfLines = 0;
+  [super viewDidLoad];
+  WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
 
-  self.view.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
-  [self.view addSubview:label];
+  CGRect deviceBounds = [UIScreen mainScreen].bounds;
+  WKWebView *webView = [[WKWebView alloc] initWithFrame:deviceBounds configuration:config];
 
-  [label constrainWidthToView:self.view predicate:@"-40"];
-  [label alignCenterWithView:self.view];
+  webView.frame = self.view.bounds;
+  webView.navigationDelegate = self;
+  [self.view addSubview:webView];
 
-  UIButton *openInEigen = [UIButton buttonWithType:UIButtonTypeCustom];
-  openInEigen.titleLabel.font = [UIFont sansSerifFontWithSize:14];
-  [openInEigen setTitle:@"OPEN IN EIGEN" forState:UIControlStateNormal];
-  [self.view addSubview:openInEigen];
-  [openInEigen constrainTopSpaceToView:label predicate:@"20"];
-  [openInEigen alignCenterXWithView:self.view predicate:@"0"];
-  [openInEigen addTarget:self action:@selector(openInEigen) forControlEvents:UIControlEventTouchUpInside];
+  _webView = webView;
+
+  [self loadURL:self.initialURL];
 }
 
-- (void)openInEigen
+- (UIStatusBarStyle)preferredStatusBarStyle
 {
-  NSString *route = [NSString stringWithFormat:@"artsy:%@", self.route];
-  NSURL *url = [NSURL URLWithString:route];
-  [[UIApplication sharedApplication] openURL:url];
+  return UIStatusBarStyleLightContent;
 }
+
+- (void)viewWillLayoutSubviews
+{
+  [self.webView constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
+  [self.webView alignLeading:@"0" trailing:@"0" toView:self.view];
+  [self.webView alignBottomEdgeWithView:self.view predicate:@"0"];
+}
+
+- (UIStatusBarStyle)statusBarStyle
+{
+  return self.statusBarStyle;
+}
+
+
+#pragma mark - Properties
+
+#pragma mark WKWebViewDelegate
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
+{
+  decisionHandler([self shouldLoadNavigationAction:navigationAction]);
+}
+
+- (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
+{
+  if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
+    NSString *route = navigationAction.request.URL.absoluteString;
+    AREmission.sharedInstance.switchBoardModule.presentNavigationViewController(self, route);
+  }
+  return WKNavigationActionPolicyAllow;
+}
+
 
 @end

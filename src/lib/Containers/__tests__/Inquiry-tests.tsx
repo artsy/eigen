@@ -4,7 +4,7 @@ import * as renderer from "react-test-renderer"
 import Inquiry from "../Inquiry"
 
 it("renders correctly", () => {
-  const tree = renderer.create(<Inquiry inquiryArtwork={inquiryProps} />).toJSON()
+  const tree = renderer.create(<Inquiry artwork={inquiryProps} />).toJSON()
   expect(tree).toMatchSnapshot()
 })
 

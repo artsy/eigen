@@ -15,7 +15,7 @@ extern NSString *const ARLabOptionCell;
 - (void)setupSection:(ARSectionData *)section withTitle:(NSString *)title;
 
 /// Show a "Are you sure?" with a cancel that doesn't run the closure
-- (void)showAlertViewWithTitle:(NSString *)title message:(NSString *)message actionTitle:(NSString *)actionTitle actionHandler:(void (^)())handler;
+- (void)showAlertViewWithTitle:(NSString *)title message:(NSString *)message actionTitle:(NSString *)actionTitle actionHandler:(void (^)(void))handler;
 
 /// Easy NSUserDefault toggle
 - (ARCellData *)editableTextCellDataWithName:(NSString *)name defaultKey:(NSString *)key;

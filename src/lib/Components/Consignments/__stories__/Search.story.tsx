@@ -3,30 +3,36 @@ import { View } from "react-native"
 
 import { camelCase } from "lodash"
 
-import Search, { ArtistQueryData } from "../Components/ArtistSearchResults"
+import Search, { SearchQueryProps } from "../Components/SearchResults"
 
-export const name = "Consignments - Search"
+export const name = "Consignments/Search"
 export const component = Search
 
-const noQuery: ArtistQueryData = {
+const noQuery: SearchQueryProps = {
   query: null,
   searching: false,
+  placeholder: "Artist/Designer Name",
+  noResultsMessage: "Unfortunately we are not accepting consignments for works by",
   results: [],
 }
 
-const queryNoResults: ArtistQueryData = {
+const queryNoResults: SearchQueryProps = {
   query: "ba",
   searching: false,
   results: [],
+  placeholder: "Artist/Designer Name",
+  noResultsMessage: "Unfortunately we are not accepting consignments for works by",
 }
 
-const queryNoResultsSearching: ArtistQueryData = {
+const queryNoResultsSearching: SearchQueryProps = {
   query: "ba",
   searching: true,
   results: [],
+  placeholder: "Artist/Designer Name",
+  noResultsMessage: "Unfortunately we are not accepting consignments for works by",
 }
 
-const query1Result: ArtistQueryData = {
+const query1Result: SearchQueryProps = {
   query: "ban",
   searching: false,
   results: [
@@ -36,9 +42,11 @@ const query1Result: ArtistQueryData = {
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
     },
   ],
+  placeholder: "Artist/Designer Name",
+  noResultsMessage: "Unfortunately we are not accepting consignments for works by",
 }
 
-const query1ResultSearching: ArtistQueryData = {
+const query1ResultSearching: SearchQueryProps = {
   query: "ban",
   searching: true,
   results: [
@@ -48,9 +56,11 @@ const query1ResultSearching: ArtistQueryData = {
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
     },
   ],
+  placeholder: "Artist/Designer Name",
+  noResultsMessage: "Unfortunately we are not accepting consignments for works by",
 }
 
-const query2Results: ArtistQueryData = {
+const query2Results: SearchQueryProps = {
   query: "bank",
   searching: false,
   results: [
@@ -65,6 +75,8 @@ const query2Results: ArtistQueryData = {
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/zKBFBZPGN-V5TljXtsSuEg/square.jpg" },
     },
   ],
+  placeholder: "Artist/Designer Name",
+  noResultsMessage: "Unfortunately we are not accepting consignments for works by",
 }
 
 const artistGen = (artistName: string) => ({
@@ -73,7 +85,7 @@ const artistGen = (artistName: string) => ({
   image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
 })
 
-const query4Results: ArtistQueryData = {
+const query4Results: SearchQueryProps = {
   query: "bank",
   searching: false,
   results: [
@@ -82,6 +94,8 @@ const query4Results: ArtistQueryData = {
     artistGen("Linda Adair"),
     artistGen("Hector Adalid"),
   ],
+  placeholder: "Artist/Designer Name",
+  noResultsMessage: "Unfortunately we are not accepting consignments for works by",
 }
 
 export const allStates = [

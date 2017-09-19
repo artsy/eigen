@@ -7,9 +7,6 @@
 #import "AppDelegate.h"
 #import "ARDefaults.h"
 
-// See https://github.com/artsy/eigen/blob/master/Artsy/View_Controllers/Admin/ARAdminSettingsViewController.m
-// for examples of how to work with this.
-
 #import "ARRootViewController+AppHub.h"
 #import "ARRootViewController+PRs.h"
 
@@ -21,6 +18,9 @@
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARInquiryComponentViewController.h>
 #import "ARStorybookComponentViewController.h"
+
+#import "InternalWebViewController.h"
+#import "EigenLikeNavigationController.h"
 
 @implementation ARRootViewController
 
@@ -35,12 +35,26 @@
   ARSectionData *appData = [[ARSectionData alloc] init];
   [self setupSection:appData withTitle:[self titleForApp]];
   [appData addCellData:self.emissionJSLocationDescription];
-  [appData addCellData:self.generateStagingSwitch];
   [tableViewData addSectionData:appData];
 
-#if TARGET_OS_SIMULATOR && defined(DEBUG)
-  ARSectionData *developerSection = [self developersSection];
-  [tableViewData addSectionData:developerSection];
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  BOOL usePRBuild = [defaults boolForKey:ARUsePREmissionDefault];
+
+#if defined(DEPLOY)
+  // It can get real confusing if you have AppHub running on your local
+  // development environment.
+  if(!usePRBuild) {
+    ARSectionData *appHubSection = [self appHubSectionData];
+    [tableViewData addSectionData:appHubSection];
+  }
+#endif
+
+#if defined(DEBUG)
+  // This isn't of any use unless you're developing
+  if(!usePRBuild) {
+    ARSectionData *developerSection = [self developersSection];
+    [tableViewData addSectionData:developerSection];
+  }
 #endif
 
   ARSectionData *reviewSection = [self prSectionData];
@@ -49,12 +63,14 @@
   ARSectionData *userSection = [self userSection];
   [tableViewData addSectionData:userSection];
 
+  ARSectionData *adminSection = [self adminSection];
+  [tableViewData addSectionData:adminSection];
+
+#if defined(DEBUG)
+  // These were nice quick for getting bootstrapped, but they should be storybooks
+  // so that they can be controlled in JS and deployed with PRs.
   ARSectionData *viewControllerSection = [self jumpToViewControllersSection];
   [tableViewData addSectionData:viewControllerSection];
-
-#if defined(DEPLOY)
-  ARSectionData *appHubSection = [self appHubSectionData];
-  [tableViewData addSectionData:appHubSection];
 #endif
 
   self.tableViewData = tableViewData;
@@ -106,6 +122,16 @@
   return [self tappableCellDataWithTitle:@"Open Storybook Browser" selection: ^{
     id viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"StorybookBrowser" initialProperties: @{}];
 
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+
+- (ARCellData *)jumpToUserDocs
+{
+  return [self tappableCellDataWithTitle:@"Open Emission beta Docs" selection: ^{
+    NSURL *url = [NSURL URLWithString:@"https://github.com/artsy/emission/blob/master/docs/using_the_beta.md"];
+    id viewController = [[InternalWebViewController alloc] initWithURL:url];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
@@ -179,6 +205,7 @@
 - (ARCellData *)jumpToConsignments
 {
   return [self tappableCellDataWithTitle:@"Start Consignment Flow" selection:^{
+    [[(EigenLikeNavigationController *)self.navigationController backButton] setHidden:YES];
     id viewController = [[ARComponentViewController alloc] initWithEmission: nil moduleName:@"Consignments" initialProperties: @{}];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
@@ -234,13 +261,23 @@
   return crashCellData;
 }
 
-
 - (ARSectionData *)userSection
 {
   ARSectionData *sectionData = [[ARSectionData alloc] init];
   [self setupSection:sectionData withTitle:@"User"];
 
   [sectionData addCellData:self.jumpToEndUserStorybooks];
+#if defined(DEPLOY)
+  [sectionData addCellData:self.jumpToUserDocs];
+#endif
+  return sectionData;
+}
+
+- (ARSectionData *)adminSection
+{
+  ARSectionData *sectionData = [[ARSectionData alloc] init];
+  [self setupSection:sectionData withTitle:@"Admin"];
+  [sectionData addCellData:self.generateStagingSwitch];
   [sectionData addCellData:self.logOutButton];
   return sectionData;
 }

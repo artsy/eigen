@@ -1,19 +1,22 @@
 cache: yarn
-
 language: node_js
-node_js:
-  - "6.7"
 
-script:
-  - scripts/deploy_commit.sh
-  - yarn ci
-  - yarn danger
+matrix:
+  include:
+  - node_js: '6.7'
+    script:
+      - yarn ci
+      - yarn danger
 
-deploy:
-  provider: script
-  script: scripts/deploy_apphub.sh
-  on:
-    branch: master
+  # Deployment related tasks
+  - node_js: "node"
+    script: ""  # NOOP as we don't need to run tests etc
+    after_success: # This can never fail the build
+      - nvm install 6.7 # Enforce the same version
+      # Upload latest PR commit to S3
+      - test ! $TRAVIS_PULL_REQUEST == "false" && scripts/deploy_commit.sh
+      # Upload merges to master to apphub
+      - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then scripts/deploy_apphub.sh; fi
 
 cache:
   yarn: true

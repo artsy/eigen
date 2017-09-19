@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as Relay from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import {
   Animated,
@@ -53,15 +53,16 @@ export class ArtistCard extends React.Component<Props, State> {
 
     ARTemporaryAPIModule.setFollowArtistStatus(true, this.props.artist._id, (error, following) => {
       if (error) {
-        console.error(error)
+        console.warn(error)
         this.setState({ processingChange: false })
       } else {
         Events.postEvent({
           name: "Follow artist",
           artist_id: this.props.artist._id,
           artist_slug: this.props.artist.id,
-          // TODO At some point, this component might be on other screens.
+          // TODO: At some point, this component might be on other screens.
           source_screen: "home page",
+          context_module: "artist rail",
         })
         this.props.onFollow(this.setFollowStatus.bind(this))
       }
@@ -150,7 +151,7 @@ interface Styles {
 }
 
 const styles = StyleSheet.create<Styles>({
-  // TODO The outer wrapping view is currently only there because setting `marginLeft: 16` on the Artist card from the
+  // TODO: The outer wrapping view is currently only there because setting `marginLeft: 16` on the Artist card from the
   //      ArtistRail component isn’t working.
   container: {
     width: 236,
@@ -207,23 +208,22 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const ArtistCardContainer = Relay.createContainer<Props>(ArtistCard, {
-  fragments: {
-    artist: () => Relay.QL`
-      fragment on Artist {
-        id
-        _id
-        href
-        name
-        formatted_artworks_count
-        formatted_nationality_and_birthday
-        image {
-          url(version: "large")
-        }
+const ArtistCardContainer = createFragmentContainer(
+  ArtistCard,
+  graphql`
+    fragment ArtistCard_artist on Artist {
+      id
+      _id
+      href
+      name
+      formatted_artworks_count
+      formatted_nationality_and_birthday
+      image {
+        url(version: "large")
       }
-    `,
-  },
-})
+    }
+  `
+)
 
 export interface ArtistCardResponse {
   id: string
@@ -237,7 +237,7 @@ export interface ArtistCardResponse {
   }
 }
 
-// TODO Until we figure out how to use Relay to fetch/render suggested artists and replace initially suggested cards,
+// TODO: Until we figure out how to use Relay to fetch/render suggested artists and replace initially suggested cards,
 //      this query is duplicated so we can fetch the data manually.
 export const ArtistCardQuery = `
   ... on Artist {

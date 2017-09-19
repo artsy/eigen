@@ -1,23 +1,23 @@
 import * as React from "react"
 
-import ArtistSearch from "../Components/ArtistSearchResults"
-import DoneButton from "../Components/BottomAlignedButton"
 import ConsignmentBG from "../Components/ConsignmentBG"
+import DoneButton from "../Components/DoneButton"
+import ArtistSearch from "../Components/SearchResults"
 
-import { ArtistResult, ConsignmentSetup } from "../index"
+import { ConsignmentSetup, SearchResult } from "../index"
 
 import { debounce } from "lodash"
 import { NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
 import metaphysics from "../../../metaphysics"
 
 interface ArtistSearchResponse {
-  match_artist: ArtistResult[]
+  match_artist: SearchResult[]
 }
 
-interface Props extends ConsignmentSetup {
+interface Props extends ConsignmentSetup, ViewProperties {
   navigator: NavigatorIOS
   route: Route
-  updateWithResult?: (result: ArtistResult) => void
+  updateWithArtist?: (result: SearchResult) => void
 }
 
 interface State {
@@ -40,9 +40,9 @@ export default class Artist extends React.Component<Props, State> {
     this.props.navigator.pop()
   }
 
-  artistSelected = (result: ArtistResult) => {
+  artistSelected = (result: SearchResult) => {
+    this.props.updateWithArtist(result)
     this.props.navigator.pop()
-    this.props.updateWithResult(result)
   }
 
   textChanged = async (text: string) => {
@@ -66,23 +66,17 @@ export default class Artist extends React.Component<Props, State> {
   }
 
   render() {
-    // This might become a higher order component for reuse, if used more elsewhere
-    const doneButtonStyles = {
-      backgroundColor: "black",
-      marginBottom: 20,
-      paddingTop: 18,
-      height: 56,
-    }
-
     return (
       <ConsignmentBG>
-        <DoneButton onPress={this.doneTapped} bodyStyle={doneButtonStyles} buttonText="DONE">
+        <DoneButton onPress={this.doneTapped}>
           <View
             style={{ alignContent: "center", justifyContent: "flex-end", flexGrow: 1, marginLeft: 20, marginRight: 20 }}
           >
             <ArtistSearch
               results={this.state.results}
               query={this.state.query}
+              placeholder="Artist/Designer Name"
+              noResultsMessage="Unfortunately we are not accepting consignments for works by"
               onChangeText={this.textChanged}
               searching={this.state.searching}
               resultSelected={this.artistSelected}

@@ -13,5 +13,20 @@ exports[`renders properly 1`] = `
       undefined,
     ]
   }
-/>
+>
+  <View
+    style={
+      Array [
+        Object {
+          "alignSelf": "center",
+          "backgroundColor": "black",
+          "height": "100%",
+          "maxWidth": 540,
+          "width": "100%",
+        },
+        undefined,
+      ]
+    }
+  />
+</View>
 `;

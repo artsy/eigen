@@ -1,8 +1,8 @@
+#!/bin/sh
 # See: https://github.com/joshuapinter/apphubdeploy
 #
 
 # Set up our npm environment again
-npm install
 npm install --global apphubdeploy
 
 # Create a .apphub credentials file
@@ -17,7 +17,3 @@ PR_NUM=`git log --format=%B -n 1 $SHA | grep -Eo '#[0-9]+' | tail -n 1`
 
 # Ship a debug build of our current in-app RN (so it will include storybooks)
 apphubdeploy --plist-file ./Example/Emission/Info.plist --target all --build-description "$PR_DESC - ${PR_NUM}" --entry-file Example/Emission/index.ios.js
-
-# To avoid build failures, kill the node_modules folder
-# e.g. https://travis-ci.org/artsy/emission/builds/158175879
-rm -rf node_modules

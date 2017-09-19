@@ -1,10 +1,5 @@
 #!/bin/sh
 
-if [ -z "$TRAVIS_PULL_REQUEST" ]; then
-    echo "Skipping deploy of the commit"
-    exit 0
-fi
-
 # Give us a CLI to work with
 yarn global add s3-cli
 

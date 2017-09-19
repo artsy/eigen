@@ -54,6 +54,8 @@ If you like git hooks, you could setup the following:
 * Run type-checker before push:
   `$ echo -e "#!/bin/sh\nyarn run type-check\n" > .git/hooks/pre-push; chmod +x .git/hooks/pre-push`
 
+To use [Storybooks](https://github.com/storybooks/storybook), select "Open Storybook" from the "Developer" section of the root view in the app. You can also use the [VSCode Storybooks plugin](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-react-native-storybooks).
+
 ---
 
 ### Using VS Code as an IDE

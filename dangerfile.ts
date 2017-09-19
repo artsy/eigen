@@ -43,17 +43,6 @@ if (modifiedAppFiles.length > 0 && !trivialPR && !changelogChanges) {
   fail("No CHANGELOG added.")
 }
 
-// No PR is too small to warrant a paragraph or two of summary
-if (pr.body.length === 0) {
-  fail("Please add a description to your PR.")
-}
-
-// Always ensure we assign someone, so that our Slackbot can do its work correctly
-if (pr.assignee === null) {
-  const method = pr.title.includes("WIP") ? warn : fail
-  method("Please assign someone to merge this PR, and optionally include people who should review.")
-}
-
 // Check that every file touched has a corresponding test file
 const correspondingTestsForAppFiles = touchedAppOnlyFiles.map(f => {
   const newPath = path.dirname(f)
@@ -68,7 +57,9 @@ const testFilesThatDontExist = correspondingTestsForAppFiles
   .filter(f => !f.includes("__stories__")) // skip stories
   .filter(f => !f.includes("AppRegistry")) // skip registry, kinda untestable
   .filter(f => !f.includes("Routes")) // skip routes, kinda untestable
-  .filter(f => !f.includes("NativeNodules")) // skip native_modules
+  .filter(f => !f.includes("NativeModules")) // skip modules that are native, they are untestable
+  .filter(f => !f.includes("lib/relay/")) // skip modules that are native, they are untestable
+  .filter(f => !f.includes("Storybooks/")) // skip modules that are native, they are untestable
   .filter(f => !fs.existsSync(f))
 
 if (testFilesThatDontExist.length > 0) {
@@ -185,7 +176,3 @@ ${errors.join("\n")}
 `
   markdown(tslintMarkdown)
 }
-
-// Check for dependency changes
-import yarn from "danger-plugin-yarn"
-schedule(yarn())

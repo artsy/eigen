@@ -118,6 +118,7 @@ exports[`looks correct when rendered 1`] = `
               },
               Array [
                 Object {
+                  "marginBottom": 3,
                   "marginLeft": 15,
                 },
                 undefined,
@@ -197,24 +198,8 @@ exports[`looks correct when rendered 1`] = `
                   ]
                 }
               >
-                30 MINUTES
+                A YEAR
               </Text>
-              <View
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "#6e1fff",
-                      "borderRadius": 4,
-                      "height": 8,
-                      "marginBottom": 3,
-                      "marginLeft": 4,
-                      "marginTop": 3,
-                      "width": 8,
-                    },
-                    undefined,
-                  ]
-                }
-              />
             </View>
           </View>
           <View
@@ -341,18 +326,12 @@ exports[`looks correct when rendered 1`] = `
           </Text>
         </View>
       </View>
-      <View
+      <ARDottedLine
+        color={4291611852}
         style={
-          Array [
-            Object {
-              "backgroundColor": "#e5e5e5",
-              "height": 1,
-              "marginBottom": 5,
-              "marginTop": 18,
-              "width": "100%",
-            },
-            undefined,
-          ]
+          Object {
+            "height": 2,
+          }
         }
       />
     </View>
@@ -426,6 +405,7 @@ exports[`looks correct when rendered 1`] = `
               },
               Array [
                 Object {
+                  "marginBottom": 3,
                   "marginLeft": 15,
                 },
                 undefined,
@@ -505,24 +485,8 @@ exports[`looks correct when rendered 1`] = `
                   ]
                 }
               >
-                AN HOUR
+                A YEAR
               </Text>
-              <View
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "#6e1fff",
-                      "borderRadius": 4,
-                      "height": 8,
-                      "marginBottom": 3,
-                      "marginLeft": 4,
-                      "marginTop": 3,
-                      "width": 8,
-                    },
-                    undefined,
-                  ]
-                }
-              />
             </View>
           </View>
           <View
@@ -649,18 +613,12 @@ exports[`looks correct when rendered 1`] = `
           </Text>
         </View>
       </View>
-      <View
+      <ARDottedLine
+        color={4291611852}
         style={
-          Array [
-            Object {
-              "backgroundColor": "#e5e5e5",
-              "height": 1,
-              "marginBottom": 5,
-              "marginTop": 18,
-              "width": "100%",
-            },
-            undefined,
-          ]
+          Object {
+            "height": 2,
+          }
         }
       />
     </View>

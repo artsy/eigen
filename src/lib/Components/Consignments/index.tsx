@@ -8,28 +8,38 @@ export interface ConsignmentMetadata {
   title: string | null
   year: string | null
   category: string | null
-  materials: string | null
-  width: number | null
-  height: number | null
+  medium: string | null
+  width: string | null
+  height: string | null
   depth: number | null
-  unit: "in" | "cm"
-  displayString: string // This would look something like "1/5", "5/5"
+  unit: string | null
+  displayString: string | null // This would look something like "1/5", "5/5"
 }
 
-export interface ArtistResult {
+export interface SearchResult {
   id: string
   name: string
-  image: {
+  image?: {
     url: string
   }
 }
 
 export interface ConsignmentSetup {
-  artist?: ArtistResult
+  artist?: SearchResult
   photos?: string[]
   metadata?: ConsignmentMetadata
-  location?: string
   provenance?: string
+  editionInfo?: {
+    size?: string
+    number?: string
+  }
+  signed?: boolean
+  certificateOfAuth?: boolean
+  location?: {
+    city: string
+    state: string
+    country: string
+  }
 }
 
 interface Props extends ViewProperties, ConsignmentSetup {}

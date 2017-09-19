@@ -2,7 +2,7 @@
 
 exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
 <View
-  keyboardVerticalOffset={60}
+  keyboardVerticalOffset={15}
   onLayout={[Function]}
   style={
     Array [
@@ -52,6 +52,7 @@ exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
     accessibilityLabel={undefined}
     accessibilityTraits={undefined}
     accessible={true}
+    collapsable={undefined}
     hitSlop={undefined}
     isTVSelectable={true}
     nativeID={undefined}
@@ -102,7 +103,7 @@ exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
 
 exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results Component 1`] = `
 <View
-  keyboardVerticalOffset={60}
+  keyboardVerticalOffset={15}
   onLayout={[Function]}
   style={
     Array [
@@ -125,15 +126,20 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
     <View>
       <View
         style={
-          Object {
-            "flex": 0,
-          }
+          Array [
+            undefined,
+            Object {
+              "flex": 1,
+              "maxHeight": 40,
+            },
+          ]
         }
       >
         <View
           style={
             Object {
               "flexDirection": "row",
+              "height": 40,
             }
           }
         >
@@ -143,7 +149,7 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
             clearButtonMode="while-editing"
             keyboardAppearance="dark"
             onChangeText={undefined}
-            placeholder="Artist/Designer Name"
+            placeholder="Example"
             placeholderTextColor="#cccccc"
             returnKeyType="search"
             selectionColor="#cccccc"
@@ -151,8 +157,6 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
               Array [
                 Object {
                   "backgroundColor": "black",
-                  "borderBottomColor": "white",
-                  "borderBottomWidth": 1,
                   "color": "white",
                   "flexBasis": 0,
                   "flexGrow": 1,
@@ -172,7 +176,7 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
             Array [
               Object {
                 "backgroundColor": "#e5e5e5",
-                "height": 1,
+                "height": 2,
               },
               undefined,
             ]
@@ -206,7 +210,8 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
               ]
             }
           >
-            Unfortunately we are not accepting consignments for works by 
+            &gt; 
+             
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -246,6 +251,7 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
     accessibilityLabel={undefined}
     accessibilityTraits={undefined}
     accessible={true}
+    collapsable={undefined}
     hitSlop={undefined}
     isTVSelectable={true}
     nativeID={undefined}

@@ -1,5 +1,20 @@
-function mockedModule(path: string, moduleName: string) {
-  jest.mock(path, () => ({ default: moduleName }))
+const originalConsoleError = console.error
+
+// Remove on the next React-Native update.
+console.error = (message?: any, ...optionalParams: any[]) => {
+  if (
+    typeof message === "string" &&
+    (message.includes("PropTypes has been moved to a separate package.") ||
+      message.includes("React.createClass is no longer supported."))
+  ) {
+    // NOOP
+  } else {
+    originalConsoleError(message)
+  }
+}
+
+function mockedModule(path: string, mockModuleName: string) {
+  jest.mock(path, () => mockModuleName)
 }
 
 jest.mock("./lib/metaphysics.ts")

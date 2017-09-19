@@ -24,6 +24,7 @@
 		6011C24E1DAF697B00CE54E5 /* EigenLikeAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C24D1DAF697B00CE54E5 /* EigenLikeAdminViewController.m */; };
 		6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */; };
 		6011C2561DAF835900CE54E5 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6011C2551DAF835900CE54E5 /* logo@2x.png */; };
+		605E32A51F3A0F0C00CFFE21 /* TakePhotoPromisable.m in Sources */ = {isa = PBXBuildFile; fileRef = 605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */; };
 		60A1A77E1DA3A23C005E3357 /* BackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */; };
 		60A1A77F1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77C1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png */; };
 		60A1A7801DA3A23C005E3357 /* BackArrowBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77D1DA3A23C005E3357 /* BackArrowBlack@2x.png */; };
@@ -34,6 +35,7 @@
 		60DA49AB1EE7D219001FE871 /* EmissionPRChooseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60DA49AA1EE7D219001FE871 /* EmissionPRChooseViewController.m */; };
 		60E02A681ECB39630010F5D5 /* ARRootViewController+AppHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E02A671ECB39630010F5D5 /* ARRootViewController+AppHub.m */; };
 		60E4ABF71EE7D85000E8C3B1 /* LoadingSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E4ABF61EE7D85000E8C3B1 /* LoadingSpinner.m */; };
+		60EDA5731F4B2944007A6100 /* InternalWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60EDA5721F4B2944007A6100 /* InternalWebViewController.m */; };
 		60F61A8B1DAF982B00A72101 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F61A8A1DAF982B00A72101 /* AuthenticationManager.m */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +93,8 @@
 		6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnroutedViewController.m; sourceTree = "<group>"; };
 		6011C2551DAF835900CE54E5 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		60204ADD1D9D590900204628 /* Emission.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Emission.entitlements; sourceTree = "<group>"; };
+		605E32A31F3A0F0C00CFFE21 /* TakePhotoPromisable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TakePhotoPromisable.h; path = Modules/TakePhotoPromisable.h; sourceTree = "<group>"; };
+		605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TakePhotoPromisable.m; path = Modules/TakePhotoPromisable.m; sourceTree = "<group>"; };
 		607673A21ECC4C9F005848B5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6077F28F1EE56723004F054D /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrow@2x.png"; sourceTree = "<group>"; };
@@ -111,6 +115,8 @@
 		60E02A671ECB39630010F5D5 /* ARRootViewController+AppHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARRootViewController+AppHub.m"; sourceTree = "<group>"; };
 		60E4ABF51EE7D85000E8C3B1 /* LoadingSpinner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingSpinner.h; sourceTree = "<group>"; };
 		60E4ABF61EE7D85000E8C3B1 /* LoadingSpinner.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingSpinner.m; sourceTree = "<group>"; };
+		60EDA5711F4B2944007A6100 /* InternalWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InternalWebViewController.h; sourceTree = "<group>"; };
+		60EDA5721F4B2944007A6100 /* InternalWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InternalWebViewController.m; sourceTree = "<group>"; };
 		60F61A891DAF982A00A72101 /* AuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationManager.h; sourceTree = "<group>"; };
 		60F61A8A1DAF982B00A72101 /* AuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationManager.m; sourceTree = "<group>"; };
 		9AB72C7CDF8351EF0ADB2E4D /* Pods-Emission.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.release.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.release.xcconfig"; sourceTree = "<group>"; };
@@ -215,6 +221,15 @@
 			name = Launch;
 			sourceTree = "<group>";
 		};
+		605E32A21F3A0EED00CFFE21 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				605E32A31F3A0F0C00CFFE21 /* TakePhotoPromisable.h */,
+				605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */,
+			);
+			name = Modules;
+			sourceTree = "<group>";
+		};
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
@@ -302,6 +317,8 @@
 				6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */,
 				60DA49A91EE7D219001FE871 /* EmissionPRChooseViewController.h */,
 				60DA49AA1EE7D219001FE871 /* EmissionPRChooseViewController.m */,
+				60EDA5711F4B2944007A6100 /* InternalWebViewController.h */,
+				60EDA5721F4B2944007A6100 /* InternalWebViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -309,6 +326,7 @@
 		60F61A881DAF849700A72101 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				605E32A21F3A0EED00CFFE21 /* Modules */,
 				60A1A7841DA3A879005E3357 /* ARMacros.h */,
 				6011C2491DAF63C000CE54E5 /* ARDefaults.h */,
 				6011C24A1DAF63C000CE54E5 /* ARDefaults.m */,
@@ -411,7 +429,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
 					510DCB0D1CCA69EC0075E8CB = {
@@ -558,7 +576,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BD012BCCAEAB7DB916DE7D2D /* [CP] Embed Pods Frameworks */ = {
@@ -585,6 +603,7 @@
 			files = (
 				60E02A681ECB39630010F5D5 /* ARRootViewController+AppHub.m in Sources */,
 				6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */,
+				605E32A51F3A0F0C00CFFE21 /* TakePhotoPromisable.m in Sources */,
 				6011C2451DAF61AF00CE54E5 /* ARAdminTableViewCell.m in Sources */,
 				60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */,
 				51F3E9A41CF3B8A4004A2013 /* EigenLikeNavigationController.m in Sources */,
@@ -598,6 +617,7 @@
 				510DCB151CCA69EC0075E8CB /* AppDelegate.m in Sources */,
 				60DA49A81EE7CF70001FE871 /* ARRootViewController+PRs.m in Sources */,
 				6011C24B1DAF63C000CE54E5 /* ARDefaults.m in Sources */,
+				60EDA5731F4B2944007A6100 /* InternalWebViewController.m in Sources */,
 				510DCB121CCA69EC0075E8CB /* main.m in Sources */,
 				6011C24E1DAF697B00CE54E5 /* EigenLikeAdminViewController.m in Sources */,
 				6011C23B1DAF5DD900CE54E5 /* ARRootViewController.m in Sources */,
@@ -765,14 +785,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -861,14 +887,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -908,14 +940,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

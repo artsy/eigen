@@ -4,20 +4,20 @@
  <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="64" height="34"/>
 
  <g transform='translate(0, 0)'>
-   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="64" height="55"/>
+   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="64" height="31"/>
 
    <g transform='translate(0, 0)'>
      <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="8" y="9" width="48" height="22"/>
 
      <g transform='translate(8, 9)'>
-       <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="24" height="22"/>
+       <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="0" y="0" width="24" height="22"><body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;"><p style="font-family:'undefined','Times New Roman';font-size:14px">L</p></body></foreignObject>
        <rect type="Text" fill-opacity="0.1" stroke-width="1" stroke="black" x="24" y="0" width="24" height="22"/>
      </g>
 
-     <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="31" width="64" height="24"/>
+     <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="6" y="4" width="52" height="24"/>
 
-     <g transform='translate(0, 31)'>
-       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="40" y="0" width="24" height="24"/>
+     <g transform='translate(6, 4)'>
+       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="28" y="0" width="24" height="24"/>
      </g>
 
    </g>

@@ -1,10 +1,12 @@
-import { AppRegistry } from "react-native";
-import { getStorybookUI, configure } from "@storybook/react-native";
+import { AppRegistry } from "react-native"
+import { getStorybookUI, configure } from "@storybook/react-native"
+
+import { loadStories } from "../../storybook/storyLoader"
 
 // import your stories
 configure(() => {
-  require("../../src/storiesRegistry");
-}, module);
+  loadStories()
+}, module)
 
-const StorybookUI = getStorybookUI({ port: 9001, host: "localhost" });
-AppRegistry.registerComponent("Storybook", () => StorybookUI);
+const StorybookUI = getStorybookUI({ port: 9001, host: "localhost" })
+AppRegistry.registerComponent("Storybook", () => StorybookUI)

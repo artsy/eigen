@@ -1,7 +1,7 @@
 import * as _ from "lodash"
 import * as React from "react"
-import * as ParallaxScrollView from "react-native-parallax-scroll-view"
-import * as Relay from "react-relay"
+import ParallaxScrollView from "react-native-parallax-scroll-view"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
@@ -12,7 +12,7 @@ import SerifText from "../Components/Text/Serif"
 import About from "../Components/Gene/About"
 import Header from "../Components/Gene/Header"
 
-import Artworks from "../Components/ArtworkGrids/RelayConnections/GeneArtworksGrid"
+import GeneArtworksGrid from "../Components/ArtworkGrids/RelayConnections/GeneArtworksGrid"
 
 import SwitchView, { SwitchEvent } from "../Components/SwitchView"
 
@@ -33,7 +33,7 @@ interface Props extends ViewProperties {
   medium: string
   price_range: string
   gene: any
-  relay?: Relay.RelayProp
+  relay?: RelayRefetchProp
 }
 
 interface State {
@@ -111,12 +111,12 @@ export class Gene extends React.Component<Props, State> {
         return <About gene={this.props.gene} />
       case TABS.WORKS:
         return (
-          <Artworks
+          <GeneArtworksGrid
             gene={this.props.gene}
             medium={this.state.selectedMedium}
             priceRange={this.state.selectedPriceRange}
             sort={this.state.sort}
-            queryKey="gene"
+            queryKey="gene.artworks"
           />
         )
     }
@@ -185,19 +185,26 @@ export class Gene extends React.Component<Props, State> {
     // to write tests with the resolved state
     return Refine.triggerRefine(this, initialSettings, currentSettings)
       .then(newSettings => {
-        this.setState({
-          selectedMedium: newSettings.medium,
-          selectedPriceRange: newSettings.selectedPrice,
-          sort: newSettings.sort,
-        })
-        this.props.relay.setVariables({
-          medium: newSettings.medium,
-          price_range: newSettings.selectedPrice,
-          sort: newSettings.sort,
-        })
+        if (newSettings) {
+          this.setState({
+            selectedMedium: newSettings.medium,
+            selectedPriceRange: newSettings.selectedPrice,
+            sort: newSettings.sort,
+          })
+
+          this.props.relay.refetch(
+            {
+              medium: newSettings.medium,
+              price_range: newSettings.selectedPrice,
+              sort: newSettings.sort,
+            },
+            // TODO: is this param really required?
+            null
+          )
+        }
       })
       .catch(error => {
-        console.error(error)
+        console.warn(error)
       })
   }
 
@@ -335,38 +342,43 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default Relay.createContainer(Gene, {
-  // fallbacks for when no medium/price_range is set
-  initialVariables: {
-    medium: "*",
-    price_range: "*-*",
-    sort: "-partner_updated_at",
-  },
-  fragments: {
-    gene: () => Relay.QL`
-      fragment on Gene {
-        _id
-        id
-        ${Header.getFragment("gene")}
-        ${About.getFragment("gene")}
-        ${Artworks.getFragment("gene")}
-        filtered_artworks(medium: $medium,
-                          price_range: $price_range,
-                          sort: $sort,
-                          aggregations: [MEDIUM, PRICE_RANGE, TOTAL],
-                          page: 1,
-                          for_sale: true) {
-          total
-          aggregations {
-            slice
-            counts {
-              id
-              name
-              count
-            }
+export default createRefetchContainer(
+  Gene,
+  graphql.experimental`
+    fragment Gene_gene on Gene
+      @argumentDefinitions(
+        sort: { type: "String", defaultValue: "-partner_updated_at" }
+        medium: { type: "String", defaultValue: "*" }
+        price_range: { type: "String", defaultValue: "*-*" }
+      ) {
+      ...Header_gene
+      ...About_gene
+      ...GeneArtworksGrid_gene
+      filtered_artworks(
+        medium: $medium
+        price_range: $price_range
+        sort: $sort
+        aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
+        page: 1
+        for_sale: true
+      ) {
+        total
+        aggregations {
+          slice
+          counts {
+            id
+            name
+            count
           }
         }
       }
-    `,
-  },
-})
+    }
+  `,
+  graphql.experimental`
+    query GeneRefetchQuery($geneID: String!, $sort: String, $medium: String, $price_range: String) {
+      gene(id: $geneID) {
+        ...Gene_gene @arguments(sort: $sort, medium: $medium, price_range: $price_range)
+      }
+    }
+  `
+)

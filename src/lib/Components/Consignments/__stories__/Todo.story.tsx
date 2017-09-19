@@ -4,7 +4,7 @@ import * as React from "react"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import { ConsignmentMetadata, ConsignmentSetup } from "../index"
 
-export const name = "Consignments - TODO"
+export const name = "Consignments/TODO Component"
 export const component = TODO
 
 interface States {
@@ -30,9 +30,9 @@ const metadata: ConsignmentMetadata = {
   title: "My Work",
   year: "1983",
   category: "Design",
-  materials: "Wood",
-  width: 100,
-  height: 100,
+  medium: "Wood",
+  width: "100",
+  height: "100",
   depth: null,
   unit: "cm",
   displayString: "5/5",
@@ -45,7 +45,11 @@ const withMetadata: ConsignmentSetup = {
 
 const withLocation: ConsignmentSetup = {
   ...withMetadata,
-  location: "Huddersfield, UK",
+  location: {
+    city: "Huddersfield",
+    state: "Yorkshire",
+    country: "UK",
+  },
 }
 
 const withProvenance: ConsignmentSetup = {

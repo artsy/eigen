@@ -1,3 +1,20 @@
+input AddAssetToConsignmentSubmissionInput {
+  # The type of the asset
+  asset_type: String!
+
+  # The token provided by Gemini for your asset
+  gemini_token: String!
+
+  # The id of the submission you want to attach an asset to
+  submission_id: String!
+  clientMutationId: String
+}
+
+type AddAssetToConsignmentSubmissionPayload {
+  asset: Asset
+  clientMutationId: String
+}
+
 # One item in an aggregation
 type AggregationCount {
   # A globally unique ID.
@@ -1306,6 +1323,21 @@ enum ArtworkSorts {
   TITLE_DESC
 }
 
+# An asset which is assigned to a consignment submission
+type Asset {
+  # Convection asset ID.
+  id: String!
+
+  # The convection submission ID
+  submission_id: String
+
+  # The gemini token for the asset
+  gemini_token: String
+
+  # The type of the asset
+  asset_type: String
+}
+
 type Attachment {
   # Attachment id.
   id: String!
@@ -1481,12 +1513,17 @@ type Collection implements Node {
   # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
-  artworks_connection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworks_connection(after: String, first: Int, before: String, last: Int, private: Boolean = false, sort: CollectionSorts): ArtworkConnection
   description: String!
   default: Boolean!
   name: String!
   private: Boolean!
   slug: String!
+}
+
+enum CollectionSorts {
+  POSITION_ASC
+  POSITION_DESC
 }
 
 type CollectorProfileType {
@@ -1562,6 +1599,8 @@ type Conversation implements Node {
   ): String
   purchase_request: Boolean
   initial_message: String!
+
+  # This is a snippet of text from the last message.
   last_message: String!
   last_message_at(
     convert_to_utc: Boolean
@@ -1570,7 +1609,18 @@ type Conversation implements Node {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # True if user/conversation initiator is a recipient.
+  is_last_message_to_user: Boolean
+
+  # Timestamp if the user opened the last message, null in all other cases
+  last_message_open: String
+
+  # Only the artworks discussed in the conversation.
   artworks: [Artwork]
+
+  # The artworks and/or partner shows discussed in the conversation.
+  items: [ConversationItem]
 
   # A connection for all messages in a single conversation
   messages(after: String, first: Int, before: String, last: Int): MessageConnection
@@ -1606,6 +1656,14 @@ type ConversationInitiator {
   initials(length: Int = 3): String
 }
 
+type ConversationItem {
+  item: ConversationItemType
+  title: String
+  permalink: String
+}
+
+union ConversationItemType = Artwork | Show
+
 # The participant responding to the conversation, currently always a Partner
 type ConversationResponder {
   # Impulse id.
@@ -1623,6 +1681,67 @@ type ConversationResponder {
 type coordinates {
   lat: Float
   lng: Float
+}
+
+input CreateSubmissionMutationInput {
+  artist_id: String!
+
+  # Does the artwork come with an certificate of authenticity?
+  authenticity_certificate: Boolean
+
+  # The set in which to put the work
+  category: SubmissionCategoryAggregation
+
+  # The depth of the work
+  depth: String
+
+  # A string, either CM or IN
+  dimensions_metric: SubmissionDimensionAggregation
+
+  # The version of individual work if from a set
+  edition: String
+
+  # The number of the individual work if in a set
+  edition_number: String
+
+  # The whole size of the set of works
+  edition_size: String
+
+  # The height of the work
+  height: String
+
+  # The city where the work currently resides
+  location_city: String
+
+  # The country where the work currently resides
+  location_country: String
+
+  # The state where the work currently resides
+  location_state: String
+
+  # The materials in which the work is created
+  medium: String
+
+  # The history of an work
+  provenance: String
+
+  # Is this work signed?
+  signature: Boolean
+
+  # The name of the work
+  title: String
+
+  # The width of the work
+  width: String
+
+  # The year the work was created
+  year: String
+  clientMutationId: String
+}
+
+type CreateSubmissionMutationPayload {
+  submission: Submission
+  clientMutationId: String
 }
 
 type CroppedImageUrl {
@@ -1653,6 +1772,42 @@ type DeepZoomImage {
 type DeepZoomImageSize {
   Width: Int
   Height: Int
+}
+
+type Delivery {
+  # Delivery id.
+  id: String!
+
+  # Masked email w/ display name.
+  full_transformed_email: String!
+  delivered_at(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  bounced_at(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  opened_at(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  clicked_at(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
 }
 
 type dimensions {
@@ -2640,6 +2795,38 @@ type Image {
   versions: [String]
 }
 
+type Invoice {
+  # Impulse's invoice id.
+  id: String!
+
+  # Lewitt's invoice id.
+  lewitt_invoice_id: String!
+
+  # Link to public checkout page.
+  payment_url: String
+
+  # Current state of invoice.
+  state: InvoiceState
+
+  # A formatted price with various currency formatting options.
+  total(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+}
+
+enum InvoiceState {
+  UNPAID
+  PAID
+  VOID
+  REFUNDED
+}
+
 union Item = ArtistItem | ArtworkItem | FeaturedLinkItem | GeneItem
 
 type Location {
@@ -2714,6 +2901,8 @@ type Me implements Node {
     # The ID of the Conversation
     id: String!
   ): Conversation
+
+  # Conversations, usually between a user and partner.
   conversations(after: String, first: Int, before: String, last: Int): ConversationConnection
   created_at(
     convert_to_utc: Boolean
@@ -2803,11 +2992,20 @@ type Message implements Node {
 
   # True if message is from the user to the partner.
   is_from_user: Boolean
-  from_email_address: String
+  from_email_address: String @deprecated(reason: "Prefer to use the structured `from` field.")
+  from: MessageInitiator
 
   # Full unsanitized text.
-  raw_text: String!
+  raw_text: String! @deprecated(reason: "Prefer to use the parsed/cleaned-up `body`.")
+
+  # Unaltered text if possible, otherwise `body`: a parsed/sanitized version from Sendgrid.
+  body: String
+  deliveries: [Delivery]
   attachments: [Attachment]
+  invoice: Invoice
+
+  # True if message is an invoice message
+  is_invoice: Boolean
   created_at(
     convert_to_utc: Boolean
     format: String
@@ -2835,14 +3033,31 @@ type MessageEdge {
   cursor: String!
 }
 
+# The participant who sent the message.
+type MessageInitiator {
+  name: String
+  email: String
+}
+
 type Mutation {
   followArtist(input: FollowArtistInput!): FollowArtistPayload
   updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
+
+  # Updating buyer outcome of a conversation.
   updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
 
   # Appending a message to a conversation thread
   sendConversationMessage(input: SendConversationMessageMutationInput!): SendConversationMessageMutationPayload
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
+
+  # Create a new consignment submission using Convection
+  createConsignmentSubmission(input: CreateSubmissionMutationInput!): CreateSubmissionMutationPayload
+
+  # Update a consigment using Convection
+  updateConsignmentSubmission(input: UpdateSubmissionMutationInput!): UpdateSubmissionMutationPayload
+
+  # Attach an gemini asset to a consignment submission
+  addAssetToConsignmentSubmission(input: AddAssetToConsignmentSubmissionInput!): AddAssetToConsignmentSubmissionPayload
 }
 
 input Near {
@@ -4237,6 +4452,87 @@ type StatusGravity {
   ping: Boolean
 }
 
+# A work to be consigned to the user
+type Submission {
+  # Convection id.
+  id: String!
+  artist_id: String!
+
+  # Does the artwork come with an certificate of authenticity?
+  authenticity_certificate: Boolean
+
+  # The set in which to put the work
+  category: SubmissionCategoryAggregation
+
+  # The depth of the work
+  depth: String
+
+  # A string, either CM or IN
+  dimensions_metric: SubmissionDimensionAggregation
+
+  # The version of individual work if from a set
+  edition: String
+
+  # The number of the individual work if in a set
+  edition_number: String
+
+  # The whole size of the set of works
+  edition_size: String
+
+  # The height of the work
+  height: String
+
+  # The city where the work currently resides
+  location_city: String
+
+  # The country where the work currently resides
+  location_country: String
+
+  # The state where the work currently resides
+  location_state: String
+
+  # The materials in which the work is created
+  medium: String
+
+  # The history of an work
+  provenance: String
+
+  # Is this work signed?
+  signature: Boolean
+
+  # The name of the work
+  title: String
+
+  # The width of the work
+  width: String
+
+  # The year the work was created
+  year: String
+}
+
+enum SubmissionCategoryAggregation {
+  PAINTING
+  SCULPTURE
+  PHOTOGRAPHY
+  PRINT
+  DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER
+  MIXED_MEDIA
+  PERFORMANCE_ART
+  INSTALLATION
+  VIDEO_FILM_ANIMATION
+  ARCHITECTURE
+  FASHION_DESIGN_AND_WEARABLE_ART
+  JEWELRY
+  DESIGN_DECORATIVE_ART
+  TEXTILE_ARTS
+  OTHER
+}
+
+enum SubmissionDimensionAggregation {
+  CM
+  IN
+}
+
 type Tag {
   # A globally unique ID.
   __id: ID!
@@ -4334,6 +4630,69 @@ input UpdateConversationMutationInput {
 
 type UpdateConversationMutationPayload {
   conversations: [Conversation]
+  clientMutationId: String
+}
+
+input UpdateSubmissionMutationInput {
+  # Convection id.
+  id: String!
+  artist_id: String!
+
+  # Does the artwork come with an certificate of authenticity?
+  authenticity_certificate: Boolean
+
+  # The set in which to put the work
+  category: SubmissionCategoryAggregation
+
+  # The depth of the work
+  depth: String
+
+  # A string, either CM or IN
+  dimensions_metric: SubmissionDimensionAggregation
+
+  # The version of individual work if from a set
+  edition: String
+
+  # The number of the individual work if in a set
+  edition_number: String
+
+  # The whole size of the set of works
+  edition_size: String
+
+  # The height of the work
+  height: String
+
+  # The city where the work currently resides
+  location_city: String
+
+  # The country where the work currently resides
+  location_country: String
+
+  # The state where the work currently resides
+  location_state: String
+
+  # The materials in which the work is created
+  medium: String
+
+  # The history of an work
+  provenance: String
+
+  # Is this work signed?
+  signature: Boolean
+
+  # The name of the work
+  title: String
+
+  # The width of the work
+  width: String
+
+  # The year the work was created
+  year: String
+  clientMutationId: String
+}
+
+type UpdateSubmissionMutationPayload {
+  submission: Submission
   clientMutationId: String
 }
 
