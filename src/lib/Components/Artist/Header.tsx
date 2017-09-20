@@ -126,7 +126,7 @@ class Header extends React.Component<HeaderProps, State> {
     return leadingSubstring + " " + birthday
   }
 
-  @track({ action: "press follow/unfollow button" })
+  @track((props, state) => ({ action: state.following ? "press unfollow button" : "press follow button" }))
   handleFollowChange() {
     const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
