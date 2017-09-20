@@ -2,6 +2,7 @@
 
 ###### Dev
 
+-   Remaps space key bidding to ctrl+space so we can enter spaces fromthe simulator - luc
 -   Conditionally use different past artist show fragments for iPad vs iPhone - alloy
 -   Upgrades Relay to ‘modern’ (v1.3.0) - alloy
 -   Upgrades React Native to v0.48.0 - sarah
@@ -31,6 +32,8 @@
 
 ###### Messaging
 
+-   Fixed separator styling in the message component - luc
+-   Moved conversation loading indicator inside list view - luc
 -   Added Pending state to message timestamps - sarah
 -   Initial spike on adding some link detection - maxim + matt
 -   Initial message now sticks to the top of the scrollview - luc

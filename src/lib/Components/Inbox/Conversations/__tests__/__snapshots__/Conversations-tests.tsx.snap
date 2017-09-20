@@ -119,7 +119,7 @@ exports[`looks correct when rendered 1`] = `
                 },
                 Array [
                   Object {
-                    "marginBottom": 3,
+                    "marginBottom": 15,
                     "marginLeft": 15,
                   },
                   undefined,
@@ -407,7 +407,7 @@ exports[`looks correct when rendered 1`] = `
                 },
                 Array [
                   Object {
-                    "marginBottom": 3,
+                    "marginBottom": 15,
                     "marginLeft": 15,
                   },
                   undefined,

@@ -52,7 +52,7 @@ export class Messages extends React.Component<Props, State> {
     }
   }
 
-  renderMessage({ item }) {
+  renderMessage({ item, index }) {
     const conversationItem = this.props.conversation.items[0].item
     const conversation = this.props.conversation
     const partnerName = conversation.to.name
@@ -60,6 +60,7 @@ export class Messages extends React.Component<Props, State> {
     const initials = item.is_from_user ? conversation.from.initials : conversation.to.initials
     return (
       <Message
+        index={index}
         firstMessage={item.firstMessage}
         initialText={item}
         message={item}
@@ -105,7 +106,6 @@ export class Messages extends React.Component<Props, State> {
 
   reload() {
     const count = this.props.conversation.messages.edges.length
-
     this.setState({ reloadingData: true })
     this.props.relay.refetchConnection(count, e => {
       this.setState({ reloadingData: false })
@@ -139,7 +139,7 @@ export class Messages extends React.Component<Props, State> {
           })
         }}
         refreshControl={refreshControl}
-        ItemSeparatorComponent={DottedLine}
+        ListFooterComponent={<ActivityIndicator animating={this.state.fetchingMoreData} hidesWhenStopped />}
       />
     )
   }

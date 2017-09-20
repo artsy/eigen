@@ -33,7 +33,7 @@ const CardContent = styled(HorizontalLayout)`
 
 const TextPreview = styled(VerticalLayout)`
   margin-left: 15;
-  margin-bottom: 3;
+  margin-bottom: 15;
 `
 
 const DateHeading = styled(HorizontalLayout)`
