@@ -31,8 +31,6 @@ plugin 'cocoapods-keys', {
 target 'Artsy' do
 
   # Networking
-  # Note: Once AFNetworking exposes AFJSONObjectByRemovingKeysWithNullValues publicly (see https://github.com/AFNetworking/AFNetworking/pull/4051 ).
-  # We can remove our copy, named ARJSONObjectByRemovingKeysWithNullValues.
   pod 'AFNetworking', "~> 2.5"
   pod 'AFOAuth1Client', :git => "https://github.com/lxcid/AFOAuth1Client.git", :tag => "0.4.0"
   pod 'AFNetworkActivityLogger'
