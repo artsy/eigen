@@ -61,8 +61,8 @@ export class Messages extends React.Component<Props, State> {
     return (
       <Message
         index={index}
-        firstMessage={item.firstMessage}
-        initialText={item}
+        firstMessage={item.first_message}
+        initialText={conversation.initial_message}
         message={item}
         senderName={senderName}
         initials={initials}
@@ -162,6 +162,7 @@ export default createPaginationContainer(
           name
           initials
         }
+        initial_message
         messages(first: $count, after: $after, sort: DESC) @connection(key: "Messages_messages", filters: []) {
           pageInfo {
             startCursor
@@ -240,6 +241,7 @@ interface RelayProps {
         email: string
         initials: string
       }
+      initial_message: string
       messages: {
         pageInfo?: {
           hasNextPage: boolean
