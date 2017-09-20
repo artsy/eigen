@@ -104,6 +104,7 @@ exports[`renders correctly with a show 1`] = `
                 "fontSize": 11,
                 "textAlign": "left",
               },
+              undefined,
               Object {},
               Object {
                 "fontFamily": "Avant Garde Gothic ITCW01Dm",
@@ -365,6 +366,7 @@ exports[`renders correctly with an artwork 1`] = `
                 "fontSize": 11,
                 "textAlign": "left",
               },
+              undefined,
               Object {},
               Object {
                 "fontFamily": "Avant Garde Gothic ITCW01Dm",

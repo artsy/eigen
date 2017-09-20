@@ -686,6 +686,7 @@ exports[`renders correctly 1`] = `
                           "fontSize": 11,
                           "textAlign": "left",
                         },
+                        undefined,
                         Object {},
                         Object {
                           "fontFamily": "Avant Garde Gothic ITCW01Dm",
@@ -973,6 +974,7 @@ exports[`renders correctly 1`] = `
                           "fontSize": 11,
                           "textAlign": "left",
                         },
+                        undefined,
                         Object {},
                         Object {
                           "fontFamily": "Avant Garde Gothic ITCW01Dm",
