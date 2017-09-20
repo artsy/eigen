@@ -11,17 +11,9 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(postEvent:(nonnull NSNumber *)reactTag info:(nonnull NSDictionary *)info)
+RCT_EXPORT_METHOD(postEvent:(nonnull NSDictionary *)info)
 {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    UIView *rootView = [self.bridge.uiManager viewForReactTag:reactTag];
-    while (rootView.superview && ![rootView isKindOfClass:RCTRootView.class]) {
-      rootView = rootView.superview;
-    }
-    UIViewController *viewController = rootView.reactViewController;
-    
-    self.eventOccurred(viewController, info);
-  });
+    self.eventOccurred(info);
 }
 
 @end

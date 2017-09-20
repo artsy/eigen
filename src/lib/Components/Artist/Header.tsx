@@ -1,5 +1,7 @@
 import * as PropTypes from "prop-types"
 import * as React from "react"
+import track from "react-tracking"
+
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
@@ -23,6 +25,7 @@ interface State {
   followersCount: number
 }
 
+@track()
 class Header extends React.Component<HeaderProps, State> {
   static propTypes = {
     artist: PropTypes.shape({
@@ -46,25 +49,6 @@ class Header extends React.Component<HeaderProps, State> {
     })
   }
 
-  handleFollowChange = () => {
-    const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
-    ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
-      if (error) {
-        console.warn(error)
-      } else {
-        Events.postEvent(this, {
-          name: following ? "Follow artist" : "Unfollow artist",
-          artist_id: this.props.artist._id,
-          artist_slug: this.props.artist.id,
-          // TODO: At some point, this component might be on other screens.
-          source_screen: "artist page",
-        })
-      }
-      this.setState({ following, followersCount: newFollowersCount })
-    })
-    this.setState({ following: !this.state.following, followersCount: newFollowersCount })
-  }
-
   render() {
     const artist = this.props.artist
     return (
@@ -86,7 +70,7 @@ class Header extends React.Component<HeaderProps, State> {
           <InvertedButton
             text={this.state.following ? "Following" : "Follow"}
             selected={this.state.following}
-            onPress={this.handleFollowChange}
+            onPress={this.handleFollowChange.bind(this)}
           />
         </View>
       )
@@ -140,6 +124,35 @@ class Header extends React.Component<HeaderProps, State> {
     }
 
     return leadingSubstring + " " + birthday
+  }
+
+  @track((props, state) => ({ action: state.following ? "press unfollow button" : "press follow button" }))
+  handleFollowChange() {
+    const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
+    ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
+      if (error) {
+        console.warn(error)
+      } else {
+        this.successfulFollowChange()
+      }
+      this.setState({ following, followersCount: newFollowersCount })
+    })
+    this.setState({ following: !this.state.following, followersCount: newFollowersCount })
+  }
+
+  @track((props, state) => ({
+    following_artist: state.following,
+    artist_id: props.artist._id,
+    artist_slug: props.artist.id,
+  }))
+  successfulFollowChange() {
+    Events.postEvent({
+      name: this.state.following ? "Follow artist" : "Unfollow artist",
+      artist_id: this.props.artist._id,
+      artist_slug: this.props.artist.id,
+      // TODO At some point, this component might be on other screens.
+      source_screen: "artist page",
+    })
   }
 }
 

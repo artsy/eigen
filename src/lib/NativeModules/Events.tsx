@@ -1,15 +1,8 @@
 import { findNodeHandle, NativeModules } from "react-native"
 const { AREventsModule } = NativeModules
 
-function postEvent(component: React.Component<any, any>, info: any) {
-  let reactTag
-  try {
-    reactTag = findNodeHandle(component)
-  } catch (err) {
-    return
-  }
-
-  AREventsModule.postEvent(reactTag, info)
+function postEvent(info: any) {
+  AREventsModule.postEvent(info)
 }
 
 export default { postEvent }

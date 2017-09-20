@@ -14,6 +14,7 @@
 -   Adds an env var for google maps API - orta
 -   Updates the beta/dev UI, and with docs - orta
 -   Some testing stability work - orta
+-   Add React Tracking lib for analytics - maxim
 
 ###### Consignments
 
