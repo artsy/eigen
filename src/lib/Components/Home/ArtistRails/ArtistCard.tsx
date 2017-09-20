@@ -56,7 +56,7 @@ export class ArtistCard extends React.Component<Props, State> {
         console.warn(error)
         this.setState({ processingChange: false })
       } else {
-        Events.postEvent(this, {
+        Events.postEvent({
           name: "Follow artist",
           artist_id: this.props.artist._id,
           artist_slug: this.props.artist.id,

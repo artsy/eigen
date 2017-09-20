@@ -48,7 +48,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
       if (error) {
         console.warn(error)
       } else {
-        Events.postEvent(this, {
+        Events.postEvent({
           name: following ? "Follow gene" : "Unfollow gene",
           gene_id: this.props.gene._id,
           gene_slug: this.props.gene.id,

@@ -71,6 +71,7 @@ interface State {
   isConnected: boolean
   markedMessageAsRead: boolean
   fetchingData: boolean
+  failedMessageText?: string
 }
 
 export class Conversation extends React.Component<Props, State> {
@@ -126,11 +127,11 @@ export class Conversation extends React.Component<Props, State> {
 
     return (
       <Composer
-        disabled={this.state.sendingMessage}
+        disabled={this.state.sendingMessage || !this.state.isConnected}
         ref={composer => (this.composer = composer)}
+        value={this.state.failedMessageText}
         onSubmit={text => {
-          this.setState({ sendingMessage: true })
-
+          this.setState({ sendingMessage: true, failedMessageText: null })
           sendConversationMessage(
             this.props.relay.environment,
             conversation,
@@ -144,7 +145,7 @@ export class Conversation extends React.Component<Props, State> {
             },
             error => {
               console.warn(error)
-              this.setState({ sendingMessage: false })
+              this.setState({ sendingMessage: false, failedMessageText: text })
             }
           )
         }}

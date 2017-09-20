@@ -5,6 +5,8 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { BodyText, FromSignatureText, MetadataText, SmallHeadline } from "../Typography"
 
+import Hyperlink from "react-native-hyperlink"
+
 import Avatar from "./Avatar"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
 import PDFPreview from "./Preview/Attachment/PDFPreview"
@@ -45,7 +47,7 @@ const TextContainer = styled(VerticalLayout)`
 `
 
 const SenderName = styled(SmallHeadline)`
-  marginRight: 3
+  marginRight: 6
   font-size: 11.5
 `
 
@@ -53,8 +55,13 @@ const FromSignature = styled(FromSignatureText)`
   marginTop: 10
 `
 
+interface TimeStampProps {
+  pending: boolean
+}
+
 const TimeStamp = styled(MetadataText)`
   font-size: 11.5
+  color: ${(p: TimeStampProps) => (p.pending ? colors["yellow-bold"] : colors["gray-medium"])}
 `
 
 const Seperator = styled(DottedLine)`
@@ -112,16 +119,26 @@ export class Message extends React.Component<Props, any> {
     const isSent = !!message.created_at
     const body = firstMessage ? initialText : message.body
 
+    const onLinkPress = url => {
+      return SwitchBoard.presentNavigationViewController(this, url)
+    }
+
+    const linkStyle = {
+      color: "#0645ad",
+    }
+
     return (
-      <BodyText disabled={!isSent}>
-        {body}
-      </BodyText>
+      <Hyperlink onPress={onLinkPress} linkStyle={linkStyle}>
+        <BodyText disabled={!isSent}>
+          {body}
+        </BodyText>
+      </Hyperlink>
     )
   }
 
   render() {
     const { artworkPreview, initials, message, senderName, showPreview } = this.props
-    const isSent = !!message.created_at
+    const isPending = !message.created_at
 
     const fromName = message.from.name
     const fromEmail = message.from.email
@@ -133,13 +150,14 @@ export class Message extends React.Component<Props, any> {
           <Avatar isUser={message.is_from_user} initials={initials} />
           <TextContainer>
             <Header>
-              <SenderName>
+              <SenderName disabled={isPending}>
                 {senderName}
               </SenderName>
-              {isSent &&
-                <TimeStamp>
-                  {moment(message.created_at).fromNow(true)}
-                </TimeStamp>}
+              {
+                <TimeStamp pending={isPending}>
+                  {isPending ? "pending" : moment(message.created_at).fromNow(true)}
+                </TimeStamp>
+              }
             </Header>
             {artworkPreview &&
               <ArtworkPreviewContainer>

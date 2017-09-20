@@ -97,7 +97,7 @@ export class Gene extends React.Component<Props, State> {
   // This is *not* called on the initial render, thus it will only post events for when the user actually taps a tab.
   // TODO: This was getting called far more than expected.
   // componentDidUpdate(previousProps, previousState) {
-  //   Events.postEvent(this, {
+  //   Events.postEvent({
   //     name: 'Tapped gene view tab',
   //     tab: this.selectedTabTitle().toLowerCase(),
   //     gene_id: this.props.gene._id,

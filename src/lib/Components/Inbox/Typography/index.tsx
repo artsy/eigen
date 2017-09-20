@@ -15,9 +15,9 @@ const LargeHeadline: React.SFC<TextProperties> = props => {
   )
 }
 
-const SmallHeadline: React.SFC<TextProperties> = props => {
+const SmallHeadline: React.SFC<TextProperties & { disabled?: boolean }> = props => {
   const children: string = (props as any).children
-  const style = [styles.smallDefault, props.style || {}, styles.smallRequired]
+  const style = [styles.smallDefault, props.disabled && styles.disabled, props.style || {}, styles.smallRequired]
   return (
     <Text key={children} style={style}>
       {(children || "").toUpperCase()}

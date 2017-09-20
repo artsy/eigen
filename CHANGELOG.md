@@ -15,6 +15,7 @@
 -   Adds an env var for google maps API - orta
 -   Updates the beta/dev UI, and with docs - orta
 -   Some testing stability work - orta
+-   Add React Tracking lib for analytics - maxim
 
 ###### Consignments
 
@@ -33,6 +34,8 @@
 
 -   Fixed separator styling in the message component - luc
 -   Moved conversation loading indicator inside list view - luc
+-   Added Pending state to message timestamps - sarah
+-   Initial spike on adding some link detection - maxim + matt
 -   Initial message now sticks to the top of the scrollview - luc
 -   Added spinner and 'no more' message when paginating thru inbox - matt
 -   Refactored messaging-related interfaces, fixed mutations, added tests - luc + matt
@@ -40,6 +43,7 @@
 -   Added ability to sort messages in ascending and descending order - luc
 -   Added capability to mark a message as read by the user - matt
 -   Updated logic to render purch requests and invoices better - matt
+-   If a message fails to send, display it again in the Composer so the user can retry - sarah
 -   Updated styling on bottom dotted border of ConversationSnippet - erik
 -   Fixed incorrect use of Attachment props in invoice component - matt
 -   Added inline rendering for invoices - matt

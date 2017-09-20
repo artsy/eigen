@@ -230,8 +230,8 @@ randomBOOL(void)
     [fromViewController.navigationController presentViewController:navigationController animated:YES completion:nil];
   };
 
-  emission.eventsModule.eventOccurred = ^(UIViewController * _Nonnull fromViewController, NSDictionary * _Nonnull info) {
-    NSLog(@"[Event] %@ - %@", fromViewController.class, info);
+  emission.eventsModule.eventOccurred = ^(NSDictionary * _Nonnull info) {
+    NSLog(@"[Event] - %@", info);
   };
 
   emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull initial, NSDictionary *_Nonnull current, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {

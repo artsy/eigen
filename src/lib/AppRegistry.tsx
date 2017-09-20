@@ -1,6 +1,7 @@
 import * as _ from "lodash"
 import * as React from "react"
 import { AppRegistry, ViewProperties } from "react-native"
+import track from "react-tracking"
 
 import Consignments from "./Components/Consignments"
 import LoadFailureView from "./Components/LoadFailureView"
@@ -18,6 +19,8 @@ import {
   RenderCallback,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
+
+import Events from "./NativeModules/Events"
 
 interface Props extends ViewProperties {
   trigger1pxScrollHack?: boolean
@@ -47,8 +50,19 @@ const renderWithLoadProgress = (Component: React.ReactType, initialProps: object
   }
 }
 
-const Artist: React.SFC<{ artistID: string; isPad: boolean }> = props =>
+// Analytics wrapper for all of our top level React components
+function AddTrack(pageName: string) {
+  return track(
+    // Here we assign the source screen to all subsequent events fired from that component
+    { page: pageName },
+    // Here we're hooking into Eigen to post analytics events to Adjust and Segement
+    { dispatch: data => Events.postEvent(data) }
+  )
+}
+
+const Artist: React.SFC<{ artistID: string; isPad: boolean }> = AddTrack("Artist")(props =>
   <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />
+)
 
 const Inbox: React.SFC<{}> = () => <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />
 

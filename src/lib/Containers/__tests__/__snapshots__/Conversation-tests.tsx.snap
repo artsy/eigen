@@ -81,6 +81,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
                 "fontSize": 11,
                 "textAlign": "left",
               },
+              undefined,
               Object {},
               Object {
                 "fontFamily": "Avant Garde Gothic ITCW01Dm",
@@ -317,10 +318,13 @@ exports[`displays a connectivity banner when network is down 1`] = `
                           "fontSize": 11,
                           "textAlign": "left",
                         },
+                        Object {
+                          "color": "#cccccc",
+                        },
                         Array [
                           Object {
                             "fontSize": 11.5,
-                            "marginRight": 3,
+                            "marginRight": 6,
                           },
                           undefined,
                         ],
@@ -332,31 +336,68 @@ exports[`displays a connectivity banner when network is down 1`] = `
                   >
                     KIMBERLY KLARK
                   </Text>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "color": "#cccccc",
+                          "fontSize": 11,
+                          "textAlign": "left",
+                        },
+                        Array [
+                          Object {
+                            "color": "#f1af1b",
+                            "fontSize": 11.5,
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        },
+                      ]
+                    }
+                  >
+                    PENDING
+                  </Text>
                 </View>
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  disabled={false}
-                  ellipsizeMode="tail"
-                  style={
-                    Array [
-                      Object {
-                        "color": "black",
-                        "fontSize": 16,
-                        "textAlign": "left",
-                      },
-                      Object {
-                        "color": "#cccccc",
-                      },
-                      Object {},
-                      Object {
-                        "fontFamily": "AGaramondPro-Regular",
-                      },
-                    ]
+                <View
+                  linkStyle={
+                    Object {
+                      "color": "#0645ad",
+                    }
                   }
+                  onPress={[Function]}
+                  style={undefined}
                 >
-                  Adoro! Por favor envie-me mais informações
-                </Text>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "color": "black",
+                          "fontSize": 16,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#cccccc",
+                        },
+                        Object {},
+                        Object {
+                          "fontFamily": "AGaramondPro-Regular",
+                        },
+                      ]
+                    }
+                  >
+                    Adoro! Por favor envie-me mais informações
+                  </Text>
+                </View>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -427,7 +468,6 @@ exports[`displays a connectivity banner when network is down 1`] = `
     }
   >
     <TextInput
-      editable={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -446,6 +486,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
           "paddingTop": 13,
         }
       }
+      value={null}
     />
     <Text
       accessibilityComponentType={undefined}
@@ -453,8 +494,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
       accessibilityTraits={undefined}
       accessible={true}
       allowFontScaling={true}
-      containsText={false}
-      disabled={false}
+      disabled={true}
       ellipsizeMode="tail"
       hitSlop={undefined}
       nativeID={undefined}
@@ -565,6 +605,7 @@ exports[`looks correct when rendered 1`] = `
                 "fontSize": 11,
                 "textAlign": "left",
               },
+              undefined,
               Object {},
               Object {
                 "fontFamily": "Avant Garde Gothic ITCW01Dm",
@@ -767,10 +808,13 @@ exports[`looks correct when rendered 1`] = `
                           "fontSize": 11,
                           "textAlign": "left",
                         },
+                        Object {
+                          "color": "#cccccc",
+                        },
                         Array [
                           Object {
                             "fontSize": 11.5,
-                            "marginRight": 3,
+                            "marginRight": 6,
                           },
                           undefined,
                         ],
@@ -782,31 +826,68 @@ exports[`looks correct when rendered 1`] = `
                   >
                     KIMBERLY KLARK
                   </Text>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "color": "#cccccc",
+                          "fontSize": 11,
+                          "textAlign": "left",
+                        },
+                        Array [
+                          Object {
+                            "color": "#f1af1b",
+                            "fontSize": 11.5,
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        },
+                      ]
+                    }
+                  >
+                    PENDING
+                  </Text>
                 </View>
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  disabled={false}
-                  ellipsizeMode="tail"
-                  style={
-                    Array [
-                      Object {
-                        "color": "black",
-                        "fontSize": 16,
-                        "textAlign": "left",
-                      },
-                      Object {
-                        "color": "#cccccc",
-                      },
-                      Object {},
-                      Object {
-                        "fontFamily": "AGaramondPro-Regular",
-                      },
-                    ]
+                <View
+                  linkStyle={
+                    Object {
+                      "color": "#0645ad",
+                    }
                   }
+                  onPress={[Function]}
+                  style={undefined}
                 >
-                  Adoro! Por favor envie-me mais informações
-                </Text>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "color": "black",
+                          "fontSize": 16,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#cccccc",
+                        },
+                        Object {},
+                        Object {
+                          "fontFamily": "AGaramondPro-Regular",
+                        },
+                      ]
+                    }
+                  >
+                    Adoro! Por favor envie-me mais informações
+                  </Text>
+                </View>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -877,7 +958,6 @@ exports[`looks correct when rendered 1`] = `
     }
   >
     <TextInput
-      editable={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -896,6 +976,7 @@ exports[`looks correct when rendered 1`] = `
           "paddingTop": 13,
         }
       }
+      value={null}
     />
     <Text
       accessibilityComponentType={undefined}
@@ -903,8 +984,7 @@ exports[`looks correct when rendered 1`] = `
       accessibilityTraits={undefined}
       accessible={true}
       allowFontScaling={true}
-      containsText={false}
-      disabled={false}
+      disabled={true}
       ellipsizeMode="tail"
       hitSlop={undefined}
       nativeID={undefined}
@@ -1015,6 +1095,7 @@ exports[`looks correct when rendered 2`] = `
                 "fontSize": 11,
                 "textAlign": "left",
               },
+              undefined,
               Object {},
               Object {
                 "fontFamily": "Avant Garde Gothic ITCW01Dm",
@@ -1217,10 +1298,13 @@ exports[`looks correct when rendered 2`] = `
                           "fontSize": 11,
                           "textAlign": "left",
                         },
+                        Object {
+                          "color": "#cccccc",
+                        },
                         Array [
                           Object {
                             "fontSize": 11.5,
-                            "marginRight": 3,
+                            "marginRight": 6,
                           },
                           undefined,
                         ],
@@ -1232,31 +1316,68 @@ exports[`looks correct when rendered 2`] = `
                   >
                     KIMBERLY KLARK
                   </Text>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "color": "#cccccc",
+                          "fontSize": 11,
+                          "textAlign": "left",
+                        },
+                        Array [
+                          Object {
+                            "color": "#f1af1b",
+                            "fontSize": 11.5,
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        },
+                      ]
+                    }
+                  >
+                    PENDING
+                  </Text>
                 </View>
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  disabled={false}
-                  ellipsizeMode="tail"
-                  style={
-                    Array [
-                      Object {
-                        "color": "black",
-                        "fontSize": 16,
-                        "textAlign": "left",
-                      },
-                      Object {
-                        "color": "#cccccc",
-                      },
-                      Object {},
-                      Object {
-                        "fontFamily": "AGaramondPro-Regular",
-                      },
-                    ]
+                <View
+                  linkStyle={
+                    Object {
+                      "color": "#0645ad",
+                    }
                   }
+                  onPress={[Function]}
+                  style={undefined}
                 >
-                  Adoro! Por favor envie-me mais informações
-                </Text>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "color": "black",
+                          "fontSize": 16,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#cccccc",
+                        },
+                        Object {},
+                        Object {
+                          "fontFamily": "AGaramondPro-Regular",
+                        },
+                      ]
+                    }
+                  >
+                    Adoro! Por favor envie-me mais informações
+                  </Text>
+                </View>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -1327,7 +1448,6 @@ exports[`looks correct when rendered 2`] = `
     }
   >
     <TextInput
-      editable={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -1346,6 +1466,7 @@ exports[`looks correct when rendered 2`] = `
           "paddingTop": 13,
         }
       }
+      value={null}
     />
     <Text
       accessibilityComponentType={undefined}
@@ -1353,8 +1474,7 @@ exports[`looks correct when rendered 2`] = `
       accessibilityTraits={undefined}
       accessible={true}
       allowFontScaling={true}
-      containsText={false}
-      disabled={false}
+      disabled={true}
       ellipsizeMode="tail"
       hitSlop={undefined}
       nativeID={undefined}

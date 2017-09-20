@@ -9,7 +9,8 @@
     "allowJs": true,
     "pretty": true,
     "strictNullChecks": false,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true
   },
   "include": ["typings/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "dangerfile.ts"],
   "exclude": [
