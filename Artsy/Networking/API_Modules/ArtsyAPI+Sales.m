@@ -23,20 +23,7 @@
                                        failure:(void (^)(NSError *))failure
 {
     NSURLRequest *request = [ARRouter artworksForSaleRequest:saleID];
-<<<<<<< HEAD
-    return [self performRequest:request success:^(id json) {
-        NSArray *errors = json[@"errors"];
-        if (errors) {
-            NSLog(@"Failure fetching GraphQL query: %@", errors);
-            [ARAnalytics event:@"Failure parsing GraphQL query" withProperties:@{@"response": json}];
-            if (failure) {
-                failure([NSError errorWithDomain:@"JSON parsing" code:0 userInfo:json]);
-            }
-            return;
-        }
-=======
     return [self performGraphQLRequest:request success:^(id json) {
->>>>>>> 0436a858... Consolidates GraphQL response error-handling.
         NSArray *saleArtworksJSON = json[@"data"][@"sale"][@"sale_artworks"];
 
         if (!saleArtworksJSON) {

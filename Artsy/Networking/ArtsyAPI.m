@@ -26,9 +26,9 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 
 @implementation ArtsyAPI
 
-+ (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request fullSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback
++ (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls fullSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback
 {
-    AFHTTPRequestOperation *operation = [self.sharedAPI requestOperation:request success:success failure:failureCallback];
+    AFHTTPRequestOperation *operation = [self.sharedAPI requestOperation:request removeNullsFromResponse:removeNulls success:success failure:failureCallback];
     [operation start];
     return operation;
 }
@@ -153,13 +153,23 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 
 - (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
 {
-    return [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:success failure:failure];
+    return [AFHTTPRequestOperation JSONRequestOperationWithRequest:request removeNulls:NO success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    return [AFHTTPRequestOperation JSONRequestOperationWithRequest:request removeNulls:removeNulls success:success failure:failure];
 }
 
 - (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure
 {
+    return [self performRequest:request removeNullsFromResponse:NO success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure
+{
     __weak AFHTTPRequestOperation *performOperation = nil;
-    performOperation = [self requestOperation:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+    performOperation = [self requestOperation:request removeNullsFromResponse:removeNulls success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         success(JSON);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (failure) {
