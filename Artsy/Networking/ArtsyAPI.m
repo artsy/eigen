@@ -35,7 +35,7 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 
 + (AFHTTPRequestOperation *)performGraphQLRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSError *error))failure
 {
-    return [self performRequest:request success:^(id json) {
+    return [self performRequest:request removeNullsFromResponse:YES success:^(id json) {
         // Parse out metadata from GraphQL response.
         NSArray *errors = json[@"errors"];
         if (errors) {
@@ -59,8 +59,13 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 
 + (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure
 {
+    return [self performRequest:request removeNullsFromResponse:NO success:success failure:failure];
+}
+
++ (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure
+{
     NSParameterAssert(success);
-    return [self.sharedAPI performRequest:request success:success failure:failure];
+    return [self.sharedAPI performRequest:request removeNullsFromResponse:removeNulls success:success failure:failure];
 }
 
 + (AFHTTPRequestOperation *)getRequest:(NSURLRequest *)request parseIntoAClass:(Class)klass success:(void (^)(id))success failure:(void (^)(NSError *error))failure

@@ -2,6 +2,7 @@
 #import "ArtsyOHHTTPAPI.h"
 #import "ArtsyAPI+Private.h"
 #import "MutableNSURLResponse.h"
+#import "AFHTTPRequestOperation+JSON.h"
 
 
 @interface ArtsyAPI (TestsPrivate)
@@ -39,6 +40,39 @@ describe(@"handleXappTokenError", ^{
         [mock stopMocking];
         expect([UICKeyChainStore stringForKey:ARXAppTokenKeychainKey]).to.beNil();
     });
+});
+
+NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://example.com"]];
+
+it(@"defaults to not removing null JSON values", ^{
+    id mockRequest = [OCMockObject niceMockForClass:[AFHTTPRequestOperation class]];
+    id mock = [OCMockObject mockForClass:[ArtsyAPI class]];
+    [[[[mock expect] classMethod] andReturn:mockRequest] performRequest:OCMOCK_ANY removeNullsFromResponse:NO success:OCMOCK_ANY failure:OCMOCK_ANY];
+
+    [ArtsyAPI performRequest:request success:^(id json) {
+        failure(@"block unexepectedly invoked");
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        failure(@"block unexepectedly invoked");
+    }];
+
+    [mock verify];
+    [mock stopMocking];
+});
+
+it(@"removes JSON nulls when specified to", ^{
+    id operationMock = [OCMockObject niceMockForClass:[AFHTTPRequestOperation class]];
+    id apiMock = [OCMockObject mockForClass:[ArtsyAPI class]];
+    [[[[operationMock expect] classMethod] andReturn:operationMock] JSONRequestOperationWithRequest:OCMOCK_ANY removeNulls:YES success:OCMOCK_ANY failure:OCMOCK_ANY];
+
+    [ArtsyAPI performRequest:request removeNullsFromResponse:YES success:^(id json) {
+        failure(@"block unexepectedly invoked");
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        failure(@"block unexepectedly invoked");
+    }];
+
+    [operationMock verify];
+    [operationMock stopMocking];
+    [apiMock stopMocking];
 });
 
 SpecEnd;

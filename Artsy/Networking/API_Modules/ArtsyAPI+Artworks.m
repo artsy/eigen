@@ -58,7 +58,7 @@
             Artwork *artwork = [Artwork modelWithJSON:json];
 
             id saleArtworkJSON = json[@"sale_artwork"];
-            if (saleArtworkJSON && saleArtworkJSON != [NSNull null]) {
+            if (saleArtworkJSON) {
                 SaleArtwork *saleArtwork = [SaleArtwork modelWithJSON:saleArtworkJSON];
                 artwork.auction = saleArtwork.auction;
                 artwork.saleArtwork = saleArtwork;
