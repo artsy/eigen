@@ -31,6 +31,7 @@
 
 ###### Messaging
 
+-   Added Pending state to message timestamps - sarah
 -   Initial spike on adding some link detection - maxim + matt
 -   Initial message now sticks to the top of the scrollview - luc
 -   Added spinner and 'no more' message when paginating thru inbox - matt

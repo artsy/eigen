@@ -175,10 +175,13 @@ exports[`looks correct when rendered 1`] = `
                     "fontSize": 11,
                     "textAlign": "left",
                   },
+                  Object {
+                    "color": "#cccccc",
+                  },
                   Array [
                     Object {
                       "fontSize": 11.5,
-                      "marginRight": 3,
+                      "marginRight": 6,
                     },
                     undefined,
                   ],
@@ -189,6 +192,33 @@ exports[`looks correct when rendered 1`] = `
               }
             >
               KIMBERLY KLARK
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              disabled={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": "#cccccc",
+                    "fontSize": 11,
+                    "textAlign": "left",
+                  },
+                  Array [
+                    Object {
+                      "color": "#f1af1b",
+                      "fontSize": 11.5,
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                  },
+                ]
+              }
+            >
+              PENDING
             </Text>
           </View>
           <View

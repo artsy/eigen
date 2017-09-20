@@ -42,7 +42,7 @@ const TextContainer = styled(VerticalLayout)`
 `
 
 const SenderName = styled(SmallHeadline)`
-  marginRight: 3
+  marginRight: 6
   font-size: 11.5
 `
 
@@ -50,8 +50,13 @@ const FromSignature = styled(FromSignatureText)`
   marginTop: 10
 `
 
+interface TimeStampProps {
+  pending: boolean
+}
+
 const TimeStamp = styled(MetadataText)`
   font-size: 11.5
+  color: ${(p: TimeStampProps) => (p.pending ? colors["yellow-bold"] : colors["gray-medium"])}
 `
 
 const ArtworkPreviewContainer = styled.View`margin-bottom: 10;`
@@ -122,7 +127,7 @@ export class Message extends React.Component<Props, any> {
 
   render() {
     const { artworkPreview, initials, message, senderName, showPreview } = this.props
-    const isSent = !!message.created_at
+    const isPending = !message.created_at
 
     const fromName = message.from.name
     const fromEmail = message.from.email
@@ -133,13 +138,14 @@ export class Message extends React.Component<Props, any> {
         <Avatar isUser={message.is_from_user} initials={initials} />
         <TextContainer>
           <Header>
-            <SenderName>
+            <SenderName disabled={isPending}>
               {senderName}
             </SenderName>
-            {isSent &&
-              <TimeStamp>
-                {moment(message.created_at).fromNow(true)}
-              </TimeStamp>}
+            {
+              <TimeStamp pending={isPending}>
+                {isPending ? "pending" : moment(message.created_at).fromNow(true)}
+              </TimeStamp>
+            }
           </Header>
           {artworkPreview &&
             <ArtworkPreviewContainer>

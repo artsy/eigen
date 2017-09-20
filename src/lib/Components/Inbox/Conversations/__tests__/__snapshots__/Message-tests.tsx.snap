@@ -99,10 +99,11 @@ exports[`looks correct when rendered 1`] = `
               "fontSize": 11,
               "textAlign": "left",
             },
+            false,
             Array [
               Object {
                 "fontSize": 11.5,
-                "marginRight": 3,
+                "marginRight": 6,
               },
               undefined,
             ],
@@ -128,6 +129,7 @@ exports[`looks correct when rendered 1`] = `
             },
             Array [
               Object {
+                "color": "#cccccc",
                 "fontSize": 11.5,
               },
               undefined,
