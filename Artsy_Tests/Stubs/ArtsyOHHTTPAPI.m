@@ -76,6 +76,11 @@ static id ARJSONObjectByRemovingKeysWithNullValues(id JSONObject, NSJSONReadingO
     callback(@"xapp token", [NSDate distantFuture]);
 }
 
+- (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback
+{
+    return [self requestOperation:request removeNullsFromResponse:NO success:success failure:failureCallback];
+}
+
 - (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback
 {
     OHHTTPStubsDescriptor *stub = [[OHHTTPStubs sharedInstance] firstStubPassingTestForRequest:request];
