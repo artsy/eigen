@@ -1,18 +1,18 @@
-import moment from 'moment';
-import * as React from 'react';
-import { View } from 'react-native';
-import Hyperlink from 'react-native-hyperlink';
-import { createFragmentContainer, graphql } from 'react-relay';
-import styled from 'styled-components/native';
+import moment from "moment"
+import * as React from "react"
+import { View } from "react-native"
+import Hyperlink from "react-native-hyperlink"
+import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
 
-import colors from '../../../../data/colors';
-import SwitchBoard from '../../../NativeModules/SwitchBoard';
-import DottedLine from '../../DottedLine';
-import { BodyText, FromSignatureText, MetadataText, SmallHeadline } from '../Typography';
-import Avatar from './Avatar';
-import ImagePreview from './Preview/Attachment/ImagePreview';
-import PDFPreview from './Preview/Attachment/PDFPreview';
-import InvoicePreview from './Preview/InvoicePreview';
+import colors from "../../../../data/colors"
+import SwitchBoard from "../../../NativeModules/SwitchBoard"
+import DottedLine from "../../DottedLine"
+import { BodyText, FromSignatureText, MetadataText, SmallHeadline } from "../Typography"
+import Avatar from "./Avatar"
+import ImagePreview from "./Preview/Attachment/ImagePreview"
+import PDFPreview from "./Preview/Attachment/PDFPreview"
+import InvoicePreview from "./Preview/InvoicePreview"
 
 const VerticalLayout = styled.View`
   flex-direction: column;

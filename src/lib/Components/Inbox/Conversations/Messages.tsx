@@ -1,33 +1,11 @@
 import * as React from "react"
-import {
-  commitMutation,
-  createPaginationContainer,
-  Environment,
-  graphql,
-  MutationConfig,
-  RecordSourceSelectorProxy,
-  RelayPaginationProp,
-} from "react-relay"
-import styled from "styled-components/native"
+import { ActivityIndicator, Dimensions, FlatList, RefreshControl } from "react-native"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
+import ARSwitchBoard from "../../../NativeModules/SwitchBoard"
 import Message from "./Message"
 import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
-
-import {
-  ActivityIndicator,
-  Dimensions,
-  FlatList,
-  ImageURISource,
-  NetInfo,
-  RefreshControl,
-  View,
-  ViewProperties,
-} from "react-native"
-import colors from "../../../../data/colors"
-import DottedLine from "../../../Components/DottedLine"
-
-import ARSwitchBoard from "../../../NativeModules/SwitchBoard"
 
 interface Props {
   conversation?: RelayProps["me"]["conversation"]

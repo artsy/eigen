@@ -1,11 +1,11 @@
-import * as React from 'react';
-import { Image, TouchableHighlight } from 'react-native';
-import { createFragmentContainer, graphql } from 'react-relay';
-import styled from 'styled-components/native';
+import * as React from "react"
+import { Image, TouchableHighlight } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
 
-import colors from '../../../../../data/colors';
-import fonts from '../../../../../data/fonts';
-import InvertedButton from '../../../Buttons/InvertedButton';
+import colors from "../../../../../data/colors"
+import fonts from "../../../../../data/fonts"
+import InvertedButton from "../../../Buttons/InvertedButton"
 
 const Container = styled.View`
   border-width: 1;
