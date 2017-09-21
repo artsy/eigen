@@ -60,9 +60,9 @@ it(@"defaults to not removing null JSON values", ^{
 });
 
 it(@"removes JSON nulls when specified to", ^{
-    id operationMock = [OCMockObject niceMockForClass:[AFHTTPRequestOperation class]];
     id apiMock = [OCMockObject mockForClass:[ArtsyAPI class]];
-    [[[[operationMock expect] classMethod] andReturn:operationMock] JSONRequestOperationWithRequest:OCMOCK_ANY removeNulls:YES success:OCMOCK_ANY failure:OCMOCK_ANY];
+    [[[[apiMock stub] classMethod] andReturn:apiMock] sharedAPI];
+    [[[apiMock expect] andReturn:[NSObject new]] performRequest:OCMOCK_ANY removeNullsFromResponse:YES success:OCMOCK_ANY failure:OCMOCK_ANY];
 
     [ArtsyAPI performRequest:request removeNullsFromResponse:YES success:^(id json) {
         failure(@"block unexepectedly invoked");
@@ -70,8 +70,7 @@ it(@"removes JSON nulls when specified to", ^{
         failure(@"block unexepectedly invoked");
     }];
 
-    [operationMock verify];
-    [operationMock stopMocking];
+    [apiMock verify];
     [apiMock stopMocking];
 });
 
