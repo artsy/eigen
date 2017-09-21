@@ -126,23 +126,36 @@ exports[`renders correctly 1`] = `
         ]
       }
     >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "#cccccc",
-              "fontWeight": "bold",
+              "height": 25,
+              "marginLeft": 15,
+              "width": 71,
             },
             undefined,
           ]
         }
       >
-        REFUNDED
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "#cccccc",
+                "fontWeight": "bold",
+              },
+              undefined,
+            ]
+          }
+        >
+          REFUNDED
+        </Text>
+      </View>
     </View>
   </View>
 </View>

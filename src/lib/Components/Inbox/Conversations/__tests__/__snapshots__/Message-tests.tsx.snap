@@ -292,6 +292,7 @@ exports[`looks correct when rendered 1`] = `
                   Array [
                     Object {
                       "height": 25,
+                      "marginLeft": 15,
                       "width": 71,
                     },
                     undefined,
