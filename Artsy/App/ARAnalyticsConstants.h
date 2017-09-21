@@ -168,3 +168,5 @@ extern NSString *const ARAnalyticsArtworksRefineTapped;
 extern NSString *const ARAnalyticsAuctionContactTapped;
 extern NSString *const ARAnalyticsAuctionBuyersPremiumTapped;
 extern NSString *const ARAnalyticsTappedApplyRefine;
+
+extern NSString *const ARAnalyticsGraphQLResponseError;

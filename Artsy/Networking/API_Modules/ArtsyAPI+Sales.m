@@ -2,6 +2,7 @@
 #import "ArtsyAPI+Private.h"
 #import "ArtsyAPI+Sales.h"
 #import "ARRouter.h"
+#import "ARAnalyticsConstants.h"
 
 #import "MTLModel+JSON.h"
 
@@ -27,6 +28,8 @@
         NSArray *saleArtworksJSON = json[@"data"][@"sale"][@"sale_artworks"];
 
         if (!saleArtworksJSON) {
+            NSLog(@"Failure fetching GraphQL data: %@", json);
+            [ARAnalytics event:ARAnalyticsGraphQLResponseError withProperties:json];
             if (failure) {
                 failure([NSError errorWithDomain:@"JSON parsing" code:0 userInfo:json]);
             }
@@ -39,7 +42,7 @@
             // So we need to do some additional checking, just to be safe.
             if (json == [NSNull null]) { return nil; }
             id artworkJSON = json[@"artwork"];
-            if (!artworkJSON || artworkJSON == [NSNull null]) { return nil;}
+            if (!artworkJSON) { return nil; }
 
             // This is messy, sorry. We need to fill those back references from artwork -> sale artwork
             // without creating a reference cycle. So we inflate two models with JSON.

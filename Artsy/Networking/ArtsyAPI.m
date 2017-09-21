@@ -1,5 +1,6 @@
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Private.h"
+#import "ARAnalyticsConstants.h"
 
 #import "ARAppConstants.h"
 #import "ARDefaults.h"
@@ -14,6 +15,7 @@
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
+@import ARAnalytics;
 
 
 NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
@@ -46,6 +48,7 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
         if (errors) {
             // GraphQL queries that fail will return 200s but indicate failures with the "errors" key. We need to check them.
             NSLog(@"Failure fetching GraphQL query: %@", errors);
+            [ARAnalytics event:ARAnalyticsGraphQLResponseError withProperties:json];
             if (failure) {
                 failure([NSError errorWithDomain:@"GraphQL" code:0 userInfo:json]);
             }

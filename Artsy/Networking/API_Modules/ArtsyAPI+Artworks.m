@@ -9,6 +9,7 @@
 #import "PartnerShow.h"
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
+#import "ARAnalyticsConstants.h"
 
 #import "MTLModel+JSON.h"
 
@@ -43,6 +44,8 @@
         NSArray *artworksJson = [artworksConnection[@"edges"] valueForKey:@"node"];
 
         if (!artworksJson) {
+            NSLog(@"Failure fetching GraphQL data: %@", json);
+            [ARAnalytics event:ARAnalyticsGraphQLResponseError withProperties:json];
             if (failure) {
                 failure([NSError errorWithDomain:@"JSON parsing" code:0 userInfo:json]);
             }

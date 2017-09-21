@@ -129,9 +129,9 @@ static id ARJSONObjectByRemovingKeysWithNullValues(id JSONObject, NSJSONReadingO
     if (response.inputStream.hasBytesAvailable) {
         if (removeNulls) {
             json = ARJSONObjectByRemovingKeysWithNullValues([NSJSONSerialization JSONObjectWithStream:response.inputStream options:NSJSONReadingAllowFragments error:&error], NSJSONReadingAllowFragments);
-                                                            } else {
-        json = [NSJSONSerialization JSONObjectWithStream:response.inputStream options:NSJSONReadingAllowFragments error:&error];
-                                                            }
+        } else {
+            json = [NSJSONSerialization JSONObjectWithStream:response.inputStream options:NSJSONReadingAllowFragments error:&error];
+        }
     }
 
     ARFakeAFJSONOperation *fakeOp = [ARFakeAFJSONOperation blockOperationWithBlock:^{
