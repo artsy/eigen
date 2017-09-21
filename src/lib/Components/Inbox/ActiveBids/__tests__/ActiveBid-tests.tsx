@@ -8,10 +8,23 @@ it("renders correctly", () => {
   expect(tree).toMatchSnapshot()
 })
 
+it("looks right for bids in live open auctions", () => {
+  const liveAuctionBid = bid
+
+  liveAuctionBid.sale.is_live_open = true
+
+  const tree = renderer.create(<ActiveBid bid={liveAuctionBid} />).toJSON()
+  expect(tree).toMatchSnapshot()
+})
+
 const bid = {
   active_bid: {
     id: "594933e6275b244305851e9c",
     display_max_bid_amount_dollars: "$10,000",
+    sale: {
+      is_live_open: false,
+      href: "/to-the-auction",
+    },
     max_bid: {
       cents: 1000000,
       display: "$10,000",
