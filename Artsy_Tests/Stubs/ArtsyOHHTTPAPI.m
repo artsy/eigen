@@ -5,7 +5,7 @@
 
 
 @interface ArtsyAPI (Private)
-- (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+- (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 @end
 
 
@@ -49,7 +49,7 @@
     callback(@"xapp token", [NSDate distantFuture]);
 }
 
-- (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback
+- (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback
 {
     OHHTTPStubsDescriptor *stub = [[OHHTTPStubs sharedInstance] firstStubPassingTestForRequest:request];
     if (!stub) {
@@ -86,7 +86,7 @@
 
         NSAssert(NO, @"Raising an exception which will fail the test, please handle this. Route: %@", request.URL.path);
 
-        return [super requestOperation:request success:success failure:failureCallback];
+        return [super requestOperation:request removeNullsFromResponse:removeNulls success:success failure:failureCallback];
     }
 
     OHHTTPStubsResponse *response = stub.responseBlock(request);
@@ -116,7 +116,7 @@
 - (void)getRequests:(NSArray *)requests success:(void (^)(NSArray *operations))completed
 {
     NSArray *operations = [requests map:^id(NSURLRequest *request) {
-        return [self requestOperation:request success:nil failure:nil];
+        return [self requestOperation:request removeNullsFromResponse:NO success:nil failure:nil];
     }];
     for (NSBlockOperation *blockOp in operations) {
         [blockOp start];
