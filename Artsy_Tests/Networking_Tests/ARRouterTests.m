@@ -109,6 +109,26 @@ describe(@"isWebURL", ^{
     });
 });
 
+describe(@"isPaymentRequestURL", ^{
+    it(@"returns YES with a staging url", ^{
+        NSURL *url = [NSURL URLWithString:@"http://invoicing-demo-partner.lewitt-web-public-staging.artsy.net/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
+        expect([ARRouter isPaymentRequestURL:url]).to.beTruthy();
+    });
+
+    it(@"returns YES with a production url", ^{
+        NSURL *url = [NSURL URLWithString:@"https://invoicing-demo-partner.artsyinvoicing.com/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
+        expect([ARRouter isPaymentRequestURL:url]).to.beTruthy();
+    });
+    
+    it(@"returns that a url is a production payment request url", ^{
+        NSURL *stagingURL = [NSURL URLWithString:@"http://invoicing-demo-partner.lewitt-web-public-staging.artsy.net/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
+        expect([ARRouter isProductionPaymentRequestURL:stagingURL]).to.beFalsy();
+
+        NSURL *productionURL = [NSURL URLWithString:@"https://invoicing-demo-partner.artsyinvoicing.com/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
+        expect([ARRouter isProductionPaymentRequestURL:productionURL]).to.beTruthy();
+    });
+});
+
 describe(@"User-Agent", ^{
     __block NSString *userAgent = [[NSUserDefaults standardUserDefaults] valueForKey:@"UserAgent"];
 
@@ -134,7 +154,6 @@ describe(@"User-Agent", ^{
     });
 
     it(@"is contained in requests sent out from router", ^{
-
         Artwork *artwork = [Artwork modelWithJSON:@{ @"id": @"artwork_id" }];
         NSURLRequest *request = [ARRouter newArtworkInquiryRequestForArtwork:artwork name:@"name" email:@"email.com" message:@"message" analyticsDictionary:@{} shouldContactGallery:NO];
 

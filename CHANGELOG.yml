@@ -15,6 +15,7 @@ upcoming:
       - Adds an admin flag for haptic feedback during a live Auction - orta
       - Removes bifurcation of bidders/observers for causality websocket connections - ash
       - Consolidates GraphQL error-handling - ash
+      - Broadcast a NSNotification when a user makes a payment so views that show the payment request status can update - alloy
 
     user_facing:
       - Adds new routing for inquiries - maxim
