@@ -4,6 +4,33 @@
 #import "ARFilteredStackTrace.h"
 
 
+/// This is borrowed from AFNetworking: https://github.com/AFNetworking/AFNetworking/blob/4f3c694920ed0f5d3a8e180aacaf3af40c2efb4a/AFNetworking/AFURLResponseSerialization.m#L63-L86
+/// Our JSON response serializing within Eigen removes null values via `removesKeysWithNullValues` and our stubs need to replicate that behaviour.
+static id ARJSONObjectByRemovingKeysWithNullValues(id JSONObject, NSJSONReadingOptions readingOptions) {
+    if ([JSONObject isKindOfClass:[NSArray class]]) {
+        NSMutableArray *mutableArray = [NSMutableArray arrayWithCapacity:[(NSArray *)JSONObject count]];
+        for (id value in (NSArray *)JSONObject) {
+            [mutableArray addObject:ARJSONObjectByRemovingKeysWithNullValues(value, readingOptions)];
+        }
+
+        return (readingOptions & NSJSONReadingMutableContainers) ? mutableArray : [NSArray arrayWithArray:mutableArray];
+    } else if ([JSONObject isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithDictionary:JSONObject];
+        for (id <NSCopying> key in [(NSDictionary *)JSONObject allKeys]) {
+            id value = [(NSDictionary *)JSONObject objectForKey:key];
+            if (!value || [value isEqual:[NSNull null]]) {
+                [mutableDictionary removeObjectForKey:key];
+            } else if ([value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSDictionary class]]) {
+                [mutableDictionary setObject:ARJSONObjectByRemovingKeysWithNullValues(value, readingOptions) forKey:key];
+            }
+        }
+
+        return (readingOptions & NSJSONReadingMutableContainers) ? mutableDictionary : [NSDictionary dictionaryWithDictionary:mutableDictionary];
+    }
+
+    return JSONObject;
+}
+
 @interface ArtsyAPI (Private)
 - (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
 @end
@@ -95,7 +122,11 @@
 
     id json = @[];
     if (response.inputStream.hasBytesAvailable) {
+        if (removeNulls) {
+            json = ARJSONObjectByRemovingKeysWithNullValues([NSJSONSerialization JSONObjectWithStream:response.inputStream options:NSJSONReadingAllowFragments error:&error], NSJSONReadingAllowFragments);
+                                                            } else {
         json = [NSJSONSerialization JSONObjectWithStream:response.inputStream options:NSJSONReadingAllowFragments error:&error];
+                                                            }
     }
 
     ARFakeAFJSONOperation *fakeOp = [ARFakeAFJSONOperation blockOperationWithBlock:^{
