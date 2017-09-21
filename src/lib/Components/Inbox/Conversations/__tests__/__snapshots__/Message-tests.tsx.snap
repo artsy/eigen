@@ -195,10 +195,8 @@ exports[`looks correct when rendered 1`] = `
                 Object {
                   "borderColor": "#e5e5e5",
                   "borderWidth": 1,
-                  "flexBasis": 0,
                   "flexDirection": "row",
-                  "flexGrow": 1,
-                  "flexShrink": 1,
+                  "height": 72,
                 },
                 undefined,
               ]
@@ -228,7 +226,7 @@ exports[`looks correct when rendered 1`] = `
                     "flexDirection": "column",
                     "flexGrow": 1,
                     "flexShrink": 1,
-                    "marginLeft": 25,
+                    "marginLeft": 10,
                   },
                   undefined,
                 ]
@@ -262,7 +260,12 @@ exports[`looks correct when rendered 1`] = `
                       "fontFamily": "AGaramondPro-Regular",
                       "fontSize": 14,
                     },
-                    undefined,
+                    Array [
+                      Object {
+                        "fontWeight": "bold",
+                      },
+                      undefined,
+                    ],
                   ]
                 }
               >
@@ -278,7 +281,7 @@ exports[`looks correct when rendered 1`] = `
                     "flexDirection": "column",
                     "flexGrow": 1,
                     "flexShrink": 1,
-                    "marginLeft": 25,
+                    "marginLeft": 10,
                   },
                   undefined,
                 ]
