@@ -1,5 +1,6 @@
 #import "AuthenticationManager.h"
 #import "ARDefaults.h"
+#import "AppSetup.h"
 
 #import <Extraction/ARSpinner.h>
 #import <SAMKeychain/SAMKeychain.h>
@@ -41,7 +42,9 @@
 
 - (void)showAuthenticationToArtsy:(NSString *)errorMessage completion:(dispatch_block_t)completion
 {
-  NSString *message = errorMessage ? errorMessage : @"Enter your Artsy credentials";
+  AppSetup *setup = [AppSetup ambientSetup];
+  NSString *prodOrStaging = setup.inStaging ? @"staging" : @"production";
+  NSString *message = errorMessage ? errorMessage : [NSString stringWithFormat:@"Enter your %@ Artsy credentials", prodOrStaging];
   UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Authentication"
                                                                  message:message
                                                           preferredStyle:UIAlertControllerStyleAlert];

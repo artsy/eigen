@@ -25,6 +25,7 @@
 		6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */; };
 		6011C2561DAF835900CE54E5 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6011C2551DAF835900CE54E5 /* logo@2x.png */; };
 		605E32A51F3A0F0C00CFFE21 /* TakePhotoPromisable.m in Sources */ = {isa = PBXBuildFile; fileRef = 605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */; };
+		608A60D61F75614700B6EF83 /* AppSetup.m in Sources */ = {isa = PBXBuildFile; fileRef = 608A60D51F75614700B6EF83 /* AppSetup.m */; };
 		60A1A77E1DA3A23C005E3357 /* BackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */; };
 		60A1A77F1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77C1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png */; };
 		60A1A7801DA3A23C005E3357 /* BackArrowBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77D1DA3A23C005E3357 /* BackArrowBlack@2x.png */; };
@@ -97,6 +98,8 @@
 		605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TakePhotoPromisable.m; path = Modules/TakePhotoPromisable.m; sourceTree = "<group>"; };
 		607673A21ECC4C9F005848B5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6077F28F1EE56723004F054D /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
+		608A60D41F75614700B6EF83 /* AppSetup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppSetup.h; sourceTree = "<group>"; };
+		608A60D51F75614700B6EF83 /* AppSetup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppSetup.m; sourceTree = "<group>"; };
 		60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrow@2x.png"; sourceTree = "<group>"; };
 		60A1A77C1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrow_Highlighted@2x.png"; sourceTree = "<group>"; };
 		60A1A77D1DA3A23C005E3357 /* BackArrowBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackArrowBlack@2x.png"; sourceTree = "<group>"; };
@@ -327,15 +330,17 @@
 			isa = PBXGroup;
 			children = (
 				605E32A21F3A0EED00CFFE21 /* Modules */,
-				60A1A7841DA3A879005E3357 /* ARMacros.h */,
-				6011C2491DAF63C000CE54E5 /* ARDefaults.h */,
-				6011C24A1DAF63C000CE54E5 /* ARDefaults.m */,
 				510DCB131CCA69EC0075E8CB /* AppDelegate.h */,
 				510DCB141CCA69EC0075E8CB /* AppDelegate.m */,
-				60E4ABF61EE7D85000E8C3B1 /* LoadingSpinner.m */,
-				60E4ABF51EE7D85000E8C3B1 /* LoadingSpinner.h */,
+				608A60D41F75614700B6EF83 /* AppSetup.h */,
+				608A60D51F75614700B6EF83 /* AppSetup.m */,
+				6011C2491DAF63C000CE54E5 /* ARDefaults.h */,
+				6011C24A1DAF63C000CE54E5 /* ARDefaults.m */,
+				60A1A7841DA3A879005E3357 /* ARMacros.h */,
 				60F61A891DAF982A00A72101 /* AuthenticationManager.h */,
 				60F61A8A1DAF982B00A72101 /* AuthenticationManager.m */,
+				60E4ABF51EE7D85000E8C3B1 /* LoadingSpinner.h */,
+				60E4ABF61EE7D85000E8C3B1 /* LoadingSpinner.m */,
 				60AE1D7E1EE7DF9C00FC800A /* PRNetworkModel.h */,
 				60AE1D7F1EE7DF9C00FC800A /* PRNetworkModel.m */,
 			);
@@ -612,6 +617,7 @@
 				60AE1D801EE7DF9C00FC800A /* PRNetworkModel.m in Sources */,
 				60E4ABF71EE7D85000E8C3B1 /* LoadingSpinner.m in Sources */,
 				60F61A8B1DAF982B00A72101 /* AuthenticationManager.m in Sources */,
+				608A60D61F75614700B6EF83 /* AppSetup.m in Sources */,
 				6011C2471DAF61AF00CE54E5 /* ARAnimatedTickView.m in Sources */,
 				60AEE7A01ECC6237008058E3 /* NSDateFormatter+TimeAgo.m in Sources */,
 				510DCB151CCA69EC0075E8CB /* AppDelegate.m in Sources */,
@@ -777,108 +783,6 @@
 			};
 			name = Release;
 		};
-		51D5E9101D92814800C74594 /* Deploy */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Deploy;
-		};
-		51D5E9111D92814800C74594 /* Deploy */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 163341760E6AD3C2BD2501B6 /* Pods-Emission.deploy.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CC = "${SRCROOT}/compile_commands_emitting_clang";
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Emission/Emission.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = 23KMWZ572J;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"COCOAPODS=1",
-					"DEPLOY=1",
-				);
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_WARN_PEDANTIC = YES;
-				INFOPLIST_FILE = Emission/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-lstdc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.Emission";
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Deploy;
-		};
-		51D5E9121D92814800C74594 /* Deploy */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = EmissionTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.EmissionTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Emission.app/Emission";
-			};
-			name = Deploy;
-		};
-		51D5E9131D92814800C74594 /* Deploy */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = EmissionUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.EmissionUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = Emission;
-				USES_XCTRUNNER = YES;
-			};
-			name = Deploy;
-		};
 		607FACED1AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -977,6 +881,117 @@
 			};
 			name = Release;
 		};
+		608A60D01F755E2F00B6EF83 /* Deploy */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"DEPLOY=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Deploy;
+		};
+		608A60D11F755E2F00B6EF83 /* Deploy */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 02E9860078C8122DA3D55F0F /* Pods-Emission.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CC = "${SRCROOT}/compile_commands_emitting_clang";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Emission/Emission.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_PEDANTIC = YES;
+				INFOPLIST_FILE = Emission/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-lstdc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.Emission";
+				SWIFT_OBJC_BRIDGING_HEADER = "Emission/Emission-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Deploy;
+		};
+		608A60D21F755E2F00B6EF83 /* Deploy */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = EmissionTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.EmissionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Emission.app/Emission";
+			};
+			name = Deploy;
+		};
+		608A60D31F755E2F00B6EF83 /* Deploy */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = EmissionUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.EmissionUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Emission;
+				USES_XCTRUNNER = YES;
+			};
+			name = Deploy;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -984,8 +999,8 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				510DCB381CCA69ED0075E8CB /* Debug */,
+				608A60D11F755E2F00B6EF83 /* Deploy */,
 				510DCB391CCA69ED0075E8CB /* Release */,
-				51D5E9111D92814800C74594 /* Deploy */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -994,8 +1009,8 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				510DCB3A1CCA69ED0075E8CB /* Debug */,
+				608A60D21F755E2F00B6EF83 /* Deploy */,
 				510DCB3B1CCA69ED0075E8CB /* Release */,
-				51D5E9121D92814800C74594 /* Deploy */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1004,8 +1019,8 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				510DCB3C1CCA69ED0075E8CB /* Debug */,
+				608A60D31F755E2F00B6EF83 /* Deploy */,
 				510DCB3D1CCA69ED0075E8CB /* Release */,
-				51D5E9131D92814800C74594 /* Deploy */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1014,8 +1029,8 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				607FACED1AFB9204008FA782 /* Debug */,
+				608A60D01F755E2F00B6EF83 /* Deploy */,
 				607FACEE1AFB9204008FA782 /* Release */,
-				51D5E9101D92814800C74594 /* Deploy */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

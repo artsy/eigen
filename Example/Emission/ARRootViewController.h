@@ -4,4 +4,5 @@
 
 @interface ARRootViewController : EigenLikeAdminViewController
 @property (nonatomic) AuthenticationManager *authenticationManager;
+
 @end
