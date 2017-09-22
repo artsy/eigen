@@ -50,11 +50,13 @@ const StatusLabel = styled(MetadataText)`
         return colors["yellow-regular"]
       case "losing":
         return colors["red-regular"]
+      case "live_auction":
+        return colors["purple-regular"]
     }
   }};
 `
 
-type BidStatus = "winning" | "reserve" | "losing"
+type BidStatus = "winning" | "reserve" | "losing" | "live_auction"
 
 interface State {
   status: BidStatus
@@ -77,12 +79,18 @@ class ActiveBid extends React.Component<RelayProps, State> {
 
   updateStatus() {
     const bid = this.props.bid
-    const leadingBidder = bid.is_leading_bidder
-    const reserveNotMet = bid.active_bid.sale_artwork.reserve_status === "reserve_not_met"
+    const isInLiveOpenAuction = bid.sale && bid.sale.is_live_open
 
     let status: BidStatus = "losing"
-    if (leadingBidder) {
-      status = reserveNotMet ? "reserve" : "winning"
+    if (isInLiveOpenAuction) {
+      status = "live_auction"
+    } else {
+      const leadingBidder = bid.is_leading_bidder
+      const reserveNotMet = bid.active_bid.sale_artwork.reserve_status === "reserve_not_met"
+
+      if (leadingBidder) {
+        status = reserveNotMet ? "reserve" : "winning"
+      }
     }
 
     this.setState({ status })
@@ -90,6 +98,8 @@ class ActiveBid extends React.Component<RelayProps, State> {
 
   get statusLabel(): string {
     switch (this.state.status) {
+      case "live_auction":
+        return "Join Live"
       case "winning":
       case "reserve":
         return "Highest Bid"
@@ -99,7 +109,10 @@ class ActiveBid extends React.Component<RelayProps, State> {
   }
 
   handleTap() {
-    SwitchBoard.presentNavigationViewController(this, this.props.bid.active_bid.sale_artwork.artwork.href)
+    const bid = this.props.bid
+    // push user into live auction if it's open; otherwise go to artwork
+    const href = this.state.status === "live_auction" ? bid.sale.href : bid.active_bid.sale_artwork.artwork.href
+    SwitchBoard.presentNavigationViewController(this, href)
   }
 
   render() {
@@ -109,7 +122,9 @@ class ActiveBid extends React.Component<RelayProps, State> {
     const artistName = bid.sale_artwork.artwork.artist_names
 
     const headline = `Lot ${lotNumber} · ${artistName} `
-    const subtitle = `Current Bid: ${bid.max_bid.display} `
+
+    const isInOpenLiveAuction = this.props.bid.sale && this.props.bid.sale.is_live_open
+    const subtitle = isInOpenLiveAuction ? "Live bidding now open" : `Current Bid: ${bid.max_bid.display} `
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap}>
@@ -140,6 +155,10 @@ export default createFragmentContainer(
   graphql`
     fragment ActiveBid_bid on LotStanding {
       is_leading_bidder
+      sale {
+        href
+        is_live_open
+      }
       active_bid {
         max_bid {
           display
@@ -163,6 +182,10 @@ export default createFragmentContainer(
 interface RelayProps {
   bid: {
     is_leading_bidder: boolean | null
+    sale: {
+      href: string | null
+      is_live_open: boolean | null
+    } | null
     active_bid: {
       max_bid: {
         display: string | null

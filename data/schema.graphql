@@ -2870,6 +2870,7 @@ type LotStanding {
 
   # Your most recent bid—which is not necessarily winning (may be higher or lower)
   most_recent_bid: BidderPosition
+  sale: Sale
   sale_artwork: SaleArtwork
 }
 

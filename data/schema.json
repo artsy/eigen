@@ -23159,6 +23159,18 @@
               "deprecationReason": null
             },
             {
+              "name": "sale",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Sale",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "sale_artwork",
               "description": null,
               "args": [],

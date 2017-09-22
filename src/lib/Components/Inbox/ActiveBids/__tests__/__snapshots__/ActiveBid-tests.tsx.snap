@@ -1,5 +1,329 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`looks right for bids in live auctions that haven't started yet 1`] = `
+<View
+  accessibilityComponentType={undefined}
+  accessibilityLabel={undefined}
+  accessibilityTraits={undefined}
+  accessible={true}
+  hitSlop={undefined}
+  nativeID={undefined}
+  onLayout={undefined}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Object {
+        "height": 80,
+        "marginBottom": 0,
+        "marginLeft": 20,
+        "marginRight": 20,
+        "marginTop": 17,
+      },
+      undefined,
+    ]
+  }
+  testID={undefined}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "flexBasis": 0,
+          "flexDirection": "row",
+          "flexGrow": 1,
+          "flexShrink": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <AROpaqueImageView
+      imageURL={undefined}
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 58,
+            "width": 58,
+          },
+          undefined,
+        ]
+      }
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexDirection": "column",
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "justifyContent": "center",
+            "marginBottom": 0,
+            "marginLeft": 15,
+            "marginRight": 15,
+            "marginTop": 0,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 16,
+              "textAlign": "left",
+            },
+            undefined,
+            Object {},
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        Lot 8 · undefined 
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 16,
+              "textAlign": "left",
+            },
+            undefined,
+            Object {},
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        Current Bid: $10,000 
+      </Text>
+    </View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "color": "#cccccc",
+            "fontSize": 11,
+            "textAlign": "left",
+          },
+          Array [
+            Object {
+              "color": "#f7625a",
+            },
+            undefined,
+          ],
+          Object {
+            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+          },
+        ]
+      }
+    >
+      OUTBID
+    </Text>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#e5e5e5",
+          "height": 1,
+          "marginTop": 17,
+          "width": "100%",
+        },
+        undefined,
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`looks right for bids in live open auctions 1`] = `
+<View
+  accessibilityComponentType={undefined}
+  accessibilityLabel={undefined}
+  accessibilityTraits={undefined}
+  accessible={true}
+  hitSlop={undefined}
+  nativeID={undefined}
+  onLayout={undefined}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Object {
+        "height": 80,
+        "marginBottom": 0,
+        "marginLeft": 20,
+        "marginRight": 20,
+        "marginTop": 17,
+      },
+      undefined,
+    ]
+  }
+  testID={undefined}
+>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "flexBasis": 0,
+          "flexDirection": "row",
+          "flexGrow": 1,
+          "flexShrink": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <AROpaqueImageView
+      imageURL={undefined}
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 58,
+            "width": 58,
+          },
+          undefined,
+        ]
+      }
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexDirection": "column",
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "justifyContent": "center",
+            "marginBottom": 0,
+            "marginLeft": 15,
+            "marginRight": 15,
+            "marginTop": 0,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 16,
+              "textAlign": "left",
+            },
+            undefined,
+            Object {},
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        Lot 8 · undefined 
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "black",
+              "fontSize": 16,
+              "textAlign": "left",
+            },
+            undefined,
+            Object {},
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+            },
+          ]
+        }
+      >
+        Live bidding now open
+      </Text>
+    </View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "color": "#cccccc",
+            "fontSize": 11,
+            "textAlign": "left",
+          },
+          Array [
+            Object {
+              "color": "#6e1fff",
+            },
+            undefined,
+          ],
+          Object {
+            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+          },
+        ]
+      }
+    >
+      JOIN LIVE
+    </Text>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#e5e5e5",
+          "height": 1,
+          "marginTop": 17,
+          "width": "100%",
+        },
+        undefined,
+      ]
+    }
+  />
+</View>
+`;
+
 exports[`renders correctly 1`] = `
 <View
   accessibilityComponentType={undefined}
