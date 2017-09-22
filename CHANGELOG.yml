@@ -1,6 +1,6 @@
 upcoming:
     version: 3.2.5
-    details: Messaging
+    details: Bug fixes
     user_facing:
       - Fixes a crash related to users with no favourited artworks - ash
 

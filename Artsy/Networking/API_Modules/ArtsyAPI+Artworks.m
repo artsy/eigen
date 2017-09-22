@@ -9,11 +9,13 @@
 #import "PartnerShow.h"
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
+#import "ARAnalyticsConstants.h"
 
 #import "MTLModel+JSON.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
+#import <ARAnalytics/ARAnalytics.h>
 
 
 @implementation ArtsyAPI (Artworks)
@@ -36,27 +38,30 @@
 + (AFHTTPRequestOperation *)getArtworkFromUserFavorites:(NSString *)cursor success:(void (^)(NSString *nextPageCursor, BOOL hasNextPage, NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newArtworksFromUsersFavoritesRequestWithCursor:cursor];
-    return [self performRequest:request success:^(id json) {
-        // Parse out metadata from GraphQL response.
-        NSArray *errors = json[@"errors"];
-        if (errors) {
-            // GraphQL queries that fail can return 200s but indicate failures with the "errors" key. We need to check them.
-            NSLog(@"Failure fetching GraphQL query: %@", errors);
-            if (failure) {
-                failure([NSError errorWithDomain:@"GraphQL" code:0 userInfo:json]);
-            }
-            return;
-        }
+    return [self performGraphQLRequest:request success:^(id json) {
         id artworksConnection = json[@"data"][@"me"][@"saved_artworks"][@"artworks_connection"];
         NSDictionary *pageInfo = artworksConnection[@"pageInfo"];
         NSArray *artworksJson = [artworksConnection[@"edges"] valueForKey:@"node"];
 
+        if (!artworksJson) {
+            NSLog(@"Failure fetching GraphQL data: %@", json);
+            [ARAnalytics event:ARAnalyticsGraphQLResponseError withProperties:json];
+            if (failure) {
+                failure([NSError errorWithDomain:@"JSON parsing" code:0 userInfo:json]);
+            }
+            return;
+        }
+
         // Parse artworks, sale artworks, and make manual connection between the two if appropritate.
         NSArray *artworks = [artworksJson map:^id(id json) {
+            // AFNetworking will remove keys from dictionaries that contain null values, but not arrays that contain *only* nulls.
+            // Once https://github.com/AFNetworking/AFNetworking/pull/4052 is merged, we can update AFNetworking and remove this NSNull check.
+            // So we need to do some additional checking, just to be safe.
+            if (json == [NSNull null]) { return nil; }
             Artwork *artwork = [Artwork modelWithJSON:json];
 
             id saleArtworkJSON = json[@"sale_artwork"];
-            if (saleArtworkJSON != [NSNull null]) {
+            if (saleArtworkJSON) {
                 SaleArtwork *saleArtwork = [SaleArtwork modelWithJSON:saleArtworkJSON];
                 artwork.auction = saleArtwork.auction;
                 artwork.saleArtwork = saleArtwork;
@@ -67,11 +72,7 @@
         if (success) {
             success(pageInfo[@"endCursor"], [pageInfo[@"hasNextPage"] boolValue], artworks);
         }
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    } failure:failure];
 }
 
 + (AFHTTPRequestOperation *)getArtworksForGene:(Gene *)gene atPage:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure

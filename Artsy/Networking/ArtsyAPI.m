@@ -1,5 +1,6 @@
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Private.h"
+#import "ARAnalyticsConstants.h"
 
 #import "ARAppConstants.h"
 #import "ARDefaults.h"
@@ -14,6 +15,7 @@
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
+@import ARAnalytics;
 
 
 NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
@@ -28,15 +30,50 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 
 + (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request fullSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback
 {
-    AFHTTPRequestOperation *operation = [self.sharedAPI requestOperation:request success:success failure:failureCallback];
+    return [self performRequest:request removeNullsFromResponse:NO fullSuccess:success failure:failureCallback];
+}
+
++ (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls fullSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback
+{
+    AFHTTPRequestOperation *operation = [self.sharedAPI requestOperation:request removeNullsFromResponse:removeNulls success:success failure:failureCallback];
     [operation start];
     return operation;
 }
 
++ (AFHTTPRequestOperation *)performGraphQLRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSError *error))failure
+{
+    return [self performRequest:request removeNullsFromResponse:YES success:^(id json) {
+        // Parse out metadata from GraphQL response.
+        NSArray *errors = json[@"errors"];
+        if (errors) {
+            // GraphQL queries that fail will return 200s but indicate failures with the "errors" key. We need to check them.
+            NSLog(@"Failure fetching GraphQL query: %@", errors);
+            [ARAnalytics event:ARAnalyticsGraphQLResponseError withProperties:json];
+            if (failure) {
+                failure([NSError errorWithDomain:@"GraphQL" code:0 userInfo:json]);
+            }
+            return;
+        }
+        if (success) {
+            success(json);
+        }
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        if (failure) {
+            NSLog(@"Network failure fetching GraphQL query: %@", error);
+            failure(error);
+        }
+    }];
+}
+
 + (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure
 {
+    return [self performRequest:request removeNullsFromResponse:NO success:success failure:failure];
+}
+
++ (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure
+{
     NSParameterAssert(success);
-    return [self.sharedAPI performRequest:request success:success failure:failure];
+    return [self.sharedAPI performRequest:request removeNullsFromResponse:removeNulls success:success failure:failure];
 }
 
 + (AFHTTPRequestOperation *)getRequest:(NSURLRequest *)request parseIntoAClass:(Class)klass success:(void (^)(id))success failure:(void (^)(NSError *error))failure
@@ -129,13 +166,23 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 
 - (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
 {
-    return [AFHTTPRequestOperation JSONRequestOperationWithRequest:request success:success failure:failure];
+    return [AFHTTPRequestOperation JSONRequestOperationWithRequest:request removeNulls:NO success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
+{
+    return [AFHTTPRequestOperation JSONRequestOperationWithRequest:request removeNulls:removeNulls success:success failure:failure];
 }
 
 - (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure
 {
+    return [self performRequest:request removeNullsFromResponse:NO success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure
+{
     __weak AFHTTPRequestOperation *performOperation = nil;
-    performOperation = [self requestOperation:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+    performOperation = [self requestOperation:request removeNullsFromResponse:removeNulls success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         success(JSON);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (failure) {
