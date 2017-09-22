@@ -22,7 +22,7 @@ exports[`looks correct when rendered 1`] = `
         },
         "from_email_address": "anita@garibaldi.br",
         "id": 222,
-        "key": 0,
+        "key": undefined,
       },
     ]
   }

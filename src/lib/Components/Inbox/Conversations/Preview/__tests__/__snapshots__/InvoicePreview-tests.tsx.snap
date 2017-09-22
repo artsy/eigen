@@ -34,10 +34,8 @@ exports[`renders correctly 1`] = `
         Object {
           "borderColor": "#e5e5e5",
           "borderWidth": 1,
-          "flexBasis": 0,
           "flexDirection": "row",
-          "flexGrow": 1,
-          "flexShrink": 1,
+          "height": 72,
         },
         undefined,
       ]
@@ -67,7 +65,7 @@ exports[`renders correctly 1`] = `
             "flexDirection": "column",
             "flexGrow": 1,
             "flexShrink": 1,
-            "marginLeft": 25,
+            "marginLeft": 10,
           },
           undefined,
         ]
@@ -101,7 +99,12 @@ exports[`renders correctly 1`] = `
               "fontFamily": "AGaramondPro-Regular",
               "fontSize": 14,
             },
-            undefined,
+            Array [
+              Object {
+                "fontWeight": "bold",
+              },
+              undefined,
+            ],
           ]
         }
       >
@@ -117,29 +120,42 @@ exports[`renders correctly 1`] = `
             "flexDirection": "column",
             "flexGrow": 1,
             "flexShrink": 1,
-            "marginLeft": 25,
+            "marginLeft": 10,
           },
           undefined,
         ]
       }
     >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "#cccccc",
-              "fontWeight": "bold",
+              "height": 25,
+              "marginLeft": 15,
+              "width": 71,
             },
             undefined,
           ]
         }
       >
-        REFUNDED
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "#cccccc",
+                "fontWeight": "bold",
+              },
+              undefined,
+            ]
+          }
+        >
+          REFUNDED
+        </Text>
+      </View>
     </View>
   </View>
 </View>

@@ -32,6 +32,7 @@
 
 ###### Messaging
 
+-   Fixed payment request component collapsing and minor UI changes - luc
 -   Fixed separator styling in the message component - luc
 -   Moved conversation loading indicator inside list view - luc
 -   Added Pending state to message timestamps - sarah

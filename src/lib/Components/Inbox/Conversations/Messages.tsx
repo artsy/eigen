@@ -1,33 +1,11 @@
 import * as React from "react"
-import {
-  commitMutation,
-  createPaginationContainer,
-  Environment,
-  graphql,
-  MutationConfig,
-  RecordSourceSelectorProxy,
-  RelayPaginationProp,
-} from "react-relay"
-import styled from "styled-components/native"
+import { ActivityIndicator, Dimensions, FlatList, RefreshControl } from "react-native"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
+import ARSwitchBoard from "../../../NativeModules/SwitchBoard"
 import Message from "./Message"
 import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
-
-import {
-  ActivityIndicator,
-  Dimensions,
-  FlatList,
-  ImageURISource,
-  NetInfo,
-  RefreshControl,
-  View,
-  ViewProperties,
-} from "react-native"
-import colors from "../../../../data/colors"
-import DottedLine from "../../../Components/DottedLine"
-
-import ARSwitchBoard from "../../../NativeModules/SwitchBoard"
 
 interface Props {
   conversation?: RelayProps["me"]["conversation"]
@@ -117,7 +95,7 @@ export class Messages extends React.Component<Props, State> {
     const messageCount = edges.length
     const messages = edges.map((edge, index) => {
       const isFirstMessage = this.props.relay && !this.props.relay.hasMore() && index === messageCount - 1
-      return { first_message: isFirstMessage, key: index, ...edge.node }
+      return { first_message: isFirstMessage, key: edge.cursor, ...edge.node }
     })
     const refreshControl = <RefreshControl refreshing={this.state.reloadingData} onRefresh={this.reload.bind(this)} />
 
@@ -247,6 +225,7 @@ interface RelayProps {
           hasNextPage: boolean
         }
         edges: Array<{
+          cursor: string
           node: {
             impulse_id: string
             is_from_user: boolean

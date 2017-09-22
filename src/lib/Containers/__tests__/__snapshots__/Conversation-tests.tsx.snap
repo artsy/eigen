@@ -149,7 +149,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
             },
             "from_email_address": "anita@garibaldi.br",
             "id": 222,
-            "key": 0,
+            "key": undefined,
           },
         ]
       }
@@ -639,7 +639,7 @@ exports[`looks correct when rendered 1`] = `
             },
             "from_email_address": "anita@garibaldi.br",
             "id": 222,
-            "key": 0,
+            "key": undefined,
           },
         ]
       }
@@ -1129,7 +1129,7 @@ exports[`looks correct when rendered 2`] = `
             },
             "from_email_address": "anita@garibaldi.br",
             "id": 222,
-            "key": 0,
+            "key": undefined,
           },
         ]
       }

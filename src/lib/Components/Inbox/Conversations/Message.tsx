@@ -1,23 +1,18 @@
 import moment from "moment"
 import * as React from "react"
 import { View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-
-import { BodyText, FromSignatureText, MetadataText, SmallHeadline } from "../Typography"
-
 import Hyperlink from "react-native-hyperlink"
+import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
 
+import colors from "../../../../data/colors"
+import SwitchBoard from "../../../NativeModules/SwitchBoard"
+import DottedLine from "../../DottedLine"
+import { BodyText, FromSignatureText, MetadataText, SmallHeadline } from "../Typography"
 import Avatar from "./Avatar"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
 import PDFPreview from "./Preview/Attachment/PDFPreview"
-
 import InvoicePreview from "./Preview/InvoicePreview"
-
-import styled from "styled-components/native"
-import colors from "../../../../data/colors"
-
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
-import DottedLine from "../../DottedLine"
 
 const VerticalLayout = styled.View`
   flex-direction: column;
@@ -69,13 +64,7 @@ const Seperator = styled(DottedLine)`
   padding-right: 20;
 `
 
-const ArtworkPreviewContainer = styled.View`margin-bottom: 10;`
-
-const ImagePreviewContainer = styled.View`margin-bottom: 10;`
-
-const PDFPreviewContainer = styled.View`margin-bottom: 10;`
-
-const InvoicePreviewContainer = styled.View`margin-bottom: 10;`
+const PreviewContainer = styled.View`margin-bottom: 10;`
 
 interface Props extends RelayProps {
   senderName: string
@@ -99,16 +88,16 @@ export class Message extends React.Component<Props, any> {
     return attachments.map(attachment => {
       if (attachment.content_type.startsWith("image")) {
         return (
-          <ImagePreviewContainer key={attachment.id}>
+          <PreviewContainer key={attachment.id}>
             <ImagePreview attachment={attachment as any} onSelected={previewAttachment} />
-          </ImagePreviewContainer>
+          </PreviewContainer>
         )
       }
       if (attachment.content_type === "application/pdf") {
         return (
-          <PDFPreviewContainer key={attachment.id}>
+          <PreviewContainer key={attachment.id}>
             <PDFPreview attachment={attachment as any} onSelected={previewAttachment} />
-          </PDFPreviewContainer>
+          </PreviewContainer>
         )
       }
     })
@@ -160,19 +149,19 @@ export class Message extends React.Component<Props, any> {
               }
             </Header>
             {artworkPreview &&
-              <ArtworkPreviewContainer>
+              <PreviewContainer>
                 {artworkPreview}
-              </ArtworkPreviewContainer>}
+              </PreviewContainer>}
 
             {showPreview &&
-              <ArtworkPreviewContainer>
+              <PreviewContainer>
                 {showPreview}
-              </ArtworkPreviewContainer>}
+              </PreviewContainer>}
 
             {message.invoice &&
-              <InvoicePreviewContainer>
+              <PreviewContainer>
                 <InvoicePreview invoice={message.invoice} />
-              </InvoicePreviewContainer>}
+              </PreviewContainer>}
 
             {this.renderAttachmentPreviews(message.attachments)}
 
