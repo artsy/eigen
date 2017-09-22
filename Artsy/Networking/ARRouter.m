@@ -215,6 +215,16 @@ static NSString *hostFromString(NSString *string)
     }
 }
 
++ (BOOL)isPaymentRequestURL:(NSURL *)url;
+{
+    return [url.host hasSuffix:@".lewitt-web-public-staging.artsy.net"] || [self isProductionPaymentRequestURL:url];
+}
+
++ (BOOL)isProductionPaymentRequestURL:(NSURL *)url;
+{
+    return [url.host hasSuffix:@".artsyinvoicing.com"];
+}
+
 + (NSURLRequest *)requestForURL:(NSURL *)url
 {
     NSMutableURLRequest *request = [self requestWithMethod:@"GET" URLString:url.absoluteString parameters:nil];
@@ -979,17 +989,6 @@ static NSString *hostFromString(NSString *string)
             params[@"landing_url"] = obj;
         }
     }];
-
-    if ([User isLocalTemporaryUser]) {
-        NSParameterAssert(name);
-        NSParameterAssert(email);
-        [params setValue:name forKey:@"name"];
-        [params setValue:email forKey:@"email"];
-        [params setValue:[ARUserManager sharedManager].localTemporaryUserUUID forKey:@"session_id"];
-    } else {
-        NSParameterAssert(!name);
-        NSParameterAssert(!email);
-    }
 
     return [self requestWithMethod:@"POST" path:ARArtworkInquiryRequestURL parameters:params];
 }

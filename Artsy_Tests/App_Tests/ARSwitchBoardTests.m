@@ -15,6 +15,7 @@
 #import "ARExternalWebBrowserViewController.h"
 #import "ARGeneViewController.h"
 #import "ARInternalMobileWebViewController.h"
+#import "ARPaymentRequestWebViewController.h"
 #import "ARProfileViewController.h"
 #import "ARShowViewController.h"
 #import "ARFairViewController.h"
@@ -179,6 +180,13 @@ describe(@"ARSwitchboard", ^{
                 [switchboard loadURL:externalURL];
                 [switchboardMock verify];
             });
+        });
+        
+        it(@"loads a payment request web view for lewitt-web URLs", ^{
+            NSURL *paymentRequestURL = [NSURL URLWithString:@"http://invoicing-demo-partner.lewitt-web-public-staging.artsy.net/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
+            ARPaymentRequestWebViewController *controller = (ARPaymentRequestWebViewController *)[switchboard loadURL:paymentRequestURL];
+            expect(controller).to.beKindOf(ARPaymentRequestWebViewController.class);
+            expect(controller.initialURL).to.equal(paymentRequestURL);
         });
     });
 
@@ -357,6 +365,7 @@ describe(@"ARSwitchboard", ^{
         });
 
         it(@"routes live auctions", ^{
+            [AROptions setBool:NO forOption:AROptionsDisableNativeLiveAuctions];
             switchboard = [[ARSwitchBoard alloc] init];
             [switchboard updateRoutes];
 

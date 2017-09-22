@@ -28,6 +28,7 @@
 #import "ARTopMenuViewController.h"
 #import "ARMutableLinkViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
+#import "ARPaymentRequestWebViewController.h"
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -189,7 +190,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
         __strong typeof (wself) sself = wself;
         return [sself loadConversationWithID:parameters[@"id"]];
     }];
-
+    
     [self.routes addRoute:@"/admin" handler:JLRouteParams {
         return [wself loadAdminMenu];
     }];
@@ -409,6 +410,10 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
         if (routedViewController) {
             return routedViewController;
         }
+    }
+
+    if ([ARRouter isPaymentRequestURL:url]) {
+        return [[ARPaymentRequestWebViewController alloc] initWithURL:url];
     }
 
     // We couldn't find one? Well, then we should present it as a martsy view

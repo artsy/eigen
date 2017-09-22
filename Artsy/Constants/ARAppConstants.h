@@ -22,6 +22,9 @@ extern NSString *const ARAuctionSaleOnHoldBannerTappedNotification;
 extern NSString *const ARAuctionIDKey;
 extern NSString *const ARAuctionArtworkIDKey;
 
+extern NSString *const ARPaymentRequestPaidNotification;
+extern NSString *const ARPaymentRequestURLKey;
+
 typedef NS_OPTIONS(NSUInteger, ARAuctionState) {
     ARAuctionStateDefault = 0,
     ARAuctionStateStarted = 1 << 0,
