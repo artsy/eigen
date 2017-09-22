@@ -79,7 +79,7 @@ class ActiveBid extends React.Component<RelayProps, State> {
 
   updateStatus() {
     const bid = this.props.bid
-    const isInLiveOpenAuction = bid.is_in_live_auction && bid.sale.is_live_open
+    const isInLiveOpenAuction = bid.sale && bid.sale.is_live_open
 
     let status: BidStatus = "losing"
     if (isInLiveOpenAuction) {
@@ -111,10 +111,7 @@ class ActiveBid extends React.Component<RelayProps, State> {
   handleTap() {
     const bid = this.props.bid
     // push user into live auction if it's open; otherwise go to artwork
-    const href =
-      this.state.status === "live_auction" && bid.sale.is_live_open
-        ? bid.sale.href
-        : bid.active_bid.sale_artwork.artwork.href
+    const href = this.state.status === "live_auction" ? bid.sale.href : bid.active_bid.sale_artwork.artwork.href
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
@@ -126,8 +123,8 @@ class ActiveBid extends React.Component<RelayProps, State> {
 
     const headline = `Lot ${lotNumber} · ${artistName} `
 
-    const isInLiveOpenAuction = this.props.bid.is_in_live_auction && this.props.bid.sale.is_live_open
-    const subtitle = isInLiveOpenAuction ? "Live bidding now open" : `Current Bid: ${bid.max_bid.display} `
+    const isInOpenLiveAuction = this.props.bid.sale && this.props.bid.sale.is_live_open
+    const subtitle = isInOpenLiveAuction ? "Live bidding now open" : `Current Bid: ${bid.max_bid.display} `
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap}>
@@ -158,7 +155,6 @@ export default createFragmentContainer(
   graphql`
     fragment ActiveBid_bid on LotStanding {
       is_leading_bidder
-      is_in_live_auction
       sale {
         href
         is_live_open
@@ -186,7 +182,6 @@ export default createFragmentContainer(
 interface RelayProps {
   bid: {
     is_leading_bidder: boolean | null
-    is_in_live_auction: boolean | null
     sale: {
       href: string | null
       is_live_open: boolean | null

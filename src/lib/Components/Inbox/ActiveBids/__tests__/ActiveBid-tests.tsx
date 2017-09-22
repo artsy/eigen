@@ -20,7 +20,6 @@ it("looks right for bids in live open auctions", () => {
 
 const bid = (isLive?: boolean, isOpen?: boolean) => {
   return {
-    is_in_live_auction: isLive,
     sale: {
       is_live_open: isOpen,
       href: "/to-the-auction",

@@ -23123,18 +23123,6 @@
               "deprecationReason": null
             },
             {
-              "name": "is_in_live_auction",
-              "description": "This lot is associated with a live auction",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "is_highest_bidder",
               "description": "You are winning and reserve is met",
               "args": [],

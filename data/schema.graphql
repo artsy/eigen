@@ -2862,9 +2862,6 @@ type LotStanding {
   active_bid: BidderPosition
   bidder: Bidder
 
-  # This lot is associated with a live auction
-  is_in_live_auction: Boolean
-
   # You are winning and reserve is met
   is_highest_bidder: Boolean
 
