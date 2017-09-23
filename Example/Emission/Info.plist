@@ -19,13 +19,9 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2017.06.07.14</string>
+	<string>2017.09.22.12</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Using Camera Roll for Consignments Photos</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Using Camera to take photos for Consignments</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -33,6 +29,10 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Using Camera to take photos for Consignments</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Using Camera Roll for Consignments Photos</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

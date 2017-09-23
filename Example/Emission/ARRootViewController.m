@@ -6,6 +6,7 @@
 
 #import "AppDelegate.h"
 #import "ARDefaults.h"
+#import "AppSetup.h"
 
 #import "ARRootViewController+AppHub.h"
 #import "ARRootViewController+PRs.h"
@@ -28,34 +29,29 @@
 {
   [super viewDidLoad];
 
+  AppSetup *setup = [AppSetup ambientSetup];
+
   ARTableViewData *tableViewData = [[ARTableViewData alloc] init];
   [self registerClass:ARTickedTableViewCell.class forCellReuseIdentifier:ARLabOptionCell];
   [self registerClass:ARAdminTableViewCell.class forCellReuseIdentifier:AROptionCell];
 
   ARSectionData *appData = [[ARSectionData alloc] init];
   [self setupSection:appData withTitle:[self titleForApp]];
-  [appData addCellData:self.emissionJSLocationDescription];
+  [appData addCellData:[self emissionJSLocationDescription:setup.emissionLoadedFromString]];
   [tableViewData addSectionData:appData];
 
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  BOOL usePRBuild = [defaults boolForKey:ARUsePREmissionDefault];
-
-#if defined(DEPLOY)
   // It can get real confusing if you have AppHub running on your local
   // development environment.
-  if(!usePRBuild) {
+  if(setup.usingAppHub || setup.usingPRBuild) {
     ARSectionData *appHubSection = [self appHubSectionData];
     [tableViewData addSectionData:appHubSection];
   }
-#endif
 
-#if defined(DEBUG)
   // This isn't of any use unless you're developing
-  if(!usePRBuild) {
+  if(!setup.usingPRBuild) {
     ARSectionData *developerSection = [self developersSection];
     [tableViewData addSectionData:developerSection];
   }
-#endif
 
   ARSectionData *reviewSection = [self prSectionData];
   [tableViewData addSectionData:reviewSection];
@@ -66,12 +62,12 @@
   ARSectionData *adminSection = [self adminSection];
   [tableViewData addSectionData:adminSection];
 
-#if defined(DEBUG)
-  // These were nice quick for getting bootstrapped, but they should be storybooks
-  // so that they can be controlled in JS and deployed with PRs.
-  ARSectionData *viewControllerSection = [self jumpToViewControllersSection];
-  [tableViewData addSectionData:viewControllerSection];
-#endif
+  if (setup.inSimulator) {
+    // These were nice quick for getting bootstrapped, but they should be storybooks
+    // so that they can be controlled in JS and deployed with PRs.
+    ARSectionData *viewControllerSection = [self jumpToViewControllersSection];
+    [tableViewData addSectionData:viewControllerSection];
+  }
 
   self.tableViewData = tableViewData;
 }
@@ -249,13 +245,11 @@
   return crashCellData;
 }
 
-- (ARCellData *)emissionJSLocationDescription
+- (ARCellData *)emissionJSLocationDescription:(NSString *)loadedFromString
 {
-  AppDelegate *appDelegate = (id)[UIApplication sharedApplication].delegate;
-
   ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
   [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-    cell.textLabel.text = [appDelegate emissionLoadedFromString];
+    cell.textLabel.text = loadedFromString;
   }];
 
   return crashCellData;
@@ -277,6 +271,15 @@
 {
   ARSectionData *sectionData = [[ARSectionData alloc] init];
   [self setupSection:sectionData withTitle:@"Admin"];
+
+  if ([AppSetup ambientSetup].inStaging) {
+    [sectionData addCellDataFromArray:@[
+      [self editableTextCellDataWithName:@"Gravity API" defaultKey:ARStagingAPIURLDefault],
+      [self editableTextCellDataWithName:@"Metaphysics API" defaultKey:ARStagingMetaphysicsURLDefault],
+      [self editableTextCellDataWithName:@"RN Packager" defaultKey:ARRNPackagerHostDefault],
+    ]];
+  }
+
   [sectionData addCellData:self.generateStagingSwitch];
   [sectionData addCellData:self.logOutButton];
   return sectionData;
