@@ -1,5 +1,6 @@
 import Quick
 import Nimble
+import SwiftyJSON
 
 @testable
 import Artsy
@@ -65,6 +66,32 @@ class LiveAuctionSocketCommunicatorSpec: QuickSpec {
             socket.onText?(state)
 
             expect(subject.updatedAuctionState.peek() ).toNot( beNil() )
+        }
+
+        describe("connected") {
+            var subject: LiveAuctionSocketCommunicatorType!
+            let bidderCredentials = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: "123456")
+
+            beforeEach {
+                subject = LiveAuctionSocketCommunicator(host: host, causalitySaleID: saleID, jwt: jwt, socketCreator: test_SocketCreator())
+            }
+
+            it("includes clientMetadata in event JSON when bidding") {
+                subject.bidOnLot("lot-od", amountCents: 100, bidderCredentials: bidderCredentials, bidUUID: "")
+                checkForClientMetadata()
+            }
+
+            it("includes clientMetadata in event JSON when leaving a max bid") {
+                subject.leaveMaxBidOnLot("lot-id", amountCents: 100, bidderCredentials: bidderCredentials, bidUUID: "")
+                checkForClientMetadata()
+            }
+
+            func checkForClientMetadata() {
+                expect(socket.writes).to( haveCount(1) )
+                let json = JSON(parseJSON: socket.writes[0])
+                expect(json["event"]["clientMetadata"].dictionary).toNot( beNil() )
+                expect(json["event"]["clientMetadata"]["User-Agent"].string).to( contain("Artsy", "Eigen") )
+            }
         }
     }
 }

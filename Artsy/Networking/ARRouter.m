@@ -155,20 +155,7 @@ static NSString *hostFromString(NSString *string)
 
 + (void)setupUserAgent
 {
-    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-
-    // Take the default from AFNetworking, and extend them all to include:
-    // * code names
-    // * version information
-    // * include big browser engine names so that scripts like that of fast.fonts.net WKWebView will load
-
-    AFHTTPRequestSerializer *serializer = [[AFHTTPRequestSerializer alloc] init];
-    NSString *userAgent = serializer.HTTPRequestHeaders[@"User-Agent"];
-    NSString *agentString = [NSString stringWithFormat:@"Mozilla/5.0 Artsy-Mobile/%@ Eigen/%@", version, build];
-    userAgent = [userAgent stringByReplacingOccurrencesOfString:@"Artsy" withString:agentString];
-    userAgent = [userAgent stringByAppendingString:@" AppleWebKit/601.1.46 (KHTML, like Gecko)"];
-
+    NSString *userAgent = [self userAgent];
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"UserAgent" : userAgent }];
     [self setHTTPHeader:@"User-Agent" value:userAgent];
 }
@@ -225,6 +212,24 @@ static NSString *hostFromString(NSString *string)
     }
 
     return request;
+}
+
++ (NSString *)userAgent
+{
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+
+    // Take the default from AFNetworking, and extend them all to include:
+    // * code names
+    // * version information
+    // * include big browser engine names so that scripts like that of fast.fonts.net WKWebView will load
+
+    AFHTTPRequestSerializer *serializer = [[AFHTTPRequestSerializer alloc] init];
+    NSString *userAgent = serializer.HTTPRequestHeaders[@"User-Agent"];
+    NSString *agentString = [NSString stringWithFormat:@"Mozilla/5.0 Artsy-Mobile/%@ Eigen/%@", version, build];
+    userAgent = [userAgent stringByReplacingOccurrencesOfString:@"Artsy" withString:agentString];
+    userAgent = [userAgent stringByAppendingString:@" AppleWebKit/601.1.46 (KHTML, like Gecko)"];
+    return userAgent;
 }
 
 + (AFHTTPSessionManager *)httpClient
