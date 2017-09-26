@@ -50,6 +50,7 @@
   "homepage": "https://github.com/artsy/emission#readme",
   "files": ["index.js", "data", "lib"],
   "dependencies": {
+    "@types/react-tracking": "^5.0.0",
     "lodash": "^4.17.4",
     "moment": "latest",
     "prop-types": "^15.5.10",
