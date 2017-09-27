@@ -42,6 +42,7 @@ export class Messages extends React.Component<Props, State> {
         firstMessage={item.first_message}
         initialText={conversation.initial_message}
         message={item}
+        conversationId={conversation.id}
         senderName={senderName}
         initials={initials}
         artworkPreview={

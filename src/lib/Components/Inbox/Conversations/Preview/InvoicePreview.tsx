@@ -1,7 +1,9 @@
 import * as React from "react"
 import { Image, TouchableHighlight } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
+
+import { EmitterSubscription, NativeEventEmitter, NativeModules } from "react-native"
 
 import colors from "../../../../../data/colors"
 import fonts from "../../../../../data/fonts"
@@ -64,14 +66,24 @@ const CostLabel = styled(PaymentRequest)`
 
 interface Props extends RelayProps {
   onSelected: () => void
+  conversationId: string
+  relay?: RelayRefetchProp
 }
 
 interface InvoiceStateButtonProps {
-  state: string | null
+  invoiceState: string | null
+  isOptimisticUpdate: boolean
 }
 
-const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ state }) => {
-  switch (state) {
+const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState, isOptimisticUpdate }) => {
+  if (isOptimisticUpdate) {
+    return (
+      <PayButtonContainer>
+        <PaidLabel>PAID</PaidLabel>
+      </PayButtonContainer>
+    )
+  }
+  switch (invoiceState) {
     case "PAID":
       return (
         <PayButtonContainer>
@@ -99,29 +111,77 @@ const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ state }) => {
   }
 }
 
-export const InvoicePreview: React.SFC<Props> = ({ invoice, onSelected }) =>
-  <TouchableHighlight onPress={invoice.state === "UNPAID" ? onSelected : null} underlayColor={colors["gray-light"]}>
-    <Container>
-      <Icon source={require("../../../../../../images/payment_request.png")} />
-      <TextContainer>
-        <PaymentRequest>Payment request</PaymentRequest>
-        <CostLabel>
-          {invoice.total}
-        </CostLabel>
-      </TextContainer>
-      <TextContainer>
-        <InvoiceStateButton state={invoice.state} />
-      </TextContainer>
-    </Container>
-  </TouchableHighlight>
+interface State {
+  hasReceivedNotification: boolean
+  subscription: EmitterSubscription
+}
 
-export default createFragmentContainer(
+export class InvoicePreview extends React.Component<Props, State> {
+  componentWillMount() {
+    const { conversationId, relay, invoice } = this.props
+    const { ARNotificationsManager } = NativeModules
+    const notificationsManagerEmitter = new NativeEventEmitter(ARNotificationsManager)
+    const paymentRequestPaidCallback = notification => {
+      if (notification.url === invoice.payment_url) {
+        // Optimistically update the UI, but also refetch.
+        this.setState({
+          hasReceivedNotification: true,
+        })
+        relay.refetch({ conversationId, invoiceId: invoice.lewitt_invoice_id }, null, null, { force: true })
+      }
+    }
+    const subscription = notificationsManagerEmitter.addListener("PaymentRequestPaid", paymentRequestPaidCallback)
+
+    this.setState({
+      subscription,
+    })
+  }
+
+  componentWillUnmount() {
+    if (this.state.subscription) {
+      this.state.subscription.remove()
+    }
+  }
+
+  render() {
+    const { invoice, onSelected } = this.props
+
+    return (
+      <TouchableHighlight onPress={invoice.state === "UNPAID" ? onSelected : null} underlayColor={colors["gray-light"]}>
+        <Container>
+          <Icon source={require("../../../../../../images/payment_request.png")} />
+          <TextContainer>
+            <PaymentRequest>Payment request</PaymentRequest>
+            <CostLabel>
+              {invoice.total}
+            </CostLabel>
+          </TextContainer>
+          <TextContainer>
+            <InvoiceStateButton invoiceState={invoice.state} isOptimisticUpdate={this.state.hasReceivedNotification} />
+          </TextContainer>
+        </Container>
+      </TouchableHighlight>
+    )
+  }
+}
+
+export default createRefetchContainer(
   InvoicePreview,
   graphql`
     fragment InvoicePreview_invoice on Invoice {
       payment_url
       state
       total
+      lewitt_invoice_id
+    }
+  `,
+  graphql`
+    query InvoicePreviewRefetchQuery($conversationId: String!, $invoiceId: String!) {
+      me {
+        invoice(conversationId: $conversationId, invoiceId: $invoiceId) {
+          ...InvoicePreview_invoice
+        }
+      }
     }
   `
 )
@@ -131,5 +191,6 @@ interface RelayProps {
     payment_url: string | null
     state: string | null
     total: string | null
+    lewitt_invoice_id: string
   }
 }

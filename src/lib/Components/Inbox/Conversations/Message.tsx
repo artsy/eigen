@@ -74,6 +74,7 @@ interface Props extends RelayProps {
   firstMessage: boolean
   index: number
   initialText: string
+  conversationId: string
 }
 
 export class Message extends React.Component<Props, any> {
@@ -126,7 +127,7 @@ export class Message extends React.Component<Props, any> {
   }
 
   render() {
-    const { artworkPreview, initials, message, senderName, showPreview } = this.props
+    const { artworkPreview, initials, message, senderName, showPreview, conversationId } = this.props
     const isPending = !message.created_at
 
     const fromName = message.from.name
@@ -167,7 +168,7 @@ export class Message extends React.Component<Props, any> {
 
             {message.invoice &&
               <PreviewContainer>
-                <InvoicePreview invoice={message.invoice} onSelected={previewInvoice} />
+                <InvoicePreview invoice={message.invoice} onSelected={previewInvoice} conversationId={conversationId} />
               </PreviewContainer>}
 
             {this.renderAttachmentPreviews(message.attachments)}

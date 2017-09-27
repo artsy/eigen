@@ -1388,7 +1388,7 @@ type Collection implements Node {
     before: String
     last: Int
     private: Boolean = false
-    sort: CollectionSorts
+    sort: CollectionSorts = POSITION_DESC
   ): ArtworkConnection
   description: String!
   default: Boolean!
@@ -2555,8 +2555,10 @@ type Image {
   versions: [String]
 }
 
-type Invoice {
-  # Impulse's invoice id.
+type Invoice implements Node {
+  # A globally unique ID.
+  __id: ID!
+  # A type-specific ID.
   id: String!
   # Lewitt's invoice id.
   lewitt_invoice_id: String!
@@ -2671,6 +2673,13 @@ type Me implements Node {
   follow_artists(page: Int, size: Int): FollowArtists
   # A list of the current user’s inquiry requests
   followed_artists_connection(after: String, first: Int, before: String, last: Int): FollowArtistConnection
+  # An invoice
+  invoice(
+    # The ID of the Conversation
+    conversationId: String!
+    # The ID of the invoice
+    invoiceId: String!
+  ): Invoice
   # The current user's status relating to bids on artworks
   lot_standing(artwork_id: String!, sale_id: String!): LotStanding
   # A list of the current user's auction standings for given lots
@@ -3463,6 +3472,8 @@ type Query {
     # Key to the OrderedSet or group of OrderedSets
     key: String!
     public: Boolean = true
+    page: Int = 1
+    size: Int = 10
   ): [OrderedSet]
   # A Partner
   partner(
@@ -4432,6 +4443,8 @@ type Viewer {
     # Key to the OrderedSet or group of OrderedSets
     key: String!
     public: Boolean = true
+    page: Int = 1
+    size: Int = 10
   ): [OrderedSet]
   # A Partner
   partner(
