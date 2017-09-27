@@ -216,6 +216,10 @@ static NSString *hostFromString(NSString *string)
 
 + (NSString *)userAgent
 {
+    static NSString *cachedUserAgent;
+    if (cachedUserAgent) {
+        return cachedUserAgent;
+    }
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 
@@ -229,6 +233,7 @@ static NSString *hostFromString(NSString *string)
     NSString *agentString = [NSString stringWithFormat:@"Mozilla/5.0 Artsy-Mobile/%@ Eigen/%@", version, build];
     userAgent = [userAgent stringByReplacingOccurrencesOfString:@"Artsy" withString:agentString];
     userAgent = [userAgent stringByAppendingString:@" AppleWebKit/601.1.46 (KHTML, like Gecko)"];
+    cachedUserAgent = userAgent;
     return userAgent;
 }
 
