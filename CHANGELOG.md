@@ -32,6 +32,7 @@
 
 ###### Messaging
 
+-   Temporarily removed partner response rate in inquiry - maxim
 -   Fixed payment request component collapsing and minor UI changes - luc
 -   Added support for live open auctions for active bids - sarah
 -   Fixed separator styling in the message component - luc
