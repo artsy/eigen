@@ -22,6 +22,8 @@
 
 + (NSURLRequest *)requestForURL:(NSURL *)url;
 
++ (NSString *)userAgent;
+
 #pragma mark - OAuth
 
 + (void)setAuthToken:(NSString *)token;

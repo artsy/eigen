@@ -1,6 +1,8 @@
 upcoming:
     version: 3.2.5
     details: Bug fixes
+    dev:
+      - Adds client metadata info to causality events - ash
     user_facing:
       - Fixes a crash related to users with no favourited artworks - ash
 
