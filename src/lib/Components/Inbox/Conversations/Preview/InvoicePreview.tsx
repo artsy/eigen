@@ -63,7 +63,7 @@ const CostLabel = styled(PaymentRequest)`
 `
 
 interface Props extends RelayProps {
-  onSelected?: () => void
+  onSelected: () => void
 }
 
 interface InvoiceStateButtonProps {
@@ -100,7 +100,7 @@ const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ state }) => {
 }
 
 export const InvoicePreview: React.SFC<Props> = ({ invoice, onSelected }) =>
-  <TouchableHighlight onPress={invoice.state === "UNPAID" && onSelected} underlayColor={colors["gray-light"]}>
+  <TouchableHighlight onPress={invoice.state === "UNPAID" ? onSelected : null} underlayColor={colors["gray-light"]}>
     <Container>
       <Icon source={require("../../../../../../images/payment_request.png")} />
       <TextContainer>
