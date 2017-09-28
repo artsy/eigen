@@ -1,5 +1,5 @@
 import * as React from "react"
-import { default as _track, Track } from "react-tracking"
+import { track as _track, Track as _Track } from "react-tracking"
 
 // tslint:disable-next-line:no-namespace
 export namespace Schema {
@@ -32,6 +32,52 @@ export namespace Schema {
 }
 
 /**
+ * Use this interface to augment the `track` function with props, state, or custom tracking-info schema.
+ *
+ * @example
+ *
+ *      ```ts
+ *      import { Schema, Track, track as _track } from "src/utils/track"
+ *
+ *
+ *      interface Props {
+ *        artist: {
+ *          id: string
+ *          slug: string
+ *        }
+ *      }
+ *
+ *      interface State {
+ *        following: boolean
+ *      }
+ *
+ *      const track: Track<Props, State, Schema.Entity> = _track
+ *
+ *      @track()
+ *      class Artist extends React.Component<Props, State> {
+ *        render() {
+ *          return (
+ *            <div onClick={this.handleFollow.bind(this)}>
+ *              ...
+ *            </div>
+ *          )
+ *        }
+ *
+ *        @track((props, state) => ({
+ *          action: `${state.following ? "Unfollow" : "Follow"} Artist`,
+ *          entity_id: props.artist.id,
+ *          entity_slug: props.artist.slug
+ *        }))
+ *        handleFollow() {
+ *          // ...
+ *        }
+ *      }
+ *
+ *      ```
+ */
+export interface Track<P = any, S = any, T extends Schema.Global = Schema.Global> extends _Track<T, P, S> {} // tslint:disable-line:no-empty-interface
+
+/**
  * A typed tracking-info alias of the default react-tracking `track` function.
  *
  * Use this when you don’t use a callback function to generate the tracking-info and only need the global schema.
@@ -58,131 +104,4 @@ export namespace Schema {
  *      }
  *      ```
  */
-export const track = createTrack<Schema.Global>()
-
-/**
- * Creates a typed alias of the react-tracking `track` function.
- *
- * Use this when you don’t use a callback function to generate the tracking-info, but do want to extend the schema.
- *
- * @example
- *
- *      ```ts
- *      import { createTrack, Schema } from "src/utils/track"
- *
- *      interface Shareable extends Schema.Global {
- *        slug: string
- *      }
- *
- *      const track = createTrack<Shareable>()
- *
- *      @track()
- *      class Artist extends React.Component<{}, null> {
- *        render() {
- *          return (
- *            <div onClick={this.handleFollow.bind(this)}>
- *              ...
- *            </div>
- *          )
- *        }
- *
- *        @track({ action: "Follow Artist", slug: "banksy" })
- *        handleFollow() {
- *          // ...
- *        }
- *      }
- *      ```
- */
-export function createTrack<T extends Schema.Global>(): Track<T, any, any>
-
-/**
- * Creates a typed alias of the react-tracking `track` function.
- *
- * Use this when you’re going to use a callback function to generate the tracking-info based on props.
- *
- * You can optionally specify an extended tracking-info schema.
- *
- * @example
- *
- *      ```ts
- *      import { createTrack } from "src/utils/track"
- *
- *      interface Props {
- *        artist: {
- *          name: string
- *        }
- *      }
- *
- *      const track = createTrack<Props>()
- *
- *      @track()
- *      class Artist extends React.Component<Props, null> {
- *        render() {
- *          return (
- *            <div onClick={this.handleFollow.bind(this)}>
- *              ...
- *            </div>
- *          )
- *        }
- *
- *        @track(props => ({ action: `Follow ${props.artist.name}` }))
- *        handleFollow() {
- *          // ...
- *        }
- *      }
- *      ```
- */
-export function createTrack<P, T extends Schema.Global = Schema.Global>(): Track<T, P>
-
-/**
- * Creates a typed alias of the react-tracking `track` function.
- *
- * Use this when you’re going to use a callback function to generate the tracking-info based on props and state.
- *
- * You can optionally specify an extended tracking-info schema.
- *
- * @example
- *
- *      ```ts
- *      import { createTrack } from "src/utils/track"
- *
- *      interface Props {
- *        artist: {
- *          name: string
- *        }
- *      }
- *
- *      interface State {
- *        following: boolean
- *      }
- *
- *      const track = createTrack<Props, State>()
- *
- *      @track()
- *      class Artist extends React.Component<Props, State> {
- *        render() {
- *          return (
- *            <div onClick={this.handleFollow.bind(this)}>
- *              ...
- *            </div>
- *          )
- *        }
- *
- *        @track((props, state) => ({ action: `${state.following ? "Unfollow" : "Follow"} ${props.artist.name}` }))
- *        handleFollow() {
- *          // ...
- *        }
- *      }
- *      ```
- */
-export function createTrack<P, S, T extends Schema.Global = Schema.Global>(): Track<T, P, S>
-
-/**
- * This is the actual implementation, but all the signatures are specified above. This function doesn’t do anything at
- * runtime other than returning the default react-tracking `track` function.
- *
- * It exists solely to be able to cast the `track` function with one of the above signatures.
- */
-export function createTrack() {
-  return _track
-}
+export const track: Track = _track

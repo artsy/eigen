@@ -16,6 +16,7 @@
 -   Updates the beta/dev UI, and with docs - orta
 -   Some testing stability work - orta
 -   Add React Tracking lib for analytics - maxim
+-   Add typings and custom schema setup for React Tracking lib - alloy
 
 ###### Consignments
 

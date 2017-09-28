@@ -1,6 +1,6 @@
 import * as PropTypes from "prop-types"
 import * as React from "react"
-import { createTrack, Schema } from "../../utils/track"
+import { Schema, Track, track as _track } from "../../utils/track"
 
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -24,7 +24,7 @@ interface State {
   followersCount: number
 }
 
-const track = createTrack<Props, State, Schema.Entity>()
+const track: Track<Props, State, Schema.Entity> = _track
 
 @track()
 class Header extends React.Component<Props, State> {
