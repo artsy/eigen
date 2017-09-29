@@ -152,6 +152,12 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-tracking@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-tracking/-/react-tracking-5.0.0.tgz#5e295829b8dc2f98ae57c3b9ffcba81e267812ca"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^16.0.5":
   version "16.0.5"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.5.tgz#d713cf67cc211dea20463d2a0b66005c22070c4b"

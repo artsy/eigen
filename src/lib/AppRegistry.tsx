@@ -1,7 +1,7 @@
 import * as _ from "lodash"
 import * as React from "react"
 import { AppRegistry, ViewProperties } from "react-native"
-import track from "react-tracking"
+import { track } from "./utils/track"
 
 import Consignments from "./Components/Consignments"
 import LoadFailureView from "./Components/LoadFailureView"

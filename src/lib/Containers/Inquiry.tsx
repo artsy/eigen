@@ -23,7 +23,7 @@ import BottomAlignedButton from "../Components/Consignments/Components/BottomAli
 import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 import { gravityURL } from "../relay/config"
-import { NetworkError } from "../system/errors"
+import { NetworkError } from "../utils/errors"
 
 const Container = styled.View`
   flex: 1;

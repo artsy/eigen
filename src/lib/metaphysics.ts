@@ -2,7 +2,7 @@ import { NativeModules } from "react-native"
 const Emission = NativeModules.Emission || {}
 
 import { metaphysicsURL } from "./relay/config"
-import { NetworkError } from "./system/errors"
+import { NetworkError } from "./utils/errors"
 
 export function metaphysics<T>(
   payload: { query: string; variables?: object },

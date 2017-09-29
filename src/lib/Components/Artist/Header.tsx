@@ -1,6 +1,6 @@
 import * as PropTypes from "prop-types"
 import * as React from "react"
-import track from "react-tracking"
+import { Schema, Track, track as _track } from "../../utils/track"
 
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -16,17 +16,18 @@ import SerifText from "../Text/Serif"
 
 const isPad = Dimensions.get("window").width > 700
 
-interface HeaderProps extends React.Props<Header> {
-  artist: any
-}
+// tslint:disable-next-line:no-empty-interface
+interface Props extends RelayProps {}
 
 interface State {
   following: boolean
   followersCount: number
 }
 
+const track: Track<Props, State, Schema.Entity> = _track
+
 @track()
-class Header extends React.Component<HeaderProps, State> {
+class Header extends React.Component<Props, State> {
   static propTypes = {
     artist: PropTypes.shape({
       name: PropTypes.string,
@@ -38,9 +39,12 @@ class Header extends React.Component<HeaderProps, State> {
     }),
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
-    this.state = { following: false, followersCount: props.artist.counts.follows }
+    this.state = {
+      following: false,
+      followersCount: props.artist.counts.follows as number,
+    }
   }
 
   componentDidMount() {
@@ -141,9 +145,9 @@ class Header extends React.Component<HeaderProps, State> {
   }
 
   @track((props, state) => ({
-    following_artist: state.following,
-    artist_id: props.artist._id,
-    artist_slug: props.artist.id,
+    action: `successfully ${state.following ? "followed" : "unfollowed"}`,
+    entity_id: props.artist._id,
+    entity_slug: props.artist.id,
   }))
   successfulFollowChange() {
     Events.postEvent({
