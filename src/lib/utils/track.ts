@@ -1,5 +1,5 @@
 import * as React from "react"
-import { track as _track, Track as _Track } from "react-tracking"
+import _track, { Track as _Track } from "react-tracking"
 
 // tslint:disable-next-line:no-namespace
 export namespace Schema {

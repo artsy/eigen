@@ -46,6 +46,7 @@ Example/Emission/Configuration.h
 coverage
 package-lock.json
 yarn-error.log
+.awcache
 
 # Use a custom, cached location for Jest to save transpiling
 # on every PR
@@ -57,3 +58,8 @@ Emission.js.meta
 
 # Danger artifacts
 tslint-errors.json
+
+# Haul
+#
+haul-debug.log
+.happypack

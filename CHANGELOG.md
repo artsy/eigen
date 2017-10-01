@@ -17,6 +17,7 @@
 -   Some testing stability work - orta
 -   Add React Tracking lib for analytics - maxim
 -   Add typings and custom schema setup for React Tracking lib - alloy
+-   Fix release build by switching from the default React Native packager (Metro) to the community one based on webpack (Haul) - alloy
 
 ###### Consignments
 
