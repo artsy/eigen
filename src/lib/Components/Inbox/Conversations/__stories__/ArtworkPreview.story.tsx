@@ -23,3 +23,5 @@
 //     artwork.title = "Canisters Canisters Canisters Canisters Canisters Canisters"
 //     return <StubContainer Component={ArtworkPreview} props={{ artwork }} />
 //   })
+
+export default undefined
