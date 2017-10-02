@@ -5,7 +5,7 @@
   "main": "index.ios.js",
   "scripts": {
     "bundle": "haul bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
-    "bundle-with-storybooks": "haul bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output Emission.js --assets-dest Pod/Assets",
+    "bundle-with-storybooks": "haul bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output  Pod/Assets/Emission.js --assets-dest Pod/Assets",
     "clean-example": "cd Example && xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",
     "type-check": "tsc --noEmit --pretty",
     "lint": "npm run tslint 'src/**/*.{ts,tsx}'",
