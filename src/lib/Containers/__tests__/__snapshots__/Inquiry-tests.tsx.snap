@@ -130,6 +130,7 @@ exports[`renders correctly 1`] = `
                     "fontSize": 11,
                     "textAlign": "left",
                   },
+                  undefined,
                   Object {},
                   Object {
                     "fontFamily": "Avant Garde Gothic ITCW01Dm",
@@ -155,21 +156,6 @@ exports[`renders correctly 1`] = `
                 ]
               }
             >
-              <View
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "#f1af1b",
-                      "borderRadius": 4,
-                      "height": 8,
-                      "marginRight": 5,
-                      "marginTop": 5,
-                      "width": 8,
-                    },
-                    undefined,
-                  ]
-                }
-              />
               <Text
                 accessible={true}
                 allowFontScaling={true}
@@ -182,6 +168,7 @@ exports[`renders correctly 1`] = `
                       "fontSize": 11,
                       "textAlign": "left",
                     },
+                    undefined,
                     Array [
                       Object {
                         "color": "#f1af1b",
@@ -195,7 +182,7 @@ exports[`renders correctly 1`] = `
                   ]
                 }
               >
-                2 DAY RESPONSE TIME
+                 
               </Text>
             </View>
           </View>
@@ -211,6 +198,7 @@ exports[`renders correctly 1`] = `
                   "fontSize": 11,
                   "textAlign": "left",
                 },
+                undefined,
                 Array [
                   Object {
                     "color": "white",

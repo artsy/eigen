@@ -1,26 +1,23 @@
 import * as React from "react"
-import { Image, Text, TouchableHighlight } from "react-native"
+import { Image, TouchableHighlight } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import colors from "../../../../../data/colors"
 import fonts from "../../../../../data/fonts"
-
-import SerifText from "../../../Text/Serif"
-
 import InvertedButton from "../../../Buttons/InvertedButton"
 
 const Container = styled.View`
   border-width: 1;
   border-color: ${colors["gray-regular"]};
-  flex: 1;
   flex-direction: row;
+  height: 72;
 `
 
 const TextContainer = styled.View`
   flex: 1;
   flex-direction: column;
-  margin-left: 25;
+  margin-left: 10;
   align-self: center;
 `
 
@@ -36,12 +33,22 @@ const CanceledLabel = styled.Text`
   color: ${colors["gray-medium"]};
   font-weight: bold;
 `
+
 const RefundedLabel = styled.Text`
   color: ${colors["gray-medium"]};
   font-weight: bold;
 `
-const PaidLabel = styled.Text`color: ${colors["green-regular"]};`
+
+const PaidLabel = styled.Text`
+  font-family: ${fonts["avant-garde-regular"]};
+  color: ${colors["green-regular"]};
+  text-align: right;
+  font-size: 12;
+  line-height: 25;
+`
+
 const PayButtonContainer = styled.View`
+  margin-left: 15;
   height: 25;
   width: 71;
 `
@@ -49,6 +56,10 @@ const PayButtonContainer = styled.View`
 const PaymentRequest = styled.Text`
   font-family: ${fonts["garamond-regular"]};
   font-size: 14;
+`
+
+const CostLabel = styled(PaymentRequest)`
+  font-weight: bold;
 `
 
 interface Props extends RelayProps {
@@ -60,21 +71,31 @@ interface InvoiceStateButtonProps {
 }
 
 const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ state }) => {
-  if (state === "PAID") {
-    return <PaidLabel>PAID</PaidLabel>
-  }
-  if (state === "VOID") {
-    return <CanceledLabel>CANCELED</CanceledLabel>
-  }
-  if (state === "REFUNDED") {
-    return <RefundedLabel>REFUNDED</RefundedLabel>
-  }
-  if (state === "UNPAID") {
-    return (
-      <PayButtonContainer>
-        <InvertedButton text="PAY" />
-      </PayButtonContainer>
-    )
+  switch (state) {
+    case "PAID":
+      return (
+        <PayButtonContainer>
+          <PaidLabel>PAID</PaidLabel>
+        </PayButtonContainer>
+      )
+    case "VOID":
+      return (
+        <PayButtonContainer>
+          <CanceledLabel>CANCELED</CanceledLabel>
+        </PayButtonContainer>
+      )
+    case "REFUNDED":
+      return (
+        <PayButtonContainer>
+          <RefundedLabel>REFUNDED</RefundedLabel>
+        </PayButtonContainer>
+      )
+    case "UNPAID":
+      return (
+        <PayButtonContainer>
+          <InvertedButton text="PAY" />
+        </PayButtonContainer>
+      )
   }
 }
 
@@ -84,12 +105,12 @@ export const InvoicePreview: React.SFC<Props> = ({ invoice, onSelected }) =>
       <Icon source={require("../../../../../../images/payment_request.png")} />
       <TextContainer>
         <PaymentRequest>Payment request</PaymentRequest>
-        <PaymentRequest>
+        <CostLabel>
           {invoice.total}
-        </PaymentRequest>
+        </CostLabel>
       </TextContainer>
       <TextContainer>
-        {InvoiceStateButton(invoice)}
+        <InvoiceStateButton state={invoice.state} />
       </TextContainer>
     </Container>
   </TouchableHighlight>

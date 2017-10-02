@@ -8,4 +8,7 @@ module.exports = {
   createPaginationContainer: component => component,
   createRefetchContainer: component => component,
   graphql: Relay.graphql,
+  commitMutation: (environment, { onCompleted, onError }) => {
+    onCompleted()
+  },
 }

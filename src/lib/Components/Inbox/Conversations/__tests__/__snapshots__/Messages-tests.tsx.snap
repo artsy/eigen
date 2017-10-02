@@ -1,0 +1,321 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks correct when rendered 1`] = `
+<RCTScrollView
+  ListFooterComponent={
+    <ActivityIndicator
+      animating={false}
+      color="#999999"
+      hidesWhenStopped={true}
+      size="small"
+    />
+  }
+  data={
+    Array [
+      Object {
+        "attachments": Array [],
+        "body": "Adoro! Por favor envie-me mais informações",
+        "first_message": undefined,
+        "from": Object {
+          "email": "percy@cat.com",
+          "name": "Percy",
+        },
+        "from_email_address": "anita@garibaldi.br",
+        "id": 222,
+        "key": undefined,
+      },
+    ]
+  }
+  disableVirtualization={false}
+  getItem={[Function]}
+  getItemCount={[Function]}
+  horizontal={false}
+  initialNumToRender={10}
+  inverted={true}
+  keyExtractor={[Function]}
+  maxToRenderPerBatch={10}
+  numColumns={1}
+  onContentSizeChange={[Function]}
+  onEndReached={[Function]}
+  onEndReachedThreshold={0.2}
+  onLayout={[Function]}
+  onMomentumScrollEnd={[Function]}
+  onScroll={[Function]}
+  onScrollBeginDrag={[Function]}
+  onScrollEndDrag={[Function]}
+  onViewableItemsChanged={undefined}
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={false}
+    />
+  }
+  renderItem={[Function]}
+  scrollEventThrottle={50}
+  stickyHeaderIndices={Array []}
+  style={
+    Array [
+      Object {
+        "transform": Array [
+          Object {
+            "scaleY": -1,
+          },
+        ],
+      },
+      undefined,
+    ]
+  }
+  updateCellsBatchingPeriod={50}
+  windowSize={21}
+>
+  <RCTRefreshControl />
+  <View>
+    <View
+      onLayout={[Function]}
+      style={
+        Object {
+          "transform": Array [
+            Object {
+              "scaleY": -1,
+            },
+          ],
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "paddingLeft": 20,
+              "paddingRight": 20,
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "flexDirection": "row",
+              },
+              Array [
+                Object {
+                  "alignSelf": "stretch",
+                  "marginBottom": 10,
+                  "marginTop": 15,
+                },
+                undefined,
+              ],
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "#e5e5e5",
+                  "borderRadius": 15,
+                  "height": 30,
+                  "width": 30,
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              disabled={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "alignSelf": "center",
+                    "color": "#666666",
+                    "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                    "fontSize": 10,
+                    "marginTop": 8,
+                  },
+                  undefined,
+                ]
+              }
+              user={undefined}
+            >
+              KK
+            </Text>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flexBasis": 0,
+                  "flexDirection": "column",
+                  "flexGrow": 1,
+                  "flexShrink": 1,
+                },
+                Array [
+                  Object {
+                    "marginLeft": 10,
+                  },
+                  undefined,
+                ],
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "flexDirection": "row",
+                  },
+                  Array [
+                    Object {
+                      "alignSelf": "stretch",
+                      "marginBottom": 10,
+                    },
+                    undefined,
+                  ],
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "color": "black",
+                      "fontSize": 11,
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#cccccc",
+                    },
+                    Array [
+                      Object {
+                        "fontSize": 11.5,
+                        "marginRight": 6,
+                      },
+                      undefined,
+                    ],
+                    Object {
+                      "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                    },
+                  ]
+                }
+              >
+                KIMBERLY KLARK
+              </Text>
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "color": "#cccccc",
+                      "fontSize": 11,
+                      "textAlign": "left",
+                    },
+                    Array [
+                      Object {
+                        "color": "#f1af1b",
+                        "fontSize": 11.5,
+                      },
+                      undefined,
+                    ],
+                    Object {
+                      "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                    },
+                  ]
+                }
+              >
+                PENDING
+              </Text>
+            </View>
+            <View
+              linkStyle={
+                Object {
+                  "color": "#0645ad",
+                }
+              }
+              onPress={[Function]}
+              style={undefined}
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "color": "black",
+                      "fontSize": 16,
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#cccccc",
+                    },
+                    Object {},
+                    Object {
+                      "fontFamily": "AGaramondPro-Regular",
+                    },
+                  ]
+                }
+              >
+                Adoro! Por favor envie-me mais informações
+              </Text>
+            </View>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              disabled={false}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "color": "#cccccc",
+                    "fontFamily": "AGaramondPro-Regular",
+                  },
+                  Array [
+                    Object {
+                      "marginTop": 10,
+                    },
+                    undefined,
+                  ],
+                ]
+              }
+            >
+              Percy · percy@cat.com
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={
+        Object {
+          "transform": Array [
+            Object {
+              "scaleY": -1,
+            },
+          ],
+        }
+      }
+    >
+      <ActivityIndicator
+        animating={false}
+        color="#999999"
+        hidesWhenStopped={true}
+        size="small"
+      />
+    </View>
+  </View>
+</RCTScrollView>
+`;

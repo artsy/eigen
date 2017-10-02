@@ -60,12 +60,14 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 - (ARCellData *)editableTextCellDataWithName:(NSString *)name defaultKey:(NSString *)key
 {
   ARCellData *cell = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
-
+  cell.height = 60;
+  
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   NSString *value = [defaults stringForKey:key];
 
-  [cell setCellConfigurationBlock:^(UITableViewCell *cell) {
-    cell.textLabel.text = [NSString stringWithFormat:@"%@: %@", name, value];
+  [cell setCellConfigurationBlock:^(UITableViewCell *tableViewCell) {
+    tableViewCell.textLabel.text = [NSString stringWithFormat:@"%@:", name];
+    tableViewCell.detailTextLabel.text = value;
   }];
 
   [cell setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {

@@ -15,16 +15,16 @@ PODS:
     - Artsy+UIColors
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
-    - React/BatchedBridge (= 0.48.0)
-    - React/Core (= 0.48.0)
-    - React/RCTAnimation (= 0.48.0)
-    - React/RCTCameraRoll (= 0.48.0)
-    - React/RCTImage (= 0.48.0)
-    - React/RCTNetwork (= 0.48.0)
-    - React/RCTText (= 0.48.0)
+    - React/BatchedBridge (= 0.48.4)
+    - React/Core (= 0.48.4)
+    - React/RCTAnimation (= 0.48.4)
+    - React/RCTCameraRoll (= 0.48.4)
+    - React/RCTImage (= 0.48.4)
+    - React/RCTNetwork (= 0.48.4)
+    - React/RCTText (= 0.48.4)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.14.5)
-    - Yoga (= 0.48.0.React)
+    - Yoga (= 0.48.4.React)
   - Extraction (1.2.3):
     - Extraction/ARAnimationContinuation (= 1.2.3)
     - Extraction/ARLoadFailureView (= 1.2.3)
@@ -63,34 +63,34 @@ PODS:
   - NSURL+QueryDictionary (1.2.0)
   - ORStackView (2.0.3):
     - FLKAutoLayout
-  - React (0.48.0):
-    - React/Core (= 0.48.0)
-  - React/BatchedBridge (0.48.0):
+  - React (0.48.4):
+    - React/Core (= 0.48.4)
+  - React/BatchedBridge (0.48.4):
     - React/Core
     - React/cxxreact_legacy
-  - React/Core (0.48.0):
-    - Yoga (= 0.48.0.React)
-  - React/cxxreact_legacy (0.48.0):
+  - React/Core (0.48.4):
+    - Yoga (= 0.48.4.React)
+  - React/cxxreact_legacy (0.48.4):
     - React/jschelpers_legacy
-  - React/DevSupport (0.48.0):
+  - React/DevSupport (0.48.4):
     - React/Core
     - React/RCTWebSocket
-  - React/jschelpers_legacy (0.48.0)
-  - React/RCTAnimation (0.48.0):
+  - React/jschelpers_legacy (0.48.4)
+  - React/RCTAnimation (0.48.4):
     - React/Core
-  - React/RCTBlob (0.48.0):
+  - React/RCTBlob (0.48.4):
     - React/Core
-  - React/RCTCameraRoll (0.48.0):
+  - React/RCTCameraRoll (0.48.4):
     - React/Core
     - React/RCTImage
-  - React/RCTImage (0.48.0):
+  - React/RCTImage (0.48.4):
     - React/Core
     - React/RCTNetwork
-  - React/RCTNetwork (0.48.0):
+  - React/RCTNetwork (0.48.4):
     - React/Core
-  - React/RCTText (0.48.0):
+  - React/RCTText (0.48.4):
     - React/Core
-  - React/RCTWebSocket (0.48.0):
+  - React/RCTWebSocket (0.48.4):
     - React/Core
     - React/RCTBlob
   - SAMKeychain (1.5.0)
@@ -107,7 +107,7 @@ PODS:
     - Sentry (~> 3.1.2)
     - Sentry/KSCrash (~> 3.1.2)
   - UIView+BooleanAnimations (1.0.2)
-  - Yoga (0.48.0.React)
+  - Yoga (0.48.4.React)
 
 DEPENDENCIES:
   - AppHub (from `https://github.com/orta/apphub.git`, branch `build_list`)
@@ -154,20 +154,20 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   Artsy+UIFonts: e66afb5c40100e2fc5bba28feb7487e252f2d06f
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
-  Emission: 7cd023eeebd140217dc39f30b311a402af4ac4bc
+  Emission: 3e9a02f64e938b2e548212ff0dc806f6f280c56b
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   KSCrash: 7bd106ca4a2247774deeeb587c740ce0207de8f3
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
-  React: 830e32675a1cef76f854240fbda322282b150f98
+  React: 6d68659481a8a56e0f6b3dbecd984d5b9bb2d6c5
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   Sentry: 5a578891f177e994d89d57effc70adb97bfb29db
   SentryReactNative: 8f251df76f03c5ee42e702f37a41803709632217
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
-  Yoga: 056a82a5b4abd6b145f3d341176406e7174afff6
+  Yoga: ccefa1454b2e9825dce3b2df98088b7f0e3c2675
 
 PODFILE CHECKSUM: 0c385e9313daa3b7b7130176793f59f9c6ee2778
 

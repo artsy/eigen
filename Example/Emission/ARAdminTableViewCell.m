@@ -1,4 +1,6 @@
 #import "ARAdminTableViewCell.h"
+#import "EigenLikeAdminViewController.h"
+
 #import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
 #import <Artsy+UIColors/UIColor+ArtsyColors.h>
 
@@ -11,7 +13,10 @@ CGFloat DetailTextVerticalOffset = 6;
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    BOOL overwriteStyle = [reuseIdentifier isEqualToString:ARLabOptionCell];
+    UITableViewCellStyle usedStyle = overwriteStyle ? UITableViewCellStyleSubtitle : style;
+  
+    self = [super initWithStyle:usedStyle reuseIdentifier:reuseIdentifier];
     if (!self) {
         return nil;
     }
@@ -32,7 +37,7 @@ CGFloat DetailTextVerticalOffset = 6;
 
     if (_useSerifFont) {
         self.textLabel.font = [UIFont serifFontWithSize:18];
-        self.detailTextLabel.font = [UIFont serifFontWithSize:18];
+        self.detailTextLabel.font = [UIFont serifItalicFontWithSize:16];
     } else {
         self.textLabel.font = [UIFont sansSerifFontWithSize:15];
         self.detailTextLabel.font = [UIFont sansSerifFontWithSize:15];

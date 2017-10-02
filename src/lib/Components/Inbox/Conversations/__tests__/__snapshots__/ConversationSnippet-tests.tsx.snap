@@ -71,7 +71,7 @@ exports[`renders correctly with a show 1`] = `
           },
           Array [
             Object {
-              "marginBottom": 3,
+              "marginBottom": 15,
               "marginLeft": 15,
             },
             undefined,
@@ -104,6 +104,7 @@ exports[`renders correctly with a show 1`] = `
                 "fontSize": 11,
                 "textAlign": "left",
               },
+              undefined,
               Object {},
               Object {
                 "fontFamily": "Avant Garde Gothic ITCW01Dm",
@@ -332,7 +333,7 @@ exports[`renders correctly with an artwork 1`] = `
           },
           Array [
             Object {
-              "marginBottom": 3,
+              "marginBottom": 15,
               "marginLeft": 15,
             },
             undefined,
@@ -365,6 +366,7 @@ exports[`renders correctly with an artwork 1`] = `
                 "fontSize": 11,
                 "textAlign": "left",
               },
+              undefined,
               Object {},
               Object {
                 "fontFamily": "Avant Garde Gothic ITCW01Dm",

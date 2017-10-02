@@ -4,8 +4,8 @@
   "description": "Artsy React(Native) components.",
   "main": "index.ios.js",
   "scripts": {
-    "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
-    "bundle-with-storybooks": "react-native bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output Emission.js --assets-dest Pod/Assets",
+    "bundle": "haul bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
+    "bundle-with-storybooks": "haul bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output  Pod/Assets/Emission.js --assets-dest Pod/Assets",
     "clean-example": "cd Example && xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",
     "type-check": "tsc --noEmit --pretty",
     "lint": "npm run tslint 'src/**/*.{ts,tsx}'",
@@ -20,7 +20,7 @@
     "danger": "danger",
     "start": "npm run clean-example && npm run start-servers",
     "start-servers": "concurrently --kill-others 'npm run start-packager' 'npm run relay -- --watch' 'npm run storybook'",
-    "start-packager": "env REACT_DEBUGGER=\"$([ -d '/Applications/React Native Debugger.app' ] && echo \"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\")\" node node_modules/react-native/local-cli/cli.js start",
+    "start-packager": "haul start --platform ios",
     "storybook": "storybook start -p 9001 -c .storybook --skip-packager",
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
     "open-sim": "open -a Simulator",
@@ -34,39 +34,33 @@
     "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && npm run dump-schema -- ../../data && rm -rf node_modules",
     "version": "yarn install && yarn bundle && pushd Example && bundle install && bundle exec pod install && popd && git add Pod/Assets Example/Podfile.lock",
     "postversion": "git push --follow-tags && env EMISSION_ROOT=\"$(pwd)\" pod repo push artsy --allow-warnings --use-json --skip-import-validation",
-    "postinstall": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h || true",
+    "postinstall": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h || ./scripts/post_installs.sh || true",
     "prestorybook": "rnstl"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/artsy/emission.git"
   },
-  "keywords": [
-    "artsy",
-    "react",
-    "react-native"
-  ],
+  "keywords": ["artsy", "react", "react-native"],
   "author": "Eloy Durán",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/artsy/emission/issues"
   },
   "homepage": "https://github.com/artsy/emission#readme",
-  "files": [
-    "index.js",
-    "data",
-    "lib"
-  ],
+  "files": ["index.js", "data", "lib"],
   "dependencies": {
+    "@types/react-tracking": "^5.0.0",
     "lodash": "^4.17.4",
     "moment": "latest",
     "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.12",
-    "react-native": "0.48.0",
+    "react-native": "0.48.4",
+    "react-native-hyperlink": "0.0.11",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
-    "react-native-reversed-flat-list": "^1.0.1",
     "react-native-sentry": "^0.14.5",
     "react-relay": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/react-relay-1.3.0-artsy.1.tgz",
+    "react-tracking": "^5.0.0",
     "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/relay-runtime-artsy.1.tgz",
     "remove-markdown": "0.1.0",
     "styled-components": "^2.0.0"
@@ -79,7 +73,7 @@
     "@types/react": "^16.0.5",
     "@types/react-native": "^0.48.0",
     "apphub": "^0.5.1",
-    "awesome-typescript-loader": "^3.1.3",
+    "awesome-typescript-loader": "^3.2.3",
     "babel-jest": "^18.0.0",
     "babel-plugin-relay": "https://github.com/alloy/relay/releases/download/v1.3.0-artsy/babel-plugin-relay-1.3.0-artsy.1.tgz",
     "babel-polyfill": "^6.13.0",
@@ -89,6 +83,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "concurrently": "^2.2.0",
     "danger": "alpha",
+    "haul": "^1.0.0-beta.5",
     "jest": "^21.0.1",
     "jest-react-native": "18.0.0",
     "jest-snapshots-svg": "^0.0.21",
@@ -108,7 +103,8 @@
     "ts-jest": "^21.0.0",
     "tslint": "^5.4.3",
     "tslint-config-prettier": "^1.0.0",
-    "typescript": "^2.3.2"
+    "typescript": "^2.3.2",
+    "webpack-merge": "^4.1.0"
   },
   "jest": {
     "preset": "react-native",
@@ -117,40 +113,23 @@
         "useBabelrc": true
       }
     },
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "/__tests__/.*-tests.(ts|tsx|js)$",
-    "testPathIgnorePatterns": [
-      "\\.snap$",
-      "<rootDir>/node_modules/"
-    ],
-    "setupFiles": [
-      "./src/setupJest.ts"
-    ],
+    "testPathIgnorePatterns": ["\\.snap$", "<rootDir>/node_modules/"],
+    "setupFiles": ["./src/setupJest.ts"],
     "cacheDirectory": ".jest/cache"
   },
   "lint-staged": {
-    "*.@(ts|tsx)": [
-      "tslint --fix",
-      "npm run prettier-write --",
-      "git add"
-    ],
-    "*.json": [
-      "npm run prettier-write --"
-    ]
+    "*.@(ts|tsx)": ["tslint --fix", "npm run prettier-write --", "git add"],
+    "*.json": ["npm run prettier-write --"]
   },
   "config": {
     "react-native-storybook-loader": {
-      "searchDir": [
-        "./src"
-      ],
+      "searchDir": ["./src"],
       "pattern": "**/*.story.tsx",
       "outputFile": "./storybook/storyLoader.js"
     }

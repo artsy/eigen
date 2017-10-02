@@ -1,5 +1,7 @@
 import * as PropTypes from "prop-types"
 import * as React from "react"
+import { Schema, Track, track as _track } from "../../utils/track"
+
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
@@ -14,16 +16,18 @@ import SerifText from "../Text/Serif"
 
 const isPad = Dimensions.get("window").width > 700
 
-interface HeaderProps extends React.Props<Header> {
-  artist: any
-}
+// tslint:disable-next-line:no-empty-interface
+interface Props extends RelayProps {}
 
 interface State {
   following: boolean
   followersCount: number
 }
 
-class Header extends React.Component<HeaderProps, State> {
+const track: Track<Props, State, Schema.Entity> = _track
+
+@track()
+class Header extends React.Component<Props, State> {
   static propTypes = {
     artist: PropTypes.shape({
       name: PropTypes.string,
@@ -35,34 +39,18 @@ class Header extends React.Component<HeaderProps, State> {
     }),
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
-    this.state = { following: false, followersCount: props.artist.counts.follows }
+    this.state = {
+      following: false,
+      followersCount: props.artist.counts.follows as number,
+    }
   }
 
   componentDidMount() {
     NativeModules.ARTemporaryAPIModule.followStatusForArtist(this.props.artist._id, (error, following) => {
       this.setState({ following })
     })
-  }
-
-  handleFollowChange = () => {
-    const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
-    ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
-      if (error) {
-        console.warn(error)
-      } else {
-        Events.postEvent(this, {
-          name: following ? "Follow artist" : "Unfollow artist",
-          artist_id: this.props.artist._id,
-          artist_slug: this.props.artist.id,
-          // TODO: At some point, this component might be on other screens.
-          source_screen: "artist page",
-        })
-      }
-      this.setState({ following, followersCount: newFollowersCount })
-    })
-    this.setState({ following: !this.state.following, followersCount: newFollowersCount })
   }
 
   render() {
@@ -86,7 +74,7 @@ class Header extends React.Component<HeaderProps, State> {
           <InvertedButton
             text={this.state.following ? "Following" : "Follow"}
             selected={this.state.following}
-            onPress={this.handleFollowChange}
+            onPress={this.handleFollowChange.bind(this)}
           />
         </View>
       )
@@ -140,6 +128,35 @@ class Header extends React.Component<HeaderProps, State> {
     }
 
     return leadingSubstring + " " + birthday
+  }
+
+  @track((props, state) => ({ action: state.following ? "press unfollow button" : "press follow button" }))
+  handleFollowChange() {
+    const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
+    ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
+      if (error) {
+        console.warn(error)
+      } else {
+        this.successfulFollowChange()
+      }
+      this.setState({ following, followersCount: newFollowersCount })
+    })
+    this.setState({ following: !this.state.following, followersCount: newFollowersCount })
+  }
+
+  @track((props, state) => ({
+    action: `successfully ${state.following ? "followed" : "unfollowed"}`,
+    entity_id: props.artist._id,
+    entity_slug: props.artist.id,
+  }))
+  successfulFollowChange() {
+    Events.postEvent({
+      name: this.state.following ? "Follow artist" : "Unfollow artist",
+      artist_id: this.props.artist._id,
+      artist_slug: this.props.artist.id,
+      // TODO At some point, this component might be on other screens.
+      source_screen: "artist page",
+    })
   }
 }
 
