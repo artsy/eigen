@@ -150,13 +150,10 @@ lane :setup_for_app_store do
   system "security import #{signing_root}/ios_distribution.cer  -k ~/Library/Keychains/login.keychain -A"
 
   # First do project-wide configuration.
-  update_project_team(
-    path: "Artsy.xcodeproj",
-    teamid: "23KMWZ572J"
-  )
   automatic_code_signing(
     path: 'Artsy.xcodeproj',
-    use_automatic_signing: false
+    use_automatic_signing: false,
+    team_id: "23KMWZ572J"
   )
 
   # Then follow up with target-specific configuration.
