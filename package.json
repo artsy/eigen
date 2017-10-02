@@ -62,7 +62,7 @@
     "moment": "latest",
     "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.12",
-    "react-native": "0.48.0",
+    "react-native": "0.48.4",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
     "react-native-reversed-flat-list": "^1.0.1",
     "react-native-sentry": "^0.14.5",
