@@ -25,6 +25,7 @@ export interface SearchResult {
 }
 
 export interface ConsignmentSetup {
+  submission_id?: string
   artist?: SearchResult
   photos?: string[]
   metadata?: ConsignmentMetadata
@@ -32,6 +33,7 @@ export interface ConsignmentSetup {
   editionInfo?: {
     size?: string
     number?: string
+    displayString?: string
   }
   signed?: boolean
   certificateOfAuth?: boolean

@@ -81,6 +81,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
                 "fontSize": 11,
                 "textAlign": "left",
               },
+              undefined,
               Object {},
               Object {
                 "fontFamily": "Avant Garde Gothic ITCW01Dm",
@@ -128,9 +129,59 @@ exports[`displays a connectivity banner when network is down 1`] = `
       </Text>
     </View>
     <RCTScrollView
+      ListFooterComponent={
+        <ActivityIndicator
+          animating={false}
+          color="#999999"
+          hidesWhenStopped={true}
+          size="small"
+        />
+      }
+      data={
+        Array [
+          Object {
+            "attachments": Array [],
+            "body": "Adoro! Por favor envie-me mais informações",
+            "first_message": undefined,
+            "from": Object {
+              "email": "percy@cat.com",
+              "name": "Percy",
+            },
+            "from_email_address": "anita@garibaldi.br",
+            "id": 222,
+            "key": undefined,
+          },
+        ]
+      }
+      disableVirtualization={false}
+      getItem={[Function]}
+      getItemCount={[Function]}
+      horizontal={false}
+      initialNumToRender={10}
+      inverted={true}
+      keyExtractor={[Function]}
+      maxToRenderPerBatch={10}
+      numColumns={1}
+      onContentSizeChange={[Function]}
+      onEndReached={[Function]}
+      onEndReachedThreshold={0.2}
+      onLayout={[Function]}
+      onMomentumScrollEnd={[Function]}
+      onScroll={[Function]}
+      onScrollBeginDrag={[Function]}
+      onScrollEndDrag={[Function]}
+      onViewableItemsChanged={undefined}
+      refreshControl={
+        <RefreshControlMock
+          onRefresh={[Function]}
+          refreshing={false}
+        />
+      }
+      renderItem={[Function]}
+      scrollEventThrottle={50}
+      stickyHeaderIndices={Array []}
       style={
         Array [
-          undefined,
           Object {
             "transform": Array [
               Object {
@@ -138,23 +189,35 @@ exports[`displays a connectivity banner when network is down 1`] = `
               },
             ],
           },
+          undefined,
         ]
       }
+      updateCellsBatchingPeriod={50}
+      windowSize={21}
     >
+      <RCTRefreshControl />
       <View>
         <View
           onLayout={[Function]}
-          style={null}
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scaleY": -1,
+                },
+              ],
+            }
+          }
         >
           <View
             style={
-              Object {
-                "transform": Array [
-                  Object {
-                    "scaleY": -1,
-                  },
-                ],
-              }
+              Array [
+                Object {
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                },
+                undefined,
+              ]
             }
           >
             <View
@@ -167,8 +230,6 @@ exports[`displays a connectivity banner when network is down 1`] = `
                     Object {
                       "alignSelf": "stretch",
                       "marginBottom": 10,
-                      "marginLeft": 20,
-                      "marginRight": 20,
                       "marginTop": 15,
                     },
                     undefined,
@@ -257,10 +318,13 @@ exports[`displays a connectivity banner when network is down 1`] = `
                           "fontSize": 11,
                           "textAlign": "left",
                         },
+                        Object {
+                          "color": "#cccccc",
+                        },
                         Array [
                           Object {
                             "fontSize": 11.5,
-                            "marginRight": 3,
+                            "marginRight": 6,
                           },
                           undefined,
                         ],
@@ -272,212 +336,68 @@ exports[`displays a connectivity banner when network is down 1`] = `
                   >
                     KIMBERLY KLARK
                   </Text>
-                </View>
-                <View
-                  style={
-                    Array [
-                      Object {
-                        "marginBottom": 10,
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <View
-                    accessibilityComponentType={undefined}
-                    accessibilityLabel={undefined}
-                    accessibilityTraits={undefined}
+                  <Text
                     accessible={true}
-                    hasTVPreferredFocus={undefined}
-                    hitSlop={undefined}
-                    isTVSelectable={true}
-                    nativeID={undefined}
-                    onLayout={undefined}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "transparent",
+                          "color": "#cccccc",
+                          "fontSize": 11,
+                          "textAlign": "left",
                         },
-                        undefined,
-                      ]
-                    }
-                    testID={undefined}
-                    tvParallaxProperties={undefined}
-                  >
-                    <View
-                      style={
                         Array [
                           Object {
-                            "borderColor": "#e5e5e5",
-                            "borderWidth": 1,
-                            "flexDirection": "row",
+                            "color": "#f1af1b",
+                            "fontSize": 11.5,
                           },
                           undefined,
-                        ]
-                      }
-                    >
-                      <AROpaqueImageView
-                        imageURL="https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg"
-                        style={
-                          Array [
-                            Object {
-                              "height": 55,
-                              "marginBottom": 12,
-                              "marginLeft": 12,
-                              "marginTop": 12,
-                              "width": 80,
-                            },
-                            undefined,
-                          ]
-                        }
-                      />
-                      <View
-                        style={
-                          Array [
-                            Object {
-                              "flexBasis": 0,
-                              "flexDirection": "column",
-                              "flexGrow": 1,
-                              "flexShrink": 1,
-                            },
-                            Array [
-                              Object {
-                                "alignSelf": "center",
-                                "marginLeft": 25,
-                              },
-                              undefined,
-                            ],
-                          ]
-                        }
-                      >
-                        <Text
-                          accessible={true}
-                          allowFontScaling={true}
-                          disabled={false}
-                          ellipsizeMode="tail"
-                          numberOfLines={1}
-                          style={
-                            Array [
-                              Object {
-                                "color": "black",
-                                "fontSize": 16,
-                                "textAlign": "left",
-                              },
-                              Array [
-                                Object {
-                                  "fontSize": 14,
-                                },
-                                undefined,
-                              ],
-                              Object {
-                                "fontFamily": "AGaramondPro-Regular",
-                              },
-                            ]
-                          }
-                        >
-                          Adrian Piper
-                        </Text>
-                        <View
-                          style={
-                            Array [
-                              Object {
-                                "flexDirection": "row",
-                                "marginTop": 3,
-                              },
-                              undefined,
-                            ]
-                          }
-                        >
-                          <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            disabled={false}
-                            ellipsizeMode="tail"
-                            numberOfLines={1}
-                            style={
-                              Array [
-                                Object {
-                                  "flexBasis": 0,
-                                  "flexGrow": 3,
-                                  "flexShrink": 1,
-                                  "fontFamily": "AGaramondPro-Italic",
-                                  "fontSize": 14,
-                                },
-                                undefined,
-                              ]
-                            }
-                          >
-                            The Mythic Being: Sol’s Drawing #1–5
-                          </Text>
-                          <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            disabled={false}
-                            ellipsizeMode="tail"
-                            numberOfLines={1}
-                            style={
-                              Array [
-                                Object {
-                                  "color": "black",
-                                  "fontSize": 16,
-                                  "textAlign": "left",
-                                },
-                                Array [
-                                  Object {
-                                    "fontSize": 14,
-                                  },
-                                  Array [
-                                    Object {
-                                      "flexBasis": 0,
-                                      "flexGrow": 1,
-                                      "flexShrink": 1,
-                                    },
-                                    undefined,
-                                  ],
-                                ],
-                                Object {
-                                  "fontFamily": "AGaramondPro-Regular",
-                                },
-                              ]
-                            }
-                          >
-                            , 1974
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
+                        ],
+                        Object {
+                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        },
+                      ]
+                    }
+                  >
+                    PENDING
+                  </Text>
                 </View>
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  disabled={false}
-                  ellipsizeMode="tail"
-                  style={
-                    Array [
-                      Object {
-                        "color": "black",
-                        "fontSize": 16,
-                        "textAlign": "left",
-                      },
-                      Object {
-                        "color": "#cccccc",
-                      },
-                      Object {},
-                      Object {
-                        "fontFamily": "AGaramondPro-Regular",
-                      },
-                    ]
+                <View
+                  linkStyle={
+                    Object {
+                      "color": "#0645ad",
+                    }
                   }
+                  onPress={[Function]}
+                  style={undefined}
                 >
-                  Adoro! Por favor envie-me mais informações
-                </Text>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "color": "black",
+                          "fontSize": 16,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#cccccc",
+                        },
+                        Object {},
+                        Object {
+                          "fontFamily": "AGaramondPro-Regular",
+                        },
+                      ]
+                    }
+                  >
+                    Adoro! Por favor envie-me mais informações
+                  </Text>
+                </View>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -504,6 +424,25 @@ exports[`displays a connectivity banner when network is down 1`] = `
             </View>
           </View>
         </View>
+        <View
+          onLayout={[Function]}
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scaleY": -1,
+                },
+              ],
+            }
+          }
+        >
+          <ActivityIndicator
+            animating={false}
+            color="#999999"
+            hidesWhenStopped={true}
+            size="small"
+          />
+        </View>
       </View>
     </RCTScrollView>
   </View>
@@ -529,7 +468,6 @@ exports[`displays a connectivity banner when network is down 1`] = `
     }
   >
     <TextInput
-      editable={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -548,6 +486,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
           "paddingTop": 13,
         }
       }
+      value={null}
     />
     <Text
       accessibilityComponentType={undefined}
@@ -555,8 +494,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
       accessibilityTraits={undefined}
       accessible={true}
       allowFontScaling={true}
-      containsText={false}
-      disabled={false}
+      disabled={true}
       ellipsizeMode="tail"
       hitSlop={undefined}
       nativeID={undefined}
@@ -667,6 +605,7 @@ exports[`looks correct when rendered 1`] = `
                 "fontSize": 11,
                 "textAlign": "left",
               },
+              undefined,
               Object {},
               Object {
                 "fontFamily": "Avant Garde Gothic ITCW01Dm",
@@ -680,9 +619,59 @@ exports[`looks correct when rendered 1`] = `
       </View>
     </View>
     <RCTScrollView
+      ListFooterComponent={
+        <ActivityIndicator
+          animating={false}
+          color="#999999"
+          hidesWhenStopped={true}
+          size="small"
+        />
+      }
+      data={
+        Array [
+          Object {
+            "attachments": Array [],
+            "body": "Adoro! Por favor envie-me mais informações",
+            "first_message": undefined,
+            "from": Object {
+              "email": "percy@cat.com",
+              "name": "Percy",
+            },
+            "from_email_address": "anita@garibaldi.br",
+            "id": 222,
+            "key": undefined,
+          },
+        ]
+      }
+      disableVirtualization={false}
+      getItem={[Function]}
+      getItemCount={[Function]}
+      horizontal={false}
+      initialNumToRender={10}
+      inverted={true}
+      keyExtractor={[Function]}
+      maxToRenderPerBatch={10}
+      numColumns={1}
+      onContentSizeChange={[Function]}
+      onEndReached={[Function]}
+      onEndReachedThreshold={0.2}
+      onLayout={[Function]}
+      onMomentumScrollEnd={[Function]}
+      onScroll={[Function]}
+      onScrollBeginDrag={[Function]}
+      onScrollEndDrag={[Function]}
+      onViewableItemsChanged={undefined}
+      refreshControl={
+        <RefreshControlMock
+          onRefresh={[Function]}
+          refreshing={false}
+        />
+      }
+      renderItem={[Function]}
+      scrollEventThrottle={50}
+      stickyHeaderIndices={Array []}
       style={
         Array [
-          undefined,
           Object {
             "transform": Array [
               Object {
@@ -690,23 +679,35 @@ exports[`looks correct when rendered 1`] = `
               },
             ],
           },
+          undefined,
         ]
       }
+      updateCellsBatchingPeriod={50}
+      windowSize={21}
     >
+      <RCTRefreshControl />
       <View>
         <View
           onLayout={[Function]}
-          style={null}
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scaleY": -1,
+                },
+              ],
+            }
+          }
         >
           <View
             style={
-              Object {
-                "transform": Array [
-                  Object {
-                    "scaleY": -1,
-                  },
-                ],
-              }
+              Array [
+                Object {
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                },
+                undefined,
+              ]
             }
           >
             <View
@@ -719,8 +720,6 @@ exports[`looks correct when rendered 1`] = `
                     Object {
                       "alignSelf": "stretch",
                       "marginBottom": 10,
-                      "marginLeft": 20,
-                      "marginRight": 20,
                       "marginTop": 15,
                     },
                     undefined,
@@ -809,10 +808,13 @@ exports[`looks correct when rendered 1`] = `
                           "fontSize": 11,
                           "textAlign": "left",
                         },
+                        Object {
+                          "color": "#cccccc",
+                        },
                         Array [
                           Object {
                             "fontSize": 11.5,
-                            "marginRight": 3,
+                            "marginRight": 6,
                           },
                           undefined,
                         ],
@@ -824,212 +826,68 @@ exports[`looks correct when rendered 1`] = `
                   >
                     KIMBERLY KLARK
                   </Text>
-                </View>
-                <View
-                  style={
-                    Array [
-                      Object {
-                        "marginBottom": 10,
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <View
-                    accessibilityComponentType={undefined}
-                    accessibilityLabel={undefined}
-                    accessibilityTraits={undefined}
+                  <Text
                     accessible={true}
-                    hasTVPreferredFocus={undefined}
-                    hitSlop={undefined}
-                    isTVSelectable={true}
-                    nativeID={undefined}
-                    onLayout={undefined}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "transparent",
+                          "color": "#cccccc",
+                          "fontSize": 11,
+                          "textAlign": "left",
                         },
-                        undefined,
-                      ]
-                    }
-                    testID={undefined}
-                    tvParallaxProperties={undefined}
-                  >
-                    <View
-                      style={
                         Array [
                           Object {
-                            "borderColor": "#e5e5e5",
-                            "borderWidth": 1,
-                            "flexDirection": "row",
+                            "color": "#f1af1b",
+                            "fontSize": 11.5,
                           },
                           undefined,
-                        ]
-                      }
-                    >
-                      <AROpaqueImageView
-                        imageURL="https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg"
-                        style={
-                          Array [
-                            Object {
-                              "height": 55,
-                              "marginBottom": 12,
-                              "marginLeft": 12,
-                              "marginTop": 12,
-                              "width": 80,
-                            },
-                            undefined,
-                          ]
-                        }
-                      />
-                      <View
-                        style={
-                          Array [
-                            Object {
-                              "flexBasis": 0,
-                              "flexDirection": "column",
-                              "flexGrow": 1,
-                              "flexShrink": 1,
-                            },
-                            Array [
-                              Object {
-                                "alignSelf": "center",
-                                "marginLeft": 25,
-                              },
-                              undefined,
-                            ],
-                          ]
-                        }
-                      >
-                        <Text
-                          accessible={true}
-                          allowFontScaling={true}
-                          disabled={false}
-                          ellipsizeMode="tail"
-                          numberOfLines={1}
-                          style={
-                            Array [
-                              Object {
-                                "color": "black",
-                                "fontSize": 16,
-                                "textAlign": "left",
-                              },
-                              Array [
-                                Object {
-                                  "fontSize": 14,
-                                },
-                                undefined,
-                              ],
-                              Object {
-                                "fontFamily": "AGaramondPro-Regular",
-                              },
-                            ]
-                          }
-                        >
-                          Adrian Piper
-                        </Text>
-                        <View
-                          style={
-                            Array [
-                              Object {
-                                "flexDirection": "row",
-                                "marginTop": 3,
-                              },
-                              undefined,
-                            ]
-                          }
-                        >
-                          <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            disabled={false}
-                            ellipsizeMode="tail"
-                            numberOfLines={1}
-                            style={
-                              Array [
-                                Object {
-                                  "flexBasis": 0,
-                                  "flexGrow": 3,
-                                  "flexShrink": 1,
-                                  "fontFamily": "AGaramondPro-Italic",
-                                  "fontSize": 14,
-                                },
-                                undefined,
-                              ]
-                            }
-                          >
-                            The Mythic Being: Sol’s Drawing #1–5
-                          </Text>
-                          <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            disabled={false}
-                            ellipsizeMode="tail"
-                            numberOfLines={1}
-                            style={
-                              Array [
-                                Object {
-                                  "color": "black",
-                                  "fontSize": 16,
-                                  "textAlign": "left",
-                                },
-                                Array [
-                                  Object {
-                                    "fontSize": 14,
-                                  },
-                                  Array [
-                                    Object {
-                                      "flexBasis": 0,
-                                      "flexGrow": 1,
-                                      "flexShrink": 1,
-                                    },
-                                    undefined,
-                                  ],
-                                ],
-                                Object {
-                                  "fontFamily": "AGaramondPro-Regular",
-                                },
-                              ]
-                            }
-                          >
-                            , 1974
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
+                        ],
+                        Object {
+                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        },
+                      ]
+                    }
+                  >
+                    PENDING
+                  </Text>
                 </View>
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  disabled={false}
-                  ellipsizeMode="tail"
-                  style={
-                    Array [
-                      Object {
-                        "color": "black",
-                        "fontSize": 16,
-                        "textAlign": "left",
-                      },
-                      Object {
-                        "color": "#cccccc",
-                      },
-                      Object {},
-                      Object {
-                        "fontFamily": "AGaramondPro-Regular",
-                      },
-                    ]
+                <View
+                  linkStyle={
+                    Object {
+                      "color": "#0645ad",
+                    }
                   }
+                  onPress={[Function]}
+                  style={undefined}
                 >
-                  Adoro! Por favor envie-me mais informações
-                </Text>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "color": "black",
+                          "fontSize": 16,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#cccccc",
+                        },
+                        Object {},
+                        Object {
+                          "fontFamily": "AGaramondPro-Regular",
+                        },
+                      ]
+                    }
+                  >
+                    Adoro! Por favor envie-me mais informações
+                  </Text>
+                </View>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -1056,6 +914,25 @@ exports[`looks correct when rendered 1`] = `
             </View>
           </View>
         </View>
+        <View
+          onLayout={[Function]}
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scaleY": -1,
+                },
+              ],
+            }
+          }
+        >
+          <ActivityIndicator
+            animating={false}
+            color="#999999"
+            hidesWhenStopped={true}
+            size="small"
+          />
+        </View>
       </View>
     </RCTScrollView>
   </View>
@@ -1081,7 +958,6 @@ exports[`looks correct when rendered 1`] = `
     }
   >
     <TextInput
-      editable={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -1100,6 +976,7 @@ exports[`looks correct when rendered 1`] = `
           "paddingTop": 13,
         }
       }
+      value={null}
     />
     <Text
       accessibilityComponentType={undefined}
@@ -1107,8 +984,497 @@ exports[`looks correct when rendered 1`] = `
       accessibilityTraits={undefined}
       accessible={true}
       allowFontScaling={true}
-      containsText={false}
-      disabled={false}
+      disabled={true}
+      ellipsizeMode="tail"
+      hitSlop={undefined}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "color": "#e5e5e5",
+            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontSize": 12,
+            "marginRight": 10,
+          },
+          undefined,
+        ]
+      }
+      testID={undefined}
+    >
+      SEND
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`looks correct when rendered 2`] = `
+<View
+  keyboardVerticalOffset={20}
+  onLayout={[Function]}
+  style={
+    Array [
+      Object {
+        "flex": 1,
+      },
+      Object {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "flexBasis": 0,
+          "flexDirection": "column",
+          "flexGrow": 1,
+          "flexShrink": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignSelf": "stretch",
+            "flexDirection": "column",
+            "marginBottom": 20,
+            "marginTop": 10,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Image
+          source={1}
+          style={
+            Array [
+              Object {
+                "height": 12,
+                "transform": Array [
+                  Object {
+                    "rotate": "180deg",
+                  },
+                ],
+                "width": 7,
+              },
+              undefined,
+            ]
+          }
+        />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 11,
+                "textAlign": "left",
+              },
+              undefined,
+              Object {},
+              Object {
+                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+              },
+            ]
+          }
+        >
+          KIMBERLY KLARK
+        </Text>
+        <View />
+      </View>
+    </View>
+    <RCTScrollView
+      ListFooterComponent={
+        <ActivityIndicator
+          animating={false}
+          color="#999999"
+          hidesWhenStopped={true}
+          size="small"
+        />
+      }
+      data={
+        Array [
+          Object {
+            "attachments": Array [],
+            "body": "Adoro! Por favor envie-me mais informações",
+            "first_message": undefined,
+            "from": Object {
+              "email": "percy@cat.com",
+              "name": "Percy",
+            },
+            "from_email_address": "anita@garibaldi.br",
+            "id": 222,
+            "key": undefined,
+          },
+        ]
+      }
+      disableVirtualization={false}
+      getItem={[Function]}
+      getItemCount={[Function]}
+      horizontal={false}
+      initialNumToRender={10}
+      inverted={true}
+      keyExtractor={[Function]}
+      maxToRenderPerBatch={10}
+      numColumns={1}
+      onContentSizeChange={[Function]}
+      onEndReached={[Function]}
+      onEndReachedThreshold={0.2}
+      onLayout={[Function]}
+      onMomentumScrollEnd={[Function]}
+      onScroll={[Function]}
+      onScrollBeginDrag={[Function]}
+      onScrollEndDrag={[Function]}
+      onViewableItemsChanged={undefined}
+      refreshControl={
+        <RefreshControlMock
+          onRefresh={[Function]}
+          refreshing={false}
+        />
+      }
+      renderItem={[Function]}
+      scrollEventThrottle={50}
+      stickyHeaderIndices={Array []}
+      style={
+        Array [
+          Object {
+            "transform": Array [
+              Object {
+                "scaleY": -1,
+              },
+            ],
+          },
+          undefined,
+        ]
+      }
+      updateCellsBatchingPeriod={50}
+      windowSize={21}
+    >
+      <RCTRefreshControl />
+      <View>
+        <View
+          onLayout={[Function]}
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scaleY": -1,
+                },
+              ],
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
+                },
+                undefined,
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "flexDirection": "row",
+                  },
+                  Array [
+                    Object {
+                      "alignSelf": "stretch",
+                      "marginBottom": 10,
+                      "marginTop": 15,
+                    },
+                    undefined,
+                  ],
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "#e5e5e5",
+                      "borderRadius": 15,
+                      "height": 30,
+                      "width": 30,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "alignSelf": "center",
+                        "color": "#666666",
+                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        "fontSize": 10,
+                        "marginTop": 8,
+                      },
+                      undefined,
+                    ]
+                  }
+                  user={undefined}
+                >
+                  KK
+                </Text>
+              </View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "flexBasis": 0,
+                      "flexDirection": "column",
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                    },
+                    Array [
+                      Object {
+                        "marginLeft": 10,
+                      },
+                      undefined,
+                    ],
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "flexDirection": "row",
+                      },
+                      Array [
+                        Object {
+                          "alignSelf": "stretch",
+                          "marginBottom": 10,
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "color": "black",
+                          "fontSize": 11,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#cccccc",
+                        },
+                        Array [
+                          Object {
+                            "fontSize": 11.5,
+                            "marginRight": 6,
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        },
+                      ]
+                    }
+                  >
+                    KIMBERLY KLARK
+                  </Text>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "color": "#cccccc",
+                          "fontSize": 11,
+                          "textAlign": "left",
+                        },
+                        Array [
+                          Object {
+                            "color": "#f1af1b",
+                            "fontSize": 11.5,
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        },
+                      ]
+                    }
+                  >
+                    PENDING
+                  </Text>
+                </View>
+                <View
+                  linkStyle={
+                    Object {
+                      "color": "#0645ad",
+                    }
+                  }
+                  onPress={[Function]}
+                  style={undefined}
+                >
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "color": "black",
+                          "fontSize": 16,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#cccccc",
+                        },
+                        Object {},
+                        Object {
+                          "fontFamily": "AGaramondPro-Regular",
+                        },
+                      ]
+                    }
+                  >
+                    Adoro! Por favor envie-me mais informações
+                  </Text>
+                </View>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "#cccccc",
+                        "fontFamily": "AGaramondPro-Regular",
+                      },
+                      Array [
+                        Object {
+                          "marginTop": 10,
+                        },
+                        undefined,
+                      ],
+                    ]
+                  }
+                >
+                  Percy · percy@cat.com
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          onLayout={[Function]}
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "scaleY": -1,
+                },
+              ],
+            }
+          }
+        >
+          <ActivityIndicator
+            animating={false}
+            color="#999999"
+            hidesWhenStopped={true}
+            size="small"
+          />
+        </View>
+      </View>
+    </RCTScrollView>
+  </View>
+  <View
+    active={false}
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#f8f8f8",
+          "borderColor": "#e5e5e5",
+          "borderRadius": 3,
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 0,
+        },
+        undefined,
+      ]
+    }
+  >
+    <TextInput
+      keyboardAppearance="dark"
+      multiline={true}
+      onChangeText={[Function]}
+      onEndEditing={[Function]}
+      onFocus={[Function]}
+      placeholder="Reply..."
+      placeholderTextColor="#666666"
+      style={
+        Object {
+          "flex": 1,
+          "fontFamily": "AGaramondPro-Regular",
+          "fontSize": 13,
+          "paddingBottom": 10,
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "paddingTop": 13,
+        }
+      }
+      value={null}
+    />
+    <Text
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      allowFontScaling={true}
+      disabled={true}
       ellipsizeMode="tail"
       hitSlop={undefined}
       nativeID={undefined}

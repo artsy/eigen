@@ -5,18 +5,10 @@ exports[`looks correct when rendered 1`] = `
   style={
     Array [
       Object {
-        "flexDirection": "row",
+        "paddingLeft": 20,
+        "paddingRight": 20,
       },
-      Array [
-        Object {
-          "alignSelf": "stretch",
-          "marginBottom": 10,
-          "marginLeft": 20,
-          "marginRight": 20,
-          "marginTop": 15,
-        },
-        undefined,
-      ],
+      undefined,
     ]
   }
 >
@@ -24,47 +16,13 @@ exports[`looks correct when rendered 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#e5e5e5",
-          "borderRadius": 15,
-          "height": 30,
-          "width": 30,
-        },
-        undefined,
-      ]
-    }
-  >
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      style={
-        Array [
-          Object {
-            "alignSelf": "center",
-            "color": "white",
-            "fontFamily": "Avant Garde Gothic ITCW01Dm",
-            "fontSize": 10,
-            "marginTop": 8,
-          },
-          undefined,
-        ]
-      }
-      user={true}
-    />
-  </View>
-  <View
-    style={
-      Array [
-        Object {
-          "flexBasis": 0,
-          "flexDirection": "column",
-          "flexGrow": 1,
-          "flexShrink": 1,
+          "flexDirection": "row",
         },
         Array [
           Object {
-            "marginLeft": 10,
+            "alignSelf": "stretch",
+            "marginBottom": 10,
+            "marginTop": 15,
           },
           undefined,
         ],
@@ -75,299 +33,367 @@ exports[`looks correct when rendered 1`] = `
       style={
         Array [
           Object {
-            "flexDirection": "row",
+            "backgroundColor": "#e5e5e5",
+            "borderRadius": 15,
+            "height": 30,
+            "width": 30,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "alignSelf": "center",
+              "color": "white",
+              "fontFamily": "Avant Garde Gothic ITCW01Dm",
+              "fontSize": 10,
+              "marginTop": 8,
+            },
+            undefined,
+          ]
+        }
+        user={true}
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexDirection": "column",
+            "flexGrow": 1,
+            "flexShrink": 1,
           },
           Array [
             Object {
-              "alignSelf": "stretch",
-              "marginBottom": 10,
+              "marginLeft": 10,
             },
             undefined,
           ],
         ]
       }
     >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "black",
-              "fontSize": 11,
-              "textAlign": "left",
-            },
-            Array [
-              Object {
-                "fontSize": 11.5,
-                "marginRight": 3,
-              },
-              undefined,
-            ],
-            Object {
-              "fontFamily": "Avant Garde Gothic ITCW01Dm",
-            },
-          ]
-        }
-      >
-        SARAH
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "#cccccc",
-              "fontSize": 11,
-              "textAlign": "left",
-            },
-            Array [
-              Object {
-                "fontSize": 11.5,
-              },
-              undefined,
-            ],
-            Object {
-              "fontFamily": "Avant Garde Gothic ITCW01Dm",
-            },
-          ]
-        }
-      >
-        A YEAR
-      </Text>
-    </View>
-    <View
-      style={
-        Array [
-          Object {
-            "marginBottom": 10,
-          },
-          undefined,
-        ]
-      }
-    >
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
-        accessible={true}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
-        isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
         style={
           Array [
             Object {
-              "backgroundColor": "transparent",
+              "flexDirection": "row",
+            },
+            Array [
+              Object {
+                "alignSelf": "stretch",
+                "marginBottom": 10,
+              },
+              undefined,
+            ],
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 11,
+                "textAlign": "left",
+              },
+              false,
+              Array [
+                Object {
+                  "fontSize": 11.5,
+                  "marginRight": 6,
+                },
+                undefined,
+              ],
+              Object {
+                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+              },
+            ]
+          }
+        >
+          SARAH
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "#cccccc",
+                "fontSize": 11,
+                "textAlign": "left",
+              },
+              Array [
+                Object {
+                  "color": "#cccccc",
+                  "fontSize": 11.5,
+                },
+                undefined,
+              ],
+              Object {
+                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+              },
+            ]
+          }
+        >
+          A YEAR
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "marginBottom": 10,
             },
             undefined,
           ]
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <View
+          accessibilityComponentType={undefined}
+          accessibilityLabel={undefined}
+          accessibilityTraits={undefined}
+          accessible={true}
+          hasTVPreferredFocus={undefined}
+          hitSlop={undefined}
+          isTVSelectable={true}
+          nativeID={undefined}
+          onLayout={undefined}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "borderColor": "#e5e5e5",
-                "borderWidth": 1,
-                "flexBasis": 0,
-                "flexDirection": "row",
-                "flexGrow": 1,
-                "flexShrink": 1,
+                "backgroundColor": "transparent",
               },
               undefined,
             ]
           }
+          testID={undefined}
+          tvParallaxProperties={undefined}
         >
-          <Image
-            source={1}
-            style={
-              Array [
-                Object {
-                  "marginBottom": 12,
-                  "marginLeft": 12,
-                  "marginTop": 12,
-                  "resizeMode": "contain",
-                  "width": 40,
-                },
-                undefined,
-              ]
-            }
-          />
           <View
             style={
               Array [
                 Object {
-                  "alignSelf": "center",
-                  "flexBasis": 0,
-                  "flexDirection": "column",
-                  "flexGrow": 1,
-                  "flexShrink": 1,
-                  "marginLeft": 25,
+                  "borderColor": "#e5e5e5",
+                  "borderWidth": 1,
+                  "flexDirection": "row",
+                  "height": 72,
                 },
                 undefined,
               ]
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
+            <Image
+              source={1}
               style={
                 Array [
                   Object {
-                    "fontFamily": "AGaramondPro-Regular",
-                    "fontSize": 14,
+                    "marginBottom": 12,
+                    "marginLeft": 12,
+                    "marginTop": 12,
+                    "resizeMode": "contain",
+                    "width": 40,
                   },
                   undefined,
                 ]
               }
-            >
-              Payment request
-            </Text>
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              style={
-                Array [
-                  Object {
-                    "fontFamily": "AGaramondPro-Regular",
-                    "fontSize": 14,
-                  },
-                  undefined,
-                ]
-              }
-            >
-              $420
-            </Text>
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "alignSelf": "center",
-                  "flexBasis": 0,
-                  "flexDirection": "column",
-                  "flexGrow": 1,
-                  "flexShrink": 1,
-                  "marginLeft": 25,
-                },
-                undefined,
-              ]
-            }
-          >
+            />
             <View
               style={
                 Array [
                   Object {
-                    "height": 25,
-                    "width": 71,
+                    "alignSelf": "center",
+                    "flexBasis": 0,
+                    "flexDirection": "column",
+                    "flexGrow": 1,
+                    "flexShrink": 1,
+                    "marginLeft": 10,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "AGaramondPro-Regular",
+                      "fontSize": 14,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                Payment request
+              </Text>
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "AGaramondPro-Regular",
+                      "fontSize": 14,
+                    },
+                    Array [
+                      Object {
+                        "fontWeight": "bold",
+                      },
+                      undefined,
+                    ],
+                  ]
+                }
+              >
+                $420
+              </Text>
+            </View>
+            <View
+              style={
+                Array [
+                  Object {
+                    "alignSelf": "center",
+                    "flexBasis": 0,
+                    "flexDirection": "column",
+                    "flexGrow": 1,
+                    "flexShrink": 1,
+                    "marginLeft": 10,
                   },
                   undefined,
                 ]
               }
             >
               <View
-                accessibilityComponentType={undefined}
-                accessibilityLabel={undefined}
-                accessibilityTraits={undefined}
-                accessible={true}
-                hasTVPreferredFocus={undefined}
-                hitSlop={undefined}
-                isTVSelectable={true}
-                nativeID={undefined}
-                onLayout={undefined}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
                 style={
                   Array [
                     Object {
-                      "backgroundColor": "transparent",
+                      "height": 25,
+                      "marginLeft": 15,
+                      "width": 71,
                     },
-                    Object {
-                      "alignItems": "center",
-                      "backgroundColor": "rgba(0, 0, 0, 1)",
-                      "flex": 1,
-                      "justifyContent": "center",
-                    },
+                    undefined,
                   ]
                 }
-                testID={undefined}
-                tvParallaxProperties={undefined}
               >
-                <View>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "fontSize": 12,
-                        },
-                        Object {
-                          "color": "white",
-                          "opacity": 1,
-                        },
-                        Object {
-                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
-                        },
-                      ]
-                    }
-                  >
-                    PAY
-                  </Text>
+                <View
+                  accessibilityComponentType={undefined}
+                  accessibilityLabel={undefined}
+                  accessibilityTraits={undefined}
+                  accessible={true}
+                  hasTVPreferredFocus={undefined}
+                  hitSlop={undefined}
+                  isTVSelectable={true}
+                  nativeID={undefined}
+                  onLayout={undefined}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                      },
+                      Object {
+                        "alignItems": "center",
+                        "backgroundColor": "rgba(0, 0, 0, 1)",
+                        "flex": 1,
+                        "justifyContent": "center",
+                      },
+                    ]
+                  }
+                  testID={undefined}
+                  tvParallaxProperties={undefined}
+                >
+                  <View>
+                    <Text
+                      accessible={true}
+                      allowFontScaling={true}
+                      disabled={false}
+                      ellipsizeMode="tail"
+                      style={
+                        Array [
+                          Object {
+                            "fontSize": 12,
+                          },
+                          Object {
+                            "color": "white",
+                            "opacity": 1,
+                          },
+                          Object {
+                            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                          },
+                        ]
+                      }
+                    >
+                      PAY
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
           </View>
         </View>
       </View>
+      <View
+        linkStyle={
+          Object {
+            "color": "#0645ad",
+          }
+        }
+        onPress={[Function]}
+        style={undefined}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 16,
+                "textAlign": "left",
+              },
+              false,
+              Object {},
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+              },
+            ]
+          }
+        >
+          Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?
+        </Text>
+      </View>
     </View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      style={
-        Array [
-          Object {
-            "color": "black",
-            "fontSize": 16,
-            "textAlign": "left",
-          },
-          false,
-          Object {},
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
-        ]
-      }
-    >
-      Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?
-    </Text>
   </View>
 </View>
 `;

@@ -13,7 +13,7 @@
 
   self.navigationBarHidden = YES;
   self.delegate = self;
-
+ 
   UIButton *backButton = [self createBackButton];
   [self.view addSubview:backButton];
   [backButton constrainTopSpaceToView:self.topLayoutGuide predicate:@"12"];
@@ -21,7 +21,7 @@
   [backButton constrainWidth:@"40" height:@"40"];
   _backButton = backButton;
 
-  UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:@" " modifierFlags:0 action:@selector(toggleNav)];
+  UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:@" " modifierFlags:UIKeyModifierControl action:@selector(toggleNav)];
   [self addKeyCommand: command];
 }
 

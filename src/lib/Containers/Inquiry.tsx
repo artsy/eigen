@@ -23,7 +23,7 @@ import BottomAlignedButton from "../Components/Consignments/Components/BottomAli
 import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPreview"
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 import { gravityURL } from "../relay/config"
-import { NetworkError } from "../system/errors"
+import { NetworkError } from "../utils/errors"
 
 const Container = styled.View`
   flex: 1;
@@ -128,7 +128,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
 
   render() {
     const message = this.state.text
-    const partnerResponseRate = "2 DAY RESPONSE TIME" // currently hardcoded
+    const partnerResponseRate = " " // currently hardcoded for alignment
     const artwork = this.props.artwork
     const partnerName = this.props.artwork.partner.name
     const buttonText = this.state.sending ? "SENDING..." : "SEND"
@@ -158,7 +158,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
                   {partnerName}
                 </SmallHeadline>
                 <ResponseRateLine>
-                  <ResponseIndicator />
+                  {/* <ResponseIndicator /> */}
                   <ResponseRate>
                     {partnerResponseRate}
                   </ResponseRate>

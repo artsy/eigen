@@ -43,17 +43,6 @@ if (modifiedAppFiles.length > 0 && !trivialPR && !changelogChanges) {
   fail("No CHANGELOG added.")
 }
 
-// No PR is too small to warrant a paragraph or two of summary
-if (pr.body.length === 0) {
-  fail("Please add a description to your PR.")
-}
-
-// Always ensure we assign someone, so that our Slackbot can do its work correctly
-if (pr.assignee === null) {
-  const method = pr.title.includes("WIP") ? warn : fail
-  method("Please assign someone to merge this PR, and optionally include people who should review.")
-}
-
 // Check that every file touched has a corresponding test file
 const correspondingTestsForAppFiles = touchedAppOnlyFiles.map(f => {
   const newPath = path.dirname(f)
@@ -65,6 +54,7 @@ const correspondingTestsForAppFiles = touchedAppOnlyFiles.map(f => {
 // Allow warning instead of failing if you say "Skip New Tests" inside the body, make it explicit.
 const testFilesThatDontExist = correspondingTestsForAppFiles
   .filter(f => !f.includes("Index-tests.tsx")) // skip indexes
+  .filter(f => !f.includes("types-tests.ts")) // skip type definitions
   .filter(f => !f.includes("__stories__")) // skip stories
   .filter(f => !f.includes("AppRegistry")) // skip registry, kinda untestable
   .filter(f => !f.includes("Routes")) // skip routes, kinda untestable

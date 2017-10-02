@@ -95,6 +95,12 @@
       "idiom" : "ipad",
       "filename" : "ipad_pro_app_83@2x.png",
       "scale" : "2x"
+    },
+    {
+      "size" : "1024x1024",
+      "idiom" : "ios-marketing",
+      "filename" : "Emission-itunes.png",
+      "scale" : "1x"
     }
   ],
   "info" : {

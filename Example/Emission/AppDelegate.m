@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
 #import "ARDefaults.h"
+#import "AppSetup.h"
 
 #import "EigenLikeNavigationController.h"
 #import "ARRootViewController.h"
@@ -28,15 +29,6 @@
 
 #import "TakePhotoPromisable.h"
 
-// Disable this to force using the release JS bundle, note that you should really do so by running a Release build.
-//
-// To do this, hold down the alt key when clicking the run button and select the Release configuration. Remember to
-// change this back afterwards.
-//
-#if TARGET_OS_SIMULATOR && defined(DEBUG)
-#define ENABLE_DEV_MODE
-#endif
-
 static BOOL
 randomBOOL(void)
 {
@@ -54,6 +46,9 @@ randomBOOL(void)
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
 {
+  // Sets all our default defaults
+  [ARDefaults setup];
+
   BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
   NSString *service = useStaging? @"Emission-Staging" : @"Emission-Production";
 
@@ -105,56 +100,12 @@ randomBOOL(void)
 - (void)setupEmissionWithUserID:(NSString *)userID accessToken:(NSString *)accessToken keychainService:(NSString *)service;
 {
   AREmission *emission = nil;
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-  NSString *gravityURL = @"https://api.artsy.net";
-  NSString *metaphysicsURL = @"https://metaphysics-production.artsy.net";
+  AppSetup *setup = [AppSetup ambientSetup];
 
-  BOOL useStaging = [defaults boolForKey:ARUseStagingDefault];
-  if (useStaging) {
-    gravityURL = @"https://stagingapi.artsy.net";
-    metaphysicsURL = @"https://metaphysics-staging.artsy.net";
-  }
+  AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID authenticationToken:accessToken sentryDSN:nil googleMapsAPIKey:nil gravityHost:setup.gravityURL metaphysicsHost:setup.metaphysicsURL];
 
-  BOOL usePRBuild = [defaults boolForKey:ARUsePREmissionDefault];
-  BOOL useRNP = NO;
-  BOOL useAppHub = NO;
-
-#ifdef ENABLE_DEV_MODE
-  useRNP = YES;
-#endif
-
-#if DEPLOY
-  useAppHub = YES;
-#endif
-
-  NSURL *jsCodeLocation = nil;
-  if (usePRBuild) {
-    PRNetworkModel *pr = [PRNetworkModel new];
-    jsCodeLocation = [pr fileURLForPRJavaScript];
-    NSInteger prNumber = [defaults integerForKey:ARPREmissionIDDefault];
-    self.emissionLoadedFromString = [NSString stringWithFormat:@"PR #%@", @(prNumber)];
-
-  } else if (useRNP) {
-    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
-    self.emissionLoadedFromString = [NSString stringWithFormat:@"Using RNP from %@", jsCodeLocation.host];
-
-  } else if (useAppHub) {
-    AHBuild *build = [[AppHub buildManager] currentBuild];
-    jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
-    self.emissionLoadedFromString = [NSString stringWithFormat:@"Using AppHub %@", build.name];
-  }
-
-  // Fall back to the bundled Emission JS for release
-  if (!jsCodeLocation) {
-    NSBundle *emissionBundle = [NSBundle bundleForClass:AREmission.class];
-    jsCodeLocation = [emissionBundle URLForResource:@"Emission" withExtension:@"js"];
-    self.emissionLoadedFromString = @"Using bundled JS";
-  }
-
-  AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID authenticationToken:accessToken sentryDSN:nil googleMapsAPIKey:nil gravityHost:gravityURL metaphysicsHost:metaphysicsURL];
-
-  emission = [[AREmission alloc] initWithConfiguration:config packagerURL:jsCodeLocation];
+  emission = [[AREmission alloc] initWithConfiguration:config packagerURL:setup.jsCodeLocation];
   [AREmission setSharedInstance:emission];
 
   ARRootViewController *controller = (id)self.navigationController.topViewController;
@@ -230,8 +181,8 @@ randomBOOL(void)
     [fromViewController.navigationController presentViewController:navigationController animated:YES completion:nil];
   };
 
-  emission.eventsModule.eventOccurred = ^(UIViewController * _Nonnull fromViewController, NSDictionary * _Nonnull info) {
-    NSLog(@"[Event] %@ - %@", fromViewController.class, info);
+  emission.eventsModule.eventOccurred = ^(NSDictionary * _Nonnull info) {
+    NSLog(@"[Event] - %@", info);
   };
 
   emission.refineModule.triggerRefine = ^(NSDictionary *_Nonnull initial, NSDictionary *_Nonnull current, UIViewController *_Nonnull controller, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject) {
