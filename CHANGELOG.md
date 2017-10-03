@@ -33,6 +33,7 @@
 -   Adds a spinner at the end of submission - orta
 -   Submit draft metadata to convection - orta
 -   Publish a consignment to convection - orta
+-   Keep track of the user's input during the submission process - orta
 
 ###### Messaging
 

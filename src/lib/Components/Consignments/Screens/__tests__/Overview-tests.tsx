@@ -63,7 +63,7 @@ describe("Updating State", () => {
 
   beforeEach(() => {
     overview = new Overview({ navigator, route, setup: {} })
-    update = overview.updateMetaphysics
+    update = overview.updateLocalStateAndMetaphysics
     overview.setState = jest.fn()
     stateMock = overview.setState as any
   })

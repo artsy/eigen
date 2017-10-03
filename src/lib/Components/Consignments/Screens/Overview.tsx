@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
+import { AsyncStorage, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
 import Button from "../../Buttons/FlatWhite"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { LargeHeadline, Subtitle } from "../Typography"
@@ -20,6 +20,8 @@ import Welcome from "./Welcome"
 import createSubmission from "../Submission/create"
 import updateSubmission from "../Submission/update"
 
+const consignmentsStateKey = "ConsignmentsStoredState"
+
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route // this gets set by NavigatorIOS
@@ -29,8 +31,18 @@ interface Props extends ViewProperties {
 export default class Info extends React.Component<Props, ConsignmentSetup> {
   constructor(props) {
     super(props)
-    this.state = props.setup || ({} as ConsignmentSetup)
+    this.state = props.setup || {}
+
+    // Grab stored details from the local storage if no
+    // props have been passed in
+    if (!props.setup) {
+      this.restoreFromLocalStorage()
+    }
   }
+
+  saveStateToLocalStorage = () => AsyncStorage.setItem(consignmentsStateKey, JSON.stringify(this.state))
+  restoreFromLocalStorage = () =>
+    AsyncStorage.getItem(consignmentsStateKey, (err, result) => result && this.setState(JSON.parse(result)))
 
   goToArtistTapped = () =>
     this.props.navigator.push({
@@ -44,7 +56,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
       passProps: { ...this.state, updateWithProvenance: this.updateProvenance },
     })
 
-  goToPhotosTapped = () => this.props.navigator.push({ component: SelectFromPhotoLibrary, passProps: this.props })
+  goToPhotosTapped = () => this.props.navigator.push({ component: SelectFromPhotoLibrary, passProps: this.state })
 
   goToMetadataTapped = () =>
     this.props.navigator.push({
@@ -67,9 +79,11 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   updateLocation = (city: string, state: string, country: string) =>
     this.updateStateAndMetaphysics({ location: { city, state, country } })
 
-  updateStateAndMetaphysics = (state: any) => this.setState(state, this.updateMetaphysics)
+  updateStateAndMetaphysics = (state: any) => this.setState(state, this.updateLocalStateAndMetaphysics)
 
-  updateMetaphysics = async () => {
+  updateLocalStateAndMetaphysics = async () => {
+    this.saveStateToLocalStorage()
+
     if (this.state.submission_id) {
       updateSubmission(this.state, this.state.submission_id)
     } else if (this.state.artist) {
@@ -80,7 +94,8 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
 
   submitFinalSubmission = async (setup: ConsignmentSetup) => {
     this.setState(setup, async () => {
-      await this.updateMetaphysics()
+      await this.updateLocalStateAndMetaphysics()
+      await AsyncStorage.removeItem(consignmentsStateKey)
       // EXIT or something
     })
   }
@@ -89,6 +104,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
     const title = "Complete work details to submit"
     const subtitle = "Provide as much detail as possible so that our partners can best assess your work."
     const state = this.state
+    const emptyFunc = () => ""
 
     // See https://github.com/artsy/convection/blob/master/app/models/submission.rb for list
     const canSubmit = !!(
@@ -123,7 +139,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
 
             <Row style={{ justifyContent: "center" }}>
               <View style={{ height: 43, width: 320, marginTop: 20, opacity: canSubmit ? 1 : 0.3 }}>
-                <Button text="NEXT" onPress={canSubmit && this.goToFinalSubmission} style={{ flex: 1 }} />
+                <Button text="NEXT" onPress={canSubmit ? this.goToFinalSubmission : emptyFunc} style={{ flex: 1 }} />
               </View>
             </Row>
           </View>
