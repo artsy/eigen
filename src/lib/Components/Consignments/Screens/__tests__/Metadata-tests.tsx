@@ -39,4 +39,44 @@ describe("state", () => {
     const m = new Metadata({ metadata: exampleMetadata })
     expect(m.state).toEqual(exampleMetadata)
   })
+
+  describe("State changes", () => {
+    let metadata: Metadata
+    let originalState: ConsignmentMetadata
+
+    beforeEach(() => {
+      metadata = new Metadata({ metadata: exampleMetadata })
+      originalState = metadata.state
+
+      metadata.setState = partial => (metadata.state = Object.assign({}, originalState, partial))
+    })
+
+    it("updates the year", () => {
+      metadata.updateYear("1985")
+      expect(metadata.state).toMatchDiffSnapshot(originalState)
+    })
+
+    it("updates the medium", () => {
+      metadata.updateMedium("Metal")
+      expect(originalState).toMatchDiffSnapshot(metadata.state)
+    })
+
+    it("updates the category", () => {
+      metadata.updateMedium("VIDEO_FILM_ANIMATION")
+      expect(originalState).toMatchDiffSnapshot(metadata.state)
+    })
+
+    it("updates the title", () => {
+      metadata.updateTitle("New Artwork Name")
+      expect(originalState).toMatchDiffSnapshot(metadata.state)
+    })
+
+    it("updates the size metrics", () => {
+      metadata.updateHeight("200")
+      metadata.updateWidth("200")
+      metadata.updateDepth("200")
+
+      expect(originalState).toMatchDiffSnapshot(metadata.state)
+    })
+  })
 })

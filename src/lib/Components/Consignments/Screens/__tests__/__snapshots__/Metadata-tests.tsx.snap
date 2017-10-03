@@ -1,5 +1,98 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`state State changes updates the category 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -2,11 +2,11 @@
+    \\"category\\": \\"DESIGN\\",
+    \\"categoryName\\": \\"Design\\",
+    \\"depth\\": null,
+    \\"displayString\\": \\"5/5\\",
+    \\"height\\": \\"100\\",
+-   \\"medium\\": \\"Wood\\",
++   \\"medium\\": \\"VIDEO_FILM_ANIMATION\\",
+    \\"title\\": \\"My Work\\",
+    \\"unit\\": \\"cm\\",
+    \\"width\\": \\"100\\",
+    \\"year\\": \\"1983\\",
+  }"
+`;
+
+exports[`state State changes updates the medium 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -2,11 +2,11 @@
+    \\"category\\": \\"DESIGN\\",
+    \\"categoryName\\": \\"Design\\",
+    \\"depth\\": null,
+    \\"displayString\\": \\"5/5\\",
+    \\"height\\": \\"100\\",
+-   \\"medium\\": \\"Wood\\",
++   \\"medium\\": \\"Metal\\",
+    \\"title\\": \\"My Work\\",
+    \\"unit\\": \\"cm\\",
+    \\"width\\": \\"100\\",
+    \\"year\\": \\"1983\\",
+  }"
+`;
+
+exports[`state State changes updates the size metrics 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -1,9 +1,9 @@
+  Object {
+    \\"category\\": \\"DESIGN\\",
+    \\"categoryName\\": \\"Design\\",
+-   \\"depth\\": null,
++   \\"depth\\": \\"200\\",
+    \\"displayString\\": \\"5/5\\",
+    \\"height\\": \\"100\\",
+    \\"medium\\": \\"Wood\\",
+    \\"title\\": \\"My Work\\",
+    \\"unit\\": \\"cm\\","
+`;
+
+exports[`state State changes updates the title 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -3,10 +3,10 @@
+    \\"categoryName\\": \\"Design\\",
+    \\"depth\\": null,
+    \\"displayString\\": \\"5/5\\",
+    \\"height\\": \\"100\\",
+    \\"medium\\": \\"Wood\\",
+-   \\"title\\": \\"My Work\\",
++   \\"title\\": \\"New Artwork Name\\",
+    \\"unit\\": \\"cm\\",
+    \\"width\\": \\"100\\",
+    \\"year\\": \\"1983\\",
+  }"
+`;
+
+exports[`state State changes updates the year 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -6,7 +6,7 @@
+    \\"height\\": \\"100\\",
+    \\"medium\\": \\"Wood\\",
+    \\"title\\": \\"My Work\\",
+    \\"unit\\": \\"cm\\",
+    \\"width\\": \\"100\\",
+-   \\"year\\": \\"1985\\",
++   \\"year\\": \\"1983\\",
+  }"
+`;
+
 exports[`state is set up with empty consignment metadata 1`] = `
 <View
   style={
