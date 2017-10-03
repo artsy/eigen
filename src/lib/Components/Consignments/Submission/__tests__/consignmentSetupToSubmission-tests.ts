@@ -18,6 +18,7 @@ describe("consignment metadata -> submission", () => {
         title: "My Work",
         year: "1983",
         category: "DESIGN_DECORATIVE_ART",
+        categoryName: "Design",
         medium: "Wood",
         width: "100",
         height: "100",

@@ -11,7 +11,8 @@ const route = {} as any
 const exampleMetadata: ConsignmentMetadata = {
   title: "My Work",
   year: "1983",
-  category: "Design",
+  category: "DESIGN",
+  categoryName: "Design",
   medium: "Wood",
   width: "100",
   height: "100",
@@ -35,19 +36,7 @@ describe("state", () => {
   })
 
   it("sets state correctly at init", () => {
-    const metadata: ConsignmentMetadata = {
-      title: "My Work",
-      year: "1983",
-      category: "Design",
-      medium: "Wood",
-      width: "100",
-      height: "100",
-      depth: null,
-      unit: "cm",
-      displayString: "5/5",
-    }
-
     const m = new Metadata({ metadata: exampleMetadata })
-    expect(m.state).toEqual(metadata)
+    expect(m.state).toEqual(exampleMetadata)
   })
 })

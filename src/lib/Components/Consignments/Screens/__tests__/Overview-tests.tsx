@@ -82,7 +82,8 @@ describe("Updating State", () => {
     overview.updateMetadata({
       title: "OK",
       year: "1983",
-      category: "Painting",
+      category: "PAINTING",
+      categoryName: "Painting",
       medium: "Oil on Canvas",
       width: "100",
       height: "200",
@@ -94,7 +95,8 @@ describe("Updating State", () => {
     expect(stateMock).toBeCalledWith(
       {
         metadata: {
-          category: "Painting",
+          category: "PAINTING",
+          categoryName: "Painting",
           depth: 20,
           displayString: "Paint on canvas",
           height: "200",
