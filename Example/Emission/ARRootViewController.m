@@ -42,7 +42,7 @@
 
   // It can get real confusing if you have AppHub running on your local
   // development environment.
-  if(setup.usingAppHub || setup.usingPRBuild) {
+  if (setup.usingAppHub || setup.usingPRBuild) {
     ARSectionData *appHubSection = [self appHubSectionData];
     [tableViewData addSectionData:appHubSection];
   }

@@ -37,7 +37,10 @@
 #endif
 
 #if DEPLOY
-    useAppHub = YES;
+//    TODO: Either bring back apphub, or just make our PR uploader work per commit too.
+//          IMO, we can probably just make it go to "latest" all the time and call it a day also.
+//          so long as we have good error handling for native bridge changes
+//    useAppHub = YES;
 #endif
 
     useRNP = isSimulator || [defaults boolForKey:ARForceUseRNPDefault];
@@ -72,7 +75,7 @@
 
     _inSimulator = isSimulator;
     _inStaging = useStaging;
-    
+
     _usingAppHub = useAppHub;
     _usingRNP = useRNP;
     _usingPRBuild = usePRBuild;
