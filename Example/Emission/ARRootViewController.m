@@ -42,7 +42,7 @@
 
   // It can get real confusing if you have AppHub running on your local
   // development environment.
-  if(setup.usingAppHub || setup.usingPRBuild) {
+  if (setup.usingAppHub || setup.usingPRBuild) {
     ARSectionData *appHubSection = [self appHubSectionData];
     [tableViewData addSectionData:appHubSection];
   }
@@ -62,12 +62,12 @@
   ARSectionData *adminSection = [self adminSection];
   [tableViewData addSectionData:adminSection];
 
-  if (setup.inSimulator) {
-    // These were nice quick for getting bootstrapped, but they should be storybooks
-    // so that they can be controlled in JS and deployed with PRs.
-    ARSectionData *viewControllerSection = [self jumpToViewControllersSection];
-    [tableViewData addSectionData:viewControllerSection];
-  }
+
+  // TODO: Deprecate
+  // These were nice quick for getting bootstrapped, but they should be storybooks
+  // so that they can be controlled in JS and deployed with PRs.
+  ARSectionData *viewControllerSection = [self jumpToViewControllersSection];
+  [tableViewData addSectionData:viewControllerSection];
 
   self.tableViewData = tableViewData;
 }
@@ -88,7 +88,7 @@
   [sectionData addCellData:self.jumpToConsignments];
   [sectionData addCellData:self.jumpToInbox];
   [sectionData addCellData:self.jumpToInquiry];
-  
+
   return sectionData;
 }
 

@@ -5,7 +5,7 @@
   "main": "index.ios.js",
   "scripts": {
     "bundle": "haul bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
-    "bundle-with-storybooks": "haul bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output Emission.js --assets-dest Pod/Assets",
+    "bundle-with-storybooks": "haul bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output  Pod/Assets/Emission.js --assets-dest Pod/Assets",
     "clean-example": "cd Example && xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",
     "type-check": "tsc --noEmit --pretty",
     "lint": "npm run tslint 'src/**/*.{ts,tsx}'",
@@ -34,7 +34,7 @@
     "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && npm run dump-schema -- ../../data && rm -rf node_modules",
     "version": "yarn install && yarn bundle && pushd Example && bundle install && bundle exec pod install && popd && git add Pod/Assets Example/Podfile.lock",
     "postversion": "git push --follow-tags && env EMISSION_ROOT=\"$(pwd)\" pod repo push artsy --allow-warnings --use-json --skip-import-validation",
-    "postinstall": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h || true",
+    "postinstall": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h && ./scripts/post_installs.sh || true",
     "prestorybook": "rnstl"
   },
   "repository": {
@@ -55,7 +55,7 @@
     "moment": "latest",
     "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.12",
-    "react-native": "0.48.0",
+    "react-native": "0.48.4",
     "react-native-hyperlink": "0.0.11",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
     "react-native-sentry": "^0.14.5",
