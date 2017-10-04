@@ -24,21 +24,21 @@ interface Props extends ViewProperties {
 
 // See: https://github.com/artsy/force/blob/814a03a579290eaac74f910a0db28c2afd9b1753/desktop/apps/consign/client/reducers.js#L22-L38
 const categoryOptions = [
-  "Painting",
-  "Sculpture",
-  "Photography",
-  "Print",
-  "Drawing, Collage or other Work on Paper",
-  "Mixed Media",
-  "Performance Art",
-  "Installation",
-  "Video/Film/Animation",
-  "Architecture",
-  "Fashion Design and Wearable Art",
-  "Jewelry",
-  "Design/Decorative Art",
-  "Textile Arts",
-  "Other",
+  { name: "Painting", value: "PAINTING" },
+  { name: "Sculpture", value: "SCULPTURE" },
+  { name: "Photography", value: "PHOTOGRAPHY" },
+  { name: "Print", value: "PRINT" },
+  { name: "Drawing, Collage or other Work on Paper", value: "DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER" },
+  { name: "Mixed Media", value: "MIXED_MEDIA" },
+  { name: "Performance Art", value: "PERFORMANCE_ART" },
+  { name: "Installation", value: "INSTALLATION" },
+  { name: "Video/Film/Animation", value: "VIDEO_FILM_ANIMATION" },
+  { name: "Architecture", value: "ARCHITECTURE" },
+  { name: "Fashion Design and Wearable Art", value: "FASHION_DESIGN_AND_WEARABLE_ART" },
+  { name: "Jewelry", value: "JEWELRY" },
+  { name: "Design/Decorative Art", value: "DESIGN_DECORATIVE_ART" },
+  { name: "Textile Arts", value: "TEXTILE_ARTS" },
+  { name: "Other", value: "OTHER" },
 ]
 
 interface State extends ConsignmentMetadata {
@@ -56,7 +56,7 @@ export default class Metadata extends React.Component<Props, State> {
     this.props.navigator.pop()
   }
 
-  updateUnit = () => this.setState({ unit: this.state.unit === "cm" ? "in" : "cm" })
+  updateUnit = () => this.setState({ unit: this.state.unit === "CM" ? "IN" : "CM" })
   updateTitle = title => this.setState({ title })
   updateYear = year => this.setState({ year })
   updateCategory = category => this.setState({ category })
@@ -110,9 +110,10 @@ export default class Metadata extends React.Component<Props, State> {
                 <Picker
                   style={{ backgroundColor: "white" }}
                   selectedValue={this.state.category}
-                  onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue })}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.setState({ category: itemValue, categoryName: categoryOptions[itemIndex].name })}
                 >
-                  {categoryOptions.map(category => <Picker.Item label={category} value={category} />)}
+                  {categoryOptions.map(category => <Picker.Item label={category.name} value={category.value} />)}
                 </Picker>}
 
               <Row>
@@ -138,7 +139,7 @@ export default class Metadata extends React.Component<Props, State> {
               </Row>
 
               <Row>
-                <Text text={{ placeholder: "Depth" }} style={{ margin: 10 }} />
+                <Text text={{ placeholder: "Depth", onChange: this.updateDepth }} style={{ margin: 10 }} />
                 <View style={{ flex: 1, flexDirection: "row", alignContent: "center", margin: 10 }}>
                   <Label>Units</Label>
                   <Toggle selected={this.state.unit === "cm"} left="CM" right="IN" onPress={this.updateUnit} />

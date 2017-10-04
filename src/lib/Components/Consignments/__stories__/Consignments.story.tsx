@@ -19,6 +19,7 @@ const blankMetadata = {
   title: null,
   year: null,
   category: null,
+  categoryName: null,
   medium: null,
   width: null,
   height: null,
@@ -36,4 +37,6 @@ storiesOf("Consignments/_Screens")
   .add("Location Page", () => <Location navigator={nav} route={route} />)
   .add("Metadata Page", () => <Metadata navigator={nav} route={route} metadata={blankMetadata} />)
   .add("Provenance", () => <Provenance navigator={nav} route={route} />)
-  .add("FinalSubmissionQuestions Page", () => <FinalSubmissionQuestions navigator={nav} route={route} setup={{}} />)
+  .add("FinalSubmissionQuestions Page", () =>
+    <FinalSubmissionQuestions navigator={nav} route={route} setup={{}} submitFinalSubmission={() => ""} />
+  )

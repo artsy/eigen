@@ -4,7 +4,7 @@ import { consignmentSetupToMutationInput } from "../consignmentSetupToSubmission
 describe("consignment metadata -> submission", () => {
   it("works with an empty object, and always has a mutation ID", () => {
     const setup: ConsignmentSetup = {}
-    const result = `{ clientMutationId: "ID" }`
+    const result = `{ clientMutationId: "ID", edition: false }`
     expect(consignmentSetupToMutationInput(setup)).toEqual(result)
   })
 
@@ -18,6 +18,7 @@ describe("consignment metadata -> submission", () => {
         title: "My Work",
         year: "1983",
         category: "DESIGN_DECORATIVE_ART",
+        categoryName: "Design",
         medium: "Wood",
         width: "100",
         height: "100",
@@ -27,7 +28,7 @@ describe("consignment metadata -> submission", () => {
       },
     }
     const result =
-      '{ clientMutationId: "ID", artist_id: "danger", category: DESIGN_DECORATIVE_ART, dimensions_metric: CM, height: "100", medium: "Wood", title: "My Work", width: "100", year: "1983" }'
+      '{ clientMutationId: "ID", artist_id: "danger", category: DESIGN_DECORATIVE_ART, dimensions_metric: CM, edition: false, height: "100", medium: "Wood", title: "My Work", width: "100", year: "1983" }'
     expect(consignmentSetupToMutationInput(setup)).toEqual(result)
   })
 })

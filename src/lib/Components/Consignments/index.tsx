@@ -8,6 +8,7 @@ export interface ConsignmentMetadata {
   title: string | null
   year: string | null
   category: string | null
+  categoryName: string | null
   medium: string | null
   width: string | null
   height: string | null
@@ -26,14 +27,14 @@ export interface SearchResult {
 
 export interface ConsignmentSetup {
   submission_id?: string
+  state?: "DRAFT" | "SUBMITTED"
   artist?: SearchResult
   photos?: string[]
   metadata?: ConsignmentMetadata
   provenance?: string
   editionInfo?: {
     size?: string
-    number?: string
-    displayString?: string
+    number?: number
   }
   signed?: boolean
   certificateOfAuth?: boolean

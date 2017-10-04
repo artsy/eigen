@@ -55,6 +55,12 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   goToLocationTapped = () =>
     this.props.navigator.push({ component: Location, passProps: { updateWithResult: this.updateLocation } })
 
+  goToFinalSubmission = () =>
+    this.props.navigator.push({
+      component: FinalSubmissionQuestions,
+      passProps: { setup: this.state, submitFinalSubmission: this.submitFinalSubmission },
+    })
+
   updateArtist = (result: SearchResult) => this.updateStateAndMetaphysics({ artist: result })
   updateMetadata = (result: ConsignmentMetadata) => this.updateStateAndMetaphysics({ metadata: result })
   updateProvenance = (result: string) => this.updateStateAndMetaphysics({ provenance: result })
@@ -72,8 +78,12 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
     }
   }
 
-  submitFinalSubmission = () =>
-    this.props.navigator.push({ component: FinalSubmissionQuestions, passProps: { setup: this.state } })
+  submitFinalSubmission = async (setup: ConsignmentSetup) => {
+    this.setState(setup, async () => {
+      await this.updateMetaphysics()
+      // EXIT or something
+    })
+  }
 
   render() {
     const title = "Complete work details to submit"
@@ -113,7 +123,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
 
             <Row style={{ justifyContent: "center" }}>
               <View style={{ height: 43, width: 320, marginTop: 20, opacity: canSubmit ? 1 : 0.3 }}>
-                <Button text="NEXT" onPress={canSubmit && this.submitFinalSubmission} style={{ flex: 1 }} />
+                <Button text="NEXT" onPress={canSubmit && this.goToFinalSubmission} style={{ flex: 1 }} />
               </View>
             </Row>
           </View>

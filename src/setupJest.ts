@@ -1,3 +1,9 @@
+import expect from "expect"
+
+// Waiting on https://github.com/thymikee/snapshot-diff/pull/17
+import diff from "snapshot-diff"
+expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
+
 const originalConsoleError = console.error
 
 // Remove on the next React-Native update.

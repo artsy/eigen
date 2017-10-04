@@ -10,12 +10,14 @@ export const consignmentSetupToMutationInput = (submission: ConsignmentSetup): s
       artist_id: submission.artist && submission.artist.id,
       // Required for updating a submission
       id: submission.submission_id,
+      // Required for finalizing a submission
+      state: submission.state,
       // Optional
       authenticity_certificate: submission.certificateOfAuth,
       category: submission.metadata && submission.metadata.category,
       depth: submission.metadata && submission.metadata.depth,
       dimensions_metric: submission.metadata && submission.metadata.unit,
-      edition: submission.editionInfo && submission.editionInfo.displayString,
+      edition: !!submission.editionInfo,
       edition_number: submission.editionInfo && submission.editionInfo.number,
       edition_size: submission.editionInfo && submission.editionInfo.size,
       height: submission.metadata && submission.metadata.height,
@@ -29,5 +31,5 @@ export const consignmentSetupToMutationInput = (submission: ConsignmentSetup): s
       width: submission.metadata && submission.metadata.width,
       year: submission.metadata && submission.metadata.year,
     },
-    ["category", "dimensions_metric"] // Enums
+    ["category", "dimensions_metric", "state"] // Enums
   )

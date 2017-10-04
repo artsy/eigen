@@ -18,7 +18,8 @@ export const withPhotos: ConsignmentSetup = {
 export const metadata: ConsignmentMetadata = {
   title: "My Work",
   year: "1983",
-  category: "Design",
+  categoryName: "Design",
+  category: "DESIGN",
   medium: "Wood",
   width: "100",
   height: "100",
