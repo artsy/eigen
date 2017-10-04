@@ -17,7 +17,7 @@ export const consignmentSetupToMutationInput = (submission: ConsignmentSetup): s
       category: submission.metadata && submission.metadata.category,
       depth: submission.metadata && submission.metadata.depth,
       dimensions_metric: submission.metadata && submission.metadata.unit,
-      edition: submission.editionInfo && submission.editionInfo.displayString,
+      edition: !!submission.editionInfo,
       edition_number: submission.editionInfo && submission.editionInfo.number,
       edition_size: submission.editionInfo && submission.editionInfo.size,
       height: submission.metadata && submission.metadata.height,
