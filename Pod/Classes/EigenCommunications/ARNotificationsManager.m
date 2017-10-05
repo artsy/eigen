@@ -4,17 +4,19 @@
 
 RCT_EXPORT_MODULE();
 
-- (instancetype)init;
-{
-    if ((self = [super init])) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paymentRequestPaidReceived:) name:@"ARPaymentRequestPaid" object:nil];
-    }
-    return self;
-}
-
 - (NSArray<NSString *> *)supportedEvents
 {
     return @[@"PaymentRequestPaid"];
+}
+
+// Will be called when this module's first listener is added.
+-(void)startObserving {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paymentRequestPaidReceived:) name:@"ARPaymentRequestPaid" object:nil];
+}
+
+// Will be called when this module's last listener is removed, or on dealloc.
+-(void)stopObserving {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"ARPaymentRequestPaid" object:nil];
 }
 
 - (void)paymentRequestPaidReceived:(NSNotification *)notification
