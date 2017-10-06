@@ -105,6 +105,7 @@ export class Messages extends React.Component<Props, State> {
         inverted={!this.state.shouldStickFirstMessageToTop}
         data={this.state.shouldStickFirstMessageToTop ? messages.reverse() : messages}
         renderItem={this.renderMessage.bind(this)}
+        keyExtractor={(item, index) => index.toString()}
         onEndReached={this.loadMore.bind(this)}
         onEndReachedThreshold={0.2}
         onContentSizeChange={(width, height) => {

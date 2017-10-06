@@ -11,7 +11,9 @@ console.error = (message?: any, ...optionalParams: any[]) => {
   if (
     typeof message === "string" &&
     (message.includes("PropTypes has been moved to a separate package.") ||
-      message.includes("React.createClass is no longer supported."))
+      message.includes("React.createClass is no longer supported.") ||
+      message.includes("Check the render method of `ScrollViewMock`. It was passed a child from ListViewMock.") ||
+      message.includes("setState(...): Can only update a mounted or mounting component."))
   ) {
     // NOOP
   } else {
@@ -19,11 +21,15 @@ console.error = (message?: any, ...optionalParams: any[]) => {
   }
 }
 
+jest.mock("./lib/metaphysics.ts")
+
+jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
+  NotificationsManager: jest.fn(),
+}))
+
 function mockedModule(path: string, mockModuleName: string) {
   jest.mock(path, () => mockModuleName)
 }
-
-jest.mock("./lib/metaphysics.ts")
 
 mockedModule("./lib/Components/SwitchView.tsx", "SwitchView")
 mockedModule("./lib/Components/Spinner.tsx", "ARSpinner")
