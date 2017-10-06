@@ -46,5 +46,3 @@
 //     }
 //     return <StubContainer Component={ArtistArticles} props={props} />
 //   })
-
-export default undefined
