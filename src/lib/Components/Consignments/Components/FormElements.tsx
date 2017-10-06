@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { ScrollView, TextProperties, View, ViewProperties, ViewStyle } from "react-native"
+import FlatWhite from "../../Buttons/FlatWhite"
 import { BodyText, LargeHeadline } from "../Typography/index"
 import Text from "./TextInput"
 
@@ -29,3 +30,12 @@ export const Label = (props: any) =>
   <BodyText style={{ paddingLeft: 10, flex: 1, textAlign: "left" }}>
     {props.children}
   </BodyText>
+
+interface ConsignmentButtonProps {
+  text: string
+  onPress: () => void
+}
+export const Button: React.SFC<ConsignmentButtonProps> = props =>
+  <View style={{ height: 43, width: 174, marginTop: 20 }}>
+    <FlatWhite text={props.text} onPress={props.onPress} style={{ flex: 1 }} />
+  </View>

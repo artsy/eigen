@@ -24,7 +24,7 @@ exports[`does not have an activity when searching  1`] = `
       autoCorrect={false}
       clearButtonMode="while-editing"
       keyboardAppearance="dark"
-      placeholderTextColor="#cccccc"
+      placeholderTextColor="#666666"
       selectionColor="#cccccc"
       style={
         Array [
@@ -54,8 +54,8 @@ exports[`does not have an activity when searching  1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#e5e5e5",
-          "height": 2,
+          "backgroundColor": "white",
+          "height": 1,
         },
         undefined,
       ]
@@ -88,7 +88,7 @@ exports[`shows an activity indicator when searching  1`] = `
       autoCorrect={false}
       clearButtonMode="while-editing"
       keyboardAppearance="dark"
-      placeholderTextColor="#cccccc"
+      placeholderTextColor="#666666"
       selectionColor="#cccccc"
       style={
         Array [
@@ -118,8 +118,8 @@ exports[`shows an activity indicator when searching  1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#e5e5e5",
-          "height": 2,
+          "backgroundColor": "white",
+          "height": 1,
         },
         undefined,
       ]

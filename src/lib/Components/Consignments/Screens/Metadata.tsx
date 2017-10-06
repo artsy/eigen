@@ -79,7 +79,7 @@ export default class Metadata extends React.Component<Props, State> {
       <ConsignmentBG>
         <DoneButton onPress={this.doneTapped}>
           <ScrollView>
-            <View>
+            <View style={{ padding: 10 }}>
               <Row>
                 <Text
                   text={{ placeholder: "Title", onChangeText: this.updateTitle, value: this.state.title }}
@@ -97,10 +97,10 @@ export default class Metadata extends React.Component<Props, State> {
               <Row>
                 <Text
                   text={{
+                    editable: false,
                     placeholder: "Category",
-                    onChangeText: this.updateCategory,
                     onFocus: this.showCategorySelection,
-                    value: this.state.category,
+                    value: this.state.categoryName,
                   }}
                   style={{ margin: 10 }}
                 />
