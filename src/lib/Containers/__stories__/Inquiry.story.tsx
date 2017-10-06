@@ -11,5 +11,3 @@
 //   const inquiryRoute = new Routes.Inquiry({ artworkID: "damien-hirst-for-the-love-of-god-lenticular-6" })
 //   return <RootContainer Component={Inquiry} route={inquiryRoute} />
 // })
-
-export default undefined

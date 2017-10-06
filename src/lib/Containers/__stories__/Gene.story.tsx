@@ -29,5 +29,3 @@
 //     const geneRoute = new Routes.Gene({ geneID: "related-to-film", refineSettings: defaultRefineSettings })
 //     return <Relay.RootContainer Component={Gene} route={geneRoute} />
 //   })
-
-export default undefined
