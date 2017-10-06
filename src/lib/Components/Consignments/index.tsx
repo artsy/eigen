@@ -34,8 +34,7 @@ export interface ConsignmentSetup {
   provenance?: string
   editionInfo?: {
     size?: string
-    number?: string
-    displayString?: string
+    number?: number
   }
   signed?: boolean
   certificateOfAuth?: boolean

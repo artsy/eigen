@@ -50,7 +50,8 @@ export default class FinalSubmissionQuestions extends React.Component<Props, Con
   updateCert = () => this.setState({ certificateOfAuth: !this.state.certificateOfAuth })
 
   updateEditionSize = text => this.setState({ editionInfo: { ...this.state.editionInfo, size: text } })
-  updateEditionNumber = text => this.setState({ editionInfo: { ...this.state.editionInfo, number: text } })
+  updateEditionNumber = text =>
+    this.setState({ editionInfo: { ...this.state.editionInfo, number: parseInt(text, 10) } })
 
   render() {
     return (
@@ -76,7 +77,10 @@ export default class FinalSubmissionQuestions extends React.Component<Props, Con
                   text={{
                     placeholder: "Edition Number",
                     onChangeText: this.updateEditionNumber,
-                    value: this.state.editionInfo && this.state.editionInfo.number,
+                    value:
+                      this.state.editionInfo &&
+                      this.state.editionInfo.number &&
+                      this.state.editionInfo.number.toString(),
                   }}
                   style={{ margin: 10 }}
                 />

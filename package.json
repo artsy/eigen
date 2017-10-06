@@ -2,6 +2,11 @@
   "name": "emission",
   "version": "1.4.0-beta.4",
   "description": "Artsy React(Native) components.",
+  "engines": {
+    "node": "8.4.x",
+    "npm": "5.4.x",
+    "yarn": "1.x"
+  },
   "main": "index.ios.js",
   "scripts": {
     "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
