@@ -11,5 +11,3 @@
 //   const profileRoute = new Routes.MyAccount()
 //   return <Relay.RootContainer Component={MyAccount} route={profileRoute} />
 // })
-
-export default undefined
