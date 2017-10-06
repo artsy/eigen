@@ -142,7 +142,9 @@ exports[`state is set up with empty consignment metadata 1`] = `
           }
         }
       >
-        <RCTScrollView>
+        <RCTScrollView
+          keyboardShouldPersistTaps="always"
+        >
           <View>
             <View
               style={
@@ -333,7 +335,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       clearButtonMode="while-editing"
                       editable={false}
                       keyboardAppearance="dark"
-                      onFocus={[Function]}
+                      onChangeText={[Function]}
                       placeholder="Category"
                       placeholderTextColor="#666666"
                       selectionColor="#cccccc"
@@ -644,7 +646,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                 <View
                   style={
                     Object {
-                      "alignContent": "center",
+                      "alignItems": "center",
                       "flex": 1,
                       "flexDirection": "row",
                       "margin": 10,
@@ -939,7 +941,9 @@ exports[`state is set up with filled consignment metadata 1`] = `
           }
         }
       >
-        <RCTScrollView>
+        <RCTScrollView
+          keyboardShouldPersistTaps="always"
+        >
           <View>
             <View
               style={
@@ -1130,7 +1134,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       clearButtonMode="while-editing"
                       editable={false}
                       keyboardAppearance="dark"
-                      onFocus={[Function]}
+                      onChangeText={[Function]}
                       placeholder="Category"
                       placeholderTextColor="#666666"
                       selectionColor="#cccccc"
@@ -1149,7 +1153,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           undefined,
                         ]
                       }
-                      value="Design"
+                      value="DESIGN"
                     />
                   </View>
                   <View
@@ -1441,7 +1445,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                 <View
                   style={
                     Object {
-                      "alignContent": "center",
+                      "alignItems": "center",
                       "flex": 1,
                       "flexDirection": "row",
                       "margin": 10,
@@ -1509,7 +1513,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                             "width": 64,
                           },
                           Object {
-                            "backgroundColor": "white",
+                            "backgroundColor": "black",
                           },
                         ],
                       ]
@@ -1548,12 +1552,12 @@ exports[`state is set up with filled consignment metadata 1`] = `
                                 "width": 24,
                               },
                               Object {
-                                "color": "black",
+                                "color": "white",
                               },
                             ]
                           }
                         >
-                          CM
+                          
                         </Text>
                         <Text
                           accessible={true}
@@ -1571,12 +1575,12 @@ exports[`state is set up with filled consignment metadata 1`] = `
                                 "width": 24,
                               },
                               Object {
-                                "color": "black",
+                                "color": "white",
                               },
                             ]
                           }
                         >
-                          
+                          IN
                         </Text>
                       </View>
                       <View
@@ -1589,7 +1593,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                               "top": 4,
                             },
                             Object {
-                              "flexDirection": "row-reverse",
+                              "flexDirection": "row",
                             },
                           ]
                         }
@@ -1599,7 +1603,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "black",
-                                "borderColor": "black",
+                                "borderColor": "white",
                                 "borderRadius": 12,
                                 "borderWidth": 1,
                                 "height": 24,

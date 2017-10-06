@@ -248,6 +248,28 @@
   return crashCellData;
 }
 
+- (ARCellData *)toggleRNPSwitch
+{
+  BOOL forceRNP = [[NSUserDefaults standardUserDefaults] boolForKey:ARForceUseRNPDefault];
+  NSString *rnpLocation = [[NSUserDefaults standardUserDefaults] stringForKey:ARRNPackagerHostDefault];
+  NSString *title = !forceRNP ? [NSString stringWithFormat:@"Use RNP at %@", rnpLocation] : @"Revert forced RNP";
+
+  ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+  [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
+    cell.textLabel.text = title;
+  }];
+
+  [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+    [self showAlertViewWithTitle:@"Confirm Switch" message:@"Switching forced RNP settings." actionTitle:@"Continue" actionHandler:^{
+
+      [[NSUserDefaults standardUserDefaults] setBool:!forceRNP forKey:ARForceUseRNPDefault];
+      [[NSUserDefaults standardUserDefaults] synchronize];
+      exit(0);
+    }];
+  }];
+  return crashCellData;
+}
+
 - (ARCellData *)emissionJSLocationDescription:(NSString *)loadedFromString
 {
   ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
@@ -274,14 +296,18 @@
 {
   ARSectionData *sectionData = [[ARSectionData alloc] init];
   [self setupSection:sectionData withTitle:@"Admin"];
-
-  if ([AppSetup ambientSetup].inStaging) {
+  AppSetup *setup = [AppSetup ambientSetup];
+  if (setup.inStaging) {
     [sectionData addCellDataFromArray:@[
       [self editableTextCellDataWithName:@"Gravity API" defaultKey:ARStagingAPIURLDefault],
       [self editableTextCellDataWithName:@"Metaphysics API" defaultKey:ARStagingMetaphysicsURLDefault],
       [self editableTextCellDataWithName:@"RN Packager" defaultKey:ARRNPackagerHostDefault],
     ]];
+    if (!setup.inSimulator) {
+      [sectionData addCellData:self.toggleRNPSwitch];
+    }
   }
+
 
   [sectionData addCellData:self.generateStagingSwitch];
   [sectionData addCellData:self.logOutButton];
@@ -298,6 +324,8 @@
     }];
   }];
 }
+
+
 
 
 @end

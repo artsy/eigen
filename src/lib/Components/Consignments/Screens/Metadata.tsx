@@ -1,6 +1,16 @@
 import * as React from "react"
 
-import { LayoutAnimation, NavigatorIOS, Picker, Route, ScrollView, View, ViewProperties } from "react-native"
+import {
+  LayoutAnimation,
+  NavigatorIOS,
+  Picker,
+  Route,
+  ScrollView,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+  View,
+  ViewProperties,
+} from "react-native"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { BodyText, LargeHeadline, Subtitle } from "../Typography"
 
@@ -78,7 +88,7 @@ export default class Metadata extends React.Component<Props, State> {
     return (
       <ConsignmentBG>
         <DoneButton onPress={this.doneTapped}>
-          <ScrollView>
+          <ScrollView keyboardShouldPersistTaps="always">
             <View style={{ padding: 10 }}>
               <Row>
                 <Text
@@ -95,15 +105,17 @@ export default class Metadata extends React.Component<Props, State> {
               </Row>
 
               <Row>
-                <Text
-                  text={{
-                    editable: false,
-                    placeholder: "Category",
-                    onFocus: this.showCategorySelection,
-                    value: this.state.categoryName,
-                  }}
-                  style={{ margin: 10 }}
-                />
+                <TouchableWithoutFeedback onPress={() => console.log("HI")} style={{ flex: 1, height: 40 }}>
+                  <Text
+                    text={{
+                      placeholder: "Category",
+                      onChangeText: this.updateCategory,
+                      editable: false,
+                      value: this.state.category,
+                    }}
+                    style={{ margin: 10 }}
+                  />
+                </TouchableWithoutFeedback>
               </Row>
 
               {this.state.showSelector &&
@@ -140,9 +152,9 @@ export default class Metadata extends React.Component<Props, State> {
 
               <Row>
                 <Text text={{ placeholder: "Depth", onChange: this.updateDepth }} style={{ margin: 10 }} />
-                <View style={{ flex: 1, flexDirection: "row", alignContent: "center", margin: 10 }}>
+                <View style={{ flex: 1, flexDirection: "row", alignItems: "center", margin: 10 }}>
                   <Label>Units</Label>
-                  <Toggle selected={this.state.unit === "cm"} left="CM" right="IN" onPress={this.updateUnit} />
+                  <Toggle selected={this.state.unit === "CM"} left="CM" right="IN" onPress={this.updateUnit} />
                 </View>
               </Row>
             </View>

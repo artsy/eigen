@@ -36,6 +36,7 @@
 -   Submit draft metadata to convection - orta
 -   Publish a consignment to convection - orta
 -   Keep track of the user's input during the submission process - orta
+-   Consolidate a lot of user interface elements - orta
 
 ###### Messaging
 
