@@ -1,12 +1,11 @@
 import * as React from "react"
-import { Image, TouchableHighlight } from "react-native"
+import { EmitterSubscription, Image, TouchableHighlight } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
-import { EmitterSubscription, NativeEventEmitter, NativeModules } from "react-native"
-
 import colors from "../../../../../data/colors"
 import fonts from "../../../../../data/fonts"
+import { NotificationsManager, PaymentRequestPaidNotification } from "../../../../NativeModules/NotificationsManager"
 import InvertedButton from "../../../Buttons/InvertedButton"
 
 const Container = styled.View`
@@ -64,25 +63,18 @@ const CostLabel = styled(PaymentRequest)`
   font-weight: bold;
 `
 
-interface Props extends RelayProps {
+export interface Props extends RelayProps {
   onSelected: () => void
   conversationId: string
   relay?: RelayRefetchProp
+  notification?: PaymentRequestPaidNotification
 }
 
 interface InvoiceStateButtonProps {
-  invoiceState: string | null
-  isOptimisticUpdate: boolean
+  invoiceState: Props["invoice"]["state"]
 }
 
-const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState, isOptimisticUpdate }) => {
-  if (isOptimisticUpdate) {
-    return (
-      <PayButtonContainer>
-        <PaidLabel>PAID</PaidLabel>
-      </PayButtonContainer>
-    )
-  }
+const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState }) => {
   switch (invoiceState) {
     case "PAID":
       return (
@@ -112,42 +104,44 @@ const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState, 
 }
 
 interface State {
-  hasReceivedNotification: boolean
-  subscription: EmitterSubscription
+  optimistic: boolean
 }
 
 export class InvoicePreview extends React.Component<Props, State> {
-  componentWillMount() {
-    const { conversationId, relay, invoice } = this.props
-    const { ARNotificationsManager } = NativeModules
-    const notificationsManagerEmitter = new NativeEventEmitter(ARNotificationsManager)
-    const paymentRequestPaidCallback = notification => {
-      if (notification.url === invoice.payment_url) {
-        // Optimistically update the UI, but also refetch.
-        this.setState({
-          hasReceivedNotification: true,
-        })
-        relay.refetch({ conversationId, invoiceId: invoice.lewitt_invoice_id }, null, null, { force: true })
-      }
-    }
-    const subscription = notificationsManagerEmitter.addListener("PaymentRequestPaid", paymentRequestPaidCallback)
+  public state = { optimistic: false }
+  private subscription?: EmitterSubscription
 
-    this.setState({
-      subscription,
-    })
+  componentWillMount() {
+    if (this.props.invoice.state === "UNPAID") {
+      this.subscription = NotificationsManager.addListener(
+        "PaymentRequestPaid",
+        this.handlePaymentRequestPaidNotification.bind(this)
+      )
+    }
   }
 
   componentWillUnmount() {
-    if (this.state.subscription) {
-      this.state.subscription.remove()
+    if (this.subscription) {
+      this.subscription.remove()
+    }
+  }
+
+  handlePaymentRequestPaidNotification(notification: PaymentRequestPaidNotification) {
+    const { invoice, conversationId, relay } = this.props
+    if (notification.url === invoice.payment_url) {
+      // Optimistically update the UI, refetch, then re-render without optimistic update.
+      this.setState({ optimistic: true })
+      const variables = { conversationId, invoiceId: invoice.lewitt_invoice_id }
+      relay.refetch(variables, null, () => this.setState({ optimistic: false }), { force: true })
     }
   }
 
   render() {
     const { invoice, onSelected } = this.props
+    const invoiceState = this.state.optimistic ? "PAID" : invoice.state
 
     return (
-      <TouchableHighlight onPress={invoice.state === "UNPAID" ? onSelected : null} underlayColor={colors["gray-light"]}>
+      <TouchableHighlight onPress={invoiceState === "UNPAID" ? onSelected : null} underlayColor={colors["gray-light"]}>
         <Container>
           <Icon source={require("../../../../../../images/payment_request.png")} />
           <TextContainer>
@@ -157,7 +151,7 @@ export class InvoicePreview extends React.Component<Props, State> {
             </CostLabel>
           </TextContainer>
           <TextContainer>
-            <InvoiceStateButton invoiceState={invoice.state} isOptimisticUpdate={this.state.hasReceivedNotification} />
+            <InvoiceStateButton invoiceState={invoiceState} />
           </TextContainer>
         </Container>
       </TouchableHighlight>
@@ -189,7 +183,7 @@ export default createRefetchContainer(
 interface RelayProps {
   invoice: {
     payment_url: string | null
-    state: string | null
+    state: "PAID" | "VOID" | "REFUNDED" | "UNPAID" | null
     total: string | null
     lewitt_invoice_id: string
   }

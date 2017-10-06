@@ -22,7 +22,7 @@ RCT_EXPORT_MODULE();
 - (void)paymentRequestPaidReceived:(NSNotification *)notification
 {
     NSDictionary *info = notification.userInfo;
-    [self sendEventWithName:@"PaymentRequestPaid" body:@{@"url": info[@"ARPaymentRequestURL"] }];
+    [self sendEventWithName:@"PaymentRequestPaid" body:@{ @"url": info[@"ARPaymentRequestURL"] }];
 }
 
 @end
