@@ -105,7 +105,7 @@ export class Messages extends React.Component<Props, State> {
         inverted={!this.state.shouldStickFirstMessageToTop}
         data={this.state.shouldStickFirstMessageToTop ? messages.reverse() : messages}
         renderItem={this.renderMessage.bind(this)}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={({ __id }) => __id}
         onEndReached={this.loadMore.bind(this)}
         onEndReachedThreshold={0.2}
         onContentSizeChange={(width, height) => {
@@ -153,6 +153,7 @@ export default createPaginationContainer(
           edges {
             cursor
             node {
+              __id
               impulse_id
               is_from_user
               body
@@ -229,6 +230,7 @@ interface RelayProps {
         edges: Array<{
           cursor: string
           node: {
+            __id: string
             impulse_id: string
             is_from_user: boolean
           } | null
