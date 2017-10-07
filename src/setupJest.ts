@@ -24,7 +24,9 @@ console.error = (message?: any, ...optionalParams: any[]) => {
 jest.mock("./lib/metaphysics.ts")
 
 jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
-  NotificationsManager: jest.fn(),
+  NotificationsManager: {
+    addListener: jest.fn(),
+  },
 }))
 
 function mockedModule(path: string, mockModuleName: string) {
