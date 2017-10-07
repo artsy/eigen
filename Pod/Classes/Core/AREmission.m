@@ -5,6 +5,7 @@
 #import "ARRefineOptionsModule.h"
 #import "ARWorksForYouModule.h"
 #import "ARTakeCameraPhotoModule.h"
+#import "ARNotificationsManager.h"
 
 #import <SentryReactNative/RNSentry.h>
 
@@ -79,10 +80,11 @@ static AREmission *_sharedInstance = nil;
     _refineModule = [ARRefineOptionsModule new];
     _worksForYouModule = [ARWorksForYouModule new];
     _cameraModule = [ARTakeCameraPhotoModule new];
+    _notificationsManagerModule = [ARNotificationsManager new];
 
     _configurationModule = config;
 
-    NSArray *modules = @[_APIModule, _configurationModule, _eventsModule, _switchBoardModule, _refineModule, _worksForYouModule, _cameraModule];
+    NSArray *modules = @[_APIModule, _configurationModule, _eventsModule, _switchBoardModule, _refineModule, _worksForYouModule, _cameraModule, _notificationsManagerModule];
 
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
                                     moduleProvider:^{ return modules; }

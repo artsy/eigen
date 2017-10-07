@@ -19,14 +19,20 @@ const doneButtonStyles = {
 }
 
 const withText = {
-  children: [<Text style={{ color: "white" }}>hi</Text>],
+  children: [
+    <Text key="text" style={{ color: "white" }}>
+      hi
+    </Text>,
+  ],
   onPress: () => "",
   bodyStyle: doneButtonStyles,
   buttonText: "DONE",
 }
 
 const withSearchResults = {
-  children: [<Search placeholder="Example" noResultsMessage="> " searching={false} query="Banko" results={null} />],
+  children: [
+    <Search key="search" placeholder="Example" noResultsMessage="> " searching={false} query="Banko" results={null} />,
+  ],
   onPress: () => "",
   bodyStyle: doneButtonStyles,
   buttonText: "DONE",

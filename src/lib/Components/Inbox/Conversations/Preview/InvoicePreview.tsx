@@ -1,10 +1,11 @@
 import * as React from "react"
-import { Image, TouchableHighlight } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { EmitterSubscription, Image, TouchableHighlight } from "react-native"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
 import colors from "../../../../../data/colors"
 import fonts from "../../../../../data/fonts"
+import { NotificationsManager, PaymentRequestPaidNotification } from "../../../../NativeModules/NotificationsManager"
 import InvertedButton from "../../../Buttons/InvertedButton"
 
 const Container = styled.View`
@@ -62,16 +63,19 @@ const CostLabel = styled(PaymentRequest)`
   font-weight: bold;
 `
 
-interface Props extends RelayProps {
-  onSelected?: () => void
+export interface Props extends RelayProps {
+  onSelected: () => void
+  conversationId: string
+  relay?: RelayRefetchProp
+  notification?: PaymentRequestPaidNotification
 }
 
 interface InvoiceStateButtonProps {
-  state: string | null
+  invoiceState: Props["invoice"]["state"]
 }
 
-const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ state }) => {
-  switch (state) {
+const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState }) => {
+  switch (invoiceState) {
     case "PAID":
       return (
         <PayButtonContainer>
@@ -99,29 +103,79 @@ const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ state }) => {
   }
 }
 
-export const InvoicePreview: React.SFC<Props> = ({ invoice, onSelected }) =>
-  <TouchableHighlight onPress={onSelected} underlayColor={colors["gray-light"]}>
-    <Container>
-      <Icon source={require("../../../../../../images/payment_request.png")} />
-      <TextContainer>
-        <PaymentRequest>Payment request</PaymentRequest>
-        <CostLabel>
-          {invoice.total}
-        </CostLabel>
-      </TextContainer>
-      <TextContainer>
-        <InvoiceStateButton state={invoice.state} />
-      </TextContainer>
-    </Container>
-  </TouchableHighlight>
+interface State {
+  optimistic: boolean
+}
 
-export default createFragmentContainer(
+export class InvoicePreview extends React.Component<Props, State> {
+  public state = { optimistic: false }
+  private subscription?: EmitterSubscription
+
+  componentWillMount() {
+    if (this.props.invoice.state === "UNPAID") {
+      this.subscription = NotificationsManager.addListener(
+        "PaymentRequestPaid",
+        this.handlePaymentRequestPaidNotification.bind(this)
+      )
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.subscription) {
+      this.subscription.remove()
+    }
+  }
+
+  handlePaymentRequestPaidNotification(notification: PaymentRequestPaidNotification) {
+    const { invoice, conversationId, relay } = this.props
+    if (notification.url === invoice.payment_url) {
+      // Optimistically update the UI, refetch, then re-render without optimistic update.
+      this.setState({ optimistic: true })
+      const variables = { conversationId, invoiceId: invoice.lewitt_invoice_id }
+      relay.refetch(variables, null, () => this.setState({ optimistic: false }), { force: true })
+    }
+  }
+
+  render() {
+    const { invoice, onSelected } = this.props
+    const invoiceState = this.state.optimistic ? "PAID" : invoice.state
+
+    return (
+      <TouchableHighlight onPress={invoiceState === "UNPAID" ? onSelected : null} underlayColor={colors["gray-light"]}>
+        <Container>
+          <Icon source={require("../../../../../../images/payment_request.png")} />
+          <TextContainer>
+            <PaymentRequest>Payment request</PaymentRequest>
+            <CostLabel>
+              {invoice.total}
+            </CostLabel>
+          </TextContainer>
+          <TextContainer>
+            <InvoiceStateButton invoiceState={invoiceState} />
+          </TextContainer>
+        </Container>
+      </TouchableHighlight>
+    )
+  }
+}
+
+export default createRefetchContainer(
   InvoicePreview,
   graphql`
     fragment InvoicePreview_invoice on Invoice {
       payment_url
       state
       total
+      lewitt_invoice_id
+    }
+  `,
+  graphql`
+    query InvoicePreviewRefetchQuery($conversationId: String!, $invoiceId: String!) {
+      me {
+        invoice(conversationId: $conversationId, invoiceId: $invoiceId) {
+          ...InvoicePreview_invoice
+        }
+      }
     }
   `
 )
@@ -129,7 +183,8 @@ export default createFragmentContainer(
 interface RelayProps {
   invoice: {
     payment_url: string | null
-    state: string | null
+    state: "PAID" | "VOID" | "REFUNDED" | "UNPAID" | null
     total: string | null
+    lewitt_invoice_id: string
   }
 }

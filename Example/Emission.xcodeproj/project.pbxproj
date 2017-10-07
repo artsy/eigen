@@ -937,7 +937,7 @@
 		};
 		608A60D11F755E2F00B6EF83 /* Deploy */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 02E9860078C8122DA3D55F0F /* Pods-Emission.debug.xcconfig */;
+			baseConfigurationReference = 163341760E6AD3C2BD2501B6 /* Pods-Emission.deploy.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CC = "${SRCROOT}/compile_commands_emitting_clang";

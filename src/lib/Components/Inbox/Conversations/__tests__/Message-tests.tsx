@@ -1,9 +1,14 @@
 import moment from "moment"
 import * as React from "react"
 import "react-native"
+import { NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import Message from "../Message"
+
+beforeAll(() => {
+  NativeModules.ARNotificationsManager = { addListener: jest.fn(), remove: jest.fn() }
+})
 
 it("looks correct when rendered", () => {
   // tslint:disable-next-line:max-line-length
@@ -27,7 +32,16 @@ it("looks correct when rendered", () => {
     },
   }
   const tree = renderer
-    .create(<Message initialText="" firstMessage={false} index={0} senderName={senderName} message={props} />)
+    .create(
+      <Message
+        conversationId={"420"}
+        initialText=""
+        firstMessage={false}
+        index={0}
+        senderName={senderName}
+        message={props}
+      />
+    )
     .toJSON()
   expect(tree).toMatchSnapshot()
 })

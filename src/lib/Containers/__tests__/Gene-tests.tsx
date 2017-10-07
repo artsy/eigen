@@ -114,7 +114,7 @@ describe("handling price ranges", () => {
   })
 })
 
-it.skip("looks like expected", () => {
+it("looks like expected", () => {
   const props = {
     gene: {
       id: "An ID",

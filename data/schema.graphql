@@ -1513,7 +1513,7 @@ type Collection implements Node {
   # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
-  artworks_connection(after: String, first: Int, before: String, last: Int, private: Boolean = false, sort: CollectionSorts): ArtworkConnection
+  artworks_connection(after: String, first: Int, before: String, last: Int, private: Boolean = false, sort: CollectionSorts = POSITION_DESC): ArtworkConnection
   description: String!
   default: Boolean!
   name: String!
@@ -1689,6 +1689,26 @@ type coordinates {
   lng: Float
 }
 
+input CreateGeminiEntryForAssetInput {
+  # The path to the file
+  source_key: String!
+
+  # The template key, this is `name` in the asset request
+  template_key: String!
+
+  # The S3 bucket where the file was uploaded
+  source_bucket: String!
+
+  # Additional JSON data to pass through gemini, should deiinitely contain an `id` and a `_type`
+  metadata: JSON!
+  clientMutationId: String
+}
+
+type CreateGeminiEntryForAssetPayload {
+  asset: GeminiEntry
+  clientMutationId: String
+}
+
 input CreateSubmissionMutationInput {
   artist_id: String!
 
@@ -1704,14 +1724,14 @@ input CreateSubmissionMutationInput {
   # A string, either CM or IN
   dimensions_metric: SubmissionDimensionAggregation
 
-  # The version of individual work if from a set
-  edition: String
+  # Is the work a part of an edition
+  edition: Boolean
 
   # The number of the individual work if in a set
   edition_number: String
 
   # The whole size of the set of works
-  edition_size: String
+  edition_size: Int
 
   # The height of the work
   height: String
@@ -1751,6 +1771,18 @@ input CreateSubmissionMutationInput {
 type CreateSubmissionMutationPayload {
   submission: Submission
   clientMutationId: String
+}
+
+# An asset which is assigned to a consignment submission
+type Credentials {
+  # The key to use with S3.
+  credentials: String!
+
+  # A base64 encoded version of the S3 policy
+  policy_encoded: String!
+
+  # The signature for your asset.
+  signature: String!
 }
 
 type CroppedImageUrl {
@@ -2047,6 +2079,12 @@ enum Format {
 # The `FormattedNumber` type represents a number that can optionally be returnedas
 # a formatted String. It does not try to coerce the type.
 scalar FormattedNumber
+
+# An entry from gemini
+type GeminiEntry {
+  # The token that represents the gemini entry.
+  token: String!
+}
 
 type Gene implements Node {
   # A globally unique ID.
@@ -2804,8 +2842,11 @@ type Image {
   versions: [String]
 }
 
-type Invoice {
-  # Impulse's invoice id.
+type Invoice implements Node {
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
   id: String!
 
   # Lewitt's invoice id.
@@ -2837,6 +2878,9 @@ enum InvoiceState {
 }
 
 union Item = ArtistItem | ArtworkItem | FeaturedLinkItem | GeneItem
+
+# The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+scalar JSON
 
 type Location {
   # A globally unique ID.
@@ -2942,6 +2986,15 @@ type Me implements Node {
 
   # A list of the current user’s inquiry requests
   followed_artists_connection(after: String, first: Int, before: String, last: Int): FollowArtistConnection
+
+  # An invoice
+  invoice(
+    # The ID of the Conversation
+    conversationId: String!
+
+    # The ID of the invoice
+    invoiceId: String!
+  ): Invoice
 
   # The current user's status relating to bids on artworks
   lot_standing(artwork_id: String!, sale_id: String!): LotStanding
@@ -3085,6 +3138,12 @@ type Mutation {
 
   # Attach an gemini asset to a consignment submission
   addAssetToConsignmentSubmission(input: AddAssetToConsignmentSubmissionInput!): AddAssetToConsignmentSubmissionPayload
+
+  # Attach an gemini asset to a consignment submission
+  requestCredentialsForAssetUpload(input: RequestCredentialsForAssetUploadInput!): RequestCredentialsForAssetUploadPayload
+
+  # Attach an gemini asset to a consignment submission
+  createGeminiEntryForAsset(input: CreateGeminiEntryForAssetInput!): CreateGeminiEntryForAssetPayload
 }
 
 input Near {
@@ -3592,6 +3651,10 @@ enum PartnersSortType {
 
 union PartnerTypes = Partner | ExternalPartner
 
+type PopularArtists {
+  artists: [Artist]
+}
+
 type Profile {
   # A globally unique ID.
   __id: ID!
@@ -3811,6 +3874,8 @@ type Query {
     # Key to the OrderedSet or group of OrderedSets
     key: String!
     public: Boolean = true
+    page: Int = 1
+    size: Int = 10
   ): [OrderedSet]
 
   # A Partner
@@ -3939,8 +4004,31 @@ type Query {
     size: Int = 40
   ): TrendingArtists
 
+  # Popular artists
+  popular_artists(
+    # If true, will exclude followed artists for the user
+    exclude_followed_artists: Boolean
+
+    # Number of results to return
+    size: Int
+  ): PopularArtists
+
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
+}
+
+input RequestCredentialsForAssetUploadInput {
+  # The gemini template you want to request
+  name: String!
+
+  # The desired access control
+  acl: String!
+  clientMutationId: String
+}
+
+type RequestCredentialsForAssetUploadPayload {
+  asset: Credentials
+  clientMutationId: String
 }
 
 type ResizedImageUrl {
@@ -4502,14 +4590,14 @@ type Submission {
   # A string, either CM or IN
   dimensions_metric: SubmissionDimensionAggregation
 
-  # The version of individual work if from a set
-  edition: String
+  # Is the work a part of an edition
+  edition: Boolean
 
   # The number of the individual work if in a set
   edition_number: String
 
   # The whole size of the set of works
-  edition_size: String
+  edition_size: Int
 
   # The height of the work
   height: String
@@ -4690,14 +4778,14 @@ input UpdateSubmissionMutationInput {
   # A string, either CM or IN
   dimensions_metric: SubmissionDimensionAggregation
 
-  # The version of individual work if from a set
-  edition: String
+  # Is the work a part of an edition
+  edition: Boolean
 
   # The number of the individual work if in a set
   edition_number: String
 
   # The whole size of the set of works
-  edition_size: String
+  edition_size: Int
 
   # The height of the work
   height: String
@@ -4907,6 +4995,8 @@ type Viewer {
     # Key to the OrderedSet or group of OrderedSets
     key: String!
     public: Boolean = true
+    page: Int = 1
+    size: Int = 10
   ): [OrderedSet]
 
   # A Partner
@@ -5034,4 +5124,13 @@ type Viewer {
     # Number of results to return
     size: Int = 40
   ): TrendingArtists
+
+  # Popular artists
+  popular_artists(
+    # If true, will exclude followed artists for the user
+    exclude_followed_artists: Boolean
+
+    # Number of results to return
+    size: Int
+  ): PopularArtists
 }

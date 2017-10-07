@@ -95,6 +95,7 @@ const props = {
       edges: [
         {
           node: {
+            __id: "unique-id",
             id: 222,
             body: "Adoro! Por favor envie-me mais informações",
             from_email_address: "anita@garibaldi.br",

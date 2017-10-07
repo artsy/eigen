@@ -74,6 +74,7 @@ interface Props extends RelayProps {
   firstMessage: boolean
   index: number
   initialText: string
+  conversationId: string
 }
 
 export class Message extends React.Component<Props, any> {
@@ -126,13 +127,20 @@ export class Message extends React.Component<Props, any> {
   }
 
   render() {
-    const { artworkPreview, initials, message, senderName, showPreview } = this.props
+    const { artworkPreview, initials, message, senderName, showPreview, conversationId } = this.props
     const isPending = !message.created_at
 
     const fromName = message.from.name
     const fromEmail = message.from.email
 
     const fromSignature = fromName ? `${fromName} · ${fromEmail}` : fromEmail
+
+    let previewInvoice
+    if (message.invoice) {
+      previewInvoice = () => {
+        SwitchBoard.presentNavigationViewController(this, message.invoice.payment_url)
+      }
+    }
     return (
       <Container>
         <Content>
@@ -160,7 +168,7 @@ export class Message extends React.Component<Props, any> {
 
             {message.invoice &&
               <PreviewContainer>
-                <InvoicePreview invoice={message.invoice} />
+                <InvoicePreview invoice={message.invoice} onSelected={previewInvoice} conversationId={conversationId} />
               </PreviewContainer>}
 
             {this.renderAttachmentPreviews(message.attachments)}
@@ -191,6 +199,7 @@ export default createFragmentContainer(
         email
       }
       invoice {
+        payment_url
         ...InvoicePreview_invoice
       }
       attachments {
