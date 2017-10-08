@@ -1,5 +1,6 @@
 import * as React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { Schema, Track, track as _track } from "../utils/track"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
@@ -82,6 +83,17 @@ const ResponseRateLine = styled.View`
   margin-top: 5;
 `
 
+// tslint:disable-next-line:no-empty-interface
+interface Props extends RelayProps {}
+
+interface State {
+  text: string
+  sending: boolean
+}
+
+const track: Track<Props, State, Schema.Entity> = _track
+
+@track()
 export class Inquiry extends React.Component<RelayProps, any> {
   constructor(props) {
     super(props)
@@ -91,10 +103,24 @@ export class Inquiry extends React.Component<RelayProps, any> {
     }
   }
 
+  @track((props, state) => ({
+    action: "Cancel Inquiry",
+    entity_id: props.artwork._id,
+    entity_slug: props.artwork.id,
+  }))
+  cancelModal() {
+    this.dismissModal()
+  }
+
   dismissModal() {
     ARSwitchBoard.dismissModalViewController(this)
   }
 
+  @track((props, state) => ({
+    action: "Send Inquiry",
+    entity_id: props.artwork._id,
+    entity_slug: props.artwork.id,
+  }))
   sendInquiry() {
     // Using setState to trigger re-render for the button
     this.setState(() => ({ sending: true }))
@@ -150,7 +176,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
         >
           <Header>
             <HeaderTextContainer>
-              <CancelButton onPress={this.dismissModal.bind(this)}>
+              <CancelButton onPress={this.cancelModal.bind(this)}>
                 <MetadataText>CANCEL</MetadataText>
               </CancelButton>
               <TitleView>
@@ -202,6 +228,7 @@ export default createFragmentContainer(
 
 interface RelayProps {
   artwork: {
+    _id: string
     id: string
     contact_message: string
     partner: {
