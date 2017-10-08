@@ -56,7 +56,7 @@ function AddTrack(pageName: string) {
     // Here we assign the source screen to all subsequent events fired from that component
     { page: pageName },
     // Here we're hooking into Eigen to post analytics events to Adjust and Segement
-    { dispatch: data => Events.postEvent(data) }
+    { dispatch: data => console.log(data) } //Events.postEvent(data) }
   )
 }
 
@@ -64,7 +64,9 @@ const Artist: React.SFC<{ artistID: string; isPad: boolean }> = AddTrack("Artist
   <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />
 )
 
-const Inbox: React.SFC<{}> = () => <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />
+const Inbox: React.SFC<{}> = AddTrack("Inbox")(() =>
+  <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />
+)
 
 const Gene: React.SFC<{ geneID: string; refineSettings: { medium: string; price_range: string } }> = ({
   geneID,
@@ -85,11 +87,13 @@ const Home: React.SFC<{}> = () => <HomeRenderer render={renderWithLoadProgress(C
 const WorksForYou: React.SFC<{ selectedArtist: string }> = props =>
   <WorksForYouRenderer {...props} render={renderWithLoadProgress(Containers.WorksForYou, props)} />
 
-const Inquiry: React.SFC<{ artworkID: string }> = props =>
+const Inquiry: React.SFC<{ artworkID: string }> = AddTrack("Inquiry")(props =>
   <InquiryRenderer {...props} render={renderWithLoadProgress(Containers.Inquiry, props)} />
+)
 
-const Conversation: React.SFC<{ conversationID: string }> = props =>
+const Conversation: React.SFC<{ conversationID: string }> = AddTrack("Conversation")(props =>
   <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />
+)
 
 const MyAccount: React.SFC<{}> = () => <MyAccountRenderer render={renderWithLoadProgress(Containers.MyAccount)} />
 
