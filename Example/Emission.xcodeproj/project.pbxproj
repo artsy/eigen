@@ -521,7 +521,7 @@
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Italic.otf",
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Regular.otf",
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Semibold.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/ITCAvantGardeDemi_Track03.ttf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AVG65lig.otf",
 				"${PODS_ROOT}/../../Pod/Assets/Emission.js",
 				"${PODS_ROOT}/../../Pod/Assets/assets",
 				"${PODS_ROOT}/Extraction/Extraction/Assets/ARLoadFailureRetryIcon@2x.png",

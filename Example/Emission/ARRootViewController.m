@@ -135,7 +135,7 @@
 - (ARCellData *)jumpToArtist
 {
   return [self tappableCellDataWithTitle:@"Artist" selection: ^{
-    id viewController = [[ARArtistComponentViewController alloc] initWithArtistID:@"david-shrigley"];
+    id viewController = [[ARArtistComponentViewController alloc] initWithArtistID:@"marina-abramovic-1"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

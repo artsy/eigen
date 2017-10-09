@@ -15,6 +15,7 @@ import {
 const { ARTemporaryAPIModule } = NativeModules
 
 import colors from "../../../../data/colors"
+import fonts from "../../../../data/fonts"
 import Events from "../../../NativeModules/Events"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import InvertedButton from "../../Buttons/InvertedButton"
@@ -186,7 +187,7 @@ const styles = StyleSheet.create<Styles>({
     height: 17,
     fontSize: 12,
     textAlign: "left",
-    fontFamily: "Avant Garde Gothic ITCW01Dm",
+    fontFamily: fonts["avant-garde-regular"],
   },
   serifText: {
     marginRight: 12,
