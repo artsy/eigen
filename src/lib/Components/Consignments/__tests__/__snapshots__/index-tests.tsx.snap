@@ -98,6 +98,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                       Object {
                         "color": "white",
                         "fontSize": 30,
+                        "marginBottom": 20,
                         "paddingLeft": 20,
                         "paddingRight": 20,
                         "textAlign": "center",
@@ -210,7 +211,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                     Object {
                       "height": 43,
                       "marginTop": 20,
-                      "width": 320,
+                      "width": 174,
                     }
                   }
                 >
