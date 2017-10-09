@@ -66,7 +66,11 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
       passProps: { ...this.state, updateWithProvenance: this.updateProvenance },
     })
 
-  goToPhotosTapped = () => this.props.navigator.push({ component: SelectFromPhotoLibrary, passProps: this.state })
+  goToPhotosTapped = () =>
+    this.props.navigator.push({
+      component: SelectFromPhotoLibrary,
+      passProps: { setup: this.state, updateWithPhotos: this.updatePhotos },
+    })
 
   goToMetadataTapped = () =>
     this.props.navigator.push({
@@ -88,6 +92,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   updateProvenance = (result: string) => this.updateStateAndMetaphysics({ provenance: result })
   updateLocation = (city: string, state: string, country: string) =>
     this.updateStateAndMetaphysics({ location: { city, state, country } })
+  updatePhotos = (photos: string[]) => this.updateStateAndMetaphysics({ photos })
 
   updateStateAndMetaphysics = (state: any) => this.setState(state, this.updateLocalStateAndMetaphysics)
 

@@ -151,7 +151,15 @@ export default class Metadata extends React.Component<Props, State> {
               </Row>
 
               <Row>
-                <Text text={{ placeholder: "Depth", onChange: this.updateDepth }} style={{ margin: 10 }} />
+                <Text
+                  text={{
+                    keyboardType: "numeric",
+                    placeholder: "Depth",
+                    onChangeText: this.updateDepth,
+                    value: this.state.depth ? this.state.depth.toString() : "",
+                  }}
+                  style={{ margin: 10 }}
+                />
                 <View style={{ flex: 1, flexDirection: "row", alignItems: "center", margin: 10 }}>
                   <Label>Units</Label>
                   <Toggle selected={this.state.unit === "CM"} left="CM" right="IN" onPress={this.updateUnit} />

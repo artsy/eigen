@@ -14,7 +14,7 @@ import {
   View,
 } from "react-native"
 
-import { chunk } from "lodash"
+import { chunk, filter } from "lodash"
 
 import styled from "styled-components/native"
 import colors from "../../../../data/colors"
@@ -80,11 +80,13 @@ const ImageForURI = (props: ImagePreviewProps) =>
 
 interface Props {
   data: ImageData[]
+  selected?: Set<string>
   onPressNewPhoto?: () => void
+  onUpdateSelectedStates?: (selectionSet: Set<string>) => void
 }
 
 interface State {
-  selected: Map<string, boolean>
+  selected: Set<string>
   dataSource: ListViewDataSource
 }
 
@@ -96,7 +98,7 @@ export default class ImageSelection extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      selected: new Map(),
+      selected: props.selected ? props.selected : new Set(),
       dataSource: this.dataSourceFromData(props.data, isPad),
     }
   }
@@ -120,13 +122,22 @@ export default class ImageSelection extends React.Component<Props, State> {
 
   onPressItem = (id: string) => {
     this.setState(state => {
-      const selected = new Map(state.selected)
-      selected.set(id, !selected.get(id))
+      const selected = this.state.selected
+      const selectedAlready = selected.has(id)
+      if (selectedAlready) {
+        selected.delete(id)
+      } else {
+        selected.add(id)
+      }
+
+      if (this.props.onUpdateSelectedStates) {
+        this.props.onUpdateSelectedStates(selected)
+      }
 
       // This is probably inefficient, but it works.
       const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
       const dataSource = this.dataSourceFromData(this.props.data, isPad)
-      return { selected, dataSource }
+      return { dataSource }
     })
   }
 
@@ -139,7 +150,7 @@ export default class ImageSelection extends React.Component<Props, State> {
       return (
         <ImageForURI
           key={d.image.uri}
-          selected={!!this.state.selected.get(d.image.uri)}
+          selected={!!this.state.selected.has(d.image.uri)}
           data={d}
           onPressItem={this.onPressItem}
         />
