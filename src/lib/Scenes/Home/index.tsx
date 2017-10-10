@@ -1,9 +1,11 @@
 import * as React from "react"
 import { View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
-import { default as Artists } from "../../Containers/Home"
+
 import WorksForYou from "../../Containers/WorksForYou"
-import { HomeRenderer, WorksForYouRenderer } from "../../relay/QueryRenderers"
+import ForYou from "./Components/ForYou"
+
+import { ForYouRenderer, WorksForYouRenderer } from "../../relay/QueryRenderers"
 import renderWithLoadProgress from "../../utils/renderWithLoadProgress"
 import TabBar from "./Components/TabBar"
 
@@ -20,10 +22,10 @@ export default class Home extends React.Component<null, null> {
     return (
       <ScrollableTabView renderTabBar={() => <TabBar />}>
         <Tab tabLabel="Artists">
-          <HomeRenderer render={renderWithLoadProgress(Artists)} />
-        </Tab>
-        <Tab tabLabel="For you">
           <WorksForYouRenderer render={renderWithLoadProgress(WorksForYou)} />
+        </Tab>
+        <Tab tabLabel="For You">
+          <ForYouRenderer render={renderWithLoadProgress(ForYou)} />
         </Tab>
         <Tab tabLabel="Auctions" />
       </ScrollableTabView>
