@@ -92,7 +92,7 @@ const render = (props: SearchQueryProps) => {
       <ScrollView
         style={{ height: 182, paddingTop: 16 }}
         scrollEnabled={props.results && !!props.results.length}
-        keyboardShouldPersistTaps={true}
+        keyboardShouldPersistTaps="always"
       >
         {props.results && props.results.length ? props.results.map(rowForResult) : noResults(props)}
       </ScrollView>

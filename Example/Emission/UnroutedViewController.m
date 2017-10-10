@@ -27,8 +27,12 @@
 
 - (NSURL *)urlForRoute:(NSString *)route
 {
-  if ([route containsString:@"https"]) {
-    return [NSURL URLWithString:route];
+  if ([route hasPrefix:@"http"]) {
+    NSURL *url = [NSURL URLWithString:route];
+    if ([url.scheme isEqualToString:@"http"]) {
+      NSLog(@"WARNING: Using a non-SSL URL, which is probably not what we want in production: %@", route);
+    }
+    return url;
   }
 
   BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];

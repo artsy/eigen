@@ -19,6 +19,9 @@
 -   Add React Tracking lib for analytics - maxim
 -   Add typings and custom schema setup for React Tracking lib - alloy
 -   Fix release build by switching from the default React Native packager (Metro) to the community one based on webpack (Haul) - alloy
+-   Revert back to React Native packager (metro), life comes at you fast, see #785 for context - orta
+-   Updates invoice preview component status when a ARPaymentRequestPaid notification is received - alloy
+
 
 ###### Consignments
 
@@ -34,6 +37,7 @@
 -   Submit draft metadata to convection - orta
 -   Publish a consignment to convection - orta
 -   Keep track of the user's input during the submission process - orta
+-   Consolidate a lot of user interface elements - orta
 
 ###### Messaging
 

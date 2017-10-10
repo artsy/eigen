@@ -53,7 +53,7 @@
       _emissionLoadedFromString = [NSString stringWithFormat:@"PR #%@", @(prNumber)];
 
     } else if (useRNP) {
-      NSString *rnpString = [NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios&dev=true", packagerURL];
+      NSString *rnpString = [NSString stringWithFormat:@"http://%@:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true", packagerURL];
 
       _jsCodeLocation = [NSURL URLWithString:rnpString];
       _emissionLoadedFromString = [NSString stringWithFormat:@"Using RNP from %@", _jsCodeLocation.host];
