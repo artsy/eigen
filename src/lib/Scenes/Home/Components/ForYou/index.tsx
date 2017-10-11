@@ -4,7 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { ListView, ListViewDataSource, RefreshControl, ScrollView, ScrollViewProps, ViewProperties } from "react-native"
 
 import ArtistRail from "../../../../Components/Home/ArtistRails/ArtistRail"
-import ArtworkRail from "../../../../Components/Home/ArtworkRails/ArtworkRail"
+import ArtworkRail from "./Components/ArtworkRail"
 
 interface DataSourceRow {
   type: "artwork" | "artist"

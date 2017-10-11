@@ -14,12 +14,12 @@ import {
 } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
 
-import Events from "../../../NativeModules/Events"
+import Events from "../../../../../NativeModules/Events"
 
-import colors from "../../../../data/colors"
-import Button from "../../Buttons/InvertedButton"
-import SerifText from "../../Text/Serif"
-import SectionTitle from "../SectionTitle"
+import colors from "../../../../../../data/colors"
+import Button from "../../../../../Components/Buttons/InvertedButton"
+import SerifText from "../../../../../Components/Text/Serif"
+import SectionTitle from "./SectionTitle"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -125,33 +125,34 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    marginTop: isPad ? 50 : 40,
+    marginTop: isPad ? 40 : 20,
     marginBottom: 20,
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 20,
+    marginRight: 20,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
   },
   title: {
     marginTop: 10,
     fontSize: isPad ? 30 : 26,
-    textAlign: "left",
+    textAlign: "center",
   },
   viewAllButton: {
     fontFamily: "Avant Garde Gothic ITCW01Dm",
     fontSize: isPad ? 14 : 12,
     color: colors["gray-medium"],
-    textAlign: "center",
     letterSpacing: 0.5,
+    padding: 0,
   },
   followButton: {
     marginTop: 10,
     marginBottom: 0,
-    alignSelf: "center",
     height: 30,
     width: 90,
   },
   followAnnotation: {
     fontStyle: "italic",
-    alignSelf: "center",
     fontSize: 16,
   },
 })
