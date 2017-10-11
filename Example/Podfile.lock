@@ -6,7 +6,7 @@ PODS:
     - ISO8601DateFormatter
     - NSURL+QueryDictionary
   - Artsy+UIColors (3.1.0)
-  - Artsy+UIFonts (3.1.1)
+  - Artsy+UIFonts (3.1.2)
   - Artsy-UIButtons (2.1.0):
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
@@ -152,7 +152,7 @@ SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   Artsy+Authentication: 3bf11ceca61c52e9e31490535bf5798f625406fa
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  Artsy+UIFonts: e66afb5c40100e2fc5bba28feb7487e252f2d06f
+  Artsy+UIFonts: e487134218dac1458b89034280186d2b47405825
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
   Emission: 3e9a02f64e938b2e548212ff0dc806f6f280c56b
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958

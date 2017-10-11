@@ -746,7 +746,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                             Array [
                               Object {
                                 "color": "white",
-                                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                                "fontFamily": "AvantGardeGothicITC",
                                 "fontSize": 11,
                                 "letterSpacing": 0.75,
                                 "textAlign": "center",
@@ -769,7 +769,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                             Array [
                               Object {
                                 "color": "white",
-                                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                                "fontFamily": "AvantGardeGothicITC",
                                 "fontSize": 11,
                                 "letterSpacing": 0.75,
                                 "textAlign": "center",
@@ -876,7 +876,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                 "flexBasis": 0,
                 "flexGrow": 1,
                 "flexShrink": 1,
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontFamily": "AvantGardeGothicITC",
                 "fontSize": 14,
                 "textAlign": "center",
               },
@@ -1545,7 +1545,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                             Array [
                               Object {
                                 "color": "white",
-                                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                                "fontFamily": "AvantGardeGothicITC",
                                 "fontSize": 11,
                                 "letterSpacing": 0.75,
                                 "textAlign": "center",
@@ -1568,7 +1568,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                             Array [
                               Object {
                                 "color": "white",
-                                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                                "fontFamily": "AvantGardeGothicITC",
                                 "fontSize": 11,
                                 "letterSpacing": 0.75,
                                 "textAlign": "center",
@@ -1675,7 +1675,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                 "flexBasis": 0,
                 "flexGrow": 1,
                 "flexShrink": 1,
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontFamily": "AvantGardeGothicITC",
                 "fontSize": 14,
                 "textAlign": "center",
               },

@@ -1,6 +1,8 @@
 import * as React from "react"
 import { StyleSheet, Text, TextProperties } from "react-native"
 
+import fonts from "../../../data/fonts"
+
 export default class Headline extends React.Component<TextProperties, any> {
   render() {
     const content = (this.props.children || "") as string
@@ -18,6 +20,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   required: {
-    fontFamily: "Avant Garde Gothic ITCW01Dm",
+    fontFamily: fonts["avant-garde-regular"],
   },
 })
