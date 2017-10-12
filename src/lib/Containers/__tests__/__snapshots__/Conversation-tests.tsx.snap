@@ -83,6 +83,21 @@ exports[`displays a connectivity banner when network is down 1`] = `
       style={
         Array [
           Object {
+            "backgroundColor": "#e5e5e5",
+            "height": 1,
+            "marginLeft": -40,
+            "marginRight": -40,
+          },
+          Object {
+            "backgroundColor": "white",
+          },
+        ]
+      }
+    />
+    <View
+      style={
+        Array [
+          Object {
             "alignItems": "center",
             "backgroundColor": "#fdefd1",
             "height": 30,
@@ -455,6 +470,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -590,6 +606,21 @@ exports[`looks correct when rendered 1`] = `
         <View />
       </View>
     </View>
+    <View
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#e5e5e5",
+            "height": 1,
+            "marginLeft": -40,
+            "marginRight": -40,
+          },
+          Object {
+            "backgroundColor": "white",
+          },
+        ]
+      }
+    />
     <RCTScrollView
       ListFooterComponent={
         <ActivityIndicator
@@ -932,6 +963,7 @@ exports[`looks correct when rendered 1`] = `
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -1067,6 +1099,21 @@ exports[`looks correct when rendered 2`] = `
         <View />
       </View>
     </View>
+    <View
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#e5e5e5",
+            "height": 1,
+            "marginLeft": -40,
+            "marginRight": -40,
+          },
+          Object {
+            "backgroundColor": "white",
+          },
+        ]
+      }
+    />
     <RCTScrollView
       ListFooterComponent={
         <ActivityIndicator
@@ -1409,6 +1456,7 @@ exports[`looks correct when rendered 2`] = `
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
