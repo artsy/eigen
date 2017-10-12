@@ -42,6 +42,7 @@
 
 ###### Messaging
 
+-   Aligns message header with existing back button - sarah
 -   Temporarily removed partner response rate in inquiry - maxim
 -   Fixed payment request component collapsing and minor UI changes - luc
 -   Added support for live open auctions for active bids - sarah

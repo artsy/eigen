@@ -29,7 +29,7 @@ const Container = styled.View`
 `
 const Header = styled.View`
   align-self: stretch;
-  margin-top: 10px;
+  margin-top: 20px;
   flex-direction: column;
   margin-bottom: 20px;
 `
@@ -39,7 +39,7 @@ const PlaceholderView = View
 
 const HeaderTextContainer = styled.View`
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
 `
 
 const BackButtonPlaceholder = styled.Image`
@@ -153,8 +153,7 @@ export class Conversation extends React.Component<Props, State> {
         <Container>
           <Header>
             <HeaderTextContainer>
-              <BackButtonPlaceholder source={chevron} />
-              <SmallHeadline>
+              <SmallHeadline style={{ fontSize: 14 }}>
                 {partnerName}
               </SmallHeadline>
               <PlaceholderView />
