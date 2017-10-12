@@ -68,6 +68,10 @@ export default class Composer extends React.Component<Props, State> {
     }
   }
 
+  componentDidMount() {
+    this.input.focus()
+  }
+
   render() {
     // The TextInput loses its isFocused() callback as a styled component
     const inputStyles = {
