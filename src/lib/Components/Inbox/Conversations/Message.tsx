@@ -39,6 +39,7 @@ const Header = styled(HorizontalLayout)`
 
 const TextContainer = styled(VerticalLayout)`
   margin-left: 10;
+  margin-top: 7;
 `
 
 const SenderName = styled(SmallHeadline)`

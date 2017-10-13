@@ -35,7 +35,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
             "alignSelf": "stretch",
             "flexDirection": "column",
             "marginBottom": 20,
-            "marginTop": 10,
+            "marginTop": 20,
           },
           undefined,
         ]
@@ -46,29 +46,12 @@ exports[`displays a connectivity banner when network is down 1`] = `
           Array [
             Object {
               "flexDirection": "row",
-              "justifyContent": "space-between",
+              "justifyContent": "center",
             },
             undefined,
           ]
         }
       >
-        <Image
-          source={1}
-          style={
-            Array [
-              Object {
-                "height": 12,
-                "transform": Array [
-                  Object {
-                    "rotate": "180deg",
-                  },
-                ],
-                "width": 7,
-              },
-              undefined,
-            ]
-          }
-        />
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -82,7 +65,9 @@ exports[`displays a connectivity banner when network is down 1`] = `
                 "textAlign": "left",
               },
               undefined,
-              Object {},
+              Object {
+                "fontSize": 14,
+              },
               Object {
                 "fontFamily": "AvantGardeGothicITC",
               },
@@ -94,6 +79,21 @@ exports[`displays a connectivity banner when network is down 1`] = `
         <View />
       </View>
     </View>
+    <View
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#e5e5e5",
+            "height": 1,
+            "marginLeft": -40,
+            "marginRight": -40,
+          },
+          Object {
+            "backgroundColor": "white",
+          },
+        ]
+      }
+    />
     <View
       style={
         Array [
@@ -285,6 +285,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
                     Array [
                       Object {
                         "marginLeft": 10,
+                        "marginTop": 7,
                       },
                       undefined,
                     ],
@@ -469,6 +470,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -560,7 +562,7 @@ exports[`looks correct when rendered 1`] = `
             "alignSelf": "stretch",
             "flexDirection": "column",
             "marginBottom": 20,
-            "marginTop": 10,
+            "marginTop": 20,
           },
           undefined,
         ]
@@ -571,29 +573,12 @@ exports[`looks correct when rendered 1`] = `
           Array [
             Object {
               "flexDirection": "row",
-              "justifyContent": "space-between",
+              "justifyContent": "center",
             },
             undefined,
           ]
         }
       >
-        <Image
-          source={1}
-          style={
-            Array [
-              Object {
-                "height": 12,
-                "transform": Array [
-                  Object {
-                    "rotate": "180deg",
-                  },
-                ],
-                "width": 7,
-              },
-              undefined,
-            ]
-          }
-        />
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -607,7 +592,9 @@ exports[`looks correct when rendered 1`] = `
                 "textAlign": "left",
               },
               undefined,
-              Object {},
+              Object {
+                "fontSize": 14,
+              },
               Object {
                 "fontFamily": "AvantGardeGothicITC",
               },
@@ -619,6 +606,21 @@ exports[`looks correct when rendered 1`] = `
         <View />
       </View>
     </View>
+    <View
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#e5e5e5",
+            "height": 1,
+            "marginLeft": -40,
+            "marginRight": -40,
+          },
+          Object {
+            "backgroundColor": "white",
+          },
+        ]
+      }
+    />
     <RCTScrollView
       ListFooterComponent={
         <ActivityIndicator
@@ -776,6 +778,7 @@ exports[`looks correct when rendered 1`] = `
                     Array [
                       Object {
                         "marginLeft": 10,
+                        "marginTop": 7,
                       },
                       undefined,
                     ],
@@ -960,6 +963,7 @@ exports[`looks correct when rendered 1`] = `
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -1051,7 +1055,7 @@ exports[`looks correct when rendered 2`] = `
             "alignSelf": "stretch",
             "flexDirection": "column",
             "marginBottom": 20,
-            "marginTop": 10,
+            "marginTop": 20,
           },
           undefined,
         ]
@@ -1062,29 +1066,12 @@ exports[`looks correct when rendered 2`] = `
           Array [
             Object {
               "flexDirection": "row",
-              "justifyContent": "space-between",
+              "justifyContent": "center",
             },
             undefined,
           ]
         }
       >
-        <Image
-          source={1}
-          style={
-            Array [
-              Object {
-                "height": 12,
-                "transform": Array [
-                  Object {
-                    "rotate": "180deg",
-                  },
-                ],
-                "width": 7,
-              },
-              undefined,
-            ]
-          }
-        />
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -1098,7 +1085,9 @@ exports[`looks correct when rendered 2`] = `
                 "textAlign": "left",
               },
               undefined,
-              Object {},
+              Object {
+                "fontSize": 14,
+              },
               Object {
                 "fontFamily": "AvantGardeGothicITC",
               },
@@ -1110,6 +1099,21 @@ exports[`looks correct when rendered 2`] = `
         <View />
       </View>
     </View>
+    <View
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#e5e5e5",
+            "height": 1,
+            "marginLeft": -40,
+            "marginRight": -40,
+          },
+          Object {
+            "backgroundColor": "white",
+          },
+        ]
+      }
+    />
     <RCTScrollView
       ListFooterComponent={
         <ActivityIndicator
@@ -1267,6 +1271,7 @@ exports[`looks correct when rendered 2`] = `
                     Array [
                       Object {
                         "marginLeft": 10,
+                        "marginTop": 7,
                       },
                       undefined,
                     ],
@@ -1451,6 +1456,7 @@ exports[`looks correct when rendered 2`] = `
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}

@@ -37,6 +37,7 @@ exports[`looks correct when rendered 1`] = `
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -130,6 +131,7 @@ exports[`regarding the send button disables it even if it contains text if the d
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -223,6 +225,7 @@ exports[`regarding the send button disables it when there is no text 1`] = `
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}

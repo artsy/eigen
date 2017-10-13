@@ -74,6 +74,7 @@ exports[`looks correct when rendered 1`] = `
           Array [
             Object {
               "marginLeft": 10,
+              "marginTop": 7,
             },
             undefined,
           ],
