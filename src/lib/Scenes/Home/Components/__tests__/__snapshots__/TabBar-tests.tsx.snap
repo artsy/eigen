@@ -51,7 +51,7 @@ exports[`renders correctly 1`] = `
       style={
         Array [
           Object {
-            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
             "letterSpacing": 1.1,
             "opacity": 0.3,
@@ -98,7 +98,7 @@ exports[`renders correctly 1`] = `
       style={
         Array [
           Object {
-            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
             "letterSpacing": 1.1,
             "opacity": 0.3,
@@ -145,7 +145,7 @@ exports[`renders correctly 1`] = `
       style={
         Array [
           Object {
-            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
             "letterSpacing": 1.1,
             "opacity": 0.3,
