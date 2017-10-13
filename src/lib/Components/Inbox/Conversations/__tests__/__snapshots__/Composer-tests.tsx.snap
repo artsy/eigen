@@ -37,6 +37,7 @@ exports[`looks correct when rendered 1`] = `
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -78,7 +79,7 @@ exports[`looks correct when rendered 1`] = `
         Array [
           Object {
             "color": "#e5e5e5",
-            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontFamily": "AvantGardeGothicITC",
             "fontSize": 12,
             "marginRight": 10,
           },
@@ -91,7 +92,7 @@ exports[`looks correct when rendered 1`] = `
     </Text>
   </View>
 </View>
-`
+`;
 
 exports[`regarding the send button disables it even if it contains text if the disabled prop is true 1`] = `
 <View
@@ -130,6 +131,7 @@ exports[`regarding the send button disables it even if it contains text if the d
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -171,7 +173,7 @@ exports[`regarding the send button disables it even if it contains text if the d
         Array [
           Object {
             "color": "#e5e5e5",
-            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontFamily": "AvantGardeGothicITC",
             "fontSize": 12,
             "marginRight": 10,
           },
@@ -184,7 +186,7 @@ exports[`regarding the send button disables it even if it contains text if the d
     </Text>
   </View>
 </View>
-`
+`;
 
 exports[`regarding the send button disables it when there is no text 1`] = `
 <View
@@ -223,6 +225,7 @@ exports[`regarding the send button disables it when there is no text 1`] = `
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -264,7 +267,7 @@ exports[`regarding the send button disables it when there is no text 1`] = `
         Array [
           Object {
             "color": "#e5e5e5",
-            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontFamily": "AvantGardeGothicITC",
             "fontSize": 12,
             "marginRight": 10,
           },
@@ -277,4 +280,4 @@ exports[`regarding the send button disables it when there is no text 1`] = `
     </Text>
   </View>
 </View>
-`
+`;

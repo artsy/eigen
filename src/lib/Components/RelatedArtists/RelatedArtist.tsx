@@ -4,6 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View } from "react-native"
 
 import colors from "../../../data/colors"
+import fonts from "../../../data/fonts"
 import SwitchBoard from "../../NativeModules/SwitchBoard"
 import ImageView from "../OpaqueImageView"
 
@@ -59,7 +60,7 @@ const styles = StyleSheet.create<Styles>({
     fontSize: 12,
     textAlign: "left",
     marginTop: 10,
-    fontFamily: "Avant Garde Gothic ITCW01Dm",
+    fontFamily: fonts["avant-garde-regular"],
   },
   serifText: {
     fontFamily: "AGaramondPro-Regular",

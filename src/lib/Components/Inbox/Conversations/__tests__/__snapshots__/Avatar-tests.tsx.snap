@@ -24,7 +24,7 @@ exports[`looks correct for a user with two initials 1`] = `
         Object {
           "alignSelf": "center",
           "color": "white",
-          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+          "fontFamily": "AvantGardeGothicITC",
           "fontSize": 10,
           "marginTop": 8,
         },

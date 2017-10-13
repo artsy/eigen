@@ -15,6 +15,7 @@ import ConnectivityBanner from "../Components/ConnectivityBanner"
 import Composer from "../Components/Inbox/Conversations/Composer"
 import Messages from "../Components/Inbox/Conversations/Messages"
 import { sendConversationMessage } from "../Components/Inbox/Conversations/SendConversationMessage"
+import Separator from "../Components/Separator"
 
 import { markLastMessageRead } from "../Components/Inbox/Conversations/MarkReadMessage"
 
@@ -29,7 +30,7 @@ const Container = styled.View`
 `
 const Header = styled.View`
   align-self: stretch;
-  margin-top: 10px;
+  margin-top: 20px;
   flex-direction: column;
   margin-bottom: 20px;
 `
@@ -39,7 +40,7 @@ const PlaceholderView = View
 
 const HeaderTextContainer = styled.View`
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
 `
 
 const BackButtonPlaceholder = styled.Image`
@@ -72,6 +73,7 @@ interface State {
   markedMessageAsRead: boolean
   fetchingData: boolean
   failedMessageText?: string
+  shouldShowSeparator?: boolean
 }
 
 export class Conversation extends React.Component<Props, State> {
@@ -86,6 +88,7 @@ export class Conversation extends React.Component<Props, State> {
       isConnected: true,
       markedMessageAsRead: false,
       fetchingData: false,
+      shouldShowSeparator: false,
     }
     this.handleConnectivityChange = this.handleConnectivityChange.bind(this)
   }
@@ -153,18 +156,21 @@ export class Conversation extends React.Component<Props, State> {
         <Container>
           <Header>
             <HeaderTextContainer>
-              <BackButtonPlaceholder source={chevron} />
-              <SmallHeadline>
+              <SmallHeadline style={{ fontSize: 14 }}>
                 {partnerName}
               </SmallHeadline>
               <PlaceholderView />
             </HeaderTextContainer>
           </Header>
+          <Separator style={{ backgroundColor: this.state.shouldShowSeparator ? colors["gray-regular"] : "white" }} />
           {!this.state.isConnected && <ConnectivityBanner />}
           <Messages
             conversation={conversation}
             onDataFetching={loading => {
               this.setState({ fetchingData: loading })
+            }}
+            shouldShowSeparator={shouldShowSeparator => {
+              this.setState({ shouldShowSeparator })
             }}
           />
         </Container>

@@ -17,6 +17,7 @@ const { ARTemporaryAPIModule } = NativeModules
 import Events from "../../../NativeModules/Events"
 
 import colors from "../../../../data/colors"
+import fonts from "../../../../data/fonts"
 import Button from "../../Buttons/InvertedButton"
 import SerifText from "../../Text/Serif"
 import SectionTitle from "../SectionTitle"
@@ -136,7 +137,7 @@ const styles = StyleSheet.create<Styles>({
     textAlign: "left",
   },
   viewAllButton: {
-    fontFamily: "Avant Garde Gothic ITCW01Dm",
+    fontFamily: fonts["avant-garde-regular"],
     fontSize: isPad ? 14 : 12,
     color: colors["gray-medium"],
     textAlign: "center",

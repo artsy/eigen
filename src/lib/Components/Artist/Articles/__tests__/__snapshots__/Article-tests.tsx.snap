@@ -63,7 +63,7 @@ exports[`renders properly 1`] = `
       style={
         Object {
           "color": "grey",
-          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+          "fontFamily": "AvantGardeGothicITC",
           "fontSize": 10,
           "marginTop": 5,
           "textAlign": "left",

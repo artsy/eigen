@@ -4,6 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { StyleSheet, Text, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 
 import colors from "../../../../data/colors"
+import fonts from "../../../../data/fonts"
 import SerifText from "../../Text/Serif"
 
 interface Props extends ViewProperties {
@@ -96,7 +97,7 @@ const styles = StyleSheet.create<Styles>({
     textAlign: "left",
     margin: 2,
     marginLeft: 0,
-    fontFamily: "Avant Garde Gothic ITCW01Dm",
+    fontFamily: fonts["avant-garde-regular"],
   },
 })
 

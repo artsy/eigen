@@ -17,6 +17,7 @@ import {
 } from "react-native"
 
 import colors from "../../../../data/colors"
+import fonts from "../../../../data/fonts"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import GenericGrid from "../../ArtworkGrids/GenericGrid"
 import Separator from "../../Separator"
@@ -291,7 +292,7 @@ const styles = StyleSheet.create<Styles>({
     color: "white",
     textAlign: "center",
     fontSize: 14,
-    fontFamily: "Avant Garde Gothic ITCW01Dm",
+    fontFamily: fonts["avant-garde-regular"],
   },
 })
 
