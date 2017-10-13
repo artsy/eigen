@@ -1,0 +1,180 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "borderBottomWidth": 1,
+        "borderColor": "rgb(229, 229, 229)",
+        "flexDirection": "row",
+        "height": 50,
+        "justifyContent": "space-around",
+        "marginTop": 20,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel="Page 1"
+    accessibilityTraits="button"
+    accessible={true}
+    hitSlop={undefined}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "paddingTop": 5,
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+  >
+    <Text
+      accessible={true}
+      active={false}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontSize": 13,
+            "letterSpacing": 1.1,
+            "opacity": 0.3,
+          },
+          undefined,
+        ]
+      }
+    >
+      PAGE 1
+    </Text>
+  </View>
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel="Page 2"
+    accessibilityTraits="button"
+    accessible={true}
+    hitSlop={undefined}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "paddingTop": 5,
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+  >
+    <Text
+      accessible={true}
+      active={false}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontSize": 13,
+            "letterSpacing": 1.1,
+            "opacity": 0.3,
+          },
+          undefined,
+        ]
+      }
+    >
+      PAGE 2
+    </Text>
+  </View>
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel="Page 3"
+    accessibilityTraits="button"
+    accessible={true}
+    hitSlop={undefined}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "paddingTop": 5,
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+  >
+    <Text
+      accessible={true}
+      active={false}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontSize": 13,
+            "letterSpacing": 1.1,
+            "opacity": 0.3,
+          },
+          undefined,
+        ]
+      }
+    >
+      PAGE 3
+    </Text>
+  </View>
+  <View
+    collapsable={undefined}
+    style={
+      Object {
+        "backgroundColor": "black",
+        "bottom": -1,
+        "height": 1,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "transform": Array [
+          Object {
+            "translateX": NaN,
+          },
+        ],
+        "width": NaN,
+      }
+    }
+  />
+</View>
+`;

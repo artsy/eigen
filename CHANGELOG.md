@@ -22,6 +22,10 @@
 -   Revert back to React Native packager (metro), life comes at you fast, see #785 for context - orta
 -   Updates invoice preview component status when a ARPaymentRequestPaid notification is received - alloy
 
+###### Home
+
+-   Adds for For You tab with styled headers - luc
+-   Creates tab view container for new home - luc
 
 ###### Consignments
 

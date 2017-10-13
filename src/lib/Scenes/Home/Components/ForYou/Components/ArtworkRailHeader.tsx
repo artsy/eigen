@@ -12,6 +12,7 @@ import {
   ViewProperties,
   ViewStyle,
 } from "react-native"
+
 const { ARTemporaryAPIModule } = NativeModules
 
 import Events from "../../../../../NativeModules/Events"

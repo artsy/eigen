@@ -151,7 +151,7 @@ export class WorksForYou extends React.Component<Props, State> {
         scrollEventThrottle={100}
         ref={scrollView => (this.scrollView = scrollView)}
       >
-        {/* <SerifText style={[styles.title, containerMargins]}>Works by Artists you Follow</SerifText> */}
+        <SerifText style={[styles.title, containerMargins]}>Works by Artists you Follow</SerifText>
         <View style={[containerMargins, { flex: 1 }]}>
           {hasNotifications ? this.renderNotifications() : this.renderEmptyState()}
         </View>

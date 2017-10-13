@@ -82,6 +82,7 @@ export default class TabBar extends React.Component<TabBarProps, null> {
               backgroundColor: "black",
               bottom: -1,
               left: 0,
+              right: 0,
             },
             {
               transform: [{ translateX }],

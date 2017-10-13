@@ -31,16 +31,6 @@ export class Home extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 
-    const dataSource: ListViewDataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
-
-    this.state = {
-      isRefreshing: false,
-      modules: [],
-      dataSource,
-    }
-  }
-
-  componentDidMount() {
     const rows: DataSourceRow[] = [
       { type: "search_bar", data: null },
       { type: "hero_units", data: this.props.home.hero_units },
@@ -48,6 +38,7 @@ export class Home extends React.Component<Props, State> {
     const artworkModules = this.props.home.artwork_modules
     // create a copy so we can mutate it (with `shift`)
     const artistModules = this.props.home.artist_modules && this.props.home.artist_modules.concat()
+
     for (let i = 0; i < artworkModules.length; i++) {
       const artworkModule = artworkModules[i]
       rows.push({ type: "artwork", data: artworkModule })
@@ -58,9 +49,14 @@ export class Home extends React.Component<Props, State> {
         }
       }
     }
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(rows),
-    })
+
+    const dataSource: ListViewDataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+
+    this.state = {
+      isRefreshing: false,
+      modules: [],
+      dataSource: dataSource.cloneWithRows(rows),
+    }
   }
 
   handleRefresh = () => {
