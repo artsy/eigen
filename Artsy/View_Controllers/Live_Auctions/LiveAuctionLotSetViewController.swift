@@ -136,7 +136,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         lotImageCollectionView.alignTop("0", leading: "0", bottom: "\(collectionViewBottomConstraint)", trailing: "0", toView: view)
         
         // Sale status view setup.
-        salesPerson.saleOnHoldSignal.subscribe { [weak self] onHold in
+        salesPerson.saleOnHoldSignal.subscribe { [weak self] (onHold, _) in
             self?.saleIsOnHold = onHold
             self?.updateTitle()
         }
