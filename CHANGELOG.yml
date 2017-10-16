@@ -2,7 +2,7 @@ upcoming:
     version: 3.2.6
     details: Bug fixes
     user_facing:
-      - Nothing.
+      - Custom sale-on-hold banner - ash
     dev:
       - Adds client metadata info to causality events - ash
 
