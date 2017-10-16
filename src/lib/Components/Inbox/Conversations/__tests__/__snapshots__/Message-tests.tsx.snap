@@ -365,7 +365,8 @@ exports[`looks correct when rendered 1`] = `
       <View
         linkStyle={
           Object {
-            "color": "#0645ad",
+            "color": "#6e1fff",
+            "textDecorationLine": "underline",
           }
         }
         onPress={[Function]}
