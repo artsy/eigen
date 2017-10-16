@@ -115,7 +115,8 @@ export class Message extends React.Component<Props, any> {
     }
 
     const linkStyle = {
-      color: "#0645ad",
+      color: colors["purple-regular"],
+      textDecorationLine: "underline",
     }
 
     return (

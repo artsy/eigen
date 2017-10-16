@@ -42,6 +42,7 @@
 
 ###### Messaging
 
+-   Hyperlinks in messages are now artsy purple & underlined - sarah
 -   Aligns message header with existing back button - sarah
 -   Temporarily removed partner response rate in inquiry - maxim
 -   Fixed payment request component collapsing and minor UI changes - luc
