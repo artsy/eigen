@@ -67,7 +67,7 @@ certs:
 
 distribute:  change_version_to_date set_git_properties setup_fastlane_env
 	brew update
-	brew install getsentry/tools/sentry-cli || true
+	brew install getsentry/tools/sentry-cli
 	bundle exec fastlane update_plugins
 	bundle exec fastlane ship_beta
 
