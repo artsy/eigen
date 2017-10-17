@@ -140,7 +140,7 @@ export class Message extends React.Component<Props, any> {
     let previewInvoice
     if (message.invoice) {
       previewInvoice = () => {
-        SwitchBoard.presentNavigationViewController(this, message.invoice.payment_url)
+        SwitchBoard.presentModalViewController(this, message.invoice.payment_url)
       }
     }
     return (
