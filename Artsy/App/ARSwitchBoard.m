@@ -29,6 +29,7 @@
 #import "ARMutableLinkViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARPaymentRequestWebViewController.h"
+#import "ARSerifNavigationViewController.h"
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -413,7 +414,8 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
     }
 
     if ([ARRouter isPaymentRequestURL:url]) {
-        return [[ARPaymentRequestWebViewController alloc] initWithURL:url];
+        UIViewController *paymentRequestViewController = [[ARPaymentRequestWebViewController alloc] initWithURL:url];
+        return [[ARSerifNavigationViewController alloc] initWithRootViewController:paymentRequestViewController];
     }
 
     // We couldn't find one? Well, then we should present it as a martsy view
