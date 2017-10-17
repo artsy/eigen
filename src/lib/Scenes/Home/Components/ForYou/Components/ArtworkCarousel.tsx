@@ -17,11 +17,12 @@ import {
 } from "react-native"
 
 import colors from "../../../../../../data/colors"
+import fonts from "../../../../../../data/fonts"
 import GenericGrid from "../../../../../Components/ArtworkGrids/GenericGrid"
 import Separator from "../../../../../Components/Separator"
 import Spinner from "../../../../../Components/Spinner"
 import SwitchBoard from "../../../../../NativeModules/SwitchBoard"
-import ArtworkRailHeader from "./ArtworkRailHeader"
+import ArtworkCarouselHeader from "./ArtworkCarouselHeader"
 
 // tslint:disable-next-line:no-var-requires
 const chevron: ImageURISource = require("../../../../../../../images/chevron.png")
@@ -51,7 +52,7 @@ interface State {
   didPerformFetch: boolean
 }
 
-export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
+export class ArtworkCarousel extends React.Component<Props & RelayPropsWorkaround, State> {
   constructor(props) {
     super(props)
 
@@ -243,7 +244,7 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
 
     return (
       <View accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
-        <ArtworkRailHeader rail={this.props.rail} handleViewAll={this.handleViewAll} />
+        <ArtworkCarouselHeader rail={this.props.rail} handleViewAll={this.handleViewAll} />
         <View style={this.railStyle()}>
           {this.renderModuleResults()}
         </View>
@@ -291,16 +292,16 @@ const styles = StyleSheet.create<Styles>({
     color: "white",
     textAlign: "center",
     fontSize: 14,
-    fontFamily: "Avant Garde Gothic ITCW01Dm",
+    fontFamily: fonts["avant-garde-regular"],
   },
 })
 
 export default createRefetchContainer(
-  ArtworkRail,
+  ArtworkCarousel,
   graphql.experimental`
-    fragment ArtworkRail_rail on HomePageArtworkModule
+    fragment ArtworkCarousel_rail on HomePageArtworkModule
       @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: false }) {
-      ...ArtworkRailHeader_rail
+      ...ArtworkCarouselHeader_rail
       __id
       key
       params {
@@ -334,9 +335,9 @@ export default createRefetchContainer(
     }
   `,
   graphql.experimental`
-    query ArtworkRailRefetchQuery($__id: ID!, $fetchContent: Boolean!) {
+    query ArtworkCarouselRefetchQuery($__id: ID!, $fetchContent: Boolean!) {
       node(__id: $__id) {
-        ...ArtworkRail_rail @arguments(fetchContent: $fetchContent)
+        ...ArtworkCarousel_rail @arguments(fetchContent: $fetchContent)
       }
     }
   `

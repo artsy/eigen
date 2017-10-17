@@ -18,6 +18,7 @@ const { ARTemporaryAPIModule } = NativeModules
 import Events from "../../../../../NativeModules/Events"
 
 import colors from "../../../../../../data/colors"
+import fonts from "../../../../../../data/fonts"
 import Button from "../../../../../Components/Buttons/InvertedButton"
 import SerifText from "../../../../../Components/Text/Serif"
 import SectionTitle from "./SectionTitle"
@@ -41,7 +42,7 @@ interface State {
   following: boolean
 }
 
-class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, State> {
+class ArtworkCarouselHeader extends React.Component<Props & RelayPropsWorkaround, State> {
   constructor(props) {
     super(props)
     this.state = { following: props.rail.key === "followed_artist" }
@@ -140,7 +141,7 @@ const styles = StyleSheet.create<Styles>({
     textAlign: "center",
   },
   viewAllButton: {
-    fontFamily: "Avant Garde Gothic ITCW01Dm",
+    fontFamily: fonts["avant-garde-regular"],
     fontSize: isPad ? 14 : 12,
     color: colors["gray-medium"],
     letterSpacing: 0.5,
@@ -159,9 +160,9 @@ const styles = StyleSheet.create<Styles>({
 })
 
 export default createFragmentContainer(
-  ArtworkRailHeader,
+  ArtworkCarouselHeader,
   graphql`
-    fragment ArtworkRailHeader_rail on HomePageArtworkModule {
+    fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
       title
       key
       context {
