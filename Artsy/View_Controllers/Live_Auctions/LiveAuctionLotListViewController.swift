@@ -72,8 +72,8 @@ class LiveAuctionLotListViewController: UICollectionViewController {
         collectionView?.register(LotListCollectionViewCell.self, forCellWithReuseIdentifier: LotListCollectionViewCell.CellIdentifier)
         
         // Sale status view setup.
-        salesPerson.saleOnHoldSignal.subscribe { [weak self] onHold in
-            self?.saleIsOnHold = onHold
+        salesPerson.saleOnHoldSignal.subscribe { [weak self] (isOnHold: Bool, _) in
+            self?.saleIsOnHold = isOnHold
             self?.updateTitle()
         }
         
