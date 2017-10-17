@@ -12,15 +12,16 @@ import {
   ViewProperties,
   ViewStyle,
 } from "react-native"
+
 const { ARTemporaryAPIModule } = NativeModules
 
-import Events from "../../../NativeModules/Events"
+import Events from "../../../../../NativeModules/Events"
 
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
-import Button from "../../Buttons/InvertedButton"
-import SerifText from "../../Text/Serif"
-import SectionTitle from "../SectionTitle"
+import colors from "../../../../../../data/colors"
+import fonts from "../../../../../../data/fonts"
+import Button from "../../../../../Components/Buttons/InvertedButton"
+import SerifText from "../../../../../Components/Text/Serif"
+import SectionTitle from "./SectionTitle"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -41,7 +42,7 @@ interface State {
   following: boolean
 }
 
-class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, State> {
+class ArtworkCarouselHeader extends React.Component<Props & RelayPropsWorkaround, State> {
   constructor(props) {
     super(props)
     this.state = { following: props.rail.key === "followed_artist" }
@@ -126,41 +127,42 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    marginTop: isPad ? 50 : 40,
+    marginTop: isPad ? 40 : 20,
     marginBottom: 20,
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 20,
+    marginRight: 20,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
   },
   title: {
     marginTop: 10,
     fontSize: isPad ? 30 : 26,
-    textAlign: "left",
+    textAlign: "center",
   },
   viewAllButton: {
     fontFamily: fonts["avant-garde-regular"],
     fontSize: isPad ? 14 : 12,
     color: colors["gray-medium"],
-    textAlign: "center",
     letterSpacing: 0.5,
+    padding: 0,
   },
   followButton: {
     marginTop: 10,
     marginBottom: 0,
-    alignSelf: "center",
     height: 30,
     width: 90,
   },
   followAnnotation: {
     fontStyle: "italic",
-    alignSelf: "center",
     fontSize: 16,
   },
 })
 
 export default createFragmentContainer(
-  ArtworkRailHeader,
+  ArtworkCarouselHeader,
   graphql`
-    fragment ArtworkRailHeader_rail on HomePageArtworkModule {
+    fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
       title
       key
       context {

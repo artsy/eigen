@@ -63,5 +63,7 @@
     "matt"
   ],
   "stylelint.additionalDocumentSelectors": ["typescript", "typescriptreact"],
-  "todohighlight.exclude": ["node_modules/**", ".vscode/**", "externals/**"]
+  "todohighlight.exclude": ["node_modules/**", ".vscode/**", "externals/**"],
+  "tslint.autoFixOnSave": true,
+  "typescript.format.enable": false
 }
