@@ -22,6 +22,7 @@
 -   Fix release build by switching from the default React Native packager (Metro) to the community one based on webpack (Haul) - alloy
 -   Revert back to React Native packager (metro), life comes at you fast, see #785 for context - orta
 -   Updates invoice preview component status when a ARPaymentRequestPaid notification is received - alloy
+-   Present payment request view modally. - alloy
 
 ###### Home
 
