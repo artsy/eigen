@@ -53,7 +53,7 @@ export class Inbox extends React.Component<Props, State> {
     return hasBids || hasConversations
       ? <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
           <ActiveBids me={this.props.me as any} ref={activeBids => (this.activeBids = activeBids)} />
-          <Conversations me={this.props.me} ref={conversations => (this.conversations = conversations)} />
+          <Conversations me={this.props.me as any} ref={conversations => (this.conversations = conversations)} />
         </Container>
       : <ZeroStateInbox />
   }

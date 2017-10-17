@@ -191,7 +191,7 @@ export class Conversation extends React.Component<Props, State> {
           <Separator style={{ backgroundColor: this.state.shouldShowSeparator ? colors["gray-regular"] : "white" }} />
           {!this.state.isConnected && <ConnectivityBanner />}
           <Messages
-            conversation={conversation}
+            conversation={conversation as any}
             onDataFetching={loading => {
               this.setState({ fetchingData: loading })
             }}

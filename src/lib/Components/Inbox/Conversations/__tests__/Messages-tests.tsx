@@ -10,6 +10,7 @@ it("looks correct when rendered", () => {
 })
 
 const props = {
+  __id: "Conversation:420",
   id: "420",
   from: {
     name: "Anita Garibaldi",
@@ -21,9 +22,12 @@ const props = {
   messages: {
     edges: [
       {
+        cursor: "some-cursor",
         node: {
           __id: "unique-id",
           id: 222,
+          impulse_id: "impulse:222",
+          is_from_user: true,
           body: "Adoro! Por favor envie-me mais informações",
           from_email_address: "anita@garibaldi.br",
           attachments: [],

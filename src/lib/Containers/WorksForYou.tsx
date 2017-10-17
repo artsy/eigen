@@ -1,5 +1,5 @@
 import React from "react"
-import { createPaginationContainer, graphql } from "react-relay"
+import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import {
   LayoutChangeEvent,
@@ -28,7 +28,7 @@ import colors from "lib/data/colors"
 const PageSize = 10
 
 interface Props extends RelayProps {
-  relay: any
+  relay?: RelayPaginationProp
 }
 
 interface State {
@@ -42,7 +42,7 @@ export class WorksForYou extends React.Component<Props, State> {
   scrollView?: ScrollView | any
   currentScrollOffset?: number = 0
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
 
     const notifications = this.props.viewer.me.notifications.edges.map(edge => edge.node)
@@ -227,7 +227,7 @@ const WorksForYouContainer = createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.viewer.me.notifications
+      return props.viewer.me.notifications as ConnectionData
     },
     getFragmentVariables(prevVars, totalCount) {
       return {

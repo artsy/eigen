@@ -1,6 +1,7 @@
 import React from "react"
 import { EmitterSubscription, Image, TouchableHighlight } from "react-native"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql } from "react-relay"
+import { RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
 import InvertedButton from "lib/Components/Buttons/InvertedButton"

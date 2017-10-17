@@ -1,6 +1,6 @@
 import React from "react"
 import { ActivityIndicator, Dimensions, FlatList, RefreshControl } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
 import ARSwitchBoard from "../../../NativeModules/SwitchBoard"
@@ -26,7 +26,7 @@ interface State {
 const LoadingIndicator = styled.ActivityIndicator`margin-top: 40px;`
 
 export class Messages extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -201,7 +201,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.conversation && props.conversation.messages
+      return props.conversation && (props.conversation.messages as ConnectionData)
     },
     getFragmentVariables(prevVars, totalCount) {
       return {

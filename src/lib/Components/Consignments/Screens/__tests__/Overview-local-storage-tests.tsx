@@ -7,8 +7,8 @@ AsyncStorage.setItem = jest.fn()
 AsyncStorage.getItem = jest.fn()
 AsyncStorage.removeItem = jest.fn()
 
-jest.mock("../../Submission/create.ts", () => jest.fn())
-jest.mock("../../Submission/update.ts", () => jest.fn())
+jest.mock("../../Submission/create", () => jest.fn())
+jest.mock("../../Submission/update", () => jest.fn())
 
 beforeEach(() => {
   jest.resetAllMocks()

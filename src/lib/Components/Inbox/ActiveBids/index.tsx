@@ -17,7 +17,7 @@ interface State {
 }
 
 class ActiveBids extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -90,7 +90,7 @@ export default createRefetchContainer(
       }
     }
   `
-)
+) as React.ComponentClass<Props>
 
 interface RelayProps {
   me: {

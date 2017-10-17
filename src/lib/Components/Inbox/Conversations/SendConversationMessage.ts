@@ -1,5 +1,5 @@
-import { commitMutation, Environment, graphql, MutationConfig, RecordSourceSelectorProxy } from "react-relay"
-import { ConnectionHandler } from "relay-runtime"
+import { commitMutation, graphql } from "react-relay"
+import { ConnectionHandler, Environment, MutationConfig, RecordSourceSelectorProxy } from "relay-runtime"
 
 interface Conversation {
   last_message_id: string
@@ -14,23 +14,19 @@ export function sendConversationMessage(
   environment: Environment,
   conversation: Conversation,
   text: string,
-  onCompleted: MutationConfig["onCompleted"],
-  onError: MutationConfig["onError"]
+  onCompleted: MutationConfig<any>["onCompleted"],
+  onError: MutationConfig<any>["onError"]
 ) {
   const storeUpdater = (store: RecordSourceSelectorProxy) => {
     const mutationPayload = store.getRootField("sendConversationMessage")
     const newMessageEdge = mutationPayload.getLinkedRecord("messageEdge")
     const conversationStore = store.get(conversation.__id)
-
-    // TODO: Why is this not working?
     const connection = ConnectionHandler.getConnection(conversationStore, "Messages_messages")
     ConnectionHandler.insertEdgeBefore(connection, newMessageEdge)
   }
-
   return commitMutation(environment, {
     onCompleted,
     onError,
-
     optimisticUpdater: storeUpdater,
     updater: storeUpdater,
 
@@ -73,7 +69,7 @@ export function sendConversationMessage(
         connectionName: "messages",
         edgeName: "messageEdge",
         rangeBehaviors: {
-          "": "append",
+          "": "APPEND",
         },
         connectionInfo: [
           {

@@ -51,4 +51,3 @@ mockedModule("./lib/Components/Artist/About.tsx", "About")
 
 // Gene tests
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
-mockedModule("./lib/Components/Gene/Artworks.tsx", "Artworks")
