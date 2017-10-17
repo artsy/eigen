@@ -43,6 +43,7 @@ class LiveAuctionToolbarView: UIView {
         if newSuperview == nil {
             lotStateObserver?.unsubscribe()
             numberOfBidsObserver?.unsubscribe()
+            numberOfBidsObserver = nil
         }
     }
 
@@ -72,7 +73,9 @@ class LiveAuctionToolbarView: UIView {
 
             numberOfBidsClosure = { [weak self] label in
                 guard let `self` = self else { return }
-                guard self.numberOfBidsObserver == nil else { return }
+                if let existingObserver = self.numberOfBidsObserver {
+                    existingObserver.unsubscribe()
+                }
 
                 self.numberOfBidsObserver = self.lotViewModel
                     .newEventsSignal

@@ -3,6 +3,7 @@ upcoming:
     details: Bug fixes
     user_facing:
       - Custom sale-on-hold banner - ash
+      - Fixes a problem where the number of bids weren't being updated in LAI
     dev:
       - Adds client metadata info to causality events - ash
 
