@@ -4,7 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { ListView, ListViewDataSource, RefreshControl, ScrollView, ScrollViewProps, ViewProperties } from "react-native"
 
 import ArtistRail from "../../../../Components/Home/ArtistRails/ArtistRail"
-import ArtworkRail from "./Components/ArtworkRail"
+import ArtworkCarousel from "./Components/ArtworkCarousel"
 
 interface DataSourceRow {
   type: "artwork" | "artist"
@@ -99,7 +99,7 @@ export class ForYou extends React.Component<Props, State> {
           const registerModule = module => (this.state.modules[row - 2] = module)
           switch (type) {
             case "artwork":
-              return <ArtworkRail ref={registerModule} key={data.__id} rail={data} />
+              return <ArtworkCarousel ref={registerModule} key={data.__id} rail={data} />
             case "artist":
               return <ArtistRail ref={registerModule} key={data.__id} rail={data} />
           }
@@ -133,7 +133,7 @@ export default createFragmentContainer(
         ]
       ) {
         __id
-        ...ArtworkRail_rail
+        ...ArtworkCarousel_rail
       }
       artist_modules {
         __id
