@@ -93,6 +93,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   updateProvenance = (result: string) => this.updateStateAndMetaphysics({ provenance: result })
   updateLocation = (city: string, state: string, country: string) =>
     this.updateStateAndMetaphysics({ location: { city, state, country } })
+  updatePhotos = (photos: string[]) => this.updateStateAndMetaphysics({ photos })
 
   updatePhotos = (photos: string[]) =>
     this.updateStateAndMetaphysics({ photos: photos.map(f => ({ file: f, uploaded: false })) })
