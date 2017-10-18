@@ -1,12 +1,21 @@
 upcoming:
-    version: 3.2.6
+    version: 3.2.7
     details: Bug fixes
+    user_facing:
+      -
+    dev:
+      -
+
+releases:
+  - version: 3.2.6
+    details: Bug fixes
+    date: October 18, 2017
     user_facing:
       - Custom sale-on-hold banner - ash
     dev:
       - Adds client metadata info to causality events - ash
+      - Removes nulls from JSON in GraphQL responses.
 
-releases:
   - version: 3.2.5
     details: Bug fixes
     date: Oct 10, 2017
