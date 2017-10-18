@@ -146,6 +146,10 @@
   version "4.14.64"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.64.tgz#979cf3a3d4a368670840bf9b3e448dc33ffe84ee"
 
+"@types/query-string@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@types/query-string/-/query-string-5.0.0.tgz#5dbebd24d0abeb555d0dd9704c33462d84a45e69"
+
 "@types/react-native@^0.48.0":
   version "0.48.0"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.48.0.tgz#08b34b4f34ea6aa6379f77851e1d32aca8aa0c00"

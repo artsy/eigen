@@ -29,6 +29,7 @@ import Welcome from "./Welcome"
 
 import createSubmission from "../Submission/create"
 import updateSubmission from "../Submission/update"
+import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
 
 const consignmentsStateKey = "ConsignmentsStoredState"
 
@@ -92,12 +93,16 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   updateProvenance = (result: string) => this.updateStateAndMetaphysics({ provenance: result })
   updateLocation = (city: string, state: string, country: string) =>
     this.updateStateAndMetaphysics({ location: { city, state, country } })
-  updatePhotos = (photos: string[]) => this.updateStateAndMetaphysics({ photos })
+
+  updatePhotos = (photos: string[]) =>
+    this.updateStateAndMetaphysics({ photos: photos.map(f => ({ file: f, uploaded: false })) })
 
   updateStateAndMetaphysics = (state: any) => this.setState(state, this.updateLocalStateAndMetaphysics)
 
   updateLocalStateAndMetaphysics = async () => {
     this.saveStateToLocalStorage()
+
+    this.uploadPhotosIfNeeded()
 
     if (this.state.submission_id) {
       updateSubmission(this.state, this.state.submission_id)
@@ -116,6 +121,14 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   }
 
   exitModal = () => SwitchBoard.dismissModalViewController(this)
+
+  uploadPhotosIfNeeded = () => {
+    const toUpload = this.state.photos.filter(f => !f.uploaded && f.file)
+    toUpload.forEach(photo => {
+      console.log(photo)
+      uploadImageAndPassToGemini(photo.file, "private")
+    })
+  }
 
   render() {
     const title = "Complete work details to submit"
