@@ -63,7 +63,6 @@
     "lib"
   ],
   "dependencies": {
-    "@types/react-tracking": "^5.0.0",
     "lodash": "^4.17.4",
     "moment": "latest",
     "prop-types": "^15.5.10",
@@ -86,6 +85,7 @@
     "@types/lodash": "^4.14.64",
     "@types/react": "^16.0.5",
     "@types/react-native": "^0.48.0",
+    "@types/react-tracking": "^5.0.0",
     "apphub": "^0.5.1",
     "awesome-typescript-loader": "^3.2.3",
     "babel-jest": "^18.0.0",
@@ -119,7 +119,7 @@
     "ts-jest": "^21.0.0",
     "tslint": "^5.4.3",
     "tslint-config-prettier": "^1.0.0",
-    "typescript": "^2.3.2"
+    "typescript": "^2.5.3"
   },
   "jest": {
     "preset": "react-native",
