@@ -194,7 +194,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "flexBasis": 0,
                         "flexGrow": 1,
                         "flexShrink": 1,
-                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       undefined,
                     ]
@@ -309,7 +309,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "flexBasis": 0,
                         "flexGrow": 1,
                         "flexShrink": 1,
-                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       undefined,
                     ]
@@ -402,7 +402,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "flexBasis": 0,
                         "flexGrow": 1,
                         "flexShrink": 1,
-                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       undefined,
                     ]
@@ -517,7 +517,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "flexBasis": 0,
                         "flexGrow": 1,
                         "flexShrink": 1,
-                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       undefined,
                     ]
@@ -632,7 +632,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "flexBasis": 0,
                         "flexGrow": 1,
                         "flexShrink": 1,
-                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       undefined,
                     ]
@@ -751,7 +751,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           "opacity": 1,
                         },
                         Object {
-                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                          "fontFamily": "AvantGardeGothicITC",
                         },
                       ]
                     }

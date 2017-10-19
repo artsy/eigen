@@ -83,7 +83,7 @@ exports[`lays out correctly 1`] = `
         ellipsizeMode="tail"
         style={
           Object {
-            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontFamily": "AvantGardeGothicITC",
             "fontSize": 12,
             "marginTop": 10,
             "textAlign": "left",

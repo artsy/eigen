@@ -49,7 +49,7 @@ exports[`renders properly 1`] = `
             "opacity": 1,
           },
           Object {
-            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontFamily": "AvantGardeGothicITC",
           },
         ]
       }

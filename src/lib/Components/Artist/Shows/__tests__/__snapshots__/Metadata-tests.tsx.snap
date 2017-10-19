@@ -16,7 +16,7 @@ exports[`renders properly 1`] = `
     ellipsizeMode="tail"
     style={
       Object {
-        "fontFamily": "Avant Garde Gothic ITCW01Dm",
+        "fontFamily": "AvantGardeGothicITC",
         "fontSize": 12,
         "margin": 2,
         "marginLeft": 0,
@@ -33,7 +33,7 @@ exports[`renders properly 1`] = `
     ellipsizeMode="tail"
     style={
       Object {
-        "fontFamily": "Avant Garde Gothic ITCW01Dm",
+        "fontFamily": "AvantGardeGothicITC",
         "fontSize": 12,
         "margin": 2,
         "marginLeft": 0,

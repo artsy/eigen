@@ -10,7 +10,8 @@
     "pretty": true,
     "strictNullChecks": false,
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "types": ["jest", "react", "react-native"]
   },
   "include": ["typings/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "dangerfile.ts"],
   "exclude": [

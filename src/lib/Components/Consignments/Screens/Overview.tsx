@@ -102,9 +102,10 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   updateLocalStateAndMetaphysics = async () => {
     this.saveStateToLocalStorage()
 
-    this.uploadPhotosIfNeeded()
-
     if (this.state.submission_id) {
+      // This is async, but we don't need the synchronous behavior from await.
+      this.uploadPhotosIfNeeded()
+
       updateSubmission(this.state, this.state.submission_id)
     } else if (this.state.artist) {
       const submission = await createSubmission(this.state)
@@ -122,13 +123,18 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
 
   exitModal = () => SwitchBoard.dismissModalViewController(this)
 
-  uploadPhotosIfNeeded = () => {
-    if (this.state.submission_id) {
-      const toUpload = this.state.photos.filter(f => !f.uploaded && f.file)
-      toUpload.forEach(photo => {
-        console.log(photo)
-        uploadImageAndPassToGemini(photo.file, "private", this.state.submission_id)
-      })
+  uploadPhotosIfNeeded = async () => {
+    const toUpload = this.state.photos && this.state.photos.filter(f => !f.uploaded && f.file)
+
+    if (toUpload.length) {
+      // Pull out the first in the queue and upload it
+      const photo = toUpload[0]
+      await uploadImageAndPassToGemini(photo.file, "private", this.state.submission_id)
+
+      // Mutate state 'unexpectedly', then send it back through "setState" to trigger the next
+      // in the queue
+      photo.uploaded = true
+      this.setState({ photos: this.state.photos }, this.uploadPhotosIfNeeded)
     }
   }
 

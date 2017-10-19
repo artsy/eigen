@@ -26,7 +26,7 @@ exports[`looks like expected 1`] = `
             },
             undefined,
             Object {
-              "fontFamily": "Avant Garde Gothic ITCW01Dm",
+              "fontFamily": "AvantGardeGothicITC",
             },
           ]
         }

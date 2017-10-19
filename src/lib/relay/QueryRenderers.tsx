@@ -101,6 +101,23 @@ export const HomeRenderer: React.SFC<RendererProps> = ({ render }) => {
   )
 }
 
+export const ForYouRenderer: React.SFC<RendererProps> = ({ render }) => {
+  return (
+    <QueryRenderer
+      environment={environment}
+      query={graphql`
+        query QueryRenderersForYouQuery {
+          forYou: home_page {
+            ...ForYou_forYou
+          }
+        }
+      `}
+      variables={{}}
+      render={render}
+    />
+  )
+}
+
 interface GeneRendererProps extends RendererProps {
   geneID: string
   medium?: string

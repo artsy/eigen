@@ -1,5 +1,7 @@
+import { shallow } from "enzyme"
 import * as React from "react"
 import "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import Composer from "../Composer"
@@ -23,5 +25,14 @@ describe("regarding the send button", () => {
     instance.componentDidUpdate()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  it("calls onSubmit with the text when send button is pressed", () => {
+    const onSubmit = jest.fn()
+    const wrapper = shallow(<Composer onSubmit={onSubmit} />)
+    const text = "Don't trust everything you see, even salt looks like sugar"
+    wrapper.setState({ text })
+    wrapper.find(TouchableWithoutFeedback).simulate("press")
+    expect(onSubmit).toBeCalledWith(text)
   })
 })

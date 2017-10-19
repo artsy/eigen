@@ -107,7 +107,7 @@ exports[`renders correctly with a show 1`] = `
               undefined,
               Object {},
               Object {
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontFamily": "AvantGardeGothicITC",
               },
             ]
           }
@@ -147,7 +147,7 @@ exports[`renders correctly with a show 1`] = `
                 },
                 Object {},
                 Object {
-                  "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                  "fontFamily": "AvantGardeGothicITC",
                 },
               ]
             }
@@ -369,7 +369,7 @@ exports[`renders correctly with an artwork 1`] = `
               undefined,
               Object {},
               Object {
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontFamily": "AvantGardeGothicITC",
               },
             ]
           }
@@ -409,7 +409,7 @@ exports[`renders correctly with an artwork 1`] = `
                 },
                 Object {},
                 Object {
-                  "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                  "fontFamily": "AvantGardeGothicITC",
                 },
               ]
             }

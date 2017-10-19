@@ -1,4 +1,8 @@
+import Enzyme from "enzyme"
+import Adapter from "enzyme-adapter-react-16"
 import expect from "expect"
+
+Enzyme.configure({ adapter: new Adapter() })
 
 // Waiting on https://github.com/thymikee/snapshot-diff/pull/17
 import diff from "snapshot-diff"
