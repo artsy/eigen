@@ -46,24 +46,15 @@
     "type": "git",
     "url": "git+https://github.com/artsy/emission.git"
   },
-  "keywords": [
-    "artsy",
-    "react",
-    "react-native"
-  ],
+  "keywords": ["artsy", "react", "react-native"],
   "author": "Eloy Durán",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/artsy/emission/issues"
   },
   "homepage": "https://github.com/artsy/emission#readme",
-  "files": [
-    "index.js",
-    "data",
-    "lib"
-  ],
+  "files": ["index.js", "data", "lib"],
   "dependencies": {
-    "@types/react-tracking": "^5.0.0",
     "lodash": "^4.17.4",
     "moment": "latest",
     "prop-types": "^15.5.10",
@@ -86,6 +77,7 @@
     "@types/lodash": "^4.14.64",
     "@types/react": "^16.0.5",
     "@types/react-native": "^0.48.0",
+    "@types/react-tracking": "^5.0.0",
     "apphub": "^0.5.1",
     "awesome-typescript-loader": "^3.2.3",
     "babel-jest": "^18.0.0",
@@ -97,6 +89,8 @@
     "babel-preset-stage-0": "^6.24.1",
     "concurrently": "^2.2.0",
     "danger": "alpha",
+    "enzyme": "^3.1.0",
+    "enzyme-adapter-react-16": "^1.0.2",
     "jest": "^21.0.1",
     "jest-react-native": "18.0.0",
     "jest-snapshots-svg": "^0.0.21",
@@ -117,7 +111,7 @@
     "ts-jest": "^21.0.0",
     "tslint": "^5.4.3",
     "tslint-config-prettier": "^1.0.0",
-    "typescript": "^2.3.2"
+    "typescript": "^2.5.3"
   },
   "jest": {
     "preset": "react-native",
@@ -126,40 +120,23 @@
         "useBabelrc": true
       }
     },
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "/__tests__/.*-tests.(ts|tsx|js)$",
-    "testPathIgnorePatterns": [
-      "\\.snap$",
-      "<rootDir>/node_modules/"
-    ],
-    "setupFiles": [
-      "./src/setupJest.ts"
-    ],
+    "testPathIgnorePatterns": ["\\.snap$", "<rootDir>/node_modules/"],
+    "setupFiles": ["./src/setupJest.ts"],
     "cacheDirectory": ".jest/cache"
   },
   "lint-staged": {
-    "*.@(ts|tsx)": [
-      "tslint --fix",
-      "npm run prettier-write --",
-      "git add"
-    ],
-    "*.json": [
-      "npm run prettier-write --"
-    ]
+    "*.@(ts|tsx)": ["tslint --fix", "npm run prettier-write --", "git add"],
+    "*.json": ["npm run prettier-write --"]
   },
   "config": {
     "react-native-storybook-loader": {
-      "searchDir": [
-        "./src"
-      ],
+      "searchDir": ["./src"],
       "pattern": "**/*.story.tsx",
       "outputFile": "./storybook/storyLoader.js"
     }

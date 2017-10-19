@@ -2,6 +2,7 @@
 
 ###### Dev
 
+-   Adds enzyme for tests - luc
 -   Updates Avant Garde font with a version that can handle special characters - sarah
 -   Remaps space key bidding to ctrl+space so we can enter spaces fromthe simulator - luc
 -   Conditionally use different past artist show fragments for iPad vs iPhone - alloy

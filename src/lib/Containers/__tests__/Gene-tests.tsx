@@ -5,6 +5,7 @@ let mockRefineCallbackPromise = () => Promise.resolve({})
 jest.mock("../../NativeModules/triggerRefine", () => ({
   triggerRefine: () => mockRefineCallbackPromise(),
 }))
+jest.mock("react-native-parallax-scroll-view", () => "react-native-parallax-scroll-view")
 
 // Stub out these views for simplicity sake
 jest.mock("../../Components/Gene/Header", () => "Header")
