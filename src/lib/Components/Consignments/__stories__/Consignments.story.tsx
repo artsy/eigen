@@ -34,7 +34,9 @@ storiesOf("Consignments/_Screens")
   .add("Overview Page (Fresh)", () => <Overview navigator={nav} route={route} setup={{}} />)
   .add("Overview Page", () => <Overview navigator={nav} route={route} setup={null} />)
   .add("Artist Page", () => <Artist navigator={nav} route={route} />)
-  .add("SelectFromPhotoLibrary Page", () => <SelectFromPhotoLibrary navigator={nav} route={route} setup={{}} />)
+  .add("SelectFromPhotoLibrary Page", () =>
+    <SelectFromPhotoLibrary navigator={nav} route={route} setup={{}} updateWithPhotos={() => ""} />
+  )
   .add("Location Page", () => <Location navigator={nav} route={route} />)
   .add("Metadata Page", () => <Metadata navigator={nav} route={route} metadata={blankMetadata} />)
   .add("Provenance", () => <Provenance navigator={nav} route={route} />)

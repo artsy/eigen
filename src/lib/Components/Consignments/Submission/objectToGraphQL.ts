@@ -14,8 +14,8 @@ export const objectToGraphQLInput = (obj: any, enums?: string[]) => {
         input += key + `: ` + element + `, `
       } else if (isString(element)) {
         input += key + `: "` + element + `", `
-      } else {
-        // is an object
+      } else if (element) {
+        // is probably an object at this point
         input += key + `: ` + objectToGraphQLInput(element) + ", "
       }
     }

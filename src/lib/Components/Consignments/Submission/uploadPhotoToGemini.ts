@@ -62,16 +62,14 @@ interface ConvectionAssetSubmissionInput {
 }
 
 export const uploadImageAndPassToGemini = async (file: string, acl: string, submissionID: string) => {
-  console.log(file)
   const creationInput = {
     name: "convection-staging",
     acl,
   }
+  // Get S3 Credentials from Gemini
   const geminiResponse = await getGeminiCredentialsForEnvironment(creationInput)
-  console.log("creds: ", geminiResponse)
-
+  // Upload our file to the place Gemini recommended
   const s3 = await uploadFileToS3(file, creationInput, geminiResponse)
-  // console.log("s3: ", s3)
 
   const triggerGeminiInput = {
     source_key: s3.key,
@@ -83,10 +81,11 @@ export const uploadImageAndPassToGemini = async (file: string, acl: string, subm
     },
   }
 
+  // Let Gemini know that this file exists and should be processed
   const geminiProcess = await createGeminiAssetWithS3Credentials(triggerGeminiInput)
-  console.log(geminiProcess)
 
-  const submission = await addAssetToConsignment({
+  // Let Convection know that the Gemini asset should be attached to the consignment
+  await addAssetToConsignment({
     asset_type: "image",
     gemini_token: geminiProcess.data.createGeminiEntryForAsset.asset.token,
     submission_id: submissionID,
@@ -118,8 +117,9 @@ export const getGeminiCredentialsForEnvironment = async (options: GeminiCredsInp
   return metaphysics<GeminiCredsResponse>({ query, variables: {} })
 }
 
-// This is in RN, but not declared in the RN types
+// These are in RN, but not declared in the RN types:
 // https://github.com/facebook/react-native/blob/master/Libraries/Network/FormData.js
+// https://github.com/facebook/react-native/blob/master/Libraries/Network/XMLHttpRequest.js
 declare var FormData: any
 declare var XMLHttpRequest: any
 
@@ -164,9 +164,8 @@ export const uploadFileToS3 = async (file: string, req: GeminiCredsInput, res: G
       if (e.target.status.toString() === asset.policy_document.conditions.success_action_status) {
         // e.g. https://artsy-media-uploads.s3.amazonaws.com/A3tfuXp0t5OuUKv07XaBOw%2F%24%7Bfilename%7D
         const url = e.target.responseHeaders.Location
-
         resolve({
-          key: url.split("/").pop(),
+          key: url.split("/").pop().replace("%2F", "/"),
         })
       } else {
         throw new Error("S3 upload failed")
@@ -190,7 +189,6 @@ export const createGeminiAssetWithS3Credentials = async (options: GeminiEntryCre
         }
       }
     }`
-  console.log(query)
   return metaphysics<GeminiEntryCreationResonse>({ query, variables: {} })
 }
 
@@ -200,12 +198,11 @@ export const addAssetToConsignment = async (options: ConvectionAssetSubmissionIn
   const input = objectToGraphQL(options, [])
   const query = `
     mutation {
-      addAssetToConsignmentSubmission(input: ${input}     ) {
+      addAssetToConsignmentSubmission(input: ${input}) {
         asset {
           submission_id
         }
       }
     }`
-  console.log(query)
   return metaphysics<GeminiEntryCreationResonse>({ query, variables: {} })
 }
