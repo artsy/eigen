@@ -7,6 +7,9 @@
     "npm": "5.4.x",
     "yarn": "1.x"
   },
+  "resolutions": {
+    "react": "16.0.0-alpha.12"
+  },
   "main": "index.ios.js",
   "scripts": {
     "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
@@ -46,27 +49,19 @@
     "type": "git",
     "url": "git+https://github.com/artsy/emission.git"
   },
-  "keywords": [
-    "artsy",
-    "react",
-    "react-native"
-  ],
+  "keywords": ["artsy", "react", "react-native"],
   "author": "Eloy Durán",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/artsy/emission/issues"
   },
   "homepage": "https://github.com/artsy/emission#readme",
-  "files": [
-    "index.js",
-    "data",
-    "lib"
-  ],
+  "files": ["index.js", "data", "lib"],
   "dependencies": {
     "lodash": "^4.17.4",
     "moment": "latest",
     "prop-types": "^15.5.10",
-    "react": "^16.0.0",
+    "react": "16.0.0-alpha.12",
     "react-native": "0.48.4",
     "react-native-hyperlink": "0.0.11",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
@@ -128,40 +123,23 @@
         "useBabelrc": true
       }
     },
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "/__tests__/.*-tests.(ts|tsx|js)$",
-    "testPathIgnorePatterns": [
-      "\\.snap$",
-      "<rootDir>/node_modules/"
-    ],
-    "setupFiles": [
-      "./src/setupJest.ts"
-    ],
+    "testPathIgnorePatterns": ["\\.snap$", "<rootDir>/node_modules/"],
+    "setupFiles": ["./src/setupJest.ts"],
     "cacheDirectory": ".jest/cache"
   },
   "lint-staged": {
-    "*.@(ts|tsx)": [
-      "tslint --fix",
-      "npm run prettier-write --",
-      "git add"
-    ],
-    "*.json": [
-      "npm run prettier-write --"
-    ]
+    "*.@(ts|tsx)": ["tslint --fix", "npm run prettier-write --", "git add"],
+    "*.json": ["npm run prettier-write --"]
   },
   "config": {
     "react-native-storybook-loader": {
-      "searchDir": [
-        "./src"
-      ],
+      "searchDir": ["./src"],
       "pattern": "**/*.story.tsx",
       "outputFile": "./storybook/storyLoader.js"
     }
