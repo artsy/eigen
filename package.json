@@ -7,9 +7,6 @@
     "npm": "5.4.x",
     "yarn": "1.x"
   },
-  "resolutions": {
-    "react": "16.0.0-alpha.12"
-  },
   "main": "index.ios.js",
   "scripts": {
     "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
