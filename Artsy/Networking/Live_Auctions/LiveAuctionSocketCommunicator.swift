@@ -174,7 +174,8 @@ extension PublicFunctions {
                 "type": "FirstPriceBidPlaced",
                 "lotId": lotID,
                 "amountCents": NSNumber(value: amountCents as UInt64),
-                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID, "paddleNumber": paddleNumber]
+                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID, "paddleNumber": paddleNumber],
+                "clientMetadata": clientMetadata()
             ]
         ] as NSDictionary)
     }
@@ -189,7 +190,8 @@ extension PublicFunctions {
                 "type": "SecondPriceBidPlaced",
                 "lotId": lotID,
                 "amountCents": NSNumber(value: amountCents as UInt64),
-                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID, "paddleNumber": paddleNumber]
+                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID, "paddleNumber": paddleNumber],
+                "clientMetadata": clientMetadata()
             ]
         ] as NSDictionary)
     }
@@ -202,5 +204,9 @@ extension PublicFunctions {
             print("Error creating JSON string of socket event")
             return print(error)
         }
+    }
+
+    func clientMetadata() -> [String: String] {
+        return ["User-Agent": ARRouter.userAgent()]
     }
 }

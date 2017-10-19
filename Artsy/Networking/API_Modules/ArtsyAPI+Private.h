@@ -8,8 +8,14 @@ NetworkFailureBlock passOnNetworkError(void (^)(NSError *error));
 
 @interface ArtsyAPI (Private)
 
-/// A simple method for performing a ARJSONRequest and passing back the returned JSON as a native object
+/// A simple method for performing a ARJSONRequest and passing back the returned JSON as a native object. Nulls are maintained.
 + (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure;
+/// A simple method for performing a ARJSONRequest and passing back the returned JSON as a native object. Nulls are removed if specified.
++ (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure;
+
+/// A method for performing an ARJSONRequest that checks for GraphQL errors prior to invoking the success callback.
+/// It also removes keys with null values from the response JSON.
++ (AFHTTPRequestOperation *)performGraphQLRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSError *error))failure;
 
 /// A method for performing an ARJSONRequest that checks for GraphQL errors prior to invoking the success callback.
 + (AFHTTPRequestOperation *)performGraphQLRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSError *error))failure;

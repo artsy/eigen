@@ -9,11 +9,13 @@
 #import "PartnerShow.h"
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
+#import "ARAnalyticsConstants.h"
 
 #import "MTLModel+JSON.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
+#import <ARAnalytics/ARAnalytics.h>
 
 
 @implementation ArtsyAPI (Artworks)
@@ -41,12 +43,25 @@
         NSDictionary *pageInfo = artworksConnection[@"pageInfo"];
         NSArray *artworksJson = [artworksConnection[@"edges"] valueForKey:@"node"];
 
+        if (!artworksJson) {
+            NSLog(@"Failure fetching GraphQL data: %@", json);
+            [ARAnalytics event:ARAnalyticsGraphQLResponseError withProperties:json];
+            if (failure) {
+                failure([NSError errorWithDomain:@"JSON parsing" code:0 userInfo:json]);
+            }
+            return;
+        }
+
         // Parse artworks, sale artworks, and make manual connection between the two if appropritate.
         NSArray *artworks = [artworksJson map:^id(id json) {
+            // AFNetworking will remove keys from dictionaries that contain null values, but not arrays that contain *only* nulls.
+            // Once https://github.com/AFNetworking/AFNetworking/pull/4052 is merged, we can update AFNetworking and remove this NSNull check.
+            // So we need to do some additional checking, just to be safe.
+            if (json == [NSNull null]) { return nil; }
             Artwork *artwork = [Artwork modelWithJSON:json];
 
             id saleArtworkJSON = json[@"sale_artwork"];
-            if (saleArtworkJSON != [NSNull null]) {
+            if (saleArtworkJSON) {
                 SaleArtwork *saleArtwork = [SaleArtwork modelWithJSON:saleArtworkJSON];
                 artwork.auction = saleArtwork.auction;
                 artwork.saleArtwork = saleArtwork;

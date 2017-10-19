@@ -23,7 +23,7 @@ class LiveAuctionStateManager: NSObject {
     let sale: LiveSale
     let bidderCredentials: BiddingCredentials
     let operatorConnectedSignal = Observable<Bool>()
-    let saleOnHoldSignal = Observable<Bool>()
+    let saleOnHoldSignal = Observable<(isOnHold: Bool, message: String?)>()
     let initialStateLoadedSignal = Observable<Void>(options: .Once)
 
     fileprivate let socketCommunicator: LiveAuctionSocketCommunicatorType
@@ -133,12 +133,14 @@ private extension PrivateFunctions {
     func handleSaleOnHoldState(_ state: AnyObject) {
         let json = JSON(state)
         let saleOnHold = json["isOnHold"].boolValue
-        saleOnHoldSignal.update(saleOnHold)
+        let message = json["userMessage"].string
+        saleOnHoldSignal.update((isOnHold: saleOnHold, message: message))
     }
     func handleSaleOnHoldInitialState(_ state: AnyObject) {
         let json = JSON(state)
         let saleOnHold = json["saleOnHold"].boolValue
-        saleOnHoldSignal.update(saleOnHold)
+        let message = json["saleOnHoldMessage"].string
+        saleOnHoldSignal.update((isOnHold: saleOnHold, message: message))
     }
 }
 
