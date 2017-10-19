@@ -93,7 +93,6 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   updateProvenance = (result: string) => this.updateStateAndMetaphysics({ provenance: result })
   updateLocation = (city: string, state: string, country: string) =>
     this.updateStateAndMetaphysics({ location: { city, state, country } })
-  updatePhotos = (photos: string[]) => this.updateStateAndMetaphysics({ photos })
 
   updatePhotos = (photos: string[]) =>
     this.updateStateAndMetaphysics({ photos: photos.map(f => ({ file: f, uploaded: false })) })
@@ -124,11 +123,13 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   exitModal = () => SwitchBoard.dismissModalViewController(this)
 
   uploadPhotosIfNeeded = () => {
-    const toUpload = this.state.photos.filter(f => !f.uploaded && f.file)
-    toUpload.forEach(photo => {
-      console.log(photo)
-      uploadImageAndPassToGemini(photo.file, "private")
-    })
+    if (this.state.submission_id) {
+      const toUpload = this.state.photos.filter(f => !f.uploaded && f.file)
+      toUpload.forEach(photo => {
+        console.log(photo)
+        uploadImageAndPassToGemini(photo.file, "private", this.state.submission_id)
+      })
+    }
   }
 
   render() {

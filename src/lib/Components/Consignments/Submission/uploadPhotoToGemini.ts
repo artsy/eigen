@@ -41,12 +41,27 @@ interface GeminiEntryCreationInput {
 }
 
 interface GeminiEntryCreationResonse {
-  asset: {
-    token: string
+  data: {
+    createGeminiEntryForAsset: {
+      asset: {
+        token: string
+      }
+    }
   }
 }
 
-export const uploadImageAndPassToGemini = async (file: string, acl: string) => {
+interface S3UploadResponse {
+  key: string
+}
+
+interface ConvectionAssetSubmissionInput {
+  asset_type: string
+  gemini_token: string
+  submission_id: string
+  clientMutationId?: string
+}
+
+export const uploadImageAndPassToGemini = async (file: string, acl: string, submissionID: string) => {
   console.log(file)
   const creationInput = {
     name: "convection-staging",
@@ -56,10 +71,10 @@ export const uploadImageAndPassToGemini = async (file: string, acl: string) => {
   console.log("creds: ", geminiResponse)
 
   const s3 = await uploadFileToS3(file, creationInput, geminiResponse)
-  console.log("s3: ", s3)
+  // console.log("s3: ", s3)
 
   const triggerGeminiInput = {
-    source_key: "",
+    source_key: s3.key,
     template_key: "convection-staging",
     source_bucket: geminiResponse.data.requestCredentialsForAssetUpload.asset.policy_document.conditions.bucket,
     metadata: {
@@ -68,8 +83,14 @@ export const uploadImageAndPassToGemini = async (file: string, acl: string) => {
     },
   }
 
-  debugger
-  // const geminiProcess = await createGeminiAssetWithS3Credentials()
+  const geminiProcess = await createGeminiAssetWithS3Credentials(triggerGeminiInput)
+  console.log(geminiProcess)
+
+  const submission = await addAssetToConsignment({
+    asset_type: "image",
+    gemini_token: geminiProcess.data.createGeminiEntryForAsset.asset.token,
+    submission_id: submissionID,
+  })
 }
 
 export const getGeminiCredentialsForEnvironment = async (options: GeminiCredsInput) => {
@@ -102,8 +123,8 @@ export const getGeminiCredentialsForEnvironment = async (options: GeminiCredsInp
 declare var FormData: any
 declare var XMLHttpRequest: any
 
-export const uploadFileToS3 = async (file: string, req: GeminiCredsInput, res: GeminiCredsResponse) => {
-  return new Promise(resolve => {
+export const uploadFileToS3 = async (file: string, req: GeminiCredsInput, res: GeminiCredsResponse) =>
+  new Promise<S3UploadResponse>(resolve => {
     const asset = res.data.requestCredentialsForAssetUpload.asset
 
     const formData = new FormData()
@@ -131,23 +152,31 @@ export const uploadFileToS3 = async (file: string, req: GeminiCredsInput, res: G
     formData.append("file", {
       uri: file,
       type: "image/jpeg",
+      name: "photo.jpg",
     })
 
+    // Fetch didn't seem to work, so I had to move to a lower
+    // level abstraction. Note that this request will fail if you are using a debugger.
+    //
+    // Kinda sucks, but https://github.com/jhen0409/react-native-debugger/issues/38
     const request = new XMLHttpRequest()
     request.onload = e => {
-      console.log("Done")
-      console.log(e)
-      if (e.target.status === 204) {
-        // Result in e.target.responseHeaders.Location
-        console.log(e.target.responseHeaders.Location)
+      if (e.target.status.toString() === asset.policy_document.conditions.success_action_status) {
+        // e.g. https://artsy-media-uploads.s3.amazonaws.com/A3tfuXp0t5OuUKv07XaBOw%2F%24%7Bfilename%7D
+        const url = e.target.responseHeaders.Location
+
+        resolve({
+          key: url.split("/").pop(),
+        })
+      } else {
+        throw new Error("S3 upload failed")
       }
-      resolve(e)
     }
+
     request.open("POST", uploadURL, true)
     request.setRequestHeader("Content-type", "multipart/form-data")
     request.send(formData)
   })
-}
 
 export const createGeminiAssetWithS3Credentials = async (options: GeminiEntryCreationInput) => {
   options.clientMutationId = Math.random().toString(8)
@@ -160,6 +189,23 @@ export const createGeminiAssetWithS3Credentials = async (options: GeminiEntryCre
           token
         }
       }
-    }  `
+    }`
+  console.log(query)
+  return metaphysics<GeminiEntryCreationResonse>({ query, variables: {} })
+}
+
+export const addAssetToConsignment = async (options: ConvectionAssetSubmissionInput) => {
+  options.clientMutationId = Math.random().toString(8)
+
+  const input = objectToGraphQL(options, [])
+  const query = `
+    mutation {
+      addAssetToConsignmentSubmission(input: ${input}     ) {
+        asset {
+          submission_id
+        }
+      }
+    }`
+  console.log(query)
   return metaphysics<GeminiEntryCreationResonse>({ query, variables: {} })
 }
