@@ -610,7 +610,8 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       autoCorrect={false}
                       clearButtonMode="while-editing"
                       keyboardAppearance="dark"
-                      onChange={[Function]}
+                      keyboardType="numeric"
+                      onChangeText={[Function]}
                       placeholder="Depth"
                       placeholderTextColor="#666666"
                       selectionColor="#cccccc"
@@ -629,6 +630,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                           undefined,
                         ]
                       }
+                      value=""
                     />
                   </View>
                   <View
@@ -1409,7 +1411,8 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       autoCorrect={false}
                       clearButtonMode="while-editing"
                       keyboardAppearance="dark"
-                      onChange={[Function]}
+                      keyboardType="numeric"
+                      onChangeText={[Function]}
                       placeholder="Depth"
                       placeholderTextColor="#666666"
                       selectionColor="#cccccc"
@@ -1428,6 +1431,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           undefined,
                         ]
                       }
+                      value=""
                     />
                   </View>
                   <View

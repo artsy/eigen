@@ -92,7 +92,7 @@ const Button: React.SFC<TouchableHighlightProperties> = ({ children, ...props })
   </TouchableHighlight>
 
 const ImagePreview = images =>
-  <ImageStyle source={{ uri: images[0] }}>
+  <ImageStyle source={{ uri: images[0].file }}>
     <ImageDarkener>
       <InlineCopy>
         {images.length}

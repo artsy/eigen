@@ -29,6 +29,7 @@ import Welcome from "./Welcome"
 
 import createSubmission from "../Submission/create"
 import updateSubmission from "../Submission/update"
+import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
 
 const consignmentsStateKey = "ConsignmentsStoredState"
 
@@ -66,7 +67,11 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
       passProps: { ...this.state, updateWithProvenance: this.updateProvenance },
     })
 
-  goToPhotosTapped = () => this.props.navigator.push({ component: SelectFromPhotoLibrary, passProps: this.state })
+  goToPhotosTapped = () =>
+    this.props.navigator.push({
+      component: SelectFromPhotoLibrary,
+      passProps: { setup: this.state, updateWithPhotos: this.updatePhotos },
+    })
 
   goToMetadataTapped = () =>
     this.props.navigator.push({
@@ -89,12 +94,18 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   updateLocation = (city: string, state: string, country: string) =>
     this.updateStateAndMetaphysics({ location: { city, state, country } })
 
+  updatePhotos = (photos: string[]) =>
+    this.updateStateAndMetaphysics({ photos: photos.map(f => ({ file: f, uploaded: false })) })
+
   updateStateAndMetaphysics = (state: any) => this.setState(state, this.updateLocalStateAndMetaphysics)
 
   updateLocalStateAndMetaphysics = async () => {
     this.saveStateToLocalStorage()
 
     if (this.state.submission_id) {
+      // This is async, but we don't need the synchronous behavior from await.
+      this.uploadPhotosIfNeeded()
+
       updateSubmission(this.state, this.state.submission_id)
     } else if (this.state.artist) {
       const submission = await createSubmission(this.state)
@@ -111,6 +122,21 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   }
 
   exitModal = () => SwitchBoard.dismissModalViewController(this)
+
+  uploadPhotosIfNeeded = async () => {
+    const toUpload = this.state.photos && this.state.photos.filter(f => !f.uploaded && f.file)
+
+    if (toUpload.length) {
+      // Pull out the first in the queue and upload it
+      const photo = toUpload[0]
+      await uploadImageAndPassToGemini(photo.file, "private", this.state.submission_id)
+
+      // Mutate state 'unexpectedly', then send it back through "setState" to trigger the next
+      // in the queue
+      photo.uploaded = true
+      this.setState({ photos: this.state.photos }, this.uploadPhotosIfNeeded)
+    }
+  }
 
   render() {
     const title = "Complete work details to submit"

@@ -24,10 +24,13 @@ import {
   View,
   ViewProperties,
 } from "react-native"
+import { ConsignmentSetup } from "../index"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route
+  setup: ConsignmentSetup
+  updateWithPhotos: (photos: string[]) => void
 }
 
 interface State {
@@ -35,6 +38,7 @@ interface State {
   lastCursor: string
   loadingMore: boolean
   noMorePhotos: boolean
+  selection: Set<string>
 }
 
 const doneButtonStyles = {
@@ -45,13 +49,15 @@ const doneButtonStyles = {
 }
 
 export default class SelectFromPhotoLibrary extends React.Component<Props, State> {
-  constructor() {
+  constructor(props: Props) {
     super()
+    const hasPhotos = props.setup && props.setup.photos
     this.state = {
       cameraImages: [],
       loadingMore: false,
       lastCursor: "",
       noMorePhotos: false,
+      selection: new Set(hasPhotos ? props.setup.photos.map(p => p.file) : []),
     }
   }
 
@@ -72,8 +78,8 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
     // const fetchParams: GetPhotosParamType = {
     const fetchParams: any = {
       first: 20,
-      groupTypes: "all",
-      assetType: "photos",
+      // groupTypes: "all",
+      assetType: "Photos",
     }
 
     if (this.state.lastCursor) {
@@ -87,11 +93,10 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
     if (inTesting) {
       return
     }
-    console.log(fetchParams)
+
     CameraRoll.getPhotos(fetchParams)
       .then(data => {
         this.appendAssets(data)
-        console.log(data)
       })
       .catch(e => {
         console.log(e)
@@ -137,19 +142,20 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
   }
 
   doneTapped = () => {
+    this.props.updateWithPhotos([...this.state.selection.values()])
     this.props.navigator.pop()
   }
 
   onPressNewPhoto = () => {
     triggerCamera(this).then(photo => {
       if (photo) {
-        console.log("Cancelled")
-      } else {
-        console.log("Got photo back")
-        console.log(photo)
+        this.state.selection.add(photo.uri)
+        this.setState({ selection: this.state.selection })
       }
     })
   }
+
+  onNewSelectionState = (state: Set<string>) => this.setState({ selection: this.state.selection })
 
   render() {
     return (
@@ -163,7 +169,12 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
           >
             <View style={{ paddingTop: 40 }}>
               <P>We suggest adding a few photos of the work including the front and back as well as the signature.</P>
-              <ImageSelection data={this.state.cameraImages} onPressNewPhoto={this.onPressNewPhoto} />
+              <ImageSelection
+                data={this.state.cameraImages}
+                onPressNewPhoto={this.onPressNewPhoto}
+                onUpdateSelectedStates={this.onNewSelectionState}
+                selected={this.state.selection}
+              />
             </View>
           </ScrollView>
         </DoneButton>

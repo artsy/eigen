@@ -150,6 +150,10 @@
   version "6.0.89"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.89.tgz#154be0e6a823760cd6083aa8c48f952e2e63e0b0"
 
+"@types/query-string@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@types/query-string/-/query-string-5.0.0.tgz#5dbebd24d0abeb555d0dd9704c33462d84a45e69"
+
 "@types/react-native@^0.48.0":
   version "0.48.10"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.48.10.tgz#c808a3ed381b2f5d87f07853ae29def8d4ad9f81"
