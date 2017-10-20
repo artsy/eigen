@@ -1,5 +1,21 @@
-// In TypeScript 2.4 this can turn into an Enum
-// https://github.com/Microsoft/TypeScript/pull/15486
+// Prefer using this instead of the default export
+
+export enum Colors {
+  GrayLight = "#f8f8f8",
+  GrayRegular = "#e5e5e5",
+  GrayMedium = "#cccccc",
+  GraySemibold = "#666666",
+  GrayBold = "#333333",
+  PurpleLight = "#e2d2ff",
+  PurpleRegular = "#6e1fff",
+  RedRegular = "#f7625a",
+  YellowRegular = "#fdefd1",
+  YellowMedium = "#fce1a8",
+  YellowBold = "#f1af1b",
+  GreenRegular = "#0eda83",
+  Black = "black",
+  White = "white",
+}
 
 export default {
   "gray-light": "#f8f8f8",
