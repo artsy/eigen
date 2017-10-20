@@ -21,7 +21,7 @@
     "stylelint": "stylelint",
     "stylelint-project": "npm run stylelint -- 'src/**/*.{ts,tsx}'",
     "lint-staged": "lint-staged",
-    "ci": "npm run type-check && npm run lint && npm run prettier-project -- -l && npm run test",
+    "ci": "npm run relay && npm run type-check && npm run lint && npm run prettier-project -- -l && npm run test",
     "danger": "danger",
     "start": "npm run clean-example && npm run start-servers",
     "start-servers": "concurrently --kill-others 'npm run start-packager' 'npm run relay -- --watch' 'npm run storybook'",
