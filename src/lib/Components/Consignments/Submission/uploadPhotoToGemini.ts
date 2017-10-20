@@ -1,5 +1,4 @@
 import queryString from "query-string"
-import { graphql } from "react-relay"
 import { metaphysics } from "../../../metaphysics"
 import {
   createGeminiAssetWithS3Credentials,
