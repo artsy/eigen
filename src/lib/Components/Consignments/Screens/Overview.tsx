@@ -173,7 +173,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
               {...this.state}
             />
             <Row style={{ justifyContent: "center" }}>
-              <Button text="NEXT" onPress={canSubmit ? this.goToFinalSubmission : emptyFunc} />
+              <Button text="NEXT" onPress={canSubmit ? this.goToFinalSubmission : undefined} />
             </Row>
           </View>
         </ScrollView>

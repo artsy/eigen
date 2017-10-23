@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import { View } from "react-native"
 
-import { GhostButton, GrayActionButton, InvertedButton } from "../"
+import { GhostButton, GrayActionButton, InvertedButton, WhiteButton } from "../"
 import Button from "../Button"
 import ProgressButton from "../InvertedButton"
 import NavigationButton from "../NavigationButton"
@@ -40,6 +40,12 @@ storiesOf("App Style/Buttons")
     return [
       <GrayActionButton text="Disabled" key="1" {...style} />,
       <GrayActionButton text="Clickable" onPress={emptyFunc} key="2" {...style} />,
+    ]
+  })
+  .add("White Button", () => {
+    return [
+      <WhiteButton text="Disabled" key="1" {...style} />,
+      <WhiteButton text="Clickable" onPress={emptyFunc} key="2" {...style} />,
     ]
   })
   .add("Progress Button", () => [

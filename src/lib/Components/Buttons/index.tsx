@@ -58,6 +58,24 @@ const greyTheme = {
   },
 }
 
+const whiteTheme = {
+  enabled: {
+    foreground: Colors.Black,
+    background: Colors.White,
+    border: Colors.White,
+  },
+  disabled: {
+    foreground: Colors.Black,
+    background: Colors.GrayBold,
+    border: Colors.GrayBold,
+  },
+  highlighted: {
+    foreground: Colors.PurpleRegular,
+    background: Colors.GrayLight,
+    border: Colors.GrayLight,
+  },
+}
+
 export interface ButtonProps extends ViewProperties {
   /** The text value on the string */
   text: string
@@ -72,3 +90,5 @@ export const InvertedButton = (props: ButtonProps) => <Button {...props} stateCo
 export const GhostButton = (props: ButtonProps) => <Button {...props} stateColors={ghostTheme} />
 
 export const GrayActionButton = (props: ButtonProps) => <Button {...props} stateColors={greyTheme} />
+
+export const WhiteButton = (props: ButtonProps) => <Button {...props} stateColors={whiteTheme} />
