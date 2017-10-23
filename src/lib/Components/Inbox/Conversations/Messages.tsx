@@ -11,6 +11,7 @@ interface Props {
   conversation?: RelayProps["me"]["conversation"]
   relay?: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
+  shouldShowSeparator?: (shouldShowSeparator: boolean) => void
 }
 
 interface State {
@@ -113,9 +114,14 @@ export class Messages extends React.Component<Props, State> {
           // display messages from the top
           const windowHeight = Dimensions.get("window").height
           const containerHeight = windowHeight - 100
+          const shouldStickFirstMessageToTop = height < containerHeight
+
+          if (this.props.shouldShowSeparator) {
+            this.props.shouldShowSeparator(!shouldStickFirstMessageToTop)
+          }
 
           this.setState({
-            shouldStickFirstMessageToTop: height < containerHeight,
+            shouldStickFirstMessageToTop,
           })
         }}
         refreshControl={refreshControl}

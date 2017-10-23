@@ -23,7 +23,7 @@ exports[`renders properly 1`] = `
           "marginBottom": 20,
         },
         Object {
-          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+          "fontFamily": "AvantGardeGothicITC",
         },
       ]
     }

@@ -2,6 +2,8 @@
 
 ###### Dev
 
+-   Adds enzyme for tests - luc
+-   Updates Avant Garde font with a version that can handle special characters - sarah
 -   Remaps space key bidding to ctrl+space so we can enter spaces fromthe simulator - luc
 -   Conditionally use different past artist show fragments for iPad vs iPhone - alloy
 -   Upgrades Relay to ‘modern’ (v1.3.0) - alloy
@@ -21,7 +23,12 @@
 -   Fix release build by switching from the default React Native packager (Metro) to the community one based on webpack (Haul) - alloy
 -   Revert back to React Native packager (metro), life comes at you fast, see #785 for context - orta
 -   Updates invoice preview component status when a ARPaymentRequestPaid notification is received - alloy
+-   Present payment request view modally. - alloy
 
+###### Home
+
+-   Adds for For You tab with styled headers - luc
+-   Creates tab view container for new home - luc
 
 ###### Consignments
 
@@ -37,9 +44,13 @@
 -   Submit draft metadata to convection - orta
 -   Publish a consignment to convection - orta
 -   Keep track of the user's input during the submission process - orta
+-   Consolidate a lot of user interface elements - orta
+-   Photos are uploaded an attached to existing submissions  - orta
 
 ###### Messaging
 
+-   Hyperlinks in messages are now artsy purple & underlined - sarah
+-   Aligns message header with existing back button - sarah
 -   Temporarily removed partner response rate in inquiry - maxim
 -   Fixed payment request component collapsing and minor UI changes - luc
 -   Added support for live open auctions for active bids - sarah

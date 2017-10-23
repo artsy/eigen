@@ -30,4 +30,10 @@ describe("JS -> GQL", () => {
     const input = { a: true, b: false, c: undefined }
     expect(objectToGraphQLInput(input, ["b"])).toEqual(result)
   })
+
+  it("handles objects correctly", () => {
+    const result = `{ a: 6, b: { c: 1 } }`
+    const input = { a: 6, b: { c: 1 } }
+    expect(objectToGraphQLInput(input)).toEqual(result)
+  })
 })

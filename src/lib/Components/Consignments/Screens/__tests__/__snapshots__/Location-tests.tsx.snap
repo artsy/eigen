@@ -96,7 +96,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                   keyboardAppearance="dark"
                   onChangeText={[Function]}
                   placeholder="City, Country"
-                  placeholderTextColor="#cccccc"
+                  placeholderTextColor="#666666"
                   returnKeyType="search"
                   selectionColor="#cccccc"
                   style={
@@ -121,8 +121,8 @@ exports[`Sets up the right view hierarchy 1`] = `
                 style={
                   Array [
                     Object {
-                      "backgroundColor": "#e5e5e5",
-                      "height": 2,
+                      "backgroundColor": "white",
+                      "height": 1,
                     },
                     undefined,
                   ]
@@ -130,7 +130,7 @@ exports[`Sets up the right view hierarchy 1`] = `
               />
             </View>
             <RCTScrollView
-              keyboardShouldPersistTaps={true}
+              keyboardShouldPersistTaps="always"
               scrollEnabled={null}
               style={
                 Object {
@@ -195,7 +195,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                 "flexBasis": 0,
                 "flexGrow": 1,
                 "flexShrink": 1,
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontFamily": "AvantGardeGothicITC",
                 "fontSize": 14,
                 "textAlign": "center",
               },

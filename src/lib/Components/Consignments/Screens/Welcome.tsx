@@ -1,8 +1,8 @@
 import * as React from "react"
 
-import Button from "../../Buttons/FlatWhite"
 import Circle from "../Components/CircleImage"
 import ConsignmentBG from "../Components/ConsignmentBG"
+import { Button } from "../Components/FormElements"
 import { BodyText as P, LargeHeadline } from "../Typography"
 import Overview from "./Overview"
 
@@ -14,11 +14,7 @@ interface Props extends ViewProperties {
 }
 
 export default class Welcome extends React.Component<Props, null> {
-  goTapped = () => {
-    this.props.navigator.push({
-      component: Overview,
-    })
-  }
+  goTapped = () => this.props.navigator.push({ component: Overview })
 
   render() {
     return (
@@ -36,9 +32,7 @@ export default class Welcome extends React.Component<Props, null> {
               <P>Get your work placed in an upcoming sale.</P>
             </View>
 
-            <View style={{ height: 43, width: 320, marginTop: 20 }}>
-              <Button text="GET STARTED" onPress={this.goTapped} style={{ flex: 1 }} />
-            </View>
+            <Button text="GET STARTED" onPress={this.goTapped} />
           </View>
         </ScrollView>
       </ConsignmentBG>

@@ -68,7 +68,7 @@ exports[`renders correctly 1`] = `
         numberOfLines={1}
         style={
           Object {
-            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontFamily": "AvantGardeGothicITC",
             "fontSize": 12,
             "height": 17,
             "marginRight": 12,
@@ -180,7 +180,7 @@ exports[`renders correctly 1`] = `
                   "opacity": 1,
                 },
                 Object {
-                  "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                  "fontFamily": "AvantGardeGothicITC",
                 },
               ]
             }

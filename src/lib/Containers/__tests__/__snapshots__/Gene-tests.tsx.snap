@@ -1,471 +1,78 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`looks like expected 1`] = `
-<View
-  onLayout={[Function]}
-  style={
+<react-native-parallax-scroll-view
+  backgroundColor="white"
+  backgroundScrollSpeed={1}
+  contentBackgroundColor="white"
+  fadeOutForeground={false}
+  onChangeHeaderVisibility={[Function]}
+  parallaxHeaderContainerStyles={
+    Object {
+      "marginBottom": 0,
+    }
+  }
+  parallaxHeaderHeight={200}
+  renderBodyComponentHeader={[Function]}
+  renderForeground={[Function]}
+  renderStickyHeader={[Function]}
+  scrollsToTop={true}
+  stickyHeaderHeight={64}
+  stickyHeaderIndices={
     Array [
-      undefined,
-      Object {
-        "backgroundColor": "transparent",
-        "flex": 1,
-      },
+      1,
     ]
   }
 >
   <View
-    collapsable={undefined}
     style={
       Object {
-        "backgroundColor": "white",
-        "height": 200,
-        "opacity": 1,
-        "overflow": "hidden",
-        "position": "absolute",
-        "top": 0,
-        "transform": Array [
-          Object {
-            "translateY": 0,
-          },
-          Object {
-            "scale": 1,
-          },
-        ],
-        "width": 750,
+        "marginTop": 20,
+        "paddingLeft": 40,
+        "paddingRight": 40,
       }
     }
   >
-    <View>
-      <View />
-    </View>
-  </View>
-  <RCTScrollView
-    onChangeHeaderVisibility={[Function]}
-    onScroll={[Function]}
-    parallaxHeaderContainerStyles={
-      Object {
-        "marginBottom": 0,
-      }
-    }
-    scrollEventThrottle={16}
-    scrollsToTop={true}
-    stickyHeaderIndices={
-      Array [
-        1,
-      ]
-    }
-    style={
-      Array [
+    <ArtworksGrid
+      gene={
         Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
-  >
-    <View>
-      <View
-        style={
-          Array [
-            Object {
-              "backgroundColor": "transparent",
-              "overflow": "hidden",
-            },
-            Object {
-              "marginBottom": 0,
-            },
-          ]
-        }
-      >
-        <View
-          collapsable={undefined}
-          style={
-            Object {
-              "backgroundColor": "transparent",
-              "height": 200,
-              "opacity": 1,
-              "overflow": "hidden",
-            }
-          }
-        >
-          <View
-            style={
+          "_id": "a UUID",
+          "description": "Here's some text",
+          "filtered_artworks": Object {
+            "aggregations": Array [
               Object {
-                "height": 200,
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "white",
-                    "paddingLeft": 40,
-                    "paddingRight": 40,
-                  },
-                  Object {
-                    "alignSelf": "center",
-                    "width": 330,
-                  },
-                ]
-              }
-            >
-              <Header
-                gene={
-                  Object {
-                    "_id": "a UUID",
-                    "description": "Here's some text",
-                    "filtered_artworks": Object {
-                      "aggregations": Array [
-                        Object {
-                          "counts": Object {
-                            "count": "Yep",
-                            "id": "OK",
-                            "name": "Sure",
-                          },
-                          "slice": "1212",
-                        },
-                      ],
-                      "total": 12,
-                    },
-                    "id": "An ID",
-                    "name": "Example Gene",
-                    "trending_artists": Array [
-                      Object {
-                        "counts": Object {
-                          "artworks": 2,
-                          "for_sale_artworks": 1,
-                        },
-                        "id": "an artist",
-                        "image": Object {
-                          "large_version": "",
-                        },
-                        "name": "Artist name",
-                      },
-                    ],
-                  }
-                }
-                shortForm={false}
-              />
-              <SwitchView
-                onSelectionChange={[Function]}
-                selectedIndex={0}
-                style={
-                  Object {
-                    "marginTop": 30,
-                  }
-                }
-                titles={
-                  Array [
-                    "WORKS",
-                    "ABOUT",
-                  ]
-                }
-              />
-            </View>
-          </View>
-        </View>
-      </View>
-      <View>
-        <View
-          style={
-            Object {
-              "backgroundColor": "white",
-            }
-          }
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "#e5e5e5",
-                  "height": 1,
-                  "marginLeft": -40,
-                  "marginRight": -40,
+                "counts": Object {
+                  "count": "Yep",
+                  "id": "OK",
+                  "name": "Sure",
                 },
-                Object {
-                  "backgroundColor": "white",
-                  "marginTop": 0,
-                },
-              ]
-            }
-          />
-          <View
-            style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                  "height": 26,
-                  "justifyContent": "space-between",
-                  "marginBottom": 12,
-                  "marginTop": 12,
-                },
-                Object {
-                  "paddingLeft": 40,
-                  "paddingRight": 40,
-                },
-              ]
-            }
-          >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "fontSize": 17,
-                  },
-                  Object {
-                    "fontStyle": "italic",
-                    "marginTop": 2,
-                    "maxWidth": 580,
-                  },
-                  Object {
-                    "fontFamily": "AGaramondPro-Regular",
-                  },
-                ]
-              }
-            >
-              12 works ・ Painting ・ Below $100,000
-            </Text>
-            <View
-              accessibilityComponentType={undefined}
-              accessibilityLabel={undefined}
-              accessibilityTraits={undefined}
-              accessible={true}
-              hasTVPreferredFocus={undefined}
-              hitSlop={undefined}
-              isTVSelectable={true}
-              nativeID={undefined}
-              onLayout={undefined}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                  },
-                  Object {
-                    "alignItems": "center",
-                    "backgroundColor": "rgba(255, 255, 255, 1)",
-                    "borderColor": "#e5e5e5",
-                    "borderWidth": 1,
-                    "height": 26,
-                    "justifyContent": "center",
-                    "width": 80,
-                  },
-                ]
-              }
-              testID={undefined}
-              tvParallaxProperties={undefined}
-            >
-              <View>
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  disabled={false}
-                  ellipsizeMode="tail"
-                  style={
-                    Array [
-                      Object {
-                        "fontSize": 12,
-                      },
-                      Object {
-                        "color": "black",
-                        "fontFamily": "AGaramondPro-Regular",
-                        "opacity": 1,
-                      },
-                      Object {
-                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
-                      },
-                    ]
-                  }
-                >
-                  REFINE
-                </Text>
-              </View>
-            </View>
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "#e5e5e5",
-                  "height": 1,
-                  "marginLeft": -40,
-                  "marginRight": -40,
-                },
-                Object {
-                  "backgroundColor": "white",
-                },
-              ]
-            }
-          />
-        </View>
-      </View>
-      <View
-        onLayout={[Function]}
-        style={
-          Object {
-            "backgroundColor": "white",
-          }
-        }
-      >
-        <View
-          style={
-            Object {
-              "marginTop": 20,
-              "paddingLeft": 40,
-              "paddingRight": 40,
-            }
-          }
-        >
-          <ArtworksGrid
-            gene={
-              Object {
-                "_id": "a UUID",
-                "description": "Here's some text",
-                "filtered_artworks": Object {
-                  "aggregations": Array [
-                    Object {
-                      "counts": Object {
-                        "count": "Yep",
-                        "id": "OK",
-                        "name": "Sure",
-                      },
-                      "slice": "1212",
-                    },
-                  ],
-                  "total": 12,
-                },
-                "id": "An ID",
-                "name": "Example Gene",
-                "trending_artists": Array [
-                  Object {
-                    "counts": Object {
-                      "artworks": 2,
-                      "for_sale_artworks": 1,
-                    },
-                    "id": "an artist",
-                    "image": Object {
-                      "large_version": "",
-                    },
-                    "name": "Artist name",
-                  },
-                ],
-              }
-            }
-            medium="painting"
-            priceRange="*-100000"
-            queryKey="gene.artworks"
-            sort="-partner_updated_at"
-          />
-        </View>
-      </View>
-      <View
-        style={
-          Object {
-            "backgroundColor": "white",
-          }
-        }
-      />
-    </View>
-  </RCTScrollView>
-  <View
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-          "left": 0,
-          "overflow": "hidden",
-          "position": "absolute",
-          "top": 0,
-        },
-        Object {
-          "height": 64,
-          "width": 750,
-        },
-      ]
-    }
-  >
-    <View
-      collapsable={undefined}
-      style={
-        Object {
-          "backgroundColor": "white",
-          "height": 64,
-          "opacity": 0,
-        }
-      }
-    >
-      <View
-        collapsable={undefined}
-        style={
-          Object {
-            "transform": Array [
-              Object {
-                "translateY": 64,
+                "slice": "1212",
               },
             ],
-          }
-        }
-      >
-        <View
-          style={
+            "total": 12,
+          },
+          "id": "An ID",
+          "name": "Example Gene",
+          "trending_artists": Array [
             Object {
-              "backgroundColor": "white",
-              "paddingLeft": 40,
-              "paddingRight": 40,
-            }
-          }
-        >
-          <Header
-            gene={
-              Object {
-                "_id": "a UUID",
-                "description": "Here's some text",
-                "filtered_artworks": Object {
-                  "aggregations": Array [
-                    Object {
-                      "counts": Object {
-                        "count": "Yep",
-                        "id": "OK",
-                        "name": "Sure",
-                      },
-                      "slice": "1212",
-                    },
-                  ],
-                  "total": 12,
-                },
-                "id": "An ID",
-                "name": "Example Gene",
-                "trending_artists": Array [
-                  Object {
-                    "counts": Object {
-                      "artworks": 2,
-                      "for_sale_artworks": 1,
-                    },
-                    "id": "an artist",
-                    "image": Object {
-                      "large_version": "",
-                    },
-                    "name": "Artist name",
-                  },
-                ],
-              }
-            }
-            shortForm={true}
-          />
-        </View>
-      </View>
-    </View>
+              "counts": Object {
+                "artworks": 2,
+                "for_sale_artworks": 1,
+              },
+              "id": "an artist",
+              "image": Object {
+                "large_version": "",
+              },
+              "name": "Artist name",
+            },
+          ],
+        }
+      }
+      medium="painting"
+      priceRange="*-100000"
+      queryKey="gene.artworks"
+      sort="-partner_updated_at"
+    />
   </View>
-</View>
+</react-native-parallax-scroll-view>
 `;

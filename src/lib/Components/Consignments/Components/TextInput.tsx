@@ -30,8 +30,8 @@ const Input = styled.TextInput`
 `
 
 const Separator = styled.View`
-  background-color: ${colors["gray-regular"]};
-  height: 2;
+  background-color: white;
+  height: 1;
 `
 
 const render = (props: TextInputProps) =>
@@ -42,7 +42,7 @@ const render = (props: TextInputProps) =>
         autoCorrect={false}
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
-        placeholderTextColor={colors["gray-medium"]}
+        placeholderTextColor={colors["gray-semibold"]}
         selectionColor={colors["gray-medium"]}
         {...props.text}
       />

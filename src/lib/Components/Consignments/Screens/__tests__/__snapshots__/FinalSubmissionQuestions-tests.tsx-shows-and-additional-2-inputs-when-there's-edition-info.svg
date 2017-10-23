@@ -10,16 +10,16 @@
      <rect type="RCTScrollView" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="1334"/>
 
      <g transform='translate(0, 0)'>
-       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="491"/>
+       <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="511"/>
 
        <g transform='translate(0, 0)'>
-         <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="491"/>
+         <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="511"/>
 
          <g transform='translate(0, 0)'>
            <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="0" y="40" width="474" height="60"><body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;"><p style="font-family:'undefined','Times New Roman';font-size:14px">Answer a few questions about the work</p></body></foreignObject>
-           <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="100" width="540" height="391"/>
+           <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="120" width="540" height="391"/>
 
-           <g transform='translate(0, 100)'>
+           <g transform='translate(0, 120)'>
              <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="540" height="88"/>
 
              <g transform='translate(0, 0)'>
@@ -61,7 +61,7 @@
                    <rect type="TextInput" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="270" height="40"/>
                  </g>
 
-                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="270" height="2"/>
+                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="270" height="1"/>
                </g>
 
                <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="270" y="6" width="270" height="40"/>
@@ -73,7 +73,7 @@
                    <rect type="TextInput" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="270" height="40"/>
                  </g>
 
-                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="270" height="2"/>
+                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="40" width="270" height="1"/>
                </g>
 
              </g>

@@ -4,5 +4,5 @@
 export default {
   "garamond-regular": "AGaramondPro-Regular",
   "garamond-italic": "AGaramondPro-Italic",
-  "avant-garde-regular": "Avant Garde Gothic ITCW01Dm",
+  "avant-garde-regular": "AvantGardeGothicITC",
 }

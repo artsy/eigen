@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Image, Text, TouchableWithoutFeedback, View } from "react-native"
 
+import fonts from "../../../data/fonts"
 import SwitchBoard from "../../NativeModules/SwitchBoard"
 import Separator from "../Separator"
 
@@ -18,7 +19,7 @@ export default class NavigationButton extends React.Component<Props, any> {
           <View style={{}}>
             <Separator style={{ marginRight: 0, marginLeft: 0 }} />
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ fontFamily: "Avant Garde Gothic ITCW01Dm", marginTop: 14, marginBottom: 14 }}>
+              <Text style={{ fontFamily: fonts["avant-garde-regular"], marginTop: 14, marginBottom: 14 }}>
                 {this.props.title.toUpperCase()}
               </Text>
               <Image style={{ alignSelf: "center" }} source={require("../../../../images/horizontal_chevron.png")} />

@@ -142,9 +142,17 @@ exports[`state is set up with empty consignment metadata 1`] = `
           }
         }
       >
-        <RCTScrollView>
+        <RCTScrollView
+          keyboardShouldPersistTaps="always"
+        >
           <View>
-            <View>
+            <View
+              style={
+                Object {
+                  "padding": 10,
+                }
+              }
+            >
               <View
                 style={
                   Array [
@@ -184,7 +192,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       keyboardAppearance="dark"
                       onChangeText={[Function]}
                       placeholder="Title"
-                      placeholderTextColor="#cccccc"
+                      placeholderTextColor="#666666"
                       selectionColor="#cccccc"
                       style={
                         Array [
@@ -208,8 +216,8 @@ exports[`state is set up with empty consignment metadata 1`] = `
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "#e5e5e5",
-                          "height": 2,
+                          "backgroundColor": "white",
+                          "height": 1,
                         },
                         undefined,
                       ]
@@ -256,7 +264,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       keyboardAppearance="dark"
                       onChangeText={[Function]}
                       placeholder="Year"
-                      placeholderTextColor="#cccccc"
+                      placeholderTextColor="#666666"
                       selectionColor="#cccccc"
                       style={
                         Array [
@@ -280,8 +288,8 @@ exports[`state is set up with empty consignment metadata 1`] = `
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "#e5e5e5",
-                          "height": 2,
+                          "backgroundColor": "white",
+                          "height": 1,
                         },
                         undefined,
                       ]
@@ -325,11 +333,11 @@ exports[`state is set up with empty consignment metadata 1`] = `
                     <TextInput
                       autoCorrect={false}
                       clearButtonMode="while-editing"
+                      editable={false}
                       keyboardAppearance="dark"
                       onChangeText={[Function]}
-                      onFocus={[Function]}
                       placeholder="Category"
-                      placeholderTextColor="#cccccc"
+                      placeholderTextColor="#666666"
                       selectionColor="#cccccc"
                       style={
                         Array [
@@ -353,8 +361,8 @@ exports[`state is set up with empty consignment metadata 1`] = `
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "#e5e5e5",
-                          "height": 2,
+                          "backgroundColor": "white",
+                          "height": 1,
                         },
                         undefined,
                       ]
@@ -401,7 +409,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       keyboardAppearance="dark"
                       onChangeText={[Function]}
                       placeholder="Medium"
-                      placeholderTextColor="#cccccc"
+                      placeholderTextColor="#666666"
                       selectionColor="#cccccc"
                       style={
                         Array [
@@ -425,8 +433,8 @@ exports[`state is set up with empty consignment metadata 1`] = `
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "#e5e5e5",
-                          "height": 2,
+                          "backgroundColor": "white",
+                          "height": 1,
                         },
                         undefined,
                       ]
@@ -473,7 +481,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       keyboardAppearance="dark"
                       onChangeText={[Function]}
                       placeholder="Width"
-                      placeholderTextColor="#cccccc"
+                      placeholderTextColor="#666666"
                       selectionColor="#cccccc"
                       style={
                         Array [
@@ -497,8 +505,8 @@ exports[`state is set up with empty consignment metadata 1`] = `
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "#e5e5e5",
-                          "height": 2,
+                          "backgroundColor": "white",
+                          "height": 1,
                         },
                         undefined,
                       ]
@@ -532,7 +540,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       keyboardAppearance="dark"
                       onChangeText={[Function]}
                       placeholder="Height"
-                      placeholderTextColor="#cccccc"
+                      placeholderTextColor="#666666"
                       selectionColor="#cccccc"
                       style={
                         Array [
@@ -556,8 +564,8 @@ exports[`state is set up with empty consignment metadata 1`] = `
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "#e5e5e5",
-                          "height": 2,
+                          "backgroundColor": "white",
+                          "height": 1,
                         },
                         undefined,
                       ]
@@ -602,9 +610,10 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       autoCorrect={false}
                       clearButtonMode="while-editing"
                       keyboardAppearance="dark"
-                      onChange={[Function]}
+                      keyboardType="numeric"
+                      onChangeText={[Function]}
                       placeholder="Depth"
-                      placeholderTextColor="#cccccc"
+                      placeholderTextColor="#666666"
                       selectionColor="#cccccc"
                       style={
                         Array [
@@ -621,14 +630,15 @@ exports[`state is set up with empty consignment metadata 1`] = `
                           undefined,
                         ]
                       }
+                      value=""
                     />
                   </View>
                   <View
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "#e5e5e5",
-                          "height": 2,
+                          "backgroundColor": "white",
+                          "height": 1,
                         },
                         undefined,
                       ]
@@ -638,7 +648,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                 <View
                   style={
                     Object {
-                      "alignContent": "center",
+                      "alignItems": "center",
                       "flex": 1,
                       "flexDirection": "row",
                       "margin": 10,
@@ -738,7 +748,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                             Array [
                               Object {
                                 "color": "white",
-                                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                                "fontFamily": "AvantGardeGothicITC",
                                 "fontSize": 11,
                                 "letterSpacing": 0.75,
                                 "textAlign": "center",
@@ -761,7 +771,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                             Array [
                               Object {
                                 "color": "white",
-                                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                                "fontFamily": "AvantGardeGothicITC",
                                 "fontSize": 11,
                                 "letterSpacing": 0.75,
                                 "textAlign": "center",
@@ -868,7 +878,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                 "flexBasis": 0,
                 "flexGrow": 1,
                 "flexShrink": 1,
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontFamily": "AvantGardeGothicITC",
                 "fontSize": 14,
                 "textAlign": "center",
               },
@@ -933,9 +943,17 @@ exports[`state is set up with filled consignment metadata 1`] = `
           }
         }
       >
-        <RCTScrollView>
+        <RCTScrollView
+          keyboardShouldPersistTaps="always"
+        >
           <View>
-            <View>
+            <View
+              style={
+                Object {
+                  "padding": 10,
+                }
+              }
+            >
               <View
                 style={
                   Array [
@@ -975,7 +993,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       keyboardAppearance="dark"
                       onChangeText={[Function]}
                       placeholder="Title"
-                      placeholderTextColor="#cccccc"
+                      placeholderTextColor="#666666"
                       selectionColor="#cccccc"
                       style={
                         Array [
@@ -999,8 +1017,8 @@ exports[`state is set up with filled consignment metadata 1`] = `
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "#e5e5e5",
-                          "height": 2,
+                          "backgroundColor": "white",
+                          "height": 1,
                         },
                         undefined,
                       ]
@@ -1047,7 +1065,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       keyboardAppearance="dark"
                       onChangeText={[Function]}
                       placeholder="Year"
-                      placeholderTextColor="#cccccc"
+                      placeholderTextColor="#666666"
                       selectionColor="#cccccc"
                       style={
                         Array [
@@ -1071,8 +1089,8 @@ exports[`state is set up with filled consignment metadata 1`] = `
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "#e5e5e5",
-                          "height": 2,
+                          "backgroundColor": "white",
+                          "height": 1,
                         },
                         undefined,
                       ]
@@ -1116,11 +1134,11 @@ exports[`state is set up with filled consignment metadata 1`] = `
                     <TextInput
                       autoCorrect={false}
                       clearButtonMode="while-editing"
+                      editable={false}
                       keyboardAppearance="dark"
                       onChangeText={[Function]}
-                      onFocus={[Function]}
                       placeholder="Category"
-                      placeholderTextColor="#cccccc"
+                      placeholderTextColor="#666666"
                       selectionColor="#cccccc"
                       style={
                         Array [
@@ -1144,8 +1162,8 @@ exports[`state is set up with filled consignment metadata 1`] = `
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "#e5e5e5",
-                          "height": 2,
+                          "backgroundColor": "white",
+                          "height": 1,
                         },
                         undefined,
                       ]
@@ -1192,7 +1210,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       keyboardAppearance="dark"
                       onChangeText={[Function]}
                       placeholder="Medium"
-                      placeholderTextColor="#cccccc"
+                      placeholderTextColor="#666666"
                       selectionColor="#cccccc"
                       style={
                         Array [
@@ -1216,8 +1234,8 @@ exports[`state is set up with filled consignment metadata 1`] = `
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "#e5e5e5",
-                          "height": 2,
+                          "backgroundColor": "white",
+                          "height": 1,
                         },
                         undefined,
                       ]
@@ -1264,7 +1282,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       keyboardAppearance="dark"
                       onChangeText={[Function]}
                       placeholder="Width"
-                      placeholderTextColor="#cccccc"
+                      placeholderTextColor="#666666"
                       selectionColor="#cccccc"
                       style={
                         Array [
@@ -1288,8 +1306,8 @@ exports[`state is set up with filled consignment metadata 1`] = `
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "#e5e5e5",
-                          "height": 2,
+                          "backgroundColor": "white",
+                          "height": 1,
                         },
                         undefined,
                       ]
@@ -1323,7 +1341,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       keyboardAppearance="dark"
                       onChangeText={[Function]}
                       placeholder="Height"
-                      placeholderTextColor="#cccccc"
+                      placeholderTextColor="#666666"
                       selectionColor="#cccccc"
                       style={
                         Array [
@@ -1347,8 +1365,8 @@ exports[`state is set up with filled consignment metadata 1`] = `
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "#e5e5e5",
-                          "height": 2,
+                          "backgroundColor": "white",
+                          "height": 1,
                         },
                         undefined,
                       ]
@@ -1393,9 +1411,10 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       autoCorrect={false}
                       clearButtonMode="while-editing"
                       keyboardAppearance="dark"
-                      onChange={[Function]}
+                      keyboardType="numeric"
+                      onChangeText={[Function]}
                       placeholder="Depth"
-                      placeholderTextColor="#cccccc"
+                      placeholderTextColor="#666666"
                       selectionColor="#cccccc"
                       style={
                         Array [
@@ -1412,14 +1431,15 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           undefined,
                         ]
                       }
+                      value=""
                     />
                   </View>
                   <View
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "#e5e5e5",
-                          "height": 2,
+                          "backgroundColor": "white",
+                          "height": 1,
                         },
                         undefined,
                       ]
@@ -1429,7 +1449,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                 <View
                   style={
                     Object {
-                      "alignContent": "center",
+                      "alignItems": "center",
                       "flex": 1,
                       "flexDirection": "row",
                       "margin": 10,
@@ -1497,7 +1517,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                             "width": 64,
                           },
                           Object {
-                            "backgroundColor": "white",
+                            "backgroundColor": "black",
                           },
                         ],
                       ]
@@ -1529,19 +1549,19 @@ exports[`state is set up with filled consignment metadata 1`] = `
                             Array [
                               Object {
                                 "color": "white",
-                                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                                "fontFamily": "AvantGardeGothicITC",
                                 "fontSize": 11,
                                 "letterSpacing": 0.75,
                                 "textAlign": "center",
                                 "width": 24,
                               },
                               Object {
-                                "color": "black",
+                                "color": "white",
                               },
                             ]
                           }
                         >
-                          CM
+                          
                         </Text>
                         <Text
                           accessible={true}
@@ -1552,19 +1572,19 @@ exports[`state is set up with filled consignment metadata 1`] = `
                             Array [
                               Object {
                                 "color": "white",
-                                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                                "fontFamily": "AvantGardeGothicITC",
                                 "fontSize": 11,
                                 "letterSpacing": 0.75,
                                 "textAlign": "center",
                                 "width": 24,
                               },
                               Object {
-                                "color": "black",
+                                "color": "white",
                               },
                             ]
                           }
                         >
-                          
+                          IN
                         </Text>
                       </View>
                       <View
@@ -1577,7 +1597,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                               "top": 4,
                             },
                             Object {
-                              "flexDirection": "row-reverse",
+                              "flexDirection": "row",
                             },
                           ]
                         }
@@ -1587,7 +1607,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "black",
-                                "borderColor": "black",
+                                "borderColor": "white",
                                 "borderRadius": 12,
                                 "borderWidth": 1,
                                 "height": 24,
@@ -1659,7 +1679,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                 "flexBasis": 0,
                 "flexGrow": 1,
                 "flexShrink": 1,
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontFamily": "AvantGardeGothicITC",
                 "fontSize": 14,
                 "textAlign": "center",
               },

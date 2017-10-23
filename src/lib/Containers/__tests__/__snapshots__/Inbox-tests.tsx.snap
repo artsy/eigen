@@ -194,7 +194,7 @@ exports[`renders correctly 1`] = `
                   undefined,
                 ],
                 Object {
-                  "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                  "fontFamily": "AvantGardeGothicITC",
                 },
               ]
             }
@@ -353,7 +353,7 @@ exports[`renders correctly 1`] = `
                   undefined,
                 ],
                 Object {
-                  "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                  "fontFamily": "AvantGardeGothicITC",
                 },
               ]
             }
@@ -512,7 +512,7 @@ exports[`renders correctly 1`] = `
                   undefined,
                 ],
                 Object {
-                  "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                  "fontFamily": "AvantGardeGothicITC",
                 },
               ]
             }
@@ -689,7 +689,7 @@ exports[`renders correctly 1`] = `
                         undefined,
                         Object {},
                         Object {
-                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                          "fontFamily": "AvantGardeGothicITC",
                         },
                       ]
                     }
@@ -729,7 +729,7 @@ exports[`renders correctly 1`] = `
                           },
                           Object {},
                           Object {
-                            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                            "fontFamily": "AvantGardeGothicITC",
                           },
                         ]
                       }
@@ -977,7 +977,7 @@ exports[`renders correctly 1`] = `
                         undefined,
                         Object {},
                         Object {
-                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                          "fontFamily": "AvantGardeGothicITC",
                         },
                       ]
                     }
@@ -1017,7 +1017,7 @@ exports[`renders correctly 1`] = `
                           },
                           Object {},
                           Object {
-                            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                            "fontFamily": "AvantGardeGothicITC",
                           },
                         ]
                       }

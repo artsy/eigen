@@ -64,6 +64,7 @@ const styles = StyleSheet.create<Styles>({
     textAlign: "center",
     paddingLeft: 20,
     paddingRight: 20,
+    marginBottom: 20,
   },
 
   largeRequired: {

@@ -107,6 +107,7 @@ export default class Composer extends React.Component<Props, State> {
             style={inputStyles}
             multiline={true}
             value={this.state.text}
+            autoFocus={true}
           />
           <TouchableWithoutFeedback disabled={disableSendButton} onPress={this.submitText.bind(this)}>
             <SendButton disabled={disableSendButton}>SEND</SendButton>

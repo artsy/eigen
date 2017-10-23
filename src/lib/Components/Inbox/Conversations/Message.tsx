@@ -41,6 +41,7 @@ const Header = styled(HorizontalLayout)`
 
 const TextContainer = styled(VerticalLayout)`
   margin-left: 10;
+  margin-top: 7;
 `
 
 const SenderName = styled(SmallHeadline)`
@@ -122,7 +123,8 @@ export class Message extends React.Component<Props, any> {
     const body = firstMessage ? initialText : message.body
 
     const linkStyle = {
-      color: "#0645ad",
+      color: colors["purple-regular"],
+      textDecorationLine: "underline",
     }
 
     return (
@@ -146,7 +148,7 @@ export class Message extends React.Component<Props, any> {
     let previewInvoice
     if (message.invoice) {
       previewInvoice = () => {
-        SwitchBoard.presentNavigationViewController(this, message.invoice.payment_url)
+        SwitchBoard.presentModalViewController(this, message.invoice.payment_url)
       }
     }
     return (

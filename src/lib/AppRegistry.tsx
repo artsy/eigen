@@ -5,9 +5,8 @@ import { TrackingInfo } from "react-tracking"
 import { Schema, Track, track as _track } from "./utils/track"
 
 import Consignments from "./Components/Consignments"
-import LoadFailureView from "./Components/LoadFailureView"
-import Spinner from "./Components/Spinner"
 import Containers from "./Containers/index"
+import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 
 import {
   ArtistRenderer,
@@ -21,34 +20,12 @@ import {
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
 
+import HomeScene from "./Scenes/Home"
+
 import Events from "./NativeModules/Events"
 
 interface Props extends ViewProperties {
   trigger1pxScrollHack?: boolean
-}
-
-const renderWithLoadProgress = (Component: React.ReactType, initialProps: object = {}): RenderCallback => {
-  let retrying = false
-  return ({ error, props, retry }) => {
-    if (error) {
-      if (retrying) {
-        retrying = false
-        // TODO: Even though this code path is reached, the retry button keeps spinning. iirc it _should_ disappear when
-        //      `onRetry` on the instance is unset.
-        //
-        // This will re-use the native view first created in the renderFailure callback, which means it can
-        // continue its ‘retry’ animation.
-        return <LoadFailureView style={{ flex: 1 }} />
-      } else {
-        retrying = true
-        return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
-      }
-    } else if (props) {
-      return <Component {...initialProps} {...props as any} />
-    } else {
-      return <Spinner style={{ flex: 1 }} />
-    }
-  }
 }
 
 // Analytics wrapper for all of our top level React components
@@ -114,7 +91,7 @@ const MyAccount: React.SFC<{}> = () => <MyAccountRenderer render={renderWithLoad
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
-AppRegistry.registerComponent("Home", () => Home)
+AppRegistry.registerComponent("Home", () => HomeScene)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
 AppRegistry.registerComponent("MyAccount", () => MyAccount)

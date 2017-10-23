@@ -134,7 +134,7 @@ exports[`looks correct when rendered 1`] = `
                   Object {
                     "alignSelf": "center",
                     "color": "#666666",
-                    "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                    "fontFamily": "AvantGardeGothicITC",
                     "fontSize": 10,
                     "marginTop": 8,
                   },
@@ -158,6 +158,7 @@ exports[`looks correct when rendered 1`] = `
                 Array [
                   Object {
                     "marginLeft": 10,
+                    "marginTop": 7,
                   },
                   undefined,
                 ],
@@ -203,7 +204,7 @@ exports[`looks correct when rendered 1`] = `
                       undefined,
                     ],
                     Object {
-                      "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                      "fontFamily": "AvantGardeGothicITC",
                     },
                   ]
                 }
@@ -230,7 +231,7 @@ exports[`looks correct when rendered 1`] = `
                       undefined,
                     ],
                     Object {
-                      "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                      "fontFamily": "AvantGardeGothicITC",
                     },
                   ]
                 }
@@ -241,7 +242,8 @@ exports[`looks correct when rendered 1`] = `
             <View
               linkStyle={
                 Object {
-                  "color": "#0645ad",
+                  "color": "#6e1fff",
+                  "textDecorationLine": "underline",
                 }
               }
               onPress={[Function]}

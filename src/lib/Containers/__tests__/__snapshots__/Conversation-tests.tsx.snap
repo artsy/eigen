@@ -35,7 +35,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
             "alignSelf": "stretch",
             "flexDirection": "column",
             "marginBottom": 20,
-            "marginTop": 10,
+            "marginTop": 20,
           },
           undefined,
         ]
@@ -46,29 +46,12 @@ exports[`displays a connectivity banner when network is down 1`] = `
           Array [
             Object {
               "flexDirection": "row",
-              "justifyContent": "space-between",
+              "justifyContent": "center",
             },
             undefined,
           ]
         }
       >
-        <Image
-          source={1}
-          style={
-            Array [
-              Object {
-                "height": 12,
-                "transform": Array [
-                  Object {
-                    "rotate": "180deg",
-                  },
-                ],
-                "width": 7,
-              },
-              undefined,
-            ]
-          }
-        />
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -82,9 +65,11 @@ exports[`displays a connectivity banner when network is down 1`] = `
                 "textAlign": "left",
               },
               undefined,
-              Object {},
               Object {
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontSize": 14,
+              },
+              Object {
+                "fontFamily": "AvantGardeGothicITC",
               },
             ]
           }
@@ -94,6 +79,21 @@ exports[`displays a connectivity banner when network is down 1`] = `
         <View />
       </View>
     </View>
+    <View
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#e5e5e5",
+            "height": 1,
+            "marginLeft": -40,
+            "marginRight": -40,
+          },
+          Object {
+            "backgroundColor": "white",
+          },
+        ]
+      }
+    />
     <View
       style={
         Array [
@@ -261,7 +261,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
                       Object {
                         "alignSelf": "center",
                         "color": "#666666",
-                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        "fontFamily": "AvantGardeGothicITC",
                         "fontSize": 10,
                         "marginTop": 8,
                       },
@@ -285,6 +285,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
                     Array [
                       Object {
                         "marginLeft": 10,
+                        "marginTop": 7,
                       },
                       undefined,
                     ],
@@ -330,7 +331,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
                           undefined,
                         ],
                         Object {
-                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                          "fontFamily": "AvantGardeGothicITC",
                         },
                       ]
                     }
@@ -357,7 +358,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
                           undefined,
                         ],
                         Object {
-                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                          "fontFamily": "AvantGardeGothicITC",
                         },
                       ]
                     }
@@ -368,7 +369,8 @@ exports[`displays a connectivity banner when network is down 1`] = `
                 <View
                   linkStyle={
                     Object {
-                      "color": "#0645ad",
+                      "color": "#6e1fff",
+                      "textDecorationLine": "underline",
                     }
                   }
                   onPress={[Function]}
@@ -469,6 +471,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -510,7 +513,7 @@ exports[`displays a connectivity banner when network is down 1`] = `
         Array [
           Object {
             "color": "#e5e5e5",
-            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontFamily": "AvantGardeGothicITC",
             "fontSize": 12,
             "marginRight": 10,
           },
@@ -560,7 +563,7 @@ exports[`looks correct when rendered 1`] = `
             "alignSelf": "stretch",
             "flexDirection": "column",
             "marginBottom": 20,
-            "marginTop": 10,
+            "marginTop": 20,
           },
           undefined,
         ]
@@ -571,29 +574,12 @@ exports[`looks correct when rendered 1`] = `
           Array [
             Object {
               "flexDirection": "row",
-              "justifyContent": "space-between",
+              "justifyContent": "center",
             },
             undefined,
           ]
         }
       >
-        <Image
-          source={1}
-          style={
-            Array [
-              Object {
-                "height": 12,
-                "transform": Array [
-                  Object {
-                    "rotate": "180deg",
-                  },
-                ],
-                "width": 7,
-              },
-              undefined,
-            ]
-          }
-        />
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -607,9 +593,11 @@ exports[`looks correct when rendered 1`] = `
                 "textAlign": "left",
               },
               undefined,
-              Object {},
               Object {
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontSize": 14,
+              },
+              Object {
+                "fontFamily": "AvantGardeGothicITC",
               },
             ]
           }
@@ -619,6 +607,21 @@ exports[`looks correct when rendered 1`] = `
         <View />
       </View>
     </View>
+    <View
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#e5e5e5",
+            "height": 1,
+            "marginLeft": -40,
+            "marginRight": -40,
+          },
+          Object {
+            "backgroundColor": "white",
+          },
+        ]
+      }
+    />
     <RCTScrollView
       ListFooterComponent={
         <ActivityIndicator
@@ -752,7 +755,7 @@ exports[`looks correct when rendered 1`] = `
                       Object {
                         "alignSelf": "center",
                         "color": "#666666",
-                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        "fontFamily": "AvantGardeGothicITC",
                         "fontSize": 10,
                         "marginTop": 8,
                       },
@@ -776,6 +779,7 @@ exports[`looks correct when rendered 1`] = `
                     Array [
                       Object {
                         "marginLeft": 10,
+                        "marginTop": 7,
                       },
                       undefined,
                     ],
@@ -821,7 +825,7 @@ exports[`looks correct when rendered 1`] = `
                           undefined,
                         ],
                         Object {
-                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                          "fontFamily": "AvantGardeGothicITC",
                         },
                       ]
                     }
@@ -848,7 +852,7 @@ exports[`looks correct when rendered 1`] = `
                           undefined,
                         ],
                         Object {
-                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                          "fontFamily": "AvantGardeGothicITC",
                         },
                       ]
                     }
@@ -859,7 +863,8 @@ exports[`looks correct when rendered 1`] = `
                 <View
                   linkStyle={
                     Object {
-                      "color": "#0645ad",
+                      "color": "#6e1fff",
+                      "textDecorationLine": "underline",
                     }
                   }
                   onPress={[Function]}
@@ -960,6 +965,7 @@ exports[`looks correct when rendered 1`] = `
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -1001,7 +1007,7 @@ exports[`looks correct when rendered 1`] = `
         Array [
           Object {
             "color": "#e5e5e5",
-            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontFamily": "AvantGardeGothicITC",
             "fontSize": 12,
             "marginRight": 10,
           },
@@ -1051,7 +1057,7 @@ exports[`looks correct when rendered 2`] = `
             "alignSelf": "stretch",
             "flexDirection": "column",
             "marginBottom": 20,
-            "marginTop": 10,
+            "marginTop": 20,
           },
           undefined,
         ]
@@ -1062,29 +1068,12 @@ exports[`looks correct when rendered 2`] = `
           Array [
             Object {
               "flexDirection": "row",
-              "justifyContent": "space-between",
+              "justifyContent": "center",
             },
             undefined,
           ]
         }
       >
-        <Image
-          source={1}
-          style={
-            Array [
-              Object {
-                "height": 12,
-                "transform": Array [
-                  Object {
-                    "rotate": "180deg",
-                  },
-                ],
-                "width": 7,
-              },
-              undefined,
-            ]
-          }
-        />
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -1098,9 +1087,11 @@ exports[`looks correct when rendered 2`] = `
                 "textAlign": "left",
               },
               undefined,
-              Object {},
               Object {
-                "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                "fontSize": 14,
+              },
+              Object {
+                "fontFamily": "AvantGardeGothicITC",
               },
             ]
           }
@@ -1110,6 +1101,21 @@ exports[`looks correct when rendered 2`] = `
         <View />
       </View>
     </View>
+    <View
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#e5e5e5",
+            "height": 1,
+            "marginLeft": -40,
+            "marginRight": -40,
+          },
+          Object {
+            "backgroundColor": "white",
+          },
+        ]
+      }
+    />
     <RCTScrollView
       ListFooterComponent={
         <ActivityIndicator
@@ -1243,7 +1249,7 @@ exports[`looks correct when rendered 2`] = `
                       Object {
                         "alignSelf": "center",
                         "color": "#666666",
-                        "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                        "fontFamily": "AvantGardeGothicITC",
                         "fontSize": 10,
                         "marginTop": 8,
                       },
@@ -1267,6 +1273,7 @@ exports[`looks correct when rendered 2`] = `
                     Array [
                       Object {
                         "marginLeft": 10,
+                        "marginTop": 7,
                       },
                       undefined,
                     ],
@@ -1312,7 +1319,7 @@ exports[`looks correct when rendered 2`] = `
                           undefined,
                         ],
                         Object {
-                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                          "fontFamily": "AvantGardeGothicITC",
                         },
                       ]
                     }
@@ -1339,7 +1346,7 @@ exports[`looks correct when rendered 2`] = `
                           undefined,
                         ],
                         Object {
-                          "fontFamily": "Avant Garde Gothic ITCW01Dm",
+                          "fontFamily": "AvantGardeGothicITC",
                         },
                       ]
                     }
@@ -1350,7 +1357,8 @@ exports[`looks correct when rendered 2`] = `
                 <View
                   linkStyle={
                     Object {
-                      "color": "#0645ad",
+                      "color": "#6e1fff",
+                      "textDecorationLine": "underline",
                     }
                   }
                   onPress={[Function]}
@@ -1451,6 +1459,7 @@ exports[`looks correct when rendered 2`] = `
     }
   >
     <TextInput
+      autoFocus={true}
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
@@ -1492,7 +1501,7 @@ exports[`looks correct when rendered 2`] = `
         Array [
           Object {
             "color": "#e5e5e5",
-            "fontFamily": "Avant Garde Gothic ITCW01Dm",
+            "fontFamily": "AvantGardeGothicITC",
             "fontSize": 12,
             "marginRight": 10,
           },
