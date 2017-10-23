@@ -17,9 +17,6 @@ NetworkFailureBlock passOnNetworkError(void (^)(NSError *error));
 /// It also removes keys with null values from the response JSON.
 + (AFHTTPRequestOperation *)performGraphQLRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSError *error))failure;
 
-/// A method for performing an ARJSONRequest that checks for GraphQL errors prior to invoking the success callback.
-+ (AFHTTPRequestOperation *)performGraphQLRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSError *error))failure;
-
 /// A more complete response API for the request, in case you need more than just the response object
 + (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request fullSuccess:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failureCallback;
 
