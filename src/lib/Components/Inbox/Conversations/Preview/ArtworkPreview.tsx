@@ -5,6 +5,8 @@ import { TouchableHighlight } from "react-native"
 
 import { PreviewText as P, Subtitle } from "../../Typography"
 
+import { Schema, Track, track as _track } from "../../../../utils/track"
+
 import styled from "styled-components/native"
 import colors from "../../../../../data/colors"
 import fonts from "../../../../../data/fonts"
@@ -57,12 +59,23 @@ interface Props extends RelayProps {
   onSelected?: () => void
 }
 
+const track: Track<Props, null, Schema.Entity> = _track
+
+@track()
 export class ArtworkPreview extends React.Component<Props, any> {
+  @track((props, state) => ({
+    action: "Click artwork attachment",
+    entity_id: props.artwork._id,
+    entity_slug: props.artwork.id,
+  }))
+  attachmentSelected() {
+    this.props.onSelected()
+  }
   render() {
     const artwork = this.props.artwork
 
     return (
-      <TouchableHighlight underlayColor={colors["gray-light"]} onPress={this.props.onSelected}>
+      <TouchableHighlight underlayColor={colors["gray-light"]} onPress={() => this.attachmentSelected()}>
         <Container>
           <Image imageURL={artwork.image.url} />
           <TextContainer>
@@ -86,6 +99,8 @@ export default createFragmentContainer(
   ArtworkPreview,
   graphql`
     fragment ArtworkPreview_artwork on Artwork {
+      id
+      _id
       title
       artist_names
       date
@@ -98,6 +113,8 @@ export default createFragmentContainer(
 
 interface RelayProps {
   artwork: {
+    id: string | null
+    _id: string | null
     title: string | null
     artist_names: string | null
     date: string | null

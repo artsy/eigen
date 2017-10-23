@@ -8,6 +8,8 @@ import fonts from "../../../../../data/fonts"
 import { NotificationsManager, PaymentRequestPaidNotification } from "../../../../NativeModules/NotificationsManager"
 import InvertedButton from "../../../Buttons/InvertedButton"
 
+import { Schema, Track, track as _track } from "../../../../utils/track"
+
 const Container = styled.View`
   border-width: 1;
   border-color: ${colors["gray-regular"]};
@@ -107,6 +109,9 @@ interface State {
   optimistic: boolean
 }
 
+const track: Track<Props, State, Schema.Entity> = _track
+
+@track()
 export class InvoicePreview extends React.Component<Props, State> {
   public state = { optimistic: false }
   private subscription?: EmitterSubscription
@@ -136,12 +141,22 @@ export class InvoicePreview extends React.Component<Props, State> {
     }
   }
 
+  @track((props, state) => ({
+    action: `Click invoice attachment: ${props.invoice.state}`,
+  }))
+  attachmentSelected() {
+    this.props.onSelected()
+  }
+
   render() {
     const { invoice, onSelected } = this.props
     const invoiceState = this.state.optimistic ? "PAID" : invoice.state
 
     return (
-      <TouchableHighlight onPress={invoiceState === "UNPAID" ? onSelected : null} underlayColor={colors["gray-light"]}>
+      <TouchableHighlight
+        onPress={invoiceState === "UNPAID" ? () => this.attachmentSelected() : null}
+        underlayColor={colors["gray-light"]}
+      >
         <Container>
           <Icon source={require("../../../../../../images/payment_request.png")} />
           <TextContainer>

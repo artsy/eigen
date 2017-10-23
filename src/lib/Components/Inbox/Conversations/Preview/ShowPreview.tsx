@@ -5,6 +5,8 @@ import { TouchableHighlight } from "react-native"
 
 import { PreviewText as P, Subtitle } from "../../Typography"
 
+import { Schema, Track, track as _track } from "../../../../utils/track"
+
 import styled from "styled-components/native"
 import colors from "../../../../../data/colors"
 import fonts from "../../../../../data/fonts"
@@ -49,12 +51,22 @@ interface Props extends RelayProps {
   onSelected?: () => void
 }
 
+const track: Track<Props, null, Schema.Entity> = _track
+
+@track()
 export class ShowPreview extends React.Component<Props, any> {
+  @track((props, state) => ({
+    action: "Click show attachment",
+  }))
+  attachmentSelected() {
+    this.props.onSelected()
+  }
+
   render() {
     const show = this.props.show
     const name = show.fair ? show.fair.name : show.name
     return (
-      <TouchableHighlight underlayColor={colors["gray-light"]} onPress={this.props.onSelected}>
+      <TouchableHighlight underlayColor={colors["gray-light"]} onPress={() => this.attachmentSelected()}>
         <Container>
           <Image imageURL={show.cover_image.url} />
           <TextContainer>
