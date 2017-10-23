@@ -1,7 +1,8 @@
 import * as _ from "lodash"
 import * as React from "react"
 import { AppRegistry, ViewProperties } from "react-native"
-import { track } from "./utils/track"
+import { TrackingInfo } from "react-tracking"
+import { Schema, Track, track as _track } from "./utils/track"
 
 import Consignments from "./Components/Consignments"
 import LoadFailureView from "./Components/LoadFailureView"
@@ -52,26 +53,34 @@ const renderWithLoadProgress = (Component: React.ReactType, initialProps: object
 
 // Analytics wrapper for all of our top level React components
 function AddTrack(pageName: string) {
-  return track(
-    // Here we assign the source screen to all subsequent events fired from that component
-    { page: pageName },
-    // Here we're hooking into Eigen to post analytics events to Adjust and Segement
-    { dispatch: data => console.log(data) } //Events.postEvent(data) }
-  )
+  return component => component
 }
 
-const Artist: React.SFC<{ artistID: string; isPad: boolean }> = AddTrack("Artist")(props =>
-  <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />
-)
+function track<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
+  return _track(trackingInfo as any, {
+    dispatch: data => console.log(data),
+    dispatchOnMount: true,
+  })
+}
 
-const Inbox: React.SFC<{}> = AddTrack("Inbox")(() =>
-  <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />
-)
+interface ArtistProps {
+  artistID: string
+  isPad: boolean
+}
+const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
+  return { page: "Artist", entity_id: props.artistID }
+})(props => <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />)
 
-const Gene: React.SFC<{ geneID: string; refineSettings: { medium: string; price_range: string } }> = ({
-  geneID,
-  refineSettings: { medium, price_range },
-}) => {
+const Inbox: React.SFC<{}> = track<{}>(props => {
+  return { page: "Inbox", entity_id: null }
+})(() => <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />)
+
+interface GeneProps {
+  geneID: string
+  refineSettings: { medium: string; price_range: string }
+}
+
+const Gene: React.SFC<GeneProps> = ({ geneID, refineSettings: { medium, price_range } }) => {
   const initialProps = { geneID, medium, price_range }
   return <GeneRenderer {...initialProps} render={renderWithLoadProgress(Containers.Gene, initialProps)} />
 }
@@ -87,13 +96,19 @@ const Home: React.SFC<{}> = () => <HomeRenderer render={renderWithLoadProgress(C
 const WorksForYou: React.SFC<{ selectedArtist: string }> = props =>
   <WorksForYouRenderer {...props} render={renderWithLoadProgress(Containers.WorksForYou, props)} />
 
-const Inquiry: React.SFC<{ artworkID: string }> = AddTrack("Inquiry")(props =>
-  <InquiryRenderer {...props} render={renderWithLoadProgress(Containers.Inquiry, props)} />
-)
+interface InquiryProps {
+  artworkID: string
+}
+const Inquiry: React.SFC<InquiryProps> = track<InquiryProps>(props => {
+  return { page: "Inquiry", entity_id: props.artworkID }
+})(props => <InquiryRenderer {...props} render={renderWithLoadProgress(Containers.Inquiry, props)} />)
 
-const Conversation: React.SFC<{ conversationID: string }> = AddTrack("Conversation")(props =>
-  <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />
-)
+interface ConversationProps {
+  conversationID: string
+}
+const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(props => {
+  return { page: "Conversation", entity_id: props.conversationID }
+})(props => <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />)
 
 const MyAccount: React.SFC<{}> = () => <MyAccountRenderer render={renderWithLoadProgress(Containers.MyAccount)} />
 
