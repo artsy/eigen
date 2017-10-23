@@ -104,11 +104,20 @@ export class Inquiry extends React.Component<RelayProps, any> {
   }
 
   @track((props, state) => ({
-    action: "Cancel Inquiry",
+    action: Schema.ActionEvents.inquiryCancelTapped,
     entity_id: props.artwork._id,
     entity_slug: props.artwork.id,
   }))
   cancelModal() {
+    this.dismissModal()
+  }
+
+  @track((props, state) => ({
+    action: Schema.ActionEvents.inquirySendSucceded,
+    entity_id: props.artwork._id,
+    entity_slug: props.artwork.id,
+  }))
+  inquirySent() {
     this.dismissModal()
   }
 
@@ -117,7 +126,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
   }
 
   @track((props, state) => ({
-    action: "Send Inquiry",
+    action: Schema.ActionEvents.inquirySendTapped,
     entity_id: props.artwork._id,
     entity_slug: props.artwork.id,
   }))
@@ -138,18 +147,26 @@ export class Inquiry extends React.Component<RelayProps, any> {
     })
       .then(response => {
         if (response.status >= 200 && response.status < 300) {
-          this.dismissModal()
+          this.inquirySent()
         } else {
-          this.setState(() => ({ sending: false }))
           const error = new NetworkError(response.statusText)
           error.response = response
-          throw error
+          this.sendFailed(error)
         }
       })
       .catch(error => {
-        this.setState(() => ({ sending: false }))
-        throw error
+        this.sendFailed(error)
       })
+  }
+
+  @track((props, state) => ({
+    action: Schema.ActionEvents.inquirySendFailed,
+    entity_id: props.artwork._id,
+    entity_slug: props.artwork.id,
+  }))
+  sendFailed(error) {
+    this.setState(() => ({ sending: false }))
+    throw error
   }
 
   render() {
