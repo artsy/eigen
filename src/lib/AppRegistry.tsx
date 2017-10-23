@@ -58,7 +58,7 @@ function AddTrack(pageName: string) {
 
 function track<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
   return _track(trackingInfo as any, {
-    dispatch: data => console.log(data),
+    dispatch: data => Events.postEvent(data),
     dispatchOnMount: true,
   })
 }

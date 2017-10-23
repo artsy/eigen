@@ -130,7 +130,11 @@ class Header extends React.Component<Props, State> {
     return leadingSubstring + " " + birthday
   }
 
-  @track((props, state) => ({ action: state.following ? "press unfollow button" : "press follow button" }))
+  @track((props, state) => ({
+    action: state.following ? "press unfollow button" : "press follow button",
+    entity_id: props.artist.id,
+    entity_slug: props.artist._id,
+  }))
   handleFollowChange() {
     const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
@@ -146,8 +150,8 @@ class Header extends React.Component<Props, State> {
 
   @track((props, state) => ({
     action: `successfully ${state.following ? "followed" : "unfollowed"}`,
-    entity_id: props.artist._id,
-    entity_slug: props.artist.id,
+    entity_id: props.artist.id,
+    entity_slug: props.artist._id,
   }))
   successfulFollowChange() {
     Events.postEvent({
