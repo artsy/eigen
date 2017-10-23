@@ -29,9 +29,18 @@ upcoming:
       - Updates bid count UI after model has been updated - ash
 
 releases:
+  - version: 3.2.6
+    details: Bug fixes
+    date: October 18, 2017
+    user_facing:
+      - Custom sale-on-hold banner - ash
+    dev:
+      - Adds client metadata info to causality events - ash
+      - Removes nulls from JSON in GraphQL responses.
+
   - version: 3.2.5
-    details: Crash fix
-    date: Sep 11, 2017
+    details: Bug fixes
+    date: Oct 10, 2017
     user_facing:
       - Fixes a crash related to users with no favourited artworks - ash
 

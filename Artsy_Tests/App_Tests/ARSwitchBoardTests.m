@@ -184,7 +184,7 @@ describe(@"ARSwitchboard", ^{
         
         it(@"loads a payment request web view for lewitt-web URLs", ^{
             NSURL *paymentRequestURL = [NSURL URLWithString:@"http://invoicing-demo-partner.lewitt-web-public-staging.artsy.net/invoices/42/gUsxioLRJQaBunE73cWMwjfv"];
-            ARPaymentRequestWebViewController *controller = (ARPaymentRequestWebViewController *)[switchboard loadURL:paymentRequestURL];
+            ARPaymentRequestWebViewController *controller = (ARPaymentRequestWebViewController *)[(UINavigationController *)[switchboard loadURL:paymentRequestURL] topViewController];
             expect(controller).to.beKindOf(ARPaymentRequestWebViewController.class);
             expect(controller.initialURL).to.equal(paymentRequestURL);
         });

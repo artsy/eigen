@@ -13,9 +13,22 @@ protocol SaleOnHoldOverlayViewDelegate {
 class SaleOnHoldOverlayView: UIView {
     var delegate: SaleOnHoldOverlayViewDelegate?
 
+    required init(message: String?) {
+        super.init(frame: CGRect.zero)
+        sharedSetup(message: message)
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
+        sharedSetup()
+    }
 
+    required init?(coder aDecoder: NSCoder) {
+        // Required for Swift compiler.
+        return nil
+    }
+
+    func sharedSetup(message: String? = nil) {
         // Set up dark blurring effect
         let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
@@ -33,12 +46,20 @@ class SaleOnHoldOverlayView: UIView {
             titleLabel.textAlignment = .center
             $0.addSubview(titleLabel, withTopMargin: "0", sideMargin: "0")
 
+            if let message = message, message.isNotEmpty {
+                let messageLabel = ARSerifLabel()
+                messageLabel.text = message
+                messageLabel.textColor = .white
+                messageLabel.backgroundColor = .clear
+                messageLabel.textAlignment = .center
+                $0.addSubview(messageLabel, withTopMargin: "20", sideMargin: "0")
+            }
+
             let subtitleLabel = ARSerifLabel()
             subtitleLabel.text = "You can still place max bids"
             subtitleLabel.textColor = .white
             subtitleLabel.backgroundColor = .clear
             subtitleLabel.textAlignment = .center
-
             $0.addSubview(subtitleLabel, withTopMargin: "20", sideMargin: "0")
         }
         addSubview(containerView)
@@ -51,11 +72,6 @@ class SaleOnHoldOverlayView: UIView {
         addSubview(button)
         button.alignLeading("20", trailing: "-20", toView: self)
         button.alignBottomEdge(withView: self, predicate: "-60")
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        // Required for Swift compiler.
-        return nil
     }
 
     func userDidTapButton() {
