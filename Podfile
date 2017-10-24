@@ -160,6 +160,8 @@ post_install do |installer|
     config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = "$(inherited) RCT_DEV=0"
   end
 
+  File.write("Pods/React/React/Views/RCTView.m", File.read("Pods/React/React/Views/RCTView.m").sub("CGRectIsEmpty(CGRectIntersection(clipRect, view.frame))", "CGSizeEqualToSize(CGRectIntersection(clipRect, view.frame).size, CGSizeZero)"))
+
   # TODO:
   # * ORStackView: Move Laura's changes into master and update
   # * Send PRs for the rest
