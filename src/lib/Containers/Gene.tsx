@@ -5,7 +5,7 @@ import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
-import WhiteButton from "../Components/Buttons/FlatWhite"
+import { WhiteButton } from "../Components/Buttons"
 import Separator from "../Components/Separator"
 import SerifText from "../Components/Text/Serif"
 

@@ -113,15 +113,10 @@
                <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="110" y="26" width="320" height="43"/>
 
                <g transform='translate(110, 26)'>
-                 <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="0" y="0" width="320" height="43"/>
+                 <rect type="View" fill-opacity="1" stroke-width="1" stroke="black" fill="rgba(255, 255, 255, 1)" x="0" y="0" width="320" height="43"/>
 
                  <g transform='translate(0, 0)'>
-                   <rect type="View" fill-opacity="0.1" stroke-width="1" stroke="black" x="107" y="10" width="107" height="24"/>
-
-                   <g transform='translate(107, 10)'>
-                     <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="0" y="0" width="107" height="24"><body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;"><p style="font-family:'undefined','Times New Roman';font-size:14px">SUBMIT TO ARTSY</p></body></foreignObject>
-                   </g>
-
+                   <foreignObject requiredExtensions="http://www.w3.org/1999/xhtml" x="107" y="10" width="107" height="24"><body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;"><p style="font-family:'undefined','Times New Roman';font-size:14px">SUBMIT TO ARTSY</p></body></foreignObject>
                  </g>
 
                </g>

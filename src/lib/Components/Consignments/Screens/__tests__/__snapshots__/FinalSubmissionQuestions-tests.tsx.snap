@@ -639,9 +639,8 @@ exports[`Sets up the right view hierarchy 1`] = `
                   accessibilityLabel={undefined}
                   accessibilityTraits={undefined}
                   accessible={true}
-                  hasTVPreferredFocus={undefined}
+                  collapsable={undefined}
                   hitSlop={undefined}
-                  isTVSelectable={true}
                   nativeID={undefined}
                   onLayout={undefined}
                   onResponderGrant={[Function]}
@@ -651,48 +650,41 @@ exports[`Sets up the right view hierarchy 1`] = `
                   onResponderTerminationRequest={[Function]}
                   onStartShouldSetResponder={[Function]}
                   style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                      },
-                      Object {
-                        "alignItems": "center",
-                        "backgroundColor": "rgba(255, 255, 255, 1)",
-                        "borderColor": "#e5e5e5",
-                        "borderWidth": 1,
-                        "flex": 1,
-                        "justifyContent": "center",
-                      },
-                    ]
+                    Object {
+                      "alignItems": "center",
+                      "backgroundColor": "rgba(255, 255, 255, 1)",
+                      "borderColor": "rgba(255, 255, 255, 1)",
+                      "borderWidth": 1,
+                      "flex": 1,
+                      "height": 36,
+                      "justifyContent": "center",
+                    }
                   }
                   testID={undefined}
-                  tvParallaxProperties={undefined}
                 >
-                  <View>
-                    <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      disabled={false}
-                      ellipsizeMode="tail"
-                      style={
-                        Array [
-                          Object {
-                            "fontSize": 12,
-                          },
-                          Object {
-                            "color": "black",
-                            "fontFamily": "AGaramondPro-Regular",
-                            "opacity": 1,
-                          },
-                          Object {
-                            "fontFamily": "AvantGardeGothicITC",
-                          },
-                        ]
-                      }
-                    >
-                      SUBMIT TO ARTSY
-                    </Text>
-                  </View>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 12,
+                        },
+                        Object {
+                          "color": "rgba(0, 0, 0, 1)",
+                          "fontFamily": "AGaramondPro-Regular",
+                          "opacity": 1,
+                        },
+                        Object {
+                          "fontFamily": "AvantGardeGothicITC",
+                        },
+                      ]
+                    }
+                  >
+                    SUBMIT TO ARTSY
+                  </Text>
                 </View>
               </View>
             </View>
