@@ -21,7 +21,7 @@ import colors from "../../../../../../data/colors"
 import fonts from "../../../../../../data/fonts"
 import Button from "../../../../../Components/Buttons/InvertedButton"
 import SerifText from "../../../../../Components/Text/Serif"
-import SectionTitle from "./SectionTitle"
+import SectionTitle from "../../SectionTitle"
 
 const isPad = Dimensions.get("window").width > 700
 
