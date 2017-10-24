@@ -2,7 +2,7 @@ upcoming:
     version: 3.2.7
     details: Bug fixes
     user_facing:
-      -
+      - Fixes issue where home view could go blank after navigating back to it - sarah
     dev:
       -
 
