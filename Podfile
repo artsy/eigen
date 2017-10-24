@@ -77,7 +77,7 @@ target 'Artsy' do
   # Artsy Spec repo stuff
   pod 'Artsy+UIFonts'
   pod 'Artsy-UIButtons'
-  pod 'Artsy+UIColors' 
+  pod 'Artsy+UIColors'
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
@@ -161,7 +161,13 @@ post_install do |installer|
   end
 
   # This is a fix for blank scroll views in React Native (see https://github.com/artsy/eigen/issues/2439)
-  File.write("Pods/React/React/Views/RCTView.m", File.read("Pods/React/React/Views/RCTView.m").sub("CGRectIsEmpty(CGRectIntersection(clipRect, view.frame))", "CGSizeEqualToSize(CGRectIntersection(clipRect, view.frame).size, CGSizeZero)")) unless File.read("Pods/React/React/Views/RCTView.m").include?("CGSizeEqualToSize(CGRectIntersection(clipRect, view.frame).size, CGSizeZero)")
+  react_view_file = "Pods/React/React/Views/RCTView.m"
+  react_view_old_code = "CGRectIsEmpty(CGRectIntersection(clipRect, view.frame))"
+  react_view_new_code = "CGSizeEqualToSize(CGRectIntersection(clipRect, view.frame).size, CGSizeZero)"
+  react_view_code = File.read(react_view_file)
+  if react_view_code.include?(react_view_old_code)
+    File.write(react_view_file, react_view_code.sub(react_view_old_code, react_view_new_code))
+  end
 
   # TODO:
   # * ORStackView: Move Laura's changes into master and update
