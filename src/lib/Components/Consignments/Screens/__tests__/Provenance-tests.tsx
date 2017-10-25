@@ -30,7 +30,7 @@ describe("callbacks", () => {
 describe("state", () => {
   it("is set up with empty props", () => {
     const provenance = new Provenance(emptyProps)
-    expect(provenance.state).toEqual({ provenance: null })
+    expect(provenance.state).toEqual({ provenance: undefined })
   })
 
   it("sets new state when text is changed", () => {
