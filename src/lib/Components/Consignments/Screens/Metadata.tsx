@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import {
+  Keyboard,
   LayoutAnimation,
   NavigatorIOS,
   Picker,
@@ -81,7 +82,10 @@ export default class Metadata extends React.Component<Props, State> {
     this.setState(newState)
   }
 
-  showCategorySelection = () => this.animateStateChange({ showSelector: true })
+  showCategorySelection = () => {
+    Keyboard.dismiss()
+    this.animateStateChange({ showSelector: true })
+  }
   hideCategorySelection = () => this.animateStateChange({ showSelector: false })
   changeCategoryValue = (value, index) => {
     this.setState({
@@ -95,55 +99,65 @@ export default class Metadata extends React.Component<Props, State> {
       <View style={{ flex: 1 }}>
         <ConsignmentBG>
           <DoneButton onPress={this.doneTapped}>
-            <ScrollView keyboardShouldPersistTaps="always">
+            <ScrollView keyboardShouldPersistTaps="handled">
               <View style={{ padding: 10 }}>
                 <Row>
                   <Text
-                    text={{ placeholder: "Title", onChangeText: this.updateTitle, value: this.state.title }}
+                    text={{
+                      placeholder: "Title",
+                      onFocus: this.hideCategorySelection,
+                      onChangeText: this.updateTitle,
+                      value: this.state.title,
+                    }}
                     style={{ margin: 10 }}
                   />
                 </Row>
 
                 <Row>
                   <Text
-                    text={{ placeholder: "Year", onChangeText: this.updateYear, value: this.state.year }}
+                    text={{
+                      placeholder: "Year",
+                      onChangeText: this.updateYear,
+                      value: this.state.year,
+                      onFocus: this.hideCategorySelection,
+                    }}
                     style={{ margin: 10 }}
                   />
                 </Row>
 
-                <Row>
-                  <TouchableWithoutFeedback onPress={() => console.log("HI")} style={{ flex: 1, height: 40 }}>
+                <TouchableWithoutFeedback onPress={this.showCategorySelection}>
+                  <Row>
                     <Text
                       text={{
                         placeholder: "Category",
-                        editable: false,
                         value: this.state.categoryName,
                       }}
+                      readonly={true}
                       style={{ margin: 10 }}
                     />
-                  </TouchableWithoutFeedback>
-                </Row>
-
-                {this.state.showSelector &&
-                  <Picker
-                    style={{ backgroundColor: "white" }}
-                    selectedValue={this.state.category}
-                    onValueChange={(itemValue, itemIndex) =>
-                      this.setState({ category: itemValue, categoryName: categoryOptions[itemIndex].name })}
-                  >
-                    {categoryOptions.map(category => <Picker.Item label={category.name} value={category.value} />)}
-                  </Picker>}
+                  </Row>
+                </TouchableWithoutFeedback>
 
                 <Row>
                   <Text
-                    text={{ placeholder: "Medium", onChangeText: this.updateMedium, value: this.state.medium }}
+                    text={{
+                      placeholder: "Medium",
+                      onChangeText: this.updateMedium,
+                      value: this.state.medium,
+                      onFocus: this.hideCategorySelection,
+                    }}
                     style={{ margin: 10 }}
                   />
                 </Row>
 
                 <Row>
                   <Text
-                    text={{ placeholder: "Width", onChangeText: this.updateWidth, value: this.state.width }}
+                    text={{
+                      placeholder: "Width",
+                      onChangeText: this.updateWidth,
+                      value: this.state.width,
+                      onFocus: this.hideCategorySelection,
+                    }}
                     style={{ margin: 10 }}
                   />
                   <Text
@@ -151,6 +165,7 @@ export default class Metadata extends React.Component<Props, State> {
                       placeholder: "Height",
                       onChangeText: this.updateHeight,
                       value: this.state.height,
+                      onFocus: this.hideCategorySelection,
                     }}
                     style={{ margin: 10 }}
                   />
@@ -162,6 +177,7 @@ export default class Metadata extends React.Component<Props, State> {
                       keyboardType: "numeric",
                       placeholder: "Depth",
                       onChangeText: this.updateDepth,
+                      onFocus: this.hideCategorySelection,
                       value: this.state.depth ? this.state.depth.toString() : "",
                     }}
                     style={{ margin: 10 }}
@@ -175,14 +191,18 @@ export default class Metadata extends React.Component<Props, State> {
             </ScrollView>
           </DoneButton>
         </ConsignmentBG>
-        <Picker
-          style={{ height: 220, backgroundColor: "black", marginTop: 40 }}
-          key="picker"
-          selectedValue={this.state.category}
-          onValueChange={this.changeCategoryValue}
-        >
-          {categoryOptions.map(opt => <Picker.Item color="white" label={opt.name} value={opt.value} key={opt.value} />)}
-        </Picker>
+        {this.state.showSelector
+          ? <Picker
+              style={{ height: 220, backgroundColor: "black", marginTop: 40 }}
+              key="picker"
+              selectedValue={this.state.category}
+              onValueChange={this.changeCategoryValue}
+            >
+              {categoryOptions.map(opt =>
+                <Picker.Item color="white" label={opt.name} value={opt.value} key={opt.value} />
+              )}
+            </Picker>
+          : null}
       </View>
     )
   }
