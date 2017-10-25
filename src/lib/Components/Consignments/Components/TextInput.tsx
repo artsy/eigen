@@ -14,10 +14,14 @@ import styled from "styled-components/native"
 import { Colors } from "../../../../data/colors"
 import { Fonts } from "../../../../data/fonts"
 
+interface ReffableTextInputProps extends TextInputProperties {
+  ref?: (component: any) => any
+}
+
 export interface TextInputProps extends ViewProperties {
   searching?: boolean
   readonly?: boolean
-  text?: TextInputProperties
+  text?: ReffableTextInputProps
   preImage?: ImageURISource | ImageURISource[]
 }
 

@@ -3,10 +3,12 @@ import * as React from "react"
 import {
   Keyboard,
   LayoutAnimation,
+  NativeMethodsMixinStatic,
   NavigatorIOS,
   Picker,
   Route,
   ScrollView,
+  TextInput,
   TouchableHighlight,
   TouchableWithoutFeedback,
   View,
@@ -53,10 +55,33 @@ const categoryOptions = [
 ]
 
 interface State extends ConsignmentMetadata {
-  showSelector?: boolean
+  showPicker?: boolean
+}
+
+// TODO: write a blog post about the refs
+
+// This is the interface for what a component looks like when it's been set via `ref`.
+// We do this so that pressing return can loop through text inputs and move on to the
+// next empty one.
+interface LiveStyledTextInput {
+  /** The object which styled components wraps */
+  root?: {
+    /** A focus function for the text input */
+    focus?: () => void
+    props?: {
+      /** The text value */
+      value?: string
+    }
+  }
 }
 
 export default class Metadata extends React.Component<Props, State> {
+  private yearInput: LiveStyledTextInput
+  private mediumInput: LiveStyledTextInput
+  private widthInput: LiveStyledTextInput
+  private heightInput: LiveStyledTextInput
+  private depthInput: LiveStyledTextInput
+
   constructor(props) {
     super(props)
     this.state = props.metadata || {}
@@ -70,7 +95,6 @@ export default class Metadata extends React.Component<Props, State> {
   updateUnit = () => this.setState({ unit: this.state.unit === "CM" ? "IN" : "CM" })
   updateTitle = title => this.setState({ title })
   updateYear = year => this.setState({ year })
-  updateCategory = category => this.setState({ category })
   updateMedium = medium => this.setState({ medium })
   updateWidth = width => this.setState({ width })
   updateHeight = height => this.setState({ height })
@@ -94,6 +118,15 @@ export default class Metadata extends React.Component<Props, State> {
     })
   }
 
+  selectNextInput = () => {
+    const inputs = [this.yearInput, this.mediumInput, this.widthInput, this.heightInput, this.depthInput]
+    for (const input of inputs) {
+      if (input && input.root && input.root.focus && !input.root.props.value) {
+        return input.root.focus()
+      }
+    }
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -108,6 +141,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onFocus: this.hideCategorySelection,
                       onChangeText: this.updateTitle,
                       value: this.state.title,
+                      onSubmitEditing: this.selectNextInput,
                     }}
                     style={{ margin: 10 }}
                   />
@@ -120,6 +154,8 @@ export default class Metadata extends React.Component<Props, State> {
                       onChangeText: this.updateYear,
                       value: this.state.year,
                       onFocus: this.hideCategorySelection,
+                      onSubmitEditing: this.selectNextInput,
+                      ref: component => (this.yearInput = component),
                     }}
                     style={{ margin: 10 }}
                   />
@@ -145,6 +181,8 @@ export default class Metadata extends React.Component<Props, State> {
                       onChangeText: this.updateMedium,
                       value: this.state.medium,
                       onFocus: this.hideCategorySelection,
+                      onSubmitEditing: this.selectNextInput,
+                      ref: component => (this.mediumInput = component),
                     }}
                     style={{ margin: 10 }}
                   />
@@ -157,6 +195,8 @@ export default class Metadata extends React.Component<Props, State> {
                       onChangeText: this.updateWidth,
                       value: this.state.width,
                       onFocus: this.hideCategorySelection,
+                      onSubmitEditing: this.selectNextInput,
+                      ref: component => (this.widthInput = component),
                     }}
                     style={{ margin: 10 }}
                   />
@@ -166,6 +206,8 @@ export default class Metadata extends React.Component<Props, State> {
                       onChangeText: this.updateHeight,
                       value: this.state.height,
                       onFocus: this.hideCategorySelection,
+                      onSubmitEditing: this.selectNextInput,
+                      ref: component => (this.heightInput = component),
                     }}
                     style={{ margin: 10 }}
                   />
@@ -178,6 +220,7 @@ export default class Metadata extends React.Component<Props, State> {
                       placeholder: "Depth",
                       onChangeText: this.updateDepth,
                       onFocus: this.hideCategorySelection,
+                      onSubmitEditing: this.selectNextInput,
                       value: this.state.depth ? this.state.depth.toString() : "",
                     }}
                     style={{ margin: 10 }}
@@ -191,7 +234,11 @@ export default class Metadata extends React.Component<Props, State> {
             </ScrollView>
           </DoneButton>
         </ConsignmentBG>
-        {this.state.showSelector
+        {
+          //  When we want to show a picker, it should replace the keyboard, so move the
+          //  keyboard down and push up the ConsignmentBG to fill in the space
+        }
+        {this.state.showPicker
           ? <Picker
               style={{ height: 220, backgroundColor: "black", marginTop: 40 }}
               key="picker"
