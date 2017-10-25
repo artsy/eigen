@@ -29,7 +29,7 @@ target 'Emission' do
   pod 'SentryReactNative', :path => sentry_path
 
   # Got to make it look right
-  pod 'Artsy+UIFonts', :git => "https://github.com/artsy/Artsy-OSSUIFonts.git", :branch => "orta-access-token"
+  pod 'Artsy+UIFonts'
 
   # For easy updating of the JS
   pod 'AppHub', :git => 'https://github.com/orta/apphub.git', :branch => "build_list"

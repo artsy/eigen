@@ -6,7 +6,7 @@ PODS:
     - ISO8601DateFormatter
     - NSURL+QueryDictionary
   - Artsy+UIColors (3.1.0)
-  - Artsy+UIFonts (3.1.2)
+  - Artsy+UIFonts (3.1.3)
   - Artsy-UIButtons (2.1.0):
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
@@ -113,7 +113,7 @@ DEPENDENCIES:
   - AppHub (from `https://github.com/orta/apphub.git`, branch `build_list`)
   - ARGenericTableViewController
   - Artsy+Authentication/email (from `https://github.com/artsy/Artsy-Authentication.git`, branch `fetch-user-details`)
-  - Artsy+UIFonts (from `https://github.com/artsy/Artsy-OSSUIFonts.git`, branch `orta-access-token`)
+  - Artsy+UIFonts
   - Emission (from `../`)
   - FLKAutoLayout
   - React/DevSupport (from `../node_modules/react-native`)
@@ -130,9 +130,6 @@ EXTERNAL SOURCES:
   Artsy+Authentication:
     :branch: fetch-user-details
     :git: https://github.com/artsy/Artsy-Authentication.git
-  Artsy+UIFonts:
-    :branch: orta-access-token
-    :git: https://github.com/artsy/Artsy-OSSUIFonts.git
   Emission:
     :path: ../
   React:
@@ -149,16 +146,13 @@ CHECKOUT OPTIONS:
   Artsy+Authentication:
     :commit: 1b582675598c999726d9edacd3b8559e01cf7c48
     :git: https://github.com/artsy/Artsy-Authentication.git
-  Artsy+UIFonts:
-    :commit: fa16a50eb81bedd709016fde17fd117f61041398
-    :git: https://github.com/artsy/Artsy-OSSUIFonts.git
 
 SPEC CHECKSUMS:
   AppHub: 03788112dd48c42b60d51321c0ffff4ef15a4432
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   Artsy+Authentication: 3bf11ceca61c52e9e31490535bf5798f625406fa
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  Artsy+UIFonts: 122dd7bbf2ae4cf86a37ef75597402c760001271
+  Artsy+UIFonts: d38c82636e000b1dee31b7bec0268e1841dac17f
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
   Emission: 3e9a02f64e938b2e548212ff0dc806f6f280c56b
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
@@ -175,6 +169,6 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: ccefa1454b2e9825dce3b2df98088b7f0e3c2675
 
-PODFILE CHECKSUM: a288550df11796f6244a3c853320ceae6e4f1ebb
+PODFILE CHECKSUM: 0c385e9313daa3b7b7130176793f59f9c6ee2778
 
 COCOAPODS: 1.3.1
