@@ -11,15 +11,15 @@ import {
   View,
   ViewProperties,
 } from "react-native"
-import ConsignmentBG from "../Components/ConsignmentBG"
-import { BodyText, LargeHeadline, Subtitle } from "../Typography"
-
 import { ConsignmentMetadata, SearchResult } from "../"
+import { Fonts } from "../../../../data/fonts"
 import TODO from "../Components/ArtworkConsignmentTodo"
+import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
 import { Form, Label, Row } from "../Components/FormElements"
 import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
+import { BodyText, LargeHeadline, Subtitle } from "../Typography"
 import Artist from "./Artist"
 import Provenance from "./Provenance"
 import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
@@ -83,92 +83,107 @@ export default class Metadata extends React.Component<Props, State> {
 
   showCategorySelection = () => this.animateStateChange({ showSelector: true })
   hideCategorySelection = () => this.animateStateChange({ showSelector: false })
+  changeCategoryValue = (value, index) => {
+    this.setState({
+      categoryName: categoryOptions[index].name,
+      category: categoryOptions[index].value,
+    })
+  }
 
   render() {
     return (
-      <ConsignmentBG>
-        <DoneButton onPress={this.doneTapped}>
-          <ScrollView keyboardShouldPersistTaps="always">
-            <View style={{ padding: 10 }}>
-              <Row>
-                <Text
-                  text={{ placeholder: "Title", onChangeText: this.updateTitle, value: this.state.title }}
-                  style={{ margin: 10 }}
-                />
-              </Row>
+      <View style={{ flex: 1 }}>
+        <ConsignmentBG>
+          <DoneButton onPress={this.doneTapped}>
+            <ScrollView keyboardShouldPersistTaps="always">
+              <View style={{ padding: 10 }}>
+                <Row>
+                  <Text
+                    text={{ placeholder: "Title", onChangeText: this.updateTitle, value: this.state.title }}
+                    style={{ margin: 10 }}
+                  />
+                </Row>
 
-              <Row>
-                <Text
-                  text={{ placeholder: "Year", onChangeText: this.updateYear, value: this.state.year }}
-                  style={{ margin: 10 }}
-                />
-              </Row>
+                <Row>
+                  <Text
+                    text={{ placeholder: "Year", onChangeText: this.updateYear, value: this.state.year }}
+                    style={{ margin: 10 }}
+                  />
+                </Row>
 
-              <Row>
-                <TouchableWithoutFeedback onPress={() => console.log("HI")} style={{ flex: 1, height: 40 }}>
+                <Row>
+                  <TouchableWithoutFeedback onPress={() => console.log("HI")} style={{ flex: 1, height: 40 }}>
+                    <Text
+                      text={{
+                        placeholder: "Category",
+                        editable: false,
+                        value: this.state.categoryName,
+                      }}
+                      style={{ margin: 10 }}
+                    />
+                  </TouchableWithoutFeedback>
+                </Row>
+
+                {this.state.showSelector &&
+                  <Picker
+                    style={{ backgroundColor: "white" }}
+                    selectedValue={this.state.category}
+                    onValueChange={(itemValue, itemIndex) =>
+                      this.setState({ category: itemValue, categoryName: categoryOptions[itemIndex].name })}
+                  >
+                    {categoryOptions.map(category => <Picker.Item label={category.name} value={category.value} />)}
+                  </Picker>}
+
+                <Row>
+                  <Text
+                    text={{ placeholder: "Medium", onChangeText: this.updateMedium, value: this.state.medium }}
+                    style={{ margin: 10 }}
+                  />
+                </Row>
+
+                <Row>
+                  <Text
+                    text={{ placeholder: "Width", onChangeText: this.updateWidth, value: this.state.width }}
+                    style={{ margin: 10 }}
+                  />
                   <Text
                     text={{
-                      placeholder: "Category",
-                      onChangeText: this.updateCategory,
-                      editable: false,
-                      value: this.state.category,
+                      placeholder: "Height",
+                      onChangeText: this.updateHeight,
+                      value: this.state.height,
                     }}
                     style={{ margin: 10 }}
                   />
-                </TouchableWithoutFeedback>
-              </Row>
+                </Row>
 
-              {this.state.showSelector &&
-                <Picker
-                  style={{ backgroundColor: "white" }}
-                  selectedValue={this.state.category}
-                  onValueChange={(itemValue, itemIndex) =>
-                    this.setState({ category: itemValue, categoryName: categoryOptions[itemIndex].name })}
-                >
-                  {categoryOptions.map(category => <Picker.Item label={category.name} value={category.value} />)}
-                </Picker>}
-
-              <Row>
-                <Text
-                  text={{ placeholder: "Medium", onChangeText: this.updateMedium, value: this.state.medium }}
-                  style={{ margin: 10 }}
-                />
-              </Row>
-
-              <Row>
-                <Text
-                  text={{ placeholder: "Width", onChangeText: this.updateWidth, value: this.state.width }}
-                  style={{ margin: 10 }}
-                />
-                <Text
-                  text={{
-                    placeholder: "Height",
-                    onChangeText: this.updateHeight,
-                    value: this.state.height,
-                  }}
-                  style={{ margin: 10 }}
-                />
-              </Row>
-
-              <Row>
-                <Text
-                  text={{
-                    keyboardType: "numeric",
-                    placeholder: "Depth",
-                    onChangeText: this.updateDepth,
-                    value: this.state.depth ? this.state.depth.toString() : "",
-                  }}
-                  style={{ margin: 10 }}
-                />
-                <View style={{ flex: 1, flexDirection: "row", alignItems: "center", margin: 10 }}>
-                  <Label>Units</Label>
-                  <Toggle selected={this.state.unit === "CM"} left="CM" right="IN" onPress={this.updateUnit} />
-                </View>
-              </Row>
-            </View>
-          </ScrollView>
-        </DoneButton>
-      </ConsignmentBG>
+                <Row>
+                  <Text
+                    text={{
+                      keyboardType: "numeric",
+                      placeholder: "Depth",
+                      onChangeText: this.updateDepth,
+                      value: this.state.depth ? this.state.depth.toString() : "",
+                    }}
+                    style={{ margin: 10 }}
+                  />
+                  <View style={{ flex: 1, flexDirection: "row", alignItems: "center", margin: 10 }}>
+                    <Label>Units</Label>
+                    <Toggle selected={this.state.unit === "CM"} left="CM" right="IN" onPress={this.updateUnit} />
+                  </View>
+                </Row>
+              </View>
+            </ScrollView>
+          </DoneButton>
+        </ConsignmentBG>
+        <Picker
+          style={{ height: 220, backgroundColor: "black", marginTop: 40 }}
+          key="picker"
+          selectedValue={this.state.category}
+          onValueChange={this.changeCategoryValue}
+        >
+          {categoryOptions.map(opt => <Picker.Item color="white" label={opt.name} value={opt.value} key={opt.value} />)}
+        </Picker>
+      </View>
     )
   }
 }

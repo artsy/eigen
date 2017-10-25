@@ -142,7 +142,6 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
     const title = "Complete work details to submit"
     const subtitle = "Provide as much detail as possible so that our partners can best assess your work."
     const state = this.state
-    const emptyFunc = () => ""
 
     // See https://github.com/artsy/convection/blob/master/app/models/submission.rb for list
     const canSubmit = !!(
@@ -153,7 +152,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
       state.metadata.title &&
       state.metadata.year
     )
-
+    console.log("Cansub:", canSubmit)
     return (
       <ConsignmentBG>
         <ScrollView style={{ flex: 1 }}>

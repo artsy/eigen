@@ -51,7 +51,7 @@ export default class Button extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    const displayState = props.onPress ? DisplayState.Enabled : DisplayState.Disabled
+    const displayState = props.onPress && props.onPress !== undefined ? DisplayState.Enabled : DisplayState.Disabled
     this.state = {
       textOpacity: new Animated.Value(1),
       displayState,

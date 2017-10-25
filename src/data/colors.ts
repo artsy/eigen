@@ -17,6 +17,8 @@ export enum Colors {
   White = "white",
 }
 
+// Move away from this export
+
 export default {
   "gray-light": "#f8f8f8",
   "gray-regular": "#e5e5e5",

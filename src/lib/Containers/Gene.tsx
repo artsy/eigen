@@ -5,7 +5,7 @@ import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
-import { WhiteButton } from "../Components/Buttons"
+import { GhostButton } from "../Components/Buttons"
 import Separator from "../Components/Separator"
 import SerifText from "../Components/Text/Serif"
 
@@ -239,7 +239,7 @@ export class Gene extends React.Component<Props, State> {
           <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>
             {this.artworkQuerySummaryString()}
           </SerifText>
-          <WhiteButton text="REFINE" style={{ height: 26, width: refineButtonWidth }} onPress={this.refineTapped} />
+          <GhostButton text="REFINE" style={{ height: 26, width: refineButtonWidth }} onPress={this.refineTapped} />
         </View>
         <Separator style={{ backgroundColor: separatorColor }} />
       </View>
