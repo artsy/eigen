@@ -10,7 +10,9 @@ const AuctionsRenderer: React.SFC<any> = ({ render }) => {
       environment={environment}
       query={graphql`
         query AuctionsRendererQuery {
-          ...Auctions_auctions
+          auctions: sales(live: true, is_auction: true) {
+            ...Auctions_auctions
+          }
         }
       `}
       variables={{}}

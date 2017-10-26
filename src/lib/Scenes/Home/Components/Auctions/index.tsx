@@ -5,12 +5,10 @@ import { createFragmentContainer, graphql } from "react-relay"
 import SectionTitle from "../SectionTitle"
 import AuctionItem from "./Components/AuctionItem"
 
-export class Auctions extends React.Component<any, any> {
+class Auctions extends React.Component<any, any> {
   render() {
-    const items = this.props
-    console.log(items)
-
-    // .map((item, i) => <AuctionItem auction={{ item }} />)
+    const auctions = this.props.auctions
+    const items = auctions.map((item, i) => <AuctionItem key={i} auction={item} />)
 
     return (
       <View>
@@ -23,10 +21,8 @@ export class Auctions extends React.Component<any, any> {
 
 export default createFragmentContainer(Auctions, {
   auctions: graphql`
-    fragment Auctions_auctions on Query {
-      sales(live: true, is_auction: true) {
-        ...AuctionItem_auction
-      }
+    fragment Auctions_auctions on Sale @relay(plural: true) {
+      ...AuctionItem_auction
     }
   `,
 })
