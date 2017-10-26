@@ -148,32 +148,25 @@ if (pr.body.replace(neuterMarkdownTicks, "-") !== newBody.replace(neuterMarkdown
   // danger.github.api.pullRequests.update({...danger.github.thisPR, body: newBody })
 }
 
-// No `yarn run` inside the Package.json
-// It would make the shell glob instead of CLI tools which do a better job.
-// See: https://github.com/yarnpkg/yarn/issues/3595
-const packageText = fs.readFileSync("package.json", "utf8")
-if (packageText.includes("yarn run")) {
-  const url = "https://github.com/yarnpkg/yarn/issues/3595"
-  fail(`You have a \`yarn run\` inside the package.json. This is probably a mistake, see ${url}.`)
-}
-
 // Show TSLint errors inline
 // Yes, this is a bit lossy, we run the linter twice now, but its still a short amount of time
 // Perhaps we could indicate that tslint failed somehow the first time?
 
 // This process should always fail, so needs the `|| true` so it won't raise.
 child_process.execSync(`npm run lint -- -- --format json --out tslint-errors.json || true`)
-const tslintErrors = JSON.parse(fs.readFileSync("tslint-errors.json")) as any[]
-if (tslintErrors.length) {
-  const errors = tslintErrors.map(error => {
-    const format = error.ruleSeverity === "ERROR" ? ":no_entry_sign:" : ":warning:"
-    const linkToFile = danger.github.utils.fileLinks([error.name])
-    return `* ${format} ${linkToFile} - ${error.ruleName} - ${error.failure}`
-  })
-  const tslintMarkdown = `
-## TSLint Issues:
+if (fs.existsSync("tslint-errors.json")) {
+  const tslintErrors = JSON.parse(fs.readFileSync("tslint-errors.json", "utf8")) as any[]
+  if (tslintErrors.length) {
+    const errors = tslintErrors.map(error => {
+      const format = error.ruleSeverity === "ERROR" ? ":no_entry_sign:" : ":warning:"
+      const linkToFile = danger.github.utils.fileLinks([error.name])
+      return `* ${format} ${linkToFile} - ${error.ruleName} - ${error.failure}`
+    })
+    const tslintMarkdown = `
+  ## TSLint Issues:
 
-${errors.join("\n")}
-`
-  markdown(tslintMarkdown)
+  ${errors.join("\n")}
+  `
+    markdown(tslintMarkdown)
+  }
 }
