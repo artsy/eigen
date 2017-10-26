@@ -1,3 +1,5 @@
+#import <KSCrash/KSCrash.h>
+
 #import "AppDelegate.h"
 #import "ARDefaults.h"
 #import "AppSetup.h"
@@ -254,7 +256,7 @@ randomBOOL(void)
     // We got metadata, show the spinner
     [self.spinner presentSpinnerOnViewController:self.navigationController title:title subtitle:subtitle completion:NULL];
   } completion:^(NSURL * _Nullable downloadedFileURL, NSError * _Nullable error) {
-    // We got the JS, remove the
+    // We got the JS
     if (downloadedFileURL) {
       [self.navigationController dismissViewControllerAnimated:YES completion:^{
         [self setupEmissionWithUserID:[auth userID] accessToken:[auth token] keychainService:service];

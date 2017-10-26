@@ -1,3 +1,5 @@
+#import <KSCrash/KSCrash.h>
+
 #import "ARDefaults.h"
 #import "AppSetup.h"
 #import "PRNetworkModel.h"
@@ -27,7 +29,7 @@
       _metaphysicsURL = [defaults stringForKey:ARStagingMetaphysicsURLDefault];
     }
 
-    BOOL useMaster = YES;
+    BOOL useMaster = ![[KSCrash sharedInstance] crashedLastLaunch];
     BOOL usePRBuild = [defaults boolForKey:ARUsePREmissionDefault];
     BOOL useRNP = NO;
     BOOL isSimulator = NO;
@@ -36,9 +38,9 @@
     isSimulator = YES;
 #endif
 
-#if DEBUG
-    useMaster = NO;
-#endif
+//#if DEBUG
+//    useMaster = NO;
+//#endif
 
     useRNP = isSimulator || [defaults boolForKey:ARForceUseRNPDefault];
 
