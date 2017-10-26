@@ -1,7 +1,7 @@
 #import "ARDefaults.h"
 #import "AppSetup.h"
 #import "PRNetworkModel.h"
-#import <AppHub/AppHub.h>
+#import "CommitNetworkModel.h"
 #import <Emission/AREmission.h>
 
 @implementation AppSetup
@@ -27,20 +27,17 @@
       _metaphysicsURL = [defaults stringForKey:ARStagingMetaphysicsURLDefault];
     }
 
+    BOOL useMaster = YES;
     BOOL usePRBuild = [defaults boolForKey:ARUsePREmissionDefault];
     BOOL useRNP = NO;
-    BOOL useAppHub = NO;
     BOOL isSimulator = NO;
 
 #if TARGET_IPHONE_SIMULATOR
     isSimulator = YES;
 #endif
 
-#if DEPLOY
-//    TODO: Either bring back apphub, or just make our PR uploader work per commit too.
-//          IMO, we can probably just make it go to "latest" all the time and call it a day also.
-//          so long as we have good error handling for native bridge changes
-//    useAppHub = YES;
+#if DEBUG
+    useMaster = NO;
 #endif
 
     useRNP = isSimulator || [defaults boolForKey:ARForceUseRNPDefault];
@@ -52,17 +49,17 @@
       NSInteger prNumber = [defaults integerForKey:ARPREmissionIDDefault];
       _emissionLoadedFromString = [NSString stringWithFormat:@"PR #%@", @(prNumber)];
 
+    } else if (useMaster) {
+      CommitNetworkModel *master = [CommitNetworkModel new];
+      _jsCodeLocation = [master fileURLForLatestCommitJavaScript];
+
+      _emissionLoadedFromString = @"Using latest JS from master";
+
     } else if (useRNP) {
       NSString *rnpString = [NSString stringWithFormat:@"http://%@:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true", packagerURL];
 
       _jsCodeLocation = [NSURL URLWithString:rnpString];
       _emissionLoadedFromString = [NSString stringWithFormat:@"Using RNP from %@", _jsCodeLocation.host];
-
-    } else if (useAppHub) {
-      AHBuild *build = [[AppHub buildManager] currentBuild];
-
-      _jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
-      _emissionLoadedFromString = [NSString stringWithFormat:@"Using AppHub %@", build.name];
     }
 
     // Fall back to the bundled Emission JS for release
@@ -76,7 +73,7 @@
     _inSimulator = isSimulator;
     _inStaging = useStaging;
 
-    _usingAppHub = useAppHub;
+    _usingMaster = useMaster;
     _usingRNP = useRNP;
     _usingPRBuild = usePRBuild;
   }

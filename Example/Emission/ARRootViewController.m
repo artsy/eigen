@@ -8,7 +8,6 @@
 #import "ARDefaults.h"
 #import "AppSetup.h"
 
-#import "ARRootViewController+AppHub.h"
 #import "ARRootViewController+PRs.h"
 
 #import <Emission/ARArtistComponentViewController.h>
@@ -39,13 +38,6 @@
   [self setupSection:appData withTitle:[self titleForApp]];
   [appData addCellData:[self emissionJSLocationDescription:setup.emissionLoadedFromString]];
   [tableViewData addSectionData:appData];
-
-  // It can get real confusing if you have AppHub running on your local
-  // development environment.
-  if (setup.usingAppHub || setup.usingPRBuild) {
-    ARSectionData *appHubSection = [self appHubSectionData];
-    [tableViewData addSectionData:appHubSection];
-  }
 
   // This isn't of any use unless you're developing
   if(!setup.usingPRBuild) {

@@ -31,9 +31,6 @@ target 'Emission' do
   # Got to make it look right
   pod 'Artsy+UIFonts'
 
-  # For easy updating of the JS
-  pod 'AppHub', :git => 'https://github.com/orta/apphub.git', :branch => "build_list"
-
   # Native UI tweaks
   pod 'FLKAutoLayout'
 

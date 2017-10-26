@@ -10,7 +10,7 @@
 @property (nonatomic, readonly) BOOL inStaging;
 
 @property (nonatomic, readonly) BOOL usingRNP;
-@property (nonatomic, readonly) BOOL usingAppHub;
+@property (nonatomic, readonly) BOOL usingMaster;
 @property (nonatomic, readonly) BOOL usingPRBuild;
 
 @property (nonatomic, readonly) BOOL inSimulator;
