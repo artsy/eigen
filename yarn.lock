@@ -4997,7 +4997,7 @@ jest-snapshots-svg@^0.0.21:
   dependencies:
     nbind "^0.3.12"
     string-pixel-width "^1.1.1"
-    yoga-layout "^1.5.0"
+    yoga-layout "1.5.0"
 
 jest-styled-components@^4.5.0:
   version "4.5.0"
@@ -9502,7 +9502,7 @@ yargs@~3.10.0:
     decamelize "^1.0.0"
     window-size "0.1.0"
 
-yoga-layout@^1.5.0:
+yoga-layout@1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/yoga-layout/-/yoga-layout-1.5.0.tgz#e1450a4923d057b1ff01621b0a6e69def6a97e1e"
   dependencies:
