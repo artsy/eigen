@@ -1,18 +1,22 @@
 cache: yarn
 language: node_js
 
+before_install:
+- curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.2.1
+- export PATH=$HOME/.yarn/bin:$PATH
+
 matrix:
   include:
-  - node_js: '6.7'
+  - node_js: '8.4'
     script:
       - yarn ci
       - yarn danger
 
   # Deployment related tasks
-  - node_js: "node"
+  - node_js: "8.4.0"
     script: ""  # NOOP as we don't need to run tests etc
     after_success: # This can never fail the build
-      - nvm install 6.7 # Enforce the same version
+      - nvm install 8.4 # Enforce the same version
       # Upload latest PR commit to S3
       - test ! $TRAVIS_PULL_REQUEST == "false" && scripts/deploy_commit.sh
       # Upload merges to master to apphub

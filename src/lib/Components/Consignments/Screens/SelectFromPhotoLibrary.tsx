@@ -2,7 +2,7 @@ import * as React from "react"
 
 import * as _ from "lodash"
 
-import Button from "../../Buttons/FlatWhite"
+import { WhiteButton } from "../../Buttons"
 import DoneButton from "../Components/BottomAlignedButton"
 
 import Circle from "../Components/CircleImage"

@@ -20,7 +20,7 @@ const ConsignmentBG = styled.View`
 `
 
 export default ({ children }: any) =>
-  <BG>
+  <BG key="bg">
     <ConsignmentBG>
       {children}
     </ConsignmentBG>

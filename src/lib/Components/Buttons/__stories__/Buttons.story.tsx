@@ -1,13 +1,22 @@
-import { action, storiesOf } from "@storybook/react-native"
+import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import { View } from "react-native"
 
-import FlatWhite from "../FlatWhite"
-import InvertedButton from "../InvertedButton"
+import { GhostButton, GrayActionButton, InvertedButton, WhiteButton } from "../"
+import Button from "../Button"
+import ProgressButton from "../InvertedButton"
 import NavigationButton from "../NavigationButton"
 
-const smallButton = { height: 26, width: 320, marginBottom: 20 }
-const largeButton = { height: 26, width: 320, marginBottom: 20 }
+const largeButton = {
+  height: 26,
+  marginBottom: 20,
+}
+
+const style = {
+  style: { margin: 10 },
+}
+
+const emptyFunc = () => ""
 
 storiesOf("App Style/Buttons")
   .addDecorator(story =>
@@ -15,25 +24,62 @@ storiesOf("App Style/Buttons")
       {story()}
     </View>
   )
-  .add("Flat White", () => {
+  .add("Ghost Button", () => {
     return [
-      <FlatWhite text="Default" style={smallButton} />,
-      <FlatWhite text="Clickable" style={smallButton} onPress={action("Pressed")} />,
+      <GhostButton text="Disabled" {...style} key="1" />,
+      <GhostButton text="Clickable" onPress={emptyFunc} {...style} key="2" />,
     ]
   })
   .add("Inverted Button", () => {
     return [
-      <View style={largeButton}>
-        <InvertedButton text="Default" />
-      </View>,
-      <View style={largeButton}>
-        <InvertedButton text="Clickable" onPress={action("Pressed")} />
-      </View>,
-      <View style={largeButton}>
-        <InvertedButton text="In Progress..." inProgress={true} />
-      </View>,
+      <InvertedButton text="Disabled" {...style} key="1" />,
+      <InvertedButton text="Clickable" onPress={emptyFunc} {...style} key="2" />,
     ]
   })
-  .add("Navigation Button", () => {
-    return [<NavigationButton title="Default" href="/link/place" />]
+  .add("Gray Action Button", () => {
+    return [
+      <GrayActionButton text="Disabled" key="1" {...style} />,
+      <GrayActionButton text="Clickable" onPress={emptyFunc} key="2" {...style} />,
+    ]
+  })
+  .add("White Button", () => {
+    return [
+      <WhiteButton text="Disabled" key="1" {...style} />,
+      <WhiteButton text="Clickable" onPress={emptyFunc} key="2" {...style} />,
+    ]
+  })
+  .add("Progress Button", () => [
+    <View style={largeButton} key="1">
+      <ProgressButton text="Disabled" />
+    </View>,
+    <View style={largeButton} key="2">
+      <ProgressButton text="Clickable" onPress={emptyFunc} />
+    </View>,
+    <View style={largeButton} key="3">
+      <ProgressButton text="In Progress..." inProgress={true} />
+    </View>,
+  ])
+  .add("Navigation Button", () => <NavigationButton title="Default" href="/link/place" />)
+  .add("Button (dev)", () => {
+    const colorfulTheme = {
+      enabled: {
+        foreground: "white",
+        background: "black",
+        border: "black",
+      },
+      disabled: {
+        foreground: "blue",
+        background: "red",
+        border: "green",
+      },
+      highlighted: {
+        foreground: "green",
+        background: "orange",
+        border: "blue",
+      },
+    }
+    return [
+      <Button text="Disabled" style={largeButton} stateColors={colorfulTheme} key="1" />,
+      <Button text="Enabled" style={largeButton} stateColors={colorfulTheme} onPress={emptyFunc} key="2" />,
+    ]
   })
