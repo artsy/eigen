@@ -5,13 +5,6 @@ before_install:
 - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.2.1
 - export PATH=$HOME/.yarn/bin:$PATH
 
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.9.3
-
 matrix:
   include:
   - node_js: '8.4'
@@ -20,7 +13,7 @@ matrix:
       - yarn danger
 
   # Deployment related tasks
-  - node_js: "node"
+  - node_js: "8.4.0"
     script: ""  # NOOP as we don't need to run tests etc
     after_success: # This can never fail the build
       - nvm install 8.4 # Enforce the same version

@@ -91,7 +91,6 @@
     "enzyme-adapter-react-16": "^1.0.2",
     "jest": "^21.0.1",
     "jest-react-native": "18.0.0",
-    "jest-snapshots-svg": "^0.0.21",
     "jest-styled-components": "^4.5.0",
     "lint-staged": "^3.4.1",
     "prettier": "^1.5.2",

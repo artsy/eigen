@@ -1,4 +1,3 @@
-import "jest-snapshots-svg"
 import * as React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
