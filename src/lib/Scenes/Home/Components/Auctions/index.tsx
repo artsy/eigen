@@ -1,5 +1,5 @@
 import * as React from "react"
-import { View } from "react-native"
+import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import SectionTitle from "../SectionTitle"
@@ -8,12 +8,18 @@ import AuctionItem from "./Components/AuctionItem"
 class Auctions extends React.Component<any, any> {
   render() {
     const auctions = this.props.auctions
-    const items = auctions.map((item, i) => <AuctionItem key={i} auction={item} />)
 
     return (
       <View>
         <SectionTitle>Live Auctions</SectionTitle>
-        {items}
+        <FlatList
+          data={auctions}
+          numColumns={2}
+          keyExtractor={(item, index) => item.id}
+          renderItem={itemData => {
+            return <AuctionItem key={itemData.index} auction={itemData.item} />
+          }}
+        />
       </View>
     )
   }
