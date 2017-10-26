@@ -26,6 +26,7 @@ Before submitting to the App Store, the binary we submit *must* be tested *on-de
   - [ ] The artwork, artist, and auctions view controllers.
   - [ ] Live Auctions interface.
 - [ ] Review `CHANGELOG.yml` entries for the release and run through any parts of the app that seem appropriate.
+- [ ] Open a React Native view, then open a modal view controller (LAI interface, inquiry modal), and navigate back to the RN view. Make sure that [the screen isn't blank](https://github.com/artsy/eigen/issues/2439).
 
 It is *critical* that we catch bugs before we submit to the App Store. If a bug gets out, it can take days or weeks for Apple to review any fix. As the submitter, you are the last line of defence – the whole team is counting on you.
 
