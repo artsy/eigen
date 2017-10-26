@@ -349,15 +349,6 @@ append-transform@^0.4.0:
   dependencies:
     default-require-extensions "^1.0.0"
 
-apphub@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/apphub/-/apphub-0.5.1.tgz#aa3418d749e11fde5c07ff336dfa2dafb31629bb"
-  dependencies:
-    mkdirp "^0.5.1"
-    node-uuid "^1.4.7"
-    plist "^1.2.0"
-    yargs "^3.31.0"
-
 aproba@^1.0.3:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/aproba/-/aproba-1.1.1.tgz#95d3600f07710aa0e9298c726ad5ecf2eacbabab"
@@ -6060,10 +6051,6 @@ node-pre-gyp@^0.6.36:
     tar "^2.2.1"
     tar-pack "^3.4.0"
 
-node-uuid@^1.4.7:
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/node-uuid/-/node-uuid-1.4.8.tgz#b040eb0923968afabf8d32fb1f17f1167fdab907"
-
 nomnom@~1.6.2:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/nomnom/-/nomnom-1.6.2.tgz#84a66a260174408fc5b77a18f888eccc44fb6971"
@@ -9408,7 +9395,7 @@ yargs@^1.2.6:
   dependencies:
     minimist "^0.1.0"
 
-yargs@^3.31.0, yargs@^3.5.4:
+yargs@^3.5.4:
   version "3.32.0"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-3.32.0.tgz#03088e9ebf9e756b69751611d2a5ef591482c995"
   dependencies:
