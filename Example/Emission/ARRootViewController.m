@@ -275,8 +275,14 @@
 - (NSArray<ARCellData *> *)cellsForMasterInformation
 {
   NSError *jsonError = nil;
-  NSData *data = [NSData dataWithContentsOfURL:[[CommitNetworkModel new] fileURLForLatestCommitMetadata]];
-  Metadata *metadata = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
+  NSURL *metadataURL = [[CommitNetworkModel new] fileURLForLatestCommitMetadata];
+
+  NSData *data = [NSData dataWithContentsOfURL:metadataURL];
+  if(!data) { return @[]; }
+
+  NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
+  Metadata *metadata = [[Metadata alloc] initFromJSONDict:json];
+
   if (jsonError) { return @[]; }
 
   ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
@@ -292,7 +298,7 @@
      [self informationCellDataWithTitle:[NSString stringWithFormat:@"Last Updated: %@ days ago", @([components day])]],
 
      [self tappableCellDataWithTitle:pr selection:^{
-       NSString *addr = [NSString stringWithFormat:@"https://github.com/artsy/emission/pulls/%@", metadata.number];
+       NSString *addr = [NSString stringWithFormat:@"https://github.com/artsy/emission/pull/%@", metadata.number];
        NSURL *url = [NSURL URLWithString:addr];
        id viewController = [[InternalWebViewController alloc] initWithURL:url];
        [self.navigationController pushViewController:viewController animated:YES];
