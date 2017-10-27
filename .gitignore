@@ -63,3 +63,4 @@ tslint-errors.json
 #
 haul-debug.log
 .happypack
+test-results.json
