@@ -46,8 +46,10 @@
     [cell.textLabel setAlpha:0.5];
     
     [network verifyJSAtPRNumber:[pr[@"number"] intValue] completion:^(BOOL exists) {
-      [cell.textLabel setAlpha:exists ? 1 : 0.5];
-      [cell setTickSelected:exists animated:YES];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [cell.textLabel setAlpha:exists ? 1 : 0.5];
+        [cell setTickSelected:exists animated:YES];
+      });
     }];
   };
 

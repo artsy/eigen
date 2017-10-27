@@ -16,7 +16,7 @@ SHA=`git rev-list --min-parents=2 --max-count=1 HEAD`
 PR_DESC=`git log --format=%B -n 1 $SHA | tail -1`
 
 # Get the PR number out of the merge commit title
-PR_NUM=`git log --format=%B -n 1 $SHA | grep -Eo '#[0-9]+' | tail -n 1`
+PR_NUM=`git log --format=%B -n 1 $SHA | grep -Eo '#[0-9]+' | tail -n 1 | cut -d "#" -f 2`
 
 # Just some potential useful metadata for later
 # format hardcoded because https://stackoverflow.com/questions/7216358/date-command-on-os-x-doesnt-have-iso-8601-i-option
