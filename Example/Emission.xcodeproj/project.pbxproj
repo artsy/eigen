@@ -563,7 +563,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"$CONFIGURATION\" = \"Release\" ]\nthen\necho \"OK\"\n#cd .. && npm run bundle\nfi";
+			shellScript = "if [ \"$CONFIGURATION\" = \"Release\" ]\nthen\ncd .. && npm run bundle\nfi";
 			showEnvVarsInLog = 0;
 		};
 		6E41E6A6664172F7C45F3D36 /* [CP] Check Pods Manifest.lock */ = {

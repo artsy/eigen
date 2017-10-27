@@ -258,9 +258,9 @@ randomBOOL(void)
   } completion:^(NSURL * _Nullable downloadedFileURL, NSError * _Nullable error) {
     // We got the JS
     if (downloadedFileURL) {
-//      [self.navigationController dismissViewControllerAnimated:YES completion:^{
-//        [self setupEmissionWithUserID:[auth userID] accessToken:[auth token] keychainService:service];
-//      }];
+      [self.navigationController dismissViewControllerAnimated:YES completion:^{
+        [self setupEmissionWithUserID:[auth userID] accessToken:[auth token] keychainService:service];
+      }];
     }
     NSLog(@"Error: %@", error);
   }];

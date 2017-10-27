@@ -7,6 +7,7 @@
 #import "AppDelegate.h"
 #import "ARDefaults.h"
 #import "AppSetup.h"
+#import "CommitNetworkModel.h"
 
 #import "ARRootViewController+PRs.h"
 
@@ -21,6 +22,7 @@
 
 #import "InternalWebViewController.h"
 #import "EigenLikeNavigationController.h"
+#import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 
 @implementation ARRootViewController
 
@@ -37,6 +39,9 @@
   ARSectionData *appData = [[ARSectionData alloc] init];
   [self setupSection:appData withTitle:[self titleForApp]];
   [appData addCellData:[self emissionJSLocationDescription:setup.emissionLoadedFromString]];
+  if (setup.usingMaster) {
+    [appData addCellDataFromArray:[self cellsForMasterInformation]];
+  }
   [tableViewData addSectionData:appData];
 
   // This isn't of any use unless you're developing
@@ -51,15 +56,14 @@
   ARSectionData *userSection = [self userSection];
   [tableViewData addSectionData:userSection];
 
-  ARSectionData *adminSection = [self adminSection];
-  [tableViewData addSectionData:adminSection];
-
-
   // TODO: Deprecate
   // These were nice quick for getting bootstrapped, but they should be storybooks
   // so that they can be controlled in JS and deployed with PRs.
   ARSectionData *viewControllerSection = [self jumpToViewControllersSection];
   [tableViewData addSectionData:viewControllerSection];
+
+  ARSectionData *adminSection = [self adminSection];
+  [tableViewData addSectionData:adminSection];
 
   self.tableViewData = tableViewData;
 }
@@ -264,13 +268,38 @@
 
 - (ARCellData *)emissionJSLocationDescription:(NSString *)loadedFromString
 {
-  ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-  [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-    cell.textLabel.text = loadedFromString;
-  }];
-
-  return crashCellData;
+  return [self informationCellDataWithTitle:loadedFromString];
 }
+
+
+- (NSArray<ARCellData *> *)cellsForMasterInformation
+{
+  NSError *jsonError = nil;
+  NSData *data = [NSData dataWithContentsOfURL:[[CommitNetworkModel new] fileURLForLatestCommitMetadata]];
+  Metadata *metadata = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
+  if (jsonError) { return @[]; }
+
+  ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+  NSDate *lastUpdate = [dateFormatter dateFromString:[metadata date]];
+
+  NSUInteger unitFlags = NSCalendarUnitDay;
+  NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierISO8601];
+  NSDateComponents *components = [calendar components:unitFlags fromDate:lastUpdate toDate:[NSDate dateWithTimeIntervalSinceNow:0] options:0];
+
+  NSString *pr = [NSString stringWithFormat:@"PR #%@ - %@", [metadata number], [metadata title]];
+
+  return @[
+     [self informationCellDataWithTitle:[NSString stringWithFormat:@"Last Updated: %@ days ago", @([components day])]],
+
+     [self tappableCellDataWithTitle:pr selection:^{
+       NSString *addr = [NSString stringWithFormat:@"https://github.com/artsy/emission/pulls/%@", metadata.number];
+       NSURL *url = [NSURL URLWithString:addr];
+       id viewController = [[InternalWebViewController alloc] initWithURL:url];
+       [self.navigationController pushViewController:viewController animated:YES];
+     }]
+  ];
+}
+
 
 - (ARSectionData *)userSection
 {

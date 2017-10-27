@@ -19,6 +19,17 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
   return cellData;
 }
 
+- (ARCellData *)informationCellDataWithTitle:(NSString *)title
+  {
+    ARCellData *cell = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    [cell setCellConfigurationBlock:^(UITableViewCell *cell) {
+      cell.textLabel.text = title;
+      cell.textLabel.textColor = [UIColor grayColor];
+    }];
+
+    return cell;
+  }
+
 - (NSString *)titleForApp
 {
   NSDictionary *metadata = [[NSBundle mainBundle] infoDictionary];

@@ -3,6 +3,7 @@
 #import "AuthenticationManager.h"
 
 @interface ARRootViewController : EigenLikeAdminViewController
+
 @property (nonatomic) AuthenticationManager *authenticationManager;
 
 @end
