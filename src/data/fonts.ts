@@ -1,5 +1,10 @@
-// In TypeScript 2.4 this can turn into an Enum
-// https://github.com/Microsoft/TypeScript/pull/15486
+// Prefer using this instead of the default export
+
+export enum Fonts {
+  GaramondRegular = "AGaramondPro-Regular",
+  GaramondItalic = "AGaramondPro-Italic",
+  AvantGardeRegular = "AvantGardeGothicITC",
+}
 
 export default {
   "garamond-regular": "AGaramondPro-Regular",
