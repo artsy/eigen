@@ -9,25 +9,39 @@ export namespace Schema {
   export interface Global {
     /**
      * The name of an event.
+     *
+     * Options are: Tap, Fail, Success
      */
-    action: string
+    action_type: string
 
     /**
-     * OPTIONAL: Additional subtypes of the action
+     * The discription of an event
+     *
+     * E.g. Conversation artwork attatchment tapped
      */
-    type: string
+    action_name: string
+
+    /**
+     * OPTIONAL: Additional properties of the action
+     */
+    additional_properties?: object
   }
 
   export interface Entity extends Global {
     /**
      * The ID of the entity in its database. E.g. the Mongo ID for entities that reside in Gravity.
      */
-    entity_id: string // name database id?
+    owner_id: string
 
     /**
      * The public slug for this entity.
      */
-    entity_slug: string // name id
+    owner_slug: string
+
+    /**
+     * The type of entity, e.g. Artwork, Artist, etc.
+     */
+    owner_type: string
   }
 
   export interface PageView {
@@ -37,19 +51,46 @@ export namespace Schema {
     page: string
 
     /**
-     * The ID of the entity in its database. E.g. the Mongo ID for entities that reside in Gravity.
+     * The public slug for the entity that owns this page (e.g. for the Artist page)
      */
-    entity_id: string
+    context_owner_slug: string
+
+    /**
+     * The ID of the entity in its database. E.g. the Mongo ID for entities that reside in Gravity.
+     *
+     * OPTIONAL: This may not always be available
+     */
+    context_owner_id?: string
+  }
+
+  export const PageNames = {
+    artistPage: "Artist",
+    inboxPage: "Inbox",
+  }
+
+  export const ActionEventTypes = {
+    /**
+     * User actions
+     */
+    tap: "tap",
+
+    /**
+     * Events / results
+     */
+    fail: "fail",
+    success: "success",
   }
 
   /**
-   * This is the list of event names
+   * Action event discriptors / names
    */
-  export const ActionEvents = {
+  export const ActionEventNames = {
     /**
      * Artist Page Events
      */
-    artistClick: "blah",
+    artistFollowButtonTapped: "blah",
+    artistUnfollowButtonTapped: "blah",
+
     /**
      * Conversations / Inbox / Messaging Events
      */
