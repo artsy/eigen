@@ -1,8 +1,12 @@
 #import "CommitNetworkModel.h"
 
+// See /scripts/deploy_master.sh
+
 @interface Metadata
-- (NSString *)title;
-- (NSString *)subtitle;
+- (NSString *)title; // PR description
+- (NSString *)sha; // Full SHA of commit used
+- (NSString *)date; // ISO8601 string of date for JS upload
+- (NSString *)number; // PR number of last merged commit
 @end
 
 
@@ -21,10 +25,11 @@
         if (error) { completionHandler(error, nil, nil); return; }
 
         NSError *jsonError = nil;
-        id json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+        Metadata *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
 
         if (error) { completionHandler(jsonError, nil, nil); return; }
-        completionHandler(nil, [json title], [json subtitle]);
+        completionHandler(nil, [json title], [json date]);
+//        completionHandler(nil, @"Downloading JS", @"Last PR: #803 Revise deployment and JS strategy across many lines ok");
       }];
 
       [task resume];
@@ -39,7 +44,7 @@
         metadata(title, subtitle);
       });
 
-      NSURL *url = [NSURL URLWithString:@"https://s3.amazonaws.com/artsy-emission-js/master.js"];
+      NSURL *url = [NSURL URLWithString:@"https://s3.amazonaws.com/artsy-emission-js/Emission-master.js"];
       NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
         if (error) { completionHandler(nil, error); return; }

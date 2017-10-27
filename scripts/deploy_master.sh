@@ -18,8 +18,13 @@ PR_DESC=`git log --format=%B -n 1 $SHA | tail -1`
 # Get the PR number out of the merge commit title
 PR_NUM=`git log --format=%B -n 1 $SHA | grep -Eo '#[0-9]+' | tail -n 1`
 
+# Just some potential useful metadata for later
+# format hardcoded because https://stackoverflow.com/questions/7216358/date-command-on-os-x-doesnt-have-iso-8601-i-option
+DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
+
 # Create a metadata file
-echo "{\"title\":\"Downloading $SHA\",\"subtitle\":\"$PR_DESC\", \"pr\": $PR_NUM }" > head_metadata.json
+echo "{\"title\":\"$PR_DESC\",\"sha\":\"$SHA\", \"date\":\"$DATE\", \"number\": $PR_NUM }" > head_metadata.json
+cat head_metadata.json
 
 # Uploads the metadata so that the app can show some info
 s3-cli put head_metadata.json "s3://artsy-emission-js/master-metadata.json"

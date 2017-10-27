@@ -28,7 +28,7 @@
       titleLabel.textAlignment = NSTextAlignmentCenter;
       [spinnerView addSubview:titleLabel];
       [titleLabel alignLeading:@"0" trailing:@"0" toView:spinnerView];
-      [titleLabel alignCenterYWithView:spinnerView predicate:@"-40"];
+      [titleLabel alignCenterYWithView:spinnerView predicate:@"-160"];
     }
 
     if (subtitle) {
@@ -38,7 +38,7 @@
       subtitleLabel.textAlignment = NSTextAlignmentCenter;
       [spinnerView addSubview:subtitleLabel];
       [subtitleLabel alignLeading:@"0" trailing:@"0" toView:spinnerView];
-      [subtitleLabel alignCenterYWithView:spinnerView predicate:@"-40"];
+      [subtitleLabel alignCenterYWithView:spinnerView predicate:@"-100"];
     }
 
     [viewController presentViewController:self.spinnerController animated:NO completion:completion];

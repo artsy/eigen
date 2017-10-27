@@ -38,9 +38,9 @@
     isSimulator = YES;
 #endif
 
-//#if DEBUG
-//    useMaster = NO;
-//#endif
+#if DEBUG
+    useMaster = NO;
+#endif
 
     useRNP = isSimulator || [defaults boolForKey:ARForceUseRNPDefault];
 
@@ -51,17 +51,17 @@
       NSInteger prNumber = [defaults integerForKey:ARPREmissionIDDefault];
       _emissionLoadedFromString = [NSString stringWithFormat:@"PR #%@", @(prNumber)];
 
+    } else if (useRNP) {
+        NSString *rnpString = [NSString stringWithFormat:@"http://%@:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true", packagerURL];
+
+        _jsCodeLocation = [NSURL URLWithString:rnpString];
+        _emissionLoadedFromString = [NSString stringWithFormat:@"Using RNP from %@", _jsCodeLocation.host];
+
     } else if (useMaster) {
       CommitNetworkModel *master = [CommitNetworkModel new];
       _jsCodeLocation = [master fileURLForLatestCommitJavaScript];
 
       _emissionLoadedFromString = @"Using latest JS from master";
-
-    } else if (useRNP) {
-      NSString *rnpString = [NSString stringWithFormat:@"http://%@:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true", packagerURL];
-
-      _jsCodeLocation = [NSURL URLWithString:rnpString];
-      _emissionLoadedFromString = [NSString stringWithFormat:@"Using RNP from %@", _jsCodeLocation.host];
     }
 
     // Fall back to the bundled Emission JS for release

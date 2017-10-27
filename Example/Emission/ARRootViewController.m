@@ -244,7 +244,7 @@
 {
   BOOL forceRNP = [[NSUserDefaults standardUserDefaults] boolForKey:ARForceUseRNPDefault];
   NSString *rnpLocation = [[NSUserDefaults standardUserDefaults] stringForKey:ARRNPackagerHostDefault];
-  NSString *title = !forceRNP ? [NSString stringWithFormat:@"Use RNP at %@", rnpLocation] : @"Revert forced RNP";
+  NSString *title = !forceRNP ? [NSString stringWithFormat:@"Use RNP with %@", rnpLocation] : @"Revert forced RNP";
 
   ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
   [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
@@ -295,12 +295,10 @@
       [self editableTextCellDataWithName:@"Metaphysics API" defaultKey:ARStagingMetaphysicsURLDefault],
       [self editableTextCellDataWithName:@"RN Packager" defaultKey:ARRNPackagerHostDefault],
     ]];
-    if (!setup.inSimulator) {
-      [sectionData addCellData:self.toggleRNPSwitch];
-    }
+
   }
 
-
+  [sectionData addCellData:self.toggleRNPSwitch];
   [sectionData addCellData:self.generateStagingSwitch];
   [sectionData addCellData:self.logOutButton];
   return sectionData;
