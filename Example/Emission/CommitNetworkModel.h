@@ -2,11 +2,14 @@
 
 // See /scripts/deploy_master.sh
 
-@interface Metadata
-- (NSString * _Nullable)title; // PR description
-- (NSString *_Nullable)sha; // Full SHA of commit used
-- (NSString *_Nullable)date; // ISO8601 string of date for JS upload
-- (NSNumber * _Nullable)number; // PR number of last merged commit
+@interface Metadata: NSObject
+@property NSString * _Nullable title; // PR description
+@property NSString * _Nullable sha; // Full SHA of commit used
+@property NSString * _Nullable date; // ISO8601 string of date for JS upload
+@property NSNumber * _Nullable number; // PR number of last merged commit
+
+- (instancetype _Nonnull )initFromJSONDict:(NSDictionary * _Nonnull)dict;
+
 @end
 
 @interface CommitNetworkModel : NSObject

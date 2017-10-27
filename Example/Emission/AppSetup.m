@@ -34,6 +34,8 @@
     BOOL useRNP = NO;
     BOOL isSimulator = NO;
 
+// Comment both of these to set yourself up as though you were running the beta
+
 #if TARGET_IPHONE_SIMULATOR
     isSimulator = YES;
 #endif

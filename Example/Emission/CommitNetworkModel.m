@@ -1,18 +1,28 @@
 #import "CommitNetworkModel.h"
 
+@implementation Metadata
+  - (instancetype)initFromJSONDict:(NSDictionary *)dict
+  {
+    self = [super init];
+    self.number = dict[@"number"];
+    self.date = dict[@"date"];
+    self.title = dict[@"title"];
+    self.sha = dict[@"shaa"];
+    return self;
+  }
+@end
 
 @implementation CommitNetworkModel
 
 - (NSURL *_Nonnull)fileURLForLatestCommitJavaScript
-  {
-    return [[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject] URLByAppendingPathComponent:@"Emission-master.js"];
-  }
+{
+  return [[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject] URLByAppendingPathComponent:@"Emission-master.js"];
+}
 
 - (NSURL *_Nonnull)fileURLForLatestCommitMetadata
-  {
-    return [[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject] URLByAppendingPathComponent:@"master-metadata.json"];
-  }
-
+{
+  return [[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject] URLByAppendingPathComponent:@"master-metadata.json"];
+}
 
 - (void)downloadMetadataForMasterCommit:(void (^_Nonnull)(NSError * _Nullable error, Metadata * _Nullable metadata))completionHandler
   {
@@ -23,7 +33,8 @@
 
         NSError *jsonError = nil;
 
-        Metadata *metadata = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
+        Metadata *metadata = [[Metadata alloc] initFromJSONDict:json];
         if (error) { completionHandler(jsonError, nil); return; }
 
         NSURL *fileURL = [self fileURLForLatestCommitMetadata];
@@ -42,7 +53,7 @@
       if (error) { completionHandler(nil, error); return; }
 
       NSString *title = @"Downloading JS";
-      NSString *subtitle = [NSString stringWithFormat:@"Last PR: #%@ - %@", metadata.number, metadata.title];
+      NSString *subtitle = [NSString stringWithFormat:@"Last PR: #%@ - %@", [metadata number], [metadata title]];
 
       dispatch_async(dispatch_get_main_queue(), ^{
         metadataCallback(title, subtitle);
