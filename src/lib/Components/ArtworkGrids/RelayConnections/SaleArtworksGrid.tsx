@@ -12,6 +12,7 @@ const SaleArtworksGrid = createPaginationContainer(
     sale: graphql.experimental`
       fragment SaleArtworksGrid_sale on Sale
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+        __id
         saleArtworks: sale_artworks_connection(first: $count, after: $cursor)
           @connection(key: "SaleArtworksGrid_saleArtworks") {
           pageInfo {
@@ -37,7 +38,7 @@ const SaleArtworksGrid = createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.sale && props.sale.sale_artworks
+      return props.sale && props.sale.saleArtworks
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -66,9 +67,3 @@ const SaleArtworksGrid = createPaginationContainer(
 )
 
 export default SaleArtworksGrid
-
-export interface SaleArtworkRelayProps {
-  artwork: {
-    id: string
-  }
-}
