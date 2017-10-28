@@ -9,11 +9,11 @@ Artwork
 const SaleArtworksGrid = createPaginationContainer(
   InfiniteScrollArtworksGrid,
   {
-    saleArtworks: graphql.experimental`
-      fragment SaleArtworksGrid_saleArtworks on Sale
+    sale: graphql.experimental`
+      fragment SaleArtworksGrid_sale on Sale
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        sale_artworks: sale_artworks_connection(first: $count, after: $cursor)
-          @connection(key: "SaleArtworksGrid_sale_artworks") {
+        saleArtworks: sale_artworks_connection(first: $count, after: $cursor)
+          @connection(key: "SaleArtworksGrid_saleArtworks") {
           pageInfo {
             hasNextPage
             startCursor
@@ -54,10 +54,10 @@ const SaleArtworksGrid = createPaginationContainer(
       }
     },
     query: graphql.experimental`
-      query SaleArtworksGridQuery($__id: ID!) {
+      query SaleArtworksGridQuery($__id: ID!, $count: Int!, $cursor: String) {
         node(__id: $__id) {
-          ... on SaleArtwork {
-            ...SaleArtworksGrid_saleArtworks @arguments(count: $count, cursor: $cursor)
+          ... on Sale {
+            ...SaleArtworksGrid_sale @arguments(count: $count, cursor: $cursor)
           }
         }
       }

@@ -12,6 +12,7 @@
     "esbenp.prettier-vscode",
     "mrmlnc.vscode-stylefmt",
     "shinnn.stylelint",
-    "wayou.vscode-todo-highlight"
+    "wayou.vscode-todo-highlight",
+    "kumar-harsh.graphql-for-vscode"
   ]
 }

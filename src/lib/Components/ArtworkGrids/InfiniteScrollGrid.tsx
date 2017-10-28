@@ -69,6 +69,10 @@ interface Props extends ArtistRelayProps, GeneRelayProps {
   /** The key to get artworks */
   queryKey: any
 
+  mapPropsToArtworksConnection?: (props: any) => ArtworksConnection
+
+  mapConnectionNodeToArtwork?: (node: any) => Artwork
+
   /** Filter for artist artworks */
   filter: any
 
@@ -117,6 +121,9 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   }
 
   artworksConnection(): ArtworksConnection {
+    if (this.props.mapPropsToArtworksConnection) {
+      return this.props.mapPropsToArtworksConnection(this.props)
+    }
     return get(this.props, this.props.queryKey) as any
   }
 
@@ -181,7 +188,10 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   sectionedArtworks() {
     const sectionedArtworks: Artworks[] = []
     const sectionRatioSums: number[] = []
-    const artworks: Artworks = this.artworksConnection() ? this.artworksConnection().edges.map(({ node }) => node) : []
+    const nodeMapper = this.props.mapConnectionNodeToArtwork ? this.props.mapConnectionNodeToArtwork : node => node
+    const artworks: Artworks = this.artworksConnection()
+      ? this.artworksConnection().edges.map(({ node }) => nodeMapper(node))
+      : []
 
     for (let i = 0; i < this.props.sectionCount; i++) {
       sectionedArtworks.push([])

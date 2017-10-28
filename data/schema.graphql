@@ -668,7 +668,7 @@ type ArtworkConnection {
 
 union ArtworkContext = ArtworkContextAuction | ArtworkContextFair | ArtworkContextPartnerShow | ArtworkContextSale
 
-type ArtworkContextAuction {
+type ArtworkContextAuction implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -899,7 +899,7 @@ type ArtworkContextPartnerShow implements Node {
   type: String
 }
 
-type ArtworkContextSale {
+type ArtworkContextSale implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -2757,7 +2757,7 @@ type HomePageModuleContextRelatedArtist {
   based_on: Artist
 }
 
-type HomePageModuleContextSale {
+type HomePageModuleContextSale implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -4120,7 +4120,7 @@ type S3PolicyDocumentType {
   conditions: S3PolicyConditionsType!
 }
 
-type Sale {
+type Sale implements Node {
   # A globally unique ID.
   __id: ID!
 

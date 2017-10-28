@@ -3,9 +3,9 @@ import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-n
 import ParallaxScrollView from "react-native-parallax-scroll-view"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
+import SaleArtworksGrid from "../Components/ArtworkGrids/RelayConnections/SaleArtworksGrid"
 import { GhostButton } from "../Components/Buttons"
 import Header from "../Components/Sale/Header"
-import SaleArtworksGrid from "../Components/ArtworkGrids/RelayConnections/SaleArtworksGrid"
 import Separator from "../Components/Separator"
 import SerifText from "../Components/Text/Serif"
 
@@ -110,7 +110,11 @@ export class Sale extends React.Component<Props, State> {
         parallaxHeaderContainerStyles={{ marginBottom: stickyTopMargin }}
       >
         <View style={{ marginTop: 20, paddingLeft: this.commonPadding, paddingRight: this.commonPadding }}>
-          <SaleArtworksGrid sale={this.props.sale} queryKey="gene.artworks" />
+          <SaleArtworksGrid
+            sale={this.props.sale}
+            mapPropsToArtworksConnection={props => props.sale.saleArtworks}
+            mapConnectionNodeToArtwork={node => node.artwork}
+          />
         </View>
       </ParallaxScrollView>
     )
@@ -153,7 +157,7 @@ export default createRefetchContainer(
       id
       name
       ...Header_sale
-      ...SaleArtworksGrid_saleArtworks
+      ...SaleArtworksGrid_sale
     }
   `,
   graphql.experimental`
