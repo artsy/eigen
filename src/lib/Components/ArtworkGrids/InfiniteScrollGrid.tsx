@@ -66,10 +66,7 @@ interface Props extends ArtistRelayProps, GeneRelayProps {
   /** The gene in question */
   gene: any
 
-  /** The key to get artworks */
-  queryKey: any
-
-  mapPropsToArtworksConnection?: (props: any) => ArtworksConnection
+  mapPropsToArtworksConnection: (props: any) => ArtworksConnection
 
   mapConnectionNodeToArtwork?: (node: any) => Artwork
 
@@ -121,10 +118,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   }
 
   artworksConnection(): ArtworksConnection {
-    if (this.props.mapPropsToArtworksConnection) {
-      return this.props.mapPropsToArtworksConnection(this.props)
-    }
-    return get(this.props, this.props.queryKey) as any
+    return this.props.mapPropsToArtworksConnection(this.props)
   }
 
   fetchNextPage() {
@@ -146,6 +140,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     //   readyState => {
     //     if (readyState.done) {
     //       this.setState({ fetchingNextPage: false })
+    //       // TODO: This uses the old queryKey, please refactor to use mapPropsToArtworksConnection
     //       if (!this.props[this.props.queryKey].artworks.pageInfo.hasNextPage && this.props.onComplete) {
     //         this.props.onComplete()
     //         this.setState({ completed: true })

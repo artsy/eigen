@@ -43,7 +43,7 @@ class Artworks extends React.Component<Props, State> {
         filter: "IS_NOT_FOR_SALE",
         onComplete: null,
         Component: ArtistNotForSaleArtworksGrid,
-        queryKey: "notForSaleArtworks",
+        mapPropsToArtworksConnection: props => props.artist.notForSaleArtworks,
       })
     } else {
       const otherWorks: any[] = []
@@ -57,7 +57,7 @@ class Artworks extends React.Component<Props, State> {
             filter: "IS_NOT_FOR_SALE",
             onComplete: null,
             Component: ArtistNotForSaleArtworksGrid,
-            queryKey: "notForSaleArtworks",
+            mapPropsToArtworksConnection: props => props.artist.notForSaleArtworks,
           })
         )
       }
@@ -71,7 +71,7 @@ class Artworks extends React.Component<Props, State> {
               this.setState({ completedForSaleWorks: true })
             },
             Component: ArtistForSaleArtworksGrid,
-            queryKey: "forSaleArtworks",
+            mapPropsToArtworksConnection: props => props.artist.forSaleArtworks,
           })}
           {otherWorks}
         </View>
@@ -79,14 +79,19 @@ class Artworks extends React.Component<Props, State> {
     }
   }
 
-  renderSection({ title, count, filter, onComplete, Component, queryKey }) {
+  renderSection({ title, count, filter, onComplete, Component, mapPropsToArtworksConnection }) {
     const countStyles = [styles.text, styles.count]
     return (
       <View key={title}>
         <SerifText style={styles.heading}>
           <SerifText style={styles.text}>{title}</SerifText> <SerifText style={countStyles}>({count})</SerifText>
         </SerifText>
-        <Component artist={this.props.artist} filter={filter} onComplete={onComplete} queryKey={`artist.${queryKey}`} />
+        <Component
+          artist={this.props.artist}
+          filter={filter}
+          onComplete={onComplete}
+          mapPropsToArtworkConnection={mapPropsToArtworkConnection}
+        />
       </View>
     )
   }
