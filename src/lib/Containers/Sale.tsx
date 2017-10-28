@@ -3,6 +3,7 @@ import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-n
 import ParallaxScrollView from "react-native-parallax-scroll-view"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
+import colors from "../../data/colors"
 import SaleArtworksGrid from "../Components/ArtworkGrids/RelayConnections/SaleArtworksGrid"
 import { GhostButton } from "../Components/Buttons"
 import Header from "../Components/Sale/Header"
@@ -21,7 +22,7 @@ interface State {
 }
 
 export class Sale extends React.Component<Props, State> {
-  foregroundHeight: number = 200
+  bannerHeight: number = 200
 
   constructor(props: Props) {
     super(props)
@@ -39,30 +40,28 @@ export class Sale extends React.Component<Props, State> {
     }
     return (
       <View style={[containerStyle, styles.header]}>
-        <Header sale={this.props.sale} />
+        <Header sale={this.props.sale} showImage={this.state.showingStickyHeader} />
       </View>
     )
   }
 
-  renderStickyRefineSection() {
-    return <View />
-    // console.log(this.state)
-    // const topMargin = this.state.showingStickyHeader ? 0 : HeaderHeight
-    // const separatorColor = this.state.showingStickyHeader ? "white" : colors["gray-regular"]
+  renderStickyRefineSection = () => {
+    const topMargin = this.state.showingStickyHeader ? 0 : HeaderHeight
+    const separatorColor = colors["gray-regular"]
 
-    // const refineButtonWidth = 80
-    // const maxLabelWidth = Dimensions.get("window").width - this.commonPadding * 2 - refineButtonWidth - 10
+    const refineButtonWidth = 80
+    const maxLabelWidth = Dimensions.get("window").width - this.commonPadding * 2 - refineButtonWidth - 10
 
-    // return (
-    //   <View style={{ backgroundColor: "white" }}>
-    //     <Separator style={{ marginTop: topMargin, backgroundColor: separatorColor }} />
-    //     <View style={[styles.refineContainer, { paddingLeft: this.commonPadding, paddingRight: this.commonPadding }]}>
-    //       <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>Hey replace me!</SerifText>
-    //       <GhostButton text="REFINE" style={{ height: 26, width: refineButtonWidth }} onPress={this.refineTapped} />
-    //     </View>
-    //     <Separator style={{ backgroundColor: separatorColor }} />
-    //   </View>
-    // )
+    return (
+      <View style={{ backgroundColor: "white" }}>
+        <Separator style={{ marginTop: topMargin, backgroundColor: separatorColor }} />
+        <View style={[styles.refineContainer, { paddingLeft: this.commonPadding, paddingRight: this.commonPadding }]}>
+          <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>Hey replace me!</SerifText>
+          <GhostButton text="REFINE" style={{ height: 26, width: refineButtonWidth }} onPress={this.refineTapped} />
+        </View>
+        <Separator style={{ backgroundColor: separatorColor }} />
+      </View>
+    )
   }
 
   renderStickyHeader = () => {
@@ -71,6 +70,17 @@ export class Sale extends React.Component<Props, State> {
       <View style={{ paddingLeft: commonPadding, paddingRight: commonPadding, backgroundColor: "white" }}>
         <Header sale={this.props.sale} />
       </View>
+    )
+  }
+
+  renderUserSpecificContent = () => {
+    // TODO: Add lot standings.
+    return (
+      <SaleArtworksGrid
+        sale={this.props.sale}
+        mapPropsToArtworksConnection={props => props.sale.saleArtworks}
+        mapConnectionNodeToArtwork={node => node.artwork}
+      />
     )
   }
 
@@ -106,15 +116,11 @@ export class Sale extends React.Component<Props, State> {
         onChangeHeaderVisibility={this.onChangeHeaderVisibility}
         stickyHeaderIndices={[1]}
         renderBodyComponentHeader={this.renderStickyRefineSection}
-        parallaxHeaderHeight={this.foregroundHeight}
+        parallaxHeaderHeight={this.bannerHeight}
         parallaxHeaderContainerStyles={{ marginBottom: stickyTopMargin }}
       >
         <View style={{ marginTop: 20, paddingLeft: this.commonPadding, paddingRight: this.commonPadding }}>
-          <SaleArtworksGrid
-            sale={this.props.sale}
-            mapPropsToArtworksConnection={props => props.sale.saleArtworks}
-            mapConnectionNodeToArtwork={node => node.artwork}
-          />
+          {this.renderUserSpecificContent()}
         </View>
       </ParallaxScrollView>
     )

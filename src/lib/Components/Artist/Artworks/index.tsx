@@ -90,7 +90,7 @@ class Artworks extends React.Component<Props, State> {
           artist={this.props.artist}
           filter={filter}
           onComplete={onComplete}
-          mapPropsToArtworkConnection={mapPropsToArtworkConnection}
+          mapPropsToArtworkConnection={mapPropsToArtworksConnection}
         />
       </View>
     )
