@@ -40,9 +40,8 @@
     isSimulator = YES;
 #endif
 
-#if DEBUG
-    useMaster = NO;
-#endif
+
+    useMaster = useMaster || isSimulator;
 
     useRNP = isSimulator || [defaults boolForKey:ARForceUseRNPDefault];
 
