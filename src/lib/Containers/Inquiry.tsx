@@ -104,9 +104,9 @@ export class Inquiry extends React.Component<RelayProps, any> {
   }
 
   @track((props, state) => ({
-    action_type: Schema.ActionEventTypes.tap,
-    action_name: Schema.ActionEventNames.inquiryCancel,
-    owner_type: Schema.OwnerEntityTypes.artwork,
+    action_type: Schema.ActionEventTypes.Tap,
+    action_name: Schema.ActionEventNames.InquiryCancel,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: props.artwork._id,
     owner_slug: props.artwork.id,
   }))
@@ -115,9 +115,9 @@ export class Inquiry extends React.Component<RelayProps, any> {
   }
 
   @track((props, state) => ({
-    action_type: Schema.ActionEventTypes.success,
-    action_name: Schema.ActionEventNames.inquirySend,
-    owner_type: Schema.OwnerEntityTypes.artwork,
+    action_type: Schema.ActionEventTypes.Success,
+    action_name: Schema.ActionEventNames.InquirySend,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: props.artwork._id,
     owner_slug: props.artwork.id,
   }))
@@ -130,9 +130,9 @@ export class Inquiry extends React.Component<RelayProps, any> {
   }
 
   @track((props, state) => ({
-    action_type: Schema.ActionEventTypes.tap,
-    action_name: Schema.ActionEventNames.inquirySend,
-    owner_type: Schema.OwnerEntityTypes.artwork,
+    action_type: Schema.ActionEventTypes.Tap,
+    action_name: Schema.ActionEventNames.InquirySend,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: props.artwork._id,
     owner_slug: props.artwork.id,
   }))
@@ -166,9 +166,9 @@ export class Inquiry extends React.Component<RelayProps, any> {
   }
 
   @track((props, state) => ({
-    action_type: Schema.ActionEventTypes.fail,
-    action_name: Schema.ActionEventNames.inquirySend,
-    owner_type: Schema.OwnerEntityTypes.artwork,
+    action_type: Schema.ActionEventTypes.Fail,
+    action_name: Schema.ActionEventNames.InquirySend,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: props.artwork._id,
     owner_slug: props.artwork.id,
   }))

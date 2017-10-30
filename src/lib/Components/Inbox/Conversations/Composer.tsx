@@ -60,8 +60,8 @@ export default class Composer extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action_type: Schema.ActionEventTypes.tap,
-    action_name: Schema.ActionEventNames.conversationSendReply,
+    action_type: Schema.ActionEventTypes.Tap,
+    action_name: Schema.ActionEventNames.ConversationSendReply,
   }))
   submitText() {
     Keyboard.dismiss()

@@ -111,9 +111,9 @@ export class Message extends React.Component<Props, any> {
   }
 
   @track((props, state) => ({
-    action_type: Schema.ActionEventTypes.tap,
-    action_name: Schema.ActionEventNames.conversationLink,
-    owner_type: Schema.OwnerEntityTypes.conversation,
+    action_type: Schema.ActionEventTypes.Tap,
+    action_name: Schema.ActionEventNames.ConversationLink,
+    owner_type: Schema.OwnerEntityTypes.Conversation,
     owner_id: props.conversationId,
   }))
   onLinkPress(url) {

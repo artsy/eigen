@@ -45,11 +45,15 @@ interface ArtistProps {
   isPad: boolean
 }
 const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
-  return { context_screen: "Artist", context_screen_owner_slug: props.artistID, context_screen_owner_type: "artist" }
+  return {
+    context_screen: "Artist",
+    context_screen_owner_slug: props.artistID,
+    context_screen_owner_type: Schema.PageNames.ArtistPage,
+  }
 })(props => <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />)
 
 const Inbox: React.SFC<{}> = track<{}>(props => {
-  return { context_screen: "Inbox", context_screen_owner_type: "inbox" }
+  return { context_screen: "Inbox", context_screen_owner_type: Schema.PageNames.InboxPage }
 })(() => <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />)
 
 interface GeneProps {

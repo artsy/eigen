@@ -131,11 +131,11 @@ class Header extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action_name: state.following ? Schema.ActionEventNames.artistUnfollow : Schema.ActionEventNames.artistFollow,
-    action_type: Schema.ActionEventTypes.tap,
+    action_name: state.following ? Schema.ActionEventNames.ArtistUnfollow : Schema.ActionEventNames.ArtistFollow,
+    action_type: Schema.ActionEventTypes.Tap,
     owner_id: props.artist._id,
     owner_slug: props.artist.id,
-    owner_type: Schema.OwnerEntityTypes.artist,
+    owner_type: Schema.OwnerEntityTypes.Artist,
   }))
   handleFollowChange() {
     const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
@@ -152,22 +152,22 @@ class Header extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action_name: state.following ? Schema.ActionEventNames.artistUnfollow : Schema.ActionEventNames.artistFollow,
-    action_type: Schema.ActionEventTypes.success,
+    action_name: state.following ? Schema.ActionEventNames.ArtistUnfollow : Schema.ActionEventNames.ArtistFollow,
+    action_type: Schema.ActionEventTypes.Success,
     owner_id: props.artist._id,
     owner_slug: props.artist.id,
-    owner_type: Schema.OwnerEntityTypes.artist,
+    owner_type: Schema.OwnerEntityTypes.Artist,
   }))
   successfulFollowChange() {
     // callback for analytics purposes
   }
 
   @track((props, state) => ({
-    action_name: state.following ? Schema.ActionEventNames.artistUnfollow : Schema.ActionEventNames.artistFollow,
-    action_type: Schema.ActionEventTypes.fail,
+    action_name: state.following ? Schema.ActionEventNames.ArtistUnfollow : Schema.ActionEventNames.ArtistFollow,
+    action_type: Schema.ActionEventTypes.Fail,
     owner_id: props.artist._id,
     owner_slug: props.artist.id,
-    owner_type: Schema.OwnerEntityTypes.artist,
+    owner_type: Schema.OwnerEntityTypes.Artist,
   }))
   failedFollowChange() {
     // callback for analytics purposes

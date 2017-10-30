@@ -130,10 +130,10 @@ export class Conversation extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action_type: Schema.ActionEventTypes.success,
-    action_name: Schema.ActionEventNames.conversationSendReply,
+    action_type: Schema.ActionEventTypes.Success,
+    action_name: Schema.ActionEventNames.ConversationSendReply,
     owner_id: props.me.conversation.id,
-    owner_type: Schema.OwnerEntityTypes.conversation,
+    owner_type: Schema.OwnerEntityTypes.Conversation,
   }))
   messageSuccessfullySent(text: string) {
     this.setState({ sendingMessage: false })
@@ -144,10 +144,10 @@ export class Conversation extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action_type: Schema.ActionEventTypes.fail,
-    action_name: Schema.ActionEventNames.conversationSendReply,
+    action_type: Schema.ActionEventTypes.Fail,
+    action_name: Schema.ActionEventNames.ConversationSendReply,
     owner_id: props.me.conversation.id,
-    owner_type: Schema.OwnerEntityTypes.conversation,
+    owner_type: Schema.OwnerEntityTypes.Conversation,
   }))
   messageFailedToSend(error: Error, text: string) {
     console.warn(error)
