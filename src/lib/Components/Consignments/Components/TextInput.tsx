@@ -55,6 +55,7 @@ const ReadOnlyInput = (props: TextInputProps) =>
       color: props.text.value ? Colors.White : Colors.GraySemibold,
       fontFamily: Fonts.GaramondRegular,
       fontSize: 20,
+      paddingTop: 8,
     }}
   >
     {props.text.value || props.text.placeholder}

@@ -192,6 +192,7 @@ export default class Metadata extends React.Component<Props, State> {
                 <Row>
                   <Text
                     text={{
+                      keyboardType: "numeric",
                       placeholder: "Width",
                       onChangeText: this.updateWidth,
                       value: this.state.width,
@@ -203,6 +204,7 @@ export default class Metadata extends React.Component<Props, State> {
                   />
                   <Text
                     text={{
+                      keyboardType: "numeric",
                       placeholder: "Height",
                       onChangeText: this.updateHeight,
                       value: this.state.height,

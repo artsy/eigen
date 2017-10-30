@@ -39,7 +39,11 @@ interface Props extends ViewProperties {
   setup: ConsignmentSetup
 }
 
-export default class Info extends React.Component<Props, ConsignmentSetup> {
+interface State extends ConsignmentSetup {
+  hasLoaded?: boolean
+}
+
+export default class Info extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = props.setup || {}
@@ -53,7 +57,10 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
 
   saveStateToLocalStorage = () => AsyncStorage.setItem(consignmentsStateKey, JSON.stringify(this.state))
   restoreFromLocalStorage = () =>
-    AsyncStorage.getItem(consignmentsStateKey, (err, result) => result && this.setState(JSON.parse(result)))
+    AsyncStorage.getItem(
+      consignmentsStateKey,
+      (err, result) => result && this.setState({ ...JSON.parse(result), hasLoaded: true })
+    )
 
   goToArtistTapped = () =>
     this.props.navigator.push({
@@ -152,7 +159,6 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
       state.metadata.title &&
       state.metadata.year
     )
-    console.log("Cansub:", canSubmit)
     return (
       <ConsignmentBG>
         <ScrollView style={{ flex: 1 }}>
@@ -172,7 +178,12 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
               {...this.state}
             />
             <Row style={{ justifyContent: "center" }}>
-              <Button text="NEXT" onPress={canSubmit ? this.goToFinalSubmission : undefined} />
+              {this.state.hasLoaded &&
+                <Button
+                  text="NEXT"
+                  onPress={canSubmit ? this.goToFinalSubmission : undefined}
+                  disableAnimations={true}
+                />}
             </Row>
           </View>
         </ScrollView>
