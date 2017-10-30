@@ -24,6 +24,7 @@
 -   Revert back to React Native packager (metro), life comes at you fast, see #785 for context - orta
 -   Updates invoice preview component status when a ARPaymentRequestPaid notification is received - alloy
 -   Present payment request view modally. - alloy
+-   Add new Analytics schema via React Tracking. - maxim
 
 ###### Home
 
@@ -72,6 +73,7 @@
 -   Added inline rendering for invoices - matt
 -   Removed hard-coded sanitization of message body - sarah
 -   Small composer UI tweaks - maxim
+-   Add analytics events for messaging - maxim
 
 ### 1.4.0-beta.3
 
