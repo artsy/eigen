@@ -111,7 +111,10 @@ export class Message extends React.Component<Props, any> {
   }
 
   @track((props, state) => ({
-    action: "link tapped",
+    action_type: Schema.ActionEventTypes.tap,
+    action_name: Schema.ActionEventNames.conversationLink,
+    owner_type: Schema.OwnerEntityTypes.conversation,
+    owner_id: props.conversationId,
   }))
   onLinkPress(url) {
     return SwitchBoard.presentNavigationViewController(this, url)

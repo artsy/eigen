@@ -142,7 +142,10 @@ export class InvoicePreview extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action: `Click invoice attachment: ${props.invoice.state}`,
+    action_type: Schema.ActionEventTypes.tap,
+    action_name: Schema.ActionEventNames.conversationAttachmentInvoice,
+    owner_type: Schema.OwnerEntityTypes.invoice,
+    owner_id: props.invoice.lewitt_invoice_id,
   }))
   attachmentSelected() {
     this.props.onSelected()

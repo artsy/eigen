@@ -131,15 +131,18 @@ class Header extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action: state.following ? "press unfollow button" : "press follow button",
-    entity_id: props.artist.id,
-    entity_slug: props.artist._id,
+    action_name: state.following ? Schema.ActionEventNames.artistUnfollow : Schema.ActionEventNames.artistFollow,
+    action_type: Schema.ActionEventTypes.tap,
+    owner_id: props.artist._id,
+    owner_slug: props.artist.id,
+    owner_type: Schema.OwnerEntityTypes.artist,
   }))
   handleFollowChange() {
     const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
       if (error) {
         console.warn(error)
+        this.failedFollowChange()
       } else {
         this.successfulFollowChange()
       }
@@ -149,18 +152,25 @@ class Header extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action: `successfully ${state.following ? "followed" : "unfollowed"}`,
-    entity_id: props.artist.id,
-    entity_slug: props.artist._id,
+    action_name: state.following ? Schema.ActionEventNames.artistUnfollow : Schema.ActionEventNames.artistFollow,
+    action_type: Schema.ActionEventTypes.success,
+    owner_id: props.artist._id,
+    owner_slug: props.artist.id,
+    owner_type: Schema.OwnerEntityTypes.artist,
   }))
   successfulFollowChange() {
-    Events.postEvent({
-      name: this.state.following ? "Follow artist" : "Unfollow artist",
-      artist_id: this.props.artist._id,
-      artist_slug: this.props.artist.id,
-      // TODO At some point, this component might be on other screens.
-      source_screen: "artist page",
-    })
+    // callback for analytics purposes
+  }
+
+  @track((props, state) => ({
+    action_name: state.following ? Schema.ActionEventNames.artistUnfollow : Schema.ActionEventNames.artistFollow,
+    action_type: Schema.ActionEventTypes.fail,
+    owner_id: props.artist._id,
+    owner_slug: props.artist.id,
+    owner_type: Schema.OwnerEntityTypes.artist,
+  }))
+  failedFollowChange() {
+    // callback for analytics purposes
   }
 }
 

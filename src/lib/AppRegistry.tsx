@@ -45,11 +45,11 @@ interface ArtistProps {
   isPad: boolean
 }
 const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
-  return { page: "Artist", entity_id: props.artistID }
+  return { context_screen: "Artist", context_screen_owner_slug: props.artistID, context_screen_owner_type: "artist" }
 })(props => <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />)
 
 const Inbox: React.SFC<{}> = track<{}>(props => {
-  return { page: "Inbox", entity_id: null }
+  return { context_screen: "Inbox", context_screen_owner_type: "inbox" }
 })(() => <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />)
 
 interface GeneProps {
@@ -77,14 +77,18 @@ interface InquiryProps {
   artworkID: string
 }
 const Inquiry: React.SFC<InquiryProps> = track<InquiryProps>(props => {
-  return { page: "Inquiry", entity_id: props.artworkID }
+  return { context_screen: "Inquiry", context_screen_owner_slug: props.artworkID, context_screen_owner_type: "artwork" }
 })(props => <InquiryRenderer {...props} render={renderWithLoadProgress(Containers.Inquiry, props)} />)
 
 interface ConversationProps {
   conversationID: string
 }
 const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(props => {
-  return { page: "Conversation", entity_id: props.conversationID }
+  return {
+    context_screen: "Conversation",
+    context_screen_owner_id: props.conversationID,
+    context_screen_owner_type: "conversation",
+  }
 })(props => <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />)
 
 const MyAccount: React.SFC<{}> = () => <MyAccountRenderer render={renderWithLoadProgress(Containers.MyAccount)} />

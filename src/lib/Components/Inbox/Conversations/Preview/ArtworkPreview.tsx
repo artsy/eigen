@@ -64,9 +64,11 @@ const track: Track<Props, null, Schema.Entity> = _track
 @track()
 export class ArtworkPreview extends React.Component<Props, any> {
   @track((props, state) => ({
-    action: Schema.ActionEvents.conversationAttachmentArtworkTapped,
-    entity_id: props.artwork._id,
-    entity_slug: props.artwork.id,
+    action_type: Schema.ActionEventTypes.tap,
+    action_name: Schema.ActionEventNames.conversationAttachmentArtwork,
+    owner_type: Schema.OwnerEntityTypes.artwork,
+    owner_id: props.artwork._id,
+    owner_slug: props.artwork.id,
   }))
   attachmentSelected() {
     this.props.onSelected()

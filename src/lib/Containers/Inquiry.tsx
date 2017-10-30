@@ -104,18 +104,22 @@ export class Inquiry extends React.Component<RelayProps, any> {
   }
 
   @track((props, state) => ({
-    action: Schema.ActionEvents.inquiryCancelTapped,
-    entity_id: props.artwork._id,
-    entity_slug: props.artwork.id,
+    action_type: Schema.ActionEventTypes.tap,
+    action_name: Schema.ActionEventNames.inquiryCancel,
+    owner_type: Schema.OwnerEntityTypes.artwork,
+    owner_id: props.artwork._id,
+    owner_slug: props.artwork.id,
   }))
   cancelModal() {
     this.dismissModal()
   }
 
   @track((props, state) => ({
-    action: Schema.ActionEvents.inquirySendSucceded,
-    entity_id: props.artwork._id,
-    entity_slug: props.artwork.id,
+    action_type: Schema.ActionEventTypes.success,
+    action_name: Schema.ActionEventNames.inquirySend,
+    owner_type: Schema.OwnerEntityTypes.artwork,
+    owner_id: props.artwork._id,
+    owner_slug: props.artwork.id,
   }))
   inquirySent() {
     this.dismissModal()
@@ -126,9 +130,11 @@ export class Inquiry extends React.Component<RelayProps, any> {
   }
 
   @track((props, state) => ({
-    action: Schema.ActionEvents.inquirySendTapped,
-    entity_id: props.artwork._id,
-    entity_slug: props.artwork.id,
+    action_type: Schema.ActionEventTypes.tap,
+    action_name: Schema.ActionEventNames.inquirySend,
+    owner_type: Schema.OwnerEntityTypes.artwork,
+    owner_id: props.artwork._id,
+    owner_slug: props.artwork.id,
   }))
   sendInquiry() {
     // Using setState to trigger re-render for the button
@@ -160,9 +166,11 @@ export class Inquiry extends React.Component<RelayProps, any> {
   }
 
   @track((props, state) => ({
-    action: Schema.ActionEvents.inquirySendFailed,
-    entity_id: props.artwork._id,
-    entity_slug: props.artwork.id,
+    action_type: Schema.ActionEventTypes.fail,
+    action_name: Schema.ActionEventNames.inquirySend,
+    owner_type: Schema.OwnerEntityTypes.artwork,
+    owner_id: props.artwork._id,
+    owner_slug: props.artwork.id,
   }))
   sendFailed(error) {
     this.setState(() => ({ sending: false }))

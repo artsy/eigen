@@ -48,24 +48,38 @@ export namespace Schema {
     /**
      * The root container component should specify this as the screen context.
      */
-    page: string
+    context_screen: string
 
     /**
      * The public slug for the entity that owns this page (e.g. for the Artist page)
      */
-    context_owner_slug: string
+    context_screen_owner_slug?: string
 
     /**
      * The ID of the entity in its database. E.g. the Mongo ID for entities that reside in Gravity.
      *
      * OPTIONAL: This may not always be available
      */
-    context_owner_id?: string
+    context_screen_owner_id?: string
+
+    /**
+     * The type of entity (owner), E.g. Artist, Artwork, etc.
+     */
+    context_screen_owner_type: string
   }
 
   export const PageNames = {
     artistPage: "Artist",
     inboxPage: "Inbox",
+  }
+
+  export const OwnerEntityTypes = {
+    artist: "Artist",
+    artwork: "Artwork",
+    conversation: "Conversation",
+    gene: "Gene",
+    show: "Show",
+    invoice: "Invoice",
   }
 
   export const ActionEventTypes = {
@@ -88,24 +102,20 @@ export namespace Schema {
     /**
      * Artist Page Events
      */
-    artistFollowButtonTapped: "blah",
-    artistUnfollowButtonTapped: "blah",
+    artistFollow: "artistFollow",
+    artistUnfollow: "artistUnfollow",
 
     /**
      * Conversations / Inbox / Messaging Events
      */
-    conversationTapped: "Conversation tapped/selected",
-    conversationSendReplyTapped: "Send message: Tapped",
-    conversationSendReplyFailed: "Send message: Failed",
-    conversationSendReplySucceded: "Send message: Success",
-    conversationAttachmentShowTapped: "Attachment tapped, Shows",
-    conversationAttachmentArtworkTapped: "Attachment tapped, Artwork",
-    conversationAttachmentInvoiceTapped: "Attachment tapped, Invoice",
-    conversationLinkTapped: "Conversation tapped",
-    inquiryCancelTapped: "Cancel Inquiry",
-    inquirySendTapped: "Send Inquiry: Tapped",
-    inquirySendFailed: "Send Inquiry: Failed",
-    inquirySendSucceded: "Send Inquiry: Success",
+    conversationSelected: "conversationSelected",
+    conversationSendReply: "conversationSendReply",
+    conversationAttachmentShow: "conversationAttachmentShow",
+    conversationAttachmentArtwork: "conversationAttachmentArtwork",
+    conversationAttachmentInvoice: "conversationAttachmentInvoice",
+    conversationLink: "conversationLinkUsed",
+    inquiryCancel: "inquiryCancel",
+    inquirySend: "inquirySend",
   }
 }
 

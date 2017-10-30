@@ -56,7 +56,11 @@ const track: Track<Props, null, Schema.Entity> = _track
 @track()
 export class ShowPreview extends React.Component<Props, any> {
   @track((props, state) => ({
-    action: "Click show attachment",
+    action_type: Schema.ActionEventTypes.tap,
+    action_name: Schema.ActionEventNames.conversationAttachmentShow,
+    owner_type: Schema.OwnerEntityTypes.show,
+    owner_slug: props.show.id,
+    owner_id: props.show._id,
   }))
   attachmentSelected() {
     this.props.onSelected()
@@ -87,6 +91,8 @@ export default createFragmentContainer(
   ShowPreview,
   graphql`
     fragment ShowPreview_show on Show {
+      id
+      _id
       name
       cover_image {
         url
@@ -105,6 +111,8 @@ export default createFragmentContainer(
 
 interface RelayProps {
   show: {
+    id: string | null
+    _id: string | null
     name: string | null
     cover_image: {
       url: string | null
