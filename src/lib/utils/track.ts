@@ -11,6 +11,11 @@ export namespace Schema {
      * The name of an event.
      *
      * Options are: Tap, Fail, Success
+     *
+     * This is unique to a "Track" event, meaning a "screen view" in Segment does not have this
+     * This is how we distinguish the two type of events in Eigen
+     * Track data inherits the screen view (called "context_screen") properties
+     *
      */
     action_type: string
 
@@ -58,7 +63,7 @@ export namespace Schema {
     /**
      * The ID of the entity in its database. E.g. the Mongo ID for entities that reside in Gravity.
      *
-     * OPTIONAL: This may not always be available
+     * OPTIONAL: Tddhis may not always be available before the relay call for props has been made
      */
     context_screen_owner_id?: string
 
@@ -152,9 +157,11 @@ export namespace Schema {
  *        }
  *
  *        @track((props, state) => ({
- *          action: `${state.following ? "Unfollow" : "Follow"} Artist`,
- *          entity_id: props.artist.id,
- *          entity_slug: props.artist.slug
+ *          action_type: Schema.ActionEventTypes.tap,
+ *          action_name: state.following ? Schema.ActionEventNames.artistUnfollow : Schema.ActionEventNames.artistFollow,
+ *          owner_id: props.artist._id,
+ *          owner_type: Schema.OwnerEntityTypes.artist,
+ *          owner_slug: props.artist.id,
  *        }))
  *        handleFollow() {
  *          // ...
