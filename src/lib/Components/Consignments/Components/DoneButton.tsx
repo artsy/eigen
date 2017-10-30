@@ -4,6 +4,7 @@ import BottomAlignedButton from "./BottomAlignedButton"
 
 export interface DoneButtonProps extends React.Props<JSX.Element> {
   onPress: () => void
+  verticalOffset?: number
 }
 
 const DoneButton: React.SFC<DoneButtonProps> = props => {
@@ -14,7 +15,12 @@ const DoneButton: React.SFC<DoneButtonProps> = props => {
     height: 56,
   }
   return (
-    <BottomAlignedButton onPress={props.onPress} bodyStyle={doneButtonStyles} buttonText="DONE">
+    <BottomAlignedButton
+      onPress={props.onPress}
+      bodyStyle={doneButtonStyles}
+      verticalOffset={props.verticalOffset}
+      buttonText="DONE"
+    >
       {props.children}
     </BottomAlignedButton>
   )

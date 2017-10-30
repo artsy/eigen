@@ -30,10 +30,17 @@ export interface BottomAlignedProps extends React.Props<JSX.Element> {
   bodyStyle: ButtonBodyStyle
   buttonText: string
   disabled?: boolean
+  verticalOffset?: number
 }
 
+const defaultVerticalOffset = 15
+
 const BottomAlignedButton: React.SFC<BottomAlignedProps> = props =>
-  <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={15} style={{ flex: 1 }}>
+  <KeyboardAvoidingView
+    behavior="padding"
+    keyboardVerticalOffset={props.verticalOffset || defaultVerticalOffset}
+    style={{ flex: 1 }}
+  >
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {props.children}
     </View>
