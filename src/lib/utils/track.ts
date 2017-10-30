@@ -17,12 +17,12 @@ export namespace Schema {
      * Track data inherits the screen view (called "context_screen") properties
      *
      */
-    action_type: string
+    action_type: "tap" | "success" | "fail"
 
     /**
      * The discription of an event
      *
-     * E.g. Conversation artwork attatchment tapped
+     * E.g. Conversation artwork attachment tapped
      */
     action_name: string
 
@@ -63,7 +63,7 @@ export namespace Schema {
     /**
      * The ID of the entity in its database. E.g. the Mongo ID for entities that reside in Gravity.
      *
-     * OPTIONAL: Tddhis may not always be available before the relay call for props has been made
+     * OPTIONAL: This may not always be available before the relay call for props has been made
      */
     context_screen_owner_id?: string
 
@@ -73,54 +73,54 @@ export namespace Schema {
     context_screen_owner_type: string
   }
 
-  export const PageNames = {
-    artistPage: "Artist",
-    inboxPage: "Inbox",
+  export enum PageNames {
+    ArtistPage = "Artist",
+    InboxPage = "Inbox",
   }
 
-  export const OwnerEntityTypes = {
-    artist: "Artist",
-    artwork: "Artwork",
-    conversation: "Conversation",
-    gene: "Gene",
-    show: "Show",
-    invoice: "Invoice",
+  export enum OwnerEntityTypes {
+    Artist = "Artist",
+    Artwork = "Artwork",
+    Conversation = "Conversation",
+    Gene = "Gene",
+    Show = "Show",
+    Invoice = "Invoice",
   }
 
-  export const ActionEventTypes = {
+  export enum ActionEventTypes {
     /**
      * User actions
      */
-    tap: "tap",
+    Tap = "tap",
 
     /**
      * Events / results
      */
-    fail: "fail",
-    success: "success",
+    Fail = "fail",
+    Success = "success",
   }
 
   /**
    * Action event discriptors / names
    */
-  export const ActionEventNames = {
+  export enum ActionEventNames {
     /**
      * Artist Page Events
      */
-    artistFollow: "artistFollow",
-    artistUnfollow: "artistUnfollow",
+    ArtistFollow = "artistFollow",
+    ArtistUnfollow = "artistUnfollow",
 
     /**
      * Conversations / Inbox / Messaging Events
      */
-    conversationSelected: "conversationSelected",
-    conversationSendReply: "conversationSendReply",
-    conversationAttachmentShow: "conversationAttachmentShow",
-    conversationAttachmentArtwork: "conversationAttachmentArtwork",
-    conversationAttachmentInvoice: "conversationAttachmentInvoice",
-    conversationLink: "conversationLinkUsed",
-    inquiryCancel: "inquiryCancel",
-    inquirySend: "inquirySend",
+    ConversationSelected = "conversationSelected",
+    ConversationSendReply = "conversationSendReply",
+    ConversationAttachmentShow = "conversationAttachmentShow",
+    ConversationAttachmentArtwork = "conversationAttachmentArtwork",
+    ConversationAttachmentInvoice = "conversationAttachmentInvoice",
+    ConversationLink = "conversationLinkUsed",
+    InquiryCancel = "inquiryCancel",
+    InquirySend = "inquirySend",
   }
 }
 
@@ -157,10 +157,10 @@ export namespace Schema {
  *        }
  *
  *        @track((props, state) => ({
- *          action_type: Schema.ActionEventTypes.tap,
- *          action_name: state.following ? Schema.ActionEventNames.artistUnfollow : Schema.ActionEventNames.artistFollow,
+ *          action_type: Schema.ActionEventTypes.Rap,
+ *          action_name: state.following ? Schema.ActionEventNames.ArtistUnfollow : Schema.ActionEventNames.ArtistFollow,
  *          owner_id: props.artist._id,
- *          owner_type: Schema.OwnerEntityTypes.artist,
+ *          owner_type: Schema.OwnerEntityTypes.Artist,
  *          owner_slug: props.artist.id,
  *        }))
  *        handleFollow() {
