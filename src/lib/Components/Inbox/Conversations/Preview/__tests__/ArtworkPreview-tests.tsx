@@ -19,6 +19,7 @@ it("handles dateless artworks", () => {
 
 const artwork = {
   id: "bradley-theodore-karl-and-anna-face-off-diptych",
+  _id: "mongoID",
   href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
   title: "Karl and Anna Face Off (Diptych)",
   date: "2016",
