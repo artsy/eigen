@@ -7,8 +7,8 @@
 #import "AppDelegate.h"
 #import "ARDefaults.h"
 #import "AppSetup.h"
+#import "CommitNetworkModel.h"
 
-#import "ARRootViewController+AppHub.h"
 #import "ARRootViewController+PRs.h"
 
 #import <Emission/ARArtistComponentViewController.h>
@@ -22,6 +22,7 @@
 
 #import "InternalWebViewController.h"
 #import "EigenLikeNavigationController.h"
+#import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 
 @implementation ARRootViewController
 
@@ -38,14 +39,10 @@
   ARSectionData *appData = [[ARSectionData alloc] init];
   [self setupSection:appData withTitle:[self titleForApp]];
   [appData addCellData:[self emissionJSLocationDescription:setup.emissionLoadedFromString]];
-  [tableViewData addSectionData:appData];
-
-  // It can get real confusing if you have AppHub running on your local
-  // development environment.
-  if (setup.usingAppHub || setup.usingPRBuild) {
-    ARSectionData *appHubSection = [self appHubSectionData];
-    [tableViewData addSectionData:appHubSection];
+  if (setup.usingMaster) {
+    [appData addCellDataFromArray:[self cellsForMasterInformation]];
   }
+  [tableViewData addSectionData:appData];
 
   // This isn't of any use unless you're developing
   if(!setup.usingPRBuild) {
@@ -59,15 +56,14 @@
   ARSectionData *userSection = [self userSection];
   [tableViewData addSectionData:userSection];
 
-  ARSectionData *adminSection = [self adminSection];
-  [tableViewData addSectionData:adminSection];
-
-
   // TODO: Deprecate
   // These were nice quick for getting bootstrapped, but they should be storybooks
   // so that they can be controlled in JS and deployed with PRs.
   ARSectionData *viewControllerSection = [self jumpToViewControllersSection];
   [tableViewData addSectionData:viewControllerSection];
+
+  ARSectionData *adminSection = [self adminSection];
+  [tableViewData addSectionData:adminSection];
 
   self.tableViewData = tableViewData;
 }
@@ -252,7 +248,7 @@
 {
   BOOL forceRNP = [[NSUserDefaults standardUserDefaults] boolForKey:ARForceUseRNPDefault];
   NSString *rnpLocation = [[NSUserDefaults standardUserDefaults] stringForKey:ARRNPackagerHostDefault];
-  NSString *title = !forceRNP ? [NSString stringWithFormat:@"Use RNP at %@", rnpLocation] : @"Revert forced RNP";
+  NSString *title = !forceRNP ? [NSString stringWithFormat:@"Use RNP with %@", rnpLocation] : @"Revert forced RNP";
 
   ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
   [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
@@ -272,13 +268,44 @@
 
 - (ARCellData *)emissionJSLocationDescription:(NSString *)loadedFromString
 {
-  ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-  [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-    cell.textLabel.text = loadedFromString;
-  }];
-
-  return crashCellData;
+  return [self informationCellDataWithTitle:loadedFromString];
 }
+
+
+- (NSArray<ARCellData *> *)cellsForMasterInformation
+{
+  NSError *jsonError = nil;
+  NSURL *metadataURL = [[CommitNetworkModel new] fileURLForLatestCommitMetadata];
+
+  NSData *data = [NSData dataWithContentsOfURL:metadataURL];
+  if(!data) { return @[]; }
+
+  NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
+  Metadata *metadata = [[Metadata alloc] initFromJSONDict:json];
+
+  if (jsonError) { return @[]; }
+
+  ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+  NSDate *lastUpdate = [dateFormatter dateFromString:[metadata date]];
+
+  NSUInteger unitFlags = NSCalendarUnitDay;
+  NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierISO8601];
+  NSDateComponents *components = [calendar components:unitFlags fromDate:lastUpdate toDate:[NSDate dateWithTimeIntervalSinceNow:0] options:0];
+
+  NSString *pr = [NSString stringWithFormat:@"PR #%@ - %@", [metadata number], [metadata title]];
+
+  return @[
+     [self informationCellDataWithTitle:[NSString stringWithFormat:@"Last Updated: %@ days ago", @([components day])]],
+
+     [self tappableCellDataWithTitle:pr selection:^{
+       NSString *addr = [NSString stringWithFormat:@"https://github.com/artsy/emission/pull/%@", metadata.number];
+       NSURL *url = [NSURL URLWithString:addr];
+       id viewController = [[InternalWebViewController alloc] initWithURL:url];
+       [self.navigationController pushViewController:viewController animated:YES];
+     }]
+  ];
+}
+
 
 - (ARSectionData *)userSection
 {
@@ -303,12 +330,10 @@
       [self editableTextCellDataWithName:@"Metaphysics API" defaultKey:ARStagingMetaphysicsURLDefault],
       [self editableTextCellDataWithName:@"RN Packager" defaultKey:ARRNPackagerHostDefault],
     ]];
-    if (!setup.inSimulator) {
-      [sectionData addCellData:self.toggleRNPSwitch];
-    }
+
   }
 
-
+  [sectionData addCellData:self.toggleRNPSwitch];
   [sectionData addCellData:self.generateStagingSwitch];
   [sectionData addCellData:self.logOutButton];
   return sectionData;

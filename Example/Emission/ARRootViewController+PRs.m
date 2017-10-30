@@ -1,4 +1,4 @@
-#import "ARRootViewController+AppHub.h"
+#import "ARRootViewController.h"
 #import "NSDateFormatter+TimeAgo.h"
 #import "ARDefaults.h"
 #import "EmissionPRChooseViewController.h"
@@ -41,7 +41,7 @@
       [self presentViewController:[EmissionPRChooseViewController new] animated:YES completion:NULL];
     } else {
       // Undo the changes and restart
-      [self showAlertViewWithTitle:@"Restarting to undo PR mode" message:@"This will revert back to dev, or apphub based JS" actionTitle:@"Do it" actionHandler:^{
+      [self showAlertViewWithTitle:@"Restarting to undo PR mode" message:@"This will revert back to dev, or master based JS" actionTitle:@"Do it" actionHandler:^{
         [defaults setBool:NO forKey:ARUsePREmissionDefault];
         [defaults synchronize];
 

@@ -26,5 +26,9 @@ extern NSString *const ARLabOptionCell;
 /// Simple cell that has a title and a click handler
 - (ARCellData *)tappableCellDataWithTitle:(NSString *)title selection:(dispatch_block_t)selection;
 
+/// Simple cell that shows info
+- (ARCellData *)informationCellDataWithTitle:(NSString *)title;
+
+
 
 @end
