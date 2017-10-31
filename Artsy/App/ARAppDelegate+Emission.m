@@ -203,11 +203,19 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
     emission.eventsModule.eventOccurred = ^(NSDictionary *_Nonnull info) {
         NSMutableDictionary *properties = [info mutableCopy];
-        [properties removeObjectForKey:@"name"];
-        [ARAnalytics event:info[@"name"] withProperties:[properties copy]];
+        if (info[@"action_type"] ) {
+            // Track event
+            [properties removeObjectForKey:@"action_type"];
+            [ARAnalytics event:info[@"action_type"] withProperties:[properties copy]];
+        } else {
+            // Screen event
+            [properties removeObjectForKey:@"context_screen"];
+            [ARAnalytics pageView:info[@"context_screen"]  withProperties:[properties copy]];
+        }
+
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([info[@"name"] isEqual:@"Follow artist"] && [info[@"page"] isEqualToString:@"Artist"]) {
+            if ([info[@"action_name"] isEqual:@"artistFollow"] && [info[@"action_type"] isEqual:@"success"]  && [info[@"context_screen"] isEqualToString:@"Artist"]) {
                 ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
                 [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
             }
