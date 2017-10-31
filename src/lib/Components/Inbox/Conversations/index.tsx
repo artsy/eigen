@@ -74,9 +74,7 @@ export class Conversations extends React.Component<Props, State> {
     }
     const conversations = me.conversations.edges
       .filter(({ node }) => {
-        if (node) {
-          return node.last_message
-        }
+        return node && node.last_message
       })
       .map(edge => edge.node)
     return conversations || []
