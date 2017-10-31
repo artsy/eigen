@@ -245,6 +245,8 @@
 		514E56491BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 514E56481BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.m */; };
 		5152C6591B500EA30018D4E4 /* HomeButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5152C6581B500EA30018D4E4 /* HomeButton@2x.png */; };
 		5152C65E1B50428A0018D4E4 /* ARAppSearchTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 5152C65D1B50428A0018D4E4 /* ARAppSearchTransition.m */; };
+		5157ECFF1F72766600C54345 /* ARPaymentRequestWebViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5157ECFE1F72766600C54345 /* ARPaymentRequestWebViewControllerTests.m */; };
+		5162E5911F71AE7C00E404CD /* ARPaymentRequestWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5162E5901F71AE7C00E404CD /* ARPaymentRequestWebViewController.m */; };
 		5168A76E1B46A70500FFBCBF /* ARFilteredStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 5168A76D1B46A70500FFBCBF /* ARFilteredStackTrace.m */; };
 		5168A7701B46D6D000FFBCBF /* NotificationsButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5168A76F1B46D6D000FFBCBF /* NotificationsButton@2x.png */; };
 		516C829A1D9581D50087B786 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 516C82991D9581D50087B786 /* assets */; };
@@ -1197,6 +1199,9 @@
 		5152C6581B500EA30018D4E4 /* HomeButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HomeButton@2x.png"; sourceTree = "<group>"; };
 		5152C65C1B50428A0018D4E4 /* ARAppSearchTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppSearchTransition.h; sourceTree = "<group>"; };
 		5152C65D1B50428A0018D4E4 /* ARAppSearchTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppSearchTransition.m; sourceTree = "<group>"; };
+		5157ECFE1F72766600C54345 /* ARPaymentRequestWebViewControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARPaymentRequestWebViewControllerTests.m; sourceTree = "<group>"; };
+		5162E58F1F71AE7C00E404CD /* ARPaymentRequestWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARPaymentRequestWebViewController.h; sourceTree = "<group>"; };
+		5162E5901F71AE7C00E404CD /* ARPaymentRequestWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARPaymentRequestWebViewController.m; sourceTree = "<group>"; };
 		5168A76C1B46A70500FFBCBF /* ARFilteredStackTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFilteredStackTrace.h; sourceTree = "<group>"; };
 		5168A76D1B46A70500FFBCBF /* ARFilteredStackTrace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFilteredStackTrace.m; sourceTree = "<group>"; };
 		5168A76F1B46D6D000FFBCBF /* NotificationsButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationsButton@2x.png"; sourceTree = "<group>"; };
@@ -2661,6 +2666,7 @@
 				60A309A91AC99B47000783C1 /* ARInternalShareValidatorTests.m */,
 				D3ACE5381AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m */,
 				510261701BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m */,
+				5157ECFE1F72766600C54345 /* ARPaymentRequestWebViewControllerTests.m */,
 			);
 			name = "Web Browsing";
 			path = Web_Browsing;
@@ -4231,6 +4237,8 @@
 				60A309A71AC999DE000783C1 /* ARInternalShareValidator.m */,
 				514433191AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.h */,
 				5144331A1AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.m */,
+				5162E58F1F71AE7C00E404CD /* ARPaymentRequestWebViewController.h */,
+				5162E5901F71AE7C00E404CD /* ARPaymentRequestWebViewController.m */,
 			);
 			name = "Web Browsing";
 			path = Web_Browsing;
@@ -5395,6 +5403,7 @@
 				60D83DE8189EAB82001672E9 /* ARFairShowMapper.m in Sources */,
 				607E2E8A17C9121500396120 /* ARZoomImageTransition.m in Sources */,
 				6016C198178C2C33008EC8E7 /* ARArtworkMasonryModule.m in Sources */,
+				5162E5911F71AE7C00E404CD /* ARPaymentRequestWebViewController.m in Sources */,
 				5EAD265A1D09E038003826C9 /* SaleAuctionStatus.swift in Sources */,
 				60F1C51817C0F3DE000938F7 /* ArtsyAPI+Browse.m in Sources */,
 				5E3816F81CBED2E100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift in Sources */,
@@ -5721,6 +5730,7 @@
 				3C7294CC196C3E660073663D /* ARShowViewControllerTests.m in Sources */,
 				D3BB62921AAE510F00BBF3D2 /* ARBrowseViewControllerTests.m in Sources */,
 				5E3816FF1CC1570A00477B17 /* LiveAuctionLotListViewControllerTests.swift in Sources */,
+				5157ECFF1F72766600C54345 /* ARPaymentRequestWebViewControllerTests.m in Sources */,
 				E6BC2C3E197EDC950063ED3C /* ARBrowseCategoriesViewControllerTests.m in Sources */,
 				3CBB03A8192BA94C00689F89 /* ARFairArtistViewControllerTests.m in Sources */,
 				3CF144B618E4802400B1A764 /* ARSystemTimeTests.m in Sources */,
