@@ -39,7 +39,7 @@
   ARSectionData *appData = [[ARSectionData alloc] init];
   [self setupSection:appData withTitle:[self titleForApp]];
   [appData addCellData:[self emissionJSLocationDescription:setup.emissionLoadedFromString]];
-  if (setup.usingMaster) {
+  if (setup.usingMaster && !setup.usingRNP) {
     [appData addCellDataFromArray:[self cellsForMasterInformation]];
   }
   [tableViewData addSectionData:appData];

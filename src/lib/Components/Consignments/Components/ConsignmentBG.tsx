@@ -1,8 +1,12 @@
 import * as React from "react"
-
-import { Image, View, ViewStyle } from "react-native"
+import { Image, LayoutChangeEvent, View, ViewProperties, ViewStyle } from "react-native"
 
 import styled from "styled-components/native"
+
+import SwitchBoard from "../../../NativeModules/SwitchBoard"
+import CloseButton from "../Components/CloseButton"
+
+import PropTypes from "prop-types"
 
 // Full screen black
 const BG = styled.View`
@@ -11,7 +15,7 @@ const BG = styled.View`
 `
 
 // Centered max-width of 600px
-const ConsignmentBG = styled.View`
+const ConsignmentContainer = styled.View`
   background-color: black;
   max-width: 540px;
   width: 100%;
@@ -19,9 +23,33 @@ const ConsignmentBG = styled.View`
   align-self: center;
 `
 
-export default ({ children }: any) =>
-  <BG key="bg">
-    <ConsignmentBG>
-      {children}
-    </ConsignmentBG>
-  </BG>
+interface Props extends ViewProperties {
+  showCloseButton?: boolean
+}
+
+export default class ConsignmentBG extends React.Component<Props> {
+  getChildContext: () => {
+    a: "Hi"
+  }
+
+  exitModal = () => SwitchBoard.dismissModalViewController(this)
+
+  onLayout = (event: LayoutChangeEvent) => {
+    const layout = event.nativeEvent.layout
+  }
+
+  render() {
+    return (
+      <BG key="bg">
+        {this.props.showCloseButton ? <CloseButton onPress={this.exitModal} /> : null}
+        <ConsignmentContainer>
+          {this.props.children}
+        </ConsignmentContainer>
+      </BG>
+    )
+  }
+}
+
+ConsignmentBG.contextTypes = {
+  isPad: PropTypes.string,
+}

@@ -15,7 +15,6 @@ import ConsignmentBG from "../Components/ConsignmentBG"
 import { LargeHeadline, Subtitle } from "../Typography"
 
 import { ConsignmentMetadata, ConsignmentSetup, SearchResult } from "../"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import TODO from "../Components/ArtworkConsignmentTodo"
 
 import { Button, Row } from "../Components/FormElements"
@@ -160,7 +159,7 @@ export default class Info extends React.Component<Props, State> {
       state.metadata.year
     )
     return (
-      <ConsignmentBG>
+      <ConsignmentBG showCloseButton>
         <ScrollView style={{ flex: 1 }}>
           <View style={{ paddingTop: 18 }}>
             <LargeHeadline style={{ marginLeft: 40, marginRight: 40 }}>
@@ -169,38 +168,22 @@ export default class Info extends React.Component<Props, State> {
             <Subtitle style={{ textAlign: "center" }}>
               {subtitle}
             </Subtitle>
-            <TODO
-              goToArtist={this.goToArtistTapped}
-              goToPhotos={this.goToPhotosTapped}
-              goToMetadata={this.goToMetadataTapped}
-              goToLocation={this.goToLocationTapped}
-              goToProvenance={this.goToProvenanceTapped}
-              {...this.state}
-            />
+            <View style={{ flex: 1, flexGrow: 1, backgroundColor: "red", padding: 20 }}>
+              <TODO
+                goToArtist={this.goToArtistTapped}
+                goToPhotos={this.goToPhotosTapped}
+                goToMetadata={this.goToMetadataTapped}
+                goToLocation={this.goToLocationTapped}
+                goToProvenance={this.goToProvenanceTapped}
+                {...this.state}
+              />
+            </View>
             <Row style={{ justifyContent: "center" }}>
               {this.state.hasLoaded &&
-                <Button
-                  text="NEXT"
-                  onPress={canSubmit ? this.goToFinalSubmission : undefined}
-                  disableAnimations={true}
-                />}
+                <Button text="NEXT" onPress={canSubmit ? this.goToFinalSubmission : undefined} />}
             </Row>
           </View>
         </ScrollView>
-        <TouchableHighlight
-          onPressOut={this.exitModal}
-          style={{
-            height: 40,
-            width: 40,
-            position: "absolute",
-            top: 20,
-            right: 20,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Image source={require("../../../../../images/consignments/close-x.png")} />
-        </TouchableHighlight>
       </ConsignmentBG>
     )
   }
