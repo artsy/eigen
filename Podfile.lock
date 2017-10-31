@@ -52,7 +52,7 @@ PODS:
   - ARTiledImageView (1.2.0):
     - SDWebImage/Core
   - Artsy+UIColors (3.1.0)
-  - Artsy+UIFonts (3.1.1)
+  - Artsy+UIFonts (3.1.3)
   - Artsy+UILabels (2.2.0):
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
@@ -76,7 +76,7 @@ PODS:
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
   - EDColor (1.0.0)
-  - Emission (1.3.12):
+  - Emission (1.3.13):
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
     - React/Core (= 0.42.0)
@@ -437,14 +437,14 @@ SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  Artsy+UIFonts: e66afb5c40100e2fc5bba28feb7487e252f2d06f
+  Artsy+UIFonts: d38c82636e000b1dee31b7bec0268e1841dac17f
   Artsy+UILabels: 7cb6e290a4f70dddba037b7dbeb21e90b49d7275
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 42fc31e7382f4cc1bf585818bc665d9ac0c73484
+  Emission: 01c3368a7a805eccd465fafd7d6108f1cc195ad2
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
