@@ -132,8 +132,8 @@ export class ConversationSnippet extends React.Component<Props, any> {
   }
 
   @track((props, state) => ({
-    action_type: Schema.ActionEventTypes.Tap,
-    action_name: Schema.ActionEventNames.ConversationSelected,
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.ConversationSelected,
     owner_id: props.conversation.id,
     owner_type: Schema.OwnerEntityTypes.Conversation,
   }))

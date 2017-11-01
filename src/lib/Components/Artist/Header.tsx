@@ -131,8 +131,8 @@ class Header extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action_name: state.following ? Schema.ActionEventNames.ArtistUnfollow : Schema.ActionEventNames.ArtistFollow,
-    action_type: Schema.ActionEventTypes.Tap,
+    action_name: state.following ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
+    action_type: Schema.ActionTypes.Tap,
     owner_id: props.artist._id,
     owner_slug: props.artist.id,
     owner_type: Schema.OwnerEntityTypes.Artist,
@@ -152,8 +152,8 @@ class Header extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action_name: state.following ? Schema.ActionEventNames.ArtistUnfollow : Schema.ActionEventNames.ArtistFollow,
-    action_type: Schema.ActionEventTypes.Success,
+    action_name: state.following ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
+    action_type: Schema.ActionTypes.Success,
     owner_id: props.artist._id,
     owner_slug: props.artist.id,
     owner_type: Schema.OwnerEntityTypes.Artist,
@@ -163,8 +163,8 @@ class Header extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action_name: state.following ? Schema.ActionEventNames.ArtistUnfollow : Schema.ActionEventNames.ArtistFollow,
-    action_type: Schema.ActionEventTypes.Fail,
+    action_name: state.following ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
+    action_type: Schema.ActionTypes.Fail,
     owner_id: props.artist._id,
     owner_slug: props.artist.id,
     owner_type: Schema.OwnerEntityTypes.Artist,

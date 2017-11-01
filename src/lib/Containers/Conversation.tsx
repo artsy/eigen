@@ -130,8 +130,8 @@ export class Conversation extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action_type: Schema.ActionEventTypes.Success,
-    action_name: Schema.ActionEventNames.ConversationSendReply,
+    action_type: Schema.ActionTypes.Success,
+    action_name: Schema.ActionNames.ConversationSendReply,
     owner_id: props.me.conversation.id,
     owner_type: Schema.OwnerEntityTypes.Conversation,
   }))
@@ -144,8 +144,8 @@ export class Conversation extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action_type: Schema.ActionEventTypes.Fail,
-    action_name: Schema.ActionEventNames.ConversationSendReply,
+    action_type: Schema.ActionTypes.Fail,
+    action_name: Schema.ActionNames.ConversationSendReply,
     owner_id: props.me.conversation.id,
     owner_type: Schema.OwnerEntityTypes.Conversation,
   }))

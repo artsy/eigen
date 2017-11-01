@@ -142,8 +142,8 @@ export class InvoicePreview extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action_type: Schema.ActionEventTypes.Tap,
-    action_name: Schema.ActionEventNames.ConversationAttachmentInvoice,
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.ConversationAttachmentInvoice,
     owner_type: Schema.OwnerEntityTypes.Invoice,
     owner_id: props.invoice.lewitt_invoice_id,
   }))

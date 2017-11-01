@@ -111,8 +111,8 @@ export class Message extends React.Component<Props, any> {
   }
 
   @track((props, state) => ({
-    action_type: Schema.ActionEventTypes.Tap,
-    action_name: Schema.ActionEventNames.ConversationLink,
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.ConversationLink,
     owner_type: Schema.OwnerEntityTypes.Conversation,
     owner_id: props.conversationId,
   }))
