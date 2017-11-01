@@ -1,5 +1,5 @@
 import * as React from "react"
-import { FlatList, View } from "react-native"
+import { FlatList, SectionList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -17,14 +17,26 @@ class Auctions extends React.Component<any, any> {
 
     return (
       <Container>
-        <SectionTitle>Live Auctions</SectionTitle>
-        <FlatList
-          data={auctions}
-          numColumns={2}
+        <SectionList
+          contentContainerStyle={{ justifyContent: "center", padding: 5 }}
+          sections={[
+            {
+              data: auctions,
+              title: "Timed Live Auctions",
+            },
+          ]}
           keyExtractor={(item, index) => item.id}
           renderItem={itemData => {
-            return <AuctionItem key={itemData.index} auction={itemData.item} />
+            return (
+              <View style={{ flex: 1, margin: 1, alignContent: "center" }}>
+                <AuctionItem key={itemData.index} auction={itemData.item} />
+              </View>
+            )
           }}
+          renderSectionHeader={({ section }) =>
+            <SectionTitle>
+              {section.title}
+            </SectionTitle>}
         />
       </Container>
     )
@@ -34,7 +46,7 @@ class Auctions extends React.Component<any, any> {
 export default createFragmentContainer(Auctions, {
   auctions: graphql`
     fragment Auctions_auctions on Sale @relay(plural: true) {
-      ...AuctionItem_auction
+      ...AuctionItem_auction @relay(mask: false)
     }
   `,
 })

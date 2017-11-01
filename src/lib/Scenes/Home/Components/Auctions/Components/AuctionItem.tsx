@@ -70,7 +70,7 @@ const BadgeText = styled.Text`
   align-self: center;
 `
 
-const TimeLeft = styled.Text`
+const Metadata = styled.Text`
   color: white;
   letter-spacing: 1.5;
   font-family: ${fonts["avant-garde-regular"]};
@@ -95,9 +95,9 @@ class AuctionItem extends React.Component<any, any> {
             </Badge>
           </Header>
           <Footer>
-            <TimeLeft>
+            <Metadata>
               {timestamp}
-            </TimeLeft>
+            </Metadata>
           </Footer>
         </Content>
       </Container>
