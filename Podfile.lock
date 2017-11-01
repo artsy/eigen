@@ -52,7 +52,7 @@ PODS:
   - ARTiledImageView (1.2.0):
     - SDWebImage/Core
   - Artsy+UIColors (3.1.0)
-  - Artsy+UIFonts (3.1.1)
+  - Artsy+UIFonts (3.1.3)
   - Artsy+UILabels (2.2.0):
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
@@ -391,7 +391,7 @@ SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  Artsy+UIFonts: e66afb5c40100e2fc5bba28feb7487e252f2d06f
+  Artsy+UIFonts: d38c82636e000b1dee31b7bec0268e1841dac17f
   Artsy+UILabels: 7cb6e290a4f70dddba037b7dbeb21e90b49d7275
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
@@ -450,6 +450,6 @@ SPEC CHECKSUMS:
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 1e50dc4765b92b34be298433613630076a27dc6b
 
-PODFILE CHECKSUM: e18f904492cda66a1794e56d245918b1d880868d
+PODFILE CHECKSUM: b5ff2e7a993b68c7c4fbed65032ad6d84c721b5b
 
 COCOAPODS: 1.2.1
