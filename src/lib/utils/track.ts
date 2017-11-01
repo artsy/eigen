@@ -17,14 +17,14 @@ export namespace Schema {
      * Track data inherits the screen view (called "context_screen") properties
      *
      */
-    action_type: "tap" | "success" | "fail"
+    action_type: ActionTypes
 
     /**
      * The discription of an event
      *
      * E.g. Conversation artwork attachment tapped
      */
-    action_name: string
+    action_name: ActionNames
 
     /**
      * OPTIONAL: Additional properties of the action
@@ -46,14 +46,14 @@ export namespace Schema {
     /**
      * The type of entity, e.g. Artwork, Artist, etc.
      */
-    owner_type: string
+    owner_type: OwnerEntityTypes
   }
 
   export interface PageView {
     /**
      * The root container component should specify this as the screen context.
      */
-    context_screen: string
+    context_screen: PageNames
 
     /**
      * The public slug for the entity that owns this page (e.g. for the Artist page)
@@ -70,7 +70,7 @@ export namespace Schema {
     /**
      * The type of entity (owner), E.g. Artist, Artwork, etc.
      */
-    context_screen_owner_type: string
+    context_screen_owner_type: OwnerEntityTypes
   }
 
   export enum PageNames {
@@ -87,7 +87,7 @@ export namespace Schema {
     Invoice = "Invoice",
   }
 
-  export enum ActionEventTypes {
+  export enum ActionTypes {
     /**
      * User actions
      */
@@ -103,7 +103,7 @@ export namespace Schema {
   /**
    * Action event discriptors / names
    */
-  export enum ActionEventNames {
+  export enum ActionNames {
     /**
      * Artist Page Events
      */
@@ -157,8 +157,8 @@ export namespace Schema {
  *        }
  *
  *        @track((props, state) => ({
- *          action_type: Schema.ActionEventTypes.Rap,
- *          action_name: state.following ? Schema.ActionEventNames.ArtistUnfollow : Schema.ActionEventNames.ArtistFollow,
+ *          action_type: Schema.ActionTypes.Rap,
+ *          action_name: state.following ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
  *          owner_id: props.artist._id,
  *          owner_type: Schema.OwnerEntityTypes.Artist,
  *          owner_slug: props.artist.id,
