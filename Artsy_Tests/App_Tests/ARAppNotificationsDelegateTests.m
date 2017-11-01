@@ -70,18 +70,19 @@ describe(@"receiveRemoteNotification", ^{
             appState = UIApplicationStateInactive;
         });
 
-        it(@"updates the badge count", ^{
-            id controllerMock = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
-            [[[mockTopMenuVC stub] andReturn:controllerMock] sharedController];
-
-            [[[controllerMock stub] andReturnValue:@(ARTopTabControllerIndexNotifications)] indexOfRootViewController:OCMOCK_ANY];
-            [[controllerMock expect] setNotificationCount:42 forControllerAtIndex:ARTopTabControllerIndexNotifications];
-
-            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
-
-            [controllerMock verify];
-            [controllerMock stopMocking];
-        });
+        // TODO: Nav Notifications
+//        it(@"updates the badge count", ^{
+//            id controllerMock = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
+//            [[[mockTopMenuVC stub] andReturn:controllerMock] sharedController];
+//
+//            [[[controllerMock stub] andReturnValue:@(ARTopTabControllerIndexNotifications)] indexOfRootViewController:OCMOCK_ANY];
+//            [[controllerMock expect] setNotificationCount:42 forControllerAtIndex:ARTopTabControllerIndexNotifications];
+//
+//            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
+//
+//            [controllerMock verify];
+//            [controllerMock stopMocking];
+//        });
 
         describe(@"with stubbed top menu VC", ^{
             beforeEach(^{

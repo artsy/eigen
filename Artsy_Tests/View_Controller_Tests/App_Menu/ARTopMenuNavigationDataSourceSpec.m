@@ -68,22 +68,24 @@ it(@"reinstantiates favorites vc", ^{
     expect(newRootVC).notTo.equal(rootVC);
 });
 
-describe(@"notifications", ^{
-    it(@"sets the app icon badge to the total amount of available notifications", ^{
-        id appMock = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-        [[appMock expect] setApplicationIconBadgeNumber:2];
-        [navDataSource setNotificationCount:1 forControllerAtIndex:ARTopTabControllerIndexFeed];
-        [navDataSource setNotificationCount:1 forControllerAtIndex:ARTopTabControllerIndexNotifications];
-        [appMock verify];
-    });
-    
-    it(@"resets the app icon badge if there are 0 notifications", ^{
-        id appMock = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-        [[appMock expect] setApplicationIconBadgeNumber:0];
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:42];
-        [navDataSource setNotificationCount:0 forControllerAtIndex:ARTopTabControllerIndexNotifications];
-        [appMock verify];
-    });
-});
+// TODO: Nav Notifications
+//
+//describe(@"notifications", ^{
+//    it(@"sets the app icon badge to the total amount of available notifications", ^{
+//        id appMock = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
+//        [[appMock expect] setApplicationIconBadgeNumber:2];
+//        [navDataSource setNotificationCount:1 forControllerAtIndex:ARTopTabControllerIndexFeed];
+//        [navDataSource setNotificationCount:1 forControllerAtIndex:ARTopTabControllerIndexNotifications];
+//        [appMock verify];
+//    });
+//    
+//    it(@"resets the app icon badge if there are 0 notifications", ^{
+//        id appMock = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
+//        [[appMock expect] setApplicationIconBadgeNumber:0];
+//        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:42];
+//        [navDataSource setNotificationCount:0 forControllerAtIndex:ARTopTabControllerIndexNotifications];
+//        [appMock verify];
+//    });
+//});
 
 SpecEnd;

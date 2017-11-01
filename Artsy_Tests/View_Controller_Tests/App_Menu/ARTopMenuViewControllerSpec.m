@@ -11,7 +11,9 @@
 #import <JSBadgeView/JSBadgeView.h>
 #import "ARSwitchBoard.h"
 #import "ARFavoritesViewController.h"
+
 #import <Emission/ARWorksForYouComponentViewController.h>
+#import <Emission/ARHomeComponentViewController.h>
 
 
 @interface ARTopMenuNavigationDataSource (Test)
@@ -191,15 +193,15 @@ describe(@"navigation", ^{
        sharedBefore();
    });
 
-   describe(@"feed", ^{
+   describe(@"messaging", ^{
        before(^{
-           [sut.tabContentView setCurrentViewIndex:ARTopTabControllerIndexBrowse animated:NO];
+           [sut.tabContentView setCurrentViewIndex:ARTopTabControllerIndexMessaging animated:NO];
        });
-       itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexFeed]});
+       itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexMessaging]});
    });
 
-   describe(@"browse", ^{
-       itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexBrowse]});
+   describe(@"profile", ^{
+       itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexProfile]});
    });
 
    describe(@"favorites", ^{
@@ -228,19 +230,24 @@ describe(@"navigation", ^{
 
         it(@"supports routing to paths", ^{
             NSDictionary *menuToPaths = @{
-                @(ARTopTabControllerIndexFeed): @"/",
-                @(ARTopTabControllerIndexBrowse): @"/browse",
-                @(ARTopTabControllerIndexFavorites): @"/favorites",
-                @(ARTopTabControllerIndexNotifications): @"/works-for-you",
+              @(ARTopTabControllerIndexHome) : @"/",
+              @(ARTopTabControllerIndexMessaging) : @"/inbox",
+              @(ARTopTabControllerIndexFavorites) : @"/favorites",
+              @(ARTopTabControllerIndexProfile) : @"/ios-settings",
             };
 
             ARSwitchBoard *switchboard = [ARSwitchBoard sharedInstance];
             for (NSNumber *tabIndex in menuToPaths.keyEnumerator) {
                 id viewcontroller = [switchboard loadPath:menuToPaths[tabIndex]];
+
+                // This will regenerate each time
                 if (tabIndex.integerValue == ARTopTabControllerIndexFavorites) {
                     expect(viewcontroller).to.beAKindOf(ARFavoritesViewController.class);
-                } else if (tabIndex.integerValue == ARTopTabControllerIndexNotifications) {
-                    expect(viewcontroller).to.beAKindOf(ARWorksForYouComponentViewController.class);
+
+                // This will regenerate each time
+                } else if (tabIndex.integerValue == ARTopTabControllerIndexMessaging) {
+                    expect(viewcontroller).to.beAKindOf(ARHomeComponentViewController.class);
+
                 } else {
                     expect(viewcontroller).to.equal([[ARTopMenuViewController sharedController] rootNavigationControllerAtIndex:tabIndex.integerValue].rootViewController);
                 }

@@ -234,7 +234,7 @@
 
 - (void)fetchNotificationCounts;
 {
-    // TODO: Notifications count
+// TODO: Nav Notifications
 //    [ArtsyAPI getWorksForYouCount:^(NSUInteger count) {
 //        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
 //    } failure:nil];
