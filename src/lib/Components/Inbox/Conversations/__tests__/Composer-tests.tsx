@@ -19,6 +19,8 @@ describe("regarding the send button", () => {
 
   it("disables it even if it contains text if the disabled prop is true", () => {
     const overrideText = "History repeats itself, first as tragedy, second as farce."
+    // We're using 'dive' here to only fetch the component we want to test
+    // This is because the component is wrapped by react-tracking, which changes the tree structure
     const tree = shallow(<Composer value={overrideText} disabled={true} />).dive()
 
     const instance = tree.instance()
@@ -29,6 +31,8 @@ describe("regarding the send button", () => {
 
   it("calls onSubmit with the text when send button is pressed", () => {
     const onSubmit = jest.fn()
+    // We're using 'dive' here to only fetch the component we want to test
+    // This is because the component is wrapped by react-tracking, which changes the tree structure
     const wrapper = shallow(<Composer onSubmit={onSubmit} />).dive()
     const text = "Don't trust everything you see, even salt looks like sugar"
     wrapper.setState({ text })
