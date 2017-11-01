@@ -6,8 +6,8 @@
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="ITC_Avant_Garde_Gothic__Demi.ttf">
-            <string>AvantGardeGothicITCW01Dm</string>
-            <string>AvantGardeGothicITCW01Dm</string>
+            <string>AvantGardeGothicITC-Dm</string>
+            <string>AvantGardeGothicITC-Dm</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -48,7 +48,7 @@
                                 <constraint firstAttribute="width" constant="65" id="ZkW-Lu-uxa"/>
                                 <constraint firstAttribute="height" constant="40" id="a0a-vr-nuZ"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="AvantGardeGothicITCW01Dm" family="Avant Garde Gothic ITCW01Dm" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="AvantGardeGothicITC-Dm" family="AvantGardeGothicITC Dm" pointSize="14"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -57,7 +57,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="bfK-WA-YZR"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="AvantGardeGothicITCW01Dm" family="Avant Garde Gothic ITCW01Dm" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="AvantGardeGothicITC-Dm" family="AvantGardeGothicITC Dm" pointSize="14"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
