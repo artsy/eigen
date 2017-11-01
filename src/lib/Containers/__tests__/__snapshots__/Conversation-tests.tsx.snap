@@ -1,1517 +1,1431 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`displays a connectivity banner when network is down 1`] = `
-<View
-  keyboardVerticalOffset={20}
-  onLayout={[Function]}
-  style={
-    Array [
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Conversation
+    me={
       Object {
-        "flex": 1,
-      },
-      Object {
-        "paddingBottom": 0,
-      },
-    ]
-  }
->
-  <View
-    style={
-      Array [
-        Object {
-          "flexBasis": 0,
-          "flexDirection": "column",
-          "flexGrow": 1,
-          "flexShrink": 1,
-        },
-        undefined,
-      ]
-    }
-  >
-    <View
-      style={
-        Array [
-          Object {
-            "alignSelf": "stretch",
-            "flexDirection": "column",
-            "marginBottom": 20,
-            "marginTop": 20,
+        "conversation": Object {
+          "from": Object {
+            "email": "anita@garibaldi.br",
+            "initials": "AG",
+            "name": "Anita Garibaldi",
           },
-          undefined,
-        ]
-      }
-    >
-      <View
-        style={
-          Array [
+          "id": "420",
+          "initial_message": "Adoro! Por favor envie-me mais informações",
+          "items": Array [
             Object {
-              "flexDirection": "row",
-              "justifyContent": "center",
-            },
-            undefined,
-          ]
-        }
-      >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "color": "black",
-                "fontSize": 11,
-                "textAlign": "left",
+              "item": Object {
+                "__typename": "Artwork",
+                "artist_names": "Adrian Piper",
+                "date": "1974",
+                "href": "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                "id": "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                "image": Object {
+                  "image_url": "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+                  "url": "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+                },
+                "title": "The Mythic Being: Sol’s Drawing #1–5",
               },
-              undefined,
-              Object {
-                "fontSize": 14,
-              },
-              Object {
-                "fontFamily": "AvantGardeGothicITC",
-              },
-            ]
-          }
-        >
-          KIMBERLY KLARK
-        </Text>
-        <View />
-      </View>
-    </View>
-    <View
-      style={
-        Array [
-          Object {
-            "backgroundColor": "#e5e5e5",
-            "height": 1,
-            "marginLeft": -40,
-            "marginRight": -40,
-          },
-          Object {
-            "backgroundColor": "white",
-          },
-        ]
-      }
-    />
-    <View
-      style={
-        Array [
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "#fdefd1",
-            "height": 30,
-            "justifyContent": "center",
-          },
-          undefined,
-        ]
-      }
-    >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "#f1af1b",
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "paddingTop": 5,
-              "textAlign": "center",
+              "title": "The Mythic Being: Sol’s Drawing #1–5",
             },
-            undefined,
-          ]
-        }
-      >
-         No Internet Connection
-      </Text>
-    </View>
-    <RCTScrollView
-      ListFooterComponent={
-        <ActivityIndicator
-          animating={false}
-          color="#999999"
-          hidesWhenStopped={true}
-          size="small"
-        />
-      }
-      data={
-        Array [
-          Object {
-            "__id": "unique-id",
-            "attachments": Array [],
-            "body": "Adoro! Por favor envie-me mais informações",
-            "first_message": undefined,
-            "from": Object {
-              "email": "percy@cat.com",
-              "name": "Percy",
-            },
-            "from_email_address": "anita@garibaldi.br",
-            "id": 222,
-            "key": undefined,
-          },
-        ]
-      }
-      disableVirtualization={false}
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={false}
-      initialNumToRender={10}
-      inverted={true}
-      keyExtractor={[Function]}
-      maxToRenderPerBatch={10}
-      numColumns={1}
-      onContentSizeChange={[Function]}
-      onEndReached={[Function]}
-      onEndReachedThreshold={0.2}
-      onLayout={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      onViewableItemsChanged={undefined}
-      refreshControl={
-        <RefreshControlMock
-          onRefresh={[Function]}
-          refreshing={false}
-        />
-      }
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
-      style={
-        Array [
-          Object {
-            "transform": Array [
+          ],
+          "messages": Object {
+            "edges": Array [
               Object {
-                "scaleY": -1,
+                "node": Object {
+                  "__id": "unique-id",
+                  "attachments": Array [],
+                  "body": "Adoro! Por favor envie-me mais informações",
+                  "from": Object {
+                    "email": "percy@cat.com",
+                    "name": "Percy",
+                  },
+                  "from_email_address": "anita@garibaldi.br",
+                  "id": 222,
+                },
               },
             ],
           },
-          undefined,
-        ]
+          "to": Object {
+            "initials": "KK",
+            "name": "Kimberly Klark",
+          },
+        },
+        "initials": "JC",
       }
-      updateCellsBatchingPeriod={50}
-      windowSize={21}
-    >
-      <RCTRefreshControl />
-      <View>
-        <View
-          onLayout={[Function]}
-          style={
-            Object {
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
-            }
-          }
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "paddingLeft": 20,
-                  "paddingRight": 20,
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
+    }
+    tracking={
+      Object {
+        "getTrackingData": [Function],
+        "trackEvent": [Function],
+      }
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": null,
+    "nodeType": "class",
+    "props": Object {
+      "children": <Styled(View)>
+        <Styled(View)>
+          <Styled(View)>
+            <SmallHeadline
               style={
-                Array [
-                  Object {
-                    "flexDirection": "row",
-                  },
-                  Array [
-                    Object {
-                      "alignSelf": "stretch",
-                      "marginBottom": 10,
-                      "marginTop": 15,
-                    },
-                    undefined,
-                  ],
-                ]
+                Object {
+                  "fontSize": 14,
+                }
               }
             >
-              <View
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "#e5e5e5",
-                      "borderRadius": 15,
-                      "height": 30,
-                      "width": 30,
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  disabled={false}
-                  ellipsizeMode="tail"
-                  style={
-                    Array [
-                      Object {
-                        "alignSelf": "center",
-                        "color": "#666666",
-                        "fontFamily": "AvantGardeGothicITC",
-                        "fontSize": 10,
-                        "marginTop": 8,
-                      },
-                      undefined,
-                    ]
-                  }
-                  user={undefined}
-                >
-                  KK
-                </Text>
-              </View>
-              <View
-                style={
-                  Array [
-                    Object {
-                      "flexBasis": 0,
-                      "flexDirection": "column",
-                      "flexGrow": 1,
-                      "flexShrink": 1,
-                    },
-                    Array [
-                      Object {
-                        "marginLeft": 10,
-                        "marginTop": 7,
-                      },
-                      undefined,
-                    ],
-                  ]
-                }
-              >
-                <View
-                  style={
-                    Array [
-                      Object {
-                        "flexDirection": "row",
-                      },
-                      Array [
-                        Object {
-                          "alignSelf": "stretch",
-                          "marginBottom": 10,
-                        },
-                        undefined,
-                      ],
-                    ]
-                  }
-                >
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "color": "black",
-                          "fontSize": 11,
-                          "textAlign": "left",
-                        },
-                        Object {
-                          "color": "#cccccc",
-                        },
-                        Array [
-                          Object {
-                            "fontSize": 11.5,
-                            "marginRight": 6,
-                          },
-                          undefined,
-                        ],
-                        Object {
-                          "fontFamily": "AvantGardeGothicITC",
-                        },
-                      ]
-                    }
-                  >
-                    KIMBERLY KLARK
-                  </Text>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "color": "#cccccc",
-                          "fontSize": 11,
-                          "textAlign": "left",
-                        },
-                        Array [
-                          Object {
-                            "color": "#f1af1b",
-                            "fontSize": 11.5,
-                          },
-                          undefined,
-                        ],
-                        Object {
-                          "fontFamily": "AvantGardeGothicITC",
-                        },
-                      ]
-                    }
-                  >
-                    PENDING
-                  </Text>
-                </View>
-                <View
-                  linkStyle={
-                    Object {
-                      "color": "#6e1fff",
-                      "textDecorationLine": "underline",
-                    }
-                  }
-                  onPress={[Function]}
-                  style={undefined}
-                >
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "color": "black",
-                          "fontSize": 16,
-                          "textAlign": "left",
-                        },
-                        Object {
-                          "color": "#cccccc",
-                        },
-                        Object {},
-                        Object {
-                          "fontFamily": "AGaramondPro-Regular",
-                        },
-                      ]
-                    }
-                  >
-                    Adoro! Por favor envie-me mais informações
-                  </Text>
-                </View>
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  disabled={false}
-                  ellipsizeMode="tail"
-                  style={
-                    Array [
-                      Object {
-                        "color": "#cccccc",
-                        "fontFamily": "AGaramondPro-Regular",
-                      },
-                      Array [
-                        Object {
-                          "marginTop": 10,
-                        },
-                        undefined,
-                      ],
-                    ]
-                  }
-                >
-                  Percy · percy@cat.com
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        <View
-          onLayout={[Function]}
+              Kimberly Klark
+            </SmallHeadline>
+            <View />
+          </Styled(View)>
+        </Styled(View)>
+        <Separator
           style={
             Object {
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "backgroundColor": "white",
             }
           }
-        >
-          <ActivityIndicator
-            animating={false}
-            color="#999999"
-            hidesWhenStopped={true}
-            size="small"
-          />
-        </View>
-      </View>
-    </RCTScrollView>
-  </View>
-  <View
-    active={false}
-    style={
-      Array [
+        />
+        <Messages
+          conversation={
+            Object {
+              "from": Object {
+                "email": "anita@garibaldi.br",
+                "initials": "AG",
+                "name": "Anita Garibaldi",
+              },
+              "id": "420",
+              "initial_message": "Adoro! Por favor envie-me mais informações",
+              "items": Array [
+                Object {
+                  "item": Object {
+                    "__typename": "Artwork",
+                    "artist_names": "Adrian Piper",
+                    "date": "1974",
+                    "href": "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                    "id": "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                    "image": Object {
+                      "image_url": "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+                    },
+                    "title": "The Mythic Being: Sol’s Drawing #1–5",
+                  },
+                  "title": "The Mythic Being: Sol’s Drawing #1–5",
+                },
+              ],
+              "messages": Object {
+                "edges": Array [
+                  Object {
+                    "node": Object {
+                      "__id": "unique-id",
+                      "attachments": Array [],
+                      "body": "Adoro! Por favor envie-me mais informações",
+                      "from": Object {
+                        "email": "percy@cat.com",
+                        "name": "Percy",
+                      },
+                      "from_email_address": "anita@garibaldi.br",
+                      "id": 222,
+                    },
+                  },
+                ],
+              },
+              "to": Object {
+                "initials": "KK",
+                "name": "Kimberly Klark",
+              },
+            }
+          }
+          onDataFetching={[Function]}
+          shouldShowSeparator={[Function]}
+        />
+      </Styled(View)>,
+      "disabled": false,
+      "onSubmit": [Function],
+      "value": undefined,
+    },
+    "ref": [Function],
+    "rendered": Object {
+      "instance": null,
+      "key": null,
+      "nodeType": "class",
+      "props": Object {
+        "children": Array [
+          <Styled(View)>
+            <Styled(View)>
+              <SmallHeadline
+                style={
+                  Object {
+                    "fontSize": 14,
+                  }
+                }
+              >
+                Kimberly Klark
+              </SmallHeadline>
+              <View />
+            </Styled(View)>
+          </Styled(View)>,
+          <Separator
+            style={
+              Object {
+                "backgroundColor": "white",
+              }
+            }
+          />,
+          false,
+          <Messages
+            conversation={
+              Object {
+                "from": Object {
+                  "email": "anita@garibaldi.br",
+                  "initials": "AG",
+                  "name": "Anita Garibaldi",
+                },
+                "id": "420",
+                "initial_message": "Adoro! Por favor envie-me mais informações",
+                "items": Array [
+                  Object {
+                    "item": Object {
+                      "__typename": "Artwork",
+                      "artist_names": "Adrian Piper",
+                      "date": "1974",
+                      "href": "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                      "id": "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                      "image": Object {
+                        "image_url": "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+                        "url": "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+                      },
+                      "title": "The Mythic Being: Sol’s Drawing #1–5",
+                    },
+                    "title": "The Mythic Being: Sol’s Drawing #1–5",
+                  },
+                ],
+                "messages": Object {
+                  "edges": Array [
+                    Object {
+                      "node": Object {
+                        "__id": "unique-id",
+                        "attachments": Array [],
+                        "body": "Adoro! Por favor envie-me mais informações",
+                        "from": Object {
+                          "email": "percy@cat.com",
+                          "name": "Percy",
+                        },
+                        "from_email_address": "anita@garibaldi.br",
+                        "id": 222,
+                      },
+                    },
+                  ],
+                },
+                "to": Object {
+                  "initials": "KK",
+                  "name": "Kimberly Klark",
+                },
+              }
+            }
+            onDataFetching={[Function]}
+            shouldShowSeparator={[Function]}
+          />,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
         Object {
-          "alignItems": "center",
-          "backgroundColor": "#f8f8f8",
-          "borderColor": "#e5e5e5",
-          "borderRadius": 3,
-          "borderWidth": 1,
-          "flexDirection": "row",
-          "justifyContent": "space-between",
-          "marginBottom": 20,
-          "marginLeft": 20,
-          "marginRight": 20,
-          "marginTop": 0,
-        },
-        undefined,
-      ]
-    }
-  >
-    <TextInput
-      autoFocus={true}
-      keyboardAppearance="dark"
-      multiline={true}
-      onChangeText={[Function]}
-      onEndEditing={[Function]}
-      onFocus={[Function]}
-      placeholder="Reply..."
-      placeholderTextColor="#666666"
-      style={
-        Object {
-          "flex": 1,
-          "fontFamily": "AGaramondPro-Regular",
-          "fontSize": 13,
-          "paddingBottom": 10,
-          "paddingLeft": 10,
-          "paddingRight": 10,
-          "paddingTop": 13,
-        }
-      }
-      value={null}
-    />
-    <Text
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      allowFontScaling={true}
-      disabled={true}
-      ellipsizeMode="tail"
-      hitSlop={undefined}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "color": "#e5e5e5",
-            "fontFamily": "AvantGardeGothicITC",
-            "fontSize": 12,
-            "marginRight": 10,
+          "instance": null,
+          "key": null,
+          "nodeType": "class",
+          "props": Object {
+            "children": <Styled(View)>
+              <SmallHeadline
+                style={
+                  Object {
+                    "fontSize": 14,
+                  }
+                }
+              >
+                Kimberly Klark
+              </SmallHeadline>
+              <View />
+            </Styled(View)>,
           },
-          undefined,
-        ]
-      }
-      testID={undefined}
-    >
-      SEND
-    </Text>
-  </View>
-</View>
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": null,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [
+                <SmallHeadline
+                  style={
+                    Object {
+                      "fontSize": 14,
+                    }
+                  }
+                >
+                  Kimberly Klark
+                </SmallHeadline>,
+                <View />,
+              ],
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": null,
+                "nodeType": "function",
+                "props": Object {
+                  "children": "Kimberly Klark",
+                  "style": Object {
+                    "fontSize": 14,
+                  },
+                },
+                "ref": null,
+                "rendered": "Kimberly Klark",
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": null,
+                "nodeType": "class",
+                "props": Object {},
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+            ],
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": null,
+          "nodeType": "class",
+          "props": Object {
+            "style": Object {
+              "backgroundColor": "white",
+            },
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        false,
+        Object {
+          "instance": null,
+          "key": null,
+          "nodeType": "class",
+          "props": Object {
+            "conversation": Object {
+              "from": Object {
+                "email": "anita@garibaldi.br",
+                "initials": "AG",
+                "name": "Anita Garibaldi",
+              },
+              "id": "420",
+              "initial_message": "Adoro! Por favor envie-me mais informações",
+              "items": Array [
+                Object {
+                  "item": Object {
+                    "__typename": "Artwork",
+                    "artist_names": "Adrian Piper",
+                    "date": "1974",
+                    "href": "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                    "id": "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                    "image": Object {
+                      "image_url": "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+                    },
+                    "title": "The Mythic Being: Sol’s Drawing #1–5",
+                  },
+                  "title": "The Mythic Being: Sol’s Drawing #1–5",
+                },
+              ],
+              "messages": Object {
+                "edges": Array [
+                  Object {
+                    "node": Object {
+                      "__id": "unique-id",
+                      "attachments": Array [],
+                      "body": "Adoro! Por favor envie-me mais informações",
+                      "from": Object {
+                        "email": "percy@cat.com",
+                        "name": "Percy",
+                      },
+                      "from_email_address": "anita@garibaldi.br",
+                      "id": 222,
+                    },
+                  },
+                ],
+              },
+              "to": Object {
+                "initials": "KK",
+                "name": "Kimberly Klark",
+              },
+            },
+            "onDataFetching": [Function],
+            "shouldShowSeparator": [Function],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+      ],
+      "type": [Function],
+    },
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": null,
+      "nodeType": "class",
+      "props": Object {
+        "children": <Styled(View)>
+          <Styled(View)>
+            <Styled(View)>
+              <SmallHeadline
+                style={
+                  Object {
+                    "fontSize": 14,
+                  }
+                }
+              >
+                Kimberly Klark
+              </SmallHeadline>
+              <View />
+            </Styled(View)>
+          </Styled(View)>
+          <Separator
+            style={
+              Object {
+                "backgroundColor": "white",
+              }
+            }
+          />
+          <Messages
+            conversation={
+              Object {
+                "from": Object {
+                  "email": "anita@garibaldi.br",
+                  "initials": "AG",
+                  "name": "Anita Garibaldi",
+                },
+                "id": "420",
+                "initial_message": "Adoro! Por favor envie-me mais informações",
+                "items": Array [
+                  Object {
+                    "item": Object {
+                      "__typename": "Artwork",
+                      "artist_names": "Adrian Piper",
+                      "date": "1974",
+                      "href": "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                      "id": "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                      "image": Object {
+                        "image_url": "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+                        "url": "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+                      },
+                      "title": "The Mythic Being: Sol’s Drawing #1–5",
+                    },
+                    "title": "The Mythic Being: Sol’s Drawing #1–5",
+                  },
+                ],
+                "messages": Object {
+                  "edges": Array [
+                    Object {
+                      "node": Object {
+                        "__id": "unique-id",
+                        "attachments": Array [],
+                        "body": "Adoro! Por favor envie-me mais informações",
+                        "from": Object {
+                          "email": "percy@cat.com",
+                          "name": "Percy",
+                        },
+                        "from_email_address": "anita@garibaldi.br",
+                        "id": 222,
+                      },
+                    },
+                  ],
+                },
+                "to": Object {
+                  "initials": "KK",
+                  "name": "Kimberly Klark",
+                },
+              }
+            }
+            onDataFetching={[Function]}
+            shouldShowSeparator={[Function]}
+          />
+        </Styled(View)>,
+        "disabled": false,
+        "onSubmit": [Function],
+        "value": undefined,
+      },
+      "ref": [Function],
+      "rendered": Object {
+        "instance": null,
+        "key": null,
+        "nodeType": "class",
+        "props": Object {
+          "children": Array [
+            <Styled(View)>
+              <Styled(View)>
+                <SmallHeadline
+                  style={
+                    Object {
+                      "fontSize": 14,
+                    }
+                  }
+                >
+                  Kimberly Klark
+                </SmallHeadline>
+                <View />
+              </Styled(View)>
+            </Styled(View)>,
+            <Separator
+              style={
+                Object {
+                  "backgroundColor": "white",
+                }
+              }
+            />,
+            false,
+            <Messages
+              conversation={
+                Object {
+                  "from": Object {
+                    "email": "anita@garibaldi.br",
+                    "initials": "AG",
+                    "name": "Anita Garibaldi",
+                  },
+                  "id": "420",
+                  "initial_message": "Adoro! Por favor envie-me mais informações",
+                  "items": Array [
+                    Object {
+                      "item": Object {
+                        "__typename": "Artwork",
+                        "artist_names": "Adrian Piper",
+                        "date": "1974",
+                        "href": "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                        "id": "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                        "image": Object {
+                          "image_url": "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+                          "url": "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+                        },
+                        "title": "The Mythic Being: Sol’s Drawing #1–5",
+                      },
+                      "title": "The Mythic Being: Sol’s Drawing #1–5",
+                    },
+                  ],
+                  "messages": Object {
+                    "edges": Array [
+                      Object {
+                        "node": Object {
+                          "__id": "unique-id",
+                          "attachments": Array [],
+                          "body": "Adoro! Por favor envie-me mais informações",
+                          "from": Object {
+                            "email": "percy@cat.com",
+                            "name": "Percy",
+                          },
+                          "from_email_address": "anita@garibaldi.br",
+                          "id": 222,
+                        },
+                      },
+                    ],
+                  },
+                  "to": Object {
+                    "initials": "KK",
+                    "name": "Kimberly Klark",
+                  },
+                }
+              }
+              onDataFetching={[Function]}
+              shouldShowSeparator={[Function]}
+            />,
+          ],
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": null,
+            "nodeType": "class",
+            "props": Object {
+              "children": <Styled(View)>
+                <SmallHeadline
+                  style={
+                    Object {
+                      "fontSize": 14,
+                    }
+                  }
+                >
+                  Kimberly Klark
+                </SmallHeadline>
+                <View />
+              </Styled(View)>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": null,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <SmallHeadline
+                    style={
+                      Object {
+                        "fontSize": 14,
+                      }
+                    }
+                  >
+                    Kimberly Klark
+                  </SmallHeadline>,
+                  <View />,
+                ],
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": null,
+                  "nodeType": "function",
+                  "props": Object {
+                    "children": "Kimberly Klark",
+                    "style": Object {
+                      "fontSize": 14,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": "Kimberly Klark",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": null,
+                  "nodeType": "class",
+                  "props": Object {},
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": null,
+            "nodeType": "class",
+            "props": Object {
+              "style": Object {
+                "backgroundColor": "white",
+              },
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          false,
+          Object {
+            "instance": null,
+            "key": null,
+            "nodeType": "class",
+            "props": Object {
+              "conversation": Object {
+                "from": Object {
+                  "email": "anita@garibaldi.br",
+                  "initials": "AG",
+                  "name": "Anita Garibaldi",
+                },
+                "id": "420",
+                "initial_message": "Adoro! Por favor envie-me mais informações",
+                "items": Array [
+                  Object {
+                    "item": Object {
+                      "__typename": "Artwork",
+                      "artist_names": "Adrian Piper",
+                      "date": "1974",
+                      "href": "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                      "id": "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                      "image": Object {
+                        "image_url": "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+                        "url": "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+                      },
+                      "title": "The Mythic Being: Sol’s Drawing #1–5",
+                    },
+                    "title": "The Mythic Being: Sol’s Drawing #1–5",
+                  },
+                ],
+                "messages": Object {
+                  "edges": Array [
+                    Object {
+                      "node": Object {
+                        "__id": "unique-id",
+                        "attachments": Array [],
+                        "body": "Adoro! Por favor envie-me mais informações",
+                        "from": Object {
+                          "email": "percy@cat.com",
+                          "name": "Percy",
+                        },
+                        "from_email_address": "anita@garibaldi.br",
+                        "id": 222,
+                      },
+                    },
+                  ],
+                },
+                "to": Object {
+                  "initials": "KK",
+                  "name": "Kimberly Klark",
+                },
+              },
+              "onDataFetching": [Function],
+              "shouldShowSeparator": [Function],
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+        ],
+        "type": [Function],
+      },
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
 `;
 
 exports[`looks correct when rendered 1`] = `
-<View
-  keyboardVerticalOffset={20}
-  onLayout={[Function]}
-  style={
-    Array [
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Conversation
+    me={
       Object {
-        "flex": 1,
-      },
-      Object {
-        "paddingBottom": 0,
-      },
-    ]
-  }
->
-  <View
-    style={
-      Array [
-        Object {
-          "flexBasis": 0,
-          "flexDirection": "column",
-          "flexGrow": 1,
-          "flexShrink": 1,
-        },
-        undefined,
-      ]
-    }
-  >
-    <View
-      style={
-        Array [
-          Object {
-            "alignSelf": "stretch",
-            "flexDirection": "column",
-            "marginBottom": 20,
-            "marginTop": 20,
+        "conversation": Object {
+          "from": Object {
+            "email": "anita@garibaldi.br",
+            "initials": "AG",
+            "name": "Anita Garibaldi",
           },
-          undefined,
-        ]
-      }
-    >
-      <View
-        style={
-          Array [
+          "id": "420",
+          "initial_message": "Adoro! Por favor envie-me mais informações",
+          "items": Array [
             Object {
-              "flexDirection": "row",
-              "justifyContent": "center",
+              "item": Object {
+                "__typename": "Artwork",
+                "artist_names": "Adrian Piper",
+                "date": "1974",
+                "href": "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                "id": "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                "image": Object {
+                  "image_url": "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+                  "url": "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+                },
+                "title": "The Mythic Being: Sol’s Drawing #1–5",
+              },
+              "title": "The Mythic Being: Sol’s Drawing #1–5",
             },
-            undefined,
-          ]
-        }
-      >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
+          ],
+          "messages": Object {
+            "edges": Array [
               Object {
-                "color": "black",
-                "fontSize": 11,
-                "textAlign": "left",
-              },
-              undefined,
-              Object {
-                "fontSize": 14,
-              },
-              Object {
-                "fontFamily": "AvantGardeGothicITC",
-              },
-            ]
-          }
-        >
-          KIMBERLY KLARK
-        </Text>
-        <View />
-      </View>
-    </View>
-    <View
-      style={
-        Array [
-          Object {
-            "backgroundColor": "#e5e5e5",
-            "height": 1,
-            "marginLeft": -40,
-            "marginRight": -40,
-          },
-          Object {
-            "backgroundColor": "white",
-          },
-        ]
-      }
-    />
-    <RCTScrollView
-      ListFooterComponent={
-        <ActivityIndicator
-          animating={false}
-          color="#999999"
-          hidesWhenStopped={true}
-          size="small"
-        />
-      }
-      data={
-        Array [
-          Object {
-            "__id": "unique-id",
-            "attachments": Array [],
-            "body": "Adoro! Por favor envie-me mais informações",
-            "first_message": undefined,
-            "from": Object {
-              "email": "percy@cat.com",
-              "name": "Percy",
-            },
-            "from_email_address": "anita@garibaldi.br",
-            "id": 222,
-            "key": undefined,
-          },
-        ]
-      }
-      disableVirtualization={false}
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={false}
-      initialNumToRender={10}
-      inverted={true}
-      keyExtractor={[Function]}
-      maxToRenderPerBatch={10}
-      numColumns={1}
-      onContentSizeChange={[Function]}
-      onEndReached={[Function]}
-      onEndReachedThreshold={0.2}
-      onLayout={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      onViewableItemsChanged={undefined}
-      refreshControl={
-        <RefreshControlMock
-          onRefresh={[Function]}
-          refreshing={false}
-        />
-      }
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
-      style={
-        Array [
-          Object {
-            "transform": Array [
-              Object {
-                "scaleY": -1,
+                "node": Object {
+                  "__id": "unique-id",
+                  "attachments": Array [],
+                  "body": "Adoro! Por favor envie-me mais informações",
+                  "from": Object {
+                    "email": "percy@cat.com",
+                    "name": "Percy",
+                  },
+                  "from_email_address": "anita@garibaldi.br",
+                  "id": 222,
+                },
               },
             ],
           },
-          undefined,
-        ]
+          "to": Object {
+            "initials": "KK",
+            "name": "Kimberly Klark",
+          },
+        },
+        "initials": "JC",
       }
-      updateCellsBatchingPeriod={50}
-      windowSize={21}
-    >
-      <RCTRefreshControl />
-      <View>
-        <View
-          onLayout={[Function]}
-          style={
-            Object {
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
-            }
-          }
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "paddingLeft": 20,
-                  "paddingRight": 20,
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
+    }
+    tracking={
+      Object {
+        "getTrackingData": [Function],
+        "trackEvent": [Function],
+      }
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": null,
+    "nodeType": "class",
+    "props": Object {
+      "children": <Styled(View)>
+        <Styled(View)>
+          <Styled(View)>
+            <SmallHeadline
               style={
-                Array [
-                  Object {
-                    "flexDirection": "row",
-                  },
-                  Array [
-                    Object {
-                      "alignSelf": "stretch",
-                      "marginBottom": 10,
-                      "marginTop": 15,
-                    },
-                    undefined,
-                  ],
-                ]
+                Object {
+                  "fontSize": 14,
+                }
               }
             >
-              <View
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "#e5e5e5",
-                      "borderRadius": 15,
-                      "height": 30,
-                      "width": 30,
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  disabled={false}
-                  ellipsizeMode="tail"
-                  style={
-                    Array [
-                      Object {
-                        "alignSelf": "center",
-                        "color": "#666666",
-                        "fontFamily": "AvantGardeGothicITC",
-                        "fontSize": 10,
-                        "marginTop": 8,
-                      },
-                      undefined,
-                    ]
-                  }
-                  user={undefined}
-                >
-                  KK
-                </Text>
-              </View>
-              <View
-                style={
-                  Array [
-                    Object {
-                      "flexBasis": 0,
-                      "flexDirection": "column",
-                      "flexGrow": 1,
-                      "flexShrink": 1,
-                    },
-                    Array [
-                      Object {
-                        "marginLeft": 10,
-                        "marginTop": 7,
-                      },
-                      undefined,
-                    ],
-                  ]
-                }
-              >
-                <View
-                  style={
-                    Array [
-                      Object {
-                        "flexDirection": "row",
-                      },
-                      Array [
-                        Object {
-                          "alignSelf": "stretch",
-                          "marginBottom": 10,
-                        },
-                        undefined,
-                      ],
-                    ]
-                  }
-                >
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "color": "black",
-                          "fontSize": 11,
-                          "textAlign": "left",
-                        },
-                        Object {
-                          "color": "#cccccc",
-                        },
-                        Array [
-                          Object {
-                            "fontSize": 11.5,
-                            "marginRight": 6,
-                          },
-                          undefined,
-                        ],
-                        Object {
-                          "fontFamily": "AvantGardeGothicITC",
-                        },
-                      ]
-                    }
-                  >
-                    KIMBERLY KLARK
-                  </Text>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "color": "#cccccc",
-                          "fontSize": 11,
-                          "textAlign": "left",
-                        },
-                        Array [
-                          Object {
-                            "color": "#f1af1b",
-                            "fontSize": 11.5,
-                          },
-                          undefined,
-                        ],
-                        Object {
-                          "fontFamily": "AvantGardeGothicITC",
-                        },
-                      ]
-                    }
-                  >
-                    PENDING
-                  </Text>
-                </View>
-                <View
-                  linkStyle={
-                    Object {
-                      "color": "#6e1fff",
-                      "textDecorationLine": "underline",
-                    }
-                  }
-                  onPress={[Function]}
-                  style={undefined}
-                >
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "color": "black",
-                          "fontSize": 16,
-                          "textAlign": "left",
-                        },
-                        Object {
-                          "color": "#cccccc",
-                        },
-                        Object {},
-                        Object {
-                          "fontFamily": "AGaramondPro-Regular",
-                        },
-                      ]
-                    }
-                  >
-                    Adoro! Por favor envie-me mais informações
-                  </Text>
-                </View>
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  disabled={false}
-                  ellipsizeMode="tail"
-                  style={
-                    Array [
-                      Object {
-                        "color": "#cccccc",
-                        "fontFamily": "AGaramondPro-Regular",
-                      },
-                      Array [
-                        Object {
-                          "marginTop": 10,
-                        },
-                        undefined,
-                      ],
-                    ]
-                  }
-                >
-                  Percy · percy@cat.com
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        <View
-          onLayout={[Function]}
+              Kimberly Klark
+            </SmallHeadline>
+            <View />
+          </Styled(View)>
+        </Styled(View)>
+        <Separator
           style={
             Object {
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
+              "backgroundColor": "white",
             }
           }
-        >
-          <ActivityIndicator
-            animating={false}
-            color="#999999"
-            hidesWhenStopped={true}
-            size="small"
-          />
-        </View>
-      </View>
-    </RCTScrollView>
-  </View>
-  <View
-    active={false}
-    style={
-      Array [
-        Object {
-          "alignItems": "center",
-          "backgroundColor": "#f8f8f8",
-          "borderColor": "#e5e5e5",
-          "borderRadius": 3,
-          "borderWidth": 1,
-          "flexDirection": "row",
-          "justifyContent": "space-between",
-          "marginBottom": 20,
-          "marginLeft": 20,
-          "marginRight": 20,
-          "marginTop": 0,
-        },
-        undefined,
-      ]
-    }
-  >
-    <TextInput
-      autoFocus={true}
-      keyboardAppearance="dark"
-      multiline={true}
-      onChangeText={[Function]}
-      onEndEditing={[Function]}
-      onFocus={[Function]}
-      placeholder="Reply..."
-      placeholderTextColor="#666666"
-      style={
-        Object {
-          "flex": 1,
-          "fontFamily": "AGaramondPro-Regular",
-          "fontSize": 13,
-          "paddingBottom": 10,
-          "paddingLeft": 10,
-          "paddingRight": 10,
-          "paddingTop": 13,
-        }
-      }
-      value={null}
-    />
-    <Text
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      allowFontScaling={true}
-      disabled={true}
-      ellipsizeMode="tail"
-      hitSlop={undefined}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "color": "#e5e5e5",
-            "fontFamily": "AvantGardeGothicITC",
-            "fontSize": 12,
-            "marginRight": 10,
-          },
-          undefined,
-        ]
-      }
-      testID={undefined}
-    >
-      SEND
-    </Text>
-  </View>
-</View>
-`;
-
-exports[`looks correct when rendered 2`] = `
-<View
-  keyboardVerticalOffset={20}
-  onLayout={[Function]}
-  style={
-    Array [
-      Object {
-        "flex": 1,
-      },
-      Object {
-        "paddingBottom": 0,
-      },
-    ]
-  }
->
-  <View
-    style={
-      Array [
-        Object {
-          "flexBasis": 0,
-          "flexDirection": "column",
-          "flexGrow": 1,
-          "flexShrink": 1,
-        },
-        undefined,
-      ]
-    }
-  >
-    <View
-      style={
-        Array [
-          Object {
-            "alignSelf": "stretch",
-            "flexDirection": "column",
-            "marginBottom": 20,
-            "marginTop": 20,
-          },
-          undefined,
-        ]
-      }
-    >
-      <View
-        style={
-          Array [
+        />
+        <Messages
+          conversation={
             Object {
-              "flexDirection": "row",
-              "justifyContent": "center",
-            },
-            undefined,
-          ]
-        }
-      >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "color": "black",
-                "fontSize": 11,
-                "textAlign": "left",
+              "from": Object {
+                "email": "anita@garibaldi.br",
+                "initials": "AG",
+                "name": "Anita Garibaldi",
               },
-              undefined,
-              Object {
-                "fontSize": 14,
+              "id": "420",
+              "initial_message": "Adoro! Por favor envie-me mais informações",
+              "items": Array [
+                Object {
+                  "item": Object {
+                    "__typename": "Artwork",
+                    "artist_names": "Adrian Piper",
+                    "date": "1974",
+                    "href": "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                    "id": "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                    "image": Object {
+                      "image_url": "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+                    },
+                    "title": "The Mythic Being: Sol’s Drawing #1–5",
+                  },
+                  "title": "The Mythic Being: Sol’s Drawing #1–5",
+                },
+              ],
+              "messages": Object {
+                "edges": Array [
+                  Object {
+                    "node": Object {
+                      "__id": "unique-id",
+                      "attachments": Array [],
+                      "body": "Adoro! Por favor envie-me mais informações",
+                      "from": Object {
+                        "email": "percy@cat.com",
+                        "name": "Percy",
+                      },
+                      "from_email_address": "anita@garibaldi.br",
+                      "id": 222,
+                    },
+                  },
+                ],
               },
-              Object {
-                "fontFamily": "AvantGardeGothicITC",
+              "to": Object {
+                "initials": "KK",
+                "name": "Kimberly Klark",
               },
-            ]
+            }
           }
-        >
-          KIMBERLY KLARK
-        </Text>
-        <View />
-      </View>
-    </View>
-    <View
-      style={
-        Array [
-          Object {
-            "backgroundColor": "#e5e5e5",
-            "height": 1,
-            "marginLeft": -40,
-            "marginRight": -40,
-          },
-          Object {
-            "backgroundColor": "white",
-          },
-        ]
-      }
-    />
-    <RCTScrollView
-      ListFooterComponent={
-        <ActivityIndicator
-          animating={false}
-          color="#999999"
-          hidesWhenStopped={true}
-          size="small"
+          onDataFetching={[Function]}
+          shouldShowSeparator={[Function]}
         />
-      }
-      data={
-        Array [
-          Object {
-            "__id": "unique-id",
-            "attachments": Array [],
-            "body": "Adoro! Por favor envie-me mais informações",
-            "first_message": undefined,
-            "from": Object {
-              "email": "percy@cat.com",
-              "name": "Percy",
-            },
-            "from_email_address": "anita@garibaldi.br",
-            "id": 222,
-            "key": undefined,
-          },
-        ]
-      }
-      disableVirtualization={false}
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={false}
-      initialNumToRender={10}
-      inverted={true}
-      keyExtractor={[Function]}
-      maxToRenderPerBatch={10}
-      numColumns={1}
-      onContentSizeChange={[Function]}
-      onEndReached={[Function]}
-      onEndReachedThreshold={0.2}
-      onLayout={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      onViewableItemsChanged={undefined}
-      refreshControl={
-        <RefreshControlMock
-          onRefresh={[Function]}
-          refreshing={false}
-        />
-      }
-      renderItem={[Function]}
-      scrollEventThrottle={50}
-      stickyHeaderIndices={Array []}
-      style={
-        Array [
-          Object {
-            "transform": Array [
+      </Styled(View)>,
+      "disabled": false,
+      "onSubmit": [Function],
+      "value": undefined,
+    },
+    "ref": [Function],
+    "rendered": Object {
+      "instance": null,
+      "key": null,
+      "nodeType": "class",
+      "props": Object {
+        "children": Array [
+          <Styled(View)>
+            <Styled(View)>
+              <SmallHeadline
+                style={
+                  Object {
+                    "fontSize": 14,
+                  }
+                }
+              >
+                Kimberly Klark
+              </SmallHeadline>
+              <View />
+            </Styled(View)>
+          </Styled(View)>,
+          <Separator
+            style={
               Object {
-                "scaleY": -1,
+                "backgroundColor": "white",
+              }
+            }
+          />,
+          false,
+          <Messages
+            conversation={
+              Object {
+                "from": Object {
+                  "email": "anita@garibaldi.br",
+                  "initials": "AG",
+                  "name": "Anita Garibaldi",
+                },
+                "id": "420",
+                "initial_message": "Adoro! Por favor envie-me mais informações",
+                "items": Array [
+                  Object {
+                    "item": Object {
+                      "__typename": "Artwork",
+                      "artist_names": "Adrian Piper",
+                      "date": "1974",
+                      "href": "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                      "id": "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                      "image": Object {
+                        "image_url": "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+                        "url": "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+                      },
+                      "title": "The Mythic Being: Sol’s Drawing #1–5",
+                    },
+                    "title": "The Mythic Being: Sol’s Drawing #1–5",
+                  },
+                ],
+                "messages": Object {
+                  "edges": Array [
+                    Object {
+                      "node": Object {
+                        "__id": "unique-id",
+                        "attachments": Array [],
+                        "body": "Adoro! Por favor envie-me mais informações",
+                        "from": Object {
+                          "email": "percy@cat.com",
+                          "name": "Percy",
+                        },
+                        "from_email_address": "anita@garibaldi.br",
+                        "id": 222,
+                      },
+                    },
+                  ],
+                },
+                "to": Object {
+                  "initials": "KK",
+                  "name": "Kimberly Klark",
+                },
+              }
+            }
+            onDataFetching={[Function]}
+            shouldShowSeparator={[Function]}
+          />,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": null,
+          "nodeType": "class",
+          "props": Object {
+            "children": <Styled(View)>
+              <SmallHeadline
+                style={
+                  Object {
+                    "fontSize": 14,
+                  }
+                }
+              >
+                Kimberly Klark
+              </SmallHeadline>
+              <View />
+            </Styled(View)>,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": null,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [
+                <SmallHeadline
+                  style={
+                    Object {
+                      "fontSize": 14,
+                    }
+                  }
+                >
+                  Kimberly Klark
+                </SmallHeadline>,
+                <View />,
+              ],
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": null,
+                "nodeType": "function",
+                "props": Object {
+                  "children": "Kimberly Klark",
+                  "style": Object {
+                    "fontSize": 14,
+                  },
+                },
+                "ref": null,
+                "rendered": "Kimberly Klark",
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": null,
+                "nodeType": "class",
+                "props": Object {},
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
               },
             ],
+            "type": [Function],
           },
-          undefined,
-        ]
-      }
-      updateCellsBatchingPeriod={50}
-      windowSize={21}
-    >
-      <RCTRefreshControl />
-      <View>
-        <View
-          onLayout={[Function]}
-          style={
-            Object {
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
-            }
-          }
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "paddingLeft": 20,
-                  "paddingRight": 20,
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "flexDirection": "row",
-                  },
-                  Array [
-                    Object {
-                      "alignSelf": "stretch",
-                      "marginBottom": 10,
-                      "marginTop": 15,
-                    },
-                    undefined,
-                  ],
-                ]
-              }
-            >
-              <View
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "#e5e5e5",
-                      "borderRadius": 15,
-                      "height": 30,
-                      "width": 30,
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  disabled={false}
-                  ellipsizeMode="tail"
-                  style={
-                    Array [
-                      Object {
-                        "alignSelf": "center",
-                        "color": "#666666",
-                        "fontFamily": "AvantGardeGothicITC",
-                        "fontSize": 10,
-                        "marginTop": 8,
-                      },
-                      undefined,
-                    ]
-                  }
-                  user={undefined}
-                >
-                  KK
-                </Text>
-              </View>
-              <View
-                style={
-                  Array [
-                    Object {
-                      "flexBasis": 0,
-                      "flexDirection": "column",
-                      "flexGrow": 1,
-                      "flexShrink": 1,
-                    },
-                    Array [
-                      Object {
-                        "marginLeft": 10,
-                        "marginTop": 7,
-                      },
-                      undefined,
-                    ],
-                  ]
-                }
-              >
-                <View
-                  style={
-                    Array [
-                      Object {
-                        "flexDirection": "row",
-                      },
-                      Array [
-                        Object {
-                          "alignSelf": "stretch",
-                          "marginBottom": 10,
-                        },
-                        undefined,
-                      ],
-                    ]
-                  }
-                >
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "color": "black",
-                          "fontSize": 11,
-                          "textAlign": "left",
-                        },
-                        Object {
-                          "color": "#cccccc",
-                        },
-                        Array [
-                          Object {
-                            "fontSize": 11.5,
-                            "marginRight": 6,
-                          },
-                          undefined,
-                        ],
-                        Object {
-                          "fontFamily": "AvantGardeGothicITC",
-                        },
-                      ]
-                    }
-                  >
-                    KIMBERLY KLARK
-                  </Text>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "color": "#cccccc",
-                          "fontSize": 11,
-                          "textAlign": "left",
-                        },
-                        Array [
-                          Object {
-                            "color": "#f1af1b",
-                            "fontSize": 11.5,
-                          },
-                          undefined,
-                        ],
-                        Object {
-                          "fontFamily": "AvantGardeGothicITC",
-                        },
-                      ]
-                    }
-                  >
-                    PENDING
-                  </Text>
-                </View>
-                <View
-                  linkStyle={
-                    Object {
-                      "color": "#6e1fff",
-                      "textDecorationLine": "underline",
-                    }
-                  }
-                  onPress={[Function]}
-                  style={undefined}
-                >
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "color": "black",
-                          "fontSize": 16,
-                          "textAlign": "left",
-                        },
-                        Object {
-                          "color": "#cccccc",
-                        },
-                        Object {},
-                        Object {
-                          "fontFamily": "AGaramondPro-Regular",
-                        },
-                      ]
-                    }
-                  >
-                    Adoro! Por favor envie-me mais informações
-                  </Text>
-                </View>
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  disabled={false}
-                  ellipsizeMode="tail"
-                  style={
-                    Array [
-                      Object {
-                        "color": "#cccccc",
-                        "fontFamily": "AGaramondPro-Regular",
-                      },
-                      Array [
-                        Object {
-                          "marginTop": 10,
-                        },
-                        undefined,
-                      ],
-                    ]
-                  }
-                >
-                  Percy · percy@cat.com
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        <View
-          onLayout={[Function]}
-          style={
-            Object {
-              "transform": Array [
-                Object {
-                  "scaleY": -1,
-                },
-              ],
-            }
-          }
-        >
-          <ActivityIndicator
-            animating={false}
-            color="#999999"
-            hidesWhenStopped={true}
-            size="small"
-          />
-        </View>
-      </View>
-    </RCTScrollView>
-  </View>
-  <View
-    active={false}
-    style={
-      Array [
-        Object {
-          "alignItems": "center",
-          "backgroundColor": "#f8f8f8",
-          "borderColor": "#e5e5e5",
-          "borderRadius": 3,
-          "borderWidth": 1,
-          "flexDirection": "row",
-          "justifyContent": "space-between",
-          "marginBottom": 20,
-          "marginLeft": 20,
-          "marginRight": 20,
-          "marginTop": 0,
+          "type": [Function],
         },
-        undefined,
-      ]
-    }
-  >
-    <TextInput
-      autoFocus={true}
-      keyboardAppearance="dark"
-      multiline={true}
-      onChangeText={[Function]}
-      onEndEditing={[Function]}
-      onFocus={[Function]}
-      placeholder="Reply..."
-      placeholderTextColor="#666666"
-      style={
         Object {
-          "flex": 1,
-          "fontFamily": "AGaramondPro-Regular",
-          "fontSize": 13,
-          "paddingBottom": 10,
-          "paddingLeft": 10,
-          "paddingRight": 10,
-          "paddingTop": 13,
-        }
-      }
-      value={null}
-    />
-    <Text
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      allowFontScaling={true}
-      disabled={true}
-      ellipsizeMode="tail"
-      hitSlop={undefined}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "color": "#e5e5e5",
-            "fontFamily": "AvantGardeGothicITC",
-            "fontSize": 12,
-            "marginRight": 10,
+          "instance": null,
+          "key": null,
+          "nodeType": "class",
+          "props": Object {
+            "style": Object {
+              "backgroundColor": "white",
+            },
           },
-          undefined,
-        ]
-      }
-      testID={undefined}
-    >
-      SEND
-    </Text>
-  </View>
-</View>
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        false,
+        Object {
+          "instance": null,
+          "key": null,
+          "nodeType": "class",
+          "props": Object {
+            "conversation": Object {
+              "from": Object {
+                "email": "anita@garibaldi.br",
+                "initials": "AG",
+                "name": "Anita Garibaldi",
+              },
+              "id": "420",
+              "initial_message": "Adoro! Por favor envie-me mais informações",
+              "items": Array [
+                Object {
+                  "item": Object {
+                    "__typename": "Artwork",
+                    "artist_names": "Adrian Piper",
+                    "date": "1974",
+                    "href": "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                    "id": "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                    "image": Object {
+                      "image_url": "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+                      "url": "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+                    },
+                    "title": "The Mythic Being: Sol’s Drawing #1–5",
+                  },
+                  "title": "The Mythic Being: Sol’s Drawing #1–5",
+                },
+              ],
+              "messages": Object {
+                "edges": Array [
+                  Object {
+                    "node": Object {
+                      "__id": "unique-id",
+                      "attachments": Array [],
+                      "body": "Adoro! Por favor envie-me mais informações",
+                      "from": Object {
+                        "email": "percy@cat.com",
+                        "name": "Percy",
+                      },
+                      "from_email_address": "anita@garibaldi.br",
+                      "id": 222,
+                    },
+                  },
+                ],
+              },
+              "to": Object {
+                "initials": "KK",
+                "name": "Kimberly Klark",
+              },
+            },
+            "onDataFetching": [Function],
+            "shouldShowSeparator": [Function],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+      ],
+      "type": [Function],
+    },
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": null,
+      "nodeType": "class",
+      "props": Object {
+        "children": <Styled(View)>
+          <Styled(View)>
+            <Styled(View)>
+              <SmallHeadline
+                style={
+                  Object {
+                    "fontSize": 14,
+                  }
+                }
+              >
+                Kimberly Klark
+              </SmallHeadline>
+              <View />
+            </Styled(View)>
+          </Styled(View)>
+          <Separator
+            style={
+              Object {
+                "backgroundColor": "white",
+              }
+            }
+          />
+          <Messages
+            conversation={
+              Object {
+                "from": Object {
+                  "email": "anita@garibaldi.br",
+                  "initials": "AG",
+                  "name": "Anita Garibaldi",
+                },
+                "id": "420",
+                "initial_message": "Adoro! Por favor envie-me mais informações",
+                "items": Array [
+                  Object {
+                    "item": Object {
+                      "__typename": "Artwork",
+                      "artist_names": "Adrian Piper",
+                      "date": "1974",
+                      "href": "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                      "id": "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                      "image": Object {
+                        "image_url": "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+                        "url": "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+                      },
+                      "title": "The Mythic Being: Sol’s Drawing #1–5",
+                    },
+                    "title": "The Mythic Being: Sol’s Drawing #1–5",
+                  },
+                ],
+                "messages": Object {
+                  "edges": Array [
+                    Object {
+                      "node": Object {
+                        "__id": "unique-id",
+                        "attachments": Array [],
+                        "body": "Adoro! Por favor envie-me mais informações",
+                        "from": Object {
+                          "email": "percy@cat.com",
+                          "name": "Percy",
+                        },
+                        "from_email_address": "anita@garibaldi.br",
+                        "id": 222,
+                      },
+                    },
+                  ],
+                },
+                "to": Object {
+                  "initials": "KK",
+                  "name": "Kimberly Klark",
+                },
+              }
+            }
+            onDataFetching={[Function]}
+            shouldShowSeparator={[Function]}
+          />
+        </Styled(View)>,
+        "disabled": false,
+        "onSubmit": [Function],
+        "value": undefined,
+      },
+      "ref": [Function],
+      "rendered": Object {
+        "instance": null,
+        "key": null,
+        "nodeType": "class",
+        "props": Object {
+          "children": Array [
+            <Styled(View)>
+              <Styled(View)>
+                <SmallHeadline
+                  style={
+                    Object {
+                      "fontSize": 14,
+                    }
+                  }
+                >
+                  Kimberly Klark
+                </SmallHeadline>
+                <View />
+              </Styled(View)>
+            </Styled(View)>,
+            <Separator
+              style={
+                Object {
+                  "backgroundColor": "white",
+                }
+              }
+            />,
+            false,
+            <Messages
+              conversation={
+                Object {
+                  "from": Object {
+                    "email": "anita@garibaldi.br",
+                    "initials": "AG",
+                    "name": "Anita Garibaldi",
+                  },
+                  "id": "420",
+                  "initial_message": "Adoro! Por favor envie-me mais informações",
+                  "items": Array [
+                    Object {
+                      "item": Object {
+                        "__typename": "Artwork",
+                        "artist_names": "Adrian Piper",
+                        "date": "1974",
+                        "href": "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                        "id": "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                        "image": Object {
+                          "image_url": "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+                          "url": "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+                        },
+                        "title": "The Mythic Being: Sol’s Drawing #1–5",
+                      },
+                      "title": "The Mythic Being: Sol’s Drawing #1–5",
+                    },
+                  ],
+                  "messages": Object {
+                    "edges": Array [
+                      Object {
+                        "node": Object {
+                          "__id": "unique-id",
+                          "attachments": Array [],
+                          "body": "Adoro! Por favor envie-me mais informações",
+                          "from": Object {
+                            "email": "percy@cat.com",
+                            "name": "Percy",
+                          },
+                          "from_email_address": "anita@garibaldi.br",
+                          "id": 222,
+                        },
+                      },
+                    ],
+                  },
+                  "to": Object {
+                    "initials": "KK",
+                    "name": "Kimberly Klark",
+                  },
+                }
+              }
+              onDataFetching={[Function]}
+              shouldShowSeparator={[Function]}
+            />,
+          ],
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": null,
+            "nodeType": "class",
+            "props": Object {
+              "children": <Styled(View)>
+                <SmallHeadline
+                  style={
+                    Object {
+                      "fontSize": 14,
+                    }
+                  }
+                >
+                  Kimberly Klark
+                </SmallHeadline>
+                <View />
+              </Styled(View)>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": null,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <SmallHeadline
+                    style={
+                      Object {
+                        "fontSize": 14,
+                      }
+                    }
+                  >
+                    Kimberly Klark
+                  </SmallHeadline>,
+                  <View />,
+                ],
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": null,
+                  "nodeType": "function",
+                  "props": Object {
+                    "children": "Kimberly Klark",
+                    "style": Object {
+                      "fontSize": 14,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": "Kimberly Klark",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": null,
+                  "nodeType": "class",
+                  "props": Object {},
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": null,
+            "nodeType": "class",
+            "props": Object {
+              "style": Object {
+                "backgroundColor": "white",
+              },
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          false,
+          Object {
+            "instance": null,
+            "key": null,
+            "nodeType": "class",
+            "props": Object {
+              "conversation": Object {
+                "from": Object {
+                  "email": "anita@garibaldi.br",
+                  "initials": "AG",
+                  "name": "Anita Garibaldi",
+                },
+                "id": "420",
+                "initial_message": "Adoro! Por favor envie-me mais informações",
+                "items": Array [
+                  Object {
+                    "item": Object {
+                      "__typename": "Artwork",
+                      "artist_names": "Adrian Piper",
+                      "date": "1974",
+                      "href": "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                      "id": "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
+                      "image": Object {
+                        "image_url": "https://d32dm0rphc51dk.cloudfront.net/J0uofgV9e8cIxGiZwn12mg/:version.jpg",
+                        "url": "https://d32dm0rphc51dk.cloudfront.net/W1FkNoM9IjrND_xv_DTkeg/normalized.jpg",
+                      },
+                      "title": "The Mythic Being: Sol’s Drawing #1–5",
+                    },
+                    "title": "The Mythic Being: Sol’s Drawing #1–5",
+                  },
+                ],
+                "messages": Object {
+                  "edges": Array [
+                    Object {
+                      "node": Object {
+                        "__id": "unique-id",
+                        "attachments": Array [],
+                        "body": "Adoro! Por favor envie-me mais informações",
+                        "from": Object {
+                          "email": "percy@cat.com",
+                          "name": "Percy",
+                        },
+                        "from_email_address": "anita@garibaldi.br",
+                        "id": 222,
+                      },
+                    },
+                  ],
+                },
+                "to": Object {
+                  "initials": "KK",
+                  "name": "Kimberly Klark",
+                },
+              },
+              "onDataFetching": [Function],
+              "shouldShowSeparator": [Function],
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+        ],
+        "type": [Function],
+      },
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
 `;
