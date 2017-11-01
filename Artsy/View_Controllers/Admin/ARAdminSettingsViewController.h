@@ -1,6 +1,5 @@
-#import <ARGenericTableViewController/ARGenericTableViewController.h>
+#import "ARAdminTableViewController.h"
 
-
-@interface ARAdminSettingsViewController : ARGenericTableViewController
+@interface ARAdminSettingsViewController : ARAdminTableViewController
 
 @end

@@ -34,7 +34,7 @@
 #import <React/RCTUtils.h>
 #import <objc/runtime.h>
 #import <ARAnalytics/ARAnalytics.h>
-#import <AppHub/AppHub.h>
+#import "ARAdminNetworkModel.h"
 #import "Artsy-Swift.h"
 
 static void
@@ -62,23 +62,10 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     // we switch out the current emission instance.
     //
     if ([AROptions boolForOption:AROptionsStagingReactEnv]) {
-        [AppHub setLogLevel:AHLogLevelDebug];
-        [AppHub setApplicationID:@"Z6IwqK52JBXrKLI4kpvJ"];
+        NSURL *packagerURL = [ARAdminNetworkModel fileURLForLatestCommitJavaScript];
+        [self setupSharedEmissionWithPackagerURL:packagerURL];
 
-        NSString *emissionHeadVersion = [[NSUserDefaults standardUserDefaults] valueForKey:AREmissionHeadVersionDefault];
-        [[AppHub buildManager] setAutomaticPollingEnabled:NO];
-        [[AppHub buildManager] setInstalledAppVersion:emissionHeadVersion];
-        [[AppHub buildManager] setDebugBuildsEnabled:YES];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newEmissionBuild) name:AHBuildManagerDidMakeBuildAvailableNotification object:nil];
-
-        [[AppHub buildManager] fetchBuildWithCompletionHandler:^(AHBuild *result, NSError *error) {
-            [self newEmissionBuild];
-        }];
-    }
-
-    // Allow using the local version of Emission
-    if ([AROptions boolForOption:AROptionsDevReactEnv]) {
+    } else if ([AROptions boolForOption:AROptionsDevReactEnv]) {
         NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
         [self setupSharedEmissionWithPackagerURL:packagerURL];
 
@@ -86,13 +73,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         // The normal flow for users
         [self setupSharedEmissionWithPackagerURL:nil];
     }
-}
-
-- (void)newEmissionBuild
-{
-    AHBuild *build = [[AppHub buildManager] currentBuild];
-    NSURL *jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
-    [self setupSharedEmissionWithPackagerURL:jsCodeLocation];
 }
 
 - (void)setupSharedEmissionWithPackagerURL:(NSURL *)packagerURL;

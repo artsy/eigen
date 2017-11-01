@@ -51,11 +51,7 @@
                                 <constraint firstAttribute="width" constant="65" id="ZkW-Lu-uxa"/>
                                 <constraint firstAttribute="height" constant="40" id="a0a-vr-nuZ"/>
                             </constraints>
-<<<<<<< HEAD
                             <fontDescription key="fontDescription" name="AvantGardeGothicITC-Dm" family="AvantGardeGothicITC Dm" pointSize="14"/>
-=======
-                            <fontDescription key="fontDescription" name="AvantGardeGothicITC-Dm" family="AvantGardeGothicITC" pointSize="14"/>
->>>>>>> more_fonts
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -64,11 +60,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="bfK-WA-YZR"/>
                             </constraints>
-<<<<<<< HEAD
                             <fontDescription key="fontDescription" name="AvantGardeGothicITC-Dm" family="AvantGardeGothicITC Dm" pointSize="14"/>
-=======
-                            <fontDescription key="fontDescription" name="AvantGardeGothicITC-Dm" family="AvantGardeGothicITC" pointSize="14"/>
->>>>>>> more_fonts
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
