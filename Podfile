@@ -158,6 +158,15 @@ post_install do |installer|
     config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = "$(inherited) RCT_DEV=0"
   end
 
+  # This is a fix for blank scroll views in React Native (see https://github.com/artsy/eigen/issues/2439)
+  react_view_file = "Pods/React/React/Views/RCTView.m"
+  react_view_old_code = "CGRectIsEmpty(CGRectIntersection(clipRect, view.frame))"
+  react_view_new_code = "CGSizeEqualToSize(CGRectIntersection(clipRect, view.frame).size, CGSizeZero)"
+  react_view_code = File.read(react_view_file)
+  if react_view_code.include?(react_view_old_code)
+    File.write(react_view_file, react_view_code.sub(react_view_old_code, react_view_new_code))
+  end
+
   # TODO:
   # * ORStackView: Move Laura's changes into master and update
   # * Send PRs for the rest
