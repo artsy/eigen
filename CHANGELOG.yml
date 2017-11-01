@@ -33,6 +33,7 @@ upcoming:
       - Fixes issue where home view could go blank after navigating back to it - sarah
     dev:
       - Adds a new Avant Garde font and fixes issue in which it wasn't showing up - sarah
+      - Finds more nooks and crannies using Avante Garde - orta/maxim
 
 releases:
   - version: 3.2.6
