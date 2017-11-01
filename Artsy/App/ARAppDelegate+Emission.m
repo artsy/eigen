@@ -217,7 +217,8 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 #pragma mark - Native Module: WorksForYou
 
     emission.worksForYouModule.setNotificationsCount = ^(NSInteger count) {
-        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
+//        TODO: Keep this around?
+//        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
     };
 }
 
