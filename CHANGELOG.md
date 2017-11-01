@@ -50,6 +50,7 @@
 
 ###### Messaging
 
+-   Fix crash of empty node in conversation list - maxim
 -   Hyperlinks in messages are now artsy purple & underlined - sarah
 -   Aligns message header with existing back button - sarah
 -   Temporarily removed partner response rate in inquiry - maxim
