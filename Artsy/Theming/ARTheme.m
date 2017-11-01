@@ -84,7 +84,7 @@ static ARTheme *defaultTheme;
     self.name = name;
     self.themeDictionary = [content mutableCopy];
     self.fontShortcuts = @{
-        @"Avant" : @"ITCAvantGardeDemi_Track03",
+        @"Avant" : @"AvantGardeGothicITC-Dm",
         @"Garamond" : @"AGaramondPro-Regular",
         @"GaramondBold" : @"AGaramondPro-Bold"
     };
