@@ -166,6 +166,7 @@ post_install do |installer|
   react_view_new_code = "CGSizeEqualToSize(CGRectIntersection(clipRect, view.frame).size, CGSizeZero)"
   react_view_code = File.read(react_view_file)
   if react_view_code.include?(react_view_old_code)
+    FileUtils.chmod("+w", react_view_file)
     File.write(react_view_file, react_view_code.sub(react_view_old_code, react_view_new_code))
   end
 
