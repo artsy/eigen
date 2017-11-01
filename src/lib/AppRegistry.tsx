@@ -46,14 +46,14 @@ interface ArtistProps {
 }
 const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
   return {
-    context_screen: "Artist",
+    context_screen: Schema.PageNames.ArtistPage,
     context_screen_owner_slug: props.artistID,
-    context_screen_owner_type: Schema.PageNames.ArtistPage,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
   }
 })(props => <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />)
 
 const Inbox: React.SFC<{}> = track<{}>(props => {
-  return { context_screen: "Inbox", context_screen_owner_type: Schema.PageNames.InboxPage }
+  return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
 })(() => <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />)
 
 interface GeneProps {
@@ -81,7 +81,11 @@ interface InquiryProps {
   artworkID: string
 }
 const Inquiry: React.SFC<InquiryProps> = track<InquiryProps>(props => {
-  return { context_screen: "Inquiry", context_screen_owner_slug: props.artworkID, context_screen_owner_type: "artwork" }
+  return {
+    context_screen: Schema.PageNames.InquiryPage,
+    context_screen_owner_slug: props.artworkID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+  }
 })(props => <InquiryRenderer {...props} render={renderWithLoadProgress(Containers.Inquiry, props)} />)
 
 interface ConversationProps {
@@ -89,9 +93,9 @@ interface ConversationProps {
 }
 const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(props => {
   return {
-    context_screen: "Conversation",
+    context_screen: Schema.PageNames.ConversationPage,
     context_screen_owner_id: props.conversationID,
-    context_screen_owner_type: "conversation",
+    context_screen_owner_type: Schema.OwnerEntityTypes.Conversation,
   }
 })(props => <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />)
 

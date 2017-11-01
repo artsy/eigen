@@ -75,7 +75,9 @@ export namespace Schema {
 
   export enum PageNames {
     ArtistPage = "Artist",
+    ConversationPage = "Conversation",
     InboxPage = "Inbox",
+    InquiryPage = "Inquiry",
   }
 
   export enum OwnerEntityTypes {
