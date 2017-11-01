@@ -13,7 +13,7 @@
 #import "ARFavoritesViewController.h"
 
 #import <Emission/ARWorksForYouComponentViewController.h>
-#import <Emission/ARHomeComponentViewController.h>
+#import <Emission/ARInboxComponentViewController.h>
 
 
 @interface ARTopMenuNavigationDataSource (Test)
@@ -37,7 +37,6 @@ __block ARTopMenuNavigationDataSource *dataSource;
 dispatch_block_t sharedBefore = ^{
     sut = [[ARTopMenuViewController alloc] initWithStubbedViewControllers];
     sut.navigationDataSource = dataSource;
-    dataSource.browseViewController.networkModel = [[ARStubbedBrowseNetworkModel alloc] init];
     [sut ar_presentWithFrame:[UIScreen mainScreen].bounds];
 
     [sut beginAppearanceTransition:YES animated:NO];
@@ -194,9 +193,6 @@ describe(@"navigation", ^{
    });
 
    describe(@"messaging", ^{
-       before(^{
-           [sut.tabContentView setCurrentViewIndex:ARTopTabControllerIndexMessaging animated:NO];
-       });
        itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexMessaging]});
    });
 
@@ -246,7 +242,7 @@ describe(@"navigation", ^{
 
                 // This will regenerate each time
                 } else if (tabIndex.integerValue == ARTopTabControllerIndexMessaging) {
-                    expect(viewcontroller).to.beAKindOf(ARHomeComponentViewController.class);
+                    expect(viewcontroller).to.beAKindOf(ARInboxComponentViewController.class);
 
                 } else {
                     expect(viewcontroller).to.equal([[ARTopMenuViewController sharedController] rootNavigationControllerAtIndex:tabIndex.integerValue].rootViewController);

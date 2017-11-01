@@ -1,7 +1,6 @@
 #import "ARTopMenuNavigationDataSource.h"
 
 #import "ARFeedTimeline.h"
-#import "ARBrowseViewController.h"
 #import <Emission/AREmission.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
@@ -23,8 +22,6 @@
 @property (nonatomic, assign, readwrite) NSInteger currentIndex;
 
 @property (nonatomic, assign, readonly) NSUInteger *badgeCounts;
-
-@property (nonatomic, strong, readonly) ARBrowseViewController *browseViewController;
 
 @property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
 @property (readonly, nonatomic, strong) ARNavigationController *messagingNavigationController;
