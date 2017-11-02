@@ -6,6 +6,10 @@
 extern NSString *const AROptionCell;
 /// Normal cells
 extern NSString *const ARLabOptionCell;
+/// So that they don't get reused as actions
+extern NSString *const ARReadOnlyOptionCell;
+// So that we know when to show two cells
+extern NSString *const ARTwoLabelCell;
 
 @interface ARAdminTableViewController : ARGenericTableViewController
 

@@ -1,11 +1,29 @@
 #import "ARAdminTableViewController.h"
 
+#import "ARAdminTableViewCell.h"
+#import "ARTickedTableViewCell.h"
+
 @import Artsy_UIFonts;
 
 NSString *const AROptionCell = @"OptionCell";
 NSString *const ARLabOptionCell = @"LabOptionCell";
+NSString *const ARReadOnlyOptionCell = @"ARReadOnlyOptionCell";
+NSString *const ARTwoLabelCell = @"ARTwoLabelCell";
 
 @implementation ARAdminTableViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    [self registerClass:[ARTickedTableViewCell class] forCellReuseIdentifier:ARLabOptionCell];
+    [self registerClass:[ARAdminTableViewCell class] forCellReuseIdentifier:AROptionCell];
+    [self registerClass:[ARAdminTableViewCell class] forCellReuseIdentifier:ARReadOnlyOptionCell];
+    [self registerClass:[ARAdminTableViewCell class] forCellReuseIdentifier:ARTwoLabelCell];
+
+    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
+    self.tableView.tableHeaderView = header;
+}
 
 - (ARCellData *)tappableCellDataWithTitle:(NSString *)title selection:(dispatch_block_t)selection
 {
@@ -22,7 +40,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 
 - (ARCellData *)informationCellDataWithTitle:(NSString *)title
 {
-    ARCellData *cell = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    ARCellData *cell = [[ARCellData alloc] initWithIdentifier:ARReadOnlyOptionCell];
     [cell setCellConfigurationBlock:^(UITableViewCell *cell) {
         cell.textLabel.text = title;
         cell.textLabel.textColor = [UIColor grayColor];
@@ -71,7 +89,7 @@ NSString *const ARLabOptionCell = @"LabOptionCell";
 
 - (ARCellData *)editableTextCellDataWithName:(NSString *)name defaultKey:(NSString *)key
 {
-    ARCellData *cell = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
+    ARCellData *cell = [[ARCellData alloc] initWithIdentifier:ARTwoLabelCell];
     cell.height = 60;
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

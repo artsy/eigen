@@ -122,7 +122,9 @@ static const CGFloat ARMenuButtonDimension = 50;
 
     UIView *separator = [[UIView alloc] init];
     [separator constrainHeight:@"1"];
-    separator.backgroundColor = [UIColor artsyGrayRegular];
+    UIColor *color = [AROptions boolForOption:ARUseStagingDefault] ?
+    [UIColor artsyPurpleRegular] : [UIColor artsyGrayRegular];
+    separator.backgroundColor = color;
     [tabContainer addSubview:separator];
     [separator alignTopEdgeWithView:tabContainer predicate:@"0"];
     [separator constrainWidthToView:tabContainer predicate:@"0"];
@@ -308,6 +310,9 @@ static const CGFloat ARMenuButtonDimension = 50;
 }
 
 #pragma mark - Badges
+
+// TODO: Nav Notifications
+
 
 - (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
 {

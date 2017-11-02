@@ -13,7 +13,7 @@ CGFloat DetailTextVerticalOffset = 6;
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    BOOL overwriteStyle = [reuseIdentifier isEqualToString:ARLabOptionCell];
+    BOOL overwriteStyle = [reuseIdentifier isEqualToString:ARTwoLabelCell];
     UITableViewCellStyle usedStyle = overwriteStyle ? UITableViewCellStyleSubtitle : style;
 
     self = [super initWithStyle:usedStyle reuseIdentifier:reuseIdentifier];
