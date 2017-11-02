@@ -90,6 +90,7 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 ### Deployment
 
 1. Ensure that the React version required by Emission has been published to [our spec-repo][spec-repo].
+   Assuming no breaking changes in RN's folder structures, you can run `make update_specs_repos`.
 2. Update the [CHANGELOG](CHANGELOG.md) file to reflect the version that will be released and commit it.
 3. Release the version with either `npm version patch`, `npm version minor`, or `npm version major`.
 
