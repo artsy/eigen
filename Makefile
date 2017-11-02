@@ -51,6 +51,7 @@ endif
 
 JQ := $(shell command -v jq 2> /dev/null)
 RNVERSION=$(shell cd node_modules/react-native && pod ipc spec React.podspec | jq '.version' -r)
+YOGAVERSION=$(shell cd node_modules/react-native/ReactCommon/yoga && pod ipc spec Yoga.podspec | jq '.version' -r)
 
 update_specs_repos:
 ifndef JQ
@@ -62,11 +63,11 @@ endif
 
 	@echo "Creating folder in artsy specs repo";
 	mkdir ~/.cocoapods/repos/artsy/React/$(RNVERSION)
-	mkdir ~/.cocoapods/repos/artsy/Yoga/$(RNVERSION)
+	mkdir ~/.cocoapods/repos/artsy/Yoga/$(YOGAVERSION)
 
 	@echo "Putting JSON specs in the folders";
 	cd node_modules/react-native && pod ipc spec React.podspec >  ~/.cocoapods/repos/artsy/React/$(RNVERSION)/React.podspec.json
-	cd node_modules/react-native/ReactCommon/yoga && pod ipc spec Yoga.podspec >  ~/.cocoapods/repos/artsy/Yoga/$(RNVERSION)/Yoga.podspec.json
+	cd node_modules/react-native/ReactCommon/yoga && pod ipc spec Yoga.podspec >  ~/.cocoapods/repos/artsy/Yoga/$(YOGAVERSION)/Yoga.podspec.json
 
 	@echo "Commiting the changes to our shared repo"
 	cd ~/.cocoapods/repos/artsy && git add .
