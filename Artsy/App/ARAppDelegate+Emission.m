@@ -111,7 +111,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         sentryDSN = nil;
     }
 
-
     NSString *gravity = [[ARRouter baseApiURL] absoluteString];
     NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID

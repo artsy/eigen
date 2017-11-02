@@ -19,20 +19,16 @@ plugin 'cocoapods-keys', {
   :project => "Artsy",
   :target => "Artsy",
   :keys => [
-    "ArtsyAPIClientSecret",
-    "ArtsyAPIClientKey",
-    "ArtsyFacebookAppID",
-    "ArtsyTwitterKey",
-    "ArtsyTwitterSecret",
-    "ArtsyTwitterStagingKey",
-    "ArtsyTwitterStagingSecret",
-    "SegmentProductionWriteKey",
-    "SegmentDevWriteKey",
-    "AdjustProductionAppToken",
-    "ArtsyEchoProductionToken",
-    "SentryProductionDSN",
-    "SentryStagingDSN",
-    "GoogleMapsAPIKey",
+    "ArtsyAPIClientSecret",      # Authing to the Artsy API
+    "ArtsyAPIClientKey",         #
+    "ArtsyFacebookAppID",        # Supporting FB Login
+    "SegmentProductionWriteKey", # Analytics
+    "SegmentDevWriteKey",        #
+    "AdjustProductionAppToken",  # Marketing
+    "ArtsyEchoProductionToken",  # Runtime behavior changes
+    "SentryProductionDSN",       # Crash Logging
+    "SentryStagingDSN",          #
+    "GoogleMapsAPIKey",          # Consignment Location Lookup
   ]
 }
 
