@@ -8,6 +8,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import fonts from "../../../../../../data/fonts"
 import OpaqueImageView from "../../../../../Components/OpaqueImageView"
 import Serif from "../../../../../Components/Text/Serif"
+import { liveDate, timedDate } from "../formatDate"
 
 const Container = styled.View`
   width: 158px;
@@ -64,7 +65,7 @@ const Badge = styled.View`
 `
 
 const BadgeText = styled.Text`
-  font-size: 8px;
+  font-size: 7px;
   font-family: ${fonts["avant-garde-regular"]};
   letter-spacing: 1.5;
   align-self: center;
@@ -77,11 +78,11 @@ const Metadata = styled.Text`
   font-size: 10px;
 `
 
-class AuctionItem extends React.Component<any, any> {
+export class AuctionItem extends React.Component<any, any> {
   render() {
     const item = this.props.auction
-    const timestamp = "59 Minutes Left".toUpperCase()
-    console.log(this.props)
+    const timestamp = (item.live_start_at ? liveDate(item) : timedDate(item)).toUpperCase()
+
     return (
       <Container>
         <Image imageURL={item.cover_image.cropped.url} skipGemini={true} />
@@ -90,9 +91,10 @@ class AuctionItem extends React.Component<any, any> {
             <Title numberOfLines={2}>
               {item.name}
             </Title>
-            <Badge>
-              <BadgeText>LIVE</BadgeText>
-            </Badge>
+            {item.live_start_at &&
+              <Badge>
+                <BadgeText>LIVE</BadgeText>
+              </Badge>}
           </Header>
           <Footer>
             <Metadata>
