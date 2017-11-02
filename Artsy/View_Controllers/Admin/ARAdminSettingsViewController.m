@@ -67,6 +67,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     ARSectionData *launcherSections = [[ARSectionData alloc] initWithCellDataArray:@[
         [self generateOnboarding],
         [self generateShowAllLiveAuctions],
+        [self showConsignmentsFlow],
         [self generateQuicksilver],
         [self generateEchoContents],
    ]];
@@ -111,20 +112,18 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)generateOnboarding
 {
-     return [self tappableCellDataWithTitle:@"Show Onboarding" selection:^{
+    return [self tappableCellDataWithTitle:@"Show Onboarding" selection:^{
         [self showSlideshow];
     }];
 }
 
-
 - (ARCellData *)generateFeedback
 {
-    return [self tappableCellDataWithTitle:@"Provide Feedback" selection:^{
+    return [self tappableCellDataWithTitle:@"Provide Beta Feedback" selection:^{
         ARHockeyFeedbackDelegate *feedback = [[ARHockeyFeedbackDelegate alloc] init];
         [feedback showFeedback:nil data:nil];
     }];
 }
-
 
 - (ARCellData *)generateRecording
 {
@@ -196,6 +195,15 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         NSURL *url = [NSURL URLWithString:@"https://live-staging.artsy.net"];
         ARInternalMobileWebViewController *webVC = [[ARInternalMobileWebViewController alloc] initWithURL:url];
         [self.navigationController pushViewController:webVC animated:YES];
+    }];
+}
+
+- (ARCellData *)showConsignmentsFlow
+{
+    return [self tappableCellDataWithTitle:@"Start Consignments Flow" selection:^{
+
+        id vc = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Consignments" initialProperties:@{}];
+        [self.navigationController presentViewController:vc animated:YES completion:NULL];
     }];
 }
 
@@ -288,7 +296,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
     return @[
      [self informationCellDataWithTitle:[NSString stringWithFormat:@"Emission v%@", emissionVersion]],
-     [self informationCellDataWithTitle:[NSString stringWithFormat:@"Current Code is %@ days old", days]],
+     [self informationCellDataWithTitle:[NSString stringWithFormat:@"Current Code is %@ old", days]],
 
      [self tappableCellDataWithTitle:pr selection:^{
          NSString *addr = [NSString stringWithFormat:@"https://github.com/artsy/emission/pull/%@", metadata.number];

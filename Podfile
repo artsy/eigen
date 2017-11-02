@@ -1,3 +1,10 @@
+using_bundler = defined? Bundler
+unless using_bundler
+  puts "\nPlease re-run using:".red
+  puts "  bundle exec pod install\n\n"
+  exit(1)
+end
+
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
@@ -12,19 +19,16 @@ plugin 'cocoapods-keys', {
   :project => "Artsy",
   :target => "Artsy",
   :keys => [
-    "ArtsyAPIClientSecret",
-    "ArtsyAPIClientKey",
-    "ArtsyFacebookAppID",
-    "ArtsyTwitterKey",
-    "ArtsyTwitterSecret",
-    "ArtsyTwitterStagingKey",
-    "ArtsyTwitterStagingSecret",
-    "SegmentProductionWriteKey",
-    "SegmentDevWriteKey",
-    "AdjustProductionAppToken",
-    "ArtsyEchoProductionToken",
-    "SentryProductionDSN",
-    "SentryStagingDSN"
+    "ArtsyAPIClientSecret",      # Authing to the Artsy API
+    "ArtsyAPIClientKey",         #
+    "ArtsyFacebookAppID",        # Supporting FB Login
+    "SegmentProductionWriteKey", # Analytics
+    "SegmentDevWriteKey",        #
+    "AdjustProductionAppToken",  # Marketing
+    "ArtsyEchoProductionToken",  # Runtime behavior changes
+    "SentryProductionDSN",       # Crash Logging
+    "SentryStagingDSN",          #
+    "GoogleMapsAPIKey",          # Consignment Location Lookup
   ]
 }
 
@@ -135,6 +139,14 @@ target 'Artsy' do
   end
 end
 
+def edit_pod_file(file, old_code, new_code)
+  code = File.read(file)
+  if code.include?(old_code)
+    FileUtils.chmod("+w", file)
+    File.write(file, code.sub(old_code, new_code))
+  end
+end
+
 post_install do |installer|
   # Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
   installer.pods_project.targets.each do |target|
@@ -162,11 +174,19 @@ post_install do |installer|
   react_view_file = "Pods/React/React/Views/RCTView.m"
   react_view_old_code = "CGRectIsEmpty(CGRectIntersection(clipRect, view.frame))"
   react_view_new_code = "CGSizeEqualToSize(CGRectIntersection(clipRect, view.frame).size, CGSizeZero)"
-  react_view_code = File.read(react_view_file)
-  if react_view_code.include?(react_view_old_code)
-    FileUtils.chmod("+w", react_view_file)
-    File.write(react_view_file, react_view_code.sub(react_view_old_code, react_view_new_code))
-  end
+  edit_pod_file react_view_file, react_view_old_code, react_view_old_code
+
+  # https://github.com/facebook/react-native/pull/14664
+  animation_view_file = "Pods/React/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h"
+  animation_view_old_code = "import <RCTAnimation/RCTValueAnimatedNode.h>"
+  animation_view_new_code = 'import "RCTValueAnimatedNode.h"'
+  edit_pod_file animation_view_file, animation_view_old_code, animation_view_new_code
+
+  # https://github.com/facebook/react-native/issues/15936
+  remote_view_file = "Pods/React/React/Base/RCTTVRemoteHandler.m"
+  remote_view_old_code = '#import "RCTDevMenu.h"'
+  remote_view_new_code = ''
+  edit_pod_file remote_view_file, remote_view_old_code, remote_view_new_code
 
   # TODO:
   # * ORStackView: Move Laura's changes into master and update

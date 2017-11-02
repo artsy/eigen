@@ -58,10 +58,16 @@
     [[SDWebImageManager sharedManager] setValue:imageCache forKey:@"_imageCache"];
 
     // Sets up AREmission manually
-    AREmission *emission = [[AREmission alloc] initWithUserID:@""
-                                          authenticationToken:@""
-                                                  packagerURL:nil
-                                        useStagingEnvironment:[AROptions boolForOption:ARUseStagingDefault]];
+    NSString *gravity = [[ARRouter baseApiURL] absoluteString];
+    NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
+    AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:@""
+                                                                  authenticationToken:@""
+                                                                            sentryDSN:@""
+                                                                     googleMapsAPIKey:@""
+                                                                          gravityHost:gravity
+                                                                      metaphysicsHost:metaphysics];
+
+    AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:nil];
     [AREmission setSharedInstance:emission];
 
     // Needed for "usesDrawRect" based Nimble-Snapshots testing
