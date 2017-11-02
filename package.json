@@ -33,6 +33,7 @@
     "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
     "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && yarn dump-schema -- ../../data && rm -rf node_modules",
+    "sync-schema:localhost": "cd ../metaphysics && yarn dump-schema -- ../emission/data",
     "version": "yarn install && yarn bundle && pushd Example && bundle install && bundle exec pod install && popd && git add Pod/Assets Example/Podfile.lock",
     "postversion": "git push --follow-tags && env EMISSION_ROOT=\"$(pwd)\" pod repo push artsy --allow-warnings --use-json --skip-import-validation",
     "postinstall": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h && ./scripts/post_installs.sh || true",

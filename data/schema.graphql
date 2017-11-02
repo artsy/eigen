@@ -668,7 +668,7 @@ type ArtworkConnection {
 
 union ArtworkContext = ArtworkContextAuction | ArtworkContextFair | ArtworkContextPartnerShow | ArtworkContextSale
 
-type ArtworkContextAuction {
+type ArtworkContextAuction implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -746,6 +746,7 @@ type ArtworkContextAuction {
   ): String
   require_bidder_approval: Boolean
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
   sale_type: String
   start_at(
     convert_to_utc: Boolean
@@ -898,7 +899,7 @@ type ArtworkContextPartnerShow implements Node {
   type: String
 }
 
-type ArtworkContextSale {
+type ArtworkContextSale implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -976,6 +977,7 @@ type ArtworkContextSale {
   ): String
   require_bidder_approval: Boolean
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
   sale_type: String
   start_at(
     convert_to_utc: Boolean
@@ -1564,6 +1566,7 @@ type CollectorProfileType {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  intents: [String]
 }
 
 # A conversation.
@@ -1781,6 +1784,9 @@ type Credentials {
   # A base64 encoded version of the S3 policy
   policy_encoded: String!
 
+  # The s3 policy document for your request
+  policy_document: S3PolicyDocumentType!
+
   # The signature for your asset.
   signature: String!
 }
@@ -1967,7 +1973,7 @@ type FeaturedLinkItem {
 type FilterArtworks {
   # Returns aggregation counts for the given filter query.
   aggregations: [ArtworksAggregationResults]
-  artworks_connection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworks_connection(after: String, first: Int, before: String, last: Int): ArtworkConnection @deprecated(reason: "Favour artwork connections that take filter arguments.")
   counts: FilterArtworksCounts
   followed_artists_total: Int @deprecated(reason: "Favor `favor counts.followed_artists`")
 
@@ -2131,8 +2137,9 @@ type Gene implements Node {
     first: Int
     before: String
     last: Int
-  ): ArtworkConnection
+  ): GeneArtworksConnection
   description: String
+  display_name: String
 
   # Artworks Elastic Search results
   filtered_artworks(
@@ -2167,15 +2174,56 @@ type Gene implements Node {
   ): FilterArtworks
   href: String
   image: Image
+  is_published: Boolean
   mode: String
   name: String
   trending_artists(sample: Int): [Artist]
+}
+
+# A connection to a list of items.
+type GeneArtworksConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [GeneArtworksEdge]
+
+  # Returns aggregation counts for the given filter query.
+  aggregations: [ArtworksAggregationResults]
+  counts: FilterArtworksCounts
+}
+
+# An edge in a connection.
+type GeneArtworksEdge {
+  # The item at the end of the edge
+  node: Artwork
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 type GeneFamily {
   id: String!
   name: String!
   genes: [Gene]
+}
+
+# A connection to a list of items.
+type GeneFamilyConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [GeneFamilyEdge]
+}
+
+# An edge in a connection.
+type GeneFamilyEdge {
+  # The item at the end of the edge
+  node: GeneFamily
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 type GeneItem implements Node {
@@ -2223,8 +2271,9 @@ type GeneItem implements Node {
     first: Int
     before: String
     last: Int
-  ): ArtworkConnection
+  ): GeneArtworksConnection
   description: String
+  display_name: String
 
   # Artworks Elastic Search results
   filtered_artworks(
@@ -2259,6 +2308,7 @@ type GeneItem implements Node {
   ): FilterArtworks
   href: String
   image: Image
+  is_published: Boolean
   mode: String
   name: String
   trending_artists(sample: Int): [Artist]
@@ -2659,8 +2709,9 @@ type HomePageModuleContextGene implements Node {
     first: Int
     before: String
     last: Int
-  ): ArtworkConnection
+  ): GeneArtworksConnection
   description: String
+  display_name: String
 
   # Artworks Elastic Search results
   filtered_artworks(
@@ -2695,6 +2746,7 @@ type HomePageModuleContextGene implements Node {
   ): FilterArtworks
   href: String
   image: Image
+  is_published: Boolean
   mode: String
   name: String
   trending_artists(sample: Int): [Artist]
@@ -2705,7 +2757,7 @@ type HomePageModuleContextRelatedArtist {
   based_on: Artist
 }
 
-type HomePageModuleContextSale {
+type HomePageModuleContextSale implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -2783,6 +2835,7 @@ type HomePageModuleContextSale {
   ): String
   require_bidder_approval: Boolean
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
   sale_type: String
   start_at(
     convert_to_utc: Boolean
@@ -3835,7 +3888,7 @@ type Query {
   ): Gene
 
   # A list of Gene Families
-  gene_families: [GeneFamily]
+  gene_families(after: String, first: Int, before: String, last: Int): GeneFamilyConnection
   gene_family: GeneFamily
 
   # Home screen content
@@ -4043,7 +4096,31 @@ enum Role {
   OPERATOR
 }
 
-type Sale {
+# The conditions for uploading assets to media.artsy.net
+type S3PolicyConditionsType {
+  # The bucket to upload to.
+  bucket: String!
+
+  # The assigned access control
+  acl: String!
+
+  # A key which is prefixed on your file
+  gemini_key: String!
+
+  # The returned status code, currently always 201
+  success_action_status: String!
+}
+
+# An policy for uploading assets to media.artsy.net
+type S3PolicyDocumentType {
+  # An expiration date string.
+  expiration: String!
+
+  # The details for the upload
+  conditions: S3PolicyConditionsType!
+}
+
+type Sale implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -4121,6 +4198,7 @@ type Sale {
   ): String
   require_bidder_approval: Boolean
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
   sale_type: String
   start_at(
     convert_to_utc: Boolean
@@ -4190,6 +4268,15 @@ enum SaleArtworkAggregation {
   TOTAL
 }
 
+# A connection to a list of items.
+type SaleArtworkConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SaleArtworkEdge]
+}
+
 type SaleArtworkCounts {
   bidder_positions(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
@@ -4215,6 +4302,15 @@ type SaleArtworkCurrentBid {
 
   # A pre-formatted price.
   display: String
+}
+
+# An edge in a connection.
+type SaleArtworkEdge {
+  # The item at the end of the edge
+  node: SaleArtwork
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 type SaleArtworkHighestBid {
@@ -4747,6 +4843,7 @@ type UpdateCollectorProfilePayload {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  intents: [String]
   clientMutationId: String
 }
 
@@ -4956,7 +5053,7 @@ type Viewer {
   ): Gene
 
   # A list of Gene Families
-  gene_families: [GeneFamily]
+  gene_families(after: String, first: Int, before: String, last: Int): GeneFamilyConnection
   gene_family: GeneFamily
 
   # Home screen content

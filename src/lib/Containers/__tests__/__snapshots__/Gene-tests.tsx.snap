@@ -68,9 +68,9 @@ exports[`looks like expected 1`] = `
           ],
         }
       }
+      mapPropsToArtworksConnection={[Function]}
       medium="painting"
       priceRange="*-100000"
-      queryKey="gene.artworks"
       sort="-partner_updated_at"
     />
   </View>

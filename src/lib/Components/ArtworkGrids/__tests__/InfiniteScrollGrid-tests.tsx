@@ -13,6 +13,9 @@ it("renders properly", () => {
     },
   }
 
-  const grid = renderWithLayout(<InfiniteScrollArtworksGrid artist={artist} queryKey="artist" />, { width: 768 })
+  const grid = renderWithLayout(
+    <InfiniteScrollArtworksGrid artist={artist} mapPropsToArtworksConnection={props => props.artist} />,
+    { width: 768 }
+  )
   expect(grid).toMatchSnapshot()
 })

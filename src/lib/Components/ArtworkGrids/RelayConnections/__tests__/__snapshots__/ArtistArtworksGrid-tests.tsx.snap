@@ -76,6 +76,6 @@ exports[`renders properly 1`] = `
       },
     }
   }
-  queryKey="artist"
+  mapPropsToArtworksConnection={[Function]}
 />
 `;
