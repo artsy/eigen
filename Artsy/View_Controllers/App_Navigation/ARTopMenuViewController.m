@@ -29,6 +29,7 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 #import <Emission/ARHomeComponentViewController.h>
+#import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <React/RCTScrollView.h>
 
@@ -90,7 +91,7 @@ static const CGFloat ARMenuButtonDimension = 50;
                                                                     dataSource:self.navigationDataSource];
     tabContentView.supportSwipeGestures = NO;
     tabContentView.buttons = buttons;
-    [tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
+    [tabContentView setCurrentViewIndex:ARTopTabControllerIndexHome animated:NO];
     _tabContentView = tabContentView;
     [self.view addSubview:tabContentView];
 
@@ -201,44 +202,38 @@ static const CGFloat ARMenuButtonDimension = 50;
     }];
 }
 
+
+- (ARNavigationTabButton *)tabButtonWithName:(NSString *)name accessibilityName: (NSString *)accessibilityName
+{
+    ARNavigationTabButton *button = [[ARNavigationTabButton alloc] init];
+    button.accessibilityLabel = accessibilityName;
+    [button setImage:[[UIImage imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    [button setImage:[[UIImage imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
+    [button.imageView constrainWidth:@"30" height:@"30"];
+    [button setTintColor:[UIColor blackColor]];
+    // Makes it 40x40 as a tap target
+    [button ar_extendHitTestSizeByWidth:5 andHeight:5];
+    return button;
+}
+
 - (NSArray *)buttons
 {
-    ARNavigationTabButton *homeButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *browseButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *favoritesButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *notificationsButton = [[ARNavigationTabButton alloc] init];
-    ARNavigationTabButton *searchButton = [[ARNavigationTabButton alloc] init];
-    notificationsButton.tag = ARNavButtonNotificationsTag;
+    ARNavigationTabButton *homeButton = [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"];
+    ARNavigationTabButton *searchButton = [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"];
+    ARNavigationTabButton *messagingButton = [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"];
+    ARNavigationTabButton *favouritesButton = [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"];
+    ARNavigationTabButton *profileButton = [self tabButtonWithName:@"nav_profile" accessibilityName:@"Profile"];
 
-    searchButton.accessibilityLabel = @"Search";
-    [searchButton setImage:[[UIImage imageNamed:@"SearchButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    [searchButton setImage:[[UIImage imageNamed:@"SearchButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
-    [searchButton.imageView constrainWidth:@"15" height:@"15"];
-    [searchButton setTintColor:[UIColor blackColor]];
-
-    [homeButton setTitle:@"HOME" forState:UIControlStateNormal];
-    [browseButton setTitle:@"EXPLORE" forState:UIControlStateNormal];
-    [favoritesButton setTitle:@"YOU" forState:UIControlStateNormal];
-
-    notificationsButton.accessibilityLabel = @"Notifications";
-    [notificationsButton setImage:[[UIImage imageNamed:@"NotificationsButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    [notificationsButton setImage:[[UIImage imageNamed:@"NotificationsButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
-    [notificationsButton.imageView constrainWidth:@"12" height:@"14"];
-    [notificationsButton setTintColor:[UIColor blackColor]];
-
-    [favoritesButton ar_extendHitTestSizeByWidth:5 andHeight:0];
-    [notificationsButton ar_extendHitTestSizeByWidth:10 andHeight:0];
-
-    return @[ searchButton, homeButton, browseButton, favoritesButton, notificationsButton ];
+    return @[ homeButton, searchButton, messagingButton, favouritesButton, profileButton ];
 }
 
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
 {
     NSDictionary *menuToPaths = @{
-        @(ARTopTabControllerIndexFeed) : @"/",
-        @(ARTopTabControllerIndexBrowse) : @"/browse",
+        @(ARTopTabControllerIndexHome) : @"/",
+        @(ARTopTabControllerIndexMessaging) : @"/inbox",
         @(ARTopTabControllerIndexFavorites) : @"/favorites",
-        @(ARTopTabControllerIndexNotifications) : @"/works-for-you",
+        @(ARTopTabControllerIndexProfile) : @"/ios-settings", // A good argument is "user/edit", _but_ the app barely supports any of it's features
     };
 
     for (NSNumber *tabIndex in menuToPaths.keyEnumerator) {
@@ -304,10 +299,11 @@ static const CGFloat ARMenuButtonDimension = 50;
             return index;
         } else if ([viewController isKindOfClass:ARFavoritesViewController.class]) {
             return ARTopTabControllerIndexFavorites;
-        } else if ([viewController isKindOfClass:ARWorksForYouComponentViewController.class]) {
-            return ARTopTabControllerIndexNotifications;
+        } else if ([viewController isKindOfClass:ARInboxComponentViewController.class]) {
+            return ARTopTabControllerIndexMessaging;
         }
     }
+
     return NSNotFound;
 }
 
@@ -473,12 +469,12 @@ static const CGFloat ARMenuButtonDimension = 50;
     BOOL alreadySelectedTab = self.selectedTabIndex == index;
     
     switch (index) {
-        case ARTopTabControllerIndexFeed:
-        case ARTopTabControllerIndexBrowse:
+        case ARTopTabControllerIndexHome:
+        case ARTopTabControllerIndexMessaging:
             presentableController = [self rootNavigationControllerAtIndex:index];
             break;
         case ARTopTabControllerIndexFavorites:
-        case ARTopTabControllerIndexNotifications:
+        case ARTopTabControllerIndexProfile:
             presentableController = [[ARNavigationController alloc] initWithRootViewController:viewController];
             
             // Setting alreadySelectedTab to NO so the notification (Works for you) view controller gets presented even though
@@ -487,7 +483,7 @@ static const CGFloat ARMenuButtonDimension = 50;
             animated = NO;
             break;
         default:
-            presentableController = [self rootNavigationControllerAtIndex:ARTopTabControllerIndexFeed];
+            presentableController = [self rootNavigationControllerAtIndex:ARTopTabControllerIndexHome];
     }
     
     if (presentableController.viewControllers.count > 1) {
@@ -573,8 +569,8 @@ static const CGFloat ARMenuButtonDimension = 50;
         }
 
         // Otherwise find the first scrollview and pop to top
-        else if (index == ARTopTabControllerIndexFeed ||
-                 index == ARTopTabControllerIndexBrowse ||
+        else if (index == ARTopTabControllerIndexHome ||
+                 index == ARTopTabControllerIndexMessaging ||
                  index == ARTopTabControllerIndexFavorites) {
             UIViewController *currentRootViewController = [controller.childViewControllers first];
             UIScrollView *rootScrollView = (id)[self firstScrollToTopScrollViewFromRootView:currentRootViewController.view];

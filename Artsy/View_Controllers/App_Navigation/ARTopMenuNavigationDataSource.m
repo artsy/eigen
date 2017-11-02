@@ -1,10 +1,10 @@
 #import "ARTopMenuNavigationDataSource.h"
 
 #import "ARFeedTimeline.h"
-#import "ARBrowseViewController.h"
 #import <Emission/AREmission.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
+#import <Emission/ARInboxComponentViewController.h>
 #import "ARFavoritesViewController.h"
 #import "ARTopMenuInternalMobileWebViewController.h"
 #import "ARFeedSubclasses.h"
@@ -23,11 +23,10 @@
 
 @property (nonatomic, assign, readonly) NSUInteger *badgeCounts;
 
-@property (nonatomic, strong, readonly) ARBrowseViewController *browseViewController;
-
 @property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
-@property (readonly, nonatomic, strong) ARNavigationController *browseNavigationController;
-@property (readonly, nonatomic, strong) ARNavigationController *worksForYouNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *messagingNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *savedNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *profileNavigationController;
 
 @end
 
@@ -51,15 +50,33 @@
     ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] initWithEmission:nil];
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
 
-    _browseViewController = [[ARBrowseViewController alloc] init];
-    _browseViewController.networkModel = [[ARBrowseNetworkModel alloc] init];
-    _browseNavigationController = [[ARNavigationController alloc] initWithRootViewController:_browseViewController];
-
     return self;
 }
 
+- (ARNavigationController *)getMessagingNavigationController
+{
+    // Make a new one each time the favorites tab is selected, so that it presents up-to-date data.
+    //
+    // This is an assumption baked into the component itself ( see the header for ARInboxComponentViewController)
 
-- (ARNavigationController *)favoritesNavigationController
+    ARComponentViewController *messagingVC = [[ARInboxComponentViewController alloc] initWithInbox];
+    _messagingNavigationController = [[ARNavigationController alloc] initWithRootViewController:messagingVC];
+    return _messagingNavigationController;
+}
+
+
+- (ARNavigationController *)getProfileNavigationController
+{
+    if (self.profileNavigationController) {
+        return self.profileNavigationController;
+    }
+    // TODO: Replace with real Emission UIVC
+    ARComponentViewController *profileVC = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccount" initialProperties:@{}];
+    _profileNavigationController = [[ARNavigationController alloc] initWithRootViewController:profileVC];
+    return _profileNavigationController;
+}
+
+- (ARNavigationController *)getFavoritesNavigationController
 {
     // Make a new one each time the favorites tab is selected, so that it presents up-to-date data.
     //
@@ -84,14 +101,18 @@
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index parameters:(NSDictionary *)params;
 {
     switch (index) {
-        case ARTopTabControllerIndexFeed:
-            return self.feedNavigationController;
-        case ARTopTabControllerIndexBrowse:
-            return self.browseNavigationController;
+        case ARTopTabControllerIndexHome:
+            return [self feedNavigationController];
+
+        case ARTopTabControllerIndexMessaging:
+            return [self getMessagingNavigationController];
+
         case ARTopTabControllerIndexFavorites:
-            return self.favoritesNavigationController;
-        case ARTopTabControllerIndexNotifications:
-            return [self worksForYouNavigationControllerWithSelectedArtist:params[@"artist_id"]];
+            return self.getFavoritesNavigationController;
+
+        case ARTopTabControllerIndexProfile:
+        return [self getProfileNavigationController];
+
     }
 
     return nil;

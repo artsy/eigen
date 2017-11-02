@@ -34,7 +34,7 @@
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L7Z-9X-6JE">
                             <rect key="frame" x="0.0" y="0.0" width="280" height="135"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="135" id="Yg5-iI-IdE"/>
+                                 <constraint firstAttribute="height" constant="135" id="Yg5-iI-IdE"/>
                             </constraints>
                         </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lwm-l0-S6U">
@@ -51,7 +51,7 @@
                                 <constraint firstAttribute="width" constant="65" id="ZkW-Lu-uxa"/>
                                 <constraint firstAttribute="height" constant="40" id="a0a-vr-nuZ"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="AvantGardeGothicITC-Dm" family="AvantGardeGothicITC" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="AvantGardeGothicITC-Dm" family="AvantGardeGothicITC Dm" pointSize="14"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -60,7 +60,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="bfK-WA-YZR"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="AvantGardeGothicITC-Dm" family="AvantGardeGothicITC" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="AvantGardeGothicITC-Dm" family="AvantGardeGothicITC Dm" pointSize="14"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>

@@ -234,9 +234,10 @@
 
 - (void)fetchNotificationCounts;
 {
-    [ArtsyAPI getWorksForYouCount:^(NSUInteger count) {
-        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
-    } failure:nil];
+// TODO: Nav Notifications
+//    [ArtsyAPI getWorksForYouCount:^(NSUInteger count) {
+//        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
+//    } failure:nil];
 }
 
 - (UIWindow *)findVisibleWindow
