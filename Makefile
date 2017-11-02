@@ -52,6 +52,8 @@ endif
 JQ := $(shell command -v jq 2> /dev/null)
 RNVERSION=$(shell cd node_modules/react-native && pod ipc spec React.podspec | jq '.version' -r)
 YOGAVERSION=$(shell cd node_modules/react-native/ReactCommon/yoga && pod ipc spec Yoga.podspec | jq '.version' -r)
+YOGA_SRC_BEFORE=yoga\/\*\*\/\*.{c,h}
+YOGA_SRC_AFTER=ReactCommon\/yoga\/yoga\/\*\*\/\*.\{c,h\}
 
 update_specs_repos:
 ifndef JQ
@@ -68,6 +70,9 @@ endif
 	@echo "Putting JSON specs in the folders";
 	cd node_modules/react-native && pod ipc spec React.podspec >  ~/.cocoapods/repos/artsy/React/$(RNVERSION)/React.podspec.json
 	cd node_modules/react-native/ReactCommon/yoga && pod ipc spec Yoga.podspec >  ~/.cocoapods/repos/artsy/Yoga/$(YOGAVERSION)/Yoga.podspec.json
+
+	@echo "Modifying Yoga to reflect the React Native repo paths"
+	sed -i -e 's/$(YOGA_SRC_BEFORE)/$(YOGA_SRC_AFTER)/g' ~/.cocoapods/repos/artsy/Yoga/$(YOGAVERSION)/Yoga.podspec.json
 
 	@echo "Commiting the changes to our shared repo"
 	cd ~/.cocoapods/repos/artsy && git add .
