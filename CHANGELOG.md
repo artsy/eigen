@@ -1,4 +1,9 @@
-### 1.4.0-beta.4
+// Please add your own contribution below inside the Master section
+// These docs are aimed at developers, but are shown inside collector GMV's channel
+
+### Master
+
+### 1.4.0-beta.5
 
 ###### Dev
 
