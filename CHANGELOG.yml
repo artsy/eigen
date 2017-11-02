@@ -1,5 +1,5 @@
 upcoming:
-    version: 3.3.0
+    version: 4.0.0
     details: Messaging
     dev:
       - Reload active bids on pull-to-refresh - alloy
@@ -12,38 +12,40 @@ upcoming:
       - Fix crash in onboarding artist search due to query text possibly being `nil` - alloy
       - Fix unneeded SIGABRT, if it actually happened at all, by not needlessly using a RN reject block - alloy
       - Add switchboard route to open admin menu through Universal Links with https://artsy.net/admin route - alloy
+      - Broadcast a NSNotification when a user makes a payment so views that show the payment request status can update - alloy
       - Adds an admin flag for haptic feedback during a live Auction - orta
       - Removes bifurcation of bidders/observers for causality websocket connections - ash
-      - Consolidates GraphQL error-handling - ash
-      - Broadcast a NSNotification when a user makes a payment so views that show the payment request status can update - alloy
 
     user_facing:
+      - Adds a new navigation UI - orta
       - Adds new routing for inquiries - maxim
-      - Removes "Contact for Price" on related works in auction list - ash
       - Fixes problem with status bar on refine options view - ash
       - Fixes login for users with short passwords - ash
       - Fixes inconsistencies in bid counts of online sales - ash
       - Fixes a minor problem displaying lots in past auctions - ash
       - Do not intercept tel links with our custom dialog modal - isac
       - Presents live bidding interface when sale has opened and UI reappearing from an artwork VC - ash
-      - Updates bid count UI after model has been updated - ash
-    version: 3.2.7
+
+releases:
+  - version: 3.2.7
     details: Bug fixes
+    date: November 2, 2017
     user_facing:
       - Fixes issue where home view could go blank after navigating back to it - sarah
     dev:
       - Adds a new Avant Garde font and fixes issue in which it wasn't showing up - sarah
       - Finds more nooks and crannies using Avante Garde - orta/maxim
 
-releases:
   - version: 3.2.6
     details: Bug fixes
     date: October 18, 2017
     user_facing:
       - Custom sale-on-hold banner - ash
     dev:
+      - Updates bid count UI after model has been updated - ash
       - Adds client metadata info to causality events - ash
-      - Removes nulls from JSON in GraphQL responses.
+      - Removes nulls from JSON in GraphQL responses. - ash
+      - Consolidates GraphQL error-handling - ash
 
   - version: 3.2.5
     details: Bug fixes
@@ -55,12 +57,13 @@ releases:
     date: Sep 8, 2017
     details: Bug fixes
     user_facing:
-      - Fixes inconsistencies in post-sale artwork supplementary info - ash
+      - Removes "Contact for Price" on related works in auction list - ash
 
   - version: 3.2.3
     date: Jul 11, 2017
     details: Auction price data fix
     user_facing:
+      - Fixes inconsistencies in post-sale artwork supplementary info - ash
       - Updates Emission to 1.3.10 which includes a fix for not showing pricing data for closed sales - ash
 
   - version: 3.2.2
