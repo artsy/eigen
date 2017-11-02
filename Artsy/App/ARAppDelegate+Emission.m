@@ -18,6 +18,7 @@
 #import "ARTopMenuViewController.h"
 #import "ARRootViewController.h"
 #import "ARAppStatus.h"
+#import "ARRouter.h"
 
 #import <Aerodramus/Aerodramus.h>
 #import <Keys/ArtsyKeys.h>
@@ -109,11 +110,18 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     if ([sentryDSN isEqualToString:@"-"]) {
         sentryDSN = nil;
     }
-    AREmission *emission = [[AREmission alloc] initWithUserID:userID
-                                          authenticationToken:authenticationToken
-                                                  packagerURL:packagerURL
-                                        useStagingEnvironment:[AROptions boolForOption:ARUseStagingDefault]
-                                                    sentryDSN:sentryDSN];
+
+
+    NSString *gravity = [[ARRouter baseApiURL] absoluteString];
+    NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
+    AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
+                                                                  authenticationToken:authenticationToken
+                                                                            sentryDSN:sentryDSN
+                                                                     googleMapsAPIKey:[keys googleMapsAPIKey]
+                                                                          gravityHost:gravity
+                                                                      metaphysicsHost:metaphysics];
+
+    AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];
     [AREmission setSharedInstance:emission];
 
 #pragma mark - Native Module: Follow status
@@ -160,7 +168,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     };
 
     emission.APIModule.notificationReadStatusAssigner = ^(RCTResponseSenderBlock block) {
-        NSLog(@"notificationsReadStatusAssigner");
         [ArtsyAPI markUserNotificationsReadWithSuccess:^(id response) {
             block(@[[NSNull null]]);
         } failure:^(NSError *error) {
@@ -201,16 +208,17 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 #pragma mark - Native Module: Events/Analytics
 
-    emission.eventsModule.eventOccurred = ^(UIViewController *_Nonnull fromViewController, NSDictionary *_Nonnull info) {
+    emission.eventsModule.eventOccurred = ^( NSDictionary *_Nonnull info) {
         NSMutableDictionary *properties = [info mutableCopy];
         [properties removeObjectForKey:@"name"];
         [ARAnalytics event:info[@"name"] withProperties:[properties copy]];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([info[@"name"] isEqual:@"Follow artist"] && [fromViewController isKindOfClass:[ARArtistComponentViewController class]]) {
-                ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
-                [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
-            }
+//            // TODO: Nav Notifications
+//            if ([info[@"name"] isEqual:@"Follow artist"] && [fromViewController isKindOfClass:[ARArtistComponentViewController class]]) {
+//                ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+//                [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
+//            }
         });
     };
 
