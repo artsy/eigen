@@ -27,3 +27,4 @@ Specific Problems
 * [Beta Deployment](deploy_to_beta.md)
 * [Certificates & Code Signing](certs.md)
 * [Notifications](notifications.md)
+* [Updating Emission](updating_emission.md)
