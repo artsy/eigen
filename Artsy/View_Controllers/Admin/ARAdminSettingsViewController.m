@@ -269,7 +269,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return sectionData;
 }
 
-
 - (NSArray<ARCellData *> *)emissionInformationCells
 {
     NSError *jsonError = nil;
@@ -463,7 +462,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     [labsSectionData addCellDataFromArray:@[
 
 #if !TARGET_IPHONE_SIMULATOR
-        [labsSectionData addCellData:[self generateNotificationTokenPasteboardCopy]],
+        [self generateNotificationTokenPasteboardCopy],
 #endif
         [self editableTextCellDataWithName:@"Gravity API" defaultKey:ARStagingAPIURLDefault],
         [self editableTextCellDataWithName:@"Web" defaultKey:ARStagingWebURLDefault],

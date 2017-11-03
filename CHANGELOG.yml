@@ -15,6 +15,7 @@ upcoming:
       - Broadcast a NSNotification when a user makes a payment so views that show the payment request status can update - alloy
       - Adds an admin flag for haptic feedback during a live Auction - orta
       - Removes bifurcation of bidders/observers for causality websocket connections - ash
+      - New Admin UI - orta
 
     user_facing:
       - Adds a new navigation UI - orta
