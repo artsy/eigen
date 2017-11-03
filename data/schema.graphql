@@ -780,6 +780,7 @@ type ArtworkContextFair {
 
   # Are we currently in the fair's active period?
   is_active: Boolean
+  mobile_image: Image
   is_published: Boolean
   location: Location
   name: String
@@ -1917,6 +1918,7 @@ type Fair {
 
   # Are we currently in the fair's active period?
   is_active: Boolean
+  mobile_image: Image
   is_published: Boolean
   location: Location
   name: String
@@ -2508,6 +2510,7 @@ type HomePage {
 
   # A list of enabled hero units to show on the requested platform
   hero_units(platform: HomePageHeroUnitPlatform!): [HomePageHeroUnit]
+  fairs_module: HomePageFairsModule
 }
 
 type HomePageArtistModule implements Node {
@@ -2554,6 +2557,10 @@ enum HomePageArtworkModuleTypes {
   RECOMMENDED_WORKS
   RELATED_ARTISTS
   SAVED_WORKS
+}
+
+type HomePageFairsModule {
+  results: [Fair]!
 }
 
 type HomePageHeroUnit {
@@ -2621,6 +2628,7 @@ type HomePageModuleContextFair {
 
   # Are we currently in the fair's active period?
   is_active: Boolean
+  mobile_image: Image
   is_published: Boolean
   location: Location
   name: String

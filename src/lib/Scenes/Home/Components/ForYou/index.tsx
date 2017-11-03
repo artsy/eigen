@@ -39,7 +39,6 @@ export class ForYou extends React.Component<Props, State> {
 
   componentDidMount() {
     const rows: DataSourceRow[] = []
-    console.log(this.props)
     const artworkModules = this.props.forYou.artwork_modules || []
     const artistModules = this.props.forYou.artist_modules && this.props.forYou.artist_modules.concat()
     for (let i = 0; i < artworkModules.length; i++) {
@@ -138,6 +137,11 @@ export default createFragmentContainer(
       artist_modules {
         __id
         ...ArtistRail_rail
+      }
+      fairs_module {
+        results {
+          name
+        }
       }
     }
   `
