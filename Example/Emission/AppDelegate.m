@@ -217,7 +217,7 @@ randomBOOL(void)
   } else if ([route hasPrefix:@"/conversation/"] || [route hasPrefix:@"conversation/"]) {
     NSString *conversationID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARConversationComponentViewController alloc] initWithConversationID:conversationID];
-  } else if ([route isEqualToString:@"/"]) {
+  } else if ([route isEqualToString:@"	/"]) {
     viewController = [[ARHomeComponentViewController alloc] initWithEmission:nil];
 
   } else {
