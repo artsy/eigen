@@ -59,7 +59,6 @@ const Title = styled(Serif)`
 
 const Badge = styled.View`
   background: white;
-  color: black;
   border-radius: 2px;
   padding: 1px 4px;
 `
@@ -78,7 +77,7 @@ const Metadata = styled.Text`
   font-size: 10px;
 `
 
-export class AuctionItem extends React.Component<any, any> {
+export class AuctionItem extends React.Component<RelayProps, null> {
   render() {
     const item = this.props.auction
     const timestamp = (item.live_start_at ? liveDate(item) : timedDate(item)).toUpperCase()
@@ -126,3 +125,21 @@ export default createFragmentContainer(AuctionItem, {
     }
   `,
 })
+
+interface RelayProps {
+  auction: {
+    id: string
+    name: string
+    is_open: boolean
+    is_live_open: boolean
+    start_at: string | null
+    end_at: string | null
+    registration_ends_at: string | null
+    live_start_at: string | null
+    cover_image: {
+      cropped: {
+        url: string | null
+      } | null
+    }
+  } | null
+}

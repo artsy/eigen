@@ -1,5 +1,5 @@
 import * as React from "react"
-import { FlatList, SectionList, View } from "react-native"
+import { FlatList, SectionList, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -31,6 +31,10 @@ interface Props {
 }
 
 class Auctions extends React.Component<Props, null> {
+  handleTap(item) {
+    console.log(item)
+  }
+
   renderList(itemData) {
     return (
       <FlatList
@@ -40,9 +44,11 @@ class Auctions extends React.Component<Props, null> {
         keyExtractor={(item, index) => item.id}
         renderItem={d => {
           return (
-            <View style={{ marginRight: 8, marginBottom: 10 }}>
-              <AuctionItem key={d.index} auction={d.item} />
-            </View>
+            <TouchableWithoutFeedback onPress={this.handleTap.bind(this, d)}>
+              <View style={{ marginRight: 10, marginBottom: 10 }}>
+                <AuctionItem key={d.index} auction={d.item} />
+              </View>
+            </TouchableWithoutFeedback>
           )
         }}
       />
@@ -73,21 +79,21 @@ class Auctions extends React.Component<Props, null> {
     ]
 
     return (
-      <Container>
-        <SectionList
-          sections={sections}
-          keyExtractor={(item, index) => item.id}
-          renderItem={itemData => {
-            return this.renderList(itemData.item)
-          }}
-          renderSectionHeader={({ section }) =>
-            <SectionHeader>
-              <SectionTitle>
-                {section.title}
-              </SectionTitle>
-            </SectionHeader>}
-        />
-      </Container>
+      <SectionList
+        contentContainerStyle={{ justifyContent: "space-between", padding: 15, display: "flex" }}
+        stickySectionHeadersEnabled={false}
+        sections={sections}
+        keyExtractor={(item, index) => item.id}
+        renderItem={itemData => {
+          return this.renderList(itemData.item)
+        }}
+        renderSectionHeader={({ section }) =>
+          <SectionHeader>
+            <SectionTitle>
+              {section.title}
+            </SectionTitle>
+          </SectionHeader>}
+      />
     )
   }
 }

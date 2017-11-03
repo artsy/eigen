@@ -10,7 +10,6 @@ interface TabBarProps {
   containerWidth?: number
   scrollValue?: Animated.AnimatedInterpolation
 }
-
 const Button = styled.TouchableWithoutFeedback`flex: 1;`
 
 const Tabs = styled.View`
@@ -35,7 +34,8 @@ interface TabLabelProps {
 const TabLabel: any = styled.Text`
   font-family: ${fonts["avant-garde-regular"]};
   font-size: 13px;
-  letter-spacing: 1.1;
+  letter-spacing: 1.5;
+  text-align: center;
   opacity: ${(props: TabLabelProps) => (props.active ? 1.0 : 0.3)};
 `
 

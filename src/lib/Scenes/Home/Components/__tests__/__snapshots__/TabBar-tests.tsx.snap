@@ -53,8 +53,9 @@ exports[`renders correctly 1`] = `
           Object {
             "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
-            "letterSpacing": 1.1,
+            "letterSpacing": 1.5,
             "opacity": 0.3,
+            "textAlign": "center",
           },
           undefined,
         ]
@@ -100,8 +101,9 @@ exports[`renders correctly 1`] = `
           Object {
             "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
-            "letterSpacing": 1.1,
+            "letterSpacing": 1.5,
             "opacity": 0.3,
+            "textAlign": "center",
           },
           undefined,
         ]
@@ -147,8 +149,9 @@ exports[`renders correctly 1`] = `
           Object {
             "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
-            "letterSpacing": 1.1,
+            "letterSpacing": 1.5,
             "opacity": 0.3,
+            "textAlign": "center",
           },
           undefined,
         ]
