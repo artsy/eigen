@@ -56,6 +56,7 @@
 
 ###### Messaging
 
+-   Fix crash by guarding against null `conversations_existence_check` - christina
 -   Fix crash of empty node in conversation list - maxim
 -   Hyperlinks in messages are now artsy purple & underlined - sarah
 -   Aligns message header with existing back button - sarah
