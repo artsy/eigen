@@ -9,6 +9,15 @@ import SerifText from "../../Text/Serif"
 
 import colors from "../../../../data/colors"
 
+interface RenderSectionParams {
+  title: string
+  count: number
+  filter: string
+  onComplete: () => void | null
+  Component: any
+  mapPropsToArtworksConnection: (Props) => any
+}
+
 interface Props extends ViewProperties {
   artist: {
     counts: {
@@ -67,9 +76,7 @@ class Artworks extends React.Component<Props, State> {
             title: "Works for Sale",
             count: forSaleCount,
             filter: "IS_FOR_SALE",
-            onComplete: () => {
-              this.setState({ completedForSaleWorks: true })
-            },
+            onComplete: () => this.setState({ completedForSaleWorks: true }),
             Component: ArtistForSaleArtworksGrid,
             mapPropsToArtworksConnection: props => props.artist.forSaleArtworks,
           })}
@@ -79,7 +86,7 @@ class Artworks extends React.Component<Props, State> {
     }
   }
 
-  renderSection({ title, count, filter, onComplete, Component, mapPropsToArtworksConnection }) {
+  renderSection({ title, count, filter, onComplete, Component, mapPropsToArtworksConnection }: RenderSectionParams) {
     const countStyles = [styles.text, styles.count]
     return (
       <View key={title}>
@@ -90,7 +97,7 @@ class Artworks extends React.Component<Props, State> {
           artist={this.props.artist}
           filter={filter}
           onComplete={onComplete}
-          mapPropsToArtworkConnection={mapPropsToArtworksConnection}
+          mapPropsToArtworksConnection={mapPropsToArtworksConnection}
         />
       </View>
     )
