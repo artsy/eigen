@@ -102,7 +102,7 @@ class GenericArtworksGrid extends React.Component<Props, State> {
       const artworks = sectionedArtworks[i]
       for (let j = 0; j < artworks.length; j++) {
         const artwork = artworks[j]
-        artworkComponents.push(<Artwork artwork={artwork} key={artwork.__id} />)
+        artworkComponents.push(<Artwork artwork={artwork} key={artwork.__id + i + j} />)
         if (j < artworks.length - 1) {
           artworkComponents.push(<View style={spacerStyle} key={"spacer-" + j} accessibilityLabel="Spacer View" />)
         }
