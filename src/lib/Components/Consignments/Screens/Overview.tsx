@@ -2,6 +2,7 @@ import * as React from "react"
 
 import {
   AsyncStorage,
+  Dimensions,
   Image,
   NavigatorIOS,
   Route,
@@ -32,6 +33,8 @@ import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
 
 const consignmentsStateKey = "ConsignmentsStoredState"
 
+import SwitchBoard from "../../../NativeModules/SwitchBoard"
+
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route // this gets set by NavigatorIOS
@@ -56,10 +59,10 @@ export default class Info extends React.Component<Props, State> {
 
   saveStateToLocalStorage = () => AsyncStorage.setItem(consignmentsStateKey, JSON.stringify(this.state))
   restoreFromLocalStorage = () =>
-    AsyncStorage.getItem(
-      consignmentsStateKey,
-      (err, result) => result && this.setState({ ...JSON.parse(result), hasLoaded: true })
-    )
+    AsyncStorage.getItem(consignmentsStateKey, (err, result) => {
+      const results = (result && JSON.parse(result)) || {}
+      this.setState({ ...results, hasLoaded: true })
+    })
 
   goToArtistTapped = () =>
     this.props.navigator.push({
@@ -158,17 +161,29 @@ export default class Info extends React.Component<Props, State> {
       state.metadata.title &&
       state.metadata.year
     )
+
+    const isPad = Dimensions.get("window").width > 700
+    const isPadHorizontal = Dimensions.get("window").height > 700
+
     return (
       <ConsignmentBG showCloseButton>
-        <ScrollView style={{ flex: 1 }}>
-          <View style={{ paddingTop: 18 }}>
+        <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} centerContent>
+          <View
+            style={{
+              paddingTop: 18,
+              alignSelf: "center",
+              width: "100%",
+              maxWidth: 540,
+              flex: 1,
+            }}
+          >
             <LargeHeadline style={{ marginLeft: 40, marginRight: 40 }}>
               {title}
             </LargeHeadline>
-            <Subtitle style={{ textAlign: "center" }}>
+            <Subtitle style={{ textAlign: "center", marginBottom: isPad ? 80 : 0 }}>
               {subtitle}
             </Subtitle>
-            <View style={{ flex: 1, flexGrow: 1, backgroundColor: "red", padding: 20 }}>
+            <View style={{ flex: 1, padding: 20 }}>
               <TODO
                 goToArtist={this.goToArtistTapped}
                 goToPhotos={this.goToPhotosTapped}
@@ -178,7 +193,7 @@ export default class Info extends React.Component<Props, State> {
                 {...this.state}
               />
             </View>
-            <Row style={{ justifyContent: "center" }}>
+            <Row style={{ justifyContent: "center", marginTop: isPad ? 80 : 0 }}>
               {this.state.hasLoaded &&
                 <Button text="NEXT" onPress={canSubmit ? this.goToFinalSubmission : undefined} />}
             </Row>

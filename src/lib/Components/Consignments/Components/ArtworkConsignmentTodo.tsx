@@ -17,7 +17,7 @@ import { ConsignmentSetup } from "../index"
 const Title = styled.Text`
   color: white;
   font-family: "${fonts["avant-garde-regular"]}";
-  flex: 1;
+  flex: 2;
 `
 
 const Subtitle = styled.Text`

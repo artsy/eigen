@@ -1,4 +1,5 @@
 import * as React from "react"
+import { View } from "react-native"
 
 import BottomAlignedButton from "./BottomAlignedButton"
 
@@ -21,7 +22,16 @@ const DoneButton: React.SFC<DoneButtonProps> = props => {
       verticalOffset={props.verticalOffset}
       buttonText="DONE"
     >
-      {props.children}
+      <View
+        style={{
+          flex: 1,
+          width: "100%",
+          maxWidth: 540,
+          alignSelf: "center",
+        }}
+      >
+        {props.children}
+      </View>
     </BottomAlignedButton>
   )
 }

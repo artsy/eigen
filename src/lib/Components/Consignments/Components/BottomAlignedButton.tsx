@@ -2,19 +2,19 @@ import * as React from "react"
 import { KeyboardAvoidingView, TouchableOpacity, View } from "react-native"
 
 import styled from "styled-components/native"
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
+import { Colors } from "../../../../data/colors"
+import { Fonts } from "../../../../data/fonts"
 
 const ButtonText = styled.Text`
   color: white;
-  font-family: "${fonts["avant-garde-regular"]}";
+  font-family: "${Fonts.AvantGardeRegular}";
   flex: 1;
   text-align: center;
   font-size: 14;
 `
 
 const Separator = styled.View`
-  background-color: ${colors["gray-regular"]};
+  background-color: ${Colors.GraySemibold};
   height: 1;
 `
 

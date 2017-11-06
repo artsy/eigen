@@ -17,7 +17,6 @@ const BG = styled.View`
 // Centered max-width of 600px
 const ConsignmentContainer = styled.View`
   background-color: black;
-  max-width: 540px;
   width: 100%;
   height: 100%;
   align-self: center;
@@ -28,10 +27,6 @@ interface Props extends ViewProperties {
 }
 
 export default class ConsignmentBG extends React.Component<Props> {
-  getChildContext: () => {
-    a: "Hi"
-  }
-
   exitModal = () => SwitchBoard.dismissModalViewController(this)
 
   onLayout = (event: LayoutChangeEvent) => {
@@ -48,8 +43,4 @@ export default class ConsignmentBG extends React.Component<Props> {
       </BG>
     )
   }
-}
-
-ConsignmentBG.contextTypes = {
-  isPad: PropTypes.string,
 }

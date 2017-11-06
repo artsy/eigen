@@ -10,8 +10,7 @@ import {
   ViewProperties,
 } from "react-native"
 
-import Hyperlink from "react-native-hyperlink"
-
+import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import Circle from "../Components/CircleImage"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { Button } from "../Components/FormElements"
@@ -23,33 +22,45 @@ interface Props extends ViewProperties {
   route: Route
 }
 
-const privacyPolicyTapped = () => {
-  console.log("OK")
-}
-
-const TOSTapped = () => {
-  console.log("OK")
-}
-
 export default class Welcome extends React.Component<Props, null> {
   goTapped = () => this.props.navigator.push({ component: Overview })
+
+  // It's not optimal to dismiss the modal, but otherwise we get into all sorts of tricky states
+  privacyPolicyTapped = () =>
+    SwitchBoard.dismissModalViewController(this) && SwitchBoard.presentNavigationViewController(this, "/privacy")
+
+  TOSTapped = () =>
+    SwitchBoard.dismissModalViewController(this) && SwitchBoard.presentNavigationViewController(this, "/terms")
 
   render() {
     const isPad = Dimensions.get("window").width > 700
     const isPadHorizontal = Dimensions.get("window").height > 700
 
     const TOS = () =>
-      <Text style={{ textDecorationStyle: "solid", textDecorationLine: "underline" }}>Terms of Sevice</Text>
+      <Text style={{ textDecorationStyle: "solid", textDecorationLine: "underline" }} onPress={this.TOSTapped}>
+        Terms of Sevice
+      </Text>
 
     const Privacy = () =>
-      <Text style={{ textDecorationStyle: "solid", textDecorationLine: "underline" }} onPress={privacyPolicyTapped}>
+      <Text
+        style={{ textDecorationStyle: "solid", textDecorationLine: "underline" }}
+        onPress={this.privacyPolicyTapped}
+      >
         Privacy Policy
       </Text>
 
     return (
       <ConsignmentBG showCloseButton>
-        <ScrollView style={{ flex: 1 }}>
-          <View style={{ marginTop: 40, alignItems: "center" }}>
+        <ScrollView style={{ flex: 1 }} centerContent>
+          <View
+            style={{
+              marginTop: 40,
+              alignItems: "center",
+              alignSelf: "center",
+              width: "100%",
+              maxWidth: 540,
+            }}
+          >
             <LargeHeadline>Sell works from your collection through our partner network</LargeHeadline>
 
             <View style={{ width: 300, alignItems: "center", marginVertical: isPad ? 60 : 20 }}>
@@ -66,7 +77,7 @@ export default class Welcome extends React.Component<Props, null> {
 
             <Button text="GET STARTED" onPress={this.goTapped} />
 
-            <SmallPrint style={{ width: 360, marginTop: 20 }} onPress={() => console.log("OOK")}>
+            <SmallPrint style={{ width: 360, marginTop: 20 }}>
               By submitting works to Artsy’s consignment program you agree to our {TOS()} and {Privacy()}
             </SmallPrint>
           </View>

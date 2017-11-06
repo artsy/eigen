@@ -4,6 +4,7 @@
 ### Master
 
 -   Renames MyProfile -> MyAccount, and sets up the design for it - orta
+-   Revised designs for consignments - orta
 -   Adds Live and timed auctions in home view - luc
 
 ### 1.4.0-beta.5
