@@ -44,6 +44,7 @@ function dismissModalViewController(component: React.Component<any, any>) {
   try {
     reactTag = findNodeHandle(component)
   } catch (err) {
+    console.log("Could not find node for ", component)
     return
   }
 

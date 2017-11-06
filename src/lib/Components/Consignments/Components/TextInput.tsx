@@ -50,8 +50,15 @@ const WritableInput = (props: TextInputProps) =>
   />
 
 const ReadOnlyInput = (props: TextInputProps) =>
-  <Text style={{ color: Colors.White, fontFamily: Fonts.GaramondRegular, fontSize: 20 }}>
-    {props.text.value}
+  <Text
+    style={{
+      color: props.text.value ? Colors.White : Colors.GraySemibold,
+      fontFamily: Fonts.GaramondRegular,
+      fontSize: 20,
+      paddingTop: 8,
+    }}
+  >
+    {props.text.value || props.text.placeholder}
   </Text>
 
 const render = (props: TextInputProps) =>

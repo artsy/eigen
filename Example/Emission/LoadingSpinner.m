@@ -13,11 +13,10 @@
 - (void)presentSpinnerOnViewController:(UIViewController *)viewController title:(NSString *)title subtitle:(NSString *)subtitle completion:(dispatch_block_t)completion;
 {
   if (self.spinnerController == nil) {
-    ARSpinner *spinner = [ARSpinner new];
-    [spinner startAnimating];
 
     self.spinnerController = [UIViewController new];
     UIView *spinnerView = self.spinnerController.view;
+    ARSpinner *spinner = [ARSpinner new];
     [spinnerView addSubview:spinner];
     [spinner alignCenterWithView:spinnerView];
 
@@ -41,7 +40,12 @@
       [subtitleLabel alignCenterYWithView:spinnerView predicate:@"-100"];
     }
 
-    [viewController presentViewController:self.spinnerController animated:NO completion:completion];
+    [viewController presentViewController:self.spinnerController animated:NO completion:^{
+      [spinner startAnimating];
+      if (completion) {
+        completion();
+      }
+    }];
   }
 }
 

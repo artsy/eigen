@@ -13,6 +13,6 @@ const imageStyle: ViewStyle = {
 }
 
 export default props =>
-  <View style={imageStyle}>
+  <View style={[imageStyle, props.style]}>
     <Image source={props.source} />
   </View>

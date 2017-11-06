@@ -29,6 +29,4 @@ extern NSString *const ARLabOptionCell;
 /// Simple cell that shows info
 - (ARCellData *)informationCellDataWithTitle:(NSString *)title;
 
-
-
 @end

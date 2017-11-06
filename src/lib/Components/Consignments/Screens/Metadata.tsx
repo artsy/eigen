@@ -108,9 +108,10 @@ export default class Metadata extends React.Component<Props, State> {
 
   showCategorySelection = () => {
     Keyboard.dismiss()
-    this.animateStateChange({ showSelector: true })
+    this.animateStateChange({ showPicker: true })
   }
-  hideCategorySelection = () => this.animateStateChange({ showSelector: false })
+
+  hideCategorySelection = () => this.animateStateChange({ showPicker: false })
   changeCategoryValue = (value, index) => {
     this.setState({
       categoryName: categoryOptions[index].name,
@@ -131,8 +132,8 @@ export default class Metadata extends React.Component<Props, State> {
     return (
       <View style={{ flex: 1 }}>
         <ConsignmentBG>
-          <DoneButton onPress={this.doneTapped}>
-            <ScrollView keyboardShouldPersistTaps="handled">
+          <DoneButton onPress={this.doneTapped} verticalOffset={80}>
+            <ScrollView keyboardShouldPersistTaps="handled" centerContent>
               <View style={{ padding: 10 }}>
                 <Row>
                   <Text
@@ -191,6 +192,7 @@ export default class Metadata extends React.Component<Props, State> {
                 <Row>
                   <Text
                     text={{
+                      keyboardType: "numeric",
                       placeholder: "Width",
                       onChangeText: this.updateWidth,
                       value: this.state.width,
@@ -202,6 +204,7 @@ export default class Metadata extends React.Component<Props, State> {
                   />
                   <Text
                     text={{
+                      keyboardType: "numeric",
                       placeholder: "Height",
                       onChangeText: this.updateHeight,
                       value: this.state.height,
