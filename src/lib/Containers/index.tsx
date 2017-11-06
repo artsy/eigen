@@ -4,7 +4,7 @@ import Conversation from "./Conversation"
 import Gene from "./Gene"
 import Inbox from "./Inbox"
 import Inquiry from "./Inquiry"
-import MyAccount from "./MyAccount"
+import MyProfile from "./MyProfile"
 import WorksForYou from "./WorksForYou"
 
 export default {
@@ -13,7 +13,7 @@ export default {
   Home,
   Gene,
   WorksForYou,
-  MyAccount,
+  MyProfile,
   Inbox,
   Inquiry,
 }

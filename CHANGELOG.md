@@ -1,4 +1,12 @@
-### 1.4.0-beta.4
+// Please add your own contribution below inside the Master section
+// These docs are aimed at developers, but are shown inside collector GMV's channel
+
+### Master
+
+-   Renames MyProfile -> MyAccount, and sets up the design for it - orta
+-   Adds Live and timed auctions in home view - luc
+
+### 1.4.0-beta.5
 
 ###### Dev
 
@@ -24,6 +32,7 @@
 -   Revert back to React Native packager (metro), life comes at you fast, see #785 for context - orta
 -   Updates invoice preview component status when a ARPaymentRequestPaid notification is received - alloy
 -   Present payment request view modally. - alloy
+-   Adds initial Sale container. - ash
 
 ###### Home
 
@@ -50,6 +59,8 @@
 
 ###### Messaging
 
+-   Fix crash by guarding against null `conversations_existence_check` - christina
+-   Fix crash of empty node in conversation list - maxim
 -   Hyperlinks in messages are now artsy purple & underlined - sarah
 -   Aligns message header with existing back button - sarah
 -   Temporarily removed partner response rate in inquiry - maxim

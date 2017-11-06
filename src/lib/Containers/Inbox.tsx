@@ -46,7 +46,8 @@ export class Inbox extends React.Component<Props, State> {
 
   render() {
     const hasBids = this.props.me.lot_standings.length > 0
-    const hasConversations = this.props.me.conversations_existence_check.edges.length > 0
+    const hasConversations =
+      this.props.me.conversations_existence_check && this.props.me.conversations_existence_check.edges.length > 0
     return hasBids || hasConversations
       ? <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
           <ActiveBids me={this.props.me as any} />

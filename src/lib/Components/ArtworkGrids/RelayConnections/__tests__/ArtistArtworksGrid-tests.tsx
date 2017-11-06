@@ -13,6 +13,9 @@ it("renders properly", () => {
     },
   }
 
-  const grid = renderWithLayout(<ArtistForSaleArtworksGrid artist={artist} queryKey="artist" />, { width: 768 })
+  const grid = renderWithLayout(
+    <ArtistForSaleArtworksGrid artist={artist} mapPropsToArtworksConnection={props => props.artist} />,
+    { width: 768 }
+  )
   expect(grid).toMatchSnapshot()
 })

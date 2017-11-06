@@ -14,7 +14,7 @@ import {
   HomeRenderer,
   InboxRenderer,
   InquiryRenderer,
-  MyAccountRenderer,
+  MyProfileRenderer,
   RenderCallback,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
@@ -68,14 +68,15 @@ const Inquiry: React.SFC<{ artworkID: string }> = props =>
 const Conversation: React.SFC<{ conversationID: string }> = props =>
   <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />
 
-const MyAccount: React.SFC<{}> = () => <MyAccountRenderer render={renderWithLoadProgress(Containers.MyAccount)} />
+const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoadProgress(Containers.MyProfile)} />
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Home", () => HomeScene)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
-AppRegistry.registerComponent("MyAccount", () => MyAccount)
+AppRegistry.registerComponent("MyProfile", () => MyProfile)
+AppRegistry.registerComponent("MyAccount", () => MyProfile) // TODO: deprecate on a new Eigen build
 AppRegistry.registerComponent("Inbox", () => Inbox)
 AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)
