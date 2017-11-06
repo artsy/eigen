@@ -1,3 +1,4 @@
+import moment from "moment"
 import React from "react"
 import "react-native"
 
@@ -14,10 +15,10 @@ const props = {
   name: "Freeman's: Modern & Contemporary Works of Art",
   is_open: true,
   is_live_open: false,
-  start_at: "2017-10-17T15:00:00+00:00",
+  start_at: moment().add(2, "hour").toISOString(),
   end_at: null,
-  registration_ends_at: "2017-11-06T17:00:00+00:00",
-  live_start_at: "2017-11-07T17:00:00+00:00",
+  registration_ends_at: moment().subtract(1, "day").toISOString(),
+  live_start_at: moment().add(5, "hour").toISOString(),
   cover_image: {
     cropped: {
       url:

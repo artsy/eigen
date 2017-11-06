@@ -26,10 +26,10 @@ exports[`looks correct when rendered 1`] = `
                 "id": "wright-noma",
                 "is_live_open": true,
                 "is_open": true,
-                "live_start_at": "2017-11-02T13:00:00+00:00",
+                "live_start_at": "2017-11-06T11:10:49.809Z",
                 "name": "Wright: noma",
-                "registration_ends_at": "2017-11-01T13:00:00+00:00",
-                "start_at": "2017-10-16T22:00:00+00:00",
+                "registration_ends_at": "2017-11-05T09:10:49.808Z",
+                "start_at": "2017-11-06T11:10:49.805Z",
               },
               Object {
                 "cover_image": Object {
@@ -41,10 +41,10 @@ exports[`looks correct when rendered 1`] = `
                 "id": "freemans-modern-and-contemporary-works-of-art",
                 "is_live_open": false,
                 "is_open": true,
-                "live_start_at": "2017-11-07T17:00:00+00:00",
+                "live_start_at": "2017-11-06T13:10:49.809Z",
                 "name": "Freeman's: Modern & Contemporary Works of Art",
-                "registration_ends_at": "2017-11-06T17:00:00+00:00",
-                "start_at": "2017-10-17T15:00:00+00:00",
+                "registration_ends_at": "2017-11-07T09:10:49.809Z",
+                "start_at": "2017-11-06T13:10:49.809Z",
               },
               Object {
                 "cover_image": Object {
@@ -56,10 +56,10 @@ exports[`looks correct when rendered 1`] = `
                 "id": "sworders-modern-and-contemporary-prints",
                 "is_live_open": true,
                 "is_open": true,
-                "live_start_at": "2017-11-01T10:00:00+00:00",
+                "live_start_at": "2017-11-06T11:10:49.810Z",
                 "name": "Sworders: Modern & Contemporary Prints",
-                "registration_ends_at": "2017-10-31T10:00:00+00:00",
-                "start_at": "2017-10-18T15:00:00+00:00",
+                "registration_ends_at": "2017-11-05T09:10:49.809Z",
+                "start_at": "2017-11-06T11:10:49.809Z",
               },
               Object {
                 "cover_image": Object {
@@ -71,40 +71,25 @@ exports[`looks correct when rendered 1`] = `
                 "id": "aperture-live-benefit-auction-2017",
                 "is_live_open": true,
                 "is_open": true,
-                "live_start_at": "2017-10-31T00:20:00+00:00",
+                "live_start_at": "2017-11-06T11:10:49.810Z",
                 "name": "Aperture: Live Benefit Auction 2017",
-                "registration_ends_at": "2017-10-31T00:20:00+00:00",
-                "start_at": "2017-10-17T16:00:00+00:00",
+                "registration_ends_at": "2017-11-07T09:10:49.810Z",
+                "start_at": "2017-11-06T11:10:49.810Z",
               },
               Object {
                 "cover_image": Object {
                   "cropped": Object {
-                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F8gU6N7U9JXfLZh0akzfaPg%2Fwide.jpg",
+                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F_dpoE5HDqU3W64l4oIskBQ%2Fsource.jpg",
                   },
                 },
-                "end_at": null,
-                "id": "doyle-prints-and-multiples",
-                "is_live_open": true,
+                "end_at": "2017-11-02T02:00:00+00:00",
+                "id": "juliens-auctions-street-art-now-vi",
+                "is_live_open": false,
                 "is_open": true,
-                "live_start_at": "2017-11-01T14:00:00+00:00",
-                "name": "Doyle: Prints & Multiples",
-                "registration_ends_at": "2017-10-31T14:00:00+00:00",
-                "start_at": "2017-10-18T19:30:00+00:00",
-              },
-              Object {
-                "cover_image": Object {
-                  "cropped": Object {
-                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…2dm0rphc51dk.cloudfront.net%2FGRxXa7ltRABT8iZ82EE47A%2Flarge_rectangle.jpg",
-                  },
-                },
-                "end_at": null,
-                "id": "phillips-photographs-4",
-                "is_live_open": true,
-                "is_open": true,
-                "live_start_at": "2017-11-02T14:00:00+00:00",
-                "name": "Phillips: Photographs",
-                "registration_ends_at": "2017-11-01T14:00:00+00:00",
-                "start_at": "2017-10-19T15:00:00+00:00",
+                "live_start_at": "2017-11-06T11:10:49.810Z",
+                "name": "Julien’s Auctions: Street Art Now VI",
+                "registration_ends_at": "2017-11-05T09:10:49.810Z",
+                "start_at": "2017-11-06T11:10:49.810Z",
               },
               Object {
                 "cover_image": Object {
@@ -116,40 +101,10 @@ exports[`looks correct when rendered 1`] = `
                 "id": "heritage-urban-art",
                 "is_live_open": false,
                 "is_open": true,
-                "live_start_at": "2017-11-06T19:00:00+00:00",
+                "live_start_at": "2017-11-06T11:10:49.811Z",
                 "name": "Heritage: Urban Art",
-                "registration_ends_at": "2017-11-05T19:00:00+00:00",
-                "start_at": "2017-10-20T17:00:00+00:00",
-              },
-              Object {
-                "cover_image": Object {
-                  "cropped": Object {
-                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F3bMJYoT6kABYNSYHObRGuQ%2Fsource.jpg",
-                  },
-                },
-                "end_at": null,
-                "id": "rago-auctions-19th-slash-20th-c-american-slash-european-art-1",
-                "is_live_open": false,
-                "is_open": true,
-                "live_start_at": "2017-11-11T15:00:00+00:00",
-                "name": "Rago Auctions: 19th/20th C. American/European Art",
-                "registration_ends_at": "2017-11-10T15:00:00+00:00",
-                "start_at": "2017-10-27T16:00:00+00:00",
-              },
-              Object {
-                "cover_image": Object {
-                  "cropped": Object {
-                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…2dm0rphc51dk.cloudfront.net%2FsrW6qryg-8eKJLzT06rBpA%2Flarge_rectangle.jpg",
-                  },
-                },
-                "end_at": null,
-                "id": "rago-auctions-property-from-the-collection-of-an-important-american-corporation",
-                "is_live_open": false,
-                "is_open": true,
-                "live_start_at": "2017-11-11T17:30:00+00:00",
-                "name": "Rago Auctions: Property from the Collection of an Important American Corporation",
-                "registration_ends_at": "2017-11-10T17:30:00+00:00",
-                "start_at": "2017-10-27T16:30:00+00:00",
+                "registration_ends_at": "2017-11-05T09:10:49.811Z",
+                "start_at": "2017-11-06T11:10:49.811Z",
               },
             ],
           },
@@ -163,17 +118,62 @@ exports[`looks correct when rendered 1`] = `
               Object {
                 "cover_image": Object {
                   "cropped": Object {
-                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F_dpoE5HDqU3W64l4oIskBQ%2Fsource.jpg",
+                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F8gU6N7U9JXfLZh0akzfaPg%2Fwide.jpg",
                   },
                 },
-                "end_at": "2017-11-02T02:00:00+00:00",
-                "id": "juliens-auctions-street-art-now-vi",
+                "end_at": null,
+                "id": "doyle-prints-and-multiples",
+                "is_live_open": true,
+                "is_open": true,
+                "live_start_at": null,
+                "name": "Doyle: Prints & Multiples",
+                "registration_ends_at": "2017-11-05T09:10:49.811Z",
+                "start_at": "2017-11-06T11:10:49.810Z",
+              },
+              Object {
+                "cover_image": Object {
+                  "cropped": Object {
+                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…2dm0rphc51dk.cloudfront.net%2FGRxXa7ltRABT8iZ82EE47A%2Flarge_rectangle.jpg",
+                  },
+                },
+                "end_at": null,
+                "id": "phillips-photographs-4",
+                "is_live_open": true,
+                "is_open": true,
+                "live_start_at": null,
+                "name": "Phillips: Photographs",
+                "registration_ends_at": "2017-11-05T09:10:49.811Z",
+                "start_at": "2017-11-06T11:10:49.811Z",
+              },
+              Object {
+                "cover_image": Object {
+                  "cropped": Object {
+                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F3bMJYoT6kABYNSYHObRGuQ%2Fsource.jpg",
+                  },
+                },
+                "end_at": null,
+                "id": "rago-auctions-19th-slash-20th-c-american-slash-european-art-1",
                 "is_live_open": false,
                 "is_open": true,
                 "live_start_at": null,
-                "name": "Julien’s Auctions: Street Art Now VI",
-                "registration_ends_at": null,
-                "start_at": "2017-10-19T17:00:00+00:00",
+                "name": "Rago Auctions: 19th/20th C. American/European Art",
+                "registration_ends_at": "2017-11-05T09:10:49.811Z",
+                "start_at": "2017-11-06T11:10:49.811Z",
+              },
+              Object {
+                "cover_image": Object {
+                  "cropped": Object {
+                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…2dm0rphc51dk.cloudfront.net%2FsrW6qryg-8eKJLzT06rBpA%2Flarge_rectangle.jpg",
+                  },
+                },
+                "end_at": null,
+                "id": "rago-auctions-property-from-the-collection-of-an-important-american-corporation",
+                "is_live_open": false,
+                "is_open": true,
+                "live_start_at": null,
+                "name": "Rago Auctions: Property from the Collection of an Important American Corporation",
+                "registration_ends_at": "2017-11-05T09:10:49.811Z",
+                "start_at": "2017-11-06T11:10:49.811Z",
               },
             ],
           },
@@ -216,10 +216,10 @@ exports[`looks correct when rendered 1`] = `
                 "id": "wright-noma",
                 "is_live_open": true,
                 "is_open": true,
-                "live_start_at": "2017-11-02T13:00:00+00:00",
+                "live_start_at": "2017-11-06T11:10:49.809Z",
                 "name": "Wright: noma",
-                "registration_ends_at": "2017-11-01T13:00:00+00:00",
-                "start_at": "2017-10-16T22:00:00+00:00",
+                "registration_ends_at": "2017-11-05T09:10:49.808Z",
+                "start_at": "2017-11-06T11:10:49.805Z",
               },
               Object {
                 "cover_image": Object {
@@ -231,10 +231,10 @@ exports[`looks correct when rendered 1`] = `
                 "id": "freemans-modern-and-contemporary-works-of-art",
                 "is_live_open": false,
                 "is_open": true,
-                "live_start_at": "2017-11-07T17:00:00+00:00",
+                "live_start_at": "2017-11-06T13:10:49.809Z",
                 "name": "Freeman's: Modern & Contemporary Works of Art",
-                "registration_ends_at": "2017-11-06T17:00:00+00:00",
-                "start_at": "2017-10-17T15:00:00+00:00",
+                "registration_ends_at": "2017-11-07T09:10:49.809Z",
+                "start_at": "2017-11-06T13:10:49.809Z",
               },
               Object {
                 "cover_image": Object {
@@ -246,10 +246,10 @@ exports[`looks correct when rendered 1`] = `
                 "id": "sworders-modern-and-contemporary-prints",
                 "is_live_open": true,
                 "is_open": true,
-                "live_start_at": "2017-11-01T10:00:00+00:00",
+                "live_start_at": "2017-11-06T11:10:49.810Z",
                 "name": "Sworders: Modern & Contemporary Prints",
-                "registration_ends_at": "2017-10-31T10:00:00+00:00",
-                "start_at": "2017-10-18T15:00:00+00:00",
+                "registration_ends_at": "2017-11-05T09:10:49.809Z",
+                "start_at": "2017-11-06T11:10:49.809Z",
               },
               Object {
                 "cover_image": Object {
@@ -261,40 +261,25 @@ exports[`looks correct when rendered 1`] = `
                 "id": "aperture-live-benefit-auction-2017",
                 "is_live_open": true,
                 "is_open": true,
-                "live_start_at": "2017-10-31T00:20:00+00:00",
+                "live_start_at": "2017-11-06T11:10:49.810Z",
                 "name": "Aperture: Live Benefit Auction 2017",
-                "registration_ends_at": "2017-10-31T00:20:00+00:00",
-                "start_at": "2017-10-17T16:00:00+00:00",
+                "registration_ends_at": "2017-11-07T09:10:49.810Z",
+                "start_at": "2017-11-06T11:10:49.810Z",
               },
               Object {
                 "cover_image": Object {
                   "cropped": Object {
-                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F8gU6N7U9JXfLZh0akzfaPg%2Fwide.jpg",
+                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F_dpoE5HDqU3W64l4oIskBQ%2Fsource.jpg",
                   },
                 },
-                "end_at": null,
-                "id": "doyle-prints-and-multiples",
-                "is_live_open": true,
+                "end_at": "2017-11-02T02:00:00+00:00",
+                "id": "juliens-auctions-street-art-now-vi",
+                "is_live_open": false,
                 "is_open": true,
-                "live_start_at": "2017-11-01T14:00:00+00:00",
-                "name": "Doyle: Prints & Multiples",
-                "registration_ends_at": "2017-10-31T14:00:00+00:00",
-                "start_at": "2017-10-18T19:30:00+00:00",
-              },
-              Object {
-                "cover_image": Object {
-                  "cropped": Object {
-                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…2dm0rphc51dk.cloudfront.net%2FGRxXa7ltRABT8iZ82EE47A%2Flarge_rectangle.jpg",
-                  },
-                },
-                "end_at": null,
-                "id": "phillips-photographs-4",
-                "is_live_open": true,
-                "is_open": true,
-                "live_start_at": "2017-11-02T14:00:00+00:00",
-                "name": "Phillips: Photographs",
-                "registration_ends_at": "2017-11-01T14:00:00+00:00",
-                "start_at": "2017-10-19T15:00:00+00:00",
+                "live_start_at": "2017-11-06T11:10:49.810Z",
+                "name": "Julien’s Auctions: Street Art Now VI",
+                "registration_ends_at": "2017-11-05T09:10:49.810Z",
+                "start_at": "2017-11-06T11:10:49.810Z",
               },
               Object {
                 "cover_image": Object {
@@ -306,40 +291,10 @@ exports[`looks correct when rendered 1`] = `
                 "id": "heritage-urban-art",
                 "is_live_open": false,
                 "is_open": true,
-                "live_start_at": "2017-11-06T19:00:00+00:00",
+                "live_start_at": "2017-11-06T11:10:49.811Z",
                 "name": "Heritage: Urban Art",
-                "registration_ends_at": "2017-11-05T19:00:00+00:00",
-                "start_at": "2017-10-20T17:00:00+00:00",
-              },
-              Object {
-                "cover_image": Object {
-                  "cropped": Object {
-                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F3bMJYoT6kABYNSYHObRGuQ%2Fsource.jpg",
-                  },
-                },
-                "end_at": null,
-                "id": "rago-auctions-19th-slash-20th-c-american-slash-european-art-1",
-                "is_live_open": false,
-                "is_open": true,
-                "live_start_at": "2017-11-11T15:00:00+00:00",
-                "name": "Rago Auctions: 19th/20th C. American/European Art",
-                "registration_ends_at": "2017-11-10T15:00:00+00:00",
-                "start_at": "2017-10-27T16:00:00+00:00",
-              },
-              Object {
-                "cover_image": Object {
-                  "cropped": Object {
-                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…2dm0rphc51dk.cloudfront.net%2FsrW6qryg-8eKJLzT06rBpA%2Flarge_rectangle.jpg",
-                  },
-                },
-                "end_at": null,
-                "id": "rago-auctions-property-from-the-collection-of-an-important-american-corporation",
-                "is_live_open": false,
-                "is_open": true,
-                "live_start_at": "2017-11-11T17:30:00+00:00",
-                "name": "Rago Auctions: Property from the Collection of an Important American Corporation",
-                "registration_ends_at": "2017-11-10T17:30:00+00:00",
-                "start_at": "2017-10-27T16:30:00+00:00",
+                "registration_ends_at": "2017-11-05T09:10:49.811Z",
+                "start_at": "2017-11-06T11:10:49.811Z",
               },
             ],
           },
@@ -353,17 +308,62 @@ exports[`looks correct when rendered 1`] = `
               Object {
                 "cover_image": Object {
                   "cropped": Object {
-                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F_dpoE5HDqU3W64l4oIskBQ%2Fsource.jpg",
+                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F8gU6N7U9JXfLZh0akzfaPg%2Fwide.jpg",
                   },
                 },
-                "end_at": "2017-11-02T02:00:00+00:00",
-                "id": "juliens-auctions-street-art-now-vi",
+                "end_at": null,
+                "id": "doyle-prints-and-multiples",
+                "is_live_open": true,
+                "is_open": true,
+                "live_start_at": null,
+                "name": "Doyle: Prints & Multiples",
+                "registration_ends_at": "2017-11-05T09:10:49.811Z",
+                "start_at": "2017-11-06T11:10:49.810Z",
+              },
+              Object {
+                "cover_image": Object {
+                  "cropped": Object {
+                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…2dm0rphc51dk.cloudfront.net%2FGRxXa7ltRABT8iZ82EE47A%2Flarge_rectangle.jpg",
+                  },
+                },
+                "end_at": null,
+                "id": "phillips-photographs-4",
+                "is_live_open": true,
+                "is_open": true,
+                "live_start_at": null,
+                "name": "Phillips: Photographs",
+                "registration_ends_at": "2017-11-05T09:10:49.811Z",
+                "start_at": "2017-11-06T11:10:49.811Z",
+              },
+              Object {
+                "cover_image": Object {
+                  "cropped": Object {
+                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F3bMJYoT6kABYNSYHObRGuQ%2Fsource.jpg",
+                  },
+                },
+                "end_at": null,
+                "id": "rago-auctions-19th-slash-20th-c-american-slash-european-art-1",
                 "is_live_open": false,
                 "is_open": true,
                 "live_start_at": null,
-                "name": "Julien’s Auctions: Street Art Now VI",
-                "registration_ends_at": null,
-                "start_at": "2017-10-19T17:00:00+00:00",
+                "name": "Rago Auctions: 19th/20th C. American/European Art",
+                "registration_ends_at": "2017-11-05T09:10:49.811Z",
+                "start_at": "2017-11-06T11:10:49.811Z",
+              },
+              Object {
+                "cover_image": Object {
+                  "cropped": Object {
+                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…2dm0rphc51dk.cloudfront.net%2FsrW6qryg-8eKJLzT06rBpA%2Flarge_rectangle.jpg",
+                  },
+                },
+                "end_at": null,
+                "id": "rago-auctions-property-from-the-collection-of-an-important-american-corporation",
+                "is_live_open": false,
+                "is_open": true,
+                "live_start_at": null,
+                "name": "Rago Auctions: Property from the Collection of an Important American Corporation",
+                "registration_ends_at": "2017-11-05T09:10:49.811Z",
+                "start_at": "2017-11-06T11:10:49.811Z",
               },
             ],
           },
@@ -439,10 +439,10 @@ exports[`looks correct when rendered 1`] = `
               "id": "wright-noma",
               "is_live_open": true,
               "is_open": true,
-              "live_start_at": "2017-11-02T13:00:00+00:00",
+              "live_start_at": "2017-11-06T11:10:49.809Z",
               "name": "Wright: noma",
-              "registration_ends_at": "2017-11-01T13:00:00+00:00",
-              "start_at": "2017-10-16T22:00:00+00:00",
+              "registration_ends_at": "2017-11-05T09:10:49.808Z",
+              "start_at": "2017-11-06T11:10:49.805Z",
             },
             Object {
               "cover_image": Object {
@@ -454,10 +454,10 @@ exports[`looks correct when rendered 1`] = `
               "id": "freemans-modern-and-contemporary-works-of-art",
               "is_live_open": false,
               "is_open": true,
-              "live_start_at": "2017-11-07T17:00:00+00:00",
+              "live_start_at": "2017-11-06T13:10:49.809Z",
               "name": "Freeman's: Modern & Contemporary Works of Art",
-              "registration_ends_at": "2017-11-06T17:00:00+00:00",
-              "start_at": "2017-10-17T15:00:00+00:00",
+              "registration_ends_at": "2017-11-07T09:10:49.809Z",
+              "start_at": "2017-11-06T13:10:49.809Z",
             },
             Object {
               "cover_image": Object {
@@ -469,10 +469,10 @@ exports[`looks correct when rendered 1`] = `
               "id": "sworders-modern-and-contemporary-prints",
               "is_live_open": true,
               "is_open": true,
-              "live_start_at": "2017-11-01T10:00:00+00:00",
+              "live_start_at": "2017-11-06T11:10:49.810Z",
               "name": "Sworders: Modern & Contemporary Prints",
-              "registration_ends_at": "2017-10-31T10:00:00+00:00",
-              "start_at": "2017-10-18T15:00:00+00:00",
+              "registration_ends_at": "2017-11-05T09:10:49.809Z",
+              "start_at": "2017-11-06T11:10:49.809Z",
             },
             Object {
               "cover_image": Object {
@@ -484,40 +484,25 @@ exports[`looks correct when rendered 1`] = `
               "id": "aperture-live-benefit-auction-2017",
               "is_live_open": true,
               "is_open": true,
-              "live_start_at": "2017-10-31T00:20:00+00:00",
+              "live_start_at": "2017-11-06T11:10:49.810Z",
               "name": "Aperture: Live Benefit Auction 2017",
-              "registration_ends_at": "2017-10-31T00:20:00+00:00",
-              "start_at": "2017-10-17T16:00:00+00:00",
+              "registration_ends_at": "2017-11-07T09:10:49.810Z",
+              "start_at": "2017-11-06T11:10:49.810Z",
             },
             Object {
               "cover_image": Object {
                 "cropped": Object {
-                  "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F8gU6N7U9JXfLZh0akzfaPg%2Fwide.jpg",
+                  "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F_dpoE5HDqU3W64l4oIskBQ%2Fsource.jpg",
                 },
               },
-              "end_at": null,
-              "id": "doyle-prints-and-multiples",
-              "is_live_open": true,
+              "end_at": "2017-11-02T02:00:00+00:00",
+              "id": "juliens-auctions-street-art-now-vi",
+              "is_live_open": false,
               "is_open": true,
-              "live_start_at": "2017-11-01T14:00:00+00:00",
-              "name": "Doyle: Prints & Multiples",
-              "registration_ends_at": "2017-10-31T14:00:00+00:00",
-              "start_at": "2017-10-18T19:30:00+00:00",
-            },
-            Object {
-              "cover_image": Object {
-                "cropped": Object {
-                  "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…2dm0rphc51dk.cloudfront.net%2FGRxXa7ltRABT8iZ82EE47A%2Flarge_rectangle.jpg",
-                },
-              },
-              "end_at": null,
-              "id": "phillips-photographs-4",
-              "is_live_open": true,
-              "is_open": true,
-              "live_start_at": "2017-11-02T14:00:00+00:00",
-              "name": "Phillips: Photographs",
-              "registration_ends_at": "2017-11-01T14:00:00+00:00",
-              "start_at": "2017-10-19T15:00:00+00:00",
+              "live_start_at": "2017-11-06T11:10:49.810Z",
+              "name": "Julien’s Auctions: Street Art Now VI",
+              "registration_ends_at": "2017-11-05T09:10:49.810Z",
+              "start_at": "2017-11-06T11:10:49.810Z",
             },
             Object {
               "cover_image": Object {
@@ -529,40 +514,10 @@ exports[`looks correct when rendered 1`] = `
               "id": "heritage-urban-art",
               "is_live_open": false,
               "is_open": true,
-              "live_start_at": "2017-11-06T19:00:00+00:00",
+              "live_start_at": "2017-11-06T11:10:49.811Z",
               "name": "Heritage: Urban Art",
-              "registration_ends_at": "2017-11-05T19:00:00+00:00",
-              "start_at": "2017-10-20T17:00:00+00:00",
-            },
-            Object {
-              "cover_image": Object {
-                "cropped": Object {
-                  "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F3bMJYoT6kABYNSYHObRGuQ%2Fsource.jpg",
-                },
-              },
-              "end_at": null,
-              "id": "rago-auctions-19th-slash-20th-c-american-slash-european-art-1",
-              "is_live_open": false,
-              "is_open": true,
-              "live_start_at": "2017-11-11T15:00:00+00:00",
-              "name": "Rago Auctions: 19th/20th C. American/European Art",
-              "registration_ends_at": "2017-11-10T15:00:00+00:00",
-              "start_at": "2017-10-27T16:00:00+00:00",
-            },
-            Object {
-              "cover_image": Object {
-                "cropped": Object {
-                  "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…2dm0rphc51dk.cloudfront.net%2FsrW6qryg-8eKJLzT06rBpA%2Flarge_rectangle.jpg",
-                },
-              },
-              "end_at": null,
-              "id": "rago-auctions-property-from-the-collection-of-an-important-american-corporation",
-              "is_live_open": false,
-              "is_open": true,
-              "live_start_at": "2017-11-11T17:30:00+00:00",
-              "name": "Rago Auctions: Property from the Collection of an Important American Corporation",
-              "registration_ends_at": "2017-11-10T17:30:00+00:00",
-              "start_at": "2017-10-27T16:30:00+00:00",
+              "registration_ends_at": "2017-11-05T09:10:49.811Z",
+              "start_at": "2017-11-06T11:10:49.811Z",
             },
           ]
         }
@@ -791,7 +746,7 @@ exports[`looks correct when rendered 1`] = `
                         ]
                       }
                     >
-                      IN PROGRESS
+                      LIVE IN 2 HOURS
                     </Text>
                   </View>
                 </View>
@@ -986,7 +941,7 @@ exports[`looks correct when rendered 1`] = `
                         ]
                       }
                     >
-                      REGISTER BY 1AM
+                      REGISTER BY 5PM
                     </Text>
                   </View>
                 </View>
@@ -1197,7 +1152,7 @@ exports[`looks correct when rendered 1`] = `
                         ]
                       }
                     >
-                      IN PROGRESS
+                      LIVE IN 2 HOURS
                     </Text>
                   </View>
                 </View>
@@ -1392,7 +1347,7 @@ exports[`looks correct when rendered 1`] = `
                         ]
                       }
                     >
-                      IN PROGRESS
+                      REGISTER BY 5PM
                     </Text>
                   </View>
                 </View>
@@ -1453,7 +1408,7 @@ exports[`looks correct when rendered 1`] = `
                 }
               >
                 <AROpaqueImageView
-                  imageURL="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F8gU6N7U9JXfLZh0akzfaPg%2Fwide.jpg"
+                  imageURL="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F_dpoE5HDqU3W64l4oIskBQ%2Fsource.jpg"
                   skipGemini={true}
                   style={
                     Array [
@@ -1529,7 +1484,7 @@ exports[`looks correct when rendered 1`] = `
                         ]
                       }
                     >
-                      Doyle: Prints & Multiples
+                      Julien’s Auctions: Street Art Now VI
                     </Text>
                     <View
                       style={
@@ -1603,223 +1558,12 @@ exports[`looks correct when rendered 1`] = `
                         ]
                       }
                     >
-                      IN PROGRESS
+                      LIVE IN 2 HOURS
                     </Text>
                   </View>
                 </View>
               </View>
             </View>
-            <View
-              accessibilityComponentType={undefined}
-              accessibilityLabel={undefined}
-              accessibilityTraits={undefined}
-              accessible={true}
-              hitSlop={undefined}
-              nativeID={undefined}
-              onLayout={undefined}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                Object {
-                  "marginBottom": 10,
-                  "marginRight": 10,
-                }
-              }
-              testID={undefined}
-            >
-              <View
-                style={
-                  Array [
-                    Object {
-                      "height": 196,
-                      "marginBottom": 5,
-                      "marginLeft": 5,
-                      "marginRight": 5,
-                      "marginTop": 5,
-                      "position": "relative",
-                      "width": 158,
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                <AROpaqueImageView
-                  imageURL="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…2dm0rphc51dk.cloudfront.net%2FGRxXa7ltRABT8iZ82EE47A%2Flarge_rectangle.jpg"
-                  skipGemini={true}
-                  style={
-                    Array [
-                      Object {
-                        "height": "100%",
-                        "left": 0,
-                        "position": "absolute",
-                        "top": 0,
-                        "width": "100%",
-                      },
-                      undefined,
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    Array [
-                      Object {
-                        "backgroundColor": "rgba(0, 0, 0, 0.5)",
-                        "height": "100%",
-                        "left": 0,
-                        "position": "absolute",
-                        "top": 0,
-                        "width": "100%",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <View
-                    style={
-                      Array [
-                        Object {
-                          "alignItems": "flex-start",
-                          "display": "flex",
-                          "flexDirection": "row",
-                          "flexWrap": "nowrap",
-                          "justifyContent": "space-between",
-                          "paddingBottom": 10,
-                          "paddingLeft": 10,
-                          "paddingRight": 10,
-                          "paddingTop": 10,
-                          "width": "100%",
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      disabled={false}
-                      ellipsizeMode="tail"
-                      numberOfLines={2}
-                      style={
-                        Array [
-                          Object {
-                            "fontSize": 17,
-                          },
-                          Array [
-                            Object {
-                              "color": "white",
-                              "flexBasis": 0,
-                              "flexGrow": 1,
-                              "flexShrink": 1,
-                              "fontSize": 15,
-                            },
-                            undefined,
-                          ],
-                          Object {
-                            "fontFamily": "AGaramondPro-Regular",
-                          },
-                        ]
-                      }
-                    >
-                      Phillips: Photographs
-                    </Text>
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "backgroundColor": "white",
-                            "borderRadius": 2,
-                            "paddingBottom": 1,
-                            "paddingLeft": 4,
-                            "paddingRight": 4,
-                            "paddingTop": 1,
-                          },
-                          undefined,
-                        ]
-                      }
-                    >
-                      <Text
-                        accessible={true}
-                        allowFontScaling={true}
-                        disabled={false}
-                        ellipsizeMode="tail"
-                        style={
-                          Array [
-                            Object {
-                              "alignSelf": "center",
-                              "fontFamily": "AvantGardeGothicITC",
-                              "fontSize": 7,
-                              "letterSpacing": 1.5,
-                            },
-                            undefined,
-                          ]
-                        }
-                      >
-                        LIVE
-                      </Text>
-                    </View>
-                  </View>
-                  <View
-                    style={
-                      Array [
-                        Object {
-                          "bottom": 0,
-                          "marginBottom": 5,
-                          "marginLeft": 5,
-                          "marginRight": 5,
-                          "marginTop": 5,
-                          "paddingBottom": 5,
-                          "paddingLeft": 5,
-                          "paddingRight": 5,
-                          "paddingTop": 5,
-                          "position": "absolute",
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      disabled={false}
-                      ellipsizeMode="tail"
-                      style={
-                        Array [
-                          Object {
-                            "color": "white",
-                            "fontFamily": "AvantGardeGothicITC",
-                            "fontSize": 10,
-                            "letterSpacing": 1.5,
-                          },
-                          undefined,
-                        ]
-                      }
-                    >
-                      IN PROGRESS
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-        <View
-          onLayout={[Function]}
-          style={null}
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                undefined,
-              ]
-            }
-          >
             <View
               accessibilityComponentType={undefined}
               accessibilityLabel={undefined}
@@ -2009,12 +1753,505 @@ exports[`looks correct when rendered 1`] = `
                         ]
                       }
                     >
-                      LIVE IN 12 HOURS
+                      LIVE IN 2 HOURS
                     </Text>
                   </View>
                 </View>
               </View>
             </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={null}
+    />
+    <View
+      onLayout={[Function]}
+      style={null}
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "paddingBottom": 10,
+              "paddingTop": 15,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          disabled={false}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 25,
+                "marginLeft": 2,
+                "textAlign": "left",
+              },
+              undefined,
+            ]
+          }
+        >
+          Current Timed Auctions
+        </Text>
+      </View>
+    </View>
+    <View
+      onLayout={[Function]}
+      style={null}
+    >
+      <View
+        contentContainerStyle={
+          Object {
+            "display": "flex",
+            "justifyContent": "space-between",
+            "padding": 5,
+          }
+        }
+        data={
+          Array [
+            Object {
+              "cover_image": Object {
+                "cropped": Object {
+                  "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F8gU6N7U9JXfLZh0akzfaPg%2Fwide.jpg",
+                },
+              },
+              "end_at": null,
+              "id": "doyle-prints-and-multiples",
+              "is_live_open": true,
+              "is_open": true,
+              "live_start_at": null,
+              "name": "Doyle: Prints & Multiples",
+              "registration_ends_at": "2017-11-05T09:10:49.811Z",
+              "start_at": "2017-11-06T11:10:49.810Z",
+            },
+            Object {
+              "cover_image": Object {
+                "cropped": Object {
+                  "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…2dm0rphc51dk.cloudfront.net%2FGRxXa7ltRABT8iZ82EE47A%2Flarge_rectangle.jpg",
+                },
+              },
+              "end_at": null,
+              "id": "phillips-photographs-4",
+              "is_live_open": true,
+              "is_open": true,
+              "live_start_at": null,
+              "name": "Phillips: Photographs",
+              "registration_ends_at": "2017-11-05T09:10:49.811Z",
+              "start_at": "2017-11-06T11:10:49.811Z",
+            },
+            Object {
+              "cover_image": Object {
+                "cropped": Object {
+                  "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F3bMJYoT6kABYNSYHObRGuQ%2Fsource.jpg",
+                },
+              },
+              "end_at": null,
+              "id": "rago-auctions-19th-slash-20th-c-american-slash-european-art-1",
+              "is_live_open": false,
+              "is_open": true,
+              "live_start_at": null,
+              "name": "Rago Auctions: 19th/20th C. American/European Art",
+              "registration_ends_at": "2017-11-05T09:10:49.811Z",
+              "start_at": "2017-11-06T11:10:49.811Z",
+            },
+            Object {
+              "cover_image": Object {
+                "cropped": Object {
+                  "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…2dm0rphc51dk.cloudfront.net%2FsrW6qryg-8eKJLzT06rBpA%2Flarge_rectangle.jpg",
+                },
+              },
+              "end_at": null,
+              "id": "rago-auctions-property-from-the-collection-of-an-important-american-corporation",
+              "is_live_open": false,
+              "is_open": true,
+              "live_start_at": null,
+              "name": "Rago Auctions: Property from the Collection of an Important American Corporation",
+              "registration_ends_at": "2017-11-05T09:10:49.811Z",
+              "start_at": "2017-11-06T11:10:49.811Z",
+            },
+          ]
+        }
+        disableVirtualization={false}
+        getItem={[Function]}
+        getItemCount={[Function]}
+        horizontal={false}
+        initialNumToRender={10}
+        keyExtractor={[Function]}
+        maxToRenderPerBatch={10}
+        numColumns={2}
+        onContentSizeChange={[Function]}
+        onEndReachedThreshold={2}
+        onLayout={[Function]}
+        onMomentumScrollEnd={[Function]}
+        onScroll={[Function]}
+        onScrollBeginDrag={[Function]}
+        onScrollEndDrag={[Function]}
+        onViewableItemsChanged={undefined}
+        renderItem={[Function]}
+        scrollEventThrottle={50}
+        stickyHeaderIndices={Array []}
+        updateCellsBatchingPeriod={50}
+        windowSize={21}
+      >
+        <View
+          onLayout={[Function]}
+          style={null}
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "flexDirection": "row",
+                },
+                undefined,
+              ]
+            }
+          >
+            <View
+              accessibilityComponentType={undefined}
+              accessibilityLabel={undefined}
+              accessibilityTraits={undefined}
+              accessible={true}
+              hitSlop={undefined}
+              nativeID={undefined}
+              onLayout={undefined}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "marginBottom": 10,
+                  "marginRight": 10,
+                }
+              }
+              testID={undefined}
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "height": 196,
+                      "marginBottom": 5,
+                      "marginLeft": 5,
+                      "marginRight": 5,
+                      "marginTop": 5,
+                      "position": "relative",
+                      "width": 158,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                <AROpaqueImageView
+                  imageURL="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F8gU6N7U9JXfLZh0akzfaPg%2Fwide.jpg"
+                  skipGemini={true}
+                  style={
+                    Array [
+                      Object {
+                        "height": "100%",
+                        "left": 0,
+                        "position": "absolute",
+                        "top": 0,
+                        "width": "100%",
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "rgba(0, 0, 0, 0.5)",
+                        "height": "100%",
+                        "left": 0,
+                        "position": "absolute",
+                        "top": 0,
+                        "width": "100%",
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      Array [
+                        Object {
+                          "alignItems": "flex-start",
+                          "display": "flex",
+                          "flexDirection": "row",
+                          "flexWrap": "nowrap",
+                          "justifyContent": "space-between",
+                          "paddingBottom": 10,
+                          "paddingLeft": 10,
+                          "paddingRight": 10,
+                          "paddingTop": 10,
+                          "width": "100%",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    <Text
+                      accessible={true}
+                      allowFontScaling={true}
+                      disabled={false}
+                      ellipsizeMode="tail"
+                      numberOfLines={2}
+                      style={
+                        Array [
+                          Object {
+                            "fontSize": 17,
+                          },
+                          Array [
+                            Object {
+                              "color": "white",
+                              "flexBasis": 0,
+                              "flexGrow": 1,
+                              "flexShrink": 1,
+                              "fontSize": 15,
+                            },
+                            undefined,
+                          ],
+                          Object {
+                            "fontFamily": "AGaramondPro-Regular",
+                          },
+                        ]
+                      }
+                    >
+                      Doyle: Prints & Multiples
+                    </Text>
+                  </View>
+                  <View
+                    style={
+                      Array [
+                        Object {
+                          "bottom": 0,
+                          "marginBottom": 5,
+                          "marginLeft": 5,
+                          "marginRight": 5,
+                          "marginTop": 5,
+                          "paddingBottom": 5,
+                          "paddingLeft": 5,
+                          "paddingRight": 5,
+                          "paddingTop": 5,
+                          "position": "absolute",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    <Text
+                      accessible={true}
+                      allowFontScaling={true}
+                      disabled={false}
+                      ellipsizeMode="tail"
+                      style={
+                        Array [
+                          Object {
+                            "color": "white",
+                            "fontFamily": "AvantGardeGothicITC",
+                            "fontSize": 10,
+                            "letterSpacing": 1.5,
+                          },
+                          undefined,
+                        ]
+                      }
+                    >
+                      LIVE IN 2 HOURS
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View
+              accessibilityComponentType={undefined}
+              accessibilityLabel={undefined}
+              accessibilityTraits={undefined}
+              accessible={true}
+              hitSlop={undefined}
+              nativeID={undefined}
+              onLayout={undefined}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "marginBottom": 10,
+                  "marginRight": 10,
+                }
+              }
+              testID={undefined}
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "height": 196,
+                      "marginBottom": 5,
+                      "marginLeft": 5,
+                      "marginRight": 5,
+                      "marginTop": 5,
+                      "position": "relative",
+                      "width": 158,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                <AROpaqueImageView
+                  imageURL="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…2dm0rphc51dk.cloudfront.net%2FGRxXa7ltRABT8iZ82EE47A%2Flarge_rectangle.jpg"
+                  skipGemini={true}
+                  style={
+                    Array [
+                      Object {
+                        "height": "100%",
+                        "left": 0,
+                        "position": "absolute",
+                        "top": 0,
+                        "width": "100%",
+                      },
+                      undefined,
+                    ]
+                  }
+                />
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "rgba(0, 0, 0, 0.5)",
+                        "height": "100%",
+                        "left": 0,
+                        "position": "absolute",
+                        "top": 0,
+                        "width": "100%",
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      Array [
+                        Object {
+                          "alignItems": "flex-start",
+                          "display": "flex",
+                          "flexDirection": "row",
+                          "flexWrap": "nowrap",
+                          "justifyContent": "space-between",
+                          "paddingBottom": 10,
+                          "paddingLeft": 10,
+                          "paddingRight": 10,
+                          "paddingTop": 10,
+                          "width": "100%",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    <Text
+                      accessible={true}
+                      allowFontScaling={true}
+                      disabled={false}
+                      ellipsizeMode="tail"
+                      numberOfLines={2}
+                      style={
+                        Array [
+                          Object {
+                            "fontSize": 17,
+                          },
+                          Array [
+                            Object {
+                              "color": "white",
+                              "flexBasis": 0,
+                              "flexGrow": 1,
+                              "flexShrink": 1,
+                              "fontSize": 15,
+                            },
+                            undefined,
+                          ],
+                          Object {
+                            "fontFamily": "AGaramondPro-Regular",
+                          },
+                        ]
+                      }
+                    >
+                      Phillips: Photographs
+                    </Text>
+                  </View>
+                  <View
+                    style={
+                      Array [
+                        Object {
+                          "bottom": 0,
+                          "marginBottom": 5,
+                          "marginLeft": 5,
+                          "marginRight": 5,
+                          "marginTop": 5,
+                          "paddingBottom": 5,
+                          "paddingLeft": 5,
+                          "paddingRight": 5,
+                          "paddingTop": 5,
+                          "position": "absolute",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    <Text
+                      accessible={true}
+                      allowFontScaling={true}
+                      disabled={false}
+                      ellipsizeMode="tail"
+                      style={
+                        Array [
+                          Object {
+                            "color": "white",
+                            "fontFamily": "AvantGardeGothicITC",
+                            "fontSize": 10,
+                            "letterSpacing": 1.5,
+                          },
+                          undefined,
+                        ]
+                      }
+                    >
+                      LIVE IN 2 HOURS
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          onLayout={[Function]}
+          style={null}
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "flexDirection": "row",
+                },
+                undefined,
+              ]
+            }
+          >
             <View
               accessibilityComponentType={undefined}
               accessibilityLabel={undefined}
@@ -2132,41 +2369,6 @@ exports[`looks correct when rendered 1`] = `
                     >
                       Rago Auctions: 19th/20th C. American/European Art
                     </Text>
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "backgroundColor": "white",
-                            "borderRadius": 2,
-                            "paddingBottom": 1,
-                            "paddingLeft": 4,
-                            "paddingRight": 4,
-                            "paddingTop": 1,
-                          },
-                          undefined,
-                        ]
-                      }
-                    >
-                      <Text
-                        accessible={true}
-                        allowFontScaling={true}
-                        disabled={false}
-                        ellipsizeMode="tail"
-                        style={
-                          Array [
-                            Object {
-                              "alignSelf": "center",
-                              "fontFamily": "AvantGardeGothicITC",
-                              "fontSize": 7,
-                              "letterSpacing": 1.5,
-                            },
-                            undefined,
-                          ]
-                        }
-                      >
-                        LIVE
-                      </Text>
-                    </View>
                   </View>
                   <View
                     style={
@@ -2204,28 +2406,12 @@ exports[`looks correct when rendered 1`] = `
                         ]
                       }
                     >
-                      REGISTER BY NOV 10, 11PM
+                      LIVE IN 2 HOURS
                     </Text>
                   </View>
                 </View>
               </View>
             </View>
-          </View>
-        </View>
-        <View
-          onLayout={[Function]}
-          style={null}
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                undefined,
-              ]
-            }
-          >
             <View
               accessibilityComponentType={undefined}
               accessibilityLabel={undefined}
@@ -2343,41 +2529,6 @@ exports[`looks correct when rendered 1`] = `
                     >
                       Rago Auctions: Property from the Collection of an Important American Corporation
                     </Text>
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "backgroundColor": "white",
-                            "borderRadius": 2,
-                            "paddingBottom": 1,
-                            "paddingLeft": 4,
-                            "paddingRight": 4,
-                            "paddingTop": 1,
-                          },
-                          undefined,
-                        ]
-                      }
-                    >
-                      <Text
-                        accessible={true}
-                        allowFontScaling={true}
-                        disabled={false}
-                        ellipsizeMode="tail"
-                        style={
-                          Array [
-                            Object {
-                              "alignSelf": "center",
-                              "fontFamily": "AvantGardeGothicITC",
-                              "fontSize": 7,
-                              "letterSpacing": 1.5,
-                            },
-                            undefined,
-                          ]
-                        }
-                      >
-                        LIVE
-                      </Text>
-                    </View>
                   </View>
                   <View
                     style={
@@ -2415,279 +2566,7 @@ exports[`looks correct when rendered 1`] = `
                         ]
                       }
                     >
-                      REGISTER BY NOV 11, 1AM
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <View
-      onLayout={[Function]}
-      style={null}
-    />
-    <View
-      onLayout={[Function]}
-      style={null}
-    >
-      <View
-        style={
-          Array [
-            Object {
-              "backgroundColor": "white",
-              "paddingBottom": 10,
-              "paddingTop": 15,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 25,
-                "marginLeft": 2,
-                "textAlign": "left",
-              },
-              undefined,
-            ]
-          }
-        >
-          Current Timed Auctions
-        </Text>
-      </View>
-    </View>
-    <View
-      onLayout={[Function]}
-      style={null}
-    >
-      <View
-        contentContainerStyle={
-          Object {
-            "display": "flex",
-            "justifyContent": "space-between",
-            "padding": 5,
-          }
-        }
-        data={
-          Array [
-            Object {
-              "cover_image": Object {
-                "cropped": Object {
-                  "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F_dpoE5HDqU3W64l4oIskBQ%2Fsource.jpg",
-                },
-              },
-              "end_at": "2017-11-02T02:00:00+00:00",
-              "id": "juliens-auctions-street-art-now-vi",
-              "is_live_open": false,
-              "is_open": true,
-              "live_start_at": null,
-              "name": "Julien’s Auctions: Street Art Now VI",
-              "registration_ends_at": null,
-              "start_at": "2017-10-19T17:00:00+00:00",
-            },
-          ]
-        }
-        disableVirtualization={false}
-        getItem={[Function]}
-        getItemCount={[Function]}
-        horizontal={false}
-        initialNumToRender={10}
-        keyExtractor={[Function]}
-        maxToRenderPerBatch={10}
-        numColumns={2}
-        onContentSizeChange={[Function]}
-        onEndReachedThreshold={2}
-        onLayout={[Function]}
-        onMomentumScrollEnd={[Function]}
-        onScroll={[Function]}
-        onScrollBeginDrag={[Function]}
-        onScrollEndDrag={[Function]}
-        onViewableItemsChanged={undefined}
-        renderItem={[Function]}
-        scrollEventThrottle={50}
-        stickyHeaderIndices={Array []}
-        updateCellsBatchingPeriod={50}
-        windowSize={21}
-      >
-        <View
-          onLayout={[Function]}
-          style={null}
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityComponentType={undefined}
-              accessibilityLabel={undefined}
-              accessibilityTraits={undefined}
-              accessible={true}
-              hitSlop={undefined}
-              nativeID={undefined}
-              onLayout={undefined}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                Object {
-                  "marginBottom": 10,
-                  "marginRight": 10,
-                }
-              }
-              testID={undefined}
-            >
-              <View
-                style={
-                  Array [
-                    Object {
-                      "height": 196,
-                      "marginBottom": 5,
-                      "marginLeft": 5,
-                      "marginRight": 5,
-                      "marginTop": 5,
-                      "position": "relative",
-                      "width": 158,
-                    },
-                    undefined,
-                  ]
-                }
-              >
-                <AROpaqueImageView
-                  imageURL="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F_dpoE5HDqU3W64l4oIskBQ%2Fsource.jpg"
-                  skipGemini={true}
-                  style={
-                    Array [
-                      Object {
-                        "height": "100%",
-                        "left": 0,
-                        "position": "absolute",
-                        "top": 0,
-                        "width": "100%",
-                      },
-                      undefined,
-                    ]
-                  }
-                />
-                <View
-                  style={
-                    Array [
-                      Object {
-                        "backgroundColor": "rgba(0, 0, 0, 0.5)",
-                        "height": "100%",
-                        "left": 0,
-                        "position": "absolute",
-                        "top": 0,
-                        "width": "100%",
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  <View
-                    style={
-                      Array [
-                        Object {
-                          "alignItems": "flex-start",
-                          "display": "flex",
-                          "flexDirection": "row",
-                          "flexWrap": "nowrap",
-                          "justifyContent": "space-between",
-                          "paddingBottom": 10,
-                          "paddingLeft": 10,
-                          "paddingRight": 10,
-                          "paddingTop": 10,
-                          "width": "100%",
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      disabled={false}
-                      ellipsizeMode="tail"
-                      numberOfLines={2}
-                      style={
-                        Array [
-                          Object {
-                            "fontSize": 17,
-                          },
-                          Array [
-                            Object {
-                              "color": "white",
-                              "flexBasis": 0,
-                              "flexGrow": 1,
-                              "flexShrink": 1,
-                              "fontSize": 15,
-                            },
-                            undefined,
-                          ],
-                          Object {
-                            "fontFamily": "AGaramondPro-Regular",
-                          },
-                        ]
-                      }
-                    >
-                      Julien’s Auctions: Street Art Now VI
-                    </Text>
-                  </View>
-                  <View
-                    style={
-                      Array [
-                        Object {
-                          "bottom": 0,
-                          "marginBottom": 5,
-                          "marginLeft": 5,
-                          "marginRight": 5,
-                          "marginTop": 5,
-                          "paddingBottom": 5,
-                          "paddingLeft": 5,
-                          "paddingRight": 5,
-                          "paddingTop": 5,
-                          "position": "absolute",
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      disabled={false}
-                      ellipsizeMode="tail"
-                      style={
-                        Array [
-                          Object {
-                            "color": "white",
-                            "fontFamily": "AvantGardeGothicITC",
-                            "fontSize": 10,
-                            "letterSpacing": 1.5,
-                          },
-                          undefined,
-                        ]
-                      }
-                    >
-                      4 DAYS AGO LEFT
+                      LIVE IN 2 HOURS
                     </Text>
                   </View>
                 </View>

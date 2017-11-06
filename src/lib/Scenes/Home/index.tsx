@@ -15,7 +15,8 @@ import TabBar from "./Components/TabBar"
 interface TabProps {
   tabLabel: string
 }
-const Tab: React.SFC<TabProps> = ({ children }) =>
+
+export const Tab: React.SFC<TabProps> = ({ children }) =>
   <View style={{ flex: 1 }}>
     {children}
   </View>

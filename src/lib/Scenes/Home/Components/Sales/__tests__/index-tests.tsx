@@ -1,4 +1,4 @@
-import * as moment from "moment"
+import moment from "moment"
 import React from "react"
 
 import "react-native"
@@ -16,10 +16,10 @@ const props = [
     name: "Wright: noma",
     is_open: true,
     is_live_open: true,
-    start_at: "2017-10-16T22:00:00+00:00",
+    start_at: moment().add(2, "hour").toISOString(),
     end_at: null,
-    registration_ends_at: "2017-11-01T13:00:00+00:00",
-    live_start_at: "2017-11-02T13:00:00+00:00",
+    registration_ends_at: moment().subtract(1, "day").toISOString(),
+    live_start_at: moment().add(2, "hour").toISOString(),
     cover_image: {
       cropped: {
         url:
@@ -32,10 +32,10 @@ const props = [
     name: "Freeman's: Modern & Contemporary Works of Art",
     is_open: true,
     is_live_open: false,
-    start_at: "2017-10-17T15:00:00+00:00",
+    start_at: moment().add(4, "hour").toISOString(),
     end_at: null,
-    registration_ends_at: "2017-11-06T17:00:00+00:00",
-    live_start_at: "2017-11-07T17:00:00+00:00",
+    registration_ends_at: moment().add(1, "day").toISOString(),
+    live_start_at: moment().add(4, "hour").toISOString(),
     cover_image: {
       cropped: {
         url:
@@ -48,10 +48,10 @@ const props = [
     name: "Sworders: Modern & Contemporary Prints",
     is_open: true,
     is_live_open: true,
-    start_at: "2017-10-18T15:00:00+00:00",
+    start_at: moment().add(2, "hour").toISOString(),
     end_at: null,
-    registration_ends_at: "2017-10-31T10:00:00+00:00",
-    live_start_at: "2017-11-01T10:00:00+00:00",
+    registration_ends_at: moment().subtract(1, "day").toISOString(),
+    live_start_at: moment().add(2, "hour").toISOString(),
     cover_image: {
       cropped: {
         url:
@@ -64,10 +64,10 @@ const props = [
     name: "Aperture: Live Benefit Auction 2017",
     is_open: true,
     is_live_open: true,
-    start_at: "2017-10-17T16:00:00+00:00",
+    start_at: moment().add(2, "hour").toISOString(),
     end_at: null,
-    registration_ends_at: "2017-10-31T00:20:00+00:00",
-    live_start_at: "2017-10-31T00:20:00+00:00",
+    registration_ends_at: moment().add(1, "day").toISOString(),
+    live_start_at: moment().add(2, "hour").toISOString(),
     cover_image: {
       cropped: {
         url:
@@ -80,10 +80,10 @@ const props = [
     name: "Julien’s Auctions: Street Art Now VI",
     is_open: true,
     is_live_open: false,
-    start_at: "2017-10-19T17:00:00+00:00",
+    start_at: moment().add(2, "hour").toISOString(),
     end_at: "2017-11-02T02:00:00+00:00",
-    registration_ends_at: null,
-    live_start_at: null,
+    registration_ends_at: moment().subtract(1, "day").toISOString(),
+    live_start_at: moment().add(2, "hour").toISOString(),
     cover_image: {
       cropped: {
         url:
@@ -96,10 +96,10 @@ const props = [
     name: "Doyle: Prints & Multiples",
     is_open: true,
     is_live_open: true,
-    start_at: "2017-10-18T19:30:00+00:00",
+    start_at: moment().add(2, "hour").toISOString(),
     end_at: null,
-    registration_ends_at: "2017-10-31T14:00:00+00:00",
-    live_start_at: "2017-11-01T14:00:00+00:00",
+    registration_ends_at: moment().subtract(1, "day").toISOString(),
+    live_start_at: null,
     cover_image: {
       cropped: {
         url:
@@ -112,10 +112,10 @@ const props = [
     name: "Phillips: Photographs",
     is_open: true,
     is_live_open: true,
-    start_at: "2017-10-19T15:00:00+00:00",
+    start_at: moment().add(2, "hour").toISOString(),
     end_at: null,
-    registration_ends_at: "2017-11-01T14:00:00+00:00",
-    live_start_at: "2017-11-02T14:00:00+00:00",
+    registration_ends_at: moment().subtract(1, "day").toISOString(),
+    live_start_at: null,
     cover_image: {
       cropped: {
         url:
@@ -128,10 +128,10 @@ const props = [
     name: "Heritage: Urban Art",
     is_open: true,
     is_live_open: false,
-    start_at: "2017-10-20T17:00:00+00:00",
+    start_at: moment().add(2, "hour").toISOString(),
     end_at: null,
-    registration_ends_at: "2017-11-05T19:00:00+00:00",
-    live_start_at: "2017-11-06T19:00:00+00:00",
+    registration_ends_at: moment().subtract(1, "day").toISOString(),
+    live_start_at: moment().add(2, "hour").toISOString(),
     cover_image: {
       cropped: {
         url:
@@ -144,10 +144,10 @@ const props = [
     name: "Rago Auctions: 19th/20th C. American/European Art",
     is_open: true,
     is_live_open: false,
-    start_at: "2017-10-27T16:00:00+00:00",
+    start_at: moment().add(2, "hour").toISOString(),
     end_at: null,
-    registration_ends_at: "2017-11-10T15:00:00+00:00",
-    live_start_at: "2017-11-11T15:00:00+00:00",
+    registration_ends_at: moment().subtract(1, "day").toISOString(),
+    live_start_at: null,
     cover_image: {
       cropped: {
         url:
@@ -160,10 +160,10 @@ const props = [
     name: "Rago Auctions: Property from the Collection of an Important American Corporation",
     is_open: true,
     is_live_open: false,
-    start_at: "2017-10-27T16:30:00+00:00",
+    start_at: moment().add(2, "hour").toISOString(),
     end_at: null,
-    registration_ends_at: "2017-11-10T17:30:00+00:00",
-    live_start_at: "2017-11-11T17:30:00+00:00",
+    registration_ends_at: moment().subtract(1, "day").toISOString(),
+    live_start_at: null,
     cover_image: {
       cropped: {
         url:
