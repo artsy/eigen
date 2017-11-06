@@ -3,6 +3,9 @@
 
 ### Master
 
+-   Renames MyProfile -> MyAccount, and sets up the design for it - orta
+-   Adds Live and timed auctions in home view - luc
+
 ### 1.4.0-beta.5
 
 ###### Dev
@@ -35,7 +38,6 @@
 
 -   Adds for For You tab with styled headers - luc
 -   Creates tab view container for new home - luc
--   Adds Live and timed auctions in home view - luc
 
 ###### Consignments
 

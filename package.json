@@ -108,7 +108,8 @@
     "ts-jest": "^21.0.0",
     "tslint": "^5.4.3",
     "tslint-config-prettier": "^1.0.0",
-    "typescript": "^2.5.3"
+    "typescript": "^2.5.3",
+    "typescript-styled-plugin": "^0.1.2"
   },
   "jest": {
     "preset": "react-native",

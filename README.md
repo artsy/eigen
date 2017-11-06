@@ -95,6 +95,7 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 3. Don't change the `package.json` version.
 4. For non-beta releases, use either `npm version patch`, `npm version minor`, or `npm version major`. For
    beta releases use `npm version prerelease`.
+5. If integrating in Eigen consult the docs [on updating Emission](/artsy/eigen/blob/master/docs/updating_emission.md)
 
 ### Resources
 

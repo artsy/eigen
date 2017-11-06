@@ -20,8 +20,8 @@ WorksForYou
 import Inquiry from "../Containers/Inquiry"
 Inquiry
 
-import MyAccount from "../Containers/MyAccount"
-MyAccount
+import MyProfile from "../Containers/MyProfile"
+MyProfile
 
 import Inbox from "../Containers/Inbox"
 Inbox
@@ -208,14 +208,14 @@ export const InboxRenderer: React.SFC<RendererProps> = ({ render }) => {
   )
 }
 
-export const MyAccountRenderer: React.SFC<RendererProps> = ({ render }) => {
+export const MyProfileRenderer: React.SFC<RendererProps> = ({ render }) => {
   return (
     <QueryRenderer
       environment={environment}
       query={graphql`
-        query QueryRenderersMyAccountQuery {
+        query QueryRenderersMyProfileQuery {
           me {
-            ...MyAccount_me
+            ...MyProfile_me
           }
         }
       `}
