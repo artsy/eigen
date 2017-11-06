@@ -4,7 +4,8 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import fonts from "../../../../../data/fonts"
-import { AuctionItem } from "./Components/AuctionItem"
+import Switchboard from "../../../../NativeModules/SwitchBoard"
+import AuctionItem from "./Components/AuctionItem"
 
 const Container = styled.View`
   flex: 1;
@@ -31,8 +32,8 @@ interface Props {
 }
 
 class Auctions extends React.Component<Props, null> {
-  handleTap(item) {
-    console.log(item)
+  handleTap({ item }) {
+    Switchboard.presentNavigationViewController(this, item.href)
   }
 
   renderList(itemData) {
@@ -41,7 +42,7 @@ class Auctions extends React.Component<Props, null> {
         contentContainerStyle={{ justifyContent: "space-between", padding: 5, display: "flex" }}
         data={itemData.data}
         numColumns={2}
-        keyExtractor={(item, index) => item.id}
+        keyExtractor={(item, index) => item.__id}
         renderItem={d => {
           return (
             <TouchableWithoutFeedback onPress={this.handleTap.bind(this, d)}>
@@ -101,7 +102,9 @@ class Auctions extends React.Component<Props, null> {
 export default createFragmentContainer(Auctions, {
   auctions: graphql`
     fragment Auctions_auctions on Sale @relay(plural: true) {
-      ...AuctionItem_auction @relay(mask: false)
+      ...AuctionItem_auction
+      live_start_at
+      href
     }
   `,
 })

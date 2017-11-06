@@ -81,10 +81,10 @@ export class AuctionItem extends React.Component<RelayProps, null> {
   render() {
     const item = this.props.auction
     const timestamp = (item.live_start_at ? liveDate(item) : timedDate(item)).toUpperCase()
-
+    const imageURL = (item.cover_image || { cropped: { url: "" } }).cropped.url
     return (
       <Container>
-        <Image imageURL={item.cover_image.cropped.url} skipGemini={true} />
+        <Image imageURL={imageURL} skipGemini={true} />
         <Content>
           <Header>
             <Title numberOfLines={2}>

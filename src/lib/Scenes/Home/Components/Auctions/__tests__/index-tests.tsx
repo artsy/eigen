@@ -1,14 +1,14 @@
 import * as moment from "moment"
-import * as React from "react"
+import React from "react"
 
 import "react-native"
 import * as renderer from "react-test-renderer"
 import Auctions from "../index"
 
 it("looks correct when rendered", () => {
-  const conversation = renderer.create(<Auctions auctions={props} />) as any
+  const auctions = renderer.create(<Auctions auctions={props} />) as any
 
-  expect(conversation).toMatchSnapshot()
+  expect(auctions).toMatchSnapshot()
 })
 
 const props = [

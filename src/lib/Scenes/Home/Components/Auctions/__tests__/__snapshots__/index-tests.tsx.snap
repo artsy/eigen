@@ -986,7 +986,7 @@ exports[`looks correct when rendered 1`] = `
                         ]
                       }
                     >
-                      REGISTER BY NOV 7, 1AM
+                      REGISTER BY 1AM
                     </Text>
                   </View>
                 </View>
@@ -2009,7 +2009,7 @@ exports[`looks correct when rendered 1`] = `
                         ]
                       }
                     >
-                      REGISTER BY NOV 6, 3AM
+                      LIVE IN 13 HOURS
                     </Text>
                   </View>
                 </View>
@@ -2687,7 +2687,7 @@ exports[`looks correct when rendered 1`] = `
                         ]
                       }
                     >
-                      A DAY AGO LEFT
+                      4 DAYS AGO LEFT
                     </Text>
                   </View>
                 </View>
