@@ -9,9 +9,7 @@ import { Colors } from "../../data/colors"
 import { Fonts } from "../../data/fonts"
 
 import Separator from "../Components/Separator"
-import UserName from "../Components/Text/Serif"
-
-const ButtonDescriptionText = UserName
+import SerifText from "../Components/Text/Serif"
 
 const AvatarCircle = styled.View`
   background-color: ${Colors.GrayRegular};
@@ -27,6 +25,22 @@ const AvatarText = styled.Text`
   font-size: 16;
 `
 
+const HeaderWrapper = styled.View`
+  align-items: center;
+  margin-top: 82;
+`
+
+const UserName = styled(SerifText)`
+  font-size: 26;
+  text-align: center;
+  margin-top: 24;
+`
+
+const ButtonSection = styled.View`
+  align-items: center;
+  margin-top: 82;
+`
+
 const ButtonSectionText = styled.Text`
   margin-top: 24;
   font-family: ${Fonts.AvantGardeRegular};
@@ -34,8 +48,18 @@ const ButtonSectionText = styled.Text`
   margin-bottom: 8;
 `
 
+const ButtonDescriptionText = styled(SerifText)`
+  color: #999999;
+  font-size: 26;
+  margin-bottom: 12;
+`
+
+/**
+ *      [OT]
+ *   Orta Therox
+ */
 const Header = ({ me }) =>
-  <View style={{ alignItems: "center", marginTop: 82 }}>
+  <HeaderWrapper>
     <AvatarCircle>
       <AvatarText>
         {me.initials}
@@ -44,7 +68,14 @@ const Header = ({ me }) =>
     <UserName style={{ fontSize: 26, textAlign: "center", marginTop: 24 }}>
       {me.name}
     </UserName>
-  </View>
+  </HeaderWrapper>
+
+/**
+ * ---------------
+ *  NAME
+ *  description
+ * ---------------
+ */
 
 const ProfileButton = ({ section, description, isTop, onPress }) =>
   <TouchableOpacity onPress={onPress} style={{ width: 330 }}>
@@ -53,7 +84,7 @@ const ProfileButton = ({ section, description, isTop, onPress }) =>
       <ButtonSectionText>
         {section.toUpperCase()}
       </ButtonSectionText>
-      <ButtonDescriptionText style={{ color: "#999999", fontSize: 26, marginBottom: 12 }}>
+      <ButtonDescriptionText>
         {description}
       </ButtonDescriptionText>
       <Separator />
@@ -63,10 +94,6 @@ const ProfileButton = ({ section, description, isTop, onPress }) =>
 interface Props extends ViewProperties, RelayProps {}
 
 export class MyProfile extends React.Component<Props, {}> {
-  state: {
-    selectedTabIndex: number
-  }
-
   render() {
     const windowDimensions = Dimensions.get("window")
     const commonPadding = windowDimensions.width > 700 ? 40 : 20
@@ -77,7 +104,7 @@ export class MyProfile extends React.Component<Props, {}> {
     return (
       <ScrollView scrollsToTop={true} automaticallyAdjustContentInsets={false}>
         <Header me={this.props.me} />
-        <View style={{ alignItems: "center", marginTop: 82 }}>
+        <ButtonSection>
           <ProfileButton
             section="Selling"
             description="Sell works from you collection"
@@ -90,14 +117,10 @@ export class MyProfile extends React.Component<Props, {}> {
             onPress={goToUserSettings}
             isTop={false}
           />
-        </View>
+        </ButtonSection>
       </ScrollView>
     )
   }
-}
-
-interface Styles {
-  tabView: ViewStyle
 }
 
 export default createFragmentContainer(

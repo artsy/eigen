@@ -3,6 +3,9 @@
 
 ### Master
 
+-   Renames MyProfile -> MyAccount, and sets up the design for it - orta
+
+
 ### 1.4.0-beta.5
 
 ###### Dev
