@@ -2,11 +2,11 @@ import React from "react"
 import "react-native"
 
 import * as renderer from "react-test-renderer"
-import AuctionItem from "../AuctionItem"
+import SaleItem from "../SaleItem"
 
 it("renders correctly", () => {
-  const auction = renderer.create(<AuctionItem auction={props} />) as any
-  expect(auction).toMatchSnapshot()
+  const sale = renderer.create(<SaleItem sale={props} />) as any
+  expect(sale).toMatchSnapshot()
 })
 
 const props = {

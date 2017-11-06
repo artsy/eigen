@@ -3,11 +3,11 @@ import { View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 
 import WorksForYou from "../../Containers/WorksForYou"
-import Auctions from "./Components/Auctions"
 import ForYou from "./Components/ForYou"
+import Sales from "./Components/Sales"
 
 import { ForYouRenderer, WorksForYouRenderer } from "../../relay/QueryRenderers"
-import AuctionsRenderer from "./Components/Auctions/Relay/AuctionsRenderer"
+import SalesRenderer from "./Components/Sales/Relay/SalesRenderer"
 
 import renderWithLoadProgress from "../../utils/renderWithLoadProgress"
 import TabBar from "./Components/TabBar"
@@ -31,7 +31,7 @@ export default class Home extends React.Component<null, null> {
           <ForYouRenderer render={renderWithLoadProgress(ForYou)} />
         </Tab>
         <Tab tabLabel="Auctions">
-          <AuctionsRenderer render={renderWithLoadProgress(Auctions)} />
+          <SalesRenderer render={renderWithLoadProgress(Sales)} />
         </Tab>
       </ScrollableTabView>
     )

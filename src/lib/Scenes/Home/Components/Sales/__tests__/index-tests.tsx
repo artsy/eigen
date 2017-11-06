@@ -6,8 +6,7 @@ import * as renderer from "react-test-renderer"
 import Auctions from "../index"
 
 it("looks correct when rendered", () => {
-  const auctions = renderer.create(<Auctions auctions={props} />) as any
-
+  const auctions = renderer.create(<Auctions sales={props} />) as any
   expect(auctions).toMatchSnapshot()
 })
 

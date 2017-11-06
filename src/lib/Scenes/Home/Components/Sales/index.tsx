@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 
 import fonts from "../../../../../data/fonts"
 import Switchboard from "../../../../NativeModules/SwitchBoard"
-import AuctionItem from "./Components/AuctionItem"
+import SaleItem from "./Components/SaleItem"
 
 const Container = styled.View`
   flex: 1;
@@ -26,12 +26,12 @@ const SectionTitle = styled.Text`
 `
 
 interface Props {
-  auctions: Array<{
+  sales: Array<{
     live_start_at: string | null
   }>
 }
 
-class Auctions extends React.Component<Props, null> {
+class Sales extends React.Component<Props, null> {
   handleTap({ item }) {
     Switchboard.presentNavigationViewController(this, item.href)
   }
@@ -47,7 +47,7 @@ class Auctions extends React.Component<Props, null> {
           return (
             <TouchableWithoutFeedback onPress={this.handleTap.bind(this, d)}>
               <View style={{ marginRight: 10, marginBottom: 10 }}>
-                <AuctionItem key={d.index} auction={d.item} />
+                <SaleItem key={d.index} sale={d.item} />
               </View>
             </TouchableWithoutFeedback>
           )
@@ -57,9 +57,9 @@ class Auctions extends React.Component<Props, null> {
   }
 
   render() {
-    const auctions = this.props.auctions
-    const liveAuctions = auctions.filter(a => !!a.live_start_at)
-    const timedAuctions = auctions.filter(a => !a.live_start_at)
+    const sales = this.props.sales
+    const liveAuctions = sales.filter(a => !!a.live_start_at)
+    const timedAuctions = sales.filter(a => !a.live_start_at)
     const sections = [
       {
         data: [
@@ -99,10 +99,10 @@ class Auctions extends React.Component<Props, null> {
   }
 }
 
-export default createFragmentContainer(Auctions, {
-  auctions: graphql`
-    fragment Auctions_auctions on Sale @relay(plural: true) {
-      ...AuctionItem_auction
+export default createFragmentContainer(Sales, {
+  sales: graphql`
+    fragment Sales_sales on Sale @relay(plural: true) {
+      ...SaleItem_sale
       live_start_at
       href
     }
