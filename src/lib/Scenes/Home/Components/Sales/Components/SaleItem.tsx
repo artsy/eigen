@@ -2,7 +2,7 @@ import moment from "moment"
 import * as React from "react"
 import styled from "styled-components/native"
 
-import { Text, View } from "react-native"
+import { Dimensions, Text, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import fonts from "../../../../../../data/fonts"
@@ -10,9 +10,15 @@ import OpaqueImageView from "../../../../../Components/OpaqueImageView"
 import Serif from "../../../../../Components/Text/Serif"
 import { liveDate, timedDate } from "../formatDate"
 
+const screenSize = Dimensions.get("window")
+const isIPad = screenSize.width > 700
+const numColumns = isIPad ? 4 : 2
+const gutterSize = isIPad ? 100 : 60
+const containerWidth = (screenSize.width - gutterSize) / numColumns
+
 const Container = styled.View`
-  width: 158px;
-  height: 196px;
+  width: ${containerWidth}px;
+  height: ${containerWidth * 1.24}px;
   position: relative;
   margin: 5px;
 `
@@ -61,6 +67,7 @@ const Badge = styled.View`
   background: white;
   border-radius: 2px;
   padding: 1px 4px;
+  margin-left: 3px;
 `
 
 const BadgeText = styled.Text`

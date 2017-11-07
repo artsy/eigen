@@ -1,5 +1,5 @@
 import * as React from "react"
-import { FlatList, SectionList, TouchableWithoutFeedback, View } from "react-native"
+import { Dimensions, FlatList, SectionList, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -37,11 +37,12 @@ class Sales extends React.Component<Props, null> {
   }
 
   renderList(itemData) {
+    const numColumns = Dimensions.get("window").width > 700 ? 4 : 2
     return (
       <FlatList
         contentContainerStyle={{ justifyContent: "space-between", padding: 5, display: "flex" }}
         data={itemData.data}
-        numColumns={2}
+        numColumns={numColumns}
         keyExtractor={(item, index) => item.__id}
         renderItem={d => {
           return (
@@ -81,7 +82,11 @@ class Sales extends React.Component<Props, null> {
 
     return (
       <SectionList
-        contentContainerStyle={{ justifyContent: "space-between", padding: 15, display: "flex" }}
+        contentContainerStyle={{
+          justifyContent: "space-between",
+          padding: 15,
+          display: "flex",
+        }}
         stickySectionHeadersEnabled={false}
         sections={sections}
         keyExtractor={(item, index) => item.id}

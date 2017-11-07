@@ -24,9 +24,9 @@ function formatDate(date, isStarted = false, isRegister = false) {
     formatted = moment(date).fromNow().replace("in ", "") + " left"
   } else if (isRegister) {
     if (moment().diff(moment(date), "hours") > -24) {
-      formatted = "Register by " + moment(date).format("ha")
+      formatted = "Register by\n" + moment(date).format("ha")
     } else {
-      formatted = "Register by " + moment(date).format("MMM D, ha")
+      formatted = "Register by\n" + moment(date).format("MMM D, ha")
     }
   } else {
     formatted = "Live " + moment(date).fromNow()
