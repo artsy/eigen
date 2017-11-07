@@ -21,7 +21,6 @@ exports[`Sets up the right view hierarchy 1`] = `
           "alignSelf": "center",
           "backgroundColor": "black",
           "height": "100%",
-          "maxWidth": 540,
           "width": "100%",
         },
         undefined,
@@ -52,78 +51,88 @@ exports[`Sets up the right view hierarchy 1`] = `
         <View
           style={
             Object {
-              "alignContent": "center",
-              "flexGrow": 1,
-              "justifyContent": "flex-end",
-              "marginLeft": 20,
-              "marginRight": 20,
-              "marginTop": 20,
+              "alignSelf": "center",
+              "flex": 1,
+              "maxWidth": 540,
+              "width": "100%",
             }
           }
         >
           <View
             style={
-              Array [
-                undefined,
-                Object {
-                  "flex": 1,
-                },
-              ]
+              Object {
+                "flexDirection": "row-reverse",
+                "marginLeft": 20,
+                "marginRight": 20,
+                "marginTop": 20,
+                "maxHeight": 600,
+              }
             }
           >
             <View
               style={
-                Object {
-                  "flexDirection": "row",
-                }
+                Array [
+                  undefined,
+                  Object {
+                    "flex": 1,
+                  },
+                ]
               }
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                disabled={false}
-                ellipsizeMode="tail"
+              <View
                 style={
-                  Array [
-                    Object {
-                      "color": "#cccccc",
-                      "fontFamily": "AGaramondPro-Regular",
-                      "fontSize": 20,
-                      "marginTop": 5,
-                      "position": "absolute",
-                      "width": "100%",
-                      "zIndex": -1,
-                    },
-                    undefined,
-                  ]
+                  Object {
+                    "flexDirection": "row",
+                  }
                 }
               >
-                Add notes about how you aquired the work. If you’re not sure add any details about how long you’ve had the work.
-              </Text>
-              <TextInput
-                autoCapitalize="sentences"
-                autoFocus={false}
-                keyboardAppearance="dark"
-                multiline={true}
-                onChangeText={[Function]}
-                selectionColor="#cccccc"
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "color": "white",
-                      "flexBasis": 0,
-                      "flexGrow": 1,
-                      "flexShrink": 1,
-                      "fontFamily": "AGaramondPro-Regular",
-                      "fontSize": 20,
-                      "height": "100%",
-                    },
-                    undefined,
-                  ]
-                }
-                value={undefined}
-              />
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "color": "#cccccc",
+                        "fontFamily": "AGaramondPro-Regular",
+                        "fontSize": 20,
+                        "marginTop": 5,
+                        "position": "absolute",
+                        "width": "100%",
+                        "zIndex": -1,
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  Add notes about how you aquired the work. If you’re not sure add any details about how long you’ve had the work.
+                </Text>
+                <TextInput
+                  autoCapitalize="sentences"
+                  autoFocus={false}
+                  keyboardAppearance="dark"
+                  multiline={true}
+                  onChangeText={[Function]}
+                  selectionColor="#cccccc"
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "color": "white",
+                        "flexBasis": 0,
+                        "flexGrow": 1,
+                        "flexShrink": 1,
+                        "fontFamily": "AGaramondPro-Regular",
+                        "fontSize": 20,
+                        "height": "100%",
+                      },
+                      undefined,
+                    ]
+                  }
+                  value={undefined}
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -132,7 +141,7 @@ exports[`Sets up the right view hierarchy 1`] = `
         style={
           Array [
             Object {
-              "backgroundColor": "#e5e5e5",
+              "backgroundColor": "#666666",
               "height": 1,
             },
             undefined,
@@ -216,7 +225,6 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
           "alignSelf": "center",
           "backgroundColor": "black",
           "height": "100%",
-          "maxWidth": 540,
           "width": "100%",
         },
         undefined,
@@ -247,56 +255,66 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
         <View
           style={
             Object {
-              "alignContent": "center",
-              "flexGrow": 1,
-              "justifyContent": "flex-end",
-              "marginLeft": 20,
-              "marginRight": 20,
-              "marginTop": 20,
+              "alignSelf": "center",
+              "flex": 1,
+              "maxWidth": 540,
+              "width": "100%",
             }
           }
         >
           <View
             style={
-              Array [
-                undefined,
-                Object {
-                  "flex": 1,
-                },
-              ]
+              Object {
+                "flexDirection": "row-reverse",
+                "marginLeft": 20,
+                "marginRight": 20,
+                "marginTop": 20,
+                "maxHeight": 600,
+              }
             }
           >
             <View
               style={
-                Object {
-                  "flexDirection": "row",
-                }
+                Array [
+                  undefined,
+                  Object {
+                    "flex": 1,
+                  },
+                ]
               }
             >
-              <TextInput
-                autoCapitalize="sentences"
-                autoFocus={false}
-                keyboardAppearance="dark"
-                multiline={true}
-                onChangeText={[Function]}
-                selectionColor="#cccccc"
+              <View
                 style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "color": "white",
-                      "flexBasis": 0,
-                      "flexGrow": 1,
-                      "flexShrink": 1,
-                      "fontFamily": "AGaramondPro-Regular",
-                      "fontSize": 20,
-                      "height": "100%",
-                    },
-                    undefined,
-                  ]
+                  Object {
+                    "flexDirection": "row",
+                  }
                 }
-                value="Acquired by my father somewhere"
-              />
+              >
+                <TextInput
+                  autoCapitalize="sentences"
+                  autoFocus={false}
+                  keyboardAppearance="dark"
+                  multiline={true}
+                  onChangeText={[Function]}
+                  selectionColor="#cccccc"
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "color": "white",
+                        "flexBasis": 0,
+                        "flexGrow": 1,
+                        "flexShrink": 1,
+                        "fontFamily": "AGaramondPro-Regular",
+                        "fontSize": 20,
+                        "height": "100%",
+                      },
+                      undefined,
+                    ]
+                  }
+                  value="Acquired by my father somewhere"
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -305,7 +323,7 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
         style={
           Array [
             Object {
-              "backgroundColor": "#e5e5e5",
+              "backgroundColor": "#666666",
               "height": 1,
             },
             undefined,

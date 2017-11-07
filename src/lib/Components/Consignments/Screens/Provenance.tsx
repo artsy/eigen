@@ -18,10 +18,10 @@ interface State {
 }
 
 export default class Provenance extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
-      provenance: null,
+      provenance: props.provenance,
     }
   }
 
@@ -30,9 +30,7 @@ export default class Provenance extends React.Component<Props, State> {
     this.props.navigator.pop()
   }
 
-  textChanged = text => {
-    this.setState({ provenance: text })
-  }
+  textChanged = text => this.setState({ provenance: text })
 
   render() {
     return (
@@ -40,18 +38,17 @@ export default class Provenance extends React.Component<Props, State> {
         <DoneButton onPress={this.doneTapped}>
           <View
             style={{
-              alignContent: "center",
-              justifyContent: "flex-end",
-              flexGrow: 1,
               marginLeft: 20,
               marginRight: 20,
               marginTop: 20,
+              maxHeight: 600,
+              flexDirection: "row-reverse",
             }}
           >
             <TextArea
               text={{
                 onChangeText: this.textChanged,
-                value: this.props.provenance,
+                value: this.state.provenance,
                 placeholder:
                   "Add notes about how you aquired the work. If you’re not sure add any details about how long you’ve had the work.",
                 autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,

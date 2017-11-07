@@ -1,12 +1,21 @@
 import * as React from "react"
+import {
+  Dimensions,
+  NavigatorIOS,
+  Route,
+  ScrollView,
+  Text,
+  TouchableHighlight,
+  View,
+  ViewProperties,
+} from "react-native"
 
+import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import Circle from "../Components/CircleImage"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { Button } from "../Components/FormElements"
-import { BodyText as P, LargeHeadline } from "../Typography"
+import { BodyText as P, LargeHeadline, SmallPrint } from "../Typography"
 import Overview from "./Overview"
-
-import { NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -16,23 +25,61 @@ interface Props extends ViewProperties {
 export default class Welcome extends React.Component<Props, null> {
   goTapped = () => this.props.navigator.push({ component: Overview })
 
+  // It's not optimal to dismiss the modal, but otherwise we get into all sorts of tricky states
+  privacyPolicyTapped = () =>
+    SwitchBoard.dismissModalViewController(this) && SwitchBoard.presentNavigationViewController(this, "/privacy")
+
+  TOSTapped = () =>
+    SwitchBoard.dismissModalViewController(this) && SwitchBoard.presentNavigationViewController(this, "/terms")
+
   render() {
+    const isPad = Dimensions.get("window").width > 700
+    const isPadHorizontal = Dimensions.get("window").height > 700
+
+    const TOS = () =>
+      <Text style={{ textDecorationStyle: "solid", textDecorationLine: "underline" }} onPress={this.TOSTapped}>
+        Terms of Sevice
+      </Text>
+
+    const Privacy = () =>
+      <Text
+        style={{ textDecorationStyle: "solid", textDecorationLine: "underline" }}
+        onPress={this.privacyPolicyTapped}
+      >
+        Privacy Policy
+      </Text>
+
     return (
-      <ConsignmentBG>
-        <ScrollView style={{ flex: 1 }}>
-          <View style={{ paddingTop: 40, alignItems: "center" }}>
+      <ConsignmentBG showCloseButton>
+        <ScrollView style={{ flex: 1 }} centerContent>
+          <View
+            style={{
+              marginTop: 40,
+              alignItems: "center",
+              alignSelf: "center",
+              width: "100%",
+              maxWidth: 540,
+            }}
+          >
             <LargeHeadline>Sell works from your collection through our partner network</LargeHeadline>
 
-            <View style={{ width: 300, alignItems: "center", marginTop: 20 }}>
+            <View style={{ width: 300, alignItems: "center", marginVertical: isPad ? 60 : 20 }}>
               <Circle source={require("../../../../../images/consignments/email.png")} />
 
-              <P>Sell work from your collection through our partner network.</P>
-              <Circle source={require("../../../../../images/consignments/hammer.png")} />
+              <P>Receive offers from partner galleries and auction houses</P>
+              <Circle
+                source={require("../../../../../images/consignments/hammer.png")}
+                style={{ marginTop: isPad ? 30 : 0 }}
+              />
 
-              <P>Get your work placed in an upcoming sale.</P>
+              <P>Get your work placed in an upcoming sale</P>
             </View>
 
             <Button text="GET STARTED" onPress={this.goTapped} />
+
+            <SmallPrint style={{ width: 360, marginTop: 20 }}>
+              By submitting works to Artsy’s consignment program you agree to our {TOS()} and {Privacy()}
+            </SmallPrint>
           </View>
         </ScrollView>
       </ConsignmentBG>

@@ -2,19 +2,19 @@ import * as React from "react"
 import { KeyboardAvoidingView, TouchableOpacity, View } from "react-native"
 
 import styled from "styled-components/native"
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
+import { Colors } from "../../../../data/colors"
+import { Fonts } from "../../../../data/fonts"
 
 const ButtonText = styled.Text`
   color: white;
-  font-family: "${fonts["avant-garde-regular"]}";
+  font-family: "${Fonts.AvantGardeRegular}";
   flex: 1;
   text-align: center;
   font-size: 14;
 `
 
 const Separator = styled.View`
-  background-color: ${colors["gray-regular"]};
+  background-color: ${Colors.GraySemibold};
   height: 1;
 `
 
@@ -30,10 +30,17 @@ export interface BottomAlignedProps extends React.Props<JSX.Element> {
   bodyStyle: ButtonBodyStyle
   buttonText: string
   disabled?: boolean
+  verticalOffset?: number
 }
 
+const defaultVerticalOffset = 15
+
 const BottomAlignedButton: React.SFC<BottomAlignedProps> = props =>
-  <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={15} style={{ flex: 1 }}>
+  <KeyboardAvoidingView
+    behavior="padding"
+    keyboardVerticalOffset={props.verticalOffset || defaultVerticalOffset}
+    style={{ flex: 1 }}
+  >
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {props.children}
     </View>

@@ -40,7 +40,7 @@ exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#e5e5e5",
+          "backgroundColor": "#666666",
           "height": 1,
         },
         undefined,
@@ -239,7 +239,7 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
     style={
       Array [
         Object {
-          "backgroundColor": "#e5e5e5",
+          "backgroundColor": "#666666",
           "height": 1,
         },
         undefined,

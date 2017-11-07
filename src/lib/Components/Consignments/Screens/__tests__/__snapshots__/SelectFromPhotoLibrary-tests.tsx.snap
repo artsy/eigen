@@ -21,7 +21,6 @@ exports[`Sets up the right view hierarchy 1`] = `
           "alignSelf": "center",
           "backgroundColor": "black",
           "height": "100%",
-          "maxWidth": 540,
           "width": "100%",
         },
         undefined,
@@ -155,7 +154,7 @@ exports[`Sets up the right view hierarchy 1`] = `
         style={
           Array [
             Object {
-              "backgroundColor": "#e5e5e5",
+              "backgroundColor": "#666666",
               "height": 1,
             },
             undefined,
