@@ -1,5 +1,5 @@
 import { shallow } from "enzyme"
-import * as React from "react"
+import React from "react"
 import "react-native"
 import { TouchableWithoutFeedback } from "react-native"
 import * as renderer from "react-test-renderer"

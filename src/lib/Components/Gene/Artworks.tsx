@@ -1,5 +1,5 @@
 import * as PropTypes from "prop-types"
-import * as React from "react"
+import React from "react"
 import ArtworksGrid from "../ArtworkGrids/RelayConnections/GeneArtworksGrid"
 
 class Artworks extends React.Component<any, any> {

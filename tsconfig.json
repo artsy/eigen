@@ -12,7 +12,8 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "types": ["jest", "react", "react-native"],
-    "plugins": [{ "name": "typescript-styled-plugin" }]
+    "plugins": [{ "name": "typescript-styled-plugin" }],
+    "baseUrl": "src"
   },
   "include": ["typings/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "dangerfile.ts"],
   "exclude": [

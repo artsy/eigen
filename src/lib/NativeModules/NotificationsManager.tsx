@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { EmitterSubscription, NativeEventEmitter, NativeModules } from "react-native"
 const { ARNotificationsManager } = NativeModules
 

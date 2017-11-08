@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 
 import { LayoutAnimation, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
 import { WhiteButton } from "../../Buttons"

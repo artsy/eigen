@@ -1,7 +1,8 @@
-import * as React from "react"
+import React from "react"
 import { Animated, StyleSheet, Text, View } from "react-native"
 import styled, { StyledFunction } from "styled-components/native"
-import fonts from "../../../../data/fonts"
+
+import fonts from "lib/data/fonts"
 
 interface TabBarProps {
   goToPage?: () => null

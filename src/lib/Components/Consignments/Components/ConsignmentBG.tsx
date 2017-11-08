@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { Image, LayoutChangeEvent, View, ViewProperties, ViewStyle } from "react-native"
 
 import styled from "styled-components/native"

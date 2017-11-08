@@ -1,12 +1,12 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import { Dimensions, ScrollView, Text, TouchableOpacity, View, ViewProperties, ViewStyle } from "react-native"
 import SwitchBoard from "../NativeModules/SwitchBoard"
 
-import { Colors } from "../../data/colors"
-import { Fonts } from "../../data/fonts"
+import { Colors } from "lib/data/colors"
+import { Fonts } from "lib/data/fonts"
 
 import Separator from "../Components/Separator"
 import SerifText from "../Components/Text/Serif"

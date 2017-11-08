@@ -1,5 +1,6 @@
-import * as React from "react"
+import React from "react"
 
+import { Fonts } from "lib/data/fonts"
 import {
   Keyboard,
   LayoutAnimation,
@@ -15,7 +16,6 @@ import {
   ViewProperties,
 } from "react-native"
 import { ConsignmentMetadata, SearchResult } from "../"
-import { Fonts } from "../../../../data/fonts"
 import TODO from "../Components/ArtworkConsignmentTodo"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"

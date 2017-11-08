@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 

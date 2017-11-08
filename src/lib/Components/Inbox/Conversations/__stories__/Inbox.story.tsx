@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
-import * as React from "react"
+import React from "react"
 import "react-native"
 // import StubContainer from "react-storybooks-relay-container"
 

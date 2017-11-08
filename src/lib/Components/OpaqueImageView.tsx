@@ -1,5 +1,5 @@
 import * as PropTypes from "prop-types"
-import * as React from "react"
+import React from "react"
 
 import {
   ColorPropType,
@@ -10,7 +10,7 @@ import {
   StyleSheet,
 } from "react-native"
 
-import colors from "../../data/colors"
+import colors from "lib/data/colors"
 
 const GeminiHost = "d7hftxdivxxvm.cloudfront.net"
 const ImageQuality = 85

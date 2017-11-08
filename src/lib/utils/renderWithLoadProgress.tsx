@@ -1,8 +1,8 @@
-import * as React from "react"
+import React from "react"
 
-import LoadFailureView from "../Components/LoadFailureView"
-import Spinner from "../Components/Spinner"
-import { RenderCallback } from "../relay/QueryRenderers"
+import LoadFailureView from "lib/Components/LoadFailureView"
+import Spinner from "lib/Components/Spinner"
+import { RenderCallback } from "lib/relay/QueryRenderers"
 
 export default (Component: React.ReactType, initialProps: object = {}): RenderCallback => {
   let retrying = false

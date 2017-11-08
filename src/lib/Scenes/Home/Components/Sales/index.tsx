@@ -1,10 +1,11 @@
-import * as React from "react"
+import React from "react"
 import { Dimensions, FlatList, SectionList, TouchableWithoutFeedback, View } from "react-native"
+
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import fonts from "../../../../../data/fonts"
-import Switchboard from "../../../../NativeModules/SwitchBoard"
+import fonts from "lib/data/fonts"
+import Switchboard from "lib/NativeModules/SwitchBoard"
 import SaleItem from "./Components/SaleItem"
 
 const Container = styled.View`

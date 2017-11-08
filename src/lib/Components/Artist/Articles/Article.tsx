@@ -1,10 +1,10 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewProperties, ViewStyle } from "react-native"
 
-import fonts from "../../../../data/fonts"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
+import fonts from "lib/data/fonts"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import ImageView from "../../OpaqueImageView"
 
 interface Props extends ViewProperties {

@@ -1,11 +1,11 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { StyleSheet, Text, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
-import SerifText from "../../Text/Serif"
+import SerifText from "lib/Components/Text/Serif"
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 
 interface Props extends ViewProperties {
   show: {

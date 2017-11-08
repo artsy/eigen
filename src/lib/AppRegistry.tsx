@@ -1,5 +1,5 @@
 import * as _ from "lodash"
-import * as React from "react"
+import React from "react"
 import { AppRegistry, ViewProperties } from "react-native"
 import { track } from "./utils/track"
 

@@ -1,7 +1,7 @@
 // TODO: Move to metametaphysics after Relay Modern migration.
 
 // import { storiesOf } from "@storybook/react-native"
-// import * as React from "react"
+// import React from "react"
 // import { View } from "react-native"
 // import StubContainer from "react-storybooks-relay-container"
 

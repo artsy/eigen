@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
-import * as React from "react"
+import React from "react"
 
 import { metadata, withArtist, withLocation, withMetadata, withOnePhoto, withPhotos } from "./consignmentSetups"
 

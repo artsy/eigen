@@ -1,13 +1,13 @@
 import moment from "moment"
-import * as React from "react"
+import React from "react"
 import styled from "styled-components/native"
 
 import { Dimensions, Text, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import fonts from "../../../../../../data/fonts"
-import OpaqueImageView from "../../../../../Components/OpaqueImageView"
-import Serif from "../../../../../Components/Text/Serif"
+import OpaqueImageView from "lib/Components/OpaqueImageView"
+import Serif from "lib/Components/Text/Serif"
+import fonts from "lib/data/fonts"
 import { liveDate, timedDate } from "../formatDate"
 
 const Image = styled(OpaqueImageView)`

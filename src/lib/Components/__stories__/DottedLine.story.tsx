@@ -1,7 +1,8 @@
 import { storiesOf } from "@storybook/react-native"
-import * as React from "react"
+import React from "react"
 import { View } from "react-native"
-import colors from "../../../data/colors"
+
+import colors from "lib/data/colors"
 
 import DottedLine from "../DottedLine"
 

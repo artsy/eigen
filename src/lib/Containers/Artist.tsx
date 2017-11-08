@@ -1,16 +1,16 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { Dimensions, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
-import About from "../Components/Artist/About"
-import Artworks from "../Components/Artist/Artworks"
-import Header from "../Components/Artist/Header"
-import Shows from "../Components/Artist/Shows"
-import Events from "../NativeModules/Events"
+import About from "lib/Components/Artist/About"
+import Artworks from "lib/Components/Artist/Artworks"
+import Header from "lib/Components/Artist/Header"
+import Shows from "lib/Components/Artist/Shows"
+import Events from "lib/NativeModules/Events"
 
-import { SwitchEvent } from "../Components/SwitchView"
-import TabView from "../Components/TabView"
+import { SwitchEvent } from "lib/Components/SwitchView"
+import TabView from "lib/Components/TabView"
 
 const isPad = Dimensions.get("window").width > 700
 

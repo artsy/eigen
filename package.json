@@ -119,6 +119,9 @@
       }
     },
     "moduleFileExtensions": ["ts", "tsx", "js"],
+    "moduleNameMapper": {
+      "^lib/(.*)": "<rootDir>/src/lib/$1"
+    },
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
