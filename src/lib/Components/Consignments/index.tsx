@@ -25,11 +25,16 @@ export interface SearchResult {
   }
 }
 
+export interface Photo {
+  file: string
+  uploaded: boolean
+}
+
 export interface ConsignmentSetup {
   submission_id?: string
   state?: "DRAFT" | "SUBMITTED"
   artist?: SearchResult
-  photos?: string[]
+  photos?: Photo[]
   metadata?: ConsignmentMetadata
   provenance?: string
   editionInfo?: {

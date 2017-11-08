@@ -5,9 +5,9 @@
 // import * as Relay from "react-relay/classic"
 
 // import Routes from "../../relay/routes"
-// import MyAccount from "../MyAccount"
+// import MyProfile from "../MyProfile"
 
 // storiesOf("My Account").add("Root", () => {
-//   const profileRoute = new Routes.MyAccount()
-//   return <Relay.RootContainer Component={MyAccount} route={profileRoute} />
+//   const profileRoute = new Routes.MyProfile()
+//   return <Relay.RootContainer Component={MyProfile} route={profileRoute} />
 // })

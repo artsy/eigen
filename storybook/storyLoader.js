@@ -24,7 +24,8 @@ function loadStories() {
   require('../src/lib/Containers/__stories__/Artist.story.tsx');
   require('../src/lib/Containers/__stories__/Gene.story.tsx');
   require('../src/lib/Containers/__stories__/Inquiry.story.tsx');
-  require('../src/lib/Containers/__stories__/MyAccount.story.tsx');
+  require('../src/lib/Containers/__stories__/MyProfile.story.tsx');
+  require('../src/lib/Containers/__stories__/Sale.story.tsx');
   
 }
 

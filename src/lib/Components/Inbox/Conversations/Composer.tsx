@@ -55,7 +55,6 @@ export default class Composer extends React.Component<Props, State> {
   }
 
   submitText() {
-    Keyboard.dismiss()
     if (this.props.onSubmit) {
       this.props.onSubmit(this.state.text)
       this.setState({ text: null })
@@ -90,9 +89,7 @@ export default class Composer extends React.Component<Props, State> {
             placeholder={"Reply..."}
             placeholderTextColor={colors["gray-semibold"]}
             keyboardAppearance={"dark"}
-            onEndEditing={() => {
-              this.setState({ active: false })
-            }}
+            onEndEditing={() => this.setState({ active: false })}
             onFocus={() => this.setState({ active: this.input.isFocused() })}
             onChangeText={text => this.setState({ text })}
             ref={input => (this.input = input)}

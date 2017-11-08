@@ -3,15 +3,18 @@
 exports[`renders properly 1`] = `
 <View
   style={
-    Object {
-      "alignItems": "center",
-      "borderColor": "white",
-      "borderRadius": 40,
-      "borderWidth": 2,
-      "height": 80,
-      "justifyContent": "center",
-      "width": 80,
-    }
+    Array [
+      Object {
+        "alignItems": "center",
+        "borderColor": "white",
+        "borderRadius": 40,
+        "borderWidth": 2,
+        "height": 80,
+        "justifyContent": "center",
+        "width": 80,
+      },
+      undefined,
+    ]
   }
 >
   <Image

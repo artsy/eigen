@@ -4,14 +4,14 @@ export const withArtist: ConsignmentSetup = { artist: { name: "Glenn Brown", id:
 
 export const withOnePhoto: ConsignmentSetup = {
   ...withArtist,
-  photos: ["https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg"],
+  photos: [{ file: "https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg", uploaded: false }],
 }
 
 export const withPhotos: ConsignmentSetup = {
   ...withArtist,
   photos: [
-    "https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg",
-    "https://d32dm0rphc51dk.cloudfront.net/UivXcEE-GMQuBqBiHmvdcg/small_square.jpg",
+    { file: "https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg", uploaded: true },
+    { file: "https://d32dm0rphc51dk.cloudfront.net/UivXcEE-GMQuBqBiHmvdcg/small_square.jpg", uploaded: true },
   ],
 }
 

@@ -66,8 +66,9 @@ interface Props extends ArtistRelayProps, GeneRelayProps {
   /** The gene in question */
   gene: any
 
-  /** The key to get artworks */
-  queryKey: any
+  mapPropsToArtworksConnection: (props: any) => ArtworksConnection
+
+  mapConnectionNodeToArtwork?: (node: any) => Artwork
 
   /** Filter for artist artworks */
   filter: any
@@ -117,7 +118,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   }
 
   artworksConnection(): ArtworksConnection {
-    return get(this.props, this.props.queryKey) as any
+    return this.props.mapPropsToArtworksConnection(this.props)
   }
 
   fetchNextPage() {
@@ -139,6 +140,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     //   readyState => {
     //     if (readyState.done) {
     //       this.setState({ fetchingNextPage: false })
+    //       // TODO: This uses the old queryKey, please refactor to use mapPropsToArtworksConnection
     //       if (!this.props[this.props.queryKey].artworks.pageInfo.hasNextPage && this.props.onComplete) {
     //         this.props.onComplete()
     //         this.setState({ completed: true })
@@ -181,7 +183,10 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   sectionedArtworks() {
     const sectionedArtworks: Artworks[] = []
     const sectionRatioSums: number[] = []
-    const artworks: Artworks = this.artworksConnection() ? this.artworksConnection().edges.map(({ node }) => node) : []
+    const nodeMapper = this.props.mapConnectionNodeToArtwork ? this.props.mapConnectionNodeToArtwork : node => node
+    const artworks: Artworks = this.artworksConnection()
+      ? this.artworksConnection().edges.map(({ node }) => nodeMapper(node))
+      : []
 
     for (let i = 0; i < this.props.sectionCount; i++) {
       sectionedArtworks.push([])
