@@ -6,7 +6,7 @@
 //    - leting the artwork component do a layout pass and calculate its own height based on the column width.
 // 4. Update height of grid to encompass all items.
 
-import * as React from "react"
+import React from "react"
 import { RelayPaginationProp } from "react-relay"
 
 import { get } from "lodash"

@@ -1,14 +1,14 @@
-import * as React from "react"
+import React from "react"
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 import ParallaxScrollView from "react-native-parallax-scroll-view"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
-import colors from "../../data/colors"
-import SaleArtworksGrid from "../Components/ArtworkGrids/RelayConnections/SaleArtworksGrid"
-import { GhostButton } from "../Components/Buttons"
-import Header from "../Components/Sale/Header"
-import Separator from "../Components/Separator"
-import SerifText from "../Components/Text/Serif"
+import SaleArtworksGrid from "lib/Components/ArtworkGrids/RelayConnections/SaleArtworksGrid"
+import { GhostButton } from "lib/Components/Buttons"
+import Header from "lib/Components/Sale/Header"
+import Separator from "lib/Components/Separator"
+import SerifText from "lib/Components/Text/Serif"
+import colors from "lib/data/colors"
 
 const isPad = Dimensions.get("window").width > 700
 const HeaderHeight = 64

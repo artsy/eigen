@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { Dimensions, NativeModules, StyleSheet, Text, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import OpaqueImageView from "../OpaqueImageView"

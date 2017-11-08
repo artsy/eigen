@@ -1,6 +1,6 @@
 import "react-native"
 
-import * as React from "react"
+import React from "react"
 import * as renderer from "react-test-renderer"
 
 import Articles from "../Articles"

@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { Image, StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -7,7 +7,7 @@ import GenericGrid from "../ArtworkGrids/GenericGrid"
 import Headline from "../Text/Headline"
 import SerifText from "../Text/Serif"
 
-import colors from "../../../data/colors"
+import colors from "lib/data/colors"
 
 export class Notification extends React.Component<RelayProps, any> {
   handleArtistTap() {

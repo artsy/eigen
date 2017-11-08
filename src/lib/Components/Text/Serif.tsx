@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { StyleSheet, Text, TextProperties } from "react-native"
 
 export default class Serif extends React.Component<TextProperties, any> {

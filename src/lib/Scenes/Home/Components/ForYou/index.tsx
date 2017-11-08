@@ -1,9 +1,9 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { ListView, ListViewDataSource, RefreshControl, ScrollView, ScrollViewProps, ViewProperties } from "react-native"
 
-import ArtistRail from "../../../../Components/Home/ArtistRails/ArtistRail"
+import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
 import ArtworkCarousel from "./Components/ArtworkCarousel"
 
 interface DataSourceRow {

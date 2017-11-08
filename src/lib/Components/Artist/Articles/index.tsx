@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { ScrollView, StyleSheet, View, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

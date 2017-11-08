@@ -1,8 +1,8 @@
-import * as React from "react"
+import React from "react"
 import { StyleSheet, Text, TextProperties, TextStyle } from "react-native"
 
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 
 const LargeHeadline: React.SFC<TextProperties> = props => {
   const children: string = (props as any).children

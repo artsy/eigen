@@ -1,7 +1,7 @@
-import * as React from "react"
+import fonts from "lib/data/fonts"
+import React from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
-import fonts from "../../../../data/fonts"
 
 const Title = styled.Text`
   color: white;

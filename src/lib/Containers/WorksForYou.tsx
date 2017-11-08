@@ -1,5 +1,5 @@
 import moment from "moment"
-import * as React from "react"
+import React from "react"
 import { createPaginationContainer, graphql } from "react-relay"
 
 import {
@@ -20,10 +20,10 @@ import GenericGrid from "../Components/ArtworkGrids/GenericGrid"
 // tslint:disable-next-line:no-unused-expression
 GenericGrid
 
-import SerifText from "../Components/Text/Serif"
-import Notification from "../Components/WorksForYou/Notification"
+import SerifText from "lib/Components/Text/Serif"
+import Notification from "lib/Components/WorksForYou/Notification"
 
-import colors from "../../data/colors"
+import colors from "lib/data/colors"
 
 const PageSize = 10
 

@@ -1,6 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
 import moment from "moment"
-import * as React from "react"
+import React from "react"
 import "react-native"
 import { ScrollView } from "react-native"
 

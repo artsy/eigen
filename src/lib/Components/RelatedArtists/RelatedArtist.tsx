@@ -1,11 +1,11 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View } from "react-native"
 
-import colors from "../../../data/colors"
-import fonts from "../../../data/fonts"
-import SwitchBoard from "../../NativeModules/SwitchBoard"
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import ImageView from "../OpaqueImageView"
 
 class RelatedArtist extends React.Component<any, any> {

@@ -1,16 +1,16 @@
 import moment from "moment"
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { MetadataText, PreviewText as P, SmallHeadline } from "../Typography"
 
 import { StyleSheet, TouchableWithoutFeedback, ViewStyle } from "react-native"
 
+import DottedLine from "lib/Components/DottedLine"
+import OpaqueImageView from "lib/Components/OpaqueImageView"
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
-import DottedLine from "../../../Components/DottedLine"
-import OpaqueImageView from "../../OpaqueImageView"
 
 const Card = styled.View`
   margin: 10px 20px 0;

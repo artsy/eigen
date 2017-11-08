@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"

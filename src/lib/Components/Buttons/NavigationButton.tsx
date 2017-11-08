@@ -1,8 +1,8 @@
-import * as React from "react"
+import React from "react"
 import { Image, Text, TouchableWithoutFeedback, View } from "react-native"
 
-import fonts from "../../../data/fonts"
-import SwitchBoard from "../../NativeModules/SwitchBoard"
+import fonts from "lib/data/fonts"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import Separator from "../Separator"
 
 interface Props extends React.Props<NavigationButton> {

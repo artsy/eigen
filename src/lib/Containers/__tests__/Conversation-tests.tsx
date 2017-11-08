@@ -1,5 +1,4 @@
-import * as moment from "moment"
-import * as React from "react"
+import React from "react"
 
 import "react-native"
 import * as renderer from "react-test-renderer"

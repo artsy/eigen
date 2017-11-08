@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -6,9 +6,9 @@ import { TouchableWithoutFeedback } from "react-native"
 
 import { BodyText, MetadataText } from "../Typography"
 
-import colors from "../../../../data/colors"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
-import OpaqueImageView from "../../OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView"
+import colors from "lib/data/colors"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 const Container = styled.View`
   margin: 17px 20px 0;

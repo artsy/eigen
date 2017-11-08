@@ -1,5 +1,5 @@
 import { MarkdownString } from "danger/distribution/dsl/Aliases"
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import { ConnectionHandler } from "relay-runtime"
 
@@ -7,9 +7,10 @@ import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
 import { FlatList, ImageURISource, NetInfo, View, ViewProperties } from "react-native"
 
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
-import colors from "../../data/colors"
-import fonts from "../../data/fonts"
+
 import ConnectivityBanner from "../Components/ConnectivityBanner"
 
 import Composer from "../Components/Inbox/Conversations/Composer"

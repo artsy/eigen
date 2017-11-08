@@ -1,5 +1,5 @@
 import * as _ from "lodash"
-import * as React from "react"
+import React from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import {
@@ -16,12 +16,12 @@ import {
   ViewStyle,
 } from "react-native"
 
-import colors from "../../../../../../data/colors"
-import fonts from "../../../../../../data/fonts"
-import GenericGrid from "../../../../../Components/ArtworkGrids/GenericGrid"
-import Separator from "../../../../../Components/Separator"
-import Spinner from "../../../../../Components/Spinner"
-import SwitchBoard from "../../../../../NativeModules/SwitchBoard"
+import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import Separator from "lib/Components/Separator"
+import Spinner from "lib/Components/Spinner"
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import ArtworkCarouselHeader from "./ArtworkCarouselHeader"
 
 // tslint:disable-next-line:no-var-requires

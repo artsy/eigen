@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import { Animated, Easing, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"

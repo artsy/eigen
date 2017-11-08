@@ -1,12 +1,12 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { ListView, ListViewDataSource, RefreshControl, ScrollView, ScrollViewProps, ViewProperties } from "react-native"
 
-import ArtistRail from "../Components/Home/ArtistRails/ArtistRail"
-import ArtworkRail from "../Components/Home/ArtworkRails/ArtworkRail"
-import HeroUnits from "../Components/Home/HeroUnits"
-import SearchBar from "../Components/Home/SearchBar"
+import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
+import ArtworkRail from "lib/Components/Home/ArtworkRails/ArtworkRail"
+import HeroUnits from "lib/Components/Home/HeroUnits"
+import SearchBar from "lib/Components/Home/SearchBar"
 
 interface DataSourceRow {
   type: "search_bar" | "hero_units" | "artwork" | "artist"

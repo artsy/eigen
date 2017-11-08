@@ -1,13 +1,14 @@
-import * as React from "react"
+import React from "react"
 import { StyleSheet, View, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import ArtistForSaleArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistForSaleArtworksGrid"
 import ArtistNotForSaleArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistNotForSaleArtworksGrid"
-import Separator from "../../Separator"
-import SerifText from "../../Text/Serif"
 
-import colors from "../../../../data/colors"
+import Separator from "lib/Components/Separator"
+import SerifText from "lib/Components/Text/Serif"
+
+import colors from "lib/data/colors"
 
 interface RenderSectionParams {
   title: string

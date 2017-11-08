@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { graphql, QueryRenderer, QueryRendererProps } from "react-relay"
 
 import createEnvironment from "../../../../../relay/createEnvironment"

@@ -1,7 +1,7 @@
-import * as React from "react"
+import React from "react"
 import { Animated, StyleSheet, TouchableHighlight, View, ViewProperties } from "react-native"
 
-import colors from "../../../data/colors"
+import colors from "lib/data/colors"
 import Headline from "../Text/Headline"
 
 const AnimationDuration = 250

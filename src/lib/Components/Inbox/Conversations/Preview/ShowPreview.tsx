@@ -1,14 +1,14 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { TouchableHighlight } from "react-native"
 
 import { PreviewText as P, Subtitle } from "../../Typography"
 
+import OpaqueImageView from "lib/Components/OpaqueImageView"
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
-import colors from "../../../../../data/colors"
-import fonts from "../../../../../data/fonts"
-import OpaqueImageView from "../../../OpaqueImageView"
 
 const Container = styled.View`
   border-width: 1;

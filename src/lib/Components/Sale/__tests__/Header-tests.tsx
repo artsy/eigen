@@ -1,6 +1,6 @@
 import { NativeModules } from "react-native"
 
-import * as React from "react"
+import React from "react"
 import * as renderer from "react-test-renderer"
 
 import Header from "../Header"

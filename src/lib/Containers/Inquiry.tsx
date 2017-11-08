@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
@@ -14,9 +14,9 @@ import {
   ViewProperties,
 } from "react-native"
 
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
-import colors from "../../data/colors"
-import fonts from "../../data/fonts"
 
 import BottomAlignedButton from "../Components/Consignments/Components/BottomAlignedButton"
 

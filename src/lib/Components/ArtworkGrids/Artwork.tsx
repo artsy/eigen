@@ -1,10 +1,10 @@
 import { map } from "lodash"
-import * as React from "react"
+import React from "react"
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import colors from "../../../data/colors"
-import SwitchBoard from "../../NativeModules/SwitchBoard"
+import colors from "lib/data/colors"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import ImageView from "../OpaqueImageView"
 import SerifText from "../Text/Serif"
 

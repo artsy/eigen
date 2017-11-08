@@ -1,6 +1,6 @@
 import "react-native"
 
-import * as React from "react"
+import React from "react"
 import { renderWithLayout } from "../../../tests/renderWithLayout"
 
 import InfiniteScrollArtworksGrid from "../RelayConnections/ArtistForSaleArtworksGrid"

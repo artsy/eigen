@@ -1,15 +1,16 @@
-import * as React from "react"
+import React from "react"
 import { View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 
-import WorksForYou from "../../Containers/WorksForYou"
+import WorksForYou from "lib/Containers/WorksForYou"
+
 import ForYou from "./Components/ForYou"
 import Sales from "./Components/Sales"
 
-import { ForYouRenderer, WorksForYouRenderer } from "../../relay/QueryRenderers"
+import { ForYouRenderer, WorksForYouRenderer } from "lib/relay/QueryRenderers"
 import SalesRenderer from "./Components/Sales/Relay/SalesRenderer"
 
-import renderWithLoadProgress from "../../utils/renderWithLoadProgress"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import TabBar from "./Components/TabBar"
 
 interface TabProps {

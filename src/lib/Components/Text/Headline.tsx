@@ -1,7 +1,7 @@
-import * as React from "react"
+import React from "react"
 import { StyleSheet, Text, TextProperties } from "react-native"
 
-import fonts from "../../../data/fonts"
+import fonts from "lib/data/fonts"
 
 export default class Headline extends React.Component<TextProperties, any> {
   render() {
