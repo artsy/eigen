@@ -5,6 +5,7 @@ import Gene from "./Gene"
 import Inbox from "./Inbox"
 import Inquiry from "./Inquiry"
 import MyProfile from "./MyProfile"
+import Sale from "./Sale"
 import WorksForYou from "./WorksForYou"
 
 export default {
@@ -12,6 +13,7 @@ export default {
   Conversation,
   Home,
   Gene,
+  Sale,
   WorksForYou,
   MyProfile,
   Inbox,

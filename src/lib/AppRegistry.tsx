@@ -16,6 +16,7 @@ import {
   InquiryRenderer,
   MyProfileRenderer,
   RenderCallback,
+  SaleRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
 
@@ -49,6 +50,11 @@ const Gene: React.SFC<{ geneID: string; refineSettings: { medium: string; price_
 }) => {
   const initialProps = { geneID, medium, price_range }
   return <GeneRenderer {...initialProps} render={renderWithLoadProgress(Containers.Gene, initialProps)} />
+}
+
+const Sale: React.SFC<{ saleID: string }> = ({ saleID }) => {
+  const initialProps = { saleID }
+  return <SaleRenderer {...initialProps} render={renderWithLoadProgress(Containers.Sale, initialProps)} />
 }
 
 // TODO: This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
