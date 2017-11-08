@@ -2,20 +2,13 @@ import moment from "moment"
 import React from "react"
 import styled from "styled-components/native"
 
-import { Text, View } from "react-native"
+import { Dimensions, Text, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Serif from "lib/Components/Text/Serif"
 import fonts from "lib/data/fonts"
 import { liveDate, timedDate } from "../formatDate"
-
-const Container = styled.View`
-  width: 158px;
-  height: 196px;
-  position: relative;
-  margin: 5px;
-`
 
 const Image = styled(OpaqueImageView)`
   position: absolute;
@@ -61,6 +54,7 @@ const Badge = styled.View`
   background: white;
   border-radius: 2px;
   padding: 1px 4px;
+  margin-left: 3px;
 `
 
 const BadgeText = styled.Text`
@@ -78,10 +72,27 @@ const Metadata = styled.Text`
 `
 
 export class SaleItem extends React.Component<RelayProps, null> {
+  get containerWidth(): number {
+    const screenSize = Dimensions.get("window")
+    const isIPad = screenSize.width > 700
+    const numColumns = isIPad ? 4 : 2
+    const gutterSize = isIPad ? 100 : 60
+    return (screenSize.width - gutterSize) / numColumns
+  }
+
   render() {
     const item = this.props.sale
     const timestamp = (item.live_start_at ? liveDate(item) : timedDate(item)).toUpperCase()
     const imageURL = (item.cover_image || { cropped: { url: "" } }).cropped.url
+    const containerWidth = this.containerWidth
+
+    const Container = styled.View`
+      width: ${containerWidth}px;
+      height: ${containerWidth * 1.24}px;
+      position: relative;
+      margin: 5px;
+    `
+
     return (
       <Container>
         <Image imageURL={imageURL} skipGemini={true} />

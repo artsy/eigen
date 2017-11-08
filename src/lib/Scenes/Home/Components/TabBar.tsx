@@ -26,6 +26,7 @@ const Tab = styled.View`
   align-items: center;
   justify-content: center;
   padding-top: 5;
+  flex: 1;
 `
 
 interface TabLabelProps {

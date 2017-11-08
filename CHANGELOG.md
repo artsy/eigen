@@ -40,6 +40,9 @@
 
 -   Adds for For You tab with styled headers - luc
 -   Creates tab view container for new home - luc
+-   Adds Live and timed auctions in home view - luc
+-   Tab bar text now aligned and centered correctly - luc
+-   Adds iPad support for Auctions view layout - luc
 
 ###### Consignments
 
