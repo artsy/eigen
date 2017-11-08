@@ -145,6 +145,27 @@ export const GeneRenderer: React.SFC<GeneRendererProps> = ({ render, geneID, med
   )
 }
 
+interface SaleRendererProps extends RendererProps {
+  saleID: string
+}
+
+export const SaleRenderer: React.SFC<SaleRendererProps> = ({ render, saleID }) => {
+  return (
+    <QueryRenderer
+      environment={environment}
+      query={graphql`
+        query QueryRenderersSaleQuery($saleID: String!) {
+          sale(id: $saleID) {
+            ...Sale_sale
+          }
+        }
+      `}
+      variables={{ saleID }}
+      render={render}
+    />
+  )
+}
+
 interface WorksForYouRendererProps extends RendererProps {
   selectedArtist?: string
 }

@@ -6,6 +6,7 @@ it("should export all components", () => {
     "Conversation",
     "Home",
     "Gene",
+    "Sale",
     "WorksForYou",
     "MyProfile",
     "Inbox",
