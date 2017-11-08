@@ -14,7 +14,7 @@ describe("live auction", () => {
     const auction = { ...liveAuction }
     const date = moment().add(2, "hour").toISOString()
     auction.live_start_at = date
-    expect(liveDate(liveAuction)).toEqual("Register by " + moment(auction.registration_ends_at).format("MMM D, ha"))
+    expect(liveDate(liveAuction)).toEqual("Register by\n" + moment(auction.registration_ends_at).format("MMM D, ha"))
   })
 })
 

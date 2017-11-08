@@ -226,7 +226,7 @@ exports[`looks correct when rendered 1`] = `
         initialNumToRender={10}
         keyExtractor={[Function]}
         maxToRenderPerBatch={10}
-        numColumns={2}
+        numColumns={4}
         onContentSizeChange={[Function]}
         onEndReachedThreshold={2}
         onLayout={[Function]}
@@ -281,13 +281,13 @@ exports[`looks correct when rendered 1`] = `
                 style={
                   Array [
                     Object {
-                      "height": 196,
+                      "height": 201.5,
                       "marginBottom": 5,
                       "marginLeft": 5,
                       "marginRight": 5,
                       "marginTop": 5,
                       "position": "relative",
-                      "width": 158,
+                      "width": 162.5,
                     },
                     undefined,
                   ]
@@ -378,6 +378,7 @@ exports[`looks correct when rendered 1`] = `
                           Object {
                             "backgroundColor": "white",
                             "borderRadius": 2,
+                            "marginLeft": 3,
                             "paddingBottom": 1,
                             "paddingLeft": 4,
                             "paddingRight": 4,
@@ -476,13 +477,13 @@ exports[`looks correct when rendered 1`] = `
                 style={
                   Array [
                     Object {
-                      "height": 196,
+                      "height": 201.5,
                       "marginBottom": 5,
                       "marginLeft": 5,
                       "marginRight": 5,
                       "marginTop": 5,
                       "position": "relative",
-                      "width": 158,
+                      "width": 162.5,
                     },
                     undefined,
                   ]
@@ -573,6 +574,7 @@ exports[`looks correct when rendered 1`] = `
                           Object {
                             "backgroundColor": "white",
                             "borderRadius": 2,
+                            "marginLeft": 3,
                             "paddingBottom": 1,
                             "paddingLeft": 4,
                             "paddingRight": 4,
@@ -710,7 +712,7 @@ exports[`looks correct when rendered 1`] = `
         initialNumToRender={10}
         keyExtractor={[Function]}
         maxToRenderPerBatch={10}
-        numColumns={2}
+        numColumns={4}
         onContentSizeChange={[Function]}
         onEndReachedThreshold={2}
         onLayout={[Function]}
