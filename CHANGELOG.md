@@ -31,7 +31,7 @@
 -   Creates tab view container for new home - luc
 -   Adds Live and timed auctions in home view - luc
 -   Tab bar text now aligned and centered correctly - luc
--   Adds iPad support to layout - luc
+-   Adds iPad support for Auctions view layout - luc
 
 ###### Consignments
 
