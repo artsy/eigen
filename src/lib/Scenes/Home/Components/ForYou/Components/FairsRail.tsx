@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -23,7 +23,7 @@ const IconTapArea = styled.TouchableHighlight`
   height: 80;
   width: 80;
   border-radius: 40;
-  marginRight: 7;
+  margin-right: 7;
 `
 
 const TouchableWrapper = styled.View`margin-right: 7;`
@@ -32,7 +32,7 @@ const FairIcon = styled(ImageView)`
   height: 80;
   width: 80;
   border-radius: 40;
-  marginRight: 7;
+  margin-right: 7;
 `
 
 class FairsRail extends React.Component<RelayProps, any> {
