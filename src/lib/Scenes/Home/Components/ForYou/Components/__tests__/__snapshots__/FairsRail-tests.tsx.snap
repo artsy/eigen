@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks correct when rendered 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "marginBottom": 15,
+        "marginLeft": 20,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    disabled={false}
+    ellipsizeMode="tail"
+    numberOfLines={0}
+    style={
+      Object {
+        "fontFamily": "AGaramondPro-Regular",
+        "fontSize": 25,
+        "textAlign": "left",
+      }
+    }
+  >
+    Recommended Art Fairs
+  </Text>
+  <RCTScrollView
+    horizontal={true}
+    scrollsToTop={false}
+    showsHorizontalScrollIndicator={false}
+    style={
+      Array [
+        Object {
+          "flexDirection": "row",
+          "marginTop": 10,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View>
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+            },
+            Array [
+              Object {
+                "borderRadius": 40,
+                "height": 80,
+                "marginRight": 7,
+                "width": 80,
+              },
+              undefined,
+            ],
+          ]
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "marginRight": 7,
+              },
+              undefined,
+            ]
+          }
+        >
+          <AROpaqueImageView
+            imageURL="https://neopets.jpg"
+            placeholderBackgroundColor="white"
+            style={
+              Array [
+                Object {
+                  "borderRadius": 40,
+                  "height": 80,
+                  "marginRight": 7,
+                  "width": 80,
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;

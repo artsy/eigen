@@ -8,11 +8,7 @@ if (Emission && Emission.gravityAPIHost && Emission.metaphysicsAPIHost) {
   metaphysicsURL = Emission.metaphysicsAPIHost
   gravityURL = Emission.gravityAPIHost
 } else {
-<<<<<<< HEAD
   metaphysicsURL = "https://metaphysics-production.artsy.net"
-=======
-  metaphysicsURL = "https://metaphysics-staging.artsy.net"
->>>>>>> [Home] Visuals and selection handling for fairs rail
   gravityURL = "https://api.artsy.net"
 }
 

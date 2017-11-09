@@ -2,24 +2,12 @@ import * as React from "react"
 import { createFragmentContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
-import {
-  Animated,
-  Easing,
-  Image,
-  ImageURISource,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-  ViewProperties,
-  ViewStyle,
-} from "react-native"
+import { ScrollView, TouchableHighlight } from "react-native"
 
-import ImageView from "../../../../../Components/OpaqueImageView"
-import Separator from "../../../../../Components/Separator"
-import Switchboard from "../../../../../NativeModules/SwitchBoard"
-import SectionTitle from "./SectionTitle"
+import ImageView from "lib/Components/OpaqueImageView"
+import Separator from "lib/Components/Separator"
+import Switchboard from "lib/NativeModules/SwitchBoard"
+import SectionTitle from "lib/Scenes/Home/Components/SectionTitle"
 
 const Container = styled.View`
   margin-left: 20;
