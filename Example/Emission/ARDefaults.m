@@ -28,7 +28,7 @@ NSString *const ARRNPackagerHostDefault = @"ARStagingRNPackagerHostDefault";
     ARUseStagingDefault : @(useStagingDefault),
     ARStagingAPIURLDefault : @"https://stagingapi.artsy.net",
     ARStagingWebURLDefault : @"https://staging.artsy.net",
-    ARStagingMetaphysicsURLDefault : @"http://metaphysics-staging.artsy.net",
+    ARStagingMetaphysicsURLDefault : @"https://metaphysics-staging.artsy.net",
     ARRNPackagerHostDefault : @"localhost",
   }];
 }

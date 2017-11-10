@@ -39,6 +39,7 @@
 
 ###### Home
 
+-   Adds a Recommended Fairs Rail - sarah
 -   Adds for For You tab with styled headers - luc
 -   Creates tab view container for new home - luc
 -   Adds Live and timed auctions in home view - luc
