@@ -44,11 +44,9 @@ describe("when it has a special notification", () => {
     const response = selectedArtistResponse()
     const worksForYou = new WorksForYou(response)
     const expectedFormattedNotification = {
-      date: moment().format("MMM DD"),
       message: "1 Work Added",
       artists: "Juliana Huxtable",
       artworks: selectedArtistResponse().viewer.selectedArtist.artworks,
-      status: "UNREAD",
       image: {
         resized: {
           url: "cloudfront.url",
@@ -89,7 +87,6 @@ interface NotificationsResponse {
         edges: Array<{
           node: {
             artists: string
-            date: string
             message: string
             artworks: [{ title: string }]
             image: {
@@ -118,7 +115,6 @@ const notificationsResponse = () => {
             {
               node: {
                 artists: "Jean-Michel Basquiat",
-                date: "Mar 16",
                 message: "1 Work Added",
                 artworks: [{ title: "Anti-Product Postcard" }],
                 image: {
@@ -131,7 +127,6 @@ const notificationsResponse = () => {
             {
               node: {
                 artists: "Ana Mendieta",
-                date: "Mar 16",
                 message: "2 Works Added",
                 artworks: [{ title: "Corazón de Roca con Sangre" }, { title: "Butterfly" }],
                 image: {

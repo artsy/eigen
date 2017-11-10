@@ -34,14 +34,11 @@ export class Notification extends React.Component<RelayProps, any> {
             {notification.image &&
               <Image source={{ uri: notification.image.resized.url }} style={styles.artistAvatar} />}
             <View style={styles.metadataContainer}>
-              <View style={styles.nameAndStatusContainer}>
-                <Headline style={styles.artistName}>
-                  {notification.artists}
-                </Headline>
-                {notification.status === "UNREAD" && <View style={styles.readStatus} />}
-              </View>
+              <Headline style={styles.artistName}>
+                {notification.artists}
+              </Headline>
               <SerifText style={styles.metadata}>
-                {notification.message + " · " + notification.date}
+                {notification.message}
               </SerifText>
             </View>
           </View>
@@ -59,8 +56,6 @@ interface Styles {
   header: ViewStyle
   artistAvatar: ViewStyle
   metadataContainer: ViewStyle
-  nameAndStatusContainer: ViewStyle
-  readStatus: ViewStyle
   artistName: TextStyle
   metadata: TextStyle
   gridContainer: ViewStyle
@@ -85,24 +80,12 @@ const styles = StyleSheet.create<Styles>({
     alignSelf: "center",
     flex: 1,
   },
-  nameAndStatusContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    flexGrow: 1,
-  },
-  readStatus: {
-    backgroundColor: colors["purple-regular"],
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    alignSelf: "center",
-  },
   artistName: {
-    fontSize: 14,
+    fontSize: 13,
   },
   metadata: {
     marginTop: 2,
-    fontSize: 16,
+    fontSize: 15,
     color: colors["gray-semibold"],
   },
   gridContainer: {
@@ -115,7 +98,6 @@ export default createFragmentContainer(
   Notification,
   graphql`
     fragment Notification_notification on NotificationsFeedItem {
-      date(format: "MMM D")
       message
       artists
       artworks {
@@ -124,7 +106,6 @@ export default createFragmentContainer(
         }
         ...GenericGrid_artworks
       }
-      status
       image {
         resized(height: 80, width: 80) {
           url
@@ -136,11 +117,9 @@ export default createFragmentContainer(
 
 interface RelayProps {
   notification: {
-    date: string
     message: string
     artists: string
     artworks: any[]
-    status: string
     image: {
       resized: {
         url: string

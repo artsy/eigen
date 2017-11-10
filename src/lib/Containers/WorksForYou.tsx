@@ -1,4 +1,3 @@
-import moment from "moment"
 import React from "react"
 import { createPaginationContainer, graphql } from "react-relay"
 
@@ -86,11 +85,9 @@ export class WorksForYou extends React.Component<Props, State> {
     const artist = this.props.viewer.selectedArtist
 
     return {
-      date: moment().format("MMM DD"),
       message: artist.artworks.length + (artist.artworks.length > 1 ? " Works Added" : " Work Added"),
       artists: artist.name,
       artworks: artist.artworks,
-      status: "UNREAD",
       image: {
         resized: {
           url: artist.image.resized.url,
@@ -151,7 +148,6 @@ export class WorksForYou extends React.Component<Props, State> {
         scrollEventThrottle={100}
         ref={scrollView => (this.scrollView = scrollView)}
       >
-        <SerifText style={[styles.title, containerMargins]}>Works by Artists you Follow</SerifText>
         <View style={[containerMargins, { flex: 1 }]}>
           {hasNotifications ? this.renderNotifications() : this.renderEmptyState()}
         </View>
