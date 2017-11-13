@@ -32,8 +32,6 @@ interface Props extends RelayProps {
 
 interface State {
   dataSource: ListViewDataSource | null
-  sideMargin: number
-  topMargin: number
   fetchingNextPage: boolean
   completed: boolean
 }
@@ -57,8 +55,6 @@ export class WorksForYou extends React.Component<Props, State> {
 
     this.state = {
       dataSource,
-      sideMargin: 20,
-      topMargin: 0,
       completed: false,
       fetchingNextPage: false,
     }
@@ -97,14 +93,6 @@ export class WorksForYou extends React.Component<Props, State> {
     }
   }
 
-  onLayout = (event: LayoutChangeEvent) => {
-    const layout = event.nativeEvent.layout
-    const sideMargin = layout.width > 600 ? 40 : 20
-    const topMargin = layout.width > 600 ? 20 : 0
-
-    this.setState({ sideMargin, topMargin })
-  }
-
   fetchNextPage() {
     if (this.state.fetchingNextPage || this.state.completed) {
       return
@@ -133,8 +121,6 @@ export class WorksForYou extends React.Component<Props, State> {
   }
 
   render() {
-    const margin = this.state.sideMargin
-    const containerMargins = { marginLeft: margin, marginRight: margin }
     const hasNotifications = this.state.dataSource
 
     /* if showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
@@ -143,12 +129,11 @@ export class WorksForYou extends React.Component<Props, State> {
     return (
       <ScrollView
         contentContainerStyle={hasNotifications ? {} : styles.container}
-        onLayout={this.onLayout.bind(this)}
         onScroll={event => (this.currentScrollOffset = event.nativeEvent.contentOffset.y)}
         scrollEventThrottle={100}
         ref={scrollView => (this.scrollView = scrollView)}
       >
-        <View style={[containerMargins, { flex: 1 }]}>
+        <View style={{ flex: 1 }}>
           {hasNotifications ? this.renderNotifications() : this.renderEmptyState()}
         </View>
       </ScrollView>
@@ -162,7 +147,6 @@ export class WorksForYou extends React.Component<Props, State> {
         renderRow={data => <Notification notification={data} />}
         renderSeparator={(sectionID, rowID) =>
           <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>}
-        style={{ marginTop: this.state.topMargin }}
         onEndReached={() => this.fetchNextPage()}
         scrollEnabled={false}
       />
@@ -209,6 +193,8 @@ const styles = StyleSheet.create<Styles>({
   },
   emptyStateContainer: {
     flex: 1,
+    marginLeft: 20,
+    marginRight: 20,
     justifyContent: "center",
     alignItems: "center",
   },

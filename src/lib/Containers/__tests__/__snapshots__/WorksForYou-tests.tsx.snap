@@ -3,22 +3,15 @@
 exports[`with notifications lays out correctly on larger screens 1`] = `
 <RCTScrollView
   contentContainerStyle={Object {}}
-  onLayout={[Function]}
   onScroll={[Function]}
   scrollEventThrottle={100}
 >
   <View>
     <View
       style={
-        Array [
-          Object {
-            "marginLeft": 40,
-            "marginRight": 40,
-          },
-          Object {
-            "flex": 1,
-          },
-        ]
+        Object {
+          "flex": 1,
+        }
       }
     >
       <RCTScrollView
@@ -32,16 +25,13 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
         renderScrollComponent={[Function]}
         renderSeparator={[Function]}
         scrollEnabled={false}
-        style={
-          Object {
-            "marginTop": 20,
-          }
-        }
       >
         <View>
           <View
             style={
               Object {
+                "marginLeft": 20,
+                "marginRight": 20,
                 "marginTop": 20,
               }
             }
@@ -103,7 +93,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "fontSize": 13,
+                        "fontSize": 12,
                       },
                       Object {
                         "fontFamily": "AvantGardeGothicITC",
@@ -126,7 +116,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                       },
                       Object {
                         "color": "#666666",
-                        "fontSize": 15,
+                        "fontSize": 14,
                         "marginTop": 2,
                       },
                       Object {
@@ -164,6 +154,8 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
           <View
             style={
               Object {
+                "marginLeft": 20,
+                "marginRight": 20,
                 "marginTop": 20,
               }
             }
@@ -225,7 +217,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "fontSize": 13,
+                        "fontSize": 12,
                       },
                       Object {
                         "fontFamily": "AvantGardeGothicITC",
@@ -248,7 +240,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                       },
                       Object {
                         "color": "#666666",
-                        "fontSize": 15,
+                        "fontSize": 14,
                         "marginTop": 2,
                       },
                       Object {
@@ -293,22 +285,15 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
 exports[`with notifications lays out correctly on small screens 1`] = `
 <RCTScrollView
   contentContainerStyle={Object {}}
-  onLayout={[Function]}
   onScroll={[Function]}
   scrollEventThrottle={100}
 >
   <View>
     <View
       style={
-        Array [
-          Object {
-            "marginLeft": 20,
-            "marginRight": 20,
-          },
-          Object {
-            "flex": 1,
-          },
-        ]
+        Object {
+          "flex": 1,
+        }
       }
     >
       <RCTScrollView
@@ -322,16 +307,13 @@ exports[`with notifications lays out correctly on small screens 1`] = `
         renderScrollComponent={[Function]}
         renderSeparator={[Function]}
         scrollEnabled={false}
-        style={
-          Object {
-            "marginTop": 0,
-          }
-        }
       >
         <View>
           <View
             style={
               Object {
+                "marginLeft": 20,
+                "marginRight": 20,
                 "marginTop": 20,
               }
             }
@@ -393,7 +375,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "fontSize": 13,
+                        "fontSize": 12,
                       },
                       Object {
                         "fontFamily": "AvantGardeGothicITC",
@@ -416,7 +398,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                       },
                       Object {
                         "color": "#666666",
-                        "fontSize": 15,
+                        "fontSize": 14,
                         "marginTop": 2,
                       },
                       Object {
@@ -454,6 +436,8 @@ exports[`with notifications lays out correctly on small screens 1`] = `
           <View
             style={
               Object {
+                "marginLeft": 20,
+                "marginRight": 20,
                 "marginTop": 20,
               }
             }
@@ -515,7 +499,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "fontSize": 13,
+                        "fontSize": 12,
                       },
                       Object {
                         "fontFamily": "AvantGardeGothicITC",
@@ -538,7 +522,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                       },
                       Object {
                         "color": "#666666",
-                        "fontSize": 15,
+                        "fontSize": 14,
                         "marginTop": 2,
                       },
                       Object {
@@ -587,22 +571,15 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
       "flex": 1,
     }
   }
-  onLayout={[Function]}
   onScroll={[Function]}
   scrollEventThrottle={100}
 >
   <View>
     <View
       style={
-        Array [
-          Object {
-            "marginLeft": 40,
-            "marginRight": 40,
-          },
-          Object {
-            "flex": 1,
-          },
-        ]
+        Object {
+          "flex": 1,
+        }
       }
     >
       <View
@@ -611,6 +588,8 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
             "alignItems": "center",
             "flex": 1,
             "justifyContent": "center",
+            "marginLeft": 20,
+            "marginRight": 20,
           }
         }
       >
@@ -710,22 +689,15 @@ exports[`without notifications lays out correctly on small screens 1`] = `
       "flex": 1,
     }
   }
-  onLayout={[Function]}
   onScroll={[Function]}
   scrollEventThrottle={100}
 >
   <View>
     <View
       style={
-        Array [
-          Object {
-            "marginLeft": 20,
-            "marginRight": 20,
-          },
-          Object {
-            "flex": 1,
-          },
-        ]
+        Object {
+          "flex": 1,
+        }
       }
     >
       <View
@@ -734,6 +706,8 @@ exports[`without notifications lays out correctly on small screens 1`] = `
             "alignItems": "center",
             "flex": 1,
             "justifyContent": "center",
+            "marginLeft": 20,
+            "marginRight": 20,
           }
         }
       >

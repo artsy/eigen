@@ -4,6 +4,8 @@ exports[`does not show artist avatar if no avatar image exists 1`] = `
 <View
   style={
     Object {
+      "marginLeft": 20,
+      "marginRight": 20,
       "marginTop": 20,
     }
   }
@@ -65,7 +67,7 @@ exports[`does not show artist avatar if no avatar image exists 1`] = `
               "fontSize": 12,
             },
             Object {
-              "fontSize": 13,
+              "fontSize": 12,
             },
             Object {
               "fontFamily": "AvantGardeGothicITC",
@@ -88,7 +90,7 @@ exports[`does not show artist avatar if no avatar image exists 1`] = `
             },
             Object {
               "color": "#666666",
-              "fontSize": 15,
+              "fontSize": 14,
               "marginTop": 2,
             },
             Object {
@@ -129,6 +131,8 @@ exports[`lays out correctly for read notification 1`] = `
 <View
   style={
     Object {
+      "marginLeft": 20,
+      "marginRight": 20,
       "marginTop": 20,
     }
   }
@@ -190,7 +194,7 @@ exports[`lays out correctly for read notification 1`] = `
               "fontSize": 12,
             },
             Object {
-              "fontSize": 13,
+              "fontSize": 12,
             },
             Object {
               "fontFamily": "AvantGardeGothicITC",
@@ -213,7 +217,7 @@ exports[`lays out correctly for read notification 1`] = `
             },
             Object {
               "color": "#666666",
-              "fontSize": 15,
+              "fontSize": 14,
               "marginTop": 2,
             },
             Object {
@@ -254,6 +258,8 @@ exports[`lays out correctly for unread notification 1`] = `
 <View
   style={
     Object {
+      "marginLeft": 20,
+      "marginRight": 20,
       "marginTop": 20,
     }
   }
@@ -315,7 +321,7 @@ exports[`lays out correctly for unread notification 1`] = `
               "fontSize": 12,
             },
             Object {
-              "fontSize": 13,
+              "fontSize": 12,
             },
             Object {
               "fontFamily": "AvantGardeGothicITC",
@@ -338,7 +344,7 @@ exports[`lays out correctly for unread notification 1`] = `
             },
             Object {
               "color": "#666666",
-              "fontSize": 15,
+              "fontSize": 14,
               "marginTop": 2,
             },
             Object {

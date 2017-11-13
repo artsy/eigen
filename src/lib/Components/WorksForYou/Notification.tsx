@@ -64,6 +64,8 @@ interface Styles {
 const styles = StyleSheet.create<Styles>({
   container: {
     marginTop: 20,
+    marginLeft: 20,
+    marginRight: 20,
   },
   header: {
     flexDirection: "row",
@@ -81,11 +83,11 @@ const styles = StyleSheet.create<Styles>({
     flex: 1,
   },
   artistName: {
-    fontSize: 13,
+    fontSize: 12,
   },
   metadata: {
     marginTop: 2,
-    fontSize: 15,
+    fontSize: 14,
     color: colors["gray-semibold"],
   },
   gridContainer: {
