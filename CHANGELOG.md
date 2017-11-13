@@ -39,6 +39,7 @@
 
 ###### Home
 
+-   Updates Artists section (aka works for you notifications) - sarah
 -   Adds a Recommended Fairs Rail - sarah
 -   Adds for For You tab with styled headers - luc
 -   Creates tab view container for new home - luc

@@ -4,6 +4,8 @@ exports[`does not show artist avatar if no avatar image exists 1`] = `
 <View
   style={
     Object {
+      "marginLeft": 20,
+      "marginRight": 20,
       "marginTop": 20,
     }
   }
@@ -54,48 +56,27 @@ exports[`does not show artist avatar if no avatar image exists 1`] = `
         }
       }
     >
-      <View
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
         style={
-          Object {
-            "flexDirection": "row",
-            "flexGrow": 1,
-            "justifyContent": "space-between",
-          }
+          Array [
+            Object {
+              "fontSize": 12,
+            },
+            Object {
+              "fontSize": 12,
+            },
+            Object {
+              "fontFamily": "AvantGardeGothicITC",
+            },
+          ]
         }
       >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "fontSize": 12,
-              },
-              Object {
-                "fontSize": 14,
-              },
-              Object {
-                "fontFamily": "AvantGardeGothicITC",
-              },
-            ]
-          }
-        >
-          JEAN-MICHEL BASQUIAT
-        </Text>
-        <View
-          style={
-            Object {
-              "alignSelf": "center",
-              "backgroundColor": "#6e1fff",
-              "borderRadius": 5,
-              "height": 10,
-              "width": 10,
-            }
-          }
-        />
-      </View>
+        JEAN-MICHEL BASQUIAT
+      </Text>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -109,7 +90,7 @@ exports[`does not show artist avatar if no avatar image exists 1`] = `
             },
             Object {
               "color": "#666666",
-              "fontSize": 16,
+              "fontSize": 14,
               "marginTop": 2,
             },
             Object {
@@ -118,7 +99,7 @@ exports[`does not show artist avatar if no avatar image exists 1`] = `
           ]
         }
       >
-        1 Work Added · Mar 16
+        1 Work Added
       </Text>
     </View>
   </View>
@@ -150,6 +131,8 @@ exports[`lays out correctly for read notification 1`] = `
 <View
   style={
     Object {
+      "marginLeft": 20,
+      "marginRight": 20,
       "marginTop": 20,
     }
   }
@@ -200,37 +183,27 @@ exports[`lays out correctly for read notification 1`] = `
         }
       }
     >
-      <View
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
         style={
-          Object {
-            "flexDirection": "row",
-            "flexGrow": 1,
-            "justifyContent": "space-between",
-          }
+          Array [
+            Object {
+              "fontSize": 12,
+            },
+            Object {
+              "fontSize": 12,
+            },
+            Object {
+              "fontFamily": "AvantGardeGothicITC",
+            },
+          ]
         }
       >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "fontSize": 12,
-              },
-              Object {
-                "fontSize": 14,
-              },
-              Object {
-                "fontFamily": "AvantGardeGothicITC",
-              },
-            ]
-          }
-        >
-          JEAN-MICHEL BASQUIAT
-        </Text>
-      </View>
+        JEAN-MICHEL BASQUIAT
+      </Text>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -244,7 +217,7 @@ exports[`lays out correctly for read notification 1`] = `
             },
             Object {
               "color": "#666666",
-              "fontSize": 16,
+              "fontSize": 14,
               "marginTop": 2,
             },
             Object {
@@ -253,7 +226,7 @@ exports[`lays out correctly for read notification 1`] = `
           ]
         }
       >
-        1 Work Added · Mar 16
+        1 Work Added
       </Text>
     </View>
   </View>
@@ -285,6 +258,8 @@ exports[`lays out correctly for unread notification 1`] = `
 <View
   style={
     Object {
+      "marginLeft": 20,
+      "marginRight": 20,
       "marginTop": 20,
     }
   }
@@ -335,48 +310,27 @@ exports[`lays out correctly for unread notification 1`] = `
         }
       }
     >
-      <View
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
         style={
-          Object {
-            "flexDirection": "row",
-            "flexGrow": 1,
-            "justifyContent": "space-between",
-          }
+          Array [
+            Object {
+              "fontSize": 12,
+            },
+            Object {
+              "fontSize": 12,
+            },
+            Object {
+              "fontFamily": "AvantGardeGothicITC",
+            },
+          ]
         }
       >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "fontSize": 12,
-              },
-              Object {
-                "fontSize": 14,
-              },
-              Object {
-                "fontFamily": "AvantGardeGothicITC",
-              },
-            ]
-          }
-        >
-          JEAN-MICHEL BASQUIAT
-        </Text>
-        <View
-          style={
-            Object {
-              "alignSelf": "center",
-              "backgroundColor": "#6e1fff",
-              "borderRadius": 5,
-              "height": 10,
-              "width": 10,
-            }
-          }
-        />
-      </View>
+        JEAN-MICHEL BASQUIAT
+      </Text>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -390,7 +344,7 @@ exports[`lays out correctly for unread notification 1`] = `
             },
             Object {
               "color": "#666666",
-              "fontSize": 16,
+              "fontSize": 14,
               "marginTop": 2,
             },
             Object {
@@ -399,7 +353,7 @@ exports[`lays out correctly for unread notification 1`] = `
           ]
         }
       >
-        1 Work Added · Mar 16
+        1 Work Added
       </Text>
     </View>
   </View>
