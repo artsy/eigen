@@ -349,7 +349,7 @@
 - (void)keyboardWillShow:(NSNotification *)notification
 {
     if (self.state == AROnboardingStagePersonalizeEmail) {
-        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
         self.navigationItemsBottomConstraint.constant = -keyboardSize.height;
     }
 }

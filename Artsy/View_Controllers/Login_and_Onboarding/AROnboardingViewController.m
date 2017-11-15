@@ -142,7 +142,7 @@
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    _keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    _keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     if ([self.topViewController respondsToSelector:@selector(updateKeyboardFrame:)]) {
         [(ARPersonalizeViewController *)self.topViewController updateKeyboardFrame:_keyboardFrame];
     }
