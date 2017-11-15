@@ -134,7 +134,6 @@ export namespace Schema {
  *      ```ts
  *      import { Schema, Track, track as _track } from "src/utils/track"
  *
- *
  *      interface Props {
  *        artist: {
  *          id: string
