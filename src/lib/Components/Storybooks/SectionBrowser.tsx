@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { ListView, NavigatorIOS, Route, TouchableHighlight, View, ViewProperties } from "react-native"
 
 import { StorySection } from "./"

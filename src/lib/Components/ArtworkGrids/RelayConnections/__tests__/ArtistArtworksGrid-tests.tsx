@@ -1,6 +1,6 @@
 import "react-native"
 
-import * as React from "react"
+import React from "react"
 import { renderWithLayout } from "../../../../tests/renderWithLayout"
 
 import artwork from "../../__tests__/__fixtures__/artwork"
@@ -13,6 +13,9 @@ it("renders properly", () => {
     },
   }
 
-  const grid = renderWithLayout(<ArtistForSaleArtworksGrid artist={artist} queryKey="artist" />, { width: 768 })
+  const grid = renderWithLayout(
+    <ArtistForSaleArtworksGrid artist={artist} mapPropsToArtworksConnection={props => props.artist} />,
+    { width: 768 }
+  )
   expect(grid).toMatchSnapshot()
 })

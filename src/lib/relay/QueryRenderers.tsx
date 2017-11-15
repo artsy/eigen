@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { graphql, QueryRenderer, QueryRendererProps } from "react-relay"
 
 // tslint:disable:no-unused-expression
@@ -20,8 +20,8 @@ WorksForYou
 import Inquiry from "../Containers/Inquiry"
 Inquiry
 
-import MyAccount from "../Containers/MyAccount"
-MyAccount
+import MyProfile from "../Containers/MyProfile"
+MyProfile
 
 import Inbox from "../Containers/Inbox"
 Inbox
@@ -145,6 +145,27 @@ export const GeneRenderer: React.SFC<GeneRendererProps> = ({ render, geneID, med
   )
 }
 
+interface SaleRendererProps extends RendererProps {
+  saleID: string
+}
+
+export const SaleRenderer: React.SFC<SaleRendererProps> = ({ render, saleID }) => {
+  return (
+    <QueryRenderer
+      environment={environment}
+      query={graphql`
+        query QueryRenderersSaleQuery($saleID: String!) {
+          sale(id: $saleID) {
+            ...Sale_sale
+          }
+        }
+      `}
+      variables={{ saleID }}
+      render={render}
+    />
+  )
+}
+
 interface WorksForYouRendererProps extends RendererProps {
   selectedArtist?: string
 }
@@ -208,14 +229,14 @@ export const InboxRenderer: React.SFC<RendererProps> = ({ render }) => {
   )
 }
 
-export const MyAccountRenderer: React.SFC<RendererProps> = ({ render }) => {
+export const MyProfileRenderer: React.SFC<RendererProps> = ({ render }) => {
   return (
     <QueryRenderer
       environment={environment}
       query={graphql`
-        query QueryRenderersMyAccountQuery {
+        query QueryRenderersMyProfileQuery {
           me {
-            ...MyAccount_me
+            ...MyProfile_me
           }
         }
       `}

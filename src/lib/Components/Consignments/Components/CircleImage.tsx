@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 
 import { Image, View, ViewStyle } from "react-native"
 
@@ -13,6 +13,6 @@ const imageStyle: ViewStyle = {
 }
 
 export default props =>
-  <View style={imageStyle}>
+  <View style={[imageStyle, props.style]}>
     <Image source={props.source} />
   </View>

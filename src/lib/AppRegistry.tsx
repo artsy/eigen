@@ -1,5 +1,5 @@
 import * as _ from "lodash"
-import * as React from "react"
+import React from "react"
 import { AppRegistry, ViewProperties } from "react-native"
 import { TrackingInfo } from "react-tracking"
 import { Schema, Track, track as _track } from "./utils/track"
@@ -15,8 +15,9 @@ import {
   HomeRenderer,
   InboxRenderer,
   InquiryRenderer,
-  MyAccountRenderer,
+  MyProfileRenderer,
   RenderCallback,
+  SaleRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
 
@@ -66,6 +67,11 @@ const Gene: React.SFC<GeneProps> = ({ geneID, refineSettings: { medium, price_ra
   return <GeneRenderer {...initialProps} render={renderWithLoadProgress(Containers.Gene, initialProps)} />
 }
 
+const Sale: React.SFC<{ saleID: string }> = ({ saleID }) => {
+  const initialProps = { saleID }
+  return <SaleRenderer {...initialProps} render={renderWithLoadProgress(Containers.Sale, initialProps)} />
+}
+
 // TODO: This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
 //
 //     this.renderFetched = data => <Containers.Home {...data} trigger1pxScrollHack={this.props.trigger1pxScrollHack} />
@@ -99,14 +105,15 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
   }
 })(props => <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />)
 
-const MyAccount: React.SFC<{}> = () => <MyAccountRenderer render={renderWithLoadProgress(Containers.MyAccount)} />
+const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoadProgress(Containers.MyProfile)} />
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Home", () => HomeScene)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
-AppRegistry.registerComponent("MyAccount", () => MyAccount)
+AppRegistry.registerComponent("MyProfile", () => MyProfile)
+AppRegistry.registerComponent("MyAccount", () => MyProfile) // TODO: deprecate on a new Eigen build
 AppRegistry.registerComponent("Inbox", () => Inbox)
 AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)

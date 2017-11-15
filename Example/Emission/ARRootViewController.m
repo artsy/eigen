@@ -39,7 +39,7 @@
   ARSectionData *appData = [[ARSectionData alloc] init];
   [self setupSection:appData withTitle:[self titleForApp]];
   [appData addCellData:[self emissionJSLocationDescription:setup.emissionLoadedFromString]];
-  if (setup.usingMaster) {
+  if (setup.usingMaster && !setup.usingRNP) {
     [appData addCellDataFromArray:[self cellsForMasterInformation]];
   }
   [tableViewData addSectionData:appData];
@@ -81,6 +81,7 @@
   [sectionData addCellData:self.jumpToGene];
   [sectionData addCellData:self.jumpToRefinedGene];
   [sectionData addCellData:self.jumpToWorksForYou];
+  [sectionData addCellData:self.jumpToMyProfile];
   [sectionData addCellData:self.jumpToConsignments];
   [sectionData addCellData:self.jumpToInbox];
   [sectionData addCellData:self.jumpToInquiry];
@@ -193,6 +194,16 @@
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
+
+
+- (ARCellData *)jumpToMyProfile
+{
+  return [self tappableCellDataWithTitle:@"My Profile" selection:^{
+    id viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfile" initialProperties:@{}];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
 
 - (ARCellData *)jumpToConsignments
 {

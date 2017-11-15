@@ -1,10 +1,10 @@
-import * as React from "react"
+import React from "react"
 import { ListView, ListViewDataSource, StyleSheet, View, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import Show from "./Show"
 
-import colors from "../../../../data/colors"
+import colors from "lib/data/colors"
 
 interface Props extends ViewProperties {
   shows: any[]

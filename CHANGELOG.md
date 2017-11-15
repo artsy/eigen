@@ -1,7 +1,18 @@
-### 1.4.0-beta.4
+// Please add your own contribution below inside the Master section
+// These docs are aimed at developers, but are shown inside collector GMV's channel
+
+### Master
+
+-   Renames MyProfile -> MyAccount, and sets up the design for it - orta
+-   Revised designs for consignments - orta
+-   Adds Live and timed auctions in home view - luc
+-   Adds Sale container to app registry - ash
+
+### 1.4.0-beta.5
 
 ###### Dev
 
+-   Converts relative to absolute paths for imports - luc
 -   Adds enzyme for tests - luc
 -   Fix test issues with react-tracking and enzyme - luc
 -   Updates Avant Garde font with a version that can handle special characters - sarah
@@ -26,11 +37,17 @@
 -   Updates invoice preview component status when a ARPaymentRequestPaid notification is received - alloy
 -   Present payment request view modally. - alloy
 -   Add new Analytics schema via React Tracking. - maxim
+-   Adds initial Sale container. - ash
 
 ###### Home
 
+-   Updates Artists section (aka works for you notifications) - sarah
+-   Adds a Recommended Fairs Rail - sarah
 -   Adds for For You tab with styled headers - luc
 -   Creates tab view container for new home - luc
+-   Adds Live and timed auctions in home view - luc
+-   Tab bar text now aligned and centered correctly - luc
+-   Adds iPad support for Auctions view layout - luc
 
 ###### Consignments
 
@@ -52,6 +69,7 @@
 
 ###### Messaging
 
+-   Fix crash by guarding against null `conversations_existence_check` - christina
 -   Fix crash of empty node in conversation list - maxim
 -   Hyperlinks in messages are now artsy purple & underlined - sarah
 -   Aligns message header with existing back button - sarah

@@ -1,9 +1,9 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { LayoutChangeEvent, ScrollView, TouchableHighlight, View, ViewProperties } from "react-native"
 
-import SwitchBoard from "../../NativeModules/SwitchBoard"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import OpaqueImageView from "../OpaqueImageView"
 import Headline from "../Text/Headline"
 

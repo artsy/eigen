@@ -1,5 +1,5 @@
 import * as _ from "lodash"
-import * as React from "react"
+import React from "react"
 import ParallaxScrollView from "react-native-parallax-scroll-view"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
@@ -16,7 +16,7 @@ import GeneArtworksGrid from "../Components/ArtworkGrids/RelayConnections/GeneAr
 
 import SwitchView, { SwitchEvent } from "../Components/SwitchView"
 
-import colors from "../../data/colors"
+import colors from "lib/data/colors"
 import Refine from "../NativeModules/triggerRefine"
 
 const isPad = Dimensions.get("window").width > 700
@@ -116,7 +116,7 @@ export class Gene extends React.Component<Props, State> {
             medium={this.state.selectedMedium}
             priceRange={this.state.selectedPriceRange}
             sort={this.state.sort}
-            queryKey="gene.artworks"
+            mapPropsToArtworksConnection={props => props.gene.artworks}
           />
         )
     }

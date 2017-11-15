@@ -1,6 +1,6 @@
 {
   "name": "emission",
-  "version": "1.4.0-beta.4",
+  "version": "1.4.0-beta.5",
   "description": "Artsy React(Native) components.",
   "engines": {
     "node": "8.4.x",
@@ -33,6 +33,7 @@
     "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
     "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && yarn dump-schema -- ../../data && rm -rf node_modules",
+    "sync-schema:localhost": "cd ../metaphysics && yarn dump-schema -- ../emission/data",
     "version": "yarn install && yarn bundle && pushd Example && bundle install && bundle exec pod install && popd && git add Pod/Assets Example/Podfile.lock",
     "postversion": "git push --follow-tags && env EMISSION_ROOT=\"$(pwd)\" pod repo push artsy --allow-warnings --use-json --skip-import-validation",
     "postinstall": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h && ./scripts/post_installs.sh || true",
@@ -107,7 +108,8 @@
     "ts-jest": "^21.0.0",
     "tslint": "^5.4.3",
     "tslint-config-prettier": "^1.0.0",
-    "typescript": "^2.5.3"
+    "typescript": "^2.5.3",
+    "typescript-styled-plugin": "^0.1.2"
   },
   "jest": {
     "preset": "react-native",
@@ -117,6 +119,9 @@
       }
     },
     "moduleFileExtensions": ["ts", "tsx", "js"],
+    "moduleNameMapper": {
+      "^lib/(.*)": "<rootDir>/src/lib/$1"
+    },
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"

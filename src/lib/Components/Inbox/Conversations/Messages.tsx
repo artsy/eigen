@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { ActivityIndicator, Dimensions, FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 

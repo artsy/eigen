@@ -1,13 +1,14 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { ListView, ListViewDataSource, RefreshControl, ScrollView, ScrollViewProps, ViewProperties } from "react-native"
 
-import ArtistRail from "../../../../Components/Home/ArtistRails/ArtistRail"
+import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
 import ArtworkCarousel from "./Components/ArtworkCarousel"
+import FairsRail from "./Components/FairsRail"
 
 interface DataSourceRow {
-  type: "artwork" | "artist"
+  type: "artwork" | "artist" | "fairs"
   data: any
 }
 
@@ -39,9 +40,10 @@ export class ForYou extends React.Component<Props, State> {
 
   componentDidMount() {
     const rows: DataSourceRow[] = []
-    console.log(this.props)
     const artworkModules = this.props.forYou.artwork_modules || []
     const artistModules = this.props.forYou.artist_modules && this.props.forYou.artist_modules.concat()
+    const fairsModule = this.props.forYou.fairs_module
+    rows.push({ type: "fairs", data: fairsModule })
     for (let i = 0; i < artworkModules.length; i++) {
       const artworkModule = artworkModules[i]
       rows.push({ type: "artwork", data: artworkModule })
@@ -102,6 +104,8 @@ export class ForYou extends React.Component<Props, State> {
               return <ArtworkCarousel ref={registerModule} key={data.__id} rail={data} />
             case "artist":
               return <ArtistRail ref={registerModule} key={data.__id} rail={data} />
+            case "fairs":
+              return <FairsRail fairs_module={data} />
           }
         }}
         onScroll={event => (this.currentScrollOffset = event.nativeEvent.contentOffset.y)}
@@ -139,6 +143,9 @@ export default createFragmentContainer(
         __id
         ...ArtistRail_rail
       }
+      fairs_module {
+        ...FairsRail_fairs_module
+      }
     }
   `
 )
@@ -151,5 +158,6 @@ interface RelayProps {
     artist_modules: Array<{
       __id: string
     } | null> | null
+    fairs_module: any | null
   }
 }

@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import {
@@ -15,13 +15,13 @@ import {
 
 const { ARTemporaryAPIModule } = NativeModules
 
-import Events from "../../../../../NativeModules/Events"
+import Events from "lib/NativeModules/Events"
 
-import colors from "../../../../../../data/colors"
-import fonts from "../../../../../../data/fonts"
-import Button from "../../../../../Components/Buttons/InvertedButton"
-import SerifText from "../../../../../Components/Text/Serif"
-import SectionTitle from "./SectionTitle"
+import Button from "lib/Components/Buttons/InvertedButton"
+import SerifText from "lib/Components/Text/Serif"
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
+import SectionTitle from "../../SectionTitle"
 
 const isPad = Dimensions.get("window").width > 700
 

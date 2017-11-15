@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
@@ -12,7 +12,7 @@ import metaphysics from "../../../metaphysics"
 
 import { stringify } from "qs"
 
-import { NativeModules } from "react-native"
+import { Dimensions, NativeModules } from "react-native"
 const { Emission } = NativeModules
 
 interface Props extends ConsignmentSetup, ViewProperties {
@@ -96,11 +96,19 @@ export default class Location extends React.Component<Props, State> {
   })
 
   render() {
+    const isPad = Dimensions.get("window").width > 700
+
     return (
       <ConsignmentBG>
         <DoneButton onPress={this.doneTapped}>
           <View
-            style={{ alignContent: "center", justifyContent: "flex-end", flexGrow: 1, marginLeft: 20, marginRight: 20 }}
+            style={{
+              alignContent: "center",
+              justifyContent: isPad ? "center" : "flex-end",
+              flexGrow: 1,
+              marginLeft: 20,
+              marginRight: 20,
+            }}
           >
             <Search
               results={this.state.results}

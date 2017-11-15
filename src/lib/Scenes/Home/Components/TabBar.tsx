@@ -1,7 +1,8 @@
-import * as React from "react"
+import React from "react"
 import { Animated, StyleSheet, Text, View } from "react-native"
 import styled, { StyledFunction } from "styled-components/native"
-import fonts from "../../../../data/fonts"
+
+import fonts from "lib/data/fonts"
 
 interface TabBarProps {
   goToPage?: () => null
@@ -10,7 +11,6 @@ interface TabBarProps {
   containerWidth?: number
   scrollValue?: Animated.AnimatedInterpolation
 }
-
 const Button = styled.TouchableWithoutFeedback`flex: 1;`
 
 const Tabs = styled.View`
@@ -26,6 +26,7 @@ const Tab = styled.View`
   align-items: center;
   justify-content: center;
   padding-top: 5;
+  flex: 1;
 `
 
 interface TabLabelProps {
@@ -35,7 +36,8 @@ interface TabLabelProps {
 const TabLabel: any = styled.Text`
   font-family: ${fonts["avant-garde-regular"]};
   font-size: 13px;
-  letter-spacing: 1.1;
+  letter-spacing: 1.5;
+  text-align: center;
   opacity: ${(props: TabLabelProps) => (props.active ? 1.0 : 0.3)};
 `
 

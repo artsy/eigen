@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
@@ -38,12 +38,11 @@ export default class Provenance extends React.Component<Props, State> {
         <DoneButton onPress={this.doneTapped}>
           <View
             style={{
-              alignContent: "center",
-              justifyContent: "flex-end",
-              flexGrow: 1,
               marginLeft: 20,
               marginRight: 20,
               marginTop: 20,
+              maxHeight: 600,
+              flexDirection: "row-reverse",
             }}
           >
             <TextArea

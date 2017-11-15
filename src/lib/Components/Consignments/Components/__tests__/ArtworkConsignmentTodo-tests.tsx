@@ -1,5 +1,5 @@
-import * as React from "react"
-// import * as ReactTestUtils from "react-dom/test-utils"
+import React from "react"
+// import ReactTestUtils from "react-dom/test-utils"
 import * as renderer from "react-test-renderer"
 import * as shallow from "react-test-renderer/shallow"
 

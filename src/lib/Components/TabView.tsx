@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { StyleSheet, View, ViewProperties } from "react-native"
 
 import SwitchView, { SwitchEvent } from "./SwitchView"

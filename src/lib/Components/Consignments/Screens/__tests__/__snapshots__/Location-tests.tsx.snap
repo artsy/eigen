@@ -21,7 +21,6 @@ exports[`Sets up the right view hierarchy 1`] = `
           "alignSelf": "center",
           "backgroundColor": "black",
           "height": "100%",
-          "maxWidth": 540,
           "width": "100%",
         },
         undefined,
@@ -52,95 +51,106 @@ exports[`Sets up the right view hierarchy 1`] = `
         <View
           style={
             Object {
-              "alignContent": "center",
-              "flexGrow": 1,
-              "justifyContent": "flex-end",
-              "marginLeft": 20,
-              "marginRight": 20,
+              "alignSelf": "center",
+              "flex": 1,
+              "maxWidth": 540,
+              "width": "100%",
             }
           }
         >
-          <View>
-            <View
-              style={
-                Array [
-                  undefined,
-                  Object {
-                    "flex": 1,
-                    "maxHeight": 40,
-                  },
-                ]
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexGrow": 1,
+                "justifyContent": "center",
+                "marginLeft": 20,
+                "marginRight": 20,
               }
-            >
+            }
+          >
+            <View>
               <View
                 style={
-                  Object {
-                    "flexDirection": "row",
-                    "height": 40,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "flex": 1,
+                      "maxHeight": 40,
+                    },
+                  ]
                 }
               >
-                <Image
-                  source={1}
+                <View
                   style={
                     Object {
-                      "marginRight": 6,
-                      "marginTop": 12,
+                      "flexDirection": "row",
+                      "height": 40,
                     }
                   }
-                />
-                <TextInput
-                  autoCorrect={false}
-                  autoFocus={false}
-                  clearButtonMode="while-editing"
-                  keyboardAppearance="dark"
-                  onChangeText={[Function]}
-                  placeholder="City, Country"
-                  placeholderTextColor="#666666"
-                  returnKeyType="search"
-                  selectionColor="#cccccc"
+                >
+                  <Image
+                    source={1}
+                    style={
+                      Object {
+                        "marginRight": 6,
+                        "marginTop": 12,
+                      }
+                    }
+                  />
+                  <TextInput
+                    autoCorrect={false}
+                    autoFocus={false}
+                    clearButtonMode="while-editing"
+                    keyboardAppearance="dark"
+                    onChangeText={[Function]}
+                    placeholder="City, Country"
+                    placeholderTextColor="#666666"
+                    returnKeyType="search"
+                    selectionColor="#cccccc"
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "black",
+                          "color": "white",
+                          "flexBasis": 0,
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "fontFamily": "AGaramondPro-Regular",
+                          "fontSize": 20,
+                          "height": 40,
+                        },
+                        undefined,
+                      ]
+                    }
+                    value={null}
+                  />
+                </View>
+                <View
                   style={
                     Array [
                       Object {
-                        "backgroundColor": "black",
-                        "color": "white",
-                        "flexBasis": 0,
-                        "flexGrow": 1,
-                        "flexShrink": 1,
-                        "fontFamily": "AGaramondPro-Regular",
-                        "fontSize": 20,
-                        "height": 40,
+                        "backgroundColor": "white",
+                        "height": 1,
                       },
                       undefined,
                     ]
                   }
-                  value={null}
                 />
               </View>
-              <View
+              <RCTScrollView
+                keyboardShouldPersistTaps="always"
+                scrollEnabled={null}
                 style={
-                  Array [
-                    Object {
-                      "backgroundColor": "white",
-                      "height": 1,
-                    },
-                    undefined,
-                  ]
+                  Object {
+                    "height": 182,
+                    "paddingTop": 16,
+                  }
                 }
-              />
+              >
+                <View />
+              </RCTScrollView>
             </View>
-            <RCTScrollView
-              keyboardShouldPersistTaps="always"
-              scrollEnabled={null}
-              style={
-                Object {
-                  "height": 182,
-                  "paddingTop": 16,
-                }
-              }
-            >
-              <View />
-            </RCTScrollView>
           </View>
         </View>
       </View>
@@ -148,7 +158,7 @@ exports[`Sets up the right view hierarchy 1`] = `
         style={
           Array [
             Object {
-              "backgroundColor": "#e5e5e5",
+              "backgroundColor": "#666666",
               "height": 1,
             },
             undefined,

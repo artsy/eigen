@@ -34,6 +34,9 @@ exports[`renders correctly 1`] = `
       Array [
         Object {
           "alignItems": "center",
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
           "justifyContent": "center",
           "paddingTop": 5,
         },
@@ -53,8 +56,9 @@ exports[`renders correctly 1`] = `
           Object {
             "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
-            "letterSpacing": 1.1,
+            "letterSpacing": 1.5,
             "opacity": 0.3,
+            "textAlign": "center",
           },
           undefined,
         ]
@@ -81,6 +85,9 @@ exports[`renders correctly 1`] = `
       Array [
         Object {
           "alignItems": "center",
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
           "justifyContent": "center",
           "paddingTop": 5,
         },
@@ -100,8 +107,9 @@ exports[`renders correctly 1`] = `
           Object {
             "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
-            "letterSpacing": 1.1,
+            "letterSpacing": 1.5,
             "opacity": 0.3,
+            "textAlign": "center",
           },
           undefined,
         ]
@@ -128,6 +136,9 @@ exports[`renders correctly 1`] = `
       Array [
         Object {
           "alignItems": "center",
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
           "justifyContent": "center",
           "paddingTop": 5,
         },
@@ -147,8 +158,9 @@ exports[`renders correctly 1`] = `
           Object {
             "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
-            "letterSpacing": 1.1,
+            "letterSpacing": 1.5,
             "opacity": 0.3,
+            "textAlign": "center",
           },
           undefined,
         ]

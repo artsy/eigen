@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { AsyncStorage } from "react-native"
 
 import Overview from "../Overview"

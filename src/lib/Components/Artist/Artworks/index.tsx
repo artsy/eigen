@@ -1,13 +1,23 @@
-import * as React from "react"
+import React from "react"
 import { StyleSheet, View, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import ArtistForSaleArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistForSaleArtworksGrid"
 import ArtistNotForSaleArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistNotForSaleArtworksGrid"
-import Separator from "../../Separator"
-import SerifText from "../../Text/Serif"
 
-import colors from "../../../../data/colors"
+import Separator from "lib/Components/Separator"
+import SerifText from "lib/Components/Text/Serif"
+
+import colors from "lib/data/colors"
+
+interface RenderSectionParams {
+  title: string
+  count: number
+  filter: string
+  onComplete: () => void | null
+  Component: any
+  mapPropsToArtworksConnection: (Props) => any
+}
 
 interface Props extends ViewProperties {
   artist: {
@@ -43,7 +53,7 @@ class Artworks extends React.Component<Props, State> {
         filter: "IS_NOT_FOR_SALE",
         onComplete: null,
         Component: ArtistNotForSaleArtworksGrid,
-        queryKey: "notForSaleArtworks",
+        mapPropsToArtworksConnection: props => props.artist.notForSaleArtworks,
       })
     } else {
       const otherWorks: any[] = []
@@ -57,7 +67,7 @@ class Artworks extends React.Component<Props, State> {
             filter: "IS_NOT_FOR_SALE",
             onComplete: null,
             Component: ArtistNotForSaleArtworksGrid,
-            queryKey: "notForSaleArtworks",
+            mapPropsToArtworksConnection: props => props.artist.notForSaleArtworks,
           })
         )
       }
@@ -67,11 +77,9 @@ class Artworks extends React.Component<Props, State> {
             title: "Works for Sale",
             count: forSaleCount,
             filter: "IS_FOR_SALE",
-            onComplete: () => {
-              this.setState({ completedForSaleWorks: true })
-            },
+            onComplete: () => this.setState({ completedForSaleWorks: true }),
             Component: ArtistForSaleArtworksGrid,
-            queryKey: "forSaleArtworks",
+            mapPropsToArtworksConnection: props => props.artist.forSaleArtworks,
           })}
           {otherWorks}
         </View>
@@ -79,14 +87,19 @@ class Artworks extends React.Component<Props, State> {
     }
   }
 
-  renderSection({ title, count, filter, onComplete, Component, queryKey }) {
+  renderSection({ title, count, filter, onComplete, Component, mapPropsToArtworksConnection }: RenderSectionParams) {
     const countStyles = [styles.text, styles.count]
     return (
       <View key={title}>
         <SerifText style={styles.heading}>
           <SerifText style={styles.text}>{title}</SerifText> <SerifText style={countStyles}>({count})</SerifText>
         </SerifText>
-        <Component artist={this.props.artist} filter={filter} onComplete={onComplete} queryKey={`artist.${queryKey}`} />
+        <Component
+          artist={this.props.artist}
+          filter={filter}
+          onComplete={onComplete}
+          mapPropsToArtworksConnection={mapPropsToArtworksConnection}
+        />
       </View>
     )
   }

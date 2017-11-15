@@ -1,9 +1,9 @@
-import * as React from "react"
+import React from "react"
 import { ActivityIndicator, Text, TextInput, TextInputProperties, View, ViewProperties } from "react-native"
 
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
 
 export interface TextAreaProps extends ViewProperties {
   text?: TextInputProperties

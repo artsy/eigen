@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import {
   ActivityIndicator,
   Image,
@@ -10,9 +10,9 @@ import {
   ViewProperties,
 } from "react-native"
 
+import { Colors } from "lib/data/colors"
+import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
-import { Colors } from "../../../../data/colors"
-import { Fonts } from "../../../../data/fonts"
 
 interface ReffableTextInputProps extends TextInputProperties {
   ref?: (component: any) => any
@@ -50,8 +50,15 @@ const WritableInput = (props: TextInputProps) =>
   />
 
 const ReadOnlyInput = (props: TextInputProps) =>
-  <Text style={{ color: Colors.White, fontFamily: Fonts.GaramondRegular, fontSize: 20 }}>
-    {props.text.value}
+  <Text
+    style={{
+      color: props.text.value ? Colors.White : Colors.GraySemibold,
+      fontFamily: Fonts.GaramondRegular,
+      fontSize: 20,
+      paddingTop: 8,
+    }}
+  >
+    {props.text.value || props.text.placeholder}
   </Text>
 
 const render = (props: TextInputProps) =>

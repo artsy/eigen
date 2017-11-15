@@ -1,9 +1,9 @@
-import * as React from "react"
+import React from "react"
 import { Keyboard, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback } from "react-native"
 
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
 
 import { Schema, Track, track as _track } from "../../../utils/track"
 
@@ -64,7 +64,6 @@ export default class Composer extends React.Component<Props, State> {
     action_name: Schema.ActionNames.ConversationSendReply,
   }))
   submitText() {
-    Keyboard.dismiss()
     if (this.props.onSubmit) {
       this.props.onSubmit(this.state.text)
       this.setState({ text: null })
@@ -99,9 +98,7 @@ export default class Composer extends React.Component<Props, State> {
             placeholder={"Reply..."}
             placeholderTextColor={colors["gray-semibold"]}
             keyboardAppearance={"dark"}
-            onEndEditing={() => {
-              this.setState({ active: false })
-            }}
+            onEndEditing={() => this.setState({ active: false })}
             onFocus={() => this.setState({ active: this.input.isFocused() })}
             onChangeText={text => this.setState({ text })}
             ref={input => (this.input = input)}

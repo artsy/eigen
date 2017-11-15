@@ -1,11 +1,11 @@
-import * as React from "react"
+import React from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
+import ActiveBids from "lib/Components/Inbox/ActiveBids"
+import Conversations from "lib/Components/Inbox/Conversations"
+import ZeroStateInbox from "lib/Components/Inbox/Conversations/ZeroStateInbox"
 import { RefreshControl, ScrollView, View } from "react-native"
-import ActiveBids from "../Components/Inbox/ActiveBids"
-import Conversations from "../Components/Inbox/Conversations"
-import ZeroStateInbox from "../Components/Inbox/Conversations/ZeroStateInbox"
 
 interface Props extends RelayProps {
   relay?: RelayRefetchProp
@@ -46,7 +46,8 @@ export class Inbox extends React.Component<Props, State> {
 
   render() {
     const hasBids = this.props.me.lot_standings.length > 0
-    const hasConversations = this.props.me.conversations_existence_check.edges.length > 0
+    const hasConversations =
+      this.props.me.conversations_existence_check && this.props.me.conversations_existence_check.edges.length > 0
     return hasBids || hasConversations
       ? <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
           <ActiveBids me={this.props.me as any} />

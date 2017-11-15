@@ -1,7 +1,7 @@
-import * as React from "react"
+import React from "react"
 import { Animated, StyleSheet, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
 
-import colors from "../../../data/colors"
+import colors from "lib/data/colors"
 import Headline from "../Text/Headline"
 
 import { ButtonProps } from "./"

@@ -1,9 +1,9 @@
-import * as React from "react"
+import React from "react"
 
 import { Dimensions, Image, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
 
-import colors from "../../../data/colors"
-import Switchboard from "../../NativeModules/SwitchBoard"
+import colors from "lib/data/colors"
+import Switchboard from "lib/NativeModules/SwitchBoard"
 
 const sideMargin = Dimensions.get("window").width > 700 ? 40 : 20
 const leftInnerMargin = Dimensions.get("window").width > 700 ? 20 : 15

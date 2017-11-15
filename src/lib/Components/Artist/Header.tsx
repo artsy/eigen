@@ -1,5 +1,5 @@
 import * as PropTypes from "prop-types"
-import * as React from "react"
+import React from "react"
 import { Schema, Track, track as _track } from "../../utils/track"
 
 import { createFragmentContainer, graphql } from "react-relay"
@@ -7,9 +7,9 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
 
-import Events from "../../NativeModules/Events"
+import Events from "lib/NativeModules/Events"
 
-import colors from "../../../data/colors"
+import colors from "lib/data/colors"
 import InvertedButton from "../Buttons/InvertedButton"
 import Headline from "../Text/Headline"
 import SerifText from "../Text/Serif"

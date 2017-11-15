@@ -1,12 +1,12 @@
-import * as React from "react"
+import React from "react"
 import { EmitterSubscription, Image, TouchableHighlight } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
-import colors from "../../../../../data/colors"
-import fonts from "../../../../../data/fonts"
-import { NotificationsManager, PaymentRequestPaidNotification } from "../../../../NativeModules/NotificationsManager"
-import InvertedButton from "../../../Buttons/InvertedButton"
+import InvertedButton from "lib/Components/Buttons/InvertedButton"
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
+import { NotificationsManager, PaymentRequestPaidNotification } from "lib/NativeModules/NotificationsManager"
 
 import { Schema, Track, track as _track } from "../../../../utils/track"
 

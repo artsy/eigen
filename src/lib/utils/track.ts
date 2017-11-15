@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import _track, { Track as _Track } from "react-tracking"
 
 // tslint:disable-next-line:no-namespace

@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 
 import { ScrollView, TextProperties, View, ViewProperties, ViewStyle } from "react-native"
 import { ButtonProps, WhiteButton } from "../../Buttons"
