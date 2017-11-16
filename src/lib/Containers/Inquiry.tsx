@@ -91,15 +91,12 @@ const ResponseRateLine = styled.View`
   margin-top: 5;
 `
 
-// tslint:disable-next-line:no-empty-interface
-interface Props extends RelayProps {}
-
 interface State {
   text: string
   sending: boolean
 }
 
-const track: Track<Props, State, Schema.Entity> = _track
+const track: Track<RelayProps, State, Schema.Entity> = _track
 
 @track()
 export class Inquiry extends React.Component<RelayProps, any> {
