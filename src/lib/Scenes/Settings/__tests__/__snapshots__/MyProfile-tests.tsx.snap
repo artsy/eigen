@@ -176,7 +176,7 @@ exports[`looks like expected 1`] = `
               ]
             }
           >
-            Sell works from you collection
+            Sell works from your collection
           </Text>
           <View
             style={
