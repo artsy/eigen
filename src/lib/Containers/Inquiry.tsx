@@ -46,6 +46,9 @@ const TitleView = styled.View`
   align-items: center;
   margin-top: 6;
 `
+const PartnerName = styled(SmallHeadline)`
+  font-size: 12;
+`
 const HeaderTextContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
@@ -136,8 +139,8 @@ export class Inquiry extends React.Component<RelayProps, any> {
     const doneButtonStyles = {
       backgroundColor: colors["purple-regular"],
       marginBottom: 0,
-      paddingTop: 12,
-      height: 44,
+      paddingTop: 15,
+      height: 50,
     }
 
     return (
@@ -154,9 +157,9 @@ export class Inquiry extends React.Component<RelayProps, any> {
                 <MetadataText>CANCEL</MetadataText>
               </CancelButton>
               <TitleView>
-                <SmallHeadline>
+                <PartnerName>
                   {partnerName}
-                </SmallHeadline>
+                </PartnerName>
                 <ResponseRateLine>
                   {/* <ResponseIndicator /> */}
                   <ResponseRate>
