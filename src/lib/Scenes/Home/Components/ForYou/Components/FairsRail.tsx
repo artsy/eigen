@@ -53,7 +53,7 @@ class FairsRail extends React.Component<RelayProps, any> {
       return (
         <IconTapArea onPress={selectionHandler} key={fair.id}>
           <TouchableWrapper>
-            <FairIcon imageURL={fair.mobile_image.url} placeholderBackgroundColor={"white"} />
+            <FairIcon imageURL={fair.mobile_image.url} placeholderBackgroundColor="white" />
           </TouchableWrapper>
         </IconTapArea>
       )

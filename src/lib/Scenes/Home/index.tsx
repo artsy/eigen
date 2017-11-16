@@ -1,6 +1,7 @@
 import React from "react"
 import { View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
+import styled from "styled-components/native"
 
 import WorksForYou from "lib/Containers/WorksForYou"
 
@@ -10,22 +11,20 @@ import Sales from "./Components/Sales"
 import { ForYouRenderer, WorksForYouRenderer } from "lib/relay/QueryRenderers"
 import SalesRenderer from "./Components/Sales/Relay/SalesRenderer"
 
+import TabBar, { Tab } from "lib/Components/TabBar"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import TabBar from "./Components/TabBar"
 
-interface TabProps {
-  tabLabel: string
-}
-
-export const Tab: React.SFC<TabProps> = ({ children }) =>
-  <View style={{ flex: 1 }}>
-    {children}
-  </View>
+const TabBarContainer = styled.View`margin-top: 20px;`
 
 export default class Home extends React.Component<null, null> {
   render() {
     return (
-      <ScrollableTabView renderTabBar={() => <TabBar />}>
+      <ScrollableTabView
+        renderTabBar={props =>
+          <TabBarContainer>
+            <TabBar {...props} />
+          </TabBarContainer>}
+      >
         <Tab tabLabel="Artists">
           <WorksForYouRenderer render={renderWithLoadProgress(WorksForYou)} />
         </Tab>
