@@ -4,6 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
 import {
+  Dimensions,
   FlatList,
   ImageURISource,
   KeyboardAvoidingView,
@@ -24,6 +25,8 @@ import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPre
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 import { gravityURL } from "../relay/config"
 import { NetworkError } from "../utils/errors"
+
+const isPad = Dimensions.get("window").width > 700
 
 const Container = styled.View`
   flex: 1;
@@ -46,6 +49,9 @@ const TitleView = styled.View`
   align-items: center;
   margin-top: 6;
 `
+const PartnerName = styled(SmallHeadline)`
+  font-size: 12;
+`
 const HeaderTextContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
@@ -55,6 +61,8 @@ const CancelButton = styled.TouchableOpacity`padding-left: 20;`
 const Content = styled.View`
   margin-left: 20;
   margin-right: 20;
+  alignSelf: ${isPad ? "center" : "stretch"};
+  ${isPad ? "width: 472;" : ""};
 `
 
 const InquiryTextInput = styled.TextInput`
@@ -136,8 +144,8 @@ export class Inquiry extends React.Component<RelayProps, any> {
     const doneButtonStyles = {
       backgroundColor: colors["purple-regular"],
       marginBottom: 0,
-      paddingTop: 12,
-      height: 44,
+      paddingTop: 15,
+      height: 50,
     }
 
     return (
@@ -154,9 +162,9 @@ export class Inquiry extends React.Component<RelayProps, any> {
                 <MetadataText>CANCEL</MetadataText>
               </CancelButton>
               <TitleView>
-                <SmallHeadline>
+                <PartnerName>
                   {partnerName}
-                </SmallHeadline>
+                </PartnerName>
                 <ResponseRateLine>
                   {/* <ResponseIndicator /> */}
                   <ResponseRate>

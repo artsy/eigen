@@ -2,6 +2,7 @@ import React from "react"
 import { Animated, StyleSheet, Text, View } from "react-native"
 import styled, { StyledFunction } from "styled-components/native"
 
+import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 
 interface TabBarProps {
@@ -17,7 +18,7 @@ const Tabs = styled.View`
   height: 50px;
   flex-direction: row;
   justify-content: space-around;
-  border-color: rgb(229, 229, 229);
+  border-color: ${colors["gray-medium"]};
   border-bottom-width: 1px;
 `
 
@@ -41,7 +42,7 @@ const TabLabel: any = styled.Text`
   font-size: 13px;
   letter-spacing: 1.5;
   text-align: center;
-  opacity: ${(props: TabLabelProps) => (props.active ? 1.0 : 0.3)};
+  color: ${(props: TabLabelProps) => (props.active ? "black" : colors["gray-medium"])};
 `
 
 export const Tab: React.SFC<TabProps> = ({ children }) =>

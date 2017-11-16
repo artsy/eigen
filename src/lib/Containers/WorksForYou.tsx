@@ -1,4 +1,3 @@
-import moment from "moment"
 import React from "react"
 import { createPaginationContainer, graphql } from "react-relay"
 
@@ -33,8 +32,6 @@ interface Props extends RelayProps {
 
 interface State {
   dataSource: ListViewDataSource | null
-  sideMargin: number
-  topMargin: number
   fetchingNextPage: boolean
   completed: boolean
 }
@@ -58,8 +55,6 @@ export class WorksForYou extends React.Component<Props, State> {
 
     this.state = {
       dataSource,
-      sideMargin: 20,
-      topMargin: 0,
       completed: false,
       fetchingNextPage: false,
     }
@@ -86,11 +81,9 @@ export class WorksForYou extends React.Component<Props, State> {
     const artist = this.props.viewer.selectedArtist
 
     return {
-      date: moment().format("MMM DD"),
       message: artist.artworks.length + (artist.artworks.length > 1 ? " Works Added" : " Work Added"),
       artists: artist.name,
       artworks: artist.artworks,
-      status: "UNREAD",
       image: {
         resized: {
           url: artist.image.resized.url,
@@ -98,14 +91,6 @@ export class WorksForYou extends React.Component<Props, State> {
       },
       artistHref: artist.href,
     }
-  }
-
-  onLayout = (event: LayoutChangeEvent) => {
-    const layout = event.nativeEvent.layout
-    const sideMargin = layout.width > 600 ? 40 : 20
-    const topMargin = layout.width > 600 ? 20 : 0
-
-    this.setState({ sideMargin, topMargin })
   }
 
   fetchNextPage() {
@@ -136,8 +121,6 @@ export class WorksForYou extends React.Component<Props, State> {
   }
 
   render() {
-    const margin = this.state.sideMargin
-    const containerMargins = { marginLeft: margin, marginRight: margin }
     const hasNotifications = this.state.dataSource
 
     /* if showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
@@ -146,13 +129,11 @@ export class WorksForYou extends React.Component<Props, State> {
     return (
       <ScrollView
         contentContainerStyle={hasNotifications ? {} : styles.container}
-        onLayout={this.onLayout.bind(this)}
         onScroll={event => (this.currentScrollOffset = event.nativeEvent.contentOffset.y)}
         scrollEventThrottle={100}
         ref={scrollView => (this.scrollView = scrollView)}
       >
-        <SerifText style={[styles.title, containerMargins]}>Works by Artists you Follow</SerifText>
-        <View style={[containerMargins, { flex: 1 }]}>
+        <View style={{ flex: 1 }}>
           {hasNotifications ? this.renderNotifications() : this.renderEmptyState()}
         </View>
       </ScrollView>
@@ -166,7 +147,6 @@ export class WorksForYou extends React.Component<Props, State> {
         renderRow={data => <Notification notification={data} />}
         renderSeparator={(sectionID, rowID) =>
           <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>}
-        style={{ marginTop: this.state.topMargin }}
         onEndReached={() => this.fetchNextPage()}
         scrollEnabled={false}
       />
@@ -213,6 +193,8 @@ const styles = StyleSheet.create<Styles>({
   },
   emptyStateContainer: {
     flex: 1,
+    marginLeft: 20,
+    marginRight: 20,
     justifyContent: "center",
     alignItems: "center",
   },

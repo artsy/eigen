@@ -7,6 +7,8 @@
 -   Revised designs for consignments - orta
 -   Adds Live and timed auctions in home view - luc
 -   Adds Sale container to app registry - ash
+-   QA for Home: change tab colors - maxim
+-   QA Inquiry screen - maxim
 
 ### 1.4.0-beta.5
 
@@ -39,6 +41,7 @@
 
 ###### Home
 
+-   Updates Artists section (aka works for you notifications) - sarah
 -   Adds a Recommended Fairs Rail - sarah
 -   Adds for For You tab with styled headers - luc
 -   Creates tab view container for new home - luc
