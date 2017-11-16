@@ -56,3 +56,4 @@ yarn-error.log
 tslint-errors.json
 
 head_metadata.json
+.vscode/temp.sql
