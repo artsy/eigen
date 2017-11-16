@@ -18,6 +18,7 @@
 #import <Emission/ARComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARInquiryComponentViewController.h>
+#import <Emission/ARSaveComponentViewController.h>
 #import "ARStorybookComponentViewController.h"
 
 #import "InternalWebViewController.h"
@@ -85,6 +86,7 @@
   [sectionData addCellData:self.jumpToConsignments];
   [sectionData addCellData:self.jumpToInbox];
   [sectionData addCellData:self.jumpToInquiry];
+  [sectionData addCellData:self.jumpToFavorites];
 
   return sectionData;
 }
@@ -233,6 +235,13 @@
   }];
 }
 
+- (ARCellData *)jumpToFavorites
+{
+  return [self tappableCellDataWithTitle:@"Favorites" selection:^{
+    id viewController = [[ARSaveComponentViewController alloc] initWithEmission:nil];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
 
 - (ARCellData *)generateStagingSwitch
 {
