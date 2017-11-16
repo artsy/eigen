@@ -131,7 +131,12 @@ exports[`renders correctly 1`] = `
                     "textAlign": "left",
                   },
                   undefined,
-                  Object {},
+                  Array [
+                    Object {
+                      "fontSize": 12,
+                    },
+                    undefined,
+                  ],
                   Object {
                     "fontFamily": "AvantGardeGothicITC",
                   },
@@ -220,8 +225,10 @@ exports[`renders correctly 1`] = `
         style={
           Array [
             Object {
+              "alignSelf": "center",
               "marginLeft": 20,
               "marginRight": 20,
+              "width": 472,
             },
             undefined,
           ]
@@ -447,10 +454,10 @@ exports[`renders correctly 1`] = `
       style={
         Object {
           "backgroundColor": "#6e1fff",
-          "height": 44,
+          "height": 50,
           "marginBottom": 0,
           "opacity": 1,
-          "paddingTop": 12,
+          "paddingTop": 15,
         }
       }
       testID={undefined}
