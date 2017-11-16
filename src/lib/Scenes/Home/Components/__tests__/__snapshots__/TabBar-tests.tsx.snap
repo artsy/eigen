@@ -6,7 +6,7 @@ exports[`renders correctly 1`] = `
     Array [
       Object {
         "borderBottomWidth": 1,
-        "borderColor": "rgb(229, 229, 229)",
+        "borderColor": "#cccccc",
         "flexDirection": "row",
         "height": 50,
         "justifyContent": "space-around",
@@ -54,10 +54,10 @@ exports[`renders correctly 1`] = `
       style={
         Array [
           Object {
+            "color": "#cccccc",
             "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
             "letterSpacing": 1.5,
-            "opacity": 0.3,
             "textAlign": "center",
           },
           undefined,
@@ -105,10 +105,10 @@ exports[`renders correctly 1`] = `
       style={
         Array [
           Object {
+            "color": "#cccccc",
             "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
             "letterSpacing": 1.5,
-            "opacity": 0.3,
             "textAlign": "center",
           },
           undefined,
@@ -156,10 +156,10 @@ exports[`renders correctly 1`] = `
       style={
         Array [
           Object {
+            "color": "#cccccc",
             "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
             "letterSpacing": 1.5,
-            "opacity": 0.3,
             "textAlign": "center",
           },
           undefined,
