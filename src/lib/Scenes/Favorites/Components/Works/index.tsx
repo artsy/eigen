@@ -1,16 +1,22 @@
 import React from "react"
 import { View } from "react-native"
 import { createPaginationContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
 
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 
+const Container = styled.ScrollView`
+  padding: 20px;
+  flex: 1;
+`
+
 class SavedWorks extends React.Component<any, any> {
   render() {
-    const artworks = this.props.me.saved_artworks.artworks_connection.edges
+    const artworks = this.props.me.saved_artworks.artworks_connection.edges.map(edge => edge.node)
     return (
-      <View style={{ flex: 1 }}>
+      <Container>
         <GenericGrid artworks={artworks} />
-      </View>
+      </Container>
     )
   }
 }
@@ -22,7 +28,8 @@ export default createPaginationContainer(
       fragment Works_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         saved_artworks {
-          artworks_connection(first: $count, after: $cursor) @connection(key: "GenericGrid_artworks_connection") {
+          artworks_connection(private: true, first: $count, after: $cursor)
+            @connection(key: "GenericGrid_artworks_connection") {
             pageInfo {
               endCursor
               hasNextPage
