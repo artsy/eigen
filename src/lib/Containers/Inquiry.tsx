@@ -4,6 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
 import {
+  Dimensions,
   FlatList,
   ImageURISource,
   KeyboardAvoidingView,
@@ -24,6 +25,8 @@ import ArtworkPreview from "../Components/Inbox/Conversations/Preview/ArtworkPre
 import ARSwitchBoard from "../NativeModules/SwitchBoard"
 import { gravityURL } from "../relay/config"
 import { NetworkError } from "../utils/errors"
+
+const isPad = Dimensions.get("window").width > 700
 
 const Container = styled.View`
   flex: 1;
@@ -58,6 +61,8 @@ const CancelButton = styled.TouchableOpacity`padding-left: 20;`
 const Content = styled.View`
   margin-left: 20;
   margin-right: 20;
+  alignSelf: ${isPad ? "center" : "stretch"};
+  ${isPad ? "width: 472;" : ""};
 `
 
 const InquiryTextInput = styled.TextInput`
