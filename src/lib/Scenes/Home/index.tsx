@@ -30,16 +30,20 @@ export default class Home extends React.Component<null, null> {
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView renderTabBar={() => <TabBar />}>
-          <Tab tabLabel="Artists">
+          {/* FIXME:
+      A thin space has been added in front of the tab label names to compensate for trailing space added by the
+      wider letter-spacing. Going forward, this would ideally be dealt with through letter indentation. */}
+          <Tab tabLabel=" Artists">
             <WorksForYouRenderer render={renderWithLoadProgress(WorksForYou)} />
           </Tab>
-          <Tab tabLabel="For You">
+          <Tab tabLabel=" For You">
             <ForYouRenderer render={renderWithLoadProgress(ForYou)} />
           </Tab>
-          <Tab tabLabel="Auctions">
+          <Tab tabLabel=" Auctions">
             <SalesRenderer render={renderWithLoadProgress(Sales)} />
           </Tab>
         </ScrollableTabView>
+
         <DarkNavigationButton
           title="Sell works from your collection through Artsy"
           onPress={this.openLink.bind(this)}

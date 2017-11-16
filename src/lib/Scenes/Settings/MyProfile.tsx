@@ -2,15 +2,15 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Dimensions, ScrollView, Text, TouchableOpacity, View, ViewProperties, ViewStyle } from "react-native"
-import SwitchBoard from "../NativeModules/SwitchBoard"
 
 import { Colors } from "lib/data/colors"
 import { Fonts } from "lib/data/fonts"
 
+import Separator from "lib/Components/Separator"
+import SerifText from "lib/Components/Text/Serif"
 import { Router } from "lib/utils/router"
-import Separator from "../Components/Separator"
-import SerifText from "../Components/Text/Serif"
 
 const AvatarCircle = styled.View`
   background-color: ${Colors.GrayRegular};
@@ -111,7 +111,7 @@ export class MyProfile extends React.Component<Props, {}> {
         <ButtonSection>
           <ProfileButton
             section="Selling"
-            description="Sell works from you collection"
+            description="Sell works from your collection"
             onPress={startSubmission}
             isTop
           />
