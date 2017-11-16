@@ -26,9 +26,9 @@ export default class Home extends React.Component<null, null> {
   render() {
     return (
       <ScrollableTabView renderTabBar={() => <TabBar />}>
-        {/* A thin space has been added in front of the tab label names to compensate for trailing space
-        added by the wider letter-spacing. Going forward,
-        this would ideally be dealt with through letter indentation.  */}
+        {/* FIXME:
+        A thin space has been added in front of the tab label names to compensate for trailing space added by the
+        wider letter-spacing. Going forward, this would ideally be dealt with through letter indentation. */}
         <Tab tabLabel=" Artists">
           <WorksForYouRenderer render={renderWithLoadProgress(WorksForYou)} />
         </Tab>
