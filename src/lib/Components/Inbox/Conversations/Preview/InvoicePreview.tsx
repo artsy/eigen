@@ -107,14 +107,14 @@ const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState, 
 }
 
 interface State {
-  optimistic: boolean
+  paid: boolean
 }
 
 const track: Track<Props, State> = _track
 
 @track()
 export class InvoicePreview extends React.Component<Props, State> {
-  public state = { optimistic: false }
+  public state = { paid: false }
   private subscription?: EmitterSubscription
 
   componentWillMount() {
@@ -136,9 +136,7 @@ export class InvoicePreview extends React.Component<Props, State> {
     const { invoice, conversationId, relay } = this.props
     if (notification.url === invoice.payment_url) {
       // Optimistically update the UI, refetch, then re-render without optimistic update.
-      this.setState({ optimistic: true })
-      const variables = { conversationId, invoiceId: invoice.lewitt_invoice_id }
-      relay.refetch(variables, null, () => this.setState({ optimistic: false }), { force: true })
+      this.setState({ paid: true })
     }
   }
 
@@ -154,7 +152,7 @@ export class InvoicePreview extends React.Component<Props, State> {
 
   render() {
     const { invoice } = this.props
-    const invoiceState = this.state.optimistic ? "PAID" : invoice.state
+    const invoiceState = this.state.paid ? "PAID" : invoice.state
 
     return (
       <Container>
