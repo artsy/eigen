@@ -3,6 +3,8 @@
 
 ### Master
 
+### 1.4.0-beta.5
+
 -   Adds Saves & Follows view - luc
 -   Renames MyProfile -> MyAccount, and sets up the design for it - orta
 -   Revised designs for consignments - orta
