@@ -135,6 +135,7 @@ export default createFragmentContainer(
           FOLLOWED_GENES
           GENERIC_GENES
         ]
+        exclude: [FOLLOWED_ARTISTS]
       ) {
         __id
         ...ArtworkCarousel_rail

@@ -11,6 +11,7 @@
 -   QA Inquiry screen - maxim
 -   Home now includes a call to action for consignments - orta
 -   QA for Home: center tab labels with thin space hack - maxim
+-   Removes ‘works by artists you follow’ rail from ForYou view - alloy
 
 ### 1.4.0-beta.5
 
