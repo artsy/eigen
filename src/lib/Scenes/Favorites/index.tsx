@@ -6,19 +6,23 @@ import styled from "styled-components/native"
 import TabBar, { Tab } from "lib/Components/TabBar"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
+import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import Headline from "lib/Components/Text/Headline"
-import fonts from "lib/data/fonts"
+import { Fonts } from "lib/data/fonts"
 
 import Artists from "./Components/Artists"
 import ArtistsRenderer from "./Components/Artists/Relay/ArtistsRenderer"
 
-import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
-import { gravityURL } from "lib/relay/config"
 import Artworks from "./Components/Artworks"
 import ArtworksRenderer from "./Components/Artworks/Relay/ArtworksRenderer"
 
+import Categories from "./Components/Categories"
+import CategoriesRenderer from "./Components/Categories/Relay/CategoriesRenderer"
+
+import { gravityURL } from "lib/relay/config"
+
 const Title = styled.Text`
-  font-family: ${fonts["garamond-regular"]};
+  font-family: ${Fonts.GaramondRegular};
   font-size: 30px;
   text-align: left;
   margin-left: 20px;
@@ -45,7 +49,7 @@ class Favorites extends React.Component<null, null> {
             <ArtistsRenderer render={renderWithLoadProgress(Artists)} />
           </Tab>
           <Tab tabLabel="Categories">
-            <View />
+            <CategoriesRenderer render={renderWithLoadProgress(Categories)} />
           </Tab>
         </ScrollableTabView>
         {isStaging && <DarkNavigationButton title="Warning: on staging favourites don't migrate" />}

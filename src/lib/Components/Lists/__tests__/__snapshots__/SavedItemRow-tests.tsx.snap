@@ -48,12 +48,13 @@ exports[`renders correctly 1`] = `
       style={
         Array [
           Object {
-            "borderRadius": 25,
             "height": 50,
             "overflow": "hidden",
             "width": 50,
           },
-          undefined,
+          Object {
+            "borderRadius": 25,
+          },
         ]
       }
     >

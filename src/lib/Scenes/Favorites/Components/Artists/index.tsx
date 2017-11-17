@@ -2,17 +2,14 @@ import React from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import SavedArtistRow from "./Components/SavedArtistRow"
+import SavedItemRow from "lib/Components/Lists/SavedItemRow"
 
 class Artists extends React.Component<RelayProps, null> {
-  renderRow(item) {
-    console.log(item)
-    return <SavedArtistRow {...item.item} />
-  }
-
   render() {
     const rows: any[] = this.props.me.follow_artists.artists
-    return <FlatList data={rows} keyExtractor={({ __id }) => __id} renderItem={this.renderRow.bind(this)} />
+    return (
+      <FlatList data={rows} keyExtractor={({ __id }) => __id} renderItem={item => <SavedItemRow {...item.item} />} />
+    )
   }
 }
 
