@@ -10,7 +10,6 @@ exports[`renders correctly 1`] = `
         "flexDirection": "row",
         "height": 50,
         "justifyContent": "space-around",
-        "marginTop": 20,
       },
       undefined,
     ]
