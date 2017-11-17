@@ -73,10 +73,11 @@ export interface Props extends RelayProps {
 }
 
 interface InvoiceStateButtonProps {
+  onSelected: () => void
   invoiceState: Props["invoice"]["state"]
 }
 
-const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState }) => {
+const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState, onSelected }) => {
   switch (invoiceState) {
     case "PAID":
       return (
@@ -99,7 +100,7 @@ const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState }
     case "UNPAID":
       return (
         <PayButtonContainer>
-          <InvertedButton text="PAY" />
+          <InvertedButton text="PAY" onPress={onSelected} />
         </PayButtonContainer>
       )
   }
@@ -152,27 +153,22 @@ export class InvoicePreview extends React.Component<Props, State> {
   }
 
   render() {
-    const { invoice, onSelected } = this.props
+    const { invoice } = this.props
     const invoiceState = this.state.optimistic ? "PAID" : invoice.state
 
     return (
-      <TouchableHighlight
-        onPress={invoiceState === "UNPAID" ? () => this.attachmentSelected() : null}
-        underlayColor={colors["gray-light"]}
-      >
-        <Container>
-          <Icon source={require("../../../../../../images/payment_request.png")} />
-          <TextContainer>
-            <PaymentRequest>Payment request</PaymentRequest>
-            <CostLabel>
-              {invoice.total}
-            </CostLabel>
-          </TextContainer>
-          <TextContainer>
-            <InvoiceStateButton invoiceState={invoiceState} />
-          </TextContainer>
-        </Container>
-      </TouchableHighlight>
+      <Container>
+        <Icon source={require("../../../../../../images/payment_request.png")} />
+        <TextContainer>
+          <PaymentRequest>Payment request</PaymentRequest>
+          <CostLabel>
+            {invoice.total}
+          </CostLabel>
+        </TextContainer>
+        <TextContainer>
+          <InvoiceStateButton invoiceState={invoiceState} onSelected={this.attachmentSelected.bind(this)} />
+        </TextContainer>
+      </Container>
     )
   }
 }

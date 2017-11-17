@@ -18,6 +18,7 @@
 -   Add analytics events for messaging - maxim
 -   Removes ‘works by artists you follow’ rail from ForYou view - alloy
 -   QA for Inbox view: center and cap size on iPad and solid line separator - maxim
+-   Changed invoice component to only being able to touch the PAY button - alloy
 
 ### 1.4.0-beta.5
 
