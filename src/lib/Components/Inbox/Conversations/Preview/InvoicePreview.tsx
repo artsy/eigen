@@ -53,7 +53,7 @@ const PaidLabel = styled.Text`
 const PayButtonContainer = styled.View`
   margin-left: 15;
   height: 25;
-  width: 71;
+  width: 78;
 `
 
 const PaymentRequest = styled.Text`
