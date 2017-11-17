@@ -8,6 +8,8 @@ import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import { NotificationsManager, PaymentRequestPaidNotification } from "lib/NativeModules/NotificationsManager"
 
+import { Schema, Track, track as _track } from "../../../../utils/track"
+
 const Container = styled.View`
   border-width: 1;
   border-color: ${colors["gray-regular"]};
@@ -107,6 +109,9 @@ interface State {
   optimistic: boolean
 }
 
+const track: Track<Props, State> = _track
+
+@track()
 export class InvoicePreview extends React.Component<Props, State> {
   public state = { optimistic: false }
   private subscription?: EmitterSubscription
@@ -136,12 +141,25 @@ export class InvoicePreview extends React.Component<Props, State> {
     }
   }
 
+  @track((props, state) => ({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.ConversationAttachmentInvoice,
+    owner_type: Schema.OwnerEntityTypes.Invoice,
+    owner_id: props.invoice.lewitt_invoice_id,
+  }))
+  attachmentSelected() {
+    this.props.onSelected()
+  }
+
   render() {
     const { invoice, onSelected } = this.props
     const invoiceState = this.state.optimistic ? "PAID" : invoice.state
 
     return (
-      <TouchableHighlight onPress={invoiceState === "UNPAID" ? onSelected : null} underlayColor={colors["gray-light"]}>
+      <TouchableHighlight
+        onPress={invoiceState === "UNPAID" ? () => this.attachmentSelected() : null}
+        underlayColor={colors["gray-light"]}
+      >
         <Container>
           <Icon source={require("../../../../../../images/payment_request.png")} />
           <TextContainer>

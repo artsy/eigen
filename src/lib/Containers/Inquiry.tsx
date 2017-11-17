@@ -1,5 +1,6 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { Schema, Track, track as _track } from "../utils/track"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
@@ -90,6 +91,14 @@ const ResponseRateLine = styled.View`
   margin-top: 5;
 `
 
+interface State {
+  text: string
+  sending: boolean
+}
+
+const track: Track<RelayProps, State, Schema.Entity> = _track
+
+@track()
 export class Inquiry extends React.Component<RelayProps, any> {
   constructor(props) {
     super(props)
@@ -99,10 +108,39 @@ export class Inquiry extends React.Component<RelayProps, any> {
     }
   }
 
+  @track((props, state) => ({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.InquiryCancel,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
+    owner_id: props.artwork._id,
+    owner_slug: props.artwork.id,
+  }))
+  cancelModal() {
+    this.dismissModal()
+  }
+
+  @track((props, state) => ({
+    action_type: Schema.ActionTypes.Success,
+    action_name: Schema.ActionNames.InquirySend,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
+    owner_id: props.artwork._id,
+    owner_slug: props.artwork.id,
+  }))
+  inquirySent() {
+    this.dismissModal()
+  }
+
   dismissModal() {
     ARSwitchBoard.dismissModalViewController(this)
   }
 
+  @track((props, state) => ({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.InquirySend,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
+    owner_id: props.artwork._id,
+    owner_slug: props.artwork.id,
+  }))
   sendInquiry() {
     // Using setState to trigger re-render for the button
     this.setState(() => ({ sending: true }))
@@ -120,18 +158,28 @@ export class Inquiry extends React.Component<RelayProps, any> {
     })
       .then(response => {
         if (response.status >= 200 && response.status < 300) {
-          this.dismissModal()
+          this.inquirySent()
         } else {
-          this.setState(() => ({ sending: false }))
           const error = new NetworkError(response.statusText)
           error.response = response
-          throw error
+          this.sendFailed(error)
         }
       })
       .catch(error => {
-        this.setState(() => ({ sending: false }))
-        throw error
+        this.sendFailed(error)
       })
+  }
+
+  @track((props, state) => ({
+    action_type: Schema.ActionTypes.Fail,
+    action_name: Schema.ActionNames.InquirySend,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
+    owner_id: props.artwork._id,
+    owner_slug: props.artwork.id,
+  }))
+  sendFailed(error) {
+    this.setState(() => ({ sending: false }))
+    throw error
   }
 
   render() {
@@ -158,7 +206,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
         >
           <Header>
             <HeaderTextContainer>
-              <CancelButton onPress={this.dismissModal.bind(this)}>
+              <CancelButton onPress={this.cancelModal.bind(this)}>
                 <MetadataText>CANCEL</MetadataText>
               </CancelButton>
               <TitleView>
@@ -210,6 +258,7 @@ export default createFragmentContainer(
 
 interface RelayProps {
   artwork: {
+    _id: string
     id: string
     contact_message: string
     partner: {

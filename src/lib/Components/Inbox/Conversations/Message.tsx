@@ -14,6 +14,8 @@ import ImagePreview from "./Preview/Attachment/ImagePreview"
 import PDFPreview from "./Preview/Attachment/PDFPreview"
 import InvoicePreview from "./Preview/InvoicePreview"
 
+import { Schema, Track, track as _track } from "../../../utils/track"
+
 const VerticalLayout = styled.View`
   flex-direction: column;
   flex: 1;
@@ -78,6 +80,9 @@ interface Props extends RelayProps {
   conversationId: string
 }
 
+const track: Track<Props> = _track
+
+@track()
 export class Message extends React.Component<Props, any> {
   renderAttachmentPreviews(attachments: Props["message"]["attachments"]) {
     // This function does not use the arrow syntax, because it shouldn’t be force bound to this component. Instead, it
@@ -105,14 +110,20 @@ export class Message extends React.Component<Props, any> {
     })
   }
 
+  @track((props, state) => ({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.ConversationLink,
+    owner_type: Schema.OwnerEntityTypes.Conversation,
+    owner_id: props.conversationId,
+  }))
+  onLinkPress(url) {
+    return SwitchBoard.presentNavigationViewController(this, url)
+  }
+
   renderBody() {
     const { message, firstMessage, initialText } = this.props
     const isSent = !!message.created_at
     const body = firstMessage ? initialText : message.body
-
-    const onLinkPress = url => {
-      return SwitchBoard.presentNavigationViewController(this, url)
-    }
 
     const linkStyle = {
       color: colors["purple-regular"],
@@ -120,7 +131,7 @@ export class Message extends React.Component<Props, any> {
     }
 
     return (
-      <Hyperlink onPress={onLinkPress} linkStyle={linkStyle}>
+      <Hyperlink onPress={this.onLinkPress.bind(this)} linkStyle={linkStyle}>
         <BodyText disabled={!isSent}>
           {body}
         </BodyText>
