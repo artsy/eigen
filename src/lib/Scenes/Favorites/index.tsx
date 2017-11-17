@@ -12,8 +12,8 @@ import fonts from "lib/data/fonts"
 import Artists from "./Components/Artists"
 import ArtistsRenderer from "./Components/Artists/Relay/ArtistsRenderer"
 
-import Works from "./Components/Works"
-import WorksRenderer from "./Components/Works/Relay/WorksRenderer"
+import Artworks from "./Components/Artworks"
+import WorksRenderer from "./Components/Artworks/Relay/ArtworksRenderer"
 
 const Title = styled.Text`
   font-family: ${fonts["garamond-regular"]};
@@ -34,7 +34,7 @@ class Favorites extends React.Component<null, null> {
           </View>}
       >
         <Tab tabLabel="Works">
-          <WorksRenderer render={renderWithLoadProgress(Works)} />
+          <WorksRenderer render={renderWithLoadProgress(Artworks)} />
         </Tab>
         <Tab tabLabel="Artists">
           <ArtistsRenderer render={renderWithLoadProgress(Artists)} />

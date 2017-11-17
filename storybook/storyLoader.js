@@ -24,8 +24,10 @@ function loadStories() {
   require('../src/lib/Containers/__stories__/Artist.story.tsx');
   require('../src/lib/Containers/__stories__/Gene.story.tsx');
   require('../src/lib/Containers/__stories__/Inquiry.story.tsx');
-  require('../src/lib/Containers/__stories__/MyProfile.story.tsx');
   require('../src/lib/Containers/__stories__/Sale.story.tsx');
+  require('../src/lib/Scenes/Favorites/__stories__/Favorites.story.tsx');
+  require('../src/lib/Scenes/Home/__stories__/Home.story.tsx');
+  require('../src/lib/Scenes/Settings/__stories__/Settings.story.tsx');
   
 }
 

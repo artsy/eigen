@@ -1,8 +1,17 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { ListView, ListViewDataSource, RefreshControl, ScrollView, ScrollViewProps, ViewProperties } from "react-native"
+import {
+  ListView,
+  ListViewDataSource,
+  RefreshControl,
+  ScrollView,
+  ScrollViewProps,
+  View,
+  ViewProperties,
+} from "react-native"
 
+import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
 import ArtworkRail from "lib/Components/Home/ArtworkRails/ArtworkRail"
 import HeroUnits from "lib/Components/Home/HeroUnits"
