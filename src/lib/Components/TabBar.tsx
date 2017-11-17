@@ -15,7 +15,6 @@ interface TabBarProps {
 const Button = styled.TouchableWithoutFeedback`flex: 1;`
 
 const Tabs = styled.View`
-  margin-top: 20px;
   height: 50px;
   flex-direction: row;
   justify-content: space-around;
@@ -23,12 +22,16 @@ const Tabs = styled.View`
   border-bottom-width: 1px;
 `
 
-const Tab = styled.View`
+const TabButton = styled.View`
   align-items: center;
   justify-content: center;
   padding-top: 5;
   flex: 1;
 `
+
+interface TabProps {
+  tabLabel: string
+}
 
 interface TabLabelProps {
   active: boolean
@@ -42,6 +45,11 @@ const TabLabel: any = styled.Text`
   color: ${(props: TabLabelProps) => (props.active ? "black" : colors["gray-medium"])};
 `
 
+export const Tab: React.SFC<TabProps> = ({ children }) =>
+  <View style={{ flex: 1 }}>
+    {children}
+  </View>
+
 export default class TabBar extends React.Component<TabBarProps, null> {
   renderTab(name, page, isTabActive, onPressHandler) {
     return (
@@ -52,11 +60,11 @@ export default class TabBar extends React.Component<TabBarProps, null> {
         accessibilityTraits="button"
         onPress={() => onPressHandler(page)}
       >
-        <Tab>
+        <TabButton>
           <TabLabel active={isTabActive}>
             {name.toUpperCase()}
           </TabLabel>
-        </Tab>
+        </TabButton>
       </Button>
     )
   }

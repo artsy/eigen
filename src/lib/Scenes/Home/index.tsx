@@ -1,6 +1,7 @@
 import React from "react"
 import { View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
+import styled from "styled-components/native"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
@@ -14,22 +15,20 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import SalesRenderer from "./Components/Sales/Relay/SalesRenderer"
 
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
-import TabBar from "./Components/TabBar"
+import TabBar, { Tab } from "lib/Components/TabBar"
 
-interface TabProps {
-  tabLabel: string
-}
-
-export const Tab: React.SFC<TabProps> = ({ children }) =>
-  <View style={{ flex: 1 }}>
-    {children}
-  </View>
+const TabBarContainer = styled.View`margin-top: 20px;`
 
 export default class Home extends React.Component<null, null> {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <ScrollableTabView renderTabBar={() => <TabBar />}>
+        <ScrollableTabView
+          renderTabBar={props =>
+            <TabBarContainer>
+              <TabBar {...props} />
+            </TabBarContainer>}
+        >
           {/* FIXME:
       A thin space has been added in front of the tab label names to compensate for trailing space added by the
       wider letter-spacing. Going forward, this would ideally be dealt with through letter indentation. */}
