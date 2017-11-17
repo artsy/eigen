@@ -8,9 +8,6 @@ Artist
 import Conversation from "../Containers/Conversation"
 Conversation
 
-import Home from "../Containers/Home"
-Home
-
 import Gene from "../Containers/Gene"
 Gene
 
