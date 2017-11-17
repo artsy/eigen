@@ -6,7 +6,8 @@ import SavedArtistRow from "./Components/SavedArtistRow"
 
 class Artists extends React.Component<RelayProps, null> {
   renderRow(item) {
-    return <SavedArtistRow artist={item.item} />
+    console.log(item)
+    return <SavedArtistRow {...item.item} />
   }
 
   render() {
@@ -21,7 +22,13 @@ export default createFragmentContainer(
     fragment Artists_me on Me {
       follow_artists {
         artists {
-          ...SavedArtistRow_artist
+          id
+          __id
+          name
+          href
+          image {
+            url
+          }
         }
       }
     }

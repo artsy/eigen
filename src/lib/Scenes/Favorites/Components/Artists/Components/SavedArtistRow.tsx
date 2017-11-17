@@ -2,7 +2,6 @@ import React from "react"
 import styled from "styled-components/native"
 
 import { Text, TouchableWithoutFeedback, View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import { Colors } from "lib/data/colors"
@@ -49,14 +48,23 @@ const Separator = styled.View`
   margin-top: 9px;
 `
 
-class SavedArtistRow extends React.Component<RelayProps, null> {
+interface Props {
+  href: string
+  name: string
+  image: {
+    url: string | null
+  }
+  square_image: boolean | undefined
+}
+
+export default class SavedArtistRow extends React.Component<Props, null> {
   handleTap() {
-    Switchboard.presentNavigationViewController(this, this.props.artist.href)
+    Switchboard.presentNavigationViewController(this, this.props.href)
   }
 
   render() {
-    const artist = this.props.artist
-    const imageURL = artist.image && artist.image.url
+    const item = this.props
+    const imageURL = item.image && item.image.url
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
@@ -66,34 +74,12 @@ class SavedArtistRow extends React.Component<RelayProps, null> {
               <ImageView imageURL={imageURL} />
             </ImageContainer>
             <Label>
-              {artist.name.toUpperCase()}
+              {item.name.toUpperCase()}
             </Label>
           </Content>
           <Separator />
         </Container>
       </TouchableWithoutFeedback>
     )
-  }
-}
-
-export default createFragmentContainer(SavedArtistRow, {
-  artist: graphql`
-    fragment SavedArtistRow_artist on Artist {
-      href
-      name
-      image {
-        url(version: "large")
-      }
-    }
-  `,
-})
-
-interface RelayProps {
-  artist: {
-    href: string | null
-    name: string | null
-    image: {
-      url: string | null
-    } | null
   }
 }

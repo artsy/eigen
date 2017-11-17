@@ -30,7 +30,7 @@ function loadStories() {
   require('../src/lib/Scenes/Favorites/__stories__/Favorites.story.tsx');
   require('../src/lib/Scenes/Home/__stories__/Home.story.tsx');
   require('../src/lib/Scenes/Settings/__stories__/Settings.story.tsx');
-
+  
 }
 
 const stories = [
@@ -59,13 +59,10 @@ const stories = [
   '../src/lib/Scenes/Favorites/__stories__/Favorites.story.tsx',
   '../src/lib/Scenes/Home/__stories__/Home.story.tsx',
   '../src/lib/Scenes/Settings/__stories__/Settings.story.tsx',
-
+  
 ];
 
 module.exports = {
   loadStories,
-<<<<<<< Updated upstream
-=======
   stories,
->>>>>>> Stashed changes
 };
