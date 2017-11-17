@@ -1,5 +1,5 @@
 import React from "react"
-import { Keyboard, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback } from "react-native"
+import { KeyboardAvoidingView, TextInput, TouchableWithoutFeedback } from "react-native"
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"

@@ -1,6 +1,6 @@
 import * as _ from "lodash"
 import React from "react"
-import { AppRegistry, ViewProperties } from "react-native"
+import { AppRegistry, View, ViewProperties } from "react-native"
 import { TrackingInfo } from "react-tracking"
 import { Schema, Track, track as _track } from "./utils/track"
 
@@ -12,7 +12,6 @@ import {
   ArtistRenderer,
   ConversationRenderer,
   GeneRenderer,
-  HomeRenderer,
   InboxRenderer,
   InquiryRenderer,
   MyProfileRenderer,
@@ -75,11 +74,6 @@ const Sale: React.SFC<{ saleID: string }> = ({ saleID }) => {
 
 // TODO: This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
 //
-//     this.renderFetched = data => <Containers.Home {...data} trigger1pxScrollHack={this.props.trigger1pxScrollHack} />
-const Home: React.SFC<{}> = () => <HomeRenderer render={renderWithLoadProgress(Containers.Home)} />
-
-// TODO: This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
-//
 //     this.renderFetched = data => <Containers.WorksForYou {...data} trigger1pxScrollHack={this.props.trigger1pxScrollHack} />
 const WorksForYou: React.SFC<{ selectedArtist: string }> = props =>
   <WorksForYouRenderer {...props} render={renderWithLoadProgress(Containers.WorksForYou, props)} />
@@ -114,7 +108,8 @@ AppRegistry.registerComponent("Home", () => HomeScene)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
 AppRegistry.registerComponent("MyProfile", () => MyProfile)
-AppRegistry.registerComponent("MyAccount", () => MyProfile) // TODO: deprecate on a new Eigen build
+AppRegistry.registerComponent("MySellingProfile", () => () => <View />)
+AppRegistry.registerComponent("MyProfileEdit", () => () => <View />)
 AppRegistry.registerComponent("Inbox", () => Inbox)
 AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)

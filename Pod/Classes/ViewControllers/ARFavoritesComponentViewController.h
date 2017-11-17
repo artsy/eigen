@@ -2,9 +2,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ARSaveComponentViewController : ARComponentViewController
+@interface ARFavoritesComponentViewController : ARComponentViewController
 
-- (instancetype)initWithEmission:(nullable AREmission *)emission NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithEmission:(nullable AREmission *)emission
                       moduleName:(NSString *)moduleName

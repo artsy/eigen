@@ -3,6 +3,7 @@
 
 ### Master
 
+* Provides native view controllers for the routing engine in Eigen - orta
 -   Changed invoice component to only being able to touch the PAY button - alloy
 -   Make invoice component’s payment status and button slightly wider to account for statuses like ‘REFUNDED’ and ‘CANCELED’ - alloy
 -   Don’t try to also fetch the invoice state after receiving a ‘paid’ notification, just trust the notification and keep showing the ‘PAID’ state - alloy
