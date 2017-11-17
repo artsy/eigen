@@ -11,6 +11,8 @@
 -   QA Inquiry screen - maxim
 -   Home now includes a call to action for consignments - orta
 -   QA for Home: center tab labels with thin space hack - maxim
+-   Add new Analytics schema via React Tracking. - maxim
+-   Add analytics events for messaging - maxim
 -   Removes ‘works by artists you follow’ rail from ForYou view - alloy
 -   QA for Inbox view: center and cap size on iPad and solid line separator - maxim
 
@@ -20,6 +22,7 @@
 
 -   Converts relative to absolute paths for imports - luc
 -   Adds enzyme for tests - luc
+-   Fix test issues with react-tracking and enzyme - luc
 -   Updates Avant Garde font with a version that can handle special characters - sarah
 -   Remaps space key bidding to ctrl+space so we can enter spaces fromthe simulator - luc
 -   Conditionally use different past artist show fragments for iPad vs iPhone - alloy

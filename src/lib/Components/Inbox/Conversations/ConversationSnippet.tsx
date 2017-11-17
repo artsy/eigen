@@ -2,6 +2,8 @@ import moment from "moment"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import { Schema, Track, track as _track } from "../../../utils/track"
+
 import { MetadataText, PreviewText as P, SmallHeadline } from "../Typography"
 
 import { Dimensions, StyleSheet, TouchableWithoutFeedback, ViewStyle } from "react-native"
@@ -98,6 +100,9 @@ interface Props {
   onSelected?: () => void
 }
 
+const track: Track<Props, null, Schema.Entity> = _track
+
+@track()
 export class ConversationSnippet extends React.Component<Props, any> {
   renderTitleForItem(item) {
     if (item.__typename === "Artwork") {
@@ -136,6 +141,16 @@ export class ConversationSnippet extends React.Component<Props, any> {
     }
   }
 
+  @track((props, state) => ({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.ConversationSelected,
+    owner_id: props.conversation.id,
+    owner_type: Schema.OwnerEntityTypes.Conversation,
+  }))
+  conversationSelected() {
+    this.props.onSelected()
+  }
+
   render() {
     const conversation = this.props.conversation
     // If we cannot resolve items in the conversation, such as deleted fair booths
@@ -160,7 +175,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
     const conversationText = conversation.last_message.replace(/\n/g, " ")
     const date = moment(conversation.last_message_at).fromNow(true)
     return (
-      <TouchableWithoutFeedback onPress={this.props.onSelected}>
+      <TouchableWithoutFeedback onPress={() => this.conversationSelected()}>
         <Card>
           <CardContent>
             <ImageView imageURL={imageURL} />

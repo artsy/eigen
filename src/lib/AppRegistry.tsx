@@ -1,7 +1,8 @@
 import * as _ from "lodash"
 import React from "react"
 import { AppRegistry, ViewProperties } from "react-native"
-import { track } from "./utils/track"
+import { TrackingInfo } from "react-tracking"
+import { Schema, Track, track as _track } from "./utils/track"
 
 import Consignments from "./Components/Consignments"
 import Containers from "./Containers/index"
@@ -30,24 +31,38 @@ interface Props extends ViewProperties {
 
 // Analytics wrapper for all of our top level React components
 function AddTrack(pageName: string) {
-  return track(
-    // Here we assign the source screen to all subsequent events fired from that component
-    { page: pageName },
-    // Here we're hooking into Eigen to post analytics events to Adjust and Segement
-    { dispatch: data => Events.postEvent(data) }
-  )
+  return component => component
 }
 
-const Artist: React.SFC<{ artistID: string; isPad: boolean }> = AddTrack("Artist")(props =>
-  <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />
-)
+function track<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
+  return _track(trackingInfo as any, {
+    dispatch: data => Events.postEvent(data),
+    dispatchOnMount: true,
+  })
+}
 
-const Inbox: React.SFC<{}> = () => <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />
+interface ArtistProps {
+  artistID: string
+  isPad: boolean
+}
+const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
+  return {
+    context_screen: Schema.PageNames.ArtistPage,
+    context_screen_owner_slug: props.artistID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+  }
+})(props => <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />)
 
-const Gene: React.SFC<{ geneID: string; refineSettings: { medium: string; price_range: string } }> = ({
-  geneID,
-  refineSettings: { medium, price_range },
-}) => {
+const Inbox: React.SFC<{}> = track<{}>(props => {
+  return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
+})(() => <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />)
+
+interface GeneProps {
+  geneID: string
+  refineSettings: { medium: string; price_range: string }
+}
+
+const Gene: React.SFC<GeneProps> = ({ geneID, refineSettings: { medium, price_range } }) => {
   const initialProps = { geneID, medium, price_range }
   return <GeneRenderer {...initialProps} render={renderWithLoadProgress(Containers.Gene, initialProps)} />
 }
@@ -68,11 +83,27 @@ const Home: React.SFC<{}> = () => <HomeRenderer render={renderWithLoadProgress(C
 const WorksForYou: React.SFC<{ selectedArtist: string }> = props =>
   <WorksForYouRenderer {...props} render={renderWithLoadProgress(Containers.WorksForYou, props)} />
 
-const Inquiry: React.SFC<{ artworkID: string }> = props =>
-  <InquiryRenderer {...props} render={renderWithLoadProgress(Containers.Inquiry, props)} />
+interface InquiryProps {
+  artworkID: string
+}
+const Inquiry: React.SFC<InquiryProps> = track<InquiryProps>(props => {
+  return {
+    context_screen: Schema.PageNames.InquiryPage,
+    context_screen_owner_slug: props.artworkID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+  }
+})(props => <InquiryRenderer {...props} render={renderWithLoadProgress(Containers.Inquiry, props)} />)
 
-const Conversation: React.SFC<{ conversationID: string }> = props =>
-  <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />
+interface ConversationProps {
+  conversationID: string
+}
+const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(props => {
+  return {
+    context_screen: Schema.PageNames.ConversationPage,
+    context_screen_owner_id: props.conversationID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Conversation,
+  }
+})(props => <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />)
 
 const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoadProgress(Containers.MyProfile)} />
 

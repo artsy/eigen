@@ -5,6 +5,8 @@ import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
 
+import { Schema, Track, track as _track } from "../../../utils/track"
+
 interface ContainerProps {
   active: boolean
 }
@@ -42,6 +44,9 @@ interface State {
   text: string
 }
 
+const track: Track<Props, State, Schema.Entity> = _track
+
+@track()
 export default class Composer extends React.Component<Props, State> {
   input?: TextInput | any
 
@@ -54,6 +59,10 @@ export default class Composer extends React.Component<Props, State> {
     }
   }
 
+  @track((props, state) => ({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.ConversationSendReply,
+  }))
   submitText() {
     if (this.props.onSubmit) {
       this.props.onSubmit(this.state.text)
