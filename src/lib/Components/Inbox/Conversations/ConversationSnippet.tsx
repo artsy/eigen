@@ -69,6 +69,11 @@ const ImageView = styled(OpaqueImageView)`
   border-radius: 4px;
 `
 
+const SeparatorLine = styled.View`
+  height: 1;
+  background-color: ${colors["gray-regular"]};
+`
+
 export interface Conversation {
   id: string | null
   to: {
@@ -172,7 +177,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
               </P>
             </TextPreview>
           </CardContent>
-          <DottedLine />
+          <SeparatorLine />
         </Card>
       </TouchableWithoutFeedback>
     )
