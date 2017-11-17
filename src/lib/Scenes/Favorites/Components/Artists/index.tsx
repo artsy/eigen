@@ -4,7 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import SavedArtistRow from "./Components/SavedArtistRow"
 
-class Artists extends React.Component<any, any> {
+class Artists extends React.Component<RelayProps, null> {
   renderRow(item) {
     return <SavedArtistRow artist={item.item} />
   }
@@ -27,3 +27,11 @@ export default createFragmentContainer(
     }
   `
 )
+
+interface RelayProps {
+  me: {
+    follow_artists: {
+      artists: any[]
+    } | null
+  } | null
+}

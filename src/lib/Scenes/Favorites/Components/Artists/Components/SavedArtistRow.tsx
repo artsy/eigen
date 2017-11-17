@@ -5,8 +5,9 @@ import { Text, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView"
-import colors from "lib/data/colors"
+import { Colors } from "lib/data/colors"
 import fonts from "lib/data/fonts"
+import Switchboard from "lib/NativeModules/SwitchBoard"
 
 const Container = styled.View`
   margin: 9px 20px 0;
@@ -44,13 +45,13 @@ const ImageContainer = styled.View`
 const Separator = styled.View`
   height: 1;
   width: 100%;
-  background-color: ${colors["gray-regular"]};
+  background-color: ${Colors.GrayRegular};
   margin-top: 9px;
 `
 
 class SavedArtistRow extends React.Component<RelayProps, null> {
   handleTap() {
-    console.log("")
+    Switchboard.presentNavigationViewController(this, this.props.artist.href)
   }
 
   render() {

@@ -10,7 +10,7 @@ const Container = styled.ScrollView`
   flex: 1;
 `
 
-class SavedWorks extends React.Component<any, any> {
+class SavedWorks extends React.Component<RelayProps, null> {
   render() {
     const artworks = this.props.me.saved_artworks.artworks_connection.edges.map(edge => edge.node)
     return (
@@ -71,3 +71,15 @@ export default createPaginationContainer(
     `,
   }
 )
+
+interface RelayProps {
+  me: {
+    saved_artworks: {
+      artworks_connection: {
+        edges: Array<{
+          node: any | null
+        } | null>
+      }
+    } | null
+  } | null
+}
