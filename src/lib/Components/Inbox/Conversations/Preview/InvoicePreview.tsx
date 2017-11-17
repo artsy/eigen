@@ -109,7 +109,7 @@ interface State {
   optimistic: boolean
 }
 
-const track: Track<Props, State, Schema.Entity> = _track
+const track: Track<Props, State> = _track
 
 @track()
 export class InvoicePreview extends React.Component<Props, State> {

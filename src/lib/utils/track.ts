@@ -145,7 +145,7 @@ export namespace Schema {
  *        following: boolean
  *      }
  *
- *      const track: Track<Props, State, Schema.Entity> = _track
+ *      const track: Track<Props, State> = _track
  *
  *      @track()
  *      class Artist extends React.Component<Props, State> {
@@ -171,7 +171,7 @@ export namespace Schema {
  *
  *      ```
  */
-export interface Track<P = any, S = any, T extends Schema.Global = Schema.Global> extends _Track<T, P, S> {} // tslint:disable-line:no-empty-interface
+export interface Track<P = any, S = any, T extends Schema.Global = Schema.Entity> extends _Track<T, P, S> {} // tslint:disable-line:no-empty-interface
 
 /**
  * A typed tracking-info alias of the default react-tracking `track` function.

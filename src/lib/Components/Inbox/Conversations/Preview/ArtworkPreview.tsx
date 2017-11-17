@@ -59,7 +59,7 @@ interface Props extends RelayProps {
   onSelected?: () => void
 }
 
-const track: Track<Props, null, Schema.Entity> = _track
+const track: Track<Props, null> = _track
 
 @track()
 export class ArtworkPreview extends React.Component<Props, any> {

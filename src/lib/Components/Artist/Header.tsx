@@ -24,7 +24,7 @@ interface State {
   followersCount: number
 }
 
-const track: Track<Props, State, Schema.Entity> = _track
+const track: Track<Props, State> = _track
 
 @track()
 class Header extends React.Component<Props, State> {

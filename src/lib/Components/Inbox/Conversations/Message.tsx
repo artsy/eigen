@@ -80,7 +80,7 @@ interface Props extends RelayProps {
   conversationId: string
 }
 
-const track: Track<Props, null, Schema.Entity> = _track
+const track: Track<Props, null> = _track
 
 @track()
 export class Message extends React.Component<Props, any> {
