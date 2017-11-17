@@ -51,7 +51,7 @@ interface Props extends RelayProps {
   onSelected?: () => void
 }
 
-const track: Track<Props, null> = _track
+const track: Track<Props> = _track
 
 @track()
 export class ShowPreview extends React.Component<Props, any> {
