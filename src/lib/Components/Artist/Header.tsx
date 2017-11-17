@@ -152,7 +152,7 @@ class Header extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action_name: state.following ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
+    action_name: state.following ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Success,
     owner_id: props.artist._id,
     owner_slug: props.artist.id,
@@ -163,7 +163,7 @@ class Header extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action_name: state.following ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
+    action_name: state.following ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Fail,
     owner_id: props.artist._id,
     owner_slug: props.artist.id,
