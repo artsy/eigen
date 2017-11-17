@@ -2107,6 +2107,34 @@ type FollowArtists {
   counts: FollowArtistCounts
 }
 
+type FollowGene {
+  gene: Gene
+
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+}
+
+# A connection to a list of items.
+type FollowGeneConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FollowGeneEdge]
+}
+
+# An edge in a connection.
+type FollowGeneEdge {
+  # The item at the end of the edge
+  node: FollowGene
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 enum Format {
   HTML
   PLAIN
@@ -3079,6 +3107,9 @@ type Me implements Node {
 
   # A list of the current user’s inquiry requests
   followed_artists_connection(after: String, first: Int, before: String, last: Int): FollowArtistConnection
+
+  # A list of the current user’s inquiry requests
+  followed_genes(after: String, first: Int, before: String, last: Int): FollowGeneConnection
 
   # An invoice
   invoice(

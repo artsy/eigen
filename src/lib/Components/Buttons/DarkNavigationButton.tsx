@@ -35,6 +35,7 @@ const Row = styled.View`
 
 export default class DarkNavigationButton extends React.Component<Props, any> {
   render() {
+    const showNavArrow = this.props.href || this.props.onPress
     return (
       <BackgroundView style={this.props.style}>
         <TouchableWithoutFeedback onPress={this.openLink.bind(this)}>
@@ -42,7 +43,7 @@ export default class DarkNavigationButton extends React.Component<Props, any> {
             <Text>
               {this.props.title}
             </Text>
-            <Image source={require("../../../../images/horizontal_chevron_white.png")} />
+            {showNavArrow && <Image source={require("../../../../images/horizontal_chevron_white.png")} />}
           </Row>
         </TouchableWithoutFeedback>
       </BackgroundView>

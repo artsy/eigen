@@ -21,6 +21,7 @@ import {
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
 
+import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
 
 import Events from "./NativeModules/Events"
@@ -117,3 +118,4 @@ AppRegistry.registerComponent("MyAccount", () => MyProfile) // TODO: deprecate o
 AppRegistry.registerComponent("Inbox", () => Inbox)
 AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)
+AppRegistry.registerComponent("Favorites", () => FavoritesScene)
