@@ -187,10 +187,19 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 #pragma mark - Native Module: Events/Analytics
 
-    emission.eventsModule.eventOccurred = ^( NSDictionary *_Nonnull info) {
+    emission.eventsModule.eventOccurred = ^(NSDictionary *_Nonnull info) {
+
         NSMutableDictionary *properties = [info mutableCopy];
-        [properties removeObjectForKey:@"name"];
-        [ARAnalytics event:info[@"name"] withProperties:[properties copy]];
+        if (info[@"action_type"] ) {
+            // Track event
+            [properties removeObjectForKey:@"action_type"];
+            [ARAnalytics event:info[@"action_type"] withProperties:[properties copy]];
+        } else {
+            // Screen event
+            [properties removeObjectForKey:@"context_screen"];
+            [ARAnalytics pageView:info[@"context_screen"]  withProperties:[properties copy]];
+        }
+
         
         dispatch_async(dispatch_get_main_queue(), ^{
 //            // TODO: Nav Notifications
