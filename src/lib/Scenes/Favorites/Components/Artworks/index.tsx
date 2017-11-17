@@ -25,7 +25,7 @@ export default createPaginationContainer(
   SavedWorks,
   {
     me: graphql.experimental`
-      fragment Works_me on Me
+      fragment Artworks_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         saved_artworks {
           artworks_connection(private: true, first: $count, after: $cursor)
@@ -63,9 +63,9 @@ export default createPaginationContainer(
       }
     },
     query: graphql.experimental`
-      query WorksQuery($count: Int!, $cursor: String) {
+      query ArtworksQuery($count: Int!, $cursor: String) {
         me {
-          ...Works_me @arguments(count: $count, cursor: $cursor)
+          ...Artworks_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
