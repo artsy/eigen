@@ -20,7 +20,7 @@ WorksForYou
 import Inquiry from "../Containers/Inquiry"
 Inquiry
 
-import MyProfile from "../Containers/MyProfile"
+import MyProfile from "lib/Scenes/Settings/MyProfile"
 MyProfile
 
 import Inbox from "../Containers/Inbox"

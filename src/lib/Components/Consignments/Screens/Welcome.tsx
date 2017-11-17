@@ -10,7 +10,9 @@ import {
   ViewProperties,
 } from "react-native"
 
+import { Router } from "lib/utils/router"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
+
 import Circle from "../Components/CircleImage"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { Button } from "../Components/FormElements"
@@ -27,10 +29,12 @@ export default class Welcome extends React.Component<Props, null> {
 
   // It's not optimal to dismiss the modal, but otherwise we get into all sorts of tricky states
   privacyPolicyTapped = () =>
-    SwitchBoard.dismissModalViewController(this) && SwitchBoard.presentNavigationViewController(this, "/privacy")
+    SwitchBoard.dismissModalViewController(this) &&
+    SwitchBoard.presentNavigationViewController(this, Router.PrivacyPage)
 
   TOSTapped = () =>
-    SwitchBoard.dismissModalViewController(this) && SwitchBoard.presentNavigationViewController(this, "/terms")
+    SwitchBoard.dismissModalViewController(this) &&
+    SwitchBoard.presentNavigationViewController(this, Router.TermsOfService)
 
   render() {
     const isPad = Dimensions.get("window").width > 700
