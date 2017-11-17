@@ -10,6 +10,7 @@ import { Fonts } from "lib/data/fonts"
 
 import Separator from "lib/Components/Separator"
 import SerifText from "lib/Components/Text/Serif"
+import { Router } from "lib/utils/router"
 
 const AvatarCircle = styled.View`
   background-color: ${Colors.GrayRegular};
@@ -98,8 +99,11 @@ export class MyProfile extends React.Component<Props, {}> {
     const windowDimensions = Dimensions.get("window")
     const commonPadding = windowDimensions.width > 700 ? 40 : 20
 
-    const goToConsignmentsOverview = () => SwitchBoard.presentNavigationViewController(this, "/user/consignments")
-    const goToUserSettings = () => SwitchBoard.presentNavigationViewController(this, "/profile/edit/ios")
+    // TODO: go to overview
+    const goToConsignmentsOverview = () => SwitchBoard.presentNavigationViewController(this, Router.SellingOverview)
+    const startSubmission = () => SwitchBoard.presentModalViewController(this, Router.ConsignmentsStartSubmission)
+
+    const goToUserSettings = () => SwitchBoard.presentNavigationViewController(this, Router.UserSettingsiOS)
 
     return (
       <ScrollView scrollsToTop={true} automaticallyAdjustContentInsets={false}>
@@ -108,7 +112,7 @@ export class MyProfile extends React.Component<Props, {}> {
           <ProfileButton
             section="Selling"
             description="Sell works from your collection"
-            onPress={goToConsignmentsOverview}
+            onPress={startSubmission}
             isTop
           />
           <ProfileButton
