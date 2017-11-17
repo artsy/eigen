@@ -22,6 +22,8 @@ Instead of `make oss` below, run `make artsy` to set up [spacecommander](https:/
 
 Make sure you have an environment variable of `ARTSY_STAFF_MEMBER` set to be truthy too.
 
+**Important**: when making bug fixes or new features, think carefully about which branch to make them on. `master` is currently being worked on for new feature work, and `3.2.7-release` is for important bug fixes. We're [working on improving this](https://github.com/artsy/eigen/issues/2444), feedback welcome.
+
 ### OSS Quick Start
 
 Want to get the app running as an OSS project? Run this in your shell:

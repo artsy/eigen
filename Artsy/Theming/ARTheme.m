@@ -2,6 +2,7 @@
 
 #import "ARLogger.h"
 
+@import Artsy_UIFonts;
 #import <EDColor/EDColor.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -84,9 +85,9 @@ static ARTheme *defaultTheme;
     self.name = name;
     self.themeDictionary = [content mutableCopy];
     self.fontShortcuts = @{
-        @"Avant" : @"AvantGardeGothicITCW01Dm",
-        @"Garamond" : @"AGaramondPro-Regular",
-        @"GaramondBold" : @"AGaramondPro-Bold"
+        @"Avant" : [UIFont sansSerifFontWithSize:12].familyName,
+        @"Garamond" : [UIFont serifFontWithSize:12].familyName,
+        @"GaramondBold" : [UIFont serifBoldFontWithSize:12].familyName
     };
 
     self.fonts = [[ARThemeFontVendor alloc] initWithTheme:self];

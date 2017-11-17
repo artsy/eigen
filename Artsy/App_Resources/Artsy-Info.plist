@@ -36,7 +36,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.3.0</string>
+	<string>4.0.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -103,7 +103,7 @@
 		<string>AGaramondPro-Bold.otf</string>
 		<string>AGaramondPro-Italic.otf</string>
 		<string>AGaramondPro-Regular.otf</string>
-		<string>ITC_Avant_Garde_Gothic__Demi.ttf</string>
+		<string>AVG65lig.otf</string>
 		<string>AGaramondPro-Semibold.otf</string>
 	</array>
 	<key>UIApplicationShortcutItems</key>

@@ -13,6 +13,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
         beforeEach {
             OHHTTPStubs.stubJSONResponse(forHost: "metaphysics*.artsy.net", withResponse: [:])
             // Not sure why ^ is needed, might be worth looking
+            // Follow up to ^ it's needed because app state, including staging/prod flags, leak between test runs.
 
             sale = testLiveSale()
 
@@ -50,6 +51,19 @@ class LiveAuctionStateManagerSpec: QuickSpec {
             mostRecentSocketCommunicator?.lotUpdateBroadcasts.update(lotEvent as AnyObject)
 
             expect(mostRecentStateReconciler?.mostRecentEventBroadcast as? [String]) == lotEvent
+        }
+
+        it("invokes sale-on-hold updates") {
+            let event: [String : Any] = [
+                "type": "SaleOnHold",
+                "isOnHold": true,
+                "userMessage": "some custom message"
+            ]
+            mostRecentSocketCommunicator?.saleOnHoldSignal.update(event as AnyObject)
+
+            let result = subject.saleOnHoldSignal.peek()
+            expect(result?.isOnHold).to( beTruthy() )
+            expect(result?.message) == "some custom message"
         }
     }
 }

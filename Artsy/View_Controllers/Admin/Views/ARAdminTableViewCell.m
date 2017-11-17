@@ -1,4 +1,5 @@
 #import "ARAdminTableViewCell.h"
+#import "ARAdminTableViewController.h"
 
 #import "ARFonts.h"
 
@@ -12,16 +13,22 @@ CGFloat DetailTextVerticalOffset = 6;
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    BOOL overwriteStyle = [reuseIdentifier isEqualToString:ARTwoLabelCell];
+    UITableViewCellStyle usedStyle = overwriteStyle ? UITableViewCellStyleSubtitle : style;
+
+    self = [super initWithStyle:usedStyle reuseIdentifier:reuseIdentifier];
     if (!self) {
         return nil;
     }
 
     self.useSerifFont = YES;
+
     UIView *backgroundView = [[UIView alloc] init];
     backgroundView.backgroundColor = [UIColor artsyGrayRegular];
     self.selectedBackgroundView = backgroundView;
+
     self.textLabel.backgroundColor = [UIColor clearColor];
+    self.detailTextLabel.textColor = [UIColor artsyGrayBold];
 
     return self;
 }
@@ -33,7 +40,7 @@ CGFloat DetailTextVerticalOffset = 6;
 
     if (_useSerifFont) {
         self.textLabel.font = [UIFont serifFontWithSize:18];
-        self.detailTextLabel.font = [UIFont serifFontWithSize:18];
+        self.detailTextLabel.font = [UIFont serifItalicFontWithSize:16];
     } else {
         self.textLabel.font = [UIFont sansSerifFontWithSize:15];
         self.detailTextLabel.font = [UIFont sansSerifFontWithSize:15];

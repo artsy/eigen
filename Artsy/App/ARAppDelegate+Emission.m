@@ -18,6 +18,7 @@
 #import "ARTopMenuViewController.h"
 #import "ARRootViewController.h"
 #import "ARAppStatus.h"
+#import "ARRouter.h"
 
 #import <Aerodramus/Aerodramus.h>
 #import <Keys/ArtsyKeys.h>
@@ -34,7 +35,7 @@
 #import <React/RCTUtils.h>
 #import <objc/runtime.h>
 #import <ARAnalytics/ARAnalytics.h>
-#import <AppHub/AppHub.h>
+#import "ARAdminNetworkModel.h"
 #import "Artsy-Swift.h"
 
 static void
@@ -62,23 +63,10 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     // we switch out the current emission instance.
     //
     if ([AROptions boolForOption:AROptionsStagingReactEnv]) {
-        [AppHub setLogLevel:AHLogLevelDebug];
-        [AppHub setApplicationID:@"Z6IwqK52JBXrKLI4kpvJ"];
+        NSURL *packagerURL = [ARAdminNetworkModel fileURLForLatestCommitJavaScript];
+        [self setupSharedEmissionWithPackagerURL:packagerURL];
 
-        NSString *emissionHeadVersion = [[NSUserDefaults standardUserDefaults] valueForKey:AREmissionHeadVersionDefault];
-        [[AppHub buildManager] setAutomaticPollingEnabled:NO];
-        [[AppHub buildManager] setInstalledAppVersion:emissionHeadVersion];
-        [[AppHub buildManager] setDebugBuildsEnabled:YES];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newEmissionBuild) name:AHBuildManagerDidMakeBuildAvailableNotification object:nil];
-
-        [[AppHub buildManager] fetchBuildWithCompletionHandler:^(AHBuild *result, NSError *error) {
-            [self newEmissionBuild];
-        }];
-    }
-
-    // Allow using the local version of Emission
-    if ([AROptions boolForOption:AROptionsDevReactEnv]) {
+    } else if ([AROptions boolForOption:AROptionsDevReactEnv]) {
         NSURL *packagerURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
         [self setupSharedEmissionWithPackagerURL:packagerURL];
 
@@ -86,13 +74,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         // The normal flow for users
         [self setupSharedEmissionWithPackagerURL:nil];
     }
-}
-
-- (void)newEmissionBuild
-{
-    AHBuild *build = [[AppHub buildManager] currentBuild];
-    NSURL *jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
-    [self setupSharedEmissionWithPackagerURL:jsCodeLocation];
 }
 
 - (void)setupSharedEmissionWithPackagerURL:(NSURL *)packagerURL;
@@ -109,11 +90,17 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     if ([sentryDSN isEqualToString:@"-"]) {
         sentryDSN = nil;
     }
-    AREmission *emission = [[AREmission alloc] initWithUserID:userID
-                                          authenticationToken:authenticationToken
-                                                  packagerURL:packagerURL
-                                        useStagingEnvironment:[AROptions boolForOption:ARUseStagingDefault]
-                                                    sentryDSN:sentryDSN];
+
+    NSString *gravity = [[ARRouter baseApiURL] absoluteString];
+    NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
+    AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
+                                                                  authenticationToken:authenticationToken
+                                                                            sentryDSN:sentryDSN
+                                                                     googleMapsAPIKey:[keys googleMapsAPIKey]
+                                                                          gravityHost:gravity
+                                                                      metaphysicsHost:metaphysics];
+
+    AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];
     [AREmission setSharedInstance:emission];
 
 #pragma mark - Native Module: Follow status
@@ -160,7 +147,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     };
 
     emission.APIModule.notificationReadStatusAssigner = ^(RCTResponseSenderBlock block) {
-        NSLog(@"notificationsReadStatusAssigner");
         [ArtsyAPI markUserNotificationsReadWithSuccess:^(id response) {
             block(@[[NSNull null]]);
         } failure:^(NSError *error) {
@@ -202,6 +188,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 #pragma mark - Native Module: Events/Analytics
 
     emission.eventsModule.eventOccurred = ^(NSDictionary *_Nonnull info) {
+
         NSMutableDictionary *properties = [info mutableCopy];
         if (info[@"action_type"] ) {
             // Track event
@@ -215,17 +202,19 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([info[@"action_name"] isEqual:@"artistFollow"] && [info[@"action_type"] isEqual:@"success"]  && [info[@"context_screen"] isEqualToString:@"Artist"]) {
-                ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
-                [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
-            }
+//            // TODO: Nav Notifications
+//            if ([info[@"name"] isEqual:@"Follow artist"] && [fromViewController isKindOfClass:[ARArtistComponentViewController class]]) {
+//                ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+//                [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextArtistFollow];
+//            }
         });
     };
 
 #pragma mark - Native Module: WorksForYou
 
     emission.worksForYouModule.setNotificationsCount = ^(NSInteger count) {
-        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
+// TODO: Nav Notifications
+//        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
     };
 }
 

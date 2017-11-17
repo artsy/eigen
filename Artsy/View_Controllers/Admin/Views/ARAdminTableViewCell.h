@@ -2,7 +2,6 @@
 
 extern CGFloat ARTableViewCellSettingsHeight;
 
-
 @interface ARAdminTableViewCell : UITableViewCell
 
 @property (nonatomic, assign) BOOL useSerifFont;

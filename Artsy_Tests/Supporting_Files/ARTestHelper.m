@@ -18,7 +18,7 @@
     NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
 
     NSAssert(version.majorVersion == 9 && version.minorVersion == 0,
-             @"The tests should be run on iOS 9.x, not %ld.%ld", version.majorVersion, version.minorVersion);
+             @"The tests should be run on iOS 9.0, not %ld.%ld", version.majorVersion, version.minorVersion);
 
     CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
     NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(750, 1334)),
@@ -58,10 +58,16 @@
     [[SDWebImageManager sharedManager] setValue:imageCache forKey:@"_imageCache"];
 
     // Sets up AREmission manually
-    AREmission *emission = [[AREmission alloc] initWithUserID:@""
-                                          authenticationToken:@""
-                                                  packagerURL:nil
-                                        useStagingEnvironment:[AROptions boolForOption:ARUseStagingDefault]];
+    NSString *gravity = [[ARRouter baseApiURL] absoluteString];
+    NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
+    AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:@""
+                                                                  authenticationToken:@""
+                                                                            sentryDSN:@""
+                                                                     googleMapsAPIKey:@""
+                                                                          gravityHost:gravity
+                                                                      metaphysicsHost:metaphysics];
+
+    AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:nil];
     [AREmission setSharedInstance:emission];
 
     // Needed for "usesDrawRect" based Nimble-Snapshots testing

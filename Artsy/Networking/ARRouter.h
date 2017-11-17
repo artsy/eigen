@@ -11,6 +11,7 @@
 + (NSSet *)artsyHosts;
 + (NSURL *)baseApiURL;
 + (NSURL *)baseWebURL;
++ (NSString *)baseMetaphysicsApiURLString;
 
 + (AFHTTPSessionManager *)httpClient;
 + (void)setupWithBaseApiURL:(NSURL *)baseApiURL;
@@ -25,6 +26,8 @@
 + (BOOL)isInternalURL:(NSURL *)url;
 
 + (NSURLRequest *)requestForURL:(NSURL *)url;
+
++ (NSString *)userAgent;
 
 #pragma mark - OAuth
 

@@ -1,14 +1,17 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="ITC_Avant_Garde_Gothic__Demi.ttf">
-            <string>AvantGardeGothicITCW01Dm</string>
-            <string>AvantGardeGothicITCW01Dm</string>
-        </mutableArray>
+        <array key="AVG65lig.otf">
+            <string>AvantGardeGothicITC-Dm</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ARFairPopupViewController">
@@ -31,12 +34,12 @@
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L7Z-9X-6JE">
                             <rect key="frame" x="0.0" y="0.0" width="280" height="135"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="135" id="Yg5-iI-IdE"/>
+                                 <constraint firstAttribute="height" constant="135" id="Yg5-iI-IdE"/>
                             </constraints>
                         </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lwm-l0-S6U">
                             <rect key="frame" x="198" y="150" width="1" height="48"/>
-                            <color key="backgroundColor" red="0.87450980392156863" green="0.87450980392156863" blue="0.87450980392156863" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.87450980392156863" green="0.87450980392156863" blue="0.87450980392156863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="48" id="8zX-EA-VQR"/>
                                 <constraint firstAttribute="width" constant="1" id="cas-Yv-hGk"/>
@@ -48,7 +51,7 @@
                                 <constraint firstAttribute="width" constant="65" id="ZkW-Lu-uxa"/>
                                 <constraint firstAttribute="height" constant="40" id="a0a-vr-nuZ"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="AvantGardeGothicITCW01Dm" family="Avant Garde Gothic ITCW01Dm" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="AvantGardeGothicITC-Dm" family="AvantGardeGothicITC Dm" pointSize="14"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -57,12 +60,12 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="bfK-WA-YZR"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="AvantGardeGothicITCW01Dm" family="Avant Garde Gothic ITCW01Dm" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="AvantGardeGothicITC-Dm" family="AvantGardeGothicITC Dm" pointSize="14"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="w42-rV-D7f" secondAttribute="bottom" constant="18" id="0JG-ul-l1O"/>
                         <constraint firstItem="L7Z-9X-6JE" firstAttribute="top" secondItem="Fyc-7o-yrk" secondAttribute="top" id="128-rh-Z48"/>
@@ -80,7 +83,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="centerY" secondItem="Fyc-7o-yrk" secondAttribute="centerY" constant="40" id="76V-pS-pmK"/>
                 <constraint firstAttribute="centerX" secondItem="Fyc-7o-yrk" secondAttribute="centerX" id="tKU-TU-8Mf"/>
@@ -88,9 +91,4 @@
             <point key="canvasLocation" x="928" y="667"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

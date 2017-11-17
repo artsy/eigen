@@ -14,31 +14,6 @@
 
 @implementation ARAuthProviders
 
-+ (void)getReverseAuthTokenForTwitter:(void (^)(NSString *token, NSString *secret))success failure:(void (^)(NSError *))failure
-{
-    NSParameterAssert(success);
-    AFOAuth1Client *client = nil;
-    client = [[AFOAuth1Client alloc] initWithBaseURL:[NSURL URLWithString:@"https://api.twitter.com/"]
-                                                 key:[ArtsyKeys new].artsyTwitterKey
-                                              secret:[ArtsyKeys new].artsyTwitterSecret];
-
-
-    [client authorizeUsingOAuthWithRequestTokenURLString:@"/oauth/request_token"
-        userAuthorizationURLString:@"/oauth/authorize"
-        callbackURL:[NSURL URLWithString:ARTwitterCallbackPath]
-        accessTokenURLString:@"/oauth/access_token"
-        accessMethod:@"POST"
-        scope:nil
-        success:^(AFOAuth1Token *accessToken, id responseObject) {
-            success(accessToken.key, accessToken.secret);
-        }
-        failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-        }];
-}
-
 + (void)getTokenForFacebook:(void (^)(NSString *token, NSString *email, NSString *name))success failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(success);

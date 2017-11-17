@@ -9,7 +9,6 @@
 #import "ARInternalMobileWebViewController.h"
 
 #import "ARDefaults.h"
-#import "ARGroupedTableViewCell.h"
 #import "ARAnimatedTickView.h"
 #import "ARAppDelegate.h"
 #import "ARUserManager.h"
@@ -25,16 +24,12 @@
 #import <AppHub/AppHub.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARInboxComponentViewController.h>
-#import "ARAdminLoadReactComponentViewController.h"
 
 #if DEBUG
 #import <VCRURLConnection/VCR.h>
 #endif
 
-NSString *const AROptionCell = @"OptionCell";
-NSString *const ARLabOptionCell = @"LabOptionCell";
 NSString *const ARRecordingScreen = @"ARRecordingScreen";
-
 
 @implementation ARAdminSettingsViewController
 
@@ -43,42 +38,54 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     [super viewDidLoad];
 
     ARTableViewData *tableViewData = [[ARTableViewData alloc] init];
-    [self registerClass:[ARTickedTableViewCell class] forCellReuseIdentifier:ARLabOptionCell];
-    [self registerClass:[ARAdminTableViewCell class] forCellReuseIdentifier:AROptionCell];
 
-    ARSectionData *miscSectionData = [[ARSectionData alloc] init];
     NSString *name = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
     NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString *gitCommitRevision = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"GITCommitRev"];
 
-    miscSectionData.headerTitle = [NSString stringWithFormat:@"%@ v%@, build %@ (%@)", name, version, build, gitCommitRevision];
-    [miscSectionData addCellDataFromArray:@[
+
+    ARSectionData *userSectionData = [[ARSectionData alloc] init];
+    userSectionData.headerTitle = [NSString stringWithFormat:@"%@ v%@, build %@ (%@)", name, version, build, gitCommitRevision];
+
+    [userSectionData addCellDataFromArray:@[
+        [self generateStagingSwitch],
+        [self generateRestart],
         [self generateLogOut],
-        [self generateOnboarding],
+    ]];
+    [tableViewData addSectionData:userSectionData];
+
+    ARSectionData *feedbackSectionData = [[ARSectionData alloc] init];
+    feedbackSectionData.headerTitle = @"Feedback";
+    [feedbackSectionData addCellDataFromArray:@[
         [self generateFeedback],
         [self generateRecording],
-        [self generateRestart],
-        [self generateStagingSwitch],
-        [self generateQuicksilver],
-        [self generateShowInbox],
-        [self generateShowAllLiveAuctions],
-        [self generateOnScreenAnalytics],
-        [self generateOnScreenMartsy],
-        [self generateEchoContents],
     ]];
+    [tableViewData addSectionData:feedbackSectionData];
 
-#if !TARGET_IPHONE_SIMULATOR
-    [miscSectionData addCellData:[self generateNotificationTokenPasteboardCopy]];
-#endif
 
-    [tableViewData addSectionData:miscSectionData];
+    ARSectionData *launcherSections = [[ARSectionData alloc] initWithCellDataArray:@[
+        [self generateOnboarding],
+        [self generateShowAllLiveAuctions],
+        [self showConsignmentsFlow],
+        [self generateQuicksilver],
+        [self generateEchoContents],
+   ]];
+    launcherSections.headerTitle = @"Launcher";
+    [tableViewData addSectionData:launcherSections];
 
     ARSectionData *rnSection = [self createReactNativeSection];
     [tableViewData addSectionData:rnSection];
 
     ARSectionData *labsSection = [self createLabsSection];
     [tableViewData addSectionData:labsSection];
+
+    ARSectionData *toggleSections = [[ARSectionData alloc] initWithCellDataArray:@[
+       [self generateOnScreenAnalytics],
+       [self generateOnScreenMartsy]
+    ]];
+    toggleSections.headerTitle = @"Options";
+    [tableViewData addSectionData:toggleSections];
 
     ARSectionData *vcrSection = [self createVCRSection];
     [tableViewData addSectionData:vcrSection];
@@ -87,7 +94,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     [tableViewData addSectionData:developerSection];
 
     self.tableViewData = tableViewData;
-    self.tableView.contentInset = UIEdgeInsetsMake(88, 0, 0, 0);
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -97,55 +103,34 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)generateLogOut
 {
-    ARCellData *onboardingData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    [onboardingData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        cell.textLabel.text = @"Log Out";
-    }];
-
-    [onboardingData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-        [self showAlertViewWithTitle:@"Confirm Logout" message:@"App will exit. Please re-open to log back in." actionTitle:@"Logout" actionHandler:^{
+    return [self tappableCellDataWithTitle:@"Log Out" selection:^{
+        [self showAlertViewWithTitle:@"Confirm Log Out" message:@"" actionTitle:@"Continue" actionHandler:^{
             [ARUserManager logout];
         }];
     }];
-    return onboardingData;
 }
 
 - (ARCellData *)generateOnboarding
 {
-    ARCellData *onboardingData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    [onboardingData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        cell.textLabel.text = @"Show Onboarding";
-    }];
-
-    [onboardingData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+    return [self tappableCellDataWithTitle:@"Show Onboarding" selection:^{
         [self showSlideshow];
     }];
-    return onboardingData;
 }
-
 
 - (ARCellData *)generateFeedback
 {
-    ARCellData *emailData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    [emailData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        cell.textLabel.text = @"Provide Feedback";
-    }];
-
-    [emailData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+    return [self tappableCellDataWithTitle:@"Provide Beta Feedback" selection:^{
         ARHockeyFeedbackDelegate *feedback = [[ARHockeyFeedbackDelegate alloc] init];
         [feedback showFeedback:nil data:nil];
-
     }];
-    return emailData;
 }
-
 
 - (ARCellData *)generateRecording
 {
     BOOL isRecording = [AROptions boolForOption:ARRecordingScreen];
     ARCellData *emailData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
     [emailData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        NSString *message = isRecording ? @"Stop Recording" : @"Create feedback Video";
+        NSString *message = isRecording ? @"Stop Recording" : @"Record Video of Screen";
         cell.textLabel.text = message;
     }];
 
@@ -170,19 +155,11 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return emailData;
 }
 
-
-
 - (ARCellData *)generateRestart
 {
-    ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        cell.textLabel.text = @"Restart";
+    return [self tappableCellDataWithTitle:@"Restart" selection:^{
+        exit(0);
     }];
-
-    [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-        exit(YES);
-    }];
-    return crashCellData;
 }
 
 - (ARCellData *)generateStagingSwitch
@@ -205,109 +182,69 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)generateQuicksilver
 {
-    ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        cell.textLabel.text = @"Quicksilver";
-    }];
-
-    [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+    return [self tappableCellDataWithTitle:@"Quicksilver" selection:^{
         ARQuicksilverViewController *quicksilver = [[ARQuicksilverViewController alloc] init];
         [self.navigationController pushViewController:quicksilver animated:YES];
     }];
-    return crashCellData;
-}
-
-- (ARCellData *)generateShowInbox
-{
-    ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        cell.textLabel.text = @"Show Inbox";
-    }];
-    
-    [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-        ARInboxComponentViewController *controller = [[ARInboxComponentViewController alloc] initWithInbox];
-        [self.navigationController pushViewController:controller animated:YES];
-    }];
-    return crashCellData;
 }
 
 - (ARCellData *)generateShowAllLiveAuctions
 {
-    ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        cell.textLabel.text = @"Show all live auctions";
-    }];
+    return [self tappableCellDataWithTitle:@"Show all live auctions" selection:^{
 
-    [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
         NSURL *url = [NSURL URLWithString:@"https://live-staging.artsy.net"];
         ARInternalMobileWebViewController *webVC = [[ARInternalMobileWebViewController alloc] initWithURL:url];
         [self.navigationController pushViewController:webVC animated:YES];
     }];
-    return crashCellData;
+}
+
+- (ARCellData *)showConsignmentsFlow
+{
+    return [self tappableCellDataWithTitle:@"Start Consignments Flow" selection:^{
+
+        id vc = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Consignments" initialProperties:@{}];
+        [self.navigationController presentViewController:vc animated:YES completion:NULL];
+    }];
 }
 
 - (ARCellData *)generateOnScreenAnalytics
 {
-    ARCellData *crashCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    [crashCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        if ([AROptions boolForOption:AROptionsShowAnalyticsOnScreen]) {
-            cell.textLabel.text = @"Stop Analytics as Popovers";
-        } else {
-            cell.textLabel.text = @"Start Analytics as Popovers";
-        }
-    }];
+    NSString *message = [AROptions boolForOption:AROptionsShowAnalyticsOnScreen] ? @"Stop" : @"Start";
+    NSString * title = NSStringWithFormat(@"%@ on Screen Analytics", message);
 
-    [crashCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-        BOOL current = [AROptions boolForOption:AROptionsShowAnalyticsOnScreen];
+    return [self tappableCellDataWithTitle:title selection:^{
+        BOOL current = [AROptions boolForOption:AROptionsShowMartsyOnScreen];
         [AROptions setBool:!current forOption:AROptionsShowAnalyticsOnScreen];
         exit(YES);
     }];
-    return crashCellData;
 }
 
 - (ARCellData *)generateOnScreenMartsy
 {
-    ARCellData *martsyCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    [martsyCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        if ([AROptions boolForOption:AROptionsShowMartsyOnScreen]) {
-            cell.textLabel.text = @"Hide Red Dot for Martsy Views";
-        } else {
-            cell.textLabel.text = @"Show Red Dot for Martsy Views";
-        }
-    }];
-    
-    [martsyCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+    NSString *message = [AROptions boolForOption:AROptionsShowMartsyOnScreen] ? @"Hide" : @"Show";
+    NSString * title = NSStringWithFormat(@"%@ Red Dot for Martsy Views", message);
+
+    return [self tappableCellDataWithTitle:title selection:^{
         BOOL current = [AROptions boolForOption:AROptionsShowMartsyOnScreen];
         [AROptions setBool:!current forOption:AROptionsShowMartsyOnScreen];
         exit(YES);
     }];
-    return martsyCellData;
 }
 
 - (ARCellData *)generateEchoContents
 {
-    ARCellData *echoContentsData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    [echoContentsData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        cell.textLabel.text = @"View Echo Configuration";
-    }];
-    [echoContentsData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+    return [self tappableCellDataWithTitle:@"View Echo Configuration" selection:^{
         [self.navigationController pushViewController:[[AREchoContentsViewController alloc] init] animated:YES];
     }];
-    return echoContentsData;
 }
 
 #if !TARGET_IPHONE_SIMULATOR
 - (ARCellData *)generateNotificationTokenPasteboardCopy;
 {
-    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
-        cell.textLabel.text = @"Copy Push Notification Token";
-    };
-    cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
+    return [self tappableCellDataWithTitle:@"Copy Push Notification Token" selection:^{
         NSString *deviceToken = [[NSUserDefaults standardUserDefaults] valueForKey:ARAPNSDeviceTokenKey];
         [[UIPasteboard generalPasteboard] setValue:deviceToken forPasteboardType:(NSString *)kUTTypePlainText];
-    };
-    return cellData;
+    }];
 }
 #endif
 
@@ -320,10 +257,8 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     BOOL isDevReact = [AROptions boolForOption:AROptionsDevReactEnv];
 
     if (isStagingReact) {
-        [sectionData addCellData:self.appHubMetadata];
+        [sectionData addCellDataFromArray:self.emissionInformationCells];
         [sectionData addCellData:self.emissionVersionUpdater];
-        [sectionData addCellData:self.openEmissionModule];
-        [sectionData addCellData:self.appHubBuildChooser];
     }
     if (!isDevReact) {
         [sectionData addCellData:self.toggleStagingReactNative];
@@ -334,66 +269,52 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return sectionData;
 }
 
-
-- (ARCellData *)appHubMetadata
+- (NSArray<ARCellData *> *)emissionInformationCells
 {
-    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
-        AHBuild *build = [[AppHub buildManager] currentBuild];
-        if (!build) {
-            cell.textLabel.text = @"Not downloaded yet";
-        } if (build && !build.creationDate) {
-            cell.textLabel.text = @"Build: Bundled with Eigen";
-        } else {
-            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-            formatter.doesRelativeDateFormatting = YES;
-            formatter.locale = [NSLocale currentLocale];
-            formatter.dateStyle = NSDateFormatterShortStyle;
-            formatter.timeStyle = NSDateFormatterShortStyle;
-            NSString *timeString = [formatter stringFromDate:build.creationDate];
-            cell.textLabel.text = [NSString stringWithFormat:@"Build: %@", timeString];
-        }
-    };
-    return cellData;
-}
+    NSError *jsonError = nil;
+    NSURL *metadataURL = [ARAdminNetworkModel fileURLForLatestCommitMetadata];
 
-- (ARCellData *)openEmissionModule
-{
-    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
-        cell.textLabel.text = @"Open Emission Module";
-    };
-    cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
-        ARAdminLoadReactComponentViewController *loadVC = [[ARAdminLoadReactComponentViewController alloc] init];
-        [self.navigationController pushViewController:loadVC animated: YES];
-    };
-    return cellData;
-}
+    NSData *data = [NSData dataWithContentsOfURL:metadataURL];
+    if(!data) { return @[]; }
 
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
+    Metadata *metadata = [[Metadata alloc] initFromJSONDict:json];
 
-- (ARCellData *)appHubBuildChooser
-{
-    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
-    cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
-        cell.textLabel.text = @"Choose an RN build";
-    };
-    cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
-        [AppHub presentSelectorOnViewController:self withBuildHandler:^(AHBuild *build, NSError *error) {
+    if (jsonError) { return @[]; }
 
-        }];
-    };
-    return cellData;
+    ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+    NSDate *lastUpdate = [dateFormatter dateFromString:[metadata date]];
+
+    NSUInteger unitFlags = NSCalendarUnitDay;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierISO8601];
+    NSDateComponents *components = [calendar components:unitFlags fromDate:lastUpdate toDate:[NSDate dateWithTimeIntervalSinceNow:0] options:0];
+
+    NSString *pr = [NSString stringWithFormat:@"Last PR #%@ - %@", [metadata number], [metadata title]];
+    NSString *emissionVersion = [[NSUserDefaults standardUserDefaults] valueForKey:AREmissionHeadVersionDefault];
+    NSString *days = [NSString stringWithFormat:@"%@ %@", @([components day]), [components day] == 1 ? @"day" : @"days"];
+
+    return @[
+     [self informationCellDataWithTitle:[NSString stringWithFormat:@"Emission v%@", emissionVersion]],
+     [self informationCellDataWithTitle:[NSString stringWithFormat:@"Current Code is %@ old", days]],
+
+     [self tappableCellDataWithTitle:pr selection:^{
+         NSString *addr = [NSString stringWithFormat:@"https://github.com/artsy/emission/pull/%@", metadata.number];
+         NSURL *url = [NSURL URLWithString:addr];
+         id viewController = [[ARInternalMobileWebViewController alloc] initWithURL:url];
+         [self.navigationController pushViewController:viewController animated:YES];
+     }]
+ ];
 }
 
 - (ARCellData *)emissionVersionUpdater
 {
+    // This should stay the long-form version so that it can edit the cell's text
+
     ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
     cellData.keepSelection = YES;
 
-    NSString *emissionVersion = [[NSUserDefaults standardUserDefaults] valueForKey:AREmissionHeadVersionDefault];
-
     cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
-        cell.textLabel.text = [NSString stringWithFormat:@"Emission v%@", emissionVersion];
+        cell.textLabel.text = @"Update Emission to latest";
     };
 
     cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
@@ -401,20 +322,27 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:selection];
         cell.textLabel.text = @"Updating...";
 
-        [self updateEmissionVersion:^(NSString *version) {
-            [tableView reloadData];
+        [self updateEmissionVersion:^() {
+            exit(0);
         }];
     };
     return cellData;
 }
 
-- (void)updateEmissionVersion:(void (^)(NSString *version))completion;
+- (void)updateEmissionVersion:(void (^)())completion;
 {
+    __block NSString *subtitleMessage = @"Emission from master";
     ARAdminNetworkModel *model = [[ARAdminNetworkModel alloc] init];
-    [model getEmissionJSON:@"package.json" completion:^(NSDictionary *JSON, NSError *error) {
-        if (JSON) {
-            [[NSUserDefaults standardUserDefaults] setValue:JSON[@"version"] forKey:AREmissionHeadVersionDefault];
-            completion(JSON[@"version"]);
+    [model downloadJavaScriptForMasterCommit:^(NSString * _Nullable title, NSString * _Nullable subtitle) {
+        subtitleMessage = subtitle;
+
+    } completion:^(NSURL * _Nullable downloadedFileURL, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Err: %@", error);
+        } else {
+            [self showAlertViewWithTitle:@"Restarting" message:subtitleMessage actionTitle:@"Restart" actionHandler:^{
+                completion();
+            }];
         }
     }];
 }
@@ -422,23 +350,39 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 - (ARCellData *)toggleStagingReactNative
 {
     ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    cellData.keepSelection = YES;
+
     BOOL isStagingReact = [AROptions boolForOption:AROptionsStagingReactEnv];
+    NSString *message = isStagingReact? @"Return to original" : @"Switch to Staging";
+    NSString *title = NSStringWithFormat(@"%@ React Native ENV (restarts)", message);
+
 
     cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
-        if (isStagingReact) {
-            cell.textLabel.text = @"Use production React ENV (restarts)";
-        } else {
-            cell.textLabel.text = @"Use staging React ENV (restarts)";
-        }
+        cell.textLabel.text = title;
     };
+
     cellData.cellSelectionBlock = ^(UITableView *tableView, NSIndexPath *indexPath) {
-        [AROptions setBool: !isStagingReact forOption:AROptionsStagingReactEnv];
+        // Update defaults
+        [AROptions setBool: ![AROptions boolForOption:AROptionsStagingReactEnv] forOption:AROptionsStagingReactEnv];
+
+        // Pass some metadata
         NSBundle *bundle = [NSBundle bundleForClass:AREmission.class];
         NSString *version = bundle.infoDictionary[@"CFBundleShortVersionString"];
         [[NSUserDefaults standardUserDefaults] setValue:version forKey:AREmissionHeadVersionDefault];
         [[NSUserDefaults standardUserDefaults] synchronize];
+
+        if (!isStagingReact) {
+            // Let the user know we're updating the JS
+            NSIndexPath *selection = tableView.indexPathForSelectedRow;
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:selection];
+            cell.textLabel.text = @"Downloading Emission...";
+
+            return [self updateEmissionVersion:^{ exit(0); }];
+        }
+
         exit(0);
     };
+
     return cellData;
 }
 
@@ -449,7 +393,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
     cellData.cellConfigurationBlock = ^(UITableViewCell *cell) {
         if (isDevReact) {
-            cell.textLabel.text = @"Use bundled/apphub Emission (restarts)";
+            cell.textLabel.text = @"Use bundled Emission (restarts)";
         } else {
             cell.textLabel.text = @"Use local Emission packaging server (restarts)";
         }
@@ -515,12 +459,16 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     ARSectionData *labsSectionData = [[ARSectionData alloc] init];
     labsSectionData.headerTitle = @"Developer";
 
-    ARCellData *stagingAPI = [self cellDataWithName:@"API" defaultKey:ARStagingAPIURLDefault];
-    ARCellData *stagingWeb = [self cellDataWithName:@"Web" defaultKey:ARStagingWebURLDefault];
-    ARCellData *stagingMetaphysics = [self cellDataWithName:@"Metaphysics" defaultKey:ARStagingMetaphysicsURLDefault];
-    ARCellData *stagingSocket = [self cellDataWithName:@"Live Auctions Socket" defaultKey:ARStagingLiveAuctionSocketURLDefault];
+    [labsSectionData addCellDataFromArray:@[
 
-    [labsSectionData addCellDataFromArray:@[stagingAPI, stagingWeb, stagingMetaphysics, stagingSocket]];
+#if !TARGET_IPHONE_SIMULATOR
+        [self generateNotificationTokenPasteboardCopy],
+#endif
+        [self editableTextCellDataWithName:@"Gravity API" defaultKey:ARStagingAPIURLDefault],
+        [self editableTextCellDataWithName:@"Web" defaultKey:ARStagingWebURLDefault],
+        [self editableTextCellDataWithName:@"Metaphysics" defaultKey:ARStagingMetaphysicsURLDefault],
+        [self editableTextCellDataWithName:@"Live Auctions Socket" defaultKey:ARStagingLiveAuctionSocketURLDefault],
+    ]];
     return labsSectionData;
 }
 
@@ -531,12 +479,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 #if DEBUG
     vcrSectionData.headerTitle = @"Offline Recording Mode (Dev)";
 
-    ARCellData *startCellData = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
-    [startCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        cell.textLabel.text = @"Start Recording, restarts";
-    }];
-
-    [startCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+    ARCellData *startCellData = [self tappableCellDataWithTitle:@"Start API Recording, restarts" selection:^{
         NSString *oldFilePath = [ARFileUtils cachesPathWithFolder:@"vcr" filename:@"eigen.json"];
         [[NSFileManager defaultManager] removeItemAtPath:oldFilePath error:nil];
 
@@ -544,51 +487,16 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         exit(0);
     }];
 
-    ARCellData *saveCellData = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
-    [saveCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
-        cell.textLabel.text = @"Saves Recording, restarts";
-    }];
-
-    [saveCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+    ARCellData *saveCellData = [self tappableCellDataWithTitle:@"Saves API Recording, restarts" selection:^{
         [VCR save:[ARFileUtils cachesPathWithFolder:@"vcr" filename:@"eigen.json"]];
         exit(0);
     }];
-
 
     [vcrSectionData addCellData:startCellData];
     [vcrSectionData addCellData:saveCellData];
 #endif
 
     return vcrSectionData;
-}
-
-- (void)showAlertViewWithTitle:(NSString *)title message:(NSString *)message actionTitle:(NSString *)actionTitle actionHandler:(void (^)())handler
-{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
-                                                                   message:message
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-
-    // if iOS 7
-
-    if (!alert) {
-        handler();
-    }
-
-    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:actionTitle
-                                                            style:UIAlertActionStyleDestructive
-                                                          handler:^(UIAlertAction *action) {
-                                        handler();
-                                                          }];
-
-
-    UIAlertAction *cancelAction = [UIAlertAction
-        actionWithTitle:@"Cancel"
-                  style:UIAlertActionStyleCancel
-                handler:nil];
-
-    [alert addAction:defaultAction];
-    [alert addAction:cancelAction];
-    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)showSlideshow
@@ -602,40 +510,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 - (BOOL)shouldAutorotate
 {
     return NO;
-}
-
-- (ARCellData *)cellDataWithName:(NSString *)name defaultKey:(NSString *)key
-{
-    ARCellData *cell = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *value = [defaults stringForKey:key];
-
-    [cell setCellConfigurationBlock:^(UITableViewCell *cell) {
-        cell.textLabel.text = [NSString stringWithFormat:@"%@: %@", name, value];
-    }];
-
-    [cell setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-        UIAlertController *controller = [UIAlertController alertControllerWithTitle:name message:@"" preferredStyle:UIAlertControllerStyleAlert];
-
-        [controller addAction:[UIAlertAction actionWithTitle:@"Save + Restart" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            UITextField *theTextField = [controller textFields].firstObject;
-            [defaults setObject:theTextField.text forKey:key];
-            [defaults synchronize];
-            exit(0);
-        }]];
-
-        [controller addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-        }]];
-
-        [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.text = value;
-        }];
-
-        [self presentViewController:controller animated:YES completion:nil];
-    }];
-    return cell;
 }
 
 @end

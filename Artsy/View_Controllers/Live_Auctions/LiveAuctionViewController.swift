@@ -22,13 +22,14 @@ class LiveAuctionViewController: UIViewController {
     fileprivate var offlineView: AROfflineView?
     fileprivate var saleOnHoldBanner: SaleOnHoldOverlayView?
     fileprivate var hasShownSaleOnHoldBanner = false
+    fileprivate var saleOnHoldMessage: String?
     fileprivate var showingOverlay = false
 
     fileprivate var loadingView: LiveAuctionLoadingView?
     fileprivate var saleViewController: LiveAuctionSaleViewController?
 
     fileprivate var overlaySubscription: ObserverToken<Bool>?
-    fileprivate var saleOnHoldSubscription: ObserverToken<Bool>?
+    fileprivate var saleOnHoldSubscription: ObserverToken<(isOnHold: Bool, message: String?)>?
     fileprivate var waitingForInitialLoad = true
     fileprivate var registrationStatusChanged = false
 
@@ -185,7 +186,10 @@ class LiveAuctionViewController: UIViewController {
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 
-    func updateSaleOnHoldOverlay(onHold: Bool) {
+    func updateSaleOnHoldOverlay(onHold: Bool, message: String?) {
+        // Important to do this in all cases.
+        saleOnHoldMessage = message
+        
         if onHold && !hasShownSaleOnHoldBanner {
             // Present a sale-on-hold overlay
             showSaleOnHoldBanner()
@@ -197,7 +201,7 @@ class LiveAuctionViewController: UIViewController {
     }
 
     func showSaleOnHoldBanner() {
-        saleOnHoldBanner = SaleOnHoldOverlayView().then {
+        saleOnHoldBanner = SaleOnHoldOverlayView(message: saleOnHoldMessage).then {
             view.addSubview($0)
             $0.align(toView: view)
             $0.delegate = self
@@ -286,8 +290,8 @@ extension PrivateFunctions {
             .subscribe(showSocketDisconnectedOverlay)
 
         saleOnHoldSubscription?.unsubscribe()
-        saleOnHoldSubscription = salesPerson.saleOnHoldSignal.subscribe { [weak self] (onHold) in
-            self?.updateSaleOnHoldOverlay(onHold: onHold)
+        saleOnHoldSubscription = salesPerson.saleOnHoldSignal.subscribe { [weak self] (isOnHold, message) in
+            self?.updateSaleOnHoldOverlay(onHold: isOnHold, message: message)
         }
     }
 

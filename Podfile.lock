@@ -52,7 +52,7 @@ PODS:
   - ARTiledImageView (1.2.0):
     - SDWebImage/Core
   - Artsy+UIColors (3.1.0)
-  - Artsy+UIFonts (3.1.1)
+  - Artsy+UIFonts (3.1.3)
   - Artsy+UILabels (2.2.0):
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
@@ -76,20 +76,20 @@ PODS:
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
   - EDColor (1.0.0)
-  - Emission (1.4.0-beta.4):
+  - Emission (1.4.0-beta.5):
     - Artsy+UIColors
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
-    - React/BatchedBridge (= 0.45.0-rc.2)
-    - React/Core (= 0.45.0-rc.2)
-    - React/RCTAnimation (= 0.45.0-rc.2)
-    - React/RCTCameraRoll (= 0.45.0-rc.2)
-    - React/RCTImage (= 0.45.0-rc.2)
-    - React/RCTNetwork (= 0.45.0-rc.2)
-    - React/RCTText (= 0.45.0-rc.2)
+    - React/BatchedBridge (= 0.48.4)
+    - React/Core (= 0.48.4)
+    - React/RCTAnimation (= 0.48.4)
+    - React/RCTCameraRoll (= 0.48.4)
+    - React/RCTImage (= 0.48.4)
+    - React/RCTNetwork (= 0.48.4)
+    - React/RCTText (= 0.48.4)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.14.5)
-    - Yoga (= 0.45.0-rc.2.React)
+    - Yoga (= 0.48.4.React)
   - Expecta (1.0.5)
   - Expecta+Snapshots (3.0.0):
     - Expecta (~> 1.0)
@@ -142,14 +142,14 @@ PODS:
   - JSDecoupledAppDelegate (1.2.0)
   - JWTDecode (2.0.0)
   - Keys (1.0.0)
-  - KSCrash/Core (1.15.11):
+  - KSCrash/Core (1.15.12):
     - KSCrash/Reporting/Filters/Basic
-  - KSCrash/Recording (1.15.11):
-    - KSCrash/Recording/Tools (= 1.15.11)
-  - KSCrash/Recording/Tools (1.15.11)
-  - KSCrash/Reporting/Filters/Base (1.15.11):
+  - KSCrash/Recording (1.15.12):
+    - KSCrash/Recording/Tools (= 1.15.12)
+  - KSCrash/Recording/Tools (1.15.12)
+  - KSCrash/Reporting/Filters/Base (1.15.12):
     - KSCrash/Recording
-  - KSCrash/Reporting/Filters/Basic (1.15.11):
+  - KSCrash/Reporting/Filters/Basic (1.15.12):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters/Base
   - KSDeferred (0.2.0)
@@ -177,27 +177,27 @@ PODS:
   - ORStackView (2.0.3):
     - FLKAutoLayout
   - Quick (0.10.0)
-  - React (0.45.0-rc.2):
-    - React/Core (= 0.45.0-rc.2)
-  - React/BatchedBridge (0.45.0-rc.2):
+  - React (0.48.4):
+    - React/Core (= 0.48.4)
+  - React/BatchedBridge (0.48.4):
     - React/Core
     - React/cxxreact_legacy
-  - React/Core (0.45.0-rc.2):
-    - Yoga (= 0.45.0-rc.2.React)
-  - React/cxxreact_legacy (0.45.0-rc.2):
+  - React/Core (0.48.4):
+    - Yoga (= 0.48.4.React)
+  - React/cxxreact_legacy (0.48.4):
     - React/jschelpers_legacy
-  - React/jschelpers_legacy (0.45.0-rc.2)
-  - React/RCTAnimation (0.45.0-rc.2):
+  - React/jschelpers_legacy (0.48.4)
+  - React/RCTAnimation (0.48.4):
     - React/Core
-  - React/RCTCameraRoll (0.45.0-rc.2):
+  - React/RCTCameraRoll (0.48.4):
     - React/Core
     - React/RCTImage
-  - React/RCTImage (0.45.0-rc.2):
+  - React/RCTImage (0.48.4):
     - React/Core
     - React/RCTNetwork
-  - React/RCTNetwork (0.45.0-rc.2):
+  - React/RCTNetwork (0.48.4):
     - React/Core
-  - React/RCTText (0.45.0-rc.2):
+  - React/RCTText (0.48.4):
     - React/Core
   - ReactiveCocoa (2.5):
     - ReactiveCocoa/UI (= 2.5)
@@ -229,7 +229,7 @@ PODS:
   - VCRURLConnection (0.2.0)
   - XCTest+OHHTTPStubSuiteCleanUp (1.0.0):
     - OHHTTPStubs
-  - Yoga (0.45.0-rc.2.React)
+  - Yoga (0.48.4.React)
 
 DEPENDENCIES:
   - Aerodramus
@@ -391,14 +391,14 @@ SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  Artsy+UIFonts: e66afb5c40100e2fc5bba28feb7487e252f2d06f
+  Artsy+UIFonts: d38c82636e000b1dee31b7bec0268e1841dac17f
   Artsy+UILabels: 7cb6e290a4f70dddba037b7dbeb21e90b49d7275
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 6fc77205363e5070b0d4a99bf38a0763ea87b543
+  Emission: 6a73c042e15ddcbb7d6aeeb7c13bc1211e16d077
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
@@ -417,7 +417,7 @@ SPEC CHECKSUMS:
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   Keys: 9c35bf00f612ee1d48556f4a4b9b4551e224e90f
-  KSCrash: 7bd106ca4a2247774deeeb587c740ce0207de8f3
+  KSCrash: 931b6caeebfbfe0d316007fcd209f6cb9889c624
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   MARKRangeSlider: dbf0878b03e921b52e4ef1e7766c1a8affb0c577
@@ -433,7 +433,7 @@ SPEC CHECKSUMS:
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
-  React: 933b792fc3204f5cd54a0adfeaf7f2c589b16dcb
+  React: 6d68659481a8a56e0f6b3dbecd984d5b9bb2d6c5
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
@@ -448,8 +448,8 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
-  Yoga: 1e50dc4765b92b34be298433613630076a27dc6b
+  Yoga: 2efb0a2b24e5c17cf1aea8c785d4428bd077f667
 
-PODFILE CHECKSUM: e18f904492cda66a1794e56d245918b1d880868d
+PODFILE CHECKSUM: 687bbff32c64c1f3f3dfea64d8efd33e848ed095
 
 COCOAPODS: 1.2.1
