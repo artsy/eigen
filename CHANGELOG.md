@@ -3,6 +3,7 @@
 
 ### Master
 
+-   Adds Saves & Follows view - luc
 -   Renames MyProfile -> MyAccount, and sets up the design for it - orta
 -   Revised designs for consignments - orta
 -   Adds Live and timed auctions in home view - luc
