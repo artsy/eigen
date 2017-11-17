@@ -95,7 +95,7 @@
     "lint-staged": "^3.4.1",
     "prettier": "^1.5.2",
     "react-dom": "16.0.0-alpha.12",
-    "react-native-storybook-loader": "^1.5.0",
+    "react-native-storybook-loader": "^1.6.0",
     "react-storybooks-relay-container": "^1.0.0",
     "react-test-renderer": "16.0.0-alpha.12",
     "recursive-readdir-sync": "^1.0.6",
