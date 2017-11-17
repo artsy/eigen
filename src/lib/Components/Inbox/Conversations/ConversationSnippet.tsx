@@ -8,8 +8,8 @@ import { Dimensions, StyleSheet, TouchableWithoutFeedback, ViewStyle } from "rea
 
 import DottedLine from "lib/Components/DottedLine"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { Colors } from "lib/data/colors"
+import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
 
 const isPad = Dimensions.get("window").width > 700
@@ -49,14 +49,14 @@ const UnreadIndicator = styled.View`
   height: 8;
   width: 8;
   border-radius: 4;
-  background-color: ${colors["purple-regular"]};
+  background-color: ${Colors.PurpleRegular};
   margin-left: 4;
   margin-top: 3;
   margin-bottom: 3;
 `
 
 const Subtitle = styled.Text`
-  font-family: ${fonts["garamond-regular"]};
+  font-family: ${Fonts.GaramondRegular};
   font-size: 16px;
   color: black;
   margin-top: 6;
@@ -64,7 +64,7 @@ const Subtitle = styled.Text`
 `
 
 const Title = styled(Subtitle)`
-  font-family: ${fonts["garamond-italic"]};
+  font-family: ${Fonts.GaramondItalic};
 `
 
 const ImageView = styled(OpaqueImageView)`
@@ -75,7 +75,7 @@ const ImageView = styled(OpaqueImageView)`
 
 const SeparatorLine = styled.View`
   height: 1;
-  background-color: ${colors["gray-regular"]};
+  background-color: ${Colors.GrayRegular};
   ${isPad ? "align-self: center; width: 708;" : ""};
 `
 
