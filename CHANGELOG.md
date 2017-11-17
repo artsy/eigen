@@ -10,6 +10,7 @@
 -   QA for Home: change tab colors - maxim
 -   QA Inquiry screen - maxim
 -   QA for Home: center tab labels with thin space hack - maxim
+-   Removes ‘works by artists you follow’ rail from ForYou view - alloy
 
 ### 1.4.0-beta.5
 
