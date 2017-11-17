@@ -4,13 +4,15 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { MetadataText, PreviewText as P, SmallHeadline } from "../Typography"
 
-import { StyleSheet, TouchableWithoutFeedback, ViewStyle } from "react-native"
+import { Dimensions, StyleSheet, TouchableWithoutFeedback, ViewStyle } from "react-native"
 
 import DottedLine from "lib/Components/DottedLine"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { Colors } from "lib/data/colors"
+import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
+
+const isPad = Dimensions.get("window").width > 700
 
 const Card = styled.View`
   margin: 10px 20px 0;
@@ -29,6 +31,8 @@ const HorizontalLayout = styled.View`
 
 const CardContent = styled(HorizontalLayout)`
   justify-content: space-between;
+  align-self: center;
+  max-width: 708;
 `
 
 const TextPreview = styled(VerticalLayout)`
@@ -45,14 +49,14 @@ const UnreadIndicator = styled.View`
   height: 8;
   width: 8;
   border-radius: 4;
-  background-color: ${colors["purple-regular"]};
+  background-color: ${Colors.PurpleRegular};
   margin-left: 4;
   margin-top: 3;
   margin-bottom: 3;
 `
 
 const Subtitle = styled.Text`
-  font-family: ${fonts["garamond-regular"]};
+  font-family: ${Fonts.GaramondRegular};
   font-size: 16px;
   color: black;
   margin-top: 6;
@@ -60,13 +64,19 @@ const Subtitle = styled.Text`
 `
 
 const Title = styled(Subtitle)`
-  font-family: ${fonts["garamond-italic"]};
+  font-family: ${Fonts.GaramondItalic};
 `
 
 const ImageView = styled(OpaqueImageView)`
   width: 58px;
   height: 58px;
   border-radius: 4px;
+`
+
+const SeparatorLine = styled.View`
+  height: 1;
+  background-color: ${Colors.GrayRegular};
+  ${isPad ? "align-self: center; width: 708;" : ""};
 `
 
 export interface Conversation {
@@ -172,7 +182,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
               </P>
             </TextPreview>
           </CardContent>
-          <DottedLine />
+          <SeparatorLine />
         </Card>
       </TouchableWithoutFeedback>
     )

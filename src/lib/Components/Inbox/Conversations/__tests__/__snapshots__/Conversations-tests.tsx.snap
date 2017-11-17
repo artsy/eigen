@@ -88,7 +88,9 @@ exports[`looks correct when rendered 1`] = `
               },
               Array [
                 Object {
+                  "alignSelf": "center",
                   "justifyContent": "space-between",
+                  "maxWidth": 708,
                 },
                 undefined,
               ],
@@ -328,12 +330,17 @@ exports[`looks correct when rendered 1`] = `
             </Text>
           </View>
         </View>
-        <ARDottedLine
-          color={4291611852}
+        <View
           style={
-            Object {
-              "height": 2,
-            }
+            Array [
+              Object {
+                "alignSelf": "center",
+                "backgroundColor": "#e5e5e5",
+                "height": 1,
+                "width": 708,
+              },
+              undefined,
+            ]
           }
         />
       </View>
@@ -376,7 +383,9 @@ exports[`looks correct when rendered 1`] = `
               },
               Array [
                 Object {
+                  "alignSelf": "center",
                   "justifyContent": "space-between",
+                  "maxWidth": 708,
                 },
                 undefined,
               ],
@@ -616,12 +625,17 @@ exports[`looks correct when rendered 1`] = `
             </Text>
           </View>
         </View>
-        <ARDottedLine
-          color={4291611852}
+        <View
           style={
-            Object {
-              "height": 2,
-            }
+            Array [
+              Object {
+                "alignSelf": "center",
+                "backgroundColor": "#e5e5e5",
+                "height": 1,
+                "width": 708,
+              },
+              undefined,
+            ]
           }
         />
       </View>
