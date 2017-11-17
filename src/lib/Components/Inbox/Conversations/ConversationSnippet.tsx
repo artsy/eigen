@@ -4,13 +4,15 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { MetadataText, PreviewText as P, SmallHeadline } from "../Typography"
 
-import { StyleSheet, TouchableWithoutFeedback, ViewStyle } from "react-native"
+import { Dimensions, StyleSheet, TouchableWithoutFeedback, ViewStyle } from "react-native"
 
 import DottedLine from "lib/Components/DottedLine"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
+
+const isPad = Dimensions.get("window").width > 700
 
 const Card = styled.View`
   margin: 10px 20px 0;
@@ -29,6 +31,8 @@ const HorizontalLayout = styled.View`
 
 const CardContent = styled(HorizontalLayout)`
   justify-content: space-between;
+  align-self: center;
+  max-width: 708;
 `
 
 const TextPreview = styled(VerticalLayout)`
@@ -72,6 +76,7 @@ const ImageView = styled(OpaqueImageView)`
 const SeparatorLine = styled.View`
   height: 1;
   background-color: ${colors["gray-regular"]};
+  ${isPad ? "align-self: center; width: 708;" : ""};
 `
 
 export interface Conversation {
