@@ -4,6 +4,9 @@
 ### Master
 
 * Provides native view controllers for the routing engine in Eigen - orta
+-   Changed invoice component to only being able to touch the PAY button - alloy
+-   Make invoice component’s payment status and button slightly wider to account for statuses like ‘REFUNDED’ and ‘CANCELED’ - alloy
+-   Don’t try to also fetch the invoice state after receiving a ‘paid’ notification, just trust the notification and keep showing the ‘PAID’ state - alloy
 
 ### 1.4.0-beta.5
 
@@ -20,8 +23,6 @@
 -   Add analytics events for messaging - maxim
 -   Removes ‘works by artists you follow’ rail from ForYou view - alloy
 -   QA for Inbox view: center and cap size on iPad and solid line separator - maxim
-
-### 1.4.0-beta.5
 
 ###### Dev
 

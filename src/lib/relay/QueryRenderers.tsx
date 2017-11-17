@@ -81,23 +81,6 @@ export const ConversationRenderer: React.SFC<ConversationRendererProps> = ({ ren
   )
 }
 
-export const HomeRenderer: React.SFC<RendererProps> = ({ render }) => {
-  return (
-    <QueryRenderer
-      environment={environment}
-      query={graphql`
-        query QueryRenderersHomeQuery {
-          home: home_page {
-            ...Home_home
-          }
-        }
-      `}
-      variables={{}}
-      render={render}
-    />
-  )
-}
-
 export const ForYouRenderer: React.SFC<RendererProps> = ({ render }) => {
   return (
     <QueryRenderer
