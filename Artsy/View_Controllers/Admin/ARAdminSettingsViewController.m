@@ -24,6 +24,7 @@
 #import <AppHub/AppHub.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARInboxComponentViewController.h>
+#import <Emission/ARShowConsignmentsFlowViewController.h>
 
 #if DEBUG
 #import <VCRURLConnection/VCR.h>
@@ -201,8 +202,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 - (ARCellData *)showConsignmentsFlow
 {
     return [self tappableCellDataWithTitle:@"Start Consignments Flow" selection:^{
-
-        id vc = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Consignments" initialProperties:@{}];
+        id vc = [[ARShowConsignmentsFlowViewController alloc] init];
         [self.navigationController presentViewController:vc animated:YES completion:NULL];
     }];
 }

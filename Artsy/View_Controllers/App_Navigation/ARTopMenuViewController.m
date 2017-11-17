@@ -31,6 +31,7 @@
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
+#import <Emission/ARFavoritesComponentViewController.h>
 #import <React/RCTScrollView.h>
 
 static const CGFloat ARMenuButtonDimension = 50;
@@ -299,7 +300,7 @@ static const CGFloat ARMenuButtonDimension = 50;
         ARNavigationController *rootController = [self rootNavigationControllerAtIndex:index];
         if (rootController.rootViewController == viewController) {
             return index;
-        } else if ([viewController isKindOfClass:ARFavoritesViewController.class]) {
+        } else if ([viewController isKindOfClass:ARFavoritesComponentViewController.class]) {
             return ARTopTabControllerIndexFavorites;
         } else if ([viewController isKindOfClass:ARInboxComponentViewController.class]) {
             return ARTopTabControllerIndexMessaging;

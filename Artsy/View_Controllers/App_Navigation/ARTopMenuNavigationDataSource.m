@@ -5,7 +5,9 @@
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
-#import "ARFavoritesViewController.h"
+#import <Emission/ARFavoritesComponentViewController.h>
+#import <Emission/ARMyProfileViewController.h>
+
 #import "ARTopMenuInternalMobileWebViewController.h"
 #import "ARFeedSubclasses.h"
 #import "FeaturedLink.h"
@@ -70,8 +72,8 @@
     if (self.profileNavigationController) {
         return self.profileNavigationController;
     }
-    // TODO: Replace with real Emission UIVC
-    ARComponentViewController *profileVC = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyAccount" initialProperties:@{}];
+
+    ARComponentViewController *profileVC = [[ARMyProfileViewController alloc] init];
     _profileNavigationController = [[ARNavigationController alloc] initWithRootViewController:profileVC];
     return _profileNavigationController;
 }
@@ -83,7 +85,7 @@
     // According to Laura, the existing instance was kept alive in the past and updated whenever new favourite data
     // became available, but it was removed because of some crashes. This likely had to do with
     // https://github.com/artsy/eigen/issues/287#issuecomment-88036710
-    ARFavoritesViewController *favoritesViewController = [[ARFavoritesViewController alloc] init];
+    ARFavoritesComponentViewController *favoritesViewController = [[ARFavoritesComponentViewController alloc] init];
     return [[ARNavigationController alloc] initWithRootViewController:favoritesViewController];
 }
 
