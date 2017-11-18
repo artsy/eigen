@@ -1,10 +1,12 @@
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARNavigationController.h"
 #import "ARBrowseViewController.h"
-#import "ARFavoritesViewController.h"
+
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Artworks.h"
+
 #import <Emission/ARHomeComponentViewController.h>
+#import <Emission/ARFavoritesComponentViewController.h>
 
 @interface ARTopMenuNavigationDataSource (Testing)
 @property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
@@ -44,7 +46,7 @@ it(@"uses a single profile vc", ^{
 it(@"generates favorites vc each time", ^{
     ARNavigationController *navigationController = [navDataSource getFavoritesNavigationController];
     UIViewController *rootVC = [[navigationController viewControllers] objectAtIndex:0];
-    expect(rootVC).to.beKindOf([ARFavoritesViewController class]);
+    expect(rootVC).to.beKindOf([ARFavoritesComponentViewController class]);
 
     ARNavigationController *newNavigationController = [navDataSource getFavoritesNavigationController];
     UIViewController *newRootVC = [[newNavigationController viewControllers] objectAtIndex:0];
