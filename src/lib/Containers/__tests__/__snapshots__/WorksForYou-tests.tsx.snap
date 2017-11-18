@@ -584,97 +584,72 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
     >
       <View
         style={
-          Object {
-            "alignItems": "center",
-            "flex": 1,
-            "justifyContent": "center",
-            "marginLeft": 20,
-            "marginRight": 20,
-          }
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "height": "100%",
+              "justifyContent": "center",
+              "marginLeft": 20,
+              "marginRight": 20,
+            },
+            undefined,
+          ]
         }
       >
         <View
           style={
-            Object {
-              "paddingBottom": 60,
-            }
+            Array [
+              Object {
+                "maxWidth": 320,
+                "paddingBottom": 60,
+              },
+              undefined,
+            ]
           }
         >
-          <View
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
             style={
-              Object {
-                "backgroundColor": "black",
-                "height": 1,
-              }
-            }
-          />
-          <View
-            style={
-              Object {
-                "alignItems": "center",
-                "marginBottom": 25,
-                "marginTop": 25,
-              }
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 30,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "fontSize": 17,
-                  },
-                  Object {
-                    "fontSize": 20,
-                  },
-                  Object {
-                    "fontFamily": "AGaramondPro-Regular",
-                  },
-                ]
-              }
-            >
-              You’re not following any artists yet
-            </Text>
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              numberOfLines={2}
-              style={
-                Array [
-                  Object {
-                    "fontSize": 17,
-                  },
-                  Object {
-                    "color": "#666666",
-                    "fontSize": 16,
-                    "marginLeft": 20,
-                    "marginRight": 20,
-                    "marginTop": 10,
-                    "textAlign": "center",
-                  },
-                  Object {
-                    "fontFamily": "AGaramondPro-Regular",
-                  },
-                ]
-              }
-            >
-              Follow artists to get updates about new works that become available.
-            </Text>
-          </View>
-          <View
+            You haven’t followed any artists yet.
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            numberOfLines={0}
             style={
-              Object {
-                "backgroundColor": "black",
-                "height": 1,
-              }
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 18,
+                  "marginTop": 10,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
             }
-          />
+          >
+            Follow artists to see new works that have been added to Artsy
+          </Text>
         </View>
       </View>
     </View>
@@ -702,97 +677,72 @@ exports[`without notifications lays out correctly on small screens 1`] = `
     >
       <View
         style={
-          Object {
-            "alignItems": "center",
-            "flex": 1,
-            "justifyContent": "center",
-            "marginLeft": 20,
-            "marginRight": 20,
-          }
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "height": "100%",
+              "justifyContent": "center",
+              "marginLeft": 20,
+              "marginRight": 20,
+            },
+            undefined,
+          ]
         }
       >
         <View
           style={
-            Object {
-              "paddingBottom": 60,
-            }
+            Array [
+              Object {
+                "maxWidth": 320,
+                "paddingBottom": 60,
+              },
+              undefined,
+            ]
           }
         >
-          <View
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
             style={
-              Object {
-                "backgroundColor": "black",
-                "height": 1,
-              }
-            }
-          />
-          <View
-            style={
-              Object {
-                "alignItems": "center",
-                "marginBottom": 25,
-                "marginTop": 25,
-              }
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 30,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "fontSize": 17,
-                  },
-                  Object {
-                    "fontSize": 20,
-                  },
-                  Object {
-                    "fontFamily": "AGaramondPro-Regular",
-                  },
-                ]
-              }
-            >
-              You’re not following any artists yet
-            </Text>
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              numberOfLines={2}
-              style={
-                Array [
-                  Object {
-                    "fontSize": 17,
-                  },
-                  Object {
-                    "color": "#666666",
-                    "fontSize": 16,
-                    "marginLeft": 20,
-                    "marginRight": 20,
-                    "marginTop": 10,
-                    "textAlign": "center",
-                  },
-                  Object {
-                    "fontFamily": "AGaramondPro-Regular",
-                  },
-                ]
-              }
-            >
-              Follow artists to get updates about new works that become available.
-            </Text>
-          </View>
-          <View
+            You haven’t followed any artists yet.
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            numberOfLines={0}
             style={
-              Object {
-                "backgroundColor": "black",
-                "height": 1,
-              }
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 18,
+                  "marginTop": 10,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
             }
-          />
+          >
+            Follow artists to see new works that have been added to Artsy
+          </Text>
         </View>
       </View>
     </View>

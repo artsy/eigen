@@ -4,18 +4,25 @@ import { createPaginationContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import ZeroState from "lib/Components/States/ZeroState"
 
 const Container = styled.ScrollView`
   padding: 20px;
   flex: 1;
 `
 
-class SavedWorks extends React.Component<any, any> {
+export class SavedWorks extends React.Component<any, any> {
   render() {
     const artworks = this.props.me.saved_artworks.artworks_connection.edges.map(edge => edge.node)
+    const EmptyState = () =>
+      <ZeroState
+        title="You haven’t followed any artists yet"
+        subtitle="Follow artists to get notified about new works that have been added to Artsy."
+      />
+
     return (
       <Container>
-        <GenericGrid artworks={artworks} />
+        {artworks.length ? <GenericGrid artworks={artworks} /> : EmptyState}
       </Container>
     )
   }

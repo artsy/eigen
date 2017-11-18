@@ -19,6 +19,7 @@ import GenericGrid from "../Components/ArtworkGrids/GenericGrid"
 // tslint:disable-next-line:no-unused-expression
 GenericGrid
 
+import ZeroState from "lib/Components/States/ZeroState"
 import SerifText from "lib/Components/Text/Serif"
 import Notification from "lib/Components/WorksForYou/Notification"
 
@@ -154,21 +155,11 @@ export class WorksForYou extends React.Component<Props, State> {
   }
 
   renderEmptyState() {
-    const border = <View style={{ height: 1, backgroundColor: "black" }} />
-    const text = "Follow artists to get updates about new works that become available."
     return (
-      <View style={styles.emptyStateContainer}>
-        <View style={{ paddingBottom: 60 }}>
-          {border}
-          <View style={styles.emptyStateText}>
-            <SerifText style={styles.emptyStateMainLabel}>You’re not following any artists yet</SerifText>
-            <SerifText style={styles.emptyStateSubLabel} numberOfLines={2}>
-              {text}
-            </SerifText>
-          </View>
-          {border}
-        </View>
-      </View>
+      <ZeroState
+        title="You haven’t followed any artists yet."
+        subtitle="Follow artists to see new works that have been added to Artsy"
+      />
     )
   }
 }
@@ -176,10 +167,6 @@ export class WorksForYou extends React.Component<Props, State> {
 interface Styles {
   container: ViewStyle
   title: TextStyle
-  emptyStateContainer: ViewStyle
-  emptyStateText: ViewStyle
-  emptyStateMainLabel: TextStyle
-  emptyStateSubLabel: TextStyle
   separator: ViewStyle
 }
 
@@ -190,29 +177,6 @@ const styles = StyleSheet.create<Styles>({
   title: {
     marginTop: 20,
     fontSize: 20,
-  },
-  emptyStateContainer: {
-    flex: 1,
-    marginLeft: 20,
-    marginRight: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  emptyStateText: {
-    marginTop: 25,
-    marginBottom: 25,
-    alignItems: "center",
-  },
-  emptyStateMainLabel: {
-    fontSize: 20,
-  },
-  emptyStateSubLabel: {
-    textAlign: "center",
-    fontSize: 16,
-    color: colors["gray-semibold"],
-    marginTop: 10,
-    marginLeft: 20,
-    marginRight: 20,
   },
   separator: {
     height: 1,

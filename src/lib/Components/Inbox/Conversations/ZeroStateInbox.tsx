@@ -3,12 +3,10 @@ import React from "react"
 import { Image, ListView, ListViewDataSource, ScrollView, Text, View } from "react-native"
 import { LargeHeadline } from "../Typography"
 
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
 
 const CenteredView = styled.View`
-  background-color: ${colors["gray-light"]};
   align-items: center;
   width: 100%;
   height: 100%;
@@ -28,10 +26,11 @@ const HorizontalLayout = styled.View`
   margin-bottom: 50;
 `
 
-const Title = styled(LargeHeadline)`
+const Title = styled.Text`
   text-align: center;
-  font-size: 30;
+  font-size: 16;
   line-height: 32;
+  font-family: ${Fonts.AvantGardeRegular};
   width: 280;
   margin-top: 35;
   align-self: center;
@@ -52,22 +51,22 @@ const Icon = styled(Image)`
 export default () =>
   <CenteredView>
     <VerticalLayout>
-      <Title>Buying Art on Artsy is Simple </Title>
+      <Title>BUYING ART ON ARTSY IS SIMPLE</Title>
       <HorizontalLayout>
         <Icon source={require("../../../../../images/find.png")} />
-        <SmallHeadline>Follow artists and find works you love</SmallHeadline>
+        <SmallHeadline>Follow artists & categories and find works you love.</SmallHeadline>
       </HorizontalLayout>
       <HorizontalLayout>
         <Icon source={require("../../../../../images/contact.png")} />
-        <SmallHeadline>Contact galleries or bid in auctions to purchase the work</SmallHeadline>
+        <SmallHeadline>Contact galleries or bid in auctions to purchase the wor.</SmallHeadline>
       </HorizontalLayout>
       <HorizontalLayout>
         <Icon source={require("../../../../../images/message.png")} />
-        <SmallHeadline>Find your ongoing conversations and bidding activity here</SmallHeadline>
+        <SmallHeadline>Find your ongoing conversations and bidding activity here.</SmallHeadline>
       </HorizontalLayout>
       <HorizontalLayout>
         <Icon source={require("../../../../../images/pay.png")} />
-        <SmallHeadline>Easily process payment through our secure platform</SmallHeadline>
+        <SmallHeadline>Easily process payment through our secure platform.</SmallHeadline>
       </HorizontalLayout>
     </VerticalLayout>
   </CenteredView>
