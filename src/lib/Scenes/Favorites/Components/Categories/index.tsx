@@ -3,18 +3,27 @@ import { FlatList, Text, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import SavedItemRow from "lib/Components/Lists/SavedItemRow"
+import ZeroState from "lib/Components/States/ZeroState"
 
-class Categories extends React.Component<RelayProps, null> {
+export class Categories extends React.Component<RelayProps, null> {
   render() {
     const rows: any[] = this.props.me.followed_genes.edges.map(edge => edge.node.gene)
+    const EmptyState = (
+      <ZeroState
+        title="You’re not following any categories yet"
+        subtitle="Find a few categories to help improve your artwork recommendations."
+      />
+    )
 
-    return (
+    const CategoriesList = (
       <FlatList
         data={rows}
         keyExtractor={({ __id }) => __id}
         renderItem={data => <SavedItemRow square_image {...data.item} />}
       />
     )
+
+    return rows.length ? CategoriesList : EmptyState
   }
 }
 
