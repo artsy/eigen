@@ -54,7 +54,7 @@ export default () =>
       <Title>BUYING ART ON ARTSY IS SIMPLE</Title>
       <HorizontalLayout>
         <Icon source={require("../../../../../images/find.png")} />
-        <SmallHeadline>Follow artists & categories and find works you love.</SmallHeadline>
+        <SmallHeadline>Follow artists and categories to find works you love.</SmallHeadline>
       </HorizontalLayout>
       <HorizontalLayout>
         <Icon source={require("../../../../../images/contact.png")} />
