@@ -3,6 +3,8 @@
 
 ### Master
 
+### 1.4.0-beta.8
+
 -   Updates the default statusbar text color to black - not white - orta
 -   Updates zero states in Artists on Home, and all the Favs & Saves - orta
 -   Updates zero states in messagin - orta
