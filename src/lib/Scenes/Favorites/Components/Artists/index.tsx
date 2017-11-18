@@ -16,7 +16,6 @@ class Artists extends React.Component<RelayProps, null> {
     )
 
     const loadMore = () => {
-      console.log("Load more called")
       if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
         return
       }
