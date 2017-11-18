@@ -8,14 +8,14 @@ export default ({ render }) => {
   return (
     <QueryRenderer
       environment={environment}
-      query={graphql`
+      query={graphql.experimental`
         query ArtistsRendererQuery {
           me {
             ...Artists_me
           }
         }
       `}
-      variables={null}
+      variables={{ count: 10 }}
       render={render}
     />
   )
