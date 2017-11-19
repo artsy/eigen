@@ -8,7 +8,7 @@ export default ({ render }) => {
   return (
     <QueryRenderer
       environment={environment}
-      query={graphql.experimental`
+      query={graphql`
         query CategoriesRendererQuery {
           me {
             ...Categories_me

@@ -72,7 +72,7 @@ randomBOOL(void)
     if (accessToken) {
       if(setup.usingPRBuild) {
         [self downloadPRBuildAndLoginWithAuth:auth keychainService:service];
-      } else if(setup.usingMaster) {
+      } else if(!setup.usingRNP && setup.usingMaster) {
         [self downloadMasterAndLoginWithAuth:auth keychainService:service];
       } else {
         [self setupEmissionWithUserID:[auth userID] accessToken:accessToken keychainService:service];

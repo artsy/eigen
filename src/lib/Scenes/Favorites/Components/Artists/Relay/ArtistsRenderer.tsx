@@ -15,7 +15,7 @@ export default ({ render }) => {
           }
         }
       `}
-      variables={null}
+      variables={{ count: 10 }}
       render={render}
     />
   )

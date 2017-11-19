@@ -7,7 +7,8 @@
 
 -   Updates the default statusbar text color to black - not white - orta
 -   Updates zero states in Artists on Home, and all the Favs & Saves - orta
--   Updates zero states in messagin - orta
+-   Updates zero states in messaging - orta
+-   Adds pagination to the follow'd Artists and Categories- orta
 
 ### 1.4.0-beta.6 - 1.4.0-beta.7
 
