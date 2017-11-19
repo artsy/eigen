@@ -20,12 +20,7 @@ class Artists extends React.Component<RelayProps, null> {
         return
       }
 
-      const updateState = (loading: boolean) => this.setState({ fetchingMoreData: loading })
-
-      updateState(true)
-      this.props.relay.loadMore(10, e => {
-        updateState(false)
-      })
+      this.props.relay.loadMore(10, () => undefined)
     }
 
     const ArtistsList = (

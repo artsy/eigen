@@ -14,17 +14,21 @@ const Container = styled.ScrollView`
 export class SavedWorks extends React.Component<any, any> {
   render() {
     const artworks = this.props.me.saved_artworks.artworks_connection.edges.map(edge => edge.node)
-    const EmptyState = () =>
+
+    const EmptyState = (
       <ZeroState
         title="You haven’t followed any artists yet"
         subtitle="Follow artists to get notified about new works that have been added to Artsy."
       />
+    )
 
-    return (
+    const Content = (
       <Container>
-        {artworks.length ? <GenericGrid artworks={artworks} /> : EmptyState}
+        <GenericGrid artworks={artworks} />
       </Container>
     )
+
+    return artworks.length ? Content : EmptyState
   }
 }
 

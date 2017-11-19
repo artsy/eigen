@@ -19,13 +19,7 @@ export class Categories extends React.Component<RelayProps, null> {
       if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
         return
       }
-
-      const updateState = (loading: boolean) => this.setState({ fetchingMoreData: loading })
-
-      updateState(true)
-      this.props.relay.loadMore(10, e => {
-        updateState(false)
-      })
+      this.props.relay.loadMore(10, () => undefined)
     }
 
     const CategoriesList = (
