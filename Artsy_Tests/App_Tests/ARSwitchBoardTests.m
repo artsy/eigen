@@ -7,7 +7,7 @@
 #import "ArtsyAPI+Profiles.h"
 #import "ARTopMenuViewController.h"
 #import "ARSerifNavigationViewController.h"
-#import "ARFavoritesViewController.h"
+
 #import "ARProfileViewController.h"
 #import "ARArtistViewController.h"
 #import "ARBrowseCategoriesViewController.h"
@@ -23,7 +23,10 @@
 #import "ARFairGuideContainerViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARMutableLinkViewController.h"
+
 #import <Emission/ARArtistComponentViewController.h>
+#import <Emission/ARFavoritesComponentViewController.h>
+
 #import "Artsy-Swift.h"
 
 

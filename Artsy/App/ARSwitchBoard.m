@@ -31,6 +31,8 @@
 #import "ARPaymentRequestWebViewController.h"
 #import "ARSerifNavigationViewController.h"
 
+#import <Emission/ARShowConsignmentsFlowViewController.h>
+
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
@@ -195,6 +197,12 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
     [self.routes addRoute:@"/admin" handler:JLRouteParams {
         return [wself loadAdminMenu];
     }];
+
+    [self.routes addRoute:@"/consign/submission" handler:JLRouteParams {
+        UIViewController *submissionVC = [[ARShowConsignmentsFlowViewController alloc] init];
+        return [[ARNavigationController alloc] initWithRootViewController:submissionVC];
+    }];
+
 
     // We don't show a native fairs UI for iPad
     if (![UIDevice isPad]) {

@@ -10,10 +10,10 @@
 #import "ARBrowseViewController.h"
 #import <JSBadgeView/JSBadgeView.h>
 #import "ARSwitchBoard.h"
-#import "ARFavoritesViewController.h"
 
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
+#import <Emission/ARFavoritesComponentViewController.h>
 
 
 @interface ARTopMenuNavigationDataSource (Test)
@@ -238,7 +238,7 @@ describe(@"navigation", ^{
 
                 // This will regenerate each time
                 if (tabIndex.integerValue == ARTopTabControllerIndexFavorites) {
-                    expect(viewcontroller).to.beAKindOf(ARFavoritesViewController.class);
+                    expect(viewcontroller).to.beAKindOf(ARFavoritesComponentViewController.class);
 
                 // This will regenerate each time
                 } else if (tabIndex.integerValue == ARTopTabControllerIndexMessaging) {

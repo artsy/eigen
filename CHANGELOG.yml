@@ -1,6 +1,7 @@
 upcoming:
     version: 4.0.0
-    details: Messaging / Consignments / Tabbed Home 
+    details: Messaging / Consignments / Tabbed Home
+    emission_version: 1.4.0
     dev:
       - Reload active bids on pull-to-refresh - alloy
       - Make active bids link to their artworks - alloy

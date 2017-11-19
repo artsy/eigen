@@ -4,7 +4,6 @@
 #import "ARInternalMobileWebViewController.h"
 #import "ARExternalWebBrowserViewController.h"
 #import "ARViewInRoomViewController.h"
-#import "ARFavoritesViewController.h"
 #import "ARBrowseViewController.h"
 #import "ARGeneViewController.h"
 #import "ARArtworkInfoViewController.h"

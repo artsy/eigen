@@ -76,7 +76,7 @@ PODS:
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
   - EDColor (1.0.0)
-  - Emission (1.4.0-beta.5):
+  - Emission (1.4.0-beta.8):
     - Artsy+UIColors
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
@@ -398,7 +398,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 6a73c042e15ddcbb7d6aeeb7c13bc1211e16d077
+  Emission: 83ad5a90162e5333d0153a547a6c061c8fc19dd0
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
@@ -450,6 +450,6 @@ SPEC CHECKSUMS:
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 2efb0a2b24e5c17cf1aea8c785d4428bd077f667
 
-PODFILE CHECKSUM: 687bbff32c64c1f3f3dfea64d8efd33e848ed095
+PODFILE CHECKSUM: dc8f8e462d0bdb109f466e0a845513c5580480cf
 
 COCOAPODS: 1.2.1
