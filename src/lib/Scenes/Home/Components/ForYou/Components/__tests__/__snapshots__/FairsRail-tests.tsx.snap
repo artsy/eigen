@@ -6,7 +6,6 @@ exports[`looks correct when rendered 1`] = `
     Array [
       Object {
         "marginBottom": 15,
-        "marginLeft": 20,
       },
       undefined,
     ]
@@ -19,18 +18,38 @@ exports[`looks correct when rendered 1`] = `
     ellipsizeMode="tail"
     numberOfLines={0}
     style={
-      Object {
-        "fontFamily": "AGaramondPro-Regular",
-        "fontSize": 25,
-        "textAlign": "left",
-      }
+      Array [
+        Object {
+          "marginLeft": 20,
+        },
+        undefined,
+      ]
     }
   >
-    Recommended Art Fairs
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      numberOfLines={0}
+      style={
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+          "fontSize": 25,
+          "textAlign": "left",
+        }
+      }
+    >
+      Recommended Art Fairs
+    </Text>
   </Text>
   <RCTScrollView
+    contentContainerStyle={
+      Object {
+        "marginLeft": 20,
+      }
+    }
     horizontal={true}
-    scrollsToTop={false}
     showsHorizontalScrollIndicator={false}
     style={
       Array [
@@ -64,15 +83,12 @@ exports[`looks correct when rendered 1`] = `
             Object {
               "backgroundColor": "transparent",
             },
-            Array [
-              Object {
-                "borderRadius": 40,
-                "height": 80,
-                "marginRight": 7,
-                "width": 80,
-              },
-              undefined,
-            ],
+            Object {
+              "borderRadius": 60,
+              "height": 120,
+              "marginRight": 7,
+              "width": 120,
+            },
           ]
         }
         testID={undefined}
@@ -92,15 +108,12 @@ exports[`looks correct when rendered 1`] = `
             imageURL="https://neopets.jpg"
             placeholderBackgroundColor="white"
             style={
-              Array [
-                Object {
-                  "borderRadius": 40,
-                  "height": 80,
-                  "marginRight": 7,
-                  "width": 80,
-                },
-                undefined,
-              ]
+              Object {
+                "borderRadius": 60,
+                "height": 120,
+                "marginRight": 7,
+                "width": 120,
+              }
             }
           />
         </View>
