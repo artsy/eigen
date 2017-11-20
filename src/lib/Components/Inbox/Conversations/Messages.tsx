@@ -107,6 +107,7 @@ export class Messages extends React.Component<Props, State> {
         data={this.state.shouldStickFirstMessageToTop ? messages.reverse() : messages}
         renderItem={this.renderMessage.bind(this)}
         keyExtractor={({ __id }) => __id}
+        keyboardShouldPersistTaps="always"
         onEndReached={this.loadMore.bind(this)}
         onEndReachedThreshold={0.2}
         onContentSizeChange={(width, height) => {

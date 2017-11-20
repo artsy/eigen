@@ -34,6 +34,7 @@ exports[`looks correct when rendered 1`] = `
   initialNumToRender={10}
   inverted={true}
   keyExtractor={[Function]}
+  keyboardShouldPersistTaps="always"
   maxToRenderPerBatch={10}
   numColumns={1}
   onContentSizeChange={[Function]}
