@@ -17,6 +17,7 @@ upcoming:
       - Adds an admin flag for haptic feedback during a live Auction - orta
       - Removes bifurcation of bidders/observers for causality websocket connections - ash
       - New Admin UI - orta
+      - Fix small bug with analytics popovers not turning off - maxim
 
     user_facing:
       - Adds a new navigation UI - orta
