@@ -3,6 +3,8 @@
 
 ### Master
 
+-   Don’t require 2 taps to open a conversation attachment and keep keyboard up - alloy
+
 ### 1.4.0-beta.8
 
 -   Updates the default statusbar text color to black - not white - orta
