@@ -213,7 +213,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     NSString * title = NSStringWithFormat(@"%@ on Screen Analytics", message);
 
     return [self tappableCellDataWithTitle:title selection:^{
-        BOOL current = [AROptions boolForOption:AROptionsShowMartsyOnScreen];
+        BOOL current = [AROptions boolForOption:AROptionsShowAnalyticsOnScreen];
         [AROptions setBool:!current forOption:AROptionsShowAnalyticsOnScreen];
         exit(YES);
     }];
