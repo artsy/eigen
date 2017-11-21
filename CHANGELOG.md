@@ -4,6 +4,7 @@
 ### Master
 
 -   Don’t require 2 taps to open a conversation attachment and keep keyboard up - alloy
+-   Don’t assume a photo was selected in the consignments photo picker - alloy
 
 ### 1.4.0-beta.8
 
