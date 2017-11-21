@@ -67,7 +67,10 @@ const Seperator = styled(DottedLine)`
   padding-right: 20;
 `
 
-const PreviewContainer = styled.View`margin-bottom: 10;`
+const PreviewContainer = styled.View`
+  margin-bottom: 10;
+  width: 295;
+`
 
 interface Props extends RelayProps {
   senderName: string
