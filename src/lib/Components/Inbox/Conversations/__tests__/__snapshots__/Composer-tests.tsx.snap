@@ -7,7 +7,9 @@ exports[`looks correct when rendered 1`] = `
   style={
     Array [
       Object {
+        "alignSelf": "center",
         "flex": 1,
+        "width": 708,
       },
       Object {
         "paddingBottom": 0,
@@ -162,7 +164,9 @@ ShallowWrapper {
       ],
       "keyboardVerticalOffset": 20,
       "style": Object {
+        "alignSelf": "center",
         "flex": 1,
+        "width": 708,
       },
     },
     "ref": null,
@@ -321,7 +325,9 @@ ShallowWrapper {
         ],
         "keyboardVerticalOffset": 20,
         "style": Object {
+          "alignSelf": "center",
           "flex": 1,
+          "width": 708,
         },
       },
       "ref": null,
@@ -450,7 +456,9 @@ exports[`regarding the send button disables it when there is no text 1`] = `
   style={
     Array [
       Object {
+        "alignSelf": "center",
         "flex": 1,
+        "width": 708,
       },
       Object {
         "paddingBottom": 0,
