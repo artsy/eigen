@@ -18,8 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LiveAuctionLot : MTLModel <MTLJSONSerializing>
 
-- (NSURL *)urlForThumbnail;
-- (NSURL *)urlForProfile;
+- (NSURL * _Nullable)urlForThumbnail;
+- (NSURL * _Nullable)urlForProfile;
 - (CGFloat)imageAspectRatio;
 
 @property (nonatomic, copy, readonly) NSString *artworkTitle;

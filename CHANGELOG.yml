@@ -18,6 +18,7 @@ upcoming:
       - Removes bifurcation of bidders/observers for causality websocket connections - ash
       - New Admin UI - orta
       - Fix small bug with analytics popovers not turning off - maxim
+      - Live auctions views handle missing image URLs gracefully - ash
 
     user_facing:
       - Adds a new navigation UI - orta

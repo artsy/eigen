@@ -59,7 +59,7 @@ extension FancyLayoutDelegate: LiveAuctionLotCollectionViewDelegateLayout {
         return lot.imageAspectRatio
     }
 
-    func thumbnailURLForIndex(_ index: RelativeIndex) -> URL {
+    func thumbnailURLForIndex(_ index: RelativeIndex) -> URL? {
         let lot = salesPerson.lotViewModelRelativeToShowingIndex(offsetForIndex(index))
         return lot.urlForThumbnail
     }

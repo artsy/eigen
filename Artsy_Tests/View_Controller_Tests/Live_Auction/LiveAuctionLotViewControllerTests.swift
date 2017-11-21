@@ -146,8 +146,8 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     var lotID = "lot-id"
     var lotPremium = "Lot Premium"
     var lotArtworkCreationDate: String? = "1985"
-    var urlForThumbnail = URL(string: "http://example.com/")!
-    var urlForProfile = URL(string: "http://example.com/")!
+    var urlForThumbnail = URL(string: "http://example.com/")
+    var urlForProfile = URL(string: "http://example.com/")
     var reserveStatusString = "is testing reserve"
     var numberOfDerivedEvents = 1
     var lotLabel: String? = "2"

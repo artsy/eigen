@@ -37,8 +37,8 @@ protocol LiveAuctionLotViewModelType: class {
     var lotID: String { get }
     var lotLabel: String? { get }
     var lotArtworkCreationDate: String? { get }
-    var urlForThumbnail: URL { get }
-    var urlForProfile: URL { get }
+    var urlForThumbnail: URL? { get }
+    var urlForProfile: URL? { get }
     var askingPrice: UInt64 { get }
     var winningBidPrice: UInt64? { get }
     var currencySymbol: String { get }
@@ -162,11 +162,11 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.onlineBidCount
     }
 
-    var urlForThumbnail: URL {
+    var urlForThumbnail: URL? {
         return model.urlForThumbnail()
     }
 
-    var urlForProfile: URL {
+    var urlForProfile: URL? {
         return model.urlForProfile()
     }
 
