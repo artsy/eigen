@@ -1,5 +1,5 @@
 import React from "react"
-import { Dimensions, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback } from "react-native"
+import { Dimensions, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback, ViewStyle } from "react-native"
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
@@ -90,7 +90,7 @@ export default class Composer extends React.Component<Props, State> {
       paddingRight: 10,
     }
 
-    const mainViewStyle = isPad
+    const mainViewStyle: ViewStyle = isPad
       ? {
           width: 708,
           alignSelf: "center",
