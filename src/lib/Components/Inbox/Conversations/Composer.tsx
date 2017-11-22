@@ -24,6 +24,11 @@ const Container = styled.View`
   background-color: ${(p: ContainerProps) => (p.active ? "white" : colors["gray-light"])};
 `
 
+const StyledKeyboardAvoidingView = styled.KeyboardAvoidingView`
+  flex: 1;
+  ${isPad ? "width: 708; align-self: center;" : ""};
+`
+
 interface StyledSendButtonProps {
   disabled: boolean
 }
@@ -90,20 +95,10 @@ export default class Composer extends React.Component<Props, State> {
       paddingRight: 10,
     }
 
-    const mainViewStyle: ViewStyle = isPad
-      ? {
-          width: 708,
-          alignSelf: "center",
-          flex: 1,
-        }
-      : {
-          flex: 1,
-        }
-
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
 
     return (
-      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={20} style={mainViewStyle}>
+      <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={20}>
         {this.props.children}
         <Container active={this.state.active}>
           <TextInput
@@ -123,7 +118,7 @@ export default class Composer extends React.Component<Props, State> {
             <SendButton disabled={disableSendButton}>SEND</SendButton>
           </TouchableWithoutFeedback>
         </Container>
-      </KeyboardAvoidingView>
+      </StyledKeyboardAvoidingView>
     )
   }
 }
