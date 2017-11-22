@@ -317,12 +317,25 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 }
 
+// For pre-iOS 10
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation
 {
-    _referralURLRepresentation = sourceApplication;
+    return [self application:application openURL:url options:@{
+       UIApplicationOpenURLOptionsSourceApplicationKey: sourceApplication ?: @"",
+       UIApplicationOpenURLOptionsAnnotationKey: annotation  ?: @""
+    }];
+}
+
+// For iOS 10
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
+{
+    NSString *sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey];
+    id annotation = options[UIApplicationOpenURLOptionsAnnotationKey];
+
+    _referralURLRepresentation = options[UIApplicationOpenURLOptionsSourceApplicationKey];
     _landingURLRepresentation = [url absoluteString];
 
     [self lookAtURLForAnalytics:url];
@@ -345,7 +358,7 @@ static ARAppDelegate *_sharedInstance = nil;
     if ([[url scheme] isEqualToString:fbScheme]) {
         // Call FBAppCall's handleOpenURL:sourceApplication to handle Facebook app responses
         FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
-        return [fbAppDelegate application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
+        return [fbAppDelegate application:app openURL:url sourceApplication:sourceApplication annotation:annotation];
     }
 
     if ([url isFileURL]) {
