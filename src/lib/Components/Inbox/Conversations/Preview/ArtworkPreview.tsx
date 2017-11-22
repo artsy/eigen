@@ -26,13 +26,13 @@ const VerticalLayout = styled.View`
 const Image = styled(OpaqueImageView)`
   margin-top: 12;
   margin-left: 12;
+  margin-right: 12;
   margin-bottom: 12;
   width: 80;
   height: 55;
 `
 
 const TextContainer = styled(VerticalLayout)`
-  margin-left: 25;
   align-self: center;
 `
 

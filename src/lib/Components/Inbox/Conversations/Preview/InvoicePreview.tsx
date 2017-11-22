@@ -20,7 +20,6 @@ const Container = styled.View`
 const TextContainer = styled.View`
   flex: 1;
   flex-direction: column;
-  margin-left: 10;
   align-self: center;
 `
 
@@ -29,6 +28,7 @@ const Icon = styled(Image)`
   width: 40;
   margin-top: 12;
   margin-left: 12;
+  margin-right: 12;
   margin-bottom: 12;
 `
 
