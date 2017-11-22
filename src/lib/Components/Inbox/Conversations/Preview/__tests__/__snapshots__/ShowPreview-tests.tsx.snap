@@ -48,6 +48,7 @@ exports[`renders correctly for a fair booth 1`] = `
             "height": 55,
             "marginBottom": 12,
             "marginLeft": 12,
+            "marginRight": 12,
             "marginTop": 12,
             "width": 80,
           },
@@ -67,7 +68,6 @@ exports[`renders correctly for a fair booth 1`] = `
           Array [
             Object {
               "alignSelf": "center",
-              "marginLeft": 25,
               "marginTop": 25,
             },
             undefined,
@@ -176,6 +176,7 @@ exports[`renders correctly for a regular show 1`] = `
             "height": 55,
             "marginBottom": 12,
             "marginLeft": 12,
+            "marginRight": 12,
             "marginTop": 12,
             "width": 80,
           },
@@ -195,7 +196,6 @@ exports[`renders correctly for a regular show 1`] = `
           Array [
             Object {
               "alignSelf": "center",
-              "marginLeft": 25,
               "marginTop": 25,
             },
             undefined,

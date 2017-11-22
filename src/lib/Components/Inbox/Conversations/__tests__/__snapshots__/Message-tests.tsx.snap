@@ -184,6 +184,7 @@ exports[`looks correct when rendered 1`] = `
                 Object {
                   "marginBottom": 12,
                   "marginLeft": 12,
+                  "marginRight": 12,
                   "marginTop": 12,
                   "resizeMode": "contain",
                   "width": 40,
@@ -201,7 +202,6 @@ exports[`looks correct when rendered 1`] = `
                   "flexDirection": "column",
                   "flexGrow": 1,
                   "flexShrink": 1,
-                  "marginLeft": 10,
                 },
                 undefined,
               ]
@@ -256,7 +256,6 @@ exports[`looks correct when rendered 1`] = `
                   "flexDirection": "column",
                   "flexGrow": 1,
                   "flexShrink": 1,
-                  "marginLeft": 10,
                 },
                 undefined,
               ]
