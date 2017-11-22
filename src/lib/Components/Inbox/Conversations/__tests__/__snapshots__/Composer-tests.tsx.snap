@@ -6,9 +6,16 @@ exports[`looks correct when rendered 1`] = `
   onLayout={[Function]}
   style={
     Array [
-      Object {
-        "flex": 1,
-      },
+      Array [
+        Object {
+          "alignSelf": "center",
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
+          "width": 708,
+        },
+        undefined,
+      ],
       Object {
         "paddingBottom": 0,
       },
@@ -161,9 +168,6 @@ ShallowWrapper {
         </Styled(View)>,
       ],
       "keyboardVerticalOffset": 20,
-      "style": Object {
-        "flex": 1,
-      },
     },
     "ref": null,
     "rendered": Array [
@@ -320,9 +324,6 @@ ShallowWrapper {
           </Styled(View)>,
         ],
         "keyboardVerticalOffset": 20,
-        "style": Object {
-          "flex": 1,
-        },
       },
       "ref": null,
       "rendered": Array [
@@ -449,9 +450,16 @@ exports[`regarding the send button disables it when there is no text 1`] = `
   onLayout={[Function]}
   style={
     Array [
-      Object {
-        "flex": 1,
-      },
+      Array [
+        Object {
+          "alignSelf": "center",
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
+          "width": 708,
+        },
+        undefined,
+      ],
       Object {
         "paddingBottom": 0,
       },

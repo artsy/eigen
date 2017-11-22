@@ -7,6 +7,8 @@ import Message from "./Message"
 import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
 
+const isPad = Dimensions.get("window").width > 700
+
 interface Props {
   conversation?: RelayProps["me"]["conversation"]
   relay?: RelayPaginationProp
@@ -101,6 +103,13 @@ export class Messages extends React.Component<Props, State> {
     })
     const refreshControl = <RefreshControl refreshing={this.state.reloadingData} onRefresh={this.reload.bind(this)} />
 
+    const messagesStyles = isPad
+      ? {
+          width: 708,
+          alignSelf: "center",
+        }
+      : {}
+
     return (
       <FlatList
         inverted={!this.state.shouldStickFirstMessageToTop}
@@ -126,6 +135,7 @@ export class Messages extends React.Component<Props, State> {
           })
         }}
         refreshControl={refreshControl}
+        style={messagesStyles}
         ListFooterComponent={<ActivityIndicator animating={this.state.fetchingMoreData} hidesWhenStopped />}
       />
     )

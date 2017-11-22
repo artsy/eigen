@@ -64,7 +64,10 @@ exports[`looks correct when rendered 1`] = `
           },
         ],
       },
-      undefined,
+      Object {
+        "alignSelf": "center",
+        "width": 708,
+      },
     ]
   }
   updateCellsBatchingPeriod={50}
