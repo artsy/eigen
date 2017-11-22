@@ -218,8 +218,18 @@ randomBOOL(void)
     NSString *conversationID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARConversationComponentViewController alloc] initWithConversationID:conversationID];
   } else if ([route isEqualToString:@"/"]) {
-    viewController = [[ARHomeComponentViewController alloc] initWithEmission:nil];
+    viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil];
 
+  } else if ([route hasPrefix:@"/works-for-you"]) {
+    NSURLComponents *components = [NSURLComponents componentsWithString: route];
+    NSString *artistID = nil;
+    for (NSURLQueryItem *item in components.queryItems)
+    {
+      if([item.name isEqualToString:@"artist_id"]) artistID = item.value;
+    }
+    
+    viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID];
+    
   } else {
 
     viewController = [[UnroutedViewController alloc] initWithRoute:route];

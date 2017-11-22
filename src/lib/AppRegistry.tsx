@@ -25,10 +25,6 @@ import HomeScene from "./Scenes/Home"
 
 import Events from "./NativeModules/Events"
 
-interface Props extends ViewProperties {
-  trigger1pxScrollHack?: boolean
-}
-
 // Analytics wrapper for all of our top level React components
 function AddTrack(pageName: string) {
   return component => component
@@ -65,6 +61,10 @@ interface GeneProps {
 const Gene: React.SFC<GeneProps> = ({ geneID, refineSettings: { medium, price_range } }) => {
   const initialProps = { geneID, medium, price_range }
   return <GeneRenderer {...initialProps} render={renderWithLoadProgress(Containers.Gene, initialProps)} />
+}
+
+const Home: React.SFC<{ selectedArtist: string }> = ({ selectedArtist }) => {
+  return <HomeScene selectedArtist={selectedArtist} />
 }
 
 const Sale: React.SFC<{ saleID: string }> = ({ saleID }) => {
@@ -104,7 +104,7 @@ const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoad
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
-AppRegistry.registerComponent("Home", () => HomeScene)
+AppRegistry.registerComponent("Home", () => Home)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
 AppRegistry.registerComponent("MyProfile", () => MyProfile)

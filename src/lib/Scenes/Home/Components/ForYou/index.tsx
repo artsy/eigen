@@ -12,17 +12,13 @@ interface DataSourceRow {
   data: any
 }
 
-interface Props extends ViewProperties, RelayProps {
-  trigger1pxScrollHack?: boolean
-}
-
 interface State {
   modules: any[]
   isRefreshing: boolean
   dataSource: ListViewDataSource
 }
 
-export class ForYou extends React.Component<Props, State> {
+export class ForYou extends React.Component<any, State> {
   listView?: ListView | any
   currentScrollOffset?: number = 0
 
@@ -78,14 +74,6 @@ export class ForYou extends React.Component<Props, State> {
         })
       })
     ).then(stopRefreshing, stopRefreshing)
-  }
-
-  componentDidUpdate(previousProps: Props) {
-    const didTrigger1pxScrollHack =
-      !!previousProps.trigger1pxScrollHack === false && this.props.trigger1pxScrollHack === true
-    if (didTrigger1pxScrollHack) {
-      this.listView.scrollTo({ y: this.currentScrollOffset + 1, animated: false })
-    }
   }
 
   render() {

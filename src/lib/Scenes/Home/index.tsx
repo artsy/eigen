@@ -19,8 +19,13 @@ import TabBar, { Tab } from "lib/Components/TabBar"
 
 const TabBarContainer = styled.View`margin-top: 20px;`
 
-export default class Home extends React.Component<null, null> {
+interface Props {
+  selectedArtist?: string
+}
+
+export default class Home extends React.Component<Props, null> {
   render() {
+    console.log(this.props)
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
@@ -33,7 +38,10 @@ export default class Home extends React.Component<null, null> {
       A thin space has been added in front of the tab label names to compensate for trailing space added by the
       wider letter-spacing. Going forward, this would ideally be dealt with through letter indentation. */}
           <Tab tabLabel=" Artists">
-            <WorksForYouRenderer render={renderWithLoadProgress(WorksForYou)} />
+            <WorksForYouRenderer
+              render={renderWithLoadProgress(WorksForYou)}
+              selectedArtist={this.props.selectedArtist}
+            />
           </Tab>
           <Tab tabLabel=" For You">
             <ForYouRenderer render={renderWithLoadProgress(ForYou)} />

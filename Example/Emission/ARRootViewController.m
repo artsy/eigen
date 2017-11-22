@@ -169,7 +169,7 @@
 - (ARCellData *)jumpToHomepage
 {
   return [self tappableCellDataWithTitle:@"Homepage" selection: ^{
-    id viewController = [[ARHomeComponentViewController alloc] initWithEmission:nil];
+    id viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
