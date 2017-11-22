@@ -21,6 +21,7 @@ exports[`InvoicePreview renders correctly 1`] = `
         Object {
           "marginBottom": 12,
           "marginLeft": 12,
+          "marginRight": 12,
           "marginTop": 12,
           "resizeMode": "contain",
           "width": 40,
@@ -38,7 +39,6 @@ exports[`InvoicePreview renders correctly 1`] = `
           "flexDirection": "column",
           "flexGrow": 1,
           "flexShrink": 1,
-          "marginLeft": 10,
         },
         undefined,
       ]
@@ -93,7 +93,6 @@ exports[`InvoicePreview renders correctly 1`] = `
           "flexDirection": "column",
           "flexGrow": 1,
           "flexShrink": 1,
-          "marginLeft": 10,
         },
         undefined,
       ]

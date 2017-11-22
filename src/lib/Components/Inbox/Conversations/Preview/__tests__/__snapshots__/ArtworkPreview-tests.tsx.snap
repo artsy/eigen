@@ -48,6 +48,7 @@ exports[`handles dateless artworks 1`] = `
             "height": 55,
             "marginBottom": 12,
             "marginLeft": 12,
+            "marginRight": 12,
             "marginTop": 12,
             "width": 80,
           },
@@ -67,7 +68,6 @@ exports[`handles dateless artworks 1`] = `
           Array [
             Object {
               "alignSelf": "center",
-              "marginLeft": 25,
             },
             undefined,
           ],
@@ -187,6 +187,7 @@ exports[`renders correctly 1`] = `
             "height": 55,
             "marginBottom": 12,
             "marginLeft": 12,
+            "marginRight": 12,
             "marginTop": 12,
             "width": 80,
           },
@@ -206,7 +207,6 @@ exports[`renders correctly 1`] = `
           Array [
             Object {
               "alignSelf": "center",
-              "marginLeft": 25,
             },
             undefined,
           ],
