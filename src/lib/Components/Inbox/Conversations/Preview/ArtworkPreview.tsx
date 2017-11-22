@@ -1,7 +1,7 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { TouchableHighlight } from "react-native"
+import { Text, TouchableHighlight } from "react-native"
 
 import { PreviewText as P, Subtitle } from "../../Typography"
 
@@ -42,19 +42,10 @@ const SerifText = styled(P)`
 
 const TitleAndDate = styled.View`
   margin-top: 3;
+  margin-right: 12;
   flex-direction: row;
+  justify-content: flex-start;
 `
-
-const Title = styled.Text`
-  font-family: ${fonts["garamond-italic"]};
-  flex: 3;
-  font-size: 14;
-`
-
-const Date = styled(SerifText)`
-  flex: 1;
-`
-
 interface Props extends RelayProps {
   onSelected?: () => void
 }
@@ -86,10 +77,11 @@ export class ArtworkPreview extends React.Component<Props, any> {
               {artwork.artist_names}
             </SerifText>
             <TitleAndDate>
-              <Title numberOfLines={1}>
-                {artwork.title}
-              </Title>
-              {!!artwork.date && <Date>{`, ${artwork.date}`}</Date>}
+              {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
+              <Text numberOfLines={1} ellipsizeMode={"middle"} style={{ fontFamily: fonts["garamond-italic"] }}>
+                {`${artwork.title}`}
+                <Text style={{ fontFamily: fonts["garamond-regular"] }}>{`, ${artwork.date}`}</Text>
+              </Text>
             </TitleAndDate>
           </TextContainer>
         </Container>
