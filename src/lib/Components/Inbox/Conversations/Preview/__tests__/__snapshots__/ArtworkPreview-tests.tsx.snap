@@ -118,12 +118,18 @@ exports[`handles dateless artworks 1`] = `
           accessible={true}
           allowFontScaling={true}
           disabled={false}
-          ellipsizeMode="middle"
-          numberOfLines={1}
+          ellipsizeMode="tail"
           style={
-            Object {
-              "fontFamily": "AGaramondPro-Italic",
-            }
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 14,
+              },
+              Object {},
+              Object {
+                "fontFamily": "AGaramondPro-Italic",
+              },
+            ]
           }
         >
           Karl and Anna Face Off (Diptych)
@@ -133,9 +139,12 @@ exports[`handles dateless artworks 1`] = `
             disabled={false}
             ellipsizeMode="tail"
             style={
-              Object {
-                "fontFamily": "AGaramondPro-Regular",
-              }
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+                undefined,
+              ]
             }
           >
             , 
@@ -265,12 +274,18 @@ exports[`renders correctly 1`] = `
           accessible={true}
           allowFontScaling={true}
           disabled={false}
-          ellipsizeMode="middle"
-          numberOfLines={1}
+          ellipsizeMode="tail"
           style={
-            Object {
-              "fontFamily": "AGaramondPro-Italic",
-            }
+            Array [
+              Object {
+                "color": "black",
+                "fontSize": 14,
+              },
+              Object {},
+              Object {
+                "fontFamily": "AGaramondPro-Italic",
+              },
+            ]
           }
         >
           Karl and Anna Face Off (Diptych)
@@ -280,9 +295,12 @@ exports[`renders correctly 1`] = `
             disabled={false}
             ellipsizeMode="tail"
             style={
-              Object {
-                "fontFamily": "AGaramondPro-Regular",
-              }
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                },
+                undefined,
+              ]
             }
           >
             , 2016

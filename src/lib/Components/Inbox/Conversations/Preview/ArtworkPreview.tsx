@@ -8,13 +8,13 @@ import { PreviewText as P, Subtitle } from "../../Typography"
 import { Schema, Track, track as _track } from "../../../../utils/track"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView"
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { Colors } from "lib/data/colors"
+import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
 
 const Container = styled.View`
   border-width: 1;
-  border-color: ${colors["gray-regular"]};
+  border-color: ${Colors.GrayRegular};
   flex-direction: row;
 `
 
@@ -39,6 +39,8 @@ const TextContainer = styled(VerticalLayout)`
 const SerifText = styled(P)`
   font-size: 14;
 `
+
+const Date = styled.Text`font-family: ${Fonts.GaramondRegular};`
 
 const TitleAndDate = styled.View`
   margin-top: 3;
@@ -69,7 +71,7 @@ export class ArtworkPreview extends React.Component<Props, any> {
     const artwork = this.props.artwork
 
     return (
-      <TouchableHighlight underlayColor={colors["gray-light"]} onPress={() => this.attachmentSelected()}>
+      <TouchableHighlight underlayColor={Colors.GrayLight} onPress={() => this.attachmentSelected()}>
         <Container>
           <Image imageURL={artwork.image.url} />
           <TextContainer>
@@ -78,10 +80,10 @@ export class ArtworkPreview extends React.Component<Props, any> {
             </SerifText>
             <TitleAndDate>
               {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
-              <Text numberOfLines={1} ellipsizeMode={"middle"} style={{ fontFamily: fonts["garamond-italic"] }}>
+              <Subtitle numberOfLines={1} ellipsizeMode={"middle"}>
                 {`${artwork.title}`}
-                <Text style={{ fontFamily: fonts["garamond-regular"] }}>{`, ${artwork.date}`}</Text>
-              </Text>
+                <Date>{`, ${artwork.date}`}</Date>
+              </Subtitle>
             </TitleAndDate>
           </TextContainer>
         </Container>
