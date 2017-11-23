@@ -183,29 +183,25 @@ export class Gene extends React.Component<Props, State> {
 
     // We're returning the promise so that it's easier
     // to write tests with the resolved state
-    return Refine.triggerRefine(this, initialSettings, currentSettings)
-      .then(newSettings => {
-        if (newSettings) {
-          this.setState({
-            selectedMedium: newSettings.medium,
-            selectedPriceRange: newSettings.selectedPrice,
-            sort: newSettings.sort,
-          })
+    return Refine.triggerRefine(this, initialSettings, currentSettings).then(newSettings => {
+      if (newSettings) {
+        this.setState({
+          selectedMedium: newSettings.medium,
+          selectedPriceRange: newSettings.selectedPrice,
+          sort: newSettings.sort,
+        })
 
-          this.props.relay.refetch(
-            {
-              medium: newSettings.medium,
-              price_range: newSettings.selectedPrice,
-              sort: newSettings.sort,
-            },
-            // TODO: is this param really required?
-            null
-          )
-        }
-      })
-      .catch(error => {
-        console.warn(error)
-      })
+        this.props.relay.refetch(
+          {
+            medium: newSettings.medium,
+            price_range: newSettings.selectedPrice,
+            sort: newSettings.sort,
+          },
+          // TODO: is this param really required?
+          null
+        )
+      }
+    })
   }
 
   /** Title of the Gene */
