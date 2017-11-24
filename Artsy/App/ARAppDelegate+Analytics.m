@@ -100,18 +100,25 @@
     if (ARAppStatus.isBetaOrDev) {
         segmentWriteKey = keys.segmentDevWriteKey;
         adjustEnv = ADJEnvironmentSandbox;
+    }
+    
+    if (ARAppStatus.isBeta) {
         sentryEnv = keys.sentryStagingDSN;
+    }
+    
+    if (ARAppStatus.isDev) {
+        sentryEnv = nil;
+    }
+
+    // For OSS builds don't ship the sentry env
+    if (sentryEnv && ![sentryEnv isEqualToString:@"-"]) {
+        id sentry = [[ARSentryAnalyticsProvider alloc] initWithDSN:sentryEnv];
+        [ARAnalytics setupProvider:sentry];
     }
 
     if ([AROptions boolForOption:AROptionsShowAnalyticsOnScreen]) {
         ARAnalyticsVisualizer *visualizer = [ARAnalyticsVisualizer new];
         [ARAnalytics setupProvider:visualizer];
-    }
-
-    // For OSS builds don't ship the sentry env
-    if (![sentryEnv isEqualToString:@"-"]) {
-        id sentry = [[ARSentryAnalyticsProvider alloc] initWithDSN:sentryEnv];
-        [ARAnalytics setupProvider:sentry];
     }
 
     BITHockeyManager *hockey = [BITHockeyManager sharedHockeyManager];
