@@ -15,9 +15,9 @@ class SaleOnHoldOverlayView: UIView {
     var delegate: SaleOnHoldOverlayViewDelegate?
     var observer: ObserverToken<String?>?
 
-    required init(messages: Observable<String?> ) {
+    required init(messages: Observable<String?>? ) {
         super.init(frame: CGRect.zero)
-        messages.subscribe(self.sharedSetup)
+        observer = messages?.subscribe(self.sharedSetup)
     }
 
     override init(frame: CGRect) {
@@ -32,7 +32,7 @@ class SaleOnHoldOverlayView: UIView {
     
     override func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
-        if let _ = newSuperview {
+        if newSuperview == nil {
             observer?.unsubscribe()
         }
     }
