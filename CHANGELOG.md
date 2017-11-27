@@ -7,6 +7,7 @@
 -   Don’t assume a photo was selected in the consignments photo picker - alloy
 -   QA for composer/thread view: ipad and fixed iphone size attachments - maxim
 -   QA for message attachments - maxim
+-   QA for saves & follows: enable pagination in Works tab in Saves & Follows - luc
 
 ### 1.4.0-beta.8
 

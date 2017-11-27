@@ -45,6 +45,10 @@ export default createPaginationContainer<RelayProps>(
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followed_artists_connection(first: $count, after: $cursor)
           @connection(key: "Artists_followed_artists_connection") {
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
           edges {
             node {
               artist {
