@@ -19,6 +19,7 @@ upcoming:
       - New Admin UI - orta
       - Fix small bug with analytics popovers not turning off - maxim
       - Live auctions views handle missing image URLs gracefully - ash
+      - Fix for opening URLs in iOS 11 - orta
 
     user_facing:
       - Adds a new navigation UI - orta
