@@ -201,7 +201,7 @@ const styles = StyleSheet.create<Styles>({
     flexGrow: 1,
     flexDirection: "row",
     marginTop: 10,
-    minHeight: 330,
+    minHeight: 320,
   },
   title: {
     marginLeft: 30,
