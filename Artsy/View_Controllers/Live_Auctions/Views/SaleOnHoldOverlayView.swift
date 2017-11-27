@@ -5,6 +5,7 @@ import ORStackView
 import Artsy_UILabels
 import Artsy_UIButtons
 import Artsy_UIFonts
+import Interstellar
 
 protocol SaleOnHoldOverlayViewDelegate {
     func userDidTapDismiss(forSaleOnHoldOverlayView saleOnHoldOverlayView: SaleOnHoldOverlayView)
@@ -12,10 +13,11 @@ protocol SaleOnHoldOverlayViewDelegate {
 
 class SaleOnHoldOverlayView: UIView {
     var delegate: SaleOnHoldOverlayViewDelegate?
+    var observer: ObserverToken<String?>?
 
-    required init(message: String?) {
+    required init(messages: Observable<String?> ) {
         super.init(frame: CGRect.zero)
-        sharedSetup(message: message)
+        messages.subscribe(self.sharedSetup)
     }
 
     override init(frame: CGRect) {
@@ -27,8 +29,16 @@ class SaleOnHoldOverlayView: UIView {
         // Required for Swift compiler.
         return nil
     }
+    
+    override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        if let _ = newSuperview {
+            observer?.unsubscribe()
+        }
+    }
 
     func sharedSetup(message: String? = nil) {
+        subviews.forEach { $0.removeFromSuperview() }
         // Set up dark blurring effect
         let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
