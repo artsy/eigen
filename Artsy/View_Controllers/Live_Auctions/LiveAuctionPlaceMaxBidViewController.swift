@@ -62,7 +62,9 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         lotNumberLabel.text = lotVM.formattedLotIndexDisplayString.uppercased()
         lotArtistLabel.text = lotVM.lotArtist
         lotNameLabel.text = lotVM.lotName
-        lotPreviewImageView.ar_setImage(with: lotVM.urlForProfile as URL!)
+        if let url = lotVM.urlForProfile {
+            lotPreviewImageView.ar_setImage(with: url)
+        }
     }
 
     @IBOutlet weak var numberOfCurrentBidsLabel: UILabel!

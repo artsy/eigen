@@ -4,7 +4,7 @@ typealias RelativeIndex = Int
 
 protocol LiveAuctionLotCollectionViewDelegateLayout: class {
     func aspectRatioForIndex(_ index: RelativeIndex) -> CGFloat
-    func thumbnailURLForIndex(_ index: RelativeIndex) -> URL
+    func thumbnailURLForIndex(_ index: RelativeIndex) -> URL?
 }
 
 protocol LiveAuctionLotCollectionViewLayoutType: class {
