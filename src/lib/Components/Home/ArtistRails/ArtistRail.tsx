@@ -204,9 +204,9 @@ const styles = StyleSheet.create<Styles>({
     minHeight: 320,
   },
   title: {
-    marginLeft: 30,
-    marginRight: 30,
-    marginTop: 40,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 30,
     marginBottom: 10,
   },
 })

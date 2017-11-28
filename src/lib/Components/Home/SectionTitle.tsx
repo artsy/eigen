@@ -25,6 +25,6 @@ const styles = StyleSheet.create<Styles>({
   headerText: {
     fontFamily: "AGaramondPro-Regular",
     fontSize: 30,
-    textAlign: "center",
+    textAlign: "left",
   },
 })
