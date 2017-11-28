@@ -6,9 +6,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) NSString *selectedArtist;
 
-- (instancetype)initWithSelectedArtist:(nullable NSString *)artistID;
 - (instancetype)initWithSelectedArtist:(nullable NSString *)artistID
                               emission:(nullable AREmission*)emission NS_DESIGNATED_INITIALIZER;
+
 
 - (instancetype)initWithEmission:(nullable AREmission *)emission
                       moduleName:(NSString *)moduleName

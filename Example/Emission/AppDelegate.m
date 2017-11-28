@@ -66,7 +66,7 @@ randomBOOL(void)
   self.window.backgroundColor = [UIColor whiteColor];
   self.window.rootViewController = self.navigationController;
   [self.window makeKeyAndVisible];
-
+  
   if ([auth isAuthenticated]) {
     NSString *accessToken = [auth token];
     if (accessToken) {
@@ -197,6 +197,16 @@ randomBOOL(void)
   };
 }
 
+- (NSString *)valueForKey:(NSString *)key
+           fromQueryItems:(NSArray *)queryItems
+{
+  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name=%@", key];
+  NSURLQueryItem *queryItem = [[queryItems
+                                filteredArrayUsingPredicate:predicate]
+                               firstObject];
+  return queryItem.value;
+}
+
 - (UIViewController *)viewControllerForRoute:(NSString *)route;
 {
   UIViewController *viewController = nil;
@@ -218,17 +228,12 @@ randomBOOL(void)
     NSString *conversationID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARConversationComponentViewController alloc] initWithConversationID:conversationID];
   } else if ([route isEqualToString:@"/"]) {
-    viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil];
+    viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil emission:nil];
 
-  } else if ([route hasPrefix:@"/works-for-you"]) {
-    NSURLComponents *components = [NSURLComponents componentsWithString: route];
-    NSString *artistID = nil;
-    for (NSURLQueryItem *item in components.queryItems)
-    {
-      if([item.name isEqualToString:@"artist_id"]) artistID = item.value;
-    }
-    
-    viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID];
+  } else if ([route hasPrefix:@"/works-for-you/"] || [route hasPrefix:@"works-for-you"]) {
+    NSURLComponents *components = [[NSURLComponents alloc] initWithString:route];
+    NSString *artistID = [self valueForKey:@"artist_id" fromQueryItems:components.queryItems];
+    viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID emission:nil];
     
   } else {
 

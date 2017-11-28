@@ -3,15 +3,10 @@
 
 @implementation ARHomeComponentViewController
 
-- (instancetype)initWithSelectedArtist:(NSString *)artistID;
-{
-    return [self initWithSelectedArtist:artistID emission:nil];
-}
-
 - (instancetype)initWithSelectedArtist:(NSString *)artistID emission:(AREmission *)emission;
 {
     if ((self = [super initWithEmission:emission
-                             moduleName:@"WorksForYou"
+                             moduleName:@"Home"
                       initialProperties:artistID ? @{ @"selectedArtist": artistID } : nil])) {
         _selectedArtist = artistID;
     }
@@ -28,6 +23,5 @@
                                      multiplier:1
                                        constant:0];
 }
-
 
 @end

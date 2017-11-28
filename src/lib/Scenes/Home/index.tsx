@@ -25,7 +25,6 @@ interface Props {
 
 export default class Home extends React.Component<Props, null> {
   render() {
-    console.log(this.props)
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
