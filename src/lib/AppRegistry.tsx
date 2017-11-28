@@ -63,10 +63,6 @@ const Gene: React.SFC<GeneProps> = ({ geneID, refineSettings: { medium, price_ra
   return <GeneRenderer {...initialProps} render={renderWithLoadProgress(Containers.Gene, initialProps)} />
 }
 
-const Home: React.SFC<{ selectedArtist: string }> = ({ selectedArtist }) => {
-  return <HomeScene selectedArtist={selectedArtist} />
-}
-
 const Sale: React.SFC<{ saleID: string }> = ({ saleID }) => {
   const initialProps = { saleID }
   return <SaleRenderer {...initialProps} render={renderWithLoadProgress(Containers.Sale, initialProps)} />
@@ -104,7 +100,7 @@ const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoad
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
-AppRegistry.registerComponent("Home", () => Home)
+AppRegistry.registerComponent("Home", () => HomeScene)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
 AppRegistry.registerComponent("MyProfile", () => MyProfile)

@@ -12,13 +12,15 @@ interface DataSourceRow {
   data: any
 }
 
+type Props = ViewProperties & RelayProps
+
 interface State {
   modules: any[]
   isRefreshing: boolean
   dataSource: ListViewDataSource
 }
 
-export class ForYou extends React.Component<any, State> {
+export class ForYou extends React.Component<Props, State> {
   listView?: ListView | any
   currentScrollOffset?: number = 0
 
