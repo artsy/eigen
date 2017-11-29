@@ -1,7 +1,7 @@
 import React from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
-import { Animated, Easing, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
+import { Animated, Easing, ScrollView, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 
 import metaphysics from "../../../metaphysics"
 
@@ -162,13 +162,16 @@ class ArtistRail extends React.Component<Props, State> {
   }
 
   title() {
+    return "Artists to Follow:"
+  }
+  subtitle() {
     switch (this.props.rail.key) {
       case "TRENDING":
-        return "Artists to Follow: Trending"
+        return "Trending on Artsy"
       case "SUGGESTED":
-        return "Artists to Follow: Recommended for You"
+        return "Recommended for You"
       case "POPULAR":
-        return "Artists to Follow: Popular"
+        return "Popular on Artsy"
     }
   }
 
@@ -183,6 +186,9 @@ class ArtistRail extends React.Component<Props, State> {
           <SectionTitle>
             {this.title()}
           </SectionTitle>
+          <SectionTitle style={styles.subtitle}>
+            {this.subtitle()}
+          </SectionTitle>
         </View>
         {this.renderModuleResults()}
         <Separator />
@@ -194,6 +200,7 @@ class ArtistRail extends React.Component<Props, State> {
 interface Styles {
   cardContainer: ViewStyle
   title: ViewStyle
+  subtitle: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -208,6 +215,10 @@ const styles = StyleSheet.create<Styles>({
     marginRight: 20,
     marginTop: 30,
     marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 20,
+    fontFamily: "AGaramondPro-Regular",
   },
 })
 
