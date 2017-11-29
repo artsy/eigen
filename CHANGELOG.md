@@ -9,6 +9,7 @@
 -   QA for composer/thread view: ipad and fixed iphone size attachments - maxim
 -   QA for message attachments - maxim
 -   QA for home header font sizes and margins - maxim
+-   Minor: change text colour for provenance placeholder in consignments - maxim
 
 ### 1.4.0-beta.8
 
