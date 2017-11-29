@@ -65,7 +65,13 @@ class Artwork extends React.Component<RelayProps, any> {
     const artwork = this.props.artwork
     if (artwork.is_in_auction && artwork.sale_artwork) {
       if (artwork.sale_artwork.sale.is_open) {
-        const numberOfBids = artwork.sale_artwork.bidder_positions_count
+        let numberOfBids = null
+        try {
+          numberOfBids = artwork.sale_artwork.bidder_positions_count
+        } catch (e) {
+          console.error(`Sentry issue #274707594 triggered with props: ${JSON.stringify(this.props)}`)
+          return null
+        }
         let text = artwork.sale_artwork.opening_bid.display
         if (numberOfBids > 0) {
           text = `${artwork.sale_artwork.current_bid.display} (${numberOfBids} bid${numberOfBids === 1 ? "" : "s"})`
