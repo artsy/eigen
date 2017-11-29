@@ -9,6 +9,7 @@
 -   QA for composer/thread view: ipad and fixed iphone size attachments - maxim
 -   QA for message attachments - maxim
 -   QA for home header font sizes and margins - maxim
+-   Don’t rely on user of the Gene VC to specify filter defaults, which could lead to a crash - alloy
 -   QA for inbox zero on ipad - maxim
 
 ### 1.4.0-beta.8
