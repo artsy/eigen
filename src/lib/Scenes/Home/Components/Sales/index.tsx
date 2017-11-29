@@ -21,7 +21,7 @@ const SectionHeader = styled.View`
 
 const SectionTitle = styled.Text`
   font-family: ${fonts["garamond-regular"]};
-  font-size: 25px;
+  font-size: 30px;
   text-align: left;
   margin-left: 2px;
 `

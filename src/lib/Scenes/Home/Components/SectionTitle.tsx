@@ -24,7 +24,7 @@ interface Styles {
 const styles = StyleSheet.create<Styles>({
   headerText: {
     fontFamily: "AGaramondPro-Regular",
-    fontSize: 25,
+    fontSize: 30,
     textAlign: "left",
   },
 })
