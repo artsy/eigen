@@ -57,6 +57,7 @@ const Icon = styled(Image)`
 
 export default class ZeroStateInbox extends React.Component<null, null> {
   render() {
+    /** TODO: Maxim see if there's any other way  */
     if (isPad) {
       return (
         <CenteredView>
