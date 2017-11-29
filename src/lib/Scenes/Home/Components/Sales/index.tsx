@@ -1,11 +1,9 @@
-import React from "react"
-import { Dimensions, FlatList, SectionList, TouchableWithoutFeedback, View } from "react-native"
-
-import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
-
 import fonts from "lib/data/fonts"
 import Switchboard from "lib/NativeModules/SwitchBoard"
+import React from "react"
+import { Dimensions, FlatList, SectionList, TouchableWithoutFeedback, View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
 import { LotsByFollowedArtists } from "./Components/LotsByFollowedArtists"
 import SaleItem from "./Components/SaleItem"
 
