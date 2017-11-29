@@ -3,14 +3,12 @@ import React from "react"
 import { Dimensions, Image, ListView, ListViewDataSource, ScrollView, Text, View } from "react-native"
 import { LargeHeadline } from "../Typography"
 
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
 
 const isPad = Dimensions.get("window").width > 700
 
 const CenteredView = styled.View`
-  background-color: ${colors["gray-light"]};
   align-items: center;
   width: 100%;
   height: 100%;
@@ -35,12 +33,13 @@ const HorizontalLayout = styled.View`
   margin-bottom: ${isPad ? 0 : 50};
 `
 
-const Title = styled(LargeHeadline)`
+const Title = styled.Text`
   text-align: center;
-  font-size: ${isPad ? 50 : 30};
+  font-size: ${isPad ? 46 : 16};
   line-height: ${isPad ? 58 : 32};
   width: ${isPad ? 700 : 280};
   margin-top: ${isPad ? 80 : 35};
+  font-family: ${Fonts.AvantGardeRegular};
   align-self: center;
 `
 
@@ -62,7 +61,7 @@ export default class ZeroStateInbox extends React.Component<null, null> {
       return (
         <CenteredView>
           <VerticalLayout>
-            <Title>Buying Art on Artsy is Simple </Title>
+            <Title>BUYING ART ON ARTSY IS SIMPLE</Title>
             <List>
               <HorizontalLayout>
                 <Icon source={require("../../../../../images/find.png")} />
@@ -88,7 +87,7 @@ export default class ZeroStateInbox extends React.Component<null, null> {
       return (
         <CenteredView>
           <VerticalLayout>
-            <Title>Buying Art on Artsy is Simple </Title>
+            <Title>BUYING ART ON ARTSY IS SIMPLE</Title>
             <HorizontalLayout>
               <Icon source={require("../../../../../images/find.png")} />
               <SmallHeadline>Follow artists and find works you love</SmallHeadline>

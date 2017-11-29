@@ -18,6 +18,10 @@
 #import <Emission/ARComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARInquiryComponentViewController.h>
+#import <Emission/ARFavoritesComponentViewController.h>
+#import <Emission/ARMyProfileViewController.h>
+#import <Emission/ARShowConsignmentsFlowViewController.h>
+
 #import "ARStorybookComponentViewController.h"
 
 #import "InternalWebViewController.h"
@@ -85,6 +89,7 @@
   [sectionData addCellData:self.jumpToConsignments];
   [sectionData addCellData:self.jumpToInbox];
   [sectionData addCellData:self.jumpToInquiry];
+  [sectionData addCellData:self.jumpToFavorites];
 
   return sectionData;
 }
@@ -114,7 +119,6 @@
 {
   return [self tappableCellDataWithTitle:@"Open Storybook Browser" selection: ^{
     id viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"StorybookBrowser" initialProperties: @{}];
-
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
@@ -199,7 +203,7 @@
 - (ARCellData *)jumpToMyProfile
 {
   return [self tappableCellDataWithTitle:@"My Profile" selection:^{
-    id viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"MyProfile" initialProperties:@{}];
+    id viewController = [[ARMyProfileViewController alloc] init];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
@@ -209,7 +213,7 @@
 {
   return [self tappableCellDataWithTitle:@"Start Consignment Flow" selection:^{
     [[(EigenLikeNavigationController *)self.navigationController backButton] setHidden:YES];
-    id viewController = [[ARComponentViewController alloc] initWithEmission: nil moduleName:@"Consignments" initialProperties: @{}];
+    id viewController = [[ARShowConsignmentsFlowViewController alloc] init];
 
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
     nav.navigationBarHidden = YES;
@@ -233,6 +237,13 @@
   }];
 }
 
+- (ARCellData *)jumpToFavorites
+{
+  return [self tappableCellDataWithTitle:@"Favorites" selection:^{
+    id viewController = [[ARFavoritesComponentViewController alloc] init];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
 
 - (ARCellData *)generateStagingSwitch
 {

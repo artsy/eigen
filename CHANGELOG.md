@@ -3,18 +3,46 @@
 
 ### Master
 
+-   Don’t require 2 taps to open a conversation attachment and keep keyboard up - alloy
+-   Don’t assume a photo was selected in the consignments photo picker - alloy
+-   QA for composer/thread view: ipad and fixed iphone size attachments - maxim
+-   QA for message attachments - maxim
+
+### 1.4.0-beta.8
+
+-   Updates the default statusbar text color to black - not white - orta
+-   Updates zero states in Artists on Home, and all the Favs & Saves - orta
+-   Updates zero states in messaging - orta
+-   Adds pagination to the follow'd Artists and Categories- orta
+
+### 1.4.0-beta.6 - 1.4.0-beta.7
+
+-   Provides native view controllers for the routing engine in Eigen - orta
+-   Changed invoice component to only being able to touch the PAY button - alloy
+-   Make invoice component’s payment status and button slightly wider to account for statuses like ‘REFUNDED’ and ‘CANCELED’ - alloy
+-   Don’t try to also fetch the invoice state after receiving a ‘paid’ notification, just trust the notification and keep showing the ‘PAID’ state - alloy
+
+### 1.4.0-beta.5
+
+-   Adds Saves & Follows view - luc
 -   Renames MyProfile -> MyAccount, and sets up the design for it - orta
 -   Revised designs for consignments - orta
 -   Adds Live and timed auctions in home view - luc
 -   Adds Sale container to app registry - ash
+-   QA for Home: change tab colors - maxim
 -   QA Inquiry screen - maxim
-
-### 1.4.0-beta.5
+-   Home now includes a call to action for consignments - orta
+-   QA for Home: center tab labels with thin space hack - maxim
+-   Add new Analytics schema via React Tracking. - maxim
+-   Add analytics events for messaging - maxim
+-   Removes ‘works by artists you follow’ rail from ForYou view - alloy
+-   QA for Inbox view: center and cap size on iPad and solid line separator - maxim
 
 ###### Dev
 
 -   Converts relative to absolute paths for imports - luc
 -   Adds enzyme for tests - luc
+-   Fix test issues with react-tracking and enzyme - luc
 -   Updates Avant Garde font with a version that can handle special characters - sarah
 -   Remaps space key bidding to ctrl+space so we can enter spaces fromthe simulator - luc
 -   Conditionally use different past artist show fragments for iPad vs iPhone - alloy

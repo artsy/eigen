@@ -24,7 +24,7 @@ interface State {
   followersCount: number
 }
 
-const track: Track<Props, State, Schema.Entity> = _track
+const track: Track<Props, State> = _track
 
 @track()
 class Header extends React.Component<Props, State> {
@@ -130,12 +130,19 @@ class Header extends React.Component<Props, State> {
     return leadingSubstring + " " + birthday
   }
 
-  @track((props, state) => ({ action: state.following ? "press unfollow button" : "press follow button" }))
+  @track((props, state) => ({
+    action_name: state.following ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: props.artist._id,
+    owner_slug: props.artist.id,
+    owner_type: Schema.OwnerEntityTypes.Artist,
+  }))
   handleFollowChange() {
     const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
       if (error) {
         console.warn(error)
+        this.failedFollowChange()
       } else {
         this.successfulFollowChange()
       }
@@ -145,18 +152,25 @@ class Header extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action: `successfully ${state.following ? "followed" : "unfollowed"}`,
-    entity_id: props.artist._id,
-    entity_slug: props.artist.id,
+    action_name: state.following ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
+    action_type: Schema.ActionTypes.Success,
+    owner_id: props.artist._id,
+    owner_slug: props.artist.id,
+    owner_type: Schema.OwnerEntityTypes.Artist,
   }))
   successfulFollowChange() {
-    Events.postEvent({
-      name: this.state.following ? "Follow artist" : "Unfollow artist",
-      artist_id: this.props.artist._id,
-      artist_slug: this.props.artist.id,
-      // TODO At some point, this component might be on other screens.
-      source_screen: "artist page",
-    })
+    // callback for analytics purposes
+  }
+
+  @track((props, state) => ({
+    action_name: state.following ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
+    action_type: Schema.ActionTypes.Fail,
+    owner_id: props.artist._id,
+    owner_slug: props.artist.id,
+    owner_type: Schema.OwnerEntityTypes.Artist,
+  }))
+  failedFollowChange() {
+    // callback for analytics purposes
   }
 }
 

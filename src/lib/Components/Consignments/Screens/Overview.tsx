@@ -104,7 +104,7 @@ export default class Info extends React.Component<Props, State> {
     this.updateStateAndMetaphysics({ location: { city, state, country } })
 
   updatePhotos = (photos: string[]) =>
-    this.updateStateAndMetaphysics({ photos: photos.map(f => ({ file: f, uploaded: false })) })
+    photos.length && this.updateStateAndMetaphysics({ photos: photos.map(f => ({ file: f, uploaded: false })) })
 
   updateStateAndMetaphysics = (state: any) => this.setState(state, this.updateLocalStateAndMetaphysics)
 

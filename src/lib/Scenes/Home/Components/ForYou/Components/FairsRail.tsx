@@ -2,16 +2,17 @@ import React from "react"
 import { createFragmentContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
-import { ScrollView, TouchableHighlight } from "react-native"
+import { Dimensions, ScrollView, TouchableHighlight } from "react-native"
 
 import ImageView from "lib/Components/OpaqueImageView"
 import Separator from "lib/Components/Separator"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import SectionTitle from "lib/Scenes/Home/Components/SectionTitle"
 
-const Container = styled.View`
+const Container = styled.View`margin-bottom: 15;`
+
+const Title = styled(SectionTitle)`
   margin-left: 20;
-  margin-bottom: 15;
 `
 
 const IconCarousel = styled.ScrollView`
@@ -19,26 +20,24 @@ const IconCarousel = styled.ScrollView`
   margin-top: 10;
 `
 
-const IconTapArea = styled.TouchableHighlight`
-  height: 80;
-  width: 80;
-  border-radius: 40;
-  margin-right: 7;
-`
-
 const TouchableWrapper = styled.View`margin-right: 7;`
-
-const FairIcon = styled(ImageView)`
-  height: 80;
-  width: 80;
-  border-radius: 40;
-  margin-right: 7;
-`
 
 class FairsRail extends React.Component<RelayProps, any> {
   renderFairs() {
     if (!this.props.fairs_module.results.length) {
       return
+    }
+
+    const isPad = Dimensions.get("window").width > 700
+
+    const iconDimension = isPad ? 120 : 90
+    const borderRadius = iconDimension / 2
+
+    const circleIconStyle = {
+      height: iconDimension,
+      width: iconDimension,
+      borderRadius,
+      marginRight: 7,
     }
 
     const icons = this.props.fairs_module.results.map(fair => {
@@ -51,16 +50,16 @@ class FairsRail extends React.Component<RelayProps, any> {
       }
 
       return (
-        <IconTapArea onPress={selectionHandler} key={fair.id}>
+        <TouchableHighlight style={circleIconStyle} onPress={selectionHandler} key={fair.id}>
           <TouchableWrapper>
-            <FairIcon imageURL={fair.mobile_image.url} placeholderBackgroundColor={"white"} />
+            <ImageView style={circleIconStyle} imageURL={fair.mobile_image.url} placeholderBackgroundColor="white" />
           </TouchableWrapper>
-        </IconTapArea>
+        </TouchableHighlight>
       )
     })
 
     return (
-      <IconCarousel horizontal={true} showsHorizontalScrollIndicator={false} scrollsToTop={false}>
+      <IconCarousel horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{ marginLeft: 20 }}>
         {icons}
       </IconCarousel>
     )
@@ -69,7 +68,9 @@ class FairsRail extends React.Component<RelayProps, any> {
   render() {
     return (
       <Container>
-        <SectionTitle>Recommended Art Fairs</SectionTitle>
+        <Title>
+          <SectionTitle>Recommended Art Fairs</SectionTitle>
+        </Title>
         {this.renderFairs()}
       </Container>
     )

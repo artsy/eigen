@@ -8,6 +8,8 @@ import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import { NotificationsManager, PaymentRequestPaidNotification } from "lib/NativeModules/NotificationsManager"
 
+import { Schema, Track, track as _track } from "../../../../utils/track"
+
 const Container = styled.View`
   border-width: 1;
   border-color: ${colors["gray-regular"]};
@@ -18,7 +20,6 @@ const Container = styled.View`
 const TextContainer = styled.View`
   flex: 1;
   flex-direction: column;
-  margin-left: 10;
   align-self: center;
 `
 
@@ -27,6 +28,7 @@ const Icon = styled(Image)`
   width: 40;
   margin-top: 12;
   margin-left: 12;
+  margin-right: 12;
   margin-bottom: 12;
 `
 
@@ -51,7 +53,7 @@ const PaidLabel = styled.Text`
 const PayButtonContainer = styled.View`
   margin-left: 15;
   height: 25;
-  width: 71;
+  width: 78;
 `
 
 const PaymentRequest = styled.Text`
@@ -71,10 +73,11 @@ export interface Props extends RelayProps {
 }
 
 interface InvoiceStateButtonProps {
+  onSelected: () => void
   invoiceState: Props["invoice"]["state"]
 }
 
-const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState }) => {
+const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState, onSelected }) => {
   switch (invoiceState) {
     case "PAID":
       return (
@@ -97,18 +100,21 @@ const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState }
     case "UNPAID":
       return (
         <PayButtonContainer>
-          <InvertedButton text="PAY" />
+          <InvertedButton text="PAY" onPress={onSelected} />
         </PayButtonContainer>
       )
   }
 }
 
 interface State {
-  optimistic: boolean
+  paid: boolean
 }
 
+const track: Track<Props, State> = _track
+
+@track()
 export class InvoicePreview extends React.Component<Props, State> {
-  public state = { optimistic: false }
+  public state = { paid: false }
   private subscription?: EmitterSubscription
 
   componentWillMount() {
@@ -130,31 +136,37 @@ export class InvoicePreview extends React.Component<Props, State> {
     const { invoice, conversationId, relay } = this.props
     if (notification.url === invoice.payment_url) {
       // Optimistically update the UI, refetch, then re-render without optimistic update.
-      this.setState({ optimistic: true })
-      const variables = { conversationId, invoiceId: invoice.lewitt_invoice_id }
-      relay.refetch(variables, null, () => this.setState({ optimistic: false }), { force: true })
+      this.setState({ paid: true })
     }
   }
 
+  @track((props, state) => ({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.ConversationAttachmentInvoice,
+    owner_type: Schema.OwnerEntityTypes.Invoice,
+    owner_id: props.invoice.lewitt_invoice_id,
+  }))
+  attachmentSelected() {
+    this.props.onSelected()
+  }
+
   render() {
-    const { invoice, onSelected } = this.props
-    const invoiceState = this.state.optimistic ? "PAID" : invoice.state
+    const { invoice } = this.props
+    const invoiceState = this.state.paid ? "PAID" : invoice.state
 
     return (
-      <TouchableHighlight onPress={invoiceState === "UNPAID" ? onSelected : null} underlayColor={colors["gray-light"]}>
-        <Container>
-          <Icon source={require("../../../../../../images/payment_request.png")} />
-          <TextContainer>
-            <PaymentRequest>Payment request</PaymentRequest>
-            <CostLabel>
-              {invoice.total}
-            </CostLabel>
-          </TextContainer>
-          <TextContainer>
-            <InvoiceStateButton invoiceState={invoiceState} />
-          </TextContainer>
-        </Container>
-      </TouchableHighlight>
+      <Container>
+        <Icon source={require("../../../../../../images/payment_request.png")} />
+        <TextContainer>
+          <PaymentRequest>Payment request</PaymentRequest>
+          <CostLabel>
+            {invoice.total}
+          </CostLabel>
+        </TextContainer>
+        <TextContainer>
+          <InvoiceStateButton invoiceState={invoiceState} onSelected={this.attachmentSelected.bind(this)} />
+        </TextContainer>
+      </Container>
     )
   }
 }

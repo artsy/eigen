@@ -281,6 +281,7 @@ exports[`renders correctly 1`] = `
                     "height": 55,
                     "marginBottom": 12,
                     "marginLeft": 12,
+                    "marginRight": 12,
                     "marginTop": 12,
                     "width": 80,
                   },
@@ -300,7 +301,6 @@ exports[`renders correctly 1`] = `
                   Array [
                     Object {
                       "alignSelf": "center",
-                      "marginLeft": 25,
                     },
                     undefined,
                   ],
@@ -339,6 +339,8 @@ exports[`renders correctly 1`] = `
                   Array [
                     Object {
                       "flexDirection": "row",
+                      "justifyContent": "flex-start",
+                      "marginRight": 12,
                       "marginTop": 3,
                     },
                     undefined,
@@ -350,55 +352,36 @@ exports[`renders correctly 1`] = `
                   allowFontScaling={true}
                   disabled={false}
                   ellipsizeMode="tail"
-                  numberOfLines={1}
-                  style={
-                    Array [
-                      Object {
-                        "flexBasis": 0,
-                        "flexGrow": 3,
-                        "flexShrink": 1,
-                        "fontFamily": "AGaramondPro-Italic",
-                        "fontSize": 14,
-                      },
-                      undefined,
-                    ]
-                  }
-                >
-                  Karl and Anna Face Off (Diptych)
-                </Text>
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  disabled={false}
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     Array [
                       Object {
                         "color": "black",
-                        "fontSize": 16,
-                        "textAlign": "left",
+                        "fontSize": 14,
                       },
-                      Array [
-                        Object {
-                          "fontSize": 14,
-                        },
-                        Array [
-                          Object {
-                            "flexBasis": 0,
-                            "flexGrow": 1,
-                            "flexShrink": 1,
-                          },
-                          undefined,
-                        ],
-                      ],
+                      Object {},
                       Object {
-                        "fontFamily": "AGaramondPro-Regular",
+                        "fontFamily": "AGaramondPro-Italic",
                       },
                     ]
                   }
                 >
-                  , 2016
+                  Karl and Anna Face Off (Diptych)
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "fontFamily": "AGaramondPro-Regular",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    , 2016
+                  </Text>
                 </Text>
               </View>
             </View>

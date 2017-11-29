@@ -3,6 +3,8 @@ import React from "react"
 import { createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import { ConnectionHandler } from "relay-runtime"
 
+import { Schema, Track, track as _track } from "../utils/track"
+
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
 
 import { FlatList, ImageURISource, NetInfo, View, ViewProperties } from "react-native"
@@ -77,6 +79,9 @@ interface State {
   shouldShowSeparator?: boolean
 }
 
+const track: Track<Props, State> = _track
+
+@track()
 export class Conversation extends React.Component<Props, State> {
   composer: Composer
 
@@ -125,6 +130,31 @@ export class Conversation extends React.Component<Props, State> {
     }
   }
 
+  @track((props, state) => ({
+    action_type: Schema.ActionTypes.Success,
+    action_name: Schema.ActionNames.ConversationSendReply,
+    owner_id: props.me.conversation.id,
+    owner_type: Schema.OwnerEntityTypes.Conversation,
+  }))
+  messageSuccessfullySent(text: string) {
+    this.setState({ sendingMessage: false })
+
+    if (this.props.onMessageSent) {
+      this.props.onMessageSent(text)
+    }
+  }
+
+  @track((props, state) => ({
+    action_type: Schema.ActionTypes.Fail,
+    action_name: Schema.ActionNames.ConversationSendReply,
+    owner_id: props.me.conversation.id,
+    owner_type: Schema.OwnerEntityTypes.Conversation,
+  }))
+  messageFailedToSend(error: Error, text: string) {
+    console.warn(error)
+    this.setState({ sendingMessage: false, failedMessageText: text })
+  }
+
   render() {
     const conversation = this.props.me.conversation
     const partnerName = conversation.to.name
@@ -141,15 +171,10 @@ export class Conversation extends React.Component<Props, State> {
             conversation,
             text,
             response => {
-              this.setState({ sendingMessage: false })
-
-              if (this.props.onMessageSent) {
-                this.props.onMessageSent(text)
-              }
+              this.messageSuccessfullySent(text)
             },
             error => {
-              console.warn(error)
-              this.setState({ sendingMessage: false, failedMessageText: text })
+              this.messageFailedToSend(error, text)
             }
           )
         }}

@@ -160,6 +160,7 @@ type Artist implements Node {
     sort: PartnerShowSorts
   ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
   public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  related: RelatedArtists
   sales(
     live: Boolean
     is_auction: Boolean
@@ -351,6 +352,7 @@ type ArtistItem implements Node {
     sort: PartnerShowSorts
   ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
   public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  related: RelatedArtists
   sales(
     live: Boolean
     is_auction: Boolean
@@ -479,6 +481,7 @@ type ArtistSearchEntity implements Node {
     sort: PartnerShowSorts
   ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
   public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  related: RelatedArtists
   sales(
     live: Boolean
     is_auction: Boolean
@@ -1863,6 +1866,32 @@ type dimensions {
   cm: String
 }
 
+input EditableLocation {
+  # First line of an address
+  address: String
+
+  # Second line of an address
+  address_2: String
+
+  # The city the location is based in
+  city: String
+
+  # The county the location is based in
+  country: String
+
+  # An optional display string for the location
+  summary: String
+
+  # Postal code for a string
+  postal_code: String
+
+  # The (optional) name of the state for location
+  state: String
+
+  # The (optional) state code of the state for location
+  state_code: String
+}
+
 type EditionSet {
   # A globally unique ID.
   __id: ID!
@@ -2076,6 +2105,34 @@ type FollowArtistPayload {
 type FollowArtists {
   artists: [Artist]
   counts: FollowArtistCounts
+}
+
+type FollowGene {
+  gene: Gene
+
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+}
+
+# A connection to a list of items.
+type FollowGeneConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FollowGeneEdge]
+}
+
+# An edge in a connection.
+type FollowGeneEdge {
+  # The item at the end of the edge
+  node: FollowGene
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 enum Format {
@@ -2506,6 +2563,9 @@ type HomePage {
 
     # The preferred order of modules, defaults to order returned by Gravity
     order: [HomePageArtworkModuleTypes]
+
+    # Exclude certain modules
+    exclude: [HomePageArtworkModuleTypes] = []
   ): [HomePageArtworkModule]
 
   # A list of enabled hero units to show on the requested platform
@@ -3048,6 +3108,9 @@ type Me implements Node {
   # A list of the current user’s inquiry requests
   followed_artists_connection(after: String, first: Int, before: String, last: Int): FollowArtistConnection
 
+  # A list of the current user’s inquiry requests
+  followed_genes(after: String, first: Int, before: String, last: Int): FollowGeneConnection
+
   # An invoice
   invoice(
     # The ID of the Conversation
@@ -3180,6 +3243,9 @@ type MessageInitiator {
 type Mutation {
   followArtist(input: FollowArtistInput!): FollowArtistPayload
   updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
+
+  # Update the current logged in user.
+  updateMyUserProfile(input: UpdateMyProfileInput!): UpdateMyProfilePayload
 
   # Updating buyer outcome of a conversation.
   updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
@@ -3895,6 +3961,9 @@ type Query {
     id: String!
   ): Gene
 
+  # List of curated genes with custom images
+  suggested_genes: [SuggestedGene]
+
   # A list of Gene Families
   gene_families(after: String, first: Int, before: String, last: Int): GeneFamilyConnection
   gene_family: GeneFamily
@@ -3916,6 +3985,21 @@ type Query {
     # Exclude these MongoDB ids from results
     exclude_ids: [String]
   ): [Artist]
+
+  # A Search for Genes
+  match_gene(
+    # Your search term
+    term: String!
+
+    # Maximum number of items to retrieve. Default: 5.
+    size: Int
+
+    # Page to retrieve. Default: 1.
+    page: Int
+
+    # Exclude these MongoDB ids from results
+    exclude_ids: [String]
+  ): [Gene]
   me: Me
 
   # Fetches an object given its Globally Unique ID
@@ -4078,6 +4162,33 @@ type Query {
   viewer: Viewer
 }
 
+type RelatedArtists {
+  # A list of the current user’s suggested artists, based on a single artist
+  suggested(
+    # The slug or ID of an artist
+    artist_id: String
+
+    # Exclude artists without for sale works
+    exclude_artists_without_forsale_artworks: Boolean
+
+    # Exclude artists without any artworks
+    exclude_artists_without_artworks: Boolean
+
+    # Exclude artists the user already follows
+    exclude_followed_artists: Boolean
+
+    # Pagination, need I say more?
+    page: Int
+
+    # Amount of artists to return
+    size: Int
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtistConnection
+}
+
 input RequestCredentialsForAssetUploadInput {
   # The gemini template you want to request
   name: String!
@@ -4232,7 +4343,7 @@ type SaleArtwork {
   cached: Int
   artwork: Artwork
   bidder_positions_count: Int @deprecated(reason: "Favor `counts.bidder_positions`")
-  bid_increments: [Int]
+  bid_increments: [Float]
   counts: SaleArtworkCounts
 
   # Currency abbreviation (e.g. "USD")
@@ -4765,6 +4876,13 @@ enum SubmissionStateAggregation {
   SUBMITTED
 }
 
+type SuggestedGene {
+  id: String
+  image_url: String
+  _id: String
+  name: String
+}
+
 type Tag {
   # A globally unique ID.
   __id: ID!
@@ -4866,6 +4984,29 @@ type UpdateConversationMutationPayload {
   clientMutationId: String
 }
 
+input UpdateMyProfileInput {
+  # The given name of the user.
+  name: String
+
+  # The given email of the user.
+  email: String
+
+  # The given phone number of the user.
+  phone: String
+
+  # The given location of the user as structured data
+  location: EditableLocation
+
+  # The collector level for the user
+  collector_level: Int
+  clientMutationId: String
+}
+
+type UpdateMyProfilePayload {
+  user: User
+  clientMutationId: String
+}
+
 input UpdateSubmissionMutationInput {
   # Convection id.
   id: String!
@@ -4930,6 +5071,23 @@ input UpdateSubmissionMutationInput {
 type UpdateSubmissionMutationPayload {
   submission: Submission
   clientMutationId: String
+}
+
+type User {
+  # User id.
+  id: String!
+
+  # The given name of the user.
+  name: String!
+
+  # The given email of the user.
+  email: String!
+
+  # The given phone number of the user.
+  phone: String
+
+  # The given location of the user as structured data
+  location: Location
 }
 
 # A wildcard used to support complex root queries in Relay
@@ -5060,6 +5218,9 @@ type Viewer {
     id: String!
   ): Gene
 
+  # List of curated genes with custom images
+  suggested_genes: [SuggestedGene]
+
   # A list of Gene Families
   gene_families(after: String, first: Int, before: String, last: Int): GeneFamilyConnection
   gene_family: GeneFamily
@@ -5081,6 +5242,21 @@ type Viewer {
     # Exclude these MongoDB ids from results
     exclude_ids: [String]
   ): [Artist]
+
+  # A Search for Genes
+  match_gene(
+    # Your search term
+    term: String!
+
+    # Maximum number of items to retrieve. Default: 5.
+    size: Int
+
+    # Page to retrieve. Default: 1.
+    page: Int
+
+    # Exclude these MongoDB ids from results
+    exclude_ids: [String]
+  ): [Gene]
   me: Me
 
   # Fetches an object given its Globally Unique ID

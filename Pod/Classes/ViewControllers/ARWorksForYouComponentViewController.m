@@ -34,9 +34,4 @@
     [rootView setAppProperties:@{ @"trigger1pxScrollHack": @NO }];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
-
 @end

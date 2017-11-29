@@ -8,9 +8,6 @@ Artist
 import Conversation from "../Containers/Conversation"
 Conversation
 
-import Home from "../Containers/Home"
-Home
-
 import Gene from "../Containers/Gene"
 Gene
 
@@ -20,7 +17,7 @@ WorksForYou
 import Inquiry from "../Containers/Inquiry"
 Inquiry
 
-import MyProfile from "../Containers/MyProfile"
+import MyProfile from "lib/Scenes/Settings/MyProfile"
 MyProfile
 
 import Inbox from "../Containers/Inbox"
@@ -79,23 +76,6 @@ export const ConversationRenderer: React.SFC<ConversationRendererProps> = ({ ren
         conversationID,
         count: 10,
       }}
-      render={render}
-    />
-  )
-}
-
-export const HomeRenderer: React.SFC<RendererProps> = ({ render }) => {
-  return (
-    <QueryRenderer
-      environment={environment}
-      query={graphql`
-        query QueryRenderersHomeQuery {
-          home: home_page {
-            ...Home_home
-          }
-        }
-      `}
-      variables={{}}
       render={render}
     />
   )

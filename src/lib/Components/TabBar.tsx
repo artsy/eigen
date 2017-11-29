@@ -2,6 +2,7 @@ import React from "react"
 import { Animated, StyleSheet, Text, View } from "react-native"
 import styled, { StyledFunction } from "styled-components/native"
 
+import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 
 interface TabBarProps {
@@ -14,20 +15,23 @@ interface TabBarProps {
 const Button = styled.TouchableWithoutFeedback`flex: 1;`
 
 const Tabs = styled.View`
-  margin-top: 20px;
   height: 50px;
   flex-direction: row;
   justify-content: space-around;
-  border-color: rgb(229, 229, 229);
+  border-color: ${colors["gray-medium"]};
   border-bottom-width: 1px;
 `
 
-const Tab = styled.View`
+const TabButton = styled.View`
   align-items: center;
   justify-content: center;
   padding-top: 5;
   flex: 1;
 `
+
+interface TabProps {
+  tabLabel: string
+}
 
 interface TabLabelProps {
   active: boolean
@@ -38,8 +42,13 @@ const TabLabel: any = styled.Text`
   font-size: 13px;
   letter-spacing: 1.5;
   text-align: center;
-  opacity: ${(props: TabLabelProps) => (props.active ? 1.0 : 0.3)};
+  color: ${(props: TabLabelProps) => (props.active ? "black" : colors["gray-medium"])};
 `
+
+export const Tab: React.SFC<TabProps> = ({ children }) =>
+  <View style={{ flex: 1 }}>
+    {children}
+  </View>
 
 export default class TabBar extends React.Component<TabBarProps, null> {
   renderTab(name, page, isTabActive, onPressHandler) {
@@ -51,11 +60,11 @@ export default class TabBar extends React.Component<TabBarProps, null> {
         accessibilityTraits="button"
         onPress={() => onPressHandler(page)}
       >
-        <Tab>
+        <TabButton>
           <TabLabel active={isTabActive}>
             {name.toUpperCase()}
           </TabLabel>
-        </Tab>
+        </TabButton>
       </Button>
     )
   }
