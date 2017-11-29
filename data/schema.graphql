@@ -186,6 +186,7 @@ type Artist implements Node {
   # Use this attribute to sort by when sorting a collection of Artists
   sortable_id: String
   statuses: ArtistStatuses
+  highlights: ArtistHighlights
   years: String
 }
 
@@ -255,6 +256,10 @@ type ArtistEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+type ArtistHighlights {
+  partner_artists(represented_by: Boolean, partner_category: [String]): [PartnerArtist]
 }
 
 type ArtistItem implements Node {
@@ -378,6 +383,7 @@ type ArtistItem implements Node {
   # Use this attribute to sort by when sorting a collection of Artists
   sortable_id: String
   statuses: ArtistStatuses
+  highlights: ArtistHighlights
   years: String
 }
 
@@ -507,6 +513,7 @@ type ArtistSearchEntity implements Node {
   # Use this attribute to sort by when sorting a collection of Artists
   sortable_id: String
   statuses: ArtistStatuses
+  highlights: ArtistHighlights
   years: String
 }
 
@@ -2963,6 +2970,15 @@ type Image {
   versions: [String]
 }
 
+enum Intents {
+  BUY_ART_AND_DESIGN
+  SELL_ART_AND_DESIGN
+  RESEARCH_ART_PRICES
+  LEARN_ABOUT_ART
+  FIND_ART_EXHIBITS
+  READ_ART_MARKET_NEWS
+}
+
 type Invoice implements Node {
   # A globally unique ID.
   __id: ID!
@@ -3955,7 +3971,7 @@ type Query {
   ): FilterArtworks
 
   # Sale Artworks Elastic Search results
-  filter_sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String): FilterSaleArtworks
+  filter_sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String): FilterSaleArtworks @deprecated(reason: "This type has been superceded by `sale_artworks`")
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -4102,6 +4118,9 @@ type Query {
     # The slug or ID of the SaleArtwork
     id: String!
   ): SaleArtwork
+
+  # Sale Artworks Elastic Search results
+  sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String, after: String, first: Int, before: String, last: Int): SaleArtworksConnection
 
   # A list of Sales
   sales(
@@ -4559,6 +4578,28 @@ type SaleArtworksAggregationResults {
   slice: SaleArtworkAggregation
 }
 
+# A connection to a list of items.
+type SaleArtworksConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SaleArtworksEdge]
+
+  # Returns aggregation counts for the given filter query.
+  aggregations: [SaleArtworksAggregationResults]
+  counts: FilterSaleArtworksCounts
+}
+
+# An edge in a connection.
+type SaleArtworksEdge {
+  # The item at the end of the edge
+  node: SaleArtwork
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 type SaleRegistration {
   bidder: Bidder
   is_registered: Boolean
@@ -4928,6 +4969,7 @@ input UpdateCollectorProfileInput {
   loyalty_applicant: Boolean
   professional_buyer: Boolean
   self_reported_purchases: String
+  intents: [Intents]
   clientMutationId: String
 }
 
@@ -5212,7 +5254,7 @@ type Viewer {
   ): FilterArtworks
 
   # Sale Artworks Elastic Search results
-  filter_sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String): FilterSaleArtworks
+  filter_sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String): FilterSaleArtworks @deprecated(reason: "This type has been superceded by `sale_artworks`")
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -5359,6 +5401,9 @@ type Viewer {
     # The slug or ID of the SaleArtwork
     id: String!
   ): SaleArtwork
+
+  # Sale Artworks Elastic Search results
+  sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String, after: String, first: Int, before: String, last: Int): SaleArtworksConnection
 
   # A list of Sales
   sales(

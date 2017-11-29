@@ -6,6 +6,7 @@ import styled from "styled-components/native"
 
 import fonts from "lib/data/fonts"
 import Switchboard from "lib/NativeModules/SwitchBoard"
+import { LotsByFollowedArtists } from "./Components/LotsByFollowedArtists"
 import SaleItem from "./Components/SaleItem"
 
 const Container = styled.View`
@@ -78,6 +79,17 @@ class Sales extends React.Component<Props, null> {
           },
         ],
         title: "Current Timed Auctions",
+      },
+      {
+        data: [
+          {
+            data: [],
+          },
+        ],
+        title: "Lots by Artists You Follow",
+        renderItem: props => {
+          return <LotsByFollowedArtists />
+        },
       },
     ]
 
