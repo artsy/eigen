@@ -18,7 +18,7 @@ interface State {
 const Placeholder = styled.Text`
   position: absolute;
   z-index: -1;
-  color: ${colors["gray-medium"]};
+  color: ${colors["gray-semibold"]};
   font-family: "${fonts["garamond-regular"]}";
   font-size: 20;
   margin-top: 5px;
