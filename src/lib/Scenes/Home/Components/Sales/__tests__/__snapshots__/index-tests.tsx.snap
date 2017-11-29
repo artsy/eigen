@@ -161,7 +161,7 @@ exports[`looks correct when rendered 1`] = `
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 25,
+                "fontSize": 30,
                 "marginLeft": 2,
                 "textAlign": "left",
               },
@@ -680,7 +680,7 @@ exports[`looks correct when rendered 1`] = `
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 25,
+                "fontSize": 30,
                 "marginLeft": 2,
                 "textAlign": "left",
               },
