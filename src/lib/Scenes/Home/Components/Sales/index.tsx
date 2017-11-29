@@ -85,9 +85,7 @@ class Sales extends React.Component<Props, null> {
           },
         ],
         title: "Lots by Artists You Follow",
-        renderItem: props => {
-          return <LotsByFollowedArtists />
-        },
+        renderItem: () => <LotsByFollowedArtists />,
       },
     ]
 
