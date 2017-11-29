@@ -6,7 +6,7 @@ import React from "react"
 import Home from "../"
 import ForYou from "../Components/ForYou"
 import Sales from "../Components/Sales"
-import SalesRenderer from "../Components/Sales/Relay/SalesRenderer"
+import SalesRenderer from "../Components/Sales/SalesRenderer"
 
 storiesOf("Home/Relay")
   .add("Root", () => <Home />)

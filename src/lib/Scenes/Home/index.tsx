@@ -12,7 +12,7 @@ import Sales from "./Components/Sales"
 
 import { ForYouRenderer, WorksForYouRenderer } from "lib/relay/QueryRenderers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import SalesRenderer from "./Components/Sales/Relay/SalesRenderer"
+import SalesRenderer from "./Components/Sales/SalesRenderer"
 
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import TabBar, { Tab } from "lib/Components/TabBar"

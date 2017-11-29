@@ -1,3 +1,20 @@
+input AddAssetToConsignmentSubmissionInput {
+  # The type of the asset
+  asset_type: String!
+
+  # The token provided by Gemini for your asset
+  gemini_token: String!
+
+  # The id of the submission you want to attach an asset to
+  submission_id: String!
+  clientMutationId: String
+}
+
+type AddAssetToConsignmentSubmissionPayload {
+  asset: Asset
+  clientMutationId: String
+}
+
 # One item in an aggregation
 type AggregationCount {
   # A globally unique ID.
@@ -1319,6 +1336,21 @@ enum ArtworkSorts {
   TITLE_DESC
 }
 
+# An asset which is assigned to a consignment submission
+type Asset {
+  # Convection asset ID.
+  id: String!
+
+  # The convection submission ID
+  submission_id: String
+
+  # The gemini token for the asset
+  gemini_token: String
+
+  # The type of the asset
+  asset_type: String
+}
+
 type Attachment {
   # Attachment id.
   id: String!
@@ -1477,13 +1509,6 @@ type BuyersPremium {
   ): String
   cents: Int
   percent: Float
-}
-
-type Category {
-  id: String!
-  category_type: String
-  internal: Boolean
-  name: String
 }
 
 enum CategoryType {
@@ -1695,6 +1720,70 @@ input CreateGeminiEntryForAssetInput {
 
 type CreateGeminiEntryForAssetPayload {
   asset: GeminiEntry
+  clientMutationId: String
+}
+
+input CreateSubmissionMutationInput {
+  artist_id: String!
+
+  # Does the artwork come with an certificate of authenticity?
+  authenticity_certificate: Boolean
+
+  # The set in which to put the work
+  category: SubmissionCategoryAggregation
+
+  # The depth of the work
+  depth: String
+
+  # A string, either CM or IN
+  dimensions_metric: SubmissionDimensionAggregation
+
+  # Is the work a part of an edition
+  edition: Boolean
+
+  # The number of the individual work if in a set
+  edition_number: String
+
+  # The whole size of the set of works
+  edition_size: Int
+
+  # The height of the work
+  height: String
+
+  # The city where the work currently resides
+  location_city: String
+
+  # The country where the work currently resides
+  location_country: String
+
+  # The state where the work currently resides
+  location_state: String
+
+  # The materials in which the work is created
+  medium: String
+
+  # The history of an work
+  provenance: String
+
+  # Is this work signed?
+  signature: Boolean
+
+  # The name of the work
+  title: String
+
+  # The internal state of the work, e.g. draft/submitted
+  state: SubmissionStateAggregation
+
+  # The width of the work
+  width: String
+
+  # The year the work was created
+  year: String
+  clientMutationId: String
+}
+
+type CreateSubmissionMutationPayload {
+  submission: Submission
   clientMutationId: String
 }
 
@@ -3185,6 +3274,15 @@ type Mutation {
   markReadMessage(input: MarkReadMessageMutationInput!): MarkReadMessageMutationPayload
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
 
+  # Create a new consignment submission using Convection
+  createConsignmentSubmission(input: CreateSubmissionMutationInput!): CreateSubmissionMutationPayload
+
+  # Update a consigment using Convection
+  updateConsignmentSubmission(input: UpdateSubmissionMutationInput!): UpdateSubmissionMutationPayload
+
+  # Attach an gemini asset to a consignment submission
+  addAssetToConsignmentSubmission(input: AddAssetToConsignmentSubmissionInput!): AddAssetToConsignmentSubmissionPayload
+
   # Attach an gemini asset to a consignment submission
   requestCredentialsForAssetUpload(input: RequestCredentialsForAssetUploadInput!): RequestCredentialsForAssetUploadPayload
 
@@ -3291,7 +3389,6 @@ type Partner implements Node {
   _id: String!
   cached: Int
   artworks(size: Int, for_sale: Boolean, sort: ArtworkSorts, exclude: [String]): [Artwork]
-  categories: [Category]
   collecting_institution: String
   contact_message: String @deprecated(reason: "Prefer artwork contact_message to handle availability-based prompts.")
   counts: PartnerCounts
@@ -4024,7 +4121,7 @@ type Query {
   ): SaleArtwork
 
   # Sale Artworks Elastic Search results
-  sale_artworks: SaleArtworks
+  sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String, after: String, first: Int, before: String, last: Int): SaleArtworksConnection
 
   # A list of Sales
   sales(
@@ -4476,10 +4573,6 @@ type SaleArtworkReserve {
   display: String
 }
 
-type SaleArtworks {
-  connection(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String, after: String, first: Int, before: String, last: Int): SaleArtworksConnection
-}
-
 # The results for one of the requested aggregations
 type SaleArtworksAggregationResults {
   counts: [AggregationCount]
@@ -4736,6 +4829,95 @@ type StatusGravity {
   ping: Boolean
 }
 
+# A work to be consigned to the user
+type Submission {
+  # Convection id.
+  id: String!
+  artist_id: String!
+
+  # Does the artwork come with an certificate of authenticity?
+  authenticity_certificate: Boolean
+
+  # The set in which to put the work
+  category: SubmissionCategoryAggregation
+
+  # The depth of the work
+  depth: String
+
+  # A string, either CM or IN
+  dimensions_metric: SubmissionDimensionAggregation
+
+  # Is the work a part of an edition
+  edition: Boolean
+
+  # The number of the individual work if in a set
+  edition_number: String
+
+  # The whole size of the set of works
+  edition_size: Int
+
+  # The height of the work
+  height: String
+
+  # The city where the work currently resides
+  location_city: String
+
+  # The country where the work currently resides
+  location_country: String
+
+  # The state where the work currently resides
+  location_state: String
+
+  # The materials in which the work is created
+  medium: String
+
+  # The history of an work
+  provenance: String
+
+  # Is this work signed?
+  signature: Boolean
+
+  # The name of the work
+  title: String
+
+  # The internal state of the work, e.g. draft/submitted
+  state: SubmissionStateAggregation
+
+  # The width of the work
+  width: String
+
+  # The year the work was created
+  year: String
+}
+
+enum SubmissionCategoryAggregation {
+  PAINTING
+  SCULPTURE
+  PHOTOGRAPHY
+  PRINT
+  DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER
+  MIXED_MEDIA
+  PERFORMANCE_ART
+  INSTALLATION
+  VIDEO_FILM_ANIMATION
+  ARCHITECTURE
+  FASHION_DESIGN_AND_WEARABLE_ART
+  JEWELRY
+  DESIGN_DECORATIVE_ART
+  TEXTILE_ARTS
+  OTHER
+}
+
+enum SubmissionDimensionAggregation {
+  CM
+  IN
+}
+
+enum SubmissionStateAggregation {
+  DRAFT
+  SUBMITTED
+}
+
 type SuggestedGene {
   id: String
   image_url: String
@@ -4871,6 +5053,72 @@ input UpdateMyProfileInput {
 
 type UpdateMyProfilePayload {
   user: User
+  clientMutationId: String
+}
+
+input UpdateSubmissionMutationInput {
+  # Convection id.
+  id: String!
+  artist_id: String!
+
+  # Does the artwork come with an certificate of authenticity?
+  authenticity_certificate: Boolean
+
+  # The set in which to put the work
+  category: SubmissionCategoryAggregation
+
+  # The depth of the work
+  depth: String
+
+  # A string, either CM or IN
+  dimensions_metric: SubmissionDimensionAggregation
+
+  # Is the work a part of an edition
+  edition: Boolean
+
+  # The number of the individual work if in a set
+  edition_number: String
+
+  # The whole size of the set of works
+  edition_size: Int
+
+  # The height of the work
+  height: String
+
+  # The city where the work currently resides
+  location_city: String
+
+  # The country where the work currently resides
+  location_country: String
+
+  # The state where the work currently resides
+  location_state: String
+
+  # The materials in which the work is created
+  medium: String
+
+  # The history of an work
+  provenance: String
+
+  # Is this work signed?
+  signature: Boolean
+
+  # The name of the work
+  title: String
+
+  # The internal state of the work, e.g. draft/submitted
+  state: SubmissionStateAggregation
+
+  # The width of the work
+  width: String
+
+  # The year the work was created
+  year: String
+  clientMutationId: String
+}
+
+type UpdateSubmissionMutationPayload {
+  submission: Submission
   clientMutationId: String
 }
 
@@ -5165,7 +5413,7 @@ type Viewer {
   ): SaleArtwork
 
   # Sale Artworks Elastic Search results
-  sale_artworks: SaleArtworks
+  sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String, after: String, first: Int, before: String, last: Int): SaleArtworksConnection
 
   # A list of Sales
   sales(

@@ -1,10 +1,9 @@
-import fonts from "lib/data/fonts"
-import Switchboard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-import { Dimensions, FlatList, SectionList, TouchableWithoutFeedback, View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
+import { Dimensions, FlatList, SectionList, TouchableWithoutFeedback, View } from "react-native"
 import { LotsByFollowedArtists } from "./Components/LotsByFollowedArtists"
+<<<<<<< HEAD
 import SaleItem from "./Components/SaleItem"
 
 const Container = styled.View`
@@ -24,6 +23,11 @@ const SectionTitle = styled.Text`
   text-align: left;
   margin-left: 2px;
 `
+=======
+import { SaleList } from "./Components/SaleList"
+import { SectionHeader } from "./Components/SectionHeader"
+import { createFragmentContainer, graphql } from "react-relay"
+>>>>>>> [Home] Modularize components
 
 interface Props {
   sales: Array<{
@@ -31,36 +35,21 @@ interface Props {
   }>
 }
 
-class Sales extends React.Component<Props, null> {
-  handleTap({ item }) {
-    Switchboard.presentNavigationViewController(this, item.href)
-  }
+class Sales extends React.Component<Props> {
+  get data() {
+    const { sales } = this.props
+    const liveAuctions = sales.filter(a => !!a.live_start_at)
+    const timedAuctions = sales.filter(a => !a.live_start_at)
 
-  renderList(itemData) {
-    const numColumns = Dimensions.get("window").width > 700 ? 4 : 2
-    return (
-      <FlatList
-        contentContainerStyle={{ justifyContent: "space-between", padding: 5, display: "flex" }}
-        data={itemData.data}
-        numColumns={numColumns}
-        keyExtractor={(item, index) => item.__id}
-        renderItem={d => {
-          return (
-            <TouchableWithoutFeedback onPress={this.handleTap.bind(this, d)}>
-              <View style={{ marginRight: 10, marginBottom: 10 }}>
-                <SaleItem key={d.index} sale={d.item} />
-              </View>
-            </TouchableWithoutFeedback>
-          )
-        }}
-      />
-    )
+    return {
+      liveAuctions,
+      timedAuctions,
+    }
   }
 
   render() {
-    const sales = this.props.sales
-    const liveAuctions = sales.filter(a => !!a.live_start_at)
-    const timedAuctions = sales.filter(a => !a.live_start_at)
+    const { liveAuctions, timedAuctions } = this.data
+
     const sections = [
       {
         data: [
@@ -84,7 +73,6 @@ class Sales extends React.Component<Props, null> {
             data: [],
           },
         ],
-        title: "Lots by Artists You Follow",
         renderItem: () => <LotsByFollowedArtists />,
       },
     ]
@@ -93,21 +81,14 @@ class Sales extends React.Component<Props, null> {
       <SectionList
         contentContainerStyle={{
           justifyContent: "space-between",
-          padding: 15,
+          padding: 10,
           display: "flex",
         }}
         stickySectionHeadersEnabled={false}
         sections={sections}
         keyExtractor={(item, index) => item.id}
-        renderItem={itemData => {
-          return this.renderList(itemData.item)
-        }}
-        renderSectionHeader={({ section }) =>
-          <SectionHeader>
-            <SectionTitle>
-              {section.title}
-            </SectionTitle>
-          </SectionHeader>}
+        renderItem={itemData => <SaleList {...itemData} />}
+        renderSectionHeader={SectionHeader}
       />
     )
   }

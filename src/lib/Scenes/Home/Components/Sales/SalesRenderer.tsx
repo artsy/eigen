@@ -1,7 +1,7 @@
 import React from "react"
+import createEnvironment from "lib/relay/createEnvironment"
 import { graphql, QueryRenderer, QueryRendererProps } from "react-relay"
 
-import createEnvironment from "../../../../../relay/createEnvironment"
 const environment = createEnvironment()
 
 const SalesRenderer: React.SFC<any> = ({ render }) => {

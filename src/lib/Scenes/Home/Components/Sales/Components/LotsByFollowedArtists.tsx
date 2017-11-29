@@ -1,15 +1,17 @@
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import React, { Component } from "react"
 import createEnvironment from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { get } from "lodash"
-import React, { Component } from "react"
 import { Button, Text, View } from "react-native"
 import { RelayPaginationProp } from "react-relay"
+import { SectionHeader } from "./SectionHeader"
 import { createPaginationContainer, graphql, QueryRenderer, QueryRendererProps } from "react-relay"
+import { get } from "lodash"
 
 const PAGE_SIZE = 2
 
 interface RelayProps {
+  onLoad: ({ data: array }) => void
   relay: RelayPaginationProp
   sale_artworks: {
     connection: {
@@ -32,8 +34,8 @@ interface RelayProps {
 
 const Query = graphql.experimental`
   query LotsByFollowedArtistsQuery($count: Int!, $cursor: String) {
-    sale_artworks {
-      ...LotsByFollowedArtists_sale_artworks @arguments(count: $count, cursor: $cursor)
+    viewer {
+      ...LotsByFollowedArtists_viewer @arguments(count: $count, cursor: $cursor)
     }
   }
 `
@@ -41,9 +43,10 @@ const Query = graphql.experimental`
 const Pagination = createPaginationContainer(
   GridContainer,
   graphql.experimental`
-    fragment LotsByFollowedArtists_sale_artworks on SaleArtworks
+    fragment LotsByFollowedArtists_viewer on Viewer
       @argumentDefinitions(count: { type: "Int" }, cursor: { type: "String" }) {
-      connection(first: $count, after: $cursor) @connection(key: "LotsByFollowedArtists_connection") {
+      sale_artworks(first: $count, after: $cursor, include_artworks_by_followed_artists: false)
+        @connection(key: "LotsByFollowedArtists_sale_artworks") {
         pageInfo {
           endCursor
           hasNextPage
@@ -83,10 +86,21 @@ export class LotsByFollowedArtists extends Component<any> {
 }
 
 function GridContainer(props: RelayProps) {
-  const artworks = get(props, "sale_artworks.connection.edges", []).map(({ node }) => node.artwork)
+  const artworks = get(props, "viewer.sale_artworks.edges", [])
+    // .filter(({ node }) => node.isOpen)
+    .map(({ node }) => node.artwork)
+
+  if (!artworks.length) {
+    return null
+  }
 
   return (
     <View>
+      <SectionHeader
+        section={{
+          title: "Lots by Artists You Follow",
+        }}
+      />
       <Button title="Load More" onPress={() => props.relay.loadMore(PAGE_SIZE, x => x)} />
       <GenericGrid artworks={artworks} />
     </View>
