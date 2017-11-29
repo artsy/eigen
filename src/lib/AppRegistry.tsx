@@ -25,10 +25,6 @@ import HomeScene from "./Scenes/Home"
 
 import Events from "./NativeModules/Events"
 
-interface Props extends ViewProperties {
-  trigger1pxScrollHack?: boolean
-}
-
 // Analytics wrapper for all of our top level React components
 function AddTrack(pageName: string) {
   return component => component
