@@ -76,9 +76,10 @@ export class Gene extends React.Component<Props, State> {
       selectedTabIndex: 0,
       showingStickyHeader: true,
 
+      // Use the metaphysics defaults for refine settings
       sort: "-partner_updated_at",
-      selectedMedium: this.props.medium,
-      selectedPriceRange: this.props.price_range,
+      selectedMedium: this.props.medium || "*",
+      selectedPriceRange: this.props.price_range || "*-*",
     }
   }
 
