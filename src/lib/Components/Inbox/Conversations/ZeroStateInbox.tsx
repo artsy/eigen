@@ -21,10 +21,12 @@ const VerticalLayout = styled.View`
   max-height: 800;
   align-items: ${isPad ? "center" : "stretch"};
 `
-const List = styled.View`
+const Listpad = styled.View`
   align-items: center;
-  padding-top: ${isPad ? 80 : 0};
+  padding-top: 80;
 `
+const Listphone = styled.View`margin-bottom: 100;`
+
 const HorizontalLayout = styled.View`
   flex: 1;
   flex-direction: row;
@@ -55,59 +57,29 @@ const Icon = styled(Image)`
   width: 40;
 `
 
-export default class ZeroStateInbox extends React.Component<null, null> {
-  render() {
-    /** TODO: Maxim see if there's any other way  */
-    if (isPad) {
-      return (
-        <CenteredView>
-          <VerticalLayout>
-            <Title>BUYING ART ON ARTSY IS SIMPLE</Title>
-            <List>
-              <HorizontalLayout>
-                <Icon source={require("../../../../../images/find.png")} />
-                <SmallHeadline>Follow artists and find works you love</SmallHeadline>
-              </HorizontalLayout>
-              <HorizontalLayout>
-                <Icon source={require("../../../../../images/contact.png")} />
-                <SmallHeadline>Contact galleries or bid in auctions to purchase the work</SmallHeadline>
-              </HorizontalLayout>
-              <HorizontalLayout>
-                <Icon source={require("../../../../../images/message.png")} />
-                <SmallHeadline>Find your ongoing conversations and bidding activity here</SmallHeadline>
-              </HorizontalLayout>
-              <HorizontalLayout>
-                <Icon source={require("../../../../../images/pay.png")} />
-                <SmallHeadline>Easily process payment through our secure platform</SmallHeadline>
-              </HorizontalLayout>
-            </List>
-          </VerticalLayout>
-        </CenteredView>
-      )
-    } else {
-      return (
-        <CenteredView>
-          <VerticalLayout>
-            <Title>BUYING ART ON ARTSY IS SIMPLE</Title>
-            <HorizontalLayout>
-              <Icon source={require("../../../../../images/find.png")} />
-              <SmallHeadline>Follow artists and find works you love</SmallHeadline>
-            </HorizontalLayout>
-            <HorizontalLayout>
-              <Icon source={require("../../../../../images/contact.png")} />
-              <SmallHeadline>Contact galleries or bid in auctions to purchase the work</SmallHeadline>
-            </HorizontalLayout>
-            <HorizontalLayout>
-              <Icon source={require("../../../../../images/message.png")} />
-              <SmallHeadline>Find your ongoing conversations and bidding activity here</SmallHeadline>
-            </HorizontalLayout>
-            <HorizontalLayout>
-              <Icon source={require("../../../../../images/pay.png")} />
-              <SmallHeadline>Easily process payment through our secure platform</SmallHeadline>
-            </HorizontalLayout>
-          </VerticalLayout>
-        </CenteredView>
-      )
-    }
-  }
-}
+const List = isPad ? Listpad : Listphone
+
+export default () =>
+  <CenteredView>
+    <VerticalLayout>
+      <Title>BUYING ART ON ARTSY IS SIMPLE</Title>
+      <List>
+        <HorizontalLayout>
+          <Icon source={require("../../../../../images/find.png")} />
+          <SmallHeadline>Follow artists and find works you love</SmallHeadline>
+        </HorizontalLayout>
+        <HorizontalLayout>
+          <Icon source={require("../../../../../images/contact.png")} />
+          <SmallHeadline>Contact galleries or bid in auctions to purchase the work</SmallHeadline>
+        </HorizontalLayout>
+        <HorizontalLayout>
+          <Icon source={require("../../../../../images/message.png")} />
+          <SmallHeadline>Find your ongoing conversations and bidding activity here</SmallHeadline>
+        </HorizontalLayout>
+        <HorizontalLayout>
+          <Icon source={require("../../../../../images/pay.png")} />
+          <SmallHeadline>Easily process payment through our secure platform</SmallHeadline>
+        </HorizontalLayout>
+      </List>
+    </VerticalLayout>
+  </CenteredView>
