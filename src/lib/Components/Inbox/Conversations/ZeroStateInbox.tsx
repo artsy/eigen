@@ -56,27 +56,58 @@ const Icon = styled(Image)`
   width: 40;
 `
 
-export default () =>
-  <CenteredView>
-    <VerticalLayout>
-      <Title>Buying Art on Artsy is Simple </Title>
-      <List>
-        <HorizontalLayout>
-          <Icon source={require("../../../../../images/find.png")} />
-          <SmallHeadline>Follow artists and find works you love</SmallHeadline>
-        </HorizontalLayout>
-        <HorizontalLayout>
-          <Icon source={require("../../../../../images/contact.png")} />
-          <SmallHeadline>Contact galleries or bid in auctions to purchase the work</SmallHeadline>
-        </HorizontalLayout>
-        <HorizontalLayout>
-          <Icon source={require("../../../../../images/message.png")} />
-          <SmallHeadline>Find your ongoing conversations and bidding activity here</SmallHeadline>
-        </HorizontalLayout>
-        <HorizontalLayout>
-          <Icon source={require("../../../../../images/pay.png")} />
-          <SmallHeadline>Easily process payment through our secure platform</SmallHeadline>
-        </HorizontalLayout>
-      </List>
-    </VerticalLayout>
-  </CenteredView>
+export default class ZeroStateInbox extends React.Component<null, null> {
+  render() {
+    if (isPad) {
+      return (
+        <CenteredView>
+          <VerticalLayout>
+            <Title>Buying Art on Artsy is Simple </Title>
+            <List>
+              <HorizontalLayout>
+                <Icon source={require("../../../../../images/find.png")} />
+                <SmallHeadline>Follow artists and find works you love</SmallHeadline>
+              </HorizontalLayout>
+              <HorizontalLayout>
+                <Icon source={require("../../../../../images/contact.png")} />
+                <SmallHeadline>Contact galleries or bid in auctions to purchase the work</SmallHeadline>
+              </HorizontalLayout>
+              <HorizontalLayout>
+                <Icon source={require("../../../../../images/message.png")} />
+                <SmallHeadline>Find your ongoing conversations and bidding activity here</SmallHeadline>
+              </HorizontalLayout>
+              <HorizontalLayout>
+                <Icon source={require("../../../../../images/pay.png")} />
+                <SmallHeadline>Easily process payment through our secure platform</SmallHeadline>
+              </HorizontalLayout>
+            </List>
+          </VerticalLayout>
+        </CenteredView>
+      )
+    } else {
+      return (
+        <CenteredView>
+          <VerticalLayout>
+            <Title>Buying Art on Artsy is Simple </Title>
+            <HorizontalLayout>
+              <Icon source={require("../../../../../images/find.png")} />
+              <SmallHeadline>Follow artists and find works you love</SmallHeadline>
+            </HorizontalLayout>
+            <HorizontalLayout>
+              <Icon source={require("../../../../../images/contact.png")} />
+              <SmallHeadline>Contact galleries or bid in auctions to purchase the work</SmallHeadline>
+            </HorizontalLayout>
+            <HorizontalLayout>
+              <Icon source={require("../../../../../images/message.png")} />
+              <SmallHeadline>Find your ongoing conversations and bidding activity here</SmallHeadline>
+            </HorizontalLayout>
+            <HorizontalLayout>
+              <Icon source={require("../../../../../images/pay.png")} />
+              <SmallHeadline>Easily process payment through our secure platform</SmallHeadline>
+            </HorizontalLayout>
+          </VerticalLayout>
+        </CenteredView>
+      )
+    }
+  }
+}
