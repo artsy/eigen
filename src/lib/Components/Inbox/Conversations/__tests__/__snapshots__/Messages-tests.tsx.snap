@@ -3,11 +3,9 @@
 exports[`looks correct when rendered 1`] = `
 <RCTScrollView
   ListFooterComponent={
-    <ActivityIndicator
+    <Styled(ActivityIndicator)
       animating={false}
-      color="#999999"
       hidesWhenStopped={true}
-      size="small"
     />
   }
   data={
@@ -321,8 +319,16 @@ exports[`looks correct when rendered 1`] = `
         color="#999999"
         hidesWhenStopped={true}
         size="small"
+        style={
+          Array [
+            Object {
+              "marginTop": 40,
+            },
+            undefined,
+          ]
+        }
       />
     </View>
   </View>
 </RCTScrollView>
-`;
+`
