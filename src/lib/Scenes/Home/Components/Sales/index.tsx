@@ -3,37 +3,24 @@ import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
 import { Dimensions, FlatList, SectionList, TouchableWithoutFeedback, View } from "react-native"
 import { LotsByFollowedArtists } from "./Components/LotsByFollowedArtists"
-<<<<<<< HEAD
-import SaleItem from "./Components/SaleItem"
-
-const Container = styled.View`
-  flex: 1;
-  padding: 10px 15px;
-`
-
-const SectionHeader = styled.View`
-  padding-top: 15px;
-  padding-bottom: 10px;
-  background-color: white;
-`
-
-const SectionTitle = styled.Text`
-  font-family: ${fonts["garamond-regular"]};
-  font-size: 30px;
-  text-align: left;
-  margin-left: 2px;
-`
-=======
 import { SaleList } from "./Components/SaleList"
 import { SectionHeader } from "./Components/SectionHeader"
+import { StyleSheet, TextStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
->>>>>>> [Home] Modularize components
 
 interface Props {
   sales: Array<{
     live_start_at: string | null
   }>
 }
+
+const SectionListStyles = StyleSheet.create({
+  contentContainer: {
+    justifyContent: "space-between",
+    padding: 10,
+    display: "flex",
+  },
+})
 
 class Sales extends React.Component<Props> {
   get data() {
@@ -48,47 +35,30 @@ class Sales extends React.Component<Props> {
   }
 
   render() {
-    const { liveAuctions, timedAuctions } = this.data
-
     const sections = [
       {
-        data: [
-          {
-            data: liveAuctions,
-          },
-        ],
+        data: [{ data: this.data.liveAuctions }],
         title: "Current Live Auctions",
+        renderItem: itemData => <SaleList {...itemData} />,
       },
       {
-        data: [
-          {
-            data: timedAuctions,
-          },
-        ],
+        data: [{ data: this.data.timedAuctions }],
         title: "Current Timed Auctions",
+        renderItem: itemData => <SaleList {...itemData} />,
       },
       {
-        data: [
-          {
-            data: [],
-          },
-        ],
+        data: [{ data: [] }],
+        title: "Lots by Artists You Follow",
         renderItem: () => <LotsByFollowedArtists />,
       },
     ]
 
     return (
       <SectionList
-        contentContainerStyle={{
-          justifyContent: "space-between",
-          padding: 10,
-          display: "flex",
-        }}
+        contentContainerStyle={SectionListStyles.contentContainer}
         stickySectionHeadersEnabled={false}
         sections={sections}
         keyExtractor={(item, index) => item.id}
-        renderItem={itemData => <SaleList {...itemData} />}
-        renderSectionHeader={SectionHeader}
       />
     )
   }

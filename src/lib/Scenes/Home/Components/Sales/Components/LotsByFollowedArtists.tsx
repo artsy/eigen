@@ -45,7 +45,7 @@ const Pagination = createPaginationContainer(
   graphql.experimental`
     fragment LotsByFollowedArtists_viewer on Viewer
       @argumentDefinitions(count: { type: "Int" }, cursor: { type: "String" }) {
-      sale_artworks(first: $count, after: $cursor, include_artworks_by_followed_artists: false)
+      sale_artworks(first: $count, after: $cursor, include_artworks_by_followed_artists: true)
         @connection(key: "LotsByFollowedArtists_sale_artworks") {
         pageInfo {
           endCursor
@@ -54,6 +54,7 @@ const Pagination = createPaginationContainer(
         edges {
           cursor
           node {
+            is_biddible
             artwork {
               ...GenericGrid_artworks
             }
@@ -87,7 +88,7 @@ export class LotsByFollowedArtists extends Component<any> {
 
 function GridContainer(props: RelayProps) {
   const artworks = get(props, "viewer.sale_artworks.edges", [])
-    // .filter(({ node }) => node.isOpen)
+    .filter(({ node }) => !node.is_biddible)
     .map(({ node }) => node.artwork)
 
   if (!artworks.length) {
@@ -96,13 +97,11 @@ function GridContainer(props: RelayProps) {
 
   return (
     <View>
-      <SectionHeader
-        section={{
-          title: "Lots by Artists You Follow",
-        }}
-      />
-      <Button title="Load More" onPress={() => props.relay.loadMore(PAGE_SIZE, x => x)} />
+      <SectionHeader title="Lots by Artists You Follow" />
       <GenericGrid artworks={artworks} />
+
+      {/* TODO: Implement scroll-based pagination */}
+      {/* <Button title="Load More" onPress={() => props.relay.loadMore(PAGE_SIZE, x => x)} /> */}
     </View>
   )
 }
