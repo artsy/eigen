@@ -72,6 +72,7 @@ const ImageForURI = (props: ImagePreviewProps) =>
       width: 158,
       margin: 4,
       borderColor: props.selected ? "white" : null,
+      opacity: props.selected ? 0.5 : 1.0,
       borderWidth: 2,
     }}
   >
