@@ -10,6 +10,7 @@
 -   QA for message attachments - maxim
 -   QA for home header font sizes and margins - maxim
 -   Minor: change text colour for provenance placeholder in consignments - maxim
+-   QA for inbox zero on ipad - maxim
 
 ### 1.4.0-beta.8
 
