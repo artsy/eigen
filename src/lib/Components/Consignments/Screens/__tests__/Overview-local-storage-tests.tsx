@@ -2,6 +2,7 @@ import React from "react"
 import { AsyncStorage } from "react-native"
 
 import Overview from "../Overview"
+jest.mock("react-tracking")
 
 AsyncStorage.setItem = jest.fn()
 AsyncStorage.getItem = jest.fn()

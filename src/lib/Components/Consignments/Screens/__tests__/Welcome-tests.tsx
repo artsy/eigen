@@ -3,6 +3,7 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 
 import Welcome from "../Welcome"
+jest.mock("react-tracking")
 
 it("Sets up the right view hierarchy", () => {
   const nav = {} as any

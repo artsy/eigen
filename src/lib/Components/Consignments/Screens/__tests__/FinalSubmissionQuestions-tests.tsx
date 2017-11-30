@@ -1,6 +1,7 @@
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
+jest.mock("react-tracking")
 
 import FinalSubmissionQuestions from "../FinalSubmissionQuestions"
 

@@ -3,6 +3,12 @@ import _track, { Track as _Track, TrackingInfo } from "react-tracking"
 
 import Events from "lib/NativeModules/Events"
 
+/**
+ * Useful notes:
+ *  * Add `jest.mock("react-tracking")` to test components
+ *    which are wrapped by tracking.
+ */
+
 // tslint:disable-next-line:no-namespace
 export namespace Schema {
   /**
