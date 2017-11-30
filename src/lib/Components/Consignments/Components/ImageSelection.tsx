@@ -58,7 +58,7 @@ interface TakePhotoImageProps {
 }
 
 const SelectedIcon = () =>
-  <ImageBG style={{ backgroundColor: "white", position: "absolute", top: 128, left: 128 }}>
+  <ImageBG style={{ backgroundColor: "white", position: "absolute", top: 120, left: 120 }}>
     <Image source={require("../../../../../images/consignments/black-tick.png")} />
   </ImageBG>
 
@@ -81,17 +81,19 @@ const TakePhotoImage = (props: TakePhotoImageProps) =>
   </TouchableOpacity>
 
 const ImageForURI = (props: ImagePreviewProps) =>
-  <View>
+  <View
+    style={{
+      borderWidth: 2,
+      borderColor: props.selected ? "white" : null,
+      margin: 4,
+      height: 158,
+      width: 158,
+    }}
+  >
     <TouchableHighlight
       onPress={() => props.onPressItem(props.data.image.uri)}
       style={{
-        backgroundColor: colors["gray-regular"],
-        height: 158,
-        width: 158,
-        margin: 4,
-        borderColor: props.selected ? "white" : null,
         opacity: props.selected ? 0.5 : 1.0,
-        borderWidth: 2,
       }}
     >
       <Image source={{ uri: props.data.image.uri }} style={{ height: 154, width: 154 }} />

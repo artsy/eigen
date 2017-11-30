@@ -54,7 +54,17 @@ exports[`renders correctly at iPhone size 1`] = `
         source={1}
       />
     </View>
-    <View>
+    <View
+      style={
+        Object {
+          "borderColor": null,
+          "borderWidth": 2,
+          "height": 158,
+          "margin": 4,
+          "width": 158,
+        }
+      }
+    >
       <View
         accessibilityComponentType={undefined}
         accessibilityLabel={undefined}
@@ -77,13 +87,7 @@ exports[`renders correctly at iPhone size 1`] = `
               "backgroundColor": "transparent",
             },
             Object {
-              "backgroundColor": "#e5e5e5",
-              "borderColor": null,
-              "borderWidth": 2,
-              "height": 158,
-              "margin": 4,
               "opacity": 1,
-              "width": 158,
             },
           ]
         }
@@ -106,7 +110,17 @@ exports[`renders correctly at iPhone size 1`] = `
       </View>
       <View />
     </View>
-    <View>
+    <View
+      style={
+        Object {
+          "borderColor": null,
+          "borderWidth": 2,
+          "height": 158,
+          "margin": 4,
+          "width": 158,
+        }
+      }
+    >
       <View
         accessibilityComponentType={undefined}
         accessibilityLabel={undefined}
@@ -129,13 +143,7 @@ exports[`renders correctly at iPhone size 1`] = `
               "backgroundColor": "transparent",
             },
             Object {
-              "backgroundColor": "#e5e5e5",
-              "borderColor": null,
-              "borderWidth": 2,
-              "height": 158,
-              "margin": 4,
               "opacity": 1,
-              "width": 158,
             },
           ]
         }
@@ -158,7 +166,17 @@ exports[`renders correctly at iPhone size 1`] = `
       </View>
       <View />
     </View>
-    <View>
+    <View
+      style={
+        Object {
+          "borderColor": null,
+          "borderWidth": 2,
+          "height": 158,
+          "margin": 4,
+          "width": 158,
+        }
+      }
+    >
       <View
         accessibilityComponentType={undefined}
         accessibilityLabel={undefined}
@@ -181,13 +199,7 @@ exports[`renders correctly at iPhone size 1`] = `
               "backgroundColor": "transparent",
             },
             Object {
-              "backgroundColor": "#e5e5e5",
-              "borderColor": null,
-              "borderWidth": 2,
-              "height": 158,
-              "margin": 4,
               "opacity": 1,
-              "width": 158,
             },
           ]
         }
