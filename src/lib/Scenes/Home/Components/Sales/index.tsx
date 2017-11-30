@@ -50,7 +50,7 @@ class Sales extends React.Component<Props> {
       {
         data: [{ data: [] }],
         title: "Lots by Artists You Follow",
-        renderItem: itemData => <LotsByFollowedArtists {...itemData} />,
+        renderItem: ({ title }) => <LotsByFollowedArtists title={title} />,
       },
     ]
 

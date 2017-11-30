@@ -174,7 +174,7 @@ exports[`looks correct when rendered 1`] = `
                 "paddingBottom": 10,
                 "paddingLeft": 10,
                 "paddingRight": 10,
-                "paddingTop": 15,
+                "paddingTop": 20,
               },
               undefined,
             ]
@@ -675,7 +675,7 @@ exports[`looks correct when rendered 1`] = `
                 "paddingBottom": 10,
                 "paddingLeft": 10,
                 "paddingRight": 10,
-                "paddingTop": 15,
+                "paddingTop": 20,
               },
               undefined,
             ]

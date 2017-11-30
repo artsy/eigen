@@ -1,6 +1,6 @@
 import moment from "moment"
 
-import { liveDate, timedDate } from "../Utils/formatDate"
+import { liveDate, timedDate } from "../formatDate"
 
 describe("live auction", () => {
   it("shows the right message when auction started", () => {

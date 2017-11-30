@@ -7,31 +7,21 @@ import { Button, ScrollView, Text, View } from "react-native"
 import { RelayPaginationProp } from "react-relay"
 import { SectionHeader } from "./SectionHeader"
 import { createPaginationContainer, graphql, QueryRenderer, QueryRendererProps } from "react-relay"
-import { get } from "lodash"
+import { get, once } from "lodash"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
-import { once } from "lodash"
 
-const PAGE_SIZE = 8 // FIXME: Increase default return in Metaphysics
+const DEFAULT_TITLE = "Lots by Artists You Follow"
+const PAGE_SIZE = 8 // FIXME: Increase
 
 interface RelayProps {
+  title?: string
   relay: RelayPaginationProp
   viewer: {
     sale_artworks: {
-      connection: {
-        pageInfo: {
-          hasNextPage: boolean
-        }
-        edges: Array<{
-          node: {
-            is_biddable: boolean
-            artwork: {
-              image: {
-                aspect_ratio: number
-              }
-            }
-          }
-        }>
-      }
+      pageInfo: object
+      edges: Array<{
+        node: object
+      }>
     }
   }
 }
@@ -86,14 +76,14 @@ export class LotsByFollowedArtists extends Component<any> {
         variables={{
           count: PAGE_SIZE,
         }}
-        render={renderWithLoadProgress(Pagination)}
+        render={renderWithLoadProgress(Pagination, this.props)}
       />
     )
   }
 }
 
 function GridContainer(props: RelayProps) {
-  const { relay, viewer } = props
+  const { relay, viewer, title = DEFAULT_TITLE } = props
 
   const artworks = get(viewer, "sale_artworks.edges", [])
     .filter(({ node }) => !node.is_biddable)
@@ -117,10 +107,14 @@ function GridContainer(props: RelayProps) {
 
   return (
     <ScrollView onScroll={handleScroll} scrollEventThrottle={30}>
-      <SectionHeader title="Lots by Artists You Follow" />
+      <SectionHeader title={title} />
       <Container>
         <GenericGrid artworks={artworks} />
       </Container>
     </ScrollView>
   )
+}
+
+export const test = {
+  GridContainer,
 }
