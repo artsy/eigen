@@ -1,17 +1,41 @@
 import React from "react"
 import { View } from "react-native"
-import { createPaginationContainer, graphql } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import ZeroState from "lib/Components/States/ZeroState"
+import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 const Container = styled.ScrollView`
   padding: 20px;
   flex: 1;
 `
 
-export class SavedWorks extends React.Component<any, any> {
+interface Props extends RelayProps {
+  relay?: RelayPaginationProp
+  onDataFetching?: (loading: boolean) => void
+}
+
+export class SavedWorks extends React.Component<Props, any> {
+  loadMore() {
+    if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
+      return
+    }
+
+    const updateState = (loading: boolean) => {
+      this.setState({ fetchingMoreData: loading })
+      if (this.props.onDataFetching) {
+        this.props.onDataFetching(loading)
+      }
+    }
+
+    updateState(true)
+    this.props.relay.loadMore(10, e => {
+      updateState(false)
+    })
+  }
+
   render() {
     const artworks = this.props.me.saved_artworks.artworks_connection.edges.map(edge => edge.node)
 
@@ -23,7 +47,14 @@ export class SavedWorks extends React.Component<any, any> {
     )
 
     const Content = (
-      <Container>
+      <Container
+        onScroll={({ nativeEvent }) => {
+          if (isCloseToBottom(nativeEvent)) {
+            this.loadMore()
+          }
+        }}
+        scrollEventThrottle={400}
+      >
         <GenericGrid artworks={artworks} />
       </Container>
     )
@@ -57,8 +88,8 @@ export default createPaginationContainer(
   },
   {
     direction: "forward",
-    getConnectionFromProps(props) {
-      return props.me && props.me.saved_artworks_connection
+    getConnectionFromProps(props: Props) {
+      return props.me && props.me.saved_artworks.artworks_connection
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -82,3 +113,15 @@ export default createPaginationContainer(
     `,
   }
 )
+
+interface RelayProps {
+  me: {
+    saved_artworks: {
+      artworks_connection: {
+        edges: Array<{
+          node: any | null
+        }> | null
+      } | null
+    } | null
+  } | null
+}

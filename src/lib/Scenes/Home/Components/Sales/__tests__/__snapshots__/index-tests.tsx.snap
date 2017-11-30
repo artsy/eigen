@@ -7,7 +7,7 @@ exports[`looks correct when rendered 1`] = `
     Object {
       "display": "flex",
       "justifyContent": "space-between",
-      "padding": 15,
+      "padding": 10,
     }
   }
   data={
@@ -49,6 +49,7 @@ exports[`looks correct when rendered 1`] = `
             ],
           },
         ],
+        "renderItem": [Function],
         "title": "Current Live Auctions",
       },
       Object {
@@ -57,7 +58,17 @@ exports[`looks correct when rendered 1`] = `
             "data": Array [],
           },
         ],
+        "renderItem": [Function],
         "title": "Current Timed Auctions",
+      },
+      Object {
+        "data": Array [
+          Object {
+            "data": Array [],
+          },
+        ],
+        "renderItem": [Function],
+        "title": "Lots by Artists You Follow",
       },
     ]
   }
@@ -77,7 +88,6 @@ exports[`looks correct when rendered 1`] = `
   onScrollEndDrag={[Function]}
   onViewableItemsChanged={undefined}
   renderItem={[Function]}
-  renderSectionHeader={[Function]}
   scrollEventThrottle={50}
   sections={
     Array [
@@ -118,6 +128,7 @@ exports[`looks correct when rendered 1`] = `
             ],
           },
         ],
+        "renderItem": [Function],
         "title": "Current Live Auctions",
       },
       Object {
@@ -126,7 +137,17 @@ exports[`looks correct when rendered 1`] = `
             "data": Array [],
           },
         ],
+        "renderItem": [Function],
         "title": "Current Timed Auctions",
+      },
+      Object {
+        "data": Array [
+          Object {
+            "data": Array [],
+          },
+        ],
+        "renderItem": [Function],
+        "title": "Lots by Artists You Follow",
       },
     ]
   }
@@ -139,159 +160,151 @@ exports[`looks correct when rendered 1`] = `
     <View
       onLayout={[Function]}
       style={null}
+    />
+    <View
+      onLayout={[Function]}
+      style={null}
     >
-      <View
-        style={
-          Array [
-            Object {
-              "backgroundColor": "white",
-              "paddingBottom": 10,
-              "paddingTop": 15,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
+      <View>
+        <View
           style={
             Array [
               Object {
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 30,
-                "marginLeft": 2,
-                "textAlign": "left",
+                "backgroundColor": "white",
+                "paddingBottom": 10,
+                "paddingLeft": 10,
+                "paddingRight": 10,
+                "paddingTop": 20,
               },
               undefined,
             ]
           }
         >
-          Current Live Auctions
-        </Text>
-      </View>
-    </View>
-    <View
-      onLayout={[Function]}
-      style={null}
-    >
-      <View
-        contentContainerStyle={
-          Object {
-            "display": "flex",
-            "justifyContent": "space-between",
-            "padding": 5,
-          }
-        }
-        data={
-          Array [
-            Object {
-              "cover_image": Object {
-                "cropped": Object {
-                  "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FWV-7BYlETayN8MGkNjOGXw%2Fsource.jpg",
-                },
-              },
-              "end_at": null,
-              "id": "wright-noma",
-              "is_live_open": true,
-              "is_open": true,
-              "live_start_at": "2017-11-02T13:00:00+00:00",
-              "name": "Wright: noma",
-              "registration_ends_at": "2017-11-01T13:00:00+00:00",
-              "start_at": "2017-10-16T22:00:00+00:00",
-            },
-            Object {
-              "cover_image": Object {
-                "cropped": Object {
-                  "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FeeqLfwMMAYA8XOmeYEb7Rg%2Fsource.jpg",
-                },
-              },
-              "end_at": null,
-              "id": "freemans-modern-and-contemporary-works-of-art",
-              "is_live_open": false,
-              "is_open": true,
-              "live_start_at": "2017-11-02T17:00:00+00:00",
-              "name": "Freeman's: Modern & Contemporary Works of Art",
-              "registration_ends_at": "2017-11-01T17:00:00+00:00",
-              "start_at": "2017-10-17T15:00:00+00:00",
-            },
-          ]
-        }
-        disableVirtualization={false}
-        getItem={[Function]}
-        getItemCount={[Function]}
-        horizontal={false}
-        initialNumToRender={10}
-        keyExtractor={[Function]}
-        maxToRenderPerBatch={10}
-        numColumns={4}
-        onContentSizeChange={[Function]}
-        onEndReachedThreshold={2}
-        onLayout={[Function]}
-        onMomentumScrollEnd={[Function]}
-        onScroll={[Function]}
-        onScrollBeginDrag={[Function]}
-        onScrollEndDrag={[Function]}
-        onViewableItemsChanged={undefined}
-        renderItem={[Function]}
-        scrollEventThrottle={50}
-        stickyHeaderIndices={Array []}
-        updateCellsBatchingPeriod={50}
-        windowSize={21}
-      >
-        <View
-          onLayout={[Function]}
-          style={null}
-        >
-          <View
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
             style={
               Array [
                 Object {
-                  "flexDirection": "row",
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 25,
+                  "textAlign": "left",
                 },
                 undefined,
               ]
             }
           >
+            Current Live Auctions
+          </Text>
+        </View>
+        <View
+          contentContainerStyle={
+            Object {
+              "display": "flex",
+              "justifyContent": "space-between",
+              "padding": 5,
+            }
+          }
+          data={
+            Array [
+              Object {
+                "cover_image": Object {
+                  "cropped": Object {
+                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FWV-7BYlETayN8MGkNjOGXw%2Fsource.jpg",
+                  },
+                },
+                "end_at": null,
+                "id": "wright-noma",
+                "is_live_open": true,
+                "is_open": true,
+                "live_start_at": "2017-11-02T13:00:00+00:00",
+                "name": "Wright: noma",
+                "registration_ends_at": "2017-11-01T13:00:00+00:00",
+                "start_at": "2017-10-16T22:00:00+00:00",
+              },
+              Object {
+                "cover_image": Object {
+                  "cropped": Object {
+                    "url": "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FeeqLfwMMAYA8XOmeYEb7Rg%2Fsource.jpg",
+                  },
+                },
+                "end_at": null,
+                "id": "freemans-modern-and-contemporary-works-of-art",
+                "is_live_open": false,
+                "is_open": true,
+                "live_start_at": "2017-11-02T17:00:00+00:00",
+                "name": "Freeman's: Modern & Contemporary Works of Art",
+                "registration_ends_at": "2017-11-01T17:00:00+00:00",
+                "start_at": "2017-10-17T15:00:00+00:00",
+              },
+            ]
+          }
+          disableVirtualization={false}
+          getItem={[Function]}
+          getItemCount={[Function]}
+          horizontal={false}
+          initialNumToRender={10}
+          keyExtractor={[Function]}
+          maxToRenderPerBatch={10}
+          numColumns={4}
+          onContentSizeChange={[Function]}
+          onEndReachedThreshold={2}
+          onLayout={[Function]}
+          onMomentumScrollEnd={[Function]}
+          onScroll={[Function]}
+          onScrollBeginDrag={[Function]}
+          onScrollEndDrag={[Function]}
+          onViewableItemsChanged={undefined}
+          renderItem={[Function]}
+          scrollEventThrottle={50}
+          stickyHeaderIndices={Array []}
+          updateCellsBatchingPeriod={50}
+          windowSize={21}
+        >
+          <View
+            onLayout={[Function]}
+            style={null}
+          >
             <View
-              accessibilityComponentType={undefined}
-              accessibilityLabel={undefined}
-              accessibilityTraits={undefined}
-              accessible={true}
-              hitSlop={undefined}
-              nativeID={undefined}
-              onLayout={undefined}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
               style={
-                Object {
-                  "marginBottom": 10,
-                  "marginRight": 10,
-                }
+                Array [
+                  Object {
+                    "flexDirection": "row",
+                  },
+                  undefined,
+                ]
               }
-              testID={undefined}
             >
               <View
+                accessibilityComponentType={undefined}
+                accessibilityLabel={undefined}
+                accessibilityTraits={undefined}
+                accessible={true}
+                hitSlop={undefined}
+                nativeID={undefined}
+                onLayout={undefined}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   Array [
                     Object {
                       "height": 201.5,
-                      "marginBottom": 5,
-                      "marginLeft": 5,
-                      "marginRight": 5,
-                      "marginTop": 5,
-                      "position": "relative",
+                      "marginBottom": 10,
+                      "marginLeft": 10,
+                      "marginRight": 10,
+                      "marginTop": 10,
                       "width": 162.5,
                     },
                     undefined,
                   ]
                 }
+                testID={undefined}
               >
                 <AROpaqueImageView
                   imageURL="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FWV-7BYlETayN8MGkNjOGXw%2Fsource.jpg"
@@ -450,44 +463,34 @@ exports[`looks correct when rendered 1`] = `
                   </View>
                 </View>
               </View>
-            </View>
-            <View
-              accessibilityComponentType={undefined}
-              accessibilityLabel={undefined}
-              accessibilityTraits={undefined}
-              accessible={true}
-              hitSlop={undefined}
-              nativeID={undefined}
-              onLayout={undefined}
-              onResponderGrant={[Function]}
-              onResponderMove={[Function]}
-              onResponderRelease={[Function]}
-              onResponderTerminate={[Function]}
-              onResponderTerminationRequest={[Function]}
-              onStartShouldSetResponder={[Function]}
-              style={
-                Object {
-                  "marginBottom": 10,
-                  "marginRight": 10,
-                }
-              }
-              testID={undefined}
-            >
               <View
+                accessibilityComponentType={undefined}
+                accessibilityLabel={undefined}
+                accessibilityTraits={undefined}
+                accessible={true}
+                hitSlop={undefined}
+                nativeID={undefined}
+                onLayout={undefined}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   Array [
                     Object {
                       "height": 201.5,
-                      "marginBottom": 5,
-                      "marginLeft": 5,
-                      "marginRight": 5,
-                      "marginTop": 5,
-                      "position": "relative",
+                      "marginBottom": 10,
+                      "marginLeft": 10,
+                      "marginRight": 10,
+                      "marginTop": 10,
                       "width": 162.5,
                     },
                     undefined,
                   ]
                 }
+                testID={undefined}
               >
                 <AROpaqueImageView
                   imageURL="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FeeqLfwMMAYA8XOmeYEb7Rg%2Fsource.jpg"
@@ -658,76 +661,90 @@ exports[`looks correct when rendered 1`] = `
     <View
       onLayout={[Function]}
       style={null}
+    />
+    <View
+      onLayout={[Function]}
+      style={null}
     >
-      <View
-        style={
-          Array [
-            Object {
-              "backgroundColor": "white",
-              "paddingBottom": 10,
-              "paddingTop": 15,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          disabled={false}
-          ellipsizeMode="tail"
+      <View>
+        <View
           style={
             Array [
               Object {
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 30,
-                "marginLeft": 2,
-                "textAlign": "left",
+                "backgroundColor": "white",
+                "paddingBottom": 10,
+                "paddingLeft": 10,
+                "paddingRight": 10,
+                "paddingTop": 20,
               },
               undefined,
             ]
           }
         >
-          Current Timed Auctions
-        </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 25,
+                  "textAlign": "left",
+                },
+                undefined,
+              ]
+            }
+          >
+            Current Timed Auctions
+          </Text>
+        </View>
+        <View
+          contentContainerStyle={
+            Object {
+              "display": "flex",
+              "justifyContent": "space-between",
+              "padding": 5,
+            }
+          }
+          data={Array []}
+          disableVirtualization={false}
+          getItem={[Function]}
+          getItemCount={[Function]}
+          horizontal={false}
+          initialNumToRender={10}
+          keyExtractor={[Function]}
+          maxToRenderPerBatch={10}
+          numColumns={4}
+          onContentSizeChange={[Function]}
+          onEndReachedThreshold={2}
+          onLayout={[Function]}
+          onMomentumScrollEnd={[Function]}
+          onScroll={[Function]}
+          onScrollBeginDrag={[Function]}
+          onScrollEndDrag={[Function]}
+          onViewableItemsChanged={undefined}
+          renderItem={[Function]}
+          scrollEventThrottle={50}
+          stickyHeaderIndices={Array []}
+          updateCellsBatchingPeriod={50}
+          windowSize={21}
+        />
       </View>
     </View>
     <View
       onLayout={[Function]}
       style={null}
-    >
-      <View
-        contentContainerStyle={
-          Object {
-            "display": "flex",
-            "justifyContent": "space-between",
-            "padding": 5,
-          }
-        }
-        data={Array []}
-        disableVirtualization={false}
-        getItem={[Function]}
-        getItemCount={[Function]}
-        horizontal={false}
-        initialNumToRender={10}
-        keyExtractor={[Function]}
-        maxToRenderPerBatch={10}
-        numColumns={4}
-        onContentSizeChange={[Function]}
-        onEndReachedThreshold={2}
-        onLayout={[Function]}
-        onMomentumScrollEnd={[Function]}
-        onScroll={[Function]}
-        onScrollBeginDrag={[Function]}
-        onScrollEndDrag={[Function]}
-        onViewableItemsChanged={undefined}
-        renderItem={[Function]}
-        scrollEventThrottle={50}
-        stickyHeaderIndices={Array []}
-        updateCellsBatchingPeriod={50}
-        windowSize={21}
-      />
-    </View>
+    />
+    <View
+      onLayout={[Function]}
+      style={null}
+    />
+    <View
+      onLayout={[Function]}
+      style={null}
+    />
     <View
       onLayout={[Function]}
       style={null}

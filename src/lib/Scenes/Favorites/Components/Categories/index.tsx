@@ -43,6 +43,10 @@ export default createPaginationContainer<RelayProps>(
       fragment Categories_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followed_genes(first: $count, after: $cursor) @connection(key: "Categories_followed_genes") {
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
           edges {
             node {
               gene {

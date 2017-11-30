@@ -1,14 +1,13 @@
-import moment from "moment"
-import React from "react"
-import styled from "styled-components/native"
-
-import { Dimensions, Text, View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-
 import OpaqueImageView from "lib/Components/OpaqueImageView"
+import React from "react"
 import Serif from "lib/Components/Text/Serif"
+import Switchboard from "lib/NativeModules/SwitchBoard"
 import fonts from "lib/data/fonts"
-import { liveDate, timedDate } from "../formatDate"
+import moment from "moment"
+import styled from "styled-components/native"
+import { Dimensions, Text, TouchableWithoutFeedback, View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
+import { liveDate, timedDate } from "../Utils/formatDate"
 
 const Image = styled(OpaqueImageView)`
   position: absolute;
@@ -71,13 +70,17 @@ const Metadata = styled.Text`
   font-size: 10px;
 `
 
-export class SaleItem extends React.Component<RelayProps, null> {
+export class SaleListItem extends React.Component<RelayProps, null> {
   get containerWidth(): number {
     const screenSize = Dimensions.get("window")
     const isIPad = screenSize.width > 700
     const numColumns = isIPad ? 4 : 2
     const gutterSize = isIPad ? 100 : 60
     return (screenSize.width - gutterSize) / numColumns
+  }
+
+  handleTap(navigateToUrl) {
+    Switchboard.presentNavigationViewController(this, navigateToUrl)
   }
 
   render() {
@@ -89,39 +92,41 @@ export class SaleItem extends React.Component<RelayProps, null> {
     const Container = styled.View`
       width: ${containerWidth}px;
       height: ${containerWidth * 1.24}px;
-      position: relative;
-      margin: 5px;
+      margin: 10px;
     `
 
     return (
-      <Container>
-        <Image imageURL={imageURL} skipGemini={true} />
-        <Content>
-          <Header>
-            <Title numberOfLines={2}>
-              {item.name}
-            </Title>
-            {item.live_start_at &&
-              <Badge>
-                <BadgeText>LIVE</BadgeText>
-              </Badge>}
-          </Header>
-          <Footer>
-            <Metadata>
-              {timestamp}
-            </Metadata>
-          </Footer>
-        </Content>
-      </Container>
+      <TouchableWithoutFeedback onPress={this.handleTap.bind(this, this.props.sale.href)}>
+        <Container>
+          <Image imageURL={imageURL} skipGemini={true} />
+          <Content>
+            <Header>
+              <Title numberOfLines={2}>
+                {item.name}
+              </Title>
+              {item.live_start_at &&
+                <Badge>
+                  <BadgeText>LIVE</BadgeText>
+                </Badge>}
+            </Header>
+            <Footer>
+              <Metadata>
+                {timestamp}
+              </Metadata>
+            </Footer>
+          </Content>
+        </Container>
+      </TouchableWithoutFeedback>
     )
   }
 }
 
-export default createFragmentContainer(SaleItem, {
+export default createFragmentContainer(SaleListItem, {
   sale: graphql`
-    fragment SaleItem_sale on Sale {
+    fragment SaleListItem_sale on Sale {
       id
       name
+      href
       is_open
       is_live_open
       start_at
@@ -141,6 +146,7 @@ interface RelayProps {
   sale: {
     id: string
     name: string
+    href: string
     is_open: boolean
     is_live_open: boolean
     start_at: string | null

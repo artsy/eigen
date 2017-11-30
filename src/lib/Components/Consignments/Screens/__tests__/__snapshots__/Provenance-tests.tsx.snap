@@ -94,7 +94,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                   style={
                     Array [
                       Object {
-                        "color": "#cccccc",
+                        "color": "#666666",
                         "fontFamily": "AGaramondPro-Regular",
                         "fontSize": 20,
                         "marginTop": 5,
