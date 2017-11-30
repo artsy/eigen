@@ -58,7 +58,7 @@ interface TakePhotoImageProps {
 }
 
 const SelectedIcon = () =>
-  <ImageBG style={{ backgroundColor: "white" }}>
+  <ImageBG style={{ backgroundColor: "white", position: "absolute", top: 128, left: 128 }}>
     <Image source={require("../../../../../images/consignments/black-tick.png")} />
   </ImageBG>
 
@@ -94,10 +94,9 @@ const ImageForURI = (props: ImagePreviewProps) =>
         borderWidth: 2,
       }}
     >
-      <Image source={{ uri: props.data.image.uri }} style={{ height: 154, width: 154 }}>
-        <SelectedIcon />
-      </Image>
+      <Image source={{ uri: props.data.image.uri }} style={{ height: 154, width: 154 }} />
     </TouchableHighlight>
+    {props.selected ? <SelectedIcon /> : <View />}
   </View>
 
 interface Props {
