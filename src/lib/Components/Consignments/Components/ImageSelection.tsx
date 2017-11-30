@@ -98,7 +98,7 @@ const ImageForURI = (props: ImagePreviewProps) =>
     >
       <Image source={{ uri: props.data.image.uri }} style={{ height: 154, width: 154 }} />
     </TouchableHighlight>
-    {props.selected ? <SelectedIcon /> : <View />}
+    {props.selected ? <SelectedIcon /> : null}
   </View>
 
 interface Props {

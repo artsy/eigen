@@ -108,7 +108,6 @@ exports[`renders correctly at iPhone size 1`] = `
           }
         />
       </View>
-      <View />
     </View>
     <View
       style={
@@ -164,7 +163,6 @@ exports[`renders correctly at iPhone size 1`] = `
           }
         />
       </View>
-      <View />
     </View>
     <View
       style={
@@ -220,7 +218,6 @@ exports[`renders correctly at iPhone size 1`] = `
           }
         />
       </View>
-      <View />
     </View>
   </View>
 </RCTScrollView>
