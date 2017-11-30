@@ -3,11 +3,16 @@
 
 ### Master
 
+-   Accommodate selectedArtist parameter in Home container - sarah
 -   Don’t require 2 taps to open a conversation attachment and keep keyboard up - alloy
 -   Don’t assume a photo was selected in the consignments photo picker - alloy
 -   QA for composer/thread view: ipad and fixed iphone size attachments - maxim
 -   QA for message attachments - maxim
 -   QA for saves & follows: enable pagination in Works tab in Saves & Follows - luc
+-   QA for home header font sizes and margins - maxim
+-   Minor: change text colour for provenance placeholder in consignments - maxim
+-   Don’t rely on user of the Gene VC to specify filter defaults, which could lead to a crash - alloy
+-   QA for inbox zero on ipad - maxim
 
 ### 1.4.0-beta.8
 

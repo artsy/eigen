@@ -1,6 +1,7 @@
 import React from "react"
 import { ActivityIndicator, Dimensions, FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import styled from "styled-components/native"
 
 import ARSwitchBoard from "../../../NativeModules/SwitchBoard"
 import Message from "./Message"
@@ -21,6 +22,8 @@ interface State {
   reloadingData: boolean
   shouldStickFirstMessageToTop: boolean
 }
+
+const LoadingIndicator = styled.ActivityIndicator`margin-top: 40px;`
 
 export class Messages extends React.Component<Props, State> {
   constructor(props) {
@@ -136,7 +139,7 @@ export class Messages extends React.Component<Props, State> {
         }}
         refreshControl={refreshControl}
         style={messagesStyles}
-        ListFooterComponent={<ActivityIndicator animating={this.state.fetchingMoreData} hidesWhenStopped />}
+        ListFooterComponent={<LoadingIndicator animating={this.state.fetchingMoreData} hidesWhenStopped />}
       />
     )
   }

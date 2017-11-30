@@ -94,13 +94,9 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
       return
     }
 
-    CameraRoll.getPhotos(fetchParams)
-      .then(data => {
-        this.appendAssets(data)
-      })
-      .catch(e => {
-        console.log(e)
-      })
+    CameraRoll.getPhotos(fetchParams).then(data => {
+      this.appendAssets(data)
+    })
   }
 
   appendAssets(data) {

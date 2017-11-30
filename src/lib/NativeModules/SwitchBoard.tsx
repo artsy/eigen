@@ -6,6 +6,7 @@ function presentNavigationViewController(component: React.Component<any, any>, r
   try {
     reactTag = findNodeHandle(component)
   } catch (err) {
+    console.error(`Unable to find tag in presentNavigationViewController: ${err.message}`)
     return
   }
 
@@ -17,6 +18,7 @@ function presentModalViewController(component: React.Component<any, any>, route:
   try {
     reactTag = findNodeHandle(component)
   } catch (err) {
+    console.error(`Unable to find tag in presentModalViewController: ${err.message}`)
     return
   }
 
@@ -33,6 +35,7 @@ function presentMediaPreviewController(
   try {
     reactTag = findNodeHandle(component)
   } catch (err) {
+    console.error(`Unable to find tag in presentMediaPreviewController: ${err.message}`)
     return
   }
 
@@ -44,7 +47,7 @@ function dismissModalViewController(component: React.Component<any, any>) {
   try {
     reactTag = findNodeHandle(component)
   } catch (err) {
-    console.log("Could not find node for ", component)
+    console.error(`Unable to find tag in dismissModalViewController: ${err.message}`)
     return
   }
 

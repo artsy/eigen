@@ -35,7 +35,7 @@ exports[`looks correct when rendered 1`] = `
       style={
         Object {
           "fontFamily": "AGaramondPro-Regular",
-          "fontSize": 25,
+          "fontSize": 30,
           "textAlign": "left",
         }
       }
