@@ -3,32 +3,35 @@ import React, { Component } from "react"
 import createEnvironment from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import styled from "styled-components/native"
-import { Button, Text, View } from "react-native"
+import { Button, ScrollView, Text, View } from "react-native"
 import { RelayPaginationProp } from "react-relay"
 import { SectionHeader } from "./SectionHeader"
 import { createPaginationContainer, graphql, QueryRenderer, QueryRendererProps } from "react-relay"
 import { get } from "lodash"
+import { isCloseToBottom } from "lib/utils/isCloseToBottom"
+import { once } from "lodash"
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 8 // FIXME: Increase default return in Metaphysics
 
 interface RelayProps {
-  onLoad: ({ data: array }) => void
   relay: RelayPaginationProp
-  sale_artworks: {
-    connection: {
-      pageInfo: {
-        hasNextPage: boolean
-      }
-      edges: Array<{
-        node: {
-          is_biddable: boolean
-          artwork: {
-            image: {
-              aspect_ratio: number
+  viewer: {
+    sale_artworks: {
+      connection: {
+        pageInfo: {
+          hasNextPage: boolean
+        }
+        edges: Array<{
+          node: {
+            is_biddable: boolean
+            artwork: {
+              image: {
+                aspect_ratio: number
+              }
             }
           }
-        }
-      }>
+        }>
+      }
     }
   }
 }
@@ -67,29 +70,32 @@ const Pagination = createPaginationContainer(
     }
   `,
   {
-    getConnectionFromProps: ({ sale_artworks }) => sale_artworks && sale_artworks.connection,
+    getConnectionFromProps: ({ viewer }) => viewer && viewer.sale_artworks,
     getFragmentVariables: (prevVars, totalCount) => ({ ...prevVars, count: totalCount }),
     getVariables: (props, { count, cursor }) => ({ count, cursor }),
     query: Query,
   }
 )
 
-export function LotsByFollowedArtists(props) {
-  console.log(props)
-  return (
-    <QueryRenderer
-      environment={createEnvironment()}
-      query={Query}
-      variables={{
-        count: PAGE_SIZE,
-      }}
-      render={renderWithLoadProgress(Pagination)}
-    />
-  )
+export class LotsByFollowedArtists extends Component<any> {
+  render() {
+    return (
+      <QueryRenderer
+        environment={createEnvironment()}
+        query={Query}
+        variables={{
+          count: PAGE_SIZE,
+        }}
+        render={renderWithLoadProgress(Pagination)}
+      />
+    )
+  }
 }
 
 function GridContainer(props: RelayProps) {
-  const artworks = get(props, "viewer.sale_artworks.edges", [])
+  const { relay, viewer } = props
+
+  const artworks = get(viewer, "sale_artworks.edges", [])
     .filter(({ node }) => !node.is_biddable)
     .map(({ node }) => node.artwork)
 
@@ -97,16 +103,24 @@ function GridContainer(props: RelayProps) {
     return null
   }
 
-  return (
-    <View>
-      <SectionHeader title="Lots by Artists You Follow" />
+  const loadMore =
+    relay.hasMore() &&
+    once(() => {
+      relay.loadMore(PAGE_SIZE, x => x)
+    })
 
+  const handleScroll = ({ nativeEvent }) => {
+    if (isCloseToBottom(nativeEvent)) {
+      loadMore()
+    }
+  }
+
+  return (
+    <ScrollView onScroll={handleScroll} scrollEventThrottle={30}>
+      <SectionHeader title="Lots by Artists You Follow" />
       <Container>
         <GenericGrid artworks={artworks} />
-
-        {/* TODO: Implement scroll-based pagination */}
-        {/* <Button title="Load More" onPress={() => props.relay.loadMore(PAGE_SIZE, x => x)} /> */}
       </Container>
-    </View>
+    </ScrollView>
   )
 }
