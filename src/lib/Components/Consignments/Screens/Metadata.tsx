@@ -132,7 +132,7 @@ export default class Metadata extends React.Component<Props, State> {
     return (
       <View style={{ flex: 1 }}>
         <ConsignmentBG>
-          <DoneButton onPress={this.doneTapped} verticalOffset={80}>
+          <DoneButton onPress={this.doneTapped}>
             <ScrollView keyboardShouldPersistTaps="handled" centerContent>
               <View style={{ padding: 10 }}>
                 <Row>
