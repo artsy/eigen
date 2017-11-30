@@ -64,12 +64,12 @@ interface ToggleProps {
 
 const render = (props: ToggleProps) => {
   const { selected } = props
-  const mainBGColor = selected ? "white" : "black"
-  const leftTextColor = selected ? "black" : "white"
-  const rightTextColor = selected ? "black" : "white"
+  const mainBGColor = "black"
+  const leftTextColor = "white"
+  const rightTextColor = "white"
   const dotDirection = selected ? "row-reverse" : "row"
   const dotBorder = selected ? "white" : "white"
-  const Circle = selected ? BlackCircle : WhiteCircle
+  const Circle = WhiteCircle
 
   return (
     <Background style={{ backgroundColor: mainBGColor }} onPress={props.onPress}>
