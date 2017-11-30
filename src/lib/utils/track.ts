@@ -1,5 +1,7 @@
 import React from "react"
-import _track, { Track as _Track } from "react-tracking"
+import _track, { Track as _Track, TrackingInfo } from "react-tracking"
+
+import Events from "lib/NativeModules/Events"
 
 // tslint:disable-next-line:no-namespace
 export namespace Schema {
@@ -76,6 +78,9 @@ export namespace Schema {
   export enum PageNames {
     ArtistPage = "Artist",
     ConversationPage = "Conversation",
+    ConsignmentsWelcome = "ConsignmentsWelcome",
+    ConsignmentsOverView = "ConsignmentsOverview",
+    ConsignmentsSubmission = "ConsignmentsSubmit",
     InboxPage = "Inbox",
     InquiryPage = "Inquiry",
   }
@@ -87,6 +92,7 @@ export namespace Schema {
     Gene = "Gene",
     Show = "Show",
     Invoice = "Invoice",
+    Consignment = "ConsignmentSubmission",
   }
 
   export enum ActionTypes {
@@ -123,6 +129,13 @@ export namespace Schema {
     ConversationLink = "conversationLinkUsed",
     InquiryCancel = "inquiryCancel",
     InquirySend = "inquirySend",
+
+    /**
+     *  Consignment flow
+     */
+
+    ConsignmentDraftCreated = "consignmentDraftCreated",
+    ConsignmentDraftSubmitted = "consignmentDraftSubmitted",
   }
 }
 
@@ -132,7 +145,7 @@ export namespace Schema {
  * @example
  *
  *      ```ts
- *      import { Schema, Track, track as _track } from "src/utils/track"
+ *      import { Schema, Track, track as _track } from "lib/utils/track"
  *
  *      interface Props {
  *        artist: {
@@ -181,7 +194,7 @@ export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entit
  * @example
  *
  *      ```ts
- *      import { track } from "src/utils/track"
+ *      import { track } from "lib/utils/track"
  *
  *      @track()
  *      class Artist extends React.Component<{}, null> {
@@ -201,3 +214,59 @@ export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entit
  *      ```
  */
 export const track: Track = _track
+
+/**
+ * A typed page view decorator for a class, for when you _don't_ need to make tracked calls internally
+ *
+ * As an object:
+ *
+ * @example
+ *
+ *      ```ts
+ *      import { pageViewTrack, Schema } from "lib/utils/track"
+ *
+ *       @pageViewTrack({
+ *        context_screen: Schema.PageNames.ConsignmentsWelcome,
+ *        context_screen_owner_slug: null,
+ *        context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
+ *       })
+ *       export default class Welcome extends React.Component<Props, null> {
+ *
+ *        goTapped = () => this.props.navigator.push({ component: Overview })
+ *
+ *        // It's not optimal to dismiss the modal, but otherwise we get into all sorts of tricky states
+ *        privacyPolicyTapped = () =>
+ *          SwitchBoard.dismissModalViewController(this) &&
+ *          SwitchBoard.presentNavigationViewController(this, Router.PrivacyPage)
+ *         [...]
+ *
+ * * As an function taking account of incoming props:
+ *
+ * @example
+ *
+ *      ```ts
+ *      import { pageViewTrack, Schema } from "lib/utils/track"
+ *
+ *      interface Props extends ViewProperties {
+ *        navigator: NavigatorIOS
+ *        route: Route
+ *        submissionID: string
+ *      }
+ *
+ *      @pageViewTrack<Props>(props => ({
+ *        context_screen: Schema.PageNames.ConsignmentsSubmission,
+ *        context_screen_owner_slug: props.submissionID,
+ *        context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
+ *      }))
+ *      export default class Welcome extends React.Component<Props, null> {
+ *        goTapped = () => this.props.navigator.push({ component: Overview })
+ *
+ *        [...]
+ *
+ */
+export function pageViewTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
+  return _track(trackingInfo as any, {
+    dispatch: data => Events.postEvent(data),
+    dispatchOnMount: true,
+  })
+}

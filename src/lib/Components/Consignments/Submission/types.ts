@@ -44,7 +44,7 @@ export interface MetaphysicsSubmission {
 export interface CreateSubmissionResponse {
   data: {
     createConsignmentSubmission: {
-      submission: MetaphysicsSubmission
+      consignment_submission: MetaphysicsSubmission
     }
   }
 }
@@ -52,7 +52,7 @@ export interface CreateSubmissionResponse {
 export interface UpdateSubmissionResponse {
   data: {
     updateConsignmentSubmission: {
-      submission: MetaphysicsSubmission
+      consignment_submission: MetaphysicsSubmission
     }
   }
 }

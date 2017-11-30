@@ -22,7 +22,6 @@ const Title = styled.Text`
   font-size: 30px;
   font-family: "${Fonts.GaramondRegular}";
   text-align: center;
-
   margin-left: 10;
   margin-right: 10;
 `

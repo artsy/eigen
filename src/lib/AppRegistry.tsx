@@ -2,7 +2,7 @@ import * as _ from "lodash"
 import React from "react"
 import { AppRegistry, View, ViewProperties } from "react-native"
 import { TrackingInfo } from "react-tracking"
-import { Schema, Track, track as _track } from "./utils/track"
+import { pageViewTrack as track, Schema, Track } from "./utils/track"
 
 import Consignments from "./Components/Consignments"
 import Containers from "./Containers/index"
@@ -23,19 +23,17 @@ import {
 import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
 
-import Events from "./NativeModules/Events"
-
 // Analytics wrapper for all of our top level React components
 function AddTrack(pageName: string) {
   return component => component
 }
 
-function track<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
-  return _track(trackingInfo as any, {
-    dispatch: data => Events.postEvent(data),
-    dispatchOnMount: true,
-  })
-}
+// function track<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
+//   return _track(trackingInfo as any, {
+//     dispatch: data => Events.postEvent(data),
+//     dispatchOnMount: true,
+//   })
+// }
 
 interface ArtistProps {
   artistID: string

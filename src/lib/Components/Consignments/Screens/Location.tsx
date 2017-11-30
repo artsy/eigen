@@ -42,6 +42,7 @@ export default class Location extends React.Component<Props, State> {
   }
 
   locationSelected = async (result: SearchResult) => {
+    // This one is a throwaway accounts'
     const apiKey = Emission.googleMapsAPIKey || "AIzaSyBJRIy_zCXQ7XYt9Ubn8bpUIEAxEOKUmx8"
     const queryString = stringify({
       key: apiKey,
