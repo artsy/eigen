@@ -123,7 +123,7 @@ export class SaleListItem extends React.Component<RelayProps, null> {
 
 export default createFragmentContainer(SaleListItem, {
   sale: graphql`
-    fragment SaleItem_sale on Sale {
+    fragment SaleListItem_sale on Sale {
       id
       name
       href
