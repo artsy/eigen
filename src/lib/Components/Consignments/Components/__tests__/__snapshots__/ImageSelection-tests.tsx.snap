@@ -54,149 +54,161 @@ exports[`renders correctly at iPhone size 1`] = `
         source={1}
       />
     </View>
-    <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
-      isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          Object {
-            "backgroundColor": "#e5e5e5",
-            "borderColor": null,
-            "borderWidth": 2,
-            "height": 158,
-            "margin": 4,
-            "width": 158,
-          },
-        ]
-      }
-      testID={undefined}
-      tvParallaxProperties={undefined}
-    >
-      <Image
-        source={
-          Object {
-            "uri": "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg",
-          }
-        }
+    <View>
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
-          Object {
-            "height": 154,
-            "width": 154,
-          }
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+            },
+            Object {
+              "backgroundColor": "#e5e5e5",
+              "borderColor": null,
+              "borderWidth": 2,
+              "height": 158,
+              "margin": 4,
+              "opacity": 1,
+              "width": 158,
+            },
+          ]
         }
-      />
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <Image
+          source={
+            Object {
+              "uri": "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg",
+            }
+          }
+          style={
+            Object {
+              "height": 154,
+              "width": 154,
+            }
+          }
+        />
+      </View>
+      <View />
     </View>
-    <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
-      isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          Object {
-            "backgroundColor": "#e5e5e5",
-            "borderColor": null,
-            "borderWidth": 2,
-            "height": 158,
-            "margin": 4,
-            "width": 158,
-          },
-        ]
-      }
-      testID={undefined}
-      tvParallaxProperties={undefined}
-    >
-      <Image
-        source={
-          Object {
-            "uri": "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg",
-          }
-        }
+    <View>
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
-          Object {
-            "height": 154,
-            "width": 154,
-          }
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+            },
+            Object {
+              "backgroundColor": "#e5e5e5",
+              "borderColor": null,
+              "borderWidth": 2,
+              "height": 158,
+              "margin": 4,
+              "opacity": 1,
+              "width": 158,
+            },
+          ]
         }
-      />
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <Image
+          source={
+            Object {
+              "uri": "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg",
+            }
+          }
+          style={
+            Object {
+              "height": 154,
+              "width": 154,
+            }
+          }
+        />
+      </View>
+      <View />
     </View>
-    <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
-      accessible={true}
-      hasTVPreferredFocus={undefined}
-      hitSlop={undefined}
-      isTVSelectable={true}
-      nativeID={undefined}
-      onLayout={undefined}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-          },
-          Object {
-            "backgroundColor": "#e5e5e5",
-            "borderColor": null,
-            "borderWidth": 2,
-            "height": 158,
-            "margin": 4,
-            "width": 158,
-          },
-        ]
-      }
-      testID={undefined}
-      tvParallaxProperties={undefined}
-    >
-      <Image
-        source={
-          Object {
-            "uri": "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg",
-          }
-        }
+    <View>
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         style={
-          Object {
-            "height": 154,
-            "width": 154,
-          }
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+            },
+            Object {
+              "backgroundColor": "#e5e5e5",
+              "borderColor": null,
+              "borderWidth": 2,
+              "height": 158,
+              "margin": 4,
+              "opacity": 1,
+              "width": 158,
+            },
+          ]
         }
-      />
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <Image
+          source={
+            Object {
+              "uri": "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg",
+            }
+          }
+          style={
+            Object {
+              "height": 154,
+              "width": 154,
+            }
+          }
+        />
+      </View>
+      <View />
     </View>
   </View>
 </RCTScrollView>
