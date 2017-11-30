@@ -13,6 +13,7 @@
 -   Minor: change text colour for provenance placeholder in consignments - maxim
 -   Don’t rely on user of the Gene VC to specify filter defaults, which could lead to a crash - alloy
 -   QA for inbox zero on ipad - maxim
+-   Implement selected state for images in consignments photo set - maxim
 
 ### 1.4.0-beta.8
 
