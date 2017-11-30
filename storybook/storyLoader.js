@@ -29,6 +29,7 @@ function loadStories() {
   require('../src/lib/Containers/__stories__/Inquiry.story.tsx');
   require('../src/lib/Containers/__stories__/Sale.story.tsx');
   require('../src/lib/Scenes/Favorites/__stories__/Favorites.story.tsx');
+  require('../src/lib/Scenes/Home/Components/Sales/Components/__stories__/Sales.Components.story.tsx');
   require('../src/lib/Scenes/Home/__stories__/Home.story.tsx');
   require('../src/lib/Scenes/Settings/__stories__/Settings.story.tsx');
   
@@ -59,6 +60,7 @@ const stories = [
   '../src/lib/Containers/__stories__/Inquiry.story.tsx',
   '../src/lib/Containers/__stories__/Sale.story.tsx',
   '../src/lib/Scenes/Favorites/__stories__/Favorites.story.tsx',
+  '../src/lib/Scenes/Home/Components/Sales/Components/__stories__/Sales.Components.story.tsx',
   '../src/lib/Scenes/Home/__stories__/Home.story.tsx',
   '../src/lib/Scenes/Settings/__stories__/Settings.story.tsx',
   

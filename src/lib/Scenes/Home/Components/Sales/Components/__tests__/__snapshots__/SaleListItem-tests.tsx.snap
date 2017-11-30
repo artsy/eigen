@@ -2,20 +2,33 @@
 
 exports[`renders correctly 1`] = `
 <View
+  accessibilityComponentType={undefined}
+  accessibilityLabel={undefined}
+  accessibilityTraits={undefined}
+  accessible={true}
+  hitSlop={undefined}
+  nativeID={undefined}
+  onLayout={undefined}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
     Array [
       Object {
         "height": 201.5,
-        "marginBottom": 5,
-        "marginLeft": 5,
-        "marginRight": 5,
-        "marginTop": 5,
-        "position": "relative",
+        "marginBottom": 10,
+        "marginLeft": 10,
+        "marginRight": 10,
+        "marginTop": 10,
         "width": 162.5,
       },
       undefined,
     ]
   }
+  testID={undefined}
 >
   <AROpaqueImageView
     imageURL="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FeeqLfwMMAYA8XOmeYEb7Rg%2Fsource.jpg"
