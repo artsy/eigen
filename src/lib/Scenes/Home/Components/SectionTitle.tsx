@@ -1,5 +1,4 @@
 import React from "react"
-
 import { StyleSheet, Text, TextStyle } from "react-native"
 
 export default class SectionTitle extends React.Component<any, any> {

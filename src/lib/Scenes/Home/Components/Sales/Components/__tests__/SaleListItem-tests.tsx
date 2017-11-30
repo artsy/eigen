@@ -3,16 +3,17 @@ import React from "react"
 import "react-native"
 
 import * as renderer from "react-test-renderer"
-import SaleItem from "../SaleItem"
+import SaleListItem from "../SaleListItem"
 
 it("renders correctly", () => {
-  const sale = renderer.create(<SaleItem sale={props} />) as any
+  const sale = renderer.create(<SaleListItem sale={props} />) as any
   expect(sale).toMatchSnapshot()
 })
 
 const props = {
   id: "freemans-modern-and-contemporary-works-of-art",
   name: "Freeman's: Modern & Contemporary Works of Art",
+  href: "http://foo.bar",
   is_open: true,
   is_live_open: false,
   start_at: moment().add(2, "hour").toISOString(),

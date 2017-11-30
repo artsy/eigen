@@ -1,12 +1,13 @@
+import "react-native"
 import * as moment from "moment"
+import * as renderer from "react-test-renderer"
+import Sales from "../index"
 import React from "react"
 
-import "react-native"
-import * as renderer from "react-test-renderer"
-import Auctions from "../index"
+jest.mock("lib/Scenes/Home/Components/Sales/Components/LotsByFollowedArtists")
 
 it("looks correct when rendered", () => {
-  const auctions = renderer.create(<Auctions sales={props} />) as any
+  const auctions = renderer.create(<Sales sales={props} />) as any
   expect(auctions).toMatchSnapshot()
 })
 
