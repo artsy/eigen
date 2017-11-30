@@ -18,6 +18,8 @@ interface State {
 const Container = styled.ScrollView`flex: 1;`
 
 export class Inbox extends React.Component<Props, State> {
+  conversations: any
+
   constructor(props) {
     super(props)
 
@@ -34,14 +36,9 @@ export class Inbox extends React.Component<Props, State> {
     }
 
     this.setState({ fetchingData: true })
-    this.props.relay.refetch(
-      {},
-      null,
-      () => {
-        this.setState({ fetchingData: false })
-      },
-      { force: true }
-    )
+    this.conversations._refetchConnection(10, () => {
+      this.setState({ fetchingData: false })
+    })
   }
 
   render() {
@@ -51,7 +48,7 @@ export class Inbox extends React.Component<Props, State> {
     return hasBids || hasConversations
       ? <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
           <ActiveBids me={this.props.me as any} />
-          <Conversations me={this.props.me} />
+          <Conversations me={this.props.me} ref={conversations => (this.conversations = conversations)} />
         </Container>
       : <ZeroStateInbox />
   }
