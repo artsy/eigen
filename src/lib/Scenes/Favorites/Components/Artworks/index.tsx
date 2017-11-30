@@ -5,6 +5,7 @@ import styled from "styled-components/native"
 
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import ZeroState from "lib/Components/States/ZeroState"
+import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 const Container = styled.ScrollView`
   padding: 20px;
@@ -35,11 +36,6 @@ export class SavedWorks extends React.Component<Props, any> {
     })
   }
 
-  isCloseToBottom({ layoutMeasurement, contentOffset, contentSize }) {
-    const paddingToBottom = 20
-    return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom
-  }
-
   render() {
     const artworks = this.props.me.saved_artworks.artworks_connection.edges.map(edge => edge.node)
 
@@ -53,7 +49,7 @@ export class SavedWorks extends React.Component<Props, any> {
     const Content = (
       <Container
         onScroll={({ nativeEvent }) => {
-          if (this.isCloseToBottom(nativeEvent)) {
+          if (isCloseToBottom(nativeEvent)) {
             this.loadMore()
           }
         }}

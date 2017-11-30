@@ -31,7 +31,7 @@ const Title = styled.Text`
 
 const isStaging = gravityURL.includes("staging")
 
-class Favorites extends React.Component<null, null> {
+class Favorites extends React.Component<null> {
   render() {
     return (
       <View style={{ flex: 1 }}>
