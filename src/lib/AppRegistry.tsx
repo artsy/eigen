@@ -28,13 +28,6 @@ function AddTrack(pageName: string) {
   return component => component
 }
 
-// function track<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
-//   return _track(trackingInfo as any, {
-//     dispatch: data => Events.postEvent(data),
-//     dispatchOnMount: true,
-//   })
-// }
-
 interface ArtistProps {
   artistID: string
   isPad: boolean

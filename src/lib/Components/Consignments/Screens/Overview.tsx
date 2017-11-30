@@ -11,13 +11,13 @@ import {
   View,
   ViewProperties,
 } from "react-native"
-
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { LargeHeadline, Subtitle } from "../Typography"
 
 import { ConsignmentMetadata, ConsignmentSetup, SearchResult } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
 
+import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, Row } from "../Components/FormElements"
 import Artist from "./Artist"
 import FinalSubmissionQuestions from "./FinalSubmissionQuestions"
@@ -45,6 +45,8 @@ interface State extends ConsignmentSetup {
   hasLoaded?: boolean
 }
 
+const track: Track<Props, State> = _track
+@track()
 export default class Info extends React.Component<Props, State> {
   constructor(props) {
     super(props)
@@ -118,17 +120,38 @@ export default class Info extends React.Component<Props, State> {
       updateSubmission(this.state, this.state.submission_id)
     } else if (this.state.artist) {
       const submission = await createSubmission(this.state)
-      this.setState({ submission_id: submission.id })
+      this.setState({ submission_id: submission.id }, this.submissionDraftCreated)
     }
   }
+
+  @track((props, state) => ({
+    action_type: Schema.ActionTypes.Success,
+    action_name: Schema.ActionNames.ConsignmentDraftCreated,
+    owner_id: state.submission_id,
+    owner_type: Schema.OwnerEntityTypes.Consignment,
+    owner_slug: state.submission_id,
+  }))
+  // tslint:disable-next-line:no-empty
+  submissionDraftCreated() {}
 
   submitFinalSubmission = async (setup: ConsignmentSetup) => {
     this.setState(setup, async () => {
       await this.updateLocalStateAndMetaphysics()
       await AsyncStorage.removeItem(consignmentsStateKey)
+      this.submissionDraftSubmitted()
       this.exitModal()
     })
   }
+
+  @track((props, state) => ({
+    action_type: Schema.ActionTypes.Success,
+    action_name: Schema.ActionNames.ConsignmentSubmitted,
+    owner_id: state.submission_id,
+    owner_type: Schema.OwnerEntityTypes.Consignment,
+    owner_slug: state.submission_id,
+  }))
+  // tslint:disable-next-line:no-empty
+  submissionDraftSubmitted() {}
 
   exitModal = () => SwitchBoard.dismissModalViewController(this)
 

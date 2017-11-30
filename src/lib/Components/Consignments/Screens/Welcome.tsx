@@ -27,7 +27,6 @@ interface Props extends ViewProperties {
 
 @pageViewTrack({
   context_screen: Schema.PageNames.ConsignmentsWelcome,
-  context_screen_owner_slug: null,
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })
 export default class Welcome extends React.Component<Props, null> {

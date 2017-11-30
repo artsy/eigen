@@ -26,14 +26,11 @@ interface Props extends ViewProperties {
 
 const Loader = (p, c) => <Spinner style={{ flex: 1 }} />
 
-@pageViewTrack<Props>(props => {
-  // debugger
-  return {
-    context_screen: Schema.PageNames.ConsignmentsSubmission,
-    context_screen_owner_slug: props.setup.submission_id,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
-  }
-})
+@pageViewTrack<Props>(props => ({
+  context_screen: Schema.PageNames.ConsignmentsSubmission,
+  context_screen_owner_slug: props.setup.submission_id,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
+}))
 export default class FinalSubmissionQuestions extends React.Component<Props, ConsignmentSetup> {
   constructor(props) {
     super(props)

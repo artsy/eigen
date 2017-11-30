@@ -133,9 +133,8 @@ export namespace Schema {
     /**
      *  Consignment flow
      */
-
     ConsignmentDraftCreated = "consignmentDraftCreated",
-    ConsignmentDraftSubmitted = "consignmentDraftSubmitted",
+    ConsignmentSubmitted = "consignmentSubmitted",
   }
 }
 
@@ -171,7 +170,7 @@ export namespace Schema {
  *        }
  *
  *        @track((props, state) => ({
- *          action_type: Schema.ActionTypes.Rap,
+ *          action_type: Schema.ActionTypes.Tap,
  *          action_name: state.following ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
  *          owner_id: props.artist._id,
  *          owner_type: Schema.OwnerEntityTypes.Artist,
