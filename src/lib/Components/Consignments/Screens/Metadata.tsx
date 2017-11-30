@@ -143,6 +143,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onChangeText: this.updateTitle,
                       value: this.state.title,
                       onSubmitEditing: this.selectNextInput,
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
@@ -157,6 +158,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       ref: component => (this.yearInput = component),
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
@@ -184,6 +186,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       ref: component => (this.mediumInput = component),
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
@@ -199,6 +202,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       ref: component => (this.widthInput = component),
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
@@ -211,6 +215,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       ref: component => (this.heightInput = component),
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
@@ -225,6 +230,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       value: this.state.depth ? this.state.depth.toString() : "",
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
