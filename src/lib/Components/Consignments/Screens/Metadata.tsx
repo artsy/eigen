@@ -164,19 +164,6 @@ export default class Metadata extends React.Component<Props, State> {
                   />
                 </Row>
 
-                <TouchableWithoutFeedback onPress={this.showCategorySelection}>
-                  <Row>
-                    <Text
-                      text={{
-                        placeholder: "Category",
-                        value: this.state.categoryName,
-                      }}
-                      readonly={true}
-                      style={{ margin: 10 }}
-                    />
-                  </Row>
-                </TouchableWithoutFeedback>
-
                 <Row>
                   <Text
                     text={{
@@ -239,6 +226,18 @@ export default class Metadata extends React.Component<Props, State> {
                     <Toggle selected={this.state.unit === "CM"} left="CM" right="IN" onPress={this.updateUnit} />
                   </View>
                 </Row>
+                <TouchableWithoutFeedback onPress={this.showCategorySelection}>
+                  <Row>
+                    <Text
+                      text={{
+                        placeholder: "Category",
+                        value: this.state.categoryName,
+                      }}
+                      readonly={true}
+                      style={{ margin: 10 }}
+                    />
+                  </Row>
+                </TouchableWithoutFeedback>
               </View>
             </ScrollView>
           </DoneButton>
