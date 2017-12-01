@@ -26,6 +26,7 @@ console.error = (message?: any, ...optionalParams: any[]) => {
 }
 
 jest.mock("./lib/metaphysics.ts")
+jest.mock("react-tracking")
 
 jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
   NotificationsManager: {

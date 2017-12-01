@@ -6,6 +6,7 @@
     "property-no-unknown": [true, { "ignoreProperties": ["resize-mode"] }],
     "block-opening-brace-space-after": null,
     "block-closing-brace-space-before": null,
-    "declaration-block-no-redundant-longhand-properties": null
+    "declaration-block-no-redundant-longhand-properties": null,
+    "color-hex-length": null
   }
 }

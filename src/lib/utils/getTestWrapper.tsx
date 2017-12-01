@@ -9,7 +9,6 @@
  */
 import "react-native"
 import renderer from "react-test-renderer"
-import { shallow } from "enzyme"
 
 export function getTestWrapper(TestComponent) {
   try {
