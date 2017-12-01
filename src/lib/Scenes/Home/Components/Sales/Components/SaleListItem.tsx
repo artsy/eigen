@@ -1,12 +1,12 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView"
-import React from "react"
 import Serif from "lib/Components/Text/Serif"
-import Switchboard from "lib/NativeModules/SwitchBoard"
 import fonts from "lib/data/fonts"
+import Switchboard from "lib/NativeModules/SwitchBoard"
 import moment from "moment"
-import styled from "styled-components/native"
+import React from "react"
 import { Dimensions, Text, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
 import { liveDate, timedDate } from "../Utils/formatDate"
 
 const Image = styled(OpaqueImageView)`

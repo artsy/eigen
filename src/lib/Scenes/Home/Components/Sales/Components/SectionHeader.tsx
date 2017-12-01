@@ -1,5 +1,5 @@
-import React from "react"
 import fonts from "lib/data/fonts"
+import React from "react"
 import styled from "styled-components/native"
 
 const Header = styled.View`

@@ -18,7 +18,7 @@ interface Props extends RelayProps {
 }
 
 export class SavedWorks extends React.Component<Props, any> {
-  loadMore() {
+  loadMore = () => {
     if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
       return
     }
@@ -47,14 +47,7 @@ export class SavedWorks extends React.Component<Props, any> {
     )
 
     const Content = (
-      <Container
-        onScroll={({ nativeEvent }) => {
-          if (isCloseToBottom(nativeEvent)) {
-            this.loadMore()
-          }
-        }}
-        scrollEventThrottle={400}
-      >
+      <Container onScroll={isCloseToBottom(this.loadMore)} scrollEventThrottle={400}>
         <GenericGrid artworks={artworks} />
       </Container>
     )

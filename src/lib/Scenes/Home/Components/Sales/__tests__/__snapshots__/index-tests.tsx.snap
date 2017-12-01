@@ -64,7 +64,16 @@ exports[`looks correct when rendered 1`] = `
       Object {
         "data": Array [
           Object {
-            "data": Array [],
+            "data": Object {
+              "edges": Array [
+                Object {
+                  "node": Object {
+                    "id": "foo",
+                  },
+                },
+              ],
+              "pageInfo": Object {},
+            },
           },
         ],
         "renderItem": [Function],
@@ -143,7 +152,16 @@ exports[`looks correct when rendered 1`] = `
       Object {
         "data": Array [
           Object {
-            "data": Array [],
+            "data": Object {
+              "edges": Array [
+                Object {
+                  "node": Object {
+                    "id": "foo",
+                  },
+                },
+              ],
+              "pageInfo": Object {},
+            },
           },
         ],
         "renderItem": [Function],

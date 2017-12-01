@@ -5,7 +5,8 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import Home from "../"
 import ForYou from "../Components/ForYou"
-import Sales, { SalesRenderer } from "../Components/Sales"
+import Sales from "../Components/Sales"
+import { SalesRenderer } from "../Components/Sales/Relay/SalesRenderer"
 
 storiesOf("Home/Relay")
   .add("Root", () => <Home />)

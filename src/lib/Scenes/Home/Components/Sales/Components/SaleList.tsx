@@ -1,6 +1,6 @@
 import React, { Component } from "react"
-import SaleListItem from "./SaleListItem"
 import { Dimensions, FlatList, View } from "react-native"
+import SaleListItem from "./SaleListItem"
 import { SectionHeader } from "./SectionHeader"
 
 export class SaleList extends Component<any> {

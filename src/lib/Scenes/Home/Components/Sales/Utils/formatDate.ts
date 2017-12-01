@@ -19,11 +19,13 @@ export function timedDate(auction) {
 }
 
 function formatDate(date, isStarted = false, isRegister = false) {
+  const diff = moment().diff(moment(date), "hours")
   let formatted
+
   if (isStarted) {
-    formatted = moment(date).fromNow().replace("in ", "") + " left"
+    formatted = moment(date).fromNow().replace("in", "").replace("ago", "").trim() + " left"
   } else if (isRegister) {
-    if (moment().diff(moment(date), "hours") > -24) {
+    if (diff > -24) {
       formatted = "Register by\n" + moment(date).format("ha")
     } else {
       formatted = "Register by\n" + moment(date).format("MMM D, ha")

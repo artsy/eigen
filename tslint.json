@@ -6,7 +6,7 @@
     "max-classes-per-file": [false],
     "member-access": [false, "check-accessor", "check-constructor"],
     "object-literal-sort-keys": false,
-    "ordered-imports": false,
+    "ordered-imports": true,
     "switch-default": false,
     "no-unused-variable": [true],
     "no-console": [true, ["error", ["warn", "error"]]]

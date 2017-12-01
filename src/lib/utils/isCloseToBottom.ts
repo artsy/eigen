@@ -1,13 +1,14 @@
+import { isFunction } from "lodash"
+import { NativeScrollEvent } from "react-native"
+
 /**
- * Detects if a <ScrollView /> has scrolled to the bottom.
+ * Detects if a <ScrollView /> has scrolled to the bottom. Taken from from RN’s ListView.js
  *
  *  @example
  *
- *  const handleScroll = ({ nativeEvent }) => {
- *    if (isCloseToBottom(nativeEvent)) {
- *      relay.loadMore(10)
- *    }
- *  }
+ *  handleScroll = isCloseToBottom(() => {
+ *    this.loadMore()
+ *  })
  *
  *  return (
  *    <ScrollView onScroll={handleScroll}>
@@ -16,27 +17,35 @@
  *  )
  */
 
-interface Size {
-  width: number
-  height: number
-}
+const PAGE_END_THRESHOLD = 1000
 
-interface Position {
-  x: number
-  y: number
-}
+type CallBack = () => void
 
-interface Props {
-  bottomPadding?: number
-  contentOffset: Position
-  contentSize: Size
-  layoutMeasurement: Size
-}
+export function isCloseToBottom(onScrollEnd: CallBack) {
+  const state = { sentEndForContentLength: 0 }
 
-const DEFAULT_PADDING = 20
+  interface ScrollEventProps {
+    nativeEvent: NativeScrollEvent
+  }
 
-export function isCloseToBottom(props: Props) {
-  const { bottomPadding = DEFAULT_PADDING, contentOffset, contentSize, layoutMeasurement } = props
-  const isClose = layoutMeasurement.height + contentOffset.y >= contentSize.height - bottomPadding
-  return isClose
+  return (props: ScrollEventProps) => {
+    const { nativeEvent: { contentOffset, contentSize, layoutMeasurement } } = props
+    const contentLength = contentSize.height
+    const isEnabled = contentLength !== state.sentEndForContentLength
+
+    if (isEnabled) {
+      const offset = contentOffset.y
+      const visibleLength = layoutMeasurement.height
+      const distanceFromEnd = contentLength - visibleLength - offset
+      const reachedEnd = distanceFromEnd < PAGE_END_THRESHOLD
+
+      if (reachedEnd) {
+        state.sentEndForContentLength = contentLength
+
+        if (isFunction(onScrollEnd)) {
+          onScrollEnd()
+        }
+      }
+    }
+  }
 }
