@@ -24,9 +24,22 @@ export interface GeminiEntryCreationResonse {
   }
 }
 
+export interface GeminiTokenResonse {
+  data: {
+    services: {
+      convection: {
+        geminiTemplateKey: string
+      }
+    }
+  }
+}
+
 export const uploadImageAndPassToGemini = async (file: string, acl: string, submissionID: string) => {
+  const services = await getConvectionGeminiKey()
+  const convectionKey = services.data.services.convection.geminiTemplateKey
+
   const creationInput = {
-    name: "convection-staging",
+    name: convectionKey,
     acl,
   }
   // Get S3 Credentials from Gemini
@@ -36,7 +49,7 @@ export const uploadImageAndPassToGemini = async (file: string, acl: string, subm
 
   const triggerGeminiInput = {
     source_key: s3.key,
-    template_key: "convection-staging",
+    template_key: convectionKey,
     source_bucket: geminiResponse.data.requestCredentialsForAssetUpload.asset.policy_document.conditions.bucket,
     metadata: {
       id: submissionID,
@@ -53,6 +66,19 @@ export const uploadImageAndPassToGemini = async (file: string, acl: string, subm
     gemini_token: geminiProcess.data.createGeminiEntryForAsset.asset.token,
     submission_id: submissionID,
   })
+}
+
+export const getConvectionGeminiKey = async () => {
+  const query = `
+  {
+    services {
+      convection {
+        geminiTemplateKey
+      }
+    }
+  }
+  `
+  return metaphysics<GeminiTokenResonse>({ query, variables: {} })
 }
 
 export const addAssetToConsignment = async (options: ConvectionAssetSubmissionInput) => {
