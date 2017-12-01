@@ -17,6 +17,7 @@
 -   Fixes for metaphysics changes to consignment submission - orta
 -   Implement selected state for images in consignments photo set - maxim
 -   Support sending images for Consignments in production - orta
+-   QA for consignments on metadata screen - maxim
 
 ### 1.4.0-beta.8
 
