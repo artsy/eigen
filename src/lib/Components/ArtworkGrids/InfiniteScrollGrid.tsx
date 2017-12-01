@@ -16,11 +16,11 @@ import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle 
 import Spinner from "../Spinner"
 import Artwork from "./Artwork"
 
+import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { ArtistRelayProps } from "./RelayConnections/ArtistForSaleArtworksGrid"
 import { GeneRelayProps } from "./RelayConnections/GeneArtworksGrid"
 
 export const PageSize = 10
-export const PageEndThreshold = 1000
 
 /**
  * TODO:
@@ -121,7 +121,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     return this.props.mapPropsToArtworksConnection(this.props)
   }
 
-  fetchNextPage() {
+  fetchNextPage = () => {
     if (this.state.fetchingNextPage || this.state.completed) {
       return
     }
@@ -258,26 +258,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     return sections
   }
 
-  // Lifted pretty much straight from RN’s ListView.js
-  onScroll = event => {
-    const scrollProperties = event.nativeEvent
-    const contentLength = scrollProperties.contentSize.height
-    if (contentLength !== this.sentEndForContentLength) {
-      const offset = scrollProperties.contentOffset.y
-      const visibleLength = scrollProperties.layoutMeasurement.height
-      const distanceFromEnd = contentLength - visibleLength - offset
-      if (distanceFromEnd < PageEndThreshold) {
-        this.sentEndForContentLength = contentLength
-        this.fetchNextPage()
-      }
-    }
-  }
-
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
     return (
       <ScrollView
-        onScroll={this.onScroll}
+        onScroll={isCloseToBottom(this.fetchNextPage)}
         scrollEventThrottle={50}
         onLayout={this.onLayout}
         scrollsToTop={false}

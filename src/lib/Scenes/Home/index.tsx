@@ -8,9 +8,10 @@ import { Router } from "lib/utils/router"
 
 import WorksForYou from "lib/Containers/WorksForYou"
 import ForYou from "./Components/ForYou"
-import Sales, { SalesRenderer } from "./Components/Sales"
+import Sales from "./Components/Sales"
 
 import { ForYouRenderer, WorksForYouRenderer } from "lib/relay/QueryRenderers"
+import { SalesRenderer } from "lib/Scenes/Home/Components/Sales/Relay/SalesRenderer"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"

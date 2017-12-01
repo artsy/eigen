@@ -16,3 +16,5 @@ export default function createEnvironment() {
     store,
   })
 }
+
+export const defaultEnvironment = createEnvironment()

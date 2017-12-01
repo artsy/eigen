@@ -1,10 +1,10 @@
-import React from "react"
 import fonts from "lib/data/fonts"
+import React from "react"
 import styled from "styled-components/native"
 
 const Header = styled.View`
   padding: 10px;
-  padding-top: 20px;
+  padding-top: 18px;
   background-color: white;
 `
 

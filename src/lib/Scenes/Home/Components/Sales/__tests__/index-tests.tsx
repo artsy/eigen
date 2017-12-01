@@ -1,13 +1,30 @@
-import "react-native"
 import * as moment from "moment"
+import React from "react"
+import "react-native"
 import * as renderer from "react-test-renderer"
 import Sales from "../index"
-import React from "react"
-
-jest.mock("lib/Scenes/Home/Components/Sales/Components/LotsByFollowedArtists")
 
 it("looks correct when rendered", () => {
-  const auctions = renderer.create(<Sales sales={props} />) as any
+  const data = {
+    relay: {
+      hasMore: jest.fn(),
+      isLoading: jest.fn(),
+      loadMore: jest.fn(),
+    },
+    viewer: {
+      sale_artworks: {
+        pageInfo: {},
+        edges: [
+          {
+            node: {
+              id: "foo",
+            },
+          },
+        ],
+      },
+    },
+  }
+  const auctions = renderer.create(<Sales sales={props} viewer={data.viewer} relay={data.relay as any} />)
   expect(auctions).toMatchSnapshot()
 })
 

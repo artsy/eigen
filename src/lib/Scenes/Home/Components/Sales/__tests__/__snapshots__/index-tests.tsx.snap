@@ -64,7 +64,16 @@ exports[`looks correct when rendered 1`] = `
       Object {
         "data": Array [
           Object {
-            "data": Array [],
+            "data": Object {
+              "edges": Array [
+                Object {
+                  "node": Object {
+                    "id": "foo",
+                  },
+                },
+              ],
+              "pageInfo": Object {},
+            },
           },
         ],
         "renderItem": [Function],
@@ -143,7 +152,16 @@ exports[`looks correct when rendered 1`] = `
       Object {
         "data": Array [
           Object {
-            "data": Array [],
+            "data": Object {
+              "edges": Array [
+                Object {
+                  "node": Object {
+                    "id": "foo",
+                  },
+                },
+              ],
+              "pageInfo": Object {},
+            },
           },
         ],
         "renderItem": [Function],
@@ -174,7 +192,7 @@ exports[`looks correct when rendered 1`] = `
                 "paddingBottom": 10,
                 "paddingLeft": 10,
                 "paddingRight": 10,
-                "paddingTop": 20,
+                "paddingTop": 18,
               },
               undefined,
             ]
@@ -675,7 +693,7 @@ exports[`looks correct when rendered 1`] = `
                 "paddingBottom": 10,
                 "paddingLeft": 10,
                 "paddingRight": 10,
-                "paddingTop": 20,
+                "paddingTop": 18,
               },
               undefined,
             ]
