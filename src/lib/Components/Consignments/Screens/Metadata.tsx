@@ -248,7 +248,7 @@ export default class Metadata extends React.Component<Props, State> {
         }
         {this.state.showPicker
           ? <Picker
-              style={{ height: 220, backgroundColor: "black", marginTop: 40 }}
+              style={{ height: 220, backgroundColor: "black" }}
               key="picker"
               selectedValue={this.state.category}
               onValueChange={this.changeCategoryValue}
