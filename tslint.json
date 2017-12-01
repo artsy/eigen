@@ -1,41 +1,14 @@
 {
-  "extends": [
-    "tslint:recommended",
-    "react",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint:recommended", "react", "tslint-config-prettier"],
   "rules": {
     "arrow-parens": false,
-    "interface-name": [
-      true,
-      "never-prefix"
-    ],
-    "max-classes-per-file": [
-      false
-    ],
-    "member-access": [
-      false,
-      "check-accessor",
-      "check-constructor"
-    ],
-    // Disabled till there’s an auto-fixer for this.
-    // https://github.com/palantir/tslint/blob/master/src/rules/objectLiteralSortKeysRule.ts
+    "interface-name": [true, "never-prefix"],
+    "max-classes-per-file": [false],
+    "member-access": [false, "check-accessor", "check-constructor"],
     "object-literal-sort-keys": false,
+    "ordered-imports": false,
     "switch-default": false,
-    "no-unused-variable": [
-      true,
-      {
-        "ignore-pattern": "React"
-      }
-    ],
-    "no-console": [
-      [
-        "error",
-        [
-          "warn",
-          "error"
-        ]
-      ]
-    ]
+    "no-unused-variable": [true],
+    "no-console": [true, ["error", ["warn", "error"]]]
   }
 }

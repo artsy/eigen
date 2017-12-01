@@ -27,6 +27,18 @@ const Photo = styled.TouchableHighlight`
   font-family: "${fonts["avant-garde-regular"]}";
   flex: 1;
 `
+
+const ImageBG = styled.View`
+  border-color: white;
+  border-radius: 13;
+  border-width: 1;
+  width: 26;
+  height: 26;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20;
+`
+
 const isPad = Dimensions.get("window").width > 700
 
 export interface ImageData {
@@ -44,6 +56,11 @@ interface ImagePreviewProps {
 interface TakePhotoImageProps {
   onPressNewPhoto: () => void
 }
+
+const SelectedIcon = () =>
+  <ImageBG style={{ backgroundColor: "white", position: "absolute", top: 120, left: 120 }}>
+    <Image source={require("../../../../../images/consignments/black-tick.png")} />
+  </ImageBG>
 
 const TakePhotoImage = (props: TakePhotoImageProps) =>
   <TouchableOpacity
@@ -64,19 +81,25 @@ const TakePhotoImage = (props: TakePhotoImageProps) =>
   </TouchableOpacity>
 
 const ImageForURI = (props: ImagePreviewProps) =>
-  <TouchableHighlight
-    onPress={() => props.onPressItem(props.data.image.uri)}
+  <View
     style={{
-      backgroundColor: colors["gray-regular"],
+      borderWidth: 2,
+      borderColor: props.selected ? "white" : null,
+      margin: 4,
       height: 158,
       width: 158,
-      margin: 4,
-      borderColor: props.selected ? "white" : null,
-      borderWidth: 2,
     }}
   >
-    <Image source={{ uri: props.data.image.uri }} style={{ height: 154, width: 154 }} />
-  </TouchableHighlight>
+    <TouchableHighlight
+      onPress={() => props.onPressItem(props.data.image.uri)}
+      style={{
+        opacity: props.selected ? 0.5 : 1.0,
+      }}
+    >
+      <Image source={{ uri: props.data.image.uri }} style={{ height: 154, width: 154 }} />
+    </TouchableHighlight>
+    {props.selected ? <SelectedIcon /> : null}
+  </View>
 
 interface Props {
   data: ImageData[]
