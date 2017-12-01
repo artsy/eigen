@@ -39,7 +39,7 @@ export const uploadImageAndPassToGemini = async (file: string, acl: string, subm
     template_key: "convection-staging",
     source_bucket: geminiResponse.data.requestCredentialsForAssetUpload.asset.policy_document.conditions.bucket,
     metadata: {
-      id: 169,
+      id: submissionID,
       _type: "Consignment",
     },
   }

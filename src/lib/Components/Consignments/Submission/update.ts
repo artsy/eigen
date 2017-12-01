@@ -13,14 +13,14 @@ const updateASubmission = async (submission: ConsignmentSetup, id: string) => {
   const input = consignmentSetupToMutationInput(submission)
   const query = `mutation {
     updateConsignmentSubmission(input:${input}) {
-      submission {
+      consignment_submission {
         id
       }
     }
   }`
 
   const results = await metaphysics<UpdateSubmissionResponse>({ query })
-  return results.data.updateConsignmentSubmission.submission
+  return results.data.updateConsignmentSubmission.consignment_submission
 }
 
 export default updateASubmission

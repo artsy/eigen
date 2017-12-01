@@ -13,14 +13,14 @@ export const createADraftSubmission = async (submission: ConsignmentSetup) => {
   const input = consignmentSetupToMutationInput(submission)
   const query = `mutation {
     createConsignmentSubmission(input:${input}) {
-      submission {
+      consignment_submission {
         id
       }
     }
   }`
 
   const results = await metaphysics<CreateSubmissionResponse>({ query })
-  return results.data.createConsignmentSubmission.submission
+  return results.data.createConsignmentSubmission.consignment_submission
 }
 
 export default createADraftSubmission

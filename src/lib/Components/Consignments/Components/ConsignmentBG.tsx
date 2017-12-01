@@ -29,17 +29,13 @@ interface Props extends ViewProperties {
 export default class ConsignmentBG extends React.Component<Props> {
   exitModal = () => SwitchBoard.dismissModalViewController(this)
 
-  onLayout = (event: LayoutChangeEvent) => {
-    const layout = event.nativeEvent.layout
-  }
-
   render() {
     return (
       <BG key="bg">
-        {this.props.showCloseButton ? <CloseButton onPress={this.exitModal} /> : null}
         <ConsignmentContainer>
           {this.props.children}
         </ConsignmentContainer>
+        {this.props.showCloseButton && <CloseButton onPress={this.exitModal} />}
       </BG>
     )
   }
