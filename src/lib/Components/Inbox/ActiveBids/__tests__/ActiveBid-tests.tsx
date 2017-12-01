@@ -24,7 +24,7 @@ const bid = (isLive?: boolean, isOpen?: boolean) => {
       is_live_open: isOpen,
       href: "/to-the-auction",
     },
-    active_bid: {
+    most_recent_bid: {
       id: "594933e6275b244305851e9c",
       display_max_bid_amount_dollars: "$10,000",
       max_bid: {

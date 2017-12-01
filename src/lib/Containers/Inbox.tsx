@@ -73,8 +73,8 @@ export default createRefetchContainer(
   {
     me: graphql`
       fragment Inbox_me on Me {
-        lot_standings(active_positions: true) {
-          active_bid {
+        lot_standings(live: true) {
+          most_recent_bid {
             __id
           }
         }
