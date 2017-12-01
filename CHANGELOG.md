@@ -16,6 +16,7 @@
 -   Add analytics to consignments - orta
 -   Fixes for metaphysics changes to consignment submission - orta
 -   Implement selected state for images in consignments photo set - maxim
+-   Support sending images for Consignments in production - orta
 
 ### 1.4.0-beta.8
 
