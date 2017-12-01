@@ -76,7 +76,7 @@ PODS:
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
   - EDColor (1.0.0)
-  - Emission (1.4.0-beta.8):
+  - Emission (1.4.0-beta.9):
     - Artsy+UIColors
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
@@ -88,7 +88,7 @@ PODS:
     - React/RCTNetwork (= 0.48.4)
     - React/RCTText (= 0.48.4)
     - SDWebImage (< 4, >= 3.7.2)
-    - SentryReactNative (= 0.14.5)
+    - SentryReactNative (= 0.30.2)
     - Yoga (= 0.48.4.React)
   - Expecta (1.0.5)
   - Expecta+Snapshots (3.0.0):
@@ -142,14 +142,14 @@ PODS:
   - JSDecoupledAppDelegate (1.2.0)
   - JWTDecode (2.0.0)
   - Keys (1.0.0)
-  - KSCrash/Core (1.15.12):
+  - KSCrash/Core (1.15.16):
     - KSCrash/Reporting/Filters/Basic
-  - KSCrash/Recording (1.15.12):
-    - KSCrash/Recording/Tools (= 1.15.12)
-  - KSCrash/Recording/Tools (1.15.12)
-  - KSCrash/Reporting/Filters/Base (1.15.12):
+  - KSCrash/Recording (1.15.16):
+    - KSCrash/Recording/Tools (= 1.15.16)
+  - KSCrash/Recording/Tools (1.15.16)
+  - KSCrash/Reporting/Filters/Base (1.15.16):
     - KSCrash/Recording
-  - KSCrash/Reporting/Filters/Basic (1.15.12):
+  - KSCrash/Reporting/Filters/Basic (1.15.16):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters/Base
   - KSDeferred (0.2.0)
@@ -210,15 +210,16 @@ PODS:
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
-  - Sentry (3.1.2):
-    - Sentry/Core (= 3.1.2)
-  - Sentry/Core (3.1.2)
-  - Sentry/KSCrash (3.1.2):
-    - KSCrash/Core (~> 1.15.9)
-  - SentryReactNative (0.14.5):
+  - Sentry (3.9.1):
+    - Sentry/Core (= 3.9.1)
+    - Sentry/KSCrash (= 3.9.1)
+  - Sentry/Core (3.9.1)
+  - Sentry/KSCrash (3.9.1):
+    - KSCrash/Core (~> 1.15.12)
+  - SentryReactNative (0.30.2):
     - React
-    - Sentry (~> 3.1.2)
-    - Sentry/KSCrash (~> 3.1.2)
+    - Sentry (~> 3.9.0)
+    - Sentry/KSCrash (~> 3.9.0)
   - Specta (1.0.5)
   - SSFadingScrollView (1.1.0)
   - Starscream (2.0.4)
@@ -253,7 +254,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission (~> 1.4.0-beta.1)
+  - Emission (~> 1.4.0-beta.9)
   - Expecta
   - Expecta+Snapshots
   - Extraction
@@ -398,7 +399,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 83ad5a90162e5333d0153a547a6c061c8fc19dd0
+  Emission: cd7b434c0f965c9218bbe05abbaa36c5de0fdb1e
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
@@ -417,7 +418,7 @@ SPEC CHECKSUMS:
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   Keys: 9c35bf00f612ee1d48556f4a4b9b4551e224e90f
-  KSCrash: 931b6caeebfbfe0d316007fcd209f6cb9889c624
+  KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   MARKRangeSlider: dbf0878b03e921b52e4ef1e7766c1a8affb0c577
@@ -437,8 +438,8 @@ SPEC CHECKSUMS:
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
-  Sentry: 5a578891f177e994d89d57effc70adb97bfb29db
-  SentryReactNative: a8704684dd30ae618db4bfab0748b72c0a0caf78
+  Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
+  SentryReactNative: 2d4a54bfc09bd8451e9b91e34090ba7b12e1a0ab
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   SSFadingScrollView: a2f142312afad23585e354a41a6ed337045e1aa3
   Starscream: df5974ee928b157c8eda8af8de7c620276b7dfcc
@@ -450,6 +451,6 @@ SPEC CHECKSUMS:
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 2efb0a2b24e5c17cf1aea8c785d4428bd077f667
 
-PODFILE CHECKSUM: dc8f8e462d0bdb109f466e0a845513c5580480cf
+PODFILE CHECKSUM: 9a5f553c55d568d26205f88682bfee4625eeaaff
 
 COCOAPODS: 1.2.1
