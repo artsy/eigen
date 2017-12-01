@@ -222,13 +222,13 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 - (NSArray *)buttons
 {
-    ARNavigationTabButton *homeButton = [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"];
-    ARNavigationTabButton *searchButton = [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"];
-    ARNavigationTabButton *messagingButton = [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"];
-    ARNavigationTabButton *favouritesButton = [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"];
-    ARNavigationTabButton *profileButton = [self tabButtonWithName:@"nav_profile" accessibilityName:@"Profile"];
-
-    return @[ homeButton, searchButton, messagingButton, favouritesButton, profileButton ];
+    return @[
+        [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
+        [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
+        [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
+        [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
+        // [self tabButtonWithName:@"nav_profile" accessibilityName:@"Profile"],
+    ];
 }
 
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
