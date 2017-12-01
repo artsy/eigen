@@ -46,7 +46,7 @@ This will set you up on our staging server, you will have a running version of t
 
 For how we deploy, check out the dedicated documentation:
 
-- [Deploying a beta](docs/deploying_to_beta.md)
+- [Deploying a beta](docs/deploy_to_beta.md)
 - [Deploying to the App Store](docs/deploy_to_app_store.md)
 
 ### Thanks
