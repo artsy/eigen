@@ -9,6 +9,8 @@ jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
 const nav = {} as any
 const route = {} as any
 
+beforeEach(jest.resetAllMocks)
+
 it("calls the draft created event", () => {
   const overviewComponent = shallow(<Overview navigator={nav} route={route} setup={{ submission_id: "123" }} />).dive()
   const overview = overviewComponent.instance()

@@ -220,11 +220,16 @@ export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entit
 export const track: Track = _track
 
 /**
- * A typed page view decorator for the top level component for your screen.
+ * A typed page view decorator for the top level component for your screen. This is the
+ * function you must use at the root of your component tree, otherwise your track calls
+ * will do nothing.
  *
  * For the majority of Emission code, this should only be used inside the AppRegistry,
  * however if you have other components which are going to be presented using a navigation
  * controller then you'll need to use this.
+ *
+ * The main implementation difference between this and `track` is that this hooks the callbacks
+ * to our native `Events.postEvent` function.
  *
  * As an object:
  *
@@ -240,7 +245,8 @@ export const track: Track = _track
  *       })
  *
  *       export default class Welcome extends React.Component<Props, null> {
- *         [...]
+ *         // [...]
+ *       }
  *
  * * As an function taking account of incoming props:
  *
@@ -250,7 +256,7 @@ export const track: Track = _track
  *      import { screenTrack, Schema } from "lib/utils/track"
  *
  *      interface Props extends ViewProperties {
- *        [..]
+ *        // [...]
  *      }
  *
  *      @screenTrack<Props>(props => ({
@@ -258,10 +264,10 @@ export const track: Track = _track
  *        context_screen_owner_slug: props.submissionID,
  *        context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
  *      }))
+ *
  *      export default class Welcome extends React.Component<Props, null> {
- *
- *        [...]
- *
+ *        // [...]
+ *      }
  */
 export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
   return _track(trackingInfo as any, {
@@ -281,37 +287,44 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *
  * Here's a full example:
  *
- * import { shallow } from "enzyme"
- * import Event from "lib/NativeModules/Events"
- * import React from "react"
+ * @example
  *
- * // Unmock react-tracking so that it will wrap our code
- * jest.unmock("react-tracking")
- * import Overview from "../Overview"
+ *       ```ts
+ *      import { shallow } from "enzyme"
+ *      import Event from "lib/NativeModules/Events"
+ *      import React from "react"
  *
- * jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
+ *      // Unmock react-tracking so that it will wrap our code
+ *      jest.unmock("react-tracking")
+ *      import Overview from "../Overview"
  *
- * it("calls the draft created event", () => {
+ *      // Create a stub for checking the events sent to the native code
+ *      // and make it reset between tests
+ *      jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
+ *      beforeEach(jest.resetAllMocks)
  *
- *   // Use enzyme to render the component tree
- *   // note that we need to `dive` into the first child component
- *   // so that we get to the real component not the reac-tracking HOC
- *   const overviewComponent = shallow(<Overview [...] />).dive()
- *   const overview = overviewComponent.instance()
+ *      it("calls the draft created event", () => {
  *
- *   // Run the function which triggers the tracking call
- *   overview.submissionDraftCreated()
+ *        // Use enzyme to render the component tree
+ *        // note that we need to `dive` into the first child component
+ *        // so that we get to the real component not the reac-tracking HOC
+ *        const overviewComponent = shallow(<Overview [...] />).dive()
+ *        const overview = overviewComponent.instance()
  *
- *   // Check that the native event for the analytics call is sent
- *   expect(Event.postEvent).toBeCalledWith({
- *     action_name: "consignmentDraftCreated",
- *     action_type: "success",
- *     context_screen: "ConsignmentsOverview",
- *     context_screen_owner_type: "ConsignmentSubmission",
- *     owner_id: "123",
- *     owner_slug: "123",
- *     owner_type: "ConsignmentSubmission",
- *   })
- * })
+ *        // Run the function which triggers the tracking call
+ *        overview.submissionDraftCreated()
+ *
+ *        // Check that the native event for the analytics call is sent
+ *        expect(Event.postEvent).toBeCalledWith({
+ *          action_name: "consignmentDraftCreated",
+ *          action_type: "success",
+ *          context_screen: "ConsignmentsOverview",
+ *          context_screen_owner_type: "ConsignmentSubmission",
+ *          owner_id: "123",
+ *          owner_slug: "123",
+ *          owner_type: "ConsignmentSubmission",
+ *        })
+ *      })
+ *      ```
  *
  */
