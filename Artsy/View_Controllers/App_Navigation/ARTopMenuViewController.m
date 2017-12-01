@@ -124,7 +124,8 @@ static const CGFloat ARMenuButtonDimension = 50;
     UIView *separator = [[UIView alloc] init];
     [separator constrainHeight:@"1"];
     UIColor *color = [AROptions boolForOption:ARUseStagingDefault] ?
-    [UIColor artsyPurpleRegular] : [UIColor artsyGrayRegular];
+        [UIColor artsyPurpleRegular] :
+        [UIColor artsyGrayRegular];
     separator.backgroundColor = color;
     [tabContainer addSubview:separator];
     [separator alignTopEdgeWithView:tabContainer predicate:@"0"];
@@ -154,8 +155,8 @@ static const CGFloat ARMenuButtonDimension = 50;
     (void)self.keyboardLayoutGuide;
 
     [self registerWithSwitchBoard:ARSwitchBoard.sharedInstance];
-    
-    if ([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding)  {
+
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding) {
         [self fadeInFromOnboarding];
     }
 }
@@ -206,7 +207,7 @@ static const CGFloat ARMenuButtonDimension = 50;
 }
 
 
-- (ARNavigationTabButton *)tabButtonWithName:(NSString *)name accessibilityName: (NSString *)accessibilityName
+- (ARNavigationTabButton *)tabButtonWithName:(NSString *)name accessibilityName:(NSString *)accessibilityName
 {
     ARNavigationTabButton *button = [[ARNavigationTabButton alloc] init];
     button.accessibilityLabel = accessibilityName;
@@ -381,10 +382,10 @@ static const CGFloat ARMenuButtonDimension = 50;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+
     // Essentially the else part of the check in viewDidLoad
     // If not coming from a new account (with animation), then prompt for push on the usual constraints
-    if (!([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding))  {
+    if (!([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding)) {
         ARAppNotificationsDelegate *remoteNotificationsDelegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
         [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
     }
@@ -438,7 +439,7 @@ static const CGFloat ARMenuButtonDimension = 50;
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void (^__nullable)(void))completion
 {
     NSAssert(viewController != nil, @"Attempt to push a nil view controller.");
-    
+
     if ([self.class shouldPresentViewControllerAsModal:viewController]) {
         [self presentViewController:viewController animated:animated completion:completion];
         return;
@@ -467,13 +468,13 @@ static const CGFloat ARMenuButtonDimension = 50;
 - (void)presentRootViewController:(UIViewController *)viewController animated:(BOOL)animated;
 {
     ARNavigationController *presentableController;
-    
+
     NSInteger index = [self indexOfRootViewController:viewController];
-    
+
     // If there is an existing instance at that index, use it. Otherwise use the instance passed in as viewController.
     // If for some reason something went wrong, default to Home
     BOOL alreadySelectedTab = self.selectedTabIndex == index;
-    
+
     switch (index) {
         case ARTopTabControllerIndexHome:
         case ARTopTabControllerIndexMessaging:
@@ -482,7 +483,7 @@ static const CGFloat ARMenuButtonDimension = 50;
         case ARTopTabControllerIndexFavorites:
         case ARTopTabControllerIndexProfile:
             presentableController = [[ARNavigationController alloc] initWithRootViewController:viewController];
-            
+
             // Setting alreadySelectedTab to NO so the notification (Works for you) view controller gets presented even though
             // the tab index hasn't changed. animated is to NO since we're transitioning to the same VC
             alreadySelectedTab = NO;
@@ -491,11 +492,11 @@ static const CGFloat ARMenuButtonDimension = 50;
         default:
             presentableController = [self rootNavigationControllerAtIndex:ARTopTabControllerIndexHome];
     }
-    
+
     if (presentableController.viewControllers.count > 1) {
         [presentableController popToRootViewControllerAnimated:(animated && alreadySelectedTab)];
     }
-    
+
     if (!alreadySelectedTab) {
         [self.tabContentView forceSetViewController:presentableController atIndex:index animated:animated];
     }
