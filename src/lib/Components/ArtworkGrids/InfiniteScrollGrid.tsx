@@ -21,7 +21,6 @@ import { ArtistRelayProps } from "./RelayConnections/ArtistForSaleArtworksGrid"
 import { GeneRelayProps } from "./RelayConnections/GeneArtworksGrid"
 
 export const PageSize = 10
-export const PageEndThreshold = 1000
 
 /**
  * TODO:
