@@ -2,8 +2,6 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-jest.mock("react-tracking")
-
 import Artist from "../Artist"
 import Location from "../Location"
 import Metadata from "../Metadata"

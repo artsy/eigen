@@ -5,8 +5,7 @@ import Events from "lib/NativeModules/Events"
 
 /**
  * Useful notes:
- *  * Add `jest.mock("react-tracking")` to test components
- *    which are wrapped by tracking.
+ *  * At the bottom of this file there is an example of how to test track'd code.
  */
 
 // tslint:disable-next-line:no-namespace
@@ -221,28 +220,26 @@ export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entit
 export const track: Track = _track
 
 /**
- * A typed page view decorator for a class, for when you _don't_ need to make tracked calls internally
+ * A typed page view decorator for the top level component for your screen.
+ *
+ * For the majority of Emission code, this should only be used inside the AppRegistry,
+ * however if you have other components which are going to be presented using a navigation
+ * controller then you'll need to use this.
  *
  * As an object:
  *
  * @example
  *
  *      ```ts
- *      import { pageViewTrack, Schema } from "lib/utils/track"
+ *      import { screenTrack, Schema } from "lib/utils/track"
  *
- *       @pageViewTrack({
+ *       @screenTrack({
  *        context_screen: Schema.PageNames.ConsignmentsWelcome,
  *        context_screen_owner_slug: null,
  *        context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
  *       })
+ *
  *       export default class Welcome extends React.Component<Props, null> {
- *
- *        goTapped = () => this.props.navigator.push({ component: Overview })
- *
- *        // It's not optimal to dismiss the modal, but otherwise we get into all sorts of tricky states
- *        privacyPolicyTapped = () =>
- *          SwitchBoard.dismissModalViewController(this) &&
- *          SwitchBoard.presentNavigationViewController(this, Router.PrivacyPage)
  *         [...]
  *
  * * As an function taking account of incoming props:
@@ -250,28 +247,71 @@ export const track: Track = _track
  * @example
  *
  *      ```ts
- *      import { pageViewTrack, Schema } from "lib/utils/track"
+ *      import { screenTrack, Schema } from "lib/utils/track"
  *
  *      interface Props extends ViewProperties {
- *        navigator: NavigatorIOS
- *        route: Route
- *        submissionID: string
+ *        [..]
  *      }
  *
- *      @pageViewTrack<Props>(props => ({
+ *      @screenTrack<Props>(props => ({
  *        context_screen: Schema.PageNames.ConsignmentsSubmission,
  *        context_screen_owner_slug: props.submissionID,
  *        context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
  *      }))
  *      export default class Welcome extends React.Component<Props, null> {
- *        goTapped = () => this.props.navigator.push({ component: Overview })
  *
  *        [...]
  *
  */
-export function pageViewTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
+export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
   return _track(trackingInfo as any, {
     dispatch: data => Events.postEvent(data),
     dispatchOnMount: true,
   })
 }
+
+/**
+ * ## Writing tests for your tracked code
+ *
+ * By default we mock `react-tracking`, so it's not possible to test the code easily.
+ *
+ * A good pattern for testing analytics code is to have a completely separate file
+ * for the tests. For example: `__tests__/Overview-analytics-tests.tsx`. Jest has each
+ * test file run in a unique environment, so in that file we can unmock react-tracking.
+ *
+ * Here's a full example:
+ *
+ * import { shallow } from "enzyme"
+ * import Event from "lib/NativeModules/Events"
+ * import React from "react"
+ *
+ * // Unmock react-tracking so that it will wrap our code
+ * jest.unmock("react-tracking")
+ * import Overview from "../Overview"
+ *
+ * jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
+ *
+ * it("calls the draft created event", () => {
+ *
+ *   // Use enzyme to render the component tree
+ *   // note that we need to `dive` into the first child component
+ *   // so that we get to the real component not the reac-tracking HOC
+ *   const overviewComponent = shallow(<Overview [...] />).dive()
+ *   const overview = overviewComponent.instance()
+ *
+ *   // Run the function which triggers the tracking call
+ *   overview.submissionDraftCreated()
+ *
+ *   // Check that the native event for the analytics call is sent
+ *   expect(Event.postEvent).toBeCalledWith({
+ *     action_name: "consignmentDraftCreated",
+ *     action_type: "success",
+ *     context_screen: "ConsignmentsOverview",
+ *     context_screen_owner_type: "ConsignmentSubmission",
+ *     owner_id: "123",
+ *     owner_slug: "123",
+ *     owner_type: "ConsignmentSubmission",
+ *   })
+ * })
+ *
+ */

@@ -13,7 +13,7 @@ import {
 import { Router } from "lib/utils/router"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 
-import { pageViewTrack, Schema, Track } from "lib/utils/track"
+import { Schema, screenTrack, Track } from "lib/utils/track"
 import Circle from "../Components/CircleImage"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { Button } from "../Components/FormElements"
@@ -25,7 +25,7 @@ interface Props extends ViewProperties {
   route: Route
 }
 
-@pageViewTrack({
+@screenTrack({
   context_screen: Schema.PageNames.ConsignmentsWelcome,
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })

@@ -1,5 +1,5 @@
+import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import React from "react"
-
 import {
   AsyncStorage,
   Dimensions,
@@ -11,14 +11,16 @@ import {
   View,
   ViewProperties,
 } from "react-native"
-import ConsignmentBG from "../Components/ConsignmentBG"
-import { LargeHeadline, Subtitle } from "../Typography"
 
 import { ConsignmentMetadata, ConsignmentSetup, SearchResult } from "../"
+import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import TODO from "../Components/ArtworkConsignmentTodo"
-
-import { Schema, Track, track as _track } from "lib/utils/track"
+import ConsignmentBG from "../Components/ConsignmentBG"
 import { Button, Row } from "../Components/FormElements"
+import createSubmission from "../Submission/create"
+import updateSubmission from "../Submission/update"
+import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
+import { LargeHeadline, Subtitle } from "../Typography"
 import Artist from "./Artist"
 import FinalSubmissionQuestions from "./FinalSubmissionQuestions"
 import Location from "./Location"
@@ -27,13 +29,7 @@ import Provenance from "./Provenance"
 import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
 import Welcome from "./Welcome"
 
-import createSubmission from "../Submission/create"
-import updateSubmission from "../Submission/update"
-import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
-
 const consignmentsStateKey = "ConsignmentsStoredState"
-
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -46,7 +42,11 @@ interface State extends ConsignmentSetup {
 }
 
 const track: Track<Props, State> = _track
-@track()
+
+@screenTrack({
+  context_screen: Schema.PageNames.ConsignmentsOverView,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
+})
 export default class Info extends React.Component<Props, State> {
   constructor(props) {
     super(props)
@@ -120,7 +120,9 @@ export default class Info extends React.Component<Props, State> {
       updateSubmission(this.state, this.state.submission_id)
     } else if (this.state.artist) {
       const submission = await createSubmission(this.state)
-      this.setState({ submission_id: submission.id }, this.submissionDraftCreated)
+      this.setState({ submission_id: submission.id }, () => {
+        this.submissionDraftCreated()
+      })
     }
   }
 
@@ -131,8 +133,9 @@ export default class Info extends React.Component<Props, State> {
     owner_type: Schema.OwnerEntityTypes.Consignment,
     owner_slug: state.submission_id,
   }))
-  // tslint:disable-next-line:no-empty
-  submissionDraftCreated() {}
+  submissionDraftCreated() {
+    return null
+  }
 
   submitFinalSubmission = async (setup: ConsignmentSetup) => {
     this.setState(setup, async () => {
@@ -150,8 +153,9 @@ export default class Info extends React.Component<Props, State> {
     owner_type: Schema.OwnerEntityTypes.Consignment,
     owner_slug: state.submission_id,
   }))
-  // tslint:disable-next-line:no-empty
-  submissionDraftSubmitted() {}
+  submissionDraftSubmitted() {
+    return null
+  }
 
   exitModal = () => SwitchBoard.dismissModalViewController(this)
 

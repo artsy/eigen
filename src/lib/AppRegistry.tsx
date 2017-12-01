@@ -2,12 +2,9 @@ import * as _ from "lodash"
 import React from "react"
 import { AppRegistry, View, ViewProperties } from "react-native"
 import { TrackingInfo } from "react-tracking"
-import { pageViewTrack as track, Schema, Track } from "./utils/track"
 
 import Consignments from "./Components/Consignments"
 import Containers from "./Containers/index"
-import renderWithLoadProgress from "./utils/renderWithLoadProgress"
-
 import {
   ArtistRenderer,
   ConversationRenderer,
@@ -19,9 +16,10 @@ import {
   SaleRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
-
 import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
+import renderWithLoadProgress from "./utils/renderWithLoadProgress"
+import { Schema, screenTrack as track, Track } from "./utils/track"
 
 // Analytics wrapper for all of our top level React components
 function AddTrack(pageName: string) {

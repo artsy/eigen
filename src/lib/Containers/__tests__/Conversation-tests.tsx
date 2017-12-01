@@ -6,6 +6,8 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 import Conversation from "../Conversation"
 
+jest.unmock("react-tracking")
+
 jest.mock("NetInfo", () => {
   return {
     addEventListener: jest.fn(),
