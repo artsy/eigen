@@ -1,7 +1,7 @@
 // Please add your own contribution below inside the Master section
 // These docs are aimed at developers, but are shown inside collector GMV's channel
 
-### Master
+### 1.4.0-beta.9
 
 -   Accommodate selectedArtist parameter in Home container - sarah
 -   Don’t require 2 taps to open a conversation attachment and keep keyboard up - alloy
@@ -18,6 +18,7 @@
 -   Implement selected state for images in consignments photo set - maxim
 -   Support sending images for Consignments in production - orta
 -   QA for consignments on metadata screen - maxim
+-   Adds <LotsByArtistsYouFollow /> component to Sales - chris
 
 ### 1.4.0-beta.8
 
@@ -86,8 +87,6 @@
 -   Adds Live and timed auctions in home view - luc
 -   Tab bar text now aligned and centered correctly - luc
 -   Adds iPad support for Auctions view layout - luc
--   Adds <LotsByArtistsYouFollow /> component to Sales - chris
--   Refactors <LotsByArtistsYouFollow /> by consolidating QueryRenderers - chris
 
 ###### Consignments
 
