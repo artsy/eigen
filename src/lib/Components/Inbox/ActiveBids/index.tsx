@@ -15,7 +15,7 @@ class ActiveBids extends React.Component<RelayProps, null> {
 
   renderRows() {
     const bids = this.props.me.lot_standings.map(bidData => {
-      return <ActiveBid key={bidData.active_bid.__id} bid={bidData} />
+      return <ActiveBid key={bidData.most_recent_bid.__id} bid={bidData} />
     })
     return bids
   }
@@ -34,8 +34,8 @@ export default createFragmentContainer(
   ActiveBids,
   graphql`
     fragment ActiveBids_me on Me {
-      lot_standings(active_positions: true) {
-        active_bid {
+      lot_standings(live: true) {
+        most_recent_bid {
           __id
         }
         ...ActiveBid_bid
@@ -47,7 +47,7 @@ export default createFragmentContainer(
 interface RelayProps {
   me: {
     lot_standings: Array<{
-      active_bid: {
+      most_recent_bid: {
         __id: string
       } | null
     } | null> | null

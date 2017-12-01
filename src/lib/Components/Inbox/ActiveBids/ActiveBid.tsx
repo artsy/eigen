@@ -1,14 +1,11 @@
-import React from "react"
-import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
-
-import { TouchableWithoutFeedback } from "react-native"
-
-import { BodyText, MetadataText } from "../Typography"
-
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import colors from "lib/data/colors"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import React from "react"
+import { TouchableWithoutFeedback } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
+import { BodyText, MetadataText } from "../Typography"
 
 const Container = styled.View`
   margin: 17px 20px 0;
@@ -86,7 +83,7 @@ class ActiveBid extends React.Component<RelayProps, State> {
       status = "live_auction"
     } else {
       const leadingBidder = bid.is_leading_bidder
-      const reserveNotMet = bid.active_bid.sale_artwork.reserve_status === "reserve_not_met"
+      const reserveNotMet = bid.most_recent_bid.sale_artwork.reserve_status === "reserve_not_met"
 
       if (leadingBidder) {
         status = reserveNotMet ? "reserve" : "winning"
@@ -111,12 +108,12 @@ class ActiveBid extends React.Component<RelayProps, State> {
   handleTap() {
     const bid = this.props.bid
     // push user into live auction if it's open; otherwise go to artwork
-    const href = this.state.status === "live_auction" ? bid.sale.href : bid.active_bid.sale_artwork.artwork.href
+    const href = this.state.status === "live_auction" ? bid.sale.href : bid.most_recent_bid.sale_artwork.artwork.href
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
   render() {
-    const bid = this.props.bid.active_bid
+    const bid = this.props.bid.most_recent_bid
     const imageURL = bid.sale_artwork.artwork.image.url
     const lotNumber = bid.sale_artwork.lot_number
     const artistName = bid.sale_artwork.artwork.artist_names
@@ -159,7 +156,8 @@ export default createFragmentContainer(
         href
         is_live_open
       }
-      active_bid {
+      most_recent_bid {
+        __id
         max_bid {
           display
         }
@@ -186,7 +184,7 @@ interface RelayProps {
       href: string | null
       is_live_open: boolean | null
     } | null
-    active_bid: {
+    most_recent_bid: {
       max_bid: {
         display: string | null
       } | null
