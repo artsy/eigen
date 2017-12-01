@@ -196,9 +196,9 @@ describe(@"navigation", ^{
        itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexMessaging]});
    });
 
-   describe(@"profile", ^{
-       itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexProfile]});
-   });
+//   describe(@"profile", ^{
+//       itShouldBehaveLike(@"tab behavior", @{@"tab" : [NSNumber numberWithInt:ARTopTabControllerIndexProfile]});
+//   });
 
    describe(@"favorites", ^{
        before(^{
