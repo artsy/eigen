@@ -132,7 +132,7 @@ export default class Metadata extends React.Component<Props, State> {
     return (
       <View style={{ flex: 1 }}>
         <ConsignmentBG>
-          <DoneButton onPress={this.doneTapped} verticalOffset={80}>
+          <DoneButton onPress={this.doneTapped}>
             <ScrollView keyboardShouldPersistTaps="handled" centerContent>
               <View style={{ padding: 10 }}>
                 <Row>
@@ -143,6 +143,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onChangeText: this.updateTitle,
                       value: this.state.title,
                       onSubmitEditing: this.selectNextInput,
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
@@ -157,23 +158,11 @@ export default class Metadata extends React.Component<Props, State> {
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       ref: component => (this.yearInput = component),
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
                 </Row>
-
-                <TouchableWithoutFeedback onPress={this.showCategorySelection}>
-                  <Row>
-                    <Text
-                      text={{
-                        placeholder: "Category",
-                        value: this.state.categoryName,
-                      }}
-                      readonly={true}
-                      style={{ margin: 10 }}
-                    />
-                  </Row>
-                </TouchableWithoutFeedback>
 
                 <Row>
                   <Text
@@ -184,6 +173,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       ref: component => (this.mediumInput = component),
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
@@ -199,6 +189,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       ref: component => (this.widthInput = component),
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
@@ -211,6 +202,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       ref: component => (this.heightInput = component),
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
@@ -225,6 +217,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       value: this.state.depth ? this.state.depth.toString() : "",
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
@@ -233,6 +226,18 @@ export default class Metadata extends React.Component<Props, State> {
                     <Toggle selected={this.state.unit === "CM"} left="CM" right="IN" onPress={this.updateUnit} />
                   </View>
                 </Row>
+                <TouchableWithoutFeedback onPress={this.showCategorySelection}>
+                  <Row>
+                    <Text
+                      text={{
+                        placeholder: "Category",
+                        value: this.state.categoryName,
+                      }}
+                      readonly={true}
+                      style={{ margin: 10 }}
+                    />
+                  </Row>
+                </TouchableWithoutFeedback>
               </View>
             </ScrollView>
           </DoneButton>
@@ -243,7 +248,7 @@ export default class Metadata extends React.Component<Props, State> {
         }
         {this.state.showPicker
           ? <Picker
-              style={{ height: 220, backgroundColor: "black", marginTop: 40 }}
+              style={{ height: 220, backgroundColor: "black" }}
               key="picker"
               selectedValue={this.state.category}
               onValueChange={this.changeCategoryValue}

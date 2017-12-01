@@ -128,7 +128,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
       }
     >
       <View
-        keyboardVerticalOffset={80}
+        keyboardVerticalOffset={15}
         onLayout={[Function]}
         style={
           Array [
@@ -207,11 +207,13 @@ exports[`state is set up with empty consignment metadata 1`] = `
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
+                          onBlur={[Function]}
                           onChangeText={[Function]}
                           onFocus={[Function]}
                           onSubmitEditing={[Function]}
                           placeholder="Title"
                           placeholderTextColor="#666666"
+                          returnKeyType="next"
                           selectionColor="#cccccc"
                           style={
                             Array [
@@ -233,13 +235,10 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       </View>
                       <View
                         style={
-                          Array [
-                            Object {
-                              "backgroundColor": "white",
-                              "height": 1,
-                            },
-                            undefined,
-                          ]
+                          Object {
+                            "backgroundColor": "#666666",
+                            "height": 1,
+                          }
                         }
                       />
                     </View>
@@ -281,11 +280,13 @@ exports[`state is set up with empty consignment metadata 1`] = `
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
+                          onBlur={[Function]}
                           onChangeText={[Function]}
                           onFocus={[Function]}
                           onSubmitEditing={[Function]}
                           placeholder="Year"
                           placeholderTextColor="#666666"
+                          returnKeyType="next"
                           selectionColor="#cccccc"
                           style={
                             Array [
@@ -307,90 +308,10 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       </View>
                       <View
                         style={
-                          Array [
-                            Object {
-                              "backgroundColor": "white",
-                              "height": 1,
-                            },
-                            undefined,
-                          ]
-                        }
-                      />
-                    </View>
-                  </View>
-                  <View
-                    accessibilityComponentType={undefined}
-                    accessibilityLabel={undefined}
-                    accessibilityTraits={undefined}
-                    accessible={true}
-                    hitSlop={undefined}
-                    nativeID={undefined}
-                    onLayout={undefined}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      Array [
-                        undefined,
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "paddingVertical": 6,
-                        },
-                      ]
-                    }
-                    testID={undefined}
-                  >
-                    <View
-                      style={
-                        Array [
                           Object {
-                            "margin": 10,
-                          },
-                          Object {
-                            "flex": 1,
-                            "maxHeight": 40,
-                          },
-                        ]
-                      }
-                    >
-                      <View
-                        style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
+                            "backgroundColor": "#666666",
+                            "height": 1,
                           }
-                        }
-                      >
-                        <Text
-                          accessible={true}
-                          allowFontScaling={true}
-                          disabled={false}
-                          ellipsizeMode="tail"
-                          style={
-                            Object {
-                              "color": "#666666",
-                              "fontFamily": "AGaramondPro-Regular",
-                              "fontSize": 20,
-                              "paddingTop": 8,
-                            }
-                          }
-                        >
-                          Category
-                        </Text>
-                      </View>
-                      <View
-                        style={
-                          Array [
-                            Object {
-                              "backgroundColor": "white",
-                              "height": 1,
-                            },
-                            undefined,
-                          ]
                         }
                       />
                     </View>
@@ -432,11 +353,13 @@ exports[`state is set up with empty consignment metadata 1`] = `
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
+                          onBlur={[Function]}
                           onChangeText={[Function]}
                           onFocus={[Function]}
                           onSubmitEditing={[Function]}
                           placeholder="Medium"
                           placeholderTextColor="#666666"
+                          returnKeyType="next"
                           selectionColor="#cccccc"
                           style={
                             Array [
@@ -458,13 +381,10 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       </View>
                       <View
                         style={
-                          Array [
-                            Object {
-                              "backgroundColor": "white",
-                              "height": 1,
-                            },
-                            undefined,
-                          ]
+                          Object {
+                            "backgroundColor": "#666666",
+                            "height": 1,
+                          }
                         }
                       />
                     </View>
@@ -507,11 +427,13 @@ exports[`state is set up with empty consignment metadata 1`] = `
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
                           keyboardType="numeric"
+                          onBlur={[Function]}
                           onChangeText={[Function]}
                           onFocus={[Function]}
                           onSubmitEditing={[Function]}
                           placeholder="Width"
                           placeholderTextColor="#666666"
+                          returnKeyType="next"
                           selectionColor="#cccccc"
                           style={
                             Array [
@@ -533,13 +455,10 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       </View>
                       <View
                         style={
-                          Array [
-                            Object {
-                              "backgroundColor": "white",
-                              "height": 1,
-                            },
-                            undefined,
-                          ]
+                          Object {
+                            "backgroundColor": "#666666",
+                            "height": 1,
+                          }
                         }
                       />
                     </View>
@@ -569,11 +488,13 @@ exports[`state is set up with empty consignment metadata 1`] = `
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
                           keyboardType="numeric"
+                          onBlur={[Function]}
                           onChangeText={[Function]}
                           onFocus={[Function]}
                           onSubmitEditing={[Function]}
                           placeholder="Height"
                           placeholderTextColor="#666666"
+                          returnKeyType="next"
                           selectionColor="#cccccc"
                           style={
                             Array [
@@ -595,13 +516,10 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       </View>
                       <View
                         style={
-                          Array [
-                            Object {
-                              "backgroundColor": "white",
-                              "height": 1,
-                            },
-                            undefined,
-                          ]
+                          Object {
+                            "backgroundColor": "#666666",
+                            "height": 1,
+                          }
                         }
                       />
                     </View>
@@ -644,11 +562,13 @@ exports[`state is set up with empty consignment metadata 1`] = `
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
                           keyboardType="numeric"
+                          onBlur={[Function]}
                           onChangeText={[Function]}
                           onFocus={[Function]}
                           onSubmitEditing={[Function]}
                           placeholder="Depth"
                           placeholderTextColor="#666666"
+                          returnKeyType="next"
                           selectionColor="#cccccc"
                           style={
                             Array [
@@ -670,13 +590,10 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       </View>
                       <View
                         style={
-                          Array [
-                            Object {
-                              "backgroundColor": "white",
-                              "height": 1,
-                            },
-                            undefined,
-                          ]
+                          Object {
+                            "backgroundColor": "#666666",
+                            "height": 1,
+                          }
                         }
                       />
                     </View>
@@ -856,6 +773,80 @@ exports[`state is set up with empty consignment metadata 1`] = `
                           </View>
                         </View>
                       </View>
+                    </View>
+                  </View>
+                  <View
+                    accessibilityComponentType={undefined}
+                    accessibilityLabel={undefined}
+                    accessibilityTraits={undefined}
+                    accessible={true}
+                    hitSlop={undefined}
+                    nativeID={undefined}
+                    onLayout={undefined}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Array [
+                        undefined,
+                        Object {
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "paddingVertical": 6,
+                        },
+                      ]
+                    }
+                    testID={undefined}
+                  >
+                    <View
+                      style={
+                        Array [
+                          Object {
+                            "margin": 10,
+                          },
+                          Object {
+                            "flex": 1,
+                            "maxHeight": 40,
+                          },
+                        ]
+                      }
+                    >
+                      <View
+                        style={
+                          Object {
+                            "flexDirection": "row",
+                            "height": 40,
+                          }
+                        }
+                      >
+                        <Text
+                          accessible={true}
+                          allowFontScaling={true}
+                          disabled={false}
+                          ellipsizeMode="tail"
+                          style={
+                            Object {
+                              "color": "#666666",
+                              "fontFamily": "AGaramondPro-Regular",
+                              "fontSize": 20,
+                              "paddingTop": 8,
+                            }
+                          }
+                        >
+                          Category
+                        </Text>
+                      </View>
+                      <View
+                        style={
+                          Object {
+                            "backgroundColor": "#666666",
+                            "height": 1,
+                          }
+                        }
+                      />
                     </View>
                   </View>
                 </View>
@@ -966,7 +957,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
       }
     >
       <View
-        keyboardVerticalOffset={80}
+        keyboardVerticalOffset={15}
         onLayout={[Function]}
         style={
           Array [
@@ -1045,11 +1036,13 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
+                          onBlur={[Function]}
                           onChangeText={[Function]}
                           onFocus={[Function]}
                           onSubmitEditing={[Function]}
                           placeholder="Title"
                           placeholderTextColor="#666666"
+                          returnKeyType="next"
                           selectionColor="#cccccc"
                           style={
                             Array [
@@ -1071,13 +1064,10 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       </View>
                       <View
                         style={
-                          Array [
-                            Object {
-                              "backgroundColor": "white",
-                              "height": 1,
-                            },
-                            undefined,
-                          ]
+                          Object {
+                            "backgroundColor": "#666666",
+                            "height": 1,
+                          }
                         }
                       />
                     </View>
@@ -1119,11 +1109,13 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
+                          onBlur={[Function]}
                           onChangeText={[Function]}
                           onFocus={[Function]}
                           onSubmitEditing={[Function]}
                           placeholder="Year"
                           placeholderTextColor="#666666"
+                          returnKeyType="next"
                           selectionColor="#cccccc"
                           style={
                             Array [
@@ -1145,90 +1137,10 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       </View>
                       <View
                         style={
-                          Array [
-                            Object {
-                              "backgroundColor": "white",
-                              "height": 1,
-                            },
-                            undefined,
-                          ]
-                        }
-                      />
-                    </View>
-                  </View>
-                  <View
-                    accessibilityComponentType={undefined}
-                    accessibilityLabel={undefined}
-                    accessibilityTraits={undefined}
-                    accessible={true}
-                    hitSlop={undefined}
-                    nativeID={undefined}
-                    onLayout={undefined}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      Array [
-                        undefined,
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "paddingVertical": 6,
-                        },
-                      ]
-                    }
-                    testID={undefined}
-                  >
-                    <View
-                      style={
-                        Array [
                           Object {
-                            "margin": 10,
-                          },
-                          Object {
-                            "flex": 1,
-                            "maxHeight": 40,
-                          },
-                        ]
-                      }
-                    >
-                      <View
-                        style={
-                          Object {
-                            "flexDirection": "row",
-                            "height": 40,
+                            "backgroundColor": "#666666",
+                            "height": 1,
                           }
-                        }
-                      >
-                        <Text
-                          accessible={true}
-                          allowFontScaling={true}
-                          disabled={false}
-                          ellipsizeMode="tail"
-                          style={
-                            Object {
-                              "color": "white",
-                              "fontFamily": "AGaramondPro-Regular",
-                              "fontSize": 20,
-                              "paddingTop": 8,
-                            }
-                          }
-                        >
-                          Design
-                        </Text>
-                      </View>
-                      <View
-                        style={
-                          Array [
-                            Object {
-                              "backgroundColor": "white",
-                              "height": 1,
-                            },
-                            undefined,
-                          ]
                         }
                       />
                     </View>
@@ -1270,11 +1182,13 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
+                          onBlur={[Function]}
                           onChangeText={[Function]}
                           onFocus={[Function]}
                           onSubmitEditing={[Function]}
                           placeholder="Medium"
                           placeholderTextColor="#666666"
+                          returnKeyType="next"
                           selectionColor="#cccccc"
                           style={
                             Array [
@@ -1296,13 +1210,10 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       </View>
                       <View
                         style={
-                          Array [
-                            Object {
-                              "backgroundColor": "white",
-                              "height": 1,
-                            },
-                            undefined,
-                          ]
+                          Object {
+                            "backgroundColor": "#666666",
+                            "height": 1,
+                          }
                         }
                       />
                     </View>
@@ -1345,11 +1256,13 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
                           keyboardType="numeric"
+                          onBlur={[Function]}
                           onChangeText={[Function]}
                           onFocus={[Function]}
                           onSubmitEditing={[Function]}
                           placeholder="Width"
                           placeholderTextColor="#666666"
+                          returnKeyType="next"
                           selectionColor="#cccccc"
                           style={
                             Array [
@@ -1371,13 +1284,10 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       </View>
                       <View
                         style={
-                          Array [
-                            Object {
-                              "backgroundColor": "white",
-                              "height": 1,
-                            },
-                            undefined,
-                          ]
+                          Object {
+                            "backgroundColor": "#666666",
+                            "height": 1,
+                          }
                         }
                       />
                     </View>
@@ -1407,11 +1317,13 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
                           keyboardType="numeric"
+                          onBlur={[Function]}
                           onChangeText={[Function]}
                           onFocus={[Function]}
                           onSubmitEditing={[Function]}
                           placeholder="Height"
                           placeholderTextColor="#666666"
+                          returnKeyType="next"
                           selectionColor="#cccccc"
                           style={
                             Array [
@@ -1433,13 +1345,10 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       </View>
                       <View
                         style={
-                          Array [
-                            Object {
-                              "backgroundColor": "white",
-                              "height": 1,
-                            },
-                            undefined,
-                          ]
+                          Object {
+                            "backgroundColor": "#666666",
+                            "height": 1,
+                          }
                         }
                       />
                     </View>
@@ -1482,11 +1391,13 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
                           keyboardType="numeric"
+                          onBlur={[Function]}
                           onChangeText={[Function]}
                           onFocus={[Function]}
                           onSubmitEditing={[Function]}
                           placeholder="Depth"
                           placeholderTextColor="#666666"
+                          returnKeyType="next"
                           selectionColor="#cccccc"
                           style={
                             Array [
@@ -1508,13 +1419,10 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       </View>
                       <View
                         style={
-                          Array [
-                            Object {
-                              "backgroundColor": "white",
-                              "height": 1,
-                            },
-                            undefined,
-                          ]
+                          Object {
+                            "backgroundColor": "#666666",
+                            "height": 1,
+                          }
                         }
                       />
                     </View>
@@ -1694,6 +1602,80 @@ exports[`state is set up with filled consignment metadata 1`] = `
                           </View>
                         </View>
                       </View>
+                    </View>
+                  </View>
+                  <View
+                    accessibilityComponentType={undefined}
+                    accessibilityLabel={undefined}
+                    accessibilityTraits={undefined}
+                    accessible={true}
+                    hitSlop={undefined}
+                    nativeID={undefined}
+                    onLayout={undefined}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Array [
+                        undefined,
+                        Object {
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "paddingVertical": 6,
+                        },
+                      ]
+                    }
+                    testID={undefined}
+                  >
+                    <View
+                      style={
+                        Array [
+                          Object {
+                            "margin": 10,
+                          },
+                          Object {
+                            "flex": 1,
+                            "maxHeight": 40,
+                          },
+                        ]
+                      }
+                    >
+                      <View
+                        style={
+                          Object {
+                            "flexDirection": "row",
+                            "height": 40,
+                          }
+                        }
+                      >
+                        <Text
+                          accessible={true}
+                          allowFontScaling={true}
+                          disabled={false}
+                          ellipsizeMode="tail"
+                          style={
+                            Object {
+                              "color": "white",
+                              "fontFamily": "AGaramondPro-Regular",
+                              "fontSize": 20,
+                              "paddingTop": 8,
+                            }
+                          }
+                        >
+                          Design
+                        </Text>
+                      </View>
+                      <View
+                        style={
+                          Object {
+                            "backgroundColor": "#666666",
+                            "height": 1,
+                          }
+                        }
+                      />
                     </View>
                   </View>
                 </View>
