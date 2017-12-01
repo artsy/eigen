@@ -93,6 +93,8 @@
 -   Adds Live and timed auctions in home view - luc
 -   Tab bar text now aligned and centered correctly - luc
 -   Adds iPad support for Auctions view layout - luc
+-   Adds <LotsByArtistsYouFollow /> component to Sales - chris
+-   Refactors <LotsByArtistsYouFollow /> by consolidating QueryRenderers - chris
 
 ###### Consignments
 
