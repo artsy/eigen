@@ -25,6 +25,10 @@ export interface TextInputProps extends ViewProperties {
   preImage?: ImageURISource | ImageURISource[]
 }
 
+interface State {
+  focused: boolean
+}
+
 const Input = styled.TextInput`
   height: 40;
   background-color: black;
@@ -34,20 +38,16 @@ const Input = styled.TextInput`
   flex: 1;
 `
 
-const Separator = styled.View`
-  background-color: white;
-  height: 1;
-`
-
-const WritableInput = (props: TextInputProps) =>
-  <Input
-    autoCorrect={false}
-    clearButtonMode="while-editing"
-    keyboardAppearance="dark"
-    placeholderTextColor={Colors.GraySemibold}
-    selectionColor={Colors.GrayMedium}
-    {...props.text}
-  />
+const Separator = focused => {
+  return (
+    <View
+      style={{
+        height: 1,
+        backgroundColor: focused ? Colors.White : Colors.GraySemibold,
+      }}
+    />
+  )
+}
 
 const ReadOnlyInput = (props: TextInputProps) =>
   <Text
@@ -61,15 +61,32 @@ const ReadOnlyInput = (props: TextInputProps) =>
     {props.text.value || props.text.placeholder}
   </Text>
 
-const render = (props: TextInputProps) =>
-  <View style={[props.style, { flex: 1, maxHeight: 40 }]}>
-    <View style={{ flexDirection: "row", height: 40 }}>
-      {props.preImage && <Image source={props.preImage} style={{ marginRight: 6, marginTop: 12 }} />}
-      {props.readonly ? ReadOnlyInput(props) : WritableInput(props)}
+export default class TextInputField extends React.Component<TextInputProps, State> {
+  constructor(props) {
+    super(props)
+    this.state = { focused: false }
+  }
+  render() {
+    return (
+      <View style={[this.props.style, { flex: 1, maxHeight: 40 }]}>
+        <View style={{ flexDirection: "row", height: 40 }}>
+          {this.props.preImage && <Image source={this.props.preImage} style={{ marginRight: 6, marginTop: 12 }} />}
+          {this.props.readonly
+            ? ReadOnlyInput(this.props)
+            : <Input
+                autoCorrect={false}
+                clearButtonMode="while-editing"
+                keyboardAppearance="dark"
+                placeholderTextColor={this.state.focused ? "white" : Colors.GraySemibold}
+                selectionColor={Colors.GrayMedium}
+                onFocus={() => this.setState({ focused: true })}
+                {...this.props.text}
+              />}
 
-      {props.searching ? <ActivityIndicator animating={props.searching} /> : null}
-    </View>
-    <Separator />
-  </View>
-
-export default render
+          {this.props.searching ? <ActivityIndicator animating={this.props.searching} /> : null}
+        </View>
+        {Separator(this.state.focused)}
+      </View>
+    )
+  }
+}
