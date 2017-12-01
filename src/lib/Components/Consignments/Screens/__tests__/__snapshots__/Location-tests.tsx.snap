@@ -103,7 +103,9 @@ exports[`Sets up the right view hierarchy 1`] = `
                     autoFocus={false}
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
+                    onBlur={[Function]}
                     onChangeText={[Function]}
+                    onFocus={[Function]}
                     placeholder="City, Country"
                     placeholderTextColor="#666666"
                     returnKeyType="search"
@@ -128,13 +130,10 @@ exports[`Sets up the right view hierarchy 1`] = `
                 </View>
                 <View
                   style={
-                    Array [
-                      Object {
-                        "backgroundColor": "white",
-                        "height": 1,
-                      },
-                      undefined,
-                    ]
+                    Object {
+                      "backgroundColor": "#666666",
+                      "height": 1,
+                    }
                   }
                 />
               </View>

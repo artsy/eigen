@@ -985,7 +985,9 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
                     keyboardType="phone-pad"
+                    onBlur={[Function]}
                     onChangeText={[Function]}
+                    onFocus={[Function]}
                     placeholder="Edition Size"
                     placeholderTextColor="#666666"
                     selectionColor="#cccccc"
@@ -1009,13 +1011,10 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                 </View>
                 <View
                   style={
-                    Array [
-                      Object {
-                        "backgroundColor": "white",
-                        "height": 1,
-                      },
-                      undefined,
-                    ]
+                    Object {
+                      "backgroundColor": "#666666",
+                      "height": 1,
+                    }
                   }
                 />
               </View>
@@ -1044,7 +1043,9 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                     autoCorrect={false}
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
+                    onBlur={[Function]}
                     onChangeText={[Function]}
+                    onFocus={[Function]}
                     placeholder="Edition Number"
                     placeholderTextColor="#666666"
                     selectionColor="#cccccc"
@@ -1068,13 +1069,10 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                 </View>
                 <View
                   style={
-                    Array [
-                      Object {
-                        "backgroundColor": "white",
-                        "height": 1,
-                      },
-                      undefined,
-                    ]
+                    Object {
+                      "backgroundColor": "#666666",
+                      "height": 1,
+                    }
                   }
                 />
               </View>

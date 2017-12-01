@@ -148,7 +148,9 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
             autoFocus={false}
             clearButtonMode="while-editing"
             keyboardAppearance="dark"
+            onBlur={[Function]}
             onChangeText={undefined}
+            onFocus={[Function]}
             placeholder="Example"
             placeholderTextColor="#666666"
             returnKeyType="search"
@@ -173,13 +175,10 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
         </View>
         <View
           style={
-            Array [
-              Object {
-                "backgroundColor": "white",
-                "height": 1,
-              },
-              undefined,
-            ]
+            Object {
+              "backgroundColor": "#666666",
+              "height": 1,
+            }
           }
         />
       </View>
