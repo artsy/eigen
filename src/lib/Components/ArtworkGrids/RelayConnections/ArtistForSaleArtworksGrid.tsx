@@ -30,6 +30,7 @@ const ArtistForSaleArtworksGrid = createPaginationContainer(
           }
           edges {
             node {
+              id
               __id
               image {
                 aspect_ratio
@@ -88,6 +89,7 @@ export interface ArtistRelayProps {
       edges: Array<{
         node: {
           __id: string
+          id: string
           image: {
             aspect_ratio: number | null
           } | null

@@ -7,15 +7,15 @@
 // 4. Update height of grid to encompass all items.
 
 import React from "react"
+import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
 import { RelayPaginationProp } from "react-relay"
 
 import { get } from "lodash"
 
-import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
-
 import Spinner from "../Spinner"
 import Artwork from "./Artwork"
 
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { ArtistRelayProps } from "./RelayConnections/ArtistForSaleArtworksGrid"
 import { GeneRelayProps } from "./RelayConnections/GeneArtworksGrid"
@@ -33,6 +33,7 @@ export const PageSize = 10
 
 interface Artwork {
   __id: string
+  id: string
   image: {
     aspect_ratio: number | null
   } | null
@@ -169,6 +170,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     // tslint:enable:no-console
   }
 
+  tappedOnArtwork = (artworkID: string) => {
+    const artworks = this.artworksConnection() ? this.artworksConnection().edges : []
+    const allArtworkIDs = artworks.map(a => a.node.id)
+    const index = allArtworkIDs.indexOf(artworkID)
+    SwitchBoard.presentArtworkSet(this, allArtworkIDs, index)
+  }
+
   onLayout = (event: LayoutChangeEvent) => {
     const layout = event.nativeEvent.layout
     if (layout.width > 0) {
@@ -235,7 +243,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
       const artworkComponents: JSX.Element[] = []
       for (let j = 0; j < sectionedArtworks[i].length; j++) {
         const artwork = sectionedArtworks[i][j]
-        artworkComponents.push(<Artwork artwork={artwork as any} key={"artwork-" + j + "-" + artwork.__id} />)
+        artworkComponents.push(
+          <Artwork
+            artwork={artwork as any}
+            key={"artwork-" + j + "-" + artwork.__id}
+            onPress={this.tappedOnArtwork.bind(this)}
+          />
+        )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
         if (j < artworks.length - 1) {
           artworkComponents.push(

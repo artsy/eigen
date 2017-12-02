@@ -72,6 +72,7 @@ const artworkProps = (saleArtwork = null) => {
     partner: {
       name: "Gallery 1261",
     },
+    id: "mikael-olson-some-kind-of-dinosaur",
     href: "/artwork/mikael-olson-some-kind-of-dinosaur",
   }
 }
