@@ -49,7 +49,7 @@
         _badgeCounts[i] = 0;
     }
 
-    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] initWithEmission:nil];
+    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil emission:nil];
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
 
     return self;
@@ -66,6 +66,12 @@
     return _messagingNavigationController;
 }
 
+- (ARNavigationController *)getHomeViewControllerWithArtist:(NSString *)artistID
+{
+    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID emission:nil];
+    _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
+    return _feedNavigationController;
+}
 
 - (ARNavigationController *)getProfileNavigationController
 {
@@ -104,7 +110,11 @@
 {
     switch (index) {
         case ARTopTabControllerIndexHome:
-            return [self feedNavigationController];
+            if (params && params[@"artist_id"]) {
+                return [self getHomeViewControllerWithArtist:params[@"artist_id"]];
+            } else {
+                return [self feedNavigationController];
+            }
 
         case ARTopTabControllerIndexMessaging:
             return [self getMessagingNavigationController];
