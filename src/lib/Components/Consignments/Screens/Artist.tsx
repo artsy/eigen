@@ -27,7 +27,7 @@ interface State {
 }
 
 export default class Artist extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       query: null,
