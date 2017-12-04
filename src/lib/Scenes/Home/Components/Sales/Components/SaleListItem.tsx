@@ -79,8 +79,10 @@ export class SaleListItem extends React.Component<RelayProps, null> {
     return (screenSize.width - gutterSize) / numColumns
   }
 
-  handleTap(navigateToUrl) {
-    Switchboard.presentNavigationViewController(this, navigateToUrl)
+  handleTap = () => {
+    const { sale: { live_url_if_open, href } } = this.props
+    const url = (live_url_if_open || href) as string
+    Switchboard.presentNavigationViewController(this, url)
   }
 
   render() {
@@ -96,7 +98,7 @@ export class SaleListItem extends React.Component<RelayProps, null> {
     `
 
     return (
-      <TouchableWithoutFeedback onPress={this.handleTap.bind(this, this.props.sale.href)}>
+      <TouchableWithoutFeedback onPress={this.handleTap}>
         <Container>
           <Image imageURL={imageURL} skipGemini={true} />
           <Content>
@@ -129,6 +131,7 @@ export default createFragmentContainer(SaleListItem, {
       href
       is_open
       is_live_open
+      live_url_if_open
       start_at
       end_at
       registration_ends_at
@@ -149,6 +152,7 @@ interface RelayProps {
     href: string
     is_open: boolean
     is_live_open: boolean
+    live_url_if_open: boolean | null
     start_at: string | null
     end_at: string | null
     registration_ends_at: string | null

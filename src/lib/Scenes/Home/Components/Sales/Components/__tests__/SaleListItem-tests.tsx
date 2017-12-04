@@ -20,6 +20,7 @@ const props = {
   end_at: null,
   registration_ends_at: moment().subtract(1, "day").toISOString(),
   live_start_at: moment().add(5, "hour").toISOString(),
+  live_url_if_open: null,
   cover_image: {
     cropped: {
       url:

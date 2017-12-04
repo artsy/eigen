@@ -15,18 +15,20 @@ describe("LotsByFollowedArtists", () => {
         loadMore: jest.fn(),
         isLoading: jest.fn(),
       },
-      saleArtworks: {
-        edges: [
-          {
-            node: {
-              name: "TestName",
-              is_biddable: true,
-              artwork: {
-                id: "foo",
+      viewer: {
+        sale_artworks: {
+          edges: [
+            {
+              node: {
+                name: "TestName",
+                is_biddable: true,
+                artwork: {
+                  id: "foo",
+                },
               },
             },
-          },
-        ],
+          ],
+        },
       },
     }
   })

@@ -7,6 +7,7 @@
     a Artwork within a grid - orta
 -   Update Relay typings to current DT version - alloy
 -   Change inquiry status bar background to white - maxim
+-   Move pagination from home/sale index to LotsByfollowedArtists, misc QA - chris
 
 ### 1.4.0-beta.9
 
