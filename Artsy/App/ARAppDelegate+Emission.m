@@ -19,6 +19,7 @@
 #import "ARRootViewController.h"
 #import "ARAppStatus.h"
 #import "ARRouter.h"
+#import "AREmissionCameraController.h"
 
 #import <Aerodramus/Aerodramus.h>
 #import <Keys/ArtsyKeys.h>
@@ -38,8 +39,6 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAdminNetworkModel.h"
 #import "Artsy-Swift.h"
-
-#import "ARTakePhotoPromisable.h"
 
 static void
 FollowRequestSuccess(RCTResponseSenderBlock block, BOOL following)
@@ -222,7 +221,8 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 #pragma mark - Native Module: WorksForYou
 
     emission.cameraModule.triggerCreatingACameraPhoto = ^(UIViewController * _Nonnull controller, RCTPromiseResolveBlock  _Nonnull resolve, RCTPromiseRejectBlock  _Nonnull reject) {
-        [ARTakePhotoPromisable presentModalCameraView:controller resolver:resolve rejecter:reject];
+        AREmissionCameraController *cameraController = [[AREmissionCameraController alloc] initWithResolver:resolve rejecter:reject];
+        [controller presentViewController:cameraController animated:YES completion:nil];
     };
 
 }
