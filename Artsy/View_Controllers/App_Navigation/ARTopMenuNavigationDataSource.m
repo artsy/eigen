@@ -57,9 +57,10 @@
 
 - (ARNavigationController *)getMessagingNavigationController
 {
-    // Make a new one each time the favorites tab is selected, so that it presents up-to-date data.
-    //
     // This is an assumption baked into the component itself ( see the header for ARInboxComponentViewController)
+    if (self.messagingNavigationController) {
+        return self.messagingNavigationController;
+    }
 
     ARComponentViewController *messagingVC = [[ARInboxComponentViewController alloc] initWithInbox];
     _messagingNavigationController = [[ARNavigationController alloc] initWithRootViewController:messagingVC];
