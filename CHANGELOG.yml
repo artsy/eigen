@@ -33,6 +33,7 @@ upcoming:
       - Fixes a minor problem displaying lots in past auctions - ash
       - Do not intercept tel links with our custom dialog modal - isac
       - Presents live bidding interface when sale has opened and UI reappearing from an artwork VC - ash
+      - Fix for launch screen image being truncated - orta
 
 releases:
   - version: 3.2.7
