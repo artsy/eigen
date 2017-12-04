@@ -619,6 +619,7 @@
 		60CF980817BF79CA005ED59B /* ARArtistBiographyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CF980717BF79CA005ED59B /* ARArtistBiographyViewController.m */; };
 		60D312471EA6CFD000B13E59 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60D312461EA6CFD000B13E59 /* ReplayKit.framework */; };
 		60D70DE41D01F420008888D1 /* LiveAuctionLotViewModelSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D70DE31D01F420008888D1 /* LiveAuctionLotViewModelSpecs.swift */; };
+		60D80A381FD575F600561E3A /* ARTakePhotoPromisable.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D80A371FD575F600561E3A /* ARTakePhotoPromisable.m */; };
 		60D83DE8189EAB82001672E9 /* ARFairShowMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D83DE7189EAB82001672E9 /* ARFairShowMapper.m */; };
 		60D83DEE189EE679001672E9 /* ARFairGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D83DED189EE679001672E9 /* ARFairGuideViewController.m */; };
 		60D8E63B18D256BB0040BEFD /* ARDemoSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D8E63918D256BB0040BEFD /* ARDemoSplashViewController.m */; };
@@ -1769,6 +1770,8 @@
 		60CF980717BF79CA005ED59B /* ARArtistBiographyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArtistBiographyViewController.m; sourceTree = "<group>"; };
 		60D312461EA6CFD000B13E59 /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		60D70DE31D01F420008888D1 /* LiveAuctionLotViewModelSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionLotViewModelSpecs.swift; sourceTree = "<group>"; };
+		60D80A361FD575F600561E3A /* ARTakePhotoPromisable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTakePhotoPromisable.h; sourceTree = "<group>"; };
+		60D80A371FD575F600561E3A /* ARTakePhotoPromisable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTakePhotoPromisable.m; sourceTree = "<group>"; };
 		60D83DE6189EAB82001672E9 /* ARFairShowMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairShowMapper.h; sourceTree = "<group>"; };
 		60D83DE7189EAB82001672E9 /* ARFairShowMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairShowMapper.m; sourceTree = "<group>"; };
 		60D83DEC189EE679001672E9 /* ARFairGuideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairGuideViewController.h; sourceTree = "<group>"; };
@@ -4140,6 +4143,7 @@
 		60A0E9FE1C5107B2002754A8 /* Setup */ = {
 			isa = PBXGroup;
 			children = (
+				60D80A351FD5758D00561E3A /* Native Callbacks */,
 				51DCC6C41C5F924500455309 /* ARFonts.h */,
 				608B2F5D1657D0500046956C /* main.m */,
 				5170C50B1BBAC1090043E601 /* ARMacros.h */,
@@ -4309,6 +4313,15 @@
 			children = (
 			);
 			name = Auctions;
+			sourceTree = "<group>";
+		};
+		60D80A351FD5758D00561E3A /* Native Callbacks */ = {
+			isa = PBXGroup;
+			children = (
+				60D80A361FD575F600561E3A /* ARTakePhotoPromisable.h */,
+				60D80A371FD575F600561E3A /* ARTakePhotoPromisable.m */,
+			);
+			name = "Native Callbacks";
 			sourceTree = "<group>";
 		};
 		60D83DEF189EE9BF001672E9 /* Guides */ = {
@@ -5285,6 +5298,7 @@
 				602F034C1CB291EC008A999D /* StoryboardImages.swift in Sources */,
 				60A4A63E1D05C924005946EF /* UIViewController+BlurredStatusView.swift in Sources */,
 				5E0846DA1C6E4B9800855667 /* ARSaleArtworkFlowCollectionViewCell.m in Sources */,
+				60D80A381FD575F600561E3A /* ARTakePhotoPromisable.m in Sources */,
 				60A309AD1AC9A7C8000783C1 /* NSString+StringBetweenStrings.m in Sources */,
 				3CEE0B6518A16F7D00FEA6E6 /* ArtsyAPI+Artists.m in Sources */,
 				1CC9EB9A1CC12B5400A74E3C /* AROnboardingFollowableTableViewCell.m in Sources */,

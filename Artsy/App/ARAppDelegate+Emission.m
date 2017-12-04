@@ -26,6 +26,7 @@
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/ARSwitchBoardModule.h>
 #import <Emission/AREventsModule.h>
+#import <Emission/ARTakeCameraPhotoModule.h>
 #import <Emission/ARRefineOptionsModule.h>
 #import <Emission/ARWorksForYouModule.h>
 #import <Emission/ARArtistComponentViewController.h>
@@ -37,6 +38,8 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAdminNetworkModel.h"
 #import "Artsy-Swift.h"
+
+#import "ARTakePhotoPromisable.h"
 
 static void
 FollowRequestSuccess(RCTResponseSenderBlock block, BOOL following)
@@ -53,6 +56,9 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     block(@[ RCTJSErrorFromNSError(error), @(following) ]);
 }
 
+@interface ARAppDelegate()
+@property (nonatomic, strong) ARTakePhotoPromisable *takePhotoPromisable;
+@end
 
 @implementation ARAppDelegate (Emission)
 
@@ -216,6 +222,14 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 // TODO: Nav Notifications
 //        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
     };
+
+#pragma mark - Native Module: WorksForYou
+
+    self.takePhotoPromisable = [ARTakePhotoPromisable new];
+    emission.cameraModule.triggerCreatingACameraPhoto = ^(UIViewController * _Nonnull controller, RCTPromiseResolveBlock  _Nonnull resolve, RCTPromiseRejectBlock  _Nonnull reject) {
+        [self.takePhotoPromisable showCameraModal:controller resolver:resolve rejecter:reject];
+    };
+
 }
 
 @end
