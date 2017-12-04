@@ -53,7 +53,7 @@ export default class DarkNavigationButton extends React.Component<Props, any> {
   openLink() {
     if (this.props.href) {
       SwitchBoard.presentNavigationViewController(this, this.props.href)
-    } else {
+    } else if (this.props.onPress) {
       this.props.onPress()
     }
   }
