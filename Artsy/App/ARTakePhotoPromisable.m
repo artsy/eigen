@@ -1,58 +1,73 @@
 #import "ARTakePhotoPromisable.h"
-#import <React/RCTBridgeModule.h>
-#import <Photos/Photos.h>
 
-@interface ARTakePhotoPromisable()
-@property (nonatomic, copy, nullable, readwrite) RCTPromiseRejectBlock reject;
-@property (nonatomic, copy, nullable, readwrite) RCTPromiseResolveBlock resolve;
-@property (nonatomic, strong, nullable, readwrite) UIImagePickerController *picker;
+#import <Photos/Photos.h>
+#import <objc/runtime.h>
+
+@interface ARTakePhotoPromisable() <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@property (nonatomic, copy, readonly) RCTPromiseRejectBlock reject;
+@property (nonatomic, copy, readonly) RCTPromiseResolveBlock resolve;
 @end
 
 @implementation ARTakePhotoPromisable
 
-- (void)showCameraModal:(UIViewController *)viewController resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject
++ (void)presentModalCameraView:(UIViewController *)presentingViewController
+                      resolver:(RCTPromiseResolveBlock)resolve
+                      rejecter:(RCTPromiseRejectBlock)reject;
 {
-  self.reject = reject;
-  self.resolve = resolve;
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+    picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+    picker.showsCameraControls = YES;
+    picker.navigationBarHidden = YES;
+    picker.toolbarHidden = YES;
 
-  // Create a UIImagePicker to show the camera
-  UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-  picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-  picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-  picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-  picker.showsCameraControls = YES;
-  picker.navigationBarHidden = YES;
-  picker.toolbarHidden = YES;
-  picker.delegate = self;
-  self.picker = picker;
-
-  [viewController presentViewController:picker animated:YES completion:nil];
+    ARTakePhotoPromisable *promisable = [[ARTakePhotoPromisable alloc] initWithResolver:resolve rejecter:reject];
+    picker.delegate = promisable;
+    // Tie the lifetime of the promisable object to the picker.
+    objc_setAssociatedObject(picker, _cmd, promisable, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    [presentingViewController presentViewController:picker animated:YES completion:nil];
 }
 
-// User took a Photo
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
+- (instancetype)initWithResolver:(RCTPromiseResolveBlock)resolve
+                        rejecter:(RCTPromiseRejectBlock)reject;
 {
+    if ((self = [super init])) {
+        _reject = reject;
+        _resolve = resolve;
 
-  // The photo needs to get saved into the Photo roll, so do that first
-  UIImage *takenImage = info[UIImagePickerControllerOriginalImage];
-  UIImageWriteToSavedPhotosAlbum(takenImage, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    }
+    return self;
 }
 
-// User Cancelled taking a photo
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
 {
-  [picker dismissViewControllerAnimated:YES completion:nil];
-  _resolve(@NO);
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    self.resolve(@NO);
 }
 
-// User saved a Photo to the photo roll
-- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+- (void)imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info;
 {
-  // We delay this because it takes time to save the photo, and it looks like it's our app's fault
-  // instead it looks like the camera is saving.
-  [self.picker dismissViewControllerAnimated:YES completion:nil];
+    UIImageWriteToSavedPhotosAlbum(
+        info[UIImagePickerControllerOriginalImage],
+        self,
+        @selector(imageWrittenToSavedPhotosAlbum:didFinishSavingWithError:imagePickerController:),
+        (__bridge void * _Nullable)picker
+    );
+}
 
-  self.resolve(@YES);
+- (void)imageWrittenToSavedPhotosAlbum:(UIImage *)image
+              didFinishSavingWithError:(NSError *)error
+                 imagePickerController:(UIImagePickerController *)picker;
+{
+    if (error) {
+        self.reject(@"TAKE_PHOTO", @"Failed to save photo to the photo roll.", error);
+    } else {
+        self.resolve(@YES);
+    }
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -95,8 +95,10 @@
 	</dict>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Used for beta testers to collect usage information.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to be able to create photos of artworks that the collector wishes to consign.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used for beta testers to access screenshots of app.</string>
+	<string>Used to be able to select photos of artworks that the collector wishes to consign.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AGaramondPro-BoldItalic.otf</string>

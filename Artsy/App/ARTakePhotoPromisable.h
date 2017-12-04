@@ -1,8 +1,10 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTBridgeModule.h>
 
-@interface ARTakePhotoPromisable: NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface ARTakePhotoPromisable: NSObject
 
-- (void)showCameraModal:(UIViewController *)viewController resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject;
++ (void)presentModalCameraView:(UIViewController *)presentingViewController
+                      resolver:(RCTPromiseResolveBlock)resolve
+                      rejecter:(RCTPromiseRejectBlock)reject;
 
 @end

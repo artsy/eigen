@@ -56,10 +56,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     block(@[ RCTJSErrorFromNSError(error), @(following) ]);
 }
 
-@interface ARAppDelegate()
-@property (nonatomic, strong) ARTakePhotoPromisable *takePhotoPromisable;
-@end
-
 @implementation ARAppDelegate (Emission)
 
 - (void)setupEmission;
@@ -225,9 +221,8 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 #pragma mark - Native Module: WorksForYou
 
-    self.takePhotoPromisable = [ARTakePhotoPromisable new];
     emission.cameraModule.triggerCreatingACameraPhoto = ^(UIViewController * _Nonnull controller, RCTPromiseResolveBlock  _Nonnull resolve, RCTPromiseRejectBlock  _Nonnull reject) {
-        [self.takePhotoPromisable showCameraModal:controller resolver:resolve rejecter:reject];
+        [ARTakePhotoPromisable presentModalCameraView:controller resolver:resolve rejecter:reject];
     };
 
 }
