@@ -1,7 +1,8 @@
 import React from "react"
+import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import Artwork from "./Artwork"
 
@@ -31,6 +32,12 @@ class GenericArtworksGrid extends React.Component<Props, State> {
     }
 
     this.onLayout = this.onLayout.bind(this)
+  }
+
+  tappedOnArtwork = (artworkID: string) => {
+    const allArtworkIDs = this.props.artworks.map(a => a.id)
+    const index = allArtworkIDs.indexOf(artworkID)
+    SwitchBoard.presentArtworkSet(this, allArtworkIDs, index)
   }
 
   layoutState(currentLayout): State {
@@ -102,7 +109,9 @@ class GenericArtworksGrid extends React.Component<Props, State> {
       const artworks = sectionedArtworks[i]
       for (let j = 0; j < artworks.length; j++) {
         const artwork = artworks[j]
-        artworkComponents.push(<Artwork artwork={artwork} key={artwork.__id + i + j} />)
+        artworkComponents.push(
+          <Artwork artwork={artwork} key={artwork.__id + i + j} onPress={this.tappedOnArtwork.bind(this)} />
+        )
         if (j < artworks.length - 1) {
           artworkComponents.push(<View style={spacerStyle} key={"spacer-" + j} accessibilityLabel="Spacer View" />)
         }
@@ -152,6 +161,7 @@ const GenericGrid = createFragmentContainer(
   graphql`
     fragment GenericGrid_artworks on Artwork @relay(plural: true) {
       __id
+      id
       image {
         aspect_ratio
       }
@@ -165,6 +175,7 @@ export default GenericGrid
 interface RelayProps {
   artworks: Array<{
     __id: string
+    id: string
     image: {
       aspect_ratio: number | null
     } | null

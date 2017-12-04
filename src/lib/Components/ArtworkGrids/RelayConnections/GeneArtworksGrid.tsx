@@ -34,6 +34,7 @@ const GeneArtworksGrid = createPaginationContainer(
           }
           edges {
             node {
+              id
               __id
               image {
                 aspect_ratio
@@ -95,6 +96,7 @@ export interface GeneRelayProps {
       edges: Array<{
         node: {
           __id: string
+          id: string
           image: {
             aspect_ratio: number | null
           } | null

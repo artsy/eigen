@@ -14,7 +14,7 @@ function loadStories() {
   require('../src/lib/Components/Consignments/__stories__/Search.story.tsx');
   require('../src/lib/Components/Consignments/__stories__/Style.story.tsx');
   require('../src/lib/Components/Consignments/__stories__/Todo.story.tsx');
-  require('../src/lib/Components/Inbox/ActiveBids/__stories__/ActiveBids.story');
+  require('../src/lib/Components/Inbox/ActiveBids/__stories__/ActiveBids.story.tsx');
   require('../src/lib/Components/Inbox/Conversations/Preview/__stories__/InvoicePreview.story.tsx');
   require('../src/lib/Components/Inbox/Conversations/__stories__/ArtworkPreview.story.tsx');
   require('../src/lib/Components/Inbox/Conversations/__stories__/Avatar.story.tsx');
@@ -33,6 +33,7 @@ function loadStories() {
   require('../src/lib/Scenes/Home/Components/Sales/Components/__stories__/Sales.Components.story.tsx');
   require('../src/lib/Scenes/Home/__stories__/Home.story.tsx');
   require('../src/lib/Scenes/Settings/__stories__/Settings.story.tsx');
+  
 }
 
 const stories = [
@@ -45,7 +46,7 @@ const stories = [
   '../src/lib/Components/Consignments/__stories__/Search.story.tsx',
   '../src/lib/Components/Consignments/__stories__/Style.story.tsx',
   '../src/lib/Components/Consignments/__stories__/Todo.story.tsx',
-  '../src/lib/Components/Inbox/ActiveBids/__stories__/ActiveBids.story',
+  '../src/lib/Components/Inbox/ActiveBids/__stories__/ActiveBids.story.tsx',
   '../src/lib/Components/Inbox/Conversations/Preview/__stories__/InvoicePreview.story.tsx',
   '../src/lib/Components/Inbox/Conversations/__stories__/ArtworkPreview.story.tsx',
   '../src/lib/Components/Inbox/Conversations/__stories__/Avatar.story.tsx',
@@ -64,7 +65,7 @@ const stories = [
   '../src/lib/Scenes/Home/Components/Sales/Components/__stories__/Sales.Components.story.tsx',
   '../src/lib/Scenes/Home/__stories__/Home.story.tsx',
   '../src/lib/Scenes/Settings/__stories__/Settings.story.tsx',
-
+  
 ];
 
 module.exports = {

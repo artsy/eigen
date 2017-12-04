@@ -23,6 +23,7 @@ const SaleArtworksGrid = createPaginationContainer(
           edges {
             node {
               artwork {
+                id
                 __id
                 image {
                   aspect_ratio

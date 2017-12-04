@@ -8,9 +8,21 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import ImageView from "../OpaqueImageView"
 import SerifText from "../Text/Serif"
 
-class Artwork extends React.Component<RelayProps, any> {
+interface Props extends RelayProps {
+  // Passes the Artwork ID back up to another component
+  // ideally, this would be used to send an array of Artworks
+  // through to Eigen where this item is the default selected one.
+  //
+  // If it's not provided, then it will push just the one artwork
+  // to the switchboard.
+  onPress?: (artworkID: string) => void
+}
+
+class Artwork extends React.Component<Props, any> {
   handleTap() {
-    SwitchBoard.presentNavigationViewController(this, this.props.artwork.href)
+    this.props.onPress && this.props.artwork.id
+      ? this.props.onPress(this.props.artwork.id)
+      : SwitchBoard.presentNavigationViewController(this, this.props.artwork.href)
   }
 
   render() {
@@ -122,6 +134,7 @@ export default createFragmentContainer(
       date
       sale_message
       is_in_auction
+      id
       sale_artwork {
         opening_bid {
           display
@@ -151,6 +164,7 @@ export default createFragmentContainer(
 
 interface RelayProps {
   artwork: {
+    id: string
     title: string | null
     date: string | null
     sale_message: string | null

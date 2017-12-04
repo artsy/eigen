@@ -1,6 +1,11 @@
 // Please add your own contribution below inside the Master section
 // These docs are aimed at developers, but are shown inside collector GMV's channel
 
+### Master
+
+-   Allow passing a set of Artworks and an index to load to Eigen when clicking on
+    a Artwork within a grid - orta
+
 ### 1.4.0-beta.9
 
 -   Accommodate selectedArtist parameter in Home container - sarah
