@@ -36,7 +36,12 @@ export class Inbox extends React.Component<Props, State> {
     }
 
     this.setState({ fetchingData: true })
-    this.conversations._refetchConnection(10, () => {
+
+    // Force-fetch self; this will update Active Bids but not Conversations (there will be a warning)
+    this.props.relay.refetch({}, {}, null, { force: true })
+
+    // Allow Conversations to properly force-fetch itself
+    this.conversations.refs.component.refreshConversations(() => {
       this.setState({ fetchingData: false })
     })
   }
