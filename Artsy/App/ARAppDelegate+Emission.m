@@ -19,6 +19,7 @@
 #import "ARRootViewController.h"
 #import "ARAppStatus.h"
 #import "ARRouter.h"
+#import "AREmissionCameraController.h"
 
 #import <Aerodramus/Aerodramus.h>
 #import <Keys/ArtsyKeys.h>
@@ -26,6 +27,7 @@
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/ARSwitchBoardModule.h>
 #import <Emission/AREventsModule.h>
+#import <Emission/ARTakeCameraPhotoModule.h>
 #import <Emission/ARRefineOptionsModule.h>
 #import <Emission/ARWorksForYouModule.h>
 #import <Emission/ARArtistComponentViewController.h>
@@ -52,7 +54,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     });
     block(@[ RCTJSErrorFromNSError(error), @(following) ]);
 }
-
 
 @implementation ARAppDelegate (Emission)
 
@@ -219,6 +220,14 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 // TODO: Nav Notifications
 //        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
     };
+
+#pragma mark - Native Module: WorksForYou
+
+    emission.cameraModule.triggerCreatingACameraPhoto = ^(UIViewController * _Nonnull controller, RCTPromiseResolveBlock  _Nonnull resolve, RCTPromiseRejectBlock  _Nonnull reject) {
+        AREmissionCameraController *cameraController = [[AREmissionCameraController alloc] initWithResolver:resolve rejecter:reject];
+        [controller presentViewController:cameraController animated:YES completion:nil];
+    };
+
 }
 
 @end

@@ -3,7 +3,7 @@
 
 # Sometimes its a README fix, or something like that - which isn't relevant for
 # including in a CHANGELOG for example
-declared_trivial = github.pr_title.include? "#trivial"
+declared_trivial = github.pr_title.include?("#trivial") || github.pr_body.include?("#trivial")
 
 # Just to let people know
 warn("PR is classed as Work in Progress") if github.pr_title.include? "[WIP]"
