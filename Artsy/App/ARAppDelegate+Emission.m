@@ -84,8 +84,11 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     NSParameterAssert(authenticationToken);
 
     ArtsyKeys *keys = [ArtsyKeys new];
-    NSString *sentryDSN = [ARAppStatus isBetaOrDev] ? [keys sentryStagingDSN] : [keys sentryProductionDSN];
-    
+    NSString *sentryDSN = nil;
+    if (![ARAppStatus isDev]) {
+        sentryDSN = [ARAppStatus isBeta] ? [keys sentryStagingDSN] : [keys sentryProductionDSN];
+    }
+
     // Don't let the JS raise an error about Sentry's DSN being a stub on OSS builds
     if ([sentryDSN isEqualToString:@"-"]) {
         sentryDSN = nil;

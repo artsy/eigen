@@ -5,6 +5,12 @@
 
 @interface ARAppStatus : NSObject
 
+/// Is the app running locally as a developer.
++ (BOOL)isDev;
+
+/// Is the app running on Testflight.
++ (BOOL)isBeta;
+
 /// Is the app running on Testflight or locally as a developer.
 + (BOOL)isBetaOrDev;
 
@@ -16,4 +22,5 @@
 
 /// Is the app running tests?
 + (BOOL)isRunningTests;
+
 @end
