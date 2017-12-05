@@ -19,6 +19,7 @@ const Container = styled.ScrollView`flex: 1;`
 
 export class Inbox extends React.Component<Props, State> {
   conversations: any
+  activeBids: any
 
   constructor(props) {
     super(props)
@@ -37,10 +38,9 @@ export class Inbox extends React.Component<Props, State> {
 
     this.setState({ fetchingData: true })
 
-    // Force-fetch self; this will update Active Bids but not Conversations (there will be a warning)
-    this.props.relay.refetch({}, {}, null, { force: true })
-
-    // Allow Conversations to properly force-fetch itself
+    // Allow Conversations & Active Bids to properly force-fetch themselves.
+    // The stored refs are the Relay containers; the components themselves are nested under as refs.
+    this.activeBids.refs.component.refreshActiveBids()
     this.conversations.refs.component.refreshConversations(() => {
       this.setState({ fetchingData: false })
     })
@@ -52,7 +52,7 @@ export class Inbox extends React.Component<Props, State> {
       this.props.me.conversations_existence_check && this.props.me.conversations_existence_check.edges.length > 0
     return hasBids || hasConversations
       ? <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
-          <ActiveBids me={this.props.me as any} />
+          <ActiveBids me={this.props.me as any} ref={activeBids => (this.activeBids = activeBids)} />
           <Conversations me={this.props.me} ref={conversations => (this.conversations = conversations)} />
         </Container>
       : <ZeroStateInbox />

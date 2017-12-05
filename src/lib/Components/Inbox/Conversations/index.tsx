@@ -66,7 +66,10 @@ export class Conversations extends React.Component<Props, State> {
     this.setState({ fetchingNextPage: true })
     this.props.relay.refetchConnection(10, () => {
       this.setState({ fetchingNextPage: false })
-      callback()
+
+      if (callback) {
+        callback()
+      }
     })
   }
 
