@@ -34,8 +34,6 @@ interface Props extends RelayProps {
 
 interface State {
   dataSource: ListViewDataSource | null
-  fetchingNextPage: boolean
-  completed: boolean
 }
 
 export class WorksForYou extends React.Component<Props, State> {
@@ -57,8 +55,6 @@ export class WorksForYou extends React.Component<Props, State> {
 
     this.state = {
       dataSource,
-      completed: false,
-      fetchingNextPage: false,
     }
   }
 
@@ -95,11 +91,10 @@ export class WorksForYou extends React.Component<Props, State> {
     }
   }
 
-  fetchNextPage() {
-    if (this.state.fetchingNextPage || this.state.completed) {
+  fetchNextPage = () => {
+    if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
       return
     }
-    this.setState({ fetchingNextPage: true })
     this.props.relay.loadMore(PageSize, error => {
       const notifications = this.props.viewer.me.notifications.edges.map(edge => edge.node)
 
@@ -109,12 +104,8 @@ export class WorksForYou extends React.Component<Props, State> {
       }
 
       this.setState({
-        fetchingNextPage: false,
         dataSource: this.state.dataSource.cloneWithRows(notifications),
       })
-      if (!this.props.viewer.me.notifications.pageInfo.hasNextPage) {
-        this.setState({ completed: true })
-      }
     })
   }
 
