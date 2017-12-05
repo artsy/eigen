@@ -2,6 +2,7 @@ import Quick
 import Nimble
 import Nimble_Snapshots
 import UIKit
+import Interstellar
 import Then
 
 @testable
@@ -13,7 +14,7 @@ func runTheTest(message: String? = nil) {
         $0.frame = UIScreen.main.bounds
     }
 
-    let subject = SaleOnHoldOverlayView(message: message)
+    let subject = SaleOnHoldOverlayView(messages: Observable(message))
     containerView.addSubview(subject)
     subject.align(toView: containerView)
 
