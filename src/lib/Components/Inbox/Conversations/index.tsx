@@ -40,6 +40,8 @@ export class Conversations extends React.Component<Props, State> {
       dataSource,
       fetchingNextPage: false,
     }
+
+    this.refreshConversations = this.refreshConversations.bind(this)
   }
 
   componentDidMount() {
@@ -53,6 +55,21 @@ export class Conversations extends React.Component<Props, State> {
 
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(conversations),
+    })
+  }
+
+  refreshConversations(callback) {
+    if (this.state.fetchingNextPage) {
+      return
+    }
+
+    this.setState({ fetchingNextPage: true })
+    this.props.relay.refetchConnection(10, () => {
+      this.setState({ fetchingNextPage: false })
+
+      if (callback) {
+        callback()
+      }
     })
   }
 

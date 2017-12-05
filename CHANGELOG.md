@@ -8,6 +8,7 @@
 
 ### 1.4.0-beta.9
 
+-   During Inbox pull-to-refresh, Conversations container force-fetches itself - sarah
 -   Accommodate selectedArtist parameter in Home container - sarah
 -   Don’t require 2 taps to open a conversation attachment and keep keyboard up - alloy
 -   Don’t assume a photo was selected in the consignments photo picker - alloy
