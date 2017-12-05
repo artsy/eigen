@@ -26,14 +26,10 @@ interface State {
 const LoadingIndicator = styled.ActivityIndicator`margin-top: 40px;`
 
 export class Messages extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-
-    this.state = {
-      fetchingMoreData: false,
-      reloadingData: false,
-      shouldStickFirstMessageToTop: false,
-    }
+  state = {
+    fetchingMoreData: false,
+    reloadingData: false,
+    shouldStickFirstMessageToTop: false,
   }
 
   renderMessage({ item, index }) {

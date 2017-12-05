@@ -104,19 +104,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     itemMargin: 20,
   }
 
-  private sentEndForContentLength: null | number
-
-  constructor(props: Props) {
-    super(props)
-
-    this.state = {
-      sectionDimension: 0,
-      completed: false,
-      fetchingNextPage: false,
-    }
-
-    this.sentEndForContentLength = null
+  state = {
+    sectionDimension: 0,
+    completed: false,
+    fetchingNextPage: false,
   }
+
+  private sentEndForContentLength: null | number = null
 
   artworksConnection(): ArtworksConnection {
     return this.props.mapPropsToArtworksConnection(this.props)
