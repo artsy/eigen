@@ -22,6 +22,7 @@ GenericGrid
 import ZeroState from "lib/Components/States/ZeroState"
 import SerifText from "lib/Components/Text/Serif"
 import Notification from "lib/Components/WorksForYou/Notification"
+import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 import colors from "lib/data/colors"
 
@@ -130,7 +131,7 @@ export class WorksForYou extends React.Component<Props, State> {
     return (
       <ScrollView
         contentContainerStyle={hasNotifications ? {} : styles.container}
-        onScroll={event => (this.currentScrollOffset = event.nativeEvent.contentOffset.y)}
+        onScroll={isCloseToBottom(this.fetchNextPage)}
         scrollEventThrottle={100}
         ref={scrollView => (this.scrollView = scrollView)}
       >
@@ -148,7 +149,6 @@ export class WorksForYou extends React.Component<Props, State> {
         renderRow={data => <Notification notification={data} />}
         renderSeparator={(sectionID, rowID) =>
           <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>}
-        onEndReached={() => this.fetchNextPage()}
         scrollEnabled={false}
       />
     )
