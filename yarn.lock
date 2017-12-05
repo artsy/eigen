@@ -160,6 +160,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-relay@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-1.3.1.tgz#955dc7c2575079302a5306c78e0defc799f058b5"
+  dependencies:
+    "@types/react" "*"
+    "@types/relay-runtime" "*"
+
 "@types/react-tracking@^5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@types/react-tracking/-/react-tracking-5.0.0.tgz#5e295829b8dc2f98ae57c3b9ffcba81e267812ca"
@@ -169,6 +176,10 @@
 "@types/react@*", "@types/react@^16.0.5":
   version "16.0.5"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.5.tgz#d713cf67cc211dea20463d2a0b66005c22070c4b"
+
+"@types/relay-runtime@*", "@types/relay-runtime@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-1.3.1.tgz#609bfff289f468c230f15d63ceb84a0c824437e6"
 
 JSONStream@^0.8.4:
   version "0.8.4"

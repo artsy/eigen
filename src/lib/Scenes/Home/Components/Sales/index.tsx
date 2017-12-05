@@ -4,13 +4,14 @@ import React from "react"
 import { Dimensions, FlatList, SectionList, Text, TouchableWithoutFeedback, View } from "react-native"
 import { StyleSheet, TextStyle } from "react-native"
 import {
+  ConnectionData,
   createFragmentContainer,
   createPaginationContainer,
   graphql,
   QueryRenderer,
   QueryRendererProps,
+  RelayPaginationProp,
 } from "react-relay"
-import { RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { LotsByFollowedArtists } from "./Components/LotsByFollowedArtists"
 import { SaleList } from "./Components/SaleList"
@@ -23,7 +24,6 @@ interface Props {
   }>
   viewer?: {
     sale_artworks: {
-      pageInfo: object | null
       edges: Array<{
         node: object | null
       }> | null
@@ -116,7 +116,7 @@ export default createPaginationContainer(
     `,
   },
   {
-    getConnectionFromProps: ({ viewer }) => viewer && viewer.sale_artworks,
+    getConnectionFromProps: ({ viewer }) => viewer && (viewer.sale_artworks as ConnectionData),
     getFragmentVariables: (prevVars, totalCount) => ({ ...prevVars, count: totalCount }),
     getVariables: (props, { count, cursor }) => ({ count, cursor }),
     query: graphql.experimental`

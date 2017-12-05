@@ -1,5 +1,5 @@
 import React from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
 import { ListView, ListViewDataSource, View } from "react-native"
@@ -29,7 +29,7 @@ interface State {
 }
 
 export class Conversations extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
 
     const dataSource = new ListView.DataSource({
@@ -164,7 +164,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.me && props.me.conversations
+      return props.me && (props.me.conversations as ConnectionData)
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -189,7 +189,7 @@ export default createPaginationContainer(
       }
     `,
   }
-)
+) as React.ComponentClass<Props>
 
 interface RelayProps {
   me: {

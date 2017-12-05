@@ -5,6 +5,7 @@
 
 -   Allow passing a set of Artworks and an index to load to Eigen when clicking on
     a Artwork within a grid - orta
+-   Update Relay typings to current DT version - alloy
 -   Change inquiry status bar background to white - maxim
 
 ### 1.4.0-beta.9
@@ -94,6 +95,8 @@
 -   Adds Live and timed auctions in home view - luc
 -   Tab bar text now aligned and centered correctly - luc
 -   Adds iPad support for Auctions view layout - luc
+-   Adds <LotsByArtistsYouFollow /> component to Sales - chris
+-   Refactors <LotsByArtistsYouFollow /> by consolidating QueryRenderers - chris
 
 ###### Consignments
 

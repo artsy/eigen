@@ -81,7 +81,7 @@ const ArtistForSaleArtworksGrid = createPaginationContainer(
 export default ArtistForSaleArtworksGrid
 
 export interface ArtistRelayProps {
-  artist: {
+  artist?: {
     artworks_connection: {
       pageInfo: {
         hasNextPage: boolean

@@ -21,7 +21,9 @@ exports[`looks correct when rendered 1`] = `
         },
         "from_email_address": "anita@garibaldi.br",
         "id": 222,
-        "key": undefined,
+        "impulse_id": "impulse:222",
+        "is_from_user": true,
+        "key": "some-cursor",
       },
     ]
   }
@@ -135,7 +137,7 @@ exports[`looks correct when rendered 1`] = `
                 Array [
                   Object {
                     "alignSelf": "center",
-                    "color": "#666666",
+                    "color": "white",
                     "fontFamily": "AvantGardeGothicITC",
                     "fontSize": 10,
                     "marginTop": 8,
@@ -143,9 +145,9 @@ exports[`looks correct when rendered 1`] = `
                   undefined,
                 ]
               }
-              user={undefined}
+              user={true}
             >
-              KK
+              AG
             </Text>
           </View>
           <View
@@ -211,7 +213,7 @@ exports[`looks correct when rendered 1`] = `
                   ]
                 }
               >
-                KIMBERLY KLARK
+                ANITA GARIBALDI
               </Text>
               <Text
                 accessible={true}
@@ -276,28 +278,6 @@ exports[`looks correct when rendered 1`] = `
                 Adoro! Por favor envie-me mais informações
               </Text>
             </View>
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              style={
-                Array [
-                  Object {
-                    "color": "#cccccc",
-                    "fontFamily": "AGaramondPro-Regular",
-                  },
-                  Array [
-                    Object {
-                      "marginTop": 10,
-                    },
-                    undefined,
-                  ],
-                ]
-              }
-            >
-              Percy · percy@cat.com
-            </Text>
           </View>
         </View>
       </View>
@@ -331,4 +311,4 @@ exports[`looks correct when rendered 1`] = `
     </View>
   </View>
 </RCTScrollView>
-`
+`;

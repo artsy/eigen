@@ -2,7 +2,7 @@ jest.mock("../../../../metaphysics", () => ({ metaphysics: jest.fn() }))
 import { metaphysics } from "../../../../metaphysics"
 const mockphysics = metaphysics as jest.Mock<any>
 
-jest.mock("../geminiUploadToS3.ts", () => ({
+jest.mock("../geminiUploadToS3", () => ({
   createGeminiAssetWithS3Credentials: jest.fn(),
   getGeminiCredentialsForEnvironment: jest.fn(),
   uploadFileToS3: jest.fn(),

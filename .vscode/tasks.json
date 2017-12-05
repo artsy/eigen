@@ -9,19 +9,15 @@
     {
       "taskName": "Start Typescript Compiler",
       "isBuildCommand": true,
-      "args": ["node_modules/.bin/tsc"],
-      "problemMatcher": [
-        "$tsc"
-      ]
+      "args": ["node_modules/.bin/tsc --noEmit"],
+      "problemMatcher": ["$tsc"]
     },
     {
       "taskName": "Start Typescript Compiler (in watch mode)",
       "isBuildCommand": true,
-      "args": ["node_modules/.bin/tsc --watch"],
+      "args": ["node_modules/.bin/tsc --watch --noEmit"],
       "isBackground": true,
-      "problemMatcher": [
-        "$tsc-watch"
-      ]
+      "problemMatcher": ["$tsc-watch"]
     },
     {
       "taskName": "TSLint: Lint all files",
@@ -29,10 +25,7 @@
       "args": ["lint"],
       "problemMatcher": {
         "owner": "tslint",
-        "fileLocation": [
-          "relative",
-          "${workspaceRoot}"
-        ],
+        "fileLocation": ["relative", "${workspaceRoot}"],
         "severity": "warning",
         "pattern": {
           "regexp": "^(\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",

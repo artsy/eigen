@@ -48,40 +48,40 @@ interface ArtworksConnection {
   }>
 }
 
-interface Props extends ArtistRelayProps, GeneRelayProps {
+export interface Props extends ArtistRelayProps, GeneRelayProps {
   /** The direction for the grid, currently only 'column' is supported . */
-  sectionDirection: string
+  sectionDirection?: string
 
   /** The arity of the number of sections (e.g. columns) to show */
-  sectionCount: number
+  sectionCount?: number
 
   /** The inset margin for the whole grid */
-  sectionMargin: number
+  sectionMargin?: number
 
   /** The per-item margin */
-  itemMargin: number
+  itemMargin?: number
 
   /** The artist in question */
-  artist: any
+  artist?: any
 
   /** The gene in question */
-  gene: any
+  gene?: any
 
   mapPropsToArtworksConnection: (props: any) => ArtworksConnection
 
   mapConnectionNodeToArtwork?: (node: any) => Artwork
 
   /** Filter for artist artworks */
-  filter: any
+  filter?: any
 
   /** Medium for filter artworks */
-  medium: string
+  medium?: string
 
   /** Price range for filter artworks */
-  priceRange: any
+  priceRange?: any
 
   /** Sort for filter artworks */
-  sort: any
+  sort?: any
 
   /** Relay */
   relay?: RelayPaginationProp
@@ -104,19 +104,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     itemMargin: 20,
   }
 
-  private sentEndForContentLength: null | number
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      sectionDimension: 0,
-      completed: false,
-      fetchingNextPage: false,
-    }
-
-    this.sentEndForContentLength = null
+  state = {
+    sectionDimension: 0,
+    completed: false,
+    fetchingNextPage: false,
   }
+
+  private sentEndForContentLength: null | number = null
 
   artworksConnection(): ArtworksConnection {
     return this.props.mapPropsToArtworksConnection(this.props)
