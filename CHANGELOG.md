@@ -6,6 +6,7 @@
 -   Allow passing a set of Artworks and an index to load to Eigen when clicking on
     a Artwork within a grid - orta
 -   Update Relay typings to current DT version - alloy
+-   Change inquiry status bar background to white - maxim
 
 ### 1.4.0-beta.9
 

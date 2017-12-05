@@ -5,6 +5,7 @@ exports[`renders correctly 1`] = `
   style={
     Array [
       Object {
+        "backgroundColor": "white",
         "flexBasis": 0,
         "flexDirection": "column",
         "flexGrow": 1,
