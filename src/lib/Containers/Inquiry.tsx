@@ -32,6 +32,7 @@ const isPad = Dimensions.get("window").width > 700
 const Container = styled.View`
   flex: 1;
   flex-direction: column;
+  background-color: white;
 `
 const Header = styled.View`
   align-self: stretch;

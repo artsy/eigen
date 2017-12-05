@@ -232,7 +232,7 @@
 - (ARCellData *)jumpToInquiry
 {
   return [self tappableCellDataWithTitle:@"Inquiry" selection: ^{
-    id viewController = [[ARInquiryComponentViewController alloc] initWithArtworkID:@"damien-hirst-for-the-love-of-god-lenticular-6"];
+    id viewController = [[ARInquiryComponentViewController alloc] initWithArtworkID:@"damien-hirst-analgesics"];
     [self.navigationController presentViewController:viewController animated:YES completion:nil];
   }];
 }
