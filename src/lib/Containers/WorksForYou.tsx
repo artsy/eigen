@@ -109,10 +109,6 @@ export class WorksForYou extends React.Component<Props, State> {
     })
   }
 
-  componentDidUpdate() {
-    this.scrollView.scrollTo({ y: this.currentScrollOffset + 1, animated: false })
-  }
-
   render() {
     const hasNotifications = this.state.dataSource
 
