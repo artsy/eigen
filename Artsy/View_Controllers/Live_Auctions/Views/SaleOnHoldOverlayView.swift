@@ -56,21 +56,17 @@ class SaleOnHoldOverlayView: UIView {
             titleLabel.textAlignment = .center
             $0.addSubview(titleLabel, withTopMargin: "0", sideMargin: "0")
 
-            if let message = message, message.isNotEmpty {
-                let messageLabel = ARSerifLabel()
-                messageLabel.text = message
-                messageLabel.textColor = .white
-                messageLabel.backgroundColor = .clear
-                messageLabel.textAlignment = .center
-                $0.addSubview(messageLabel, withTopMargin: "20", sideMargin: "0")
+            let messageLabel = ARSerifLabel()
+            messageLabel.textColor = .white
+            messageLabel.backgroundColor = .clear
+            messageLabel.textAlignment = .center
+            $0.addSubview(messageLabel, withTopMargin: "20", sideMargin: "0")
+            switch message {
+            case .some(let unwrappedMessage) where unwrappedMessage.isNotEmpty:
+                messageLabel.text = unwrappedMessage
+            default:
+                messageLabel.text = "You can still place max bids"
             }
-
-            let subtitleLabel = ARSerifLabel()
-            subtitleLabel.text = "You can still place max bids"
-            subtitleLabel.textColor = .white
-            subtitleLabel.backgroundColor = .clear
-            subtitleLabel.textAlignment = .center
-            $0.addSubview(subtitleLabel, withTopMargin: "20", sideMargin: "0")
         }
         addSubview(containerView)
         containerView.alignLeading("20", trailing: "-20", toView: self)
