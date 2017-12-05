@@ -48,14 +48,14 @@ PODS:
     - Extraction/ARAnimationContinuation
   - FLKAutoLayout (1.0.0)
   - ISO8601DateFormatter (0.8)
-  - KSCrash/Core (1.15.12):
+  - KSCrash/Core (1.15.16):
     - KSCrash/Reporting/Filters/Basic
-  - KSCrash/Recording (1.15.12):
-    - KSCrash/Recording/Tools (= 1.15.12)
-  - KSCrash/Recording/Tools (1.15.12)
-  - KSCrash/Reporting/Filters/Base (1.15.12):
+  - KSCrash/Recording (1.15.16):
+    - KSCrash/Recording/Tools (= 1.15.16)
+  - KSCrash/Recording/Tools (1.15.16)
+  - KSCrash/Reporting/Filters/Base (1.15.16):
     - KSCrash/Recording
-  - KSCrash/Reporting/Filters/Basic (1.15.12):
+  - KSCrash/Reporting/Filters/Basic (1.15.16):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters/Base
   - NSURL+QueryDictionary (1.2.0)
@@ -149,7 +149,7 @@ SPEC CHECKSUMS:
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
-  KSCrash: 931b6caeebfbfe0d316007fcd209f6cb9889c624
+  KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   React: 6d68659481a8a56e0f6b3dbecd984d5b9bb2d6c5

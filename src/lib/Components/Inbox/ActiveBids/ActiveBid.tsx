@@ -44,7 +44,7 @@ const StatusLabel = styled(MetadataText)`
       case "winning":
         return colors["green-regular"]
       case "reserve":
-        return colors["yellow-regular"]
+        return colors["yellow-bold"]
       case "losing":
         return colors["red-regular"]
       case "live_auction":
