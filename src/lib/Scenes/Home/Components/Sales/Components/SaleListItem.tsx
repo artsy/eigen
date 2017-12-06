@@ -100,7 +100,7 @@ export class SaleListItem extends React.Component<RelayProps, null> {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap}>
         <Container>
-          <Image imageURL={imageURL} skipGemini={true} />
+          <Image imageURL={imageURL} />
           <Content>
             <Header>
               <Title numberOfLines={2}>

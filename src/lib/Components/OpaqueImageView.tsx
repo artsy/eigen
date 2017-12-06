@@ -25,8 +25,6 @@ interface Props {
   /** Any additional styling for the imageview */
   style?: any
 
-  skipGemini?: boolean
-
   /**
    * An aspect ratio created with: width / height.
    *
@@ -82,9 +80,6 @@ export default class OpaqueImageView extends React.Component<Props, State> {
 
   imageURL() {
     const imageURL = this.props.imageURL
-    if (this.props.skipGemini) {
-      return imageURL
-    }
     if (imageURL) {
       // Either scale or crop, based on if an aspect ratio is available.
       const type = this.state.aspectRatio ? "fit" : "fill"

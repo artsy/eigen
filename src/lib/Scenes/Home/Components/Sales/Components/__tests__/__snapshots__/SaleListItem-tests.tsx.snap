@@ -32,7 +32,6 @@ exports[`renders correctly 1`] = `
 >
   <AROpaqueImageView
     imageURL="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FeeqLfwMMAYA8XOmeYEb7Rg%2Fsource.jpg"
-    skipGemini={true}
     style={
       Array [
         Object {
