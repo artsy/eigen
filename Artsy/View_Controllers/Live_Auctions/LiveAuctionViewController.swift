@@ -32,6 +32,7 @@ class LiveAuctionViewController: UIViewController {
     fileprivate var saleOnHoldSubscription: ObserverToken<(isOnHold: Bool, message: String?)>?
     fileprivate var waitingForInitialLoad = true
     fileprivate var registrationStatusChanged = false
+    fileprivate var saleOnHoldMessageSignal: Observable<String?>?
 
     /// We want to offer ~1 second of delay to allow
     /// the socket to reconnect before we show the disconnect warning
@@ -194,14 +195,14 @@ class LiveAuctionViewController: UIViewController {
             // Present a sale-on-hold overlay
             showSaleOnHoldBanner()
             hasShownSaleOnHoldBanner = true
-        } else {
+        } else if !onHold {
             // Dismiss any sale-on-hold overlay
             dismissSaleOnHoldBanner()
         }
     }
 
     func showSaleOnHoldBanner() {
-        saleOnHoldBanner = SaleOnHoldOverlayView(message: saleOnHoldMessage).then {
+        saleOnHoldBanner = SaleOnHoldOverlayView(messages: saleOnHoldMessageSignal).then {
             view.addSubview($0)
             $0.align(toView: view)
             $0.delegate = self
@@ -289,6 +290,8 @@ extension PrivateFunctions {
             .map { return $0.0 && $0.1 } // We are connected iff the socket is connected and the operator is connected.
             .subscribe(showSocketDisconnectedOverlay)
 
+        self.saleOnHoldMessageSignal = salesPerson.saleOnHoldSignal.map { $1 }
+        
         saleOnHoldSubscription?.unsubscribe()
         saleOnHoldSubscription = salesPerson.saleOnHoldSignal.subscribe { [weak self] (isOnHold, message) in
             self?.updateSaleOnHoldOverlay(onHold: isOnHold, message: message)

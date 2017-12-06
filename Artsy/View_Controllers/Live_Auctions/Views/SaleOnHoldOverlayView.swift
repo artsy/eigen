@@ -5,6 +5,7 @@ import ORStackView
 import Artsy_UILabels
 import Artsy_UIButtons
 import Artsy_UIFonts
+import Interstellar
 
 protocol SaleOnHoldOverlayViewDelegate {
     func userDidTapDismiss(forSaleOnHoldOverlayView saleOnHoldOverlayView: SaleOnHoldOverlayView)
@@ -12,10 +13,11 @@ protocol SaleOnHoldOverlayViewDelegate {
 
 class SaleOnHoldOverlayView: UIView {
     var delegate: SaleOnHoldOverlayViewDelegate?
+    var observer: ObserverToken<String?>?
 
-    required init(message: String?) {
+    required init(messages: Observable<String?>? ) {
         super.init(frame: CGRect.zero)
-        sharedSetup(message: message)
+        observer = messages?.subscribe(self.sharedSetup)
     }
 
     override init(frame: CGRect) {
@@ -27,8 +29,16 @@ class SaleOnHoldOverlayView: UIView {
         // Required for Swift compiler.
         return nil
     }
+    
+    override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        if newSuperview == nil {
+            observer?.unsubscribe()
+        }
+    }
 
     func sharedSetup(message: String? = nil) {
+        subviews.forEach { $0.removeFromSuperview() }
         // Set up dark blurring effect
         let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
@@ -46,21 +56,17 @@ class SaleOnHoldOverlayView: UIView {
             titleLabel.textAlignment = .center
             $0.addSubview(titleLabel, withTopMargin: "0", sideMargin: "0")
 
-            if let message = message, message.isNotEmpty {
-                let messageLabel = ARSerifLabel()
-                messageLabel.text = message
-                messageLabel.textColor = .white
-                messageLabel.backgroundColor = .clear
-                messageLabel.textAlignment = .center
-                $0.addSubview(messageLabel, withTopMargin: "20", sideMargin: "0")
+            let messageLabel = ARSerifLabel()
+            messageLabel.textColor = .white
+            messageLabel.backgroundColor = .clear
+            messageLabel.textAlignment = .center
+            $0.addSubview(messageLabel, withTopMargin: "20", sideMargin: "0")
+            switch message {
+            case .some(let unwrappedMessage) where unwrappedMessage.isNotEmpty:
+                messageLabel.text = unwrappedMessage
+            default:
+                messageLabel.text = "You can still place max bids"
             }
-
-            let subtitleLabel = ARSerifLabel()
-            subtitleLabel.text = "You can still place max bids"
-            subtitleLabel.textColor = .white
-            subtitleLabel.backgroundColor = .clear
-            subtitleLabel.textAlignment = .center
-            $0.addSubview(subtitleLabel, withTopMargin: "20", sideMargin: "0")
         }
         addSubview(containerView)
         containerView.alignLeading("20", trailing: "-20", toView: self)
