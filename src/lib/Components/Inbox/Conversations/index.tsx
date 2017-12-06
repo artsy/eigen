@@ -61,6 +61,7 @@ export class Conversations extends React.Component<Props, State> {
       return
     }
 
+<<<<<<< HEAD
     this.setState({ fetchingNextPage: true })
     this.props.relay.refetchConnection(10, error => {
       if (error) {
@@ -68,6 +69,13 @@ export class Conversations extends React.Component<Props, State> {
         console.error("Conversations/index.jsx", error.message)
       }
 
+=======
+    this.setState({
+      fetchingNextPage: true,
+    })
+
+    this.props.relay.refetchConnection(10, () => {
+>>>>>>> [Home/ForYou] Fix tests
       this.setState({
         fetchingNextPage: false,
       })
@@ -94,11 +102,13 @@ export class Conversations extends React.Component<Props, State> {
     if (!me) {
       return []
     }
+
     const conversations = me.conversations.edges
       .filter(({ node }) => {
         return node && node.last_message
       })
       .map(edge => edge.node)
+
     return conversations || []
   }
 
@@ -125,7 +135,8 @@ export class Conversations extends React.Component<Props, State> {
   }
 
   render() {
-    const showLoadingSpinner = this.props.relay.hasMore() && this.state.fetchingNextPage
+    const { relay } = this.props
+    const showLoadingSpinner = relay && relay.hasMore() && this.state.fetchingNextPage
 
     return (
       <View>
@@ -138,7 +149,7 @@ export class Conversations extends React.Component<Props, State> {
           renderHeader={() =>
             <View>
               {this.props.headerView}
-              {this.hasContent() ? <Headline>Messages</Headline> : null}
+              {this.hasContent() && <Headline>Messages</Headline>}
             </View>}
           renderRow={data =>
             <ConversationSnippet

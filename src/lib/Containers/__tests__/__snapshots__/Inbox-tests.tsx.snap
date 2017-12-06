@@ -203,6 +203,7 @@ exports[`renders correctly 1`] = `
               }
             >
               Current Bid: $1,100 
+Highest Bid: $1,100
             </Text>
           </View>
         </View>
@@ -362,6 +363,7 @@ exports[`renders correctly 1`] = `
               }
             >
               Current Bid: $10,000 
+Highest Bid: $10,000
             </Text>
           </View>
         </View>
@@ -521,6 +523,7 @@ exports[`renders correctly 1`] = `
               }
             >
               Current Bid: $5,000 
+Highest Bid: $5,000
             </Text>
           </View>
         </View>
@@ -548,11 +551,11 @@ exports[`renders correctly 1`] = `
         enableEmptySections={true}
         initialListSize={10}
         onEndReached={[Function]}
-        onEndReachedThreshold={10}
+        onEndReachedThreshold={100}
         renderHeader={[Function]}
         renderRow={[Function]}
         renderScrollComponent={[Function]}
-        scrollEventThrottle={10}
+        scrollEventThrottle={500}
       >
         <View>
           <View>

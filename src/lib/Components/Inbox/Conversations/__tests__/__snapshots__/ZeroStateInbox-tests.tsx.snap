@@ -11,11 +11,11 @@ exports[`looks correct when the user has no conversations 1`] = `
     enableEmptySections={true}
     initialListSize={10}
     onEndReached={[Function]}
-    onEndReachedThreshold={10}
+    onEndReachedThreshold={100}
     renderHeader={[Function]}
     renderRow={[Function]}
     renderScrollComponent={[Function]}
-    scrollEventThrottle={10}
+    scrollEventThrottle={500}
   >
     <View>
       <View />
