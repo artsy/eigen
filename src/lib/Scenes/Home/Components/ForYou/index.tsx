@@ -15,9 +15,10 @@ interface DataSourceRow {
 type Props = ViewProperties & RelayProps
 
 interface State {
-  modules: any[]
-  isRefreshing: boolean
   dataSource: ListViewDataSource
+  error?: string
+  isRefreshing: boolean
+  modules: any[]
 }
 
 export class ForYou extends React.Component<Props, State> {
@@ -74,38 +75,61 @@ export class ForYou extends React.Component<Props, State> {
     })
   }
 
-  handleRefresh = () => {
-    this.setState({ isRefreshing: true })
-    const stopRefreshing = () => this.setState({ isRefreshing: false })
+  handleRefresh = async () => {
+    this.setState({
+      isRefreshing: true,
+    })
 
-    Promise.all(
-      this.state.modules.map(module => {
-        return new Promise((resolve, reject) => {
-          module.forceFetch(null, readyState => {
-            if (readyState.error) {
-              reject(readyState.error)
-            } else if (readyState.aborted) {
-              reject()
-            } else if (readyState.done) {
-              resolve()
-            }
+    try {
+      await Promise.all(
+        this.state.modules.map(module => {
+          return new Promise((resolve, reject) => {
+            const { props, state: { data, relayProp } } = module
+
+            relayProp.refetch({ ...props.rail, fetchContent: true }, null, error => {
+              if (error) {
+                reject({ error })
+              } else {
+                resolve()
+              }
+            })
           })
         })
+      )
+
+      // Success
+      this.setState({
+        isRefreshing: false,
       })
-    ).then(stopRefreshing, stopRefreshing)
+
+      // Fail
+    } catch (error) {
+      this.setState({
+        error, // TODO: Display this somehow
+      })
+    }
   }
 
   render() {
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderScrollComponent={(props: ScrollViewProps) => {
-          const refreshControl = <RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />
-          return <ScrollView {...props} automaticallyAdjustContentInsets={false} refreshControl={refreshControl} />
+        renderScrollComponent={props => {
+          return (
+            <ScrollView
+              {...props}
+              automaticallyAdjustContentInsets={false}
+              refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
+            />
+          )
         }}
         renderRow={({ type, data }, _, row: number) => {
-          // Offset row because we don’t store a reference to the search bar and hero units rows.
-          const registerModule = module => (this.state.modules[row - 2] = module)
+          const registerModule = module => {
+            // Offset row because we don’t store a reference to the search bar and hero units rows.
+            // FIXME: Don't mutate state
+            this.state.modules[row - 2] = module
+          }
+
           switch (type) {
             case "artwork":
               return <ArtworkCarousel ref={registerModule} key={data.__id} rail={data} />
