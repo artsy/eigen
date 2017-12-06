@@ -94,6 +94,9 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
               display: "$1,100",
             },
             sale_artwork: {
+              counts: {
+                bidder_positions: 1,
+              },
               lot_label: "14",
               lot_number: "14",
               position: 14,
@@ -124,6 +127,9 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
               display: "$10,000",
             },
             sale_artwork: {
+              counts: {
+                bidder_positions: 1,
+              },
               lot_label: "8",
               lot_number: "8",
               position: 8,
@@ -154,6 +160,9 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
               display: "$5,000",
             },
             sale_artwork: {
+              counts: {
+                bidder_positions: 1,
+              },
               lot_label: "2",
               lot_number: "2",
               position: 2,

@@ -10,8 +10,7 @@ exports[`looks correct when rendered 1`] = `
     }
     enableEmptySections={true}
     initialListSize={10}
-    onEndReached={[Function]}
-    onEndReachedThreshold={100}
+    onScroll={[Function]}
     renderHeader={[Function]}
     renderRow={[Function]}
     renderScrollComponent={[Function]}

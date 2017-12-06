@@ -143,8 +143,7 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
           ]
         }
       >
-        Current Bid: $10,000 
-Highest Bid: $10,000
+        $10,000 (1 Bid)
       </Text>
     </View>
   </View>
@@ -468,8 +467,7 @@ exports[`renders correctly 1`] = `
           ]
         }
       >
-        Current Bid: $10,000 
-Highest Bid: $10,000
+        $10,000 (1 Bid)
       </Text>
     </View>
   </View>

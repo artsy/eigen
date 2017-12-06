@@ -6,6 +6,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { ListView, ListViewDataSource, View } from "react-native"
 import { LargeHeadline } from "../Typography"
 
+import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import Spinner from "../../Spinner"
 import ConversationSnippet from "./ConversationSnippet"
@@ -105,7 +106,7 @@ export class Conversations extends React.Component<Props, State> {
   }
 
   fetchData() {
-    if (this.state.fetchingNextPage) {
+    if (this.props.relay.isLoading()) {
       return
     }
 
@@ -127,8 +128,7 @@ export class Conversations extends React.Component<Props, State> {
   }
 
   render() {
-    const { relay } = this.props
-    const showLoadingSpinner = relay && relay.hasMore() && this.state.fetchingNextPage
+    const showLoadingSpinner = this.props.relay.hasMore()
 
     return (
       <View>
@@ -136,7 +136,6 @@ export class Conversations extends React.Component<Props, State> {
           dataSource={this.state.dataSource}
           initialListSize={10}
           scrollEventThrottle={500}
-          onEndReachedThreshold={100}
           enableEmptySections={true}
           renderHeader={() =>
             <View>
@@ -149,7 +148,7 @@ export class Conversations extends React.Component<Props, State> {
               key={data.id}
               onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${data.id}`)}
             />}
-          onEndReached={() => this.fetchData()}
+          onScroll={isCloseToBottom(this.fetchData)} // TODO: Investiate why onEndReached fires erroniously
         />
         {showLoadingSpinner && <Spinner style={{ marginTop: 20 }} />}
       </View>
