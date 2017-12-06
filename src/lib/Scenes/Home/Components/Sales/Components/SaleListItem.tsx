@@ -87,8 +87,8 @@ export class SaleListItem extends React.Component<RelayProps, null> {
 
   render() {
     const item = this.props.sale
+    const image = item.cover_image
     const timestamp = (item.live_start_at ? liveDate(item) : timedDate(item)).toUpperCase()
-    const imageURL = (item.cover_image || { cropped: { url: "" } }).cropped.url
     const containerWidth = this.containerWidth
 
     const Container = styled.View`
@@ -100,7 +100,7 @@ export class SaleListItem extends React.Component<RelayProps, null> {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap}>
         <Container>
-          <Image imageURL={imageURL} />
+          <Image imageURL={image && image.url} />
           <Content>
             <Header>
               <Title numberOfLines={2}>
@@ -137,9 +137,8 @@ export default createFragmentContainer(SaleListItem, {
       registration_ends_at
       live_start_at
       cover_image {
-        cropped(width: 158, height: 196, version: "medium") {
-          url
-        }
+        url(version: "large")
+        aspect_ratio
       }
     }
   `,
@@ -158,9 +157,7 @@ interface RelayProps {
     registration_ends_at: string | null
     live_start_at: string | null
     cover_image: {
-      cropped: {
-        url: string | null
-      } | null
+      url: string | null
     }
   } | null
 }
