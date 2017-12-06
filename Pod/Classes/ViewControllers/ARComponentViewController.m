@@ -19,7 +19,11 @@
   if ((self = [super initWithNibName:nil bundle:nil])) {
     _emission = emission ?: [AREmission sharedInstance];
     _moduleName = moduleName;
-    _initialProperties = initialProperties;
+    
+    NSMutableDictionary *properties = [NSMutableDictionary new];
+    [properties addEntriesFromDictionary:initialProperties];
+    [properties addEntriesFromDictionary:@{@"isVisible": @YES}];
+    _initialProperties = properties;
     _rootView = nil;
   }
   return self;
