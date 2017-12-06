@@ -26,9 +26,9 @@
 @property (nonatomic, assign, readonly) NSUInteger *badgeCounts;
 
 @property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
-@property (readonly, nonatomic, strong) ARNavigationController *messagingNavigationController;
-@property (readonly, nonatomic, strong) ARNavigationController *savedNavigationController;
-@property (readonly, nonatomic, strong) ARNavigationController *profileNavigationController;
+@property (nonatomic, strong) ARNavigationController *favoritesNavigationController;
+@property (nonatomic, strong) ARNavigationController *messagingNavigationController;
+@property (nonatomic, strong) ARNavigationController *profileNavigationController;
 
 @end
 
@@ -55,11 +55,10 @@
     return self;
 }
 
-- (ARNavigationController *)getMessagingNavigationController
+- (ARNavigationController *)messagingNavigationController
 {
-    // This is an assumption baked into the component itself ( see the header for ARInboxComponentViewController)
-    if (self.messagingNavigationController) {
-        return self.messagingNavigationController;
+    if (_messagingNavigationController) {
+        return _messagingNavigationController;
     }
 
     ARComponentViewController *messagingVC = [[ARInboxComponentViewController alloc] initWithInbox];
@@ -74,10 +73,10 @@
     return _feedNavigationController;
 }
 
-- (ARNavigationController *)getProfileNavigationController
+- (ARNavigationController *)profileNavigationController
 {
-    if (self.profileNavigationController) {
-        return self.profileNavigationController;
+    if (_profileNavigationController) {
+        return _profileNavigationController;
     }
 
     ARComponentViewController *profileVC = [[ARMyProfileViewController alloc] init];
@@ -85,15 +84,11 @@
     return _profileNavigationController;
 }
 
-- (ARNavigationController *)getFavoritesNavigationController
+- (ARNavigationController *)favoritesNavigationController
 {
-    // Make a new one each time the favorites tab is selected, so that it presents up-to-date data.
-    //
-    // According to Laura, the existing instance was kept alive in the past and updated whenever new favourite data
-    // became available, but it was removed because of some crashes. This likely had to do with
-    // https://github.com/artsy/eigen/issues/287#issuecomment-88036710
-    ARFavoritesComponentViewController *favoritesViewController = [[ARFavoritesComponentViewController alloc] init];
-    return [[ARNavigationController alloc] initWithRootViewController:favoritesViewController];
+    ARFavoritesComponentViewController *favoritesVC = [[ARFavoritesComponentViewController alloc] init];
+    _favoritesNavigationController = [[ARNavigationController alloc] initWithRootViewController:favoritesVC];
+    return _favoritesNavigationController;
 }
 
 - (ARNavigationController *)worksForYouNavigationControllerWithSelectedArtist:(NSString *)artistID
@@ -118,13 +113,13 @@
             }
 
         case ARTopTabControllerIndexMessaging:
-            return [self getMessagingNavigationController];
+            return [self messagingNavigationController];
 
         case ARTopTabControllerIndexFavorites:
-            return self.getFavoritesNavigationController;
+            return [self favoritesNavigationController];
 
         case ARTopTabControllerIndexProfile:
-        return [self getProfileNavigationController];
+            return [self profileNavigationController];
 
     }
 
