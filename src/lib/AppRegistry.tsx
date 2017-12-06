@@ -40,7 +40,7 @@ const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
 
 const Inbox: React.SFC<{}> = track<{}>(props => {
   return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
-})(() => <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />)
+})(props => <InboxRenderer {...props} render={renderWithLoadProgress(Containers.Inbox, props)} />)
 
 interface GeneProps {
   geneID: string

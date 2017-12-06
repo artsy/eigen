@@ -11,7 +11,7 @@
 {
     if ((self = [super initWithEmission:nil
                              moduleName:@"Inbox"
-                      initialProperties:nil])) {
+                      initialProperties:@{@"isVisible": @YES}])) {
     }
     return self;
 }
