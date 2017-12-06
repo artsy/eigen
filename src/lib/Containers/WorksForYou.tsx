@@ -22,6 +22,7 @@ GenericGrid
 import ZeroState from "lib/Components/States/ZeroState"
 import SerifText from "lib/Components/Text/Serif"
 import Notification from "lib/Components/WorksForYou/Notification"
+import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 import colors from "lib/data/colors"
 
@@ -33,8 +34,6 @@ interface Props extends RelayProps {
 
 interface State {
   dataSource: ListViewDataSource | null
-  fetchingNextPage: boolean
-  completed: boolean
 }
 
 export class WorksForYou extends React.Component<Props, State> {
@@ -56,8 +55,6 @@ export class WorksForYou extends React.Component<Props, State> {
 
     this.state = {
       dataSource,
-      completed: false,
-      fetchingNextPage: false,
     }
   }
 
@@ -94,11 +91,10 @@ export class WorksForYou extends React.Component<Props, State> {
     }
   }
 
-  fetchNextPage() {
-    if (this.state.fetchingNextPage || this.state.completed) {
+  fetchNextPage = () => {
+    if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
       return
     }
-    this.setState({ fetchingNextPage: true })
     this.props.relay.loadMore(PageSize, error => {
       const notifications = this.props.viewer.me.notifications.edges.map(edge => edge.node)
 
@@ -108,17 +104,9 @@ export class WorksForYou extends React.Component<Props, State> {
       }
 
       this.setState({
-        fetchingNextPage: false,
         dataSource: this.state.dataSource.cloneWithRows(notifications),
       })
-      if (!this.props.viewer.me.notifications.pageInfo.hasNextPage) {
-        this.setState({ completed: true })
-      }
     })
-  }
-
-  componentDidUpdate() {
-    this.scrollView.scrollTo({ y: this.currentScrollOffset + 1, animated: false })
   }
 
   render() {
@@ -130,7 +118,7 @@ export class WorksForYou extends React.Component<Props, State> {
     return (
       <ScrollView
         contentContainerStyle={hasNotifications ? {} : styles.container}
-        onScroll={event => (this.currentScrollOffset = event.nativeEvent.contentOffset.y)}
+        onScroll={isCloseToBottom(this.fetchNextPage)}
         scrollEventThrottle={100}
         ref={scrollView => (this.scrollView = scrollView)}
       >
@@ -148,7 +136,6 @@ export class WorksForYou extends React.Component<Props, State> {
         renderRow={data => <Notification notification={data} />}
         renderSeparator={(sectionID, rowID) =>
           <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>}
-        onEndReached={() => this.fetchNextPage()}
         scrollEnabled={false}
       />
     )
