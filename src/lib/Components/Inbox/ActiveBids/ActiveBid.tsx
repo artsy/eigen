@@ -125,7 +125,9 @@ class ActiveBid extends React.Component<RelayProps, State> {
     const headline = `Lot ${lotNumber} · ${artistName} `
 
     const isInOpenLiveAuction = this.props.bid.sale && this.props.bid.sale.is_live_open
-    const subtitle = isInOpenLiveAuction ? "Live bidding now open" : `Current Bid: ${bid.max_bid.display} `
+    const subtitle = isInOpenLiveAuction
+      ? "Live bidding now open"
+      : `Current Bid: ${bid.max_bid.display} \nHighest Bid: ${bid.sale_artwork.highest_bid.display}`
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap}>
@@ -166,6 +168,10 @@ export default createFragmentContainer(
           display
         }
         sale_artwork {
+          highest_bid {
+            display
+            id
+          }
           lot_number
           reserve_status
           artwork {
@@ -193,6 +199,9 @@ interface RelayProps {
         display: string | null
       } | null
       sale_artwork: {
+        highest_bid: {
+          display: string | null
+        } | null
         lot_number: string | null
         reserve_status: string | null
         artwork: {

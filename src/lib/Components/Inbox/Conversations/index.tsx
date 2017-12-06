@@ -125,13 +125,15 @@ export class Conversations extends React.Component<Props, State> {
   }
 
   render() {
+    const showLoadingSpinner = this.props.relay.hasMore() && this.state.fetchingNextPage
+
     return (
       <View>
         <ListView
           dataSource={this.state.dataSource}
           initialListSize={10}
-          scrollEventThrottle={10}
-          onEndReachedThreshold={10}
+          scrollEventThrottle={500}
+          onEndReachedThreshold={100}
           enableEmptySections={true}
           renderHeader={() =>
             <View>
@@ -146,7 +148,7 @@ export class Conversations extends React.Component<Props, State> {
             />}
           onEndReached={() => this.fetchData()}
         />
-        {this.state.fetchingNextPage && <Spinner />}
+        {showLoadingSpinner && <Spinner style={{ marginTop: 20 }} />}
       </View>
     )
   }

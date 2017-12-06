@@ -27,7 +27,9 @@ export class ForYou extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 
-    const dataSource: ListViewDataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+    const dataSource: ListViewDataSource = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2,
+    })
 
     this.state = {
       isRefreshing: false,
@@ -37,21 +39,36 @@ export class ForYou extends React.Component<Props, State> {
   }
 
   componentDidMount() {
+    const { forYou } = this.props
     const rows: DataSourceRow[] = []
-    const artworkModules = this.props.forYou.artwork_modules || []
-    const artistModules = this.props.forYou.artist_modules && this.props.forYou.artist_modules.concat()
-    const fairsModule = this.props.forYou.fairs_module
-    rows.push({ type: "fairs", data: fairsModule })
-    for (let i = 0; i < artworkModules.length; i++) {
-      const artworkModule = artworkModules[i]
-      rows.push({ type: "artwork", data: artworkModule })
-      if ((i + 1) % 2 === 0) {
+    const artworkModules = forYou.artwork_modules || []
+    const artistModules = forYou.artist_modules && forYou.artist_modules.concat()
+    const fairsModule = forYou.fairs_module
+
+    rows.push({
+      type: "fairs",
+      data: fairsModule,
+    })
+
+    artworkModules.forEach((artworkModule, index) => {
+      rows.push({
+        type: "artwork",
+        data: artworkModule,
+      })
+
+      const alternateRow = (index + 1) % 2 === 0
+
+      if (alternateRow) {
         const artistModule = artistModules.shift()
         if (artistModule) {
-          rows.push({ type: "artist", data: artistModule })
+          rows.push({
+            type: "artist",
+            data: artistModule,
+          })
         }
       }
-    }
+    })
+
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(rows),
     })
