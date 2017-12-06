@@ -170,7 +170,6 @@ export default createFragmentContainer(
         sale_artwork {
           highest_bid {
             display
-            id
           }
           lot_number
           reserve_status

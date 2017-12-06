@@ -61,7 +61,6 @@ export class Conversations extends React.Component<Props, State> {
       return
     }
 
-<<<<<<< HEAD
     this.setState({ fetchingNextPage: true })
     this.props.relay.refetchConnection(10, error => {
       if (error) {
@@ -69,13 +68,6 @@ export class Conversations extends React.Component<Props, State> {
         console.error("Conversations/index.jsx", error.message)
       }
 
-=======
-    this.setState({
-      fetchingNextPage: true,
-    })
-
-    this.props.relay.refetchConnection(10, () => {
->>>>>>> [Home/ForYou] Fix tests
       this.setState({
         fetchingNextPage: false,
       })

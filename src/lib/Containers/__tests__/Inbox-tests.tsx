@@ -4,6 +4,8 @@ import * as renderer from "react-test-renderer"
 
 import Inbox from "../Inbox"
 
+jest.mock("../../Components/Inbox/Conversations", () => "Conversations")
+
 it("renders correctly", () => {
   const tree = renderer.create(<Inbox me={meProps()} />).toJSON()
   expect(tree).toMatchSnapshot()

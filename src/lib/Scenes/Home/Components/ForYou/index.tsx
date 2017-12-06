@@ -16,14 +16,22 @@ type Props = ViewProperties & RelayProps
 
 interface State {
   dataSource: ListViewDataSource
-  error?: string
+  errors?: string // TODO: Wire up to UI handler
   isRefreshing: boolean
-  modules: any[]
+}
+
+interface Module {
+  props: {
+    rail: any
+    relay: RelayProps
+  }
+  state: any
 }
 
 export class ForYou extends React.Component<Props, State> {
   listView?: ListView | any
   currentScrollOffset?: number = 0
+  modules: Module[] = []
 
   constructor(props) {
     super(props)
@@ -34,7 +42,6 @@ export class ForYou extends React.Component<Props, State> {
 
     this.state = {
       isRefreshing: false,
-      modules: [],
       dataSource,
     }
   }
@@ -82,13 +89,14 @@ export class ForYou extends React.Component<Props, State> {
 
     try {
       await Promise.all(
-        this.state.modules.map(module => {
+        this.modules.map(module => {
           return new Promise((resolve, reject) => {
             const { props, state: { data, relayProp } } = module
 
             relayProp.refetch({ ...props.rail, fetchContent: true }, null, error => {
               if (error) {
-                reject({ error })
+                console.error("Home/ForYou | ", error)
+                reject(error)
               } else {
                 resolve()
               }
@@ -103,9 +111,9 @@ export class ForYou extends React.Component<Props, State> {
       })
 
       // Fail
-    } catch (error) {
+    } catch (errors) {
       this.setState({
-        error, // TODO: Display this somehow
+        errors, // TODO: Display this somehow
       })
     }
   }
@@ -127,7 +135,7 @@ export class ForYou extends React.Component<Props, State> {
           const registerModule = module => {
             // Offset row because we don’t store a reference to the search bar and hero units rows.
             // FIXME: Don't mutate state
-            this.state.modules[row - 2] = module
+            this.modules[row - 2] = module
           }
 
           switch (type) {
