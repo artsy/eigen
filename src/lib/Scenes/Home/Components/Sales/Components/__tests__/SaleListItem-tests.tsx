@@ -22,9 +22,6 @@ const props = {
   live_start_at: moment().add(5, "hour").toISOString(),
   live_url_if_open: null,
   cover_image: {
-    cropped: {
-      url:
-        "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FeeqLfwMMAYA8XOmeYEb7Rg%2Fsource.jpg",
-    },
+    url: "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
   },
 }
