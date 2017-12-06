@@ -1,37 +1,26 @@
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import Spinner from "lib/Components/Spinner"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
-import { get, once } from "lodash"
+import { once } from "lodash"
 import PropTypes from "prop-types"
 import React, { Component } from "react"
 import { FlatList, ScrollView, Text, View } from "react-native"
-import { RelayPaginationProp } from "react-relay"
+import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { SectionHeader } from "./SectionHeader"
 
 const DEFAULT_TITLE = "Lots by Artists You Follow"
-export const PAGE_SIZE = 10
+const PAGE_SIZE = 10
 
-const Container = styled.View`padding: 10px;`
-
-interface Props {
-  relay?: RelayPaginationProp
-  title?: string
-  saleArtworks?: {
-    edges: Array<{
-      node: object | null
-    }> | null
-  }
-}
-
-export function LotsByFollowedArtists(props: Props) {
-  const { relay, saleArtworks, title = DEFAULT_TITLE } = props
-
-  const artworks = get(saleArtworks, "edges", []).filter(({ node }) => node.is_biddable).map(({ node }) => node.artwork)
+export const LotsByFollowedArtists: React.SFC<Props> = props => {
+  const { viewer, relay, title = DEFAULT_TITLE } = props
+  const artworks = viewer.sale_artworks.edges.filter(({ node }) => node.is_biddable).map(({ node }) => node.artwork)
 
   if (!artworks.length) {
     return null
   }
+
+  const showSpinner = relay.hasMore() && relay.isLoading()
 
   const loadMore =
     relay.hasMore() &&
@@ -44,8 +33,62 @@ export function LotsByFollowedArtists(props: Props) {
       <SectionHeader title={title} />
       <Container>
         <GenericGrid artworks={artworks} />
-        {relay.isLoading() && <Spinner style={{ marginTop: 20 }} />}
+        {showSpinner && <Spinner style={{ marginTop: 20 }} />}
       </Container>
     </ScrollView>
   )
+}
+
+export default createPaginationContainer(
+  LotsByFollowedArtists,
+  graphql.experimental`
+    fragment LotsByFollowedArtists_viewer on Viewer
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+      sale_artworks: sale_artworks(first: $count, after: $cursor, include_artworks_by_followed_artists: true)
+        @connection(key: "LotsByFollowedArtists_sale_artworks") {
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+        edges {
+          cursor
+          node {
+            is_biddable
+            artwork {
+              ...GenericGrid_artworks
+            }
+          }
+        }
+      }
+    }
+  `,
+  {
+    getConnectionFromProps: ({ viewer }) => viewer && (viewer.sale_artworks as ConnectionData),
+    getFragmentVariables: (prevVars, totalCount) => ({ ...prevVars, count: totalCount }),
+    getVariables: (props, { count, cursor }) => ({ count, cursor }),
+    query: graphql.experimental`
+      query LotsByFollowedArtistsQuery($count: Int!, $cursor: String) {
+        viewer {
+          ...LotsByFollowedArtists_viewer @arguments(count: $count, cursor: $cursor)
+        }
+      }
+    `,
+  }
+)
+
+const Container = styled.View`padding: 10px;`
+
+interface Props {
+  relay?: RelayPaginationProp
+  title?: string
+  viewer?: {
+    sale_artworks: {
+      edges: Array<{
+        node: {
+          artwork: object | null
+          is_biddable: boolean | null
+        }
+      }> | null
+    } | null
+  }
 }

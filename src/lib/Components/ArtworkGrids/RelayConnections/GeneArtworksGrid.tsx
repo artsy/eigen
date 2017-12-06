@@ -88,7 +88,7 @@ const GeneArtworksGrid = createPaginationContainer(
 export default GeneArtworksGrid
 
 export interface GeneRelayProps {
-  artist: {
+  gene?: {
     artworks_connection: {
       pageInfo: {
         hasNextPage: boolean

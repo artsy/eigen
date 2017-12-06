@@ -10,7 +10,7 @@ const Header = styled.View`
 
 const Title = styled.Text`
   font-family: ${fonts["garamond-regular"]};
-  font-size: 25px;
+  font-size: 30px;
   text-align: left;
 `
 
@@ -18,7 +18,7 @@ interface Props {
   title: string
 }
 
-export function SectionHeader(props: Props) {
+export const SectionHeader: React.SFC<Props> = props => {
   return (
     <Header>
       <Title>

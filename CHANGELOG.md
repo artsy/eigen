@@ -5,9 +5,14 @@
 
 -   Allow passing a set of Artworks and an index to load to Eigen when clicking on
     a Artwork within a grid - orta
+-   Update Relay typings to current DT version - alloy
+-   Change inquiry status bar background to white - maxim
+-   Move pagination from home/sale index to LotsByfollowedArtists, misc QA - chris
+-   Only load a single Works For You page at a time - alloy
 
 ### 1.4.0-beta.9
 
+-   During Inbox pull-to-refresh, Conversations container force-fetches itself - sarah
 -   Accommodate selectedArtist parameter in Home container - sarah
 -   Don’t require 2 taps to open a conversation attachment and keep keyboard up - alloy
 -   Don’t assume a photo was selected in the consignments photo picker - alloy
@@ -92,6 +97,8 @@
 -   Adds Live and timed auctions in home view - luc
 -   Tab bar text now aligned and centered correctly - luc
 -   Adds iPad support for Auctions view layout - luc
+-   Adds <LotsByArtistsYouFollow /> component to Sales - chris
+-   Refactors <LotsByArtistsYouFollow /> by consolidating QueryRenderers - chris
 
 ###### Consignments
 

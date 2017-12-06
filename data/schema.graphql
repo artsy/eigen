@@ -92,6 +92,7 @@ type Artist implements Node {
     exclude: [String]
   ): [Artwork]
   artworks_connection(sort: ArtworkSorts, filter: [ArtistArtworksFilters], published: Boolean = true, after: String, first: Int, before: String, last: Int): ArtworkConnection
+  auctionResults(sort: AuctionResultSorts, after: String, first: Int, before: String, last: Int): AuctionResultConnection
   bio: String
 
   # The Artist biography article written by Artsy
@@ -289,6 +290,7 @@ type ArtistItem implements Node {
     exclude: [String]
   ): [Artwork]
   artworks_connection(sort: ArtworkSorts, filter: [ArtistArtworksFilters], published: Boolean = true, after: String, first: Int, before: String, last: Int): ArtworkConnection
+  auctionResults(sort: AuctionResultSorts, after: String, first: Int, before: String, last: Int): AuctionResultConnection
   bio: String
 
   # The Artist biography article written by Artsy
@@ -419,6 +421,7 @@ type ArtistSearchEntity implements Node {
     exclude: [String]
   ): [Artwork]
   artworks_connection(sort: ArtworkSorts, filter: [ArtistArtworksFilters], published: Boolean = true, after: String, first: Int, before: String, last: Int): ArtworkConnection
+  auctionResults(sort: AuctionResultSorts, after: String, first: Int, before: String, last: Int): AuctionResultConnection
   bio: String
 
   # The Artist biography article written by Artsy
@@ -746,6 +749,9 @@ type ArtworkContextAuction implements Node {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # Returns a live auctions url if the sale is open and start time is after now
+  live_url_if_open: String
   profile: Profile
   registration_ends_at(
     convert_to_utc: Boolean
@@ -978,6 +984,9 @@ type ArtworkContextSale implements Node {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # Returns a live auctions url if the sale is open and start time is after now
+  live_url_if_open: String
   profile: Profile
   registration_ends_at(
     convert_to_utc: Boolean
@@ -1363,6 +1372,109 @@ type Attachment {
   download_url: String!
 }
 
+# In centimeters.
+type AuctionLotDimensions {
+  width: Float
+  height: Float
+  depth: Float
+}
+
+type AuctionLotImages {
+  larger: Image
+  thumbnail: Image
+}
+
+type AuctionResult implements Node {
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+  title: String
+  artist_id: String!
+  date(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  date_text: String
+  medium_text: String
+  category_text: String
+  dimension_text: String
+  dimensions: AuctionLotDimensions
+  organization: String
+  sale_date(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  sale_date_text: String
+  sale_title: String
+  currency: String
+  description: String
+  external_url: String
+  images: AuctionLotImages
+
+  # A formatted price with various currency formatting options.
+  low_estimate(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # A formatted price with various currency formatting options.
+  high_estimate(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # A formatted price with various currency formatting options.
+  price_realized(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+}
+
+# A connection to a list of items.
+type AuctionResultConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [AuctionResultEdge]
+}
+
+# An edge in a connection.
+type AuctionResultEdge {
+  # The item at the end of the edge
+  node: AuctionResult
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+enum AuctionResultSorts {
+  PRICE_AND_DATE_DESC
+}
+
 type Author {
   # A globally unique ID.
   __id: ID!
@@ -1511,6 +1623,13 @@ type BuyersPremium {
   percent: Float
 }
 
+type Category {
+  id: String!
+  category_type: String
+  internal: Boolean
+  name: String
+}
+
 enum CategoryType {
   GALLERY
   INSTITUTION
@@ -1578,6 +1697,99 @@ type CollectorProfileType {
     timezone: String
   ): String
   intents: [String]
+}
+
+# A work to be consigned to the user
+type ConsignmentSubmission implements Node {
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+
+  # A type-specific Gravity Mongo Document ID.
+  _id: String!
+  artist_id: String!
+
+  # Does the artwork come with an certificate of authenticity?
+  authenticity_certificate: Boolean
+
+  # The set in which to put the work
+  category: SubmissionCategoryAggregation
+
+  # The depth of the work
+  depth: String
+
+  # A string, either CM or IN
+  dimensions_metric: SubmissionDimensionAggregation
+
+  # Is the work a part of an edition
+  edition: Boolean
+
+  # The number of the individual work if in a set
+  edition_number: String
+
+  # The whole size of the set of works
+  edition_size: Int
+
+  # The height of the work
+  height: String
+
+  # The city where the work currently resides
+  location_city: String
+
+  # The country where the work currently resides
+  location_country: String
+
+  # The state where the work currently resides
+  location_state: String
+
+  # The materials in which the work is created
+  medium: String
+
+  # The history of an work
+  provenance: String
+
+  # Is this work signed?
+  signature: Boolean
+
+  # The name of the work
+  title: String
+
+  # The internal state of the work, e.g. draft/submitted
+  state: SubmissionStateAggregation
+
+  # The width of the work
+  width: String
+
+  # The year the work was created
+  year: String
+
+  # The user who submitted the work
+  user_id: ID
+  artist: Artist
+}
+
+# A connection to a list of items.
+type ConsignmentSubmissionConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ConsignmentSubmissionEdge]
+}
+
+# An edge in a connection.
+type ConsignmentSubmissionEdge {
+  # The item at the end of the edge
+  node: ConsignmentSubmission
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Convection {
+  geminiTemplateKey: String!
 }
 
 # A conversation.
@@ -1779,11 +1991,14 @@ input CreateSubmissionMutationInput {
 
   # The year the work was created
   year: String
+
+  # The user who submitted the work
+  user_id: ID
   clientMutationId: String
 }
 
 type CreateSubmissionMutationPayload {
-  submission: Submission
+  consignment_submission: ConsignmentSubmission
   clientMutationId: String
 }
 
@@ -2141,6 +2356,16 @@ type FollowGeneEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+input FollowGeneInput {
+  gene_id: String
+  clientMutationId: String
+}
+
+type FollowGenePayload {
+  gene: Gene
+  clientMutationId: String
 }
 
 enum Format {
@@ -2901,6 +3126,9 @@ type HomePageModuleContextSale implements Node {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # Returns a live auctions url if the sale is open and start time is after now
+  live_url_if_open: String
   profile: Profile
   registration_ends_at(
     convert_to_utc: Boolean
@@ -3076,6 +3304,9 @@ type Me implements Node {
 
   # A type-specific ID.
   id: String!
+
+  # A list of the current user’s consignment submissions
+  consignment_submissions(after: String, first: Int, before: String, last: Int, completed: Boolean): ConsignmentSubmissionConnection
 
   # A list of the current user’s inquiry requests
   artwork_inquiries_connection(after: String, first: Int, before: String, last: Int): ArtworkInquiryConnection
@@ -3259,6 +3490,7 @@ type MessageInitiator {
 
 type Mutation {
   followArtist(input: FollowArtistInput!): FollowArtistPayload
+  followGene(input: FollowGeneInput!): FollowGenePayload
   updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
 
   # Update the current logged in user.
@@ -3274,6 +3506,12 @@ type Mutation {
   markReadMessage(input: MarkReadMessageMutationInput!): MarkReadMessageMutationPayload
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
 
+  # Attach an gemini asset to a consignment submission
+  requestCredentialsForAssetUpload(input: RequestCredentialsForAssetUploadInput!): RequestCredentialsForAssetUploadPayload
+
+  # Attach an gemini asset to a consignment submission
+  createGeminiEntryForAsset(input: CreateGeminiEntryForAssetInput!): CreateGeminiEntryForAssetPayload
+
   # Create a new consignment submission using Convection
   createConsignmentSubmission(input: CreateSubmissionMutationInput!): CreateSubmissionMutationPayload
 
@@ -3282,12 +3520,6 @@ type Mutation {
 
   # Attach an gemini asset to a consignment submission
   addAssetToConsignmentSubmission(input: AddAssetToConsignmentSubmissionInput!): AddAssetToConsignmentSubmissionPayload
-
-  # Attach an gemini asset to a consignment submission
-  requestCredentialsForAssetUpload(input: RequestCredentialsForAssetUploadInput!): RequestCredentialsForAssetUploadPayload
-
-  # Attach an gemini asset to a consignment submission
-  createGeminiEntryForAsset(input: CreateGeminiEntryForAssetInput!): CreateGeminiEntryForAssetPayload
 }
 
 input Near {
@@ -3389,6 +3621,7 @@ type Partner implements Node {
   _id: String!
   cached: Int
   artworks(size: Int, for_sale: Boolean, sort: ArtworkSorts, exclude: [String]): [Artwork]
+  categories: [Category]
   collecting_institution: String
   contact_message: String @deprecated(reason: "Prefer artwork contact_message to handle availability-based prompts.")
   counts: PartnerCounts
@@ -4143,6 +4376,9 @@ type Query {
     term: String!
   ): Search
 
+  # The schema for difference microservice settings
+  services: Services
+
   # A Show
   show(
     # The slug or ID of the Show
@@ -4327,6 +4563,9 @@ type Sale implements Node {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # Returns a live auctions url if the sale is open and start time is after now
+  live_url_if_open: String
   profile: Profile
   registration_ends_at(
     convert_to_utc: Boolean
@@ -4672,6 +4911,10 @@ type SendConversationMessageMutationPayload {
   clientMutationId: String
 }
 
+type Services {
+  convection: Convection!
+}
+
 type Show implements Node {
   # A globally unique ID.
   __id: ID!
@@ -4829,67 +5072,6 @@ type StatusGravity {
   ping: Boolean
 }
 
-# A work to be consigned to the user
-type Submission {
-  # Convection id.
-  id: String!
-  artist_id: String!
-
-  # Does the artwork come with an certificate of authenticity?
-  authenticity_certificate: Boolean
-
-  # The set in which to put the work
-  category: SubmissionCategoryAggregation
-
-  # The depth of the work
-  depth: String
-
-  # A string, either CM or IN
-  dimensions_metric: SubmissionDimensionAggregation
-
-  # Is the work a part of an edition
-  edition: Boolean
-
-  # The number of the individual work if in a set
-  edition_number: String
-
-  # The whole size of the set of works
-  edition_size: Int
-
-  # The height of the work
-  height: String
-
-  # The city where the work currently resides
-  location_city: String
-
-  # The country where the work currently resides
-  location_country: String
-
-  # The state where the work currently resides
-  location_state: String
-
-  # The materials in which the work is created
-  medium: String
-
-  # The history of an work
-  provenance: String
-
-  # Is this work signed?
-  signature: Boolean
-
-  # The name of the work
-  title: String
-
-  # The internal state of the work, e.g. draft/submitted
-  state: SubmissionStateAggregation
-
-  # The width of the work
-  width: String
-
-  # The year the work was created
-  year: String
-}
-
 enum SubmissionCategoryAggregation {
   PAINTING
   SCULPTURE
@@ -4916,6 +5098,8 @@ enum SubmissionDimensionAggregation {
 enum SubmissionStateAggregation {
   DRAFT
   SUBMITTED
+  APPROVED
+  REJECTED
 }
 
 type SuggestedGene {
@@ -5057,7 +5241,7 @@ type UpdateMyProfilePayload {
 }
 
 input UpdateSubmissionMutationInput {
-  # Convection id.
+  # A type-specific ID.
   id: String!
   artist_id: String!
 
@@ -5114,11 +5298,14 @@ input UpdateSubmissionMutationInput {
 
   # The year the work was created
   year: String
+
+  # The user who submitted the work
+  user_id: ID
   clientMutationId: String
 }
 
 type UpdateSubmissionMutationPayload {
-  submission: Submission
+  consignment_submission: ConsignmentSubmission
   clientMutationId: String
 }
 
@@ -5434,6 +5621,9 @@ type Viewer {
     # Your search term
     term: String!
   ): Search
+
+  # The schema for difference microservice settings
+  services: Services
 
   # A Show
   show(

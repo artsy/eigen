@@ -1,5 +1,5 @@
 import React from "react"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
 import { View } from "react-native"
@@ -8,7 +8,25 @@ import ActiveBid from "./ActiveBid"
 
 const Container = styled.View`margin: 20px 0 40px;`
 
-class ActiveBids extends React.Component<RelayProps, null> {
+interface Props extends RelayProps {
+  relay?: RelayRefetchProp
+}
+
+interface State {
+  fetchingData: boolean
+}
+
+class ActiveBids extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+
+    this.state = {
+      fetchingData: false,
+    }
+
+    this.refreshActiveBids = this.refreshActiveBids.bind(this)
+  }
+
   hasContent() {
     return this.props.me.lot_standings.length > 0
   }
@@ -18,6 +36,27 @@ class ActiveBids extends React.Component<RelayProps, null> {
       return <ActiveBid key={bidData.most_recent_bid.__id} bid={bidData} />
     })
     return bids
+  }
+
+  refreshActiveBids(callback) {
+    if (this.state.fetchingData) {
+      return
+    }
+
+    this.setState({ fetchingData: true })
+
+    this.props.relay.refetch(
+      {},
+      {},
+      () => {
+        this.setState({ fetchingData: false })
+
+        if (callback) {
+          callback()
+        }
+      },
+      { force: true }
+    )
   }
 
   render() {
@@ -30,19 +69,28 @@ class ActiveBids extends React.Component<RelayProps, null> {
   }
 }
 
-export default createFragmentContainer(
+export default createRefetchContainer(
   ActiveBids,
-  graphql`
-    fragment ActiveBids_me on Me {
-      lot_standings(live: true) {
-        most_recent_bid {
-          __id
+  {
+    me: graphql`
+      fragment ActiveBids_me on Me {
+        lot_standings(live: true) {
+          most_recent_bid {
+            __id
+          }
+          ...ActiveBid_bid
         }
-        ...ActiveBid_bid
+      }
+    `,
+  },
+  graphql`
+    query ActiveBidsRefetchQuery {
+      me {
+        ...ActiveBids_me
       }
     }
   `
-)
+) as React.ComponentClass<Props>
 
 interface RelayProps {
   me: {

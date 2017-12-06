@@ -81,7 +81,7 @@ export default createPaginationContainer(
   },
   {
     direction: "forward",
-    getConnectionFromProps(props: Props) {
+    getConnectionFromProps(props) {
       return props.me && props.me.saved_artworks.artworks_connection
     },
     getFragmentVariables(prevVars, totalCount) {

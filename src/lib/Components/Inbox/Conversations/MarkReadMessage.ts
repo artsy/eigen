@@ -1,4 +1,5 @@
-import { commitMutation, Environment, graphql, MutationConfig, RecordSourceSelectorProxy } from "react-relay"
+import { commitMutation, graphql } from "react-relay"
+import { Environment, MutationConfig } from "relay-runtime"
 
 interface Conversation {
   __id: string
@@ -9,16 +10,14 @@ export function markLastMessageRead(
   environment: Environment,
   conversation: Conversation,
   deliveryId: string,
-  onCompleted: MutationConfig["onCompleted"],
-  onError: MutationConfig["onError"]
+  onCompleted: MutationConfig<any>["onCompleted"],
+  onError: MutationConfig<any>["onError"]
 ) {
-  const storeUpdater = (store: RecordSourceSelectorProxy) => {
-    const currentTime = new Date().toISOString()
-    store.get(conversation.__id).setValue(currentTime, "last_message_open")
-  }
-
   return commitMutation(environment, {
-    updater: storeUpdater,
+    updater: store => {
+      const currentTime = new Date().toISOString()
+      store.get(conversation.__id).setValue(currentTime, "last_message_open")
+    },
     onCompleted,
     onError,
     mutation: graphql`
