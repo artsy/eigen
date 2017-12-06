@@ -69,8 +69,6 @@
     NSMutableDictionary *appProperties = [self.rootView.appProperties mutableCopy];
     appProperties[@"isVisible"] = @YES;
     self.rootView.appProperties = appProperties;
-    
-    NSLog(@"ARComponentViewController(%@) viewWillAppear", self.rootView.moduleName);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -79,8 +77,6 @@
     NSMutableDictionary *appProperties = [self.rootView.appProperties mutableCopy];
     appProperties[@"isVisible"] = @NO;
     self.rootView.appProperties = appProperties;
-    
-    NSLog(@"ARComponentViewController(%@) viewWillDisappear", self.rootView.moduleName);
 }
 
 - (NSLayoutConstraint *)topLayoutConstraintWithRootView:(UIView *)rootView;
