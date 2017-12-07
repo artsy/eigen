@@ -5,7 +5,7 @@ import * as renderer from "react-test-renderer"
 import Sales from "../index"
 
 it("looks correct when rendered", () => {
-  const auctions = renderer.create(<Sales {...props as any} />)
+  const auctions = renderer.create(<Sales {...props} />)
   expect(auctions).toMatchSnapshot()
 })
 
@@ -19,6 +19,7 @@ const props = {
     sales: [
       {
         id: "wright-noma",
+        href: "/auction/wright-noma",
         name: "Wright: noma",
         is_open: true,
         is_live_open: true,
@@ -27,14 +28,12 @@ const props = {
         registration_ends_at: "2017-11-01T13:00:00+00:00",
         live_start_at: "2017-11-02T13:00:00+00:00",
         cover_image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FWV-7BYlETayN8MGkNjOGXw%2Fsource.jpg",
-          },
+          url: "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
         },
       },
       {
         id: "freemans-modern-and-contemporary-works-of-art",
+        href: "/auction/freemans-modern-and-contemporary-works-of-art",
         name: "Freeman's: Modern & Contemporary Works of Art",
         is_open: true,
         is_live_open: false,
@@ -43,10 +42,7 @@ const props = {
         registration_ends_at: "2017-11-01T17:00:00+00:00",
         live_start_at: "2017-11-02T17:00:00+00:00",
         cover_image: {
-          cropped: {
-            url:
-              "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&width=158&height=196&q…A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FeeqLfwMMAYA8XOmeYEb7Rg%2Fsource.jpg",
-          },
+          url: "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
         },
       },
     ],

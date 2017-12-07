@@ -11,6 +11,7 @@
 -   Only load a single Works For You page at a time - alloy
 -   QA on Inbox and Active Bids spacing - maxim
 -   iPad support for Active Bids - maxim
+-   Get rid of image view flag that would skip on-the-fly resizing - alloy
 
 ### 1.4.0-beta.9
 
