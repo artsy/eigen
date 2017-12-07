@@ -80,7 +80,26 @@ const SeparatorLine = styled.View`
   ${isPad ? "align-self: center; width: 708;" : ""};
 `
 
+<<<<<<< HEAD
 export interface Props extends RelayProps {
+=======
+export interface Conversation {
+  id: string | null
+  to: {
+    name: string | null
+  }
+  last_message: string | null
+  last_message_at: string | null
+  is_last_message_to_user: boolean
+  last_message_open: string | null
+  items: Array<{
+    item: any
+  }>
+}
+
+export interface Props {
+  conversation: Conversation
+>>>>>>> [Inbox] Swap deprecated ListView with FlatList
   onSelected?: () => void
 }
 

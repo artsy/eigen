@@ -146,7 +146,6 @@ export class WorksForYou extends React.Component<Props, State> {
       />
     )
   }
-
   renderEmptyState() {
     return (
       <ZeroState
@@ -156,13 +155,11 @@ export class WorksForYou extends React.Component<Props, State> {
     )
   }
 }
-
 interface Styles {
   container: ViewStyle
   title: TextStyle
   separator: ViewStyle
 }
-
 const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
@@ -176,7 +173,6 @@ const styles = StyleSheet.create<Styles>({
     backgroundColor: colors["gray-regular"],
   },
 })
-
 const WorksForYouContainer = createPaginationContainer(
   WorksForYou,
   {

@@ -2,23 +2,62 @@
 
 exports[`looks correct when the user has no conversations 1`] = `
 <View>
-  <RCTScrollView
-    dataSource={
-      ListViewDataSource {
-        "items": 0,
+  <View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "color": "black",
+            "fontSize": 30,
+            "paddingLeft": 20,
+            "paddingRight": 20,
+            "textAlign": "left",
+          },
+          Array [
+            Object {
+              "marginBottom": 20,
+              "marginTop": 10,
+            },
+            undefined,
+          ],
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+          },
+        ]
       }
-    }
-    enableEmptySections={true}
-    initialListSize={10}
+    >
+      Messages
+    </Text>
+  </View>
+  <RCTScrollView
+    data={Array []}
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
     onScroll={[Function]}
-    renderHeader={[Function]}
-    renderRow={[Function]}
-    renderScrollComponent={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    onViewableItemsChanged={undefined}
+    renderItem={[Function]}
     scrollEventThrottle={500}
+    stickyHeaderIndices={Array []}
+    updateCellsBatchingPeriod={50}
+    windowSize={21}
   >
-    <View>
-      <View />
-    </View>
+    <View />
   </RCTScrollView>
 </View>
 `;
