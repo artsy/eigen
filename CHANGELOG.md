@@ -3,6 +3,8 @@
 
 ### Master
 
+-   Refetch data when user re-enters Inbox tab - luc
+-   Send event from view controller to react component when tab changes - luc
 -   Allow passing a set of Artworks and an index to load to Eigen when clicking on
     a Artwork within a grid - orta
 -   Update Relay typings to current DT version - alloy
