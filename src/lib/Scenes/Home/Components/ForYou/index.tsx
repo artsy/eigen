@@ -1,7 +1,7 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { ListView, ListViewDataSource, RefreshControl, ScrollView, ScrollViewProps, ViewProperties } from "react-native"
+import { FlatList, ListView, RefreshControl, ScrollView, ViewProperties } from "react-native"
 
 import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
 import ArtworkCarousel from "./Components/ArtworkCarousel"
@@ -15,7 +15,7 @@ interface DataSourceRow {
 type Props = ViewProperties & RelayProps
 
 interface State {
-  dataSource: ListViewDataSource
+  rowData: DataSourceRow[]
   errors?: string // TODO: Wire up to UI handler
   isRefreshing: boolean
 }
@@ -33,33 +33,25 @@ export class ForYou extends React.Component<Props, State> {
   currentScrollOffset?: number = 0
   modules: Module[] = []
 
-  constructor(props) {
-    super(props)
-
-    const dataSource: ListViewDataSource = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2,
-    })
-
-    this.state = {
-      isRefreshing: false,
-      dataSource,
-    }
+  state = {
+    isRefreshing: false,
+    rowData: [],
   }
 
   componentDidMount() {
     const { forYou } = this.props
-    const rows: DataSourceRow[] = []
+    const rowData = []
     const artworkModules = forYou.artwork_modules || []
     const artistModules = forYou.artist_modules && forYou.artist_modules.concat()
     const fairsModule = forYou.fairs_module
 
-    rows.push({
+    rowData.push({
       type: "fairs",
       data: fairsModule,
     })
 
     artworkModules.forEach((artworkModule, index) => {
-      rows.push({
+      rowData.push({
         type: "artwork",
         data: artworkModule,
       })
@@ -69,7 +61,7 @@ export class ForYou extends React.Component<Props, State> {
       if (alternateRow) {
         const artistModule = artistModules.shift()
         if (artistModule) {
-          rows.push({
+          rowData.push({
             type: "artist",
             data: artistModule,
           })
@@ -78,7 +70,7 @@ export class ForYou extends React.Component<Props, State> {
     })
 
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(rows),
+      rowData,
     })
   }
 
@@ -118,10 +110,14 @@ export class ForYou extends React.Component<Props, State> {
     }
   }
 
+  handleScroll = event => {
+    this.currentScrollOffset = event.nativeEvent.contentOffset.y
+  }
+
   render() {
     return (
-      <ListView
-        dataSource={this.state.dataSource}
+      <FlatList
+        data={this.state.rowData}
         renderScrollComponent={props => {
           return (
             <ScrollView
@@ -131,11 +127,10 @@ export class ForYou extends React.Component<Props, State> {
             />
           )
         }}
-        renderRow={({ type, data }, _, row: number) => {
+        renderItem={rowItem => {
+          const { item: { data, type }, index } = rowItem
           const registerModule = module => {
-            // Offset row because we don’t store a reference to the search bar and hero units rows.
-            // FIXME: Don't mutate state
-            this.modules[row - 2] = module
+            this.modules[index - 2] = module // Offset row because we don’t store a reference to the search bar and hero units rows.
           }
 
           switch (type) {
@@ -147,7 +142,8 @@ export class ForYou extends React.Component<Props, State> {
               return <FairsRail fairs_module={data} />
           }
         }}
-        onScroll={event => (this.currentScrollOffset = event.nativeEvent.contentOffset.y)}
+        onScroll={this.handleScroll}
+        keyExtractor={(item, index) => item.data.type + String(index)}
         ref={listView => (this.listView = listView)}
         style={{ marginTop: 20, overflow: "visible" }}
       />

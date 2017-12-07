@@ -41,18 +41,15 @@ export class WorksForYou extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    const { viewer } = this.props
-    const notifications = viewer.me.notifications.edges.map(edge => edge.node)
 
-    if (viewer.selectedArtist) {
+    const notifications = this.props.viewer.me.notifications.edges.map(edge => edge.node)
+    if (this.props.viewer.selectedArtist) {
       notifications.unshift(this.formattedSpecialNotification())
     }
 
     const dataSource =
       notifications.length &&
-      new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-      }).cloneWithRows(notifications)
+      new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }).cloneWithRows(notifications)
 
     this.state = {
       dataSource,
@@ -146,6 +143,7 @@ export class WorksForYou extends React.Component<Props, State> {
       />
     )
   }
+
   renderEmptyState() {
     return (
       <ZeroState
@@ -155,11 +153,13 @@ export class WorksForYou extends React.Component<Props, State> {
     )
   }
 }
+
 interface Styles {
   container: ViewStyle
   title: TextStyle
   separator: ViewStyle
 }
+
 const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
@@ -173,6 +173,7 @@ const styles = StyleSheet.create<Styles>({
     backgroundColor: colors["gray-regular"],
   },
 })
+
 const WorksForYouContainer = createPaginationContainer(
   WorksForYou,
   {
