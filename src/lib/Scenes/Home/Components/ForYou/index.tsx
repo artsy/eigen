@@ -1,37 +1,28 @@
 import React from "react"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import { FlatList, ListView, RefreshControl, ScrollView, ViewProperties } from "react-native"
 
-import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
-import ArtworkCarousel from "./Components/ArtworkCarousel"
-import FairsRail from "./Components/FairsRail"
+import ArtistRail, { ArtistRail as ArtistRailType } from "lib/Components/Home/ArtistRails/ArtistRail"
+import ArtworkCarousel, { ArtworkCarousel as ArtworkCarouselType } from "./Components/ArtworkCarousel"
+import FairsRail, { FairsRail as FairsRailType } from "./Components/FairsRail"
 
-interface DataSourceRow {
-  type: "artwork" | "artist" | "fairs"
-  data: any
-}
-
+type RailModule = ArtistRailType | FairsRailType | ArtworkCarouselType
 type Props = ViewProperties & RelayProps
 
 interface State {
-  rowData: DataSourceRow[]
-  errors?: string // TODO: Wire up to UI handler
+  rowData: Array<{
+    type: "artwork" | "artist" | "fairs"
+    data: any
+  }>
+  errors?: string[] // TODO: Wire up to UI handler
   isRefreshing: boolean
-}
-
-interface Module {
-  props: {
-    rail: any
-    relay: RelayProps
-  }
-  state: any
 }
 
 export class ForYou extends React.Component<Props, State> {
   listView?: ListView | any
   currentScrollOffset?: number = 0
-  modules: Module[] = []
+  railModules: RailModule[] = []
 
   state = {
     isRefreshing: false,
@@ -74,42 +65,31 @@ export class ForYou extends React.Component<Props, State> {
     })
   }
 
+  registerRailModule = railModule => {
+    this.railModules = this.railModules.concat([railModule])
+  }
+
   handleRefresh = async () => {
     this.setState({
       isRefreshing: true,
     })
 
     try {
-      await Promise.all(
-        this.modules.map(module => {
-          return new Promise((resolve, reject) => {
-            const { props, state: { data, relayProp } } = module
+      await Promise.all(this.railModules.map(railModule => railModule.refreshData()))
 
-            relayProp.refetch({ ...props.rail, fetchContent: true }, null, error => {
-              if (error) {
-                console.error("Home/ForYou | ", error)
-                reject(error)
-              } else {
-                resolve()
-              }
-            })
-          })
-        })
-      )
-
-      // Success
       this.setState({
         isRefreshing: false,
       })
-
-      // Fail
     } catch (errors) {
+      console.error("ForYou/index.tsx |", errors)
+
       this.setState({
         errors, // TODO: Display this somehow
       })
     }
   }
 
+  // TODO: Is this still needed?
   handleScroll = event => {
     this.currentScrollOffset = event.nativeEvent.contentOffset.y
   }
@@ -129,17 +109,14 @@ export class ForYou extends React.Component<Props, State> {
         }}
         renderItem={rowItem => {
           const { item: { data, type }, index } = rowItem
-          const registerModule = module => {
-            this.modules[index - 2] = module // Offset row because we don’t store a reference to the search bar and hero units rows.
-          }
 
           switch (type) {
             case "artwork":
-              return <ArtworkCarousel ref={registerModule} key={data.__id} rail={data} />
+              return <ArtworkCarousel key={data.__id} rail={data} registerRailModule={this.registerRailModule} />
             case "artist":
-              return <ArtistRail ref={registerModule} key={data.__id} rail={data} />
+              return <ArtistRail key={data.__id} rail={data} registerRailModule={this.registerRailModule} />
             case "fairs":
-              return <FairsRail fairs_module={data} />
+              return <FairsRail fairs_module={data} registerRailModule={this.registerRailModule} />
           }
         }}
         onScroll={this.handleScroll}

@@ -1,5 +1,5 @@
-import React from "react"
-import { createFragmentContainer, graphql } from "react-relay"
+import React, { Component } from "react"
+import { createFragmentContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
 import { Dimensions, TouchableHighlight } from "react-native"
@@ -21,14 +21,24 @@ const IconCarousel = styled.ScrollView`
 
 const TouchableWrapper = styled.View`margin-right: 7;`
 
-class FairsRail extends React.Component<RelayProps, any> {
+interface Props extends RelayProps {
+  registerRailModule?: (module: FairsRail) => void
+  relay?: RelayRefetchProp
+}
+
+export class FairsRail extends Component<Props, any> {
+  componentWillMount() {
+    if (this.props.registerRailModule) {
+      this.props.registerRailModule(this)
+    }
+  }
+
   renderFairs() {
     if (!this.props.fairs_module.results.length) {
       return
     }
 
     const isPad = Dimensions.get("window").width > 700
-
     const iconDimension = isPad ? 120 : 90
     const borderRadius = iconDimension / 2
 
@@ -62,6 +72,19 @@ class FairsRail extends React.Component<RelayProps, any> {
         {icons}
       </IconCarousel>
     )
+  }
+
+  refreshData = () => {
+    return new Promise((resolve, reject) => {
+      this.props.relay.refetch({ ...this.props.fairs_module, fetchContent: true }, null, error => {
+        if (error) {
+          console.error("FairsRail.jsx |", error)
+          reject(error)
+        } else {
+          resolve()
+        }
+      })
+    })
   }
 
   render() {

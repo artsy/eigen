@@ -8,7 +8,7 @@ it("looks correct when the user has no conversations", () => {
   const tree = renderer
     .create(
       <Conversations
-        relay={{ hasMore: jest.fn() }}
+        relay={{ hasMore: jest.fn() } as any}
         me={{
           conversations: {
             pageInfo: {

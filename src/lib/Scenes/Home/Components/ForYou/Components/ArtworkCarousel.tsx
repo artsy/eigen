@@ -1,5 +1,5 @@
-import * as _ from "lodash"
-import React from "react"
+import { omit } from "lodash"
+import React, { Component } from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import {
@@ -42,25 +42,28 @@ const additionalContentRails = [
 export const minRailHeight = 400
 
 interface Props extends ViewProperties, RelayProps {
+  registerRailModule?: (rail: ArtworkCarousel) => void
   relay?: RelayRefetchProp
 }
 
 interface State {
+  didPerformFetch: boolean
   expanded: boolean
   gridHeight: number
   loadFailed: boolean
-  didPerformFetch: boolean
 }
 
-export class ArtworkCarousel extends React.Component<Props & RelayPropsWorkaround, State> {
-  constructor(props) {
-    super(props)
+export class ArtworkCarousel extends Component<Props & RelayPropsWorkaround, State> {
+  state = {
+    didPerformFetch: false,
+    expanded: false,
+    gridHeight: 0,
+    loadFailed: false,
+  }
 
-    this.state = {
-      expanded: false,
-      gridHeight: 0,
-      loadFailed: false,
-      didPerformFetch: false,
+  componentWillMount() {
+    if (this.props.registerRailModule) {
+      this.props.registerRailModule(this)
     }
   }
 
@@ -128,7 +131,7 @@ export class ArtworkCarousel extends React.Component<Props & RelayPropsWorkaroun
     }
     // Pull out any params, removing the first removing data ID
     // and any null values, turn that into a query string
-    const relatedKeys = Object.keys(_.omit(rail.params, ["__dataID__"]))
+    const relatedKeys = Object.keys(omit(rail.params, ["__dataID__"]))
 
     return (
       rail.context &&
@@ -233,6 +236,19 @@ export class ArtworkCarousel extends React.Component<Props & RelayPropsWorkaroun
     }
 
     return style
+  }
+
+  refreshData = () => {
+    return new Promise((resolve, reject) => {
+      this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
+        if (error) {
+          console.error("ArtworkCarousel.jsx |", error)
+          reject(error)
+        } else {
+          resolve()
+        }
+      })
+    })
   }
 
   render() {

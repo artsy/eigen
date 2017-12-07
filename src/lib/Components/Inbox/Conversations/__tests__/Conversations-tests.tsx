@@ -7,7 +7,7 @@ import * as renderer from "react-test-renderer"
 import { Conversations } from "../"
 
 it("looks correct when rendered", () => {
-  const tree = renderer.create(<Conversations me={meProps} relay={{ hasMore: jest.fn() }} />).toJSON()
+  const tree = renderer.create(<Conversations me={meProps} relay={{ hasMore: jest.fn() } as any} />).toJSON()
   expect(tree).toMatchSnapshot()
 })
 

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Component } from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import { Animated, Easing, ScrollView, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
@@ -20,6 +20,7 @@ const Animation = {
 }
 
 interface Props extends ViewProperties, RelayProps {
+  registerRailModule?: (rail: ArtistRail) => void
   relay?: RelayRefetchProp
 }
 
@@ -28,12 +29,15 @@ interface State {
   loadFailed: boolean
 }
 
-class ArtistRail extends React.Component<Props, State> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      artists: [],
-      loadFailed: false,
+export class ArtistRail extends Component<Props, State> {
+  state = {
+    artists: [],
+    loadFailed: false,
+  }
+
+  componentWillMount() {
+    if (this.props.registerRailModule) {
+      this.props.registerRailModule(this)
     }
   }
 
@@ -177,6 +181,19 @@ class ArtistRail extends React.Component<Props, State> {
       case "POPULAR":
         return "Popular on Artsy"
     }
+  }
+
+  refreshData = () => {
+    return new Promise((resolve, reject) => {
+      this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
+        if (error) {
+          console.error("ArtistRail.jsx |", error)
+          reject(error)
+        } else {
+          resolve()
+        }
+      })
+    })
   }
 
   render() {
