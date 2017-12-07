@@ -26,8 +26,6 @@ exports[`renders correctly 1`] = `
         Array [
           Object {
             "marginBottom": 40,
-            "marginLeft": 0,
-            "marginRight": 0,
             "marginTop": 20,
           },
           undefined,
@@ -48,7 +46,12 @@ exports[`renders correctly 1`] = `
               "paddingRight": 20,
               "textAlign": "left",
             },
-            Object {},
+            Array [
+              Object {
+                "marginBottom": -10,
+              },
+              undefined,
+            ],
             Object {
               "fontFamily": "AGaramondPro-Regular",
             },
@@ -560,8 +563,8 @@ exports[`renders correctly 1`] = `
                   },
                   Array [
                     Object {
-                      "marginBottom": 20,
-                      "marginTop": 10,
+                      "marginBottom": -10,
+                      "marginTop": 20,
                     },
                     undefined,
                   ],

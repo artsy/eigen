@@ -6,7 +6,14 @@ import { View } from "react-native"
 import { LargeHeadline } from "../Typography"
 import ActiveBid from "./ActiveBid"
 
-const Container = styled.View`margin: 20px 0 40px;`
+const Container = styled.View`
+  margin-top: 20px;
+  margin-bottom: 40px;
+`
+
+const Headline = styled(LargeHeadline)`
+margin-bottom: -10px;
+`
 
 interface Props extends RelayProps {
   relay?: RelayRefetchProp
@@ -62,7 +69,7 @@ class ActiveBids extends React.Component<Props, State> {
   render() {
     return this.hasContent()
       ? <Container>
-          <LargeHeadline>Active Bids</LargeHeadline>
+          <Headline>Active Bids</Headline>
           {this.renderRows()}
         </Container>
       : null
