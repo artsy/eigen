@@ -2,15 +2,18 @@ import OpaqueImageView from "lib/Components/OpaqueImageView"
 import colors from "lib/data/colors"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { BodyText, MetadataText } from "../Typography"
+
+const isPad = Dimensions.get("window").width > 700
 
 const Container = styled.View`
   height: 120px;
   margin-left: 20px;
   margin-right: 20px;
+  ${isPad ? "align-self: center; width: 708;" : ""};
 `
 
 const Content = styled.View`

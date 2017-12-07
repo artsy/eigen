@@ -77,9 +77,11 @@ exports[`renders correctly 1`] = `
         style={
           Array [
             Object {
+              "alignSelf": "center",
               "height": 120,
               "marginLeft": 20,
               "marginRight": 20,
+              "width": 708,
             },
             undefined,
           ]
@@ -233,9 +235,11 @@ exports[`renders correctly 1`] = `
         style={
           Array [
             Object {
+              "alignSelf": "center",
               "height": 120,
               "marginLeft": 20,
               "marginRight": 20,
+              "width": 708,
             },
             undefined,
           ]
@@ -389,9 +393,11 @@ exports[`renders correctly 1`] = `
         style={
           Array [
             Object {
+              "alignSelf": "center",
               "height": 120,
               "marginLeft": 20,
               "marginRight": 20,
+              "width": 708,
             },
             undefined,
           ]
