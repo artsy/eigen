@@ -3,6 +3,7 @@ upcoming:
     details: Messaging / Consignments / Tabbed Home
     emission_version: 1.4.0
     dev:
+      - Caches Inbox VC to prevent refetching all data on tab changes - luc
       - When routing from Works For You email, place selected artist from email at top of home feed - sarah
       - Reload active bids on pull-to-refresh - alloy
       - Make active bids link to their artworks - alloy
