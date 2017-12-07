@@ -16,11 +16,6 @@ import styled from "styled-components/native"
 
 const isPad = Dimensions.get("window").width > 700
 
-const Card = styled.View`
-  margin: 10px 20px 0;
-  min-height: 80px;
-`
-
 const VerticalLayout = styled.View`
   flex: 1;
   flex-direction: column;
@@ -31,20 +26,25 @@ const HorizontalLayout = styled.View`
   flex-direction: row;
 `
 
+const Card = styled(VerticalLayout)`
+  height: 120px;
+  align-items: center;
+  margin-left:10px;
+  margin-right:10px;
+`
+
 const CardContent = styled(HorizontalLayout)`
-  justify-content: space-between;
-  align-self: center;
   max-width: 708;
 `
 
 const TextPreview = styled(VerticalLayout)`
-  margin-left: 15;
-  margin-bottom: 15;
+  margin-left: 10;
+  height: 70px;
+  align-self: center;
 `
 
 const DateHeading = styled(HorizontalLayout)`
   justify-content: flex-end;
-  margin-bottom: 4;
 `
 
 const UnreadIndicator = styled.View`
@@ -61,8 +61,6 @@ const Subtitle = styled.Text`
   font-family: ${Fonts.GaramondRegular};
   font-size: 16px;
   color: black;
-  margin-top: 6;
-  margin-bottom: 2;
 `
 
 const Title = styled(Subtitle)`
@@ -70,14 +68,16 @@ const Title = styled(Subtitle)`
 `
 
 const ImageView = styled(OpaqueImageView)`
-  width: 58px;
-  height: 58px;
-  border-radius: 4px;
+  width: 80px;
+  height: 80px;
+  border-radius: 2px;
+  align-self:center;
 `
 
 const SeparatorLine = styled.View`
   height: 1;
   background-color: ${Colors.GrayRegular};
+  width: 100%;
   ${isPad ? "align-self: center; width: 708;" : ""};
 `
 
@@ -185,9 +185,6 @@ export class ConversationSnippet extends React.Component<Props, any> {
                   {partnerName}
                 </SmallHeadline>
                 <DateHeading>
-                  <MetadataText>
-                    {date}
-                  </MetadataText>
                   {conversation.is_last_message_to_user && !conversation.last_message_open && <UnreadIndicator />}
                 </DateHeading>
               </HorizontalLayout>
@@ -195,6 +192,9 @@ export class ConversationSnippet extends React.Component<Props, any> {
               <P>
                 {conversationText}
               </P>
+              <MetadataText>
+                {date}
+              </MetadataText>
             </TextPreview>
           </CardContent>
           <SeparatorLine />
