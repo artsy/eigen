@@ -8,7 +8,6 @@ import { WorksForYou } from "../WorksForYou"
 
 beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { markNotificationsRead: jest.fn() }
-  NativeModules.ARWorksForYouModule = { updateNotificationsCount: jest.fn() }
   WorksForYou.prototype.componentDidUpdate = () => {
     return null
   }
@@ -87,7 +86,7 @@ interface NotificationsResponse {
         edges: Array<{
           node: {
             artists: string
-            message: string
+            summary: string
             artworks: [{ title: string }]
             image: {
               resized: {
@@ -115,7 +114,7 @@ const notificationsResponse = () => {
             {
               node: {
                 artists: "Jean-Michel Basquiat",
-                message: "1 Work Added",
+                summary: "1 Work Added",
                 artworks: [{ title: "Anti-Product Postcard" }],
                 image: {
                   resized: {
@@ -127,7 +126,7 @@ const notificationsResponse = () => {
             {
               node: {
                 artists: "Ana Mendieta",
-                message: "2 Works Added",
+                summary: "2 Works Added",
                 artworks: [{ title: "Corazón de Roca con Sangre" }, { title: "Butterfly" }],
                 image: {
                   resized: {

@@ -3,6 +3,7 @@
 
 ### Master
 
+-   Update WorksForYou to use new Metaphysics schema to avoid frequent empty states - matt
 -   Allow passing a set of Artworks and an index to load to Eigen when clicking on
     a Artwork within a grid - orta
 -   Update Relay typings to current DT version - alloy

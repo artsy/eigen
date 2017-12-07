@@ -70,9 +70,6 @@ export class WorksForYou extends React.Component<Props, State> {
         })
       }
     })
-
-    // update anything in Eigen that relies on notification count
-    NativeModules.ARWorksForYouModule.updateNotificationsCount(0)
   }
 
   formattedSpecialNotification() {
@@ -180,9 +177,10 @@ const WorksForYouContainer = createPaginationContainer(
           count: { type: "Int", defaultValue: 10 }
           cursor: { type: "String" }
           selectedArtist: { type: "String!", defaultValue: "" }
+          sort: { type: "ArtworkSorts" }
         ) {
         me {
-          notifications: notifications_connection(first: $count, after: $cursor)
+          notifications: followed_artists_artwork_groups(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor)
             @connection(key: "WorksForYou_notifications") {
             pageInfo {
               hasNextPage
