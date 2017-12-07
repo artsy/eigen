@@ -9,6 +9,7 @@
 -   Change inquiry status bar background to white - maxim
 -   Move pagination from home/sale index to LotsByfollowedArtists, misc QA - chris
 -   Only load a single Works For You page at a time - alloy
+-   QA on Inbox and Active Bids spacing - maxim
 
 ### 1.4.0-beta.9
 
