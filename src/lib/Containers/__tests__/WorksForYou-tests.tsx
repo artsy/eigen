@@ -1,4 +1,3 @@
-import moment from "moment"
 import React from "react"
 import { NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"

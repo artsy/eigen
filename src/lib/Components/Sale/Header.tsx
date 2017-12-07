@@ -1,5 +1,5 @@
 import React from "react"
-import { Dimensions, NativeModules, StyleSheet, Text, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
+import { Dimensions, StyleSheet, TextStyle, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import OpaqueImageView from "../OpaqueImageView"
 import Headline from "../Text/Headline"

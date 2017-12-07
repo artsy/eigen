@@ -6,9 +6,7 @@ import Search from "../Components/SearchResults"
 
 import { ConsignmentSetup, SearchResult } from "../index"
 
-import { debounce } from "lodash"
-import { NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
-import metaphysics from "../../../metaphysics"
+import { NavigatorIOS, Route, View, ViewProperties } from "react-native"
 
 import { stringify } from "qs"
 

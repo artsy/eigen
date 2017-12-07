@@ -14,6 +14,7 @@
 -   QA on Inbox and Active Bids spacing - maxim
 -   iPad support for Active Bids - maxim
 -   Get rid of image view flag that would skip on-the-fly resizing - alloy
+-   Add noUnusedLocals / noUnusedParameters to tslint config; clean up refs in app -chris
 
 ### 1.4.0-beta.9
 

@@ -9,7 +9,6 @@ import Overview from "../Overview"
 
 import Provenance from "../Provenance"
 import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
-import Welcome from "../Welcome"
 
 const nav = {} as any
 const route = {} as any

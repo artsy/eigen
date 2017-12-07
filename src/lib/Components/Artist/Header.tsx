@@ -7,8 +7,6 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
 
-import Events from "lib/NativeModules/Events"
-
 import colors from "lib/data/colors"
 import InvertedButton from "../Buttons/InvertedButton"
 import Headline from "../Text/Headline"
@@ -49,6 +47,10 @@ class Header extends React.Component<Props, State> {
 
   componentDidMount() {
     NativeModules.ARTemporaryAPIModule.followStatusForArtist(this.props.artist._id, (error, following) => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Artist/Header.tsx", error.message)
+      }
       this.setState({ following })
     })
   }

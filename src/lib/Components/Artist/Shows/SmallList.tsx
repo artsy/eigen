@@ -6,15 +6,11 @@ import Show from "./Show"
 
 import colors from "lib/data/colors"
 
-interface Props extends ViewProperties {
-  shows: any[]
-}
-
 interface State {
   dataSource: ListViewDataSource
 }
 
-class SmallList extends React.Component<Props, State> {
+class SmallList extends React.Component<RelayProps & ViewProperties, State> {
   constructor(props) {
     super(props)
     this.state = {

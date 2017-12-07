@@ -1,12 +1,13 @@
+import React from "react"
+import { Dimensions, TouchableWithoutFeedback } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
+
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Serif from "lib/Components/Text/Serif"
 import fonts from "lib/data/fonts"
 import Switchboard from "lib/NativeModules/SwitchBoard"
-import moment from "moment"
-import React from "react"
-import { Dimensions, Text, TouchableWithoutFeedback, View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
+
 import { liveDate, timedDate } from "../Utils/formatDate"
 
 const Image = styled(OpaqueImageView)`

@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Dimensions, Image, ListView, ListViewDataSource, ScrollView, Text, View } from "react-native"
+import { Dimensions, Image } from "react-native"
 import { LargeHeadline } from "../Typography"
 
 import { Fonts } from "lib/data/fonts"

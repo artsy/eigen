@@ -25,6 +25,10 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   componentDidMount() {
     NativeModules.ARTemporaryAPIModule.followStatusForGene(this.props.gene._id, (error, following) => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Gene/Header.tsx", error.message)
+      }
       this.setState({ following })
     })
   }

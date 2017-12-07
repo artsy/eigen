@@ -1,6 +1,6 @@
 import React from "react"
-import { Animated, StyleSheet, Text, View } from "react-native"
-import styled, { StyledFunction } from "styled-components/native"
+import { Animated, View } from "react-native"
+import styled from "styled-components/native"
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"

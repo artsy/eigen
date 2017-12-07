@@ -1,5 +1,5 @@
 import { createPaginationContainer, graphql } from "react-relay"
-import InfiniteScrollArtworksGrid, { PageSize } from "../InfiniteScrollGrid"
+import InfiniteScrollArtworksGrid from "../InfiniteScrollGrid"
 
 import Artwork from "../Artwork"
 // tslint:disable-next-line:no-unused-expression

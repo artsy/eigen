@@ -2,7 +2,6 @@ import React from "react"
 import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import {
-  LayoutChangeEvent,
   ListView,
   ListViewDataSource,
   NativeModules,
@@ -15,18 +14,17 @@ import {
 
 import Events from "../NativeModules/Events"
 
+// FIXME: IS this kind of empty import still needed?
 import GenericGrid from "../Components/ArtworkGrids/GenericGrid"
 // tslint:disable-next-line:no-unused-expression
 GenericGrid
 
+import { PAGE_SIZE } from "lib/data/constants"
+
 import ZeroState from "lib/Components/States/ZeroState"
-import SerifText from "lib/Components/Text/Serif"
 import Notification from "lib/Components/WorksForYou/Notification"
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
-
 import colors from "lib/data/colors"
-
-const PageSize = 10
+import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 interface Props extends RelayProps {
   relay?: RelayPaginationProp
@@ -95,7 +93,12 @@ export class WorksForYou extends React.Component<Props, State> {
     if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
       return
     }
-    this.props.relay.loadMore(PageSize, error => {
+    this.props.relay.loadMore(PAGE_SIZE, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("WorksForYou.tsx", error.message)
+      }
+
       const notifications = this.props.viewer.me.notifications.edges.map(edge => edge.node)
 
       // Make sure we maintain the special notification if it exists
@@ -222,7 +225,7 @@ const WorksForYouContainer = createPaginationContainer(
         count: totalCount,
       }
     },
-    getVariables(props, { count, cursor }, fragmentVariables) {
+    getVariables(_props, { count, cursor }, fragmentVariables) {
       return {
         // in most cases, for variables other than connection filters like
         // `first`, `after`, etc. you may want to use the previous values.

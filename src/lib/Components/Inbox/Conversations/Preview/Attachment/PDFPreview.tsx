@@ -1,10 +1,9 @@
 import React from "react"
-import { Image, Text, TouchableHighlight } from "react-native"
+import { Image, Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
 
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 

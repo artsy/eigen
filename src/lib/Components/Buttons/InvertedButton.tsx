@@ -37,7 +37,7 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
     }
   }
 
-  componentDidUpdate(prevProps: any, prevState: any) {
+  componentDidUpdate(prevProps: any) {
     if (this.props.selected !== prevProps.selected) {
       const duration = AnimationDuration
       Animated.parallel([

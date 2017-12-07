@@ -67,6 +67,10 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
   componentDidMount() {
     if (this.props.relay) {
       this.props.relay.refetch({ __id: this.props.rail.__id, fetchContent: true }, null, error => {
+        if (error) {
+          console.error("ArtworkRail.tsx", error.message)
+        }
+
         this.setState({
           didPerformFetch: true,
           loadFailed: !!error,

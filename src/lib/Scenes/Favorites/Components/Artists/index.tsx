@@ -1,11 +1,13 @@
 import React from "react"
-import { FlatList, View } from "react-native"
-import { createFragmentContainer, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { FlatList } from "react-native"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import SavedItemRow from "lib/Components/Lists/SavedItemRow"
 import ZeroState from "lib/Components/States/ZeroState"
 
-class Artists extends React.Component<RelayProps, null> {
+import { PAGE_SIZE } from "lib/data/constants"
+
+class Artists extends React.Component<RelayProps> {
   render() {
     const rows: any[] = this.props.me.followed_artists_connection.edges.map(e => e.node.artist)
     const EmptyState = (
@@ -20,7 +22,12 @@ class Artists extends React.Component<RelayProps, null> {
         return
       }
 
-      this.props.relay.loadMore(10, () => undefined)
+      this.props.relay.loadMore(PAGE_SIZE, error => {
+        if (error) {
+          // FIXME: Handle error
+          console.error("Artists/index.tsx", error.message)
+        }
+      })
     }
 
     const ArtistsList = (
@@ -77,7 +84,7 @@ export default createPaginationContainer<RelayProps>(
         count: totalCount,
       }
     },
-    getVariables(props, pageInfo, fragmentVariables) {
+    getVariables(_props, pageInfo, _fragmentVariables) {
       return pageInfo
     },
     query: graphql.experimental`

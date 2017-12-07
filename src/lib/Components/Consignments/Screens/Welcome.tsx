@@ -1,19 +1,10 @@
 import React from "react"
-import {
-  Dimensions,
-  NavigatorIOS,
-  Route,
-  ScrollView,
-  Text,
-  TouchableHighlight,
-  View,
-  ViewProperties,
-} from "react-native"
+import { Dimensions, NavigatorIOS, Route, ScrollView, Text, View, ViewProperties } from "react-native"
 
 import { Router } from "lib/utils/router"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 
-import { Schema, screenTrack, Track } from "lib/utils/track"
+import { Schema, screenTrack } from "lib/utils/track"
 import Circle from "../Components/CircleImage"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { Button } from "../Components/FormElements"
@@ -43,7 +34,6 @@ export default class Welcome extends React.Component<Props, null> {
 
   render() {
     const isPad = Dimensions.get("window").width > 700
-    const isPadHorizontal = Dimensions.get("window").height > 700
 
     const TOS = () =>
       <Text style={{ textDecorationStyle: "solid", textDecorationLine: "underline" }} onPress={this.TOSTapped}>

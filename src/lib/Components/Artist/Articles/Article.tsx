@@ -7,20 +7,7 @@ import fonts from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import ImageView from "../../OpaqueImageView"
 
-interface Props extends ViewProperties {
-  article: {
-    href: string
-    author: {
-      name
-    }
-    thumbnail_image: {
-      url
-    }
-    thumbnail_title: string
-  }
-}
-
-class Article extends React.Component<Props, {}> {
+class Article extends React.Component<RelayProps & ViewProperties> {
   handleTap() {
     SwitchBoard.presentNavigationViewController(this, this.props.article.href)
   }

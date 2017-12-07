@@ -10,8 +10,6 @@ import React from "react"
 import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
 import { RelayPaginationProp } from "react-relay"
 
-import { get } from "lodash"
-
 import Spinner from "../Spinner"
 import Artwork from "./Artwork"
 
@@ -20,7 +18,7 @@ import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { ArtistRelayProps } from "./RelayConnections/ArtistForSaleArtworksGrid"
 import { GeneRelayProps } from "./RelayConnections/GeneArtworksGrid"
 
-export const PageSize = 10
+import { PAGE_SIZE } from "lib/data/constants"
 
 /**
  * TODO:
@@ -110,8 +108,6 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     fetchingNextPage: false,
   }
 
-  private sentEndForContentLength: null | number = null
-
   artworksConnection(): ArtworksConnection {
     return this.props.mapPropsToArtworksConnection(this.props)
   }
@@ -121,7 +117,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
       return
     }
     this.setState({ fetchingNextPage: true })
-    this.props.relay.loadMore(PageSize, error => {
+    this.props.relay.loadMore(PAGE_SIZE, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("InfiniteScrollGrid.tsx", error.message)
+      }
       this.setState({ fetchingNextPage: false })
       if (!this.artworksConnection().pageInfo.hasNextPage && this.props.onComplete) {
         this.props.onComplete()

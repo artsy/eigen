@@ -6,8 +6,7 @@ import ArtistSearch from "../Components/SearchResults"
 
 import { ConsignmentSetup, SearchResult } from "../index"
 
-import { debounce } from "lodash"
-import { Dimensions, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
+import { Dimensions, NavigatorIOS, Route, View, ViewProperties } from "react-native"
 import metaphysics from "../../../metaphysics"
 
 interface ArtistSearchResponse {

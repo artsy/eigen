@@ -1,5 +1,5 @@
 import React from "react"
-import { Text, View } from "react-native"
+import { Text } from "react-native"
 
 import BottomAlignedButton, { BottomAlignedProps } from "../Components/BottomAlignedButton"
 import Search from "../Components/SearchResults"

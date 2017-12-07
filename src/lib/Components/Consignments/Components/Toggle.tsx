@@ -30,15 +30,6 @@ const TextBackground = styled.View`
   margin-right: 8;
 `
 
-const BlackCircle = styled.View`
-  width: 24;
-  height: 24;
-  border-radius: 12;
-  background-color: black;
-  border-color: black;
-  border-width: 1;
-`
-
 const WhiteCircle = styled.View`
   width: 24;
   height: 24;

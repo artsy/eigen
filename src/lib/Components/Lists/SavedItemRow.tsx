@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components/native"
 
-import { Text, TouchableWithoutFeedback, View } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import { Colors } from "lib/data/colors"

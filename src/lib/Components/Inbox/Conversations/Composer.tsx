@@ -1,5 +1,5 @@
 import React from "react"
-import { Dimensions, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback, ViewStyle } from "react-native"
+import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
@@ -66,7 +66,7 @@ export default class Composer extends React.Component<Props, State> {
     }
   }
 
-  @track((props, state) => ({
+  @track(_props => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationSendReply,
   }))

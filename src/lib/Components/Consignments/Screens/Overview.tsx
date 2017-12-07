@@ -1,16 +1,6 @@
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import React from "react"
-import {
-  AsyncStorage,
-  Dimensions,
-  Image,
-  NavigatorIOS,
-  Route,
-  ScrollView,
-  TouchableHighlight,
-  View,
-  ViewProperties,
-} from "react-native"
+import { AsyncStorage, Dimensions, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
 
 import { ConsignmentMetadata, ConsignmentSetup, SearchResult } from "../"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
@@ -27,7 +17,6 @@ import Location from "./Location"
 import Metadata from "./Metadata"
 import Provenance from "./Provenance"
 import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
-import Welcome from "./Welcome"
 
 const consignmentsStateKey = "ConsignmentsStoredState"
 
@@ -61,7 +50,7 @@ export default class Info extends React.Component<Props, State> {
 
   saveStateToLocalStorage = () => AsyncStorage.setItem(consignmentsStateKey, JSON.stringify(this.state))
   restoreFromLocalStorage = () =>
-    AsyncStorage.getItem(consignmentsStateKey, (err, result) => {
+    AsyncStorage.getItem(consignmentsStateKey, (_err, result) => {
       const results = (result && JSON.parse(result)) || {}
       this.setState({ ...results, hasLoaded: true })
     })
@@ -126,7 +115,7 @@ export default class Info extends React.Component<Props, State> {
     }
   }
 
-  @track((props, state) => ({
+  @track((_props, state) => ({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.ConsignmentDraftCreated,
     owner_id: state.submission_id,
@@ -146,7 +135,7 @@ export default class Info extends React.Component<Props, State> {
     })
   }
 
-  @track((props, state) => ({
+  @track((_props, state) => ({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.ConsignmentSubmitted,
     owner_id: state.submission_id,
@@ -190,7 +179,6 @@ export default class Info extends React.Component<Props, State> {
     )
 
     const isPad = Dimensions.get("window").width > 700
-    const isPadHorizontal = Dimensions.get("window").height > 700
 
     return (
       <ConsignmentBG showCloseButton>

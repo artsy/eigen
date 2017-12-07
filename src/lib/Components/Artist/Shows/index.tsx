@@ -1,16 +1,13 @@
 import React from "react"
+import { StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
-import { Dimensions, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 
 import Separator from "../../Separator"
 import SerifText from "../../Text/Serif"
 import SmallList from "./SmallList"
 import VariableSizeShowsList from "./VariableSizeShowsList"
 
-const windowDimensions = Dimensions.get("window")
-
-class Shows extends React.Component<RelayProps, any> {
+class Shows extends React.Component<RelayProps> {
   render() {
     return (
       <View style={styles.container}>
@@ -98,6 +95,8 @@ interface RelayProps {
     current_shows: Array<boolean | number | string | null> | null
     upcoming_shows: Array<boolean | number | string | null> | null
     past_small_shows: Array<boolean | number | string | null> | null
-    past_large_shows: Array<boolean | number | string | null> | null
+    past_large_shows: Array<{
+      __id: string | null
+    }> | null
   }
 }

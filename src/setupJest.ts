@@ -11,7 +11,7 @@ expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 const originalConsoleError = console.error
 
 // Remove on the next React-Native update.
-console.error = (message?: any, ...optionalParams: any[]) => {
+console.error = (message?: any) => {
   if (
     typeof message === "string" &&
     (message.includes("PropTypes has been moved to a separate package.") ||

@@ -1,6 +1,5 @@
-import * as PropTypes from "prop-types"
 import React from "react"
-import { ColorPropType, processColor, requireNativeComponent, View } from "react-native"
+import { ColorPropType, processColor, requireNativeComponent } from "react-native"
 
 import colors from "lib/data/colors"
 

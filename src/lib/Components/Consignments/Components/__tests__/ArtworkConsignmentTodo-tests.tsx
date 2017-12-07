@@ -1,12 +1,5 @@
-import React from "react"
-// import ReactTestUtils from "react-dom/test-utils"
-import * as renderer from "react-test-renderer"
-import * as shallow from "react-test-renderer/shallow"
-
 import * as TODOStories from "../../__stories__/Todo.story"
 import storyRunner from "./Runner"
-
-import TODO from "../ArtworkConsignmentTodo"
 
 storyRunner("TODO states:", TODOStories)
 

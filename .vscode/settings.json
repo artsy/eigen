@@ -65,5 +65,8 @@
   "stylelint.additionalDocumentSelectors": ["typescript", "typescriptreact"],
   "todohighlight.exclude": ["node_modules/**", ".vscode/**", "externals/**"],
   "tslint.autoFixOnSave": true,
-  "typescript.format.enable": false
+  "typescript.format.enable": false,
+  "[json]": {
+    "editor.formatOnSave": false
+  }
 }
