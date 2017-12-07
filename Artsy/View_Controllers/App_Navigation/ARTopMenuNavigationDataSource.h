@@ -21,9 +21,9 @@ typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
 
 @interface ARTopMenuNavigationDataSource : NSObject <ARTabViewDataSource>
 
-- (ARNavigationController *)getMessagingNavigationController;
-- (ARNavigationController *)getProfileNavigationController;
-- (ARNavigationController *)getFavoritesNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *messagingNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *profileNavigationController;
+@property (readonly, nonatomic, strong) ARNavigationController *favoritesNavigationController;
 
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index parameters:(NSDictionary *)params;

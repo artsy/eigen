@@ -33,22 +33,22 @@ it(@"uses the same home feed vc", ^{
 });
 
 it(@"uses a single profile vc", ^{
-    ARNavigationController *navigationController = [navDataSource getProfileNavigationController];
+    ARNavigationController *navigationController = [navDataSource profileNavigationController];
     UIViewController *rootVC = [[navigationController viewControllers] objectAtIndex:0];
     expect(rootVC).to.beKindOf(ARComponentViewController.class);
 
-    ARNavigationController *newNavigationController = [navDataSource getProfileNavigationController];
+    ARNavigationController *newNavigationController = [navDataSource profileNavigationController];
     UIViewController *newRootVC = [[newNavigationController viewControllers] objectAtIndex:0];
     expect(newNavigationController).to.equal(navigationController);
     expect(newRootVC).to.equal(rootVC);
 });
 
 it(@"generates favorites vc each time", ^{
-    ARNavigationController *navigationController = [navDataSource getFavoritesNavigationController];
+    ARNavigationController *navigationController = [navDataSource favoritesNavigationController];
     UIViewController *rootVC = [[navigationController viewControllers] objectAtIndex:0];
     expect(rootVC).to.beKindOf([ARFavoritesComponentViewController class]);
 
-    ARNavigationController *newNavigationController = [navDataSource getFavoritesNavigationController];
+    ARNavigationController *newNavigationController = [navDataSource favoritesNavigationController];
     UIViewController *newRootVC = [[newNavigationController viewControllers] objectAtIndex:0];
     expect(newNavigationController).notTo.equal(navigationController);
     expect(newRootVC).notTo.equal(rootVC);
