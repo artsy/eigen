@@ -8,8 +8,9 @@ import styled from "styled-components/native"
 import { BodyText, MetadataText } from "../Typography"
 
 const Container = styled.View`
-  margin: 17px 20px 0;
-  height: 80px;
+  height: 120px;
+  margin-left: 20px;
+  margin-right: 20px;
 `
 
 const Content = styled.View`
@@ -19,13 +20,13 @@ const Content = styled.View`
 `
 
 const ImageView = styled(OpaqueImageView)`
-  width: 58px;
-  height: 58px;
+  width: 80px;
+  height: 80px;
   border-radius: 4;
 `
 
 const MetadataContainer = styled.View`
-  margin: 0 15px;
+  margin: 0 10px;
   flex: 1;
   flex-direction: column;
   justify-content: center;
@@ -35,7 +36,6 @@ const Separator = styled.View`
   height: 1;
   width: 100%;
   background-color: ${colors["gray-regular"]};
-  margin-top: 17px;
 `
 
 const StatusLabel = styled(MetadataText)`
@@ -129,6 +129,9 @@ class ActiveBid extends React.Component<RelayProps, State> {
           <Content>
             <ImageView imageURL={imageURL} />
             <MetadataContainer>
+              <StatusLabel status={this.state.status}>
+                {this.statusLabel}
+              </StatusLabel>
               <BodyText>
                 {headline}
               </BodyText>
@@ -136,9 +139,6 @@ class ActiveBid extends React.Component<RelayProps, State> {
                 {subtitle}
               </BodyText>
             </MetadataContainer>
-            <StatusLabel status={this.state.status}>
-              {this.statusLabel}
-            </StatusLabel>
           </Content>
           <Separator />
         </Container>

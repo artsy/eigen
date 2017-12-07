@@ -75,8 +75,8 @@ exports[`looks correct when rendered 1`] = `
               Object {
                 "alignItems": "center",
                 "height": 120,
-                "marginLeft": 10,
-                "marginRight": 10,
+                "marginLeft": 20,
+                "marginRight": 20,
               },
               undefined,
             ],
@@ -369,8 +369,8 @@ exports[`looks correct when rendered 1`] = `
               Object {
                 "alignItems": "center",
                 "height": 120,
-                "marginLeft": 10,
-                "marginRight": 10,
+                "marginLeft": 20,
+                "marginRight": 20,
               },
               undefined,
             ],

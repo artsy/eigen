@@ -29,8 +29,8 @@ const HorizontalLayout = styled.View`
 const Card = styled(VerticalLayout)`
   height: 120px;
   align-items: center;
-  margin-left:10px;
-  margin-right:10px;
+  margin-left:20px;
+  margin-right:20px;
 `
 
 const CardContent = styled(HorizontalLayout)`
