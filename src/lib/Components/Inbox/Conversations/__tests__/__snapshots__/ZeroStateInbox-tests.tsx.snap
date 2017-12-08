@@ -19,8 +19,8 @@ exports[`looks correct when the user has no conversations 1`] = `
           },
           Array [
             Object {
-              "marginBottom": 20,
-              "marginTop": 10,
+              "marginBottom": -10,
+              "marginTop": 20,
             },
             undefined,
           ],

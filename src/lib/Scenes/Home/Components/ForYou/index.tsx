@@ -1,7 +1,6 @@
 import React from "react"
-import { createFragmentContainer, graphql, RelayRefetchProp } from "react-relay"
-
-import { FlatList, ListView, RefreshControl, ScrollView, ViewProperties } from "react-native"
+import { FlatList, RefreshControl, ScrollView, ViewProperties } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import ArtistRail, { ArtistRail as ArtistRailType } from "lib/Components/Home/ArtistRails/ArtistRail"
 import ArtworkCarousel, { ArtworkCarousel as ArtworkCarouselType } from "./Components/ArtworkCarousel"
@@ -19,7 +18,6 @@ interface State {
 type RailModule = ArtistRailType | FairsRailType | ArtworkCarouselType
 
 export class ForYou extends React.Component<ViewProperties & RelayProps, State> {
-  listView?: ListView | any
   currentScrollOffset?: number = 0
   railModules: RailModule[] = []
 
@@ -74,11 +72,13 @@ export class ForYou extends React.Component<ViewProperties & RelayProps, State> 
         })
       )
 
-      this.setState({
-        isRefreshing: false,
-      })
+      setTimeout(() => {
+        this.setState({
+          isRefreshing: false,
+        })
+      }, 1000) // For consistent pull-to-refresh UI experience
     } catch (error) {
-      console.error("ForYou/index.tsx", error.message)
+      console.error("ForYou/index.tsx - Error refreshing ForYou rails:", error.message)
 
       this.setState({
         error: error.message, // TODO: Display this somehow
@@ -86,10 +86,8 @@ export class ForYou extends React.Component<ViewProperties & RelayProps, State> 
     }
   }
 
-  registerRailModule = row => {
-    return railModule => {
-      this.railModules[row - 2] = railModule // Offset row because we don’t store a reference to the search bar and hero units rows.
-    }
+  registerRailModule = (railModule: RailModule) => {
+    this.railModules.push(railModule)
   }
 
   render() {
@@ -101,24 +99,29 @@ export class ForYou extends React.Component<ViewProperties & RelayProps, State> 
             <ScrollView
               {...props}
               automaticallyAdjustContentInsets={false}
-              refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.isRefreshing}
+                  onRefresh={this.handleRefresh}
+                  style={{ marginBottom: 20 }}
+                />
+              }
             />
           )
         }}
         renderItem={rowItem => {
-          const { item: { data, type }, index } = rowItem
+          const { item: { data, type } } = rowItem
 
           switch (type) {
             case "artwork":
-              return <ArtworkCarousel key={data.__id} rail={data} registerRailModule={this.registerRailModule(index)} />
+              return <ArtworkCarousel key={data.__id} rail={data} registerRailModule={this.registerRailModule} />
             case "artist":
-              return <ArtistRail key={data.__id} rail={data} registerRailModule={this.registerRailModule(index)} />
+              return <ArtistRail key={data.__id} rail={data} registerRailModule={this.registerRailModule} />
             case "fairs":
-              return <FairsRail fairs_module={data} registerRailModule={this.registerRailModule(index)} />
+              return <FairsRail fairs_module={data} registerRailModule={this.registerRailModule} />
           }
         }}
         keyExtractor={(item, index) => item.data.type + String(index)}
-        ref={listView => (this.listView = listView)}
         style={{ marginTop: 20, overflow: "visible" }}
       />
     )

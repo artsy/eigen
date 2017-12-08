@@ -5,6 +5,7 @@ import { Animated, Easing, ScrollView, StyleSheet, TextStyle, View, ViewProperti
 
 import metaphysics from "../../../metaphysics"
 
+import { Disposable } from "relay-runtime"
 import Separator from "../../Separator"
 import Spinner from "../../Spinner"
 import SectionTitle from "../SectionTitle"
@@ -30,6 +31,8 @@ interface State {
 }
 
 export class ArtistRail extends Component<Props, State> {
+  inflightRequest: Disposable
+
   state = {
     artists: [],
     loadFailed: false,
@@ -41,18 +44,8 @@ export class ArtistRail extends Component<Props, State> {
     }
   }
 
-  componentDidMount() {
-    if (this.props.relay) {
-      this.props.relay.refetch({ __id: this.props.rail.__id, fetchContent: true }, null, error => {
-        if (error) {
-          console.error("ArtistRail.tsx", error.message)
-
-          this.setState({
-            loadFailed: true,
-          })
-        }
-      })
-    }
+  async componentDidMount() {
+    await this.refreshData()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -165,7 +158,7 @@ export class ArtistRail extends Component<Props, State> {
         </ScrollView>
       )
     } else {
-      return <Spinner style={{ flex: 1 }} />
+      return <Spinner style={{ flex: 1, marginBottom: 20 }} />
     }
   }
 
@@ -184,15 +177,30 @@ export class ArtistRail extends Component<Props, State> {
   }
 
   refreshData = () => {
-    return new Promise((resolve, reject) => {
-      this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
-        if (error) {
-          reject(error)
-        } else {
-          resolve()
-        }
+    // TODO: Ensures rail has been mounted before a refresh occurs, circumventing setState errors.
+    // See https://stackoverflow.com/a/40969739/1038901 for more info.
+    if (this.refs.rail) {
+      if (this.inflightRequest) {
+        this.inflightRequest.dispose()
+      }
+
+      return new Promise((resolve, reject) => {
+        this.inflightRequest = this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
+          if (error) {
+            console.error("ArtistRail.jsx", error.message)
+
+            this.setState({
+              loadFailed: true,
+            })
+
+            reject(error)
+          } else {
+            this.inflightRequest = null
+            resolve()
+          }
+        })
       })
-    })
+    }
   }
 
   render() {
@@ -201,7 +209,7 @@ export class ArtistRail extends Component<Props, State> {
     }
 
     return (
-      <View>
+      <View ref="rail">
         <View style={styles.title}>
           <SectionTitle>
             {this.title()}

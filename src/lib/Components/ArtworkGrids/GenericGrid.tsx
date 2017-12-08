@@ -117,12 +117,12 @@ class GenericArtworksGrid extends React.Component<Props, State> {
         }
       }
 
-      const sectionSpecificStlye = {
+      const sectionSpecificStyle = {
         width: this.state.sectionDimension,
         marginRight: i === this.state.sectionCount - 1 ? 0 : this.props.sectionMargin,
       }
       sections.push(
-        <View style={[styles.section, sectionSpecificStlye]} key={i} accessibilityLabel={"Section " + i}>
+        <View style={[styles.section, sectionSpecificStyle]} key={i} accessibilityLabel={"Section " + i}>
           {artworkComponents}
         </View>
       )

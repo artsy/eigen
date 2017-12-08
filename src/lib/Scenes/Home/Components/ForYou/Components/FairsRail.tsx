@@ -75,14 +75,16 @@ export class FairsRail extends Component<Props, any> {
   }
 
   refreshData = () => {
-    return new Promise((resolve, reject) => {
-      resolve() // Refetch not needed yet
-    })
+    if (this.refs.rail) {
+      return new Promise((resolve, _reject) => {
+        resolve() // Refetch not needed yet
+      })
+    }
   }
 
   render() {
     return (
-      <Container>
+      <Container ref="rail">
         <Title>
           <SectionTitle>Recommended Art Fairs</SectionTitle>
         </Title>
