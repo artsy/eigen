@@ -18,13 +18,20 @@ exports[`renders correctly with a show 1`] = `
   style={
     Array [
       Object {
-        "marginBottom": 0,
-        "marginLeft": 20,
-        "marginRight": 20,
-        "marginTop": 10,
-        "minHeight": 80,
+        "flexBasis": 0,
+        "flexDirection": "column",
+        "flexGrow": 1,
+        "flexShrink": 1,
       },
-      undefined,
+      Array [
+        Object {
+          "alignItems": "center",
+          "height": 120,
+          "marginLeft": 20,
+          "marginRight": 20,
+        },
+        undefined,
+      ],
     ]
   }
   testID={undefined}
@@ -40,8 +47,6 @@ exports[`renders correctly with a show 1`] = `
         },
         Array [
           Object {
-            "alignSelf": "center",
-            "justifyContent": "space-between",
             "maxWidth": 708,
           },
           undefined,
@@ -54,9 +59,10 @@ exports[`renders correctly with a show 1`] = `
       style={
         Array [
           Object {
-            "borderRadius": 4,
-            "height": 58,
-            "width": 58,
+            "alignSelf": "center",
+            "borderRadius": 2,
+            "height": 80,
+            "width": 80,
           },
           undefined,
         ]
@@ -73,8 +79,9 @@ exports[`renders correctly with a show 1`] = `
           },
           Array [
             Object {
-              "marginBottom": 15,
-              "marginLeft": 15,
+              "alignSelf": "center",
+              "height": 70,
+              "marginLeft": 10,
             },
             undefined,
           ],
@@ -128,34 +135,12 @@ exports[`renders correctly with a show 1`] = `
               Array [
                 Object {
                   "justifyContent": "flex-end",
-                  "marginBottom": 4,
                 },
                 undefined,
               ],
             ]
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            disabled={false}
-            ellipsizeMode="tail"
-            style={
-              Array [
-                Object {
-                  "color": "#cccccc",
-                  "fontSize": 11,
-                  "textAlign": "left",
-                },
-                Object {},
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-              ]
-            }
-          >
-            A YEAR
-          </Text>
           <View
             style={
               Array [
@@ -218,8 +203,6 @@ exports[`renders correctly with a show 1`] = `
                   "color": "black",
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
-                  "marginBottom": 2,
-                  "marginTop": 6,
                 },
                 undefined,
               ]
@@ -250,6 +233,27 @@ exports[`renders correctly with a show 1`] = `
         }
       >
         Karl and Anna... Fab!
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "#cccccc",
+              "fontSize": 11,
+              "textAlign": "left",
+            },
+            Object {},
+            Object {
+              "fontFamily": "AvantGardeGothicITC",
+            },
+          ]
+        }
+      >
+        A YEAR
       </Text>
     </View>
   </View>
@@ -287,13 +291,20 @@ exports[`renders correctly with an artwork 1`] = `
   style={
     Array [
       Object {
-        "marginBottom": 0,
-        "marginLeft": 20,
-        "marginRight": 20,
-        "marginTop": 10,
-        "minHeight": 80,
+        "flexBasis": 0,
+        "flexDirection": "column",
+        "flexGrow": 1,
+        "flexShrink": 1,
       },
-      undefined,
+      Array [
+        Object {
+          "alignItems": "center",
+          "height": 120,
+          "marginLeft": 20,
+          "marginRight": 20,
+        },
+        undefined,
+      ],
     ]
   }
   testID={undefined}
@@ -309,8 +320,6 @@ exports[`renders correctly with an artwork 1`] = `
         },
         Array [
           Object {
-            "alignSelf": "center",
-            "justifyContent": "space-between",
             "maxWidth": 708,
           },
           undefined,
@@ -323,9 +332,10 @@ exports[`renders correctly with an artwork 1`] = `
       style={
         Array [
           Object {
-            "borderRadius": 4,
-            "height": 58,
-            "width": 58,
+            "alignSelf": "center",
+            "borderRadius": 2,
+            "height": 80,
+            "width": 80,
           },
           undefined,
         ]
@@ -342,8 +352,9 @@ exports[`renders correctly with an artwork 1`] = `
           },
           Array [
             Object {
-              "marginBottom": 15,
-              "marginLeft": 15,
+              "alignSelf": "center",
+              "height": 70,
+              "marginLeft": 10,
             },
             undefined,
           ],
@@ -397,34 +408,12 @@ exports[`renders correctly with an artwork 1`] = `
               Array [
                 Object {
                   "justifyContent": "flex-end",
-                  "marginBottom": 4,
                 },
                 undefined,
               ],
             ]
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            disabled={false}
-            ellipsizeMode="tail"
-            style={
-              Array [
-                Object {
-                  "color": "#cccccc",
-                  "fontSize": 11,
-                  "textAlign": "left",
-                },
-                Object {},
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-              ]
-            }
-          >
-            A YEAR
-          </Text>
           <View
             style={
               Array [
@@ -487,8 +476,6 @@ exports[`renders correctly with an artwork 1`] = `
                   "color": "black",
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
-                  "marginBottom": 2,
-                  "marginTop": 6,
                 },
                 undefined,
               ]
@@ -507,8 +494,6 @@ exports[`renders correctly with an artwork 1`] = `
                   "color": "black",
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
-                  "marginBottom": 2,
-                  "marginTop": 6,
                 },
                 Array [
                   Object {
@@ -532,8 +517,6 @@ exports[`renders correctly with an artwork 1`] = `
                   "color": "black",
                   "fontFamily": "AGaramondPro-Regular",
                   "fontSize": 16,
-                  "marginBottom": 2,
-                  "marginTop": 6,
                 },
                 undefined,
               ]
@@ -564,6 +547,27 @@ exports[`renders correctly with an artwork 1`] = `
         }
       >
         Karl and Anna... Fab!
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "#cccccc",
+              "fontSize": 11,
+              "textAlign": "left",
+            },
+            Object {},
+            Object {
+              "fontFamily": "AvantGardeGothicITC",
+            },
+          ]
+        }
+      >
+        A YEAR
       </Text>
     </View>
   </View>

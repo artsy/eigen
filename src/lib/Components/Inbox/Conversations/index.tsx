@@ -13,8 +13,8 @@ import Spinner from "../../Spinner"
 const PageSize = 10
 
 const Headline = styled(LargeHeadline)`
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: -10px;
 `
 
 interface Props extends RelayProps {
