@@ -42,6 +42,7 @@ const Separator = styled.View`
 `
 
 const StatusLabel = styled(MetadataText)`
+  margin-bottom: 3px;
   color: ${(props: { status: BidStatus }) => {
     switch (props.status) {
       case "winning":

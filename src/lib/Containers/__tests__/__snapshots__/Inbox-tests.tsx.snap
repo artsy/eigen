@@ -148,6 +148,7 @@ exports[`renders correctly 1`] = `
                   Array [
                     Object {
                       "color": "#f7625a",
+                      "marginBottom": 3,
                     },
                     undefined,
                   ],
@@ -306,6 +307,7 @@ exports[`renders correctly 1`] = `
                   Array [
                     Object {
                       "color": "#f7625a",
+                      "marginBottom": 3,
                     },
                     undefined,
                   ],
@@ -464,6 +466,7 @@ exports[`renders correctly 1`] = `
                   Array [
                     Object {
                       "color": "#f7625a",
+                      "marginBottom": 3,
                     },
                     undefined,
                   ],

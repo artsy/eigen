@@ -89,6 +89,7 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
             Array [
               Object {
                 "color": "#f7625a",
+                "marginBottom": 3,
               },
               undefined,
             ],
@@ -250,6 +251,7 @@ exports[`looks right for bids in live open auctions 1`] = `
             Array [
               Object {
                 "color": "#6e1fff",
+                "marginBottom": 3,
               },
               undefined,
             ],
@@ -411,6 +413,7 @@ exports[`renders correctly 1`] = `
             Array [
               Object {
                 "color": "#f7625a",
+                "marginBottom": 3,
               },
               undefined,
             ],
