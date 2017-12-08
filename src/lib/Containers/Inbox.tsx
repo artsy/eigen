@@ -5,10 +5,11 @@ import styled from "styled-components/native"
 import ActiveBids from "lib/Components/Inbox/ActiveBids"
 import Conversations from "lib/Components/Inbox/Conversations"
 import ZeroStateInbox from "lib/Components/Inbox/Conversations/ZeroStateInbox"
-import { RefreshControl, ScrollView, View } from "react-native"
+import { RefreshControl, ScrollView, Text, View } from "react-native"
 
 interface Props extends RelayProps {
   relay?: RelayRefetchProp
+  isVisible: boolean
 }
 
 interface State {
@@ -29,6 +30,12 @@ export class Inbox extends React.Component<Props, State> {
     }
 
     this.fetchData = this.fetchData.bind(this)
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.isVisible) {
+      this.fetchData()
+    }
   }
 
   fetchData() {
