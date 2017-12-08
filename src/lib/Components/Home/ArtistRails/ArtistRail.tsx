@@ -187,7 +187,6 @@ export class ArtistRail extends Component<Props, State> {
     return new Promise((resolve, reject) => {
       this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
         if (error) {
-          console.error("ArtistRail.jsx |", error)
           reject(error)
         } else {
           resolve()

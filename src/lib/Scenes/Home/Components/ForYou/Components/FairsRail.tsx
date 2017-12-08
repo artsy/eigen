@@ -76,14 +76,7 @@ export class FairsRail extends Component<Props, any> {
 
   refreshData = () => {
     return new Promise((resolve, reject) => {
-      this.props.relay.refetch({ ...this.props.fairs_module, fetchContent: true }, null, error => {
-        if (error) {
-          console.error("FairsRail.jsx |", error)
-          reject(error)
-        } else {
-          resolve()
-        }
-      })
+      resolve() // Refetch not needed yet
     })
   }
 

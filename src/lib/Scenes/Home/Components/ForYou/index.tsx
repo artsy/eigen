@@ -7,19 +7,18 @@ import ArtistRail, { ArtistRail as ArtistRailType } from "lib/Components/Home/Ar
 import ArtworkCarousel, { ArtworkCarousel as ArtworkCarouselType } from "./Components/ArtworkCarousel"
 import FairsRail, { FairsRail as FairsRailType } from "./Components/FairsRail"
 
-type RailModule = ArtistRailType | FairsRailType | ArtworkCarouselType
-type Props = ViewProperties & RelayProps
-
 interface State {
   rowData: Array<{
     type: "artwork" | "artist" | "fairs"
     data: any
   }>
-  errors?: string[] // TODO: Wire up to UI handler
+  error?: string // TODO: Wire up to UI handler
   isRefreshing: boolean
 }
 
-export class ForYou extends React.Component<Props, State> {
+type RailModule = ArtistRailType | FairsRailType | ArtworkCarouselType
+
+export class ForYou extends React.Component<ViewProperties & RelayProps, State> {
   listView?: ListView | any
   currentScrollOffset?: number = 0
   railModules: RailModule[] = []
@@ -65,33 +64,32 @@ export class ForYou extends React.Component<Props, State> {
     })
   }
 
-  registerRailModule = railModule => {
-    this.railModules = this.railModules.concat([railModule])
-  }
-
   handleRefresh = async () => {
-    this.setState({
-      isRefreshing: true,
-    })
+    this.setState({ isRefreshing: true })
 
     try {
-      await Promise.all(this.railModules.map(railModule => railModule.refreshData()))
+      await Promise.all(
+        this.railModules.map(railModule => {
+          railModule.refreshData()
+        })
+      )
 
       this.setState({
         isRefreshing: false,
       })
-    } catch (errors) {
-      console.error("ForYou/index.tsx |", errors)
+    } catch (error) {
+      console.error("ForYou/index.tsx", error.message)
 
       this.setState({
-        errors, // TODO: Display this somehow
+        error: error.message, // TODO: Display this somehow
       })
     }
   }
 
-  // TODO: Is this still needed?
-  handleScroll = event => {
-    this.currentScrollOffset = event.nativeEvent.contentOffset.y
+  registerRailModule = row => {
+    return railModule => {
+      this.railModules[row - 2] = railModule // Offset row because we don’t store a reference to the search bar and hero units rows.
+    }
   }
 
   render() {
@@ -112,14 +110,13 @@ export class ForYou extends React.Component<Props, State> {
 
           switch (type) {
             case "artwork":
-              return <ArtworkCarousel key={data.__id} rail={data} registerRailModule={this.registerRailModule} />
+              return <ArtworkCarousel key={data.__id} rail={data} registerRailModule={this.registerRailModule(index)} />
             case "artist":
-              return <ArtistRail key={data.__id} rail={data} registerRailModule={this.registerRailModule} />
+              return <ArtistRail key={data.__id} rail={data} registerRailModule={this.registerRailModule(index)} />
             case "fairs":
-              return <FairsRail fairs_module={data} registerRailModule={this.registerRailModule} />
+              return <FairsRail fairs_module={data} registerRailModule={this.registerRailModule(index)} />
           }
         }}
-        onScroll={this.handleScroll}
         keyExtractor={(item, index) => item.data.type + String(index)}
         ref={listView => (this.listView = listView)}
         style={{ marginTop: 20, overflow: "visible" }}

@@ -242,7 +242,7 @@ export class ArtworkCarousel extends Component<Props & RelayPropsWorkaround, Sta
     return new Promise((resolve, reject) => {
       this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
         if (error) {
-          console.error("ArtworkCarousel.jsx |", error)
+          console.error("ArtworkCarousel.jsx |", error.message)
           reject(error)
         } else {
           resolve()

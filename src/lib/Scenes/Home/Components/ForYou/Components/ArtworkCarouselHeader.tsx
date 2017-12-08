@@ -49,6 +49,10 @@ class ArtworkCarouselHeader extends Component<Props & RelayPropsWorkaround, Stat
   }
 
   render() {
+    // FIXME: For some reason this.props.rail.title existence triggers a "Can only update a
+    // mounted or mounting component" error. Only happens when mounted from ArtworkCarousel.
+    // Doesn't break app, but potentially breaking. Maybe some kind of hidden state within
+    // SectionTitle text component?
     return (
       <TouchableWithoutFeedback onPress={this.props.handleViewAll}>
         <View style={styles.container}>
@@ -103,7 +107,7 @@ class ArtworkCarouselHeader extends Component<Props & RelayPropsWorkaround, Stat
     const context = this.props.rail.context
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, context.artist.id, (error, following) => {
       if (error) {
-        console.warn(error)
+        console.error("ArtworkCarouselHeader.tsx", error)
       } else {
         Events.postEvent({
           name: following ? "Follow artist" : "Unfollow artist",
