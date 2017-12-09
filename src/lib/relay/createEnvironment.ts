@@ -1,9 +1,9 @@
-import { Environment, Network, RecordSource, RelayInMemoryRecordSource, Store } from "relay-runtime"
+import { Environment, Network, RecordSource, Store } from "relay-runtime"
 import { metaphysics } from "../metaphysics"
 
 // Define a function that fetches the results of an operation (query/mutation/etc)
 // and returns its results as a Promise:
-function fetchQuery(operation, variables, cacheConfig, uploadables) {
+function fetchQuery(operation, variables, _cacheConfig, _uploadables) {
   return metaphysics({ query: operation.text, variables })
 }
 

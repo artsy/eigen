@@ -1,32 +1,16 @@
 import React from "react"
 import {
-  ButtonProperties,
   Dimensions,
-  FlatList,
   Image,
   ListView,
   ListViewDataSource,
-  ScrollView,
   StyleSheet,
-  Text,
   TouchableHighlight,
   TouchableOpacity,
   View,
 } from "react-native"
 
-import { chunk, filter } from "lodash"
-
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
-
-import { ConsignmentSetup } from "../index"
-
-const Photo = styled.TouchableHighlight`
-  color: white;
-  font-family: "${fonts["avant-garde-regular"]}";
-  flex: 1;
-`
 
 const ImageBG = styled.View`
   border-color: white;
@@ -144,7 +128,7 @@ export default class ImageSelection extends React.Component<Props, State> {
   }
 
   onPressItem = (id: string) => {
-    this.setState(state => {
+    this.setState(_state => {
       const selected = this.state.selected
       const selectedAlready = selected.has(id)
       if (selectedAlready) {
@@ -158,7 +142,6 @@ export default class ImageSelection extends React.Component<Props, State> {
       }
 
       // This is probably inefficient, but it works.
-      const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
       const dataSource = this.dataSourceFromData(this.props.data, isPad)
       return { dataSource }
     })

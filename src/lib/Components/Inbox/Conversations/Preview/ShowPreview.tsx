@@ -3,7 +3,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { TouchableHighlight } from "react-native"
 
-import { PreviewText as P, Subtitle } from "../../Typography"
+import { PreviewText as P } from "../../Typography"
 
 import { Schema, Track, track as _track } from "../../../../utils/track"
 
@@ -55,7 +55,7 @@ const track: Track<Props> = _track
 
 @track()
 export class ShowPreview extends React.Component<Props, any> {
-  @track((props, state) => ({
+  @track(props => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationAttachmentShow,
     owner_type: Schema.OwnerEntityTypes.Show,

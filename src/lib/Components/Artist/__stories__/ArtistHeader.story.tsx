@@ -1,8 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
 import { View } from "react-native"
-import { Environment, Network, RecordSource, Store } from "relay-runtime"
-// import StubContainer from "react-storybooks-relay-container"
 
 import Header from "../Header"
 

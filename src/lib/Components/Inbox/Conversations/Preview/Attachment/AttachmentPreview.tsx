@@ -5,7 +5,6 @@ import { TouchableHighlight } from "react-native"
 import styled from "styled-components/native"
 
 import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
 
 const Container = styled.View`flex-direction: row;`
 

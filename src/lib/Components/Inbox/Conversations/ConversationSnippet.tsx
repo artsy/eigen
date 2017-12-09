@@ -6,9 +6,8 @@ import { Schema, Track, track as _track } from "../../../utils/track"
 
 import { MetadataText, PreviewText as P, SmallHeadline } from "../Typography"
 
-import { Dimensions, StyleSheet, TouchableWithoutFeedback, ViewStyle } from "react-native"
+import { Dimensions, TouchableWithoutFeedback } from "react-native"
 
-import DottedLine from "lib/Components/DottedLine"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import { Colors } from "lib/data/colors"
 import { Fonts } from "lib/data/fonts"
@@ -81,22 +80,7 @@ const SeparatorLine = styled.View`
   ${isPad ? "align-self: center; width: 708;" : ""};
 `
 
-export interface Conversation {
-  id: string | null
-  to: {
-    name: string | null
-  }
-  last_message: string | null
-  last_message_at: string | null
-  is_last_message_to_user: boolean
-  last_message_open: string | null
-  items: Array<{
-    item: any
-  }>
-}
-
-interface Props {
-  conversation: Conversation
+export interface Props extends RelayProps {
   onSelected?: () => void
 }
 
@@ -141,7 +125,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
     }
   }
 
-  @track((props, state) => ({
+  @track(props => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationSelected,
     owner_id: props.conversation.id,
@@ -252,7 +236,6 @@ interface RelayProps {
     last_message_at: string | null
     is_last_message_to_user: boolean
     last_message_open: string | null
-    __typename: string
     items: Array<{
       item: any
     } | null> | null

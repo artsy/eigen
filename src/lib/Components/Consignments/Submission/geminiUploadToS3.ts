@@ -1,4 +1,3 @@
-import queryString from "query-string"
 import { metaphysics } from "../../../metaphysics"
 import objectToGraphQL from "./objectToGraphQL"
 import { GeminiEntryCreationResonse } from "./uploadPhotoToGemini"
@@ -96,11 +95,10 @@ export const uploadFileToS3 = async (file: string, req: GeminiCredsInput, res: G
     const geminiKey = asset.policy_document.conditions.gemini_key
     const bucket = asset.policy_document.conditions.bucket
     const uploadURL = `https://${bucket}.s3.amazonaws.com`
-    const filename = file.split(/\//g).pop()
 
     const data = {
       "Content-Type": "image/jpg",
-      key: geminiKey + "/${filename}",
+      key: geminiKey + "/${filename}", // NOTE: This form (which _looks_ like ES6 interpolation) is required by AWS
       AWSAccessKeyId: asset.credentials,
       acl: req.acl,
       success_action_status: asset.policy_document.conditions.success_action_status,

@@ -1,11 +1,6 @@
 import React from "react"
 
-import * as _ from "lodash"
-
-import { WhiteButton } from "../../Buttons"
 import DoneButton from "../Components/BottomAlignedButton"
-
-import Circle from "../Components/CircleImage"
 import ConsignmentBG from "../Components/ConsignmentBG"
 
 import ImageSelection, { ImageData } from "../Components/ImageSelection"
@@ -13,17 +8,7 @@ import { BodyText as P } from "../Typography"
 
 import triggerCamera from "../../../NativeModules/triggerCamera"
 
-import {
-  CameraRoll,
-  Dimensions,
-  GetPhotosParamType,
-  GetPhotosReturnType,
-  NavigatorIOS,
-  Route,
-  ScrollView,
-  View,
-  ViewProperties,
-} from "react-native"
+import { CameraRoll, Dimensions, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
 import { ConsignmentSetup } from "../index"
 
 interface Props extends ViewProperties {
@@ -101,10 +86,12 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
 
   appendAssets(data) {
     const assets = data.edges
-    const nextState = {
-      loadingMore: false,
-      noMorePhotos: !data.page_info.has_next_page,
-    }
+
+    // TODO: Reenable when used
+    // const nextState = {
+    //   loadingMore: false,
+    //   noMorePhotos: !data.page_info.has_next_page,
+    // }
 
     if (assets.length === 0) {
       this.setState({
@@ -151,7 +138,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
     })
   }
 
-  onNewSelectionState = (state: Set<string>) => this.setState({ selection: this.state.selection })
+  onNewSelectionState = (_state: Set<string>) => this.setState({ selection: this.state.selection })
 
   render() {
     return (

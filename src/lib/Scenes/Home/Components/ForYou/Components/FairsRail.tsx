@@ -1,11 +1,10 @@
 import React from "react"
-import { createFragmentContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import { Dimensions, ScrollView, TouchableHighlight } from "react-native"
+import { Dimensions, TouchableHighlight } from "react-native"
 
 import ImageView from "lib/Components/OpaqueImageView"
-import Separator from "lib/Components/Separator"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import SectionTitle from "lib/Scenes/Home/Components/SectionTitle"
 

@@ -1,12 +1,13 @@
+import React from "react"
+import { ScrollView } from "react-native"
+import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import styled from "styled-components/native"
+
+import { once } from "lodash"
+
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import Spinner from "lib/Components/Spinner"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
-import { once } from "lodash"
-import PropTypes from "prop-types"
-import React, { Component } from "react"
-import { FlatList, ScrollView, Text, View } from "react-native"
-import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import styled from "styled-components/native"
 import { SectionHeader } from "./SectionHeader"
 
 const DEFAULT_TITLE = "Lots by Artists You Follow"
@@ -65,7 +66,7 @@ export default createPaginationContainer(
   {
     getConnectionFromProps: ({ viewer }) => viewer && (viewer.sale_artworks as ConnectionData),
     getFragmentVariables: (prevVars, totalCount) => ({ ...prevVars, count: totalCount }),
-    getVariables: (props, { count, cursor }) => ({ count, cursor }),
+    getVariables: (_props, { count, cursor }) => ({ count, cursor }),
     query: graphql.experimental`
       query LotsByFollowedArtistsQuery($count: Int!, $cursor: String) {
         viewer {

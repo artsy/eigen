@@ -1,4 +1,3 @@
-import React from "react"
 import _track, { Track as _Track, TrackingInfo } from "react-tracking"
 
 import Events from "lib/NativeModules/Events"

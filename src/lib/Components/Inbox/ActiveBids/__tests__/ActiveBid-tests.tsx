@@ -18,7 +18,7 @@ it("looks right for bids in live open auctions", () => {
   expect(tree).toMatchSnapshot()
 })
 
-const bid = (isLive?: boolean, isOpen?: boolean) => {
+const bid = (_isLive?: boolean, isOpen?: boolean) => {
   return {
     sale: {
       is_live_open: isOpen,

@@ -2,7 +2,6 @@ import React from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
-import { View } from "react-native"
 import { LargeHeadline } from "../Typography"
 import ActiveBid from "./ActiveBid"
 
@@ -50,20 +49,26 @@ class ActiveBids extends React.Component<Props, State> {
       return
     }
 
-    this.setState({ fetchingData: true })
+    this.setState({
+      fetchingData: true,
+    })
 
-    this.props.relay.refetch(
-      {},
-      {},
-      () => {
-        this.setState({ fetchingData: false })
+    const onFetchComplete = error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("ActiveBids/index.tsx", error.message)
+      }
 
-        if (callback) {
-          callback()
-        }
-      },
-      { force: true }
-    )
+      this.setState({
+        fetchingData: false,
+      })
+
+      if (callback) {
+        callback()
+      }
+    }
+
+    this.props.relay.refetch({}, {}, onFetchComplete, { force: true })
   }
 
   render() {

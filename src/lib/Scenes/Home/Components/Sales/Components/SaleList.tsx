@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { Dimensions, FlatList, View } from "react-native"
+
 import SaleListItem from "./SaleListItem"
 import { SectionHeader } from "./SectionHeader"
 
@@ -18,7 +19,7 @@ export class SaleList extends Component<any> {
           }}
           data={this.props.item.data}
           numColumns={numColumns}
-          keyExtractor={(item, index) => item.__id}
+          keyExtractor={item => item.__id}
           renderItem={({ item, index }) => <SaleListItem key={index} sale={item} />}
         />
       </View>

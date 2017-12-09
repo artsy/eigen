@@ -42,6 +42,6 @@ it("shows trending artists correctly", () => {
     ],
   }
 
-  const about = renderer.create(<About gene={gene} />).toJSON()
+  const about = renderer.create(<About gene={gene as any} />).toJSON()
   expect(about).toMatchSnapshot()
 })

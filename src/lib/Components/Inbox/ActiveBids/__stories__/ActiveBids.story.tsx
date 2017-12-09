@@ -1,10 +1,8 @@
 import { storiesOf } from "@storybook/react-native"
 import createEnvironment from "lib/relay/createEnvironment"
-import { InboxRenderer } from "lib/relay/QueryRenderers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { Text, View } from "react-native"
-import { graphql, QueryRenderer, QueryRendererProps } from "react-relay"
+import { graphql, QueryRenderer } from "react-relay"
 import ActiveBids from "../index"
 
 function ActiveBidsRenderer({ render }) {

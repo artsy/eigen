@@ -1,4 +1,3 @@
-import { StorySection } from "../index"
 import { sectionsToTree, toSectionHeirarchy } from "../utils"
 
 const stubbedStories = [

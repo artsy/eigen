@@ -72,7 +72,7 @@ const railProps = (startedFetching = true) => {
       variables: {
         fetchContent: startedFetching,
       },
-      refetch: (a, b, c) => {
+      refetch: (_a, _b, c) => {
         return c && c()
       },
     },

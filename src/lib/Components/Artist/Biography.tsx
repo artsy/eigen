@@ -9,11 +9,7 @@ import SerifText from "../Text/Serif"
 
 const sideMargin = Dimensions.get("window").width > 700 ? 50 : 0
 
-interface Props extends ViewProperties {
-  artist: any
-}
-
-class Biography extends React.Component<Props, any> {
+class Biography extends React.Component<RelayProps & ViewProperties> {
   render() {
     const artist = this.props.artist
     if (!artist.blurb && !artist.bio) {

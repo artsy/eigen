@@ -1,19 +1,21 @@
 {
   "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "src",
+    "experimentalDecorators": true,
     "jsx": "react",
-    "target": "es6",
     "module": "es2015",
     "moduleResolution": "node",
-    "rootDir": "src",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "outDir": "build",
-    "allowJs": true,
-    "pretty": true,
-    "strictNullChecks": false,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "types": ["jest", "react", "react-native"],
     "plugins": [{ "name": "typescript-styled-plugin" }],
-    "baseUrl": "src"
+    "pretty": true,
+    "rootDir": "src",
+    "strictNullChecks": false,
+    "target": "es6",
+    "types": ["jest", "react", "react-native"]
   },
   "include": ["typings/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "dangerfile.ts"],
   "exclude": [

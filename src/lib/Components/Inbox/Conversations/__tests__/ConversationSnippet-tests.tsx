@@ -40,6 +40,7 @@ const show = {
 }
 
 const artworkConversation = {
+  __typename: "Conversation",
   id: "582",
   inquiry_id: "59302144275b244a81d0f9c6",
   from: { name: "Jean-Luc Collecteur", email: "luc+messaging@artsymail.com" },
@@ -57,6 +58,7 @@ const artworkConversation = {
 }
 
 const showConversation = {
+  __typename: "Conversation",
   id: "582",
   inquiry_id: "59302144275b244a81d0f9c6",
   from: { name: "Jean-Luc Collecteur", email: "luc+messaging@artsymail.com" },

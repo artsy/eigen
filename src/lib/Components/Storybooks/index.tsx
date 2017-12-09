@@ -20,7 +20,7 @@ export interface StorySection {
 const stories = storybook.getStorybook()
 const root = storiesToTree(stories)
 
-const render = (props: any) =>
+const render = (_props: any) =>
   <NavigatorIOS
     navigationBarHidden={true}
     initialRoute={{ component: Browser, title: "Welcome", passProps: { section: root } }}

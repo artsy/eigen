@@ -1,32 +1,23 @@
 import React from "react"
 
-import { Fonts } from "lib/data/fonts"
 import {
   Keyboard,
   LayoutAnimation,
-  NativeMethodsMixinStatic,
   NavigatorIOS,
   Picker,
   Route,
   ScrollView,
-  TextInput,
-  TouchableHighlight,
   TouchableWithoutFeedback,
   View,
   ViewProperties,
 } from "react-native"
-import { ConsignmentMetadata, SearchResult } from "../"
-import TODO from "../Components/ArtworkConsignmentTodo"
+
+import { ConsignmentMetadata } from "../"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
-import { Form, Label, Row } from "../Components/FormElements"
+import { Label, Row } from "../Components/FormElements"
 import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
-import { BodyText, LargeHeadline, Subtitle } from "../Typography"
-import Artist from "./Artist"
-import Provenance from "./Provenance"
-import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
-import Welcome from "./Welcome"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -112,7 +103,7 @@ export default class Metadata extends React.Component<Props, State> {
   }
 
   hideCategorySelection = () => this.animateStateChange({ showPicker: false })
-  changeCategoryValue = (value, index) => {
+  changeCategoryValue = (_value, index) => {
     this.setState({
       categoryName: categoryOptions[index].name,
       category: categoryOptions[index].value,

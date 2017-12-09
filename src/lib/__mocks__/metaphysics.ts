@@ -1,5 +1,5 @@
-function metaphysics(query) {
-  return new Promise((resolve, reject) => {
+function metaphysics(_query) {
+  return new Promise(resolve => {
     resolve({})
   })
 }

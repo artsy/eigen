@@ -1,20 +1,9 @@
 import React from "react"
+import { Dimensions, NativeModules } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { Schema, Track, track as _track } from "../utils/track"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
-
-import {
-  Dimensions,
-  FlatList,
-  ImageURISource,
-  KeyboardAvoidingView,
-  NativeModules,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ViewProperties,
-} from "react-native"
+import { Schema, Track, track as _track } from "../utils/track"
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
@@ -76,14 +65,16 @@ const ResponseRate = styled(SmallHeadline)`
   color: ${colors["yellow-bold"]};
   margin-top: 5;
 `
-const ResponseIndicator = styled.View`
-  width: 8;
-  height: 8;
-  border-radius: 4;
-  margin-top: 5;
-  margin-right: 5;
-  background-color: ${colors["yellow-bold"]};
-`
+// TODO: Uncomment when use is uncommented in code below
+// const ResponseIndicator = styled.View`
+//   width: 8;
+//   height: 8;
+//   border-radius: 4;
+//   margin-top: 5;
+//   margin-right: 5;
+//   background-color: ${colors["yellow-bold"]};
+// `
+
 const ResponseRateLine = styled.View`
   flex: 1;
   flex-direction: row;
@@ -109,7 +100,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
     }
   }
 
-  @track((props, state) => ({
+  @track(props => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.InquiryCancel,
     owner_type: Schema.OwnerEntityTypes.Artwork,
@@ -120,7 +111,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
     this.dismissModal()
   }
 
-  @track((props, state) => ({
+  @track(props => ({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
@@ -135,7 +126,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
     ARSwitchBoard.dismissModalViewController(this)
   }
 
-  @track((props, state) => ({
+  @track(props => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
@@ -171,7 +162,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
       })
   }
 
-  @track((props, state) => ({
+  @track(props => ({
     action_type: Schema.ActionTypes.Fail,
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,

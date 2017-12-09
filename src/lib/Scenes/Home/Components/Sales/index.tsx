@@ -1,21 +1,9 @@
-import fonts from "lib/data/fonts"
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import React from "react"
-import { Dimensions, FlatList, SectionList, Text, TouchableWithoutFeedback, View } from "react-native"
-import { StyleSheet, TextStyle } from "react-native"
-import {
-  ConnectionData,
-  createFragmentContainer,
-  createPaginationContainer,
-  graphql,
-  QueryRenderer,
-  QueryRendererProps,
-  RelayPaginationProp,
-} from "react-relay"
-import styled from "styled-components/native"
+import { SectionList } from "react-native"
+import { StyleSheet } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import LotsByFollowedArtists from "./Components/LotsByFollowedArtists"
 import { SaleList } from "./Components/SaleList"
-import { SectionHeader } from "./Components/SectionHeader"
 
 class Sales extends React.Component<Props> {
   get data() {
@@ -54,7 +42,7 @@ class Sales extends React.Component<Props> {
         contentContainerStyle={SectionListStyles.contentContainer}
         stickySectionHeadersEnabled={false}
         sections={sections}
-        keyExtractor={(item, index) => item.id}
+        keyExtractor={item => item.id}
       />
     )
   }

@@ -1,5 +1,5 @@
 import React from "react"
-import { NativeModules, View } from "react-native"
+import { View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import styled from "styled-components/native"
 
@@ -7,7 +7,6 @@ import TabBar, { Tab } from "lib/Components/TabBar"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
-import Headline from "lib/Components/Text/Headline"
 import { Fonts } from "lib/data/fonts"
 
 import Artists from "./Components/Artists"

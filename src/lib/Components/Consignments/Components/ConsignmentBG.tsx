@@ -1,12 +1,10 @@
 import React from "react"
-import { Image, LayoutChangeEvent, View, ViewProperties, ViewStyle } from "react-native"
+import { ViewProperties } from "react-native"
 
 import styled from "styled-components/native"
 
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import CloseButton from "../Components/CloseButton"
-
-import PropTypes from "prop-types"
 
 // Full screen black
 const BG = styled.View`

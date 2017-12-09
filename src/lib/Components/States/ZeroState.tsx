@@ -1,7 +1,6 @@
 import React from "react"
 import styled from "styled-components/native"
 
-import { Colors } from "lib/data/colors"
 import { Fonts } from "lib/data/fonts"
 
 const Container = styled.View`
