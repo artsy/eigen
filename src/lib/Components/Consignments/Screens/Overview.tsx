@@ -151,7 +151,7 @@ export default class Info extends React.Component<Props, State> {
   uploadPhotosIfNeeded = async () => {
     const toUpload = this.state.photos && this.state.photos.filter(f => !f.uploaded && f.file)
 
-    if (toUpload.length) {
+    if (toUpload && toUpload.length) {
       // Pull out the first in the queue and upload it
       const photo = toUpload[0]
       await uploadImageAndPassToGemini(photo.file, "private", this.state.submission_id)
