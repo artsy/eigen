@@ -234,12 +234,12 @@ randomBOOL(void)
     NSString *conversationID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARConversationComponentViewController alloc] initWithConversationID:conversationID];
   } else if ([route isEqualToString:@"/"]) {
-    viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil emission:nil];
+    viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil tab:0 emission:nil];
 
   } else if ([route hasPrefix:@"/works-for-you/"] || [route hasPrefix:@"works-for-you"]) {
     NSURLComponents *components = [[NSURLComponents alloc] initWithString:route];
     NSString *artistID = [self valueForKey:@"artist_id" fromQueryItems:components.queryItems];
-    viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID emission:nil];
+    viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID tab:0 emission:nil];
     
   } else {
 

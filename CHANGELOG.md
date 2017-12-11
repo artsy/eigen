@@ -3,6 +3,7 @@
 
 ### Master
 
+-   Adds a way to select tab on Home scene from initial props - sarah
 -   Refetch data when user re-enters Inbox tab - luc
 -   Send event from view controller to react component when tab changes - luc
 -   Allow passing a set of Artworks and an index to load to Eigen when clicking on
