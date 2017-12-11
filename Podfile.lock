@@ -31,7 +31,7 @@ PODS:
   - AFOAuth1Client (0.4.0):
     - AFNetworking (~> 2.5)
   - ALPValidator (0.0.3)
-  - Analytics (3.0.7)
+  - Analytics (3.6.9)
   - AppHub (0.5.1):
     - React/Core
   - ARAnalytics/Adjust (4.0.2):
@@ -385,7 +385,7 @@ SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
   ALPValidator: c74ea0d49bbbff0f8a4228f1eb6589b992255cfe
-  Analytics: b342fb4f43fa4f97ca6f4358b44d3295217ba294
+  Analytics: 6541ce337e99d9f7a2240a8b3953940a7be5f998
   AppHub: '03788112dd48c42b60d51321c0ffff4ef15a4432'
   ARAnalytics: c00626b8fc45cb7cff0253efc19f20652603b417
   ARCollectionViewMasonryLayout: 97cb468434b546b79a98c7c0908447ff803eb85e
