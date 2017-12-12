@@ -1,7 +1,5 @@
 import React from "react"
-import { Dimensions, Image, NavigatorIOS, Route, ScrollView, Text, View, ViewProperties } from "react-native"
-
-import { Router } from "lib/utils/router"
+import { Dimensions, Image, NavigatorIOS, Route, ScrollView, ViewProperties } from "react-native"
 
 import { Schema, screenTrack } from "lib/utils/track"
 import CloseButton from "../Components/CloseButton"
@@ -19,12 +17,6 @@ interface Props extends ViewProperties {
 }
 
 const isPad = Dimensions.get("window").width > 700
-
-const CenteredView = styled.View`
-  align-items: center;
-  width: 100%;
-  height: 100%;
-`
 
 const VerticalLayout = styled.View`
   flex: 1;
@@ -51,7 +43,7 @@ const Title = styled.Text`
   text-align: center;
   font-size: ${isPad ? 46 : 16};
   line-height: ${isPad ? 58 : 32};
-  width: ${isPad ? 700 : 300};
+  width: ${isPad ? 760 : 300};
   margin-top: ${isPad ? 80 : 35};
   font-family: ${Fonts.AvantGardeRegular};
   align-self: center;
@@ -59,7 +51,7 @@ const Title = styled.Text`
 `
 
 const SmallHeadline = styled(LargeHeadline)`
-  font-size: ${isPad ? 34 : 18};
+  font-size: ${isPad ? 34 : 20};
   color: white;
   ${isPad ? "width: 540" : "max-width: 280"};
   min-height: 60;
