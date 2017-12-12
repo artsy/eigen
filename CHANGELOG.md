@@ -19,6 +19,7 @@
 -   Get rid of image view flag that would skip on-the-fly resizing - alloy
 -   Add noUnusedLocals / noUnusedParameters to tslint config; clean up refs in app -chris
 -   Swap ListView for FlatList in Inbox/ForYou and refactor rail registration, misc QA - chris
+-   New design for consignments welcome screen - maxim
 
 ### 1.4.0-beta.9
 

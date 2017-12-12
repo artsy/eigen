@@ -181,7 +181,7 @@ export default class Info extends React.Component<Props, State> {
     const isPad = Dimensions.get("window").width > 700
 
     return (
-      <ConsignmentBG showCloseButton>
+      <ConsignmentBG>
         <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} centerContent>
           <View
             style={{

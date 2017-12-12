@@ -1,19 +1,12 @@
 import React from "react"
 
-import { Image, TouchableHighlight, TouchableHighlightProperties } from "react-native"
+import SwitchBoard from "../../../NativeModules/SwitchBoard"
+import { BlackButton } from "../Components/FormElements"
 
-export default (props: TouchableHighlightProperties) =>
-  <TouchableHighlight
-    style={{
-      height: 40,
-      width: 40,
-      position: "absolute",
-      top: 20,
-      right: 20,
-      alignItems: "center",
-      justifyContent: "center",
-    }}
-    {...props}
-  >
-    <Image source={require("../../../../../images/consignments/close-x.png")} />
-  </TouchableHighlight>
+export default class CloseButton extends React.Component<{}> {
+  exitModal = () => SwitchBoard.dismissModalViewController(this)
+
+  render() {
+    return <BlackButton text="CLOSE" onPress={this.exitModal} />
+  }
+}
