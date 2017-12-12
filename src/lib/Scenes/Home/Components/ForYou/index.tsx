@@ -1,105 +1,127 @@
 import React from "react"
+import { FlatList, RefreshControl, ScrollView, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { ListView, ListViewDataSource, RefreshControl, ScrollView, ScrollViewProps, ViewProperties } from "react-native"
-
-import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
-import ArtworkCarousel from "./Components/ArtworkCarousel"
-import FairsRail from "./Components/FairsRail"
-
-interface DataSourceRow {
-  type: "artwork" | "artist" | "fairs"
-  data: any
-}
-
-type Props = ViewProperties & RelayProps
+import ArtistRail, { ArtistRail as ArtistRailType } from "lib/Components/Home/ArtistRails/ArtistRail"
+import ArtworkCarousel, { ArtworkCarousel as ArtworkCarouselType } from "./Components/ArtworkCarousel"
+import FairsRail, { FairsRail as FairsRailType } from "./Components/FairsRail"
 
 interface State {
-  modules: any[]
+  rowData: Array<{
+    type: "artwork" | "artist" | "fairs"
+    data: any
+  }>
+  error?: string // TODO: Wire up to UI handler
   isRefreshing: boolean
-  dataSource: ListViewDataSource
 }
 
-export class ForYou extends React.Component<Props, State> {
-  listView?: ListView | any
+type RailModule = ArtistRailType | FairsRailType | ArtworkCarouselType
+
+export class ForYou extends React.Component<ViewProperties & RelayProps, State> {
   currentScrollOffset?: number = 0
+  railModules: RailModule[] = []
 
-  constructor(props) {
-    super(props)
-
-    const dataSource: ListViewDataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
-
-    this.state = {
-      isRefreshing: false,
-      modules: [],
-      dataSource,
-    }
+  state = {
+    isRefreshing: false,
+    rowData: [],
   }
 
   componentDidMount() {
-    const rows: DataSourceRow[] = []
-    const artworkModules = this.props.forYou.artwork_modules || []
-    const artistModules = this.props.forYou.artist_modules && this.props.forYou.artist_modules.concat()
-    const fairsModule = this.props.forYou.fairs_module
-    rows.push({ type: "fairs", data: fairsModule })
-    for (let i = 0; i < artworkModules.length; i++) {
-      const artworkModule = artworkModules[i]
-      rows.push({ type: "artwork", data: artworkModule })
-      if ((i + 1) % 2 === 0) {
+    const { forYou } = this.props
+    const rowData = []
+    const artworkModules = forYou.artwork_modules || []
+    const artistModules = forYou.artist_modules && forYou.artist_modules.concat()
+    const fairsModule = forYou.fairs_module
+
+    rowData.push({
+      type: "fairs",
+      data: fairsModule,
+    })
+
+    artworkModules.forEach((artworkModule, index) => {
+      rowData.push({
+        type: "artwork",
+        data: artworkModule,
+      })
+
+      const alternateRow = (index + 1) % 2 === 0
+
+      if (alternateRow) {
         const artistModule = artistModules.shift()
         if (artistModule) {
-          rows.push({ type: "artist", data: artistModule })
+          rowData.push({
+            type: "artist",
+            data: artistModule,
+          })
         }
       }
-    }
+    })
+
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(rows),
+      rowData,
     })
   }
 
-  handleRefresh = () => {
+  handleRefresh = async () => {
     this.setState({ isRefreshing: true })
-    const stopRefreshing = () => this.setState({ isRefreshing: false })
 
-    Promise.all(
-      this.state.modules.map(module => {
-        return new Promise((resolve, reject) => {
-          module.forceFetch(null, readyState => {
-            if (readyState.error) {
-              reject(readyState.error)
-            } else if (readyState.aborted) {
-              reject()
-            } else if (readyState.done) {
-              resolve()
-            }
-          })
+    try {
+      await Promise.all(
+        this.railModules.map(railModule => {
+          railModule.refreshData()
         })
+      )
+
+      setTimeout(() => {
+        this.setState({
+          isRefreshing: false,
+        })
+      }, 1000) // For consistent pull-to-refresh UI experience
+    } catch (error) {
+      console.error("ForYou/index.tsx - Error refreshing ForYou rails:", error.message)
+
+      this.setState({
+        error: error.message, // TODO: Display this somehow
       })
-    ).then(stopRefreshing, stopRefreshing)
+    }
+  }
+
+  registerRailModule = (railModule: RailModule) => {
+    this.railModules.push(railModule)
   }
 
   render() {
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderScrollComponent={(props: ScrollViewProps) => {
-          const refreshControl = <RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />
-          return <ScrollView {...props} automaticallyAdjustContentInsets={false} refreshControl={refreshControl} />
+      <FlatList
+        data={this.state.rowData}
+        renderScrollComponent={props => {
+          return (
+            <ScrollView
+              {...props}
+              automaticallyAdjustContentInsets={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.isRefreshing}
+                  onRefresh={this.handleRefresh}
+                  style={{ marginBottom: 20 }}
+                />
+              }
+            />
+          )
         }}
-        renderRow={({ type, data }, _, row: number) => {
-          // Offset row because we don’t store a reference to the search bar and hero units rows.
-          const registerModule = module => (this.state.modules[row - 2] = module)
+        renderItem={rowItem => {
+          const { item: { data, type } } = rowItem
+
           switch (type) {
             case "artwork":
-              return <ArtworkCarousel ref={registerModule} key={data.__id} rail={data} />
+              return <ArtworkCarousel key={data.__id} rail={data} registerRailModule={this.registerRailModule} />
             case "artist":
-              return <ArtistRail ref={registerModule} key={data.__id} rail={data} />
+              return <ArtistRail key={data.__id} rail={data} registerRailModule={this.registerRailModule} />
             case "fairs":
-              return <FairsRail fairs_module={data} />
+              return <FairsRail fairs_module={data} registerRailModule={this.registerRailModule} />
           }
         }}
-        onScroll={event => (this.currentScrollOffset = event.nativeEvent.contentOffset.y)}
-        ref={listView => (this.listView = listView)}
+        keyExtractor={(item, index) => item.data.type + String(index)}
         style={{ marginTop: 20, overflow: "visible" }}
       />
     )

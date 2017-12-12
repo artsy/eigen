@@ -125,7 +125,12 @@ class ActiveBid extends React.Component<RelayProps, State> {
     const headline = `Lot ${lotNumber} · ${artistName} `
 
     const isInOpenLiveAuction = this.props.bid.sale && this.props.bid.sale.is_live_open
-    const subtitle = isInOpenLiveAuction ? "Live bidding now open" : `Current Bid: ${bid.max_bid.display} `
+    const bidderPositions = bid.sale_artwork.counts.bidder_positions
+    const bidderPositionsLabel = bidderPositions + " " + (bidderPositions === 1 ? "Bid" : "Bids")
+
+    const subtitle = isInOpenLiveAuction
+      ? "Live bidding now open"
+      : `${bid.sale_artwork.highest_bid.display} (${bidderPositionsLabel})`
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap}>
@@ -166,8 +171,6 @@ export default createFragmentContainer(
           display
         }
         sale_artwork {
-          lot_number
-          reserve_status
           artwork {
             href
             image {
@@ -175,6 +178,14 @@ export default createFragmentContainer(
             }
             artist_names
           }
+          counts {
+            bidder_positions
+          }
+          highest_bid {
+            display
+          }
+          lot_number
+          reserve_status
         }
       }
     }
@@ -193,8 +204,6 @@ interface RelayProps {
         display: string | null
       } | null
       sale_artwork: {
-        lot_number: string | null
-        reserve_status: string | null
         artwork: {
           href: string | null
           image: {
@@ -202,6 +211,14 @@ interface RelayProps {
           } | null
           artist_names: string | null
         } | null
+        counts: {
+          bidder_positions: number | null
+        } | null
+        highest_bid: {
+          display: string | null
+        } | null
+        lot_number: string | null
+        reserve_status: string | null
       } | null
     } | null
   }

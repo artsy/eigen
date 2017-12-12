@@ -32,6 +32,9 @@ const bid = (_isLive?: boolean, isOpen?: boolean) => {
         display: "$10,000",
       },
       sale_artwork: {
+        counts: {
+          bidder_positions: 1,
+        },
         lot_label: "8",
         lot_number: "8",
         position: 8,

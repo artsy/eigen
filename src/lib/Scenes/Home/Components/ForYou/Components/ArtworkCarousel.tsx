@@ -1,5 +1,5 @@
-import * as _ from "lodash"
-import React from "react"
+import { omit } from "lodash"
+import React, { Component } from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import {
@@ -22,6 +22,7 @@ import Spinner from "lib/Components/Spinner"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Disposable } from "relay-runtime"
 import ArtworkCarouselHeader from "./ArtworkCarouselHeader"
 
 // tslint:disable-next-line:no-var-requires
@@ -42,41 +43,35 @@ const additionalContentRails = [
 export const minRailHeight = 400
 
 interface Props extends ViewProperties, RelayProps {
+  registerRailModule?: (rail: ArtworkCarousel) => void
   relay?: RelayRefetchProp
 }
 
 interface State {
+  didPerformFetch: boolean
   expanded: boolean
   gridHeight: number
   loadFailed: boolean
-  didPerformFetch: boolean
 }
 
-export class ArtworkCarousel extends React.Component<Props & RelayPropsWorkaround, State> {
-  constructor(props) {
-    super(props)
+export class ArtworkCarousel extends Component<Props & RelayPropsWorkaround, State> {
+  inflightRequest: Disposable
 
-    this.state = {
-      expanded: false,
-      gridHeight: 0,
-      loadFailed: false,
-      didPerformFetch: false,
+  state = {
+    didPerformFetch: false,
+    expanded: false,
+    gridHeight: 0,
+    loadFailed: false,
+  }
+
+  componentWillMount() {
+    if (this.props.registerRailModule) {
+      this.props.registerRailModule(this)
     }
   }
 
-  componentDidMount() {
-    if (this.props.relay) {
-      this.props.relay.refetch({ __id: this.props.rail.__id, fetchContent: true }, null, error => {
-        if (error) {
-          console.error("ArtworkCarousel.tsx", error.message)
-        }
-
-        this.setState({
-          didPerformFetch: true,
-          loadFailed: !!error,
-        })
-      })
-    }
+  async componentDidMount() {
+    await this.refreshData()
   }
 
   expand = () => {
@@ -128,7 +123,7 @@ export class ArtworkCarousel extends React.Component<Props & RelayPropsWorkaroun
     }
     // Pull out any params, removing the first removing data ID
     // and any null values, turn that into a query string
-    const relatedKeys = Object.keys(_.omit(rail.params, ["__dataID__"]))
+    const relatedKeys = Object.keys(omit(rail.params, ["__dataID__"]))
 
     return (
       rail.context &&
@@ -235,19 +230,52 @@ export class ArtworkCarousel extends React.Component<Props & RelayPropsWorkaroun
     return style
   }
 
+  refreshData = () => {
+    // TODO: Ensures rail has been mounted before a refresh occurs, circumventing setState errors.
+    // See https://stackoverflow.com/a/40969739/1038901 for more info.
+    if (this.refs.rail) {
+      if (this.inflightRequest) {
+        this.inflightRequest.dispose()
+      }
+
+      return new Promise((resolve, reject) => {
+        this.inflightRequest = this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
+          if (error) {
+            console.error("ArtworkCarousel.jsx", error.message)
+
+            this.setState({
+              loadFailed: true,
+            })
+
+            reject(error)
+          } else {
+            this.inflightRequest = null
+
+            this.setState({
+              didPerformFetch: true,
+            })
+
+            resolve()
+          }
+        })
+      })
+    }
+  }
+
   render() {
     if (this.state.loadFailed) {
       return null
     }
 
     const hasArtworks = this.props.rail.results && this.props.rail.results.length
+
+    // if the data has been fetched but there are no results, hide the whole thing
     if (this.state.didPerformFetch && !hasArtworks) {
-      // if the data has been fetched but there are no results, hide the whole thing
       return null
     }
 
     return (
-      <View accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
+      <View ref="rail" accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
         <ArtworkCarouselHeader rail={this.props.rail} handleViewAll={this.handleViewAll} />
         <View style={this.railStyle()}>
           {this.renderModuleResults()}

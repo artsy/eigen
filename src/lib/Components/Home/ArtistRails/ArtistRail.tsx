@@ -1,10 +1,11 @@
-import React from "react"
+import React, { Component } from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import { Animated, Easing, ScrollView, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 
 import metaphysics from "../../../metaphysics"
 
+import { Disposable } from "relay-runtime"
 import Separator from "../../Separator"
 import Spinner from "../../Spinner"
 import SectionTitle from "../SectionTitle"
@@ -20,6 +21,7 @@ const Animation = {
 }
 
 interface Props extends ViewProperties, RelayProps {
+  registerRailModule?: (rail: ArtistRail) => void
   relay?: RelayRefetchProp
 }
 
@@ -28,27 +30,22 @@ interface State {
   loadFailed: boolean
 }
 
-class ArtistRail extends React.Component<Props, State> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      artists: [],
-      loadFailed: false,
+export class ArtistRail extends Component<Props, State> {
+  inflightRequest: Disposable
+
+  state = {
+    artists: [],
+    loadFailed: false,
+  }
+
+  componentWillMount() {
+    if (this.props.registerRailModule) {
+      this.props.registerRailModule(this)
     }
   }
 
-  componentDidMount() {
-    if (this.props.relay) {
-      this.props.relay.refetch({ __id: this.props.rail.__id, fetchContent: true }, null, error => {
-        if (error) {
-          console.error("ArtistRail.tsx", error.message)
-
-          this.setState({
-            loadFailed: true,
-          })
-        }
-      })
-    }
+  async componentDidMount() {
+    await this.refreshData()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -161,7 +158,7 @@ class ArtistRail extends React.Component<Props, State> {
         </ScrollView>
       )
     } else {
-      return <Spinner style={{ flex: 1 }} />
+      return <Spinner style={{ flex: 1, marginBottom: 20 }} />
     }
   }
 
@@ -179,13 +176,40 @@ class ArtistRail extends React.Component<Props, State> {
     }
   }
 
+  refreshData = () => {
+    // TODO: Ensures rail has been mounted before a refresh occurs, circumventing setState errors.
+    // See https://stackoverflow.com/a/40969739/1038901 for more info.
+    if (this.refs.rail) {
+      if (this.inflightRequest) {
+        this.inflightRequest.dispose()
+      }
+
+      return new Promise((resolve, reject) => {
+        this.inflightRequest = this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
+          if (error) {
+            console.error("ArtistRail.jsx", error.message)
+
+            this.setState({
+              loadFailed: true,
+            })
+
+            reject(error)
+          } else {
+            this.inflightRequest = null
+            resolve()
+          }
+        })
+      })
+    }
+  }
+
   render() {
     if (this.state.loadFailed || !this.state.artists.length) {
       return null
     }
 
     return (
-      <View>
+      <View ref="rail">
         <View style={styles.title}>
           <SectionTitle>
             {this.title()}
