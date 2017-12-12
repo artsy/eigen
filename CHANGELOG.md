@@ -3,6 +3,7 @@
 
 ### Master
 
+-   Update WorksForYou to use new Metaphysics schema to avoid frequent empty states - matt
 -   Adds a way to select tab on Home scene from initial props - sarah
 -   Don't load an ArtistRail if it doesn't have any artists - sarah
 -   Refetch data when user re-enters Inbox tab - luc
