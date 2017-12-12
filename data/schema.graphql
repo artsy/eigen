@@ -144,7 +144,7 @@ type Artist implements Node {
   meta: ArtistMeta
   nationality: String
   name: String
-  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnectionConnection
+  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnection
   partner_artists(
     # The number of PartnerArtists to return
     size: Int
@@ -262,7 +262,7 @@ type ArtistEdge {
 }
 
 type ArtistHighlights {
-  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnectionConnection
+  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnection
 }
 
 type ArtistItem implements Node {
@@ -344,7 +344,7 @@ type ArtistItem implements Node {
   meta: ArtistMeta
   nationality: String
   name: String
-  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnectionConnection
+  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnection
   partner_artists(
     # The number of PartnerArtists to return
     size: Int
@@ -477,7 +477,7 @@ type ArtistSearchEntity implements Node {
   meta: ArtistMeta
   nationality: String
   name: String
-  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnectionConnection
+  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnection
   partner_artists(
     # The number of PartnerArtists to return
     size: Int
@@ -2403,6 +2403,11 @@ type FollowGenePayload {
   clientMutationId: String
 }
 
+type FollowsAndSaves {
+  # A list of published artworks by followed artists (grouped by date and artists).
+  bundledArtworksByArtist(sort: ArtworkSorts, after: String, first: Int, before: String, last: Int): FollowedArtistsArtworksGroupConnection
+}
+
 enum Format {
   HTML
   PLAIN
@@ -3391,11 +3396,9 @@ type Me implements Node {
   # A list of the current user’s inquiry requests
   followed_artists_connection(after: String, first: Int, before: String, last: Int): FollowArtistConnection
 
-  # A list of published artworks by followed artists (grouped by date and artists).
-  followed_artists_artwork_groups(sort: ArtworkSorts, after: String, first: Int, before: String, last: Int): FollowedArtistsArtworksGroupConnection
-
   # A list of the current user’s inquiry requests
   followed_genes(after: String, first: Int, before: String, last: Int): FollowGeneConnection
+  followsAndSaves: FollowsAndSaves
 
   # An invoice
   invoice(
@@ -3694,16 +3697,29 @@ type PartnerArtist {
 }
 
 # A connection to a list of items.
-type PartnerArtistConnectionConnection {
+type PartnerArtistConnection {
   # Information to aid in pagination.
   pageInfo: PageInfo!
 
   # A list of edges.
-  edges: [PartnerArtistConnectionEdge]
+  edges: [PartnerArtistEdge]
+}
+
+type PartnerArtistCounts {
+  artworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  for_sale_artworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
 }
 
 # An edge in a connection.
-type PartnerArtistConnectionEdge {
+type PartnerArtistEdge {
   # The item at the end of the edge
   node: Partner
 
@@ -3723,19 +3739,6 @@ type PartnerArtistConnectionEdge {
   is_use_default_biography: Boolean
   partner: Partner
   sortable_id: String
-}
-
-type PartnerArtistCounts {
-  artworks(
-    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
-    format: String
-    label: String
-  ): FormattedNumber
-  for_sale_artworks(
-    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
-    format: String
-    label: String
-  ): FormattedNumber
 }
 
 type PartnerCategory {
