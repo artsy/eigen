@@ -49,10 +49,6 @@ class ArtworkCarouselHeader extends Component<Props & RelayPropsWorkaround, Stat
   }
 
   render() {
-    // FIXME: For some reason this.props.rail.title existence triggers a "Can only update a
-    // mounted or mounting component" error. Only happens when mounted from ArtworkCarousel.
-    // Doesn't break app, but potentially breaking. Maybe some kind of hidden state within
-    // SectionTitle text component?
     return (
       <TouchableWithoutFeedback onPress={this.props.handleViewAll}>
         <View style={styles.container}>
