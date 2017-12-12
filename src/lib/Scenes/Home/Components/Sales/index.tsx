@@ -1,6 +1,5 @@
 import React from "react"
-import { SectionList } from "react-native"
-import { StyleSheet } from "react-native"
+import { SectionList, StyleSheet, WebView } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import LotsByFollowedArtists from "./Components/LotsByFollowedArtists"
 import { SaleList } from "./Components/SaleList"
@@ -18,7 +17,17 @@ class Sales extends React.Component<Props> {
     }
   }
 
+  hasData() {
+    const { liveAuctions, timedAuctions, viewer } = this.data
+    return liveAuctions.length > 0 || timedAuctions.length > 0 || viewer.sales.length > 0
+  }
+
   render() {
+    const hasData = this.hasData()
+    if (!hasData) {
+      return <WebView source={{ uri: "https://www.artsy.net/auctions" }} style={{ flex: 1 }} />
+    }
+
     const sections = [
       {
         data: [{ data: this.data.liveAuctions }],
