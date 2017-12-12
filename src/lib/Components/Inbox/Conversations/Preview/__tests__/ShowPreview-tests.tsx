@@ -26,16 +26,3 @@ const show = {
   },
   fair: null,
 }
-
-const booth = {
-  name: "Catty Booth",
-  cover_image: {
-    url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
-  },
-  partner: {
-    name: "Catty Partner",
-  },
-  fair: {
-    name: "Catty Fair",
-  },
-}

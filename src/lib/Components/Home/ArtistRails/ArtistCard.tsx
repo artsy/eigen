@@ -53,7 +53,7 @@ export class ArtistCard extends React.Component<Props, State> {
   handleFollowChange = () => {
     this.setState({ processingChange: true })
 
-    ARTemporaryAPIModule.setFollowArtistStatus(true, this.props.artist._id, (error, following) => {
+    ARTemporaryAPIModule.setFollowArtistStatus(true, this.props.artist._id, (error, _following) => {
       if (error) {
         console.warn(error)
         this.setState({ processingChange: false })

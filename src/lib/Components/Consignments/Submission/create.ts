@@ -1,7 +1,6 @@
 import { metaphysics } from "../../../metaphysics"
 import { ConsignmentSetup } from "../index"
 import { consignmentSetupToMutationInput } from "./consignmentSetupToSubmission"
-import { objectToGraphQLInput } from "./objectToGraphQL"
 import { CreateSubmissionResponse } from "./types"
 
 /**

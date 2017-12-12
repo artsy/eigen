@@ -4,13 +4,20 @@
 ### Master
 
 -   Update WorksForYou to use new Metaphysics schema to avoid frequent empty states - matt
+-   Adds a way to select tab on Home scene from initial props - sarah
+-   Don't load an ArtistRail if it doesn't have any artists - sarah
+-   Refetch data when user re-enters Inbox tab - luc
+-   Send event from view controller to react component when tab changes - luc
 -   Allow passing a set of Artworks and an index to load to Eigen when clicking on
     a Artwork within a grid - orta
 -   Update Relay typings to current DT version - alloy
 -   Change inquiry status bar background to white - maxim
 -   Move pagination from home/sale index to LotsByfollowedArtists, misc QA - chris
 -   Only load a single Works For You page at a time - alloy
+-   QA on Inbox and Active Bids spacing - maxim
+-   iPad support for Active Bids - maxim
 -   Get rid of image view flag that would skip on-the-fly resizing - alloy
+-   Add noUnusedLocals / noUnusedParameters to tslint config; clean up refs in app -chris
 
 ### 1.4.0-beta.9
 

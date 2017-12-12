@@ -3,9 +3,6 @@ import React from "react"
 import ImageSelection from "../Components/ImageSelection"
 import { Wrapper } from "./"
 
-const nav = {} as any
-const route = {} as any
-
 const uri1 = "https://d32dm0rphc51dk.cloudfront.net/Vq62IJMLbG1TuUjs-2fZCg/large.jpg"
 const uri2 = "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large.jpg"
 const uri3 = "https://d32dm0rphc51dk.cloudfront.net/8BuMWBuUOBtKVBsGRUoDKw/large.jpg"

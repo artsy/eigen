@@ -1,7 +1,9 @@
 import React from "react"
-import { ActivityIndicator, Dimensions, FlatList, RefreshControl } from "react-native"
+import { Dimensions, FlatList, RefreshControl } from "react-native"
 import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
+
+import { PAGE_SIZE } from "lib/data/constants"
 
 import ARSwitchBoard from "../../../NativeModules/SwitchBoard"
 import Message from "./Message"
@@ -80,7 +82,11 @@ export class Messages extends React.Component<Props, State> {
     }
 
     updateState(true)
-    this.props.relay.loadMore(10, e => {
+    this.props.relay.loadMore(PAGE_SIZE, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Messages.tsx", error.message)
+      }
       updateState(false)
     })
   }
@@ -88,7 +94,11 @@ export class Messages extends React.Component<Props, State> {
   reload() {
     const count = this.props.conversation.messages.edges.length
     this.setState({ reloadingData: true })
-    this.props.relay.refetchConnection(count, e => {
+    this.props.relay.refetchConnection(count, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Messages.tsx", error.message)
+      }
       this.setState({ reloadingData: false })
     })
   }
@@ -118,7 +128,7 @@ export class Messages extends React.Component<Props, State> {
         keyboardShouldPersistTaps="always"
         onEndReached={this.loadMore.bind(this)}
         onEndReachedThreshold={0.2}
-        onContentSizeChange={(width, height) => {
+        onContentSizeChange={(_width, height) => {
           // If there aren't enough items to scroll through
           // display messages from the top
           const windowHeight = Dimensions.get("window").height
@@ -205,7 +215,7 @@ export default createPaginationContainer(
         count: totalCount,
       }
     },
-    getVariables(props, paginationInfo, fragmentVariables) {
+    getVariables(props, paginationInfo, _fragmentVariables) {
       return {
         conversationID: props.conversation.id,
         count: paginationInfo.count,

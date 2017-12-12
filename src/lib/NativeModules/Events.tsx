@@ -1,4 +1,4 @@
-import { findNodeHandle, NativeModules } from "react-native"
+import { NativeModules } from "react-native"
 const { AREventsModule } = NativeModules
 
 function postEvent(info: any) {

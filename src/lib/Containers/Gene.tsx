@@ -168,7 +168,7 @@ export class Gene extends React.Component<Props, State> {
     return HeaderHeight
   }
 
-  refineTapped = button => {
+  refineTapped = _button => {
     const initialSettings = {
       sort: "-partner_updated_at",
       selectedMedium: this.props.medium,

@@ -1,9 +1,8 @@
 import React from "react"
 
-import { ScrollView, TextProperties, View, ViewProperties, ViewStyle } from "react-native"
+import { ScrollView, View, ViewProperties } from "react-native"
 import { ButtonProps, WhiteButton } from "../../Buttons"
 import { BodyText, LargeHeadline } from "../Typography/index"
-import Text from "./TextInput"
 
 /** A re-usable full-screen form with a scrollview */
 export const Form: React.SFC<{ title?: string }> = props =>

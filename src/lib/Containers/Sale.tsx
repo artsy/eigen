@@ -1,7 +1,7 @@
 import React from "react"
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 import ParallaxScrollView from "react-native-parallax-scroll-view"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql } from "react-relay"
 
 import SaleArtworksGrid from "lib/Components/ArtworkGrids/RelayConnections/SaleArtworksGrid"
 import { GhostButton } from "lib/Components/Buttons"
@@ -92,7 +92,7 @@ export class Sale extends React.Component<Props, State> {
     }
   }
 
-  refineTapped = button => {
+  refineTapped = _button => {
     // Aww yeah
   }
 

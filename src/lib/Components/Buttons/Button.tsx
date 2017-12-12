@@ -1,7 +1,6 @@
 import React from "react"
-import { Animated, StyleSheet, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+import { Animated, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 
-import colors from "lib/data/colors"
 import Headline from "../Text/Headline"
 
 import { ButtonProps } from "./"
@@ -61,7 +60,7 @@ export default class Button extends React.Component<Props, State> {
     }
   }
 
-  componentDidUpdate(prevProps: any, prevState: any) {
+  componentDidUpdate(_prevProps: any, prevState: any) {
     if (this.state.displayState !== prevState.displayState) {
       // Don't animate in when it's the initial press down
       const showHighlight =

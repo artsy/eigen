@@ -9,7 +9,7 @@ beforeEach(mockphysics.mockReset)
 it("getGeminiCredentialsForEnvironment makes a graphQL request to metaphysics", async () => {
   mockphysics.mockImplementationOnce(() => Promise.resolve())
 
-  const response = await getGeminiCredentialsForEnvironment({
+  await getGeminiCredentialsForEnvironment({
     name: "thing",
     acl: "private",
   })
@@ -22,7 +22,7 @@ it("getGeminiCredentialsForEnvironment makes a graphQL request to metaphysics", 
 it("createGeminiAssetWithS3Credentials makes a graphQL request to metaphysics", async () => {
   mockphysics.mockImplementationOnce(() => Promise.resolve())
 
-  const response = await createGeminiAssetWithS3Credentials({
+  await createGeminiAssetWithS3Credentials({
     source_key: "source",
     template_key: "template",
     source_bucket: "bucket",

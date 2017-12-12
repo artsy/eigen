@@ -1,5 +1,5 @@
 import React from "react"
-import { ActivityIndicator, Text, TextInput, TextInputProperties, View, ViewProperties } from "react-native"
+import { TextInputProperties, View, ViewProperties } from "react-native"
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"

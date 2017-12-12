@@ -17,12 +17,21 @@ exports[`layout works as expected with no tabs 1`] = `
       <Header
         artist={
           Object {
+            "_id": null,
+            "birthday": null,
             "counts": Object {
               "articles": 0,
               "artworks": 0,
               "partner_shows": 0,
             },
+            "current_shows": null,
             "has_metadata": false,
+            "id": null,
+            "name": null,
+            "nationality": null,
+            "past_large_shows": null,
+            "past_small_shows": null,
+            "upcoming_shows": null,
           }
         }
       />
@@ -55,12 +64,21 @@ exports[`layout works as expected with one tab 1`] = `
       <Header
         artist={
           Object {
+            "_id": null,
+            "birthday": null,
             "counts": Object {
               "articles": 0,
               "artworks": 0,
               "partner_shows": 0,
             },
+            "current_shows": null,
             "has_metadata": true,
+            "id": null,
+            "name": null,
+            "nationality": null,
+            "past_large_shows": null,
+            "past_small_shows": null,
+            "upcoming_shows": null,
           }
         }
       />
@@ -74,12 +92,21 @@ exports[`layout works as expected with one tab 1`] = `
         <About
           artist={
             Object {
+              "_id": null,
+              "birthday": null,
               "counts": Object {
                 "articles": 0,
                 "artworks": 0,
                 "partner_shows": 0,
               },
+              "current_shows": null,
               "has_metadata": true,
+              "id": null,
+              "name": null,
+              "nationality": null,
+              "past_large_shows": null,
+              "past_small_shows": null,
+              "upcoming_shows": null,
             }
           }
         />
@@ -106,11 +133,20 @@ exports[`layout works as expected with three tabs 1`] = `
       <Header
         artist={
           Object {
+            "_id": null,
+            "birthday": null,
             "counts": Object {
               "artworks": 2,
               "partner_shows": 1,
             },
+            "current_shows": null,
             "has_metadata": true,
+            "id": null,
+            "name": null,
+            "nationality": null,
+            "past_large_shows": null,
+            "past_small_shows": null,
+            "upcoming_shows": null,
           }
         }
       />
@@ -138,11 +174,20 @@ exports[`layout works as expected with three tabs 1`] = `
           <Artworks
             artist={
               Object {
+                "_id": null,
+                "birthday": null,
                 "counts": Object {
                   "artworks": 2,
                   "partner_shows": 1,
                 },
+                "current_shows": null,
                 "has_metadata": true,
+                "id": null,
+                "name": null,
+                "nationality": null,
+                "past_large_shows": null,
+                "past_small_shows": null,
+                "upcoming_shows": null,
               }
             }
           />

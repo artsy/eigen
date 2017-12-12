@@ -1,5 +1,5 @@
 import React from "react"
-import { ActivityIndicator, ScrollView, TouchableHighlight, View } from "react-native"
+import { ScrollView, View } from "react-native"
 
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"

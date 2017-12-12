@@ -1,7 +1,8 @@
-import { getTestWrapper } from "lib/utils/getTestWrapper"
-import React from "react"
 import "react-native"
-import renderer from "react-test-renderer"
+
+import React from "react"
+
+import { getTestWrapper } from "lib/utils/getTestWrapper"
 import { LotsByFollowedArtists } from "../LotsByFollowedArtists"
 
 describe("LotsByFollowedArtists", () => {

@@ -3,7 +3,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Dimensions, ScrollView, Text, TouchableOpacity, View, ViewProperties, ViewStyle } from "react-native"
+import { ScrollView, TouchableOpacity, View, ViewProperties } from "react-native"
 
 import { Colors } from "lib/data/colors"
 import { Fonts } from "lib/data/fonts"
@@ -96,13 +96,12 @@ interface Props extends ViewProperties, RelayProps {}
 
 export class MyProfile extends React.Component<Props, {}> {
   render() {
-    const windowDimensions = Dimensions.get("window")
-    const commonPadding = windowDimensions.width > 700 ? 40 : 20
+    // TODO: go to overview / implement below
+    // const windowDimensions = Dimensions.get("window")
+    // const commonPadding = windowDimensions.width > 700 ? 40 : 20
+    // const goToConsignmentsOverview = () => SwitchBoard.presentNavigationViewController(this, Router.SellingOverview)
 
-    // TODO: go to overview
-    const goToConsignmentsOverview = () => SwitchBoard.presentNavigationViewController(this, Router.SellingOverview)
     const startSubmission = () => SwitchBoard.presentModalViewController(this, Router.ConsignmentsStartSubmission)
-
     const goToUserSettings = () => SwitchBoard.presentNavigationViewController(this, Router.UserSettingsiOS)
 
     return (

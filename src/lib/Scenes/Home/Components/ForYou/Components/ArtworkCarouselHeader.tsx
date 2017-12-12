@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Component } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import {
@@ -42,7 +42,7 @@ interface State {
   following: boolean
 }
 
-class ArtworkCarouselHeader extends React.Component<Props & RelayPropsWorkaround, State> {
+class ArtworkCarouselHeader extends Component<Props & RelayPropsWorkaround, State> {
   constructor(props) {
     super(props)
     this.state = { following: props.rail.key === "followed_artist" }

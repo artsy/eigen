@@ -1,21 +1,14 @@
 import React from "react"
 
-import { LayoutAnimation, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
+import { LayoutAnimation, NavigatorIOS, Route, View, ViewProperties } from "react-native"
 import { WhiteButton } from "../../Buttons"
 import ConsignmentBG from "../Components/ConsignmentBG"
-import { BodyText, LargeHeadline, Subtitle } from "../Typography"
 
 import { Schema, screenTrack } from "lib/utils/track"
-import { ConsignmentSetup, SearchResult } from "../"
-import Spinner from "../../Spinner"
-import TODO from "../Components/ArtworkConsignmentTodo"
+import { ConsignmentSetup } from "../"
 import { Form, Label, Row } from "../Components/FormElements"
 import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
-import Artist from "./Artist"
-import Provenance from "./Provenance"
-import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
-import Welcome from "./Welcome"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -23,8 +16,6 @@ interface Props extends ViewProperties {
   setup: ConsignmentSetup
   submitFinalSubmission: (setup: ConsignmentSetup) => void
 }
-
-const Loader = (p, c) => <Spinner style={{ flex: 1 }} />
 
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.ConsignmentsSubmission,

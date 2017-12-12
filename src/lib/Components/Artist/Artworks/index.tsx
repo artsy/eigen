@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Component } from "react"
 import { StyleSheet, View, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -19,33 +19,22 @@ interface RenderSectionParams {
   mapPropsToArtworksConnection: (Props) => any
 }
 
-interface Props extends ViewProperties {
-  artist: {
-    counts: {
-      for_sale_artworks: number
-      artworks: number
-    }
-    not_for_sale_artworks: any[]
-    for_sale_artworks: any[]
-  }
-  relay: any
+interface Props extends RelayProps, ViewProperties {
+  relay?: RelayProps
 }
 
 interface State {
   completedForSaleWorks: boolean
 }
 
-class Artworks extends React.Component<Props, State> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      completedForSaleWorks: false,
-    }
+class Artworks extends Component<Props, State> {
+  state = {
+    completedForSaleWorks: false,
   }
 
   render() {
     const forSaleCount = this.props.artist.counts.for_sale_artworks
-    const otherCount = this.props.artist.counts.artworks - forSaleCount
+    const otherCount = (this.props.artist.counts.artworks as number) - (forSaleCount as number)
     if (forSaleCount === 0) {
       return this.renderSection({
         title: "Works",
@@ -75,7 +64,7 @@ class Artworks extends React.Component<Props, State> {
         <View style={styles.section}>
           {this.renderSection({
             title: "Works for Sale",
-            count: forSaleCount,
+            count: forSaleCount as number,
             filter: "IS_FOR_SALE",
             onComplete: () => this.setState({ completedForSaleWorks: true }),
             Component: ArtistForSaleArtworksGrid,
@@ -144,7 +133,5 @@ interface RelayProps {
       artworks: boolean | number | string | null
       for_sale_artworks: boolean | number | string | null
     } | null
-    for_sale_artworks: Array<boolean | number | string | null> | null
-    not_for_sale_artworks: Array<boolean | number | string | null> | null
   }
 }

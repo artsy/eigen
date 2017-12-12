@@ -67,6 +67,10 @@ export class ArtworkCarousel extends React.Component<Props & RelayPropsWorkaroun
   componentDidMount() {
     if (this.props.relay) {
       this.props.relay.refetch({ __id: this.props.rail.__id, fetchContent: true }, null, error => {
+        if (error) {
+          console.error("ArtworkCarousel.tsx", error.message)
+        }
+
         this.setState({
           didPerformFetch: true,
           loadFailed: !!error,

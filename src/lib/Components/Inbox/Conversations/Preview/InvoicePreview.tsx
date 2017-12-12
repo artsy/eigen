@@ -1,5 +1,5 @@
 import React from "react"
-import { EmitterSubscription, Image, TouchableHighlight } from "react-native"
+import { EmitterSubscription, Image } from "react-native"
 import { createRefetchContainer, graphql } from "react-relay"
 import { RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
@@ -134,14 +134,14 @@ export class InvoicePreview extends React.Component<Props, State> {
   }
 
   handlePaymentRequestPaidNotification(notification: PaymentRequestPaidNotification) {
-    const { invoice, conversationId, relay } = this.props
+    const { invoice } = this.props
     if (notification.url === invoice.payment_url) {
       // Optimistically update the UI, refetch, then re-render without optimistic update.
       this.setState({ paid: true })
     }
   }
 
-  @track((props, state) => ({
+  @track(props => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationAttachmentInvoice,
     owner_type: Schema.OwnerEntityTypes.Invoice,

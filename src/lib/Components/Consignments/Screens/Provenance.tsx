@@ -4,7 +4,7 @@ import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
 
 import { NavigatorIOS, Route, View, ViewProperties } from "react-native"
-import TextArea, { TextAreaProps } from "../Components/TextArea"
+import TextArea from "../Components/TextArea"
 import { ConsignmentSetup } from "../index"
 
 interface Props extends ConsignmentSetup, ViewProperties {

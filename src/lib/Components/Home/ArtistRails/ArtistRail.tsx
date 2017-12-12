@@ -41,7 +41,11 @@ class ArtistRail extends React.Component<Props, State> {
     if (this.props.relay) {
       this.props.relay.refetch({ __id: this.props.rail.__id, fetchContent: true }, null, error => {
         if (error) {
-          this.setState({ loadFailed: true })
+          console.error("ArtistRail.tsx", error.message)
+
+          this.setState({
+            loadFailed: true,
+          })
         }
       })
     }
@@ -65,7 +69,7 @@ class ArtistRail extends React.Component<Props, State> {
   }
 
   followedArtistAnimation(followedArtist) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
       const { opacity, translateY } = followedArtist._animatedValues
       const duration = Animation.duration.followedArtist
       const easing = Animation.easing
@@ -77,7 +81,7 @@ class ArtistRail extends React.Component<Props, State> {
   }
 
   suggestedArtistAnimation(suggestedArtist: SuggestedArtist) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
       const { opacity, translateY } = suggestedArtist._animatedValues
       const duration = Animation.duration.suggestedArtist
       const easing = Animation.easing
@@ -176,7 +180,7 @@ class ArtistRail extends React.Component<Props, State> {
   }
 
   render() {
-    if (this.state.loadFailed) {
+    if (this.state.loadFailed || !this.state.artists.length) {
       return null
     }
 

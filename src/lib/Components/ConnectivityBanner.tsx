@@ -1,6 +1,4 @@
 import React from "react"
-import * as Relay from "react-relay"
-
 import styled from "styled-components/native"
 
 import colors from "lib/data/colors"

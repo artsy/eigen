@@ -3,11 +3,12 @@
 
 @implementation ARHomeComponentViewController
 
-- (instancetype)initWithSelectedArtist:(NSString *)artistID emission:(AREmission *)emission;
+- (instancetype)initWithSelectedArtist:(nullable NSString *)artistID tab:(NSInteger)selectedTab emission:(nullable AREmission*)emission;
 {
+    NSDictionary *initialProps = artistID ? @{ @"selectedArtist": artistID, @"selectedTab": @(selectedTab) } : @{ @"selectedTab": @(selectedTab) };
     if ((self = [super initWithEmission:emission
                              moduleName:@"Home"
-                      initialProperties:artistID ? @{ @"selectedArtist": artistID } : nil])) {
+                      initialProperties:initialProps])) {
         _selectedArtist = artistID;
     }
     return self;

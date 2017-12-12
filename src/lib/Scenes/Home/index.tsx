@@ -21,6 +21,7 @@ const TabBarContainer = styled.View`margin-top: 20px;`
 
 interface Props {
   selectedArtist?: string
+  selectedTab?: number
 }
 
 export default class Home extends React.Component<Props, null> {
@@ -28,6 +29,7 @@ export default class Home extends React.Component<Props, null> {
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
+          initialPage={this.props.selectedTab || 0}
           renderTabBar={props =>
             <TabBarContainer>
               <TabBar {...props} />

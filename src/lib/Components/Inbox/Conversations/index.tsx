@@ -2,19 +2,17 @@ import React from "react"
 import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
+import { PAGE_SIZE } from "lib/data/constants"
 import { ListView, ListViewDataSource, View } from "react-native"
 import { LargeHeadline } from "../Typography"
 
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
+import Spinner from "../../Spinner"
 import ConversationSnippet from "./ConversationSnippet"
 
-import Spinner from "../../Spinner"
-
-const PageSize = 10
-
 const Headline = styled(LargeHeadline)`
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: -10px;
 `
 
 interface Props extends RelayProps {
@@ -64,8 +62,15 @@ export class Conversations extends React.Component<Props, State> {
     }
 
     this.setState({ fetchingNextPage: true })
-    this.props.relay.refetchConnection(10, () => {
-      this.setState({ fetchingNextPage: false })
+    this.props.relay.refetchConnection(10, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Conversations/index.jsx", error.message)
+      }
+
+      this.setState({
+        fetchingNextPage: false,
+      })
 
       if (callback) {
         callback()
@@ -101,9 +106,17 @@ export class Conversations extends React.Component<Props, State> {
     if (this.state.fetchingNextPage) {
       return
     }
-    this.setState({ fetchingNextPage: true })
-    this.props.relay.loadMore(PageSize, error => {
-      // TODO: Not performing any error handling here
+
+    this.setState({
+      fetchingNextPage: true,
+    })
+
+    this.props.relay.loadMore(PAGE_SIZE, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Conversations/index.tsx", error.message)
+      }
+
       this.setState({
         fetchingNextPage: false,
         dataSource: this.state.dataSource.cloneWithRows(this.conversations),
@@ -172,7 +185,7 @@ export default createPaginationContainer(
         count: totalCount,
       }
     },
-    getVariables(props, { count, cursor }, fragmentVariables) {
+    getVariables(_props, { count, cursor }, fragmentVariables) {
       return {
         // in most cases, for variables other than connection filters like
         // `first`, `after`, etc. you may want to use the previous values.

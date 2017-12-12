@@ -1,11 +1,10 @@
 import React from "react"
-import { Image, TouchableWithoutFeedback, View } from "react-native"
+import { Image, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
 import { Colors } from "lib/data/colors"
 import { Fonts } from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import Separator from "../Separator"
 
 interface Props extends React.Props<DarkNavigationButton> {
   href?: string

@@ -1,7 +1,5 @@
-import * as _ from "lodash"
 import React from "react"
-import { AppRegistry, View, ViewProperties } from "react-native"
-import { TrackingInfo } from "react-tracking"
+import { AppRegistry, View } from "react-native"
 
 import Consignments from "./Components/Consignments"
 import Containers from "./Containers/index"
@@ -12,24 +10,18 @@ import {
   InboxRenderer,
   InquiryRenderer,
   MyProfileRenderer,
-  RenderCallback,
-  SaleRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
 import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
-import { Schema, screenTrack as track, Track } from "./utils/track"
-
-// Analytics wrapper for all of our top level React components
-function AddTrack(pageName: string) {
-  return component => component
-}
+import { Schema, screenTrack as track } from "./utils/track"
 
 interface ArtistProps {
   artistID: string
   isPad: boolean
 }
+
 const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
   return {
     context_screen: Schema.PageNames.ArtistPage,
@@ -38,9 +30,9 @@ const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
   }
 })(props => <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />)
 
-const Inbox: React.SFC<{}> = track<{}>(props => {
+const Inbox: React.SFC<{}> = track<{}>(() => {
   return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
-})(() => <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />)
+})(props => <InboxRenderer {...props} render={renderWithLoadProgress(Containers.Inbox, props)} />)
 
 interface GeneProps {
   geneID: string
@@ -52,10 +44,11 @@ const Gene: React.SFC<GeneProps> = ({ geneID, refineSettings: { medium, price_ra
   return <GeneRenderer {...initialProps} render={renderWithLoadProgress(Containers.Gene, initialProps)} />
 }
 
-const Sale: React.SFC<{ saleID: string }> = ({ saleID }) => {
-  const initialProps = { saleID }
-  return <SaleRenderer {...initialProps} render={renderWithLoadProgress(Containers.Sale, initialProps)} />
-}
+// FIXME: This isn't being used
+// const Sale: React.SFC<{ saleID: string }> = ({ saleID }) => {
+//   const initialProps = { saleID }
+//   return <SaleRenderer {...initialProps} render={renderWithLoadProgress(Containers.Sale, initialProps)} />
+// }
 
 // TODO: This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
 //

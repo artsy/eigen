@@ -1,10 +1,10 @@
-import React from "react"
-import { View } from "react-native"
+import React, { Component } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import ZeroState from "lib/Components/States/ZeroState"
+import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 const Container = styled.ScrollView`
@@ -17,7 +17,7 @@ interface Props extends RelayProps {
   onDataFetching?: (loading: boolean) => void
 }
 
-export class SavedWorks extends React.Component<Props, any> {
+export class SavedWorks extends Component<Props> {
   loadMore = () => {
     if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
       return
@@ -31,7 +31,11 @@ export class SavedWorks extends React.Component<Props, any> {
     }
 
     updateState(true)
-    this.props.relay.loadMore(10, e => {
+    this.props.relay.loadMore(PAGE_SIZE, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Artworks/index.tsx", error.message)
+      }
       updateState(false)
     })
   }
@@ -90,7 +94,7 @@ export default createPaginationContainer(
         count: totalCount,
       }
     },
-    getVariables(props, { count, cursor }, fragmentVariables) {
+    getVariables(_props, { count, cursor }, fragmentVariables) {
       return {
         ...fragmentVariables,
         count,

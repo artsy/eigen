@@ -1,4 +1,3 @@
-import React from "react"
 import { AsyncStorage } from "react-native"
 
 import Overview from "../Overview"
@@ -17,12 +16,14 @@ beforeEach(() => {
 const key = "ConsignmentsStoredState"
 
 it("restores when no props are provided", () => {
-  const overview = new Overview({ setup: null })
+  // tslint:disable-next-line
+  new Overview({ setup: null })
   expect(AsyncStorage.getItem).toBeCalledWith(key, expect.anything())
 })
 
 it("does not restore setup props are provided", () => {
-  const overview = new Overview({ setup: {} })
+  // tslint:disable-next-line
+  new Overview({ setup: {} })
   expect(AsyncStorage.getItem).not.toBeCalled()
 })
 

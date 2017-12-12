@@ -2,11 +2,17 @@ import React from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
-import { View } from "react-native"
 import { LargeHeadline } from "../Typography"
 import ActiveBid from "./ActiveBid"
 
-const Container = styled.View`margin: 20px 0 40px;`
+const Container = styled.View`
+  margin-top: 20px;
+  margin-bottom: 40px;
+`
+
+const Headline = styled(LargeHeadline)`
+margin-bottom: -10px;
+`
 
 interface Props extends RelayProps {
   relay?: RelayRefetchProp
@@ -43,26 +49,32 @@ class ActiveBids extends React.Component<Props, State> {
       return
     }
 
-    this.setState({ fetchingData: true })
+    this.setState({
+      fetchingData: true,
+    })
 
-    this.props.relay.refetch(
-      {},
-      {},
-      () => {
-        this.setState({ fetchingData: false })
+    const onFetchComplete = error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("ActiveBids/index.tsx", error.message)
+      }
 
-        if (callback) {
-          callback()
-        }
-      },
-      { force: true }
-    )
+      this.setState({
+        fetchingData: false,
+      })
+
+      if (callback) {
+        callback()
+      }
+    }
+
+    this.props.relay.refetch({}, {}, onFetchComplete, { force: true })
   }
 
   render() {
     return this.hasContent()
       ? <Container>
-          <LargeHeadline>Active Bids</LargeHeadline>
+          <Headline>Active Bids</Headline>
           {this.renderRows()}
         </Container>
       : null

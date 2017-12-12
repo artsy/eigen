@@ -129,7 +129,7 @@
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "/__tests__/.*-tests.(ts|tsx|js)$",
-    "testPathIgnorePatterns": ["\\.snap$", "<rootDir>/node_modules/"],
+    "testPathIgnorePatterns": ["\\.snap$", "<rootDir>/build", "<rootDir>/node_modules/"],
     "setupFiles": ["./src/setupJest.ts"],
     "cacheDirectory": ".jest/cache"
   },

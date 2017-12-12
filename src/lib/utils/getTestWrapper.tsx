@@ -7,7 +7,6 @@
  *  const { text }  = getTestSnapshot(<MyComponent title='Hi!' />)
  *  expect(text).toContain('Hi!')
  */
-import { shallow } from "enzyme"
 import "react-native"
 import renderer from "react-test-renderer"
 
