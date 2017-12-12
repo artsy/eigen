@@ -90,11 +90,7 @@ export default class Info extends React.Component<Props, State> {
   goToLocationTapped = () =>
     this.props.navigator.push({ component: Location, passProps: { updateWithResult: this.updateLocation } })
 
-  goToFinalSubmission = () =>
-    this.props.navigator.push({
-      component: FinalSubmissionQuestions,
-      passProps: { setup: this.state, submitFinalSubmission: this.submitFinalSubmission },
-    })
+  goToFinalSubmission = () => this.submitFinalSubmission(this.state)
 
   updateArtist = (result: SearchResult) => this.updateStateAndMetaphysics({ artist: result })
   updateMetadata = (result: ConsignmentMetadata) => this.updateStateAndMetaphysics({ metadata: result })
