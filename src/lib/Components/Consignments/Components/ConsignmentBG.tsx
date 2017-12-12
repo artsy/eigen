@@ -1,10 +1,6 @@
 import React from "react"
-import { ViewProperties } from "react-native"
 
 import styled from "styled-components/native"
-
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
-import CloseButton from "../Components/CloseButton"
 
 // Full screen black
 const BG = styled.View`
@@ -20,20 +16,13 @@ const ConsignmentContainer = styled.View`
   align-self: center;
 `
 
-interface Props extends ViewProperties {
-  showCloseButton?: boolean
-}
-
-export default class ConsignmentBG extends React.Component<Props> {
-  exitModal = () => SwitchBoard.dismissModalViewController(this)
-
+export default class ConsignmentBG extends React.Component<{}> {
   render() {
     return (
       <BG key="bg">
         <ConsignmentContainer>
           {this.props.children}
         </ConsignmentContainer>
-        {this.props.showCloseButton && <CloseButton onPress={this.exitModal} />}
       </BG>
     )
   }
