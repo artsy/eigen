@@ -64,8 +64,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                   "textAlign": "center",
                 },
                 Object {
-                  "marginLeft": 40,
-                  "marginRight": 40,
+                  "textAlign": "center",
                 },
                 Object {
                   "fontFamily": "AGaramondPro-Regular",
@@ -83,17 +82,18 @@ exports[`Sets up the right view hierarchy 1`] = `
             style={
               Array [
                 Object {
-                  "color": "#cccccc",
+                  "color": "#808080",
                   "fontSize": 20,
-                  "paddingLeft": 25,
-                  "paddingRight": 25,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
                 },
                 Object {
                   "marginBottom": 80,
+                  "marginTop": -20,
                   "textAlign": "center",
                 },
                 Object {
-                  "fontFamily": "AGaramondPro-Italic",
+                  "fontFamily": "AGaramondPro-Regular",
                 },
               ]
             }
@@ -104,7 +104,7 @@ exports[`Sets up the right view hierarchy 1`] = `
             style={
               Object {
                 "flex": 1,
-                "padding": 20,
+                "padding": 0,
               }
             }
           >

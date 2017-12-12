@@ -192,13 +192,13 @@ export default class Info extends React.Component<Props, State> {
               flex: 1,
             }}
           >
-            <LargeHeadline style={{ marginLeft: 40, marginRight: 40 }}>
+            <LargeHeadline style={{ textAlign: isPad ? "center" : "left" }}>
               {title}
             </LargeHeadline>
-            <Subtitle style={{ textAlign: "center", marginBottom: isPad ? 80 : 0 }}>
+            <Subtitle style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0, marginTop: -20 }}>
               {subtitle}
             </Subtitle>
-            <View style={{ flex: 1, padding: 20 }}>
+            <View style={{ flex: 1, padding: 0 }}>
               <TODO
                 goToArtist={this.goToArtistTapped}
                 goToPhotos={this.goToPhotosTapped}
