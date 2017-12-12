@@ -23,9 +23,9 @@ class Sales extends React.Component<Props> {
   }
 
   render() {
-    const hasData = this.hasData()
+    const hasData = false && this.hasData()
     if (!hasData) {
-      return <WebView source={{ uri: "https://www.artsy.net/auctions" }} style={{ flex: 1 }} />
+      return <WebView source={require("./Components/ZeroState/index.html")} style={{ flex: 1 }} />
     }
 
     const sections = [
