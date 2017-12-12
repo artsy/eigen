@@ -41,17 +41,17 @@ const HorizontalLayout = styled.View`
 
 const Title = styled.Text`
   text-align: center;
-  font-size: ${isPad ? 46 : 16};
-  line-height: ${isPad ? 58 : 32};
+  font-size: ${isPad ? 20 : 16};
+  line-height: ${isPad ? 24 : 32};
   width: ${isPad ? 760 : 300};
-  margin-top: ${isPad ? 80 : 35};
+  margin-top: ${isPad ? 0 : 35};
   font-family: ${Fonts.AvantGardeRegular};
   align-self: center;
   color: white;
 `
 
 const SmallHeadline = styled(LargeHeadline)`
-  font-size: ${isPad ? 34 : 20};
+  font-size: ${isPad ? 30 : 20};
   color: white;
   ${isPad ? "width: 540" : "max-width: 280"};
   min-height: 60;

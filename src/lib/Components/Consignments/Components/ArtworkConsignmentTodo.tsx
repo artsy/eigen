@@ -105,6 +105,7 @@ interface TODOProps extends ConsignmentSetup {
   goToArtist?: () => void
   goToPhotos?: () => void
   goToMetadata?: () => void
+  goToEdition?: () => void
   goToLocation?: () => void
   goToProvenance?: () => void
   style?: StyleProp<ViewStyle>
@@ -133,7 +134,18 @@ const render = (props: TODOProps) =>
       {props.metadata && props.metadata.category && props.metadata.title && props.metadata.year
         ? DoneButton()
         : ToDoButton()}
-      <Title>METADATA</Title>
+      <Title>WORK DETAILS</Title>
+      <Subtitle>
+        {props.metadata ? props.metadata.displayString : ""}
+      </Subtitle>
+    </Button>
+
+    <Separator />
+    <Button onPress={props.goToEdition}>
+      {props.metadata && props.metadata.category && props.metadata.title && props.metadata.year
+        ? DoneButton()
+        : ToDoButton()}
+      <Title>EDITION & AUTHENTICITY</Title>
       <Subtitle>
         {props.metadata ? props.metadata.displayString : ""}
       </Subtitle>

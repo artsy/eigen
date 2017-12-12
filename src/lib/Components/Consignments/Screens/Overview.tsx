@@ -5,6 +5,7 @@ import { AsyncStorage, Dimensions, NavigatorIOS, Route, ScrollView, View, ViewPr
 import { ConsignmentMetadata, ConsignmentSetup, SearchResult } from "../"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import TODO from "../Components/ArtworkConsignmentTodo"
+import CloseButton from "../Components/CloseButton"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { Button, Row } from "../Components/FormElements"
 import createSubmission from "../Submission/create"
@@ -12,6 +13,7 @@ import updateSubmission from "../Submission/update"
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
 import { LargeHeadline, Subtitle } from "../Typography"
 import Artist from "./Artist"
+import Edition from "./Edition"
 import FinalSubmissionQuestions from "./FinalSubmissionQuestions"
 import Location from "./Location"
 import Metadata from "./Metadata"
@@ -79,6 +81,12 @@ export default class Info extends React.Component<Props, State> {
       passProps: { metadata: this.state.metadata, updateWithMetadata: this.updateMetadata },
     })
 
+  goToEditionTapped = () =>
+    this.props.navigator.push({
+      component: Edition,
+      passProps: { setup: this.state, updateWithEdition: this.updateEdition },
+    })
+
   goToLocationTapped = () =>
     this.props.navigator.push({ component: Location, passProps: { updateWithResult: this.updateLocation } })
 
@@ -91,6 +99,7 @@ export default class Info extends React.Component<Props, State> {
   updateArtist = (result: SearchResult) => this.updateStateAndMetaphysics({ artist: result })
   updateMetadata = (result: ConsignmentMetadata) => this.updateStateAndMetaphysics({ metadata: result })
   updateProvenance = (result: string) => this.updateStateAndMetaphysics({ provenance: result })
+  updateEdition = (result: ConsignmentSetup) => this.updateStateAndMetaphysics({ state: result })
   updateLocation = (city: string, state: string, country: string) =>
     this.updateStateAndMetaphysics({ location: { city, state, country } })
 
@@ -185,7 +194,7 @@ export default class Info extends React.Component<Props, State> {
         <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} centerContent>
           <View
             style={{
-              paddingTop: 18,
+              paddingTop: 10,
               alignSelf: "center",
               width: "100%",
               maxWidth: 540,
@@ -195,22 +204,26 @@ export default class Info extends React.Component<Props, State> {
             <LargeHeadline style={{ textAlign: isPad ? "center" : "left" }}>
               {title}
             </LargeHeadline>
-            <Subtitle style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0, marginTop: -20 }}>
+            <Subtitle style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0, marginTop: -15 }}>
               {subtitle}
             </Subtitle>
-            <View style={{ flex: 1, padding: 0 }}>
+            <View style={{ flex: 1 }}>
               <TODO
                 goToArtist={this.goToArtistTapped}
                 goToPhotos={this.goToPhotosTapped}
+                goToEdition={this.goToEditionTapped}
                 goToMetadata={this.goToMetadataTapped}
                 goToLocation={this.goToLocationTapped}
                 goToProvenance={this.goToProvenanceTapped}
                 {...this.state}
               />
             </View>
-            <Row style={{ justifyContent: "center", marginTop: isPad ? 80 : 0 }}>
+            <Row style={{ justifyContent: "center", marginTop: isPad ? 80 : -30 }}>
               {this.state.hasLoaded &&
-                <Button text="NEXT" onPress={canSubmit ? this.goToFinalSubmission : undefined} />}
+                <Button text="SUBMIT" onPress={canSubmit ? this.goToFinalSubmission : undefined} />}
+            </Row>
+            <Row style={{ justifyContent: "center", marginTop: isPad ? 0 : -20 }}>
+              <CloseButton />
             </Row>
           </View>
         </ScrollView>
