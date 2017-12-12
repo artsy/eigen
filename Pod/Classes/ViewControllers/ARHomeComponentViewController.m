@@ -3,7 +3,7 @@
 
 @implementation ARHomeComponentViewController
 
-- (instancetype)initWithSelectedArtist:(nullable NSString *)artistID tab:(NSInteger)selectedTab emission:(nullable AREmission*)emission;
+- (instancetype)initWithSelectedArtist:(nullable NSString *)artistID tab:(ARHomeTabType)selectedTab emission:(nullable AREmission*)emission;
 {
     NSDictionary *initialProps = artistID ? @{ @"selectedArtist": artistID, @"selectedTab": @(selectedTab) } : @{ @"selectedTab": @(selectedTab) };
     if ((self = [super initWithEmission:emission

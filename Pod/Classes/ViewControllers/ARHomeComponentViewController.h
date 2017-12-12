@@ -2,12 +2,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef enum ARHomeTabType {
+    ARHomeTabArtists,
+    ARHomeTabForYou,
+    ARHomeTabAuctions
+} ARHomeTabType;
+
 @interface ARHomeComponentViewController : ARComponentViewController
 
 @property (nonatomic, strong, readonly) NSString *selectedArtist;
 
 - (instancetype)initWithSelectedArtist:(nullable NSString *)artistID
-                                   tab:(NSInteger)selectedTab
+                                   tab:(ARHomeTabType)selectedTab
                               emission:(nullable AREmission*)emission NS_DESIGNATED_INITIALIZER;
 
 
