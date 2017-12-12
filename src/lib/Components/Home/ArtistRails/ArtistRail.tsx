@@ -180,7 +180,7 @@ class ArtistRail extends React.Component<Props, State> {
   }
 
   render() {
-    if (this.state.loadFailed) {
+    if (this.state.loadFailed || !this.state.artists.length) {
       return null
     }
 
