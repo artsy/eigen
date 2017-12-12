@@ -36,6 +36,7 @@ upcoming:
       - Presents live bidding interface when sale has opened and UI reappearing from an artwork VC - ash
       - Fix for launch screen image being truncated - orta
       - Improvements to LAI sale-on-hold UI - erik&ash
+      - Fixes sending the right user min/max pricing details during onboarding - orta
 
 releases:
   - version: 3.2.7
