@@ -29,7 +29,10 @@ const Listpad = styled.View`
   align-items: center;
   padding-top: 80;
 `
-const Listphone = styled.View`margin-bottom: 100;`
+const Listphone = styled.View`
+  margin-bottom: 100;
+  margin-left: 20;
+`
 
 const HorizontalLayout = styled.View`
   flex: 1;
@@ -85,19 +88,19 @@ export default class Welcome extends React.Component<Props, null> {
             <Title>SELL WORKS FROM YOUR COLLECTION</Title>
             <List>
               <HorizontalLayout>
-                <Icon source={require("../../../../../images/find.png")} />
+                <Icon source={require("../../../../../images/cam.png")} />
                 <SmallHeadline>Take a few photos and submit details about the work</SmallHeadline>
               </HorizontalLayout>
               <HorizontalLayout>
-                <Icon source={require("../../../../../images/contact.png")} />
+                <Icon source={require("../../../../../images/offer.png")} />
                 <SmallHeadline>Get the offers from galleries and auction houses</SmallHeadline>
               </HorizontalLayout>
               <HorizontalLayout>
-                <Icon source={require("../../../../../images/message.png")} />
+                <Icon source={require("../../../../../images/sell.png")} />
                 <SmallHeadline>Have your work placed in a gallery or upcoming sale</SmallHeadline>
               </HorizontalLayout>
               <HorizontalLayout>
-                <Icon source={require("../../../../../images/pay.png")} />
+                <Icon source={require("../../../../../images/money.png")} />
                 <SmallHeadline>Receive payment once the work sells</SmallHeadline>
               </HorizontalLayout>
               <ButtonsView>
