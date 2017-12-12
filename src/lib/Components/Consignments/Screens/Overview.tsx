@@ -99,14 +99,15 @@ export default class Info extends React.Component<Props, State> {
   updateArtist = (result: SearchResult) => this.updateStateAndMetaphysics({ artist: result })
   updateMetadata = (result: ConsignmentMetadata) => this.updateStateAndMetaphysics({ metadata: result })
   updateProvenance = (result: string) => this.updateStateAndMetaphysics({ provenance: result })
-  updateEdition = (result: ConsignmentSetup) => this.updateStateAndMetaphysics({ state: result })
+  updateEdition = (result: ConsignmentSetup) => this.updateStateAndMetaphysics(result)
   updateLocation = (city: string, state: string, country: string) =>
     this.updateStateAndMetaphysics({ location: { city, state, country } })
 
   updatePhotos = (photos: string[]) =>
     photos.length && this.updateStateAndMetaphysics({ photos: photos.map(f => ({ file: f, uploaded: false })) })
 
-  updateStateAndMetaphysics = (state: any) => this.setState(state, this.updateLocalStateAndMetaphysics)
+  updateStateAndMetaphysics = (state: Partial<ConsignmentSetup>) =>
+    this.setState(state, this.updateLocalStateAndMetaphysics)
 
   updateLocalStateAndMetaphysics = async () => {
     this.saveStateToLocalStorage()

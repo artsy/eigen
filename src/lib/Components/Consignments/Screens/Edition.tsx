@@ -17,19 +17,11 @@ interface Props extends ConsignmentSetup, ViewProperties {
   updateWithEdition?: (setup: ConsignmentSetup) => void
 }
 
-// interface State {
-//   editionInfo?: {
-//     size?: string
-//     number?: number
-//   }
-//   signed?: boolean
-//   certificateOfAuth?: boolean
-// }
-
 export default class Edition extends React.Component<Props, ConsignmentSetup> {
   constructor(props: Props) {
     super(props)
     this.state = props.setup
+    console.log(this.state)
   }
 
   doneTapped = () => {

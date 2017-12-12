@@ -14,7 +14,7 @@ interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route // this gets set by NavigatorIOS
   setup: ConsignmentSetup
-  submitFinalSubmission: (setup: ConsignmentSetup) => void
+  submitFinalSubmission: (state: ConsignmentSetup) => void
 }
 
 @screenTrack<Props>(props => ({
