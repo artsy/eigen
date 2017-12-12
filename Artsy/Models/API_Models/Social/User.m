@@ -90,11 +90,12 @@
 
 - (void)setRemoteUpdatePriceRange:(NSInteger)maximumRange success:(void (^)(User *user))success failure:(void (^)(NSError *error))failure
 {
-    NSString *stringRange = [NSString stringWithFormat:@"-1:%@", @(maximumRange)];
-    if (maximumRange == 1000000) {
-        stringRange = @"1000000:1000000000000";
-    }
-    [ArtsyAPI updateCurrentUserProperty:@"price_range" toValue:stringRange success:success failure:failure];
+    BOOL wasMaxMax = maximumRange == 1000000;
+    NSString *min = wasMaxMax ? @"1000000" : @"-1";
+    NSString *max = wasMaxMax ? @"1000000000000" : [NSString stringWithFormat:@"%@", @(maximumRange)];
+
+    [ArtsyAPI updateCurrentUserProperty:@"price_range_min" toValue:min success:success failure:failure];
+    [ArtsyAPI updateCurrentUserProperty:@"price_range_max" toValue:max success:success failure:failure];
 }
 
 - (void)setNilValueForKey:(NSString *)key
