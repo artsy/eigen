@@ -171,8 +171,8 @@ export class Gene extends React.Component<Props, State> {
   refineTapped = _button => {
     const initialSettings = {
       sort: "-partner_updated_at",
-      selectedMedium: this.props.medium,
-      selectedPrice: this.props.price_range,
+      selectedMedium: this.props.medium || "*",
+      selectedPrice: this.props.price_range || "*-*",
       aggregations: this.props.gene.filtered_artworks.aggregations,
     }
 

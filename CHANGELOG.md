@@ -3,6 +3,8 @@
 
 ### Master
 
+-   Bug fix for the Gene refine not showing on Eigen - orta
+
 ### 1.4.0-beta.10
 
 -   Update WorksForYou to use new Metaphysics schema to avoid frequent empty states - matt
