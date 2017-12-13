@@ -10,8 +10,6 @@ NSString *const AROptionsDisableNativeLiveAuctions = @"Disable native live aucti
 NSString *const AROptionsStagingReactEnv = @"Use Staging React ENV";
 NSString *const AROptionsDevReactEnv = @"Use Dev React ENV";
 
-NSString *const AROptionFeedbackLiveAuction = @"Use Haptic Feedback on Live Auctions";
-
 @implementation AROptions
 
 + (NSArray *)labsOptions
@@ -21,7 +19,6 @@ NSString *const AROptionFeedbackLiveAuction = @"Use Haptic Feedback on Live Auct
         AROptionsSettingsMenu,
         AROptionsTappingPartnerSendsToPartner,
         AROptionsDisableNativeLiveAuctions,
-        AROptionFeedbackLiveAuction
     ];
 }
 
