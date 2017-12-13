@@ -90,7 +90,7 @@ export default class Info extends React.Component<Props, State> {
   goToLocationTapped = () =>
     this.props.navigator.push({ component: Location, passProps: { updateWithResult: this.updateLocation } })
 
-  goToFinalSubmission = () => this.submitFinalSubmission(this.state)
+  goToFinalSubmission = () => this.setState({ state: "SUBMITTED" }, () => this.submitFinalSubmission(this.state))
 
   updateArtist = (result: SearchResult) => this.updateStateAndMetaphysics({ artist: result })
   updateMetadata = (result: ConsignmentMetadata) => this.updateStateAndMetaphysics({ metadata: result })
@@ -133,6 +133,7 @@ export default class Info extends React.Component<Props, State> {
   }
 
   submitFinalSubmission = async (setup: ConsignmentSetup) => {
+    console.log(this.state)
     this.setState(setup, async () => {
       await this.updateLocalStateAndMetaphysics()
       await AsyncStorage.removeItem(consignmentsStateKey)
@@ -149,6 +150,7 @@ export default class Info extends React.Component<Props, State> {
     owner_slug: state.submission_id,
   }))
   submissionDraftSubmitted() {
+    console.log("submitted")
     return null
   }
 
