@@ -49,7 +49,7 @@
         _badgeCounts[i] = 0;
     }
 
-    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil emission:nil];
+    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil tab:ARHomeTabArtists emission:nil];
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
 
     return self;
@@ -68,7 +68,7 @@
 
 - (ARNavigationController *)getHomeViewControllerWithArtist:(NSString *)artistID
 {
-    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID emission:nil];
+    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID tab:ARHomeTabArtists emission:nil];
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
     return _feedNavigationController;
 }

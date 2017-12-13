@@ -29,7 +29,7 @@
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
 #import "AROptions.h"
-
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 @interface ARSwitchBoard (Private)
 @property (nonatomic, strong) Aerodramus *echo;
@@ -71,6 +71,15 @@
 {
     return [[ARArtworkSetViewController alloc] initWithArtworkSet:artworkSet fair:fair atIndex:index];
 }
+
+- (ARArtworkSetViewController *)loadArtworkIDSet:(NSArray *)artworkIDSet inFair:(Fair *)fair atIndex:(NSInteger)index
+{
+    NSArray *artworks = [artworkIDSet map:^id(id artworkID) {
+        return [[Artwork alloc] initWithArtworkID:artworkID];
+    }];
+    return [[ARArtworkSetViewController alloc] initWithArtworkSet:artworks fair:fair atIndex:index];
+}
+
 
 - (UIViewController *)loadAuctionWithID:(NSString *)saleID
 {
