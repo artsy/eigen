@@ -180,7 +180,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
 - (BOOL)shouldUseWhiteBackground:(UIViewController *)viewController
 {
-    return [viewController isKindOfClass:ARComponentViewController.class];
+    return [viewController isKindOfClass:ARComponentViewController.class] && [viewController preferredStatusBarStyle] == UIStatusBarStyleDefault;
 }
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
