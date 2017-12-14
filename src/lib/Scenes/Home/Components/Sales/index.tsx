@@ -1,8 +1,9 @@
 import React from "react"
-import { SectionList, StyleSheet, WebView } from "react-native"
+import { SectionList, StyleSheet } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import LotsByFollowedArtists from "./Components/LotsByFollowedArtists"
 import { SaleList } from "./Components/SaleList"
+import { ZeroState } from "./Components/ZeroState"
 
 class Sales extends React.Component<Props> {
   get data() {
@@ -23,9 +24,8 @@ class Sales extends React.Component<Props> {
   }
 
   render() {
-    const hasData = false && this.hasData()
-    if (!hasData) {
-      return <WebView source={require("./Components/ZeroState/index.html")} style={{ flex: 1 }} />
+    if (!this.hasData()) {
+      return <ZeroState />
     }
 
     const sections = [
