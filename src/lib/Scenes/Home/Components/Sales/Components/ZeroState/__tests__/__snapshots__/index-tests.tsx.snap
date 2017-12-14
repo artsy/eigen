@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks correct when rendered 1`] = `
+<WebView
+  onShouldStartLoadWithRequest={[Function]}
+  source=""
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+/>
+`;

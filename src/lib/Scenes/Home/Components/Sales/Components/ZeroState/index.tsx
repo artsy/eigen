@@ -9,7 +9,6 @@ export class ZeroState extends React.Component<null> {
       <WebView
         onShouldStartLoadWithRequest={e => {
           if (e.navigationType === "click") {
-            console.log(e)
             SwitchBoard.presentNavigationViewController(this, e.url)
             return false
           }
