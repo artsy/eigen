@@ -1,16 +1,17 @@
 require 'json'
 
 root = ENV["EMISSION_ROOT"] || __dir__
-pkg_version = lambda do |dir_from_root = ''|
+pkg_version = lambda do |dir_from_root = '', version = 'version'|
   path = File.join(root, dir_from_root, 'package.json')
-  JSON.load(File.read(path))['version']
+  JSON.load(File.read(path))[version]
 end
 
 emission_version = pkg_version.call
+emission_native_version = pkg_version.call('', 'native-code-version')
 react_native_version = pkg_version.call('node_modules/react-native')
 sentry_version = pkg_version.call('node_modules/react-native-sentry')
 
-Pod::Spec.new do |s|
+podspec = Pod::Spec.new do |s|
   s.name           = 'Emission'
   s.version        = emission_version
   s.summary        = 'React Native Components used by Eigen.'
@@ -43,3 +44,7 @@ Pod::Spec.new do |s|
   # with the SentryReactNative version that CocoaPods would pull into Eigen.
   s.dependency 'SentryReactNative', sentry_version
 end
+
+# Attach the native version info into the podspec
+podspec.attributes_hash['native_version'] = emission_native_version
+podspec
