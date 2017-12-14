@@ -49,5 +49,31 @@ class LiveAuctionLotViewModelSpec: QuickSpec {
 
             expect(subject.numberOfDerivedEvents) == 1
         }
+
+        context("estimates") {
+            let creds = BiddingCredentials(bidders: [], paddleNumber: "")
+
+            it("calculates highEstimateOrEstimateCents with only a highEstimate") {
+                let lot = LiveAuctionLot(json: ["high_estimate_cents": 20000])
+                subject = LiveAuctionLotViewModel(lot: lot!, bidderCredentials: creds)
+
+                expect(subject.highEstimateOrEstimateCents) == 20000
+            }
+
+            it("calculates highEstimateOrEstimateCents with only an estimate") {
+                let lot = LiveAuctionLot(json: ["estimate_cents": 30000])
+                subject = LiveAuctionLotViewModel(lot: lot!, bidderCredentials: creds)
+
+                expect(subject.highEstimateOrEstimateCents) == 30000
+
+            }
+
+            it("prefers a highEstimate when calculating highEstimateOrEstimateCents") {
+                let lot = LiveAuctionLot(json: ["estimate_cents": 40000, "high_estimate_cents": 50000])
+                subject = LiveAuctionLotViewModel(lot: lot!, bidderCredentials: creds)
+
+                expect(subject.highEstimateOrEstimateCents) == 50000
+            }
+        }
     }
 }
