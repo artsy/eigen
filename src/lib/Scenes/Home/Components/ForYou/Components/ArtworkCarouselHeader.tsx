@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { Component } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import {
@@ -15,13 +15,13 @@ import {
 
 const { ARTemporaryAPIModule } = NativeModules
 
-import Events from "../../../../../NativeModules/Events"
+import Events from "lib/NativeModules/Events"
 
-import colors from "../../../../../../data/colors"
-import fonts from "../../../../../../data/fonts"
-import Button from "../../../../../Components/Buttons/InvertedButton"
-import SerifText from "../../../../../Components/Text/Serif"
-import SectionTitle from "./SectionTitle"
+import Button from "lib/Components/Buttons/InvertedButton"
+import SerifText from "lib/Components/Text/Serif"
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
+import SectionTitle from "../../SectionTitle"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -42,7 +42,7 @@ interface State {
   following: boolean
 }
 
-class ArtworkCarouselHeader extends React.Component<Props & RelayPropsWorkaround, State> {
+class ArtworkCarouselHeader extends Component<Props & RelayPropsWorkaround, State> {
   constructor(props) {
     super(props)
     this.state = { following: props.rail.key === "followed_artist" }
@@ -52,10 +52,10 @@ class ArtworkCarouselHeader extends React.Component<Props & RelayPropsWorkaround
     return (
       <TouchableWithoutFeedback onPress={this.props.handleViewAll}>
         <View style={styles.container}>
-          {this.props.rail.context && this.followAnnotation()}
           <SectionTitle>
             {this.props.rail.title}
           </SectionTitle>
+          {this.props.rail.context && this.followAnnotation()}
           {this.actionButton()}
         </View>
       </TouchableWithoutFeedback>
@@ -82,7 +82,8 @@ class ArtworkCarouselHeader extends React.Component<Props & RelayPropsWorkaround
     if (this.hasAdditionalContent()) {
       return (
         <Text style={styles.viewAllButton}>
-          {" "}{"View All".toUpperCase()}{" "}
+          {""}
+          {"View All".toUpperCase()}{" "}
         </Text>
       )
     } else if (this.props.rail.key === "related_artists" || this.props.rail.key === "followed_artist") {
@@ -102,7 +103,7 @@ class ArtworkCarouselHeader extends React.Component<Props & RelayPropsWorkaround
     const context = this.props.rail.context
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, context.artist.id, (error, following) => {
       if (error) {
-        console.warn(error)
+        console.error("ArtworkCarouselHeader.tsx", error)
       } else {
         Events.postEvent({
           name: following ? "Follow artist" : "Unfollow artist",
@@ -119,7 +120,6 @@ class ArtworkCarouselHeader extends React.Component<Props & RelayPropsWorkaround
 
 interface Styles {
   container: ViewStyle
-  title: TextStyle
   viewAllButton: TextStyle
   followButton: ViewStyle
   followAnnotation: TextStyle
@@ -127,7 +127,7 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    marginTop: isPad ? 40 : 20,
+    marginTop: isPad ? 40 : 30,
     marginBottom: 20,
     marginLeft: 20,
     marginRight: 20,
@@ -135,27 +135,22 @@ const styles = StyleSheet.create<Styles>({
     flexDirection: "column",
     alignItems: "flex-start",
   },
-  title: {
-    marginTop: 10,
-    fontSize: isPad ? 30 : 26,
-    textAlign: "center",
-  },
   viewAllButton: {
     fontFamily: fonts["avant-garde-regular"],
     fontSize: isPad ? 14 : 12,
     color: colors["gray-medium"],
     letterSpacing: 0.5,
     padding: 0,
+    marginTop: -5,
   },
   followButton: {
-    marginTop: 10,
+    marginTop: 5,
     marginBottom: 0,
     height: 30,
     width: 90,
   },
   followAnnotation: {
-    fontStyle: "italic",
-    fontSize: 16,
+    fontSize: 20,
   },
 })
 

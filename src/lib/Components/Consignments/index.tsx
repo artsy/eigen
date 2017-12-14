@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import Welcome from "./Screens/Welcome"
 
 import { NavigatorIOS, ViewProperties } from "react-native"

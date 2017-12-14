@@ -2,27 +2,20 @@ jest.mock("../../../../metaphysics", () => ({ metaphysics: jest.fn() }))
 import { metaphysics } from "../../../../metaphysics"
 const mockphysics = metaphysics as jest.Mock<any>
 
-jest.mock("../geminiUploadToS3.ts", () => ({
+jest.mock("../geminiUploadToS3", () => ({
   createGeminiAssetWithS3Credentials: jest.fn(),
   getGeminiCredentialsForEnvironment: jest.fn(),
   uploadFileToS3: jest.fn(),
 }))
 
-import {
-  createGeminiAssetWithS3Credentials,
-  GeminiCredsResponse,
-  getGeminiCredentialsForEnvironment,
-  uploadFileToS3,
-} from "../geminiUploadToS3"
-
-import { addAssetToConsignment, uploadImageAndPassToGemini } from "../uploadPhotoToGemini"
+import { addAssetToConsignment } from "../uploadPhotoToGemini"
 
 beforeEach(jest.resetAllMocks)
 
 it("addAssetToConsignment makes a graphQL request to metaphysics", async () => {
   mockphysics.mockImplementationOnce(() => Promise.resolve())
 
-  const response = await addAssetToConsignment({
+  await addAssetToConsignment({
     asset_type: "asset",
     gemini_token: "g-token",
     submission_id: "123",

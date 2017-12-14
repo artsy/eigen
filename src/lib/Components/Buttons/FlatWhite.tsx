@@ -1,7 +1,7 @@
-import * as React from "react"
+import React from "react"
 import { Animated, StyleSheet, TouchableHighlight, View, ViewProperties } from "react-native"
 
-import colors from "../../../data/colors"
+import colors from "lib/data/colors"
 import Headline from "../Text/Headline"
 
 const AnimationDuration = 250
@@ -40,7 +40,7 @@ export default class WhiteButton extends React.Component<Props, State> {
     }
   }
 
-  componentDidUpdate(prevProps: any, prevState: any) {
+  componentDidUpdate(prevProps: any) {
     if (this.props.selected !== prevProps.selected) {
       const duration = AnimationDuration
       Animated.parallel([

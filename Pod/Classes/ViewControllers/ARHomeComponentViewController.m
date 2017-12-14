@@ -3,9 +3,15 @@
 
 @implementation ARHomeComponentViewController
 
-- (instancetype)initWithEmission:(AREmission *)emission;
+- (instancetype)initWithSelectedArtist:(nullable NSString *)artistID tab:(ARHomeTabType)selectedTab emission:(nullable AREmission*)emission;
 {
-  return [super initWithEmission:emission moduleName:@"Home" initialProperties:nil];
+    NSDictionary *initialProps = artistID ? @{ @"selectedArtist": artistID, @"selectedTab": @(selectedTab) } : @{ @"selectedTab": @(selectedTab) };
+    if ((self = [super initWithEmission:emission
+                             moduleName:@"Home"
+                      initialProperties:initialProps])) {
+        _selectedArtist = artistID;
+    }
+    return self;
 }
 
 - (NSLayoutConstraint *)topLayoutConstraintWithRootView:(UIView *)rootView;
@@ -17,22 +23,6 @@
                                       attribute:NSLayoutAttributeTop
                                      multiplier:1
                                        constant:0];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    RCTRootView *rootView = self.view.subviews.firstObject;
-    [rootView setAppProperties:@{ @"trigger1pxScrollHack": @YES }];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    RCTRootView *rootView = self.view.subviews.firstObject;
-    [rootView setAppProperties:@{ @"trigger1pxScrollHack": @NO }];
 }
 
 @end

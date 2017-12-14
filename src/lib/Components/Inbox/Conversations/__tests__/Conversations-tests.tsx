@@ -1,13 +1,12 @@
 import "jest-styled-components"
-import moment from "moment"
-import * as React from "react"
+import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
 import { Conversations } from "../"
 
 it("looks correct when rendered", () => {
-  const tree = renderer.create(<Conversations me={meProps} />).toJSON()
+  const tree = renderer.create(<Conversations me={meProps} relay={{ hasMore: jest.fn() } as any} />).toJSON()
   expect(tree).toMatchSnapshot()
 })
 
@@ -25,7 +24,6 @@ const meProps = {
           from: { name: "Jean-Luc Collecteur", email: "luc+messaging@artsymail.com" },
           to: { name: "ACA Galleries" },
           last_message: "Karl and Anna... Fab!",
-          last_message_at: moment().subtract(1, "year").toISOString(),
           created_at: "2017-06-01T14:14:35.538Z",
           items: [
             {
@@ -55,7 +53,6 @@ const meProps = {
           last_message:
             "Hi, I’m interested in purchasing this work. \
                     Could you please provide more information about the piece?",
-          last_message_at: moment().subtract(1, "year").toISOString(),
           created_at: "2017-06-01T14:12:19.155Z",
           items: [
             {

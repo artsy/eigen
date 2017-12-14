@@ -1,18 +1,19 @@
-import * as React from "react"
+import OpaqueImageView from "lib/Components/OpaqueImageView"
+import colors from "lib/data/colors"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import React from "react"
+import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
-
-import { TouchableWithoutFeedback } from "react-native"
-
 import { BodyText, MetadataText } from "../Typography"
 
-import colors from "../../../../data/colors"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
-import OpaqueImageView from "../../OpaqueImageView"
+const isPad = Dimensions.get("window").width > 700
 
 const Container = styled.View`
-  margin: 17px 20px 0;
-  height: 80px;
+  height: 120px;
+  margin-left: 20px;
+  margin-right: 20px;
+  ${isPad ? "align-self: center; width: 708;" : ""};
 `
 
 const Content = styled.View`
@@ -22,13 +23,13 @@ const Content = styled.View`
 `
 
 const ImageView = styled(OpaqueImageView)`
-  width: 58px;
-  height: 58px;
+  width: 80px;
+  height: 80px;
   border-radius: 4;
 `
 
 const MetadataContainer = styled.View`
-  margin: 0 15px;
+  margin: 0 10px;
   flex: 1;
   flex-direction: column;
   justify-content: center;
@@ -38,16 +39,16 @@ const Separator = styled.View`
   height: 1;
   width: 100%;
   background-color: ${colors["gray-regular"]};
-  margin-top: 17px;
 `
 
 const StatusLabel = styled(MetadataText)`
+  margin-bottom: 3px;
   color: ${(props: { status: BidStatus }) => {
     switch (props.status) {
       case "winning":
         return colors["green-regular"]
       case "reserve":
-        return colors["yellow-regular"]
+        return colors["yellow-bold"]
       case "losing":
         return colors["red-regular"]
       case "live_auction":
@@ -86,7 +87,7 @@ class ActiveBid extends React.Component<RelayProps, State> {
       status = "live_auction"
     } else {
       const leadingBidder = bid.is_leading_bidder
-      const reserveNotMet = bid.active_bid.sale_artwork.reserve_status === "reserve_not_met"
+      const reserveNotMet = bid.most_recent_bid.sale_artwork.reserve_status === "reserve_not_met"
 
       if (leadingBidder) {
         status = reserveNotMet ? "reserve" : "winning"
@@ -111,12 +112,12 @@ class ActiveBid extends React.Component<RelayProps, State> {
   handleTap() {
     const bid = this.props.bid
     // push user into live auction if it's open; otherwise go to artwork
-    const href = this.state.status === "live_auction" ? bid.sale.href : bid.active_bid.sale_artwork.artwork.href
+    const href = this.state.status === "live_auction" ? bid.sale.href : bid.most_recent_bid.sale_artwork.artwork.href
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
   render() {
-    const bid = this.props.bid.active_bid
+    const bid = this.props.bid.most_recent_bid
     const imageURL = bid.sale_artwork.artwork.image.url
     const lotNumber = bid.sale_artwork.lot_number
     const artistName = bid.sale_artwork.artwork.artist_names
@@ -124,7 +125,12 @@ class ActiveBid extends React.Component<RelayProps, State> {
     const headline = `Lot ${lotNumber} · ${artistName} `
 
     const isInOpenLiveAuction = this.props.bid.sale && this.props.bid.sale.is_live_open
-    const subtitle = isInOpenLiveAuction ? "Live bidding now open" : `Current Bid: ${bid.max_bid.display} `
+    const bidderPositions = bid.sale_artwork.counts.bidder_positions
+    const bidderPositionsLabel = bidderPositions + " " + (bidderPositions === 1 ? "Bid" : "Bids")
+
+    const subtitle = isInOpenLiveAuction
+      ? "Live bidding now open"
+      : `${bid.sale_artwork.highest_bid.display} (${bidderPositionsLabel})`
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap}>
@@ -132,6 +138,9 @@ class ActiveBid extends React.Component<RelayProps, State> {
           <Content>
             <ImageView imageURL={imageURL} />
             <MetadataContainer>
+              <StatusLabel status={this.state.status}>
+                {this.statusLabel}
+              </StatusLabel>
               <BodyText>
                 {headline}
               </BodyText>
@@ -139,9 +148,6 @@ class ActiveBid extends React.Component<RelayProps, State> {
                 {subtitle}
               </BodyText>
             </MetadataContainer>
-            <StatusLabel status={this.state.status}>
-              {this.statusLabel}
-            </StatusLabel>
           </Content>
           <Separator />
         </Container>
@@ -159,13 +165,12 @@ export default createFragmentContainer(
         href
         is_live_open
       }
-      active_bid {
+      most_recent_bid {
+        __id
         max_bid {
           display
         }
         sale_artwork {
-          lot_number
-          reserve_status
           artwork {
             href
             image {
@@ -173,6 +178,14 @@ export default createFragmentContainer(
             }
             artist_names
           }
+          counts {
+            bidder_positions
+          }
+          highest_bid {
+            display
+          }
+          lot_number
+          reserve_status
         }
       }
     }
@@ -186,13 +199,11 @@ interface RelayProps {
       href: string | null
       is_live_open: boolean | null
     } | null
-    active_bid: {
+    most_recent_bid: {
       max_bid: {
         display: string | null
       } | null
       sale_artwork: {
-        lot_number: string | null
-        reserve_status: string | null
         artwork: {
           href: string | null
           image: {
@@ -200,6 +211,14 @@ interface RelayProps {
           } | null
           artist_names: string | null
         } | null
+        counts: {
+          bidder_positions: number | null
+        } | null
+        highest_bid: {
+          display: string | null
+        } | null
+        lot_number: string | null
+        reserve_status: string | null
       } | null
     } | null
   }

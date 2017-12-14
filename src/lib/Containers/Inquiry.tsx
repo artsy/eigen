@@ -1,22 +1,13 @@
-import * as React from "react"
+import React from "react"
+import { Dimensions, NativeModules } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
+import { Schema, Track, track as _track } from "../utils/track"
 
-import {
-  FlatList,
-  ImageURISource,
-  KeyboardAvoidingView,
-  NativeModules,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ViewProperties,
-} from "react-native"
-
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
-import colors from "../../data/colors"
-import fonts from "../../data/fonts"
 
 import BottomAlignedButton from "../Components/Consignments/Components/BottomAlignedButton"
 
@@ -25,9 +16,12 @@ import ARSwitchBoard from "../NativeModules/SwitchBoard"
 import { gravityURL } from "../relay/config"
 import { NetworkError } from "../utils/errors"
 
+const isPad = Dimensions.get("window").width > 700
+
 const Container = styled.View`
   flex: 1;
   flex-direction: column;
+  background-color: white;
 `
 const Header = styled.View`
   align-self: stretch;
@@ -46,6 +40,9 @@ const TitleView = styled.View`
   align-items: center;
   margin-top: 6;
 `
+const PartnerName = styled(SmallHeadline)`
+  font-size: 12;
+`
 const HeaderTextContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
@@ -55,6 +52,8 @@ const CancelButton = styled.TouchableOpacity`padding-left: 20;`
 const Content = styled.View`
   margin-left: 20;
   margin-right: 20;
+  alignSelf: ${isPad ? "center" : "stretch"};
+  ${isPad ? "width: 472;" : ""};
 `
 
 const InquiryTextInput = styled.TextInput`
@@ -66,14 +65,16 @@ const ResponseRate = styled(SmallHeadline)`
   color: ${colors["yellow-bold"]};
   margin-top: 5;
 `
-const ResponseIndicator = styled.View`
-  width: 8;
-  height: 8;
-  border-radius: 4;
-  margin-top: 5;
-  margin-right: 5;
-  background-color: ${colors["yellow-bold"]};
-`
+// TODO: Uncomment when use is uncommented in code below
+// const ResponseIndicator = styled.View`
+//   width: 8;
+//   height: 8;
+//   border-radius: 4;
+//   margin-top: 5;
+//   margin-right: 5;
+//   background-color: ${colors["yellow-bold"]};
+// `
+
 const ResponseRateLine = styled.View`
   flex: 1;
   flex-direction: row;
@@ -82,6 +83,14 @@ const ResponseRateLine = styled.View`
   margin-top: 5;
 `
 
+interface State {
+  text: string
+  sending: boolean
+}
+
+const track: Track<RelayProps, State, Schema.Entity> = _track
+
+@track()
 export class Inquiry extends React.Component<RelayProps, any> {
   constructor(props) {
     super(props)
@@ -91,10 +100,39 @@ export class Inquiry extends React.Component<RelayProps, any> {
     }
   }
 
+  @track(props => ({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.InquiryCancel,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
+    owner_id: props.artwork._id,
+    owner_slug: props.artwork.id,
+  }))
+  cancelModal() {
+    this.dismissModal()
+  }
+
+  @track(props => ({
+    action_type: Schema.ActionTypes.Success,
+    action_name: Schema.ActionNames.InquirySend,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
+    owner_id: props.artwork._id,
+    owner_slug: props.artwork.id,
+  }))
+  inquirySent() {
+    this.dismissModal()
+  }
+
   dismissModal() {
     ARSwitchBoard.dismissModalViewController(this)
   }
 
+  @track(props => ({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.InquirySend,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
+    owner_id: props.artwork._id,
+    owner_slug: props.artwork.id,
+  }))
   sendInquiry() {
     // Using setState to trigger re-render for the button
     this.setState(() => ({ sending: true }))
@@ -112,18 +150,28 @@ export class Inquiry extends React.Component<RelayProps, any> {
     })
       .then(response => {
         if (response.status >= 200 && response.status < 300) {
-          this.dismissModal()
+          this.inquirySent()
         } else {
-          this.setState(() => ({ sending: false }))
           const error = new NetworkError(response.statusText)
           error.response = response
-          throw error
+          this.sendFailed(error)
         }
       })
       .catch(error => {
-        this.setState(() => ({ sending: false }))
-        throw error
+        this.sendFailed(error)
       })
+  }
+
+  @track(props => ({
+    action_type: Schema.ActionTypes.Fail,
+    action_name: Schema.ActionNames.InquirySend,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
+    owner_id: props.artwork._id,
+    owner_slug: props.artwork.id,
+  }))
+  sendFailed(error) {
+    this.setState(() => ({ sending: false }))
+    throw error
   }
 
   render() {
@@ -136,8 +184,8 @@ export class Inquiry extends React.Component<RelayProps, any> {
     const doneButtonStyles = {
       backgroundColor: colors["purple-regular"],
       marginBottom: 0,
-      paddingTop: 12,
-      height: 44,
+      paddingTop: 15,
+      height: 50,
     }
 
     return (
@@ -150,13 +198,13 @@ export class Inquiry extends React.Component<RelayProps, any> {
         >
           <Header>
             <HeaderTextContainer>
-              <CancelButton onPress={this.dismissModal.bind(this)}>
+              <CancelButton onPress={this.cancelModal.bind(this)}>
                 <MetadataText>CANCEL</MetadataText>
               </CancelButton>
               <TitleView>
-                <SmallHeadline>
+                <PartnerName>
                   {partnerName}
-                </SmallHeadline>
+                </PartnerName>
                 <ResponseRateLine>
                   {/* <ResponseIndicator /> */}
                   <ResponseRate>
@@ -202,6 +250,7 @@ export default createFragmentContainer(
 
 interface RelayProps {
   artwork: {
+    _id: string
     id: string
     contact_message: string
     partner: {

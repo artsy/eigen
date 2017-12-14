@@ -1,3 +1,5 @@
+#import <KSCrash/KSCrash.h>
+
 #import "AppDelegate.h"
 #import "ARDefaults.h"
 #import "AppSetup.h"
@@ -25,7 +27,7 @@
 #import "AuthenticationManager.h"
 #import "LoadingSpinner.h"
 #import "PRNetworkModel.h"
-#import <AppHub/AppHub.h>
+#import "CommitNetworkModel.h"
 
 #import "TakePhotoPromisable.h"
 
@@ -49,10 +51,8 @@ randomBOOL(void)
   // Sets all our default defaults
   [ARDefaults setup];
 
-  BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
-  NSString *service = useStaging? @"Emission-Staging" : @"Emission-Production";
-
-  BOOL usesPRBuild = [[NSUserDefaults standardUserDefaults] boolForKey:ARUsePREmissionDefault];
+  AppSetup *setup = [AppSetup ambientSetup];
+  NSString *service = setup.inStaging? @"Emission-Staging" : @"Emission-Production";
 
   AuthenticationManager *auth = [[AuthenticationManager alloc] initWithService:service];
   self.spinner = [LoadingSpinner new];
@@ -66,24 +66,20 @@ randomBOOL(void)
   self.window.backgroundColor = [UIColor whiteColor];
   self.window.rootViewController = self.navigationController;
   [self.window makeKeyAndVisible];
-
-#if defined(DEPLOY)
-  // [AppHub setLogLevel: AHLogLevelDebug];
-  [AppHub setApplicationID: @"Z6IwqK52JBXrKLI4kpvJ"];
-  [[AppHub buildManager] setDebugBuildsEnabled:YES];
-#endif
-
+  
   if ([auth isAuthenticated]) {
     NSString *accessToken = [auth token];
     if (accessToken) {
-      if(usesPRBuild) {
+      if(setup.usingPRBuild) {
         [self downloadPRBuildAndLoginWithAuth:auth keychainService:service];
+      } else if(!setup.usingRNP && setup.usingMaster) {
+        [self downloadMasterAndLoginWithAuth:auth keychainService:service];
       } else {
         [self setupEmissionWithUserID:[auth userID] accessToken:accessToken keychainService:service];
       }
     }
   } else {
-    [self.spinner presentSpinnerOnViewController:rootVC completion:^{
+    [self.spinner presentSpinnerOnViewController:rootVC title:@"Logging in" subtitle:nil completion:^{
       [auth presentAuthenticationPromptOnViewController:rootVC.presentedViewController completion:^{
         NSLog(@"Logged in successfully :)");
         [self setupEmissionWithUserID:[auth userID] accessToken:[auth token] keychainService:service];
@@ -163,8 +159,14 @@ randomBOOL(void)
       NSLog(@"Route push - %@", route);
       return;
     }
-    [fromViewController.navigationController pushViewController:[self viewControllerForRoute:route]
-                                                       animated:YES];
+    [fromViewController.navigationController pushViewController:[self viewControllerForRoute:route] animated:YES];
+  };
+
+  // Ignore the set attributes for now inside Emission, just load the artwork as a singleton
+  emission.switchBoardModule.presentArtworkSet = ^(UIViewController * _Nonnull fromViewController, NSArray<NSString *> * _Nonnull artworkIDs, NSNumber * _Nonnull index) {
+    NSString *artworkID = artworkIDs[index.integerValue];
+    NSString *route = [NSString stringWithFormat:@"/artwork/%@", artworkID];
+    [fromViewController.navigationController pushViewController:[self viewControllerForRoute:route] animated:YES];
   };
 
   emission.switchBoardModule.presentModalViewController = ^(UIViewController * _Nonnull fromViewController,
@@ -201,6 +203,16 @@ randomBOOL(void)
   };
 }
 
+- (NSString *)valueForKey:(NSString *)key
+           fromQueryItems:(NSArray *)queryItems
+{
+  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name=%@", key];
+  NSURLQueryItem *queryItem = [[queryItems
+                                filteredArrayUsingPredicate:predicate]
+                               firstObject];
+  return queryItem.value;
+}
+
 - (UIViewController *)viewControllerForRoute:(NSString *)route;
 {
   UIViewController *viewController = nil;
@@ -222,8 +234,13 @@ randomBOOL(void)
     NSString *conversationID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARConversationComponentViewController alloc] initWithConversationID:conversationID];
   } else if ([route isEqualToString:@"/"]) {
-    viewController = [[ARHomeComponentViewController alloc] initWithEmission:nil];
+    viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil tab:ARHomeTabArtists emission:nil];
 
+  } else if ([route hasPrefix:@"/works-for-you/"] || [route hasPrefix:@"works-for-you"]) {
+    NSURLComponents *components = [[NSURLComponents alloc] initWithString:route];
+    NSString *artistID = [self valueForKey:@"artist_id" fromQueryItems:components.queryItems];
+    viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID tab:ARHomeTabArtists emission:nil];
+    
   } else {
 
     viewController = [[UnroutedViewController alloc] initWithRoute:route];
@@ -243,7 +260,8 @@ randomBOOL(void)
   PRNetworkModel *network = [PRNetworkModel new];
   NSUInteger prNumber = [[NSUserDefaults standardUserDefaults] integerForKey:ARPREmissionIDDefault];
 
-  [self.spinner presentSpinnerOnViewController:self.navigationController completion:^{
+  NSString *subtitle = [NSString stringWithFormat:@"PR: %@", @(prNumber)];
+  [self.spinner presentSpinnerOnViewController:self.navigationController title:@"Downloading PR JS" subtitle:subtitle completion:^{
     [network downloadJavaScriptForPRNumber:prNumber completion:^(NSURL * _Nullable downloadedFileURL, NSError * _Nullable error) {
       [self.navigationController dismissViewControllerAnimated:YES completion:^{
         [self setupEmissionWithUserID:[auth userID] accessToken:[auth token] keychainService:service];
@@ -251,6 +269,24 @@ randomBOOL(void)
     }];
   }];
 }
+
+- (void)downloadMasterAndLoginWithAuth:(AuthenticationManager *)auth keychainService:(NSString *)service
+{
+  CommitNetworkModel *network = [CommitNetworkModel new];
+  [network downloadJavaScriptForMasterCommit:^(NSString * _Nullable title, NSString * _Nullable subtitle) {
+    // We got metadata, show the spinner
+    [self.spinner presentSpinnerOnViewController:self.navigationController title:title subtitle:subtitle completion:NULL];
+  } completion:^(NSURL * _Nullable downloadedFileURL, NSError * _Nullable error) {
+    // We got the JS
+    if (downloadedFileURL) {
+      [self.navigationController dismissViewControllerAnimated:YES completion:^{
+        [self setupEmissionWithUserID:[auth userID] accessToken:[auth token] keychainService:service];
+      }];
+    }
+    NSLog(@"Error: %@", error);
+  }];
+}
+
 
 @end
 

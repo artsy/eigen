@@ -1,11 +1,10 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { TouchableHighlight } from "react-native"
 import styled from "styled-components/native"
 
-import colors from "../../../../../../data/colors"
-import fonts from "../../../../../../data/fonts"
+import colors from "lib/data/colors"
 
 const Container = styled.View`flex-direction: row;`
 

@@ -1,32 +1,28 @@
-import * as React from "react"
+import React from "react"
 import {
-  ButtonProperties,
   Dimensions,
-  FlatList,
   Image,
   ListView,
   ListViewDataSource,
-  ScrollView,
   StyleSheet,
-  Text,
   TouchableHighlight,
   TouchableOpacity,
   View,
 } from "react-native"
 
-import { chunk, filter } from "lodash"
-
 import styled from "styled-components/native"
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
 
-import { ConsignmentSetup } from "../index"
-
-const Photo = styled.TouchableHighlight`
-  color: white;
-  font-family: "${fonts["avant-garde-regular"]}";
-  flex: 1;
+const ImageBG = styled.View`
+  border-color: white;
+  border-radius: 13;
+  border-width: 1;
+  width: 26;
+  height: 26;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20;
 `
+
 const isPad = Dimensions.get("window").width > 700
 
 export interface ImageData {
@@ -44,6 +40,11 @@ interface ImagePreviewProps {
 interface TakePhotoImageProps {
   onPressNewPhoto: () => void
 }
+
+const SelectedIcon = () =>
+  <ImageBG style={{ backgroundColor: "white", position: "absolute", top: 120, left: 120 }}>
+    <Image source={require("../../../../../images/consignments/black-tick.png")} />
+  </ImageBG>
 
 const TakePhotoImage = (props: TakePhotoImageProps) =>
   <TouchableOpacity
@@ -64,19 +65,25 @@ const TakePhotoImage = (props: TakePhotoImageProps) =>
   </TouchableOpacity>
 
 const ImageForURI = (props: ImagePreviewProps) =>
-  <TouchableHighlight
-    onPress={() => props.onPressItem(props.data.image.uri)}
+  <View
     style={{
-      backgroundColor: colors["gray-regular"],
+      borderWidth: 2,
+      borderColor: props.selected ? "white" : null,
+      margin: 4,
       height: 158,
       width: 158,
-      margin: 4,
-      borderColor: props.selected ? "white" : null,
-      borderWidth: 2,
     }}
   >
-    <Image source={{ uri: props.data.image.uri }} style={{ height: 154, width: 154 }} />
-  </TouchableHighlight>
+    <TouchableHighlight
+      onPress={() => props.onPressItem(props.data.image.uri)}
+      style={{
+        opacity: props.selected ? 0.5 : 1.0,
+      }}
+    >
+      <Image source={{ uri: props.data.image.uri }} style={{ height: 154, width: 154 }} />
+    </TouchableHighlight>
+    {props.selected ? <SelectedIcon /> : null}
+  </View>
 
 interface Props {
   data: ImageData[]
@@ -121,7 +128,7 @@ export default class ImageSelection extends React.Component<Props, State> {
   }
 
   onPressItem = (id: string) => {
-    this.setState(state => {
+    this.setState(_state => {
       const selected = this.state.selected
       const selectedAlready = selected.has(id)
       if (selectedAlready) {
@@ -135,7 +142,6 @@ export default class ImageSelection extends React.Component<Props, State> {
       }
 
       // This is probably inefficient, but it works.
-      const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
       const dataSource = this.dataSourceFromData(this.props.data, isPad)
       return { dataSource }
     })

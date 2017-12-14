@@ -1,10 +1,11 @@
-import * as React from "react"
+import React, { Component } from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
-import { Animated, Easing, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
+import { Animated, Easing, ScrollView, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 
 import metaphysics from "../../../metaphysics"
 
+import { Disposable } from "relay-runtime"
 import Separator from "../../Separator"
 import Spinner from "../../Spinner"
 import SectionTitle from "../SectionTitle"
@@ -20,6 +21,7 @@ const Animation = {
 }
 
 interface Props extends ViewProperties, RelayProps {
+  registerRailModule?: (rail: ArtistRail) => void
   relay?: RelayRefetchProp
 }
 
@@ -28,23 +30,22 @@ interface State {
   loadFailed: boolean
 }
 
-class ArtistRail extends React.Component<Props, State> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      artists: [],
-      loadFailed: false,
+export class ArtistRail extends Component<Props, State> {
+  inflightRequest: Disposable
+
+  state = {
+    artists: [],
+    loadFailed: false,
+  }
+
+  componentWillMount() {
+    if (this.props.registerRailModule) {
+      this.props.registerRailModule(this)
     }
   }
 
-  componentDidMount() {
-    if (this.props.relay) {
-      this.props.relay.refetch({ __id: this.props.rail.__id, fetchContent: true }, null, error => {
-        if (error) {
-          this.setState({ loadFailed: true })
-        }
-      })
-    }
+  async componentDidMount() {
+    await this.refreshData()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,7 +66,7 @@ class ArtistRail extends React.Component<Props, State> {
   }
 
   followedArtistAnimation(followedArtist) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
       const { opacity, translateY } = followedArtist._animatedValues
       const duration = Animation.duration.followedArtist
       const easing = Animation.easing
@@ -77,7 +78,7 @@ class ArtistRail extends React.Component<Props, State> {
   }
 
   suggestedArtistAnimation(suggestedArtist: SuggestedArtist) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
       const { opacity, translateY } = suggestedArtist._animatedValues
       const duration = Animation.duration.suggestedArtist
       const easing = Animation.easing
@@ -157,31 +158,64 @@ class ArtistRail extends React.Component<Props, State> {
         </ScrollView>
       )
     } else {
-      return <Spinner style={{ flex: 1 }} />
+      return <Spinner style={{ flex: 1, marginBottom: 20 }} />
     }
   }
 
   title() {
+    return "Artists to Follow:"
+  }
+  subtitle() {
     switch (this.props.rail.key) {
       case "TRENDING":
-        return "Artists to Follow: Trending"
+        return "Trending on Artsy"
       case "SUGGESTED":
-        return "Artists to Follow: Recommended for You"
+        return "Recommended for You"
       case "POPULAR":
-        return "Artists to Follow: Popular"
+        return "Popular on Artsy"
+    }
+  }
+
+  refreshData = () => {
+    // TODO: Ensures rail has been mounted before a refresh occurs, circumventing setState errors.
+    // See https://stackoverflow.com/a/40969739/1038901 for more info.
+    if (this.refs.rail) {
+      if (this.inflightRequest) {
+        this.inflightRequest.dispose()
+      }
+
+      return new Promise((resolve, reject) => {
+        this.inflightRequest = this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
+          if (error) {
+            console.error("ArtistRail.jsx", error.message)
+
+            this.setState({
+              loadFailed: true,
+            })
+
+            reject(error)
+          } else {
+            this.inflightRequest = null
+            resolve()
+          }
+        })
+      })
     }
   }
 
   render() {
-    if (this.state.loadFailed) {
+    if (this.state.loadFailed || !this.state.artists.length) {
       return null
     }
 
     return (
-      <View>
+      <View ref="rail">
         <View style={styles.title}>
           <SectionTitle>
             {this.title()}
+          </SectionTitle>
+          <SectionTitle style={styles.subtitle}>
+            {this.subtitle()}
           </SectionTitle>
         </View>
         {this.renderModuleResults()}
@@ -194,6 +228,7 @@ class ArtistRail extends React.Component<Props, State> {
 interface Styles {
   cardContainer: ViewStyle
   title: ViewStyle
+  subtitle: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -201,13 +236,17 @@ const styles = StyleSheet.create<Styles>({
     flexGrow: 1,
     flexDirection: "row",
     marginTop: 10,
-    minHeight: 330,
+    minHeight: 320,
   },
   title: {
-    marginLeft: 30,
-    marginRight: 30,
-    marginTop: 40,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 30,
     marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 20,
+    fontFamily: "AGaramondPro-Regular",
   },
 })
 

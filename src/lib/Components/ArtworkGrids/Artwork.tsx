@@ -1,16 +1,28 @@
 import { map } from "lodash"
-import * as React from "react"
+import React from "react"
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import colors from "../../../data/colors"
-import SwitchBoard from "../../NativeModules/SwitchBoard"
+import colors from "lib/data/colors"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import ImageView from "../OpaqueImageView"
 import SerifText from "../Text/Serif"
 
-class Artwork extends React.Component<RelayProps, any> {
+interface Props extends RelayProps {
+  // Passes the Artwork ID back up to another component
+  // ideally, this would be used to send an array of Artworks
+  // through to Eigen where this item is the default selected one.
+  //
+  // If it's not provided, then it will push just the one artwork
+  // to the switchboard.
+  onPress?: (artworkID: string) => void
+}
+
+class Artwork extends React.Component<Props, any> {
   handleTap() {
-    SwitchBoard.presentNavigationViewController(this, this.props.artwork.href)
+    this.props.onPress && this.props.artwork.id
+      ? this.props.onPress(this.props.artwork.id)
+      : SwitchBoard.presentNavigationViewController(this, this.props.artwork.href)
   }
 
   render() {
@@ -65,7 +77,13 @@ class Artwork extends React.Component<RelayProps, any> {
     const artwork = this.props.artwork
     if (artwork.is_in_auction && artwork.sale_artwork) {
       if (artwork.sale_artwork.sale.is_open) {
-        const numberOfBids = artwork.sale_artwork.bidder_positions_count
+        let numberOfBids = null
+        try {
+          numberOfBids = artwork.sale_artwork.bidder_positions_count
+        } catch (e) {
+          console.error(`Sentry issue #274707594 triggered with props: ${JSON.stringify(this.props)}`)
+          return null
+        }
         let text = artwork.sale_artwork.opening_bid.display
         if (numberOfBids > 0) {
           text = `${artwork.sale_artwork.current_bid.display} (${numberOfBids} bid${numberOfBids === 1 ? "" : "s"})`
@@ -116,6 +134,7 @@ export default createFragmentContainer(
       date
       sale_message
       is_in_auction
+      id
       sale_artwork {
         opening_bid {
           display
@@ -145,6 +164,7 @@ export default createFragmentContainer(
 
 interface RelayProps {
   artwork: {
+    id: string
     title: string | null
     date: string | null
     sale_message: string | null

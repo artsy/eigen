@@ -1,32 +1,23 @@
-import * as React from "react"
+import React from "react"
 
 import {
   Keyboard,
   LayoutAnimation,
-  NativeMethodsMixinStatic,
   NavigatorIOS,
   Picker,
   Route,
   ScrollView,
-  TextInput,
-  TouchableHighlight,
   TouchableWithoutFeedback,
   View,
   ViewProperties,
 } from "react-native"
-import { ConsignmentMetadata, SearchResult } from "../"
-import { Fonts } from "../../../../data/fonts"
-import TODO from "../Components/ArtworkConsignmentTodo"
+
+import { ConsignmentMetadata } from "../"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
-import { Form, Label, Row } from "../Components/FormElements"
+import { Label, Row } from "../Components/FormElements"
 import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
-import { BodyText, LargeHeadline, Subtitle } from "../Typography"
-import Artist from "./Artist"
-import Provenance from "./Provenance"
-import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
-import Welcome from "./Welcome"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -108,10 +99,11 @@ export default class Metadata extends React.Component<Props, State> {
 
   showCategorySelection = () => {
     Keyboard.dismiss()
-    this.animateStateChange({ showSelector: true })
+    this.animateStateChange({ showPicker: true })
   }
-  hideCategorySelection = () => this.animateStateChange({ showSelector: false })
-  changeCategoryValue = (value, index) => {
+
+  hideCategorySelection = () => this.animateStateChange({ showPicker: false })
+  changeCategoryValue = (_value, index) => {
     this.setState({
       categoryName: categoryOptions[index].name,
       category: categoryOptions[index].value,
@@ -132,7 +124,7 @@ export default class Metadata extends React.Component<Props, State> {
       <View style={{ flex: 1 }}>
         <ConsignmentBG>
           <DoneButton onPress={this.doneTapped}>
-            <ScrollView keyboardShouldPersistTaps="handled">
+            <ScrollView keyboardShouldPersistTaps="handled" centerContent>
               <View style={{ padding: 10 }}>
                 <Row>
                   <Text
@@ -142,6 +134,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onChangeText: this.updateTitle,
                       value: this.state.title,
                       onSubmitEditing: this.selectNextInput,
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
@@ -156,23 +149,11 @@ export default class Metadata extends React.Component<Props, State> {
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       ref: component => (this.yearInput = component),
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
                 </Row>
-
-                <TouchableWithoutFeedback onPress={this.showCategorySelection}>
-                  <Row>
-                    <Text
-                      text={{
-                        placeholder: "Category",
-                        value: this.state.categoryName,
-                      }}
-                      readonly={true}
-                      style={{ margin: 10 }}
-                    />
-                  </Row>
-                </TouchableWithoutFeedback>
 
                 <Row>
                   <Text
@@ -183,6 +164,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       ref: component => (this.mediumInput = component),
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
@@ -191,23 +173,27 @@ export default class Metadata extends React.Component<Props, State> {
                 <Row>
                   <Text
                     text={{
+                      keyboardType: "numeric",
                       placeholder: "Width",
                       onChangeText: this.updateWidth,
                       value: this.state.width,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       ref: component => (this.widthInput = component),
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
                   <Text
                     text={{
+                      keyboardType: "numeric",
                       placeholder: "Height",
                       onChangeText: this.updateHeight,
                       value: this.state.height,
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       ref: component => (this.heightInput = component),
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
@@ -222,6 +208,7 @@ export default class Metadata extends React.Component<Props, State> {
                       onFocus: this.hideCategorySelection,
                       onSubmitEditing: this.selectNextInput,
                       value: this.state.depth ? this.state.depth.toString() : "",
+                      returnKeyType: "next",
                     }}
                     style={{ margin: 10 }}
                   />
@@ -230,6 +217,18 @@ export default class Metadata extends React.Component<Props, State> {
                     <Toggle selected={this.state.unit === "CM"} left="CM" right="IN" onPress={this.updateUnit} />
                   </View>
                 </Row>
+                <TouchableWithoutFeedback onPress={this.showCategorySelection}>
+                  <Row>
+                    <Text
+                      text={{
+                        placeholder: "Category",
+                        value: this.state.categoryName,
+                      }}
+                      readonly={true}
+                      style={{ margin: 10 }}
+                    />
+                  </Row>
+                </TouchableWithoutFeedback>
               </View>
             </ScrollView>
           </DoneButton>
@@ -240,7 +239,7 @@ export default class Metadata extends React.Component<Props, State> {
         }
         {this.state.showPicker
           ? <Picker
-              style={{ height: 220, backgroundColor: "black", marginTop: 40 }}
+              style={{ height: 220, backgroundColor: "black" }}
               key="picker"
               selectedValue={this.state.category}
               onValueChange={this.changeCategoryValue}

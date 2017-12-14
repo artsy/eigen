@@ -1,20 +1,20 @@
-import * as React from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import React, { Component } from "react"
+import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
-import { ListView, ListViewDataSource, View } from "react-native"
+import { FlatList, View } from "react-native"
 import { LargeHeadline } from "../Typography"
 
+import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
-import ConversationSnippet from "./ConversationSnippet"
-
 import Spinner from "../../Spinner"
+import ConversationSnippet, { Props as ConversationSnippetProps } from "./ConversationSnippet"
 
-const PageSize = 10
+import { PAGE_SIZE } from "lib/data/constants"
 
 const Headline = styled(LargeHeadline)`
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: -10px;
 `
 
 interface Props extends RelayProps {
@@ -24,27 +24,17 @@ interface Props extends RelayProps {
 }
 
 interface State {
-  dataSource: ListViewDataSource | null
-  fetchingNextPage: boolean
+  conversations: ConversationSnippetProps[] | null
 }
 
-export class Conversations extends React.Component<Props, State> {
-  constructor(props) {
-    super(props)
-
-    const dataSource = new ListView.DataSource({
-      rowHasChanged: (a, b) => a !== b,
-    }).cloneWithRows(this.conversations)
-
-    this.state = {
-      dataSource,
-      fetchingNextPage: false,
-    }
+export class Conversations extends Component<Props, State> {
+  get conversations() {
+    return this.getConversationsFrom(this.props.me)
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.setState({
-      dataSource: this.state.dataSource,
+      conversations: this.conversations,
     })
   }
 
@@ -52,71 +42,82 @@ export class Conversations extends React.Component<Props, State> {
     const conversations = this.getConversationsFrom(newProps.me)
 
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(conversations),
+      conversations,
     })
-  }
-
-  hasContent() {
-    if (!this.props.me) {
-      return false
-    }
-
-    return this.props.me.conversations.edges.length > 0
-  }
-
-  get conversations() {
-    return this.getConversationsFrom(this.props.me)
   }
 
   getConversationsFrom(me) {
-    if (!me) {
-      return []
+    let conversations = []
+
+    if (me) {
+      conversations = me.conversations.edges
+        .filter(({ node }) => {
+          return node && node.last_message
+        })
+        .map(edge => edge.node)
     }
-    const conversations = me.conversations.edges
-      .filter(({ node }) => {
-        return node.last_message
-      })
-      .map(edge => edge.node)
-    return conversations || []
+
+    return conversations
   }
 
-  fetchData() {
-    if (this.state.fetchingNextPage) {
-      return
-    }
-    this.setState({ fetchingNextPage: true })
-    this.props.relay.loadMore(PageSize, error => {
-      // TODO: Not performing any error handling here
-      this.setState({
-        fetchingNextPage: false,
-        dataSource: this.state.dataSource.cloneWithRows(this.conversations),
+  fetchData = () => {
+    const { relay } = this.props
+
+    if (!relay.isLoading()) {
+      relay.loadMore(PAGE_SIZE, error => {
+        if (error) {
+          console.error("Conversations/index.tsx #fetchData", error.message)
+          // FIXME: Handle error
+        }
+
+        this.setState({
+          conversations: this.conversations,
+        })
       })
-    })
+    }
+  }
+
+  refreshConversations = (callback: () => void) => {
+    const { relay } = this.props
+
+    if (!relay.isLoading()) {
+      relay.refetchConnection(PAGE_SIZE, error => {
+        if (error) {
+          console.error("Conversations/index.tsx #refreshConversations", error.message)
+          // FIXME: Handle error
+        }
+
+        if (callback) {
+          callback()
+        }
+      })
+    }
   }
 
   render() {
+    const showLoadingSpinner = this.props.relay.hasMore()
+
     return (
       <View>
-        <ListView
-          dataSource={this.state.dataSource}
-          initialListSize={10}
-          scrollEventThrottle={10}
-          onEndReachedThreshold={10}
-          enableEmptySections={true}
-          renderHeader={() =>
-            <View>
-              {this.props.headerView}
-              {this.hasContent() ? <Headline>Messages</Headline> : null}
-            </View>}
-          renderRow={data =>
-            <ConversationSnippet
-              conversation={data}
-              key={data.id}
-              onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${data.id}`)}
-            />}
-          onEndReached={() => this.fetchData()}
+        <View>
+          {this.props.headerView}
+          {this.conversations && <Headline>Messages</Headline>}
+        </View>
+        <FlatList
+          data={this.state.conversations}
+          keyExtractor={(_item, index) => String(index)}
+          scrollEventThrottle={500}
+          renderItem={({ item }) => {
+            return (
+              <ConversationSnippet
+                conversation={item}
+                onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${item.id}`)}
+              />
+            )
+          }}
+          onScroll={isCloseToBottom(this.fetchData)} // TODO: Investiate why onEndReached fires erroniously
         />
-        {this.state.fetchingNextPage && <Spinner />}
+        {showLoadingSpinner && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
       </View>
     )
   }
@@ -147,7 +148,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.me && props.me.conversations
+      return props.me && (props.me.conversations as ConnectionData)
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -155,7 +156,7 @@ export default createPaginationContainer(
         count: totalCount,
       }
     },
-    getVariables(props, { count, cursor }, fragmentVariables) {
+    getVariables(_props, { count, cursor }, fragmentVariables) {
       return {
         // in most cases, for variables other than connection filters like
         // `first`, `after`, etc. you may want to use the previous values.
@@ -172,7 +173,7 @@ export default createPaginationContainer(
       }
     `,
   }
-)
+) as React.ComponentClass<Props>
 
 interface RelayProps {
   me: {

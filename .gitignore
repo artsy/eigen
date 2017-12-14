@@ -52,10 +52,6 @@ yarn-error.log
 # on every PR
 .jest/cache
 
-# A commit deploy using `yarn bundle-with-storybooks` generates these
-Emission.js
-Emission.js.meta
-
 # Danger artifacts
 tslint-errors.json
 
@@ -64,3 +60,5 @@ tslint-errors.json
 haul-debug.log
 .happypack
 test-results.json
+head_metadata.json
+.vscode/temp.sql

@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { AppRegistry, NavigatorIOS } from "react-native"
 
 import * as storybook from "@storybook/react-native"
@@ -20,7 +20,7 @@ export interface StorySection {
 const stories = storybook.getStorybook()
 const root = storiesToTree(stories)
 
-const render = (props: any) =>
+const render = (_props: any) =>
   <NavigatorIOS
     navigationBarHidden={true}
     initialRoute={{ component: Browser, title: "Welcome", passProps: { section: root } }}

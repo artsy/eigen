@@ -3,51 +3,15 @@
 exports[`with notifications lays out correctly on larger screens 1`] = `
 <RCTScrollView
   contentContainerStyle={Object {}}
-  onLayout={[Function]}
   onScroll={[Function]}
   scrollEventThrottle={100}
 >
   <View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      numberOfLines={1}
-      style={
-        Array [
-          Object {
-            "fontSize": 17,
-          },
-          Array [
-            Object {
-              "fontSize": 20,
-              "marginTop": 20,
-            },
-            Object {
-              "marginLeft": 40,
-              "marginRight": 40,
-            },
-          ],
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
-        ]
-      }
-    >
-      Works by Artists you Follow
-    </Text>
     <View
       style={
-        Array [
-          Object {
-            "marginLeft": 40,
-            "marginRight": 40,
-          },
-          Object {
-            "flex": 1,
-          },
-        ]
+        Object {
+          "flex": 1,
+        }
       }
     >
       <RCTScrollView
@@ -56,21 +20,17 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
             "items": 2,
           }
         }
-        onEndReached={[Function]}
         renderRow={[Function]}
         renderScrollComponent={[Function]}
         renderSeparator={[Function]}
         scrollEnabled={false}
-        style={
-          Object {
-            "marginTop": 20,
-          }
-        }
       >
         <View>
           <View
             style={
               Object {
+                "marginLeft": 20,
+                "marginRight": 20,
                 "marginTop": 20,
               }
             }
@@ -121,37 +81,27 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                   }
                 }
               >
-                <View
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
                   style={
-                    Object {
-                      "flexDirection": "row",
-                      "flexGrow": 1,
-                      "justifyContent": "space-between",
-                    }
+                    Array [
+                      Object {
+                        "fontSize": 12,
+                      },
+                      Object {
+                        "fontSize": 12,
+                      },
+                      Object {
+                        "fontFamily": "AvantGardeGothicITC",
+                      },
+                    ]
                   }
                 >
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "fontSize": 12,
-                        },
-                        Object {
-                          "fontSize": 14,
-                        },
-                        Object {
-                          "fontFamily": "AvantGardeGothicITC",
-                        },
-                      ]
-                    }
-                  >
-                    JEAN-MICHEL BASQUIAT
-                  </Text>
-                </View>
+                  JEAN-MICHEL BASQUIAT
+                </Text>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -165,7 +115,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                       },
                       Object {
                         "color": "#666666",
-                        "fontSize": 16,
+                        "fontSize": 14,
                         "marginTop": 2,
                       },
                       Object {
@@ -174,7 +124,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                     ]
                   }
                 >
-                  1 Work Added · Mar 16
+                  1 Work Added
                 </Text>
               </View>
             </View>
@@ -203,6 +153,8 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
           <View
             style={
               Object {
+                "marginLeft": 20,
+                "marginRight": 20,
                 "marginTop": 20,
               }
             }
@@ -253,37 +205,27 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                   }
                 }
               >
-                <View
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
                   style={
-                    Object {
-                      "flexDirection": "row",
-                      "flexGrow": 1,
-                      "justifyContent": "space-between",
-                    }
+                    Array [
+                      Object {
+                        "fontSize": 12,
+                      },
+                      Object {
+                        "fontSize": 12,
+                      },
+                      Object {
+                        "fontFamily": "AvantGardeGothicITC",
+                      },
+                    ]
                   }
                 >
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "fontSize": 12,
-                        },
-                        Object {
-                          "fontSize": 14,
-                        },
-                        Object {
-                          "fontFamily": "AvantGardeGothicITC",
-                        },
-                      ]
-                    }
-                  >
-                    ANA MENDIETA
-                  </Text>
-                </View>
+                  ANA MENDIETA
+                </Text>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -297,7 +239,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                       },
                       Object {
                         "color": "#666666",
-                        "fontSize": 16,
+                        "fontSize": 14,
                         "marginTop": 2,
                       },
                       Object {
@@ -306,7 +248,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                     ]
                   }
                 >
-                  2 Works Added · Mar 16
+                  2 Works Added
                 </Text>
               </View>
             </View>
@@ -342,51 +284,15 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
 exports[`with notifications lays out correctly on small screens 1`] = `
 <RCTScrollView
   contentContainerStyle={Object {}}
-  onLayout={[Function]}
   onScroll={[Function]}
   scrollEventThrottle={100}
 >
   <View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      numberOfLines={1}
-      style={
-        Array [
-          Object {
-            "fontSize": 17,
-          },
-          Array [
-            Object {
-              "fontSize": 20,
-              "marginTop": 20,
-            },
-            Object {
-              "marginLeft": 20,
-              "marginRight": 20,
-            },
-          ],
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
-        ]
-      }
-    >
-      Works by Artists you Follow
-    </Text>
     <View
       style={
-        Array [
-          Object {
-            "marginLeft": 20,
-            "marginRight": 20,
-          },
-          Object {
-            "flex": 1,
-          },
-        ]
+        Object {
+          "flex": 1,
+        }
       }
     >
       <RCTScrollView
@@ -395,21 +301,17 @@ exports[`with notifications lays out correctly on small screens 1`] = `
             "items": 2,
           }
         }
-        onEndReached={[Function]}
         renderRow={[Function]}
         renderScrollComponent={[Function]}
         renderSeparator={[Function]}
         scrollEnabled={false}
-        style={
-          Object {
-            "marginTop": 0,
-          }
-        }
       >
         <View>
           <View
             style={
               Object {
+                "marginLeft": 20,
+                "marginRight": 20,
                 "marginTop": 20,
               }
             }
@@ -460,37 +362,27 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                   }
                 }
               >
-                <View
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
                   style={
-                    Object {
-                      "flexDirection": "row",
-                      "flexGrow": 1,
-                      "justifyContent": "space-between",
-                    }
+                    Array [
+                      Object {
+                        "fontSize": 12,
+                      },
+                      Object {
+                        "fontSize": 12,
+                      },
+                      Object {
+                        "fontFamily": "AvantGardeGothicITC",
+                      },
+                    ]
                   }
                 >
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "fontSize": 12,
-                        },
-                        Object {
-                          "fontSize": 14,
-                        },
-                        Object {
-                          "fontFamily": "AvantGardeGothicITC",
-                        },
-                      ]
-                    }
-                  >
-                    JEAN-MICHEL BASQUIAT
-                  </Text>
-                </View>
+                  JEAN-MICHEL BASQUIAT
+                </Text>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -504,7 +396,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                       },
                       Object {
                         "color": "#666666",
-                        "fontSize": 16,
+                        "fontSize": 14,
                         "marginTop": 2,
                       },
                       Object {
@@ -513,7 +405,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                     ]
                   }
                 >
-                  1 Work Added · Mar 16
+                  1 Work Added
                 </Text>
               </View>
             </View>
@@ -542,6 +434,8 @@ exports[`with notifications lays out correctly on small screens 1`] = `
           <View
             style={
               Object {
+                "marginLeft": 20,
+                "marginRight": 20,
                 "marginTop": 20,
               }
             }
@@ -592,37 +486,27 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                   }
                 }
               >
-                <View
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
                   style={
-                    Object {
-                      "flexDirection": "row",
-                      "flexGrow": 1,
-                      "justifyContent": "space-between",
-                    }
+                    Array [
+                      Object {
+                        "fontSize": 12,
+                      },
+                      Object {
+                        "fontSize": 12,
+                      },
+                      Object {
+                        "fontFamily": "AvantGardeGothicITC",
+                      },
+                    ]
                   }
                 >
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "fontSize": 12,
-                        },
-                        Object {
-                          "fontSize": 14,
-                        },
-                        Object {
-                          "fontFamily": "AvantGardeGothicITC",
-                        },
-                      ]
-                    }
-                  >
-                    ANA MENDIETA
-                  </Text>
-                </View>
+                  ANA MENDIETA
+                </Text>
                 <Text
                   accessible={true}
                   allowFontScaling={true}
@@ -636,7 +520,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                       },
                       Object {
                         "color": "#666666",
-                        "fontSize": 16,
+                        "fontSize": 14,
                         "marginTop": 2,
                       },
                       Object {
@@ -645,7 +529,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                     ]
                   }
                 >
-                  2 Works Added · Mar 16
+                  2 Works Added
                 </Text>
               </View>
             </View>
@@ -685,144 +569,85 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
       "flex": 1,
     }
   }
-  onLayout={[Function]}
   onScroll={[Function]}
   scrollEventThrottle={100}
 >
   <View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      numberOfLines={1}
-      style={
-        Array [
-          Object {
-            "fontSize": 17,
-          },
-          Array [
-            Object {
-              "fontSize": 20,
-              "marginTop": 20,
-            },
-            Object {
-              "marginLeft": 40,
-              "marginRight": 40,
-            },
-          ],
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
-        ]
-      }
-    >
-      Works by Artists you Follow
-    </Text>
     <View
       style={
-        Array [
-          Object {
-            "marginLeft": 40,
-            "marginRight": 40,
-          },
-          Object {
-            "flex": 1,
-          },
-        ]
+        Object {
+          "flex": 1,
+        }
       }
     >
       <View
         style={
-          Object {
-            "alignItems": "center",
-            "flex": 1,
-            "justifyContent": "center",
-          }
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "height": "100%",
+              "justifyContent": "center",
+              "marginLeft": 20,
+              "marginRight": 20,
+            },
+            undefined,
+          ]
         }
       >
         <View
           style={
-            Object {
-              "paddingBottom": 60,
-            }
+            Array [
+              Object {
+                "maxWidth": 320,
+                "paddingBottom": 60,
+              },
+              undefined,
+            ]
           }
         >
-          <View
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
             style={
-              Object {
-                "backgroundColor": "black",
-                "height": 1,
-              }
-            }
-          />
-          <View
-            style={
-              Object {
-                "alignItems": "center",
-                "marginBottom": 25,
-                "marginTop": 25,
-              }
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 30,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "fontSize": 17,
-                  },
-                  Object {
-                    "fontSize": 20,
-                  },
-                  Object {
-                    "fontFamily": "AGaramondPro-Regular",
-                  },
-                ]
-              }
-            >
-              You’re not following any artists yet
-            </Text>
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              numberOfLines={2}
-              style={
-                Array [
-                  Object {
-                    "fontSize": 17,
-                  },
-                  Object {
-                    "color": "#666666",
-                    "fontSize": 16,
-                    "marginLeft": 20,
-                    "marginRight": 20,
-                    "marginTop": 10,
-                    "textAlign": "center",
-                  },
-                  Object {
-                    "fontFamily": "AGaramondPro-Regular",
-                  },
-                ]
-              }
-            >
-              Follow artists to get updates about new works that become available.
-            </Text>
-          </View>
-          <View
+            You haven’t followed any artists yet.
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            numberOfLines={0}
             style={
-              Object {
-                "backgroundColor": "black",
-                "height": 1,
-              }
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 18,
+                  "marginTop": 10,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
             }
-          />
+          >
+            Follow artists to see new works that have been added to Artsy
+          </Text>
         </View>
       </View>
     </View>
@@ -837,144 +662,85 @@ exports[`without notifications lays out correctly on small screens 1`] = `
       "flex": 1,
     }
   }
-  onLayout={[Function]}
   onScroll={[Function]}
   scrollEventThrottle={100}
 >
   <View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      numberOfLines={1}
-      style={
-        Array [
-          Object {
-            "fontSize": 17,
-          },
-          Array [
-            Object {
-              "fontSize": 20,
-              "marginTop": 20,
-            },
-            Object {
-              "marginLeft": 20,
-              "marginRight": 20,
-            },
-          ],
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
-        ]
-      }
-    >
-      Works by Artists you Follow
-    </Text>
     <View
       style={
-        Array [
-          Object {
-            "marginLeft": 20,
-            "marginRight": 20,
-          },
-          Object {
-            "flex": 1,
-          },
-        ]
+        Object {
+          "flex": 1,
+        }
       }
     >
       <View
         style={
-          Object {
-            "alignItems": "center",
-            "flex": 1,
-            "justifyContent": "center",
-          }
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "height": "100%",
+              "justifyContent": "center",
+              "marginLeft": 20,
+              "marginRight": 20,
+            },
+            undefined,
+          ]
         }
       >
         <View
           style={
-            Object {
-              "paddingBottom": 60,
-            }
+            Array [
+              Object {
+                "maxWidth": 320,
+                "paddingBottom": 60,
+              },
+              undefined,
+            ]
           }
         >
-          <View
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
             style={
-              Object {
-                "backgroundColor": "black",
-                "height": 1,
-              }
-            }
-          />
-          <View
-            style={
-              Object {
-                "alignItems": "center",
-                "marginBottom": 25,
-                "marginTop": 25,
-              }
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 30,
+                  "marginLeft": 10,
+                  "marginRight": 10,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "fontSize": 17,
-                  },
-                  Object {
-                    "fontSize": 20,
-                  },
-                  Object {
-                    "fontFamily": "AGaramondPro-Regular",
-                  },
-                ]
-              }
-            >
-              You’re not following any artists yet
-            </Text>
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              disabled={false}
-              ellipsizeMode="tail"
-              numberOfLines={2}
-              style={
-                Array [
-                  Object {
-                    "fontSize": 17,
-                  },
-                  Object {
-                    "color": "#666666",
-                    "fontSize": 16,
-                    "marginLeft": 20,
-                    "marginRight": 20,
-                    "marginTop": 10,
-                    "textAlign": "center",
-                  },
-                  Object {
-                    "fontFamily": "AGaramondPro-Regular",
-                  },
-                ]
-              }
-            >
-              Follow artists to get updates about new works that become available.
-            </Text>
-          </View>
-          <View
+            You haven’t followed any artists yet.
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            disabled={false}
+            ellipsizeMode="tail"
+            numberOfLines={0}
             style={
-              Object {
-                "backgroundColor": "black",
-                "height": 1,
-              }
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 18,
+                  "marginTop": 10,
+                  "textAlign": "center",
+                },
+                undefined,
+              ]
             }
-          />
+          >
+            Follow artists to see new works that have been added to Artsy
+          </Text>
         </View>
       </View>
     </View>

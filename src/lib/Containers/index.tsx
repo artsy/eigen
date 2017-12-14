@@ -1,10 +1,11 @@
 import Home from "../Scenes/Home"
+import MyProfile from "../Scenes/Settings/MyProfile"
 import Artist from "./Artist"
 import Conversation from "./Conversation"
 import Gene from "./Gene"
 import Inbox from "./Inbox"
 import Inquiry from "./Inquiry"
-import MyAccount from "./MyAccount"
+import Sale from "./Sale"
 import WorksForYou from "./WorksForYou"
 
 export default {
@@ -12,8 +13,9 @@ export default {
   Conversation,
   Home,
   Gene,
+  Sale,
   WorksForYou,
-  MyAccount,
+  MyProfile,
   Inbox,
   Inquiry,
 }

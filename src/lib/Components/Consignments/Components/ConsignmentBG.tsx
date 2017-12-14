@@ -1,6 +1,4 @@
-import * as React from "react"
-
-import { Image, View, ViewStyle } from "react-native"
+import React from "react"
 
 import styled from "styled-components/native"
 
@@ -11,17 +9,21 @@ const BG = styled.View`
 `
 
 // Centered max-width of 600px
-const ConsignmentBG = styled.View`
+const ConsignmentContainer = styled.View`
   background-color: black;
-  max-width: 540px;
   width: 100%;
   height: 100%;
   align-self: center;
 `
 
-export default ({ children }: any) =>
-  <BG key="bg">
-    <ConsignmentBG>
-      {children}
-    </ConsignmentBG>
-  </BG>
+export default class ConsignmentBG extends React.Component<{}> {
+  render() {
+    return (
+      <BG key="bg">
+        <ConsignmentContainer>
+          {this.props.children}
+        </ConsignmentContainer>
+      </BG>
+    )
+  }
+}

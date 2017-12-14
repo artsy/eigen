@@ -4,8 +4,7 @@
 
 - (instancetype)initWithGeneID:(NSString *)geneID;
 {
-    // Use the metaphysics defaults for a nil refineSetting
-    return [self initWithGeneID:geneID refineSettings:@{ @"medium": @"*", @"price_range": @"*-*" } emission:nil];
+    return [self initWithGeneID:geneID refineSettings:@{} emission:nil];
 }
 
 - (instancetype)initWithGeneID:(NSString *)geneID refineSettings:(nonnull NSDictionary *)settings;
@@ -21,11 +20,6 @@
     _geneID = geneID;
   }
   return self;
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
 }
 
 @end

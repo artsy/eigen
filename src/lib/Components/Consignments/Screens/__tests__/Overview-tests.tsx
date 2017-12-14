@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
@@ -9,7 +9,6 @@ import Overview from "../Overview"
 
 import Provenance from "../Provenance"
 import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
-import Welcome from "../Welcome"
 
 const nav = {} as any
 const route = {} as any

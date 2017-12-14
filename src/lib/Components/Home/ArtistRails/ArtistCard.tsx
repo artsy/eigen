@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import {
@@ -14,12 +14,13 @@ import {
 } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
 
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
-import Events from "../../../NativeModules/Events"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
-import InvertedButton from "../../Buttons/InvertedButton"
-import ImageView from "../../OpaqueImageView"
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
+import Events from "lib/NativeModules/Events"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+
+import InvertedButton from "lib/Components/Buttons/InvertedButton"
+import ImageView from "lib/Components/OpaqueImageView"
 
 type ArtistFollowHandlerResult = Promise<Animated.EndResult>
 export type ArtistFollowButtonStatusSetter = (status: boolean) => ArtistFollowHandlerResult
@@ -52,7 +53,7 @@ export class ArtistCard extends React.Component<Props, State> {
   handleFollowChange = () => {
     this.setState({ processingChange: true })
 
-    ARTemporaryAPIModule.setFollowArtistStatus(true, this.props.artist._id, (error, following) => {
+    ARTemporaryAPIModule.setFollowArtistStatus(true, this.props.artist._id, (error, _following) => {
       if (error) {
         console.warn(error)
         this.setState({ processingChange: false })

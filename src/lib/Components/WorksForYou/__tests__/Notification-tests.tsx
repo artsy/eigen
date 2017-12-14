@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import "react-native"
 
 import { renderWithLayout } from "../../../tests/renderWithLayout"
@@ -31,7 +31,7 @@ const notification = () => {
   return {
     artists: "Jean-Michel Basquiat",
     date: "Mar 16",
-    message: "1 Work Added",
+    summary: "1 Work Added",
     artworks: [{ title: "Anti-Product Postcard" }],
     status: "UNREAD",
     image: {

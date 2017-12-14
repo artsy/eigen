@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { TouchableWithoutFeedback, View, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -6,13 +6,7 @@ import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import OpaqueImageView from "../../OpaqueImageView"
 import Metadata from "./Metadata"
 
-interface Props extends ViewProperties {
-  show: {
-    href: string
-    cover_image: {
-      url: string
-    }
-  }
+interface Props extends RelayProps, ViewProperties {
   styles?: {
     container?: any
     image?: any
@@ -20,7 +14,7 @@ interface Props extends ViewProperties {
   }
 }
 
-class Show extends React.Component<Props, {}> {
+class Show extends React.Component<Props> {
   handleTap() {
     SwitchBoard.presentNavigationViewController(this, this.props.show.href)
   }

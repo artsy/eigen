@@ -31,9 +31,6 @@ target 'Emission' do
   # Got to make it look right
   pod 'Artsy+UIFonts'
 
-  # For easy updating of the JS
-  pod 'AppHub', :git => 'https://github.com/orta/apphub.git', :branch => "build_list"
-
   # Native UI tweaks
   pod 'FLKAutoLayout'
 
@@ -49,9 +46,26 @@ target 'Emission' do
                               :branch => 'fetch-user-details'
 end
 
+def edit_pod_file(file, old_code, new_code)
+  code = File.read(file)
+  if code.include?(old_code)
+    FileUtils.chmod("+w", file)
+    File.write(file, code.sub(old_code, new_code))
+  end
+end
+
 post_install do |installer|
   emission = installer.pods_project.targets.find { |target| target.name == 'Emission' }
   emission.build_configurations.each do |config|
     config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = "YES"
   end
+
+  # This fixes a bug in our Home tab view; it can probably be removed when we upgrade to RN 0.50+
+  # See https://github.com/artsy/collector-experience/issues/751
+  react_scrollview_file = '../node_modules/react-native/React/Views/RCTScrollView.m'
+  react_scrollview_old_code = 'self.contentOffset = CGPointMake(
+    MAX(0, MIN(originalOffset.x, fullContentSize.width - boundsSize.width)),
+    MAX(0, MIN(originalOffset.y, fullContentSize.height - boundsSize.height)));'
+  react_scrollview_new_code = 'self.contentOffset= originalOffset;'
+  edit_pod_file react_scrollview_file, react_scrollview_old_code, react_scrollview_new_code
 end

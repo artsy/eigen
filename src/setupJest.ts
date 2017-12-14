@@ -11,7 +11,7 @@ expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 const originalConsoleError = console.error
 
 // Remove on the next React-Native update.
-console.error = (message?: any, ...optionalParams: any[]) => {
+console.error = (message?: any) => {
   if (
     typeof message === "string" &&
     (message.includes("PropTypes has been moved to a separate package.") ||
@@ -26,6 +26,7 @@ console.error = (message?: any, ...optionalParams: any[]) => {
 }
 
 jest.mock("./lib/metaphysics.ts")
+jest.mock("react-tracking")
 
 jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
   NotificationsManager: {
@@ -50,4 +51,3 @@ mockedModule("./lib/Components/Artist/About.tsx", "About")
 
 // Gene tests
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
-mockedModule("./lib/Components/Gene/Artworks.tsx", "Artworks")

@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
@@ -6,8 +6,7 @@ import ArtistSearch from "../Components/SearchResults"
 
 import { ConsignmentSetup, SearchResult } from "../index"
 
-import { debounce } from "lodash"
-import { NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
+import { Dimensions, NavigatorIOS, Route, View, ViewProperties } from "react-native"
 import metaphysics from "../../../metaphysics"
 
 interface ArtistSearchResponse {
@@ -27,7 +26,7 @@ interface State {
 }
 
 export default class Artist extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       query: null,
@@ -54,7 +53,7 @@ export default class Artist extends React.Component<Props, State> {
     const results = await metaphysics<ArtistSearchResponse>(`
       {
         match_artist(term: "${query}") {
-          id
+          id: _id
           name
           image {
             url
@@ -66,11 +65,19 @@ export default class Artist extends React.Component<Props, State> {
   }
 
   render() {
+    const isPad = Dimensions.get("window").width > 700
+
     return (
       <ConsignmentBG>
         <DoneButton onPress={this.doneTapped}>
           <View
-            style={{ alignContent: "center", justifyContent: "flex-end", flexGrow: 1, marginLeft: 20, marginRight: 20 }}
+            style={{
+              alignContent: "center",
+              justifyContent: isPad ? "center" : "flex-end",
+              flexGrow: 1,
+              marginLeft: 20,
+              marginRight: 20,
+            }}
           >
             <ArtistSearch
               results={this.state.results}

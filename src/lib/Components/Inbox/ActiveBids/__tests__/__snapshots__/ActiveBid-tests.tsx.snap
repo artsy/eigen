@@ -18,11 +18,11 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
   style={
     Array [
       Object {
-        "height": 80,
-        "marginBottom": 0,
+        "alignSelf": "center",
+        "height": 120,
         "marginLeft": 20,
         "marginRight": 20,
-        "marginTop": 17,
+        "width": 708,
       },
       undefined,
     ]
@@ -49,8 +49,8 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
         Array [
           Object {
             "borderRadius": 4,
-            "height": 58,
-            "width": 58,
+            "height": 80,
+            "width": 80,
           },
           undefined,
         ]
@@ -66,14 +66,41 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
             "flexShrink": 1,
             "justifyContent": "center",
             "marginBottom": 0,
-            "marginLeft": 15,
-            "marginRight": 15,
+            "marginLeft": 10,
+            "marginRight": 10,
             "marginTop": 0,
           },
           undefined,
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "#cccccc",
+              "fontSize": 11,
+              "textAlign": "left",
+            },
+            Array [
+              Object {
+                "color": "#f7625a",
+                "marginBottom": 3,
+              },
+              undefined,
+            ],
+            Object {
+              "fontFamily": "AvantGardeGothicITC",
+            },
+          ]
+        }
+      >
+        OUTBID
+      </Text>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -116,35 +143,9 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
           ]
         }
       >
-        Current Bid: $10,000 
+        $10,000 (1 Bid)
       </Text>
     </View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      style={
-        Array [
-          Object {
-            "color": "#cccccc",
-            "fontSize": 11,
-            "textAlign": "left",
-          },
-          Array [
-            Object {
-              "color": "#f7625a",
-            },
-            undefined,
-          ],
-          Object {
-            "fontFamily": "AvantGardeGothicITC",
-          },
-        ]
-      }
-    >
-      OUTBID
-    </Text>
   </View>
   <View
     style={
@@ -152,7 +153,6 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
         Object {
           "backgroundColor": "#e5e5e5",
           "height": 1,
-          "marginTop": 17,
           "width": "100%",
         },
         undefined,
@@ -180,11 +180,11 @@ exports[`looks right for bids in live open auctions 1`] = `
   style={
     Array [
       Object {
-        "height": 80,
-        "marginBottom": 0,
+        "alignSelf": "center",
+        "height": 120,
         "marginLeft": 20,
         "marginRight": 20,
-        "marginTop": 17,
+        "width": 708,
       },
       undefined,
     ]
@@ -211,8 +211,8 @@ exports[`looks right for bids in live open auctions 1`] = `
         Array [
           Object {
             "borderRadius": 4,
-            "height": 58,
-            "width": 58,
+            "height": 80,
+            "width": 80,
           },
           undefined,
         ]
@@ -228,14 +228,41 @@ exports[`looks right for bids in live open auctions 1`] = `
             "flexShrink": 1,
             "justifyContent": "center",
             "marginBottom": 0,
-            "marginLeft": 15,
-            "marginRight": 15,
+            "marginLeft": 10,
+            "marginRight": 10,
             "marginTop": 0,
           },
           undefined,
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "#cccccc",
+              "fontSize": 11,
+              "textAlign": "left",
+            },
+            Array [
+              Object {
+                "color": "#6e1fff",
+                "marginBottom": 3,
+              },
+              undefined,
+            ],
+            Object {
+              "fontFamily": "AvantGardeGothicITC",
+            },
+          ]
+        }
+      >
+        JOIN LIVE
+      </Text>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -281,32 +308,6 @@ exports[`looks right for bids in live open auctions 1`] = `
         Live bidding now open
       </Text>
     </View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      style={
-        Array [
-          Object {
-            "color": "#cccccc",
-            "fontSize": 11,
-            "textAlign": "left",
-          },
-          Array [
-            Object {
-              "color": "#6e1fff",
-            },
-            undefined,
-          ],
-          Object {
-            "fontFamily": "AvantGardeGothicITC",
-          },
-        ]
-      }
-    >
-      JOIN LIVE
-    </Text>
   </View>
   <View
     style={
@@ -314,7 +315,6 @@ exports[`looks right for bids in live open auctions 1`] = `
         Object {
           "backgroundColor": "#e5e5e5",
           "height": 1,
-          "marginTop": 17,
           "width": "100%",
         },
         undefined,
@@ -342,11 +342,11 @@ exports[`renders correctly 1`] = `
   style={
     Array [
       Object {
-        "height": 80,
-        "marginBottom": 0,
+        "alignSelf": "center",
+        "height": 120,
         "marginLeft": 20,
         "marginRight": 20,
-        "marginTop": 17,
+        "width": 708,
       },
       undefined,
     ]
@@ -373,8 +373,8 @@ exports[`renders correctly 1`] = `
         Array [
           Object {
             "borderRadius": 4,
-            "height": 58,
-            "width": 58,
+            "height": 80,
+            "width": 80,
           },
           undefined,
         ]
@@ -390,14 +390,41 @@ exports[`renders correctly 1`] = `
             "flexShrink": 1,
             "justifyContent": "center",
             "marginBottom": 0,
-            "marginLeft": 15,
-            "marginRight": 15,
+            "marginLeft": 10,
+            "marginRight": 10,
             "marginTop": 0,
           },
           undefined,
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "#cccccc",
+              "fontSize": 11,
+              "textAlign": "left",
+            },
+            Array [
+              Object {
+                "color": "#f7625a",
+                "marginBottom": 3,
+              },
+              undefined,
+            ],
+            Object {
+              "fontFamily": "AvantGardeGothicITC",
+            },
+          ]
+        }
+      >
+        OUTBID
+      </Text>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -440,35 +467,9 @@ exports[`renders correctly 1`] = `
           ]
         }
       >
-        Current Bid: $10,000 
+        $10,000 (1 Bid)
       </Text>
     </View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      style={
-        Array [
-          Object {
-            "color": "#cccccc",
-            "fontSize": 11,
-            "textAlign": "left",
-          },
-          Array [
-            Object {
-              "color": "#f7625a",
-            },
-            undefined,
-          ],
-          Object {
-            "fontFamily": "AvantGardeGothicITC",
-          },
-        ]
-      }
-    >
-      OUTBID
-    </Text>
   </View>
   <View
     style={
@@ -476,7 +477,6 @@ exports[`renders correctly 1`] = `
         Object {
           "backgroundColor": "#e5e5e5",
           "height": 1,
-          "marginTop": 17,
           "width": "100%",
         },
         undefined,

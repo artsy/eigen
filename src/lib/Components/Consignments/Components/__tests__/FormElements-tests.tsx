@@ -1,8 +1,8 @@
-import * as React from "react"
+import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import { Form, Label, Row } from "../FormElements"
+import { Row } from "../FormElements"
 
 describe("Row", () => {
   it("row passes style props, and other props into the view", () => {

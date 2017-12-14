@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import * as renderer from "react-test-renderer"
 
 import ActiveBid from "../ActiveBid"
@@ -18,13 +18,13 @@ it("looks right for bids in live open auctions", () => {
   expect(tree).toMatchSnapshot()
 })
 
-const bid = (isLive?: boolean, isOpen?: boolean) => {
+const bid = (_isLive?: boolean, isOpen?: boolean) => {
   return {
     sale: {
       is_live_open: isOpen,
       href: "/to-the-auction",
     },
-    active_bid: {
+    most_recent_bid: {
       id: "594933e6275b244305851e9c",
       display_max_bid_amount_dollars: "$10,000",
       max_bid: {
@@ -32,6 +32,9 @@ const bid = (isLive?: boolean, isOpen?: boolean) => {
         display: "$10,000",
       },
       sale_artwork: {
+        counts: {
+          bidder_positions: 1,
+        },
         lot_label: "8",
         lot_number: "8",
         position: 8,

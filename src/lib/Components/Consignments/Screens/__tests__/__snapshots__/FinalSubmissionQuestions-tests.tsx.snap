@@ -21,7 +21,6 @@ exports[`Sets up the right view hierarchy 1`] = `
           "alignSelf": "center",
           "backgroundColor": "black",
           "height": "100%",
-          "maxWidth": 540,
           "width": "100%",
         },
         undefined,
@@ -717,7 +716,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
           "alignSelf": "center",
           "backgroundColor": "black",
           "height": "100%",
-          "maxWidth": 540,
           "width": "100%",
         },
         undefined,
@@ -843,7 +841,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                         "width": 64,
                       },
                       Object {
-                        "backgroundColor": "white",
+                        "backgroundColor": "black",
                       },
                     ],
                   ]
@@ -882,7 +880,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                             "width": 24,
                           },
                           Object {
-                            "color": "black",
+                            "color": "white",
                           },
                         ]
                       }
@@ -905,7 +903,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                             "width": 24,
                           },
                           Object {
-                            "color": "black",
+                            "color": "white",
                           },
                         ]
                       }
@@ -933,7 +931,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "black",
-                            "borderColor": "black",
+                            "borderColor": "white",
                             "borderRadius": 12,
                             "borderWidth": 1,
                             "height": 24,
@@ -987,7 +985,9 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
                     keyboardType="phone-pad"
+                    onBlur={[Function]}
                     onChangeText={[Function]}
+                    onFocus={[Function]}
                     placeholder="Edition Size"
                     placeholderTextColor="#666666"
                     selectionColor="#cccccc"
@@ -1011,13 +1011,10 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                 </View>
                 <View
                   style={
-                    Array [
-                      Object {
-                        "backgroundColor": "white",
-                        "height": 1,
-                      },
-                      undefined,
-                    ]
+                    Object {
+                      "backgroundColor": "#666666",
+                      "height": 1,
+                    }
                   }
                 />
               </View>
@@ -1046,7 +1043,9 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                     autoCorrect={false}
                     clearButtonMode="while-editing"
                     keyboardAppearance="dark"
+                    onBlur={[Function]}
                     onChangeText={[Function]}
+                    onFocus={[Function]}
                     placeholder="Edition Number"
                     placeholderTextColor="#666666"
                     selectionColor="#cccccc"
@@ -1070,13 +1069,10 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                 </View>
                 <View
                   style={
-                    Array [
-                      Object {
-                        "backgroundColor": "white",
-                        "height": 1,
-                      },
-                      undefined,
-                    ]
+                    Object {
+                      "backgroundColor": "#666666",
+                      "height": 1,
+                    }
                   }
                 />
               </View>

@@ -24,6 +24,8 @@ exports[`does not have an activity when searching  1`] = `
       autoCorrect={false}
       clearButtonMode="while-editing"
       keyboardAppearance="dark"
+      onBlur={[Function]}
+      onFocus={[Function]}
       placeholderTextColor="#666666"
       selectionColor="#cccccc"
       style={
@@ -52,13 +54,10 @@ exports[`does not have an activity when searching  1`] = `
   </View>
   <View
     style={
-      Array [
-        Object {
-          "backgroundColor": "white",
-          "height": 1,
-        },
-        undefined,
-      ]
+      Object {
+        "backgroundColor": "#666666",
+        "height": 1,
+      }
     }
   />
 </View>
@@ -88,6 +87,8 @@ exports[`shows an activity indicator when searching  1`] = `
       autoCorrect={false}
       clearButtonMode="while-editing"
       keyboardAppearance="dark"
+      onBlur={[Function]}
+      onFocus={[Function]}
       placeholderTextColor="#666666"
       selectionColor="#cccccc"
       style={
@@ -116,13 +117,10 @@ exports[`shows an activity indicator when searching  1`] = `
   </View>
   <View
     style={
-      Array [
-        Object {
-          "backgroundColor": "white",
-          "height": 1,
-        },
-        undefined,
-      ]
+      Object {
+        "backgroundColor": "#666666",
+        "height": 1,
+      }
     }
   />
 </View>

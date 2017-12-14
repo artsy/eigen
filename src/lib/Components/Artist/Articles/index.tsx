@@ -1,15 +1,11 @@
-import * as React from "react"
+import React, { Component } from "react"
 import { ScrollView, StyleSheet, View, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import SerifText from "../../Text/Serif"
 import Article from "./Article"
 
-interface Props extends ViewProperties {
-  articles: any[]
-}
-
-class Articles extends React.Component<Props, {}> {
+class Articles extends Component<RelayProps & ViewProperties> {
   render() {
     const articles = this.props.articles
     return (
@@ -21,7 +17,7 @@ class Articles extends React.Component<Props, {}> {
           scrollsToTop={false}
           style={{ overflow: "visible", marginBottom: 40 }}
         >
-          {articles.map(article => <Article key={article.__id} article={article} style={styles.article} />)}
+          {articles.map(article => <Article key={article.__id} article={article as any} style={styles.article} />)}
         </ScrollView>
       </View>
     )

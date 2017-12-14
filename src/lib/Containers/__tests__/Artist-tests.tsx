@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
@@ -85,8 +85,17 @@ const artistProps = (hasMetadata: boolean, counts?: any) => {
   }
   return {
     artist: {
+      _id: null,
+      id: null,
       has_metadata: hasMetadata,
       counts,
+      birthday: null,
+      name: null,
+      nationality: null,
+      current_shows: null,
+      upcoming_shows: null,
+      past_small_shows: null,
+      past_large_shows: null,
     },
   }
 }

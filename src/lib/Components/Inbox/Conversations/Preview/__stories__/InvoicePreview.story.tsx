@@ -1,12 +1,14 @@
 import { storiesOf } from "@storybook/react-native"
-import * as React from "react"
+import React from "react"
 import { RelayRefetchProp } from "react-relay"
 import { InvoicePreview, Props } from "../InvoicePreview"
 
 function createProps(state: Props["invoice"]["state"]): Props {
   return {
     conversationId: "42",
-    onSelected: () => "bleep bloop",
+    onSelected: () => {
+      console.log("Selected!")
+    },
     relay: { environment: null, refetch: () => null } as RelayRefetchProp,
     invoice: {
       state,

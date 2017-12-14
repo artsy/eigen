@@ -1,12 +1,10 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { LayoutChangeEvent, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 
 import SerifText from "../Text/Serif"
 import RelatedArtist from "./RelatedArtist"
-
-interface Props extends ViewProperties, RelayProps {}
 
 interface State {
   columns: number
@@ -16,7 +14,7 @@ interface State {
   }
 }
 
-class RelatedArtists extends React.Component<Props, State> {
+class RelatedArtists extends React.Component<RelayProps & ViewProperties, State> {
   constructor(props) {
     super(props)
     this.state = {
@@ -122,5 +120,14 @@ export default createFragmentContainer(
 interface RelayProps {
   artists: Array<{
     __id: string
+    href: string | null
+    name: string | null
+    counts: {
+      for_sale_artworks: boolean | number | string | null
+      artworks: boolean | number | string | null
+    } | null
+    image: {
+      url: string | null
+    } | null
   } | null> | null
 }

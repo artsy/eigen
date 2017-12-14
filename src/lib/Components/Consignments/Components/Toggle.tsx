@@ -1,7 +1,7 @@
-import * as React from "react"
+import fonts from "lib/data/fonts"
+import React from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
-import fonts from "../../../../data/fonts"
 
 const Title = styled.Text`
   color: white;
@@ -30,15 +30,6 @@ const TextBackground = styled.View`
   margin-right: 8;
 `
 
-const BlackCircle = styled.View`
-  width: 24;
-  height: 24;
-  border-radius: 12;
-  background-color: black;
-  border-color: black;
-  border-width: 1;
-`
-
 const WhiteCircle = styled.View`
   width: 24;
   height: 24;
@@ -64,12 +55,12 @@ interface ToggleProps {
 
 const render = (props: ToggleProps) => {
   const { selected } = props
-  const mainBGColor = selected ? "white" : "black"
-  const leftTextColor = selected ? "black" : "white"
-  const rightTextColor = selected ? "black" : "white"
+  const mainBGColor = "black"
+  const leftTextColor = "white"
+  const rightTextColor = "white"
   const dotDirection = selected ? "row-reverse" : "row"
   const dotBorder = selected ? "white" : "white"
-  const Circle = selected ? BlackCircle : WhiteCircle
+  const Circle = WhiteCircle
 
   return (
     <Background style={{ backgroundColor: mainBGColor }} onPress={props.onPress}>

@@ -7,7 +7,7 @@
 // * Do not add an alpha channel, to ensure that the image will be drawn by UIImageView without any blending.
 //
 static void
-LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, void (^callback)(UIImage *loadedImage)) {
+LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *backgroundColor, void (^callback)(UIImage *loadedImage)) {
   dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
     CGFloat width = destinationSize.width * scaleFactor;
     CGFloat height = destinationSize.height * scaleFactor;
@@ -22,7 +22,12 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, void (^ca
                                                  colourSpace,
                                                  kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Host);
     CGColorSpaceRelease(colourSpace);
+      
+    // Ensure there's no background fill weirdness for non-rectangular shapes
+    CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
+    CGContextFillRect(context, CGRectMake(0, 0, width, height));
 
+      
     CGContextDrawImage(context, CGRectMake(0, 0, width, height), image.CGImage);
 
     CGImageRef outputImage = CGBitmapContextCreateImage(context);
@@ -107,7 +112,7 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, void (^ca
        // The view might not yet be associated with a window, in which case
        // -[UIView contentScaleFactor] would always return 1, so use screen instead.
        CGFloat scaleFactor = [[UIScreen mainScreen] scale];
-       LoadImage(image, strongSelf.bounds.size, scaleFactor, ^(UIImage *loadedImage) {
+       LoadImage(image, strongSelf.bounds.size, scaleFactor, strongSelf.placeholderBackgroundColor,^(UIImage *loadedImage) {
          if ([imageURL isEqual:weakSelf.imageURL]) {
            weakSelf.image = loadedImage;
          }

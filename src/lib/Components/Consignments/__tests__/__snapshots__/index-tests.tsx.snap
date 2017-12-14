@@ -65,7 +65,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                 "alignSelf": "center",
                 "backgroundColor": "black",
                 "height": "100%",
-                "maxWidth": 540,
                 "width": "100%",
               },
               undefined,
@@ -73,6 +72,7 @@ exports[`Sets up the right view hierarchy 1`] = `
           }
         >
           <RCTScrollView
+            centerContent={true}
             style={
               Object {
                 "flex": 1,
@@ -82,10 +82,18 @@ exports[`Sets up the right view hierarchy 1`] = `
             <View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "paddingTop": 40,
-                  }
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "flexBasis": 0,
+                      "flexDirection": "column",
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                      "maxHeight": 800,
+                      "minHeight": 400,
+                    },
+                    undefined,
+                  ]
                 }
               >
                 <Text
@@ -96,168 +104,400 @@ exports[`Sets up the right view hierarchy 1`] = `
                   style={
                     Array [
                       Object {
+                        "alignSelf": "center",
                         "color": "white",
-                        "fontSize": 30,
-                        "marginBottom": 20,
-                        "paddingLeft": 20,
-                        "paddingRight": 20,
+                        "fontFamily": "AvantGardeGothicITC",
+                        "fontSize": 46,
+                        "lineHeight": 58,
+                        "marginTop": 80,
                         "textAlign": "center",
+                        "width": 760,
                       },
-                      Object {},
-                      Object {
-                        "fontFamily": "AGaramondPro-Regular",
-                      },
+                      undefined,
                     ]
                   }
                 >
-                  Sell works from your collection through our partner network
+                  SELL WORKS FROM YOUR COLLECTION
                 </Text>
                 <View
                   style={
-                    Object {
-                      "alignItems": "center",
-                      "marginTop": 20,
-                      "width": 300,
-                    }
+                    Array [
+                      Object {
+                        "alignItems": "center",
+                        "paddingTop": 80,
+                      },
+                      undefined,
+                    ]
                   }
                 >
                   <View
                     style={
-                      Object {
-                        "alignItems": "center",
-                        "borderColor": "white",
-                        "borderRadius": 40,
-                        "borderWidth": 2,
-                        "height": 80,
-                        "justifyContent": "center",
-                        "width": 80,
-                      }
+                      Array [
+                        Object {
+                          "flexBasis": 0,
+                          "flexDirection": "row",
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "marginBottom": 0,
+                          "marginLeft": 0,
+                          "marginTop": 50,
+                        },
+                        undefined,
+                      ]
                     }
                   >
                     <Image
                       source={1}
+                      style={
+                        Array [
+                          Object {
+                            "resizeMode": "contain",
+                            "width": 40,
+                          },
+                          undefined,
+                        ]
+                      }
                     />
+                    <Text
+                      accessible={true}
+                      allowFontScaling={true}
+                      disabled={false}
+                      ellipsizeMode="tail"
+                      style={
+                        Array [
+                          Object {
+                            "color": "white",
+                            "fontSize": 30,
+                            "marginBottom": 20,
+                            "paddingLeft": 20,
+                            "paddingRight": 20,
+                            "textAlign": "center",
+                          },
+                          Array [
+                            Object {
+                              "color": "white",
+                              "fontSize": 34,
+                              "minHeight": 60,
+                              "textAlign": "left",
+                              "width": 540,
+                            },
+                            undefined,
+                          ],
+                          Object {
+                            "fontFamily": "AGaramondPro-Regular",
+                          },
+                        ]
+                      }
+                    >
+                      Take a few photos and submit details about the work
+                    </Text>
                   </View>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "color": "#cccccc",
-                          "fontSize": 20,
-                          "marginBottom": 18,
-                          "marginTop": 18,
-                          "paddingLeft": 25,
-                          "paddingRight": 25,
-                          "textAlign": "center",
-                        },
-                        Object {},
-                        Object {
-                          "fontFamily": "AGaramondPro-Regular",
-                        },
-                      ]
-                    }
-                  >
-                    Sell work from your collection through our partner network.
-                  </Text>
                   <View
                     style={
-                      Object {
-                        "alignItems": "center",
-                        "borderColor": "white",
-                        "borderRadius": 40,
-                        "borderWidth": 2,
-                        "height": 80,
-                        "justifyContent": "center",
-                        "width": 80,
-                      }
+                      Array [
+                        Object {
+                          "flexBasis": 0,
+                          "flexDirection": "row",
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "marginBottom": 0,
+                          "marginLeft": 0,
+                          "marginTop": 50,
+                        },
+                        undefined,
+                      ]
                     }
                   >
                     <Image
                       source={1}
+                      style={
+                        Array [
+                          Object {
+                            "resizeMode": "contain",
+                            "width": 40,
+                          },
+                          undefined,
+                        ]
+                      }
                     />
+                    <Text
+                      accessible={true}
+                      allowFontScaling={true}
+                      disabled={false}
+                      ellipsizeMode="tail"
+                      style={
+                        Array [
+                          Object {
+                            "color": "white",
+                            "fontSize": 30,
+                            "marginBottom": 20,
+                            "paddingLeft": 20,
+                            "paddingRight": 20,
+                            "textAlign": "center",
+                          },
+                          Array [
+                            Object {
+                              "color": "white",
+                              "fontSize": 34,
+                              "minHeight": 60,
+                              "textAlign": "left",
+                              "width": 540,
+                            },
+                            undefined,
+                          ],
+                          Object {
+                            "fontFamily": "AGaramondPro-Regular",
+                          },
+                        ]
+                      }
+                    >
+                      Get the offers from galleries and auction houses
+                    </Text>
                   </View>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
+                  <View
                     style={
                       Array [
                         Object {
-                          "color": "#cccccc",
-                          "fontSize": 20,
-                          "marginBottom": 18,
-                          "marginTop": 18,
-                          "paddingLeft": 25,
-                          "paddingRight": 25,
-                          "textAlign": "center",
+                          "flexBasis": 0,
+                          "flexDirection": "row",
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "marginBottom": 0,
+                          "marginLeft": 0,
+                          "marginTop": 50,
                         },
-                        Object {},
-                        Object {
-                          "fontFamily": "AGaramondPro-Regular",
-                        },
+                        undefined,
                       ]
                     }
                   >
-                    Get your work placed in an upcoming sale.
-                  </Text>
-                </View>
-                <View
-                  accessibilityComponentType={undefined}
-                  accessibilityLabel={undefined}
-                  accessibilityTraits={undefined}
-                  accessible={true}
-                  collapsable={undefined}
-                  hitSlop={undefined}
-                  nativeID={undefined}
-                  onLayout={undefined}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
-                  style={
-                    Object {
-                      "alignItems": "center",
-                      "backgroundColor": "rgba(255, 255, 255, 1)",
-                      "borderColor": "rgba(255, 255, 255, 1)",
-                      "borderWidth": 1,
-                      "height": 43,
-                      "justifyContent": "center",
-                      "marginTop": 20,
-                      "width": 174,
-                    }
-                  }
-                  testID={undefined}
-                >
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
+                    <Image
+                      source={1}
+                      style={
+                        Array [
+                          Object {
+                            "resizeMode": "contain",
+                            "width": 40,
+                          },
+                          undefined,
+                        ]
+                      }
+                    />
+                    <Text
+                      accessible={true}
+                      allowFontScaling={true}
+                      disabled={false}
+                      ellipsizeMode="tail"
+                      style={
+                        Array [
+                          Object {
+                            "color": "white",
+                            "fontSize": 30,
+                            "marginBottom": 20,
+                            "paddingLeft": 20,
+                            "paddingRight": 20,
+                            "textAlign": "center",
+                          },
+                          Array [
+                            Object {
+                              "color": "white",
+                              "fontSize": 34,
+                              "minHeight": 60,
+                              "textAlign": "left",
+                              "width": 540,
+                            },
+                            undefined,
+                          ],
+                          Object {
+                            "fontFamily": "AGaramondPro-Regular",
+                          },
+                        ]
+                      }
+                    >
+                      Have your work placed in a gallery or upcoming sale
+                    </Text>
+                  </View>
+                  <View
                     style={
                       Array [
                         Object {
-                          "fontSize": 12,
+                          "flexBasis": 0,
+                          "flexDirection": "row",
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                          "marginBottom": 0,
+                          "marginLeft": 0,
+                          "marginTop": 50,
                         },
-                        Object {
-                          "color": "rgba(0, 0, 0, 1)",
-                          "fontFamily": "AGaramondPro-Regular",
-                          "opacity": 1,
-                        },
-                        Object {
-                          "fontFamily": "AvantGardeGothicITC",
-                        },
+                        undefined,
                       ]
                     }
                   >
-                    GET STARTED
-                  </Text>
+                    <Image
+                      source={1}
+                      style={
+                        Array [
+                          Object {
+                            "resizeMode": "contain",
+                            "width": 40,
+                          },
+                          undefined,
+                        ]
+                      }
+                    />
+                    <Text
+                      accessible={true}
+                      allowFontScaling={true}
+                      disabled={false}
+                      ellipsizeMode="tail"
+                      style={
+                        Array [
+                          Object {
+                            "color": "white",
+                            "fontSize": 30,
+                            "marginBottom": 20,
+                            "paddingLeft": 20,
+                            "paddingRight": 20,
+                            "textAlign": "center",
+                          },
+                          Array [
+                            Object {
+                              "color": "white",
+                              "fontSize": 34,
+                              "minHeight": 60,
+                              "textAlign": "left",
+                              "width": 540,
+                            },
+                            undefined,
+                          ],
+                          Object {
+                            "fontFamily": "AGaramondPro-Regular",
+                          },
+                        ]
+                      }
+                    >
+                      Receive payment once the work sells
+                    </Text>
+                  </View>
+                  <View
+                    style={
+                      Array [
+                        Object {
+                          "alignItems": "center",
+                          "flexBasis": 0,
+                          "flexGrow": 1,
+                          "flexShrink": 1,
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    <View
+                      accessibilityComponentType={undefined}
+                      accessibilityLabel={undefined}
+                      accessibilityTraits={undefined}
+                      accessible={true}
+                      collapsable={undefined}
+                      hitSlop={undefined}
+                      nativeID={undefined}
+                      onLayout={undefined}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        Object {
+                          "alignItems": "center",
+                          "backgroundColor": "rgba(255, 255, 255, 1)",
+                          "borderColor": "rgba(255, 255, 255, 1)",
+                          "borderWidth": 1,
+                          "height": 43,
+                          "justifyContent": "center",
+                          "marginTop": 20,
+                          "width": 174,
+                        }
+                      }
+                      testID={undefined}
+                    >
+                      <Text
+                        accessible={true}
+                        allowFontScaling={true}
+                        disabled={false}
+                        ellipsizeMode="tail"
+                        style={
+                          Array [
+                            Object {
+                              "fontSize": 12,
+                            },
+                            Object {
+                              "color": "rgba(0, 0, 0, 1)",
+                              "fontFamily": "AGaramondPro-Regular",
+                              "opacity": 1,
+                            },
+                            Object {
+                              "fontFamily": "AvantGardeGothicITC",
+                            },
+                          ]
+                        }
+                      >
+                        GET STARTED
+                      </Text>
+                    </View>
+                    <View
+                      accessibilityComponentType={undefined}
+                      accessibilityLabel={undefined}
+                      accessibilityTraits={undefined}
+                      accessible={true}
+                      collapsable={undefined}
+                      hitSlop={undefined}
+                      nativeID={undefined}
+                      onLayout={undefined}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        Object {
+                          "alignItems": "center",
+                          "backgroundColor": "rgba(0, 0, 0, 1)",
+                          "borderColor": "rgba(0, 0, 0, 1)",
+                          "borderWidth": 1,
+                          "height": 43,
+                          "justifyContent": "center",
+                          "marginTop": 20,
+                          "width": 174,
+                        }
+                      }
+                      testID={undefined}
+                    >
+                      <Text
+                        accessible={true}
+                        allowFontScaling={true}
+                        disabled={false}
+                        ellipsizeMode="tail"
+                        style={
+                          Array [
+                            Object {
+                              "fontSize": 12,
+                            },
+                            Object {
+                              "color": "rgba(255, 255, 255, 1)",
+                              "fontFamily": "AGaramondPro-Regular",
+                              "opacity": 1,
+                            },
+                            Object {
+                              "fontFamily": "AvantGardeGothicITC",
+                            },
+                          ]
+                        }
+                      >
+                        CLOSE
+                      </Text>
+                    </View>
+                  </View>
                 </View>
               </View>
             </View>

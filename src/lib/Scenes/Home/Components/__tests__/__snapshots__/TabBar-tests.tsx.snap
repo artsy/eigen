@@ -6,11 +6,10 @@ exports[`renders correctly 1`] = `
     Array [
       Object {
         "borderBottomWidth": 1,
-        "borderColor": "rgb(229, 229, 229)",
+        "borderColor": "#cccccc",
         "flexDirection": "row",
         "height": 50,
         "justifyContent": "space-around",
-        "marginTop": 20,
       },
       undefined,
     ]
@@ -34,6 +33,9 @@ exports[`renders correctly 1`] = `
       Array [
         Object {
           "alignItems": "center",
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
           "justifyContent": "center",
           "paddingTop": 5,
         },
@@ -51,10 +53,11 @@ exports[`renders correctly 1`] = `
       style={
         Array [
           Object {
+            "color": "#cccccc",
             "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
-            "letterSpacing": 1.1,
-            "opacity": 0.3,
+            "letterSpacing": 1.5,
+            "textAlign": "center",
           },
           undefined,
         ]
@@ -81,6 +84,9 @@ exports[`renders correctly 1`] = `
       Array [
         Object {
           "alignItems": "center",
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
           "justifyContent": "center",
           "paddingTop": 5,
         },
@@ -98,10 +104,11 @@ exports[`renders correctly 1`] = `
       style={
         Array [
           Object {
+            "color": "#cccccc",
             "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
-            "letterSpacing": 1.1,
-            "opacity": 0.3,
+            "letterSpacing": 1.5,
+            "textAlign": "center",
           },
           undefined,
         ]
@@ -128,6 +135,9 @@ exports[`renders correctly 1`] = `
       Array [
         Object {
           "alignItems": "center",
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
           "justifyContent": "center",
           "paddingTop": 5,
         },
@@ -145,10 +155,11 @@ exports[`renders correctly 1`] = `
       style={
         Array [
           Object {
+            "color": "#cccccc",
             "fontFamily": "AvantGardeGothicITC",
             "fontSize": 13,
-            "letterSpacing": 1.1,
-            "opacity": 0.3,
+            "letterSpacing": 1.5,
+            "textAlign": "center",
           },
           undefined,
         ]

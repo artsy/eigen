@@ -1,6 +1,6 @@
 import "react-native"
 
-import * as React from "react"
+import React from "react"
 import * as renderer from "react-test-renderer"
 
 import Artwork from "../Artwork"
@@ -72,6 +72,7 @@ const artworkProps = (saleArtwork = null) => {
     partner: {
       name: "Gallery 1261",
     },
+    id: "mikael-olson-some-kind-of-dinosaur",
     href: "/artwork/mikael-olson-some-kind-of-dinosaur",
   }
 }

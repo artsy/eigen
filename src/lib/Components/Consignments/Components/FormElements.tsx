@@ -1,9 +1,8 @@
-import * as React from "react"
+import React from "react"
 
-import { ScrollView, TextProperties, View, ViewProperties, ViewStyle } from "react-native"
-import { ButtonProps, WhiteButton } from "../../Buttons"
+import { ScrollView, View, ViewProperties } from "react-native"
+import { ButtonProps, InvertedButton, WhiteButton } from "../../Buttons"
 import { BodyText, LargeHeadline } from "../Typography/index"
-import Text from "./TextInput"
 
 /** A re-usable full-screen form with a scrollview */
 export const Form: React.SFC<{ title?: string }> = props =>
@@ -33,3 +32,6 @@ export const Label = (props: any) =>
 
 export const Button: React.SFC<ButtonProps> = props =>
   <WhiteButton {...props} style={Object.assign({ height: 43, width: 174, marginTop: 20 }, props.style)} />
+
+export const BlackButton: React.SFC<ButtonProps> = props =>
+  <InvertedButton {...props} style={Object.assign({ height: 43, width: 174, marginTop: 20 }, props.style)} />

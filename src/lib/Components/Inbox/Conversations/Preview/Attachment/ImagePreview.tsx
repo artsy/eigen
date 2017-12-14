@@ -1,12 +1,8 @@
-import * as React from "react"
-import { TouchableHighlight } from "react-native"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import colors from "../../../../../../data/colors"
-import fonts from "../../../../../../data/fonts"
-
-import OpaqueImageView from "../../../../OpaqueImageView"
+import OpaqueImageView from "lib/Components/OpaqueImageView"
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 
 const Image = styled(OpaqueImageView)`

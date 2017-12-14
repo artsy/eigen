@@ -1,20 +1,16 @@
-import * as React from "react"
+import React from "react"
 import { ListView, ListViewDataSource, StyleSheet, View, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import Show from "./Show"
 
-import colors from "../../../../data/colors"
-
-interface Props extends ViewProperties {
-  shows: any[]
-}
+import colors from "lib/data/colors"
 
 interface State {
   dataSource: ListViewDataSource
 }
 
-class SmallList extends React.Component<Props, State> {
+class SmallList extends React.Component<RelayProps & ViewProperties, State> {
   constructor(props) {
     super(props)
     this.state = {

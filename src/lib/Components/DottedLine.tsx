@@ -1,7 +1,7 @@
-import * as PropTypes from "prop-types"
-import * as React from "react"
-import { ColorPropType, processColor, requireNativeComponent, View } from "react-native"
-import colors from "../../data/colors"
+import React from "react"
+import { ColorPropType, processColor, requireNativeComponent } from "react-native"
+
+import colors from "lib/data/colors"
 
 interface Props {
   /** The color of the dots (default: Artsy gray-medium) */

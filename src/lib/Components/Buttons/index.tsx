@@ -1,6 +1,7 @@
-import * as React from "react"
+import React from "react"
 import { Animated, ViewProperties } from "react-native"
-import { Colors } from "../../../data/colors"
+
+import { Colors } from "lib/data/colors"
 
 import Button from "./Button"
 

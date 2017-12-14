@@ -1,7 +1,7 @@
-import * as React from "react"
+import React from "react"
 import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
 
-import colors from "../../data/colors"
+import colors from "lib/data/colors"
 
 const negativeMargin = Dimensions.get("window").width > 700 ? -40 : -20
 

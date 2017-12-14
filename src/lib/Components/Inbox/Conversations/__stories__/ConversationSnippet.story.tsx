@@ -1,16 +1,15 @@
 import { storiesOf } from "@storybook/react-native"
-import moment from "moment"
-import * as React from "react"
+import React from "react"
 import "react-native"
 import { ScrollView } from "react-native"
 
-import { Conversation, ConversationSnippet } from "../ConversationSnippet"
+import { ConversationSnippet } from "../ConversationSnippet"
 
-const conversation: Conversation = {
+const conversation = {
   id: "582",
   to: { name: "ACA Galleries" },
   last_message: "Karl and Anna... Fab!",
-  last_message_at: moment().subtract(1, "year").toISOString(),
+  last_message_at: null, // moment().subtract(1, "year").toISOString(),
   is_last_message_to_user: true,
   last_message_open: null,
   items: [

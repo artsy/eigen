@@ -1,21 +1,19 @@
 import moment from "moment"
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+
+import { Schema, Track, track as _track } from "../../../utils/track"
 
 import { MetadataText, PreviewText as P, SmallHeadline } from "../Typography"
 
-import { StyleSheet, TouchableWithoutFeedback, ViewStyle } from "react-native"
+import { Dimensions, TouchableWithoutFeedback } from "react-native"
 
+import OpaqueImageView from "lib/Components/OpaqueImageView"
+import { Colors } from "lib/data/colors"
+import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
-import DottedLine from "../../../Components/DottedLine"
-import OpaqueImageView from "../../OpaqueImageView"
 
-const Card = styled.View`
-  margin: 10px 20px 0;
-  min-height: 80px;
-`
+const isPad = Dimensions.get("window").width > 700
 
 const VerticalLayout = styled.View`
   flex: 1;
@@ -27,67 +25,68 @@ const HorizontalLayout = styled.View`
   flex-direction: row;
 `
 
+const Card = styled(VerticalLayout)`
+  height: 120px;
+  align-items: center;
+  margin-left:20px;
+  margin-right:20px;
+`
+
 const CardContent = styled(HorizontalLayout)`
-  justify-content: space-between;
+  max-width: 708;
 `
 
 const TextPreview = styled(VerticalLayout)`
-  margin-left: 15;
-  margin-bottom: 15;
+  margin-left: 10;
+  height: 70px;
+  align-self: center;
 `
 
 const DateHeading = styled(HorizontalLayout)`
   justify-content: flex-end;
-  margin-bottom: 4;
 `
 
 const UnreadIndicator = styled.View`
   height: 8;
   width: 8;
   border-radius: 4;
-  background-color: ${colors["purple-regular"]};
+  background-color: ${Colors.PurpleRegular};
   margin-left: 4;
   margin-top: 3;
   margin-bottom: 3;
 `
 
 const Subtitle = styled.Text`
-  font-family: ${fonts["garamond-regular"]};
+  font-family: ${Fonts.GaramondRegular};
   font-size: 16px;
   color: black;
-  margin-top: 6;
-  margin-bottom: 2;
 `
 
 const Title = styled(Subtitle)`
-  font-family: ${fonts["garamond-italic"]};
+  font-family: ${Fonts.GaramondItalic};
 `
 
 const ImageView = styled(OpaqueImageView)`
-  width: 58px;
-  height: 58px;
-  border-radius: 4px;
+  width: 80px;
+  height: 80px;
+  border-radius: 2px;
+  align-self:center;
 `
 
-export interface Conversation {
-  id: string | null
-  to: {
-    name: string | null
-  }
-  last_message: string | null
-  last_message_at: string | null
-  is_last_message_to_user: boolean
-  last_message_open: string | null
-  items: Array<{
-    item: any
-  }>
-}
+const SeparatorLine = styled.View`
+  height: 1;
+  background-color: ${Colors.GrayRegular};
+  width: 100%;
+  ${isPad ? "align-self: center; width: 708;" : ""};
+`
 
-interface Props {
-  conversation: Conversation
+export interface Props extends RelayProps {
   onSelected?: () => void
 }
 
+const track: Track<Props, null, Schema.Entity> = _track
+
+@track()
 export class ConversationSnippet extends React.Component<Props, any> {
   renderTitleForItem(item) {
     if (item.__typename === "Artwork") {
@@ -126,6 +125,16 @@ export class ConversationSnippet extends React.Component<Props, any> {
     }
   }
 
+  @track(props => ({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.ConversationSelected,
+    owner_id: props.conversation.id,
+    owner_type: Schema.OwnerEntityTypes.Conversation,
+  }))
+  conversationSelected() {
+    this.props.onSelected()
+  }
+
   render() {
     const conversation = this.props.conversation
     // If we cannot resolve items in the conversation, such as deleted fair booths
@@ -150,7 +159,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
     const conversationText = conversation.last_message.replace(/\n/g, " ")
     const date = moment(conversation.last_message_at).fromNow(true)
     return (
-      <TouchableWithoutFeedback onPress={this.props.onSelected}>
+      <TouchableWithoutFeedback onPress={() => this.conversationSelected()}>
         <Card>
           <CardContent>
             <ImageView imageURL={imageURL} />
@@ -160,9 +169,6 @@ export class ConversationSnippet extends React.Component<Props, any> {
                   {partnerName}
                 </SmallHeadline>
                 <DateHeading>
-                  <MetadataText>
-                    {date}
-                  </MetadataText>
                   {conversation.is_last_message_to_user && !conversation.last_message_open && <UnreadIndicator />}
                 </DateHeading>
               </HorizontalLayout>
@@ -170,9 +176,12 @@ export class ConversationSnippet extends React.Component<Props, any> {
               <P>
                 {conversationText}
               </P>
+              <MetadataText>
+                {date}
+              </MetadataText>
             </TextPreview>
           </CardContent>
-          <DottedLine />
+          <SeparatorLine />
         </Card>
       </TouchableWithoutFeedback>
     )
@@ -227,7 +236,6 @@ interface RelayProps {
     last_message_at: string | null
     is_last_message_to_user: boolean
     last_message_open: string | null
-    __typename: string
     items: Array<{
       item: any
     } | null> | null

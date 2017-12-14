@@ -1,7 +1,8 @@
 import * as _ from "lodash"
-import * as React from "react"
+import React from "react"
 import ParallaxScrollView from "react-native-parallax-scroll-view"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql } from "react-relay"
+import { RelayRefetchProp } from "react-relay"
 
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
@@ -16,7 +17,7 @@ import GeneArtworksGrid from "../Components/ArtworkGrids/RelayConnections/GeneAr
 
 import SwitchView, { SwitchEvent } from "../Components/SwitchView"
 
-import colors from "../../data/colors"
+import colors from "lib/data/colors"
 import Refine from "../NativeModules/triggerRefine"
 
 const isPad = Dimensions.get("window").width > 700
@@ -76,9 +77,10 @@ export class Gene extends React.Component<Props, State> {
       selectedTabIndex: 0,
       showingStickyHeader: true,
 
+      // Use the metaphysics defaults for refine settings
       sort: "-partner_updated_at",
-      selectedMedium: this.props.medium,
-      selectedPriceRange: this.props.price_range,
+      selectedMedium: this.props.medium || "*",
+      selectedPriceRange: this.props.price_range || "*-*",
     }
   }
 
@@ -116,7 +118,7 @@ export class Gene extends React.Component<Props, State> {
             medium={this.state.selectedMedium}
             priceRange={this.state.selectedPriceRange}
             sort={this.state.sort}
-            queryKey="gene.artworks"
+            mapPropsToArtworksConnection={props => props.gene.artworks}
           />
         )
     }
@@ -166,11 +168,11 @@ export class Gene extends React.Component<Props, State> {
     return HeaderHeight
   }
 
-  refineTapped = button => {
+  refineTapped = _button => {
     const initialSettings = {
       sort: "-partner_updated_at",
-      selectedMedium: this.props.medium,
-      selectedPrice: this.props.price_range,
+      selectedMedium: this.props.medium || "*",
+      selectedPrice: this.props.price_range || "*-*",
       aggregations: this.props.gene.filtered_artworks.aggregations,
     }
 
@@ -183,29 +185,25 @@ export class Gene extends React.Component<Props, State> {
 
     // We're returning the promise so that it's easier
     // to write tests with the resolved state
-    return Refine.triggerRefine(this, initialSettings, currentSettings)
-      .then(newSettings => {
-        if (newSettings) {
-          this.setState({
-            selectedMedium: newSettings.medium,
-            selectedPriceRange: newSettings.selectedPrice,
-            sort: newSettings.sort,
-          })
+    return Refine.triggerRefine(this, initialSettings, currentSettings).then(newSettings => {
+      if (newSettings) {
+        this.setState({
+          selectedMedium: newSettings.medium,
+          selectedPriceRange: newSettings.selectedPrice,
+          sort: newSettings.sort,
+        })
 
-          this.props.relay.refetch(
-            {
-              medium: newSettings.medium,
-              price_range: newSettings.selectedPrice,
-              sort: newSettings.sort,
-            },
-            // TODO: is this param really required?
-            null
-          )
-        }
-      })
-      .catch(error => {
-        console.warn(error)
-      })
+        this.props.relay.refetch(
+          {
+            medium: newSettings.medium,
+            price_range: newSettings.selectedPrice,
+            sort: newSettings.sort,
+          },
+          // TODO: is this param really required?
+          null
+        )
+      }
+    })
   }
 
   /** Title of the Gene */

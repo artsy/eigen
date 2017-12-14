@@ -1,9 +1,8 @@
-import * as React from "react"
-import * as Relay from "react-relay"
-
+import React from "react"
 import styled from "styled-components/native"
-import colors from "../../data/colors"
-import fonts from "../../data/fonts"
+
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 
 const Container = styled.View`
   height: 30;

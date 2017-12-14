@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
@@ -72,7 +72,7 @@ const railProps = (startedFetching = true) => {
       variables: {
         fetchContent: startedFetching,
       },
-      refetch: (a, b, c) => {
+      refetch: (_a, _b, c) => {
         return c && c()
       },
     },

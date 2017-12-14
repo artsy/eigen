@@ -1,7 +1,7 @@
-import * as React from "react"
+import React from "react"
 import { Animated, StyleSheet, TouchableHighlight, View } from "react-native"
 
-import colors from "../../../data/colors"
+import colors from "lib/data/colors"
 import Spinner from "../Spinner"
 import Headline from "../Text/Headline"
 
@@ -37,7 +37,7 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
     }
   }
 
-  componentDidUpdate(prevProps: any, prevState: any) {
+  componentDidUpdate(prevProps: any) {
     if (this.props.selected !== prevProps.selected) {
       const duration = AnimationDuration
       Animated.parallel([

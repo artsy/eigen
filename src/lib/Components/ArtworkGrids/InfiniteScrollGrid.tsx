@@ -6,21 +6,19 @@
 //    - leting the artwork component do a layout pass and calculate its own height based on the column width.
 // 4. Update height of grid to encompass all items.
 
-import * as React from "react"
-import { RelayPaginationProp } from "react-relay"
-
-import { get } from "lodash"
-
+import React from "react"
 import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
+import { RelayPaginationProp } from "react-relay"
 
 import Spinner from "../Spinner"
 import Artwork from "./Artwork"
 
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { ArtistRelayProps } from "./RelayConnections/ArtistForSaleArtworksGrid"
 import { GeneRelayProps } from "./RelayConnections/GeneArtworksGrid"
 
-export const PageSize = 10
-export const PageEndThreshold = 1000
+import { PAGE_SIZE } from "lib/data/constants"
 
 /**
  * TODO:
@@ -33,6 +31,7 @@ export const PageEndThreshold = 1000
 
 interface Artwork {
   __id: string
+  id: string
   image: {
     aspect_ratio: number | null
   } | null
@@ -47,39 +46,40 @@ interface ArtworksConnection {
   }>
 }
 
-interface Props extends ArtistRelayProps, GeneRelayProps {
+export interface Props extends ArtistRelayProps, GeneRelayProps {
   /** The direction for the grid, currently only 'column' is supported . */
-  sectionDirection: string
+  sectionDirection?: string
 
   /** The arity of the number of sections (e.g. columns) to show */
-  sectionCount: number
+  sectionCount?: number
 
   /** The inset margin for the whole grid */
-  sectionMargin: number
+  sectionMargin?: number
 
   /** The per-item margin */
-  itemMargin: number
+  itemMargin?: number
 
   /** The artist in question */
-  artist: any
+  artist?: any
 
   /** The gene in question */
-  gene: any
+  gene?: any
 
-  /** The key to get artworks */
-  queryKey: any
+  mapPropsToArtworksConnection: (props: any) => ArtworksConnection
+
+  mapConnectionNodeToArtwork?: (node: any) => Artwork
 
   /** Filter for artist artworks */
-  filter: any
+  filter?: any
 
   /** Medium for filter artworks */
-  medium: string
+  medium?: string
 
   /** Price range for filter artworks */
-  priceRange: any
+  priceRange?: any
 
   /** Sort for filter artworks */
-  sort: any
+  sort?: any
 
   /** Relay */
   relay?: RelayPaginationProp
@@ -102,30 +102,26 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     itemMargin: 20,
   }
 
-  private sentEndForContentLength: null | number
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      sectionDimension: 0,
-      completed: false,
-      fetchingNextPage: false,
-    }
-
-    this.sentEndForContentLength = null
+  state = {
+    sectionDimension: 0,
+    completed: false,
+    fetchingNextPage: false,
   }
 
   artworksConnection(): ArtworksConnection {
-    return get(this.props, this.props.queryKey) as any
+    return this.props.mapPropsToArtworksConnection(this.props)
   }
 
-  fetchNextPage() {
+  fetchNextPage = () => {
     if (this.state.fetchingNextPage || this.state.completed) {
       return
     }
     this.setState({ fetchingNextPage: true })
-    this.props.relay.loadMore(PageSize, error => {
+    this.props.relay.loadMore(PAGE_SIZE, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("InfiniteScrollGrid.tsx", error.message)
+      }
       this.setState({ fetchingNextPage: false })
       if (!this.artworksConnection().pageInfo.hasNextPage && this.props.onComplete) {
         this.props.onComplete()
@@ -139,6 +135,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     //   readyState => {
     //     if (readyState.done) {
     //       this.setState({ fetchingNextPage: false })
+    //       // TODO: This uses the old queryKey, please refactor to use mapPropsToArtworksConnection
     //       if (!this.props[this.props.queryKey].artworks.pageInfo.hasNextPage && this.props.onComplete) {
     //         this.props.onComplete()
     //         this.setState({ completed: true })
@@ -167,6 +164,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     // tslint:enable:no-console
   }
 
+  tappedOnArtwork = (artworkID: string) => {
+    const artworks = this.artworksConnection() ? this.artworksConnection().edges : []
+    const allArtworkIDs = artworks.map(a => a.node.id)
+    const index = allArtworkIDs.indexOf(artworkID)
+    SwitchBoard.presentArtworkSet(this, allArtworkIDs, index)
+  }
+
   onLayout = (event: LayoutChangeEvent) => {
     const layout = event.nativeEvent.layout
     if (layout.width > 0) {
@@ -181,7 +185,10 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
   sectionedArtworks() {
     const sectionedArtworks: Artworks[] = []
     const sectionRatioSums: number[] = []
-    const artworks: Artworks = this.artworksConnection() ? this.artworksConnection().edges.map(({ node }) => node) : []
+    const nodeMapper = this.props.mapConnectionNodeToArtwork ? this.props.mapConnectionNodeToArtwork : node => node
+    const artworks: Artworks = this.artworksConnection()
+      ? this.artworksConnection().edges.map(({ node }) => nodeMapper(node))
+      : []
 
     for (let i = 0; i < this.props.sectionCount; i++) {
       sectionedArtworks.push([])
@@ -230,7 +237,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
       const artworkComponents: JSX.Element[] = []
       for (let j = 0; j < sectionedArtworks[i].length; j++) {
         const artwork = sectionedArtworks[i][j]
-        artworkComponents.push(<Artwork artwork={artwork as any} key={"artwork-" + j + "-" + artwork.__id} />)
+        artworkComponents.push(
+          <Artwork
+            artwork={artwork as any}
+            key={"artwork-" + j + "-" + artwork.__id}
+            onPress={this.tappedOnArtwork.bind(this)}
+          />
+        )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
         if (j < artworks.length - 1) {
           artworkComponents.push(
@@ -253,26 +266,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     return sections
   }
 
-  // Lifted pretty much straight from RN’s ListView.js
-  onScroll = event => {
-    const scrollProperties = event.nativeEvent
-    const contentLength = scrollProperties.contentSize.height
-    if (contentLength !== this.sentEndForContentLength) {
-      const offset = scrollProperties.contentOffset.y
-      const visibleLength = scrollProperties.layoutMeasurement.height
-      const distanceFromEnd = contentLength - visibleLength - offset
-      if (distanceFromEnd < PageEndThreshold) {
-        this.sentEndForContentLength = contentLength
-        this.fetchNextPage()
-      }
-    }
-  }
-
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
     return (
       <ScrollView
-        onScroll={this.onScroll}
+        onScroll={isCloseToBottom(this.fetchNextPage)}
         scrollEventThrottle={50}
         onLayout={this.onLayout}
         scrollsToTop={false}

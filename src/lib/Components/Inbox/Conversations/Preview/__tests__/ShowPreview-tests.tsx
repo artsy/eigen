@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
@@ -16,6 +16,8 @@ it("renders correctly for a fair booth", () => {
 
 const show = {
   name: "Catty Show",
+  id: "slugID",
+  _id: "mongoID",
   cover_image: {
     url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
   },
@@ -23,17 +25,4 @@ const show = {
     name: "Catty Partner",
   },
   fair: null,
-}
-
-const booth = {
-  name: "Catty Booth",
-  cover_image: {
-    url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
-  },
-  partner: {
-    name: "Catty Partner",
-  },
-  fair: {
-    name: "Catty Fair",
-  },
 }

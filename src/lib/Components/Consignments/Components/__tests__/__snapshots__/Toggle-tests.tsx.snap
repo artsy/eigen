@@ -33,7 +33,7 @@ exports[`has the expected tree 1`] = `
           "width": 64,
         },
         Object {
-          "backgroundColor": "white",
+          "backgroundColor": "black",
         },
       ],
     ]
@@ -72,7 +72,7 @@ exports[`has the expected tree 1`] = `
               "width": 24,
             },
             Object {
-              "color": "black",
+              "color": "white",
             },
           ]
         }
@@ -95,7 +95,7 @@ exports[`has the expected tree 1`] = `
               "width": 24,
             },
             Object {
-              "color": "black",
+              "color": "white",
             },
           ]
         }
@@ -123,7 +123,7 @@ exports[`has the expected tree 1`] = `
           Array [
             Object {
               "backgroundColor": "black",
-              "borderColor": "black",
+              "borderColor": "white",
               "borderRadius": 12,
               "borderWidth": 1,
               "height": 24,

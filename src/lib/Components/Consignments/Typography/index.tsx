@@ -1,12 +1,12 @@
-import * as React from "react"
+import React from "react"
 import { StyleSheet, Text, TextProperties, TextStyle } from "react-native"
 
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 
 const LargeHeadline: React.SFC<TextProperties> = props => {
   const children: string = (props as any).children
-  const style = [styles.largeDefault, props.style || {}, styles.largeRequired]
+  const style = [styles.largeHeadlineDefault, props.style || {}, styles.largeHeadlineRequired]
   return (
     <Text key={children} style={style}>
       {props.children}
@@ -16,7 +16,7 @@ const LargeHeadline: React.SFC<TextProperties> = props => {
 
 const SmallHeadline: React.SFC<TextProperties> = (props: TextProperties) => {
   const children: string = (props as any).children
-  const style = [styles.smallDefault, props.style || {}, styles.smallRequired]
+  const style = [styles.smallHeadlineDefault, props.style || {}, styles.smallHeadlineRequired]
   return (
     <Text key={children} style={style}>
       {children}
@@ -44,21 +44,33 @@ const BodyText: React.SFC<TextProperties> = (props: TextProperties) => {
   )
 }
 
-export { LargeHeadline, SmallHeadline, Subtitle, BodyText }
+const SmallPrint: React.SFC<TextProperties> = (props: TextProperties) => {
+  const children: string = (props as any).children
+  const style = [styles.smallPrintDefault, props.style || {}, styles.smallPrintRequired]
+  return (
+    <Text key={children} style={style}>
+      {children}
+    </Text>
+  )
+}
+
+export { LargeHeadline, SmallHeadline, Subtitle, BodyText, SmallPrint }
 
 interface Styles {
-  largeRequired: TextStyle
-  largeDefault: TextStyle
-  smallRequired: TextStyle
-  smallDefault: TextStyle
+  largeHeadlineRequired: TextStyle
+  largeHeadlineDefault: TextStyle
+  smallHeadlineRequired: TextStyle
+  smallHeadlineDefault: TextStyle
   subtitleRequired: TextStyle
   subtitleDefault: TextStyle
   bodyRequired: TextStyle
   bodyDefault: TextStyle
+  smallPrintRequired: TextStyle
+  smallPrintDefault: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
-  largeDefault: {
+  largeHeadlineDefault: {
     fontSize: 30,
     color: "white",
     textAlign: "center",
@@ -67,17 +79,17 @@ const styles = StyleSheet.create<Styles>({
     marginBottom: 20,
   },
 
-  largeRequired: {
+  largeHeadlineRequired: {
     fontFamily: fonts["garamond-regular"],
   },
 
-  smallDefault: {
+  smallHeadlineDefault: {
     fontSize: 30,
     color: "white",
     textAlign: "center",
   },
 
-  smallRequired: {
+  smallHeadlineRequired: {
     fontFamily: fonts["garamond-regular"],
   },
 
@@ -103,6 +115,20 @@ const styles = StyleSheet.create<Styles>({
   },
 
   bodyRequired: {
+    fontFamily: fonts["garamond-regular"],
+  },
+
+  smallPrintDefault: {
+    fontSize: 14,
+    color: colors["gray-medium"],
+    paddingLeft: 25,
+    paddingRight: 25,
+    marginTop: 18,
+    marginBottom: 18,
+    textAlign: "center",
+  },
+
+  smallPrintRequired: {
     fontFamily: fonts["garamond-regular"],
   },
 })

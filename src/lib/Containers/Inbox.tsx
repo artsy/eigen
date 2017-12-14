@@ -1,14 +1,15 @@
-import * as React from "react"
+import React from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
-import { RefreshControl, ScrollView, View } from "react-native"
-import ActiveBids from "../Components/Inbox/ActiveBids"
-import Conversations from "../Components/Inbox/Conversations"
-import ZeroStateInbox from "../Components/Inbox/Conversations/ZeroStateInbox"
+import ActiveBids from "lib/Components/Inbox/ActiveBids"
+import Conversations from "lib/Components/Inbox/Conversations"
+import ZeroStateInbox from "lib/Components/Inbox/Conversations/ZeroStateInbox"
+import { RefreshControl } from "react-native"
 
 interface Props extends RelayProps {
   relay?: RelayRefetchProp
+  isVisible: boolean
 }
 
 interface State {
@@ -18,6 +19,9 @@ interface State {
 const Container = styled.ScrollView`flex: 1;`
 
 export class Inbox extends React.Component<Props, State> {
+  conversations: any
+  activeBids: any
+
   constructor(props) {
     super(props)
 
@@ -28,29 +32,35 @@ export class Inbox extends React.Component<Props, State> {
     this.fetchData = this.fetchData.bind(this)
   }
 
+  componentWillReceiveProps(newProps) {
+    if (newProps.isVisible) {
+      this.fetchData()
+    }
+  }
+
   fetchData() {
     if (this.state.fetchingData) {
       return
     }
 
     this.setState({ fetchingData: true })
-    this.props.relay.refetch(
-      {},
-      null,
-      () => {
-        this.setState({ fetchingData: false })
-      },
-      { force: true }
-    )
+
+    // Allow Conversations & Active Bids to properly force-fetch themselves.
+    // The stored refs are the Relay containers; the components themselves are nested under as refs.
+    this.activeBids.refs.component.refreshActiveBids()
+    this.conversations.refs.component.refreshConversations(() => {
+      this.setState({ fetchingData: false })
+    })
   }
 
   render() {
     const hasBids = this.props.me.lot_standings.length > 0
-    const hasConversations = this.props.me.conversations_existence_check.edges.length > 0
+    const hasConversations =
+      this.props.me.conversations_existence_check && this.props.me.conversations_existence_check.edges.length > 0
     return hasBids || hasConversations
       ? <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
-          <ActiveBids me={this.props.me as any} />
-          <Conversations me={this.props.me} />
+          <ActiveBids me={this.props.me as any} ref={activeBids => (this.activeBids = activeBids)} />
+          <Conversations me={this.props.me as any} ref={conversations => (this.conversations = conversations)} />
         </Container>
       : <ZeroStateInbox />
   }
@@ -72,8 +82,8 @@ export default createRefetchContainer(
   {
     me: graphql`
       fragment Inbox_me on Me {
-        lot_standings(active_positions: true) {
-          active_bid {
+        lot_standings(live: true) {
+          most_recent_bid {
             __id
           }
         }

@@ -1,11 +1,16 @@
-import * as React from "react"
-import { ActivityIndicator, Dimensions, FlatList, RefreshControl } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import React from "react"
+import { Dimensions, FlatList, RefreshControl } from "react-native"
+import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import styled from "styled-components/native"
+
+import { PAGE_SIZE } from "lib/data/constants"
 
 import ARSwitchBoard from "../../../NativeModules/SwitchBoard"
 import Message from "./Message"
 import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
+
+const isPad = Dimensions.get("window").width > 700
 
 interface Props {
   conversation?: RelayProps["me"]["conversation"]
@@ -20,15 +25,13 @@ interface State {
   shouldStickFirstMessageToTop: boolean
 }
 
-export class Messages extends React.Component<Props, State> {
-  constructor(props) {
-    super(props)
+const LoadingIndicator = styled.ActivityIndicator`margin-top: 40px;`
 
-    this.state = {
-      fetchingMoreData: false,
-      reloadingData: false,
-      shouldStickFirstMessageToTop: false,
-    }
+export class Messages extends React.Component<Props, State> {
+  state = {
+    fetchingMoreData: false,
+    reloadingData: false,
+    shouldStickFirstMessageToTop: false,
   }
 
   renderMessage({ item, index }) {
@@ -79,7 +82,11 @@ export class Messages extends React.Component<Props, State> {
     }
 
     updateState(true)
-    this.props.relay.loadMore(10, e => {
+    this.props.relay.loadMore(PAGE_SIZE, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Messages.tsx", error.message)
+      }
       updateState(false)
     })
   }
@@ -87,7 +94,11 @@ export class Messages extends React.Component<Props, State> {
   reload() {
     const count = this.props.conversation.messages.edges.length
     this.setState({ reloadingData: true })
-    this.props.relay.refetchConnection(count, e => {
+    this.props.relay.refetchConnection(count, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Messages.tsx", error.message)
+      }
       this.setState({ reloadingData: false })
     })
   }
@@ -101,15 +112,23 @@ export class Messages extends React.Component<Props, State> {
     })
     const refreshControl = <RefreshControl refreshing={this.state.reloadingData} onRefresh={this.reload.bind(this)} />
 
+    const messagesStyles = isPad
+      ? {
+          width: 708,
+          alignSelf: "center",
+        }
+      : {}
+
     return (
       <FlatList
         inverted={!this.state.shouldStickFirstMessageToTop}
         data={this.state.shouldStickFirstMessageToTop ? messages.reverse() : messages}
         renderItem={this.renderMessage.bind(this)}
         keyExtractor={({ __id }) => __id}
+        keyboardShouldPersistTaps="always"
         onEndReached={this.loadMore.bind(this)}
         onEndReachedThreshold={0.2}
-        onContentSizeChange={(width, height) => {
+        onContentSizeChange={(_width, height) => {
           // If there aren't enough items to scroll through
           // display messages from the top
           const windowHeight = Dimensions.get("window").height
@@ -125,7 +144,8 @@ export class Messages extends React.Component<Props, State> {
           })
         }}
         refreshControl={refreshControl}
-        ListFooterComponent={<ActivityIndicator animating={this.state.fetchingMoreData} hidesWhenStopped />}
+        style={messagesStyles}
+        ListFooterComponent={<LoadingIndicator animating={this.state.fetchingMoreData} hidesWhenStopped />}
       />
     )
   }
@@ -187,7 +207,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.conversation && props.conversation.messages
+      return props.conversation && (props.conversation.messages as ConnectionData)
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -195,7 +215,7 @@ export default createPaginationContainer(
         count: totalCount,
       }
     },
-    getVariables(props, paginationInfo, fragmentVariables) {
+    getVariables(props, paginationInfo, _fragmentVariables) {
       return {
         conversationID: props.conversation.id,
         count: paginationInfo.count,

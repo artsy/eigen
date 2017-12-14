@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import * as renderer from "react-test-renderer"
 
 let mockRefineCallbackPromise = () => Promise.resolve({})
@@ -9,7 +9,6 @@ jest.mock("react-native-parallax-scroll-view", () => "react-native-parallax-scro
 
 // Stub out these views for simplicity sake
 jest.mock("../../Components/Gene/Header", () => "Header")
-jest.mock("../../Components/Gene/Artworks", () => "Artworks")
 
 import { Gene } from "../Gene"
 

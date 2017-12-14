@@ -1,7 +1,8 @@
 import { storiesOf } from "@storybook/react-native"
-import * as React from "react"
+import React from "react"
 import { View } from "react-native"
 
+import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import { GhostButton, GrayActionButton, InvertedButton, WhiteButton } from "../"
 import Button from "../Button"
 import ProgressButton from "../InvertedButton"
@@ -60,6 +61,9 @@ storiesOf("App Style/Buttons")
     </View>,
   ])
   .add("Navigation Button", () => <NavigationButton title="Default" href="/link/place" />)
+  .add("Dark Navigation Button", () =>
+    <DarkNavigationButton title="Default button with some text" href="/link/place" />
+  )
   .add("Button (dev)", () => {
     const colorfulTheme = {
       enabled: {

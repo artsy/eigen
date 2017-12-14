@@ -1,20 +1,14 @@
-import * as React from "react"
+import React from "react"
 
-import { LayoutAnimation, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
+import { LayoutAnimation, NavigatorIOS, Route, View, ViewProperties } from "react-native"
 import { WhiteButton } from "../../Buttons"
 import ConsignmentBG from "../Components/ConsignmentBG"
-import { BodyText, LargeHeadline, Subtitle } from "../Typography"
 
-import { ConsignmentSetup, SearchResult } from "../"
-import Spinner from "../../Spinner"
-import TODO from "../Components/ArtworkConsignmentTodo"
+import { Schema, screenTrack } from "lib/utils/track"
+import { ConsignmentSetup } from "../"
 import { Form, Label, Row } from "../Components/FormElements"
 import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
-import Artist from "./Artist"
-import Provenance from "./Provenance"
-import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
-import Welcome from "./Welcome"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -23,8 +17,11 @@ interface Props extends ViewProperties {
   submitFinalSubmission: (setup: ConsignmentSetup) => void
 }
 
-const Loader = (p, c) => <Spinner style={{ flex: 1 }} />
-
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.ConsignmentsSubmission,
+  context_screen_owner_slug: props.setup.submission_id,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
+}))
 export default class FinalSubmissionQuestions extends React.Component<Props, ConsignmentSetup> {
   constructor(props) {
     super(props)

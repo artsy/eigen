@@ -1,10 +1,8 @@
-import * as React from "react"
+import React from "react"
 
-import { Text, View } from "react-native"
-
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
 
 const BackgroundCircle = styled.View`
   background-color: ${colors["gray-regular"]};

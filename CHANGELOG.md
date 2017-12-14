@@ -1,8 +1,87 @@
-### 1.4.0-beta.4
+// Please add your own contribution below inside the Master section
+// These docs are aimed at developers, but are shown inside collector GMV's channel
+
+### Master
+
+-   Sets the status bar BG color to dark for Consignments - orta 
+-   Bug fix for the Gene refine not showing on Eigen - orta
+-   Taking a consignment photo will now select the created image by default - orta
+
+### 1.4.0-beta.10
+
+-   Update WorksForYou to use new Metaphysics schema to avoid frequent empty states - matt
+-   Adds a way to select tab on Home scene from initial props - sarah
+-   Don't load an ArtistRail if it doesn't have any artists - sarah
+-   Refetch data when user re-enters Inbox tab - luc
+-   Send event from view controller to react component when tab changes - luc
+-   Allow passing a set of Artworks and an index to load to Eigen when clicking on
+    a Artwork within a grid - orta
+-   Update Relay typings to current DT version - alloy
+-   Change inquiry status bar background to white - maxim
+-   Move pagination from home/sale index to LotsByfollowedArtists, misc QA - chris
+-   Only load a single Works For You page at a time - alloy
+-   QA on Inbox and Active Bids spacing - maxim
+-   iPad support for Active Bids - maxim
+-   Get rid of image view flag that would skip on-the-fly resizing - alloy
+-   Add noUnusedLocals / noUnusedParameters to tslint config; clean up refs in app -chris
+-   Swap ListView for FlatList in Inbox/ForYou and refactor rail registration, misc QA - chris
+-   New design for consignments welcome screen - maxim
+
+### 1.4.0-beta.9
+
+-   During Inbox pull-to-refresh, Conversations container force-fetches itself - sarah
+-   Accommodate selectedArtist parameter in Home container - sarah
+-   Don’t require 2 taps to open a conversation attachment and keep keyboard up - alloy
+-   Don’t assume a photo was selected in the consignments photo picker - alloy
+-   QA for composer/thread view: ipad and fixed iphone size attachments - maxim
+-   QA for message attachments - maxim
+-   QA for saves & follows: enable pagination in Works tab in Saves & Follows - luc
+-   QA for home header font sizes and margins - maxim
+-   Minor: change text colour for provenance placeholder in consignments - maxim
+-   Don’t rely on user of the Gene VC to specify filter defaults, which could lead to a crash - alloy
+-   QA for inbox zero on ipad - maxim
+-   Add analytics to consignments - orta
+-   Fixes for metaphysics changes to consignment submission - orta
+-   Implement selected state for images in consignments photo set - maxim
+-   Support sending images for Consignments in production - orta
+-   QA for consignments on metadata screen - maxim
+-   Adds <LotsByArtistsYouFollow /> component to Sales - chris
+
+### 1.4.0-beta.8
+
+-   Updates the default statusbar text color to black - not white - orta
+-   Updates zero states in Artists on Home, and all the Favs & Saves - orta
+-   Updates zero states in messaging - orta
+-   Adds pagination to the follow'd Artists and Categories- orta
+
+### 1.4.0-beta.6 - 1.4.0-beta.7
+
+-   Provides native view controllers for the routing engine in Eigen - orta
+-   Changed invoice component to only being able to touch the PAY button - alloy
+-   Make invoice component’s payment status and button slightly wider to account for statuses like ‘REFUNDED’ and ‘CANCELED’ - alloy
+-   Don’t try to also fetch the invoice state after receiving a ‘paid’ notification, just trust the notification and keep showing the ‘PAID’ state - alloy
+
+### 1.4.0-beta.5
+
+-   Adds Saves & Follows view - luc
+-   Renames MyProfile -> MyAccount, and sets up the design for it - orta
+-   Revised designs for consignments - orta
+-   Adds Live and timed auctions in home view - luc
+-   Adds Sale container to app registry - ash
+-   QA for Home: change tab colors - maxim
+-   QA Inquiry screen - maxim
+-   Home now includes a call to action for consignments - orta
+-   QA for Home: center tab labels with thin space hack - maxim
+-   Add new Analytics schema via React Tracking. - maxim
+-   Add analytics events for messaging - maxim
+-   Removes ‘works by artists you follow’ rail from ForYou view - alloy
+-   QA for Inbox view: center and cap size on iPad and solid line separator - maxim
 
 ###### Dev
 
+-   Converts relative to absolute paths for imports - luc
 -   Adds enzyme for tests - luc
+-   Fix test issues with react-tracking and enzyme - luc
 -   Updates Avant Garde font with a version that can handle special characters - sarah
 -   Remaps space key bidding to ctrl+space so we can enter spaces fromthe simulator - luc
 -   Conditionally use different past artist show fragments for iPad vs iPhone - alloy
@@ -24,11 +103,19 @@
 -   Revert back to React Native packager (metro), life comes at you fast, see #785 for context - orta
 -   Updates invoice preview component status when a ARPaymentRequestPaid notification is received - alloy
 -   Present payment request view modally. - alloy
+-   Adds initial Sale container. - ash
 
 ###### Home
 
+-   Updates Artists section (aka works for you notifications) - sarah
+-   Adds a Recommended Fairs Rail - sarah
 -   Adds for For You tab with styled headers - luc
 -   Creates tab view container for new home - luc
+-   Adds Live and timed auctions in home view - luc
+-   Tab bar text now aligned and centered correctly - luc
+-   Adds iPad support for Auctions view layout - luc
+-   Adds <LotsByArtistsYouFollow /> component to Sales - chris
+-   Refactors <LotsByArtistsYouFollow /> by consolidating QueryRenderers - chris
 
 ###### Consignments
 
@@ -50,6 +137,8 @@
 
 ###### Messaging
 
+-   Fix crash by guarding against null `conversations_existence_check` - christina
+-   Fix crash of empty node in conversation list - maxim
 -   Hyperlinks in messages are now artsy purple & underlined - sarah
 -   Aligns message header with existing back button - sarah
 -   Temporarily removed partner response rate in inquiry - maxim

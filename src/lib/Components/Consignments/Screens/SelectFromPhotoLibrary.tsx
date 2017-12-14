@@ -1,11 +1,6 @@
-import * as React from "react"
+import React from "react"
 
-import * as _ from "lodash"
-
-import { WhiteButton } from "../../Buttons"
 import DoneButton from "../Components/BottomAlignedButton"
-
-import Circle from "../Components/CircleImage"
 import ConsignmentBG from "../Components/ConsignmentBG"
 
 import ImageSelection, { ImageData } from "../Components/ImageSelection"
@@ -13,17 +8,7 @@ import { BodyText as P } from "../Typography"
 
 import triggerCamera from "../../../NativeModules/triggerCamera"
 
-import {
-  CameraRoll,
-  Dimensions,
-  GetPhotosParamType,
-  GetPhotosReturnType,
-  NavigatorIOS,
-  Route,
-  ScrollView,
-  View,
-  ViewProperties,
-} from "react-native"
+import { CameraRoll, Dimensions, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
 import { ConsignmentSetup } from "../index"
 
 interface Props extends ViewProperties {
@@ -94,21 +79,26 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
       return
     }
 
-    CameraRoll.getPhotos(fetchParams)
-      .then(data => {
-        this.appendAssets(data)
-      })
-      .catch(e => {
-        console.log(e)
-      })
+    CameraRoll.getPhotos(fetchParams).then(data => {
+      if (data && data.edges[0] && data.edges[0].node) {
+        const photo = data.edges[0].node
+
+        // Update selection
+        this.state.selection.add(photo.image.uri)
+        this.setState({
+          selection: this.state.selection,
+          // An item in cameraImage is a subset of the photo that we pass in,
+          // so we `as any` to avoid a compiler error
+          cameraImages: data.edges.map(e => e.node).concat(this.state.cameraImages as any),
+        })
+      } else {
+        console.log("CameraRoll: Did not receive a photo from call to getPhotos")
+      }
+    })
   }
 
   appendAssets(data) {
     const assets = data.edges
-    const nextState = {
-      loadingMore: false,
-      noMorePhotos: !data.page_info.has_next_page,
-    }
 
     if (assets.length === 0) {
       this.setState({
@@ -155,7 +145,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
     })
   }
 
-  onNewSelectionState = (state: Set<string>) => this.setState({ selection: this.state.selection })
+  onNewSelectionState = (_state: Set<string>) => this.setState({ selection: this.state.selection })
 
   render() {
     return (

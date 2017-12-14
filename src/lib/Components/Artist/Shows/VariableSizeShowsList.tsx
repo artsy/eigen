@@ -1,13 +1,12 @@
-import * as React from "react"
+import React, { Component } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { LayoutChangeEvent, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
 import Show from "./Show"
 
-interface Props extends ViewProperties {
+interface Props extends RelayProps, ViewProperties {
   showSize: "medium" | "large"
-  shows: any[]
 }
 
 interface State {
@@ -15,14 +14,10 @@ interface State {
   height: number
 }
 
-class ShowsList extends React.Component<Props, State> {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      width: 1,
-      height: 1,
-    }
+class ShowsList extends Component<Props, State> {
+  state = {
+    width: 1,
+    height: 1,
   }
 
   imageDimensions(layout) {

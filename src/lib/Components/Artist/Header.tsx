@@ -1,5 +1,5 @@
 import * as PropTypes from "prop-types"
-import * as React from "react"
+import React from "react"
 import { Schema, Track, track as _track } from "../../utils/track"
 
 import { createFragmentContainer, graphql } from "react-relay"
@@ -7,9 +7,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
 
-import Events from "../../NativeModules/Events"
-
-import colors from "../../../data/colors"
+import colors from "lib/data/colors"
 import InvertedButton from "../Buttons/InvertedButton"
 import Headline from "../Text/Headline"
 import SerifText from "../Text/Serif"
@@ -24,7 +22,7 @@ interface State {
   followersCount: number
 }
 
-const track: Track<Props, State, Schema.Entity> = _track
+const track: Track<Props, State> = _track
 
 @track()
 class Header extends React.Component<Props, State> {
@@ -49,6 +47,10 @@ class Header extends React.Component<Props, State> {
 
   componentDidMount() {
     NativeModules.ARTemporaryAPIModule.followStatusForArtist(this.props.artist._id, (error, following) => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Artist/Header.tsx", error.message)
+      }
       this.setState({ following })
     })
   }
@@ -130,12 +132,19 @@ class Header extends React.Component<Props, State> {
     return leadingSubstring + " " + birthday
   }
 
-  @track((props, state) => ({ action: state.following ? "press unfollow button" : "press follow button" }))
+  @track((props, state) => ({
+    action_name: state.following ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: props.artist._id,
+    owner_slug: props.artist.id,
+    owner_type: Schema.OwnerEntityTypes.Artist,
+  }))
   handleFollowChange() {
     const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
       if (error) {
         console.warn(error)
+        this.failedFollowChange()
       } else {
         this.successfulFollowChange()
       }
@@ -145,18 +154,25 @@ class Header extends React.Component<Props, State> {
   }
 
   @track((props, state) => ({
-    action: `successfully ${state.following ? "followed" : "unfollowed"}`,
-    entity_id: props.artist._id,
-    entity_slug: props.artist.id,
+    action_name: state.following ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
+    action_type: Schema.ActionTypes.Success,
+    owner_id: props.artist._id,
+    owner_slug: props.artist.id,
+    owner_type: Schema.OwnerEntityTypes.Artist,
   }))
   successfulFollowChange() {
-    Events.postEvent({
-      name: this.state.following ? "Follow artist" : "Unfollow artist",
-      artist_id: this.props.artist._id,
-      artist_slug: this.props.artist.id,
-      // TODO At some point, this component might be on other screens.
-      source_screen: "artist page",
-    })
+    // callback for analytics purposes
+  }
+
+  @track((props, state) => ({
+    action_name: state.following ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
+    action_type: Schema.ActionTypes.Fail,
+    owner_id: props.artist._id,
+    owner_slug: props.artist.id,
+    owner_type: Schema.OwnerEntityTypes.Artist,
+  }))
+  failedFollowChange() {
+    // callback for analytics purposes
   }
 }
 

@@ -1,7 +1,9 @@
+#import <KSCrash/KSCrash.h>
+
 #import "ARDefaults.h"
 #import "AppSetup.h"
 #import "PRNetworkModel.h"
-#import <AppHub/AppHub.h>
+#import "CommitNetworkModel.h"
 #import <Emission/AREmission.h>
 
 @implementation AppSetup
@@ -27,21 +29,19 @@
       _metaphysicsURL = [defaults stringForKey:ARStagingMetaphysicsURLDefault];
     }
 
+    BOOL useMaster = ![[KSCrash sharedInstance] crashedLastLaunch];
     BOOL usePRBuild = [defaults boolForKey:ARUsePREmissionDefault];
     BOOL useRNP = NO;
-    BOOL useAppHub = NO;
     BOOL isSimulator = NO;
+
+// Comment both of these to set yourself up as though you were running the beta
 
 #if TARGET_IPHONE_SIMULATOR
     isSimulator = YES;
 #endif
 
-#if DEPLOY
-//    TODO: Either bring back apphub, or just make our PR uploader work per commit too.
-//          IMO, we can probably just make it go to "latest" all the time and call it a day also.
-//          so long as we have good error handling for native bridge changes
-//    useAppHub = YES;
-#endif
+
+    useMaster = useMaster || isSimulator;
 
     useRNP = isSimulator || [defaults boolForKey:ARForceUseRNPDefault];
 
@@ -53,16 +53,16 @@
       _emissionLoadedFromString = [NSString stringWithFormat:@"PR #%@", @(prNumber)];
 
     } else if (useRNP) {
-      NSString *rnpString = [NSString stringWithFormat:@"http://%@:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true", packagerURL];
+        NSString *rnpString = [NSString stringWithFormat:@"http://%@:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true", packagerURL];
 
-      _jsCodeLocation = [NSURL URLWithString:rnpString];
-      _emissionLoadedFromString = [NSString stringWithFormat:@"Using RNP from %@", _jsCodeLocation.host];
+        _jsCodeLocation = [NSURL URLWithString:rnpString];
+        _emissionLoadedFromString = [NSString stringWithFormat:@"Using RNP from %@", _jsCodeLocation.host];
 
-    } else if (useAppHub) {
-      AHBuild *build = [[AppHub buildManager] currentBuild];
+    } else if (useMaster) {
+      CommitNetworkModel *master = [CommitNetworkModel new];
+      _jsCodeLocation = [master fileURLForLatestCommitJavaScript];
 
-      _jsCodeLocation = [build.bundle URLForResource:@"main" withExtension:@"jsbundle"];
-      _emissionLoadedFromString = [NSString stringWithFormat:@"Using AppHub %@", build.name];
+      _emissionLoadedFromString = @"Using latest JS from master";
     }
 
     // Fall back to the bundled Emission JS for release
@@ -76,7 +76,7 @@
     _inSimulator = isSimulator;
     _inStaging = useStaging;
 
-    _usingAppHub = useAppHub;
+    _usingMaster = useMaster;
     _usingRNP = useRNP;
     _usingPRBuild = usePRBuild;
   }

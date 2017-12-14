@@ -1,9 +1,13 @@
-import * as React from "react"
-import { Keyboard, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback } from "react-native"
+import React from "react"
+import { Dimensions, TextInput, TouchableWithoutFeedback } from "react-native"
 
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
+
+import { Schema, Track, track as _track } from "../../../utils/track"
+
+const isPad = Dimensions.get("window").width > 700
 
 interface ContainerProps {
   active: boolean
@@ -18,6 +22,11 @@ const Container = styled.View`
   border-radius: 3;
   margin: 0 20px 20px;
   background-color: ${(p: ContainerProps) => (p.active ? "white" : colors["gray-light"])};
+`
+
+const StyledKeyboardAvoidingView = styled.KeyboardAvoidingView`
+  flex: 1;
+  ${isPad ? "width: 708; align-self: center;" : ""};
 `
 
 interface StyledSendButtonProps {
@@ -42,6 +51,9 @@ interface State {
   text: string
 }
 
+const track: Track<Props, State, Schema.Entity> = _track
+
+@track()
 export default class Composer extends React.Component<Props, State> {
   input?: TextInput | any
 
@@ -54,8 +66,11 @@ export default class Composer extends React.Component<Props, State> {
     }
   }
 
+  @track(_props => ({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.ConversationSendReply,
+  }))
   submitText() {
-    Keyboard.dismiss()
     if (this.props.onSubmit) {
       this.props.onSubmit(this.state.text)
       this.setState({ text: null })
@@ -83,16 +98,14 @@ export default class Composer extends React.Component<Props, State> {
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
 
     return (
-      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={20} style={{ flex: 1 }}>
+      <StyledKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={20}>
         {this.props.children}
         <Container active={this.state.active}>
           <TextInput
             placeholder={"Reply..."}
             placeholderTextColor={colors["gray-semibold"]}
             keyboardAppearance={"dark"}
-            onEndEditing={() => {
-              this.setState({ active: false })
-            }}
+            onEndEditing={() => this.setState({ active: false })}
             onFocus={() => this.setState({ active: this.input.isFocused() })}
             onChangeText={text => this.setState({ text })}
             ref={input => (this.input = input)}
@@ -105,7 +118,7 @@ export default class Composer extends React.Component<Props, State> {
             <SendButton disabled={disableSendButton}>SEND</SendButton>
           </TouchableWithoutFeedback>
         </Container>
-      </KeyboardAvoidingView>
+      </StyledKeyboardAvoidingView>
     )
   }
 }

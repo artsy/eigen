@@ -21,7 +21,7 @@ it("makes a graphQL request to metaphysics", async () => {
     })
   )
 
-  const response = await update(withLocation, "123")
+  await update(withLocation, "123")
   const query = mockphysics.mock.calls[0][0].query
 
   expect(query).toContain("mutation")

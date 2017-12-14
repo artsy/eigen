@@ -7,6 +7,7 @@
 @property (nonatomic, strong, readonly) AREmission *emission;
 @property (nonatomic, strong, readonly) NSString *moduleName;
 @property (nonatomic, strong, readonly) NSDictionary *initialProperties;
+@property (nonatomic, strong) RCTRootView *rootView;
 @end
 
 @implementation ARComponentViewController
@@ -18,7 +19,12 @@
   if ((self = [super initWithNibName:nil bundle:nil])) {
     _emission = emission ?: [AREmission sharedInstance];
     _moduleName = moduleName;
-    _initialProperties = initialProperties;
+    
+    NSMutableDictionary *properties = [NSMutableDictionary new];
+    [properties addEntriesFromDictionary:initialProperties];
+    [properties addEntriesFromDictionary:@{@"isVisible": @YES}];
+    _initialProperties = properties;
+    _rootView = nil;
   }
   return self;
 }
@@ -28,30 +34,30 @@
   [super viewDidLoad];
   self.automaticallyAdjustsScrollViewInsets = NO;
 
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:self.emission.bridge
+  self.rootView = [[RCTRootView alloc] initWithBridge:self.emission.bridge
                                                    moduleName:self.moduleName
                                             initialProperties:self.initialProperties];
-  [self.view addSubview:rootView];
-  rootView.reactViewController = self;
+  [self.view addSubview:self.rootView];
+  self.rootView.reactViewController = self;
 
-  rootView.translatesAutoresizingMaskIntoConstraints = NO;
+  self.rootView.translatesAutoresizingMaskIntoConstraints = NO;
   [self.view addConstraints:@[
-    [self topLayoutConstraintWithRootView:rootView],
-    [NSLayoutConstraint constraintWithItem:rootView
+    [self topLayoutConstraintWithRootView:self.rootView],
+    [NSLayoutConstraint constraintWithItem:self.rootView
                                  attribute:NSLayoutAttributeLeading
                                  relatedBy:NSLayoutRelationEqual
                                     toItem:self.view
                                  attribute:NSLayoutAttributeLeading
                                 multiplier:1
                                   constant:0],
-    [NSLayoutConstraint constraintWithItem:rootView
+    [NSLayoutConstraint constraintWithItem:self.rootView
                                  attribute:NSLayoutAttributeTrailing
                                  relatedBy:NSLayoutRelationEqual
                                     toItem:self.view
                                  attribute:NSLayoutAttributeTrailing
                                 multiplier:1
                                   constant:0],
-    [NSLayoutConstraint constraintWithItem:rootView
+    [NSLayoutConstraint constraintWithItem:self.rootView
                                  attribute:NSLayoutAttributeBottom
                                  relatedBy:NSLayoutRelationEqual
                                     toItem:self.bottomLayoutGuide
@@ -59,6 +65,22 @@
                                 multiplier:1
                                   constant:0]
   ]];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NSMutableDictionary *appProperties = [self.rootView.appProperties mutableCopy];
+    appProperties[@"isVisible"] = @YES;
+    self.rootView.appProperties = appProperties;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    NSMutableDictionary *appProperties = [self.rootView.appProperties mutableCopy];
+    appProperties[@"isVisible"] = @NO;
+    self.rootView.appProperties = appProperties;
 }
 
 - (NSLayoutConstraint *)topLayoutConstraintWithRootView:(UIView *)rootView;
@@ -80,6 +102,11 @@
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations;
 {
   return self.shouldAutorotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
 }
 
 @end

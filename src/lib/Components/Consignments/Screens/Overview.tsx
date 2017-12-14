@@ -1,35 +1,22 @@
-import * as React from "react"
-
-import {
-  AsyncStorage,
-  Image,
-  NavigatorIOS,
-  Route,
-  ScrollView,
-  TouchableHighlight,
-  View,
-  ViewProperties,
-} from "react-native"
-
-import ConsignmentBG from "../Components/ConsignmentBG"
-import { LargeHeadline, Subtitle } from "../Typography"
+import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
+import React from "react"
+import { AsyncStorage, Dimensions, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
 
 import { ConsignmentMetadata, ConsignmentSetup, SearchResult } from "../"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import TODO from "../Components/ArtworkConsignmentTodo"
-
+import ConsignmentBG from "../Components/ConsignmentBG"
 import { Button, Row } from "../Components/FormElements"
+import createSubmission from "../Submission/create"
+import updateSubmission from "../Submission/update"
+import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
+import { LargeHeadline, Subtitle } from "../Typography"
 import Artist from "./Artist"
 import FinalSubmissionQuestions from "./FinalSubmissionQuestions"
 import Location from "./Location"
 import Metadata from "./Metadata"
 import Provenance from "./Provenance"
 import SelectFromPhotoLibrary from "./SelectFromPhotoLibrary"
-import Welcome from "./Welcome"
-
-import createSubmission from "../Submission/create"
-import updateSubmission from "../Submission/update"
-import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
 
 const consignmentsStateKey = "ConsignmentsStoredState"
 
@@ -39,7 +26,17 @@ interface Props extends ViewProperties {
   setup: ConsignmentSetup
 }
 
-export default class Info extends React.Component<Props, ConsignmentSetup> {
+interface State extends ConsignmentSetup {
+  hasLoaded?: boolean
+}
+
+const track: Track<Props, State> = _track
+
+@screenTrack({
+  context_screen: Schema.PageNames.ConsignmentsOverView,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
+})
+export default class Info extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = props.setup || {}
@@ -53,7 +50,10 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
 
   saveStateToLocalStorage = () => AsyncStorage.setItem(consignmentsStateKey, JSON.stringify(this.state))
   restoreFromLocalStorage = () =>
-    AsyncStorage.getItem(consignmentsStateKey, (err, result) => result && this.setState(JSON.parse(result)))
+    AsyncStorage.getItem(consignmentsStateKey, (_err, result) => {
+      const results = (result && JSON.parse(result)) || {}
+      this.setState({ ...results, hasLoaded: true })
+    })
 
   goToArtistTapped = () =>
     this.props.navigator.push({
@@ -95,7 +95,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
     this.updateStateAndMetaphysics({ location: { city, state, country } })
 
   updatePhotos = (photos: string[]) =>
-    this.updateStateAndMetaphysics({ photos: photos.map(f => ({ file: f, uploaded: false })) })
+    photos.length && this.updateStateAndMetaphysics({ photos: photos.map(f => ({ file: f, uploaded: false })) })
 
   updateStateAndMetaphysics = (state: any) => this.setState(state, this.updateLocalStateAndMetaphysics)
 
@@ -109,16 +109,41 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
       updateSubmission(this.state, this.state.submission_id)
     } else if (this.state.artist) {
       const submission = await createSubmission(this.state)
-      this.setState({ submission_id: submission.id })
+      this.setState({ submission_id: submission.id }, () => {
+        this.submissionDraftCreated()
+      })
     }
+  }
+
+  @track((_props, state) => ({
+    action_type: Schema.ActionTypes.Success,
+    action_name: Schema.ActionNames.ConsignmentDraftCreated,
+    owner_id: state.submission_id,
+    owner_type: Schema.OwnerEntityTypes.Consignment,
+    owner_slug: state.submission_id,
+  }))
+  submissionDraftCreated() {
+    return null
   }
 
   submitFinalSubmission = async (setup: ConsignmentSetup) => {
     this.setState(setup, async () => {
       await this.updateLocalStateAndMetaphysics()
       await AsyncStorage.removeItem(consignmentsStateKey)
+      this.submissionDraftSubmitted()
       this.exitModal()
     })
+  }
+
+  @track((_props, state) => ({
+    action_type: Schema.ActionTypes.Success,
+    action_name: Schema.ActionNames.ConsignmentSubmitted,
+    owner_id: state.submission_id,
+    owner_type: Schema.OwnerEntityTypes.Consignment,
+    owner_slug: state.submission_id,
+  }))
+  submissionDraftSubmitted() {
+    return null
   }
 
   exitModal = () => SwitchBoard.dismissModalViewController(this)
@@ -126,7 +151,7 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
   uploadPhotosIfNeeded = async () => {
     const toUpload = this.state.photos && this.state.photos.filter(f => !f.uploaded && f.file)
 
-    if (toUpload.length) {
+    if (toUpload && toUpload.length) {
       // Pull out the first in the queue and upload it
       const photo = toUpload[0]
       await uploadImageAndPassToGemini(photo.file, "private", this.state.submission_id)
@@ -152,44 +177,43 @@ export default class Info extends React.Component<Props, ConsignmentSetup> {
       state.metadata.title &&
       state.metadata.year
     )
-    console.log("Cansub:", canSubmit)
+
+    const isPad = Dimensions.get("window").width > 700
+
     return (
       <ConsignmentBG>
-        <ScrollView style={{ flex: 1 }}>
-          <View style={{ paddingTop: 18 }}>
+        <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} centerContent>
+          <View
+            style={{
+              paddingTop: 18,
+              alignSelf: "center",
+              width: "100%",
+              maxWidth: 540,
+              flex: 1,
+            }}
+          >
             <LargeHeadline style={{ marginLeft: 40, marginRight: 40 }}>
               {title}
             </LargeHeadline>
-            <Subtitle style={{ textAlign: "center" }}>
+            <Subtitle style={{ textAlign: "center", marginBottom: isPad ? 80 : 0 }}>
               {subtitle}
             </Subtitle>
-            <TODO
-              goToArtist={this.goToArtistTapped}
-              goToPhotos={this.goToPhotosTapped}
-              goToMetadata={this.goToMetadataTapped}
-              goToLocation={this.goToLocationTapped}
-              goToProvenance={this.goToProvenanceTapped}
-              {...this.state}
-            />
-            <Row style={{ justifyContent: "center" }}>
-              <Button text="NEXT" onPress={canSubmit ? this.goToFinalSubmission : undefined} />
+            <View style={{ flex: 1, padding: 20 }}>
+              <TODO
+                goToArtist={this.goToArtistTapped}
+                goToPhotos={this.goToPhotosTapped}
+                goToMetadata={this.goToMetadataTapped}
+                goToLocation={this.goToLocationTapped}
+                goToProvenance={this.goToProvenanceTapped}
+                {...this.state}
+              />
+            </View>
+            <Row style={{ justifyContent: "center", marginTop: isPad ? 80 : 0 }}>
+              {this.state.hasLoaded &&
+                <Button text="NEXT" onPress={canSubmit ? this.goToFinalSubmission : undefined} />}
             </Row>
           </View>
         </ScrollView>
-        <TouchableHighlight
-          onPressOut={this.exitModal}
-          style={{
-            height: 40,
-            width: 40,
-            position: "absolute",
-            top: 20,
-            right: 20,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Image source={require("../../../../../images/consignments/close-x.png")} />
-        </TouchableHighlight>
       </ConsignmentBG>
     )
   }

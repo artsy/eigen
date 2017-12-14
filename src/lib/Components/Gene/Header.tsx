@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
@@ -25,6 +25,10 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   componentDidMount() {
     NativeModules.ARTemporaryAPIModule.followStatusForGene(this.props.gene._id, (error, following) => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Gene/Header.tsx", error.message)
+      }
       this.setState({ following })
     })
   }

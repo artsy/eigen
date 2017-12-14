@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { StyleSheet, View, ViewStyle } from "react-native"
@@ -8,7 +8,7 @@ import Biography from "./Biography"
 import RelatedArtists from "../RelatedArtists"
 import Separator from "../Separator"
 
-class About extends React.Component<RelayPropsWorkaround, any> {
+class About extends React.Component<RelayProps> {
   render() {
     return (
       <View>
@@ -59,10 +59,5 @@ export default createFragmentContainer(
 interface RelayProps {
   gene: {
     trending_artists: Array<boolean | number | string | null> | null
-  }
-}
-interface RelayPropsWorkaround {
-  gene: {
-    trending_artists: any[]
   }
 }

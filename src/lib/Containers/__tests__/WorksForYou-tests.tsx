@@ -1,5 +1,4 @@
-import moment from "moment"
-import * as React from "react"
+import React from "react"
 import { NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"
 
@@ -8,7 +7,6 @@ import { WorksForYou } from "../WorksForYou"
 
 beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { markNotificationsRead: jest.fn() }
-  NativeModules.ARWorksForYouModule = { updateNotificationsCount: jest.fn() }
   WorksForYou.prototype.componentDidUpdate = () => {
     return null
   }
@@ -44,11 +42,9 @@ describe("when it has a special notification", () => {
     const response = selectedArtistResponse()
     const worksForYou = new WorksForYou(response)
     const expectedFormattedNotification = {
-      date: moment().format("MMM DD"),
       message: "1 Work Added",
       artists: "Juliana Huxtable",
       artworks: selectedArtistResponse().viewer.selectedArtist.artworks,
-      status: "UNREAD",
       image: {
         resized: {
           url: "cloudfront.url",
@@ -82,23 +78,24 @@ describe("without notifications", () => {
 interface NotificationsResponse {
   viewer: {
     me: {
-      notifications: {
-        pageInfo: {
-          hasNextPage: boolean
-        }
-        edges: Array<{
-          node: {
-            artists: string
-            date: string
-            message: string
-            artworks: [{ title: string }]
-            image: {
-              resized: {
-                url: string
+      followsAndSaves: {
+        notifications: {
+          pageInfo: {
+            hasNextPage: boolean
+          }
+          edges: Array<{
+            node: {
+              artists: string
+              summary: string
+              artworks: [{ title: string }]
+              image: {
+                resized: {
+                  url: string
+                }
               }
             }
-          }
-        }>
+          }>
+        }
       }
     }
 
@@ -110,38 +107,38 @@ const notificationsResponse = () => {
   return {
     viewer: {
       me: {
-        notifications: {
-          pageInfo: {
-            hasNextPage: true,
+        followsAndSaves: {
+          notifications: {
+            pageInfo: {
+              hasNextPage: true,
+            },
+            edges: [
+              {
+                node: {
+                  artists: "Jean-Michel Basquiat",
+                  summary: "1 Work Added",
+                  artworks: [{ title: "Anti-Product Postcard" }],
+                  image: {
+                    resized: {
+                      url: "cloudfront.url",
+                    },
+                  },
+                },
+              },
+              {
+                node: {
+                  artists: "Ana Mendieta",
+                  summary: "2 Works Added",
+                  artworks: [{ title: "Corazón de Roca con Sangre" }, { title: "Butterfly" }],
+                  image: {
+                    resized: {
+                      url: "cloudfront.url",
+                    },
+                  },
+                },
+              },
+            ],
           },
-          edges: [
-            {
-              node: {
-                artists: "Jean-Michel Basquiat",
-                date: "Mar 16",
-                message: "1 Work Added",
-                artworks: [{ title: "Anti-Product Postcard" }],
-                image: {
-                  resized: {
-                    url: "cloudfront.url",
-                  },
-                },
-              },
-            },
-            {
-              node: {
-                artists: "Ana Mendieta",
-                date: "Mar 16",
-                message: "2 Works Added",
-                artworks: [{ title: "Corazón de Roca con Sangre" }, { title: "Butterfly" }],
-                image: {
-                  resized: {
-                    url: "cloudfront.url",
-                  },
-                },
-              },
-            },
-          ],
         },
       },
     },
@@ -152,11 +149,13 @@ const emptyStateResponse = () => {
   return {
     viewer: {
       me: {
-        notifications: {
-          pageInfo: {
-            hasNextPage: true,
+        followsAndSaves: {
+          notifications: {
+            pageInfo: {
+              hasNextPage: true,
+            },
+            edges: [],
           },
-          edges: [],
         },
       },
     },

@@ -1,16 +1,15 @@
-import * as React from "react"
-import { ButtonProperties, Image, TouchableHighlight, TouchableHighlightProperties } from "react-native"
+import React from "react"
+import { Image, StyleProp, TouchableHighlight, TouchableHighlightProperties, ViewStyle } from "react-native"
 
+import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
 
 import { ConsignmentSetup } from "../index"
 
 const Title = styled.Text`
   color: white;
   font-family: "${fonts["avant-garde-regular"]}";
-  flex: 1;
+  flex: 2;
 `
 
 const Subtitle = styled.Text`
@@ -37,7 +36,7 @@ const Background = styled.View`
 `
 
 const Separator = styled.View`
-  background-color: ${colors["gray-regular"]};
+  background-color: #444444;
   height: 1;
 `
 
@@ -108,14 +107,15 @@ interface TODOProps extends ConsignmentSetup {
   goToMetadata?: () => void
   goToLocation?: () => void
   goToProvenance?: () => void
+  style?: StyleProp<ViewStyle>
 }
 
 const render = (props: TODOProps) =>
-  <Background>
+  <Background style={props.style}>
     <Separator />
     <Button onPress={props.goToArtist}>
       {props.artist ? DoneButton() : ToDoButton()}
-      <Title>ARTIST/DESIGNER</Title>
+      <Title>ARTIST/DESIGNER NAME</Title>
       <Subtitle>
         {props.artist ? props.artist.name : ""}
       </Subtitle>

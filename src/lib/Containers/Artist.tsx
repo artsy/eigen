@@ -1,16 +1,16 @@
-import * as React from "react"
+import React, { Component } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { Dimensions, ScrollView, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
-import About from "../Components/Artist/About"
-import Artworks from "../Components/Artist/Artworks"
-import Header from "../Components/Artist/Header"
-import Shows from "../Components/Artist/Shows"
-import Events from "../NativeModules/Events"
+import About from "lib/Components/Artist/About"
+import Artworks from "lib/Components/Artist/Artworks"
+import Header from "lib/Components/Artist/Header"
+import Shows from "lib/Components/Artist/Shows"
+import Events from "lib/NativeModules/Events"
 
-import { SwitchEvent } from "../Components/SwitchView"
-import TabView from "../Components/TabView"
+import { SwitchEvent } from "lib/Components/SwitchView"
+import TabView from "lib/Components/TabView"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -20,11 +20,7 @@ const TABS = {
   SHOWS: "SHOWS",
 }
 
-interface Props extends ViewProperties {
-  artist: any
-}
-
-export class Artist extends React.Component<Props, {}> {
+export class Artist extends Component<RelayProps & ViewProperties> {
   state: {
     selectedTabIndex: number
   }
@@ -66,7 +62,7 @@ export class Artist extends React.Component<Props, {}> {
   }
 
   // This is *not* called on the initial render, thus it will only post events for when the user actually taps a tab.
-  componentDidUpdate(previousProps, previousState) {
+  componentDidUpdate() {
     Events.postEvent({
       name: "Tapped artist view tab",
       tab: this.selectedTabTitle().toLowerCase(),
@@ -159,14 +155,25 @@ export default createFragmentContainer(
 
 interface RelayProps {
   artist: {
-    _id: string
-    id: string
-    has_metadata: boolean | null
+    _id: string | null
+    id: string | null
+    birthday: string | null
     counts: {
+      articles: boolean | number | string | null
       artworks: boolean | number | string | null
+      follows: boolean | number | string | null
       partner_shows: boolean | number | string | null
       related_artists: boolean | number | string | null
-      articles: boolean | number | string | null
+      for_sale_artworks: boolean | number | string | null
     } | null
+    has_metadata: boolean | null
+    name: string | null
+    nationality: string | null
+    current_shows: Array<boolean | number | string | null> | null
+    upcoming_shows: Array<boolean | number | string | null> | null
+    past_small_shows: Array<boolean | number | string | null> | null
+    past_large_shows: Array<{
+      __id: string | null
+    }> | null
   }
 }

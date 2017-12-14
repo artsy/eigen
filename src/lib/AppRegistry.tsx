@@ -1,60 +1,54 @@
-import * as _ from "lodash"
-import * as React from "react"
-import { AppRegistry, ViewProperties } from "react-native"
-import { track } from "./utils/track"
+import React from "react"
+import { AppRegistry, View } from "react-native"
 
 import Consignments from "./Components/Consignments"
 import Containers from "./Containers/index"
-import renderWithLoadProgress from "./utils/renderWithLoadProgress"
-
 import {
   ArtistRenderer,
   ConversationRenderer,
   GeneRenderer,
-  HomeRenderer,
   InboxRenderer,
   InquiryRenderer,
-  MyAccountRenderer,
-  RenderCallback,
+  MyProfileRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
-
+import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
+import renderWithLoadProgress from "./utils/renderWithLoadProgress"
+import { Schema, screenTrack as track } from "./utils/track"
 
-import Events from "./NativeModules/Events"
-
-interface Props extends ViewProperties {
-  trigger1pxScrollHack?: boolean
+interface ArtistProps {
+  artistID: string
+  isPad: boolean
 }
 
-// Analytics wrapper for all of our top level React components
-function AddTrack(pageName: string) {
-  return track(
-    // Here we assign the source screen to all subsequent events fired from that component
-    { page: pageName },
-    // Here we're hooking into Eigen to post analytics events to Adjust and Segement
-    { dispatch: data => Events.postEvent(data) }
-  )
+const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
+  return {
+    context_screen: Schema.PageNames.ArtistPage,
+    context_screen_owner_slug: props.artistID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+  }
+})(props => <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />)
+
+const Inbox: React.SFC<{}> = track<{}>(() => {
+  return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
+})(props => <InboxRenderer {...props} render={renderWithLoadProgress(Containers.Inbox, props)} />)
+
+interface GeneProps {
+  geneID: string
+  refineSettings: { medium: string; price_range: string }
 }
 
-const Artist: React.SFC<{ artistID: string; isPad: boolean }> = AddTrack("Artist")(props =>
-  <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />
-)
-
-const Inbox: React.SFC<{}> = () => <InboxRenderer render={renderWithLoadProgress(Containers.Inbox)} />
-
-const Gene: React.SFC<{ geneID: string; refineSettings: { medium: string; price_range: string } }> = ({
-  geneID,
-  refineSettings: { medium, price_range },
-}) => {
+const Gene: React.SFC<GeneProps> = ({ geneID, refineSettings: { medium, price_range } }) => {
   const initialProps = { geneID, medium, price_range }
   return <GeneRenderer {...initialProps} render={renderWithLoadProgress(Containers.Gene, initialProps)} />
 }
 
-// TODO: This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
-//
-//     this.renderFetched = data => <Containers.Home {...data} trigger1pxScrollHack={this.props.trigger1pxScrollHack} />
-const Home: React.SFC<{}> = () => <HomeRenderer render={renderWithLoadProgress(Containers.Home)} />
+// FIXME: This isn't being used
+// const Sale: React.SFC<{ saleID: string }> = ({ saleID }) => {
+//   const initialProps = { saleID }
+//   return <SaleRenderer {...initialProps} render={renderWithLoadProgress(Containers.Sale, initialProps)} />
+// }
 
 // TODO: This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
 //
@@ -62,20 +56,39 @@ const Home: React.SFC<{}> = () => <HomeRenderer render={renderWithLoadProgress(C
 const WorksForYou: React.SFC<{ selectedArtist: string }> = props =>
   <WorksForYouRenderer {...props} render={renderWithLoadProgress(Containers.WorksForYou, props)} />
 
-const Inquiry: React.SFC<{ artworkID: string }> = props =>
-  <InquiryRenderer {...props} render={renderWithLoadProgress(Containers.Inquiry, props)} />
+interface InquiryProps {
+  artworkID: string
+}
+const Inquiry: React.SFC<InquiryProps> = track<InquiryProps>(props => {
+  return {
+    context_screen: Schema.PageNames.InquiryPage,
+    context_screen_owner_slug: props.artworkID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+  }
+})(props => <InquiryRenderer {...props} render={renderWithLoadProgress(Containers.Inquiry, props)} />)
 
-const Conversation: React.SFC<{ conversationID: string }> = props =>
-  <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />
+interface ConversationProps {
+  conversationID: string
+}
+const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(props => {
+  return {
+    context_screen: Schema.PageNames.ConversationPage,
+    context_screen_owner_id: props.conversationID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Conversation,
+  }
+})(props => <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />)
 
-const MyAccount: React.SFC<{}> = () => <MyAccountRenderer render={renderWithLoadProgress(Containers.MyAccount)} />
+const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoadProgress(Containers.MyProfile)} />
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Home", () => HomeScene)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
-AppRegistry.registerComponent("MyAccount", () => MyAccount)
+AppRegistry.registerComponent("MyProfile", () => MyProfile)
+AppRegistry.registerComponent("MySellingProfile", () => () => <View />)
+AppRegistry.registerComponent("MyProfileEdit", () => () => <View />)
 AppRegistry.registerComponent("Inbox", () => Inbox)
 AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)
+AppRegistry.registerComponent("Favorites", () => FavoritesScene)

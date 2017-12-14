@@ -1,5 +1,5 @@
 import { createPaginationContainer, graphql } from "react-relay"
-import InfiniteScrollArtworksGrid, { PageSize } from "../InfiniteScrollGrid"
+import InfiniteScrollArtworksGrid from "../InfiniteScrollGrid"
 
 import Artwork from "../Artwork"
 // tslint:disable-next-line:no-unused-expression
@@ -34,6 +34,7 @@ const GeneArtworksGrid = createPaginationContainer(
           }
           edges {
             node {
+              id
               __id
               image {
                 aspect_ratio
@@ -87,7 +88,7 @@ const GeneArtworksGrid = createPaginationContainer(
 export default GeneArtworksGrid
 
 export interface GeneRelayProps {
-  artist: {
+  gene?: {
     artworks_connection: {
       pageInfo: {
         hasNextPage: boolean
@@ -95,6 +96,7 @@ export interface GeneRelayProps {
       edges: Array<{
         node: {
           __id: string
+          id: string
           image: {
             aspect_ratio: number | null
           } | null

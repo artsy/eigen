@@ -92,6 +92,7 @@ type Artist implements Node {
     exclude: [String]
   ): [Artwork]
   artworks_connection(sort: ArtworkSorts, filter: [ArtistArtworksFilters], published: Boolean = true, after: String, first: Int, before: String, last: Int): ArtworkConnection
+  auctionResults(sort: AuctionResultSorts, after: String, first: Int, before: String, last: Int): AuctionResultConnection
   bio: String
 
   # The Artist biography article written by Artsy
@@ -104,6 +105,7 @@ type Artist implements Node {
   birthday: String
   blurb(format: Format): String
   carousel: ArtistCarousel
+  collections: [String]
   contemporary(
     # The number of Artists to return
     size: Int
@@ -142,6 +144,7 @@ type Artist implements Node {
   meta: ArtistMeta
   nationality: String
   name: String
+  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnection
   partner_artists(
     # The number of PartnerArtists to return
     size: Int
@@ -160,6 +163,7 @@ type Artist implements Node {
     sort: PartnerShowSorts
   ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
   public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  related: RelatedArtists
   sales(
     live: Boolean
     is_auction: Boolean
@@ -185,6 +189,7 @@ type Artist implements Node {
   # Use this attribute to sort by when sorting a collection of Artists
   sortable_id: String
   statuses: ArtistStatuses
+  highlights: ArtistHighlights
   years: String
 }
 
@@ -256,6 +261,10 @@ type ArtistEdge {
   cursor: String!
 }
 
+type ArtistHighlights {
+  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnection
+}
+
 type ArtistItem implements Node {
   # A globally unique ID.
   __id: ID!
@@ -283,6 +292,7 @@ type ArtistItem implements Node {
     exclude: [String]
   ): [Artwork]
   artworks_connection(sort: ArtworkSorts, filter: [ArtistArtworksFilters], published: Boolean = true, after: String, first: Int, before: String, last: Int): ArtworkConnection
+  auctionResults(sort: AuctionResultSorts, after: String, first: Int, before: String, last: Int): AuctionResultConnection
   bio: String
 
   # The Artist biography article written by Artsy
@@ -295,6 +305,7 @@ type ArtistItem implements Node {
   birthday: String
   blurb(format: Format): String
   carousel: ArtistCarousel
+  collections: [String]
   contemporary(
     # The number of Artists to return
     size: Int
@@ -333,6 +344,7 @@ type ArtistItem implements Node {
   meta: ArtistMeta
   nationality: String
   name: String
+  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnection
   partner_artists(
     # The number of PartnerArtists to return
     size: Int
@@ -351,6 +363,7 @@ type ArtistItem implements Node {
     sort: PartnerShowSorts
   ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
   public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  related: RelatedArtists
   sales(
     live: Boolean
     is_auction: Boolean
@@ -376,6 +389,7 @@ type ArtistItem implements Node {
   # Use this attribute to sort by when sorting a collection of Artists
   sortable_id: String
   statuses: ArtistStatuses
+  highlights: ArtistHighlights
   years: String
 }
 
@@ -411,6 +425,7 @@ type ArtistSearchEntity implements Node {
     exclude: [String]
   ): [Artwork]
   artworks_connection(sort: ArtworkSorts, filter: [ArtistArtworksFilters], published: Boolean = true, after: String, first: Int, before: String, last: Int): ArtworkConnection
+  auctionResults(sort: AuctionResultSorts, after: String, first: Int, before: String, last: Int): AuctionResultConnection
   bio: String
 
   # The Artist biography article written by Artsy
@@ -423,6 +438,7 @@ type ArtistSearchEntity implements Node {
   birthday: String
   blurb(format: Format): String
   carousel: ArtistCarousel
+  collections: [String]
   contemporary(
     # The number of Artists to return
     size: Int
@@ -461,6 +477,7 @@ type ArtistSearchEntity implements Node {
   meta: ArtistMeta
   nationality: String
   name: String
+  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnection
   partner_artists(
     # The number of PartnerArtists to return
     size: Int
@@ -479,6 +496,7 @@ type ArtistSearchEntity implements Node {
     sort: PartnerShowSorts
   ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
   public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
+  related: RelatedArtists
   sales(
     live: Boolean
     is_auction: Boolean
@@ -504,6 +522,7 @@ type ArtistSearchEntity implements Node {
   # Use this attribute to sort by when sorting a collection of Artists
   sortable_id: String
   statuses: ArtistStatuses
+  highlights: ArtistHighlights
   years: String
 }
 
@@ -668,7 +687,7 @@ type ArtworkConnection {
 
 union ArtworkContext = ArtworkContextAuction | ArtworkContextFair | ArtworkContextPartnerShow | ArtworkContextSale
 
-type ArtworkContextAuction {
+type ArtworkContextAuction implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -736,6 +755,9 @@ type ArtworkContextAuction {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # Returns a live auctions url if the sale is open and start time is after now
+  live_url_if_open: String
   profile: Profile
   registration_ends_at(
     convert_to_utc: Boolean
@@ -746,6 +768,7 @@ type ArtworkContextAuction {
   ): String
   require_bidder_approval: Boolean
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
   sale_type: String
   start_at(
     convert_to_utc: Boolean
@@ -779,6 +802,7 @@ type ArtworkContextFair {
 
   # Are we currently in the fair's active period?
   is_active: Boolean
+  mobile_image: Image
   is_published: Boolean
   location: Location
   name: String
@@ -898,7 +922,7 @@ type ArtworkContextPartnerShow implements Node {
   type: String
 }
 
-type ArtworkContextSale {
+type ArtworkContextSale implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -966,6 +990,9 @@ type ArtworkContextSale {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # Returns a live auctions url if the sale is open and start time is after now
+  live_url_if_open: String
   profile: Profile
   registration_ends_at(
     convert_to_utc: Boolean
@@ -976,6 +1003,7 @@ type ArtworkContextSale {
   ): String
   require_bidder_approval: Boolean
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
   sale_type: String
   start_at(
     convert_to_utc: Boolean
@@ -1350,6 +1378,109 @@ type Attachment {
   download_url: String!
 }
 
+# In centimeters.
+type AuctionLotDimensions {
+  width: Float
+  height: Float
+  depth: Float
+}
+
+type AuctionLotImages {
+  larger: Image
+  thumbnail: Image
+}
+
+type AuctionResult implements Node {
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+  title: String
+  artist_id: String!
+  date(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  date_text: String
+  medium_text: String
+  category_text: String
+  dimension_text: String
+  dimensions: AuctionLotDimensions
+  organization: String
+  sale_date(
+    convert_to_utc: Boolean
+    format: String
+
+    # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+  sale_date_text: String
+  sale_title: String
+  currency: String
+  description: String
+  external_url: String
+  images: AuctionLotImages
+
+  # A formatted price with various currency formatting options.
+  low_estimate(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # A formatted price with various currency formatting options.
+  high_estimate(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # A formatted price with various currency formatting options.
+  price_realized(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+}
+
+# A connection to a list of items.
+type AuctionResultConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [AuctionResultEdge]
+}
+
+# An edge in a connection.
+type AuctionResultEdge {
+  # The item at the end of the edge
+  node: AuctionResult
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+enum AuctionResultSorts {
+  PRICE_AND_DATE_DESC
+}
+
 type Author {
   # A globally unique ID.
   __id: ID!
@@ -1498,6 +1629,13 @@ type BuyersPremium {
   percent: Float
 }
 
+type Category {
+  id: String!
+  category_type: String
+  internal: Boolean
+  name: String
+}
+
 enum CategoryType {
   GALLERY
   INSTITUTION
@@ -1564,6 +1702,100 @@ type CollectorProfileType {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  intents: [String]
+}
+
+# A work to be consigned to the user
+type ConsignmentSubmission implements Node {
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+
+  # A type-specific Gravity Mongo Document ID.
+  _id: String!
+  artist_id: String!
+
+  # Does the artwork come with an certificate of authenticity?
+  authenticity_certificate: Boolean
+
+  # The set in which to put the work
+  category: SubmissionCategoryAggregation
+
+  # The depth of the work
+  depth: String
+
+  # A string, either CM or IN
+  dimensions_metric: SubmissionDimensionAggregation
+
+  # Is the work a part of an edition
+  edition: Boolean
+
+  # The number of the individual work if in a set
+  edition_number: String
+
+  # The whole size of the set of works
+  edition_size: Int
+
+  # The height of the work
+  height: String
+
+  # The city where the work currently resides
+  location_city: String
+
+  # The country where the work currently resides
+  location_country: String
+
+  # The state where the work currently resides
+  location_state: String
+
+  # The materials in which the work is created
+  medium: String
+
+  # The history of an work
+  provenance: String
+
+  # Is this work signed?
+  signature: Boolean
+
+  # The name of the work
+  title: String
+
+  # The internal state of the work, e.g. draft/submitted
+  state: SubmissionStateAggregation
+
+  # The width of the work
+  width: String
+
+  # The year the work was created
+  year: String
+
+  # The user who submitted the work
+  user_id: ID
+  artist: Artist
+}
+
+# A connection to a list of items.
+type ConsignmentSubmissionConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ConsignmentSubmissionEdge]
+}
+
+# An edge in a connection.
+type ConsignmentSubmissionEdge {
+  # The item at the end of the edge
+  node: ConsignmentSubmission
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Convection {
+  geminiTemplateKey: String!
 }
 
 # A conversation.
@@ -1765,11 +1997,14 @@ input CreateSubmissionMutationInput {
 
   # The year the work was created
   year: String
+
+  # The user who submitted the work
+  user_id: ID
   clientMutationId: String
 }
 
 type CreateSubmissionMutationPayload {
-  submission: Submission
+  consignment_submission: ConsignmentSubmission
   clientMutationId: String
 }
 
@@ -1780,6 +2015,9 @@ type Credentials {
 
   # A base64 encoded version of the S3 policy
   policy_encoded: String!
+
+  # The s3 policy document for your request
+  policy_document: S3PolicyDocumentType!
 
   # The signature for your asset.
   signature: String!
@@ -1856,6 +2094,32 @@ type dimensions {
   cm: String
 }
 
+input EditableLocation {
+  # First line of an address
+  address: String
+
+  # Second line of an address
+  address_2: String
+
+  # The city the location is based in
+  city: String
+
+  # The county the location is based in
+  country: String
+
+  # An optional display string for the location
+  summary: String
+
+  # Postal code for a string
+  postal_code: String
+
+  # The (optional) name of the state for location
+  state: String
+
+  # The (optional) state code of the state for location
+  state_code: String
+}
+
 type EditionSet {
   # A globally unique ID.
   __id: ID!
@@ -1867,7 +2131,8 @@ type EditionSet {
   is_acquireable: Boolean
   is_for_sale: Boolean
   is_sold: Boolean
-  price: String
+  price: String @deprecated(reason: "Prefer to use `sale_message`.")
+  sale_message: String
 }
 
 enum EventStatus {
@@ -1911,6 +2176,7 @@ type Fair {
 
   # Are we currently in the fair's active period?
   is_active: Boolean
+  mobile_image: Image
   is_published: Boolean
   location: Location
   name: String
@@ -1967,7 +2233,7 @@ type FeaturedLinkItem {
 type FilterArtworks {
   # Returns aggregation counts for the given filter query.
   aggregations: [ArtworksAggregationResults]
-  artworks_connection(after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworks_connection(after: String, first: Int, before: String, last: Int): ArtworkConnection @deprecated(reason: "Favour artwork connections that take filter arguments.")
   counts: FilterArtworksCounts
   followed_artists_total: Int @deprecated(reason: "Favor `favor counts.followed_artists`")
 
@@ -2070,6 +2336,78 @@ type FollowArtists {
   counts: FollowArtistCounts
 }
 
+type FollowedArtistsArtworksGroup implements Node {
+  # A globally unique ID.
+  __id: ID!
+
+  # List of artworks in this group.
+  artworks: [Artwork]
+  artists: String
+  summary: String
+  image: Image
+}
+
+# A connection to a list of items.
+type FollowedArtistsArtworksGroupConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FollowedArtistsArtworksGroupEdge]
+}
+
+# An edge in a connection.
+type FollowedArtistsArtworksGroupEdge {
+  # The item at the end of the edge
+  node: FollowedArtistsArtworksGroup
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type FollowGene {
+  gene: Gene
+
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+}
+
+# A connection to a list of items.
+type FollowGeneConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FollowGeneEdge]
+}
+
+# An edge in a connection.
+type FollowGeneEdge {
+  # The item at the end of the edge
+  node: FollowGene
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input FollowGeneInput {
+  gene_id: String
+  clientMutationId: String
+}
+
+type FollowGenePayload {
+  gene: Gene
+  clientMutationId: String
+}
+
+type FollowsAndSaves {
+  # A list of published artworks by followed artists (grouped by date and artists).
+  bundledArtworksByArtist(sort: ArtworkSorts, after: String, first: Int, before: String, last: Int): FollowedArtistsArtworksGroupConnection
+}
+
 enum Format {
   HTML
   PLAIN
@@ -2131,8 +2469,9 @@ type Gene implements Node {
     first: Int
     before: String
     last: Int
-  ): ArtworkConnection
+  ): GeneArtworksConnection
   description: String
+  display_name: String
 
   # Artworks Elastic Search results
   filtered_artworks(
@@ -2167,15 +2506,56 @@ type Gene implements Node {
   ): FilterArtworks
   href: String
   image: Image
+  is_published: Boolean
   mode: String
   name: String
   trending_artists(sample: Int): [Artist]
+}
+
+# A connection to a list of items.
+type GeneArtworksConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [GeneArtworksEdge]
+
+  # Returns aggregation counts for the given filter query.
+  aggregations: [ArtworksAggregationResults]
+  counts: FilterArtworksCounts
+}
+
+# An edge in a connection.
+type GeneArtworksEdge {
+  # The item at the end of the edge
+  node: Artwork
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 type GeneFamily {
   id: String!
   name: String!
   genes: [Gene]
+}
+
+# A connection to a list of items.
+type GeneFamilyConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [GeneFamilyEdge]
+}
+
+# An edge in a connection.
+type GeneFamilyEdge {
+  # The item at the end of the edge
+  node: GeneFamily
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 type GeneItem implements Node {
@@ -2223,8 +2603,9 @@ type GeneItem implements Node {
     first: Int
     before: String
     last: Int
-  ): ArtworkConnection
+  ): GeneArtworksConnection
   description: String
+  display_name: String
 
   # Artworks Elastic Search results
   filtered_artworks(
@@ -2259,6 +2640,7 @@ type GeneItem implements Node {
   ): FilterArtworks
   href: String
   image: Image
+  is_published: Boolean
   mode: String
   name: String
   trending_artists(sample: Int): [Artist]
@@ -2454,10 +2836,14 @@ type HomePage {
 
     # The preferred order of modules, defaults to order returned by Gravity
     order: [HomePageArtworkModuleTypes]
+
+    # Exclude certain modules
+    exclude: [HomePageArtworkModuleTypes] = []
   ): [HomePageArtworkModule]
 
   # A list of enabled hero units to show on the requested platform
   hero_units(platform: HomePageHeroUnitPlatform!): [HomePageHeroUnit]
+  fairs_module: HomePageFairsModule
 }
 
 type HomePageArtistModule implements Node {
@@ -2504,6 +2890,10 @@ enum HomePageArtworkModuleTypes {
   RECOMMENDED_WORKS
   RELATED_ARTISTS
   SAVED_WORKS
+}
+
+type HomePageFairsModule {
+  results: [Fair]!
 }
 
 type HomePageHeroUnit {
@@ -2571,6 +2961,7 @@ type HomePageModuleContextFair {
 
   # Are we currently in the fair's active period?
   is_active: Boolean
+  mobile_image: Image
   is_published: Boolean
   location: Location
   name: String
@@ -2659,8 +3050,9 @@ type HomePageModuleContextGene implements Node {
     first: Int
     before: String
     last: Int
-  ): ArtworkConnection
+  ): GeneArtworksConnection
   description: String
+  display_name: String
 
   # Artworks Elastic Search results
   filtered_artworks(
@@ -2695,6 +3087,7 @@ type HomePageModuleContextGene implements Node {
   ): FilterArtworks
   href: String
   image: Image
+  is_published: Boolean
   mode: String
   name: String
   trending_artists(sample: Int): [Artist]
@@ -2705,7 +3098,7 @@ type HomePageModuleContextRelatedArtist {
   based_on: Artist
 }
 
-type HomePageModuleContextSale {
+type HomePageModuleContextSale implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -2773,6 +3166,9 @@ type HomePageModuleContextSale {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # Returns a live auctions url if the sale is open and start time is after now
+  live_url_if_open: String
   profile: Profile
   registration_ends_at(
     convert_to_utc: Boolean
@@ -2783,6 +3179,7 @@ type HomePageModuleContextSale {
   ): String
   require_bidder_approval: Boolean
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
   sale_type: String
   start_at(
     convert_to_utc: Boolean
@@ -2840,6 +3237,15 @@ type Image {
   width: Int
   url(version: [String]): String
   versions: [String]
+}
+
+enum Intents {
+  BUY_ART_AND_DESIGN
+  SELL_ART_AND_DESIGN
+  RESEARCH_ART_PRICES
+  LEARN_ABOUT_ART
+  FIND_ART_EXHIBITS
+  READ_ART_MARKET_NEWS
 }
 
 type Invoice implements Node {
@@ -2939,6 +3345,9 @@ type Me implements Node {
   # A type-specific ID.
   id: String!
 
+  # A list of the current user’s consignment submissions
+  consignment_submissions(after: String, first: Int, before: String, last: Int, completed: Boolean): ConsignmentSubmissionConnection
+
   # A list of the current user’s inquiry requests
   artwork_inquiries_connection(after: String, first: Int, before: String, last: Int): ArtworkInquiryConnection
 
@@ -2987,6 +3396,10 @@ type Me implements Node {
   # A list of the current user’s inquiry requests
   followed_artists_connection(after: String, first: Int, before: String, last: Int): FollowArtistConnection
 
+  # A list of the current user’s inquiry requests
+  followed_genes(after: String, first: Int, before: String, last: Int): FollowGeneConnection
+  followsAndSaves: FollowsAndSaves
+
   # An invoice
   invoice(
     # The ID of the Conversation
@@ -3017,7 +3430,7 @@ type Me implements Node {
   initials(length: Int = 3): String
 
   # A list of feed items, indicating published artworks (grouped by date and artists).
-  notifications_connection(after: String, first: Int, before: String, last: Int): NotificationsFeedItemConnection
+  notifications_connection(after: String, first: Int, before: String, last: Int): NotificationsFeedItemConnection @deprecated(reason: "Prefer to use followed_artists_artwork_groups.")
   paddle_number: String
   sale_registrations(
     # Limit by auction.
@@ -3118,7 +3531,11 @@ type MessageInitiator {
 
 type Mutation {
   followArtist(input: FollowArtistInput!): FollowArtistPayload
+  followGene(input: FollowGeneInput!): FollowGenePayload
   updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
+
+  # Update the current logged in user.
+  updateMyUserProfile(input: UpdateMyProfileInput!): UpdateMyProfilePayload
 
   # Updating buyer outcome of a conversation.
   updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
@@ -3130,6 +3547,12 @@ type Mutation {
   markReadMessage(input: MarkReadMessageMutationInput!): MarkReadMessageMutationPayload
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
 
+  # Attach an gemini asset to a consignment submission
+  requestCredentialsForAssetUpload(input: RequestCredentialsForAssetUploadInput!): RequestCredentialsForAssetUploadPayload
+
+  # Attach an gemini asset to a consignment submission
+  createGeminiEntryForAsset(input: CreateGeminiEntryForAssetInput!): CreateGeminiEntryForAssetPayload
+
   # Create a new consignment submission using Convection
   createConsignmentSubmission(input: CreateSubmissionMutationInput!): CreateSubmissionMutationPayload
 
@@ -3138,12 +3561,6 @@ type Mutation {
 
   # Attach an gemini asset to a consignment submission
   addAssetToConsignmentSubmission(input: AddAssetToConsignmentSubmissionInput!): AddAssetToConsignmentSubmissionPayload
-
-  # Attach an gemini asset to a consignment submission
-  requestCredentialsForAssetUpload(input: RequestCredentialsForAssetUploadInput!): RequestCredentialsForAssetUploadPayload
-
-  # Attach an gemini asset to a consignment submission
-  createGeminiEntryForAsset(input: CreateGeminiEntryForAssetInput!): CreateGeminiEntryForAssetPayload
 }
 
 input Near {
@@ -3245,6 +3662,7 @@ type Partner implements Node {
   _id: String!
   cached: Int
   artworks(size: Int, for_sale: Boolean, sort: ArtworkSorts, exclude: [String]): [Artwork]
+  categories: [Category]
   collecting_institution: String
   contact_message: String @deprecated(reason: "Prefer artwork contact_message to handle availability-based prompts.")
   counts: PartnerCounts
@@ -3278,6 +3696,15 @@ type PartnerArtist {
   sortable_id: String
 }
 
+# A connection to a list of items.
+type PartnerArtistConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [PartnerArtistEdge]
+}
+
 type PartnerArtistCounts {
   artworks(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
@@ -3289,6 +3716,29 @@ type PartnerArtistCounts {
     format: String
     label: String
   ): FormattedNumber
+}
+
+# An edge in a connection.
+type PartnerArtistEdge {
+  # The item at the end of the edge
+  node: Partner
+
+  # A cursor for use in pagination
+  cursor: String!
+
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+  artist: Artist
+  biography: String
+  counts: PartnerArtistCounts
+  is_display_on_partner_profile: Boolean
+  is_represented_by: Boolean
+  is_use_default_biography: Boolean
+  partner: Partner
+  sortable_id: String
 }
 
 type PartnerCategory {
@@ -3828,14 +4278,17 @@ type Query {
   ): FilterArtworks
 
   # Sale Artworks Elastic Search results
-  filter_sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String): FilterSaleArtworks
+  filter_sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String): FilterSaleArtworks @deprecated(reason: "This type has been superceded by `sale_artworks`")
   gene(
     # The slug or ID of the Gene
     id: String!
   ): Gene
 
+  # List of curated genes with custom images
+  suggested_genes: [SuggestedGene]
+
   # A list of Gene Families
-  gene_families: [GeneFamily]
+  gene_families(after: String, first: Int, before: String, last: Int): GeneFamilyConnection
   gene_family: GeneFamily
 
   # Home screen content
@@ -3855,6 +4308,21 @@ type Query {
     # Exclude these MongoDB ids from results
     exclude_ids: [String]
   ): [Artist]
+
+  # A Search for Genes
+  match_gene(
+    # Your search term
+    term: String!
+
+    # Maximum number of items to retrieve. Default: 5.
+    size: Int
+
+    # Page to retrieve. Default: 1.
+    page: Int
+
+    # Exclude these MongoDB ids from results
+    exclude_ids: [String]
+  ): [Gene]
   me: Me
 
   # Fetches an object given its Globally Unique ID
@@ -3958,6 +4426,9 @@ type Query {
     id: String!
   ): SaleArtwork
 
+  # Sale Artworks Elastic Search results
+  sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String, after: String, first: Int, before: String, last: Int): SaleArtworksConnection
+
   # A list of Sales
   sales(
     # Limit by auction.
@@ -3977,6 +4448,9 @@ type Query {
     # Your search term
     term: String!
   ): Search
+
+  # The schema for difference microservice settings
+  services: Services
 
   # A Show
   show(
@@ -4017,6 +4491,33 @@ type Query {
   viewer: Viewer
 }
 
+type RelatedArtists {
+  # A list of the current user’s suggested artists, based on a single artist
+  suggested(
+    # The slug or ID of an artist
+    artist_id: String
+
+    # Exclude artists without for sale works
+    exclude_artists_without_forsale_artworks: Boolean
+
+    # Exclude artists without any artworks
+    exclude_artists_without_artworks: Boolean
+
+    # Exclude artists the user already follows
+    exclude_followed_artists: Boolean
+
+    # Pagination, need I say more?
+    page: Int
+
+    # Amount of artists to return
+    size: Int
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtistConnection
+}
+
 input RequestCredentialsForAssetUploadInput {
   # The gemini template you want to request
   name: String!
@@ -4043,7 +4544,31 @@ enum Role {
   OPERATOR
 }
 
-type Sale {
+# The conditions for uploading assets to media.artsy.net
+type S3PolicyConditionsType {
+  # The bucket to upload to.
+  bucket: String!
+
+  # The assigned access control
+  acl: String!
+
+  # A key which is prefixed on your file
+  gemini_key: String!
+
+  # The returned status code, currently always 201
+  success_action_status: String!
+}
+
+# An policy for uploading assets to media.artsy.net
+type S3PolicyDocumentType {
+  # An expiration date string.
+  expiration: String!
+
+  # The details for the upload
+  conditions: S3PolicyConditionsType!
+}
+
+type Sale implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -4111,6 +4636,9 @@ type Sale {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # Returns a live auctions url if the sale is open and start time is after now
+  live_url_if_open: String
   profile: Profile
   registration_ends_at(
     convert_to_utc: Boolean
@@ -4121,6 +4649,7 @@ type Sale {
   ): String
   require_bidder_approval: Boolean
   sale_artworks(page: Int = 1, size: Int = 25, all: Boolean = false): [SaleArtwork]
+  sale_artworks_connection(after: String, first: Int, before: String, last: Int): SaleArtworkConnection
   sale_type: String
   start_at(
     convert_to_utc: Boolean
@@ -4146,7 +4675,7 @@ type SaleArtwork {
   cached: Int
   artwork: Artwork
   bidder_positions_count: Int @deprecated(reason: "Favor `counts.bidder_positions`")
-  bid_increments: [Int]
+  bid_increments: [Float]
   counts: SaleArtworkCounts
 
   # Currency abbreviation (e.g. "USD")
@@ -4190,6 +4719,15 @@ enum SaleArtworkAggregation {
   TOTAL
 }
 
+# A connection to a list of items.
+type SaleArtworkConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SaleArtworkEdge]
+}
+
 type SaleArtworkCounts {
   bidder_positions(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
@@ -4215,6 +4753,15 @@ type SaleArtworkCurrentBid {
 
   # A pre-formatted price.
   display: String
+}
+
+# An edge in a connection.
+type SaleArtworkEdge {
+  # The item at the end of the edge
+  node: SaleArtwork
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 type SaleArtworkHighestBid {
@@ -4344,6 +4891,28 @@ type SaleArtworksAggregationResults {
   slice: SaleArtworkAggregation
 }
 
+# A connection to a list of items.
+type SaleArtworksConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SaleArtworksEdge]
+
+  # Returns aggregation counts for the given filter query.
+  aggregations: [SaleArtworksAggregationResults]
+  counts: FilterSaleArtworksCounts
+}
+
+# An edge in a connection.
+type SaleArtworksEdge {
+  # The item at the end of the edge
+  node: SaleArtwork
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 type SaleRegistration {
   bidder: Bidder
   is_registered: Boolean
@@ -4413,6 +4982,10 @@ type SendConversationMessageMutationPayload {
   conversation: Conversation
   messageEdge: MessageEdge
   clientMutationId: String
+}
+
+type Services {
+  convection: Convection!
 }
 
 type Show implements Node {
@@ -4572,67 +5145,6 @@ type StatusGravity {
   ping: Boolean
 }
 
-# A work to be consigned to the user
-type Submission {
-  # Convection id.
-  id: String!
-  artist_id: String!
-
-  # Does the artwork come with an certificate of authenticity?
-  authenticity_certificate: Boolean
-
-  # The set in which to put the work
-  category: SubmissionCategoryAggregation
-
-  # The depth of the work
-  depth: String
-
-  # A string, either CM or IN
-  dimensions_metric: SubmissionDimensionAggregation
-
-  # Is the work a part of an edition
-  edition: Boolean
-
-  # The number of the individual work if in a set
-  edition_number: String
-
-  # The whole size of the set of works
-  edition_size: Int
-
-  # The height of the work
-  height: String
-
-  # The city where the work currently resides
-  location_city: String
-
-  # The country where the work currently resides
-  location_country: String
-
-  # The state where the work currently resides
-  location_state: String
-
-  # The materials in which the work is created
-  medium: String
-
-  # The history of an work
-  provenance: String
-
-  # Is this work signed?
-  signature: Boolean
-
-  # The name of the work
-  title: String
-
-  # The internal state of the work, e.g. draft/submitted
-  state: SubmissionStateAggregation
-
-  # The width of the work
-  width: String
-
-  # The year the work was created
-  year: String
-}
-
 enum SubmissionCategoryAggregation {
   PAINTING
   SCULPTURE
@@ -4659,6 +5171,15 @@ enum SubmissionDimensionAggregation {
 enum SubmissionStateAggregation {
   DRAFT
   SUBMITTED
+  APPROVED
+  REJECTED
+}
+
+type SuggestedGene {
+  id: String
+  image_url: String
+  _id: String
+  name: String
 }
 
 type Tag {
@@ -4706,6 +5227,7 @@ input UpdateCollectorProfileInput {
   loyalty_applicant: Boolean
   professional_buyer: Boolean
   self_reported_purchases: String
+  intents: [Intents]
   clientMutationId: String
 }
 
@@ -4747,6 +5269,7 @@ type UpdateCollectorProfilePayload {
     # Specify a tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+  intents: [String]
   clientMutationId: String
 }
 
@@ -4761,8 +5284,37 @@ type UpdateConversationMutationPayload {
   clientMutationId: String
 }
 
+input UpdateMyProfileInput {
+  # The given name of the user.
+  name: String
+
+  # The given email of the user.
+  email: String
+
+  # The given phone number of the user.
+  phone: String
+
+  # The given location of the user as structured data
+  location: EditableLocation
+
+  # The collector level for the user
+  collector_level: Int
+
+  # The minimum price collector has selected
+  price_range_min: Int
+
+  # The maximum price collector has selected
+  price_range_max: Int
+  clientMutationId: String
+}
+
+type UpdateMyProfilePayload {
+  user: User
+  clientMutationId: String
+}
+
 input UpdateSubmissionMutationInput {
-  # Convection id.
+  # A type-specific ID.
   id: String!
   artist_id: String!
 
@@ -4819,12 +5371,35 @@ input UpdateSubmissionMutationInput {
 
   # The year the work was created
   year: String
+
+  # The user who submitted the work
+  user_id: ID
   clientMutationId: String
 }
 
 type UpdateSubmissionMutationPayload {
-  submission: Submission
+  consignment_submission: ConsignmentSubmission
   clientMutationId: String
+}
+
+type User {
+  # User id.
+  id: String!
+
+  # The given name of the user.
+  name: String!
+
+  # The given email of the user.
+  email: String!
+
+  # The given phone number of the user.
+  phone: String
+
+  # The given location of the user as structured data
+  location: Location
+
+  # The price range the collector has selected
+  price_range: String
 }
 
 # A wildcard used to support complex root queries in Relay
@@ -4949,14 +5524,17 @@ type Viewer {
   ): FilterArtworks
 
   # Sale Artworks Elastic Search results
-  filter_sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String): FilterSaleArtworks
+  filter_sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String): FilterSaleArtworks @deprecated(reason: "This type has been superceded by `sale_artworks`")
   gene(
     # The slug or ID of the Gene
     id: String!
   ): Gene
 
+  # List of curated genes with custom images
+  suggested_genes: [SuggestedGene]
+
   # A list of Gene Families
-  gene_families: [GeneFamily]
+  gene_families(after: String, first: Int, before: String, last: Int): GeneFamilyConnection
   gene_family: GeneFamily
 
   # Home screen content
@@ -4976,6 +5554,21 @@ type Viewer {
     # Exclude these MongoDB ids from results
     exclude_ids: [String]
   ): [Artist]
+
+  # A Search for Genes
+  match_gene(
+    # Your search term
+    term: String!
+
+    # Maximum number of items to retrieve. Default: 5.
+    size: Int
+
+    # Page to retrieve. Default: 1.
+    page: Int
+
+    # Exclude these MongoDB ids from results
+    exclude_ids: [String]
+  ): [Gene]
   me: Me
 
   # Fetches an object given its Globally Unique ID
@@ -5079,6 +5672,9 @@ type Viewer {
     id: String!
   ): SaleArtwork
 
+  # Sale Artworks Elastic Search results
+  sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String, after: String, first: Int, before: String, last: Int): SaleArtworksConnection
+
   # A list of Sales
   sales(
     # Limit by auction.
@@ -5098,6 +5694,9 @@ type Viewer {
     # Your search term
     term: String!
   ): Search
+
+  # The schema for difference microservice settings
+  services: Services
 
   # A Show
   show(

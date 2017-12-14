@@ -1,15 +1,15 @@
-import { MarkdownString } from "danger/distribution/dsl/Aliases"
-import * as React from "react"
+import React from "react"
 import { createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
-import { ConnectionHandler } from "relay-runtime"
 
-import { MetadataText, SmallHeadline } from "../Components/Inbox/Typography"
+import { Schema, Track, track as _track } from "../utils/track"
 
-import { FlatList, ImageURISource, NetInfo, View, ViewProperties } from "react-native"
+import { SmallHeadline } from "../Components/Inbox/Typography"
 
+import { NetInfo, View } from "react-native"
+
+import colors from "lib/data/colors"
 import styled from "styled-components/native"
-import colors from "../../data/colors"
-import fonts from "../../data/fonts"
+
 import ConnectivityBanner from "../Components/ConnectivityBanner"
 
 import Composer from "../Components/Inbox/Conversations/Composer"
@@ -18,11 +18,6 @@ import { sendConversationMessage } from "../Components/Inbox/Conversations/SendC
 import Separator from "../Components/Separator"
 
 import { markLastMessageRead } from "../Components/Inbox/Conversations/MarkReadMessage"
-
-import ARSwitchBoard from "../NativeModules/SwitchBoard"
-
-// tslint:disable-next-line:no-var-requires
-const chevron: ImageURISource = require("../../../images/horizontal_chevron.png")
 
 const Container = styled.View`
   flex: 1;
@@ -43,25 +38,6 @@ const HeaderTextContainer = styled.View`
   justify-content: center;
 `
 
-const BackButtonPlaceholder = styled.Image`
-  height: 12;
-  width: 7;
-  transform: rotate(180deg);
-`
-
-const DottedBorder = styled.View`
-  height: 1;
-  border-width: 1;
-  border-style: dotted;
-  border-color: ${colors["gray-regular"]};
-  margin-left: 20;
-  margin-right: 20;
-`
-
-const MessagesList = styled(FlatList)`
-  margin-top: 10;
-`
-
 interface Props extends RelayProps {
   relay?: RelayPaginationProp
   onMessageSent?: (text: string) => void
@@ -76,6 +52,9 @@ interface State {
   shouldShowSeparator?: boolean
 }
 
+const track: Track<Props, State> = _track
+
+@track()
 export class Conversation extends React.Component<Props, State> {
   composer: Composer
 
@@ -113,7 +92,7 @@ export class Conversation extends React.Component<Props, State> {
         this.props.relay.environment,
         conversation,
         conversation.last_message_delivery_id,
-        response => {
+        _response => {
           this.setState({ markedMessageAsRead: true })
         },
         error => {
@@ -122,6 +101,31 @@ export class Conversation extends React.Component<Props, State> {
         }
       )
     }
+  }
+
+  @track(props => ({
+    action_type: Schema.ActionTypes.Success,
+    action_name: Schema.ActionNames.ConversationSendReply,
+    owner_id: props.me.conversation.id,
+    owner_type: Schema.OwnerEntityTypes.Conversation,
+  }))
+  messageSuccessfullySent(text: string) {
+    this.setState({ sendingMessage: false })
+
+    if (this.props.onMessageSent) {
+      this.props.onMessageSent(text)
+    }
+  }
+
+  @track(props => ({
+    action_type: Schema.ActionTypes.Fail,
+    action_name: Schema.ActionNames.ConversationSendReply,
+    owner_id: props.me.conversation.id,
+    owner_type: Schema.OwnerEntityTypes.Conversation,
+  }))
+  messageFailedToSend(error: Error, text: string) {
+    console.warn(error)
+    this.setState({ sendingMessage: false, failedMessageText: text })
   }
 
   render() {
@@ -139,16 +143,11 @@ export class Conversation extends React.Component<Props, State> {
             this.props.relay.environment,
             conversation,
             text,
-            response => {
-              this.setState({ sendingMessage: false })
-
-              if (this.props.onMessageSent) {
-                this.props.onMessageSent(text)
-              }
+            _response => {
+              this.messageSuccessfullySent(text)
             },
             error => {
-              console.warn(error)
-              this.setState({ sendingMessage: false, failedMessageText: text })
+              this.messageFailedToSend(error, text)
             }
           )
         }}
@@ -165,7 +164,7 @@ export class Conversation extends React.Component<Props, State> {
           <Separator style={{ backgroundColor: this.state.shouldShowSeparator ? colors["gray-regular"] : "white" }} />
           {!this.state.isConnected && <ConnectivityBanner />}
           <Messages
-            conversation={conversation}
+            conversation={conversation as any}
             onDataFetching={loading => {
               this.setState({ fetchingData: loading })
             }}

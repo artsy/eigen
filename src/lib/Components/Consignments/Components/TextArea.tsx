@@ -1,9 +1,9 @@
-import * as React from "react"
-import { ActivityIndicator, Text, TextInput, TextInputProperties, View, ViewProperties } from "react-native"
+import React from "react"
+import { TextInputProperties, View, ViewProperties } from "react-native"
 
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
-import colors from "../../../../data/colors"
-import fonts from "../../../../data/fonts"
 
 export interface TextAreaProps extends ViewProperties {
   text?: TextInputProperties
@@ -18,7 +18,7 @@ interface State {
 const Placeholder = styled.Text`
   position: absolute;
   z-index: -1;
-  color: ${colors["gray-medium"]};
+  color: ${colors["gray-semibold"]};
   font-family: "${fonts["garamond-regular"]}";
   font-size: 20;
   margin-top: 5px;
