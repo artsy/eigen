@@ -4,6 +4,8 @@
 ### Master
 
 -   Sets the status bar BG color to dark for Consignments - orta 
+-   Bug fix for the Gene refine not showing on Eigen - orta
+-   Taking a consignment photo will now select the created image by default - orta
 
 ### 1.4.0-beta.10
 

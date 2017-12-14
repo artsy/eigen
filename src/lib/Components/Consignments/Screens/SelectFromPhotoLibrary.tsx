@@ -80,18 +80,25 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
     }
 
     CameraRoll.getPhotos(fetchParams).then(data => {
-      this.appendAssets(data)
+      if (data && data.edges[0] && data.edges[0].node) {
+        const photo = data.edges[0].node
+
+        // Update selection
+        this.state.selection.add(photo.image.uri)
+        this.setState({
+          selection: this.state.selection,
+          // An item in cameraImage is a subset of the photo that we pass in,
+          // so we `as any` to avoid a compiler error
+          cameraImages: data.edges.map(e => e.node).concat(this.state.cameraImages as any),
+        })
+      } else {
+        console.log("CameraRoll: Did not receive a photo from call to getPhotos")
+      }
     })
   }
 
   appendAssets(data) {
     const assets = data.edges
-
-    // TODO: Reenable when used
-    // const nextState = {
-    //   loadingMore: false,
-    //   noMorePhotos: !data.page_info.has_next_page,
-    // }
 
     if (assets.length === 0) {
       this.setState({
