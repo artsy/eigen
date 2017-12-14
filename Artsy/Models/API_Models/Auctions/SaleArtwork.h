@@ -41,6 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSNumber *_Nullable openingBidCents;
 @property (nonatomic, strong) NSNumber *minimumNextBidCents;
+@property (nonatomic, strong) NSNumber *_Nullable estimateCents;
 @property (nonatomic, strong) NSNumber *_Nullable lowEstimateCents;
 @property (nonatomic, strong) NSNumber *_Nullable highEstimateCents;
 @property (nonatomic, strong) NSNumber *_Nullable bidCount;
@@ -54,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 // This is shared behavior between SaleArtwork and LiveLot
 
 + (NSValueTransformer *)reserveStatusJSONTransformer;
-+ (NSString *)estimateStringForLowEstimate:(NSNumber *_Nullable)lowEstimateCents highEstimateCents:(NSNumber *_Nullable)highEstimateCents currencySymbol:(NSString *)symbol currency:(NSString *)currency;
++ (NSString *)estimateStringForEstimate:(NSNumber *_Nullable)estimateCents lowEstimate:(NSNumber *_Nullable)lowEstimateCents highEstimateCents:(NSNumber *_Nullable)highEstimateCents currencySymbol:(NSString *)symbol currency:(NSString *)currency;
 + (NSString *)dollarsFromCents:(NSNumber *)cents currencySymbol:(NSString *)symbol;
 
 

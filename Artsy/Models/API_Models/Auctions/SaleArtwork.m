@@ -37,6 +37,7 @@ static NSNumberFormatter *currencyFormatter;
         ar_keypath(SaleArtwork.new, minimumNextBidCents) : @"minimum_next_bid_cents",
         ar_keypath(SaleArtwork.new, saleHighestBid) : @"highest_bid",
         ar_keypath(SaleArtwork.new, artworkNumPositions) : @"bidder_positions_count",
+        ar_keypath(SaleArtwork.new, estimateCents) : @"estimate_cents",
         ar_keypath(SaleArtwork.new, lowEstimateCents) : @"low_estimate_cents",
         ar_keypath(SaleArtwork.new, highEstimateCents) : @"high_estimate_cents",
         ar_keypath(SaleArtwork.new, reserveStatus) : @"reserve_status",
@@ -154,14 +155,16 @@ static NSNumberFormatter *currencyFormatter;
 
 - (BOOL)hasEstimate
 {
-    return self.lowEstimateCents || self.highEstimateCents;
+    return self.estimateCents || self.lowEstimateCents || self.highEstimateCents;
 }
 
-+ (NSString *)estimateStringForLowEstimate:(NSNumber *_Nullable)lowEstimateCents highEstimateCents:(NSNumber *_Nullable)highEstimateCents currencySymbol:(NSString *)symbol currency:(NSString *)currency
++ (NSString *)estimateStringForEstimate:(NSNumber *_Nullable)estimateCents lowEstimate:(NSNumber *_Nullable)lowEstimateCents highEstimateCents:(NSNumber *_Nullable)highEstimateCents currencySymbol:(NSString *)symbol currency:(NSString *)currency
 {
     NSString *estimateValue;
     if (lowEstimateCents && highEstimateCents) {
         estimateValue = [NSString stringWithFormat:@"%@ – %@", [self dollarsFromCents:lowEstimateCents currencySymbol:symbol], [self dollarsFromCents:highEstimateCents currencySymbol:symbol]];
+    } else if (estimateCents) {
+        estimateValue = [self dollarsFromCents:estimateCents currencySymbol:symbol];
     } else if (lowEstimateCents) {
         estimateValue = [self dollarsFromCents:lowEstimateCents currencySymbol:symbol];
     } else if (highEstimateCents) {
@@ -175,7 +178,7 @@ static NSNumberFormatter *currencyFormatter;
 
 - (NSString *)estimateString
 {
-    return [self.class estimateStringForLowEstimate:self.lowEstimateCents highEstimateCents:self.highEstimateCents currencySymbol:self.currencySymbol currency:self.currency];
+    return [self.class estimateStringForEstimate:self.estimateCents lowEstimate:self.lowEstimateCents highEstimateCents:self.highEstimateCents currencySymbol:self.currencySymbol currency:self.currency];
 }
 
 - (NSString *)numberOfBidsString
