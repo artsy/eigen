@@ -38,7 +38,7 @@ export class Notification extends React.Component<RelayProps, any> {
                 {notification.artists}
               </Headline>
               <SerifText style={styles.metadata}>
-                {notification.message}
+                {notification.summary}
               </SerifText>
             </View>
           </View>
@@ -99,8 +99,8 @@ const styles = StyleSheet.create<Styles>({
 export default createFragmentContainer(
   Notification,
   graphql`
-    fragment Notification_notification on NotificationsFeedItem {
-      message
+    fragment Notification_notification on FollowedArtistsArtworksGroup {
+      summary
       artists
       artworks {
         artists(shallow: true) {
@@ -119,7 +119,7 @@ export default createFragmentContainer(
 
 interface RelayProps {
   notification: {
-    message: string
+    summary: string
     artists: string
     artworks: any[]
     image: {

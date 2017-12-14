@@ -4,6 +4,13 @@
 ### Master
 
 -   Adds webview support and zero state page for Auction tab - luc
+-   Sets the status bar BG color to dark for Consignments - orta 
+-   Bug fix for the Gene refine not showing on Eigen - orta
+-   Taking a consignment photo will now select the created image by default - orta
+
+### 1.4.0-beta.10
+
+-   Update WorksForYou to use new Metaphysics schema to avoid frequent empty states - matt
 -   Adds a way to select tab on Home scene from initial props - sarah
 -   Don't load an ArtistRail if it doesn't have any artists - sarah
 -   Refetch data when user re-enters Inbox tab - luc
@@ -19,6 +26,7 @@
 -   Get rid of image view flag that would skip on-the-fly resizing - alloy
 -   Add noUnusedLocals / noUnusedParameters to tslint config; clean up refs in app -chris
 -   Swap ListView for FlatList in Inbox/ForYou and refactor rail registration, misc QA - chris
+-   New design for consignments welcome screen - maxim
 
 ### 1.4.0-beta.9
 
