@@ -170,3 +170,6 @@ if (fs.existsSync("tslint-errors.json")) {
     markdown(tslintMarkdown)
   }
 }
+
+import jest from "danger-plugin-jest"
+jest()
