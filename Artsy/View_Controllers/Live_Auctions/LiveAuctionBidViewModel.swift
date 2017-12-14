@@ -79,7 +79,7 @@ class LiveAuctionBidViewModel: NSObject {
 
         bidIncrements = [currentBid]
 
-        let threshold = 5 * max(lotVM.askingPrice, (lotVM.highEstimateCents ?? 0))
+        let threshold = 5 * max(lotVM.askingPrice, (lotVM.highEstimateOrEstimateCents ?? 0))
         var i = 0
         repeat {
             let nextBid = salesPerson.bidIncrements.minimumNextBidCentsIncrement(bidIncrements[i])

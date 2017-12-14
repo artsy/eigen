@@ -32,7 +32,7 @@ protocol LiveAuctionLotViewModelType: class {
     var lotArtworkDimensions: String? { get }
 
     var estimateString: String? { get }
-    var highEstimateCents: UInt64? { get }
+    var highEstimateOrEstimateCents: UInt64? { get }
     var lotName: String { get }
     var lotID: String { get }
     var lotLabel: String? { get }
@@ -243,8 +243,8 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         return model.estimate
     }
 
-    var highEstimateCents: UInt64? {
-        return model.highEstimateCents?.uint64Value
+    var highEstimateOrEstimateCents: UInt64? {
+        return model.highEstimateCents?.uint64Value ?? model.estimateCents?.uint64Value
     }
 
     var eventIDs: [String] {
