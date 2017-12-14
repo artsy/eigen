@@ -44,9 +44,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
             self.tableView.reloadData()
 
             // Support haptic feedback during an auction
-            if(AROptions.bool(forOption: AROptionFeedbackLiveAuction)) {
-                self.provideHapticFeedbackForEvents(events: newEvents)
-            }
+            self.provideHapticFeedbackForEvents(events: newEvents)
 
             //
 //            let currentCellCount = self.tableView.numberOfRowsInSection(0)
