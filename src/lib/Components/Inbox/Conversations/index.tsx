@@ -10,7 +10,7 @@ import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import Spinner from "../../Spinner"
 import ConversationSnippet, { Props as ConversationSnippetProps } from "./ConversationSnippet"
 
-const PAGE_SIZE = 10
+import { PAGE_SIZE } from "lib/data/constants"
 
 const Headline = styled(LargeHeadline)`
   margin-top: 20px;
@@ -66,7 +66,8 @@ export class Conversations extends Component<Props, State> {
     if (!relay.isLoading()) {
       relay.loadMore(PAGE_SIZE, error => {
         if (error) {
-          // TODO: Check against errors and display somehow
+          console.error("Conversations/index.tsx #fetchData", error.message)
+          // FIXME: Handle error
         }
 
         this.setState({
@@ -80,7 +81,12 @@ export class Conversations extends Component<Props, State> {
     const { relay } = this.props
 
     if (!relay.isLoading()) {
-      relay.refetchConnection(PAGE_SIZE, () => {
+      relay.refetchConnection(PAGE_SIZE, error => {
+        if (error) {
+          console.error("Conversations/index.tsx #refreshConversations", error.message)
+          // FIXME: Handle error
+        }
+
         if (callback) {
           callback()
         }
