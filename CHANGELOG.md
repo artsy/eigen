@@ -3,6 +3,8 @@
 
 ### Master
 
+### 1.4.0-beta.11
+
 * Adds webview support and zero state page for Auction tab - luc
 * Sets the status bar BG color to dark for Consignments - orta
 * Bug fix for the Gene refine not showing on Eigen - orta
