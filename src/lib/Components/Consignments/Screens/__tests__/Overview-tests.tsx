@@ -3,6 +3,7 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 
 import Artist from "../Artist"
+import Edition from "../Edition"
 import Location from "../Location"
 import Metadata from "../Metadata"
 import Overview from "../Overview"
@@ -42,6 +43,11 @@ describe("Opening the right page", () => {
   it("pushes a Metadata when you tap on Metadata", () => {
     overview.goToMetadataTapped()
     expect(navigator.push).toBeCalledWith({ component: Metadata, passProps: anything() })
+  })
+
+  it("pushes a Edition when you tap on Edition", () => {
+    overview.goToEditionTapped()
+    expect(navigator.push).toBeCalledWith({ component: Edition, passProps: anything() })
   })
 
   it("pushes a Provenance when you tap on Provenance", () => {
@@ -113,6 +119,11 @@ describe("Updating State", () => {
   it("updates Provenance", () => {
     overview.updateProvenance("This is my provenance")
     expect(stateMock).toBeCalledWith({ provenance: "This is my provenance" }, update)
+  })
+
+  it("adds submitted before triggering final submission on submit", () => {
+    overview.goToFinalSubmission()
+    expect(stateMock).toBeCalledWith({ state: "SUBMITTED" }, update)
   })
 
   it.skip("updates Photos")

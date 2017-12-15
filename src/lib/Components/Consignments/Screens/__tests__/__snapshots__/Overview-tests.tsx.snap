@@ -174,27 +174,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     ]
                   }
                 >
-                  <View
-                    style={
-                      Array [
-                        Object {
-                          "alignItems": "center",
-                          "borderColor": "white",
-                          "borderRadius": 13,
-                          "borderWidth": 1,
-                          "height": 26,
-                          "justifyContent": "center",
-                          "marginRight": 20,
-                          "width": 26,
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    <Image
-                      source={1}
-                    />
-                  </View>
                   <Text
                     accessible={true}
                     allowFontScaling={true}
@@ -215,28 +194,27 @@ exports[`Sets up the right view hierarchy 1`] = `
                   >
                     ARTIST/DESIGNER NAME
                   </Text>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
+                  <View
                     style={
                       Array [
                         Object {
-                          "color": "white",
-                          "flexBasis": 0,
-                          "flexGrow": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "AGaramondPro-Regular",
-                          "paddingTop": 6,
-                          "textAlign": "right",
+                          "alignItems": "center",
+                          "borderColor": "white",
+                          "borderRadius": 13,
+                          "borderWidth": 1,
+                          "height": 26,
+                          "justifyContent": "center",
+                          "marginRight": 20,
+                          "width": 26,
                         },
                         undefined,
                       ]
                     }
                   >
-                    
-                  </Text>
+                    <Image
+                      source={1}
+                    />
+                  </View>
                 </View>
               </View>
               <View
@@ -289,27 +267,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     ]
                   }
                 >
-                  <View
-                    style={
-                      Array [
-                        Object {
-                          "alignItems": "center",
-                          "borderColor": "white",
-                          "borderRadius": 13,
-                          "borderWidth": 1,
-                          "height": 26,
-                          "justifyContent": "center",
-                          "marginRight": 20,
-                          "width": 26,
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    <Image
-                      source={1}
-                    />
-                  </View>
                   <Text
                     accessible={true}
                     allowFontScaling={true}
@@ -330,6 +287,27 @@ exports[`Sets up the right view hierarchy 1`] = `
                   >
                     PHOTOS
                   </Text>
+                  <View
+                    style={
+                      Array [
+                        Object {
+                          "alignItems": "center",
+                          "borderColor": "white",
+                          "borderRadius": 13,
+                          "borderWidth": 1,
+                          "height": 26,
+                          "justifyContent": "center",
+                          "marginRight": 20,
+                          "width": 26,
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    <Image
+                      source={1}
+                    />
+                  </View>
                 </View>
               </View>
               <View
@@ -382,27 +360,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     ]
                   }
                 >
-                  <View
-                    style={
-                      Array [
-                        Object {
-                          "alignItems": "center",
-                          "borderColor": "white",
-                          "borderRadius": 13,
-                          "borderWidth": 1,
-                          "height": 26,
-                          "justifyContent": "center",
-                          "marginRight": 20,
-                          "width": 26,
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    <Image
-                      source={1}
-                    />
-                  </View>
                   <Text
                     accessible={true}
                     allowFontScaling={true}
@@ -423,28 +380,27 @@ exports[`Sets up the right view hierarchy 1`] = `
                   >
                     WORK DETAILS
                   </Text>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
+                  <View
                     style={
                       Array [
                         Object {
-                          "color": "white",
-                          "flexBasis": 0,
-                          "flexGrow": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "AGaramondPro-Regular",
-                          "paddingTop": 6,
-                          "textAlign": "right",
+                          "alignItems": "center",
+                          "borderColor": "white",
+                          "borderRadius": 13,
+                          "borderWidth": 1,
+                          "height": 26,
+                          "justifyContent": "center",
+                          "marginRight": 20,
+                          "width": 26,
                         },
                         undefined,
                       ]
                     }
                   >
-                    
-                  </Text>
+                    <Image
+                      source={1}
+                    />
+                  </View>
                 </View>
               </View>
               <View
@@ -497,27 +453,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     ]
                   }
                 >
-                  <View
-                    style={
-                      Array [
-                        Object {
-                          "alignItems": "center",
-                          "borderColor": "white",
-                          "borderRadius": 13,
-                          "borderWidth": 1,
-                          "height": 26,
-                          "justifyContent": "center",
-                          "marginRight": 20,
-                          "width": 26,
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    <Image
-                      source={1}
-                    />
-                  </View>
                   <Text
                     accessible={true}
                     allowFontScaling={true}
@@ -538,28 +473,27 @@ exports[`Sets up the right view hierarchy 1`] = `
                   >
                     EDITION & AUTHENTICITY
                   </Text>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
+                  <View
                     style={
                       Array [
                         Object {
-                          "color": "white",
-                          "flexBasis": 0,
-                          "flexGrow": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "AGaramondPro-Regular",
-                          "paddingTop": 6,
-                          "textAlign": "right",
+                          "alignItems": "center",
+                          "borderColor": "white",
+                          "borderRadius": 13,
+                          "borderWidth": 1,
+                          "height": 26,
+                          "justifyContent": "center",
+                          "marginRight": 20,
+                          "width": 26,
                         },
                         undefined,
                       ]
                     }
                   >
-                    
-                  </Text>
+                    <Image
+                      source={1}
+                    />
+                  </View>
                 </View>
               </View>
               <View
@@ -612,27 +546,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     ]
                   }
                 >
-                  <View
-                    style={
-                      Array [
-                        Object {
-                          "alignItems": "center",
-                          "borderColor": "white",
-                          "borderRadius": 13,
-                          "borderWidth": 1,
-                          "height": 26,
-                          "justifyContent": "center",
-                          "marginRight": 20,
-                          "width": 26,
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    <Image
-                      source={1}
-                    />
-                  </View>
                   <Text
                     accessible={true}
                     allowFontScaling={true}
@@ -653,28 +566,27 @@ exports[`Sets up the right view hierarchy 1`] = `
                   >
                     LOCATION
                   </Text>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
+                  <View
                     style={
                       Array [
                         Object {
-                          "color": "white",
-                          "flexBasis": 0,
-                          "flexGrow": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "AGaramondPro-Regular",
-                          "paddingTop": 6,
-                          "textAlign": "right",
+                          "alignItems": "center",
+                          "borderColor": "white",
+                          "borderRadius": 13,
+                          "borderWidth": 1,
+                          "height": 26,
+                          "justifyContent": "center",
+                          "marginRight": 20,
+                          "width": 26,
                         },
                         undefined,
                       ]
                     }
                   >
-                    
-                  </Text>
+                    <Image
+                      source={1}
+                    />
+                  </View>
                 </View>
               </View>
               <View
@@ -727,6 +639,26 @@ exports[`Sets up the right view hierarchy 1`] = `
                     ]
                   }
                 >
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "color": "white",
+                          "flexBasis": 0,
+                          "flexGrow": 2,
+                          "flexShrink": 1,
+                          "fontFamily": "AvantGardeGothicITC",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    PROVENANCE
+                  </Text>
                   <View
                     style={
                       Array [
@@ -748,49 +680,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                       source={1}
                     />
                   </View>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "color": "white",
-                          "flexBasis": 0,
-                          "flexGrow": 2,
-                          "flexShrink": 1,
-                          "fontFamily": "AvantGardeGothicITC",
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    PROVENANCE
-                  </Text>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
-                    style={
-                      Array [
-                        Object {
-                          "color": "white",
-                          "flexBasis": 0,
-                          "flexGrow": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "AGaramondPro-Regular",
-                          "paddingTop": 6,
-                          "textAlign": "right",
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    
-                  </Text>
                 </View>
               </View>
               <View
