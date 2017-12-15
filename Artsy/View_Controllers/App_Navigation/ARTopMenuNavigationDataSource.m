@@ -13,6 +13,7 @@
 #import "FeaturedLink.h"
 #import "ARNavigationController.h"
 #import "AROptions.h"
+#import "ARDefaults.h"
 #import "ARSwitchBoard.h"
 
 #import <SDWebImage/SDWebImagePrefetcher.h>
@@ -48,8 +49,9 @@
     for (int i = 0; i < ARTopTabControllerIndexDelimiter; i++) {
         _badgeCounts[i] = 0;
     }
-
-    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil tab:ARHomeTabArtists emission:nil];
+    
+    BOOL shouldOpenOnForYouTab = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding;
+    ARHomeComponentViewController *homeVC = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil tab:shouldOpenOnForYouTab ? ARHomeTabForYou : ARHomeTabArtists emission:nil];
     _feedNavigationController = [[ARNavigationController alloc] initWithRootViewController:homeVC];
 
     return self;
