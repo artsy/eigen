@@ -138,15 +138,9 @@ class ActiveBid extends React.Component<RelayProps, State> {
           <Content>
             <ImageView imageURL={imageURL} />
             <MetadataContainer>
-              <StatusLabel status={this.state.status}>
-                {this.statusLabel}
-              </StatusLabel>
-              <BodyText>
-                {headline}
-              </BodyText>
-              <BodyText>
-                {subtitle}
-              </BodyText>
+              <StatusLabel status={this.state.status}>{this.statusLabel}</StatusLabel>
+              <BodyText>{headline}</BodyText>
+              <BodyText>{subtitle}</BodyText>
             </MetadataContainer>
           </Content>
           <Separator />

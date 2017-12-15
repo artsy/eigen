@@ -197,9 +197,7 @@ export default class Info extends React.Component<Props, State> {
               flex: 1,
             }}
           >
-            <LargeHeadline style={{ textAlign: isPad ? "center" : "left" }}>
-              {title}
-            </LargeHeadline>
+            <LargeHeadline style={{ textAlign: isPad ? "center" : "left" }}>{title}</LargeHeadline>
             <Subtitle style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0, marginTop: -15 }}>
               {subtitle}
             </Subtitle>
@@ -215,8 +213,9 @@ export default class Info extends React.Component<Props, State> {
               />
             </View>
             <Row style={{ justifyContent: "center", marginTop: isPad ? 80 : -30 }}>
-              {this.state.hasLoaded &&
-                <Button text="SUBMIT" onPress={canSubmit ? this.goToFinalSubmission : undefined} />}
+              {this.state.hasLoaded && (
+                <Button text="SUBMIT" onPress={canSubmit ? this.goToFinalSubmission : undefined} />
+              )}
             </Row>
             <Row style={{ justifyContent: "center", marginTop: isPad ? 0 : -20 }}>
               <CloseButton />

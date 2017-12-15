@@ -77,7 +77,9 @@ export default createPaginationContainer(
   }
 )
 
-const Container = styled.View`padding: 10px;`
+const Container = styled.View`
+  padding: 10px;
+`
 
 interface Props {
   relay?: RelayPaginationProp

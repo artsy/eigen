@@ -7,11 +7,7 @@ export default class Headline extends React.Component<TextProperties, any> {
   render() {
     const content = (this.props.children || "") as string
 
-    return (
-      <Text style={[styles.default, this.props.style, styles.required]}>
-        {content.toUpperCase()}
-      </Text>
-    )
+    return <Text style={[styles.default, this.props.style, styles.required]}>{content.toUpperCase()}</Text>
   }
 }
 

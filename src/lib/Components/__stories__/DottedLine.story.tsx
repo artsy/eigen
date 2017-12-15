@@ -7,11 +7,11 @@ import colors from "lib/data/colors"
 import DottedLine from "../DottedLine"
 
 storiesOf("App Style/Dotted Line")
-  .addDecorator(story =>
+  .addDecorator(story => (
     <View accessibilityLabel="wrapperView" style={{ height: 10, marginTop: 60, marginLeft: 20, marginRight: 20 }}>
       {story()}
     </View>
-  )
+  ))
   .add("Default", () => {
     return <DottedLine />
   })

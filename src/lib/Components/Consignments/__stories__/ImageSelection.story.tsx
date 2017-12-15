@@ -8,13 +8,13 @@ const uri2 = "https://d32dm0rphc51dk.cloudfront.net/WAlGHmjlxTn3USMllNt4rA/large
 const uri3 = "https://d32dm0rphc51dk.cloudfront.net/8BuMWBuUOBtKVBsGRUoDKw/large.jpg"
 
 storiesOf("Consignments/Image Selection")
-  .add("With some images", () =>
+  .add("With some images", () => (
     <Wrapper>
       <ImageSelection data={[{ image: { uri: uri1 } }, { image: { uri: uri2 } }, { image: { uri: uri3 } }]} />
     </Wrapper>
-  )
-  .add("With no images", () =>
+  ))
+  .add("With no images", () => (
     <Wrapper>
       <ImageSelection data={[]} />
     </Wrapper>
-  )
+  ))

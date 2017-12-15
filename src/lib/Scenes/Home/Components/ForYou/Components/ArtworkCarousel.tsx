@@ -277,9 +277,7 @@ export class ArtworkCarousel extends Component<Props & RelayPropsWorkaround, Sta
     return (
       <View ref="rail" accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
         <ArtworkCarouselHeader rail={this.props.rail} handleViewAll={this.handleViewAll} />
-        <View style={this.railStyle()}>
-          {this.renderModuleResults()}
-        </View>
+        <View style={this.railStyle()}>{this.renderModuleResults()}</View>
       </View>
     )
   }

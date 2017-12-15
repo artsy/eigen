@@ -22,9 +22,7 @@ interface Props {
 export const SectionHeader: React.SFC<Props> = props => {
   return (
     <Header>
-      <Title>
-        {props.title}
-      </Title>
+      <Title>{props.title}</Title>
     </Header>
   )
 }

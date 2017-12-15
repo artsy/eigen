@@ -6,7 +6,9 @@ import styled from "styled-components/native"
 
 import colors from "lib/data/colors"
 
-const Container = styled.View`flex-direction: row;`
+const Container = styled.View`
+  flex-direction: row;
+`
 
 export interface AttachmentProps {
   /**
@@ -26,9 +28,7 @@ export class AttachmentPreview extends React.Component<Props, null> {
         underlayColor={colors["gray-light"]}
         onPress={onSelected && onSelected.bind(this, attachment.id)}
       >
-        <Container>
-          {children}
-        </Container>
+        <Container>{children}</Container>
       </TouchableHighlight>
     )
   }

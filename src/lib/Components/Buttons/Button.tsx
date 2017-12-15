@@ -140,9 +140,7 @@ export default class Button extends React.Component<Props, State> {
     return (
       <TouchableWithoutFeedback onPress={this.onPress} onPressIn={this.startHighlight} onPressOut={this.endHighlight}>
         <AnimatedView {...styling}>
-          <AnimatedHeadline style={headlineStyles}>
-            {this.props.text}
-          </AnimatedHeadline>
+          <AnimatedHeadline style={headlineStyles}>{this.props.text}</AnimatedHeadline>
         </AnimatedView>
       </TouchableWithoutFeedback>
     )

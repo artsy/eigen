@@ -9,21 +9,21 @@ import * as T from "../Typography"
 import { Wrapper } from "./"
 
 storiesOf("Consignments/Styling")
-  .add("Type Reference", () =>
+  .add("Type Reference", () => (
     <Wrapper>
       <T.LargeHeadline>Large Headline</T.LargeHeadline>
       <T.SmallHeadline>Small Headline</T.SmallHeadline>
       <T.Subtitle>Subtitle</T.Subtitle>
     </Wrapper>
-  )
-  .add("Boolean selector", () =>
+  ))
+  .add("Boolean selector", () => (
     <Wrapper>
       <Toggle selected={true} left="YES" right="NO" />
       <View style={{ height: 20 }} />
       <Toggle selected={false} left="IN" right="CM" />
     </Wrapper>
-  )
-  .add("Form items", () =>
+  ))
+  .add("Form items", () => (
     <Wrapper>
       <View style={{ padding: 10 }}>
         <View style={{ flexDirection: "row", paddingVertical: 10 }}>
@@ -46,4 +46,4 @@ storiesOf("Consignments/Styling")
         </View>
       </View>
     </Wrapper>
-  )
+  ))

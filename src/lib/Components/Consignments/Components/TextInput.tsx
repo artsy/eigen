@@ -40,7 +40,7 @@ const Separator = focused => {
   )
 }
 
-const ReadOnlyInput = (props: TextInputProps) =>
+const ReadOnlyInput = (props: TextInputProps) => (
   <Text
     style={{
       color: props.text.value ? Colors.White : Colors.GraySemibold,
@@ -51,6 +51,7 @@ const ReadOnlyInput = (props: TextInputProps) =>
   >
     {props.text.value || props.text.placeholder}
   </Text>
+)
 
 export default class TextInputField extends React.Component<TextInputProps, State> {
   constructor(props) {
@@ -62,18 +63,20 @@ export default class TextInputField extends React.Component<TextInputProps, Stat
       <View style={[this.props.style, { flex: 1, maxHeight: 40 }]}>
         <View style={{ flexDirection: "row", height: 40 }}>
           {this.props.preImage && <Image source={this.props.preImage} style={{ marginRight: 6, marginTop: 12 }} />}
-          {this.props.readonly
-            ? ReadOnlyInput(this.props)
-            : <Input
-                autoCorrect={false}
-                clearButtonMode="while-editing"
-                keyboardAppearance="dark"
-                placeholderTextColor={this.state.focused ? "white" : Colors.GraySemibold}
-                selectionColor={Colors.GrayMedium}
-                {...this.props.text}
-                onFocus={() => this.setState({ focused: true }, this.props.text.onFocus)}
-                onBlur={() => this.setState({ focused: false }, this.props.text.onBlur)}
-              />}
+          {this.props.readonly ? (
+            ReadOnlyInput(this.props)
+          ) : (
+            <Input
+              autoCorrect={false}
+              clearButtonMode="while-editing"
+              keyboardAppearance="dark"
+              placeholderTextColor={this.state.focused ? "white" : Colors.GraySemibold}
+              selectionColor={Colors.GrayMedium}
+              {...this.props.text}
+              onFocus={() => this.setState({ focused: true }, this.props.text.onFocus)}
+              onBlur={() => this.setState({ focused: false }, this.props.text.onBlur)}
+            />
+          )}
 
           {this.props.searching ? <ActivityIndicator animating={this.props.searching} /> : null}
         </View>

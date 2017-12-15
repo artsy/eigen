@@ -72,9 +72,7 @@ export default class SavedArtistRow extends React.Component<Props, null> {
             <ImageContainer style={{ borderRadius: item.square_image ? 0 : 25 }}>
               <ImageView imageURL={imageURL} />
             </ImageContainer>
-            <Label>
-              {item.name.toUpperCase()}
-            </Label>
+            <Label>{item.name.toUpperCase()}</Label>
           </Content>
           <Separator />
         </Container>

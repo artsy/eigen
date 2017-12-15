@@ -23,7 +23,12 @@ function formatDate(date, isStarted = false, isRegister = false) {
   let formatted
 
   if (isStarted) {
-    formatted = moment(date).fromNow().replace("in", "").replace("ago", "").trim() + " left"
+    formatted =
+      moment(date)
+        .fromNow()
+        .replace("in", "")
+        .replace("ago", "")
+        .trim() + " left"
   } else if (isRegister) {
     if (diff > -24) {
       formatted = "Register by\n" + moment(date).format("ha")

@@ -12,10 +12,11 @@ const Image = styled(OpaqueImageView)`
 
 interface Props extends AttachmentProps, RelayProps {}
 
-export const ImagePreview: React.SFC<Props> = ({ attachment, onSelected }) =>
+export const ImagePreview: React.SFC<Props> = ({ attachment, onSelected }) => (
   <AttachmentPreview attachment={attachment as any} onSelected={onSelected}>
     <Image imageURL={attachment.download_url} />
   </AttachmentPreview>
+)
 
 export default createFragmentContainer(
   ImagePreview,

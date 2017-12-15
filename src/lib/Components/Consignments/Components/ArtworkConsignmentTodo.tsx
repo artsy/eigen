@@ -41,22 +41,23 @@ const ImageBG = styled.View`
   margin-right: 20;
 `
 
-const ToDoButton = () =>
+const ToDoButton = () => (
   <ImageBG>
     <Image source={require("../../../../../images/consignments/plus.png")} />
   </ImageBG>
+)
 
-const DoneButton = () =>
+const DoneButton = () => (
   <ImageBG style={{ backgroundColor: "white" }}>
     <Image source={require("../../../../../images/consignments/black-tick.png")} />
   </ImageBG>
+)
 
-const Button: React.SFC<TouchableHighlightProperties> = ({ children, ...props }) =>
+const Button: React.SFC<TouchableHighlightProperties> = ({ children, ...props }) => (
   <TouchableHighlight {...props}>
-    <ButtonView>
-      {children}
-    </ButtonView>
+    <ButtonView>{children}</ButtonView>
   </TouchableHighlight>
+)
 
 interface TODOProps extends ConsignmentSetup {
   goToArtist?: () => void
@@ -68,7 +69,7 @@ interface TODOProps extends ConsignmentSetup {
   style?: StyleProp<ViewStyle>
 }
 
-const render = (props: TODOProps) =>
+const render = (props: TODOProps) => (
   <Background style={props.style}>
     <Separator />
     <Button onPress={props.goToArtist}>
@@ -112,6 +113,7 @@ const render = (props: TODOProps) =>
 
     <Separator />
   </Background>
+)
 
 export default class ConsignmentTODO extends React.Component<TODOProps, null> {
   render() {

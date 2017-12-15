@@ -40,7 +40,9 @@ const SerifText = styled(P)`
   font-size: 14;
 `
 
-const Date = styled.Text`font-family: ${Fonts.GaramondRegular};`
+const Date = styled.Text`
+  font-family: ${Fonts.GaramondRegular};
+`
 
 const TitleAndDate = styled.View`
   margin-top: 3;
@@ -75,9 +77,7 @@ export class ArtworkPreview extends React.Component<Props, any> {
         <Container>
           <Image imageURL={artwork.image.url} />
           <TextContainer>
-            <SerifText>
-              {artwork.artist_names}
-            </SerifText>
+            <SerifText>{artwork.artist_names}</SerifText>
             <TitleAndDate>
               {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
               <Subtitle numberOfLines={1} ellipsizeMode={"middle"}>

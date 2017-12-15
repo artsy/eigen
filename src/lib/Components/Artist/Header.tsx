@@ -59,9 +59,7 @@ class Header extends React.Component<Props, State> {
     const artist = this.props.artist
     return (
       <View style={{ paddingTop: 20 }}>
-        <Headline style={[styles.base, styles.headline]}>
-          {artist.name}
-        </Headline>
+        <Headline style={[styles.base, styles.headline]}>{artist.name}</Headline>
         {this.renderByline()}
         {this.renderFollowersCount()}
         {this.renderFollowButton()}
@@ -86,11 +84,7 @@ class Header extends React.Component<Props, State> {
   renderFollowersCount() {
     const count = this.state.followersCount
     const followerString = count + (count === 1 ? " Follower" : " Followers")
-    return (
-      <SerifText style={[styles.base, styles.followCount]}>
-        {followerString}
-      </SerifText>
-    )
+    return <SerifText style={[styles.base, styles.followCount]}>{followerString}</SerifText>
   }
 
   renderByline() {
@@ -99,9 +93,7 @@ class Header extends React.Component<Props, State> {
     if (bylineRequired) {
       return (
         <View>
-          <SerifText style={styles.base}>
-            {this.descriptiveString()}
-          </SerifText>
+          <SerifText style={styles.base}>{this.descriptiveString()}</SerifText>
         </View>
       )
     } else {

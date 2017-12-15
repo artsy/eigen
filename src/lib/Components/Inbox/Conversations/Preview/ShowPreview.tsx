@@ -74,12 +74,8 @@ export class ShowPreview extends React.Component<Props, any> {
         <Container>
           <Image imageURL={show.cover_image.url} />
           <TextContainer>
-            <SerifText>
-              {show.partner.name}
-            </SerifText>
-            <Title numberOfLines={1}>
-              {name}
-            </Title>
+            <SerifText>{show.partner.name}</SerifText>
+            <Title numberOfLines={1}>{name}</Title>
           </TextContainer>
         </Container>
       </TouchableHighlight>

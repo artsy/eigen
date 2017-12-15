@@ -59,17 +59,14 @@ const ButtonDescriptionText = styled(SerifText)`
  *      [OT]
  *   Orta Therox
  */
-const Header = ({ me }) =>
+const Header = ({ me }) => (
   <HeaderWrapper>
     <AvatarCircle>
-      <AvatarText>
-        {me.initials}
-      </AvatarText>
+      <AvatarText>{me.initials}</AvatarText>
     </AvatarCircle>
-    <UserName style={{ fontSize: 26, textAlign: "center", marginTop: 24 }}>
-      {me.name}
-    </UserName>
+    <UserName style={{ fontSize: 26, textAlign: "center", marginTop: 24 }}>{me.name}</UserName>
   </HeaderWrapper>
+)
 
 /**
  * ---------------
@@ -78,19 +75,16 @@ const Header = ({ me }) =>
  * ---------------
  */
 
-const ProfileButton = ({ section, description, isTop, onPress }) =>
+const ProfileButton = ({ section, description, isTop, onPress }) => (
   <TouchableOpacity onPress={onPress} style={{ width: 330 }}>
     <View>
       {isTop && <Separator />}
-      <ButtonSectionText>
-        {section.toUpperCase()}
-      </ButtonSectionText>
-      <ButtonDescriptionText>
-        {description}
-      </ButtonDescriptionText>
+      <ButtonSectionText>{section.toUpperCase()}</ButtonSectionText>
+      <ButtonDescriptionText>{description}</ButtonDescriptionText>
       <Separator />
     </View>
   </TouchableOpacity>
+)
 
 interface Props extends ViewProperties, RelayProps {}
 

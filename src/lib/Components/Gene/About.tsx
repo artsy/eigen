@@ -28,9 +28,9 @@ class About extends React.Component<RelayProps> {
   }
 
   relatedArtists() {
-    return (this.props.gene.trending_artists || []).length
-      ? <RelatedArtists artists={this.props.gene.trending_artists} />
-      : null
+    return (this.props.gene.trending_artists || []).length ? (
+      <RelatedArtists artists={this.props.gene.trending_artists} />
+    ) : null
   }
 }
 

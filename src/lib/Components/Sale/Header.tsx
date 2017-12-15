@@ -16,13 +16,13 @@ class Header extends React.Component<RelayProps, {}> {
     return (
       <View>
         <View style={styles.header}>
-          {this.props.showImage
-            ? <OpaqueImageView
-                // TODO: un-hardcode this (metaphysics isn't resolving sales' cover_image field property.)
-                imageURL="https://d32dm0rphc51dk.cloudfront.net/3YueUJ2y1Vwx-YQJ82lG_w/wide.jpg"
-                style={{ position: "absolute", top: 0, width, height }}
-              />
-            : null}
+          {this.props.showImage ? (
+            <OpaqueImageView
+              // TODO: un-hardcode this (metaphysics isn't resolving sales' cover_image field property.)
+              imageURL="https://d32dm0rphc51dk.cloudfront.net/3YueUJ2y1Vwx-YQJ82lG_w/wide.jpg"
+              style={{ position: "absolute", top: 0, width, height }}
+            />
+          ) : null}
           <Headline style={styles.headline} numberOfLines={2}>
             {sale.name}
           </Headline>

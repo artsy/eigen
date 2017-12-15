@@ -20,9 +20,7 @@ export default class ConsignmentBG extends React.Component<{}> {
   render() {
     return (
       <BG key="bg">
-        <ConsignmentContainer>
-          {this.props.children}
-        </ConsignmentContainer>
+        <ConsignmentContainer>{this.props.children}</ConsignmentContainer>
       </BG>
     )
   }

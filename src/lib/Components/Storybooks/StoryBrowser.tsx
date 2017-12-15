@@ -11,10 +11,7 @@ interface Props extends ViewProperties {
 }
 
 const render = (props: Props) => {
-  const Headline = () =>
-    <Title>
-      {props.section.kind}
-    </Title>
+  const Headline = () => <Title>{props.section.kind}</Title>
 
   const ListViewItem = (item: Story) => {
     const showStory = () => {
@@ -24,9 +21,7 @@ const render = (props: Props) => {
     return (
       <View key={item.name}>
         <TouchableHighlight onPress={showStory}>
-          <BodyText>
-            {item.name}
-          </BodyText>
+          <BodyText>{item.name}</BodyText>
         </TouchableHighlight>
         <Separator />
       </View>

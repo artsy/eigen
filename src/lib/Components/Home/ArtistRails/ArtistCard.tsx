@@ -122,9 +122,7 @@ export class ArtistCard extends React.Component<Props, State> {
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
           <View style={styles.touchableContainer}>
             <ImageView style={styles.image} imageURL={imageURL} />
-            <View style={styles.textContainer}>
-              {this.renderMetadata()}
-            </View>
+            <View style={styles.textContainer}>{this.renderMetadata()}</View>
             <View style={styles.followButton}>
               <InvertedButton
                 text={this.state.following ? "Following" : "Follow"}

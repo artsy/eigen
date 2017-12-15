@@ -5,7 +5,12 @@ export const consignmentSetupToMutationInput = (submission: ConsignmentSetup): s
   objectToGraphQLInput(
     {
       // A random string as we're not using Relay
-      clientMutationId: typeof jest === "undefined" ? Math.random().toString(36).slice(2) : "ID",
+      clientMutationId:
+        typeof jest === "undefined"
+          ? Math.random()
+              .toString(36)
+              .slice(2)
+          : "ID",
       // Required fields by metaphysics
       artist_id: submission.artist && submission.artist.id,
       // Required for updating a submission

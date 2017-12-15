@@ -27,12 +27,8 @@ class RelatedArtist extends Component<Props> {
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View style={{ margin: 5, paddingBottom: 20, width: this.props.imageSize.width }}>
           <ImageView style={this.props.imageSize} imageURL={imageURL} />
-          <Text style={styles.sansSerifText}>
-            {artist.name.toUpperCase()}
-          </Text>
-          <Text style={styles.serifText}>
-            {this.artworksString(artist.counts)}
-          </Text>
+          <Text style={styles.sansSerifText}>{artist.name.toUpperCase()}</Text>
+          <Text style={styles.serifText}>{this.artworksString(artist.counts)}</Text>
         </View>
       </TouchableWithoutFeedback>
     )

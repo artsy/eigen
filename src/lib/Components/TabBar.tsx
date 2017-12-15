@@ -12,7 +12,9 @@ interface TabBarProps {
   containerWidth?: number
   scrollValue?: Animated.AnimatedInterpolation
 }
-const Button = styled.TouchableWithoutFeedback`flex: 1;`
+const Button = styled.TouchableWithoutFeedback`
+  flex: 1;
+`
 
 const Tabs = styled.View`
   height: 50px;
@@ -45,10 +47,7 @@ const TabLabel: any = styled.Text`
   color: ${(props: TabLabelProps) => (props.active ? "black" : colors["gray-medium"])};
 `
 
-export const Tab: React.SFC<TabProps> = ({ children }) =>
-  <View style={{ flex: 1 }}>
-    {children}
-  </View>
+export const Tab: React.SFC<TabProps> = ({ children }) => <View style={{ flex: 1 }}>{children}</View>
 
 export default class TabBar extends React.Component<TabBarProps, null> {
   renderTab(name, page, isTabActive, onPressHandler) {
@@ -61,9 +60,7 @@ export default class TabBar extends React.Component<TabBarProps, null> {
         onPress={() => onPressHandler(page)}
       >
         <TabButton>
-          <TabLabel active={isTabActive}>
-            {name.toUpperCase()}
-          </TabLabel>
+          <TabLabel active={isTabActive}>{name.toUpperCase()}</TabLabel>
         </TabButton>
       </Button>
     )

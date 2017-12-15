@@ -33,9 +33,7 @@ export default class Avatar extends React.Component<Props, any> {
     const initials = this.props.initials
     return (
       <BackgroundCircle>
-        <Name user={this.props.isUser}>
-          {initials}
-        </Name>
+        <Name user={this.props.isUser}>{initials}</Name>
       </BackgroundCircle>
     )
   }

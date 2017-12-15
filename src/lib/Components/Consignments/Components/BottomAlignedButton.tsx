@@ -35,7 +35,7 @@ export interface BottomAlignedProps extends React.Props<JSX.Element> {
 
 const defaultVerticalOffset = 15
 
-const BottomAlignedButton: React.SFC<BottomAlignedProps> = props =>
+const BottomAlignedButton: React.SFC<BottomAlignedProps> = props => (
   <KeyboardAvoidingView
     behavior="padding"
     keyboardVerticalOffset={props.verticalOffset || defaultVerticalOffset}
@@ -47,10 +47,9 @@ const BottomAlignedButton: React.SFC<BottomAlignedProps> = props =>
 
     <Separator key="separator" />
     <TouchableOpacity key="button" onPress={props.onPress} style={props.bodyStyle} disabled={props.disabled}>
-      <ButtonText>
-        {props.buttonText}
-      </ButtonText>
+      <ButtonText>{props.buttonText}</ButtonText>
     </TouchableOpacity>
   </KeyboardAvoidingView>
+)
 
 export default BottomAlignedButton

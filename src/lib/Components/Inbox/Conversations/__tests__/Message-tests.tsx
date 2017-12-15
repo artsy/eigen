@@ -17,7 +17,9 @@ it("looks correct when rendered", () => {
   const senderName = "Sarah"
   const props = {
     key: 0,
-    created_at: moment().subtract(1, "year").toISOString(),
+    created_at: moment()
+      .subtract(1, "year")
+      .toISOString(),
     body: messageBody,
     is_from_user: true,
     attachments: [],
