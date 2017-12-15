@@ -8,8 +8,6 @@ import Serif from "lib/Components/Text/Serif"
 import fonts from "lib/data/fonts"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 
-import { liveDate, timedDate } from "../Utils/formatDate"
-
 const Image = styled(OpaqueImageView)`
   position: absolute;
   top: 0;
@@ -89,7 +87,7 @@ export class SaleListItem extends React.Component<RelayProps, null> {
   render() {
     const item = this.props.sale
     const image = item.cover_image
-    const timestamp = (item.live_start_at ? liveDate(item) : timedDate(item)).toUpperCase()
+    const timestamp = item.display_timely_at.toUpperCase()
     const containerWidth = this.containerWidth
 
     const Container = styled.View`
@@ -137,6 +135,7 @@ export default createFragmentContainer(SaleListItem, {
       end_at
       registration_ends_at
       live_start_at
+      display_timely_at
       cover_image {
         url(version: "large")
         aspect_ratio
@@ -157,6 +156,7 @@ interface RelayProps {
     end_at: string | null
     registration_ends_at: string | null
     live_start_at: string | null
+    display_timely_at: string | null
     cover_image: {
       url: string | null
     }

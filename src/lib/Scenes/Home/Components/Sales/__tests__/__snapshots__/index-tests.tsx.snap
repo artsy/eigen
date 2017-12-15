@@ -21,6 +21,7 @@ exports[`looks correct when rendered 1`] = `
                 "cover_image": Object {
                   "url": "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
                 },
+                "display_timely_at": "In Progress",
                 "end_at": null,
                 "href": "/auction/wright-noma",
                 "id": "wright-noma",
@@ -35,6 +36,7 @@ exports[`looks correct when rendered 1`] = `
                 "cover_image": Object {
                   "url": "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
                 },
+                "display_timely_at": "In Progress",
                 "end_at": null,
                 "href": "/auction/freemans-modern-and-contemporary-works-of-art",
                 "id": "freemans-modern-and-contemporary-works-of-art",
@@ -48,6 +50,7 @@ exports[`looks correct when rendered 1`] = `
             ],
           },
         ],
+        "isFirstItem": true,
         "renderItem": [Function],
         "title": "Current Live Auctions",
       },
@@ -79,6 +82,7 @@ exports[`looks correct when rendered 1`] = `
                   "cover_image": Object {
                     "url": "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
                   },
+                  "display_timely_at": "In Progress",
                   "end_at": null,
                   "href": "/auction/wright-noma",
                   "id": "wright-noma",
@@ -93,6 +97,7 @@ exports[`looks correct when rendered 1`] = `
                   "cover_image": Object {
                     "url": "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
                   },
+                  "display_timely_at": "In Progress",
                   "end_at": null,
                   "href": "/auction/freemans-modern-and-contemporary-works-of-art",
                   "id": "freemans-modern-and-contemporary-works-of-art",
@@ -139,6 +144,7 @@ exports[`looks correct when rendered 1`] = `
                 "cover_image": Object {
                   "url": "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
                 },
+                "display_timely_at": "In Progress",
                 "end_at": null,
                 "href": "/auction/wright-noma",
                 "id": "wright-noma",
@@ -153,6 +159,7 @@ exports[`looks correct when rendered 1`] = `
                 "cover_image": Object {
                   "url": "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
                 },
+                "display_timely_at": "In Progress",
                 "end_at": null,
                 "href": "/auction/freemans-modern-and-contemporary-works-of-art",
                 "id": "freemans-modern-and-contemporary-works-of-art",
@@ -166,6 +173,7 @@ exports[`looks correct when rendered 1`] = `
             ],
           },
         ],
+        "isFirstItem": true,
         "renderItem": [Function],
         "title": "Current Live Auctions",
       },
@@ -197,6 +205,7 @@ exports[`looks correct when rendered 1`] = `
                   "cover_image": Object {
                     "url": "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
                   },
+                  "display_timely_at": "In Progress",
                   "end_at": null,
                   "href": "/auction/wright-noma",
                   "id": "wright-noma",
@@ -211,6 +220,7 @@ exports[`looks correct when rendered 1`] = `
                   "cover_image": Object {
                     "url": "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
                   },
+                  "display_timely_at": "In Progress",
                   "end_at": null,
                   "href": "/auction/freemans-modern-and-contemporary-works-of-art",
                   "id": "freemans-modern-and-contemporary-works-of-art",
@@ -244,16 +254,23 @@ exports[`looks correct when rendered 1`] = `
       onLayout={[Function]}
       style={null}
     >
-      <View>
+      <View
+        style={
+          Object {
+            "marginTop": -9,
+          }
+        }
+      >
         <View
           style={
             Array [
               Object {
                 "backgroundColor": "white",
-                "paddingBottom": 10,
+                "marginBottom": -4,
+                "paddingBottom": 0,
                 "paddingLeft": 10,
                 "paddingRight": 10,
-                "paddingTop": 18,
+                "paddingTop": 47,
               },
               undefined,
             ]
@@ -292,6 +309,7 @@ exports[`looks correct when rendered 1`] = `
                 "cover_image": Object {
                   "url": "https://d32dm0rphc51dk.cloudfront.net/WV-7BYlETayN8MGkNjOGXw/source.jpg",
                 },
+                "display_timely_at": "In Progress",
                 "end_at": null,
                 "href": "/auction/wright-noma",
                 "id": "wright-noma",
@@ -306,6 +324,7 @@ exports[`looks correct when rendered 1`] = `
                 "cover_image": Object {
                   "url": "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
                 },
+                "display_timely_at": "In Progress",
                 "end_at": null,
                 "href": "/auction/freemans-modern-and-contemporary-works-of-art",
                 "id": "freemans-modern-and-contemporary-works-of-art",
@@ -740,74 +759,7 @@ exports[`looks correct when rendered 1`] = `
     <View
       onLayout={[Function]}
       style={null}
-    >
-      <View>
-        <View
-          style={
-            Array [
-              Object {
-                "backgroundColor": "white",
-                "paddingBottom": 10,
-                "paddingLeft": 10,
-                "paddingRight": 10,
-                "paddingTop": 18,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            disabled={false}
-            ellipsizeMode="tail"
-            style={
-              Array [
-                Object {
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 30,
-                  "textAlign": "left",
-                },
-                undefined,
-              ]
-            }
-          >
-            Current Timed Auctions
-          </Text>
-        </View>
-        <View
-          contentContainerStyle={
-            Object {
-              "display": "flex",
-              "justifyContent": "space-between",
-              "padding": 5,
-            }
-          }
-          data={Array []}
-          disableVirtualization={false}
-          getItem={[Function]}
-          getItemCount={[Function]}
-          horizontal={false}
-          initialNumToRender={10}
-          keyExtractor={[Function]}
-          maxToRenderPerBatch={10}
-          numColumns={4}
-          onContentSizeChange={[Function]}
-          onEndReachedThreshold={2}
-          onLayout={[Function]}
-          onMomentumScrollEnd={[Function]}
-          onScroll={[Function]}
-          onScrollBeginDrag={[Function]}
-          onScrollEndDrag={[Function]}
-          onViewableItemsChanged={undefined}
-          renderItem={[Function]}
-          scrollEventThrottle={50}
-          stickyHeaderIndices={Array []}
-          updateCellsBatchingPeriod={50}
-          windowSize={21}
-        />
-      </View>
-    </View>
+    />
     <View
       onLayout={[Function]}
       style={null}

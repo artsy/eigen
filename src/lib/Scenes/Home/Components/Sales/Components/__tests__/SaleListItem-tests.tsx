@@ -21,6 +21,7 @@ const props = {
   registration_ends_at: moment().subtract(1, "day").toISOString(),
   live_start_at: moment().add(5, "hour").toISOString(),
   live_url_if_open: null,
+  display_timely_at: "Live in 2 hours",
   cover_image: {
     url: "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",
   },

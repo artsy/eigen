@@ -716,6 +716,7 @@ type ArtworkContextAuction implements Node {
   cover_image: Image
   currency: String
   description: String
+  display_timely_at: String
   eligible_sale_artworks_count: Int
   end_at(
     convert_to_utc: Boolean
@@ -951,6 +952,7 @@ type ArtworkContextSale implements Node {
   cover_image: Image
   currency: String
   description: String
+  display_timely_at: String
   eligible_sale_artworks_count: Int
   end_at(
     convert_to_utc: Boolean
@@ -1026,9 +1028,9 @@ type ArtworkEdge {
   cursor: String!
 }
 
-union ArtworkFilterFacet = ArtworkFilterTag
+union ArtworkFilterFacet = ArtworkFilterTag | ArtworkFilterGene
 
-type ArtworkFilterTag {
+type ArtworkFilterGene implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -1043,6 +1045,87 @@ type ArtworkFilterTag {
   href: String
   image: Image
   count: Int
+
+  # Artworks Elastic Search results
+  filtered_artworks(
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    artist_ids: [String]
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+    tag_id: String
+    keyword: String
+  ): FilterArtworks
+}
+
+type ArtworkFilterTag implements Node {
+  # A globally unique ID.
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+
+  # A type-specific Gravity Mongo Document ID.
+  _id: String!
+  cached: Int
+  description: String
+  name: String
+  href: String
+  image: Image
+  count: Int
+
+  # Artworks Elastic Search results
+  filtered_artworks(
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    artist_ids: [String]
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+    tag_id: String
+    keyword: String
+  ): FilterArtworks
 }
 
 type ArtworkInquiry {
@@ -2230,10 +2313,13 @@ type FeaturedLinkItem {
   title: String
 }
 
-type FilterArtworks {
+type FilterArtworks implements Node {
+  # The ID of the object.
+  __id: ID!
+
   # Returns aggregation counts for the given filter query.
   aggregations: [ArtworksAggregationResults]
-  artworks_connection(after: String, first: Int, before: String, last: Int): ArtworkConnection @deprecated(reason: "Favour artwork connections that take filter arguments.")
+  artworks_connection(sort: String, after: String, first: Int, before: String, last: Int): ArtworkConnection @deprecated(reason: "Favour artwork connections that take filter arguments.")
   counts: FilterArtworksCounts
   followed_artists_total: Int @deprecated(reason: "Favor `favor counts.followed_artists`")
 
@@ -2509,6 +2595,16 @@ type Gene implements Node {
   is_published: Boolean
   mode: String
   name: String
+
+  # A list of genes similar to the specified gene
+  similar(
+    # Array of gene ids (not slugs) to exclude, may result in all genes being excluded.
+    exclude_gene_ids: [String]
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): GeneConnection
   trending_artists(sample: Int): [Artist]
 }
 
@@ -2529,6 +2625,24 @@ type GeneArtworksConnection {
 type GeneArtworksEdge {
   # The item at the end of the edge
   node: Artwork
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# A connection to a list of items.
+type GeneConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [GeneEdge]
+}
+
+# An edge in a connection.
+type GeneEdge {
+  # The item at the end of the edge
+  node: Gene
 
   # A cursor for use in pagination
   cursor: String!
@@ -2643,6 +2757,16 @@ type GeneItem implements Node {
   is_published: Boolean
   mode: String
   name: String
+
+  # A list of genes similar to the specified gene
+  similar(
+    # Array of gene ids (not slugs) to exclude, may result in all genes being excluded.
+    exclude_gene_ids: [String]
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): GeneConnection
   trending_artists(sample: Int): [Artist]
 }
 
@@ -3090,6 +3214,16 @@ type HomePageModuleContextGene implements Node {
   is_published: Boolean
   mode: String
   name: String
+
+  # A list of genes similar to the specified gene
+  similar(
+    # Array of gene ids (not slugs) to exclude, may result in all genes being excluded.
+    exclude_gene_ids: [String]
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): GeneConnection
   trending_artists(sample: Int): [Artist]
 }
 
@@ -3127,6 +3261,7 @@ type HomePageModuleContextSale implements Node {
   cover_image: Image
   currency: String
   description: String
+  display_timely_at: String
   eligible_sale_artworks_count: Int
   end_at(
     convert_to_utc: Boolean
@@ -4285,7 +4420,7 @@ type Query {
   ): Gene
 
   # List of curated genes with custom images
-  suggested_genes: [SuggestedGene]
+  suggested_genes: [Gene]
 
   # A list of Gene Families
   gene_families(after: String, first: Int, before: String, last: Int): GeneFamilyConnection
@@ -4597,6 +4732,7 @@ type Sale implements Node {
   cover_image: Image
   currency: String
   description: String
+  display_timely_at: String
   eligible_sale_artworks_count: Int
   end_at(
     convert_to_utc: Boolean
@@ -5175,14 +5311,7 @@ enum SubmissionStateAggregation {
   REJECTED
 }
 
-type SuggestedGene {
-  id: String
-  image_url: String
-  _id: String
-  name: String
-}
-
-type Tag {
+type Tag implements Node {
   # A globally unique ID.
   __id: ID!
 
@@ -5197,6 +5326,38 @@ type Tag {
   href: String
   image: Image
   count: Int
+
+  # Artworks Elastic Search results
+  filtered_artworks(
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    artist_ids: [String]
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+    tag_id: String
+    keyword: String
+  ): FilterArtworks
 }
 
 type TrendingArtists {
@@ -5531,7 +5692,7 @@ type Viewer {
   ): Gene
 
   # List of curated genes with custom images
-  suggested_genes: [SuggestedGene]
+  suggested_genes: [Gene]
 
   # A list of Gene Families
   gene_families(after: String, first: Int, before: String, last: Int): GeneFamilyConnection
