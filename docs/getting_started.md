@@ -37,17 +37,14 @@ Then you're good to go. Learn about what things are architectually [here](https:
 
 ### Certificates
 
-Login as **it@artsymail.com** to [Certificates, Identities and Profiles](https://developer.apple.com/account/overview.action). The password is in 1password.
-
-This is only needed for building to a device, which is a _really_ arduous process.
-
-Run `make certs`.
+We use Xcode's auto-codesigning. It should magically "just work" if you log in to Xcode with an iTunes account
+which is on the Artsy team.
 
 We have [cert troubleshooting here](https://github.com/artsy/eigen/blob/master/docs/certs.md)
 
 ### Connecting a device.
 
-Xcode will prompt you to join a team, then to enable the device for development. When prompted, choose the uppercase *ART.SY INC.* team.
+Xcode will prompt you to join a team, then to enable the device for development. When If you have to choose a team, choose the uppercase *ART.SY INC.* team.
 
 Choose Preferences, Accounts, which should list your Apple ID and membership.
 
