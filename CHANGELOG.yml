@@ -26,6 +26,7 @@ upcoming:
       - Don’t report crashes from development builds - alloy
 
     user_facing:
+      - Onboarding users land on For You tab of Home instead of Artists - sarah
       - Adds a new navigation UI - orta
       - Adds new routing for inquiries - maxim
       - Fixes problem with status bar on refine options view - ash
