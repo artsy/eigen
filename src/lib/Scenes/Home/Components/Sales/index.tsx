@@ -22,6 +22,7 @@ class Sales extends React.Component<Props> {
       {
         data: [{ data: this.data.liveAuctions }],
         title: "Current Live Auctions",
+        isFirstItem: true,
         renderItem: props => <SaleList {...props} />,
       },
       {
@@ -51,7 +52,7 @@ export default createFragmentContainer(
   Sales,
   graphql`
     fragment Sales_viewer on Viewer {
-      sales(live: true, is_auction: true, size: 100) {
+      sales(live: true, is_auction: true, size: 100, sort: TIMELY_AT_NAME_DESC) {
         ...SaleListItem_sale
         href
         live_start_at
