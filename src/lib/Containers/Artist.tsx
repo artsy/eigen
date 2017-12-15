@@ -96,11 +96,7 @@ export class Artist extends Component<RelayProps & ViewProperties> {
   }
 
   renderSingleTab() {
-    return (
-      <View style={{ paddingTop: 30 }}>
-        {this.renderSelectedTab()}
-      </View>
-    )
+    return <View style={{ paddingTop: 30 }}>{this.renderSelectedTab()}</View>
   }
 
   render() {

@@ -14,11 +14,7 @@ class Article extends React.Component<RelayProps & ViewProperties> {
 
   render() {
     const article = this.props.article
-    const author =
-      article.author &&
-      <Text style={styles.sansSerifText}>
-        {article.author.name.toUpperCase()}
-      </Text>
+    const author = article.author && <Text style={styles.sansSerifText}>{article.author.name.toUpperCase()}</Text>
 
     return (
       <View style={styles.container}>

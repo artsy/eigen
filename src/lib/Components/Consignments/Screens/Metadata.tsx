@@ -237,18 +237,18 @@ export default class Metadata extends React.Component<Props, State> {
           //  When we want to show a picker, it should replace the keyboard, so move the
           //  keyboard down and push up the ConsignmentBG to fill in the space
         }
-        {this.state.showPicker
-          ? <Picker
-              style={{ height: 220, backgroundColor: "black" }}
-              key="picker"
-              selectedValue={this.state.category}
-              onValueChange={this.changeCategoryValue}
-            >
-              {categoryOptions.map(opt =>
-                <Picker.Item color="white" label={opt.name} value={opt.value} key={opt.value} />
-              )}
-            </Picker>
-          : null}
+        {this.state.showPicker ? (
+          <Picker
+            style={{ height: 220, backgroundColor: "black" }}
+            key="picker"
+            selectedValue={this.state.category}
+            onValueChange={this.changeCategoryValue}
+          >
+            {categoryOptions.map(opt => (
+              <Picker.Item color="white" label={opt.name} value={opt.value} key={opt.value} />
+            ))}
+          </Picker>
+        ) : null}
       </View>
     )
   }

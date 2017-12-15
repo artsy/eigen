@@ -65,15 +65,14 @@ const noResults = props => {
 }
 
 const render = (props: SearchQueryProps) => {
-  const rowForResult = result =>
+  const rowForResult = result => (
     <Result key={result.id} onPress={() => props.resultSelected(result)}>
       <ResultContainers>
         {result.image && <Image source={{ uri: result.image.url }} />}
-        <Text>
-          {result.name}
-        </Text>
+        <Text>{result.name}</Text>
       </ResultContainers>
     </Result>
+  )
 
   return (
     <View>

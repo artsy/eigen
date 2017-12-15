@@ -155,9 +155,7 @@ export class Conversation extends React.Component<Props, State> {
         <Container>
           <Header>
             <HeaderTextContainer>
-              <SmallHeadline style={{ fontSize: 14 }}>
-                {partnerName}
-              </SmallHeadline>
+              <SmallHeadline style={{ fontSize: 14 }}>{partnerName}</SmallHeadline>
               <PlaceholderView />
             </HeaderTextContainer>
           </Header>

@@ -53,8 +53,9 @@ const Gene: React.SFC<GeneProps> = ({ geneID, refineSettings: { medium, price_ra
 // TODO: This was required to trigger the 1px wake-up hack (in case the scrollview goes blank)
 //
 //     this.renderFetched = data => <Containers.WorksForYou {...data} trigger1pxScrollHack={this.props.trigger1pxScrollHack} />
-const WorksForYou: React.SFC<{ selectedArtist: string }> = props =>
+const WorksForYou: React.SFC<{ selectedArtist: string }> = props => (
   <WorksForYouRenderer {...props} render={renderWithLoadProgress(Containers.WorksForYou, props)} />
+)
 
 interface InquiryProps {
   artworkID: string

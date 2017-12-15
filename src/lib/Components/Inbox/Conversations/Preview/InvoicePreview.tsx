@@ -160,9 +160,7 @@ export class InvoicePreview extends React.Component<Props, State> {
         <Icon source={require("../../../../../../images/payment_request.png")} />
         <TextContainer>
           <PaymentRequest>Payment request</PaymentRequest>
-          <CostLabel>
-            {invoice.total}
-          </CostLabel>
+          <CostLabel>{invoice.total}</CostLabel>
         </TextContainer>
         <TextContainer>
           <InvoiceStateButton invoiceState={invoiceState} onSelected={this.attachmentSelected.bind(this)} />

@@ -57,30 +57,30 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
               <Toggle selected={!!this.state.editionInfo} left="YES" right="NO" onPress={this.updateEdition} />
             </Row>
 
-            {this.state.editionInfo
-              ? <Row>
-                  <Text
-                    text={{
-                      placeholder: "Edition Size",
-                      keyboardType: "phone-pad",
-                      onChangeText: this.updateEditionSize,
-                      value: this.state.editionInfo && this.state.editionInfo.size,
-                    }}
-                    style={{ margin: 10 }}
-                  />
-                  <Text
-                    text={{
-                      placeholder: "Edition Number",
-                      onChangeText: this.updateEditionNumber,
-                      value:
-                        this.state.editionInfo &&
-                        this.state.editionInfo.number &&
-                        this.state.editionInfo.number.toString(),
-                    }}
-                    style={{ margin: 10 }}
-                  />
-                </Row>
-              : null}
+            {this.state.editionInfo ? (
+              <Row>
+                <Text
+                  text={{
+                    placeholder: "Edition Size",
+                    keyboardType: "phone-pad",
+                    onChangeText: this.updateEditionSize,
+                    value: this.state.editionInfo && this.state.editionInfo.size,
+                  }}
+                  style={{ margin: 10 }}
+                />
+                <Text
+                  text={{
+                    placeholder: "Edition Number",
+                    onChangeText: this.updateEditionNumber,
+                    value:
+                      this.state.editionInfo &&
+                      this.state.editionInfo.number &&
+                      this.state.editionInfo.number.toString(),
+                  }}
+                  style={{ margin: 10 }}
+                />
+              </Row>
+            ) : null}
 
             <Row>
               <Label>Is this work signed?</Label>

@@ -12,16 +12,9 @@ class Metadata extends React.Component<RelayProps & ViewProperties> {
     const partnerName = this.props.show.partner && this.props.show.partner.name
     return (
       <View style={styles.container}>
-        {partnerName &&
-          <Text style={styles.sansSerifText}>
-            {partnerName.toUpperCase()}
-          </Text>}
-        <Text style={styles.sansSerifText}>
-          {this.showTypeString()}
-        </Text>
-        <SerifText style={styles.serifText}>
-          {this.props.show.name}
-        </SerifText>
+        {partnerName && <Text style={styles.sansSerifText}>{partnerName.toUpperCase()}</Text>}
+        <Text style={styles.sansSerifText}>{this.showTypeString()}</Text>
+        <SerifText style={styles.serifText}>{this.props.show.name}</SerifText>
         {this.dateAndLocationString()}
         {this.statusText()}
       </View>
@@ -39,11 +32,7 @@ class Metadata extends React.Component<RelayProps & ViewProperties> {
 
     if (city || exhibition_period) {
       const text = city ? city.trim() + ", " + exhibition_period : exhibition_period
-      return (
-        <SerifText style={[styles.serifText, { color: "grey" }]}>
-          {text}
-        </SerifText>
-      )
+      return <SerifText style={[styles.serifText, { color: "grey" }]}>{text}</SerifText>
     }
     return null
   }
@@ -51,11 +40,7 @@ class Metadata extends React.Component<RelayProps & ViewProperties> {
   statusText() {
     if (this.props.show.status_update) {
       const textColor = this.props.show.status === "upcoming" ? "green-regular" : "red-regular"
-      return (
-        <SerifText style={{ color: colors[textColor] }}>
-          {this.props.show.status_update}
-        </SerifText>
-      )
+      return <SerifText style={{ color: colors[textColor] }}>{this.props.show.status_update}</SerifText>
     }
     return null
   }

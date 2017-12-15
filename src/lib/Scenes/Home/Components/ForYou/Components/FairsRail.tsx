@@ -8,7 +8,9 @@ import ImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import SectionTitle from "lib/Scenes/Home/Components/SectionTitle"
 
-const Container = styled.View`margin-bottom: 15;`
+const Container = styled.View`
+  margin-bottom: 15;
+`
 
 const Title = styled(SectionTitle)`
   margin-left: 20;
@@ -19,7 +21,9 @@ const IconCarousel = styled.ScrollView`
   margin-top: 10;
 `
 
-const TouchableWrapper = styled.View`margin-right: 7;`
+const TouchableWrapper = styled.View`
+  margin-right: 7;
+`
 
 interface Props extends RelayProps {
   registerRailModule?: (module: FairsRail) => void

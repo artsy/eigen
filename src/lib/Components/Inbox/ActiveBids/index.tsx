@@ -11,7 +11,7 @@ const Container = styled.View`
 `
 
 const Headline = styled(LargeHeadline)`
-margin-bottom: -10px;
+  margin-bottom: -10px;
 `
 
 interface Props extends RelayProps {
@@ -72,12 +72,12 @@ class ActiveBids extends React.Component<Props, State> {
   }
 
   render() {
-    return this.hasContent()
-      ? <Container>
-          <Headline>Active Bids</Headline>
-          {this.renderRows()}
-        </Container>
-      : null
+    return this.hasContent() ? (
+      <Container>
+        <Headline>Active Bids</Headline>
+        {this.renderRows()}
+      </Container>
+    ) : null
   }
 }
 

@@ -102,18 +102,15 @@ export class SaleListItem extends React.Component<RelayProps, null> {
           <Image imageURL={image && image.url} />
           <Content>
             <Header>
-              <Title numberOfLines={2}>
-                {item.name}
-              </Title>
-              {item.live_start_at &&
+              <Title numberOfLines={2}>{item.name}</Title>
+              {item.live_start_at && (
                 <Badge>
                   <BadgeText>LIVE</BadgeText>
-                </Badge>}
+                </Badge>
+              )}
             </Header>
             <Footer>
-              <Metadata>
-                {timestamp}
-              </Metadata>
+              <Metadata>{timestamp}</Metadata>
             </Footer>
           </Content>
         </Container>

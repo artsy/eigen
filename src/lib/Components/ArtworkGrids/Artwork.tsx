@@ -34,10 +34,7 @@ class Artwork extends React.Component<Props, any> {
           <ImageView style={styles.image} aspectRatio={artwork.image.aspect_ratio} imageURL={artwork.image.url} />
           {this.artists()}
           {this.artworkTitle()}
-          {partnerName &&
-            <SerifText style={styles.text}>
-              {partnerName}
-            </SerifText>}
+          {partnerName && <SerifText style={styles.text}>{partnerName}</SerifText>}
           {this.saleMessage()}
         </View>
       </TouchableWithoutFeedback>
@@ -47,11 +44,7 @@ class Artwork extends React.Component<Props, any> {
   artists() {
     const artists = this.props.artwork.artists
     if (artists && artists.length > 0) {
-      return (
-        <SerifText style={[styles.text, styles.artist]}>
-          {map(artists, "name").join(", ")}
-        </SerifText>
-      )
+      return <SerifText style={[styles.text, styles.artist]}>{map(artists, "name").join(", ")}</SerifText>
     } else {
       return null
     }
@@ -62,9 +55,7 @@ class Artwork extends React.Component<Props, any> {
     if (artwork.title) {
       return (
         <SerifText style={styles.text}>
-          <SerifText style={[styles.text, styles.title]}>
-            {artwork.title}
-          </SerifText>
+          <SerifText style={[styles.text, styles.title]}>{artwork.title}</SerifText>
           {artwork.date ? ", " + artwork.date : ""}
         </SerifText>
       )
@@ -91,21 +82,14 @@ class Artwork extends React.Component<Props, any> {
         return (
           <View style={{ flexDirection: "row" }}>
             <Image style={{ marginRight: 4 }} source={require("../../../../images/paddle.png")} />
-            <SerifText style={styles.text}>
-              {text}
-            </SerifText>
+            <SerifText style={styles.text}>{text}</SerifText>
           </View>
         )
       } else {
         return <SerifText style={styles.text}>Auction Closed</SerifText>
       }
     } else {
-      return (
-        artwork.sale_message &&
-        <SerifText style={styles.text}>
-          {artwork.sale_message}
-        </SerifText>
-      )
+      return artwork.sale_message && <SerifText style={styles.text}>{artwork.sale_message}</SerifText>
     }
   }
 }

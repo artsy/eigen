@@ -38,18 +38,15 @@ interface ZeroStateProps {
   separators?: boolean
 }
 
-const render = (props: ZeroStateProps) =>
+const render = (props: ZeroStateProps) => (
   <Container>
     <AlignUpSlightly>
-      <Title>
-        {props.title}
-      </Title>
+      <Title>{props.title}</Title>
 
-      <Subtitle numberOfLines={0}>
-        {props.subtitle}
-      </Subtitle>
+      <Subtitle numberOfLines={0}>{props.subtitle}</Subtitle>
     </AlignUpSlightly>
   </Container>
+)
 
 // TODO: Remove post RN 0.50
 export default class ZeroState extends React.Component<ZeroStateProps, null> {

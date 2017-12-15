@@ -20,9 +20,7 @@ export default class TabView extends React.Component<Props, any> {
           titles={this.props.titles}
           selectedIndex={this.props.selectedIndex}
         />
-        <View>
-          {children}
-        </View>
+        <View>{children}</View>
       </View>
     )
   }

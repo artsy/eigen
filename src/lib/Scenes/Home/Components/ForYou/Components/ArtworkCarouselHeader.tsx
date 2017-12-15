@@ -52,9 +52,7 @@ class ArtworkCarouselHeader extends Component<Props & RelayPropsWorkaround, Stat
     return (
       <TouchableWithoutFeedback onPress={this.props.handleViewAll}>
         <View style={styles.container}>
-          <SectionTitle>
-            {this.props.rail.title}
-          </SectionTitle>
+          <SectionTitle>{this.props.rail.title}</SectionTitle>
           {this.props.rail.context && this.followAnnotation()}
           {this.actionButton()}
         </View>
@@ -65,11 +63,7 @@ class ArtworkCarouselHeader extends Component<Props & RelayPropsWorkaround, Stat
   followAnnotation() {
     if (this.props.rail.key === "related_artists") {
       const name = this.props.rail.context.based_on.name
-      return (
-        <SerifText style={styles.followAnnotation}>
-          {"Based on " + name}
-        </SerifText>
-      )
+      return <SerifText style={styles.followAnnotation}>{"Based on " + name}</SerifText>
     }
   }
 

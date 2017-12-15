@@ -34,11 +34,7 @@ const RootContainer: React.SFC<any> = ({ Component, artistID }) => {
 }
 
 storiesOf("Artist/Header")
-  .addDecorator(story =>
-    <View style={{ marginLeft: 20, marginRight: 20 }}>
-      {story()}
-    </View>
-  )
+  .addDecorator(story => <View style={{ marginLeft: 20, marginRight: 20 }}>{story()}</View>)
   .add("Real Artist - Glenn Brown", () => {
     return <RootContainer Component={Header} artistID="glenn-brown" />
   })

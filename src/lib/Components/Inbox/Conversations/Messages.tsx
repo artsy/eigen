@@ -25,7 +25,9 @@ interface State {
   shouldStickFirstMessageToTop: boolean
 }
 
-const LoadingIndicator = styled.ActivityIndicator`margin-top: 40px;`
+const LoadingIndicator = styled.ActivityIndicator`
+  margin-top: 40px;
+`
 
 export class Messages extends React.Component<Props, State> {
   state = {
@@ -51,19 +53,21 @@ export class Messages extends React.Component<Props, State> {
         initials={initials}
         artworkPreview={
           item.first_message &&
-          conversationItem.__typename === "Artwork" &&
-          <ArtworkPreview
-            artwork={conversationItem}
-            onSelected={() => ARSwitchBoard.presentNavigationViewController(this, conversationItem.href)}
-          />
+          conversationItem.__typename === "Artwork" && (
+            <ArtworkPreview
+              artwork={conversationItem}
+              onSelected={() => ARSwitchBoard.presentNavigationViewController(this, conversationItem.href)}
+            />
+          )
         }
         showPreview={
           item.first_message &&
-          conversationItem.__typename === "Show" &&
-          <ShowPreview
-            show={conversationItem}
-            onSelected={() => ARSwitchBoard.presentNavigationViewController(this, conversationItem.href)}
-          />
+          conversationItem.__typename === "Show" && (
+            <ShowPreview
+              show={conversationItem}
+              onSelected={() => ARSwitchBoard.presentNavigationViewController(this, conversationItem.href)}
+            />
+          )
         }
       />
     )

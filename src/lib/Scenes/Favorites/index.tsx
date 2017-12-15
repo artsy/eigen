@@ -35,11 +35,12 @@ class Favorites extends React.Component<null> {
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
-          renderTabBar={props =>
+          renderTabBar={props => (
             <View>
               <Title>Saves &amp; Follows</Title>
               <TabBar {...props} />
-            </View>}
+            </View>
+          )}
         >
           <Tab tabLabel="Works">
             <ArtworksRenderer render={renderWithLoadProgress(Artworks)} />

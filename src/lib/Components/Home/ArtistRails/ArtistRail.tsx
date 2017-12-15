@@ -211,12 +211,8 @@ export class ArtistRail extends Component<Props, State> {
     return (
       <View ref="rail">
         <View style={styles.title}>
-          <SectionTitle>
-            {this.title()}
-          </SectionTitle>
-          <SectionTitle style={styles.subtitle}>
-            {this.subtitle()}
-          </SectionTitle>
+          <SectionTitle>{this.title()}</SectionTitle>
+          <SectionTitle style={styles.subtitle}>{this.subtitle()}</SectionTitle>
         </View>
         {this.renderModuleResults()}
         <Separator />

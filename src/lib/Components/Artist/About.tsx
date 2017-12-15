@@ -59,9 +59,9 @@ class About extends React.Component<Props, null> {
   }
 
   relatedArtists() {
-    return this.props.artist.related_artists.length
-      ? <RelatedArtists artists={this.props.artist.related_artists} />
-      : null
+    return this.props.artist.related_artists.length ? (
+      <RelatedArtists artists={this.props.artist.related_artists} />
+    ) : null
   }
 }
 

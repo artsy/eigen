@@ -17,7 +17,9 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import TabBar, { Tab } from "lib/Components/TabBar"
 
-const TabBarContainer = styled.View`margin-top: 20px;`
+const TabBarContainer = styled.View`
+  margin-top: 20px;
+`
 
 interface Props {
   selectedArtist?: string
@@ -30,10 +32,11 @@ export default class Home extends React.Component<Props, null> {
       <View style={{ flex: 1 }}>
         <ScrollableTabView
           initialPage={this.props.selectedTab || 0}
-          renderTabBar={props =>
+          renderTabBar={props => (
             <TabBarContainer>
               <TabBar {...props} />
-            </TabBarContainer>}
+            </TabBarContainer>
+          )}
         >
           {/* FIXME:
       A thin space has been added in front of the tab label names to compensate for trailing space added by the

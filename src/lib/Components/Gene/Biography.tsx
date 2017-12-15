@@ -17,11 +17,7 @@ class Biography extends React.Component<Props, any> {
       return null
     }
 
-    return (
-      <View style={{ marginLeft: sideMargin, marginRight: sideMargin }}>
-        {this.blurb(gene)}
-      </View>
-    )
+    return <View style={{ marginLeft: sideMargin, marginRight: sideMargin }}>{this.blurb(gene)}</View>
   }
 
   blurb(gene) {

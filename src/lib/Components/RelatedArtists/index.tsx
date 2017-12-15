@@ -58,9 +58,7 @@ class RelatedArtists extends React.Component<RelayProps & ViewProperties, State>
     return (
       <View style={styles.container} onLayout={this.onLayout.bind(this)}>
         <SerifText style={styles.heading}>Related Artists</SerifText>
-        <View style={styles.artistContainer}>
-          {this.renderArtists()}
-        </View>
+        <View style={styles.artistContainer}>{this.renderArtists()}</View>
       </View>
     )
   }

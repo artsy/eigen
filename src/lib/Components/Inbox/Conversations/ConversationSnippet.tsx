@@ -28,8 +28,8 @@ const HorizontalLayout = styled.View`
 const Card = styled(VerticalLayout)`
   height: 120px;
   align-items: center;
-  margin-left:20px;
-  margin-right:20px;
+  margin-left: 20px;
+  margin-right: 20px;
 `
 
 const CardContent = styled(HorizontalLayout)`
@@ -70,7 +70,7 @@ const ImageView = styled(OpaqueImageView)`
   width: 80px;
   height: 80px;
   border-radius: 2px;
-  align-self:center;
+  align-self: center;
 `
 
 const SeparatorLine = styled.View`
@@ -97,15 +97,9 @@ export class ConversationSnippet extends React.Component<Props, any> {
       return (
         <HorizontalLayout>
           <P>
-            <Subtitle>
-              {artworkArtist}
-            </Subtitle>
-            <Title>
-              {artworkTitle}
-            </Title>
-            <Subtitle>
-              {artworkDate}
-            </Subtitle>
+            <Subtitle>{artworkArtist}</Subtitle>
+            <Title>{artworkTitle}</Title>
+            <Subtitle>{artworkDate}</Subtitle>
           </P>
         </HorizontalLayout>
       )
@@ -116,9 +110,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
       return (
         <HorizontalLayout>
           <P>
-            <Subtitle>
-              {name}
-            </Subtitle>
+            <Subtitle>{name}</Subtitle>
           </P>
         </HorizontalLayout>
       )
@@ -165,20 +157,14 @@ export class ConversationSnippet extends React.Component<Props, any> {
             <ImageView imageURL={imageURL} />
             <TextPreview>
               <HorizontalLayout>
-                <SmallHeadline>
-                  {partnerName}
-                </SmallHeadline>
+                <SmallHeadline>{partnerName}</SmallHeadline>
                 <DateHeading>
                   {conversation.is_last_message_to_user && !conversation.last_message_open && <UnreadIndicator />}
                 </DateHeading>
               </HorizontalLayout>
               {this.renderTitleForItem(item)}
-              <P>
-                {conversationText}
-              </P>
-              <MetadataText>
-                {date}
-              </MetadataText>
+              <P>{conversationText}</P>
+              <MetadataText>{date}</MetadataText>
             </TextPreview>
           </CardContent>
           <SeparatorLine />

@@ -31,15 +31,12 @@ export class Notification extends React.Component<RelayProps, any> {
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this)}>
           <View style={styles.header}>
-            {notification.image &&
-              <Image source={{ uri: notification.image.resized.url }} style={styles.artistAvatar} />}
+            {notification.image && (
+              <Image source={{ uri: notification.image.resized.url }} style={styles.artistAvatar} />
+            )}
             <View style={styles.metadataContainer}>
-              <Headline style={styles.artistName}>
-                {notification.artists}
-              </Headline>
-              <SerifText style={styles.metadata}>
-                {notification.summary}
-              </SerifText>
+              <Headline style={styles.artistName}>{notification.artists}</Headline>
+              <SerifText style={styles.metadata}>{notification.summary}</SerifText>
             </View>
           </View>
         </TouchableWithoutFeedback>

@@ -128,7 +128,10 @@ export const uploadFileToS3 = async (file: string, req: GeminiCredsInput, res: G
         // e.g. https://artsy-media-uploads.s3.amazonaws.com/A3tfuXp0t5OuUKv07XaBOw%2F%24%7Bfilename%7D
         const url = e.target.responseHeaders.Location
         resolve({
-          key: url.split("/").pop().replace("%2F", "/"),
+          key: url
+            .split("/")
+            .pop()
+            .replace("%2F", "/"),
         })
       } else {
         throw new Error("S3 upload failed")

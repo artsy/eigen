@@ -122,9 +122,7 @@ export class WorksForYou extends React.Component<Props, State> {
         scrollEventThrottle={100}
         ref={scrollView => (this.scrollView = scrollView)}
       >
-        <View style={{ flex: 1 }}>
-          {hasNotifications ? this.renderNotifications() : this.renderEmptyState()}
-        </View>
+        <View style={{ flex: 1 }}>{hasNotifications ? this.renderNotifications() : this.renderEmptyState()}</View>
       </ScrollView>
     )
   }
@@ -135,7 +133,8 @@ export class WorksForYou extends React.Component<Props, State> {
         dataSource={this.state.dataSource}
         renderRow={data => <Notification notification={data} />}
         renderSeparator={(sectionID, rowID) =>
-          <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>}
+          <View key={`${sectionID}-${rowID}`} style={styles.separator} /> as React.ReactElement<{}>
+        }
         scrollEnabled={false}
       />
     )

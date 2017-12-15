@@ -39,9 +39,7 @@ export default class DarkNavigationButton extends React.Component<Props, any> {
       <BackgroundView style={this.props.style}>
         <TouchableWithoutFeedback onPress={this.openLink.bind(this)}>
           <Row>
-            <Text>
-              {this.props.title}
-            </Text>
+            <Text>{this.props.title}</Text>
             {showNavArrow && <Image source={require("../../../../images/horizontal_chevron_white.png")} />}
           </Row>
         </TouchableWithoutFeedback>

@@ -249,9 +249,7 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
     return (
       <View accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
         <ArtworkRailHeader rail={this.props.rail} handleViewAll={this.handleViewAll} />
-        <View style={this.railStyle()}>
-          {this.renderModuleResults()}
-        </View>
+        <View style={this.railStyle()}>{this.renderModuleResults()}</View>
       </View>
     )
   }

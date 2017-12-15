@@ -21,7 +21,9 @@ const VerticalLayout = styled.View`
   flex: 1;
 `
 
-const HorizontalLayout = styled.View`flex-direction: row;`
+const HorizontalLayout = styled.View`
+  flex-direction: row;
+`
 
 const Container = styled(View)`
   padding-left: 20;
@@ -45,12 +47,12 @@ const TextContainer = styled(VerticalLayout)`
 `
 
 const SenderName = styled(SmallHeadline)`
-  marginRight: 6
-  font-size: 11.5
+  margin-right: 6;
+  font-size: 11.5;
 `
 
 const FromSignature = styled(FromSignatureText)`
-  marginTop: 10
+  margin-top: 10;
 `
 
 interface TimeStampProps {
@@ -135,9 +137,7 @@ export class Message extends React.Component<Props, any> {
 
     return (
       <Hyperlink onPress={this.onLinkPress.bind(this)} linkStyle={linkStyle}>
-        <BodyText disabled={!isSent}>
-          {body}
-        </BodyText>
+        <BodyText disabled={!isSent}>{body}</BodyText>
       </Hyperlink>
     )
   }
@@ -163,38 +163,28 @@ export class Message extends React.Component<Props, any> {
           <Avatar isUser={message.is_from_user} initials={initials} />
           <TextContainer>
             <Header>
-              <SenderName disabled={isPending}>
-                {senderName}
-              </SenderName>
+              <SenderName disabled={isPending}>{senderName}</SenderName>
               {
                 <TimeStamp pending={isPending}>
                   {isPending ? "pending" : moment(message.created_at).fromNow(true)}
                 </TimeStamp>
               }
             </Header>
-            {artworkPreview &&
-              <PreviewContainer>
-                {artworkPreview}
-              </PreviewContainer>}
+            {artworkPreview && <PreviewContainer>{artworkPreview}</PreviewContainer>}
 
-            {showPreview &&
-              <PreviewContainer>
-                {showPreview}
-              </PreviewContainer>}
+            {showPreview && <PreviewContainer>{showPreview}</PreviewContainer>}
 
-            {message.invoice &&
+            {message.invoice && (
               <PreviewContainer>
                 <InvoicePreview invoice={message.invoice} onSelected={previewInvoice} conversationId={conversationId} />
-              </PreviewContainer>}
+              </PreviewContainer>
+            )}
 
             {this.renderAttachmentPreviews(message.attachments)}
 
             {this.renderBody()}
 
-            {!message.is_from_user &&
-              <FromSignature>
-                {fromSignature}
-              </FromSignature>}
+            {!message.is_from_user && <FromSignature>{fromSignature}</FromSignature>}
           </TextContainer>
         </Content>
         {this.props.index !== 0 && <Seperator />}

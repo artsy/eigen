@@ -56,11 +56,7 @@ export default class TextArea extends React.Component<TextAreaProps, State> {
     return (
       <View style={[this.props.style, { flex: 1 }]}>
         <View style={{ flexDirection: "row" }}>
-          {displayPlaceholder
-            ? <Placeholder>
-                {placeholderText}
-              </Placeholder>
-            : null}
+          {displayPlaceholder ? <Placeholder>{placeholderText}</Placeholder> : null}
           <Input
             autoCapitalize={"sentences"}
             keyboardAppearance="dark"

@@ -16,10 +16,16 @@ const props = {
   href: "http://foo.bar",
   is_open: true,
   is_live_open: false,
-  start_at: moment().add(2, "hour").toISOString(),
+  start_at: moment()
+    .add(2, "hour")
+    .toISOString(),
   end_at: null,
-  registration_ends_at: moment().subtract(1, "day").toISOString(),
-  live_start_at: moment().add(5, "hour").toISOString(),
+  registration_ends_at: moment()
+    .subtract(1, "day")
+    .toISOString(),
+  live_start_at: moment()
+    .add(5, "hour")
+    .toISOString(),
   live_url_if_open: null,
   display_timely_at: "Live in 2 hours",
   cover_image: {

@@ -25,7 +25,9 @@ const Listpad = styled.View`
   align-items: center;
   padding-top: 80;
 `
-const Listphone = styled.View`margin-bottom: 100;`
+const Listphone = styled.View`
+  margin-bottom: 100;
+`
 
 const HorizontalLayout = styled.View`
   flex: 1;
@@ -59,7 +61,7 @@ const Icon = styled(Image)`
 
 const List = isPad ? Listpad : Listphone
 
-export default () =>
+export default () => (
   <CenteredView>
     <VerticalLayout>
       <Title>BUYING ART ON ARTSY IS SIMPLE</Title>
@@ -83,3 +85,4 @@ export default () =>
       </List>
     </VerticalLayout>
   </CenteredView>
+)

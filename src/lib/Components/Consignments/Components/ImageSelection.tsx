@@ -41,12 +41,13 @@ interface TakePhotoImageProps {
   onPressNewPhoto: () => void
 }
 
-const SelectedIcon = () =>
+const SelectedIcon = () => (
   <ImageBG style={{ backgroundColor: "white", position: "absolute", top: 120, left: 120 }}>
     <Image source={require("../../../../../images/consignments/black-tick.png")} />
   </ImageBG>
+)
 
-const TakePhotoImage = (props: TakePhotoImageProps) =>
+const TakePhotoImage = (props: TakePhotoImageProps) => (
   <TouchableOpacity
     onPress={props.onPressNewPhoto}
     style={{
@@ -63,8 +64,9 @@ const TakePhotoImage = (props: TakePhotoImageProps) =>
   >
     <Image source={require("../../../../../images/consignments/camera-black.png")} />
   </TouchableOpacity>
+)
 
-const ImageForURI = (props: ImagePreviewProps) =>
+const ImageForURI = (props: ImagePreviewProps) => (
   <View
     style={{
       borderWidth: 2,
@@ -84,6 +86,7 @@ const ImageForURI = (props: ImagePreviewProps) =>
     </TouchableHighlight>
     {props.selected ? <SelectedIcon /> : null}
   </View>
+)
 
 interface Props {
   data: ImageData[]

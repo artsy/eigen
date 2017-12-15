@@ -47,12 +47,14 @@ const HeaderTextContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
 `
-const CancelButton = styled.TouchableOpacity`padding-left: 20;`
+const CancelButton = styled.TouchableOpacity`
+  padding-left: 20;
+`
 
 const Content = styled.View`
   margin-left: 20;
   margin-right: 20;
-  alignSelf: ${isPad ? "center" : "stretch"};
+  align-self: ${isPad ? "center" : "stretch"};
   ${isPad ? "width: 472;" : ""};
 `
 
@@ -202,14 +204,10 @@ export class Inquiry extends React.Component<RelayProps, any> {
                 <MetadataText>CANCEL</MetadataText>
               </CancelButton>
               <TitleView>
-                <PartnerName>
-                  {partnerName}
-                </PartnerName>
+                <PartnerName>{partnerName}</PartnerName>
                 <ResponseRateLine>
                   {/* <ResponseIndicator /> */}
-                  <ResponseRate>
-                    {partnerResponseRate}
-                  </ResponseRate>
+                  <ResponseRate>{partnerResponseRate}</ResponseRate>
                 </ResponseRateLine>
               </TitleView>
               <PlaceholderView>CANCEL</PlaceholderView>
