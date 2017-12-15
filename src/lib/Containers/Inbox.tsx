@@ -47,12 +47,16 @@ export class Inbox extends React.Component<Props, State> {
 
     this.setState({ fetchingData: true })
 
-    // Allow Conversations & Active Bids to properly force-fetch themselves.
-    // The stored refs are the Relay containers; the components themselves are nested under as refs.
-    this.activeBids.refs.component.refreshActiveBids()
-    this.conversations.refs.component.refreshConversations(() => {
-      this.setState({ fetchingData: false })
-    })
+    if (this.activeBids && this.conversations) {
+      // Allow Conversations & Active Bids to properly force-fetch themselves.
+      // The stored refs are the Relay containers; the components themselves are nested under as refs.
+      this.activeBids.refs.component.refreshActiveBids()
+      this.conversations.refs.component.refreshConversations(() => {
+        this.setState({ fetchingData: false })
+      })
+    } else {
+      this.props.relay.refetch({})
+    }
   }
 
   render() {
