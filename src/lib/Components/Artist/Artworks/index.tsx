@@ -75,7 +75,7 @@ class Artworks extends Component<Props, State> {
       )
     }
   }
-
+  // tslint:disable-next-line:no-shadowed-variable
   renderSection({ title, count, filter, onComplete, Component, mapPropsToArtworksConnection }: RenderSectionParams) {
     const countStyles = [styles.text, styles.count]
     return (
