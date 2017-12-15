@@ -1,6 +1,5 @@
 import React from "react"
-import { SectionList } from "react-native"
-import { StyleSheet } from "react-native"
+import { SectionList, StyleSheet } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import LotsByFollowedArtists from "./Components/LotsByFollowedArtists"
 import { SaleList } from "./Components/SaleList"
