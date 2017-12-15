@@ -43,7 +43,7 @@ exports[`Sets up the right view hierarchy 1`] = `
               "alignSelf": "center",
               "flex": 1,
               "maxWidth": 540,
-              "paddingTop": 18,
+              "paddingTop": 10,
               "width": "100%",
             }
           }
@@ -64,8 +64,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                   "textAlign": "center",
                 },
                 Object {
-                  "marginLeft": 40,
-                  "marginRight": 40,
+                  "textAlign": "center",
                 },
                 Object {
                   "fontFamily": "AGaramondPro-Regular",
@@ -83,17 +82,18 @@ exports[`Sets up the right view hierarchy 1`] = `
             style={
               Array [
                 Object {
-                  "color": "#cccccc",
+                  "color": "#808080",
                   "fontSize": 20,
-                  "paddingLeft": 25,
-                  "paddingRight": 25,
+                  "paddingLeft": 20,
+                  "paddingRight": 20,
                 },
                 Object {
                   "marginBottom": 80,
+                  "marginTop": -15,
                   "textAlign": "center",
                 },
                 Object {
-                  "fontFamily": "AGaramondPro-Italic",
+                  "fontFamily": "AGaramondPro-Regular",
                 },
               ]
             }
@@ -104,7 +104,6 @@ exports[`Sets up the right view hierarchy 1`] = `
             style={
               Object {
                 "flex": 1,
-                "padding": 20,
               }
             }
           >
@@ -175,27 +174,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     ]
                   }
                 >
-                  <View
-                    style={
-                      Array [
-                        Object {
-                          "alignItems": "center",
-                          "borderColor": "white",
-                          "borderRadius": 13,
-                          "borderWidth": 1,
-                          "height": 26,
-                          "justifyContent": "center",
-                          "marginRight": 20,
-                          "width": 26,
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    <Image
-                      source={1}
-                    />
-                  </View>
                   <Text
                     accessible={true}
                     allowFontScaling={true}
@@ -216,28 +194,27 @@ exports[`Sets up the right view hierarchy 1`] = `
                   >
                     ARTIST/DESIGNER NAME
                   </Text>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
+                  <View
                     style={
                       Array [
                         Object {
-                          "color": "white",
-                          "flexBasis": 0,
-                          "flexGrow": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "AGaramondPro-Regular",
-                          "paddingTop": 6,
-                          "textAlign": "right",
+                          "alignItems": "center",
+                          "borderColor": "white",
+                          "borderRadius": 13,
+                          "borderWidth": 1,
+                          "height": 26,
+                          "justifyContent": "center",
+                          "marginRight": 20,
+                          "width": 26,
                         },
                         undefined,
                       ]
                     }
                   >
-                    
-                  </Text>
+                    <Image
+                      source={1}
+                    />
+                  </View>
                 </View>
               </View>
               <View
@@ -290,27 +267,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     ]
                   }
                 >
-                  <View
-                    style={
-                      Array [
-                        Object {
-                          "alignItems": "center",
-                          "borderColor": "white",
-                          "borderRadius": 13,
-                          "borderWidth": 1,
-                          "height": 26,
-                          "justifyContent": "center",
-                          "marginRight": 20,
-                          "width": 26,
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    <Image
-                      source={1}
-                    />
-                  </View>
                   <Text
                     accessible={true}
                     allowFontScaling={true}
@@ -331,6 +287,27 @@ exports[`Sets up the right view hierarchy 1`] = `
                   >
                     PHOTOS
                   </Text>
+                  <View
+                    style={
+                      Array [
+                        Object {
+                          "alignItems": "center",
+                          "borderColor": "white",
+                          "borderRadius": 13,
+                          "borderWidth": 1,
+                          "height": 26,
+                          "justifyContent": "center",
+                          "marginRight": 20,
+                          "width": 26,
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    <Image
+                      source={1}
+                    />
+                  </View>
                 </View>
               </View>
               <View
@@ -383,27 +360,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     ]
                   }
                 >
-                  <View
-                    style={
-                      Array [
-                        Object {
-                          "alignItems": "center",
-                          "borderColor": "white",
-                          "borderRadius": 13,
-                          "borderWidth": 1,
-                          "height": 26,
-                          "justifyContent": "center",
-                          "marginRight": 20,
-                          "width": 26,
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    <Image
-                      source={1}
-                    />
-                  </View>
                   <Text
                     accessible={true}
                     allowFontScaling={true}
@@ -422,30 +378,29 @@ exports[`Sets up the right view hierarchy 1`] = `
                       ]
                     }
                   >
-                    METADATA
+                    WORK DETAILS
                   </Text>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
+                  <View
                     style={
                       Array [
                         Object {
-                          "color": "white",
-                          "flexBasis": 0,
-                          "flexGrow": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "AGaramondPro-Regular",
-                          "paddingTop": 6,
-                          "textAlign": "right",
+                          "alignItems": "center",
+                          "borderColor": "white",
+                          "borderRadius": 13,
+                          "borderWidth": 1,
+                          "height": 26,
+                          "justifyContent": "center",
+                          "marginRight": 20,
+                          "width": 26,
                         },
                         undefined,
                       ]
                     }
                   >
-                    
-                  </Text>
+                    <Image
+                      source={1}
+                    />
+                  </View>
                 </View>
               </View>
               <View
@@ -498,6 +453,26 @@ exports[`Sets up the right view hierarchy 1`] = `
                     ]
                   }
                 >
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "color": "white",
+                          "flexBasis": 0,
+                          "flexGrow": 2,
+                          "flexShrink": 1,
+                          "fontFamily": "AvantGardeGothicITC",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    EDITION & AUTHENTICITY
+                  </Text>
                   <View
                     style={
                       Array [
@@ -519,6 +494,58 @@ exports[`Sets up the right view hierarchy 1`] = `
                       source={1}
                     />
                   </View>
+                </View>
+              </View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "#444444",
+                      "height": 1,
+                    },
+                    undefined,
+                  ]
+                }
+              />
+              <View
+                accessibilityComponentType={undefined}
+                accessibilityLabel={undefined}
+                accessibilityTraits={undefined}
+                accessible={true}
+                hasTVPreferredFocus={undefined}
+                hitSlop={undefined}
+                isTVSelectable={true}
+                nativeID={undefined}
+                onLayout={undefined}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                    },
+                    undefined,
+                  ]
+                }
+                testID={undefined}
+                tvParallaxProperties={undefined}
+              >
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "height": 60,
+                      },
+                      undefined,
+                    ]
+                  }
+                >
                   <Text
                     accessible={true}
                     allowFontScaling={true}
@@ -539,28 +566,27 @@ exports[`Sets up the right view hierarchy 1`] = `
                   >
                     LOCATION
                   </Text>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
+                  <View
                     style={
                       Array [
                         Object {
-                          "color": "white",
-                          "flexBasis": 0,
-                          "flexGrow": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "AGaramondPro-Regular",
-                          "paddingTop": 6,
-                          "textAlign": "right",
+                          "alignItems": "center",
+                          "borderColor": "white",
+                          "borderRadius": 13,
+                          "borderWidth": 1,
+                          "height": 26,
+                          "justifyContent": "center",
+                          "marginRight": 20,
+                          "width": 26,
                         },
                         undefined,
                       ]
                     }
                   >
-                    
-                  </Text>
+                    <Image
+                      source={1}
+                    />
+                  </View>
                 </View>
               </View>
               <View
@@ -613,6 +639,26 @@ exports[`Sets up the right view hierarchy 1`] = `
                     ]
                   }
                 >
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    disabled={false}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "color": "white",
+                          "flexBasis": 0,
+                          "flexGrow": 2,
+                          "flexShrink": 1,
+                          "fontFamily": "AvantGardeGothicITC",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    PROVENANCE
+                  </Text>
                   <View
                     style={
                       Array [
@@ -634,49 +680,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                       source={1}
                     />
                   </View>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "color": "white",
-                          "flexBasis": 0,
-                          "flexGrow": 2,
-                          "flexShrink": 1,
-                          "fontFamily": "AvantGardeGothicITC",
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    PROVENANCE
-                  </Text>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
-                    style={
-                      Array [
-                        Object {
-                          "color": "white",
-                          "flexBasis": 0,
-                          "flexGrow": 1,
-                          "flexShrink": 1,
-                          "fontFamily": "AGaramondPro-Regular",
-                          "paddingTop": 6,
-                          "textAlign": "right",
-                        },
-                        undefined,
-                      ]
-                    }
-                  >
-                    
-                  </Text>
                 </View>
               </View>
               <View
@@ -707,6 +710,75 @@ exports[`Sets up the right view hierarchy 1`] = `
               ]
             }
           />
+          <View
+            style={
+              Array [
+                Object {
+                  "justifyContent": "center",
+                  "marginTop": 0,
+                },
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "paddingVertical": 6,
+                },
+              ]
+            }
+          >
+            <View
+              accessibilityComponentType={undefined}
+              accessibilityLabel={undefined}
+              accessibilityTraits={undefined}
+              accessible={true}
+              collapsable={undefined}
+              hitSlop={undefined}
+              nativeID={undefined}
+              onLayout={undefined}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "rgba(0, 0, 0, 1)",
+                  "borderColor": "rgba(0, 0, 0, 1)",
+                  "borderWidth": 1,
+                  "height": 43,
+                  "justifyContent": "center",
+                  "marginTop": 20,
+                  "width": 174,
+                }
+              }
+              testID={undefined}
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                disabled={false}
+                ellipsizeMode="tail"
+                style={
+                  Array [
+                    Object {
+                      "fontSize": 12,
+                    },
+                    Object {
+                      "color": "rgba(255, 255, 255, 1)",
+                      "fontFamily": "AGaramondPro-Regular",
+                      "opacity": 1,
+                    },
+                    Object {
+                      "fontFamily": "AvantGardeGothicITC",
+                    },
+                  ]
+                }
+              >
+                CLOSE
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
     </RCTScrollView>

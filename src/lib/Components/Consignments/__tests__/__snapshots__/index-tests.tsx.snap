@@ -107,9 +107,9 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "alignSelf": "center",
                         "color": "white",
                         "fontFamily": "AvantGardeGothicITC",
-                        "fontSize": 46,
-                        "lineHeight": 58,
-                        "marginTop": 80,
+                        "fontSize": 20,
+                        "lineHeight": 24,
+                        "marginTop": 0,
                         "textAlign": "center",
                         "width": 760,
                       },
@@ -140,7 +140,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           "flexShrink": 1,
                           "marginBottom": 0,
                           "marginLeft": 0,
-                          "marginTop": 50,
+                          "marginTop": 40,
                         },
                         undefined,
                       ]
@@ -176,7 +176,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           Array [
                             Object {
                               "color": "white",
-                              "fontSize": 34,
+                              "fontSize": 30,
                               "minHeight": 60,
                               "textAlign": "left",
                               "width": 540,
@@ -202,7 +202,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           "flexShrink": 1,
                           "marginBottom": 0,
                           "marginLeft": 0,
-                          "marginTop": 50,
+                          "marginTop": 40,
                         },
                         undefined,
                       ]
@@ -238,7 +238,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           Array [
                             Object {
                               "color": "white",
-                              "fontSize": 34,
+                              "fontSize": 30,
                               "minHeight": 60,
                               "textAlign": "left",
                               "width": 540,
@@ -264,7 +264,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           "flexShrink": 1,
                           "marginBottom": 0,
                           "marginLeft": 0,
-                          "marginTop": 50,
+                          "marginTop": 40,
                         },
                         undefined,
                       ]
@@ -300,7 +300,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           Array [
                             Object {
                               "color": "white",
-                              "fontSize": 34,
+                              "fontSize": 30,
                               "minHeight": 60,
                               "textAlign": "left",
                               "width": 540,
@@ -326,7 +326,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           "flexShrink": 1,
                           "marginBottom": 0,
                           "marginLeft": 0,
-                          "marginTop": 50,
+                          "marginTop": 40,
                         },
                         undefined,
                       ]
@@ -362,7 +362,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           Array [
                             Object {
                               "color": "white",
-                              "fontSize": 34,
+                              "fontSize": 30,
                               "minHeight": 60,
                               "textAlign": "left",
                               "width": 540,
@@ -386,6 +386,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           "flexBasis": 0,
                           "flexGrow": 1,
                           "flexShrink": 1,
+                          "marginTop": 30,
                         },
                         undefined,
                       ]

@@ -68,27 +68,6 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -109,28 +88,27 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
       >
         ARTIST/DESIGNER NAME
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -183,27 +161,6 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -224,6 +181,27 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
       >
         PHOTOS
       </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -276,27 +254,6 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -315,30 +272,29 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
           ]
         }
       >
-        METADATA
+        WORK DETAILS
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -391,6 +347,26 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        EDITION & AUTHENTICITY
+      </Text>
       <View
         style={
           Array [
@@ -412,6 +388,58 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
           source={1}
         />
       </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#444444",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 60,
+          },
+          undefined,
+        ]
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -432,28 +460,27 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
       >
         LOCATION
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -506,6 +533,26 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        PROVENANCE
+      </Text>
       <View
         style={
           Array [
@@ -527,49 +574,6 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
           source={1}
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            undefined,
-          ]
-        }
-      >
-        PROVENANCE
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        
-      </Text>
     </View>
   </View>
   <View
@@ -654,6 +658,26 @@ exports[`TODO states: Looks right when With Artist 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        ARTIST/DESIGNER NAME
+      </Text>
       <View
         style={
           Array [
@@ -677,48 +701,6 @@ exports[`TODO states: Looks right when With Artist 1`] = `
           source={1}
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            undefined,
-          ]
-        }
-      >
-        ARTIST/DESIGNER NAME
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        Glenn Brown
-      </Text>
     </View>
   </View>
   <View
@@ -771,27 +753,6 @@ exports[`TODO states: Looks right when With Artist 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -812,6 +773,27 @@ exports[`TODO states: Looks right when With Artist 1`] = `
       >
         PHOTOS
       </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -864,27 +846,6 @@ exports[`TODO states: Looks right when With Artist 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -903,30 +864,29 @@ exports[`TODO states: Looks right when With Artist 1`] = `
           ]
         }
       >
-        METADATA
+        WORK DETAILS
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -979,6 +939,26 @@ exports[`TODO states: Looks right when With Artist 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        EDITION & AUTHENTICITY
+      </Text>
       <View
         style={
           Array [
@@ -1000,6 +980,58 @@ exports[`TODO states: Looks right when With Artist 1`] = `
           source={1}
         />
       </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#444444",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 60,
+          },
+          undefined,
+        ]
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -1020,28 +1052,27 @@ exports[`TODO states: Looks right when With Artist 1`] = `
       >
         LOCATION
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -1094,6 +1125,26 @@ exports[`TODO states: Looks right when With Artist 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        PROVENANCE
+      </Text>
       <View
         style={
           Array [
@@ -1115,49 +1166,6 @@ exports[`TODO states: Looks right when With Artist 1`] = `
           source={1}
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            undefined,
-          ]
-        }
-      >
-        PROVENANCE
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        
-      </Text>
     </View>
   </View>
   <View
@@ -1242,27 +1250,6 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -1283,80 +1270,6 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
       >
         ARTIST/DESIGNER NAME
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        
-      </Text>
-    </View>
-  </View>
-  <View
-    style={
-      Array [
-        Object {
-          "backgroundColor": "#444444",
-          "height": 1,
-        },
-        undefined,
-      ]
-    }
-  />
-  <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
-    accessible={true}
-    hasTVPreferredFocus={undefined}
-    hitSlop={undefined}
-    isTVSelectable={true}
-    nativeID={undefined}
-    onLayout={undefined}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
-    testID={undefined}
-    tvParallaxProperties={undefined}
-  >
-    <View
-      style={
-        Array [
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "height": 60,
-          },
-          undefined,
-        ]
-      }
-    >
       <View
         style={
           Array [
@@ -1378,26 +1291,6 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
           source={1}
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            undefined,
-          ]
-        }
-      >
-        PHOTOS
-      </Text>
     </View>
   </View>
   <View
@@ -1450,6 +1343,119 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        PHOTOS
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Image
+          source={1}
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#444444",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 60,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        WORK DETAILS
+      </Text>
       <View
         style={
           Array [
@@ -1473,48 +1479,6 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
           source={1}
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            undefined,
-          ]
-        }
-      >
-        METADATA
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        5/5
-      </Text>
     </View>
   </View>
   <View
@@ -1567,6 +1531,26 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        EDITION & AUTHENTICITY
+      </Text>
       <View
         style={
           Array [
@@ -1580,7 +1564,9 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
               "marginRight": 20,
               "width": 26,
             },
-            undefined,
+            Object {
+              "backgroundColor": "white",
+            },
           ]
         }
       >
@@ -1588,6 +1574,58 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
           source={1}
         />
       </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#444444",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 60,
+          },
+          undefined,
+        ]
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -1608,28 +1646,27 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
       >
         LOCATION
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -1682,6 +1719,26 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        PROVENANCE
+      </Text>
       <View
         style={
           Array [
@@ -1703,49 +1760,6 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
           source={1}
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            undefined,
-          ]
-        }
-      >
-        PROVENANCE
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        
-      </Text>
     </View>
   </View>
   <View
@@ -1830,29 +1844,6 @@ exports[`TODO states: Looks right when With Location 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            Object {
-              "backgroundColor": "white",
-            },
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -1873,28 +1864,29 @@ exports[`TODO states: Looks right when With Location 1`] = `
       >
         ARTIST/DESIGNER NAME
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
-            undefined,
+            Object {
+              "backgroundColor": "white",
+            },
           ]
         }
       >
-        Glenn Brown
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -1947,29 +1939,6 @@ exports[`TODO states: Looks right when With Location 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            Object {
-              "backgroundColor": "white",
-            },
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -1990,113 +1959,6 @@ exports[`TODO states: Looks right when With Location 1`] = `
       >
         PHOTOS
       </Text>
-      <Image
-        source={
-          Object {
-            "uri": "https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg",
-          }
-        }
-        style={
-          Array [
-            Object {
-              "borderColor": "white",
-              "borderWidth": 1,
-              "height": 38,
-              "width": 38,
-            },
-            undefined,
-          ]
-        }
-      >
-        <View
-          style={
-            Array [
-              Object {
-                "alignItems": "center",
-                "backgroundColor": "rgba(0, 0, 0, 0.5)",
-                "flexBasis": 0,
-                "flexGrow": 1,
-                "flexShrink": 1,
-                "justifyContent": "center",
-                "paddingTop": 2,
-                "width": 38,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            disabled={false}
-            ellipsizeMode="tail"
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "color": "white",
-                  "fontFamily": "AGaramondPro-Regular",
-                },
-                undefined,
-              ]
-            }
-          >
-            2
-          </Text>
-        </View>
-      </Image>
-    </View>
-  </View>
-  <View
-    style={
-      Array [
-        Object {
-          "backgroundColor": "#444444",
-          "height": 1,
-        },
-        undefined,
-      ]
-    }
-  />
-  <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
-    accessible={true}
-    hasTVPreferredFocus={undefined}
-    hitSlop={undefined}
-    isTVSelectable={true}
-    nativeID={undefined}
-    onLayout={undefined}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
-    testID={undefined}
-    tvParallaxProperties={undefined}
-  >
-    <View
-      style={
-        Array [
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "height": 60,
-          },
-          undefined,
-        ]
-      }
-    >
       <View
         style={
           Array [
@@ -2120,48 +1982,6 @@ exports[`TODO states: Looks right when With Location 1`] = `
           source={1}
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            undefined,
-          ]
-        }
-      >
-        METADATA
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        5/5
-      </Text>
     </View>
   </View>
   <View
@@ -2214,6 +2034,26 @@ exports[`TODO states: Looks right when With Location 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        WORK DETAILS
+      </Text>
       <View
         style={
           Array [
@@ -2227,7 +2067,9 @@ exports[`TODO states: Looks right when With Location 1`] = `
               "marginRight": 20,
               "width": 26,
             },
-            undefined,
+            Object {
+              "backgroundColor": "white",
+            },
           ]
         }
       >
@@ -2235,6 +2077,153 @@ exports[`TODO states: Looks right when With Location 1`] = `
           source={1}
         />
       </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#444444",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 60,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        EDITION & AUTHENTICITY
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={1}
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#444444",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 60,
+          },
+          undefined,
+        ]
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -2255,28 +2244,27 @@ exports[`TODO states: Looks right when With Location 1`] = `
       >
         LOCATION
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -2329,6 +2317,26 @@ exports[`TODO states: Looks right when With Location 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        PROVENANCE
+      </Text>
       <View
         style={
           Array [
@@ -2350,49 +2358,6 @@ exports[`TODO states: Looks right when With Location 1`] = `
           source={1}
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            undefined,
-          ]
-        }
-      >
-        PROVENANCE
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        
-      </Text>
     </View>
   </View>
   <View
@@ -2477,27 +2442,6 @@ exports[`TODO states: Looks right when With Long 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -2518,28 +2462,27 @@ exports[`TODO states: Looks right when With Long 1`] = `
       >
         ARTIST/DESIGNER NAME
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -2592,27 +2535,6 @@ exports[`TODO states: Looks right when With Long 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -2633,6 +2555,27 @@ exports[`TODO states: Looks right when With Long 1`] = `
       >
         PHOTOS
       </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -2685,27 +2628,6 @@ exports[`TODO states: Looks right when With Long 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -2724,30 +2646,29 @@ exports[`TODO states: Looks right when With Long 1`] = `
           ]
         }
       >
-        METADATA
+        WORK DETAILS
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -2800,6 +2721,26 @@ exports[`TODO states: Looks right when With Long 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        EDITION & AUTHENTICITY
+      </Text>
       <View
         style={
           Array [
@@ -2821,6 +2762,58 @@ exports[`TODO states: Looks right when With Long 1`] = `
           source={1}
         />
       </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#444444",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 60,
+          },
+          undefined,
+        ]
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -2841,28 +2834,27 @@ exports[`TODO states: Looks right when With Long 1`] = `
       >
         LOCATION
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -2915,6 +2907,26 @@ exports[`TODO states: Looks right when With Long 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        PROVENANCE
+      </Text>
       <View
         style={
           Array [
@@ -2938,49 +2950,6 @@ exports[`TODO states: Looks right when With Long 1`] = `
           source={1}
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            undefined,
-          ]
-        }
-      >
-        PROVENANCE
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        This is a long long long run on sentence that should break correctly.
-      </Text>
     </View>
   </View>
   <View
@@ -3065,29 +3034,6 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            Object {
-              "backgroundColor": "white",
-            },
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -3108,28 +3054,29 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
       >
         ARTIST/DESIGNER NAME
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
-            undefined,
+            Object {
+              "backgroundColor": "white",
+            },
           ]
         }
       >
-        Glenn Brown
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -3182,29 +3129,6 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            Object {
-              "backgroundColor": "white",
-            },
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -3225,113 +3149,6 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
       >
         PHOTOS
       </Text>
-      <Image
-        source={
-          Object {
-            "uri": "https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg",
-          }
-        }
-        style={
-          Array [
-            Object {
-              "borderColor": "white",
-              "borderWidth": 1,
-              "height": 38,
-              "width": 38,
-            },
-            undefined,
-          ]
-        }
-      >
-        <View
-          style={
-            Array [
-              Object {
-                "alignItems": "center",
-                "backgroundColor": "rgba(0, 0, 0, 0.5)",
-                "flexBasis": 0,
-                "flexGrow": 1,
-                "flexShrink": 1,
-                "justifyContent": "center",
-                "paddingTop": 2,
-                "width": 38,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            disabled={false}
-            ellipsizeMode="tail"
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "color": "white",
-                  "fontFamily": "AGaramondPro-Regular",
-                },
-                undefined,
-              ]
-            }
-          >
-            2
-          </Text>
-        </View>
-      </Image>
-    </View>
-  </View>
-  <View
-    style={
-      Array [
-        Object {
-          "backgroundColor": "#444444",
-          "height": 1,
-        },
-        undefined,
-      ]
-    }
-  />
-  <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
-    accessible={true}
-    hasTVPreferredFocus={undefined}
-    hitSlop={undefined}
-    isTVSelectable={true}
-    nativeID={undefined}
-    onLayout={undefined}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
-    testID={undefined}
-    tvParallaxProperties={undefined}
-  >
-    <View
-      style={
-        Array [
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "height": 60,
-          },
-          undefined,
-        ]
-      }
-    >
       <View
         style={
           Array [
@@ -3355,48 +3172,6 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
           source={1}
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            undefined,
-          ]
-        }
-      >
-        METADATA
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        5/5
-      </Text>
     </View>
   </View>
   <View
@@ -3449,6 +3224,26 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        WORK DETAILS
+      </Text>
       <View
         style={
           Array [
@@ -3462,7 +3257,9 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
               "marginRight": 20,
               "width": 26,
             },
-            undefined,
+            Object {
+              "backgroundColor": "white",
+            },
           ]
         }
       >
@@ -3470,6 +3267,153 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
           source={1}
         />
       </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#444444",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 60,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        EDITION & AUTHENTICITY
+      </Text>
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
+            },
+            Object {
+              "backgroundColor": "white",
+            },
+          ]
+        }
+      >
+        <Image
+          source={1}
+        />
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#444444",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 60,
+          },
+          undefined,
+        ]
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -3490,28 +3434,27 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
       >
         LOCATION
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -3564,6 +3507,26 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        PROVENANCE
+      </Text>
       <View
         style={
           Array [
@@ -3585,49 +3548,6 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
           source={1}
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            undefined,
-          ]
-        }
-      >
-        PROVENANCE
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        
-      </Text>
     </View>
   </View>
   <View
@@ -3712,29 +3632,6 @@ exports[`TODO states: Looks right when With One 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            Object {
-              "backgroundColor": "white",
-            },
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -3755,80 +3652,6 @@ exports[`TODO states: Looks right when With One 1`] = `
       >
         ARTIST/DESIGNER NAME
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        Glenn Brown
-      </Text>
-    </View>
-  </View>
-  <View
-    style={
-      Array [
-        Object {
-          "backgroundColor": "#444444",
-          "height": 1,
-        },
-        undefined,
-      ]
-    }
-  />
-  <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
-    accessible={true}
-    hasTVPreferredFocus={undefined}
-    hitSlop={undefined}
-    isTVSelectable={true}
-    nativeID={undefined}
-    onLayout={undefined}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
-    testID={undefined}
-    tvParallaxProperties={undefined}
-  >
-    <View
-      style={
-        Array [
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "height": 60,
-          },
-          undefined,
-        ]
-      }
-    >
       <View
         style={
           Array [
@@ -3852,6 +3675,58 @@ exports[`TODO states: Looks right when With One 1`] = `
           source={1}
         />
       </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#444444",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 60,
+          },
+          undefined,
+        ]
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -3872,61 +3747,29 @@ exports[`TODO states: Looks right when With One 1`] = `
       >
         PHOTOS
       </Text>
-      <Image
-        source={
-          Object {
-            "uri": "https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg",
-          }
-        }
+      <View
         style={
           Array [
             Object {
+              "alignItems": "center",
               "borderColor": "white",
+              "borderRadius": 13,
               "borderWidth": 1,
-              "height": 38,
-              "width": 38,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
-            undefined,
+            Object {
+              "backgroundColor": "white",
+            },
           ]
         }
       >
-        <View
-          style={
-            Array [
-              Object {
-                "alignItems": "center",
-                "backgroundColor": "rgba(0, 0, 0, 0.5)",
-                "flexBasis": 0,
-                "flexGrow": 1,
-                "flexShrink": 1,
-                "justifyContent": "center",
-                "paddingTop": 2,
-                "width": 38,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            disabled={false}
-            ellipsizeMode="tail"
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "color": "white",
-                  "fontFamily": "AGaramondPro-Regular",
-                },
-                undefined,
-              ]
-            }
-          >
-            1
-          </Text>
-        </View>
-      </Image>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -3979,27 +3822,6 @@ exports[`TODO states: Looks right when With One 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -4018,30 +3840,29 @@ exports[`TODO states: Looks right when With One 1`] = `
           ]
         }
       >
-        METADATA
+        WORK DETAILS
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -4094,6 +3915,26 @@ exports[`TODO states: Looks right when With One 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        EDITION & AUTHENTICITY
+      </Text>
       <View
         style={
           Array [
@@ -4115,6 +3956,58 @@ exports[`TODO states: Looks right when With One 1`] = `
           source={1}
         />
       </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#444444",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 60,
+          },
+          undefined,
+        ]
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -4135,28 +4028,27 @@ exports[`TODO states: Looks right when With One 1`] = `
       >
         LOCATION
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -4209,6 +4101,26 @@ exports[`TODO states: Looks right when With One 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        PROVENANCE
+      </Text>
       <View
         style={
           Array [
@@ -4230,49 +4142,6 @@ exports[`TODO states: Looks right when With One 1`] = `
           source={1}
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            undefined,
-          ]
-        }
-      >
-        PROVENANCE
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        
-      </Text>
     </View>
   </View>
   <View
@@ -4357,29 +4226,6 @@ exports[`TODO states: Looks right when With Photos 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            Object {
-              "backgroundColor": "white",
-            },
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -4400,80 +4246,6 @@ exports[`TODO states: Looks right when With Photos 1`] = `
       >
         ARTIST/DESIGNER NAME
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        Glenn Brown
-      </Text>
-    </View>
-  </View>
-  <View
-    style={
-      Array [
-        Object {
-          "backgroundColor": "#444444",
-          "height": 1,
-        },
-        undefined,
-      ]
-    }
-  />
-  <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
-    accessible={true}
-    hasTVPreferredFocus={undefined}
-    hitSlop={undefined}
-    isTVSelectable={true}
-    nativeID={undefined}
-    onLayout={undefined}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
-    testID={undefined}
-    tvParallaxProperties={undefined}
-  >
-    <View
-      style={
-        Array [
-          Object {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "height": 60,
-          },
-          undefined,
-        ]
-      }
-    >
       <View
         style={
           Array [
@@ -4497,6 +4269,58 @@ exports[`TODO states: Looks right when With Photos 1`] = `
           source={1}
         />
       </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#444444",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 60,
+          },
+          undefined,
+        ]
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -4517,61 +4341,29 @@ exports[`TODO states: Looks right when With Photos 1`] = `
       >
         PHOTOS
       </Text>
-      <Image
-        source={
-          Object {
-            "uri": "https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg",
-          }
-        }
+      <View
         style={
           Array [
             Object {
+              "alignItems": "center",
               "borderColor": "white",
+              "borderRadius": 13,
               "borderWidth": 1,
-              "height": 38,
-              "width": 38,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
-            undefined,
+            Object {
+              "backgroundColor": "white",
+            },
           ]
         }
       >
-        <View
-          style={
-            Array [
-              Object {
-                "alignItems": "center",
-                "backgroundColor": "rgba(0, 0, 0, 0.5)",
-                "flexBasis": 0,
-                "flexGrow": 1,
-                "flexShrink": 1,
-                "justifyContent": "center",
-                "paddingTop": 2,
-                "width": 38,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            disabled={false}
-            ellipsizeMode="tail"
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "color": "white",
-                  "fontFamily": "AGaramondPro-Regular",
-                },
-                undefined,
-              ]
-            }
-          >
-            2
-          </Text>
-        </View>
-      </Image>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -4624,27 +4416,6 @@ exports[`TODO states: Looks right when With Photos 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -4663,30 +4434,29 @@ exports[`TODO states: Looks right when With Photos 1`] = `
           ]
         }
       >
-        METADATA
+        WORK DETAILS
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -4739,6 +4509,26 @@ exports[`TODO states: Looks right when With Photos 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        EDITION & AUTHENTICITY
+      </Text>
       <View
         style={
           Array [
@@ -4760,6 +4550,58 @@ exports[`TODO states: Looks right when With Photos 1`] = `
           source={1}
         />
       </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#444444",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 60,
+          },
+          undefined,
+        ]
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -4780,28 +4622,27 @@ exports[`TODO states: Looks right when With Photos 1`] = `
       >
         LOCATION
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
             undefined,
           ]
         }
       >
-        
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -4854,6 +4695,26 @@ exports[`TODO states: Looks right when With Photos 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        PROVENANCE
+      </Text>
       <View
         style={
           Array [
@@ -4875,49 +4736,6 @@ exports[`TODO states: Looks right when With Photos 1`] = `
           source={1}
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            undefined,
-          ]
-        }
-      >
-        PROVENANCE
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        
-      </Text>
     </View>
   </View>
   <View
@@ -5002,29 +4820,6 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            Object {
-              "backgroundColor": "white",
-            },
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -5045,28 +4840,29 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
       >
         ARTIST/DESIGNER NAME
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
-            undefined,
+            Object {
+              "backgroundColor": "white",
+            },
           ]
         }
       >
-        Glenn Brown
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -5119,29 +4915,6 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            Object {
-              "backgroundColor": "white",
-            },
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -5162,61 +4935,29 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
       >
         PHOTOS
       </Text>
-      <Image
-        source={
-          Object {
-            "uri": "https://d32dm0rphc51dk.cloudfront.net/VFiyokWNcBZNlfglZND_3g/small_square.jpg",
-          }
-        }
+      <View
         style={
           Array [
             Object {
+              "alignItems": "center",
               "borderColor": "white",
+              "borderRadius": 13,
               "borderWidth": 1,
-              "height": 38,
-              "width": 38,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
-            undefined,
+            Object {
+              "backgroundColor": "white",
+            },
           ]
         }
       >
-        <View
-          style={
-            Array [
-              Object {
-                "alignItems": "center",
-                "backgroundColor": "rgba(0, 0, 0, 0.5)",
-                "flexBasis": 0,
-                "flexGrow": 1,
-                "flexShrink": 1,
-                "justifyContent": "center",
-                "paddingTop": 2,
-                "width": 38,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            disabled={false}
-            ellipsizeMode="tail"
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "color": "white",
-                  "fontFamily": "AGaramondPro-Regular",
-                },
-                undefined,
-              ]
-            }
-          >
-            2
-          </Text>
-        </View>
-      </Image>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -5269,29 +5010,6 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
         ]
       }
     >
-      <View
-        style={
-          Array [
-            Object {
-              "alignItems": "center",
-              "borderColor": "white",
-              "borderRadius": 13,
-              "borderWidth": 1,
-              "height": 26,
-              "justifyContent": "center",
-              "marginRight": 20,
-              "width": 26,
-            },
-            Object {
-              "backgroundColor": "white",
-            },
-          ]
-        }
-      >
-        <Image
-          source={1}
-        />
-      </View>
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -5310,30 +5028,31 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
           ]
         }
       >
-        METADATA
+        WORK DETAILS
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
-            undefined,
+            Object {
+              "backgroundColor": "white",
+            },
           ]
         }
       >
-        5/5
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -5386,6 +5105,26 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        EDITION & AUTHENTICITY
+      </Text>
       <View
         style={
           Array [
@@ -5409,6 +5148,58 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
           source={1}
         />
       </View>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#444444",
+          "height": 1,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    hasTVPreferredFocus={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 60,
+          },
+          undefined,
+        ]
+      }
+    >
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -5429,28 +5220,29 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
       >
         LOCATION
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
+      <View
         style={
           Array [
             Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
+              "alignItems": "center",
+              "borderColor": "white",
+              "borderRadius": 13,
+              "borderWidth": 1,
+              "height": 26,
+              "justifyContent": "center",
+              "marginRight": 20,
+              "width": 26,
             },
-            undefined,
+            Object {
+              "backgroundColor": "white",
+            },
           ]
         }
       >
-        Huddersfield, Yorkshire, UK
-      </Text>
+        <Image
+          source={1}
+        />
+      </View>
     </View>
   </View>
   <View
@@ -5503,6 +5295,26 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
         ]
       }
     >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "white",
+              "flexBasis": 0,
+              "flexGrow": 2,
+              "flexShrink": 1,
+              "fontFamily": "AvantGardeGothicITC",
+            },
+            undefined,
+          ]
+        }
+      >
+        PROVENANCE
+      </Text>
       <View
         style={
           Array [
@@ -5526,49 +5338,6 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
           source={1}
         />
       </View>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 2,
-              "flexShrink": 1,
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            undefined,
-          ]
-        }
-      >
-        PROVENANCE
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "color": "white",
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "paddingTop": 6,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        This work has seen many hands.
-      </Text>
     </View>
   </View>
   <View
