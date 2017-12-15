@@ -3,6 +3,7 @@
 
 ### Master
 
+-   Adds webview support and zero state page for Auction tab - luc
 -   Sets the status bar BG color to dark for Consignments - orta
 -   Bug fix for the Gene refine not showing on Eigen - orta
 -   Taking a consignment photo will now select the created image by default - orta
