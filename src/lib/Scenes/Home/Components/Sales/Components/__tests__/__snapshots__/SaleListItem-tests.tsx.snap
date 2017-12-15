@@ -181,7 +181,7 @@ exports[`renders correctly 1`] = `
           ]
         }
       >
-        LIVE IN 5 HOURS
+        LIVE IN 2 HOURS
       </Text>
     </View>
   </View>

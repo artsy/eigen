@@ -5,7 +5,9 @@ import fonts from "lib/data/fonts"
 
 const Header = styled.View`
   padding: 10px;
-  padding-top: 18px;
+  padding-top: 47px;
+  padding-bottom: 0px;
+  margin-bottom: -4px;
   background-color: white;
 `
 

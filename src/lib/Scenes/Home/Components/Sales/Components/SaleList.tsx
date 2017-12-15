@@ -1,26 +1,46 @@
+import { isEmpty } from "lodash"
 import React, { Component } from "react"
 import { Dimensions, FlatList, View } from "react-native"
 
 import SaleListItem from "./SaleListItem"
 import { SectionHeader } from "./SectionHeader"
 
-export class SaleList extends Component<any> {
+interface Props {
+  item: {
+    data: any[]
+  }
+  section: {
+    isFirstItem?: boolean
+    title: string
+  }
+}
+
+export class SaleList extends Component<Props> {
   render() {
+    const { item, section } = this.props
     const numColumns = Dimensions.get("window").width > 700 ? 4 : 2
 
+    if (isEmpty(item.data)) {
+      return null
+    }
+
+    const style = {
+      marginTop: section.isFirstItem ? -9 : 0, // Offset spaced section headers
+    }
+
     return (
-      <View>
-        <SectionHeader title={this.props.section.title} />
+      <View style={style}>
+        <SectionHeader title={section.title} />
         <FlatList
           contentContainerStyle={{
             justifyContent: "space-between",
             padding: 5,
             display: "flex",
           }}
-          data={this.props.item.data}
+          data={item.data}
           numColumns={numColumns}
-          keyExtractor={item => item.__id}
-          renderItem={({ item, index }) => <SaleListItem key={index} sale={item} />}
+          keyExtractor={row => row.__id}
+          renderItem={row => <SaleListItem key={row.index} sale={row.item} />}
         />
       </View>
     )
