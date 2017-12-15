@@ -32,7 +32,7 @@ it("updates the local state when there an update is triggered", () => {
 
   overview.setState = (updated, callback) => {
     overview.state = Object.assign({}, overview.state, updated)
-    callback(overview.state)
+    callback()
   }
 
   overview.updateProvenance("This is a new provenance")
@@ -49,7 +49,7 @@ it("resets the cache when a final submission is made", async () => {
 
   overview.setState = (updated, callback) => {
     overview.state = Object.assign({}, overview.state, updated)
-    callback(overview.state)
+    callback()
   }
 
   await overview.submitFinalSubmission({ signed: true })

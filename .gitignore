@@ -55,5 +55,10 @@ yarn-error.log
 # Danger artifacts
 tslint-errors.json
 
+# Haul
+#
+haul-debug.log
+.happypack
+test-results.json
 head_metadata.json
 .vscode/temp.sql

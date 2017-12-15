@@ -95,20 +95,20 @@ const styles = StyleSheet.create<Styles>({
 
   subtitleDefault: {
     fontSize: 20,
-    color: colors["gray-medium"],
-    paddingLeft: 25,
-    paddingRight: 25,
+    color: "#808080", // spec says 50% white, which is not in our standard set of colours
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 
   subtitleRequired: {
-    fontFamily: fonts["garamond-italic"],
+    fontFamily: fonts["garamond-regular"],
   },
 
   bodyDefault: {
     fontSize: 20,
     color: colors["gray-medium"],
-    paddingLeft: 25,
-    paddingRight: 25,
+    paddingLeft: 20,
+    paddingRight: 20,
     marginTop: 18,
     marginBottom: 18,
     textAlign: "center",

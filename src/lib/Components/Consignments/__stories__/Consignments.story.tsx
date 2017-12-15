@@ -3,7 +3,7 @@ import React from "react"
 
 import Nav from "../index"
 import Artist from "../Screens/Artist"
-import FinalSubmissionQuestions from "../Screens/FinalSubmissionQuestions"
+import Edition from "../Screens/Edition"
 
 import Location from "../Screens/Location"
 import Metadata from "../Screens/Metadata"
@@ -40,6 +40,4 @@ storiesOf("Consignments/_Screens")
   .add("Location Page", () => <Location navigator={nav} route={route} />)
   .add("Metadata Page", () => <Metadata navigator={nav} route={route} metadata={blankMetadata} />)
   .add("Provenance", () => <Provenance navigator={nav} route={route} />)
-  .add("FinalSubmissionQuestions Page", () =>
-    <FinalSubmissionQuestions navigator={nav} route={route} setup={{}} submitFinalSubmission={() => ""} />
-  )
+  .add("Edition Page", () => <Edition navigator={nav} route={route} setup={{}} updateWithEdition={() => ""} />)

@@ -1,6 +1,7 @@
 {
   "name": "emission",
   "version": "1.4.0-beta.10",
+  "native-code-version": 1,
   "description": "Artsy React(Native) components.",
   "engines": {
     "node": "8.4.x",
@@ -18,7 +19,7 @@
     "prettier-write": "prettier --parser typescript --no-semi --trailing-comma es5 --write --print-width 120 ",
     "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
     "stylelint-project": " stylelint -- 'src/**/*.{ts,tsx}'",
-    "ci": "yarn relay && yarn type-check && yarn lint && yarn prettier-project -l && yarn test",
+    "ci": "yarn relay && yarn type-check && yarn lint && yarn prettier-project -l && yarn test:ci",
     "danger": "danger",
     "start": "yarn clean-example && yarn start-servers",
     "start-servers": "concurrently --kill-others 'yarn start-packager' 'yarn relay --watch' 'yarn storybook'",
@@ -28,6 +29,7 @@
     "open-sim": "open -a Simulator",
     "open-emission": "xcrun simctl launch booted net.artsy.Emission",
     "test": "jest",
+    "test:ci": "jest --outputFile test-results.json --json",
     "testing": "jest --watch",
     "relay": "relay-compiler --src ./src --schema data/schema.graphql --extensions ts tsx",
     "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
@@ -53,7 +55,7 @@
   "files": ["index.js", "data", "lib"],
   "dependencies": {
     "lodash": "^4.17.4",
-    "moment": "latest",
+    "moment": "^2.19.4",
     "prop-types": "^15.5.10",
     "query-string": "^4.1.0",
     "react": "16.0.0-alpha.12",
@@ -88,14 +90,15 @@
     "babel-preset-react-native": "^1.9.1",
     "babel-preset-stage-0": "^6.24.1",
     "concurrently": "^2.2.0",
-    "danger": "alpha",
+    "danger": "^2.1.5",
+    "danger-plugin-jest": "^1.1.0",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
-    "jest": "^21.0.1",
+    "jest": "^21.2.1",
     "jest-react-native": "18.0.0",
-    "jest-styled-components": "^4.5.0",
-    "lint-staged": "^3.4.1",
-    "prettier": "^1.5.2",
+    "jest-styled-components": "^4.9.0",
+    "lint-staged": "^6.0.0",
+    "prettier": "1.5.2",
     "react-dom": "16.0.0-alpha.12",
     "react-native-storybook-loader": "^1.6.0",
     "react-storybooks-relay-container": "^1.0.0",
@@ -107,9 +110,9 @@
     "stylelint": "^7.13.0",
     "stylelint-config-standard": "^16.0.0",
     "stylelint-processor-styled-components": "^0.1.2",
-    "ts-jest": "^21.0.0",
-    "tslint": "^5.4.3",
-    "tslint-config-prettier": "^1.0.0",
+    "ts-jest": "^21.2.4",
+    "tslint": "^5.8.0",
+    "tslint-config-prettier": "^1.6.0",
     "typescript": "^2.5.3",
     "typescript-styled-plugin": "^0.1.2"
   },
@@ -135,7 +138,8 @@
   },
   "lint-staged": {
     "*.@(ts|tsx)": ["tslint --fix", "yarn run prettier-write --", "git add"],
-    "*.json": ["yarn run prettier-write --", "git add"]
+    "*.json": ["yarn run prettier-write --", "git add"],
+    "*.md": ["yarn run prettier-write --", "git add"]
   },
   "config": {
     "react-native-storybook-loader": {
@@ -143,5 +147,12 @@
       "pattern": "**/*.story.tsx",
       "outputFile": "./storybook/storyLoader.js"
     }
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": false,
+    "trailingComma": "es5",
+    "bracketSpacing": true
   }
 }

@@ -5,8 +5,11 @@
 
 -   Adds webview support and zero state page for Auction tab - luc
 -   Sets the status bar BG color to dark for Consignments - orta 
+-   Sets the status bar BG color to dark for Consignments - orta
 -   Bug fix for the Gene refine not showing on Eigen - orta
 -   Taking a consignment photo will now select the created image by default - orta
+-   Rearrange Consignments overview page with Edition step - maxim
+-   Modify design and alignment on consignment screens - maxim
 
 ### 1.4.0-beta.10
 

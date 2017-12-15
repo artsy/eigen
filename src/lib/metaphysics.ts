@@ -29,6 +29,6 @@ export function metaphysics<T>(
     .then<T>(response => response.json())
 }
 
-export default function query<T>(query: string): Promise<T> {
-  return metaphysics<{ data: T }>({ query }).then(({ data }) => data)
+export default function query<T>(url: string): Promise<T> {
+  return metaphysics<{ data: T }>({ query: url }).then(({ data }) => data)
 }

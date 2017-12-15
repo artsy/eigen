@@ -16,8 +16,9 @@ const modified = danger.git.modified_files
 const bodyAndTitle = (pr.body + pr.title).toLowerCase()
 
 // Custom modifiers for people submitting PRs to be able to say "skip this"
-const trivialPR = bodyAndTitle.includes("trivial")
-const acceptedNoTests = bodyAndTitle.includes("skip new tests")
+const trivialPR = bodyAndTitle.includes("#trivial")
+const acceptedNoTests = bodyAndTitle.includes("#skip_new_tests")
+const acceptedNoNativeChanges = bodyAndTitle.includes("#native_no_changes")
 
 const typescriptOnly = (file: string) => includes(file, ".ts")
 const filesOnly = (file: string) => fs.existsSync(file) && fs.lstatSync(file).isFile()
@@ -69,7 +70,7 @@ if (testFilesThatDontExist.length > 0) {
 
 ${testFilesThatDontExist.map(f => `- \`${f}\``).join("\n")}
 
-If these files are supposed to not exist, please update your PR body to include "Skip New Tests".`
+If these files are supposed to not exist, please update your PR body to include "#skip_new_tests".`
   callout(output)
 }
 
@@ -169,4 +170,20 @@ if (fs.existsSync("tslint-errors.json")) {
   `
     markdown(tslintMarkdown)
   }
+}
+
+// Show Jest fails in the PR
+import jest from "danger-plugin-jest"
+jest()
+
+// Raise when native code changes are made, but the package.json does not
+// have a bump for the native code version
+//
+const hasNativeCodeChanges = modifiedAppFiles.find(p => p.includes("Pod/Classes"))
+const hasPackageJSONChanges = modifiedAppFiles.find(p => p === "package.json")
+if (hasNativeCodeChanges && !hasPackageJSONChanges && !acceptedNoNativeChanges) {
+  fail(
+    `This PR includes changes to the Emission Pod's native code but does not have a \`package.json\`
+     change for the update to the \`"native-code-version"\`. If this is fine, add #native_no_changes to your PR message.`
+  )
 }
