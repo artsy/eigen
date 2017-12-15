@@ -42,7 +42,7 @@ export class WorksForYou extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    const notifications = this.props.viewer.me.notifications.edges.map(edge => edge.node)
+    const notifications = this.props.viewer.me.followsAndSaves.notifications.edges.map(edge => edge.node)
     if (this.props.viewer.selectedArtist) {
       notifications.unshift(this.formattedSpecialNotification())
     }
@@ -68,9 +68,6 @@ export class WorksForYou extends React.Component<Props, State> {
         })
       }
     })
-
-    // update anything in Eigen that relies on notification count
-    NativeModules.ARWorksForYouModule.updateNotificationsCount(0)
   }
 
   formattedSpecialNotification() {
@@ -99,7 +96,7 @@ export class WorksForYou extends React.Component<Props, State> {
         console.error("WorksForYou.tsx", error.message)
       }
 
-      const notifications = this.props.viewer.me.notifications.edges.map(edge => edge.node)
+      const notifications = this.props.viewer.me.followsAndSaves.notifications.edges.map(edge => edge.node)
 
       // Make sure we maintain the special notification if it exists
       if (this.props.viewer.selectedArtist) {
@@ -183,18 +180,21 @@ const WorksForYouContainer = createPaginationContainer(
           count: { type: "Int", defaultValue: 10 }
           cursor: { type: "String" }
           selectedArtist: { type: "String!", defaultValue: "" }
+          sort: { type: "ArtworkSorts" }
         ) {
         me {
-          notifications: notifications_connection(first: $count, after: $cursor)
-            @connection(key: "WorksForYou_notifications") {
-            pageInfo {
-              hasNextPage
-              endCursor
-            }
-            edges {
-              node {
-                __id
-                ...Notification_notification
+          followsAndSaves {
+            notifications: bundledArtworksByArtist(sort: PUBLISHED_AT_DESC, first: $count, after: $cursor)
+              @connection(key: "WorksForYou_notifications") {
+              pageInfo {
+                hasNextPage
+                endCursor
+              }
+              edges {
+                node {
+                  __id
+                  ...Notification_notification
+                }
               }
             }
           }
@@ -217,7 +217,7 @@ const WorksForYouContainer = createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.viewer.me.notifications as ConnectionData
+      return props.viewer.me.followsAndSaves.notifications as ConnectionData
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -249,13 +249,15 @@ export default WorksForYouContainer
 interface RelayProps {
   viewer: {
     me: {
-      notifications: {
-        pageInfo: {
-          hasNextPage: boolean
+      followsAndSaves: {
+        notifications: {
+          pageInfo: {
+            hasNextPage: boolean
+          }
+          edges: Array<{
+            node: any | null
+          }>
         }
-        edges: Array<{
-          node: any | null
-        }>
       }
     }
     selectedArtist?: {
