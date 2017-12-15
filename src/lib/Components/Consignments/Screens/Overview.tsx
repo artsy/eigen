@@ -132,7 +132,6 @@ export default class Info extends React.Component<Props, State> {
   }
 
   submitFinalSubmission = async (setup: ConsignmentSetup) => {
-    console.log(this.state)
     this.setState(setup, async () => {
       await this.updateLocalStateAndMetaphysics()
       await AsyncStorage.removeItem(consignmentsStateKey)
@@ -149,7 +148,6 @@ export default class Info extends React.Component<Props, State> {
     owner_slug: state.submission_id,
   }))
   submissionDraftSubmitted() {
-    console.log("submitted")
     return null
   }
 
