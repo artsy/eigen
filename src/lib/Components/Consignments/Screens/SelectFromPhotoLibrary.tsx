@@ -35,7 +35,8 @@ const doneButtonStyles = {
 
 export default class SelectFromPhotoLibrary extends React.Component<Props, State> {
   constructor(props: Props) {
-    super()
+    super(props)
+
     const hasPhotos = props.setup && props.setup.photos
     this.state = {
       cameraImages: [],

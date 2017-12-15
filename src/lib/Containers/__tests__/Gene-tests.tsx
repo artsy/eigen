@@ -12,6 +12,13 @@ jest.mock("../../Components/Gene/Header", () => "Header")
 
 import { Gene } from "../Gene"
 
+const exampleProps = {
+  medium: "propupines",
+  price_range: "1000-80000",
+  sort: "-desc",
+  gene: { filtered_artworks: { aggregations: [] } },
+}
+
 describe("state", () => {
   it("sets up the initial state in componentWillMount", () => {
     const gene = new Gene({
@@ -32,7 +39,7 @@ describe("state", () => {
   })
 
   it("updates from the switch change the selectedTabIndex", () => {
-    const gene = new Gene()
+    const gene = new Gene(exampleProps)
     const switchEvent = {
       nativeEvent: {
         selectedIndex: 23,
@@ -94,7 +101,7 @@ describe("handling price ranges", () => {
   let gene: Gene
 
   beforeEach(() => {
-    gene = new Gene()
+    gene = new Gene(exampleProps)
   })
 
   it("is empty when *-*", () => {

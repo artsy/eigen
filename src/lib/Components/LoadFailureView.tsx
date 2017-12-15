@@ -1,15 +1,25 @@
 import * as PropTypes from "prop-types"
 import React from "react"
-import { requireNativeComponent } from "react-native"
+import { requireNativeComponent, ViewProperties } from "react-native"
 
-export default class LoadFailureView extends React.Component<any, any> {
+interface Props extends ViewProperties {
+  // A callback that is called when the user requests a retry.
+  onRetry?: () => void
+}
+
+export default class LoadFailureView extends React.Component<Props, any> {
   static propTypes = {
-    // A callback that is called when the user requests a retry.
     onRetry: PropTypes.func,
   }
 
   render() {
-    return <NativeLoadFailureView {...this.props} />
+    // TypeScript uses the propTypes above to
+    // generate an interface for NativeLoadFailureView
+    // via the above propTypes. However, onRetry above is
+    // classed as nullable, but the generated interface
+    // doesn't take the nullability into account.
+    const anyProps = this.props as any
+    return <NativeLoadFailureView {...anyProps} />
   }
 }
 

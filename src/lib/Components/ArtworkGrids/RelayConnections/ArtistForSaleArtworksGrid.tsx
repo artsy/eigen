@@ -2,8 +2,8 @@ import { createPaginationContainer, graphql } from "react-relay"
 import InfiniteScrollArtworksGrid from "../InfiniteScrollGrid"
 
 import Artwork from "../Artwork"
-// tslint:disable-next-line:no-unused-expression
 // This is so that TypeScript won’t remove the seemingly unused `Artwork` import. Relay depends on it to exist.
+// tslint:disable-next-line:no-unused-expression
 Artwork
 
 const ArtistForSaleArtworksGrid = createPaginationContainer(
