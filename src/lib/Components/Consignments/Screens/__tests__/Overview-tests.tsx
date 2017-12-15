@@ -123,7 +123,7 @@ describe("Updating State", () => {
 
   it("adds submitted before triggering final submission on submit", () => {
     overview.goToFinalSubmission()
-    expect(stateMock).toBeCalledWith({ state: "SUBMITTED" }, update)
+    expect(stateMock).toBeCalledWith({ state: "SUBMITTED" }, expect.anything())
   })
 
   it.skip("updates Photos")
