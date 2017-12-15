@@ -8,6 +8,8 @@
 -   Taking a consignment photo will now select the created image by default - orta
 -   Rearrange Consignments overview page with Edition step - maxim
 -   Modify design and alignment on consignment screens - maxim
+-   Sort auctions by timeliness - chris
+-   Pixel pushing of margins between auctions - chris
 
 ### 1.4.0-beta.10
 
