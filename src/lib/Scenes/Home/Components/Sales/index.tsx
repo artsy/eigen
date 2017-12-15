@@ -1,9 +1,9 @@
 import React from "react"
-import { SectionList, StyleSheet } from "react-native"
+import { SectionList } from "react-native"
+import { StyleSheet } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import LotsByFollowedArtists from "./Components/LotsByFollowedArtists"
 import { SaleList } from "./Components/SaleList"
-import { ZeroState } from "./Components/ZeroState"
 
 class Sales extends React.Component<Props> {
   get data() {
@@ -18,16 +18,7 @@ class Sales extends React.Component<Props> {
     }
   }
 
-  hasData() {
-    const { liveAuctions, timedAuctions, viewer } = this.data
-    return liveAuctions.length > 0 || timedAuctions.length > 0 || viewer.sales.length > 0
-  }
-
   render() {
-    if (!this.hasData()) {
-      return <ZeroState />
-    }
-
     const sections = [
       {
         data: [{ data: this.data.liveAuctions }],
