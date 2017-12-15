@@ -47,12 +47,12 @@ const TextContainer = styled(VerticalLayout)`
 `
 
 const SenderName = styled(SmallHeadline)`
-  marginRight: 6
-  font-size: 11.5
+  margin-right: 6;
+  font-size: 11.5;
 `
 
 const FromSignature = styled(FromSignatureText)`
-  margintop: 10;
+  margin-top: 10;
 `
 
 interface TimeStampProps {
