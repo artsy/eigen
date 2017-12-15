@@ -140,7 +140,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           "flexShrink": 1,
                           "marginBottom": 0,
                           "marginLeft": 0,
-                          "marginTop": 50,
+                          "marginTop": 40,
                         },
                         undefined,
                       ]
@@ -202,7 +202,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           "flexShrink": 1,
                           "marginBottom": 0,
                           "marginLeft": 0,
-                          "marginTop": 50,
+                          "marginTop": 40,
                         },
                         undefined,
                       ]
@@ -264,7 +264,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           "flexShrink": 1,
                           "marginBottom": 0,
                           "marginLeft": 0,
-                          "marginTop": 50,
+                          "marginTop": 40,
                         },
                         undefined,
                       ]
@@ -326,7 +326,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           "flexShrink": 1,
                           "marginBottom": 0,
                           "marginLeft": 0,
-                          "marginTop": 50,
+                          "marginTop": 40,
                         },
                         undefined,
                       ]
@@ -386,6 +386,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           "flexBasis": 0,
                           "flexGrow": 1,
                           "flexShrink": 1,
+                          "marginTop": 30,
                         },
                         undefined,
                       ]

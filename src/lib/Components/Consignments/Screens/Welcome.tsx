@@ -38,7 +38,7 @@ const HorizontalLayout = styled.View`
   flex: 1;
   flex-direction: row;
   margin-left: ${isPad ? 0 : 20};
-  margin-top: 50;
+  margin-top: 40;
   margin-bottom: ${isPad ? 0 : 50};
 `
 
@@ -47,7 +47,7 @@ const Title = styled.Text`
   font-size: ${isPad ? 20 : 16};
   line-height: ${isPad ? 24 : 32};
   width: ${isPad ? 760 : 300};
-  margin-top: ${isPad ? 0 : 35};
+  margin-top: ${isPad ? 0 : 20};
   font-family: ${Fonts.AvantGardeRegular};
   align-self: center;
   color: white;
@@ -69,6 +69,7 @@ const Icon = styled(Image)`
 const ButtonsView = styled.View`
   flex: 1;
   align-items: center;
+  margin-top: 30;
 `
 
 const List = isPad ? Listpad : Listphone
