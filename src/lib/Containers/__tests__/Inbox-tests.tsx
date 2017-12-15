@@ -2,9 +2,14 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import Inbox from "../Inbox"
+import Inbox, { Inbox as ActualInbox } from "../Inbox"
 
 jest.mock("../../Components/Inbox/Conversations", () => "Conversations")
+
+const emptyMeProps = {
+  lot_standings: [],
+  conversations_existence_check: null,
+}
 
 it("renders correctly", () => {
   const tree = renderer.create(<Inbox me={meProps()} />).toJSON()
@@ -16,6 +21,25 @@ it("shows empty state if there's no data", () => {
   // const tree = renderer.create(<Inbox me={meProps(false, false)} />).toJSON()
   // const emptyStateView = TestUtils.scryRenderedComponentsWithType(tree, ZeroStateInbox)
   // expect(emptyStateView.length).toEqual(1)
+})
+
+it("Shows a zero state when there are no bids/conversations", () => {
+  const tree = JSON.stringify(renderer.create(<Inbox me={emptyMeProps} />).toJSON())
+  // Taken from the title in ZeroStateInbox
+  expect(tree).toContain("BUYING ART ON ARTSY IS SIMPLE")
+})
+
+it("It requests a relay refetch when fetchData is called in ZeroState", () => {
+  const relayEmptyProps = {
+    ...emptyMeProps,
+    relay: {
+      refetch: jest.fn(),
+    },
+  }
+
+  const inbox = new ActualInbox(relayEmptyProps)
+  inbox.fetchData()
+  expect(relayEmptyProps.relay.refetch).toBeCalled()
 })
 
 const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
