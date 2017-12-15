@@ -26,7 +26,7 @@ DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
 NATIVE_VERSION=`ruby -e "require'json';puts(JSON.parse(File.read('package.json'))['native-code-version'])"`
 
 # Create a metadata file
-echo "{\"title\": \"$PR_DESC\",\"sha\": \"$SHA\", \"date\": \"$DATE\", \"number\": $PR_NUM,  \"native_version\": $NATIVE_VERSION,}" > head_metadata.json
+echo "{\"title\": \"$PR_DESC\",\"sha\": \"$SHA\", \"date\": \"$DATE\", \"number\": $PR_NUM,  \"native_version\": $NATIVE_VERSION }" > head_metadata.json
 cat head_metadata.json
 
 # Uploads the metadata so that the app can show some info
