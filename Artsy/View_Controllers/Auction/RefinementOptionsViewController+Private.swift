@@ -12,7 +12,7 @@ extension RefinementOptionsViewController {
     func setupViews() {
         let cancelButton = self.cancelButton()
         view.addSubview(cancelButton)
-        cancelButton.alignTopEdge(withView: view, predicate: "10")
+        cancelButton.alignTopEdge(withView: view, predicate: "30")
         cancelButton.alignTrailingEdge(withView: view, predicate: "-10")
 
         // This isn't normally running inside a nav, so needs to create its own
@@ -21,7 +21,7 @@ extension RefinementOptionsViewController {
             $0.text = "Refine"
         }
         view.addSubview(titleLabel)
-        titleLabel.alignTopEdge(withView: view, predicate: "20")
+        titleLabel.alignTopEdge(withView: view, predicate: "40")
         titleLabel.alignLeadingEdge(withView: view, predicate: "20")
 
         // An expandable whitespace gobbler, so that the tableview can remain at the bottom
