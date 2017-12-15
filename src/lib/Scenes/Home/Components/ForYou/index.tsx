@@ -122,7 +122,7 @@ export class ForYou extends React.Component<ViewProperties & RelayProps, State> 
           }
         }}
         keyExtractor={(item, index) => item.data.type + String(index)}
-        style={{ marginTop: 20, overflow: "visible" }}
+        style={{ overflow: "visible" }}
       />
     )
   }
