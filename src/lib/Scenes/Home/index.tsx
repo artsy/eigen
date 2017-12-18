@@ -25,7 +25,7 @@ interface Props {
 }
 
 interface State {
-  appState?: string
+  appState: string
 }
 
 export default class Home extends React.Component<Props, State> {
