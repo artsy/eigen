@@ -1,5 +1,5 @@
 import React from "react"
-import { View } from "react-native"
+import { AppState, View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import styled from "styled-components/native"
 
@@ -17,26 +17,54 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import TabBar, { Tab } from "lib/Components/TabBar"
 
-const TabBarContainer = styled.View`
-  margin-top: 20px;
-`
+const TabBarContainer = styled.View`margin-top: 20px;`
 
 interface Props {
   selectedArtist?: string
   selectedTab?: number
 }
 
-export default class Home extends React.Component<Props, null> {
+interface State {
+  appState?: string
+}
+
+export default class Home extends React.Component<Props, State> {
+  tabView?: ScrollableTabView | any
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      appState: AppState.currentState,
+    }
+  }
+
+  componentDidMount() {
+    AppState.addEventListener("change", this._handleAppStateChange)
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener("change", this._handleAppStateChange)
+  }
+
+  _handleAppStateChange = nextAppState => {
+    // If we are coming back to the app from the background with a selected artist, make sure we're on the Artists tab
+    if (this.props.selectedArtist && this.state.appState.match(/inactive|background/) && nextAppState === "active") {
+      this.tabView.goToPage(0)
+    }
+    this.setState({ appState: nextAppState })
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
           initialPage={this.props.selectedTab || 0}
-          renderTabBar={props => (
+          ref={tabView => (this.tabView = tabView)}
+          renderTabBar={props =>
             <TabBarContainer>
               <TabBar {...props} />
-            </TabBarContainer>
-          )}
+            </TabBarContainer>}
         >
           {/* FIXME:
       A thin space has been added in front of the tab label names to compensate for trailing space added by the
