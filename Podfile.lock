@@ -76,7 +76,7 @@ PODS:
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
   - EDColor (1.0.0)
-  - Emission (1.4.0-beta.10):
+  - Emission (1.4.0-beta.11):
     - Artsy+UIColors
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
@@ -88,7 +88,7 @@ PODS:
     - React/RCTNetwork (= 0.48.4)
     - React/RCTText (= 0.48.4)
     - SDWebImage (< 4, >= 3.7.2)
-    - SentryReactNative (= 0.30.2)
+    - SentryReactNative (= 0.30.3)
     - Yoga (= 0.48.4.React)
   - Expecta (1.0.5)
   - Expecta+Snapshots (3.0.0):
@@ -216,7 +216,7 @@ PODS:
   - Sentry/Core (3.9.1)
   - Sentry/KSCrash (3.9.1):
     - KSCrash/Core (~> 1.15.12)
-  - SentryReactNative (0.30.2):
+  - SentryReactNative (0.30.3):
     - React
     - Sentry (~> 3.9.0)
     - Sentry/KSCrash (~> 3.9.0)
@@ -254,7 +254,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission (~> 1.4.0-beta.10)
+  - Emission (~> 1.4.0-beta.11)
   - Expecta
   - Expecta+Snapshots
   - Extraction
@@ -399,7 +399,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 8773470707856fa2c744e7e1ac1c9d699a98e2e7
+  Emission: 0cf87350160ff80349a01cbe3c51424103033ec6
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
@@ -439,7 +439,7 @@ SPEC CHECKSUMS:
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
-  SentryReactNative: 2d4a54bfc09bd8451e9b91e34090ba7b12e1a0ab
+  SentryReactNative: 3dff4e9bd82aa581dc64ff8d2524d7007cea076b
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   SSFadingScrollView: a2f142312afad23585e354a41a6ed337045e1aa3
   Starscream: df5974ee928b157c8eda8af8de7c620276b7dfcc
@@ -451,6 +451,6 @@ SPEC CHECKSUMS:
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 2efb0a2b24e5c17cf1aea8c785d4428bd077f667
 
-PODFILE CHECKSUM: 41a54c15ad801f59453a5f9044f1e778b1106e95
+PODFILE CHECKSUM: 67dbeb4c5dc5539751ead5875d4b005ae451042f
 
 COCOAPODS: 1.2.1

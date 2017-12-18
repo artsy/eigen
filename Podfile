@@ -85,7 +85,7 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission', '~> 1.4.0-beta.10'
+  pod 'Emission', '~> 1.4.0-beta.11'
   pod 'React/Core'
 
   # Facebook
@@ -175,6 +175,16 @@ post_install do |installer|
   react_view_old_code = "CGRectIsEmpty(CGRectIntersection(clipRect, view.frame))"
   react_view_new_code = "CGSizeEqualToSize(CGRectIntersection(clipRect, view.frame).size, CGSizeZero)"
   edit_pod_file react_view_file, react_view_old_code, react_view_old_code
+
+  # This fixes a bug in our Home tab view; it can probably be removed when we upgrade to RN 0.50+
+  # See https://github.com/artsy/collector-experience/issues/751
+  # React uses 4 spaces for  indents so please make sure Prettier doesn't change the indents here :)
+  react_scrollview_file = "Pods/React/React/Views/RCTScrollView.m"
+  react_scrollview_old_code = "self.contentOffset = CGPointMake(
+    MAX(0, MIN(originalOffset.x, fullContentSize.width - boundsSize.width)),
+    MAX(0, MIN(originalOffset.y, fullContentSize.height - boundsSize.height)));"
+  react_scrollview_new_code = "self.contentOffset= originalOffset;"
+  edit_pod_file react_scrollview_file, react_scrollview_old_code, react_scrollview_new_code
 
   # https://github.com/facebook/react-native/pull/14664
   animation_view_file = "Pods/React/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h"

@@ -24,8 +24,10 @@ upcoming:
       - Fix for opening URLs in iOS 11 - orta
       - Add ARAppStatus.isDev getter to only determine dev mode - alloy
       - Don’t report crashes from development builds - alloy
+      - Adds an admin panel for showing the Sentry breadcrumbs (crashes/logs/analytics calls) - orta
 
     user_facing:
+      - Onboarding users land on For You tab of Home instead of Artists - sarah
       - Adds a new navigation UI - orta
       - Adds new routing for inquiries - maxim
       - Fixes problem with status bar on refine options view - ash
