@@ -91,6 +91,10 @@ export class Conversations extends Component<Props, State> {
           callback()
         }
       })
+    } else {
+      if (callback) {
+        callback()
+      }
     }
   }
 
