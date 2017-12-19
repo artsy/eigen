@@ -8,6 +8,12 @@ export default (Component: React.ReactType, initialProps: object = {}): RenderCa
   let retrying = false
   return ({ error, props, retry }) => {
     if (error) {
+      const networkError = error as any
+      if (networkError.response && networkError.response._bodyInit) {
+        const data = networkError.response._bodyInit || {}
+        console.error(`Metaphysics Error: ${error.message}\n`, JSON.parse(data))
+      }
+
       if (retrying) {
         retrying = false
         // TODO: Even though this code path is reached, the retry button keeps spinning. iirc it _should_ disappear when
