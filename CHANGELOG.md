@@ -3,6 +3,8 @@
 
 ### Master
 
+* Fixes Inbox loading indicator stuck and conversation row collapsing - luc
+
 ### 1.4.0-beta.11
 
 * Adds webview support and zero state page for Auction tab - luc
