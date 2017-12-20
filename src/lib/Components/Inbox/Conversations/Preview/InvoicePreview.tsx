@@ -33,14 +33,12 @@ const Icon = styled(Image)`
   margin-bottom: 12;
 `
 
-const CanceledLabel = styled.Text`
+const GrayPaymentStatusLabel = styled.Text`
   color: ${colors["gray-medium"]};
-  font-weight: bold;
-`
-
-const RefundedLabel = styled.Text`
-  color: ${colors["gray-medium"]};
-  font-weight: bold;
+  font-family: ${fonts["avant-garde-regular"]};
+  text-align: right;
+  font-size: 12;
+  line-height: 25;
 `
 
 const PaidLabel = styled.Text`
@@ -89,13 +87,13 @@ const InvoiceStateButton: React.SFC<InvoiceStateButtonProps> = ({ invoiceState, 
     case "VOID":
       return (
         <PayButtonContainer>
-          <CanceledLabel>CANCELED</CanceledLabel>
+          <GrayPaymentStatusLabel>CANCELED</GrayPaymentStatusLabel>
         </PayButtonContainer>
       )
     case "REFUNDED":
       return (
         <PayButtonContainer>
-          <RefundedLabel>REFUNDED</RefundedLabel>
+          <GrayPaymentStatusLabel>REFUNDED</GrayPaymentStatusLabel>
         </PayButtonContainer>
       )
     case "UNPAID":
