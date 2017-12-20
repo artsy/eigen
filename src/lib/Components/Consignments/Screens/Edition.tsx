@@ -44,8 +44,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
   updateCert = () => this.setState({ certificateOfAuth: !this.state.certificateOfAuth })
 
   updateEditionSize = text => this.setState({ editionInfo: { ...this.state.editionInfo, size: text } })
-  updateEditionNumber = text =>
-    this.setState({ editionInfo: { ...this.state.editionInfo, number: parseInt(text, 10) } })
+  updateEditionNumber = text => this.setState({ editionInfo: { ...this.state.editionInfo, number: text } })
 
   render() {
     return (
@@ -72,10 +71,7 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
                   text={{
                     placeholder: "Edition Number",
                     onChangeText: this.updateEditionNumber,
-                    value:
-                      this.state.editionInfo &&
-                      this.state.editionInfo.number &&
-                      this.state.editionInfo.number.toString(),
+                    value: this.state.editionInfo && this.state.editionInfo.number,
                   }}
                   style={{ margin: 10 }}
                 />
