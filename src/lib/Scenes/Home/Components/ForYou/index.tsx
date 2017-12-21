@@ -98,6 +98,7 @@ export class ForYou extends React.Component<ViewProperties & RelayProps, State> 
           return (
             <ScrollView
               {...props}
+              removeClippedSubviews={true}
               automaticallyAdjustContentInsets={false}
               refreshControl={
                 <RefreshControl

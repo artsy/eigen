@@ -3,6 +3,9 @@
 
 ### Master
 
+* Optimize the Home/ForYou view by re-enabling removal of clipped subviews - alloy
+* Brings back artist rails on the Home/ForYou view - alloy
+
 ### 1.4.0-beta.11
 
 * Edition number field allows letters too - sarah
