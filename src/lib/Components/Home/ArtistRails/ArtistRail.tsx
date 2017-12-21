@@ -177,30 +177,26 @@ export class ArtistRail extends Component<Props, State> {
   }
 
   refreshData = () => {
-    // TODO: Ensures rail has been mounted before a refresh occurs, circumventing setState errors.
-    // See https://stackoverflow.com/a/40969739/1038901 for more info.
-    if (this.refs.rail) {
-      if (this.inflightRequest) {
-        this.inflightRequest.dispose()
-      }
-
-      return new Promise((resolve, reject) => {
-        this.inflightRequest = this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
-          if (error) {
-            console.error("ArtistRail.jsx", error.message)
-
-            this.setState({
-              loadFailed: true,
-            })
-
-            reject(error)
-          } else {
-            this.inflightRequest = null
-            resolve()
-          }
-        })
-      })
+    if (this.inflightRequest) {
+      this.inflightRequest.dispose()
     }
+
+    return new Promise((resolve, reject) => {
+      this.inflightRequest = this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
+        if (error) {
+          console.error("ArtistRail.jsx", error.message)
+
+          this.setState({
+            loadFailed: true,
+          })
+
+          reject(error)
+        } else {
+          this.inflightRequest = null
+          resolve()
+        }
+      })
+    })
   }
 
   render() {
@@ -209,7 +205,7 @@ export class ArtistRail extends Component<Props, State> {
     }
 
     return (
-      <View ref="rail">
+      <View>
         <View style={styles.title}>
           <SectionTitle>{this.title()}</SectionTitle>
           <SectionTitle style={styles.subtitle}>{this.subtitle()}</SectionTitle>
