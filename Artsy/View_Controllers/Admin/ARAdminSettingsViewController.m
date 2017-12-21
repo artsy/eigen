@@ -7,6 +7,7 @@
 #import "ARQuicksilverViewController.h"
 #import "AREchoContentsViewController.h"
 #import "ARInternalMobileWebViewController.h"
+#import "ARAdminSentryBreadcrumbViewController.h"
 
 #import "ARDefaults.h"
 #import "ARAnimatedTickView.h"
@@ -69,6 +70,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [self generateOnboarding],
         [self generateShowAllLiveAuctions],
         [self showConsignmentsFlow],
+        [self showSentryBreadcrumbs],
         [self generateQuicksilver],
         [self generateEchoContents],
    ]];
@@ -189,9 +191,18 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     }];
 }
 
+- (ARCellData *)showSentryBreadcrumbs
+{
+    return [self tappableCellDataWithTitle:@"Show Sentry Breadcrumbs" selection:^{
+        ARAdminSentryBreadcrumbViewController *quicksilver = [[ARAdminSentryBreadcrumbViewController alloc] init];
+        [self.navigationController pushViewController:quicksilver animated:YES];
+    }];
+}
+
+
 - (ARCellData *)generateShowAllLiveAuctions
 {
-    return [self tappableCellDataWithTitle:@"Show all live auctions" selection:^{
+    return [self tappableCellDataWithTitle:@"Show All Live Auctions" selection:^{
 
         NSURL *url = [NSURL URLWithString:@"https://live-staging.artsy.net"];
         ARInternalMobileWebViewController *webVC = [[ARInternalMobileWebViewController alloc] initWithURL:url];

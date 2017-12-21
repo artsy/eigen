@@ -568,6 +568,7 @@
 		60903CD5175CF23F002AB800 /* ARTickedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CD4175CF23F002AB800 /* ARTickedTableViewCell.m */; };
 		60903CD8175CF27D002AB800 /* ARAdminTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CD7175CF27D002AB800 /* ARAdminTableViewCell.m */; };
 		60903CDD175DE1C2002AB800 /* ARFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CDC175DE1C2002AB800 /* ARFeed.m */; };
+		60928D761FE8481F007AE5D1 /* ARAdminSentryBreadcrumbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60928D751FE8481F007AE5D1 /* ARAdminSentryBreadcrumbViewController.m */; };
 		60935A441A69CFE700129CE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 601C3183165838590013E061 /* MobileCoreServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		60935A461A69CFEE00129CE1 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60935A451A69CFEE00129CE1 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		609624C91CEF3304002F3F33 /* ARTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 609624C81CEF3304002F3F33 /* ARTextViewTests.m */; };
@@ -1682,6 +1683,8 @@
 		60903CD7175CF27D002AB800 /* ARAdminTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAdminTableViewCell.m; sourceTree = "<group>"; };
 		60903CDB175DE1C2002AB800 /* ARFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeed.h; sourceTree = "<group>"; };
 		60903CDC175DE1C2002AB800 /* ARFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeed.m; sourceTree = "<group>"; };
+		60928D741FE8481F007AE5D1 /* ARAdminSentryBreadcrumbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAdminSentryBreadcrumbViewController.h; sourceTree = "<group>"; };
+		60928D751FE8481F007AE5D1 /* ARAdminSentryBreadcrumbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAdminSentryBreadcrumbViewController.m; sourceTree = "<group>"; };
 		60935A451A69CFEE00129CE1 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		609624C81CEF3304002F3F33 /* ARTextViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTextViewTests.m; sourceTree = "<group>"; };
 		6099F8F7178DBF160004EF04 /* ARModernPartnerShowTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARModernPartnerShowTableViewCell.h; sourceTree = "<group>"; };
@@ -4028,6 +4031,8 @@
 				5E407DF61DF7390B00999533 /* AREchoContentsViewController.m */,
 				601EC3271FAA6C6E00DD0CC4 /* ARAdminTableViewController.h */,
 				601EC3281FAA6C6E00DD0CC4 /* ARAdminTableViewController.m */,
+				60928D741FE8481F007AE5D1 /* ARAdminSentryBreadcrumbViewController.h */,
+				60928D751FE8481F007AE5D1 /* ARAdminSentryBreadcrumbViewController.m */,
 			);
 			path = Admin;
 			sourceTree = "<group>";
@@ -5412,6 +5417,7 @@
 				3CFBE32D18C3A3F400C781D0 /* ARNetworkErrorView.m in Sources */,
 				60838EB51773547700869F6E /* ARViewInRoomTransition.m in Sources */,
 				5ECFA8E81907E26E000B92EA /* ARSwitchView+Artist.m in Sources */,
+				60928D761FE8481F007AE5D1 /* ARAdminSentryBreadcrumbViewController.m in Sources */,
 				6051919A1C7760500002E11A /* ArtsyAPI+Pages.m in Sources */,
 				601F029817F3419400EB3E83 /* ARArtworkViewController+ButtonActions.m in Sources */,
 				5E4F17481CD80FD800AEB6BD /* LiveBidder.m in Sources */,
