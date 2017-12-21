@@ -119,7 +119,10 @@ exports[`InvoicePreview renders correctly 1`] = `
           Array [
             Object {
               "color": "#cccccc",
-              "fontWeight": "bold",
+              "fontFamily": "AvantGardeGothicITC",
+              "fontSize": 12,
+              "lineHeight": 25,
+              "textAlign": "right",
             },
             undefined,
           ]
