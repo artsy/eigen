@@ -15,7 +15,7 @@ interface State {
   isRefreshing: boolean
 }
 
-type RailModule = ArtistRailType | FairsRailType | ArtworkCarouselType
+type RailModule = ArtistRailType | FairsRailType | ArtworkCarouselType | null
 
 export class ForYou extends React.Component<ViewProperties & RelayProps, State> {
   currentScrollOffset?: number = 0
@@ -66,11 +66,7 @@ export class ForYou extends React.Component<ViewProperties & RelayProps, State> 
     this.setState({ isRefreshing: true })
 
     try {
-      await Promise.all(
-        this.railModules.map(railModule => {
-          railModule.refreshData()
-        })
-      )
+      await Promise.all(this.railModules.map(railModule => railModule && railModule.refreshData()))
 
       setTimeout(() => {
         this.setState({
@@ -86,8 +82,11 @@ export class ForYou extends React.Component<ViewProperties & RelayProps, State> 
     }
   }
 
-  registerRailModule = (railModule: RailModule) => {
-    this.railModules.push(railModule)
+  /**
+   * Can be used to register a mounting module or de-register an unmounting module by setting the index to `null`.
+   */
+  registerRailModule(index: number, railModule: RailModule) {
+    this.railModules[index] = railModule
   }
 
   render() {
@@ -111,15 +110,16 @@ export class ForYou extends React.Component<ViewProperties & RelayProps, State> 
           )
         }}
         renderItem={rowItem => {
-          const { item: { data, type } } = rowItem
+          const { item: { data, type }, index } = rowItem
+          const registerRailModule = this.registerRailModule.bind(this, index)
 
           switch (type) {
             case "artwork":
-              return <ArtworkCarousel key={data.__id} rail={data} registerRailModule={this.registerRailModule} />
+              return <ArtworkCarousel key={data.__id} rail={data} registerRailModule={registerRailModule} />
             case "artist":
-              return <ArtistRail key={data.__id} rail={data} registerRailModule={this.registerRailModule} />
+              return <ArtistRail key={data.__id} rail={data} registerRailModule={registerRailModule} />
             case "fairs":
-              return <FairsRail fairs_module={data} registerRailModule={this.registerRailModule} />
+              return <FairsRail fairs_module={data} registerRailModule={registerRailModule} />
           }
         }}
         keyExtractor={(item, index) => item.data.type + String(index)}

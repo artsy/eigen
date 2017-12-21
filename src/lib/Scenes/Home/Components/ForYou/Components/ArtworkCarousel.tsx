@@ -43,7 +43,7 @@ const additionalContentRails = [
 export const minRailHeight = 400
 
 interface Props extends ViewProperties, RelayProps {
-  registerRailModule?: (rail: ArtworkCarousel) => void
+  registerRailModule?: (rail: ArtworkCarousel | null) => void
   relay?: RelayRefetchProp
 }
 
@@ -72,6 +72,12 @@ export class ArtworkCarousel extends Component<Props & RelayPropsWorkaround, Sta
 
   async componentDidMount() {
     await this.refreshData()
+  }
+
+  componentWillUnmount() {
+    if (this.props.registerRailModule) {
+      this.props.registerRailModule(null)
+    }
   }
 
   expand = () => {
@@ -231,35 +237,31 @@ export class ArtworkCarousel extends Component<Props & RelayPropsWorkaround, Sta
   }
 
   refreshData = () => {
-    // TODO: Ensures rail has been mounted before a refresh occurs, circumventing setState errors.
-    // See https://stackoverflow.com/a/40969739/1038901 for more info.
-    if (this.refs.rail) {
-      if (this.inflightRequest) {
-        this.inflightRequest.dispose()
-      }
-
-      return new Promise((resolve, reject) => {
-        this.inflightRequest = this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
-          if (error) {
-            console.error("ArtworkCarousel.jsx", error.message)
-
-            this.setState({
-              loadFailed: true,
-            })
-
-            reject(error)
-          } else {
-            this.inflightRequest = null
-
-            this.setState({
-              didPerformFetch: true,
-            })
-
-            resolve()
-          }
-        })
-      })
+    if (this.inflightRequest) {
+      this.inflightRequest.dispose()
     }
+
+    return new Promise((resolve, reject) => {
+      this.inflightRequest = this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
+        if (error) {
+          console.error("ArtworkCarousel.jsx", error.message)
+
+          this.setState({
+            loadFailed: true,
+          })
+
+          reject(error)
+        } else {
+          this.inflightRequest = null
+
+          this.setState({
+            didPerformFetch: true,
+          })
+
+          resolve()
+        }
+      })
+    })
   }
 
   render() {
@@ -275,7 +277,7 @@ export class ArtworkCarousel extends Component<Props & RelayPropsWorkaround, Sta
     }
 
     return (
-      <View ref="rail" accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
+      <View accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
         <ArtworkCarouselHeader rail={this.props.rail} handleViewAll={this.handleViewAll} />
         <View style={this.railStyle()}>{this.renderModuleResults()}</View>
       </View>

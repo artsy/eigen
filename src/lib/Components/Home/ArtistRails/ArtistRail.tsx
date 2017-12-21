@@ -21,7 +21,7 @@ const Animation = {
 }
 
 interface Props extends ViewProperties, RelayProps {
-  registerRailModule?: (rail: ArtistRail) => void
+  registerRailModule?: (rail: ArtistRail | null) => void
   relay?: RelayRefetchProp
 }
 
@@ -46,6 +46,12 @@ export class ArtistRail extends Component<Props, State> {
 
   async componentDidMount() {
     await this.refreshData()
+  }
+
+  componentWillUnmount() {
+    if (this.props.registerRailModule) {
+      this.props.registerRailModule(null)
+    }
   }
 
   componentWillReceiveProps(nextProps) {
