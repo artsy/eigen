@@ -7,6 +7,8 @@
 
 ### 1.4.0-beta.11
 
+* Edition number field allows letters too - sarah
+* Makes sure Home view shows Artists tab whenever there's a selected artist - sarah
 * Adds webview support and zero state page for Auction tab - luc
 * Sets the status bar BG color to dark for Consignments - orta
 * Bug fix for the Gene refine not showing on Eigen - orta
