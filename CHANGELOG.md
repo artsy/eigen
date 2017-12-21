@@ -3,6 +3,10 @@
 
 ### Master
 
+* Optimize the Home/ForYou view by re-enabling removal of clipped subviews - alloy
+* Brings back artist rails on the Home/ForYou view - alloy
+* Fix issue where unmounted Home/ForYou rails would be refreshed - chris & alloy
+
 ### 1.4.0-beta.11
 
 * Edition number field allows letters too - sarah

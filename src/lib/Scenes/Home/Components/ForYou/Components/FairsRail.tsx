@@ -26,7 +26,7 @@ const TouchableWrapper = styled.View`
 `
 
 interface Props extends RelayProps {
-  registerRailModule?: (module: FairsRail) => void
+  registerRailModule?: (module: FairsRail | null) => void
   relay?: RelayRefetchProp
 }
 
@@ -34,6 +34,12 @@ export class FairsRail extends Component<Props, any> {
   componentWillMount() {
     if (this.props.registerRailModule) {
       this.props.registerRailModule(this)
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.registerRailModule) {
+      this.props.registerRailModule(null)
     }
   }
 
@@ -79,16 +85,14 @@ export class FairsRail extends Component<Props, any> {
   }
 
   refreshData = () => {
-    if (this.refs.rail) {
-      return new Promise((resolve, _reject) => {
-        resolve() // Refetch not needed yet
-      })
-    }
+    return new Promise((resolve, _reject) => {
+      resolve() // Refetch not needed yet
+    })
   }
 
   render() {
     return (
-      <Container ref="rail">
+      <Container>
         <Title>
           <SectionTitle>Recommended Art Fairs</SectionTitle>
         </Title>
