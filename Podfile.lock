@@ -138,7 +138,6 @@ PODS:
   - iRate (1.10.2)
   - ISO8601DateFormatter (0.7.1)
   - JLRoutes (2.0.0)
-  - JSBadgeView (1.4.1)
   - JSDecoupledAppDelegate (1.2.0)
   - JWTDecode (2.0.0)
   - Keys (1.0.0)
@@ -269,7 +268,6 @@ DEPENDENCIES:
   - iRate
   - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/orta/JLRoutes.git`)
-  - JSBadgeView
   - JSDecoupledAppDelegate
   - JWTDecode
   - Keys (from `Pods/CocoaPodsKeys`)
@@ -414,7 +412,6 @@ SPEC CHECKSUMS:
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
-  JSBadgeView: 3861ddee41094284d9468e6d0af5107f703aaac5
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   Keys: 9c35bf00f612ee1d48556f4a4b9b4551e224e90f
@@ -451,6 +448,6 @@ SPEC CHECKSUMS:
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 2efb0a2b24e5c17cf1aea8c785d4428bd077f667
 
-PODFILE CHECKSUM: 67dbeb4c5dc5539751ead5875d4b005ae451042f
+PODFILE CHECKSUM: 153230d3ef406bd477a4028f4861bbf3ac252e4c
 
 COCOAPODS: 1.2.1

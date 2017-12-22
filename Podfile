@@ -52,7 +52,6 @@ target 'Artsy' do
   pod 'iRate'
   pod 'ISO8601DateFormatter', :git => "https://github.com/orta/iso-8601-date-formatter"
   pod 'JLRoutes', :git => 'https://github.com/orta/JLRoutes.git'
-  pod 'JSBadgeView'
   pod 'JSDecoupledAppDelegate'
   pod 'Mantle', '~> 1.5.6'
   pod 'MMMarkdown'

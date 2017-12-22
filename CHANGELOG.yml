@@ -42,6 +42,7 @@ upcoming:
       - A Live Auctions uses haptic feedback - orta
       - Fixes sending the right user min/max pricing details during onboarding - orta
       - Stops status bar from obscuring cancel button and title label of refine view - ash
+      - Replace small notifications badge on tab bar items with large one - alloy
 
 releases:
   - version: 3.2.7

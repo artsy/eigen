@@ -6073,6 +6073,7 @@
 				OTHER_CFLAGS = (
 					"-DAR_SHOW_ALL_DEBUG=1",
 					"-Werror=nonnull",
+					"-Werror=return-type",
 				);
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;

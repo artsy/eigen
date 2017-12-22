@@ -148,6 +148,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    // FIXME: This may not be invoked directly. Removing it doesn’t seem to break anything.
     [self.view layoutSubviews];
     [super viewDidAppear:animated];
 
