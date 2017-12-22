@@ -1,3 +1,4 @@
+import { shallow } from "enzyme"
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
@@ -5,6 +6,11 @@ import Sales from "../index"
 
 jest.mock("WebView", () => "WebView")
 jest.mock("../Components/ZeroState/index.html", () => "")
+
+it("renders the ZeroState when there are no sales", () => {
+  const auctions = shallow(<Sales {...Object.assign({}, props, { viewer: { sales: [] } })} />)
+  expect(auctions.find("ZeroState").length).toEqual(1)
+})
 
 it("looks correct when rendered", () => {
   const auctions = renderer.create(<Sales {...props} />)
