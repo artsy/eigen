@@ -10,8 +10,7 @@ const conversation = {
   to: { name: "ACA Galleries" },
   last_message: "Karl and Anna... Fab!",
   last_message_at: null, // moment().subtract(1, "year").toISOString(),
-  is_last_message_to_user: true,
-  last_message_open: null,
+  unread: true,
   items: [
     {
       item: {

@@ -40,7 +40,7 @@
       "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
     "sync-schema":
-      "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && yarn dump-schema -- ../../data && rm -rf node_modules",
+      "cd externals/metaphysics && git fetch && git checkout origin/new_unread_stuff && yarn install && yarn dump-schema -- ../../data && rm -rf node_modules",
     "sync-schema:localhost": "cd ../metaphysics && yarn dump-schema -- ../emission/data",
     "version":
       "yarn install && yarn bundle && pushd Example && bundle install && bundle exec pod install && popd && git add Pod/Assets Example/Podfile.lock",

@@ -6,26 +6,25 @@ interface Conversation {
   id: string
 }
 
-export function markLastMessageRead(
+export function updateConversation(
   environment: Environment,
   conversation: Conversation,
-  deliveryId: string,
+  fromLastViewedMessageId: string,
   onCompleted: MutationConfig<any>["onCompleted"],
   onError: MutationConfig<any>["onError"]
 ) {
   return commitMutation(environment, {
     updater: store => {
-      const currentTime = new Date().toISOString()
-      store.get(conversation.__id).setValue(currentTime, "last_message_open")
+      store.get(conversation.__id).setValue(false, "unread")
     },
     onCompleted,
     onError,
     mutation: graphql`
-      mutation MarkReadMessageMutation($input: MarkReadMessageMutationInput!) {
-        markReadMessage(input: $input) {
-          delivery {
+      mutation UpdateConversationMutation($input: UpdateConversationMutationInput!) {
+        updateConversation(input: $input) {
+          conversation {
             id
-            opened_at
+            from_last_viewed_message_id
           }
         }
       }
@@ -33,7 +32,7 @@ export function markLastMessageRead(
     variables: {
       input: {
         conversationId: conversation.id,
-        deliveryId,
+        fromLastViewedMessageId,
       },
     },
   })
