@@ -118,6 +118,7 @@ it(@"displays only the live button when live auction is running", ^{
     view.saleArtwork = [SaleArtwork modelWithJSON:@{
         @"high_estimate_cents" : @20000,
         @"low_estimate_cents" : @10000,
+        @"symbol" : @"$"
     }];
     view.saleArtwork.auction = [Sale modelWithJSON:@{
         @"start_at" : @"1-12-30 00:00:00",
@@ -139,7 +140,8 @@ it(@"does not display contact when artwork is in auction", ^{
     }];
     view.saleArtwork = [SaleArtwork modelWithJSON:@{
         @"high_estimate_cents" : @20000,
-        @"low_estimate_cents" : @10000
+        @"low_estimate_cents" : @10000,
+        @"symbol" : @"$"
     }];
     [view updateUI];
     [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
@@ -170,6 +172,7 @@ describe(@"frozen time", ^{
         view.saleArtwork = [SaleArtwork modelWithJSON:@{
             @"high_estimate_cents" : @20000,
             @"low_estimate_cents" : @10000,
+            @"symbol" : @"$"
         }];
         view.saleArtwork.auction = [Sale modelWithDictionary:@{
             @"startDate" : [[NSDate date] dateByAddingTimeInterval:-3600],
