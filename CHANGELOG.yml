@@ -26,6 +26,7 @@ upcoming:
       - Don’t report crashes from development builds - alloy
       - Adds an admin panel for showing the Sentry breadcrumbs (crashes/logs/analytics calls) - orta
       - Updates to Xcode 9.1 - orta
+      - Admin option for AR View in Room - orta
 
     user_facing:
       - Onboarding users land on For You tab of Home instead of Artists - sarah
