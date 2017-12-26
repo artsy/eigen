@@ -34,19 +34,19 @@ class LiveAuctionLotSetViewControllerSpec: QuickSpec {
 
         describe("regular horizontal size class ") {
             itBehavesLike("live auctions lot set") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.regular.rawValue, "device": ARDeviceType.pad.rawValue] as NSDictionary
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.regular.rawValue, "device": ARDeviceType.pad.rawValue]
             }
         }
 
         describe("compact horizontal size class") {
             itBehavesLike("live auctions lot set") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.compact.rawValue, "device": ARDeviceType.phone6.rawValue] as NSDictionary
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.compact.rawValue, "device": ARDeviceType.phone6.rawValue]
             }
         }
 
         describe("really compact horizontal size class") {
             itBehavesLike("live auctions lot set") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.compact.rawValue, "device": ARDeviceType.phone4.rawValue] as NSDictionary
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.compact.rawValue, "device": ARDeviceType.phone4.rawValue]
             }
         }
     }
