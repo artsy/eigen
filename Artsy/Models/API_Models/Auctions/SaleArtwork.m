@@ -10,21 +10,26 @@
 // For a number formatter
 @import Artsy_UILabels;
 
-static NSNumberFormatter *currencyFormatter;
+static NSMutableDictionary <NSString *, NSNumberFormatter *> *formattersPerCurrency;
 
 @implementation SaleArtwork
 
 + (void)initialize
 {
     if (self == [SaleArtwork class]) {
-        currencyFormatter = [[NSNumberFormatter alloc] init];
-        currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
-        currencyFormatter.currencyGroupingSeparator = @",";
-        currencyFormatter.maximumFractionDigits = 0;
-        // This comes in from the server, so we can't apply it here
-        currencyFormatter.currencySymbol = @"";
-        currencyFormatter.internationalCurrencySymbol = @"";
+        formattersPerCurrency = [NSMutableDictionary dictionary];
     }
+}
+
++ (NSNumberFormatter *)createFormatterForCurrency:(NSString *)currency
+{
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    formatter.currencyGroupingSeparator = @",";
+    formatter.currencySymbol = currency;
+    formatter.internationalCurrencySymbol = currency;
+    formatter.maximumFractionDigits = 0;
+    return formatter;
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -144,13 +149,18 @@ static NSNumberFormatter *currencyFormatter;
 
 + (NSString *)dollarsFromCents:(NSNumber *)cents currencySymbol:(NSString *)symbol
 {
+    NSString *currencyKey = symbol ?: @"$";
     NSNumber *amount = @(roundf(cents.floatValue / 100));
 
-    // Need to set both of these to work around this bug http://www.openradar.me/18034852
-    currencyFormatter.currencySymbol = symbol;
-    currencyFormatter.internationalCurrencySymbol = symbol;
+    NSNumberFormatter *formatter = formattersPerCurrency[currencyKey];
+    if (formatter) {
+        return [formatter stringFromNumber:amount];
+    } else {
+        NSNumberFormatter *newFormatter = [SaleArtwork createFormatterForCurrency:currencyKey];
+        formattersPerCurrency[currencyKey] = newFormatter;
+        return [newFormatter stringFromNumber:amount];
+    }
 
-    return [currencyFormatter stringFromNumber:amount];
 }
 
 - (BOOL)hasEstimate
