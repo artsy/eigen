@@ -2,9 +2,7 @@
 @import SceneKit;
 
 #import "ARAugmentedRealityConfig.h"
-#import "AnimatingUIImageView.h"
-
-#import "ViewController.h"
+#import "ARAugmentedVIRViewController.h"
 
 typedef void (^OnboardingStepBlock)(void);
 
@@ -25,7 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) SCNNode *artwork;
 @property (nonatomic, strong, nullable) SCNNode *plane;
 
-@property (nonatomic, strong, nullable) AnimatingUIImageView *imageView;
 @property (nonatomic, strong, nullable) UIView *bgView;
 @property (nonatomic, strong, nullable) UILabel *userMessagesLabel;
 
@@ -43,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation ViewController
+@implementation ARAugmentedVIRViewController
 
 - (instancetype)initWithConfig:(ARAugmentedRealityConfig *)config  {
     self = [super init];

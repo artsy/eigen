@@ -585,6 +585,7 @@
 		60A0AD4A1797FD2E00E976B7 /* ARThemedFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A0AD491797FD2E00E976B7 /* ARThemedFactory.m */; };
 		60A0EA031C511C31002754A8 /* Echo.json in Resources */ = {isa = PBXBuildFile; fileRef = 60A0EA021C511C31002754A8 /* Echo.json */; };
 		60A224FC17CE040B00233CA1 /* AROnboardingTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A224FB17CE040B00233CA1 /* AROnboardingTransition.m */; };
+		60A22B251FF308C300443BC3 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60A22B241FF308C000443BC3 /* ARKit.framework */; };
 		60A309A21AC98BF3000783C1 /* Article.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A11AC98BF3000783C1 /* Article.m */; };
 		60A309A81AC999DE000783C1 /* ARInternalShareValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A71AC999DE000783C1 /* ARInternalShareValidator.m */; };
 		60A309AA1AC99B47000783C1 /* ARInternalShareValidatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A309A91AC99B47000783C1 /* ARInternalShareValidatorTests.m */; };
@@ -608,7 +609,6 @@
 		60BC92F31BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BC92F21BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m */; };
 		60BCE10F1FF2B8A500071AA6 /* ARAugmentedRealityConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BCE10C1FF2B8A500071AA6 /* ARAugmentedRealityConfig.m */; };
 		60BCE1101FF2B8A500071AA6 /* ARAugmentedVIRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BCE10E1FF2B8A500071AA6 /* ARAugmentedVIRViewController.m */; };
-		60BCE1141FF2BA5B00071AA6 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BCE1131FF2BA5A00071AA6 /* ARKit.framework */; };
 		60C1C3101C5F497700EC98EE /* ScrollingStickyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1C30F1C5F497700EC98EE /* ScrollingStickyHeaderView.swift */; };
 		60C1C3181C5FA34400EC98EE /* ARSerifNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C1C3171C5FA34400EC98EE /* ARSerifNavigationViewController.m */; };
 		60C26DEA1BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C26DE91BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m */; };
@@ -1714,6 +1714,7 @@
 		60A224FA17CE040B00233CA1 /* AROnboardingTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROnboardingTransition.h; sourceTree = "<group>"; };
 		60A224FB17CE040B00233CA1 /* AROnboardingTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingTransition.m; sourceTree = "<group>"; };
 		60A224FD17CE0E1B00233CA1 /* AROnboardingViewControllers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AROnboardingViewControllers.h; sourceTree = "<group>"; };
+		60A22B241FF308C000443BC3 /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
 		60A3099C1AC8AD6A000783C1 /* Artsy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Artsy.entitlements; sourceTree = "<group>"; };
 		60A309A01AC98BF3000783C1 /* Article.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Article.h; sourceTree = "<group>"; };
 		60A309A11AC98BF3000783C1 /* Article.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Article.m; sourceTree = "<group>"; };
@@ -2031,7 +2032,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60BCE1141FF2BA5B00071AA6 /* ARKit.framework in Frameworks */,
+				60A22B251FF308C300443BC3 /* ARKit.framework in Frameworks */,
 				60D312471EA6CFD000B13E59 /* ReplayKit.framework in Frameworks */,
 				512AB35C1BD7C82F00F92B9A /* MessageUI.framework in Frameworks */,
 				512AB35B1BD7C7A100F92B9A /* CoreSpotlight.framework in Frameworks */,
@@ -2899,6 +2900,7 @@
 			isa = PBXGroup;
 			children = (
 				60BCE1131FF2BA5A00071AA6 /* ARKit.framework */,
+				60A22B241FF308C000443BC3 /* ARKit.framework */,
 				60BCE1111FF2BA1700071AA6 /* Xcode.app */,
 				60D312461EA6CFD000B13E59 /* ReplayKit.framework */,
 				512AB35A1BD7C7A100F92B9A /* CoreSpotlight.framework */,
