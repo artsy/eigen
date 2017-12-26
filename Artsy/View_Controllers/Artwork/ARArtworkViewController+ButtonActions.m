@@ -28,6 +28,8 @@
 #import "ARTopMenuViewController.h"
 #import "ARLogger.h"
 #import "Artsy-Swift.h"
+#import "ARAugmentedRealityConfig.h"
+#import "ARAugmentedVIRViewController.h"
 #import <Emission/ARInquiryComponentViewController.h>
 
 
@@ -76,8 +78,17 @@
 
 - (void)tappedArtworkViewInRoom
 {
-    ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:self.artwork];
-    [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
+    if([AROptions boolForOption:AROptionsUseARVIR]) {
+        CGSize size = CGSizeMake(self.artwork.widthInches, self.artwork.heightInches);
+        ARAugmentedRealityConfig *config = [[ARAugmentedRealityConfig alloc] initWithImage:self.imageView.image size:size];
+        ARAugmentedVIRViewController *viewInRoomVC = [[ARAugmentedVIRViewController alloc] initWithConfig:config];
+        [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
+
+    } else {
+        ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:self.artwork];
+        [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
+
+    }
 }
 
 - (void)tappedArtworkViewInMap
