@@ -226,8 +226,7 @@ export class ArtworkCarousel extends Component<Props & RelayPropsWorkaround, Sta
   }
 
   railStyle() {
-    const sideMargin = isPad ? 40 : 20
-    const style: any = { marginLeft: sideMargin, marginRight: sideMargin }
+    const style: any = { marginLeft: 20, marginRight: 20 }
 
     if (!this.state.didPerformFetch) {
       style.minHeight = minRailHeight
