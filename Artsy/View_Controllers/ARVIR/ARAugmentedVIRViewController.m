@@ -1,8 +1,15 @@
 @import ARKit;
 @import SceneKit;
 
+#import "ARFonts.h"
+#import "ARSpinner.h"
+#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <FLKAutoLayout/FLKAutoLayout.h>
+#import "UIView+HitTestExpansion.h"
+
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRViewController.h"
+
 
 typedef void (^OnboardingStepBlock)(void);
 
@@ -27,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) UILabel *userMessagesLabel;
 
 @property (nonatomic, strong, nullable) UIButton *button;
+@property (nonatomic, strong, nullable) ARSpinner *spinner;
 @property (nonatomic, strong, nullable) UILabel *textLabel;
 
 @property (nonatomic, copy) NSDictionary<NSNumber *, OnboardingStepBlock> *steps;
@@ -55,18 +63,21 @@ NS_ASSUME_NONNULL_BEGIN
             self.textLabel.text = @"Slowly pan the room with your phone";
 
             self.button.hidden = YES;
+           [self.spinner startAnimating];
         },
         @(OnboardingStepFinishedDetectingPlanes) : ^{
             self.textLabel.hidden = NO;
             self.textLabel.text = @"Slowly pan the room with your phone";
 
             self.button.hidden = NO;
-            [self.button setImage:[UIImage imageNamed:@"next"] forState:UIControlStateNormal];
+            [self.spinner stopAnimating];
+            [self.button setImage:[UIImage imageNamed:@"BackArrow"] forState:UIControlStateNormal];
         },
         @(OnboardingStepPlacePhoneOnWall): ^{
             self.textLabel.hidden = NO;
             self.textLabel.text = @"Place your phone on the wall where you want to see the work";
 
+            [self.spinner startAnimating];
             self.button.hidden = YES;
         },
         @(OnboardingStepWallDetected): ^{
@@ -74,7 +85,8 @@ NS_ASSUME_NONNULL_BEGIN
             self.textLabel.text = @"Place your phone on the wall where you want to see the work";
 
             self.button.hidden = NO;
-            [self.button setImage:[UIImage imageNamed:@"next"] forState:UIControlStateNormal];
+            [self.spinner stopAnimating];
+            [self.button setImage:[UIImage imageNamed:@"BackArrow"] forState:UIControlStateNormal];
         },
         @(OnboardingStepViewing): ^{
             [self placeArt];
@@ -85,6 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
             self.imageMaterial.transparency = 0.5;
 
             self.button.hidden = NO;
+            [self.spinner stopAnimating];
             [self.button setImage:[UIImage imageNamed:@"reset"] forState:UIControlStateNormal];
         }
     };
@@ -123,9 +136,13 @@ NS_ASSUME_NONNULL_BEGIN
     self.imageMaterial = imageMaterial;
 
     // Button
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    button.tintColor = [UIColor whiteColor];
+    UIButton *button = [[ARMenuButton alloc] init];
+    [button ar_extendHitTestSizeByWidth:10 andHeight:10];
+    [button setImage:[UIImage imageNamed:@"BackArrow"] forState:UIControlStateNormal];
+    button.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
     button.translatesAutoresizingMaskIntoConstraints = false;
+    // Rotate the back button 180' to make it a forwards button
+    button.transform = CGAffineTransformMakeRotation(M_PI);
 
     [button addTarget:self action:@selector(showNextStep) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
@@ -138,10 +155,22 @@ NS_ASSUME_NONNULL_BEGIN
     ]];
     self.button = button;
 
+    ARSpinner *spinner = [[ARSpinner alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    spinner.translatesAutoresizingMaskIntoConstraints = false;
+    spinner.spinnerColor = [UIColor whiteColor];
+
+    [self.view addSubview:spinner];
+    [self.view addConstraints: @[
+        [spinner.centerXAnchor constraintEqualToAnchor:button.centerXAnchor],
+        [spinner.centerYAnchor constraintEqualToAnchor:button.centerYAnchor]
+    ]];
+
+    self.spinner = spinner;
+
     // Text label
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.textColor = UIColor.whiteColor;
-    label.font = [UIFont systemFontOfSize:24.0];
+    label.font = [UIFont serifFontWithSize:24.0];
     label.translatesAutoresizingMaskIntoConstraints = false;
     label.numberOfLines = 0;
     label.lineBreakMode = NSLineBreakByWordWrapping;
@@ -284,8 +313,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)sessionInterruptionEnded:(ARSession *)session {
     // Reset tracking and/or remove existing anchors if consistent tracking is required
-    
 }
+
+- (BOOL)hidesToolbarMenu
+{
+    return YES;
+}
+
+- (BOOL)hidesBackButton
+{
+    return YES;
+}
+
+- (BOOL)hidesBottomBarWhenPushed
+{
+    return YES;
+}
+
 
 #pragma mark - Touches
 /**

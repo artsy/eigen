@@ -1,7 +1,9 @@
 @import UIKit;
 @class ARAugmentedRealityConfig;
 
-@interface ARAugmentedVIRViewController : UIViewController
+#import "ARMenuAwareViewController.h"
+
+@interface ARAugmentedVIRViewController : UIViewController <ARMenuAwareViewController>
 
 - (instancetype)initWithConfig:(ARAugmentedRealityConfig *)config;
 
