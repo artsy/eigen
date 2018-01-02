@@ -1,6 +1,6 @@
 import moment from "moment"
 import React from "react"
-import { View } from "react-native"
+import { Dimensions, View } from "react-native"
 import Hyperlink from "react-native-hyperlink"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
@@ -15,6 +15,8 @@ import PDFPreview from "./Preview/Attachment/PDFPreview"
 import InvoicePreview from "./Preview/InvoicePreview"
 
 import { Schema, Track, track as _track } from "../../../utils/track"
+
+const isPad = Dimensions.get("window").width > 700
 
 const VerticalLayout = styled.View`
   flex-direction: column;
@@ -70,8 +72,8 @@ const Seperator = styled(DottedLine)`
 `
 
 const PreviewContainer = styled.View`
+  ${isPad ? "width: 295;" : ""};
   margin-bottom: 10;
-  width: 295;
 `
 
 interface Props extends RelayProps {
