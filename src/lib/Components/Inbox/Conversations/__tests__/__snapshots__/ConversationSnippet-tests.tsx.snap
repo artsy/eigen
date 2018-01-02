@@ -18,20 +18,12 @@ exports[`renders correctly with a show 1`] = `
   style={
     Array [
       Object {
-        "flexBasis": 0,
-        "flexDirection": "column",
-        "flexGrow": 1,
-        "flexShrink": 1,
+        "alignItems": "center",
+        "height": 120,
+        "marginLeft": 20,
+        "marginRight": 20,
       },
-      Array [
-        Object {
-          "alignItems": "center",
-          "height": 120,
-          "marginLeft": 20,
-          "marginRight": 20,
-        },
-        undefined,
-      ],
+      undefined,
     ]
   }
   testID={undefined}
@@ -291,20 +283,12 @@ exports[`renders correctly with an artwork 1`] = `
   style={
     Array [
       Object {
-        "flexBasis": 0,
-        "flexDirection": "column",
-        "flexGrow": 1,
-        "flexShrink": 1,
+        "alignItems": "center",
+        "height": 120,
+        "marginLeft": 20,
+        "marginRight": 20,
       },
-      Array [
-        Object {
-          "alignItems": "center",
-          "height": 120,
-          "marginLeft": 20,
-          "marginRight": 20,
-        },
-        undefined,
-      ],
+      undefined,
     ]
   }
   testID={undefined}

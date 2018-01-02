@@ -252,83 +252,69 @@ exports[`looks correct when rendered 1`] = `
               Array [
                 Object {
                   "alignSelf": "center",
-                  "flexBasis": 0,
-                  "flexDirection": "column",
-                  "flexGrow": 1,
-                  "flexShrink": 1,
+                  "height": 25,
+                  "marginRight": 15,
+                  "width": 78,
                 },
                 undefined,
               ]
             }
           >
             <View
+              accessibilityComponentType={undefined}
+              accessibilityLabel={undefined}
+              accessibilityTraits={undefined}
+              accessible={true}
+              hasTVPreferredFocus={undefined}
+              hitSlop={undefined}
+              isTVSelectable={true}
+              nativeID={undefined}
+              onLayout={undefined}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
               style={
                 Array [
                   Object {
-                    "height": 25,
-                    "marginLeft": 15,
-                    "width": 78,
+                    "backgroundColor": "transparent",
                   },
-                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "rgba(0, 0, 0, 1)",
+                    "flex": 1,
+                    "justifyContent": "center",
+                  },
                 ]
               }
+              testID={undefined}
+              tvParallaxProperties={undefined}
             >
-              <View
-                accessibilityComponentType={undefined}
-                accessibilityLabel={undefined}
-                accessibilityTraits={undefined}
-                accessible={true}
-                hasTVPreferredFocus={undefined}
-                hitSlop={undefined}
-                isTVSelectable={true}
-                nativeID={undefined}
-                onLayout={undefined}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                    },
-                    Object {
-                      "alignItems": "center",
-                      "backgroundColor": "rgba(0, 0, 0, 1)",
-                      "flex": 1,
-                      "justifyContent": "center",
-                    },
-                  ]
-                }
-                testID={undefined}
-                tvParallaxProperties={undefined}
-              >
-                <View>
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    disabled={false}
-                    ellipsizeMode="tail"
-                    style={
-                      Array [
-                        Object {
-                          "fontSize": 12,
-                        },
-                        Object {
-                          "color": "white",
-                          "opacity": 1,
-                        },
-                        Object {
-                          "fontFamily": "AvantGardeGothicITC",
-                        },
-                      ]
-                    }
-                  >
-                    PAY
-                  </Text>
-                </View>
+              <View>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  disabled={false}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "fontSize": 12,
+                      },
+                      Object {
+                        "color": "white",
+                        "opacity": 1,
+                      },
+                      Object {
+                        "fontFamily": "AvantGardeGothicITC",
+                      },
+                    ]
+                  }
+                >
+                  PAY
+                </Text>
               </View>
             </View>
           </View>

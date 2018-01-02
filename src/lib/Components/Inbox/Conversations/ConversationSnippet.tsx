@@ -25,7 +25,7 @@ const HorizontalLayout = styled.View`
   flex-direction: row;
 `
 
-const Card = styled(VerticalLayout)`
+const Card = styled.View`
   height: 120px;
   align-items: center;
   margin-left: 20px;

@@ -89,48 +89,34 @@ exports[`InvoicePreview renders correctly 1`] = `
       Array [
         Object {
           "alignSelf": "center",
-          "flexBasis": 0,
-          "flexDirection": "column",
-          "flexGrow": 1,
-          "flexShrink": 1,
+          "height": 25,
+          "marginRight": 15,
+          "width": 78,
         },
         undefined,
       ]
     }
   >
-    <View
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
       style={
         Array [
           Object {
-            "height": 25,
-            "marginLeft": 15,
-            "width": 78,
+            "color": "#cccccc",
+            "fontFamily": "AvantGardeGothicITC",
+            "fontSize": 12,
+            "lineHeight": 25,
+            "textAlign": "right",
           },
           undefined,
         ]
       }
     >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        disabled={false}
-        ellipsizeMode="tail"
-        style={
-          Array [
-            Object {
-              "color": "#cccccc",
-              "fontFamily": "AvantGardeGothicITC",
-              "fontSize": 12,
-              "lineHeight": 25,
-              "textAlign": "right",
-            },
-            undefined,
-          ]
-        }
-      >
-        REFUNDED
-      </Text>
-    </View>
+      REFUNDED
+    </Text>
   </View>
 </View>
 `;
