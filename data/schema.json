@@ -27273,7 +27273,7 @@
         {
           "kind": "OBJECT",
           "name": "ArtworkInquiry",
-          "description": null,
+          "description": "An inquiry on an Artwork",
           "fields": [
             {
               "name": "artwork",
@@ -41874,7 +41874,7 @@
             },
             {
               "name": "saveArtwork",
-              "description": null,
+              "description": "Save (or remove) an artwork to (from) a users default collection.",
               "args": [
                 {
                   "name": "input",
@@ -42093,6 +42093,39 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "Artist",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "popular_artists",
+              "description": "Popular artists",
+              "args": [
+                {
+                  "name": "exclude_followed_artists",
+                  "description": "If true, will exclude followed artists for the user",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "size",
+                  "description": "Number of results to return",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "PopularArtists",
                 "ofType": null
               },
               "isDeprecated": false,

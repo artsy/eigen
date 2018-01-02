@@ -1130,6 +1130,7 @@ type ArtworkFilterTag implements Node {
   ): FilterArtworks
 }
 
+# An inquiry on an Artwork
 type ArtworkInquiry {
   artwork: Artwork!
   id: ID
@@ -2411,6 +2412,15 @@ input FollowArtistInput {
 
 type FollowArtistPayload {
   artist: Artist
+
+  # Popular artists
+  popular_artists(
+    # If true, will exclude followed artists for the user
+    exclude_followed_artists: Boolean
+
+    # Number of results to return
+    size: Int
+  ): PopularArtists
   clientMutationId: String
 }
 
@@ -3669,6 +3679,8 @@ type Mutation {
 
   # Appending a message to a conversation thread
   sendConversationMessage(input: SendConversationMessageMutationInput!): SendConversationMessageMutationPayload
+
+  # Save (or remove) an artwork to (from) a users default collection.
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
 
   # Attach an gemini asset to a consignment submission
