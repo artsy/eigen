@@ -3,6 +3,7 @@
 
 ### Master
 
+* Fixes Inbox loading indicator stuck and conversation row collapsing - luc
 * Optimize the Home/ForYou view by re-enabling removal of clipped subviews - alloy
 * Brings back artist rails on the Home/ForYou view - alloy
 * Fix issue where unmounted Home/ForYou rails would be refreshed - chris & alloy
