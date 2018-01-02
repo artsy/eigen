@@ -97,15 +97,9 @@ export class ConversationSnippet extends React.Component<Props, any> {
       return (
         <HorizontalLayout>
           <P>
-            <Subtitle>
-              {artworkArtist}
-            </Subtitle>
-            <Title>
-              {artworkTitle}
-            </Title>
-            <Subtitle>
-              {artworkDate}
-            </Subtitle>
+            <Subtitle>{artworkArtist}</Subtitle>
+            <Title>{artworkTitle}</Title>
+            <Subtitle>{artworkDate}</Subtitle>
           </P>
         </HorizontalLayout>
       )
@@ -116,9 +110,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
       return (
         <HorizontalLayout>
           <P>
-            <Subtitle>
-              {name}
-            </Subtitle>
+            <Subtitle>{name}</Subtitle>
           </P>
         </HorizontalLayout>
       )
@@ -165,20 +157,14 @@ export class ConversationSnippet extends React.Component<Props, any> {
             <ImageView imageURL={imageURL} />
             <TextPreview>
               <HorizontalLayout>
-                <SmallHeadline>
-                  {partnerName}
-                </SmallHeadline>
+                <SmallHeadline>{partnerName}</SmallHeadline>
                 <DateHeading>
                   {conversation.is_last_message_to_user && !conversation.last_message_open && <UnreadIndicator />}
                 </DateHeading>
               </HorizontalLayout>
               {this.renderTitleForItem(item)}
-              <P>
-                {conversationText}
-              </P>
-              <MetadataText>
-                {date}
-              </MetadataText>
+              <P>{conversationText}</P>
+              <MetadataText>{date}</MetadataText>
             </TextPreview>
           </CardContent>
           <SeparatorLine />
