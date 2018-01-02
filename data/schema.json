@@ -541,8 +541,7 @@
                 },
                 {
                   "name": "partner_categories",
-                  "description":
-                    "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
+                  "description": "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -717,6 +716,16 @@
                 },
                 {
                   "name": "include_artworks_by_followed_artists",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "include_medium_filter_in_aggregation",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
@@ -1743,8 +1752,7 @@
                 },
                 {
                   "name": "partner_categories",
-                  "description":
-                    "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
+                  "description": "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -2332,8 +2340,7 @@
         {
           "kind": "SCALAR",
           "name": "String",
-          "description":
-            "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
+          "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -2822,8 +2829,7 @@
         {
           "kind": "SCALAR",
           "name": "ID",
-          "description":
-            "The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID.",
+          "description": "The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID.",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -2833,8 +2839,7 @@
         {
           "kind": "SCALAR",
           "name": "Int",
-          "description":
-            "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. ",
+          "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. ",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -3357,8 +3362,7 @@
         {
           "kind": "SCALAR",
           "name": "Float",
-          "description":
-            "The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). ",
+          "description": "The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). ",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -7488,8 +7492,7 @@
         {
           "kind": "SCALAR",
           "name": "FormattedNumber",
-          "description":
-            "The `FormattedNumber` type represents a number that can optionally be returnedas a formatted String. It does not try to coerce the type.",
+          "description": "The `FormattedNumber` type represents a number that can optionally be returnedas a formatted String. It does not try to coerce the type.",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -11954,6 +11957,20 @@
                     "kind": "SCALAR",
                     "name": "Boolean",
                     "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "exclude_artist_ids",
+                  "description": "Exclude these ids from results, may result in all artists being excluded.",
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
                   },
                   "defaultValue": null
                 },
@@ -20036,6 +20053,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "include_medium_filter_in_aggregation",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "for_sale",
                   "description": null,
                   "type": {
@@ -20469,6 +20496,16 @@
                 },
                 {
                   "name": "include_artworks_by_followed_artists",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "include_medium_filter_in_aggregation",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
@@ -21135,6 +21172,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "include_medium_filter_in_aggregation",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "for_sale",
                   "description": null,
                   "type": {
@@ -21495,6 +21542,16 @@
                 },
                 {
                   "name": "include_artworks_by_followed_artists",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "include_medium_filter_in_aggregation",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
@@ -23427,6 +23484,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "include_medium_filter_in_aggregation",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "for_sale",
                   "description": null,
                   "type": {
@@ -23787,6 +23854,16 @@
                 },
                 {
                   "name": "include_artworks_by_followed_artists",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "include_medium_filter_in_aggregation",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
@@ -26479,6 +26556,20 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "exclude_artist_ids",
+                  "description": "Exclude these ids from results, may result in all artists being excluded.",
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "page",
                   "description": "Pagination, need I say more?",
                   "type": {
@@ -27182,7 +27273,7 @@
         {
           "kind": "OBJECT",
           "name": "ArtworkInquiry",
-          "description": null,
+          "description": "An inquiry on an Artwork",
           "fields": [
             {
               "name": "artwork",
@@ -28647,6 +28738,18 @@
               "deprecationReason": null
             },
             {
+              "name": "from_last_viewed_message_id",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "initial_message",
               "description": null,
               "args": [],
@@ -28754,8 +28857,8 @@
                 "name": "String",
                 "ofType": null
               },
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "Prefer to use `unread`"
             },
             {
               "name": "last_message_delivery_id",
@@ -28859,6 +28962,18 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "MessageConnection",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "unread",
+              "description": "True if there is an unread message by the user.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -29029,8 +29144,7 @@
             },
             {
               "name": "reply_to_impulse_ids",
-              "description":
-                "An array of Impulse IDs that correspond to all email addresses that messages should be sent to",
+              "description": "An array of Impulse IDs that correspond to all email addresses that messages should be sent to",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -30023,6 +30137,18 @@
                   "name": "ConversationEdge",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "totalUnreadCount",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -33943,6 +34069,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "include_medium_filter_in_aggregation",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "for_sale",
                   "description": null,
                   "type": {
@@ -34303,6 +34439,16 @@
                 },
                 {
                   "name": "include_artworks_by_followed_artists",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "include_medium_filter_in_aggregation",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
@@ -34864,8 +35010,7 @@
                 },
                 {
                   "name": "partner_categories",
-                  "description":
-                    "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
+                  "description": "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -38917,6 +39062,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "include_medium_filter_in_aggregation",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "for_sale",
                   "description": null,
                   "type": {
@@ -39766,8 +39921,7 @@
                 },
                 {
                   "name": "partner_categories",
-                  "description":
-                    "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
+                  "description": "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -39942,6 +40096,16 @@
                 },
                 {
                   "name": "include_artworks_by_followed_artists",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "include_medium_filter_in_aggregation",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
@@ -40968,8 +41132,7 @@
                 },
                 {
                   "name": "partner_categories",
-                  "description":
-                    "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
+                  "description": "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -41657,7 +41820,7 @@
             },
             {
               "name": "updateConversation",
-              "description": "Updating buyer outcome of a conversation.",
+              "description": "Update a conversation.",
               "args": [
                 {
                   "name": "input",
@@ -41710,35 +41873,8 @@
               "deprecationReason": null
             },
             {
-              "name": "markReadMessage",
-              "description": "Marking a message as read",
-              "args": [
-                {
-                  "name": "input",
-                  "description": null,
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "MarkReadMessageMutationInput",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "OBJECT",
-                "name": "MarkReadMessageMutationPayload",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "saveArtwork",
-              "description": null,
+              "description": "Save (or remove) an artwork to (from) a users default collection.",
               "args": [
                 {
                   "name": "input",
@@ -41957,6 +42093,39 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "Artist",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "popular_artists",
+              "description": "Popular artists",
+              "args": [
+                {
+                  "name": "exclude_followed_artists",
+                  "description": "If true, will exclude followed artists for the user",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "size",
+                  "description": "Number of results to return",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "PopularArtists",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -42768,24 +42937,24 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "buyer_outcome",
-              "description": null,
+              "name": "conversationId",
+              "description": "The id of the conversation to be updated.",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "ENUM",
-                  "name": "BuyerOutcomeTypes",
+                  "kind": "SCALAR",
+                  "name": "String",
                   "ofType": null
                 }
               },
               "defaultValue": null
             },
             {
-              "name": "ids",
-              "description": null,
+              "name": "fromLastViewedMessageId",
+              "description": "The message id to mark as read.",
               "type": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
                   "kind": "SCALAR",
@@ -42811,75 +42980,18 @@
           "possibleTypes": null
         },
         {
-          "kind": "ENUM",
-          "name": "BuyerOutcomeTypes",
-          "description": null,
-          "fields": null,
-          "inputFields": null,
-          "interfaces": null,
-          "enumValues": [
-            {
-              "name": "PURCHASED",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "STILL_CONSIDERING",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "HIGH_PRICE",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "LOST_INTEREST",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "WORK_UNAVAILABLE",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "OTHER",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "BLANK",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "possibleTypes": null
-        },
-        {
           "kind": "OBJECT",
           "name": "UpdateConversationMutationPayload",
           "description": null,
           "fields": [
             {
-              "name": "conversations",
+              "name": "conversation",
               "description": null,
               "args": [],
               "type": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "Conversation",
-                  "ofType": null
-                }
+                "kind": "OBJECT",
+                "name": "Conversation",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -43003,90 +43115,6 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "MessageEdge",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "clientMutationId",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "INPUT_OBJECT",
-          "name": "MarkReadMessageMutationInput",
-          "description": null,
-          "fields": null,
-          "inputFields": [
-            {
-              "name": "conversationId",
-              "description": "The id of the conversation to be updated",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "deliveryId",
-              "description": "The delivery object that is marked as read",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "clientMutationId",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            }
-          ],
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
-          "name": "MarkReadMessageMutationPayload",
-          "description": null,
-          "fields": [
-            {
-              "name": "delivery",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "Delivery",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -43513,8 +43541,7 @@
             },
             {
               "name": "metadata",
-              "description":
-                "Additional JSON data to pass through gemini, should deiinitely contain an `id` and a `_type`",
+              "description": "Additional JSON data to pass through gemini, should deiinitely contain an `id` and a `_type`",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -43544,8 +43571,7 @@
         {
           "kind": "SCALAR",
           "name": "JSON",
-          "description":
-            "The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).",
+          "description": "The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -44312,8 +44338,7 @@
         {
           "kind": "OBJECT",
           "name": "__Schema",
-          "description":
-            "A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.",
+          "description": "A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.",
           "fields": [
             {
               "name": "types",
@@ -44369,8 +44394,7 @@
             },
             {
               "name": "subscriptionType",
-              "description":
-                "If this server support subscription, the type that subscription operations will be rooted at.",
+              "description": "If this server support subscription, the type that subscription operations will be rooted at.",
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -44413,8 +44437,7 @@
         {
           "kind": "OBJECT",
           "name": "__Type",
-          "description":
-            "The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name and description, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.",
+          "description": "The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name and description, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.",
           "fields": [
             {
               "name": "kind",
@@ -44658,8 +44681,7 @@
         {
           "kind": "OBJECT",
           "name": "__Field",
-          "description":
-            "Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type.",
+          "description": "Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type.",
           "fields": [
             {
               "name": "name",
@@ -44766,8 +44788,7 @@
         {
           "kind": "OBJECT",
           "name": "__InputValue",
-          "description":
-            "Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value.",
+          "description": "Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value.",
           "fields": [
             {
               "name": "name",
@@ -44834,8 +44855,7 @@
         {
           "kind": "OBJECT",
           "name": "__EnumValue",
-          "description":
-            "One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string.",
+          "description": "One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string.",
           "fields": [
             {
               "name": "name",
@@ -44902,8 +44922,7 @@
         {
           "kind": "OBJECT",
           "name": "__Directive",
-          "description":
-            "A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.\n\nIn some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.",
+          "description": "A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.\n\nIn some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.",
           "fields": [
             {
               "name": "name",
@@ -45038,8 +45057,7 @@
         {
           "kind": "ENUM",
           "name": "__DirectiveLocation",
-          "description":
-            "A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.",
+          "description": "A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -45160,7 +45178,11 @@
         {
           "name": "include",
           "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
-          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
+          "locations": [
+            "FIELD",
+            "FRAGMENT_SPREAD",
+            "INLINE_FRAGMENT"
+          ],
           "args": [
             {
               "name": "if",
@@ -45181,7 +45203,11 @@
         {
           "name": "skip",
           "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
-          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
+          "locations": [
+            "FIELD",
+            "FRAGMENT_SPREAD",
+            "INLINE_FRAGMENT"
+          ],
           "args": [
             {
               "name": "if",
@@ -45202,12 +45228,14 @@
         {
           "name": "deprecated",
           "description": "Marks an element of a GraphQL schema as no longer supported.",
-          "locations": ["FIELD_DEFINITION", "ENUM_VALUE"],
+          "locations": [
+            "FIELD_DEFINITION",
+            "ENUM_VALUE"
+          ],
           "args": [
             {
               "name": "reason",
-              "description":
-                "Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted in [Markdown](https://daringfireball.net/projects/markdown/).",
+              "description": "Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted in [Markdown](https://daringfireball.net/projects/markdown/).",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",

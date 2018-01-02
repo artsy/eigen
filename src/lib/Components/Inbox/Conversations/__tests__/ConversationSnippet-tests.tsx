@@ -49,8 +49,7 @@ const artworkConversation = {
   last_message_at: moment()
     .subtract(1, "year")
     .toISOString(),
-  is_last_message_to_user: true,
-  last_message_open: null,
+  unread: true,
   created_at: "2017-06-01T14:14:35.538Z",
   items: [
     {
@@ -69,8 +68,7 @@ const showConversation = {
   last_message_at: moment()
     .subtract(1, "year")
     .toISOString(),
-  is_last_message_to_user: true,
-  last_message_open: null,
+  unread: true,
   created_at: "2017-06-01T14:14:35.538Z",
   items: [
     {

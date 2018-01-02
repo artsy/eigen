@@ -158,9 +158,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
             <TextPreview>
               <HorizontalLayout>
                 <SmallHeadline>{partnerName}</SmallHeadline>
-                <DateHeading>
-                  {conversation.is_last_message_to_user && !conversation.last_message_open && <UnreadIndicator />}
-                </DateHeading>
+                <DateHeading>{conversation.unread && <UnreadIndicator />}</DateHeading>
               </HorizontalLayout>
               {this.renderTitleForItem(item)}
               <P>{conversationText}</P>
@@ -184,8 +182,7 @@ export default createFragmentContainer(
       }
       last_message
       last_message_at
-      last_message_open
-      is_last_message_to_user
+      unread
       items {
         item {
           __typename
@@ -220,8 +217,7 @@ interface RelayProps {
     }
     last_message: string
     last_message_at: string | null
-    is_last_message_to_user: boolean
-    last_message_open: string | null
+    unread: boolean
     items: Array<{
       item: any
     } | null> | null
