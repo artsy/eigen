@@ -19,9 +19,11 @@ it("looks correct when rendered", () => {
 
 const props = {
   relay: {
+    environment: null,
     hasMore: jest.fn(),
     isLoading: jest.fn(),
     loadMore: jest.fn(),
+    refetch: jest.fn(),
   },
   viewer: {
     sales: [

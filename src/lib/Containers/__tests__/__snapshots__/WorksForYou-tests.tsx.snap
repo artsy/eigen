@@ -4,8 +4,20 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
 <RCTScrollView
   contentContainerStyle={Object {}}
   onScroll={[Function]}
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={false}
+      style={
+        Object {
+          "marginBottom": 20,
+        }
+      }
+    />
+  }
   scrollEventThrottle={100}
 >
+  <RCTRefreshControl />
   <View>
     <View
       style={
@@ -285,8 +297,20 @@ exports[`with notifications lays out correctly on small screens 1`] = `
 <RCTScrollView
   contentContainerStyle={Object {}}
   onScroll={[Function]}
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={false}
+      style={
+        Object {
+          "marginBottom": 20,
+        }
+      }
+    />
+  }
   scrollEventThrottle={100}
 >
+  <RCTRefreshControl />
   <View>
     <View
       style={
@@ -570,8 +594,20 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
     }
   }
   onScroll={[Function]}
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={false}
+      style={
+        Object {
+          "marginBottom": 20,
+        }
+      }
+    />
+  }
   scrollEventThrottle={100}
 >
+  <RCTRefreshControl />
   <View>
     <View
       style={
@@ -663,8 +699,20 @@ exports[`without notifications lays out correctly on small screens 1`] = `
     }
   }
   onScroll={[Function]}
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={false}
+      style={
+        Object {
+          "marginBottom": 20,
+        }
+      }
+    />
+  }
   scrollEventThrottle={100}
 >
+  <RCTRefreshControl />
   <View>
     <View
       style={
