@@ -9,6 +9,7 @@
 * Brings back artist rails on the Home/ForYou view - alloy
 * Fix issue where unmounted Home/ForYou rails would be refreshed - chris & alloy
 * Fix payment request component status not updating after payment - alloy
+* Add pull-to-refresh to the ARTISTS and AUCTIONS tabs on the Home view - alloy
 
 ### 1.4.0-beta.11
 
