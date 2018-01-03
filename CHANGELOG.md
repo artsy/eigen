@@ -3,6 +3,8 @@
 
 ### Master
 
+### 1.4.0-beta.12
+
 * New methodology for unread indicator and marking conversation as read - matt
 * Fixes Inbox loading indicator stuck and conversation row collapsing - luc
 * Optimize the Home/ForYou view by re-enabling removal of clipped subviews - alloy
