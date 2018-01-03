@@ -17,8 +17,7 @@ const CenteredView = styled.View`
 const VerticalLayout = styled.View`
   flex: 1;
   flex-direction: column;
-  min-height: 400;
-  max-height: 800;
+  ${isPad && "max-height: 600;"};
   align-items: ${isPad ? "center" : "stretch"};
 `
 const Listpad = styled.View`
@@ -51,7 +50,7 @@ const SmallHeadline = styled(LargeHeadline)`
   font-size: ${isPad ? 30 : 20};
   color: black;
   ${isPad ? "width: 540" : "max-width: 280"};
-  min-height: 60;
+  min-height: 80;
 `
 
 const Icon = styled(Image)`
