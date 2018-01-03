@@ -72,7 +72,6 @@ exports[`Sets up the right view hierarchy 1`] = `
           }
         >
           <RCTScrollView
-            centerContent={true}
             style={
               Object {
                 "flex": 1,
@@ -89,8 +88,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                       "flexDirection": "column",
                       "flexGrow": 1,
                       "flexShrink": 1,
-                      "maxHeight": 800,
-                      "minHeight": 400,
                     },
                     undefined,
                   ]
@@ -109,7 +106,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "fontFamily": "AvantGardeGothicITC",
                         "fontSize": 20,
                         "lineHeight": 24,
-                        "marginTop": 0,
+                        "marginTop": 110,
                         "textAlign": "center",
                         "width": 760,
                       },
@@ -124,7 +121,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                     Array [
                       Object {
                         "alignItems": "center",
-                        "paddingTop": 80,
+                        "paddingTop": 100,
                       },
                       undefined,
                     ]
@@ -134,10 +131,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                     style={
                       Array [
                         Object {
-                          "flexBasis": 0,
                           "flexDirection": "row",
-                          "flexGrow": 1,
-                          "flexShrink": 1,
                           "marginBottom": 0,
                           "marginLeft": 0,
                           "marginTop": 40,
@@ -177,7 +171,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                             Object {
                               "color": "white",
                               "fontSize": 30,
-                              "minHeight": 60,
                               "textAlign": "left",
                               "width": 540,
                             },
@@ -196,10 +189,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                     style={
                       Array [
                         Object {
-                          "flexBasis": 0,
                           "flexDirection": "row",
-                          "flexGrow": 1,
-                          "flexShrink": 1,
                           "marginBottom": 0,
                           "marginLeft": 0,
                           "marginTop": 40,
@@ -239,7 +229,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                             Object {
                               "color": "white",
                               "fontSize": 30,
-                              "minHeight": 60,
                               "textAlign": "left",
                               "width": 540,
                             },
@@ -258,10 +247,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                     style={
                       Array [
                         Object {
-                          "flexBasis": 0,
                           "flexDirection": "row",
-                          "flexGrow": 1,
-                          "flexShrink": 1,
                           "marginBottom": 0,
                           "marginLeft": 0,
                           "marginTop": 40,
@@ -301,7 +287,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                             Object {
                               "color": "white",
                               "fontSize": 30,
-                              "minHeight": 60,
                               "textAlign": "left",
                               "width": 540,
                             },
@@ -320,10 +305,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                     style={
                       Array [
                         Object {
-                          "flexBasis": 0,
                           "flexDirection": "row",
-                          "flexGrow": 1,
-                          "flexShrink": 1,
                           "marginBottom": 0,
                           "marginLeft": 0,
                           "marginTop": 40,
@@ -363,7 +345,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                             Object {
                               "color": "white",
                               "fontSize": 30,
-                              "minHeight": 60,
                               "textAlign": "left",
                               "width": 540,
                             },
@@ -386,7 +367,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                           "flexBasis": 0,
                           "flexGrow": 1,
                           "flexShrink": 1,
-                          "marginTop": 30,
+                          "marginTop": 50,
                         },
                         undefined,
                       ]
