@@ -138,7 +138,9 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
+    if (self.navigationController && [self.navigationController isKindOfClass:ARNavigationController.class]) {
+        [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
+    }
 }
 
 #pragma mark UIGestureRecognizerDelegate
