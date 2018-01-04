@@ -1,5 +1,5 @@
 import React from "react"
-import { Image, NavigatorIOS, Route, ViewProperties } from "react-native"
+import { Image, NavigatorIOS, Route, View, ViewProperties } from "react-native"
 
 import { Schema, screenTrack } from "lib/utils/track"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
@@ -37,20 +37,33 @@ const Subtitle = styled(LargeHeadline)`
 export default class Confirmation extends React.Component<Props, null> {
   exitModal = () => SwitchBoard.dismissModalViewController(this)
   restart = () => this.props.navigator.push({ component: Welcome })
+
+  progressContent = () => (
+    <View>
+      <Spinner source={require("../../../../../images/whitespinner.png")} />
+      <LargeHeadline>Submitting your work</LargeHeadline>
+    </View>
+  )
+  successContent = () => (
+    <View>
+      <LargeHeadline>Succesfully submitted</LargeHeadline>
+      <Subtitle>You will receive a confirmation email shortly.</Subtitle>
+      <Button text="DONE" onPress={this.exitModal} />
+    </View>
+  )
+  failedContent = () => (
+    <View>
+      <LargeHeadline>Submission failed</LargeHeadline>
+      <Subtitle>Please try again.</Subtitle>
+      <BorderedBlackButton text="TRY AGAIN" onPress={this.restart} />
+      <Button text="QUIT" onPress={this.exitModal} />
+    </View>
+  )
+
   render() {
     return (
       <ConsignmentBG>
-        <Container>
-          {/* <Spinner source={require("../../../../../images/whitespinner.png")} />
-          <LargeHeadline>Submitting your work</LargeHeadline> */}
-          {/* <LargeHeadline>Succesfully submitted</LargeHeadline>
-          <Subtitle>You will receive a confirmation email shortly.</Subtitle>
-          <Button text="DONE" onPress={this.exitModal} /> */}
-          <LargeHeadline>Submission failed</LargeHeadline>
-          <Subtitle>Please try again.</Subtitle>
-          <BorderedBlackButton text="TRY AGAIN" onPress={this.restart} />
-          <Button text="QUIT" onPress={this.exitModal} />
-        </Container>
+        <Container>{this.failedContent()}</Container>
       </ConsignmentBG>
     )
   }
