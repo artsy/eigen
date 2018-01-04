@@ -13,6 +13,7 @@ import updateSubmission from "../Submission/update"
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
 import { LargeHeadline, Subtitle } from "../Typography"
 import Artist from "./Artist"
+import Confirmation from "./Confirmation"
 import Edition from "./Edition"
 import Location from "./Location"
 import Metadata from "./Metadata"
@@ -136,7 +137,7 @@ export default class Info extends React.Component<Props, State> {
       await this.updateLocalStateAndMetaphysics()
       await AsyncStorage.removeItem(consignmentsStateKey)
       this.submissionDraftSubmitted()
-      this.exitModal()
+      // this.exitModal()
     })
   }
 
@@ -148,7 +149,8 @@ export default class Info extends React.Component<Props, State> {
     owner_slug: state.submission_id,
   }))
   submissionDraftSubmitted() {
-    return null
+    // show confirmation screen
+    this.props.navigator.push({ component: Confirmation })
   }
 
   exitModal = () => SwitchBoard.dismissModalViewController(this)

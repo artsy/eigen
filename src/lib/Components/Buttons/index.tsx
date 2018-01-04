@@ -23,6 +23,24 @@ const flatBlackTheme = {
   },
 }
 
+const flatBorderedBlackTheme = {
+  enabled: {
+    foreground: Colors.White,
+    background: Colors.Black,
+    border: Colors.White,
+  },
+  disabled: {
+    foreground: Colors.GrayMedium,
+    background: Colors.GrayBold,
+    border: Colors.GrayLight,
+  },
+  highlighted: {
+    foreground: Colors.White,
+    background: Colors.PurpleRegular,
+    border: Colors.PurpleRegular,
+  },
+}
+
 const ghostTheme = {
   enabled: {
     foreground: Colors.Black,
@@ -87,6 +105,8 @@ export interface ButtonProps extends ViewProperties {
 }
 
 export const InvertedButton = (props: ButtonProps) => <Button {...props} stateColors={flatBlackTheme} />
+
+export const InvertedBorderedButton = (props: ButtonProps) => <Button {...props} stateColors={flatBorderedBlackTheme} />
 
 export const GhostButton = (props: ButtonProps) => <Button {...props} stateColors={ghostTheme} />
 
