@@ -138,7 +138,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (self.navigationController && [self.navigationController isKindOfClass:ARNavigationController.class]) {
+    if ([self.navigationController isKindOfClass:ARNavigationController.class]) {
         [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
     }
 }
