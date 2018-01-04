@@ -10,29 +10,30 @@ const triggerMock = triggerCamera as jest.Mock<any>
 
 const nav = {} as any
 const route = {} as any
+const emptyProps = {
+  navigator: nav,
+  route,
+  setup: { photos: [] },
+  updateWithPhotos: () => "",
+}
 
 it("Sets up the right view hierarchy", () => {
-  const tree = renderer
-    .create(<SelectFromPhotoLibrary navigator={nav} route={route} setup={{}} updateWithPhotos={() => ""} />)
-    .toJSON()
+  const tree = renderer.create(<SelectFromPhotoLibrary {...emptyProps} />).toJSON()
   expect(tree).toMatchSnapshot()
 })
 
 it("adds new photo to the list, and selects it", () => {
-  const newPhoto = { image: { url: "https://image.com" } }
-  triggerMock.mockImplementationOnce(() => Promise.resolve(newPhoto))
+  triggerMock.mockImplementationOnce(() => Promise.resolve(true))
 
-  const select = new SelectFromPhotoLibrary({
-    navigator: nav,
-    route,
-    setup: { photos: [] },
-    updateWithPhotos: () => "",
-  })
+  const select = new SelectFromPhotoLibrary(emptyProps)
 
   select.setState = jest.fn()
+  const newPhoto = { image: { url: "https://image.com" } }
+  select.getCameraRollPhotos = () => Promise.resolve({ edges: [{ node: newPhoto }] }) as any
 
   expect.hasAssertions()
   return select.onPressNewPhoto().then(() => {
+    // Expect state to be updated
     expect(select.setState).toBeCalledWith({
       cameraImages: [{ image: { url: "https://image.com" } }],
       selection: expect.anything(),
