@@ -41,7 +41,7 @@ Your local Emission should be usable inside Eigen.
 
 Inside Eigen:
 
-``` sh
+```sh
 # Undo your Podfile changes
 git checkout Podfile Podfile.lock
 # Undo your Pods folder changes

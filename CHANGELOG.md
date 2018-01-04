@@ -3,6 +3,9 @@
 
 ### Master
 
+* Fixes for the camera roll order in consignments - orta
+* Adds the new photo and selects it when taking a photo - orta
+
 ### 1.4.0-beta.12
 
 * New methodology for unread indicator and marking conversation as read - matt
