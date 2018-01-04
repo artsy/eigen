@@ -29,16 +29,6 @@ it(@"forwards its web view's scroll view", ^{
     expect(vc.scrollView).to.equal(vc.webView.scrollView);
 });
 
-it(@"forwards `scrollViewDidScroll` to scroll chief", ^{
-    [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
-
-    id chiefMock = [OCMockObject partialMockForObject:[ARScrollNavigationChief chief]];
-    [[chiefMock expect] scrollViewDidScroll:vc.scrollView];
-    [vc scrollViewDidScroll:vc.scrollView];
-    [chiefMock verify];
-});
-
-
 it(@"uses the shared ARWebViewCacheHost WKWebView instances", ^{
     [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
 
