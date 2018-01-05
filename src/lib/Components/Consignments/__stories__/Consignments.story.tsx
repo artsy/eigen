@@ -5,6 +5,7 @@ import Nav from "../index"
 import Artist from "../Screens/Artist"
 import Edition from "../Screens/Edition"
 
+import Confirmation, { SubmissionTypes } from "../Screens/Confirmation"
 import Location from "../Screens/Location"
 import Metadata from "../Screens/Metadata"
 import Overview from "../Screens/Overview"
@@ -41,3 +42,12 @@ storiesOf("Consignments/_Screens")
   .add("Metadata Page", () => <Metadata navigator={nav} route={route} metadata={blankMetadata} />)
   .add("Provenance", () => <Provenance navigator={nav} route={route} />)
   .add("Edition Page", () => <Edition navigator={nav} route={route} setup={{}} updateWithEdition={() => ""} />)
+  .add("Confirmation Page: Submitting", () => (
+    <Confirmation navigator={nav} route={route} initialState={SubmissionTypes.Submitting} />
+  ))
+  .add("Confirmation Page: Success", () => (
+    <Confirmation navigator={nav} route={route} initialState={SubmissionTypes.SuccessfulSubmission} />
+  ))
+  .add("Confirmation Page: Failed", () => (
+    <Confirmation navigator={nav} route={route} initialState={SubmissionTypes.FailedSubmission} />
+  ))

@@ -3,8 +3,11 @@
 
 ### Master
 
+### 1.4.0-beta.13
+
 * Fixes for the camera roll order in consignments - orta
 * Adds the new photo and selects it when taking a photo - orta
+* Adds a confirmation screen to the end of the consignment submission process - maxim/orta
 * Make sure Home/Fairs rail does not clip any icons at the end of the list - alloy
 
 ### 1.4.0-beta.12

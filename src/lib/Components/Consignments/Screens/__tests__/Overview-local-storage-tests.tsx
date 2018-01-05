@@ -46,12 +46,14 @@ it("updates the local state when there an update is triggered", () => {
 it("resets the cache when a final submission is made", async () => {
   const overview = new Overview({ setup: {} })
   overview.uploadPhotosIfNeeded = () => Promise.resolve()
+  overview.showConfirmationScreen = () => true
 
-  overview.setState = (updated, callback) => {
-    overview.state = Object.assign({}, overview.state, updated)
+  // Expect the state to get called, and replicate the behavior
+  overview.setState = (_, callback) => {
     callback()
   }
 
+  // Make a call to the
   await overview.submitFinalSubmission({ signed: true })
 
   expect(AsyncStorage.removeItem).toBeCalledWith(key)

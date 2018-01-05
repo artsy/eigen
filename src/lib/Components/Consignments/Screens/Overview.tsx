@@ -13,6 +13,7 @@ import updateSubmission from "../Submission/update"
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
 import { LargeHeadline, Subtitle } from "../Typography"
 import Artist from "./Artist"
+import Confirmation from "./Confirmation"
 import Edition from "./Edition"
 import Location from "./Location"
 import Metadata from "./Metadata"
@@ -29,6 +30,8 @@ interface Props extends ViewProperties {
 
 interface State extends ConsignmentSetup {
   hasLoaded?: boolean
+  /** Used at the end to keep track of the final submission to convection for the Confirmation page to see */
+  hasSubmittedSuccessfully?: boolean
 }
 
 const track: Track<Props, State> = _track
@@ -133,10 +136,18 @@ export default class Info extends React.Component<Props, State> {
 
   submitFinalSubmission = async (setup: ConsignmentSetup) => {
     this.setState(setup, async () => {
-      await this.updateLocalStateAndMetaphysics()
-      await AsyncStorage.removeItem(consignmentsStateKey)
-      this.submissionDraftSubmitted()
-      this.exitModal()
+      this.showConfirmationScreen()
+      let hasSubmittedSuccessfully = true
+      try {
+        await this.updateLocalStateAndMetaphysics()
+        await AsyncStorage.removeItem(consignmentsStateKey)
+        this.submissionDraftSubmitted()
+      } catch (error) {
+        console.error("Overview final submission: " + error)
+        hasSubmittedSuccessfully = false
+      }
+
+      this.setState({ hasSubmittedSuccessfully })
     })
   }
 
@@ -149,6 +160,13 @@ export default class Info extends React.Component<Props, State> {
   }))
   submissionDraftSubmitted() {
     return null
+  }
+
+  showConfirmationScreen() {
+    // Confirmation will ask to see how the submission process has worked in 1 second
+    const submissionRequestValidationCheck = () => this.state.hasSubmittedSuccessfully
+    // Show confirmation screen
+    this.props.navigator.push({ component: Confirmation, passProps: { submissionRequestValidationCheck } })
   }
 
   exitModal = () => SwitchBoard.dismissModalViewController(this)
