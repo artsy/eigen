@@ -19,9 +19,15 @@ afterEach(^{
     vc = nil;
 });
 
-it(@"sets the scroll view's `delegate`", ^{
+it(@"sets the scroll view's `delegate` if it belongs to ARNavigationController", ^{
     [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
+    ARNavigationController *nav =[[ARNavigationController alloc] initWithRootViewController:vc];
     expect(vc.scrollView.delegate).to.equal(vc);
+});
+
+it(@"does not set the scroll view's `delegate` if it does not belong to ARNavigationController", ^{
+    [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
+    expect(vc.scrollView.delegate).to.equal(nil);
 });
 
 it(@"forwards its web view's scroll view", ^{
