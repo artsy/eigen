@@ -136,14 +136,17 @@ export default class Info extends React.Component<Props, State> {
 
   submitFinalSubmission = async (setup: ConsignmentSetup) => {
     this.setState(setup, async () => {
-      this.submissionDraftSubmitted()
+      this.showConfirmationScreen()
       let hasSubmittedSuccessfully = true
       try {
         await this.updateLocalStateAndMetaphysics()
         await AsyncStorage.removeItem(consignmentsStateKey)
-      } catch {
+        this.submissionDraftSubmitted()
+      } catch (error) {
+        console.error("Overview final submission: " + error)
         hasSubmittedSuccessfully = false
       }
+
       this.setState({ hasSubmittedSuccessfully })
     })
   }
@@ -156,6 +159,10 @@ export default class Info extends React.Component<Props, State> {
     owner_slug: state.submission_id,
   }))
   submissionDraftSubmitted() {
+    return null
+  }
+
+  showConfirmationScreen() {
     // Confirmation will ask to see how the submission process has worked in 1 second
     const submissionRequestValidationCheck = () => this.state.hasSubmittedSuccessfully
     // Show confirmation screen

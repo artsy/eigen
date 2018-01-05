@@ -34,7 +34,7 @@ export class RotatingView extends Component<Props, State> {
       toValue: this.props.toValue || 1,
       duration: this.props.rotationDuration || 2000,
       easing: Easing.linear,
-      useNativeDriver: true,
+      useNativeDriver: typeof jest === "undefined", // We get console logs during errors otherwise
     }).start(() => {
       if (this.props.loop) {
         this.spin()
@@ -55,11 +55,14 @@ export class RotatingView extends Component<Props, State> {
       outputRange: ["0deg", "360deg"],
     })
 
+    const isJest = typeof jest !== "undefined"
+    const rotation = isJest ? {} : { rotate: spin }
+
     return (
       <Animated.View
         style={{
           ...this.props.style,
-          transform: [{ rotate: spin }],
+          transform: [rotation],
         }}
       >
         {this.props.children}

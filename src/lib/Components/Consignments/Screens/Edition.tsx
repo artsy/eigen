@@ -21,7 +21,6 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
   constructor(props: Props) {
     super(props)
     this.state = props.setup
-    console.log(this.state)
   }
 
   doneTapped = () => {

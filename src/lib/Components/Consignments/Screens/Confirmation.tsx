@@ -25,9 +25,6 @@ interface State {
   submissionState: SubmissionTypes
 }
 
-// Can be exported if we want it to work with the network calls in Overview
-// Would need to be a prop then
-// Not sure how it works when pushing a new nav cont though, seeing as it wouldn't be a child view / comp
 export enum SubmissionTypes {
   Submitting = "Submitting",
   SuccessfulSubmission = "SuccessfulSubmission",
@@ -74,6 +71,8 @@ export default class Confirmation extends React.Component<Props, State> {
       submissionState: props.initialState || SubmissionTypes.Submitting,
     }
 
+    // If we have a function we can use to check on the state of a submission, check for it in 1 second
+    // 1 second is a lot of time for this request, it's _tiny_.
     if (this.state.submissionState === SubmissionTypes.Submitting && props.submissionRequestValidationCheck) {
       setTimeout(this.checkForSubmissionStatus, 1000)
     }

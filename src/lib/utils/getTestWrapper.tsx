@@ -25,3 +25,19 @@ export function getTestWrapper(TestComponent) {
     console.warn(`utils/getTestWrapper | Error returning test wrapper`, error)
   }
 }
+
+/**
+ * Test helper that takes a component and "snapshots" it, returning its
+ * string representation. Useful for asserting tree contents. Cheaper than
+ * the getTestWrapper
+ *
+ *  @example
+ *
+ *  const text = getTextTree(<MyComponent title='Hi!' />)
+ *  expect(text).toContain('Hi!')
+ */
+
+export function getTextTree(TestComponent) {
+  const snapshot = renderer.create(TestComponent)
+  return JSON.stringify(snapshot.toJSON())
+}
