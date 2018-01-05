@@ -8,11 +8,6 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
     <RefreshControlMock
       onRefresh={[Function]}
       refreshing={false}
-      style={
-        Object {
-          "marginBottom": 20,
-        }
-      }
     />
   }
   scrollEventThrottle={100}
@@ -301,11 +296,6 @@ exports[`with notifications lays out correctly on small screens 1`] = `
     <RefreshControlMock
       onRefresh={[Function]}
       refreshing={false}
-      style={
-        Object {
-          "marginBottom": 20,
-        }
-      }
     />
   }
   scrollEventThrottle={100}
@@ -598,11 +588,6 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
     <RefreshControlMock
       onRefresh={[Function]}
       refreshing={false}
-      style={
-        Object {
-          "marginBottom": 20,
-        }
-      }
     />
   }
   scrollEventThrottle={100}
@@ -703,11 +688,6 @@ exports[`without notifications lays out correctly on small screens 1`] = `
     <RefreshControlMock
       onRefresh={[Function]}
       refreshing={false}
-      style={
-        Object {
-          "marginBottom": 20,
-        }
-      }
     />
   }
   scrollEventThrottle={100}
