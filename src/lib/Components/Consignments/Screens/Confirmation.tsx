@@ -59,7 +59,7 @@ const Subtitle = styled(LargeHeadline)`
 `
 
 @screenTrack({
-  context_screen: Schema.PageNames.ConsignmentsWelcome,
+  context_screen: Schema.PageNames.ConsignmentsSubmission, // this the correct one?
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })
 export default class Confirmation extends React.Component<Props, State> {
