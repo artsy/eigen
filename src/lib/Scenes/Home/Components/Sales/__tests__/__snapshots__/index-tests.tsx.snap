@@ -136,11 +136,6 @@ exports[`looks correct when rendered 1`] = `
     <RefreshControlMock
       onRefresh={[Function]}
       refreshing={false}
-      style={
-        Object {
-          "marginBottom": 20,
-        }
-      }
     />
   }
   renderItem={[Function]}
@@ -282,7 +277,7 @@ exports[`looks correct when rendered 1`] = `
                 "paddingBottom": 0,
                 "paddingLeft": 10,
                 "paddingRight": 10,
-                "paddingTop": 47,
+                "paddingTop": 25,
               },
               undefined,
             ]

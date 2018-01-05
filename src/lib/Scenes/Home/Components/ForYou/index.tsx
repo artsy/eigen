@@ -103,7 +103,7 @@ export class ForYou extends React.Component<ViewProperties & RelayProps, State> 
                 <RefreshControl
                   refreshing={this.state.isRefreshing}
                   onRefresh={this.handleRefresh}
-                  style={{ marginBottom: 20 }}
+                  style={{ marginBottom: 18 }}
                 />
               }
             />

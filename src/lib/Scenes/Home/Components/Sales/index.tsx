@@ -82,13 +82,7 @@ class Sales extends React.Component<Props, State> {
         stickySectionHeadersEnabled={false}
         sections={sections}
         keyExtractor={item => item.id}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.isRefreshing}
-            onRefresh={this.handleRefresh}
-            style={{ marginBottom: 20 }}
-          />
-        }
+        refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
       />
     )
   }

@@ -135,13 +135,7 @@ export class WorksForYou extends React.Component<Props, State> {
         onScroll={isCloseToBottom(this.fetchNextPage)}
         scrollEventThrottle={100}
         ref={scrollView => (this.scrollView = scrollView)}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.isRefreshing}
-            onRefresh={this.handleRefresh}
-            style={{ marginBottom: 20 }}
-          />
-        }
+        refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
       >
         <View style={{ flex: 1 }}>{hasNotifications ? this.renderNotifications() : this.renderEmptyState()}</View>
       </ScrollView>

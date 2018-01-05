@@ -30,7 +30,7 @@ export class SaleList extends Component<Props> {
 
     return (
       <View style={style}>
-        <SectionHeader title={section.title} />
+        <SectionHeader title={section.title} style={{ paddingTop: this.props.section.isFirstItem ? 0 : 22 }} />
         <FlatList
           contentContainerStyle={{
             justifyContent: "space-between",
