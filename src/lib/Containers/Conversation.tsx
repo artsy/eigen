@@ -17,7 +17,7 @@ import Messages from "../Components/Inbox/Conversations/Messages"
 import { sendConversationMessage } from "../Components/Inbox/Conversations/SendConversationMessage"
 import Separator from "../Components/Separator"
 
-import { markLastMessageRead } from "../Components/Inbox/Conversations/MarkReadMessage"
+import { updateConversation } from "../Components/Inbox/Conversations/UpdateConversation"
 
 const Container = styled.View`
   flex: 1;
@@ -87,11 +87,11 @@ export class Conversation extends React.Component<Props, State> {
 
   maybeMarkLastMessageAsRead() {
     const conversation = this.props.me.conversation
-    if (conversation.is_last_message_to_user && !conversation.last_message_open && !this.state.markedMessageAsRead) {
-      markLastMessageRead(
+    if (conversation.unread && !this.state.markedMessageAsRead) {
+      updateConversation(
         this.props.relay.environment,
         conversation,
-        conversation.last_message_delivery_id,
+        conversation.last_message_id,
         _response => {
           this.setState({ markedMessageAsRead: true })
         },
@@ -192,9 +192,7 @@ export default createFragmentContainer(Conversation, {
         last_message_id
         ...Messages_conversation
         initial_message
-        is_last_message_to_user
-        last_message_open
-        last_message_delivery_id
+        unread
       }
     }
   `,
@@ -214,9 +212,7 @@ interface RelayProps {
       }
       last_message_id: string
       initial_message: string
-      is_last_message_to_user: boolean
-      last_message_open: string | null
-      last_message_delivery_id: string | null
+      unread: boolean
     }
   }
 }

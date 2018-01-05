@@ -50,9 +50,10 @@ const PaidLabel = styled.Text`
 `
 
 const PayButtonContainer = styled.View`
-  margin-left: 15;
   height: 25;
   width: 78;
+  align-self: center;
+  margin-right: 15;
 `
 
 const PaymentRequest = styled.Text`
@@ -160,9 +161,7 @@ export class InvoicePreview extends React.Component<Props, State> {
           <PaymentRequest>Payment request</PaymentRequest>
           <CostLabel>{invoice.total}</CostLabel>
         </TextContainer>
-        <TextContainer>
-          <InvoiceStateButton invoiceState={invoiceState} onSelected={this.attachmentSelected.bind(this)} />
-        </TextContainer>
+        <InvoiceStateButton invoiceState={invoiceState} onSelected={this.attachmentSelected.bind(this)} />
       </Container>
     )
   }

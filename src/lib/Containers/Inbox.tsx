@@ -55,7 +55,9 @@ export class Inbox extends React.Component<Props, State> {
         this.setState({ fetchingData: false })
       })
     } else {
-      this.props.relay.refetch({})
+      this.props.relay.refetch({}, null, () => {
+        this.setState({ fetchingData: false })
+      })
     }
   }
 

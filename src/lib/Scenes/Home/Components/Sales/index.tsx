@@ -1,10 +1,29 @@
 import React from "react"
-import { SectionList, StyleSheet } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { RefreshControl, SectionList, StyleSheet } from "react-native"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import LotsByFollowedArtists from "./Components/LotsByFollowedArtists"
 import { SaleList } from "./Components/SaleList"
+import { ZeroState } from "./Components/ZeroState"
 
-class Sales extends React.Component<Props> {
+interface Props {
+  relay?: RelayRefetchProp
+  viewer: {
+    sales: Array<{
+      href: string | null
+      live_start_at: string | null
+    }>
+  }
+}
+
+interface State {
+  isRefreshing: boolean
+}
+
+class Sales extends React.Component<Props, State> {
+  state = {
+    isRefreshing: false,
+  }
+
   get data() {
     const { viewer } = this.props
     const liveAuctions = viewer.sales.filter(a => !!a.live_start_at)
@@ -17,7 +36,27 @@ class Sales extends React.Component<Props> {
     }
   }
 
+  handleRefresh = () => {
+    this.setState({ isRefreshing: true })
+    this.props.relay.refetch(
+      {},
+      {},
+      error => {
+        if (error) {
+          // FIXME: Handle error
+          console.error("Sales/index.tsx", error.message)
+        }
+        this.setState({ isRefreshing: false })
+      },
+      { force: true }
+    )
+  }
+
   render() {
+    if (this.props.viewer.sales.length === 0) {
+      return <ZeroState />
+    }
+
     const sections = [
       {
         data: [{ data: this.data.liveAuctions }],
@@ -43,12 +82,19 @@ class Sales extends React.Component<Props> {
         stickySectionHeadersEnabled={false}
         sections={sections}
         keyExtractor={item => item.id}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefreshing}
+            onRefresh={this.handleRefresh}
+            style={{ marginBottom: 20 }}
+          />
+        }
       />
     )
   }
 }
 
-export default createFragmentContainer(
+export default createRefetchContainer(
   Sales,
   graphql`
     fragment Sales_viewer on Viewer {
@@ -58,6 +104,13 @@ export default createFragmentContainer(
         live_start_at
       }
       ...LotsByFollowedArtists_viewer
+    }
+  `,
+  graphql`
+    query SalesQuery {
+      viewer {
+        ...Sales_viewer
+      }
     }
   `
 )
@@ -70,12 +123,3 @@ const SectionListStyles = StyleSheet.create({
     display: "flex",
   },
 })
-
-interface Props {
-  viewer: {
-    sales: Array<{
-      href: string | null
-      live_start_at: string | null
-    }>
-  }
-}

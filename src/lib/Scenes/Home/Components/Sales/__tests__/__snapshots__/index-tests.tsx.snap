@@ -132,6 +132,17 @@ exports[`looks correct when rendered 1`] = `
   onScrollBeginDrag={[Function]}
   onScrollEndDrag={[Function]}
   onViewableItemsChanged={undefined}
+  refreshControl={
+    <RefreshControlMock
+      onRefresh={[Function]}
+      refreshing={false}
+      style={
+        Object {
+          "marginBottom": 20,
+        }
+      }
+    />
+  }
   renderItem={[Function]}
   scrollEventThrottle={50}
   sections={
@@ -245,6 +256,7 @@ exports[`looks correct when rendered 1`] = `
   updateCellsBatchingPeriod={50}
   windowSize={21}
 >
+  <RCTRefreshControl />
   <View>
     <View
       onLayout={[Function]}

@@ -1,7 +1,7 @@
 import { findNodeHandle, NativeModules } from "react-native"
 const { ARTakeCameraPhotoModule } = NativeModules
 
-async function triggerCamera(component: React.Component<any, any>): Promise<any> {
+export async function triggerCamera(component: React.Component<any, any>): Promise<any> {
   let reactTag
   try {
     reactTag = findNodeHandle(component)
@@ -11,5 +11,3 @@ async function triggerCamera(component: React.Component<any, any>): Promise<any>
   }
   return ARTakeCameraPhotoModule.triggerCameraModal(reactTag)
 }
-
-export default triggerCamera

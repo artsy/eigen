@@ -21,25 +21,24 @@ const isPad = Dimensions.get("window").width > 700
 const VerticalLayout = styled.View`
   flex: 1;
   flex-direction: column;
-  min-height: 400;
-  max-height: 800;
   align-items: ${isPad ? "center" : "stretch"};
 `
 const Listpad = styled.View`
   align-items: center;
-  padding-top: 80;
+  padding-top: 100;
 `
 const Listphone = styled.View`
   margin-bottom: 100;
   margin-left: 20;
+  margin-top: 50;
+  margin-right: 50;
 `
 
 const HorizontalLayout = styled.View`
-  flex: 1;
   flex-direction: row;
   margin-left: ${isPad ? 0 : 20};
-  margin-top: 40;
-  margin-bottom: ${isPad ? 0 : 50};
+  margin-top: ${isPad ? 40 : 10};
+  margin-bottom: ${isPad ? 0 : 10};
 `
 
 const Title = styled.Text`
@@ -47,7 +46,7 @@ const Title = styled.Text`
   font-size: ${isPad ? 20 : 16};
   line-height: ${isPad ? 24 : 32};
   width: ${isPad ? 760 : 300};
-  margin-top: ${isPad ? 0 : 20};
+  margin-top: ${isPad ? 110 : 50};
   font-family: ${Fonts.AvantGardeRegular};
   align-self: center;
   color: white;
@@ -57,7 +56,6 @@ const SmallHeadline = styled(LargeHeadline)`
   font-size: ${isPad ? 30 : 20};
   color: white;
   ${isPad ? "width: 540" : "max-width: 280"};
-  min-height: 60;
   text-align: left;
 `
 
@@ -69,7 +67,7 @@ const Icon = styled(Image)`
 const ButtonsView = styled.View`
   flex: 1;
   align-items: center;
-  margin-top: 30;
+  margin-top: ${isPad ? 50 : 10};
 `
 
 const List = isPad ? Listpad : Listphone
@@ -84,7 +82,7 @@ export default class Welcome extends React.Component<Props, null> {
   render() {
     return (
       <ConsignmentBG>
-        <ScrollView style={{ flex: 1 }} centerContent>
+        <ScrollView style={{ flex: 1 }}>
           <VerticalLayout>
             <Title>SELL WORKS FROM YOUR COLLECTION</Title>
             <List>

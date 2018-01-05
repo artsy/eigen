@@ -3,6 +3,19 @@
 
 ### Master
 
+* Fixes for the camera roll order in consignments - orta
+* Adds the new photo and selects it when taking a photo - orta
+
+### 1.4.0-beta.12
+
+* New methodology for unread indicator and marking conversation as read - matt
+* Fixes Inbox loading indicator stuck and conversation row collapsing - luc
+* Optimize the Home/ForYou view by re-enabling removal of clipped subviews - alloy
+* Brings back artist rails on the Home/ForYou view - alloy
+* Fix issue where unmounted Home/ForYou rails would be refreshed - chris & alloy
+* Fix payment request component status not updating after payment - alloy
+* Add pull-to-refresh to the ARTISTS and AUCTIONS tabs on the Home view - alloy
+
 ### 1.4.0-beta.11
 
 * Edition number field allows letters too - sarah

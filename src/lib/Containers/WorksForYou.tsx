@@ -5,6 +5,7 @@ import {
   ListView,
   ListViewDataSource,
   NativeModules,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   TextStyle,
@@ -32,6 +33,7 @@ interface Props extends RelayProps {
 
 interface State {
   dataSource: ListViewDataSource | null
+  isRefreshing: boolean
 }
 
 export class WorksForYou extends React.Component<Props, State> {
@@ -53,6 +55,7 @@ export class WorksForYou extends React.Component<Props, State> {
 
     this.state = {
       dataSource,
+      isRefreshing: false,
     }
   }
 
@@ -109,6 +112,17 @@ export class WorksForYou extends React.Component<Props, State> {
     })
   }
 
+  handleRefresh = () => {
+    this.setState({ isRefreshing: true })
+    this.props.relay.refetchConnection(PAGE_SIZE, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("WorksForYou.tsx #handleRefresh", error.message)
+      }
+      this.setState({ isRefreshing: false })
+    })
+  }
+
   render() {
     const hasNotifications = this.state.dataSource
 
@@ -121,6 +135,13 @@ export class WorksForYou extends React.Component<Props, State> {
         onScroll={isCloseToBottom(this.fetchNextPage)}
         scrollEventThrottle={100}
         ref={scrollView => (this.scrollView = scrollView)}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefreshing}
+            onRefresh={this.handleRefresh}
+            style={{ marginBottom: 20 }}
+          />
+        }
       >
         <View style={{ flex: 1 }}>{hasNotifications ? this.renderNotifications() : this.renderEmptyState()}</View>
       </ScrollView>
