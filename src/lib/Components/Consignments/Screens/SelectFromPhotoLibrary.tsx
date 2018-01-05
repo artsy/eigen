@@ -6,7 +6,7 @@ import ConsignmentBG from "../Components/ConsignmentBG"
 import ImageSelection, { ImageData } from "../Components/ImageSelection"
 import { BodyText as P } from "../Typography"
 
-import triggerCamera from "../../../NativeModules/triggerCamera"
+import { triggerCamera } from "lib/NativeModules/triggerCamera"
 
 import { CameraRoll, Dimensions, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
 import { ConsignmentSetup } from "../index"
@@ -61,10 +61,8 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
 
   loadPhotos() {
     // TODO: Need to update the RN 0.48 types on DT
-    // const fetchParams: GetPhotosParamType = {
     const fetchParams: any = {
       first: 20,
-      // groupTypes: "all",
       assetType: "Photos",
     }
 
@@ -80,22 +78,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
       return
     }
 
-    CameraRoll.getPhotos(fetchParams).then(data => {
-      if (data && data.edges[0] && data.edges[0].node) {
-        const photo = data.edges[0].node
-
-        // Update selection
-        this.state.selection.add(photo.image.uri)
-        this.setState({
-          selection: this.state.selection,
-          // An item in cameraImage is a subset of the photo that we pass in,
-          // so we `as any` to avoid a compiler error
-          cameraImages: data.edges.map(e => e.node).concat(this.state.cameraImages as any),
-        })
-      } else {
-        console.log("CameraRoll: Did not receive a photo from call to getPhotos")
-      }
-    })
+    this.getCameraRollPhotos(fetchParams).then(data => this.appendAssets(data))
   }
 
   appendAssets(data) {
@@ -137,11 +120,37 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
     this.props.navigator.pop()
   }
 
+  getCameraRollPhotos = (params: any) => CameraRoll.getPhotos(params)
+
   onPressNewPhoto = () => {
-    triggerCamera(this).then(photo => {
-      if (photo) {
-        this.state.selection.add(photo.uri)
-        this.setState({ selection: this.state.selection })
+    return triggerCamera(this).then(success => {
+      if (success) {
+        // Grab the most recent photo
+        // and add it to the top
+
+        const fetchParams: any = {
+          first: 1,
+          assetType: "Photos",
+        }
+
+        this.getCameraRollPhotos(fetchParams).then(photos => {
+          if (!photos.edges || photos.edges.length === 0) {
+            console.error("SelectFromLibrary: Got no photos when looking for most recent")
+          } else {
+            const photo = photos.edges.map(e => e.node)[0]
+
+            // Update selection
+            this.state.selection.add(photo.image.uri)
+            this.setState({
+              selection: this.state.selection,
+              // An item in cameraImage is a subset of the photo that we pass in,
+              // so we `as any` to avoid a compiler error
+              cameraImages: [photo].concat(this.state.cameraImages as any),
+            })
+          }
+        })
+      } else {
+        console.error("SelectFromLibrary: Did not receive a photo from call to getPhotos")
       }
     })
   }
