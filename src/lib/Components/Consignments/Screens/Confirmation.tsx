@@ -71,8 +71,6 @@ export default class Confirmation extends React.Component<Props, State> {
       submissionState: props.initialState || SubmissionTypes.Submitting,
     }
 
-    // If we have a function we can use to check on the state of a submission, check for it in 1 second
-    // 1 second is a lot of time for this request, it's _tiny_.
     if (this.state.submissionState === SubmissionTypes.Submitting && props.submissionRequestValidationCheck) {
       setTimeout(this.checkForSubmissionStatus, 1000)
     }
@@ -80,8 +78,12 @@ export default class Confirmation extends React.Component<Props, State> {
 
   checkForSubmissionStatus = () => {
     const success = this.props.submissionRequestValidationCheck()
-    const submissionState = success ? SubmissionTypes.SuccessfulSubmission : SubmissionTypes.FailedSubmission
-    this.setState({ submissionState })
+    if (success === undefined) {
+      setTimeout(this.checkForSubmissionStatus, 1000)
+    } else {
+      const submissionState = success ? SubmissionTypes.SuccessfulSubmission : SubmissionTypes.FailedSubmission
+      this.setState({ submissionState })
+    }
   }
 
   exitModal = () => SwitchBoard.dismissModalViewController(this)

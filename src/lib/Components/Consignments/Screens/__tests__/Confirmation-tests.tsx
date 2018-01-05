@@ -34,7 +34,7 @@ describe("callbacks", () => {
     // tslint:disable-next-line:no-unused-expression
     _confirm
 
-    jest.runAllTimers()
+    jest.runOnlyPendingTimers()
     expect(submissionRequestValidationCheck).toHaveBeenCalled()
   })
 
@@ -45,7 +45,7 @@ describe("callbacks", () => {
     const confirmation = new Confirmation({ ...emptyProps, submissionRequestValidationCheck })
     confirmation.setState = jest.fn()
 
-    jest.runAllTimers()
+    jest.runOnlyPendingTimers()
     expect(confirmation.setState).toHaveBeenCalledWith({ submissionState: "SuccessfulSubmission" })
   })
 
@@ -56,8 +56,24 @@ describe("callbacks", () => {
     const confirmation = new Confirmation({ ...emptyProps, submissionRequestValidationCheck })
     confirmation.setState = jest.fn()
 
-    jest.runAllTimers()
+    jest.runOnlyPendingTimers()
     expect(confirmation.setState).toHaveBeenCalledWith({ submissionState: "FailedSubmission" })
+  })
+
+  it("getting undefined back sets will make it run the check a second time", () => {
+    jest.useFakeTimers()
+
+    const submissionRequestValidationCheck = jest.fn()
+    const confirmation = new Confirmation({ ...emptyProps, submissionRequestValidationCheck })
+    confirmation.setState = jest.fn()
+
+    submissionRequestValidationCheck.mockImplementationOnce(() => undefined)
+    jest.runOnlyPendingTimers()
+
+    submissionRequestValidationCheck.mockImplementationOnce(() => true)
+    jest.runOnlyPendingTimers()
+
+    expect(confirmation.setState).toHaveBeenCalledWith({ submissionState: "SuccessfulSubmission" })
   })
 })
 
