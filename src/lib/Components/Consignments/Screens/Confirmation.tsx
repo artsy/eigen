@@ -22,10 +22,25 @@ const Container = styled.View`
   align-items: center;
   justify-content: center;
 `
-const Spinner = styled(Image)`
+const CenterImage = styled(Image)`
   margin-bottom: 20;
+  resize-mode: contain;
 `
-
+const ImageContainer = styled.View`
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+`
+const TextContainer = styled.View`
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+`
+const ButtonView = styled.View`
+  margin-bottom: 60px;
+`
 const Subtitle = styled(LargeHeadline)`
   font-size: 20;
 `
@@ -40,30 +55,54 @@ export default class Confirmation extends React.Component<Props, null> {
 
   progressContent = () => (
     <View>
-      <Spinner source={require("../../../../../images/whitespinner.png")} />
-      <LargeHeadline>Submitting your work</LargeHeadline>
+      <ImageContainer>
+        <CenterImage source={require("../../../../../images/whitespinner.png")} />
+      </ImageContainer>
+      <TextContainer>
+        <View>
+          <LargeHeadline>Submitting your work</LargeHeadline>
+        </View>
+      </TextContainer>
     </View>
   )
   successContent = () => (
     <View>
-      <LargeHeadline>Succesfully submitted</LargeHeadline>
-      <Subtitle>You will receive a confirmation email shortly.</Subtitle>
-      <Button text="DONE" onPress={this.exitModal} />
+      <ImageContainer>
+        <CenterImage source={require("../../../../../images/consignments/success.png")} />
+      </ImageContainer>
+      <TextContainer>
+        <View>
+          <LargeHeadline>Succesfully submitted</LargeHeadline>
+          <Subtitle>You will receive a confirmation email shortly.</Subtitle>
+        </View>
+        <ButtonView>
+          <Button text="DONE" onPress={this.exitModal} />
+        </ButtonView>
+      </TextContainer>
     </View>
   )
   failedContent = () => (
     <View>
-      <LargeHeadline>Submission failed</LargeHeadline>
-      <Subtitle>Please try again.</Subtitle>
-      <BorderedBlackButton text="TRY AGAIN" onPress={this.restart} />
-      <Button text="QUIT" onPress={this.exitModal} />
+      <ImageContainer>
+        <CenterImage source={require("../../../../../images/consignments/failure.png")} />
+      </ImageContainer>
+      <TextContainer>
+        <View>
+          <LargeHeadline>Submission failed</LargeHeadline>
+          <Subtitle>Please try again.</Subtitle>
+        </View>
+        <ButtonView>
+          <BorderedBlackButton text="TRY AGAIN" onPress={this.restart} />
+          <Button text="QUIT" onPress={this.exitModal} />
+        </ButtonView>
+      </TextContainer>
     </View>
   )
 
   render() {
     return (
       <ConsignmentBG>
-        <Container>{this.failedContent()}</Container>
+        <Container>{this.successContent()}</Container>
       </ConsignmentBG>
     )
   }
