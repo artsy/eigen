@@ -8,12 +8,17 @@ import { BorderedBlackButton, Button } from "../Components/FormElements"
 import { LargeHeadline } from "../Typography/index"
 import Welcome from "./Welcome"
 
-// import { Fonts } from "lib/data/fonts"
+import { RotatingView } from "lib/Components/UtilityViews/RotatingView"
 import styled from "styled-components/native"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route
+  /** Used for testing and storybooks, it's expected to be undefined in prod */
+  initialState?: SubmissionTypes
+
+  /** Callback for when the spinner has been showing for after 1 second */
+  submissionRequestValidationCheck?: () => boolean
 }
 
 interface State {
@@ -23,7 +28,7 @@ interface State {
 // Can be exported if we want it to work with the network calls in Overview
 // Would need to be a prop then
 // Not sure how it works when pushing a new nav cont though, seeing as it wouldn't be a child view / comp
-enum SubmissionTypes {
+export enum SubmissionTypes {
   Submitting = "Submitting",
   SuccessfulSubmission = "SuccessfulSubmission",
   FailedSubmission = "FailedSubmission",
@@ -36,7 +41,6 @@ const Container = styled.View`
   justify-content: center;
 `
 const CenterImage = styled(Image)`
-  margin-bottom: 20;
   resize-mode: contain;
 `
 const ImageContainer = styled.View`
@@ -50,6 +54,7 @@ const TextContainer = styled.View`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  margin-top: 20;
 `
 const ButtonView = styled.View`
   margin-bottom: 60px;
@@ -59,13 +64,25 @@ const Subtitle = styled(LargeHeadline)`
 `
 
 @screenTrack({
-  context_screen: Schema.PageNames.ConsignmentsSubmission, // this the correct one?
+  context_screen: Schema.PageNames.ConsignmentsSubmission,
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })
 export default class Confirmation extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
-    this.state = { submissionState: SubmissionTypes.Submitting }
+    this.state = {
+      submissionState: props.initialState || SubmissionTypes.Submitting,
+    }
+
+    if (this.state.submissionState === SubmissionTypes.Submitting && props.submissionRequestValidationCheck) {
+      setTimeout(this.checkForSubmissionStatus, 1000)
+    }
+  }
+
+  checkForSubmissionStatus = () => {
+    const success = this.props.submissionRequestValidationCheck()
+    const submissionState = success ? SubmissionTypes.SuccessfulSubmission : SubmissionTypes.FailedSubmission
+    this.setState({ submissionState })
   }
 
   exitModal = () => SwitchBoard.dismissModalViewController(this)
@@ -74,7 +91,9 @@ export default class Confirmation extends React.Component<Props, State> {
   progressContent = () => (
     <View>
       <ImageContainer>
-        <CenterImage source={require("../../../../../images/whitespinner.png")} />
+        <RotatingView loop={true}>
+          <CenterImage source={require("../../../../../images/whitespinner.png")} />
+        </RotatingView>
       </ImageContainer>
       <TextContainer>
         <View>
@@ -83,6 +102,7 @@ export default class Confirmation extends React.Component<Props, State> {
       </TextContainer>
     </View>
   )
+
   successContent = () => (
     <View>
       <ImageContainer>
