@@ -16,6 +16,19 @@ interface Props extends ViewProperties {
   route: Route
 }
 
+interface State {
+  submissionState: SubmissionTypes
+}
+
+// Can be exported if we want it to work with the network calls in Overview
+// Would need to be a prop then
+// Not sure how it works when pushing a new nav cont though, seeing as it wouldn't be a child view / comp
+enum SubmissionTypes {
+  Submitting = "Submitting",
+  SuccessfulSubmission = "SuccessfulSubmission",
+  FailedSubmission = "FailedSubmission",
+}
+
 const Container = styled.View`
   flex: 1;
   flex-direction: column;
@@ -49,7 +62,12 @@ const Subtitle = styled(LargeHeadline)`
   context_screen: Schema.PageNames.ConsignmentsWelcome,
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })
-export default class Confirmation extends React.Component<Props, null> {
+export default class Confirmation extends React.Component<Props, State> {
+  constructor(props) {
+    super(props)
+    this.state = { submissionState: SubmissionTypes.Submitting }
+  }
+
   exitModal = () => SwitchBoard.dismissModalViewController(this)
   restart = () => this.props.navigator.push({ component: Welcome })
 
@@ -99,10 +117,20 @@ export default class Confirmation extends React.Component<Props, null> {
     </View>
   )
 
+  confirmationContent() {
+    if (this.state.submissionState === SubmissionTypes.Submitting) {
+      return this.progressContent()
+    } else if (this.state.submissionState === SubmissionTypes.SuccessfulSubmission) {
+      return this.successContent()
+    } else if (this.state.submissionState === SubmissionTypes.FailedSubmission) {
+      return this.failedContent()
+    }
+  }
+
   render() {
     return (
       <ConsignmentBG>
-        <Container>{this.successContent()}</Container>
+        <Container>{this.confirmationContent()}</Container>
       </ConsignmentBG>
     )
   }
