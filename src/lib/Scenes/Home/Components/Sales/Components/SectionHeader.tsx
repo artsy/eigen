@@ -1,11 +1,12 @@
 import React from "react"
+import { ViewProperties } from "react-native"
 import styled from "styled-components/native"
 
 import fonts from "lib/data/fonts"
 
 const Header = styled.View`
   padding: 10px;
-  padding-top: 47px;
+  padding-top: 25px;
   padding-bottom: 0px;
   margin-bottom: -4px;
   background-color: white;
@@ -17,7 +18,7 @@ const Title = styled.Text`
   text-align: left;
 `
 
-interface Props {
+interface Props extends ViewProperties {
   title: string
 }
 
