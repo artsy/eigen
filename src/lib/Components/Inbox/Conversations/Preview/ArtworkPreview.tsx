@@ -73,7 +73,10 @@ export class ArtworkPreview extends React.Component<Props, any> {
     const artwork = this.props.artwork
 
     return (
-      <TouchableHighlight underlayColor={Colors.GrayLight} onPress={() => this.attachmentSelected()}>
+      <TouchableHighlight
+        underlayColor={Colors.GrayLight}
+        onPress={this.props.onSelected && this.attachmentSelected.bind(this)}
+      >
         <Container>
           <Image imageURL={artwork.image.url} />
           <TextContainer>

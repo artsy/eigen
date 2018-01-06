@@ -1,3 +1,4 @@
+import { shallow } from "enzyme"
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
@@ -15,6 +16,20 @@ it("handles dateless artworks", () => {
   const tree = renderer.create(<ArtworkPreview artwork={dateless} />)
 
   expect(tree).toMatchSnapshot()
+})
+
+describe("concerning selection handling", () => {
+  it("passes a onPress handler to the touchable component if an onSelected handler is given", () => {
+    const wrapper = shallow(<ArtworkPreview artwork={artwork} onSelected={() => null} />)
+    const touchable = wrapper.find("TouchableHighlight")
+    expect(touchable.props().onPress).toBeDefined()
+  })
+
+  it("does not pass a onPress handler to the touchable component if no onSelected handler is given", () => {
+    const wrapper = shallow(<ArtworkPreview artwork={artwork} />)
+    const touchable = wrapper.find("TouchableHighlight")
+    expect(touchable.props().onPress).toBeUndefined()
+  })
 })
 
 const artwork = {
