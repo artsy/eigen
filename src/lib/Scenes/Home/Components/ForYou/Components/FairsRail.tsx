@@ -18,11 +18,15 @@ const Title = styled(SectionTitle)`
 
 const IconCarousel = styled.ScrollView`
   flex-direction: row;
+  overflow: visible;
   margin-top: 10;
+  margin-left: 16;
+  margin-right: 16;
 `
 
 const TouchableWrapper = styled.View`
-  margin-right: 7;
+  margin-left: 4;
+  margin-right: 4;
 `
 
 interface Props extends RelayProps {
@@ -30,7 +34,7 @@ interface Props extends RelayProps {
   relay?: RelayRefetchProp
 }
 
-export class FairsRail extends Component<Props, any> {
+export class FairsRail extends Component<Props, null> {
   componentWillMount() {
     if (this.props.registerRailModule) {
       this.props.registerRailModule(this)
@@ -78,7 +82,7 @@ export class FairsRail extends Component<Props, any> {
     })
 
     return (
-      <IconCarousel horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{ marginLeft: 20 }}>
+      <IconCarousel horizontal={true} showsHorizontalScrollIndicator={false}>
         {icons}
       </IconCarousel>
     )

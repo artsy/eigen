@@ -44,18 +44,16 @@ exports[`looks correct when rendered 1`] = `
     </Text>
   </Text>
   <RCTScrollView
-    contentContainerStyle={
-      Object {
-        "marginLeft": 20,
-      }
-    }
     horizontal={true}
     showsHorizontalScrollIndicator={false}
     style={
       Array [
         Object {
           "flexDirection": "row",
+          "marginLeft": 16,
+          "marginRight": 16,
           "marginTop": 10,
+          "overflow": "visible",
         },
         undefined,
       ]
@@ -98,7 +96,8 @@ exports[`looks correct when rendered 1`] = `
           style={
             Array [
               Object {
-                "marginRight": 7,
+                "marginLeft": 4,
+                "marginRight": 4,
               },
               undefined,
             ]
