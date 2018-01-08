@@ -168,7 +168,7 @@ export class Message extends React.Component<Props, any> {
               <SenderName disabled={isPending}>{senderName}</SenderName>
               {
                 <TimeStamp pending={isPending}>
-                  {isPending ? "pending" : moment(message.created_at).fromNow(true)}
+                  {isPending ? "pending" : moment(message.created_at).fromNow(true) + " ago"}
                 </TimeStamp>
               }
             </Header>

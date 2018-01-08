@@ -150,7 +150,7 @@ exports[`looks correct when rendered 1`] = `
             ]
           }
         >
-          A YEAR
+          A YEAR AGO
         </Text>
       </View>
       <View
