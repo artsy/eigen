@@ -38,8 +38,8 @@ interface State {
 // It's necessary to wrap all tracks nested in this component, so they dispatch properly
 // Also, it'll only fire when the home screen is mounted, the only event we would otherwise miss with our own callbacks
 @screenTrack({
-  context_screen: Schema.PageNames.ArtistPage,
-  context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
+  context_screen: Schema.PageNames.HomeArtistsWorksForYou,
+  context_screen_owner_type: null,
 })
 export default class Home extends React.Component<Props, State> {
   tabView?: ScrollableTabView | any
@@ -76,7 +76,7 @@ export default class Home extends React.Component<Props, State> {
     if (this.props.selectedArtist && this.state.appState.match(/inactive|background/) && nextAppState === "active") {
       this.tabView.goToPage(0)
     }
-    this.setState({ appState: nextAppState })
+    this.setState({ appState: nextAppState, selectedTab: 0 }, () => this.fireHomeScreenViewAnalytics())
   }
 
   render() {
@@ -122,14 +122,22 @@ export default class Home extends React.Component<Props, State> {
   }
 
   setSelectedTab(selectedTab) {
-    this.setState({ selectedTab: selectedTab.i })
-    this.fireHomeScreenViewAnalytics()
+    this.setState({ selectedTab: selectedTab.i }, () => this.fireHomeScreenViewAnalytics())
   }
 
   fireHomeScreenViewAnalytics() {
+    let screenType
+
+    if (this.state.selectedTab === 0) {
+      screenType = Schema.PageNames.HomeArtistsWorksForYou
+    } else if (this.state.selectedTab === 1) {
+      screenType = Schema.PageNames.HomeForYou
+    } else {
+      screenType = Schema.PageNames.HomeAuctions
+    }
     this.props.tracking.trackEvent({
-      context_screen: Schema.PageNames.ConsignmentsWelcome,
-      context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
+      context_screen: screenType,
+      context_screen_owner_type: null,
     })
   }
 }

@@ -87,6 +87,9 @@ export namespace Schema {
     ConsignmentsSubmission = "ConsignmentsSubmit",
     InboxPage = "Inbox",
     InquiryPage = "Inquiry",
+    HomeArtistsWorksForYou = "HomeArtistsWorksForYou",
+    HomeForYou = "HomeForYou",
+    HomeAuctions = "HomeAuctions",
   }
 
   export enum OwnerEntityTypes {
