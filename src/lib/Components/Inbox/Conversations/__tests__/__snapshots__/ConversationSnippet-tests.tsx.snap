@@ -245,7 +245,7 @@ exports[`renders correctly with a show 1`] = `
           ]
         }
       >
-        A YEAR
+        A YEAR AGO
       </Text>
     </View>
   </View>
@@ -551,7 +551,7 @@ exports[`renders correctly with an artwork 1`] = `
           ]
         }
       >
-        A YEAR
+        A YEAR AGO
       </Text>
     </View>
   </View>

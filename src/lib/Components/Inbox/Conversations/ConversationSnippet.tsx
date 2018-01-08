@@ -149,7 +149,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
     const partnerName = conversation.to.name
 
     const conversationText = conversation.last_message.replace(/\n/g, " ")
-    const date = moment(conversation.last_message_at).fromNow(true)
+    const date = moment(conversation.last_message_at).fromNow(true) + " ago"
     return (
       <TouchableWithoutFeedback onPress={() => this.conversationSelected()}>
         <Card>
