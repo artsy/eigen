@@ -6,6 +6,7 @@
 * Make sure Home/Fairs rail does not clip any icons at the end of the list - alloy
 * Re-align headers in all Home tabs - alloy
 * Fix crash that would occur when tapping artwork component on inquiry view - alloy
+* Fix a bug that would not let an infinite scroll of artworks stop requesting more artworks - orta
 
 ### 1.4.0-beta.13
 
