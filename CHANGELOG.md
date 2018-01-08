@@ -7,9 +7,13 @@
 * Re-align headers in all Home tabs - alloy
 * Fix crash that would occur when tapping artwork component on inquiry view - alloy
 * Add analytics to the Home tabs - maxim
+* Fix a bug that would not let an infinite scroll of artworks stop requesting more artworks - orta
+* More pixel pushing in the consignments welcome screen - alloy
+* More pixel pushing in the conversations zero state screen - alloy
 
 ### 1.4.0-beta.13
 
+* Message timestamps are more human-readable with 'ago' - sarah
 * Fixes for the camera roll order in consignments - orta
 * Adds the new photo and selects it when taking a photo - orta
 * Adds a confirmation screen to the end of the consignment submission process - maxim/orta

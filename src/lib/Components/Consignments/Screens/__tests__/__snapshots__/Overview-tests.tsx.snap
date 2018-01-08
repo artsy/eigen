@@ -715,7 +715,6 @@ exports[`Sets up the right view hierarchy 1`] = `
               Array [
                 Object {
                   "justifyContent": "center",
-                  "marginTop": 0,
                 },
                 Object {
                   "alignItems": "center",
@@ -748,7 +747,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                   "borderWidth": 1,
                   "height": 43,
                   "justifyContent": "center",
-                  "marginTop": 20,
+                  "marginTop": -8,
                   "width": 174,
                 }
               }

@@ -61,6 +61,18 @@ export default class Button extends React.Component<Props, State> {
   }
 
   componentDidUpdate(_prevProps: any, prevState: any) {
+    const currentDisplayState = this.state.displayState
+
+    // Check to see if it has been enabled/disabled since last render; ignore this if highlighted
+    if (currentDisplayState !== DisplayState.Highlighted) {
+      const enablementState =
+        this.props.onPress && this.props.onPress !== undefined ? DisplayState.Enabled : DisplayState.Disabled
+
+      if (currentDisplayState !== enablementState) {
+        this.setState({ displayState: enablementState })
+      }
+    }
+
     if (this.state.displayState !== prevState.displayState) {
       // Don't animate in when it's the initial press down
       const showHighlight =

@@ -1,114 +1,157 @@
+/**
+ * TODO: This file shares much with the Conversations/ZeroStateInbox screen and should be refactored.
+ */
+
 import React from "react"
-import { Dimensions, Image, NavigatorIOS, Route, ScrollView, ViewProperties } from "react-native"
+import { Image, LayoutChangeEvent, NavigatorIOS, Route, ScrollView, TextProperties, ViewProperties } from "react-native"
 
 import { Schema, screenTrack } from "lib/utils/track"
 import CloseButton from "../Components/CloseButton"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import { Button } from "../Components/FormElements"
-import { LargeHeadline } from "../Typography"
+import * as Typography from "../Typography"
 import Overview from "./Overview"
 
 import { Fonts } from "lib/data/fonts"
-import styled from "styled-components/native"
+import styled, { StyledFunction } from "styled-components/native"
+
+const View: StyledFunction<DeviceProps & ViewProperties> = styled.View
+const Text: StyledFunction<DeviceProps & TextProperties> = styled.Text
+
+interface DeviceProps {
+  isTiny: boolean
+  isPad: boolean
+  isPortrait: boolean
+}
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
   route: Route
 }
 
-const isPad = Dimensions.get("window").width > 700
+interface State {
+  deviceProps?: DeviceProps
+}
 
-const VerticalLayout = styled.View`
+const VerticalLayout = View`
   flex: 1;
   flex-direction: column;
-  align-items: ${isPad ? "center" : "stretch"};
-`
-const Listpad = styled.View`
-  align-items: center;
-  padding-top: 100;
-`
-const Listphone = styled.View`
-  margin-bottom: 100;
-  margin-left: 20;
-  margin-top: 50;
-  margin-right: 50;
+  align-items: ${({ isPad }) => (isPad ? "center" : "stretch")};
 `
 
-const HorizontalLayout = styled.View`
-  flex-direction: row;
-  margin-left: ${isPad ? 0 : 20};
-  margin-top: ${isPad ? 40 : 10};
-  margin-bottom: ${isPad ? 0 : 10};
-`
-
-const Title = styled.Text`
-  text-align: center;
-  font-size: ${isPad ? 20 : 16};
-  line-height: ${isPad ? 24 : 32};
-  width: ${isPad ? 760 : 300};
-  margin-top: ${isPad ? 110 : 50};
-  font-family: ${Fonts.AvantGardeRegular};
+const List = View`
   align-self: center;
-  color: white;
+  width: ${({ isTiny }) => (isTiny ? 280 : 330)};
+  margin-top: 0;
+  margin-bottom: 0;
 `
 
-const SmallHeadline = styled(LargeHeadline)`
-  font-size: ${isPad ? 30 : 20};
+const HorizontalLayout = View`
+  flex-direction: row;
+  margin-left: 0;
+  margin-top: 0;
+  margin-bottom: 51;
+`
+
+const Title = Text`
+  font-size: 16;
+  line-height: 22;
+  margin-top: ${({ isPad, isPortrait }) => (isPad && isPortrait ? 230 : 58)};
+  font-family: ${Fonts.AvantGardeRegular};
   color: white;
-  ${isPad ? "width: 540" : "max-width: 280"};
+  margin-bottom: 63;
+  /* This text aligment doesn’t seem to work, so using letter-spacing instead. */
+  /* text-align: justify; */
+  letter-spacing: ${({ isTiny }) => (isTiny ? "-0.2" : "1.474")};
+`
+
+/* TODO: This should actually have a reduced line gap, but there doesn’t appear to be a way to do so. Maybe native? */
+const BaseHeadline: StyledFunction<DeviceProps & TextProperties> = styled(Typography.LargeHeadline)
+const SmallHeadline = BaseHeadline`
+  font-size: 20;
+  line-height: 22;
+  flex: 1;
+  padding: 0;
+  color: white;
+  margin-right: 0;
+  margin-bottom: 0;
   text-align: left;
+  /* This is not 44, as per the design, because RN currently clips text regardless of overflow setting. In our case it
+     would clip the descender part of the font. */
+  height: 47;
+  /* height: 44; */
+  /* overflow: visible; */
 `
 
 const Icon = styled(Image)`
   resize-mode: contain;
   width: 40;
+  margin-right: 24;
 `
 
-const ButtonsView = styled.View`
+const ButtonsView = View`
   flex: 1;
   align-items: center;
-  margin-top: ${isPad ? 50 : 10};
+  margin-top: ${({ isPad }) => (isPad ? 50 : 8)};
+  margin-bottom: 10;
 `
 
-const List = isPad ? Listpad : Listphone
+const Contents: React.SFC<{ deviceProps: DeviceProps; onPress: () => void }> = ({ deviceProps, onPress }) => {
+  return (
+    <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false}>
+      <VerticalLayout {...deviceProps}>
+        <List {...deviceProps}>
+          <Title {...deviceProps}>SELL WORKS FROM YOUR COLLECTION</Title>
+          <HorizontalLayout {...deviceProps}>
+            <Icon source={require("../../../../../images/cam.png")} />
+            <SmallHeadline {...deviceProps}>Take a few photos and submit details about the work</SmallHeadline>
+          </HorizontalLayout>
+          <HorizontalLayout {...deviceProps}>
+            <Icon source={require("../../../../../images/offer.png")} />
+            <SmallHeadline {...deviceProps}>Get the offers from galleries and auction houses</SmallHeadline>
+          </HorizontalLayout>
+          <HorizontalLayout {...deviceProps}>
+            <Icon source={require("../../../../../images/sell.png")} />
+            <SmallHeadline {...deviceProps}>Have your work placed in a gallery or upcoming sale</SmallHeadline>
+          </HorizontalLayout>
+          <HorizontalLayout {...deviceProps}>
+            <Icon source={require("../../../../../images/money.png")} />
+            <SmallHeadline {...deviceProps}>Receive payment once the{"\n"}work sells</SmallHeadline>
+          </HorizontalLayout>
+          <ButtonsView {...deviceProps}>
+            <Button text="GET STARTED" onPress={onPress} style={{ marginTop: 0 }} />
+            <CloseButton />
+          </ButtonsView>
+        </List>
+      </VerticalLayout>
+    </ScrollView>
+  )
+}
 
 @screenTrack({
   context_screen: Schema.PageNames.ConsignmentsWelcome,
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })
-export default class Welcome extends React.Component<Props, null> {
+export default class Welcome extends React.Component<Props, State> {
+  state = { deviceProps: undefined }
+
   goTapped = () => this.props.navigator.push({ component: Overview })
+
+  handleLayoutChange = (event: LayoutChangeEvent) => {
+    const { width, height } = event.nativeEvent.layout
+    this.setState({
+      deviceProps: {
+        isTiny: width < 321, // Pre-iPhone 6
+        isPad: width > 700,
+        isPortrait: width < height,
+      },
+    })
+  }
 
   render() {
     return (
-      <ConsignmentBG>
-        <ScrollView style={{ flex: 1 }}>
-          <VerticalLayout>
-            <Title>SELL WORKS FROM YOUR COLLECTION</Title>
-            <List>
-              <HorizontalLayout>
-                <Icon source={require("../../../../../images/cam.png")} />
-                <SmallHeadline>Take a few photos and submit details about the work</SmallHeadline>
-              </HorizontalLayout>
-              <HorizontalLayout>
-                <Icon source={require("../../../../../images/offer.png")} />
-                <SmallHeadline>Get the offers from galleries and auction houses</SmallHeadline>
-              </HorizontalLayout>
-              <HorizontalLayout>
-                <Icon source={require("../../../../../images/sell.png")} />
-                <SmallHeadline>Have your work placed in a gallery or upcoming sale</SmallHeadline>
-              </HorizontalLayout>
-              <HorizontalLayout>
-                <Icon source={require("../../../../../images/money.png")} />
-                <SmallHeadline>Receive payment once the work sells</SmallHeadline>
-              </HorizontalLayout>
-              <ButtonsView>
-                <Button text="GET STARTED" onPress={this.goTapped} />
-                <CloseButton />
-              </ButtonsView>
-            </List>
-          </VerticalLayout>
-        </ScrollView>
+      <ConsignmentBG onLayout={this.handleLayoutChange}>
+        {this.state.deviceProps && <Contents deviceProps={this.state.deviceProps} onPress={this.goTapped} />}
       </ConsignmentBG>
     )
   }

@@ -123,8 +123,10 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
         console.error("InfiniteScrollGrid.tsx", error.message)
       }
       this.setState({ fetchingNextPage: false })
-      if (!this.artworksConnection().pageInfo.hasNextPage && this.props.onComplete) {
-        this.props.onComplete()
+      if (!this.artworksConnection().pageInfo.hasNextPage) {
+        if (this.props.onComplete) {
+          this.props.onComplete()
+        }
         this.setState({ completed: true })
       }
     })
