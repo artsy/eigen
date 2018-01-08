@@ -3,6 +3,8 @@ import { AppState, View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import styled from "styled-components/native"
 
+import { Schema, track } from "lib/utils/track"
+
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
 
@@ -28,8 +30,10 @@ interface Props {
 
 interface State {
   appState: string
+  selectedTab: number
 }
 
+@track()
 export default class Home extends React.Component<Props, State> {
   tabView?: ScrollableTabView | any
 
@@ -38,6 +42,7 @@ export default class Home extends React.Component<Props, State> {
 
     this.state = {
       appState: AppState.currentState,
+      selectedTab: 0, // default to the WorksForYou view
     }
   }
 
@@ -47,6 +52,15 @@ export default class Home extends React.Component<Props, State> {
 
   componentWillUnmount() {
     AppState.removeEventListener("change", this._handleAppStateChange)
+  }
+
+  // FIXME: Make a proper "viewDidAppear" callback / event emitter
+  // This is called when the overall home component appears in Eigen
+  // We use it to dispatch screen events at that point
+  componentWillReceiveProps(newProps) {
+    if (newProps.isVisible) {
+      this.fireHomeScreenViewAnalytics()
+    }
   }
 
   _handleAppStateChange = nextAppState => {
@@ -63,6 +77,7 @@ export default class Home extends React.Component<Props, State> {
         <ScrollableTabView
           initialPage={this.props.selectedTab || 0}
           ref={tabView => (this.tabView = tabView)}
+          onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
           renderTabBar={props => (
             <TabBarContainer>
               <TabBar {...props} />
@@ -96,5 +111,15 @@ export default class Home extends React.Component<Props, State> {
 
   openLink() {
     SwitchBoard.presentNavigationViewController(this, Router.ConsignmentsStartSubmission)
+  }
+
+  setSelectedTab(selectedTab) {
+    this.setState({ selectedTab: selectedTab.i })
+    this.fireHomeScreenViewAnalytics()
+  }
+
+  fireHomeScreenViewAnalytics() {
+    console.log("hi")
+    this.props.tracking.trackEvent({})
   }
 }
