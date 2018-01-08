@@ -69,7 +69,6 @@
     [webView loadRequest:initialRequest];
 
     UIScrollView *scrollView = webView.scrollView;
-    scrollView.delegate = self;
     scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
 
     // Work around bug in WKScrollView by setting private ivar directly: http://trac.webkit.org/changeset/188541
@@ -91,6 +90,13 @@
 
     _webView = webView;
 }
+
+- (void)willMoveToParentViewController:(UIViewController *)parent;
+{
+    [super willMoveToParentViewController:parent];
+    self.scrollView.delegate = [parent isKindOfClass:ARNavigationController.class] ? self : nil;
+}
+
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -138,7 +144,9 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
+    if ([self.navigationController isKindOfClass:ARNavigationController.class]) {
+        [[ARScrollNavigationChief chief] scrollViewDidScroll:scrollView];
+    }
 }
 
 #pragma mark UIGestureRecognizerDelegate

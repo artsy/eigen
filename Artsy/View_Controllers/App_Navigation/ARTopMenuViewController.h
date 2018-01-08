@@ -48,9 +48,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Used in search to exit out of search and back into a previous tab.
 - (void)returnToPreviousTab;
 
-/// Updates the badge counters on each tab by asking the data source for current counts.
-- (void)updateBadges;
-
 /// Present the root view controller of the navigation controller at the specified (tab) index. If a navigation stack
 /// exists, it is popped to said root view controller.
 - (void)presentRootViewControllerAtIndex:(NSInteger)index animated:(BOOL)animated;

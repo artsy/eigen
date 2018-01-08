@@ -8,7 +8,6 @@
 #import "AROnboardingViewController.h"
 #import "ARStubbedBrowseNetworkModel.h"
 #import "ARBrowseViewController.h"
-#import <JSBadgeView/JSBadgeView.h>
 #import "ARSwitchBoard.h"
 
 #import <Emission/ARWorksForYouComponentViewController.h>
@@ -25,7 +24,6 @@
 
 @interface ARTopMenuViewController (ExposedForTesting) <ARTabViewDelegate>
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
-- (JSBadgeView *)badgeForButtonAtIndex:(NSInteger)index createIfNecessary:(BOOL)createIfNecessary;
 @property (readwrite, nonatomic, assign) enum ARTopTabControllerIndex selectedTabIndex;
 @end
 
@@ -144,30 +142,6 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
                 [topMenuVCMock presentRootViewControllerAtIndex:tab animated:YES];
                 [tabContentViewMock verify];
             });
-        });
-    });
-
-    describe(@"concerning badges", ^{
-        __block JSBadgeView *badgeView = nil;
-
-        before(^{
-            sut.navigationDataSource.badgeCounts[tab] = tab+1;
-            [sut updateBadges];
-            badgeView = [sut badgeForButtonAtIndex:tab createIfNecessary:NO];
-        });
-
-        it(@"shows a notification badge", ^{
-            expect(badgeView.badgeText).to.equal(@(tab+1).stringValue);
-        });
-
-        it(@"updates the badge count in the data source", ^{
-            [sut setNotificationCount:0 forControllerAtIndex:tab];
-            expect(badgeView.badgeText).to.equal(@"0");
-        });
-
-        it(@"does not show a notification badge when it's value is 0", ^{
-            [sut setNotificationCount:0 forControllerAtIndex:tab];
-            expect(badgeView.isHidden).to.beTruthy;
         });
     });
 });

@@ -132,8 +132,11 @@ struct GeneRefineSettings {
     static func refinementFromAggregationJSON(_ data: [String: AnyObject], initial: Bool) -> GeneRefineSettings? {
         let json = JSON(data)
         guard let aggregations = json["aggregations"].array,
-            let sort = json["sort"].string, let sorting = GeneSortingOrder.fromID(sort),
+            let sort = json["sort"].string,
+            let sorting = GeneSortingOrder.fromID(sort),
             let mediumID = json["selectedMedium"].string else {
+                print("Gene Refine from JSON: Either aggregations, sort or selectedMedium were missing or set up wrong")
+                print(data)
                 return nil
         }
 
@@ -147,7 +150,11 @@ struct GeneRefineSettings {
             price = Price(id: json["selectedPrice"].string!)
         }
 
-        guard let mediumsJSON = aggregations.filter({ $0["slice"].stringValue == "MEDIUM" }).first else { return nil }
+        guard let mediumsJSON = aggregations.filter({ $0["slice"].stringValue == "MEDIUM" }).first else {
+            print("Gene Refine from JSON: No aggregation slice contained MEDIUM")
+            print(data)
+            return nil
+        }
         let mediums = mediumsJSON["counts"].arrayValue.map({ Medium(id: $0["id"].stringValue, name: $0["name"].stringValue, count: $0["count"].intValue) })
 
         let allowedMediums = mediums.filter { $0.count > 0 }

@@ -20,7 +20,6 @@
 #import "UIDevice-Hardware.h"
 #import "Artsy-Swift.h"
 
-#import <JSBadgeView/JSBadgeView.h>
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
@@ -35,6 +34,67 @@
 #import <React/RCTScrollView.h>
 
 static const CGFloat ARMenuButtonDimension = 50;
+
+@interface ARNavigationTabButtonWithBadge : ARNavigationTabButton
+@property (nonatomic, strong) UIImage *icon;
+@end
+
+@implementation ARNavigationTabButtonWithBadge
+
+- (void)setup;
+{
+    [super setup];
+    [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+
+    // TODO: Clears all on tap. This needs to get more sophisticated, as per
+    // https://github.com/artsy/collector-experience/issues/661
+    [self addTarget:self action:@selector(clearBadge) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)clearBadge;
+{
+    self.badgeCount = 0;
+}
+
+- (void)setBadgeCount:(NSUInteger)badgeCount;
+{
+    if (badgeCount) {
+        [self setImage:nil forState:UIControlStateNormal];
+        [self setImage:nil forState:UIControlStateSelected];
+        [self setBackgroundImage:[self badgeBackgroundImageWithColor:[UIColor blackColor]] forState:UIControlStateNormal];
+        [self setBackgroundImage:[self badgeBackgroundImageWithColor:[UIColor artsyPurpleRegular]] forState:UIControlStateSelected];
+        [self setTitle:[NSString stringWithFormat:@"%lu", badgeCount] forState:UIControlStateNormal];
+        [self setTitle:[NSString stringWithFormat:@"%lu", badgeCount] forState:UIControlStateSelected];
+    } else {
+        [self setImage:self.icon forState:UIControlStateNormal];
+        [self setImage:self.icon forState:UIControlStateSelected];
+        [self setBackgroundImage:nil forState:UIControlStateNormal];
+        [self setBackgroundImage:nil forState:UIControlStateSelected];
+        [self setTitle:nil forState:UIControlStateNormal];
+        [self setTitle:nil forState:UIControlStateSelected];
+    }
+}
+
+- (void)setIcon:(UIImage *)icon;
+{
+    _icon = icon;
+    [self setImage:_icon forState:UIControlStateNormal];
+    [self setImage:_icon forState:UIControlStateSelected];
+}
+
+- (UIImage *)badgeBackgroundImageWithColor:(UIColor *)color;
+{
+    CGSize size = self.bounds.size;
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0);
+    [color setFill];
+    CGContextFillEllipseInRect(UIGraphicsGetCurrentContext(), (CGRect){ CGPointZero, size });
+    UIImage *backgroundImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return backgroundImage;
+}
+
+@end
 
 
 @interface ARTopMenuViewController () <ARTabViewDelegate>
@@ -74,8 +134,6 @@ static const CGFloat ARMenuButtonDimension = 50;
 
     // TODO: Turn into custom view?
 
-    NSArray *buttons = [self buttons];
-
     UIView *tabContainer = [[UIView alloc] init];
     self.tabContainer = tabContainer;
     self.tabContainer.backgroundColor = [UIColor whiteColor];
@@ -91,8 +149,6 @@ static const CGFloat ARMenuButtonDimension = 50;
                                                                       delegate:self
                                                                     dataSource:self.navigationDataSource];
     tabContentView.supportSwipeGestures = NO;
-    tabContentView.buttons = buttons;
-    [tabContentView setCurrentViewIndex:ARTopTabControllerIndexHome animated:NO];
     _tabContentView = tabContentView;
     [self.view addSubview:tabContentView];
 
@@ -117,10 +173,6 @@ static const CGFloat ARMenuButtonDimension = 50;
         [buttonContainer alignLeading:@"0" trailing:@"0" toView:self.tabContainer];
     }
 
-    for (ARNavigationTabButton *button in buttons) {
-        [buttonContainer addSubview:button];
-    }
-
     UIView *separator = [[UIView alloc] init];
     [separator constrainHeight:@"1"];
     UIColor *color = [AROptions boolForOption:ARUseStagingDefault] ?
@@ -131,23 +183,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     [separator alignTopEdgeWithView:tabContainer predicate:@"0"];
     [separator constrainWidthToView:tabContainer predicate:@"0"];
 
-    NSMutableArray *constraintsForButtons = [NSMutableArray array];
-    [buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
-        [button alignCenterYWithView:buttonContainer predicate:@"0"];
-        
-        NSString *marginToContainerEdges = regularHorizontalSizeClass ? @"0" : @"20";
-        NSString *marginBetweenButtons = regularHorizontalSizeClass ? @"100" : @"0";
-        if (index == 0) {
-            [button alignLeadingEdgeWithView:buttonContainer predicate:marginToContainerEdges];
-        } else {
-            [constraintsForButtons addObject:[button constrainLeadingSpaceToView:buttons[index - 1] predicate:marginBetweenButtons]];
-        }
-        
-        if (index == buttons.count - 1 && !regularHorizontalSizeClass) {
-            [buttonContainer alignTrailingEdgeWithView:button predicate:@"20"];
-        }
-    }];
-    self.constraintsForButtons = [constraintsForButtons copy];
+    [self updateButtons];
 
     // Ensure it's created now and started listening for keyboard changes.
     // TODO Ideally this pod would start listening from launch of the app, so we don't need to rely on this one but can
@@ -204,31 +240,6 @@ static const CGFloat ARMenuButtonDimension = 50;
             [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
         }];
     }];
-}
-
-
-- (ARNavigationTabButton *)tabButtonWithName:(NSString *)name accessibilityName:(NSString *)accessibilityName
-{
-    ARNavigationTabButton *button = [[ARNavigationTabButton alloc] init];
-    button.accessibilityLabel = accessibilityName;
-    [button setImage:[[UIImage imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    [button setImage:[[UIImage imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
-    [button.imageView constrainWidth:@"30" height:@"30"];
-    [button setTintColor:[UIColor blackColor]];
-    // Makes it 40x40 as a tap target
-    [button ar_extendHitTestSizeByWidth:5 andHeight:5];
-    return button;
-}
-
-- (NSArray *)buttons
-{
-    return @[
-        [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
-        [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
-        [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
-        [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
-        // [self tabButtonWithName:@"nav_profile" accessibilityName:@"Profile"],
-    ];
 }
 
 - (void)registerWithSwitchBoard:(ARSwitchBoard *)switchboard
@@ -315,48 +326,68 @@ static const CGFloat ARMenuButtonDimension = 50;
     return NSNotFound;
 }
 
-#pragma mark - Badges
+#pragma mark - Buttons
 
-// TODO: Nav Notifications
+- (ARNavigationTabButton *)tabButtonWithName:(NSString *)name accessibilityName:(NSString *)accessibilityName
+{
+    ARNavigationTabButtonWithBadge *button = [[ARNavigationTabButtonWithBadge alloc] init];
+    button.accessibilityLabel = accessibilityName;
+    button.icon = [[UIImage imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [button setTintColor:[UIColor blackColor]];
+    [button ar_extendHitTestSizeByWidth:5 andHeight:5];
+    return button;
+}
 
+- (NSArray *)buttons
+{
+    return @[
+             [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
+             [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
+             [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
+             [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
+             // [self tabButtonWithName:@"nav_profile" accessibilityName:@"Profile"],
+             ];
+}
+
+- (void)updateButtons;
+{
+    NSArray *buttons = self.buttons;
+    
+    self.tabContentView.buttons = buttons;
+    [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexHome animated:NO];
+    
+    UIView *buttonContainer = self.buttonContainer;
+    BOOL regularHorizontalSizeClass = self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular;
+    
+    for (ARNavigationTabButton *button in buttons) {
+        [buttonContainer addSubview:button];
+    }
+    
+    NSMutableArray *constraintsForButtons = [NSMutableArray array];
+    [buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
+        [button alignCenterYWithView:buttonContainer predicate:@"0"];
+        
+        NSString *marginToContainerEdges = regularHorizontalSizeClass ? @"0" : @"20";
+        NSString *marginBetweenButtons = regularHorizontalSizeClass ? @"100" : @"0";
+        if (index == 0) {
+            [button alignLeadingEdgeWithView:buttonContainer predicate:marginToContainerEdges];
+        } else {
+            [constraintsForButtons addObject:[button constrainLeadingSpaceToView:buttons[index - 1] predicate:marginBetweenButtons]];
+        }
+        
+        if (index == buttons.count - 1 && !regularHorizontalSizeClass) {
+            [buttonContainer alignTrailingEdgeWithView:button predicate:@"20"];
+        }
+    }];
+    self.constraintsForButtons = [constraintsForButtons copy];
+}
 
 - (void)setNotificationCount:(NSUInteger)number forControllerAtIndex:(ARTopTabControllerIndex)index;
 {
-    [self.navigationDataSource setNotificationCount:number forControllerAtIndex:index];
-    [self updateBadges];
-}
-
-- (void)updateBadges;
-{
-    [self.tabContentView.buttons eachWithIndex:^(UIButton *button, NSUInteger index) {
-        NSUInteger number = [self.navigationDataSource badgeNumberForTabAtIndex:index];
-        if (number > 0) {
-            JSBadgeView *badgeView = [self badgeForButtonAtIndex:index createIfNecessary:YES];
-            badgeView.badgeText = [NSString stringWithFormat:@"%lu", (long unsigned)number];
-            badgeView.hidden = NO;
-        } else {
-            JSBadgeView *badgeView = [self badgeForButtonAtIndex:index createIfNecessary:NO];
-            badgeView.badgeText = @"0";
-            badgeView.hidden = YES;
-        }
-    }];
-}
-
-- (JSBadgeView *)badgeForButtonAtIndex:(NSInteger)index createIfNecessary:(BOOL)createIfNecessary;
-{
-    static char kButtonBadgeKey;
-    UIButton *button = self.tabContentView.buttons[index];
-    JSBadgeView *badgeView = objc_getAssociatedObject(button, &kButtonBadgeKey);
-    if (badgeView == nil && createIfNecessary) {
-        UIView *parentView = [button titleForState:UIControlStateNormal] == nil ? button.imageView : button.titleLabel;
-        parentView.clipsToBounds = NO;
-        badgeView = [[JSBadgeView alloc] initWithParentView:parentView alignment:JSBadgeViewAlignmentTopRight];
-        badgeView.badgeTextFont = [UIFont sansSerifFontWithSize:10];
-        // This is a unique purple color. If it ever needs to be used elsewhere it should be moved to Artsy-UIColors.
-        badgeView.badgeBackgroundColor = [UIColor artsyRedRegular];
-        objc_setAssociatedObject(button, &kButtonBadgeKey, badgeView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    return badgeView;
+    // TODO: See https://github.com/artsy/collector-experience/issues/661
+    // [self.navigationDataSource setNotificationCount:number forControllerAtIndex:index];
+    ARNavigationTabButtonWithBadge *button = self.tabContentView.buttons[index];
+    button.badgeCount = number;
 }
 
 #pragma mark - ARMenuAwareViewController

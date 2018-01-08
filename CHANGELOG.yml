@@ -25,6 +25,7 @@ upcoming:
       - Fix for opening URLs in iOS 11 - orta
       - Add ARAppStatus.isDev getter to only determine dev mode - alloy
       - Don’t report crashes from development builds - alloy
+      - Adds an admin panel for showing the Sentry breadcrumbs (crashes/logs/analytics calls) - orta
 
     user_facing:
       - Onboarding users land on For You tab of Home instead of Artists - sarah
@@ -42,6 +43,7 @@ upcoming:
       - A Live Auctions uses haptic feedback - orta
       - Fixes sending the right user min/max pricing details during onboarding - orta
       - Stops status bar from obscuring cancel button and title label of refine view - ash
+      - Replace small notifications badge on tab bar items with large one - alloy
 
 releases:
   - version: 3.2.7

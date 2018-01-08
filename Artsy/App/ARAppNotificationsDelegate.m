@@ -189,39 +189,40 @@
 
     NSString *url = userInfo[@"url"];
     NSString *message = userInfo[@"aps"][@"alert"] ?: url;
-    UIViewController *viewController = nil;
     if (url) {
-        viewController = [ARSwitchBoard.sharedInstance loadPath:url];
-        // Set the badge count on the tab that the view controller belongs to.
-        NSInteger tabIndex = [[ARTopMenuViewController sharedController] indexOfRootViewController:viewController];
-        if (tabIndex != NSNotFound) {
+        // TODO: https://github.com/artsy/collector-experience/issues/661
+        if ([[[NSURL URLWithString:url] path] hasPrefix:@"/conversation/"]) {
             NSUInteger count = [userInfo[@"aps"][@"badge"] unsignedLongValue];
-            [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:tabIndex];
+            [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexMessaging];
         }
     }
 
     if (applicationState == UIApplicationStateBackground) {
         // A notification was received while the app is in the background.
-        [self receivedNotification:notificationInfo viewController:viewController];
+        [self receivedNotification:notificationInfo];
 
-    } else if (applicationState == UIApplicationStateActive) {
-        // A notification was received while the app was already active, so we show our own notification view.
-        [self receivedNotification:notificationInfo viewController:viewController];
-        [ARNotificationView showNoticeInView:[self findVisibleWindow]
-                                       title:message
-                                    response:^{
-                                        if (viewController) {
+    } else {
+        UIViewController *viewController = nil;
+        if (url) {
+            viewController = [ARSwitchBoard.sharedInstance loadPath:url];
+        }
+        if (applicationState == UIApplicationStateActive) {
+            // A notification was received while the app was already active, so we show our own notification view.
+            [self receivedNotification:notificationInfo];
+            [ARNotificationView showNoticeInView:[self findVisibleWindow]
+                                           title:message
+                                        response:^{
                                             [self tappedNotification:notificationInfo viewController:viewController];
-                                        }
-                                    }];
+                                        }];
 
-    } else if (applicationState == UIApplicationStateInactive) {
-        // The user tapped a notification while the app was in background.
-        [self tappedNotification:notificationInfo viewController:viewController];
+        } else if (applicationState == UIApplicationStateInactive) {
+            // The user tapped a notification while the app was in background.
+            [self tappedNotification:notificationInfo viewController:viewController];
+        }
     }
 }
 
-- (void)receivedNotification:(NSDictionary *)notificationInfo viewController:(UIViewController *)viewController;
+- (void)receivedNotification:(NSDictionary *)notificationInfo;
 {
     [ARAnalytics event:ARAnalyticsNotificationReceived withProperties:notificationInfo];
 }
