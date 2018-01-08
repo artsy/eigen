@@ -235,8 +235,9 @@ export default class Info extends React.Component<Props, State> {
                 <Button text="SUBMIT" onPress={canSubmit ? this.goToFinalSubmission : undefined} />
               )}
             </Row>
-            <Row style={{ justifyContent: "center", marginTop: isPad ? 0 : -20 }}>
-              <CloseButton />
+            <Row style={{ justifyContent: "center" }}>
+              {/* TODO: This margin offset is just battling the default margins set on the buttons */}
+              <CloseButton style={{ marginTop: -8 }} />
             </Row>
           </View>
         </ScrollView>
