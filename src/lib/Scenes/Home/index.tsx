@@ -34,6 +34,10 @@ interface State {
   selectedTab: number
 }
 
+const ArtistsWorksForYouTab = 0
+const ForYouTab = 1
+const AuctionsTab = 2
+
 // This kills two birds with one stone:
 // It's necessary to wrap all tracks nested in this component, so they dispatch properly
 // Also, it'll only fire when the home screen is mounted, the only event we would otherwise miss with our own callbacks
@@ -76,7 +80,7 @@ export default class Home extends React.Component<Props, State> {
     if (this.props.selectedArtist && this.state.appState.match(/inactive|background/) && nextAppState === "active") {
       this.tabView.goToPage(0)
     }
-    this.setState({ appState: nextAppState, selectedTab: 0 }, () => this.fireHomeScreenViewAnalytics())
+    this.setState({ appState: nextAppState, selectedTab: 0 }, this.fireHomeScreenViewAnalytics)
   }
 
   render() {
@@ -122,17 +126,17 @@ export default class Home extends React.Component<Props, State> {
   }
 
   setSelectedTab(selectedTab) {
-    this.setState({ selectedTab: selectedTab.i }, () => this.fireHomeScreenViewAnalytics())
+    this.setState({ selectedTab: selectedTab.i }, this.fireHomeScreenViewAnalytics)
   }
 
-  fireHomeScreenViewAnalytics() {
+  fireHomeScreenViewAnalytics = () => {
     let screenType
 
-    if (this.state.selectedTab === 0) {
+    if (this.state.selectedTab === ArtistsWorksForYouTab) {
       screenType = Schema.PageNames.HomeArtistsWorksForYou
-    } else if (this.state.selectedTab === 1) {
+    } else if (this.state.selectedTab === ForYouTab) {
       screenType = Schema.PageNames.HomeForYou
-    } else {
+    } else if (this.state.selectedTab === AuctionsTab) {
       screenType = Schema.PageNames.HomeAuctions
     }
     this.props.tracking.trackEvent({
