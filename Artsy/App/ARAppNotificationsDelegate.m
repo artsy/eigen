@@ -15,6 +15,7 @@
 #import "AROptions.h"
 #import "ARDispatchManager.h"
 
+#import <Emission/ARConversationComponentViewController.h>
 #import <ARAnalytics/ARAnalytics.h>
 
 
@@ -189,12 +190,11 @@
 
     NSString *url = userInfo[@"url"];
     NSString *message = userInfo[@"aps"][@"alert"] ?: url;
-    if (url) {
-        // TODO: https://github.com/artsy/collector-experience/issues/661
-        if ([[[NSURL URLWithString:url] path] hasPrefix:@"/conversation/"]) {
-            NSUInteger count = [userInfo[@"aps"][@"badge"] unsignedLongValue];
-            [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexMessaging];
-        }
+    BOOL isConversation = url && [[[NSURL URLWithString:url] path] hasPrefix:@"/conversation/"];
+    
+    if (isConversation) {
+        NSUInteger count = [userInfo[@"aps"][@"badge"] unsignedLongValue];
+        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexMessaging];
     }
 
     if (applicationState == UIApplicationStateBackground) {
@@ -209,11 +209,19 @@
         if (applicationState == UIApplicationStateActive) {
             // A notification was received while the app was already active, so we show our own notification view.
             [self receivedNotification:notificationInfo];
-            [ARNotificationView showNoticeInView:[self findVisibleWindow]
-                                           title:message
-                                        response:^{
-                                            [self tappedNotification:notificationInfo viewController:viewController];
-                                        }];
+            
+            id controller = [[[[ARTopMenuViewController sharedController] rootNavigationController] viewControllers] lastObject];
+            NSString *conversationID = [notificationInfo[@"conversation_id"] stringValue];
+            if ([controller isKindOfClass:ARConversationComponentViewController.class] && [((ARConversationComponentViewController *) controller).conversationID isEqualToString:conversationID]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"notification_received" object:notificationInfo];
+            } else {
+            
+                [ARNotificationView showNoticeInView:[self findVisibleWindow]
+                                               title:message
+                                            response:^{
+                                                [self tappedNotification:notificationInfo viewController:viewController];
+                                            }];
+            }
 
         } else if (applicationState == UIApplicationStateInactive) {
             // The user tapped a notification while the app was in background.
@@ -230,6 +238,15 @@
 - (void)tappedNotification:(NSDictionary *)notificationInfo viewController:(UIViewController *)viewController;
 {
     [ARAnalytics event:ARAnalyticsNotificationTapped withProperties:notificationInfo];
+    
+    ARTopMenuViewController *topMenuController = [ARTopMenuViewController sharedController];
+    NSString *url = notificationInfo[@"url"];
+    BOOL isConversation = url && [[[NSURL URLWithString:url] path] hasPrefix:@"/conversation/"];
+    
+    if (isConversation) {
+        [topMenuController presentRootViewControllerAtIndex:ARTopTabControllerIndexMessaging animated:NO];
+    }
+    
     if (viewController) {
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
     }
