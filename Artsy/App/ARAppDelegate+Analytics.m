@@ -200,13 +200,6 @@
                     ARAnalyticsClass: ARShowViewController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsPartnerShowView,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARShowViewController *controller, NSArray *_) {
-                                return controller.dictionaryForAnalytics;
-                            }
-                        },
-                        @{
                             ARAnalyticsEventName: ARAnalyticsFairMapButtonTapped,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(handleMapButtonPress:)),
                             ARAnalyticsProperties: ^NSDictionary*(ARShowViewController *controller, NSArray *_) {
@@ -223,25 +216,6 @@
                                 return @{
                                     @"gallery_slug" : controller.show.partner.partnerID ?: @"",
                                 };
-                            }
-                        },
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARHeartButton.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsHearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(setHearted:animated:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARHeartButton *button, NSArray *_) {
-                                return button.hearted;
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsUnhearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(setHearted:animated:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARHeartButton *button, NSArray *_) {
-                                return !button.hearted;
                             }
                         },
                     ]
@@ -408,16 +382,6 @@
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedAuctionInfo)),
                         },
                         @{
-                            ARAnalyticsEventName: ARAnalyticsArtworkView,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
-                                return @{
-                                    @"artwork_id" : controller.artwork.artworkID ?: @"",
-                                    @"fair_id" : controller.fair.fairID ?: @""
-                                };
-                            },
-                        },
-                        @{
                             ARAnalyticsEventName: ARAnalyticsArtworkZoom,
                             ARAnalyticsSelectorName: ARAnalyticsSelector(tappedTileableImagePreview),
                             ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
@@ -515,22 +479,6 @@
                                     @"gene_id" : controller.gene.geneID ?: @"",
                                     @"source_screen": @"gene page"
                                 };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsHearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowingGene:)),
-                            ARAnalyticsShouldFire: ^BOOL (ARGeneViewController *controller, NSArray *parameters) {
-                                ARHeartButton *sender = parameters.firstObject;
-                                return sender.hearted;
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsUnhearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowingGene:)),
-                            ARAnalyticsShouldFire: ^BOOL (ARGeneViewController *controller, NSArray *parameters) {
-                                ARHeartButton *sender = parameters.firstObject;
-                                return sender.hearted;
                             },
                         }
                     ]
@@ -775,34 +723,6 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARTabContentView.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedMainNavigationItem,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(navigationControllerForIndex:),
-                            ARAnalyticsProperties:^NSDictionary*(ARTabContentView *view, NSArray *parameters) {
-                                NSInteger index = [parameters.firstObject integerValue];
-                                UIButton *button = view.buttons[index];
-                                NSString *title = button.accessibilityLabel ?: button.titleLabel.text;
-                                NSParameterAssert(title);
-                                return @{
-                                    @"tab name" : (title ?: @"").lowercaseString
-                                };
-                            },
-                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
-                                // Ignore first invocation so that we don't track when users are loading the app initially.
-                                static BOOL firstInvocation = YES;
-                                if (firstInvocation) {
-                                    firstInvocation = NO;
-                                    return NO;
-                                }
-
-                                return YES;
-                            }
-                        }
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARArtistComponentViewController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -863,16 +783,6 @@
                                     @"source_screen" : @"Artist"
                                 };
                             },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsHearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowingArtist:)),
-                            ARAnalyticsShouldFire: heartedShouldFireBlock,
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsUnhearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowingArtist:)),
-                            ARAnalyticsShouldFire: unheartedShouldFireBlock,
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsArtistTappedForSale,
