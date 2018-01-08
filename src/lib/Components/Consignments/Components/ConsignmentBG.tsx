@@ -1,5 +1,5 @@
 import React from "react"
-
+import { ViewProperties } from "react-native"
 import styled from "styled-components/native"
 
 // Full screen black
@@ -16,10 +16,10 @@ const ConsignmentContainer = styled.View`
   align-self: center;
 `
 
-export default class ConsignmentBG extends React.Component<{}> {
+export default class ConsignmentBG extends React.Component<ViewProperties> {
   render() {
     return (
-      <BG key="bg">
+      <BG key="bg" {...this.props}>
         <ConsignmentContainer>{this.props.children}</ConsignmentContainer>
       </BG>
     )
