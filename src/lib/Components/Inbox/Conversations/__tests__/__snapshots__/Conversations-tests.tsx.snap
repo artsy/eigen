@@ -393,7 +393,7 @@ exports[`looks correct when rendered 1`] = `
                   ]
                 }
               >
-                A FEW SECONDS
+                A FEW SECONDS AGO
               </Text>
             </View>
           </View>
@@ -684,7 +684,7 @@ exports[`looks correct when rendered 1`] = `
                   ]
                 }
               >
-                A FEW SECONDS
+                A FEW SECONDS AGO
               </Text>
             </View>
           </View>
