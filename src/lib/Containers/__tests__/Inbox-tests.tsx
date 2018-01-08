@@ -1,5 +1,7 @@
 import React from "react"
 import "react-native"
+
+import { renderWithLayout } from "lib/tests/renderWithLayout"
 import * as renderer from "react-test-renderer"
 
 import Inbox, { Inbox as ActualInbox } from "../Inbox"
@@ -24,7 +26,7 @@ it("shows empty state if there's no data", () => {
 })
 
 it("Shows a zero state when there are no bids/conversations", () => {
-  const tree = JSON.stringify(renderer.create(<Inbox me={emptyMeProps} />).toJSON())
+  const tree = JSON.stringify(renderWithLayout(<Inbox me={emptyMeProps} />, { width: 768, height: 1024 }))
   // Taken from the title in ZeroStateInbox
   expect(tree).toContain("BUYING ART ON ARTSY IS SIMPLE")
 })

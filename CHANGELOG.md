@@ -7,6 +7,7 @@
 * Re-align headers in all Home tabs - alloy
 * Fix crash that would occur when tapping artwork component on inquiry view - alloy
 * More pixel pushing in the consignments welcome screen - alloy
+* More pixel pushing in the conversations zero state screen - alloy
 
 ### 1.4.0-beta.13
 
