@@ -1080,38 +1080,6 @@
                         }
                     ]
                 },
-                @{
-                    ARAnalyticsClass: ARHomeComponentViewController.class,
-                    ARAnalyticsDetails: @[
-                            @{
-                                ARAnalyticsPageName: @"Home",
-                                }
-                            ]
-                },
-                @{
-                    ARAnalyticsClass: ARBrowseViewController.class,
-                    ARAnalyticsDetails: @[
-                            @{
-                                ARAnalyticsPageName: @"Explore",
-                                }
-                            ]
-                },
-                @{
-                    ARAnalyticsClass: ARFavoritesViewController.class,
-                    ARAnalyticsDetails: @[
-                            @{
-                                ARAnalyticsPageName: @"You",
-                                }
-                            ]
-                },
-                @{
-                    ARAnalyticsClass: ARWorksForYouComponentViewController.class,
-                    ARAnalyticsDetails: @[
-                            @{
-                                ARAnalyticsPageName: @"Works by artists you follow",
-                                }
-                            ]
-                },
                 // ========== CORE CONTENT SCREENS ==========
                 @{
                     ARAnalyticsClass: ARArtworkViewController.class,
