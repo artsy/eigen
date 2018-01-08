@@ -399,7 +399,7 @@
                                     @"artwork_slug": controller.artwork.artworkID ?: @"",
                                     @"artist_slug": controller.artwork.artist.artistID ?: @"",
                                     @"auction_id": saleArtwork.auction.saleID ?: @"",
-                                    @"context_type" : @"artwork_page"
+                                    @"owner_type" : @"Artwork"
                                 };
                             },
                         },
@@ -568,16 +568,19 @@
                                 ARAppNotificationsRequestContext context = ((ARAppNotificationsDelegate *)controller).requestContext;
                                 NSString *analyticsContext = @"";
                                 if (context == ARAppNotificationsRequestContextArtistFollow) {
-                                    analyticsContext = @"artist follow";
+                                    analyticsContext = @"ArtistFollow";
                                 } else if (context == ARAppNotificationsRequestContextOnboarding) {
-                                    analyticsContext = @"onboarding";
+                                    analyticsContext = @"Onboarding";
                                 } else if (context == ARAppNotificationsRequestContextLaunch) {
-                                    analyticsContext = @"launch";
+                                    analyticsContext = @"Launch";
                                 }
+        
+                                analyticsContext = [@[@"PushNotification, analyticsContext] componentsJoinedByString:@""];
 
                                 return @{
-                                         @"outcome"      : @"yes",
-                                         @"context_type" : analyticsContext
+                                         @"action_type" : @"Tap",
+                                         @"action_name" : @"Yes",
+                                         @"context_screen" : analyticsContext,
                                          };
                             }
                         },
@@ -588,15 +591,18 @@
                                 ARAppNotificationsRequestContext context = ((ARAppNotificationsDelegate *)controller).requestContext;
                                 NSString *analyticsContext = @"";
                                 if (context == ARAppNotificationsRequestContextArtistFollow) {
-                                    analyticsContext = @"artist follow";
+                                    analyticsContext = @"ArtistFollow";
                                 } else if (context == ARAppNotificationsRequestContextOnboarding) {
-                                    analyticsContext = @"onboarding";
+                                    analyticsContext = @"Onboarding";
                                 } else if (context == ARAppNotificationsRequestContextLaunch) {
-                                    analyticsContext = @"launch";
+                                    analyticsContext = @"Launch";
                                 }
+                                    analyticsContext = [@[@"PushNotification, analyticsContext] componentsJoinedByString:@""];
+
                                 return @{
-                                         @"outcome"      : @"cancel",
-                                         @"context_type" : analyticsContext
+                                         @"action_type" : @"Tap",
+                                         @"action_name" : @"Cancel",
+                                         @"context_screen"  : analyticsContext
                                          };
                             }
                         },
@@ -607,15 +613,18 @@
                                 ARAppNotificationsRequestContext context = ((ARAppNotificationsDelegate *)controller).requestContext;
                                 NSString *analyticsContext = @"";
                                 if (context == ARAppNotificationsRequestContextArtistFollow) {
-                                    analyticsContext = @"artist follow";
+                                    analyticsContext = @"ArtistFollow";
                                 } else if (context == ARAppNotificationsRequestContextOnboarding) {
-                                    analyticsContext = @"onboarding";
+                                    analyticsContext = @"Onboarding";
                                 } else if (context == ARAppNotificationsRequestContextLaunch) {
-                                    analyticsContext = @"launch";
+                                    analyticsContext = @"Launch";
                                 }
+                                        analyticsContext = [@[@"PushNotification, analyticsContext] componentsJoinedByString:@""];
+
                                 return @{
-                                         @"outcome"      : @"yes",
-                                         @"context_type" : analyticsContext
+                                         @"action_type" : @"Tap",
+                                         @"action_name" : @"Yes",
+                                         @"context_screen"  : analyticsContext
                                          };
                             }
                         },
@@ -626,15 +635,17 @@
                                 ARAppNotificationsRequestContext context = ((ARAppNotificationsDelegate *)controller).requestContext;
                                 NSString *analyticsContext = @"";
                                 if (context == ARAppNotificationsRequestContextArtistFollow) {
-                                    analyticsContext = @"artist follow";
+                                    analyticsContext = @"ArtistFollow";
                                 } else if (context == ARAppNotificationsRequestContextOnboarding) {
-                                    analyticsContext = @"onboarding";
+                                    analyticsContext = @"Onboarding";
                                 } else if (context == ARAppNotificationsRequestContextLaunch) {
-                                    analyticsContext = @"launch";
+                                    analyticsContext = @"Launch";
                                 }
+                                    analyticsContext = [@[@"PushNotification, analyticsContext] componentsJoinedByString:@""];
                                 return @{
-                                         @"outcome"      : @"cancel",
-                                         @"context_type" : analyticsContext
+                                         @"action_type" : @"Tap",
+                                         @"action_name" : @"Cancel",
+                                         @"context_screen"  : analyticsContext
                                          };
                             }
                         },
