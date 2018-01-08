@@ -6,7 +6,6 @@
 #import "LotStanding.h"
 #import "Bidder.h"
 
-
 @implementation ArtsyAPI (CurrentUserFunctions)
 
 + (void)updateCurrentUserProperty:(NSString *)property toValue:(id)value success:(void (^)(User *user))success failure:(void (^)(NSError *error))failure
@@ -36,5 +35,22 @@
     [self getRequest:request parseIntoAnArrayOfClass:[LotStanding class] success:success failure:failure];
 }
 
++ (void)getCurrentUserTotalUnreadMessagesCount:(NSInteger)count success:(void (^)(NSInteger))success failure:(void (^)(NSError *error))failure
+{
+    NSURLRequest *request = [ARRouter newTotalUnreadMessagesCountRequest];
+    [self performGraphQLRequest:request success:^(id json) {
+        NSString *countString = json[@"data"][@"me"][@"conversations"][@"totalUnreadCount"];
+        
+        if (!countString) {
+            NSLog(@"Failure fetching GraphQL data: %@", json);
+            if (failure) {
+                failure([NSError errorWithDomain:@"JSON parsing" code:0 userInfo:json]);
+            }
+            return;
+        }
+        
+        success([countString integerValue]);
+    } failure:failure];
+}
 
 @end

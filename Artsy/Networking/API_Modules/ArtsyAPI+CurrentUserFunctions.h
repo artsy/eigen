@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Calls success callback based on a successful API call and JSON deserialiation.
 + (void)getCurrentUserLotStandingsForSale:(NSString *)saleID success:(void (^)(NSArray<LotStanding *> *))success failure:(void (^)(NSError *error))failure;
 
++ (void)getCurrentUserTotalUnreadMessagesCount:(NSInteger)count success:(nullable void (^)(NSInteger))success failure:(void (^)(NSError *error))failure;
+
 @end
 
 NS_ASSUME_NONNULL_END

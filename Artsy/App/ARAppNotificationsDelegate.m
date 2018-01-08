@@ -2,6 +2,7 @@
 
 #import "ArtsyAPI+Notifications.h"
 #import "ArtsyAPI+DeviceTokens.h"
+#import "ArtsyAPI+CurrentUserFunctions.h"
 
 #import "ARAppConstants.h"
 #import "ARAnalyticsConstants.h"
@@ -12,6 +13,7 @@
 #import "ARLogger.h"
 #import "ARDefaults.h"
 #import "AROptions.h"
+#import "ARDispatchManager.h"
 
 #import <ARAnalytics/ARAnalytics.h>
 
@@ -232,12 +234,16 @@
     }
 }
 
-- (void)fetchNotificationCounts;
+- (void)fetchNotificationCounts
 {
-// TODO: Nav Notifications
-//    [ArtsyAPI getWorksForYouCount:^(NSUInteger count) {
-//        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
-//    } failure:nil];
+    [ArtsyAPI getCurrentUserTotalUnreadMessagesCount:10 success:^(NSInteger count) {
+        ar_dispatch_main_queue(^{
+            [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexMessaging];
+            [UIApplication sharedApplication].applicationIconBadgeNumber = count;
+        });
+    } failure:^(NSError * _Nonnull error) {
+        ARErrorLog(@"Couldn't fetch total unread messages count, error: %@", error.localizedDescription);
+    }];
 }
 
 - (UIWindow *)findVisibleWindow

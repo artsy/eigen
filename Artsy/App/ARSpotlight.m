@@ -132,9 +132,11 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
     dispatch_block_t finalizeBlock = ^{
 #ifdef DEBUG
-        if (application.applicationState == UIApplicationStateBackground) {
-            NSLog(@"Remaining allowed background time by task finalizing: %f", application.backgroundTimeRemaining);
-        }
+        ar_dispatch_main_queue(^{
+            if (application.applicationState == UIApplicationStateBackground) {
+                NSLog(@"Remaining allowed background time by task finalizing: %f", application.backgroundTimeRemaining);
+            }
+        });
 #endif
         [application endBackgroundTask:backgroundTask];
         backgroundTask = UIBackgroundTaskInvalid;

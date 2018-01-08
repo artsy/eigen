@@ -213,6 +213,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
     if ([User currentUser]) {
         [self.remoteNotificationsDelegate fetchNotificationCounts];
+        [ARSpotlight indexAllUsersFavorites];
     }
 }
 
