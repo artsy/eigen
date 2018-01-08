@@ -8,5 +8,6 @@
 + (NSString *)graphQueryForArtworksInSale:(NSString *)saleID;
 
 + (NSString *)graphQLQueryForLiveSaleStaticData:(NSString *)saleID role:(NSString *)causalityRole;
++ (NSString *)graphQueryForConversations;
 
 @end

@@ -2,6 +2,7 @@
 
 #import "ArtsyAPI+Notifications.h"
 #import "ArtsyAPI+DeviceTokens.h"
+#import "ArtsyAPI+CurrentUserFunctions.h"
 
 #import "ARAppConstants.h"
 #import "ARAnalyticsConstants.h"
@@ -12,6 +13,7 @@
 #import "ARLogger.h"
 #import "ARDefaults.h"
 #import "AROptions.h"
+#import "ARDispatchManager.h"
 
 #import <ARAnalytics/ARAnalytics.h>
 
@@ -193,12 +195,6 @@
             NSUInteger count = [userInfo[@"aps"][@"badge"] unsignedLongValue];
             [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexMessaging];
         }
-        // Set the badge count on the tab that the view controller belongs to.
-//        NSInteger tabIndex = [[ARTopMenuViewController sharedController] indexOfRootViewController:viewController];
-//        if (tabIndex != NSNotFound) {
-//            NSUInteger count = [userInfo[@"aps"][@"badge"] unsignedLongValue];
-//            [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:tabIndex];
-//        }
     }
 
     if (applicationState == UIApplicationStateBackground) {
@@ -239,12 +235,16 @@
     }
 }
 
-- (void)fetchNotificationCounts;
+- (void)fetchNotificationCounts
 {
-// TODO: https://github.com/artsy/collector-experience/issues/661
-//    [ArtsyAPI getWorksForYouCount:^(NSUInteger count) {
-//        [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexNotifications];
-//    } failure:nil];
+    [ArtsyAPI getCurrentUserTotalUnreadMessagesCount:^(NSInteger count) {
+        ar_dispatch_main_queue(^{
+            [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexMessaging];
+            [UIApplication sharedApplication].applicationIconBadgeNumber = count;
+        });
+    } failure:^(NSError * _Nonnull error) {
+        ARErrorLog(@"Couldn't fetch total unread messages count, error: %@", error.localizedDescription);
+    }];
 }
 
 - (UIWindow *)findVisibleWindow

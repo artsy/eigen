@@ -218,5 +218,6 @@
 
 + (NSURLRequest *)newHEADRequestForPath:(NSString *)path;
 + (NSURLRequest *)newSailthruRegisterClickAndDecodeURLRequest:(NSURL *)encodedURL;
++ (NSURLRequest *)newTotalUnreadMessagesCountRequest;
 
 @end

@@ -1062,6 +1062,11 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARSiteUpURL parameters:nil];
 }
 
++ (NSURLRequest *)newTotalUnreadMessagesCountRequest
+{
+    return [self graphQLRequestForQuery:[self graphQueryForConversations]];
+}
+
 + (NSURLRequest *)salesWithArtworkRequest:(NSString *)artworkID
 {
     NSDictionary *params = @{ @"artwork[]" : artworkID };
