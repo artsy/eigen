@@ -3,7 +3,7 @@ import { AppState, View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import styled from "styled-components/native"
 
-import { Schema, track } from "lib/utils/track"
+import { Schema, screenTrack } from "lib/utils/track"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Router } from "lib/utils/router"
@@ -26,6 +26,7 @@ const TabBarContainer = styled.View`
 interface Props {
   selectedArtist?: string
   selectedTab?: number
+  tracking: any
 }
 
 interface State {
@@ -33,7 +34,13 @@ interface State {
   selectedTab: number
 }
 
-@track()
+// This kills two birds with one stone:
+// It's necessary to wrap all tracks nested in this component, so they dispatch properly
+// Also, it'll only fire when the home screen is mounted, the only event we would otherwise miss with our own callbacks
+@screenTrack({
+  context_screen: Schema.PageNames.ArtistPage,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
+})
 export default class Home extends React.Component<Props, State> {
   tabView?: ScrollableTabView | any
 
@@ -55,6 +62,7 @@ export default class Home extends React.Component<Props, State> {
   }
 
   // FIXME: Make a proper "viewDidAppear" callback / event emitter
+  // https://github.com/artsy/emission/issues/930
   // This is called when the overall home component appears in Eigen
   // We use it to dispatch screen events at that point
   componentWillReceiveProps(newProps) {
@@ -119,7 +127,9 @@ export default class Home extends React.Component<Props, State> {
   }
 
   fireHomeScreenViewAnalytics() {
-    console.log("hi")
-    this.props.tracking.trackEvent({})
+    this.props.tracking.trackEvent({
+      context_screen: Schema.PageNames.ConsignmentsWelcome,
+      context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
+    })
   }
 }
