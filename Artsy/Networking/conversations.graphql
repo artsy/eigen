@@ -1,6 +1,6 @@
 {
     me {
-        conversations(first: %@) {
+        conversations(first: 0) {
             totalUnreadCount
         }
     }

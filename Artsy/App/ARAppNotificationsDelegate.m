@@ -237,7 +237,7 @@
 
 - (void)fetchNotificationCounts
 {
-    [ArtsyAPI getCurrentUserTotalUnreadMessagesCount:10 success:^(NSInteger count) {
+    [ArtsyAPI getCurrentUserTotalUnreadMessagesCount:^(NSInteger count) {
         ar_dispatch_main_queue(^{
             [[ARTopMenuViewController sharedController] setNotificationCount:count forControllerAtIndex:ARTopTabControllerIndexMessaging];
             [UIApplication sharedApplication].applicationIconBadgeNumber = count;

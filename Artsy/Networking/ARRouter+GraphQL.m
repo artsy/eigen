@@ -44,7 +44,7 @@
 
 + (NSString *)graphQueryForConversations
 {
-    return [NSString stringWithFormat:[self graphQLFileNamed:@"conversations"], @"10"];
+    return [self graphQLFileNamed:@"conversations"];
 }
 
 @end

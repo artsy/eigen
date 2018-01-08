@@ -35,7 +35,7 @@
     [self getRequest:request parseIntoAnArrayOfClass:[LotStanding class] success:success failure:failure];
 }
 
-+ (void)getCurrentUserTotalUnreadMessagesCount:(NSInteger)count success:(void (^)(NSInteger))success failure:(void (^)(NSError *error))failure
++ (void)getCurrentUserTotalUnreadMessagesCount:(void (^)(NSInteger))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newTotalUnreadMessagesCountRequest];
     [self performGraphQLRequest:request success:^(id json) {
