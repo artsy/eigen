@@ -4,6 +4,6 @@ import React from "react"
 import Home from "../index"
 
 it("has the correct number of tabs", () => {
-  const wrapper = shallow(<Home />)
+  const wrapper = shallow(<Home tracking={null} />)
   expect(wrapper.find(Tab)).toHaveLength(3)
 })
