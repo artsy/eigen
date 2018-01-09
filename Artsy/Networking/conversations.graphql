@@ -1,0 +1,7 @@
+{
+    me {
+        conversations(first: 0) {
+            totalUnreadCount
+        }
+    }
+}
