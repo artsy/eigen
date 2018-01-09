@@ -5,6 +5,8 @@ import { Animated, Easing, ScrollView, StyleSheet, TextStyle, View, ViewProperti
 
 import metaphysics from "../../../metaphysics"
 
+import { Schema, Track, track as _track } from "lib/utils/track"
+
 import { Disposable } from "relay-runtime"
 import Separator from "../../Separator"
 import Spinner from "../../Spinner"
@@ -29,7 +31,11 @@ interface State {
   artists: any[]
   loadFailed: boolean
 }
+// FIXME: can remove "trackWithArguments" when the third arguments parameter is added to the typings of react-tracking
+const track: Track<Props, State> = _track
+const trackWithArguments: any = _track
 
+@track()
 export class ArtistRail extends Component<Props, State> {
   inflightRequest: Disposable
 
@@ -114,6 +120,13 @@ export class ArtistRail extends Component<Props, State> {
     })
   }
 
+  @trackWithArguments((_props, _state, [followArtist]) => ({
+    action_name: Schema.ActionNames.HomeArtistRailFollow,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: followArtist._id,
+    owner_slug: followArtist.id,
+    owner_type: Schema.OwnerEntityTypes.Artist,
+  }))
   handleFollowChange(followArtist, setFollowButtonStatus: ArtistFollowButtonStatusSetter) {
     // Get a new suggested artist based on the followed artist.
     return (

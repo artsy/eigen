@@ -137,6 +137,12 @@ export namespace Schema {
     Refine = "geneRefine",
 
     /**
+     * Home page events
+     */
+    HomeArtistRailFollow = "homeArtistRailFollow",
+    HomeArtistArtworksBlockFollow = "homeArtistArtworksBlockFollow",
+
+    /**
      * Conversations / Inbox / Messaging Events
      */
     ConversationSelected = "conversationSelected",
@@ -151,9 +157,9 @@ export namespace Schema {
     /**
      *  Saves And Follows Events
      */
-    SavesAndFollowsWorks = "SavesAndFollowsWorks",
-    SavesAndFollowsArtists = "SavesAndFollowsArtists",
-    SavesAndFollowsCategories = "SavesAndFollowsCategories",
+    SavesAndFollowsWorks = "savesAndFollowsWorks",
+    SavesAndFollowsArtists = "savesAndFollowsArtists",
+    SavesAndFollowsCategories = "savesAndFollowsCategories",
 
     /**
      *  Consignment flow

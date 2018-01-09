@@ -4,8 +4,6 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
 
-import Events from "../../NativeModules/Events"
-
 import { Schema, Track, track as _track } from "../../utils/track"
 
 import InvertedButton from "../Buttons/InvertedButton"
