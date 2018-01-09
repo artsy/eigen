@@ -85,14 +85,11 @@ describe("state", () => {
       })
 
       // As well as trigger new state for Relay ( triggering a new call to metaphysics )
-      expect(gene.props.relay.refetch).lastCalledWith(
-        {
-          medium: "porcupines",
-          price_range: "1000-80000",
-          sort: "-desc",
-        },
-        null
-      )
+      expect(gene.props.relay.refetch).lastCalledWith({
+        medium: "porcupines",
+        price_range: "1000-80000",
+        sort: "-desc",
+      })
     })
   })
 })

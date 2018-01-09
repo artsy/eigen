@@ -108,10 +108,10 @@ export const GeneRenderer: React.SFC<GeneRendererProps> = ({ render, geneID, med
   return (
     <QueryRenderer
       environment={environment}
-      query={graphql`
-        query QueryRenderersGeneQuery($geneID: String!) {
+      query={graphql.experimental`
+        query QueryRenderersGeneQuery($geneID: String!, $medium: String, $price_range: String) {
           gene(id: $geneID) {
-            ...Gene_gene
+            ...Gene_gene @arguments(medium: $medium, price_range: $price_range)
           }
         }
       `}

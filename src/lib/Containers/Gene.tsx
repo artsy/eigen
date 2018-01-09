@@ -193,15 +193,11 @@ export class Gene extends React.Component<Props, State> {
           sort: newSettings.sort,
         })
 
-        this.props.relay.refetch(
-          {
-            medium: newSettings.medium,
-            price_range: newSettings.selectedPrice,
-            sort: newSettings.sort,
-          },
-          // TODO: is this param really required?
-          null
-        )
+        this.props.relay.refetch({
+          medium: newSettings.medium,
+          price_range: newSettings.selectedPrice,
+          sort: newSettings.sort,
+        })
       }
     })
   }
@@ -351,7 +347,8 @@ export default createRefetchContainer(
       ) {
       ...Header_gene
       ...About_gene
-      ...GeneArtworksGrid_gene
+      ...GeneArtworksGrid_gene @arguments(sort: $sort, medium: $medium, price_range: $price_range)
+
       filtered_artworks(
         medium: $medium
         price_range: $price_range

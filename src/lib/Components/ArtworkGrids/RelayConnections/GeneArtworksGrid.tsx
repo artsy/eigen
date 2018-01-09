@@ -16,7 +16,7 @@ const GeneArtworksGrid = createPaginationContainer(
           cursor: { type: "String" }
           sort: { type: "String", defaultValue: "-partner_updated_at" }
           medium: { type: "String", defaultValue: "*" }
-          priceRange: { type: "String", defaultValue: "*-*" }
+          price_range: { type: "String", defaultValue: "*-*" }
         ) {
         __id
         artworks: artworks_connection(
@@ -24,7 +24,7 @@ const GeneArtworksGrid = createPaginationContainer(
           after: $cursor
           sort: $sort
           medium: $medium
-          price_range: $priceRange
+          price_range: $price_range
           for_sale: true
         ) @connection(key: "GeneArtworksGrid_artworks") {
           pageInfo {
@@ -63,6 +63,9 @@ const GeneArtworksGrid = createPaginationContainer(
         __id: props.gene.__id,
         count,
         cursor,
+        sort: props.sort,
+        medium: props.medium,
+        price_range: props.priceRange,
       }
     },
     query: graphql.experimental`
@@ -72,12 +75,12 @@ const GeneArtworksGrid = createPaginationContainer(
         $cursor: String
         $sort: String
         $medium: String
-        $priceRange: String
+        $price_range: String
       ) {
         node(__id: $__id) {
           ... on Gene {
             ...GeneArtworksGrid_gene
-              @arguments(count: $count, cursor: $cursor, sort: $sort, medium: $medium, priceRange: $priceRange)
+              @arguments(count: $count, cursor: $cursor, sort: $sort, medium: $medium, price_range: $price_range)
           }
         }
       }
