@@ -509,9 +509,16 @@ static const CGFloat ARMenuButtonDimension = 50;
     // If there is an existing instance at that index, use it. Otherwise use the instance passed in as viewController.
     // If for some reason something went wrong, default to Home
     BOOL alreadySelectedTab = self.selectedTabIndex == index;
-
+    BOOL showSelectedArtistFromUniversalLink = [viewController isKindOfClass:ARHomeComponentViewController.class] && [(ARHomeComponentViewController *)viewController selectedArtist];
     switch (index) {
         case ARTopTabControllerIndexHome:
+            if (showSelectedArtistFromUniversalLink) {
+                NSString *selectedArtistID = [(ARHomeComponentViewController *)viewController selectedArtist];
+                presentableController = [self.navigationDataSource navigationControllerAtIndex:ARTopTabControllerIndexHome parameters:@{@"artist_id": selectedArtistID}];
+            } else {
+                presentableController = [self rootNavigationControllerAtIndex:index];
+            }
+            break;
         case ARTopTabControllerIndexMessaging:
             presentableController = [self rootNavigationControllerAtIndex:index];
             break;
@@ -534,6 +541,10 @@ static const CGFloat ARMenuButtonDimension = 50;
 
     if (!alreadySelectedTab) {
         [self.tabContentView forceSetViewController:presentableController atIndex:index animated:animated];
+    }
+    
+    if (showSelectedArtistFromUniversalLink) {
+        [self.tabContentView forceSetViewController:presentableController atIndex:index animated:NO];
     }
 }
 
