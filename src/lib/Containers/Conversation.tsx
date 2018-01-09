@@ -25,9 +25,9 @@ const Container = styled.View`
 `
 const Header = styled.View`
   align-self: stretch;
-  margin-top: 20px;
+  margin-top: 22px;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 `
 
 // This makes it really easy to style the HeaderTextContainer with space-between
