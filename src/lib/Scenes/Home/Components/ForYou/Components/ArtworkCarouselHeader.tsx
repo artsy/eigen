@@ -15,7 +15,7 @@ import {
 
 const { ARTemporaryAPIModule } = NativeModules
 
-import Events from "lib/NativeModules/Events"
+import { Schema, Track, track as _track } from "lib/utils/track"
 
 import Button from "lib/Components/Buttons/InvertedButton"
 import SerifText from "lib/Components/Text/Serif"
@@ -42,6 +42,9 @@ interface State {
   following: boolean
 }
 
+const track: Track<Props, State> = _track
+
+@track()
 class ArtworkCarouselHeader extends Component<Props & RelayPropsWorkaround, State> {
   constructor(props) {
     super(props)
@@ -86,26 +89,27 @@ class ArtworkCarouselHeader extends Component<Props & RelayPropsWorkaround, Stat
           <Button
             text={this.state.following ? "Following" : "Follow"}
             selected={this.state.following}
-            onPress={this.handleFollowChange}
+            onPress={this.handleFollowChange.bind(this)}
           />
         </View>
       )
     }
   }
 
-  handleFollowChange = () => {
+  @track(props => ({
+    action_name: Schema.ActionNames.HomeArtistArtworksBlockFollow,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: props.rail.context.artist._id,
+    owner_slug: props.rail.context.artist.id,
+    owner_type: Schema.OwnerEntityTypes.Artist,
+  }))
+  handleFollowChange() {
     const context = this.props.rail.context
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, context.artist.id, (error, following) => {
       if (error) {
         console.error("ArtworkCarouselHeader.tsx", error)
       } else {
-        Events.postEvent({
-          name: following ? "Follow artist" : "Unfollow artist",
-          artist_id: context.artist.id,
-          artist_slug: context.artist.id,
-          source_screen: "home page",
-          context_module: "random suggested artist",
-        })
+        // success
       }
       this.setState({ following })
     })
@@ -157,6 +161,7 @@ export default createFragmentContainer(
       context {
         ... on HomePageModuleContextRelatedArtist {
           artist {
+            _id
             id
           }
           based_on {
@@ -172,9 +177,13 @@ interface RelayProps {
   rail: {
     title: string | null
     key: string | null
-    context: Array<boolean | number | string | null> | null
+    context: any
   }
 }
+
+// FIXME: What is this workaround? Can we stop using it?
+// Also the context in RelayProps above was set to be an array, now cast to "any" for release
+// Should figure out why
 interface RelayPropsWorkaround {
   rail: {
     context: any

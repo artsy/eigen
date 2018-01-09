@@ -6,6 +6,8 @@ import { RelayRefetchProp } from "react-relay"
 
 import { Dimensions, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 
+import { Schema, Track, track as _track } from "lib/utils/track"
+
 import { GhostButton } from "../Components/Buttons"
 import Separator from "../Components/Separator"
 import SerifText from "../Components/Text/Serif"
@@ -44,6 +46,7 @@ interface State {
   selectedMedium?: string
   selectedPriceRange?: string
 }
+const track: Track<Props, State> = _track
 
 /**
  *  There are 3 different major views inside this componentDidUpdate
@@ -69,6 +72,7 @@ interface State {
  *     the `stickyHeaderIndices` is always at the right index.
  *
  */
+@track()
 export class Gene extends React.Component<Props, State> {
   foregroundHeight: number = 200
 
@@ -84,7 +88,14 @@ export class Gene extends React.Component<Props, State> {
     }
   }
 
-  switchSelectionDidChange = (event: SwitchEvent) => {
+  @track((props, state) => ({
+    action_name: state.selectedTabIndex ? Schema.ActionNames.GeneWorks : Schema.ActionNames.GeneAbout,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: props.gene._id,
+    owner_slug: props.gene.id,
+    owner_type: Schema.OwnerEntityTypes.Gene,
+  }))
+  switchSelectionDidChange(event: SwitchEvent) {
     this.setState({ selectedTabIndex: event.nativeEvent.selectedIndex })
   }
 
@@ -146,7 +157,7 @@ export class Gene extends React.Component<Props, State> {
           style={{ marginTop: 30 }}
           titles={this.availableTabs()}
           selectedIndex={this.state.selectedTabIndex}
-          onSelectionChange={this.switchSelectionDidChange}
+          onSelectionChange={this.switchSelectionDidChange.bind(this)}
         />
       </View>
     )
@@ -168,7 +179,14 @@ export class Gene extends React.Component<Props, State> {
     return HeaderHeight
   }
 
-  refineTapped = _button => {
+  @track(props => ({
+    action_name: Schema.ActionNames.Refine,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: props.gene._id,
+    owner_slug: props.gene.id,
+    owner_type: Schema.OwnerEntityTypes.Gene,
+  }))
+  refineTapped(_button) {
     const initialSettings = {
       sort: "-partner_updated_at",
       selectedMedium: this.props.medium || "*",
@@ -233,7 +251,11 @@ export class Gene extends React.Component<Props, State> {
           <SerifText style={{ fontStyle: "italic", marginTop: 2, maxWidth: maxLabelWidth }}>
             {this.artworkQuerySummaryString()}
           </SerifText>
-          <GhostButton text="REFINE" style={{ height: 26, width: refineButtonWidth }} onPress={this.refineTapped} />
+          <GhostButton
+            text="REFINE"
+            style={{ height: 26, width: refineButtonWidth }}
+            onPress={this.refineTapped.bind(this)}
+          />
         </View>
         <Separator style={{ backgroundColor: separatorColor }} />
       </View>

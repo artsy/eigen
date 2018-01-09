@@ -32,15 +32,24 @@ const Title = styled.Text`
 
 const isStaging = gravityURL.includes("staging")
 
+const WorksTab = 0
+const ArtistsTab = 1
+const CategoriesTab = 2
+
+interface Props {
+  tracking: any
+}
+
 @screenTrack({
   context_screen: Schema.PageNames.SavesAndFollows,
   context_screen_owner_type: null,
 })
-class Favorites extends React.Component<null> {
+class Favorites extends React.Component<Props, null> {
   render() {
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
+          onChangeTab={selectedTab => this.fireTabSelectionAnalytics(selectedTab)}
           renderTabBar={props => (
             <View>
               <Title>Saves &amp; Follows</Title>
@@ -61,6 +70,22 @@ class Favorites extends React.Component<null> {
         {isStaging && <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />}
       </View>
     )
+  }
+
+  fireTabSelectionAnalytics = selectedTab => {
+    let tabType
+
+    if (selectedTab.i === WorksTab) {
+      tabType = Schema.ActionNames.SavesAndFollowsWorks
+    } else if (selectedTab.i === ArtistsTab) {
+      tabType = Schema.ActionNames.SavesAndFollowsArtists
+    } else if (selectedTab.i === CategoriesTab) {
+      tabType = Schema.ActionNames.SavesAndFollowsCategories
+    }
+    this.props.tracking.trackEvent({
+      action_name: tabType,
+      action_type: Schema.ActionTypes.Tap,
+    })
   }
 }
 

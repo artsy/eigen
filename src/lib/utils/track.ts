@@ -85,6 +85,7 @@ export namespace Schema {
     ConsignmentsWelcome = "ConsignmentsWelcome",
     ConsignmentsOverView = "ConsignmentsOverview",
     ConsignmentsSubmission = "ConsignmentsSubmit",
+    GenePage = "Gene",
     InboxPage = "Inbox",
     InquiryPage = "Inquiry",
     HomeArtistsWorksForYou = "HomeArtistsWorksForYou",
@@ -127,6 +128,21 @@ export namespace Schema {
     ArtistUnfollow = "artistUnfollow",
 
     /**
+     * Gene Page Events
+     */
+    GeneAbout = "geneAbout",
+    GeneFollow = "geneFollow",
+    GeneUnfollow = "geneUnfollow",
+    GeneWorks = "geneWorks",
+    Refine = "geneRefine",
+
+    /**
+     * Home page events
+     */
+    HomeArtistRailFollow = "homeArtistRailFollow",
+    HomeArtistArtworksBlockFollow = "homeArtistArtworksBlockFollow",
+
+    /**
      * Conversations / Inbox / Messaging Events
      */
     ConversationSelected = "conversationSelected",
@@ -137,6 +153,13 @@ export namespace Schema {
     ConversationLink = "conversationLinkUsed",
     InquiryCancel = "inquiryCancel",
     InquirySend = "inquirySend",
+
+    /**
+     *  Saves And Follows Events
+     */
+    SavesAndFollowsWorks = "savesAndFollowsWorks",
+    SavesAndFollowsArtists = "savesAndFollowsArtists",
+    SavesAndFollowsCategories = "savesAndFollowsCategories",
 
     /**
      *  Consignment flow
