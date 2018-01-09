@@ -3,6 +3,7 @@ upcoming:
     details: Messaging / Consignments / Tabbed Home
     emission_version: 1.4.0
     dev:
+      - Fixes crash when notification payload title is object - luc
       - Tidy analytics, deprecating unused views and old tabs - maxim
       - Sets App & Inbox badge to total unread messages - luc
       - Caches Inbox VC to prevent refetching all data on tab changes - luc
