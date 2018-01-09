@@ -91,13 +91,6 @@ ShallowWrapper {
             <View />
           </Styled(View)>
         </Styled(View)>
-        <Separator
-          style={
-            Object {
-              "backgroundColor": "white",
-            }
-          }
-        />
         <Messages
           conversation={
             Object {
@@ -149,7 +142,6 @@ ShallowWrapper {
             }
           }
           onDataFetching={[Function]}
-          shouldShowSeparator={[Function]}
         />
       </Styled(View)>,
       "disabled": false,
@@ -177,13 +169,6 @@ ShallowWrapper {
               <View />
             </Styled(View)>
           </Styled(View)>,
-          <Separator
-            style={
-              Object {
-                "backgroundColor": "white",
-              }
-            }
-          />,
           false,
           <Messages
             conversation={
@@ -236,7 +221,6 @@ ShallowWrapper {
               }
             }
             onDataFetching={[Function]}
-            shouldShowSeparator={[Function]}
           />,
         ],
       },
@@ -309,19 +293,6 @@ ShallowWrapper {
           },
           "type": [Function],
         },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "style": Object {
-              "backgroundColor": "white",
-            },
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
         false,
         Object {
           "instance": null,
@@ -376,7 +347,6 @@ ShallowWrapper {
               },
             },
             "onDataFetching": [Function],
-            "shouldShowSeparator": [Function],
           },
           "ref": null,
           "rendered": null,
@@ -408,13 +378,6 @@ ShallowWrapper {
               <View />
             </Styled(View)>
           </Styled(View)>
-          <Separator
-            style={
-              Object {
-                "backgroundColor": "white",
-              }
-            }
-          />
           <Messages
             conversation={
               Object {
@@ -466,7 +429,6 @@ ShallowWrapper {
               }
             }
             onDataFetching={[Function]}
-            shouldShowSeparator={[Function]}
           />
         </Styled(View)>,
         "disabled": false,
@@ -494,13 +456,6 @@ ShallowWrapper {
                 <View />
               </Styled(View)>
             </Styled(View)>,
-            <Separator
-              style={
-                Object {
-                  "backgroundColor": "white",
-                }
-              }
-            />,
             false,
             <Messages
               conversation={
@@ -553,7 +508,6 @@ ShallowWrapper {
                 }
               }
               onDataFetching={[Function]}
-              shouldShowSeparator={[Function]}
             />,
           ],
         },
@@ -626,19 +580,6 @@ ShallowWrapper {
             },
             "type": [Function],
           },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "style": Object {
-                "backgroundColor": "white",
-              },
-            },
-            "ref": null,
-            "rendered": null,
-            "type": [Function],
-          },
           false,
           Object {
             "instance": null,
@@ -693,7 +634,6 @@ ShallowWrapper {
                 },
               },
               "onDataFetching": [Function],
-              "shouldShowSeparator": [Function],
             },
             "ref": null,
             "rendered": null,
@@ -806,13 +746,6 @@ ShallowWrapper {
             <View />
           </Styled(View)>
         </Styled(View)>
-        <Separator
-          style={
-            Object {
-              "backgroundColor": "white",
-            }
-          }
-        />
         <Messages
           conversation={
             Object {
@@ -864,7 +797,6 @@ ShallowWrapper {
             }
           }
           onDataFetching={[Function]}
-          shouldShowSeparator={[Function]}
         />
       </Styled(View)>,
       "disabled": false,
@@ -892,13 +824,6 @@ ShallowWrapper {
               <View />
             </Styled(View)>
           </Styled(View)>,
-          <Separator
-            style={
-              Object {
-                "backgroundColor": "white",
-              }
-            }
-          />,
           false,
           <Messages
             conversation={
@@ -951,7 +876,6 @@ ShallowWrapper {
               }
             }
             onDataFetching={[Function]}
-            shouldShowSeparator={[Function]}
           />,
         ],
       },
@@ -1024,19 +948,6 @@ ShallowWrapper {
           },
           "type": [Function],
         },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "style": Object {
-              "backgroundColor": "white",
-            },
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
         false,
         Object {
           "instance": null,
@@ -1091,7 +1002,6 @@ ShallowWrapper {
               },
             },
             "onDataFetching": [Function],
-            "shouldShowSeparator": [Function],
           },
           "ref": null,
           "rendered": null,
@@ -1123,13 +1033,6 @@ ShallowWrapper {
               <View />
             </Styled(View)>
           </Styled(View)>
-          <Separator
-            style={
-              Object {
-                "backgroundColor": "white",
-              }
-            }
-          />
           <Messages
             conversation={
               Object {
@@ -1181,7 +1084,6 @@ ShallowWrapper {
               }
             }
             onDataFetching={[Function]}
-            shouldShowSeparator={[Function]}
           />
         </Styled(View)>,
         "disabled": false,
@@ -1209,13 +1111,6 @@ ShallowWrapper {
                 <View />
               </Styled(View)>
             </Styled(View)>,
-            <Separator
-              style={
-                Object {
-                  "backgroundColor": "white",
-                }
-              }
-            />,
             false,
             <Messages
               conversation={
@@ -1268,7 +1163,6 @@ ShallowWrapper {
                 }
               }
               onDataFetching={[Function]}
-              shouldShowSeparator={[Function]}
             />,
           ],
         },
@@ -1341,19 +1235,6 @@ ShallowWrapper {
             },
             "type": [Function],
           },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "style": Object {
-                "backgroundColor": "white",
-              },
-            },
-            "ref": null,
-            "rendered": null,
-            "type": [Function],
-          },
           false,
           Object {
             "instance": null,
@@ -1408,7 +1289,6 @@ ShallowWrapper {
                 },
               },
               "onDataFetching": [Function],
-              "shouldShowSeparator": [Function],
             },
             "ref": null,
             "rendered": null,

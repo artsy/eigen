@@ -31,6 +31,7 @@
 * Fix payment request component status not updating after payment - alloy
 * Add pull-to-refresh to the ARTISTS and AUCTIONS tabs on the Home view - alloy
 * Align conversation view header title with navigation button - alloy
+* Remove rule underneath conversation view header - alloy
 * Add analytics coverage for home, saves & follows, and gene events - maxim
 
 ### 1.4.0-beta.11
