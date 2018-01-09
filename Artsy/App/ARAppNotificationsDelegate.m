@@ -210,12 +210,11 @@
             // A notification was received while the app was already active, so we show our own notification view.
             [self receivedNotification:notificationInfo];
             
-            id controller = [[[[ARTopMenuViewController sharedController] rootNavigationController] viewControllers] lastObject];
+            ARConversationComponentViewController * controller = [[[[ARTopMenuViewController sharedController] rootNavigationController] viewControllers] lastObject];
             NSString *conversationID = [notificationInfo[@"conversation_id"] stringValue];
-            if ([controller isKindOfClass:ARConversationComponentViewController.class] && [((ARConversationComponentViewController *) controller).conversationID isEqualToString:conversationID]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"notification_received" object:notificationInfo];
+            if ([controller isKindOfClass:ARConversationComponentViewController.class] && [controller.conversationID isEqualToString:conversationID]) {
+                [controller refreshView];
             } else {
-            
                 [ARNotificationView showNoticeInView:[self findVisibleWindow]
                                                title:message
                                             response:^{
