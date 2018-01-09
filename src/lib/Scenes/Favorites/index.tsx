@@ -3,6 +3,8 @@ import { View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import styled from "styled-components/native"
 
+import { Schema, screenTrack } from "lib/utils/track"
+
 import TabBar, { Tab } from "lib/Components/TabBar"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
@@ -30,6 +32,10 @@ const Title = styled.Text`
 
 const isStaging = gravityURL.includes("staging")
 
+@screenTrack({
+  context_screen: Schema.PageNames.SavesAndFollows,
+  context_screen_owner_type: null,
+})
 class Favorites extends React.Component<null> {
   render() {
     return (

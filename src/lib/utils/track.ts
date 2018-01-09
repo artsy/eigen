@@ -90,6 +90,7 @@ export namespace Schema {
     HomeArtistsWorksForYou = "HomeArtistsWorksForYou",
     HomeForYou = "HomeForYou",
     HomeAuctions = "HomeAuctions",
+    SavesAndFollows = "SavesAndFollows",
   }
 
   export enum OwnerEntityTypes {
