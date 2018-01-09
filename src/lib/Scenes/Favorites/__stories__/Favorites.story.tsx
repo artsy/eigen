@@ -13,7 +13,7 @@ import ArtworksRenderer from "../Components/Artworks/Relay/ArtworksRenderer"
 import CategoriesRenderer from "../Components/Categories/Relay/CategoriesRenderer"
 
 storiesOf("Favourites/Relay")
-  .add("Root", () => <Favourites />)
+  .add("Root", () => <Favourites tracking={trackingData => console.log(trackingData)} />)
   .add("Artists", () => <ArtistsRenderer render={renderWithLoadProgress(Artists)} />)
   .add("Artworks", () => <ArtworksRenderer render={renderWithLoadProgress(Artworks)} />)
   .add("Genes", () => <CategoriesRenderer render={renderWithLoadProgress(Categories)} />)

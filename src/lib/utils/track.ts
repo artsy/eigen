@@ -297,8 +297,7 @@ export const track: Track = _track
  */
 export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, null>) {
   return _track(trackingInfo as any, {
-    // dispatch: data => Events.postEvent(data),
-    dispatch: data => console.log(data),
+    dispatch: data => Events.postEvent(data),
     dispatchOnMount: true,
   })
 }

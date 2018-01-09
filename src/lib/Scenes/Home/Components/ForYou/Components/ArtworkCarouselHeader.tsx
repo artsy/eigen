@@ -15,8 +15,6 @@ import {
 
 const { ARTemporaryAPIModule } = NativeModules
 
-import Events from "lib/NativeModules/Events"
-
 import { Schema, Track, track as _track } from "lib/utils/track"
 
 import Button from "lib/Components/Buttons/InvertedButton"
