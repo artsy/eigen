@@ -189,7 +189,7 @@
     [notificationInfo setObject:uiApplicationState forKey:@"UIApplicationState"];
 
     NSString *url = userInfo[@"url"];
-    NSString *message = userInfo[@"aps"][@"alert"] ?: url;
+    id message = userInfo[@"aps"][@"alert"] ?: url;
     BOOL isConversation = url && [[[NSURL URLWithString:url] path] hasPrefix:@"/conversation/"];
     
     if (isConversation) {
@@ -213,10 +213,11 @@
             ARConversationComponentViewController * controller = [[[[ARTopMenuViewController sharedController] rootNavigationController] viewControllers] lastObject];
             NSString *conversationID = [notificationInfo[@"conversation_id"] stringValue];
             if ([controller isKindOfClass:ARConversationComponentViewController.class] && [controller.conversationID isEqualToString:conversationID]) {
-                [controller refreshView];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"notification_received" object:notificationInfo];
             } else {
+                NSString *title = [message isKindOfClass:[NSString class]] ? message : message[@"title"];
                 [ARNotificationView showNoticeInView:[self findVisibleWindow]
-                                               title:message
+                                               title:title
                                             response:^{
                                                 [self tappedNotification:notificationInfo viewController:viewController];
                                             }];
