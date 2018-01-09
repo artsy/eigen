@@ -11,6 +11,7 @@
 * More pixel pushing in the consignments welcome screen - alloy
 * More pixel pushing in the conversations zero state screen - alloy
 * Add saves and follows analytics - maxim
+* Fix a bug where the relay query params for the gene page weren't being set - orta
 
 ### 1.4.0-beta.13
 
