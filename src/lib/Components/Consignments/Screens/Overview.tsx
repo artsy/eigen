@@ -172,16 +172,22 @@ export default class Info extends React.Component<Props, State> {
   exitModal = () => SwitchBoard.dismissModalViewController(this)
 
   uploadPhotosIfNeeded = async () => {
+    const uploading = this.state.photos && this.state.photos.some(f => f.uploading)
     const toUpload = this.state.photos && this.state.photos.filter(f => !f.uploaded && f.file)
-
-    if (toUpload && toUpload.length) {
+    if (!uploading && toUpload && toUpload.length) {
       // Pull out the first in the queue and upload it
       const photo = toUpload[0]
+
+      // Set this one photo to upload, so that if you go in and out
+      // quickly it doesn't upload duplicates
+      photo.uploading = true
+      this.setState({ photos: this.state.photos })
       await uploadImageAndPassToGemini(photo.file, "private", this.state.submission_id)
 
       // Mutate state 'unexpectedly', then send it back through "setState" to trigger the next
       // in the queue
       photo.uploaded = true
+      photo.uploading = false
       this.setState({ photos: this.state.photos }, this.uploadPhotosIfNeeded)
     }
   }
