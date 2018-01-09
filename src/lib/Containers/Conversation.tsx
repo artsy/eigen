@@ -7,7 +7,6 @@ import { SmallHeadline } from "../Components/Inbox/Typography"
 
 import { NetInfo, View } from "react-native"
 
-import colors from "lib/data/colors"
 import styled from "styled-components/native"
 
 import ConnectivityBanner from "../Components/ConnectivityBanner"
@@ -15,7 +14,6 @@ import ConnectivityBanner from "../Components/ConnectivityBanner"
 import Composer from "../Components/Inbox/Conversations/Composer"
 import Messages from "../Components/Inbox/Conversations/Messages"
 import { sendConversationMessage } from "../Components/Inbox/Conversations/SendConversationMessage"
-import Separator from "../Components/Separator"
 
 import { updateConversation } from "../Components/Inbox/Conversations/UpdateConversation"
 
@@ -49,7 +47,6 @@ interface State {
   markedMessageAsRead: boolean
   fetchingData: boolean
   failedMessageText?: string
-  shouldShowSeparator?: boolean
 }
 
 const track: Track<Props, State> = _track
@@ -67,7 +64,6 @@ export class Conversation extends React.Component<Props, State> {
       isConnected: true,
       markedMessageAsRead: false,
       fetchingData: false,
-      shouldShowSeparator: false,
     }
     this.handleConnectivityChange = this.handleConnectivityChange.bind(this)
   }
@@ -159,15 +155,11 @@ export class Conversation extends React.Component<Props, State> {
               <PlaceholderView />
             </HeaderTextContainer>
           </Header>
-          <Separator style={{ backgroundColor: this.state.shouldShowSeparator ? colors["gray-regular"] : "white" }} />
           {!this.state.isConnected && <ConnectivityBanner />}
           <Messages
             conversation={conversation as any}
             onDataFetching={loading => {
               this.setState({ fetchingData: loading })
-            }}
-            shouldShowSeparator={shouldShowSeparator => {
-              this.setState({ shouldShowSeparator })
             }}
           />
         </Container>
