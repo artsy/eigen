@@ -39,10 +39,16 @@ interface GeneProps {
   refineSettings: { medium: string; price_range: string }
 }
 
-const Gene: React.SFC<GeneProps> = ({ geneID, refineSettings: { medium, price_range } }) => {
+const Gene: React.SFC<GeneProps> = track<GeneProps>(props => {
+  return {
+    context_screen: Schema.PageNames.GenePage,
+    context_screen_owner_slug: props.geneID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
+  }
+})(({ geneID, refineSettings: { medium, price_range } }) => {
   const initialProps = { geneID, medium, price_range }
   return <GeneRenderer {...initialProps} render={renderWithLoadProgress(Containers.Gene, initialProps)} />
-}
+})
 
 // FIXME: This isn't being used
 // const Sale: React.SFC<{ saleID: string }> = ({ saleID }) => {

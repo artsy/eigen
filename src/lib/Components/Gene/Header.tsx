@@ -6,6 +6,8 @@ const { ARTemporaryAPIModule } = NativeModules
 
 import Events from "../../NativeModules/Events"
 
+import { Schema, Track, track as _track } from "../../utils/track"
+
 import InvertedButton from "../Buttons/InvertedButton"
 import Headline from "../Text/Headline"
 
@@ -17,6 +19,9 @@ interface HeaderState {
   following: boolean | null
 }
 
+const track: Track<HeaderProps, HeaderState> = _track
+
+@track()
 class Header extends React.Component<HeaderProps, HeaderState> {
   constructor(props) {
     super(props)
@@ -47,21 +52,46 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     )
   }
 
-  handleFollowChange = () => {
+  @track((props, state) => ({
+    action_name: state.following ? Schema.ActionNames.GeneUnfollow : Schema.ActionNames.GeneFollow,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: props.gene._id,
+    owner_slug: props.gene.id,
+    owner_type: Schema.OwnerEntityTypes.Gene,
+  }))
+  handleFollowChange() {
     ARTemporaryAPIModule.setFollowGeneStatus(!this.state.following, this.props.gene._id, (error, following) => {
       if (error) {
         console.warn(error)
+        this.failedFollowChange()
       } else {
-        Events.postEvent({
-          name: following ? "Follow gene" : "Unfollow gene",
-          gene_id: this.props.gene._id,
-          gene_slug: this.props.gene.id,
-          source_screen: "gene page",
-        })
+        this.successfulFollowChange()
       }
       this.setState({ following })
     })
     this.setState({ following: !this.state.following })
+  }
+
+  @track((props, state) => ({
+    action_name: state.following ? Schema.ActionNames.GeneFollow : Schema.ActionNames.GeneUnfollow,
+    action_type: Schema.ActionTypes.Success,
+    owner_id: props.gene._id,
+    owner_slug: props.gene.id,
+    owner_type: Schema.OwnerEntityTypes.Gene,
+  }))
+  successfulFollowChange() {
+    // callback for analytics purposes
+  }
+
+  @track((props, state) => ({
+    action_name: state.following ? Schema.ActionNames.GeneFollow : Schema.ActionNames.GeneUnfollow,
+    action_type: Schema.ActionTypes.Fail,
+    owner_id: props.gene._id,
+    owner_slug: props.gene.id,
+    owner_type: Schema.OwnerEntityTypes.Gene,
+  }))
+  failedFollowChange() {
+    // callback for analytics purposes
   }
 
   renderFollowButton() {
@@ -74,14 +104,14 @@ class Header extends React.Component<HeaderProps, HeaderState> {
           <InvertedButton
             text={this.state.following ? "Following" : "Follow"}
             selected={this.state.following}
-            onPress={this.handleFollowChange}
+            onPress={this.handleFollowChange.bind(this)}
           />
         </View>
       )
     } else {
       return (
         <View style={styles.followButton}>
-          <InvertedButton text="" onPress={this.handleFollowChange} />
+          <InvertedButton text="" onPress={this.handleFollowChange.bind(this)} />
         </View>
       )
     }
