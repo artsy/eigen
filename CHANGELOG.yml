@@ -44,6 +44,7 @@ upcoming:
       - Fixes sending the right user min/max pricing details during onboarding - orta
       - Stops status bar from obscuring cancel button and title label of refine view - ash
       - Replace small notifications badge on tab bar items with large one - alloy
+      - Disabling Spotlight indexing for now to speed up launch performance - alloy
 
 releases:
   - version: 3.2.7
