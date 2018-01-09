@@ -373,7 +373,7 @@
                                     @"artwork_slug": controller.artwork.artworkID ?: @"",
                                     @"artist_slug": controller.artwork.artist.artistID ?: @"",
                                     @"auction_id": saleArtwork.auction.saleID ?: @"",
-                                    @"owner_type" : @"Artwork"
+                                    @"context_type" : @"Artwork"
                                 };
                             },
                         },
