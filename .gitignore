@@ -61,4 +61,4 @@ haul-debug.log
 .happypack
 test-results.json
 head_metadata.json
-.vscode/temp.sql
+.vscode/*.sql

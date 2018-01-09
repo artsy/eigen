@@ -9,7 +9,7 @@ import Sales from "../Components/Sales"
 import { SalesRenderer } from "../Components/Sales/Relay/SalesRenderer"
 
 storiesOf("Home/Relay")
-  .add("Root", () => <Home />)
+  .add("Root", () => <Home tracking={trackingData => console.log(trackingData)} />)
   .add("Artists", () => <WorksForYouRenderer render={renderWithLoadProgress(WorksForYou)} />)
   .add("For You", () => <ForYouRenderer render={renderWithLoadProgress(ForYou)} />)
   .add("Auctions", () => <SalesRenderer render={renderWithLoadProgress(Sales)} />)
