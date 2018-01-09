@@ -4,6 +4,7 @@ upcoming:
     emission_version: 1.4.0
     dev:
       - Fixes crash when notification payload title is object - luc
+      - Tidy analytics, deprecating unused views and old tabs - maxim
       - Sets App & Inbox badge to total unread messages - luc
       - Caches Inbox VC to prevent refetching all data on tab changes - luc
       - When routing from Works For You email, place selected artist from email at top of home feed - sarah
@@ -45,6 +46,7 @@ upcoming:
       - Fixes sending the right user min/max pricing details during onboarding - orta
       - Stops status bar from obscuring cancel button and title label of refine view - ash
       - Replace small notifications badge on tab bar items with large one - alloy
+      - Disabling Spotlight indexing for now to speed up launch performance - alloy
 
 releases:
   - version: 3.2.7

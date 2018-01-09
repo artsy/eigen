@@ -590,7 +590,7 @@ describe(@"Indexing favourites", ^{
         [spotlightClassMock stopMocking];
     });
 
-    describe(@"concerning Spotlight interfacing", ^{
+    xdescribe(@"concerning Spotlight interfacing", ^{
         __block id searchableIndexMock = nil;
 
         beforeEach(^{
@@ -665,7 +665,7 @@ describe(@"Indexing favourites", ^{
             [spotlightClassMock verifyWithDelay:5];
         });
 
-        it(@"kicks-off the indexer", ^{
+        xit(@"kicks-off the indexer", ^{
             id previouslyIndexedMock = [OCMockObject mockForClass:NSMutableSet.class];
             [[[spotlightClassMock stub] andReturn:previouslyIndexedMock] indexedEntities];
             [[[previouslyIndexedMock stub] andReturn:previouslyIndexedMock] mutableCopy];

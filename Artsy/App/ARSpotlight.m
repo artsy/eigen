@@ -24,6 +24,7 @@
 #import <SDWebImage/SDWebImageManager.h>
 
 
+static BOOL ARSpotlightDisabled = NO;
 static BOOL ARSpotlightAvailable = NO;
 static dispatch_queue_t ARSpotlightQueue = nil;
 static NSMutableSet *ARIndexedEntities = nil;
@@ -55,8 +56,12 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 + (void)load;
 {
     ARSpotlightAvailable = NSClassFromString(@"CSSearchableIndex") != nil && [CSSearchableIndex isIndexingAvailable];
+    
+    // TODO: Disabled until we get to (and decide to) work on https://github.com/artsy/collector-experience/issues/810
+    // ARSpotlightDisabled = !ARSpotlightAvailable;
+    ARSpotlightDisabled = YES;
 
-    if (ARSpotlightAvailable) {
+    if (!ARSpotlightDisabled) {
         ARSearchableIndex = [CSSearchableIndex defaultSearchableIndex];
 
         ARSpotlightQueue = dispatch_queue_create("net.artsy.artsy.ARSpotlightQueue", DISPATCH_QUEUE_SERIAL);
@@ -87,7 +92,9 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
 + (void)disableIndexing;
 {
+    if (ARSpotlightDisabled) return;
     dispatch_sync(ARSpotlightQueue, ^{
+        ARSpotlightDisabled = YES;
         ARSearchableIndex = nil;
         ARIndexedEntities = nil;
         ARIndexedEntitiesFile = nil;
@@ -106,7 +113,7 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
 + (void)indexAllUsersFavorites;
 {
-    if (!ARSpotlightAvailable) {
+    if (ARSpotlightDisabled) {
         return;
     }
 
@@ -193,7 +200,7 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
 + (void)addToSpotlightIndex:(BOOL)addOrRemove entity:(id<ARSpotlightMetadataProvider>)entity;
 {
-    if (!ARSpotlightAvailable) {
+    if (ARSpotlightDisabled) {
         return;
     }
     addOrRemove ? [self addEntityToSpotlightIndex:entity] : [self removeEntityFromSpotlightIndex:entity];
