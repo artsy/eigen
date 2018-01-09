@@ -149,6 +149,13 @@ export namespace Schema {
     InquirySend = "inquirySend",
 
     /**
+     *  Saves And Follows Events
+     */
+    SavesAndFollowsWorks = "SavesAndFollowsWorks",
+    SavesAndFollowsArtists = "SavesAndFollowsArtists",
+    SavesAndFollowsCategories = "SavesAndFollowsCategories",
+
+    /**
      *  Consignment flow
      */
     ConsignmentDraftCreated = "consignmentDraftCreated",
