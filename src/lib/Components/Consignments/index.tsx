@@ -27,7 +27,8 @@ export interface SearchResult {
 
 export interface Photo {
   file: string
-  uploaded: boolean
+  uploaded?: boolean
+  uploading?: boolean
 }
 
 export interface ConsignmentSetup {
