@@ -112,7 +112,7 @@ export default class Composer extends React.Component<Props, State> {
             style={inputStyles}
             multiline={true}
             value={this.state.text}
-            autoFocus={true}
+            autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
           />
           <TouchableWithoutFeedback disabled={disableSendButton} onPress={this.submitText.bind(this)}>
             <SendButton disabled={disableSendButton}>SEND</SendButton>

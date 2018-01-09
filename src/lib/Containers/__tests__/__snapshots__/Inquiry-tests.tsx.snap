@@ -389,7 +389,7 @@ exports[`renders correctly 1`] = `
           </View>
         </View>
         <TextInput
-          autoFocus={true}
+          autoFocus={false}
           keyboardAppearance="dark"
           multiline={true}
           onChangeText={[Function]}

@@ -219,7 +219,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
               value={message}
               keyboardAppearance="dark"
               multiline={true}
-              autoFocus={true}
+              autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
               onEndEditing={() => {
                 this.setState({ active: false, text: null })
               }}
