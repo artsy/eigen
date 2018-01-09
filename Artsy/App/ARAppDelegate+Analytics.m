@@ -523,7 +523,7 @@
                                     analyticsContext = @"Launch";
                                 }
         
-                                analyticsContext = [@[@"PushNotification, analyticsContext] componentsJoinedByString:@""];
+                                analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
 
                                 return @{
                                          @"action_type" : @"Tap",
@@ -545,7 +545,8 @@
                                 } else if (context == ARAppNotificationsRequestContextLaunch) {
                                     analyticsContext = @"Launch";
                                 }
-                                    analyticsContext = [@[@"PushNotification, analyticsContext] componentsJoinedByString:@""];
+        
+                                analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
 
                                 return @{
                                          @"action_type" : @"Tap",
@@ -567,7 +568,7 @@
                                 } else if (context == ARAppNotificationsRequestContextLaunch) {
                                     analyticsContext = @"Launch";
                                 }
-                                        analyticsContext = [@[@"PushNotification, analyticsContext] componentsJoinedByString:@""];
+                                analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
 
                                 return @{
                                          @"action_type" : @"Tap",
@@ -589,7 +590,7 @@
                                 } else if (context == ARAppNotificationsRequestContextLaunch) {
                                     analyticsContext = @"Launch";
                                 }
-                                    analyticsContext = [@[@"PushNotification, analyticsContext] componentsJoinedByString:@""];
+                                analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
                                 return @{
                                          @"action_type" : @"Tap",
                                          @"action_name" : @"Cancel",
