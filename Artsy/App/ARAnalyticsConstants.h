@@ -64,13 +64,10 @@ extern NSString *const ARAnalyticsInquiryError;
 
 
 extern NSString *const ARAnalyticsTappedHeroUnit;
-extern NSString *const ARAnalyticsTappedMainNavigationItem;
 
 // Sharing
 
 extern NSString *const ARAnalyticsShare;
-extern NSString *const ARAnalyticsHearted;
-extern NSString *const ARAnalyticsUnhearted;
 
 // Artwork
 

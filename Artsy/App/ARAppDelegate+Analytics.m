@@ -200,13 +200,6 @@
                     ARAnalyticsClass: ARShowViewController.class,
                     ARAnalyticsDetails: @[
                         @{
-                            ARAnalyticsEventName: ARAnalyticsPartnerShowView,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARShowViewController *controller, NSArray *_) {
-                                return controller.dictionaryForAnalytics;
-                            }
-                        },
-                        @{
                             ARAnalyticsEventName: ARAnalyticsFairMapButtonTapped,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(handleMapButtonPress:)),
                             ARAnalyticsProperties: ^NSDictionary*(ARShowViewController *controller, NSArray *_) {
@@ -223,25 +216,6 @@
                                 return @{
                                     @"gallery_slug" : controller.show.partner.partnerID ?: @"",
                                 };
-                            }
-                        },
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARHeartButton.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsHearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(setHearted:animated:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARHeartButton *button, NSArray *_) {
-                                return button.hearted;
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsUnhearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(setHearted:animated:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARHeartButton *button, NSArray *_) {
-                                return !button.hearted;
                             }
                         },
                     ]
@@ -399,23 +373,13 @@
                                     @"artwork_slug": controller.artwork.artworkID ?: @"",
                                     @"artist_slug": controller.artwork.artist.artistID ?: @"",
                                     @"auction_id": saleArtwork.auction.saleID ?: @"",
-                                    @"context_type" : @"artwork_page"
+                                    @"context_type" : @"Artwork"
                                 };
                             },
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsAuctionHowBiddingWorks,
                             ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedAuctionInfo)),
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtworkView,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
-                                return @{
-                                    @"artwork_id" : controller.artwork.artworkID ?: @"",
-                                    @"fair_id" : controller.fair.fairID ?: @""
-                                };
-                            },
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsArtworkZoom,
@@ -516,22 +480,6 @@
                                     @"source_screen": @"gene page"
                                 };
                             },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsHearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowingGene:)),
-                            ARAnalyticsShouldFire: ^BOOL (ARGeneViewController *controller, NSArray *parameters) {
-                                ARHeartButton *sender = parameters.firstObject;
-                                return sender.hearted;
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsUnhearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowingGene:)),
-                            ARAnalyticsShouldFire: ^BOOL (ARGeneViewController *controller, NSArray *parameters) {
-                                ARHeartButton *sender = parameters.firstObject;
-                                return sender.hearted;
-                            },
                         }
                     ]
                 },
@@ -568,16 +516,19 @@
                                 ARAppNotificationsRequestContext context = ((ARAppNotificationsDelegate *)controller).requestContext;
                                 NSString *analyticsContext = @"";
                                 if (context == ARAppNotificationsRequestContextArtistFollow) {
-                                    analyticsContext = @"artist follow";
+                                    analyticsContext = @"ArtistFollow";
                                 } else if (context == ARAppNotificationsRequestContextOnboarding) {
-                                    analyticsContext = @"onboarding";
+                                    analyticsContext = @"Onboarding";
                                 } else if (context == ARAppNotificationsRequestContextLaunch) {
-                                    analyticsContext = @"launch";
+                                    analyticsContext = @"Launch";
                                 }
+        
+                                analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
 
                                 return @{
-                                         @"outcome"      : @"yes",
-                                         @"context_type" : analyticsContext
+                                         @"action_type" : @"Tap",
+                                         @"action_name" : @"Yes",
+                                         @"context_screen" : analyticsContext,
                                          };
                             }
                         },
@@ -588,15 +539,19 @@
                                 ARAppNotificationsRequestContext context = ((ARAppNotificationsDelegate *)controller).requestContext;
                                 NSString *analyticsContext = @"";
                                 if (context == ARAppNotificationsRequestContextArtistFollow) {
-                                    analyticsContext = @"artist follow";
+                                    analyticsContext = @"ArtistFollow";
                                 } else if (context == ARAppNotificationsRequestContextOnboarding) {
-                                    analyticsContext = @"onboarding";
+                                    analyticsContext = @"Onboarding";
                                 } else if (context == ARAppNotificationsRequestContextLaunch) {
-                                    analyticsContext = @"launch";
+                                    analyticsContext = @"Launch";
                                 }
+        
+                                analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
+
                                 return @{
-                                         @"outcome"      : @"cancel",
-                                         @"context_type" : analyticsContext
+                                         @"action_type" : @"Tap",
+                                         @"action_name" : @"Cancel",
+                                         @"context_screen"  : analyticsContext
                                          };
                             }
                         },
@@ -607,15 +562,18 @@
                                 ARAppNotificationsRequestContext context = ((ARAppNotificationsDelegate *)controller).requestContext;
                                 NSString *analyticsContext = @"";
                                 if (context == ARAppNotificationsRequestContextArtistFollow) {
-                                    analyticsContext = @"artist follow";
+                                    analyticsContext = @"ArtistFollow";
                                 } else if (context == ARAppNotificationsRequestContextOnboarding) {
-                                    analyticsContext = @"onboarding";
+                                    analyticsContext = @"Onboarding";
                                 } else if (context == ARAppNotificationsRequestContextLaunch) {
-                                    analyticsContext = @"launch";
+                                    analyticsContext = @"Launch";
                                 }
+                                analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
+
                                 return @{
-                                         @"outcome"      : @"yes",
-                                         @"context_type" : analyticsContext
+                                         @"action_type" : @"Tap",
+                                         @"action_name" : @"Yes",
+                                         @"context_screen"  : analyticsContext
                                          };
                             }
                         },
@@ -626,15 +584,17 @@
                                 ARAppNotificationsRequestContext context = ((ARAppNotificationsDelegate *)controller).requestContext;
                                 NSString *analyticsContext = @"";
                                 if (context == ARAppNotificationsRequestContextArtistFollow) {
-                                    analyticsContext = @"artist follow";
+                                    analyticsContext = @"ArtistFollow";
                                 } else if (context == ARAppNotificationsRequestContextOnboarding) {
-                                    analyticsContext = @"onboarding";
+                                    analyticsContext = @"Onboarding";
                                 } else if (context == ARAppNotificationsRequestContextLaunch) {
-                                    analyticsContext = @"launch";
+                                    analyticsContext = @"Launch";
                                 }
+                                analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
                                 return @{
-                                         @"outcome"      : @"cancel",
-                                         @"context_type" : analyticsContext
+                                         @"action_type" : @"Tap",
+                                         @"action_name" : @"Cancel",
+                                         @"context_screen"  : analyticsContext
                                          };
                             }
                         },
@@ -764,34 +724,6 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARTabContentView.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsTappedMainNavigationItem,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(navigationControllerForIndex:),
-                            ARAnalyticsProperties:^NSDictionary*(ARTabContentView *view, NSArray *parameters) {
-                                NSInteger index = [parameters.firstObject integerValue];
-                                UIButton *button = view.buttons[index];
-                                NSString *title = button.accessibilityLabel ?: button.titleLabel.text;
-                                NSParameterAssert(title);
-                                return @{
-                                    @"tab name" : (title ?: @"").lowercaseString
-                                };
-                            },
-                            ARAnalyticsShouldFire: ^BOOL(ARTabContentView *view, NSArray *parameters) {
-                                // Ignore first invocation so that we don't track when users are loading the app initially.
-                                static BOOL firstInvocation = YES;
-                                if (firstInvocation) {
-                                    firstInvocation = NO;
-                                    return NO;
-                                }
-
-                                return YES;
-                            }
-                        }
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARArtistComponentViewController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -852,16 +784,6 @@
                                     @"source_screen" : @"Artist"
                                 };
                             },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsHearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowingArtist:)),
-                            ARAnalyticsShouldFire: heartedShouldFireBlock,
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsUnhearted,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowingArtist:)),
-                            ARAnalyticsShouldFire: unheartedShouldFireBlock,
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsArtistTappedForSale,
@@ -1158,38 +1080,6 @@
                             ARAnalyticsPageName: @"Search",
                         }
                     ]
-                },
-                @{
-                    ARAnalyticsClass: ARHomeComponentViewController.class,
-                    ARAnalyticsDetails: @[
-                            @{
-                                ARAnalyticsPageName: @"Home",
-                                }
-                            ]
-                },
-                @{
-                    ARAnalyticsClass: ARBrowseViewController.class,
-                    ARAnalyticsDetails: @[
-                            @{
-                                ARAnalyticsPageName: @"Explore",
-                                }
-                            ]
-                },
-                @{
-                    ARAnalyticsClass: ARFavoritesViewController.class,
-                    ARAnalyticsDetails: @[
-                            @{
-                                ARAnalyticsPageName: @"You",
-                                }
-                            ]
-                },
-                @{
-                    ARAnalyticsClass: ARWorksForYouComponentViewController.class,
-                    ARAnalyticsDetails: @[
-                            @{
-                                ARAnalyticsPageName: @"Works by artists you follow",
-                                }
-                            ]
                 },
                 // ========== CORE CONTENT SCREENS ==========
                 @{
