@@ -53,7 +53,7 @@ export default class Home extends React.Component<Props, State> {
 
     this.state = {
       appState: AppState.currentState,
-      selectedTab: 0, // default to the WorksForYou view
+      selectedTab: ArtistsWorksForYouTab, // default to the WorksForYou view
     }
   }
 
@@ -78,16 +78,16 @@ export default class Home extends React.Component<Props, State> {
   _handleAppStateChange = nextAppState => {
     // If we are coming back to the app from the background with a selected artist, make sure we're on the Artists tab
     if (this.props.selectedArtist && this.state.appState.match(/inactive|background/) && nextAppState === "active") {
-      this.tabView.goToPage(0)
+      this.tabView.goToPage(ArtistsWorksForYouTab)
     }
-    this.setState({ appState: nextAppState, selectedTab: 0 }, this.fireHomeScreenViewAnalytics)
+    this.setState({ appState: nextAppState, selectedTab: ArtistsWorksForYouTab }, this.fireHomeScreenViewAnalytics)
   }
 
   render() {
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
-          initialPage={this.props.selectedTab || 0}
+          initialPage={this.props.selectedTab || ArtistsWorksForYouTab}
           ref={tabView => (this.tabView = tabView)}
           onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
           renderTabBar={props => (
