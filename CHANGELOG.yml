@@ -48,6 +48,7 @@ upcoming:
       - Stops status bar from obscuring cancel button and title label of refine view - ash
       - Replace small notifications badge on tab bar items with large one - alloy
       - Disabling Spotlight indexing for now to speed up launch performance - alloy
+      - Fixes currency display issues for "Other Works in Auction" view - ash
 
 releases:
   - version: 3.2.7
