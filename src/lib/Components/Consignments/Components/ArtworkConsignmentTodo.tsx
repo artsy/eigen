@@ -94,9 +94,7 @@ const render = (props: TODOProps) => (
     <Separator />
     <Button onPress={props.goToEdition}>
       <Title>EDITION & AUTHENTICITY</Title>
-      {props.metadata && props.metadata.category && props.metadata.title && props.metadata.year
-        ? DoneButton()
-        : ToDoButton()}
+      {props.editionScreenViewed ? DoneButton() : ToDoButton()}
     </Button>
 
     <Separator />

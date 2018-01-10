@@ -24,6 +24,10 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
   }
 
   doneTapped = () => {
+    this.setState({ editionScreenViewed: true }, this.updateAndCloseScreen)
+  }
+
+  updateAndCloseScreen = () => {
     this.props.updateWithEdition(this.state)
     this.props.navigator.pop()
   }
