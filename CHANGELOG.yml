@@ -49,6 +49,7 @@ upcoming:
       - Replace small notifications badge on tab bar items with large one - alloy
       - Disabling Spotlight indexing for now to speed up launch performance - alloy
       - Remove unneeded cents from artwork price - alloy
+      - Fixes currency display issues for "Other Works in Auction" view - ash
 
 releases:
   - version: 3.2.7
