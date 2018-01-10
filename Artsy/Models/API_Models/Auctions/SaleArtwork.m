@@ -10,41 +10,45 @@
 // For a number formatter
 @import Artsy_UILabels;
 
-static NSNumberFormatter *currencyFormatter;
+static NSMutableDictionary <NSString *, NSNumberFormatter *> *formattersPerCurrency;
 
 @implementation SaleArtwork
 
 + (void)initialize
 {
     if (self == [SaleArtwork class]) {
-        currencyFormatter = [[NSNumberFormatter alloc] init];
-        currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
-        currencyFormatter.currencyGroupingSeparator = @",";
-        currencyFormatter.minimumFractionDigits = 0;
-        currencyFormatter.maximumFractionDigits = 0;
-        // This comes in from the server, so we can't apply it here
-        currencyFormatter.currencySymbol = @"";
-        currencyFormatter.internationalCurrencySymbol = @"";
+        formattersPerCurrency = [NSMutableDictionary dictionary];
     }
+}
+
++ (NSNumberFormatter *)createFormatterForCurrency:(NSString *)currency
+{
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    formatter.currencyGroupingSeparator = @",";
+    formatter.currencySymbol = currency;
+    formatter.internationalCurrencySymbol = currency;
+    formatter.maximumFractionDigits = 0;
+    return formatter;
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        ar_keypath(SaleArtwork.new, saleArtworkID) : @"id",
-        ar_keypath(SaleArtwork.new, currencySymbol) : @"symbol",
-        ar_keypath(SaleArtwork.new, saleArtworkID) : @"id",
-        ar_keypath(SaleArtwork.new, openingBidCents) : @"opening_bid_cents",
-        ar_keypath(SaleArtwork.new, minimumNextBidCents) : @"minimum_next_bid_cents",
-        ar_keypath(SaleArtwork.new, saleHighestBid) : @"highest_bid",
-        ar_keypath(SaleArtwork.new, artworkNumPositions) : @"bidder_positions_count",
-        ar_keypath(SaleArtwork.new, estimateCents) : @"estimate_cents",
-        ar_keypath(SaleArtwork.new, lowEstimateCents) : @"low_estimate_cents",
-        ar_keypath(SaleArtwork.new, highEstimateCents) : @"high_estimate_cents",
-        ar_keypath(SaleArtwork.new, reserveStatus) : @"reserve_status",
-        ar_keypath(SaleArtwork.new, lotLabel) : @"lot_label",
-        ar_keypath(SaleArtwork.new, bidCount) : @"bidder_positions_count"
-    };
+             ar_keypath(SaleArtwork.new, saleArtworkID) : @"id",
+             ar_keypath(SaleArtwork.new, currencySymbol) : @"symbol",
+             ar_keypath(SaleArtwork.new, saleArtworkID) : @"id",
+             ar_keypath(SaleArtwork.new, openingBidCents) : @"opening_bid_cents",
+             ar_keypath(SaleArtwork.new, minimumNextBidCents) : @"minimum_next_bid_cents",
+             ar_keypath(SaleArtwork.new, saleHighestBid) : @"highest_bid",
+             ar_keypath(SaleArtwork.new, artworkNumPositions) : @"bidder_positions_count",
+             ar_keypath(SaleArtwork.new, estimateCents) : @"estimate_cents",
+             ar_keypath(SaleArtwork.new, lowEstimateCents) : @"low_estimate_cents",
+             ar_keypath(SaleArtwork.new, highEstimateCents) : @"high_estimate_cents",
+             ar_keypath(SaleArtwork.new, reserveStatus) : @"reserve_status",
+             ar_keypath(SaleArtwork.new, lotLabel) : @"lot_label",
+             ar_keypath(SaleArtwork.new, bidCount) : @"bidder_positions_count"
+             };
 }
 
 + (NSValueTransformer *)auctionJSONTransformer
@@ -113,11 +117,11 @@ static NSNumberFormatter *currencyFormatter;
 + (NSValueTransformer *)reserveStatusJSONTransformer
 {
     NSDictionary *types = @{
-        @"no_reserve" : @(ARReserveStatusNoReserve),
-        @"reserve_not_met" : @(ARReserveStatusReserveNotMet),
-        @"reserve_met" : @(ARReserveStatusReserveMet),
-        @"reserve_unknown" : @(ARReserveStatusUnknown)
-    };
+                            @"no_reserve" : @(ARReserveStatusNoReserve),
+                            @"reserve_not_met" : @(ARReserveStatusReserveNotMet),
+                            @"reserve_met" : @(ARReserveStatusReserveMet),
+                            @"reserve_unknown" : @(ARReserveStatusUnknown)
+                            };
 
     return [MTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         if(!str) { str = @"not for sale"; }
@@ -145,19 +149,18 @@ static NSNumberFormatter *currencyFormatter;
 
 + (NSString *)dollarsFromCents:(NSNumber *)cents currencySymbol:(NSString *)symbol
 {
+    NSString *currencyKey = symbol ?: @"$";
     NSNumber *amount = @(roundf(cents.floatValue / 100));
 
-    // Need to set both of these to work around this bug http://www.openradar.me/18034852
-    currencyFormatter.currencySymbol = symbol;
-    currencyFormatter.internationalCurrencySymbol = symbol;
-
-    // Even with the above workaround the bug still manifests in iOS >= 10
-    NSString *formatted = [currencyFormatter stringFromNumber:amount];
-    if ([formatted hasSuffix:@".00"]) {
-        formatted = [formatted substringToIndex:formatted.length-3];
+    NSNumberFormatter *formatter = formattersPerCurrency[currencyKey];
+    if (formatter) {
+        return [formatter stringFromNumber:amount];
+    } else {
+        NSNumberFormatter *newFormatter = [SaleArtwork createFormatterForCurrency:currencyKey];
+        formattersPerCurrency[currencyKey] = newFormatter;
+        return [newFormatter stringFromNumber:amount];
     }
 
-    return formatted;
 }
 
 - (BOOL)hasEstimate
