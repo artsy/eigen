@@ -15,6 +15,8 @@
 * Add saves and follows analytics - maxim
 * Track which images are being uploaded in consignments - orta
 * Fix a bug where the relay query params for the gene page weren't being set - orta
+* Fix a bug where edition screen was considered seen based on metadata props
+  - maxim
 
 ### 1.4.0-beta.13
 
