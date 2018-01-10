@@ -200,14 +200,13 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
 + (void)addToSpotlightIndex:(BOOL)addOrRemove entity:(id<ARSpotlightMetadataProvider>)entity;
 {
-    if (ARSpotlightDisabled) {
-        return;
-    }
+    if (ARSpotlightDisabled) return;
     addOrRemove ? [self addEntityToSpotlightIndex:entity] : [self removeEntityFromSpotlightIndex:entity];
 }
 
 + (void)addEntityToSpotlightIndex:(id<ARSpotlightMetadataProvider>)entity;
 {
+    if (ARSpotlightDisabled) return;
     ar_dispatch_on_queue(ARSpotlightQueue, ^{
         [self searchAttributesForEntity:entity includeIdentifier:YES completion:^(CSSearchableItemAttributeSet *attributeSet) {
             NSString *domainIdentifier = nil;
@@ -239,6 +238,7 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
 + (void)removeEntityFromSpotlightIndex:(id<ARSpotlightMetadataProvider>)entity;
 {
+    if (ARSpotlightDisabled) return;
     ar_dispatch_on_queue(ARSpotlightQueue, ^{
         [self removeEntityByIdentifierFromSpotlightIndex:[self webpageURLForEntity:entity].absoluteString];
     });
@@ -246,6 +246,7 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
 + (void)removeEntityByIdentifierFromSpotlightIndex:(NSString *)identifier;
 {
+    if (ARSpotlightDisabled) return;
     ar_dispatch_on_queue(ARSpotlightQueue, ^{
         [self.searchableIndex deleteSearchableItemsWithIdentifiers:@[identifier]
                                               completionHandler:^(NSError *error) {
@@ -272,6 +273,7 @@ ARStringByStrippingMarkdown(NSString *markdownString)
                                           includeIdentifier:(BOOL)includeIdentifier
                                                  completion:(ARSearchAttributesCompletionBlock)completion;
 {
+    if (ARSpotlightDisabled) return nil;
     CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
 
     attributeSet.title = entity.name;
