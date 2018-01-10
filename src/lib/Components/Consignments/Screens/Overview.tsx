@@ -192,20 +192,24 @@ export default class Info extends React.Component<Props, State> {
     }
   }
 
+  canSubmit = () =>
+    !!(
+      this.state.artist &&
+      this.state.location &&
+      this.state.metadata &&
+      this.state.metadata.category &&
+      this.state.metadata.title &&
+      this.state.metadata.year &&
+      this.state.metadata.medium &&
+      this.state.editionScreenViewed
+    )
+
   render() {
     const title = "Complete work details to submit"
     const subtitle = "Provide as much detail as possible so that our partners can best assess your work."
-    const state = this.state
 
     // See https://github.com/artsy/convection/blob/master/app/models/submission.rb for list
-    const canSubmit = !!(
-      state.artist &&
-      state.location &&
-      state.metadata &&
-      state.metadata.category &&
-      state.metadata.title &&
-      state.metadata.year
-    )
+    const canSubmit = this.canSubmit()
 
     const isPad = Dimensions.get("window").width > 700
 

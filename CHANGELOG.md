@@ -3,6 +3,8 @@
 
 ### Master
 
+* Fix a bug where edition screen was considered seen based on metadata props - maxim
+
 ### 1.4.0-rc.0
 
 * Make sure Home/Fairs rail does not clip any icons at the end of the list - alloy
@@ -15,8 +17,6 @@
 * Add saves and follows analytics - maxim
 * Track which images are being uploaded in consignments - orta
 * Fix a bug where the relay query params for the gene page weren't being set - orta
-* Fix a bug where edition screen was considered seen based on metadata props
-  - maxim
 
 ### 1.4.0-beta.13
 

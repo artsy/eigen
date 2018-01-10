@@ -69,7 +69,7 @@ interface TODOProps extends ConsignmentSetup {
   style?: StyleProp<ViewStyle>
 }
 
-const render = (props: TODOProps) => (
+const render = (props: TODOProps, canSubmitMetadata: boolean) => (
   <Background style={props.style}>
     <Separator />
     <Button onPress={props.goToArtist}>
@@ -86,9 +86,7 @@ const render = (props: TODOProps) => (
     <Separator />
     <Button onPress={props.goToMetadata}>
       <Title>WORK DETAILS</Title>
-      {props.metadata && props.metadata.category && props.metadata.title && props.metadata.year
-        ? DoneButton()
-        : ToDoButton()}
+      {canSubmitMetadata ? DoneButton() : ToDoButton()}
     </Button>
 
     <Separator />
@@ -114,7 +112,10 @@ const render = (props: TODOProps) => (
 )
 
 export default class ConsignmentTODO extends React.Component<TODOProps, null> {
+  canSubmitMetadata = props =>
+    props.metadata && props.metadata.category && props.metadata.title && props.metadata.year && props.metadata.medium
+
   render() {
-    return render(this.props)
+    return render(this.props, this.canSubmitMetadata(this.props))
   }
 }
