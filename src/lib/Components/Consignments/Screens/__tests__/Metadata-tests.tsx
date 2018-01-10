@@ -50,7 +50,6 @@ describe("state", () => {
 
       metadata.setState = partial => (metadata.state = Object.assign({}, originalState, partial))
     })
-
     it("updates the year", () => {
       metadata.updateYear("1985")
       expect(metadata.state).toMatchDiffSnapshot(originalState)
@@ -78,5 +77,20 @@ describe("state", () => {
 
       expect(originalState).toMatchDiffSnapshot(metadata.state)
     })
+  })
+
+  it("sets the category state to the first when you start selecting if it's null", () => {
+    const metadata = new Metadata({ metadata: {} })
+    metadata.animateStateChange = partial => (metadata.state = Object.assign({}, {}, partial))
+    metadata.showCategorySelection()
+    expect(metadata.state).toEqual({ category: "PAINTING", categoryName: "Painting", showPicker: true })
+  })
+
+  it("doesn't overwrite the category state when you start selecting a category", () => {
+    const originalState = { category: "DESIGN", categoryName: "Design" }
+    const metadata = new Metadata({ metadata: originalState })
+    metadata.animateStateChange = partial => (metadata.state = Object.assign({}, originalState, partial))
+    metadata.showCategorySelection()
+    expect(metadata.state).toEqual({ category: "DESIGN", categoryName: "Design", showPicker: true })
   })
 })
