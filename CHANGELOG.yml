@@ -48,6 +48,7 @@ upcoming:
       - Stops status bar from obscuring cancel button and title label of refine view - ash
       - Replace small notifications badge on tab bar items with large one - alloy
       - Disabling Spotlight indexing for now to speed up launch performance - alloy
+      - Remove unneeded cents from artwork price - alloy
 
 releases:
   - version: 3.2.7

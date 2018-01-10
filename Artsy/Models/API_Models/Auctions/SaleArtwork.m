@@ -20,6 +20,7 @@ static NSNumberFormatter *currencyFormatter;
         currencyFormatter = [[NSNumberFormatter alloc] init];
         currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
         currencyFormatter.currencyGroupingSeparator = @",";
+        currencyFormatter.minimumFractionDigits = 0;
         currencyFormatter.maximumFractionDigits = 0;
         // This comes in from the server, so we can't apply it here
         currencyFormatter.currencySymbol = @"";
@@ -150,7 +151,13 @@ static NSNumberFormatter *currencyFormatter;
     currencyFormatter.currencySymbol = symbol;
     currencyFormatter.internationalCurrencySymbol = symbol;
 
-    return [currencyFormatter stringFromNumber:amount];
+    // Even with the above workaround the bug still manifests in iOS >= 10
+    NSString *formatted = [currencyFormatter stringFromNumber:amount];
+    if ([formatted hasSuffix:@".00"]) {
+        formatted = [formatted substringToIndex:formatted.length-3];
+    }
+
+    return formatted;
 }
 
 - (BOOL)hasEstimate
