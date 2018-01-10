@@ -99,7 +99,10 @@ export default class Metadata extends React.Component<Props, State> {
 
   showCategorySelection = () => {
     Keyboard.dismiss()
-    this.animateStateChange({ showPicker: true })
+
+    const category = this.state.category || categoryOptions[0].value
+    const categoryName = this.state.categoryName || categoryOptions[0].name
+    this.animateStateChange({ showPicker: true, categoryName, category })
   }
 
   hideCategorySelection = () => this.animateStateChange({ showPicker: false })

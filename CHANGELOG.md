@@ -4,6 +4,7 @@
 ### Master
 
 * Fix a bug where edition screen was considered seen based on metadata props - maxim
+* Fix for selecting a painting in consignments - orta
 
 ### 1.4.0-rc.0
 
