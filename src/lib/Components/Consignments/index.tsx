@@ -49,6 +49,7 @@ export interface ConsignmentSetup {
     state: string
     country: string
   }
+  editionScreenViewed?: boolean
 }
 
 interface Props extends ViewProperties, ConsignmentSetup {}

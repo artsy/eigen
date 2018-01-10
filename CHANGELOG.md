@@ -3,6 +3,8 @@
 
 ### Master
 
+* Fix a bug where edition screen was considered seen based on metadata props - maxim
+
 ### 1.4.0-rc.0
 
 * Make sure Home/Fairs rail does not clip any icons at the end of the list - alloy

@@ -26,6 +26,7 @@ describe("consignment metadata -> submission", () => {
         unit: "CM",
         displayString: "5/5",
       },
+      editionScreenViewed: true,
     }
     const result =
       '{ clientMutationId: "ID", artist_id: "danger", category: DESIGN_DECORATIVE_ART, dimensions_metric: CM, edition: false, height: "100", medium: "Wood", title: "My Work", width: "100", year: "1983" }'

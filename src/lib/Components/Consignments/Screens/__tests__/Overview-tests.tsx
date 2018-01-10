@@ -126,5 +126,40 @@ describe("Updating State", () => {
     expect(stateMock).toBeCalledWith({ state: "SUBMITTED" }, expect.anything())
   })
 
-  it.skip("updates Photos")
+  it("adds submitted before triggering final submission on submit", () => {
+    overview.goToFinalSubmission()
+    expect(stateMock).toBeCalledWith({ state: "SUBMITTED" }, expect.anything())
+  })
+})
+
+it("requires the same metadata props as force", () => {
+  const requiredProps: any = {
+    artist: {},
+    location: {},
+    editionScreenViewed: true,
+    metadata: {
+      category: "a",
+      categoryName: "A",
+      title: "Work",
+      year: "123",
+      medium: "123",
+      width: "123",
+      height: "12",
+      depth: 12,
+      unit: "CM",
+      displayString: "A work",
+    },
+  }
+  const overview = new Overview({ setup: requiredProps })
+  expect(overview.canSubmit()).toBeTruthy()
+})
+
+it("does not allow submission without all the right options", () => {
+  const requiredProps: any = {
+    artist: {},
+    location: {},
+    editionScreenViewed: true,
+  }
+  const overview = new Overview({ setup: requiredProps })
+  expect(overview.canSubmit()).toBeFalsy()
 })
