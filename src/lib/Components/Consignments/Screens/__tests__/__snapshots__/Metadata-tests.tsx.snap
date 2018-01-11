@@ -205,6 +205,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       >
                         <TextInput
                           autoCorrect={false}
+                          autoFocus={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
                           onBlur={[Function]}
@@ -1034,6 +1035,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       >
                         <TextInput
                           autoCorrect={false}
+                          autoFocus={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
                           onBlur={[Function]}
