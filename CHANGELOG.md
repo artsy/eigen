@@ -6,6 +6,7 @@
 * Fix a bug where edition screen was considered seen based on metadata props - maxim
 * Fix for selecting a painting in consignments - orta
 * Fix submission requirements for consignments to match force - orta/maxim
+* Add auto focus to the work details / metadata screen - maxim
 
 ### 1.4.0-rc.0
 

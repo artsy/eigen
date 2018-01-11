@@ -138,6 +138,9 @@ export default class Metadata extends React.Component<Props, State> {
                       value: this.state.title,
                       onSubmitEditing: this.selectNextInput,
                       returnKeyType: "next",
+                      autoFocus: this.state.title
+                        ? false
+                        : typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
                     }}
                     style={{ margin: 10 }}
                   />
