@@ -3,12 +3,14 @@
 
 ### Master
 
+### 1.4.0-rc.3
+
 * Fix a bug where edition screen was considered seen based on metadata props - maxim
 * Fix for selecting a painting in consignments - orta
 * Fix submission requirements for consignments to match force - orta/maxim
 * Add auto focus to the work details / metadata screen - maxim
 
-### 1.4.0-rc.0
+### 1.4.0-rc.0-2
 
 * Make sure Home/Fairs rail does not clip any icons at the end of the list - alloy
 * Re-align headers in all Home tabs - alloy
