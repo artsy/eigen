@@ -201,6 +201,8 @@ export default class Info extends React.Component<Props, State> {
       this.state.metadata.title &&
       this.state.metadata.year &&
       this.state.metadata.medium &&
+      this.state.metadata.height &&
+      this.state.metadata.width &&
       this.state.editionScreenViewed
     )
 

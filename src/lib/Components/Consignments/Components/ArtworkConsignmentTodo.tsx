@@ -113,7 +113,13 @@ const render = (props: TODOProps, canSubmitMetadata: boolean) => (
 
 export default class ConsignmentTODO extends React.Component<TODOProps, null> {
   canSubmitMetadata = props =>
-    props.metadata && props.metadata.category && props.metadata.title && props.metadata.year && props.metadata.medium
+    props.metadata &&
+    props.metadata.category &&
+    props.metadata.title &&
+    props.metadata.year &&
+    props.metadata.medium &&
+    props.metadata.height &&
+    props.metadata.width
 
   render() {
     return render(this.props, this.canSubmitMetadata(this.props))
