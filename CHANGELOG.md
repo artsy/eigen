@@ -9,6 +9,7 @@
 * Fix for selecting a painting in consignments - orta
 * Fix submission requirements for consignments to match force - orta/maxim
 * Add auto focus to the work details / metadata screen - maxim
+* Fix filter logic around sale works by followed artists - chris
 
 ### 1.4.0-rc.0-2
 

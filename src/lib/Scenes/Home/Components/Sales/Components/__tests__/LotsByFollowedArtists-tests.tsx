@@ -22,7 +22,9 @@ describe("LotsByFollowedArtists", () => {
             {
               node: {
                 name: "TestName",
-                is_biddable: true,
+                sale: {
+                  is_open: true,
+                },
                 artwork: {
                   id: "foo",
                 },

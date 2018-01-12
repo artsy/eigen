@@ -92,7 +92,16 @@ type Artist implements Node {
     exclude: [String]
   ): [Artwork]
   artworks_connection(sort: ArtworkSorts, filter: [ArtistArtworksFilters], published: Boolean = true, after: String, first: Int, before: String, last: Int): ArtworkConnection
-  auctionResults(sort: AuctionResultSorts, after: String, first: Int, before: String, last: Int): AuctionResultConnection
+  auctionResults(
+    sort: AuctionResultSorts
+
+    # When true, will only return records for whitelisted artists.
+    recordsTrusted: Boolean = false
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): AuctionResultConnection
   bio: String
 
   # The Artist biography article written by Artsy
@@ -292,7 +301,16 @@ type ArtistItem implements Node {
     exclude: [String]
   ): [Artwork]
   artworks_connection(sort: ArtworkSorts, filter: [ArtistArtworksFilters], published: Boolean = true, after: String, first: Int, before: String, last: Int): ArtworkConnection
-  auctionResults(sort: AuctionResultSorts, after: String, first: Int, before: String, last: Int): AuctionResultConnection
+  auctionResults(
+    sort: AuctionResultSorts
+
+    # When true, will only return records for whitelisted artists.
+    recordsTrusted: Boolean = false
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): AuctionResultConnection
   bio: String
 
   # The Artist biography article written by Artsy
@@ -425,7 +443,16 @@ type ArtistSearchEntity implements Node {
     exclude: [String]
   ): [Artwork]
   artworks_connection(sort: ArtworkSorts, filter: [ArtistArtworksFilters], published: Boolean = true, after: String, first: Int, before: String, last: Int): ArtworkConnection
-  auctionResults(sort: AuctionResultSorts, after: String, first: Int, before: String, last: Int): AuctionResultConnection
+  auctionResults(
+    sort: AuctionResultSorts
+
+    # When true, will only return records for whitelisted artists.
+    recordsTrusted: Boolean = false
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): AuctionResultConnection
   bio: String
 
   # The Artist biography article written by Artsy
@@ -760,6 +787,7 @@ type ArtworkContextAuction implements Node {
   # Returns a live auctions url if the sale is open and start time is after now
   live_url_if_open: String
   profile: Profile
+  promoted_sale: Sale
   registration_ends_at(
     convert_to_utc: Boolean
     format: String
@@ -996,6 +1024,7 @@ type ArtworkContextSale implements Node {
   # Returns a live auctions url if the sale is open and start time is after now
   live_url_if_open: String
   profile: Profile
+  promoted_sale: Sale
   registration_ends_at(
     convert_to_utc: Boolean
     format: String
@@ -1510,39 +1539,7 @@ type AuctionResult implements Node {
   description: String
   external_url: String
   images: AuctionLotImages
-
-  # A formatted price with various currency formatting options.
-  low_estimate(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # A formatted price with various currency formatting options.
-  high_estimate(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # A formatted price with various currency formatting options.
-  price_realized(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
+  price_realized: AuctionResultPriceRealized
 }
 
 # A connection to a list of items.
@@ -1561,6 +1558,15 @@ type AuctionResultEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+type AuctionResultPriceRealized {
+  cents: Int
+  cents_usd: Int
+  display(
+    # Passes in to numeral, such as `'0.00'`
+    format: String = ""
+  ): String
 }
 
 enum AuctionResultSorts {
@@ -2417,6 +2423,9 @@ type FollowArtistPayload {
   popular_artists(
     # If true, will exclude followed artists for the user
     exclude_followed_artists: Boolean
+
+    # Exclude these ids from results, may result in all artists being excluded.
+    exclude_artist_ids: [String]
 
     # Number of results to return
     size: Int
@@ -3318,6 +3327,7 @@ type HomePageModuleContextSale implements Node {
   # Returns a live auctions url if the sale is open and start time is after now
   live_url_if_open: String
   profile: Profile
+  promoted_sale: Sale
   registration_ends_at(
     convert_to_utc: Boolean
     format: String
@@ -4620,6 +4630,9 @@ type Query {
     # If true, will exclude followed artists for the user
     exclude_followed_artists: Boolean
 
+    # Exclude these ids from results, may result in all artists being excluded.
+    exclude_artist_ids: [String]
+
     # Number of results to return
     size: Int
   ): PopularArtists
@@ -4781,6 +4794,7 @@ type Sale implements Node {
   # Returns a live auctions url if the sale is open and start time is after now
   live_url_if_open: String
   profile: Profile
+  promoted_sale: Sale
   registration_ends_at(
     convert_to_utc: Boolean
     format: String
@@ -5899,6 +5913,9 @@ type Viewer {
   popular_artists(
     # If true, will exclude followed artists for the user
     exclude_followed_artists: Boolean
+
+    # Exclude these ids from results, may result in all artists being excluded.
+    exclude_artist_ids: [String]
 
     # Number of results to return
     size: Int
