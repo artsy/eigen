@@ -16,11 +16,13 @@ const DEFAULT_TITLE = "Lots by Artists You Follow"
 export class LotsByFollowedArtists extends Component<Props> {
   state = {
     artworks: [],
+    loading: false,
   }
 
   componentWillMount() {
     this.setState({
       artworks: this.artworks,
+      loading: false,
     })
   }
 
@@ -49,15 +51,17 @@ export class LotsByFollowedArtists extends Component<Props> {
 
   render() {
     const { relay, title = DEFAULT_TITLE } = this.props
-    const showSpinner = relay.hasMore() && relay.isLoading()
+    const showSpinner = relay.hasMore() && this.state.loading
+    const hasArtworks = this.artworks.length > 0
 
     const loadMore =
       relay.hasMore() &&
       once(() => {
-        relay.loadMore(PAGE_SIZE, x => x)
+        this.setState({ loading: true })
+        relay.loadMore(PAGE_SIZE, () => this.setState({ loading: false }))
       })
 
-    return (
+    return hasArtworks ? (
       <ScrollView onScroll={isCloseToBottom(loadMore)} scrollEventThrottle={400}>
         <SectionHeader title={title} />
         <Container>
@@ -65,7 +69,7 @@ export class LotsByFollowedArtists extends Component<Props> {
           {showSpinner && <Spinner style={{ marginTop: 20 }} />}
         </Container>
       </ScrollView>
-    )
+    ) : null
   }
 }
 
