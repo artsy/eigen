@@ -5,6 +5,7 @@
 
 * Fix loading indicator not hiding in Auctions tab of Home view - luc
 * Fix gene view pagination - alloy
+* Fix home page analytics double fire upon entering background - maxim
 
 ### 1.4.0-rc.4
 
