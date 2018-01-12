@@ -6,6 +6,7 @@
 * Fix loading indicator not hiding in Auctions tab of Home view - luc
 * Fix gene view pagination - alloy
 * Fix home page analytics double fire upon entering background - maxim
+* Consignments welcome wording fixes - barry/orta
 
 ### 1.4.0-rc.4
 

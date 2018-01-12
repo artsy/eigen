@@ -236,7 +236,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                   ]
                 }
               >
-                Get the offers from galleries and auction houses
+                Get offers from galleries and auction houses
               </Text>
             </View>
             <View
@@ -755,7 +755,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                   ]
                 }
               >
-                Get the offers from galleries and auction houses
+                Get offers from galleries and auction houses
               </Text>
             </View>
             <View
@@ -1274,7 +1274,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                   ]
                 }
               >
-                Get the offers from galleries and auction houses
+                Get offers from galleries and auction houses
               </Text>
             </View>
             <View
@@ -1793,7 +1793,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                   ]
                 }
               >
-                Get the offers from galleries and auction houses
+                Get offers from galleries and auction houses
               </Text>
             </View>
             <View
@@ -2312,7 +2312,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                   ]
                 }
               >
-                Get the offers from galleries and auction houses
+                Get offers from galleries and auction houses
               </Text>
             </View>
             <View
