@@ -34,38 +34,19 @@ exports[`looks like expected 1`] = `
     }
   >
     <ArtworksGrid
-      gene={
+      filtered_artworks={
         Object {
-          "_id": "a UUID",
-          "description": "Here's some text",
-          "filtered_artworks": Object {
-            "aggregations": Array [
-              Object {
-                "counts": Object {
-                  "count": "Yep",
-                  "id": "OK",
-                  "name": "Sure",
-                },
-                "slice": "1212",
-              },
-            ],
-            "total": 12,
-          },
-          "id": "An ID",
-          "name": "Example Gene",
-          "trending_artists": Array [
+          "aggregations": Array [
             Object {
               "counts": Object {
-                "artworks": 2,
-                "for_sale_artworks": 1,
+                "count": "Yep",
+                "id": "OK",
+                "name": "Sure",
               },
-              "id": "an artist",
-              "image": Object {
-                "large_version": "",
-              },
-              "name": "Artist name",
+              "slice": "1212",
             },
           ],
+          "total": 12,
         }
       }
       mapPropsToArtworksConnection={[Function]}

@@ -4,6 +4,7 @@
 ### Master
 
 * Fix loading indicator not hiding in Auctions tab of Home view - luc
+* Fix gene view pagination - alloy
 
 ### 1.4.0-rc.4
 
