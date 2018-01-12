@@ -108,7 +108,7 @@ const Contents: React.SFC<{ deviceProps: DeviceProps; onPress: () => void }> = (
           </HorizontalLayout>
           <HorizontalLayout {...deviceProps}>
             <Icon source={require("../../../../../images/offer.png")} />
-            <SmallHeadline {...deviceProps}>Get the offers from galleries and auction houses</SmallHeadline>
+            <SmallHeadline {...deviceProps}>Get offers from galleries and auction houses</SmallHeadline>
           </HorizontalLayout>
           <HorizontalLayout {...deviceProps}>
             <Icon source={require("../../../../../images/sell.png")} />
