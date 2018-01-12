@@ -3,6 +3,8 @@
 
 ### Master
 
+* Fix loading indicator not hiding in Auctions tab of Home view - luc
+
 ### 1.4.0-rc.4
 
 * Fix filter logic around sale works by followed artists - chris
