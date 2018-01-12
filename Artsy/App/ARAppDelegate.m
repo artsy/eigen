@@ -70,6 +70,7 @@ static ARAppDelegate *_sharedInstance = nil;
 {
     _sharedInstance = [[self alloc] init];
     [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = _sharedInstance;
+    [JSDecoupledAppDelegate sharedAppDelegate].appDefaultOrientationDelegate = (id)_sharedInstance;
 
     // TODO Until we drop iOS 8 support, we can’t really conform to the `JSApplicationURLResourceOpeningDelegate`
     // protocol, as it means we would have to implement `application:openURL:options:` which seems tricky if we still
@@ -80,6 +81,13 @@ static ARAppDelegate *_sharedInstance = nil;
 + (ARAppDelegate *)sharedInstance
 {
     return _sharedInstance;
+}
+
+// Because we‘ve locked the launch screen on iPhone to portrait mode, we now have to unlock all of them again such that
+// VCs get to decide the allowed orientations, specifically for the view in room VC.
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    return UIInterfaceOrientationMaskAll;
 }
 
 /// These are the pre-requisites for doing any background networking with Eigen.
