@@ -85,8 +85,15 @@ target 'Artsy' do
   pod 'Extraction'
 
   pod 'Emission', '~> 1.4.0-beta.11'
-  pod 'React/Core'
 
+  # Allow easily running Emission from Metro inside Eigen (see issue #2497)
+  if ENV["CIRCLE_BUILD_NUM"]
+    # Production:
+    pod 'React', :subspecs => %w(Core)
+  else
+    # Development
+    pod 'React', :subspecs => %w(Core DevSupport)
+  end
   # Facebook
   pod 'FBSDKCoreKit', '~> 4.9'
   pod 'FBSDKLoginKit', '~> 4.9'
