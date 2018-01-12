@@ -80,7 +80,7 @@ export default class Home extends React.Component<Props, State> {
     if (this.props.selectedArtist && this.state.appState.match(/inactive|background/) && nextAppState === "active") {
       this.tabView.goToPage(ArtistsWorksForYouTab)
     }
-    this.setState({ appState: nextAppState, selectedTab: ArtistsWorksForYouTab }, this.fireHomeScreenViewAnalytics)
+    this.setState({ appState: nextAppState })
   }
 
   render() {
