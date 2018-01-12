@@ -6,6 +6,7 @@ import Sales from "../index"
 
 jest.mock("WebView", () => "WebView")
 jest.mock("../Components/ZeroState/index.html", () => "")
+jest.mock("../Components/LotsByFollowedArtists", () => "")
 
 it("renders the ZeroState when there are no sales", () => {
   const auctions = shallow(<Sales {...Object.assign({}, props, { viewer: { sales: [] } })} />)
