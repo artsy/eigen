@@ -3,6 +3,8 @@
 
 ### Master
 
+* Fix gene view pagination - alloy
+
 ### 1.4.0-rc.4
 
 * Fix filter logic around sale works by followed artists - chris

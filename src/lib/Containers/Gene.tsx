@@ -125,11 +125,11 @@ export class Gene extends React.Component<Props, State> {
       case TABS.WORKS:
         return (
           <GeneArtworksGrid
-            gene={this.props.gene}
+            filtered_artworks={this.props.gene.filtered_artworks}
             medium={this.state.selectedMedium}
             priceRange={this.state.selectedPriceRange}
             sort={this.state.sort}
-            mapPropsToArtworksConnection={props => props.gene.artworks}
+            mapPropsToArtworksConnection={props => props.filtered_artworks.artworks}
           />
         )
     }
@@ -369,14 +369,13 @@ export default createRefetchContainer(
       ) {
       ...Header_gene
       ...About_gene
-      ...GeneArtworksGrid_gene @arguments(sort: $sort, medium: $medium, price_range: $price_range)
 
       filtered_artworks(
+        size: 0
         medium: $medium
         price_range: $price_range
         sort: $sort
         aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
-        page: 1
         for_sale: true
       ) {
         total
@@ -388,6 +387,7 @@ export default createRefetchContainer(
             count
           }
         }
+        ...GeneArtworksGrid_filtered_artworks @arguments(sort: $sort)
       }
     }
   `,

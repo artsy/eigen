@@ -1,4 +1,4 @@
-import { createPaginationContainer, graphql } from "react-relay"
+import { ConnectionData, createPaginationContainer, graphql } from "react-relay"
 import InfiniteScrollArtworksGrid from "../InfiniteScrollGrid"
 
 import Artwork from "../Artwork"
@@ -9,24 +9,16 @@ Artwork
 const GeneArtworksGrid = createPaginationContainer(
   InfiniteScrollArtworksGrid,
   {
-    gene: graphql.experimental`
-      fragment GeneArtworksGrid_gene on Gene
+    filtered_artworks: graphql.experimental`
+      fragment GeneArtworksGrid_filtered_artworks on FilterArtworks
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
-          cursor: { type: "String" }
-          sort: { type: "String", defaultValue: "-partner_updated_at" }
-          medium: { type: "String", defaultValue: "*" }
-          price_range: { type: "String", defaultValue: "*-*" }
+          cursor: { type: "String", defaultValue: "" }
+          sort: { type: "String" }
         ) {
         __id
-        artworks: artworks_connection(
-          first: $count
-          after: $cursor
-          sort: $sort
-          medium: $medium
-          price_range: $price_range
-          for_sale: true
-        ) @connection(key: "GeneArtworksGrid_artworks") {
+        artworks: artworks_connection(first: $count, after: $cursor, sort: $sort)
+          @connection(key: "GeneArtworksGrid_artworks") {
           pageInfo {
             hasNextPage
             startCursor
@@ -49,7 +41,7 @@ const GeneArtworksGrid = createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.gene && props.gene.artworks
+      return props.filtered_artworks && (props.filtered_artworks.artworks as ConnectionData)
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -60,27 +52,17 @@ const GeneArtworksGrid = createPaginationContainer(
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
         ...fragmentVariables,
-        __id: props.gene.__id,
+        __id: props.filtered_artworks.__id,
         count,
         cursor,
         sort: props.sort,
-        medium: props.medium,
-        price_range: props.priceRange,
       }
     },
     query: graphql.experimental`
-      query GeneArtworksGridQuery(
-        $__id: ID!
-        $count: Int!
-        $cursor: String
-        $sort: String
-        $medium: String
-        $price_range: String
-      ) {
+      query GeneArtworksGridQuery($__id: ID!, $count: Int!, $cursor: String, $sort: String) {
         node(__id: $__id) {
-          ... on Gene {
-            ...GeneArtworksGrid_gene
-              @arguments(count: $count, cursor: $cursor, sort: $sort, medium: $medium, price_range: $price_range)
+          ... on FilterArtworks {
+            ...GeneArtworksGrid_filtered_artworks @arguments(count: $count, cursor: $cursor, sort: $sort)
           }
         }
       }
@@ -91,8 +73,8 @@ const GeneArtworksGrid = createPaginationContainer(
 export default GeneArtworksGrid
 
 export interface GeneRelayProps {
-  gene?: {
-    artworks_connection: {
+  filtered_artworks?: {
+    artworks: {
       pageInfo: {
         hasNextPage: boolean
       }
