@@ -1,7 +1,7 @@
 // Please add your own contribution below inside the Master section
 // These docs are aimed at developers, but are shown inside collector GMV's channel
 
-### Master
+### 1.4.0
 
 * Fix gene view pagination - alloy
 * Fix home page analytics double fire upon entering background - maxim
