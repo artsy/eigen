@@ -6,6 +6,7 @@
 * Fix gene view pagination - alloy
 * Fix home page analytics double fire upon entering background - maxim
 * Consignments welcome wording fixes - barry/orta
+* Disabled Lots by Artists You Follow for this release - alloy
 
 ### 1.4.0-rc.4
 
