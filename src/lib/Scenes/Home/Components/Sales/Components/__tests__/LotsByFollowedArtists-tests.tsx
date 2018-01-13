@@ -6,30 +6,19 @@ import { getTestWrapper } from "lib/utils/getTestWrapper"
 import { LotsByFollowedArtists } from "../LotsByFollowedArtists"
 
 describe("LotsByFollowedArtists", () => {
-  it("looks correct when rendered", () => {
-    const props: any = getProps()
-    const { text } = getTestWrapper(<LotsByFollowedArtists {...props} />)
-    expect(text).toContain("Test Lots")
-  })
+  let props
 
-  it("should not show when there's no data", () => {
-    const props: any = getProps(false)
-    const { json } = getTestWrapper(<LotsByFollowedArtists {...props} />)
-    expect(json.rendered).toEqual(null)
-  })
-})
-
-const getProps = (withEdges = true) => ({
-  title: "Test Lots",
-  relay: {
-    hasMore: () => false,
-    loadMore: () => true,
-    isLoading: () => false,
-  },
-  viewer: {
-    sale_artworks: {
-      edges: withEdges
-        ? [
+  beforeEach(() => {
+    props = {
+      title: "Test Lots",
+      relay: {
+        hasMore: jest.fn(),
+        loadMore: jest.fn(),
+        isLoading: jest.fn(),
+      },
+      viewer: {
+        sale_artworks: {
+          edges: [
             {
               node: {
                 name: "TestName",
@@ -41,8 +30,14 @@ const getProps = (withEdges = true) => ({
                 },
               },
             },
-          ]
-        : [],
-    },
-  },
+          ],
+        },
+      },
+    }
+  })
+
+  it("looks correct when rendered", () => {
+    const { text } = getTestWrapper(<LotsByFollowedArtists {...props} />)
+    expect(text).toContain("Test Lots")
+  })
 })
