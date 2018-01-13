@@ -84,7 +84,7 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission', '~> 1.4.0-beta.11'
+  pod 'Emission', '~> 1.4.0'
   pod 'React/Core'
 
   # Facebook
