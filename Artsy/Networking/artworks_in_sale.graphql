@@ -4,6 +4,7 @@
       id
       bidder_positions_count
       opening_bid_cents
+      symbol
       highest_bid {
         id
         amount_cents

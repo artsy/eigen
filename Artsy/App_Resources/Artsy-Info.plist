@@ -98,7 +98,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Used to be able to create photos of artworks that the collector wishes to consign.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used to be able to select photos of artworks that the collector wishes to consign.</string>
+	<string>Photos will be used to gauge the quality of the work you are submitting</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AGaramondPro-BoldItalic.otf</string>
@@ -157,8 +157,13 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UIViewEdgeAntialiasing</key>
 	<true/>

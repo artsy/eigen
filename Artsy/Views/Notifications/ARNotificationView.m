@@ -73,6 +73,7 @@ static NSMutableArray *notificationQueue = nil; // Global notification queue
 
 {
     ARNotificationView *noticeView = [[self alloc] initWithFrame:CGRectMake(0, -panelHeight, view.bounds.size.width, 0) andResponseBlock:response];
+    
     noticeView.titleLabel.text = title;
     noticeView.parentView = view;
     noticeView.hideInterval = time;

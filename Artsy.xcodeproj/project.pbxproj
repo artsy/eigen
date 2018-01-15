@@ -664,6 +664,7 @@
 		66A43C691CE470C400FFD6ED /* Hash@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C661CE470C400FFD6ED /* Hash@3x.png */; };
 		66A43C6B1CE48FA800FFD6ED /* SearchButtonWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C6A1CE48FA800FFD6ED /* SearchButtonWhite@2x.png */; };
 		7091E01A0E49F283EF9BF395 /* Pods_Artsy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BEA0E7F562681F61B29D4C4 /* Pods_Artsy.framework */; };
+		7F45A1682003C7100063D6B5 /* conversations.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 7F45A1672003C7100063D6B5 /* conversations.graphql */; };
 		8337688A1C80DEC700611262 /* ARWorksForYouNetworkModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 833768891C80DEC700611262 /* ARWorksForYouNetworkModelTests.m */; };
 		833D53C71C75DFA900D63ADB /* ARWorksForYouNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53C61C75DFA900D63ADB /* ARWorksForYouNetworkModel.m */; };
 		833D53CB1C760B5400D63ADB /* ARWorksForYouNotificationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 833D53CA1C760B5400D63ADB /* ARWorksForYouNotificationItem.m */; };
@@ -1849,6 +1850,7 @@
 		66A43C651CE470C400FFD6ED /* Hash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hash@2x.png"; sourceTree = "<group>"; };
 		66A43C661CE470C400FFD6ED /* Hash@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hash@3x.png"; sourceTree = "<group>"; };
 		66A43C6A1CE48FA800FFD6ED /* SearchButtonWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchButtonWhite@2x.png"; sourceTree = "<group>"; };
+		7F45A1672003C7100063D6B5 /* conversations.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = conversations.graphql; sourceTree = "<group>"; };
 		83282D751EB0D9F1006F30C2 /* ARRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRootViewController.h; sourceTree = "<group>"; };
 		833768891C80DEC700611262 /* ARWorksForYouNetworkModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWorksForYouNetworkModelTests.m; sourceTree = "<group>"; };
 		833D53C51C75DFA900D63ADB /* ARWorksForYouNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWorksForYouNetworkModel.h; sourceTree = "<group>"; };
@@ -3142,6 +3144,7 @@
 				5EFB45711F2280CE00328A6B /* favorites.graphql */,
 				5EFB45731F22830F00328A6B /* static_sale_data.graphql */,
 				5EFABE221F26934900662FEC /* artworks_in_sale.graphql */,
+				7F45A1672003C7100063D6B5 /* conversations.graphql */,
 			);
 			name = Queries;
 			sourceTree = "<group>";
@@ -4985,6 +4988,7 @@
 				3C4AE9AC1909C3A5009C0E8B /* MapAnnotationCallout_Arrow@2x.png in Resources */,
 				66A43C691CE470C400FFD6ED /* Hash@3x.png in Resources */,
 				608B708C17D4A1C80088A56C /* SidebarButtonHighlightBG@2x.png in Resources */,
+				7F45A1682003C7100063D6B5 /* conversations.graphql in Resources */,
 				3C4AE98819094DAA009C0E8B /* MapAnnotation_Transport@2x.png in Resources */,
 				5E17B1991C5965CC00CE6E98 /* Thumb@2x.png in Resources */,
 				605191931C7525AF0002E11A /* serif_modal_close@2x.png in Resources */,
