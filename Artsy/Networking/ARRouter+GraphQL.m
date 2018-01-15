@@ -42,6 +42,11 @@
     return [NSString stringWithFormat:[self graphQLFileNamed:@"static_sale_data"], causalityRole, saleID, saleID];
 }
 
++ (NSString *)graphQueryForConversations
+{
+    return [self graphQLFileNamed:@"conversations"];
+}
+
 @end
 
 #pragma clang dianostic pop

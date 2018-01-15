@@ -455,7 +455,8 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     } else if (context == ARNavigationControllerScrollingChiefContext) {
         // All hail the chief
         ARScrollNavigationChief *chief = object;
-
+        
+        NSAssert(self.visibleViewController == self.topViewController, @"Called by a VC that is not part of this navigation controller's stack.");
         [self showBackButton:[self shouldShowBackButtonForViewController:self.topViewController] && chief.allowsMenuButtons animated:YES];
     } else if (context == ARNavigationControllerMenuAwareScrollViewContext) {
         UIViewController<ARMenuAwareViewController> *vc = object;

@@ -37,7 +37,6 @@ NSString *const ARAnalyticsPushNotificationLocal = @"Artsy notification prompt r
 NSString *const ARAnalyticsPushNotificationApple = @"Apple notification prompt response";
 
 NSString *const ARAnalyticsTappedHeroUnit = @"Tapped banner";
-NSString *const ARAnalyticsTappedMainNavigationItem = @"view main navigation item";
 
 NSString *const ARAnalyticsArtworkView = @"artwork view";
 NSString *const ARAnalyticsArtworkViewInRoom = @"View in room";
@@ -49,9 +48,6 @@ NSString *const ARAnalyticsTapPartnerName = @"Tapped gallery name";
 NSString *const ARAnalyticsPartnerShowView = @"partner show view";
 
 NSString *const ARAnalyticsShare = @"Share";
-
-NSString *const ARAnalyticsHearted = @"user hearted";
-NSString *const ARAnalyticsUnhearted = @"user unhearted";
 
 NSString *const ARAnalyticsProfileView = @"profile view";
 NSString *const ARAnalyticsPartnerFollow = @"Follow partner";

@@ -35,20 +35,20 @@ static NSMutableDictionary <NSString *, NSNumberFormatter *> *formattersPerCurre
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-        ar_keypath(SaleArtwork.new, saleArtworkID) : @"id",
-        ar_keypath(SaleArtwork.new, currencySymbol) : @"symbol",
-        ar_keypath(SaleArtwork.new, saleArtworkID) : @"id",
-        ar_keypath(SaleArtwork.new, openingBidCents) : @"opening_bid_cents",
-        ar_keypath(SaleArtwork.new, minimumNextBidCents) : @"minimum_next_bid_cents",
-        ar_keypath(SaleArtwork.new, saleHighestBid) : @"highest_bid",
-        ar_keypath(SaleArtwork.new, artworkNumPositions) : @"bidder_positions_count",
-        ar_keypath(SaleArtwork.new, estimateCents) : @"estimate_cents",
-        ar_keypath(SaleArtwork.new, lowEstimateCents) : @"low_estimate_cents",
-        ar_keypath(SaleArtwork.new, highEstimateCents) : @"high_estimate_cents",
-        ar_keypath(SaleArtwork.new, reserveStatus) : @"reserve_status",
-        ar_keypath(SaleArtwork.new, lotLabel) : @"lot_label",
-        ar_keypath(SaleArtwork.new, bidCount) : @"bidder_positions_count"
-    };
+             ar_keypath(SaleArtwork.new, saleArtworkID) : @"id",
+             ar_keypath(SaleArtwork.new, currencySymbol) : @"symbol",
+             ar_keypath(SaleArtwork.new, saleArtworkID) : @"id",
+             ar_keypath(SaleArtwork.new, openingBidCents) : @"opening_bid_cents",
+             ar_keypath(SaleArtwork.new, minimumNextBidCents) : @"minimum_next_bid_cents",
+             ar_keypath(SaleArtwork.new, saleHighestBid) : @"highest_bid",
+             ar_keypath(SaleArtwork.new, artworkNumPositions) : @"bidder_positions_count",
+             ar_keypath(SaleArtwork.new, estimateCents) : @"estimate_cents",
+             ar_keypath(SaleArtwork.new, lowEstimateCents) : @"low_estimate_cents",
+             ar_keypath(SaleArtwork.new, highEstimateCents) : @"high_estimate_cents",
+             ar_keypath(SaleArtwork.new, reserveStatus) : @"reserve_status",
+             ar_keypath(SaleArtwork.new, lotLabel) : @"lot_label",
+             ar_keypath(SaleArtwork.new, bidCount) : @"bidder_positions_count"
+             };
 }
 
 + (NSValueTransformer *)auctionJSONTransformer
@@ -117,11 +117,11 @@ static NSMutableDictionary <NSString *, NSNumberFormatter *> *formattersPerCurre
 + (NSValueTransformer *)reserveStatusJSONTransformer
 {
     NSDictionary *types = @{
-        @"no_reserve" : @(ARReserveStatusNoReserve),
-        @"reserve_not_met" : @(ARReserveStatusReserveNotMet),
-        @"reserve_met" : @(ARReserveStatusReserveMet),
-        @"reserve_unknown" : @(ARReserveStatusUnknown)
-    };
+                            @"no_reserve" : @(ARReserveStatusNoReserve),
+                            @"reserve_not_met" : @(ARReserveStatusReserveNotMet),
+                            @"reserve_met" : @(ARReserveStatusReserveMet),
+                            @"reserve_unknown" : @(ARReserveStatusUnknown)
+                            };
 
     return [MTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         if(!str) { str = @"not for sale"; }

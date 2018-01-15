@@ -24,6 +24,7 @@
 #import <SDWebImage/SDWebImageManager.h>
 
 
+static BOOL ARSpotlightDisabled = NO;
 static BOOL ARSpotlightAvailable = NO;
 static dispatch_queue_t ARSpotlightQueue = nil;
 static NSMutableSet *ARIndexedEntities = nil;
@@ -55,8 +56,12 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 + (void)load;
 {
     ARSpotlightAvailable = NSClassFromString(@"CSSearchableIndex") != nil && [CSSearchableIndex isIndexingAvailable];
+    
+    // TODO: Disabled until we get to (and decide to) work on https://github.com/artsy/collector-experience/issues/810
+    // ARSpotlightDisabled = !ARSpotlightAvailable;
+    ARSpotlightDisabled = YES;
 
-    if (ARSpotlightAvailable) {
+    if (!ARSpotlightDisabled) {
         ARSearchableIndex = [CSSearchableIndex defaultSearchableIndex];
 
         ARSpotlightQueue = dispatch_queue_create("net.artsy.artsy.ARSpotlightQueue", DISPATCH_QUEUE_SERIAL);
@@ -87,7 +92,9 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
 + (void)disableIndexing;
 {
+    if (ARSpotlightDisabled) return;
     dispatch_sync(ARSpotlightQueue, ^{
+        ARSpotlightDisabled = YES;
         ARSearchableIndex = nil;
         ARIndexedEntities = nil;
         ARIndexedEntitiesFile = nil;
@@ -106,7 +113,7 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
 + (void)indexAllUsersFavorites;
 {
-    if (!ARSpotlightAvailable) {
+    if (ARSpotlightDisabled) {
         return;
     }
 
@@ -132,9 +139,11 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
     dispatch_block_t finalizeBlock = ^{
 #ifdef DEBUG
-        if (application.applicationState == UIApplicationStateBackground) {
-            NSLog(@"Remaining allowed background time by task finalizing: %f", application.backgroundTimeRemaining);
-        }
+        ar_dispatch_main_queue(^{
+            if (application.applicationState == UIApplicationStateBackground) {
+                NSLog(@"Remaining allowed background time by task finalizing: %f", application.backgroundTimeRemaining);
+            }
+        });
 #endif
         [application endBackgroundTask:backgroundTask];
         backgroundTask = UIBackgroundTaskInvalid;
@@ -191,14 +200,13 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
 + (void)addToSpotlightIndex:(BOOL)addOrRemove entity:(id<ARSpotlightMetadataProvider>)entity;
 {
-    if (!ARSpotlightAvailable) {
-        return;
-    }
+    if (ARSpotlightDisabled) return;
     addOrRemove ? [self addEntityToSpotlightIndex:entity] : [self removeEntityFromSpotlightIndex:entity];
 }
 
 + (void)addEntityToSpotlightIndex:(id<ARSpotlightMetadataProvider>)entity;
 {
+    if (ARSpotlightDisabled) return;
     ar_dispatch_on_queue(ARSpotlightQueue, ^{
         [self searchAttributesForEntity:entity includeIdentifier:YES completion:^(CSSearchableItemAttributeSet *attributeSet) {
             NSString *domainIdentifier = nil;
@@ -230,6 +238,7 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
 + (void)removeEntityFromSpotlightIndex:(id<ARSpotlightMetadataProvider>)entity;
 {
+    if (ARSpotlightDisabled) return;
     ar_dispatch_on_queue(ARSpotlightQueue, ^{
         [self removeEntityByIdentifierFromSpotlightIndex:[self webpageURLForEntity:entity].absoluteString];
     });
@@ -237,6 +246,7 @@ ARStringByStrippingMarkdown(NSString *markdownString)
 
 + (void)removeEntityByIdentifierFromSpotlightIndex:(NSString *)identifier;
 {
+    if (ARSpotlightDisabled) return;
     ar_dispatch_on_queue(ARSpotlightQueue, ^{
         [self.searchableIndex deleteSearchableItemsWithIdentifiers:@[identifier]
                                               completionHandler:^(NSError *error) {
@@ -263,6 +273,7 @@ ARStringByStrippingMarkdown(NSString *markdownString)
                                           includeIdentifier:(BOOL)includeIdentifier
                                                  completion:(ARSearchAttributesCompletionBlock)completion;
 {
+    if (ARSpotlightDisabled) return nil;
     CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(NSString *)kUTTypeData];
 
     attributeSet.title = entity.name;

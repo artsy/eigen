@@ -3,6 +3,10 @@ upcoming:
     details: Messaging / Consignments / Tabbed Home
     emission_version: 1.4.0
     dev:
+      - Fixes crash when notification payload title is object - luc
+      - Tidy analytics, deprecating unused views and old tabs - maxim
+      - Sets App & Inbox badge to total unread messages - luc
+      - When coming from a universal link with a selected artist, double-checks that Home loads special Works For You notification - sarah
       - Caches Inbox VC to prevent refetching all data on tab changes - luc
       - When routing from Works For You email, place selected artist from email at top of home feed - sarah
       - Reload active bids on pull-to-refresh - alloy
@@ -44,6 +48,10 @@ upcoming:
       - Fixes sending the right user min/max pricing details during onboarding - orta
       - Stops status bar from obscuring cancel button and title label of refine view - ash
       - Replace small notifications badge on tab bar items with large one - alloy
+      - Disabling Spotlight indexing for now to speed up launch performance - alloy
+      - Remove unneeded cents from artwork price - alloy
+      - Fixes currency display issues for "Other Works in Auction" view - ash
+      - Lock launch screen on iPhone to portrait mode - alloy
 
 releases:
   - version: 3.2.7

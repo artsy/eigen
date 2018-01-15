@@ -102,7 +102,7 @@ lane :ship_beta do
   FileUtils.mv(dsym_archive, ENV['CIRCLE_ARTIFACTS'])
 
   # # Send to the app store
-  pilot changelog: beta_readme
+  pilot changelog: beta_readme, itc_provider: "ArtsyInc"
 
   # Let us know everything has finished
   slack message: "There is a new Eigen beta available. Grab it from Testflight on your iOS device.",

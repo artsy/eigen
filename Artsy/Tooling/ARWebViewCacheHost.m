@@ -3,6 +3,7 @@
 #import "ARRouter.h"
 #import "ARDispatchManager.h"
 #import "ARAppConstants.h"
+#import "ARAppStatus.h"
 
 #import <WebKit/WebKit.h>
 
@@ -80,6 +81,10 @@
         config.requiresUserActionForMediaPlayback = NO;
     }
 
+    // Allow hooking up to the web inspector
+    if(ARAppStatus.isBetaDevOrAdmin) {
+        [config.preferences setValue:@YES forKey:@"developerExtrasEnabled"];
+    }
     CGRect deviceBounds = [UIScreen mainScreen].bounds;
     WKWebView *webView = [[WKWebView alloc] initWithFrame:deviceBounds configuration:config];
     webView.navigationDelegate = self;
