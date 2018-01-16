@@ -59,10 +59,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 - (void)setupEmission;
 {
-    // AppHub's loading of our Emission instance is Async, so we let
-    // the normal JS run, then if we get the notification of a new build
-    // we switch out the current emission instance.
-    //
     if ([AROptions boolForOption:AROptionsStagingReactEnv]) {
         NSURL *packagerURL = [ARAdminNetworkModel fileURLForLatestCommitJavaScript];
         [self setupSharedEmissionWithPackagerURL:packagerURL];

@@ -22,7 +22,6 @@
 #import "UIViewController+SimpleChildren.h"
 #import "ARShowViewController.h"
 #import "ARArtworkSetViewController.h"
-#import "ARGeneViewController.h"
 #import "ARParallaxHeaderViewController.h"
 #import "SiteFeature.h"
 #import "UIViewController+ARUserActivity.h"

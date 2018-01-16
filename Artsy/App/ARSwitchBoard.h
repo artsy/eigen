@@ -17,8 +17,7 @@
 @class ARArtistViewController;
 @class ARArtworkInfoViewController;
 @class ARAuctionArtworkResultsViewController;
-@class ARFairMapViewController;
-@class ARGeneViewController;
+@class ARFairMapViewController; 
 @class ARUserSettingsViewController;
 @class Aerodramus;
 

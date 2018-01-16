@@ -4,6 +4,7 @@ upcoming:
     emission_version: 1.4.x
     dev:
       - Updates to Xcode 9.1 - orta
+      - Deletes un-used View Controllers - orta
 
     user_facing:
       - iPhone X support [eventually] - ortaa
