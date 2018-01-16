@@ -5,7 +5,6 @@ require 'fileutils'
 APP_ID = "net.artsy.artsy"
 
 lane :ship_beta do
-  setup_for_app_store
   verify_pod_keys
 
   readme_yaml = File.read("../CHANGELOG.yml")
@@ -29,7 +28,9 @@ lane :ship_beta do
   `/usr/libexec/PlistBuddy -c "Set CFBundleVersion #{latest_version}" Artsy\ Stickers/Info.plist`
 
   # Builds the app
-  gym
+  sync_code_signing(app_identifier: ["net.artsy.artsy", "net.artsy.artsy.Artsy-Stickers"], type: "appstore", readonly: true)
+
+  build_ios_app(configuration: "Store")
 
   # Find out how many builds we've sent for this version
   # if it's zero, it will raise an exception
@@ -111,87 +112,6 @@ lane :ship_beta do
           'What\'s new' => beta_readme
         },
         default_payloads: []
-end
-
-lane :deploy_latest_to_external do
-  readme_yaml = File.read("../CHANGELOG.yml")
-  readme_data = YAML.load(readme_yaml)
-
-  latest_version = readme_data["upcoming"]["version"]
-
-  id = CredentialsManager::AppfileConfig.try_fetch_value(:apple_id)
-  password = CredentialsManager::AccountManager.new(user: id).password
-  Spaceship::Tunes.login(id, password)
-  app = Spaceship::Tunes::Application.find APP_ID
-
-  raise "You have no internal builds for #{latest_version}" if app.build_trains.keys.count == 0
-  train = app.build_trains[latest_version]
-
-  train.client.submit_testflight_build_for_review!(
-    app_id: APP_ID,
-    train: train.version_string,
-    build_number: latest_version,
-    platform: "ios"
-  )
-end
-
-## We want to have a simpler version of fastlane's match
-## this does it in a pretty reasonable amount of code.
-
-lane :setup_for_app_store do
-  signing_root = "signing"
-
-  `git clone https://github.com/artsy/mobile_code_signing.git #{signing_root}`
-
-  # prints out the codesigning identities
-  system "security find-identity -v -p codesigning"
-
-  # Install the iOS distribution certificate, -A
-  system "security import #{signing_root}/ios_distribution.cer  -k ~/Library/Keychains/login.keychain -A"
-
-  # First do project-wide configuration.
-  automatic_code_signing(
-    path: 'Artsy.xcodeproj',
-    use_automatic_signing: false,
-    team_id: "23KMWZ572J"
-  )
-
-  # Then follow up with target-specific configuration.
-  [["eigen", "Artsy"], ["eigen-stickers", "Artsy Stickers"]].each do |app_details|
-    app_name = app_details[0]
-    app_target = app_details[1]
-
-    # Move our provisioning profile in
-    profile_path = File.expand_path("~") + "/Library/MobileDevice/Provisioning Profiles/"
-    destination = profile_path + "/" + app_name + ".mobileprovision"
-    profile = Dir.glob(signing_root + "/profiles/" + app_name + "/*").first
-
-    update_project_provisioning(
-      xcodeproj: 'Artsy.xcodeproj',
-      profile: "fastlane/#{profile}",
-      target_filter: app_target,
-      build_configuration: 'Store'
-    )
-
-    # Ensure folder exists
-    unless File.directory?(profile_path)
-      FileUtils.mkdir_p(profile_path)
-    end
-
-    # Migrate it in
-    FileUtils.copy profile, destination
-    puts "Installed Profile for #{app_target}."
-  end
-
-  # Install the key
-  key = Dir.glob(signing_root + "/keys/eigen/*").first
-  system "security import #{key} -k ~/Library/Keychains/login.keychain -P #{ENV['MATCH_PASSWORD']}  -A "
-
-  # prints out the codesigning identities
-  system "security find-identity -v -p codesigning"
-
-  # Clean-up
-  `rm -rf #{signing_root}`
 end
 
 error do |_, exception|
