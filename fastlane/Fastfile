@@ -45,7 +45,6 @@ lane :ship_beta do
 
   build_ios_app(configuration: 'Store')
 
-  exit(0)
   # Find out how many builds we've sent for this version
   # if it's zero, it will raise an exception
   build_version = 0
