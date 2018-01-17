@@ -178,7 +178,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                             unit:NSUnitLength.inches]
                       measurementByConvertingToUnit:NSUnitLength.meters]
                      doubleValue];
-    ;
+    
     CGFloat height = [[[[NSMeasurement alloc] initWithDoubleValue:self.config.size.height
                                                              unit:NSUnitLength.inches]
                        measurementByConvertingToUnit:NSUnitLength.meters]

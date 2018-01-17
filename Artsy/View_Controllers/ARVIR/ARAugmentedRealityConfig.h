@@ -1,11 +1,3 @@
-//
-//  ARAugmentedRealityConfig.h
-//  ArtWallsThing
-//
-//  Created by Mike Walker on 11/14/17.
-//  Copyright © 2017 Orta Therox. All rights reserved.
-//
-
 @import UIKit;
 
 @interface ARAugmentedRealityConfig : NSObject
