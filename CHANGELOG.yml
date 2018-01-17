@@ -1,7 +1,19 @@
 upcoming:
-    version: 4.0.0
+    version: 4.0.1
+    details: Bug Fixes / iPhone X / ARVIR
+    emission_version: 1.4.x
+    dev:
+      - Updates to Xcode 9.1 - orta
+      - Deletes un-used View Controllers - orta
+
+    user_facing:
+      - iPhone X support [eventually] - ortaa
+
+releases:
+  - version: 4.0.0
     details: Messaging / Consignments / Tabbed Home
     emission_version: 1.4.0
+    date: Jan 13, 2018
     dev:
       - Fixes crash when notification payload title is object - luc
       - Tidy analytics, deprecating unused views and old tabs - maxim
@@ -29,6 +41,7 @@ upcoming:
       - Add ARAppStatus.isDev getter to only determine dev mode - alloy
       - Don’t report crashes from development builds - alloy
       - Adds an admin panel for showing the Sentry breadcrumbs (crashes/logs/analytics calls) - orta
+      - Updates to Xcode 9.1 - orta
 
     user_facing:
       - Onboarding users land on For You tab of Home instead of Artists - sarah
@@ -52,7 +65,6 @@ upcoming:
       - Fixes currency display issues for "Other Works in Auction" view - ash
       - Lock launch screen on iPhone to portrait mode - alloy
 
-releases:
   - version: 3.2.7
     details: Bug fixes
     date: November 2, 2017

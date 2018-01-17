@@ -300,13 +300,13 @@ class AuctionViewControllerTests: QuickSpec {
 
         describe("regular horizontal size class ") {
             itBehavesLike("auctions view controller registration status") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.regular.rawValue, "device": ARDeviceType.pad.rawValue] as NSDictionary
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.regular.rawValue, "device": ARDeviceType.pad.rawValue]
             }
         }
 
         describe("compact horizontal size class") {
             itBehavesLike("auctions view controller registration status") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.compact.rawValue, "device": ARDeviceType.phone6.rawValue] as NSDictionary
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.compact.rawValue, "device": ARDeviceType.phone6.rawValue]
             }
         }
 

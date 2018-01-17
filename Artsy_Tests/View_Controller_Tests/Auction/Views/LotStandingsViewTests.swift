@@ -51,13 +51,13 @@ class LotStandingsViewTests: QuickSpec {
 
         describe("iPhone") {
             itBehavesLike("looks good by default") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.compact.rawValue, "device": ARDeviceType.phone5.rawValue] as NSDictionary
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.compact.rawValue, "device": ARDeviceType.phone5.rawValue]
             }
         }
 
         describe("iPad") {
             itBehavesLike("looks good by default") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.regular.rawValue, "device": ARDeviceType.pad.rawValue] as NSDictionary
+                return ["horizontalSizeClass": UIUserInterfaceSizeClass.regular.rawValue, "device": ARDeviceType.pad.rawValue]
             }
         }
     }
