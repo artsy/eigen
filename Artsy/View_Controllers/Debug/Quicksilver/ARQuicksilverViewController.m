@@ -256,7 +256,7 @@
         controller = [[ARArtistViewController alloc] initWithArtistID:result.modelID];
 
     } else if (result.model == [Gene class]) {
-        controller = [[ARGeneViewController alloc] initWithGeneID:result.modelID];
+        controller = [ARSwitchBoard.sharedInstance loadGeneWithID:result.modelID];
 
     } else if (result.model == [Profile class]) {
         controller = [ARSwitchBoard.sharedInstance loadProfileWithID:result.modelID];

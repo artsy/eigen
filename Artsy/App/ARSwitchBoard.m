@@ -9,21 +9,18 @@
 #import "ARTopMenuNavigationDataSource.h"
 
 #import "ARFairAwareObject.h"
-#import "ARFavoritesViewController.h"
 #import "Fair.h"
 #import "User.h"
 
 // View Controllers
 #import "ARArtworkSetViewController.h"
 #import "ARShowViewController.h"
-#import "ARGeneViewController.h"
 #import "ARArtworkInfoViewController.h"
 #import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARFairGuideContainerViewController.h"
 #import "ARAuctionWebViewController.h"
-#import "ARFavoritesViewController.h"
 #import "ARFairMapViewController.h"
 #import "ARTopMenuViewController.h"
 #import "ARMutableLinkViewController.h"

@@ -5,6 +5,5 @@
 #import "ARExternalWebBrowserViewController.h"
 #import "ARViewInRoomViewController.h"
 #import "ARBrowseViewController.h"
-#import "ARGeneViewController.h"
 #import "ARArtworkInfoViewController.h"
 #import "ARQuicksilverViewController.h"
