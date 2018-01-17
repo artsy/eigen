@@ -6,13 +6,19 @@ Fork https://github.com/artsy/eigen and clone it locally.
 
 ### Ruby dependencies
 
-Install the CocoaPods ruby gem or use the App.
-
-```
+```sh
+git clone https://github.com/artsy/eigen
+cd eigen
 bundle install
 ```
 
-Now run `bundle exec pod install` in the root directory. This will grab all our external libraries.
+### iOS Dependencies
+
+Now that you've got the Gems, you'll need to Pods. We use CocoaPods for all our dependencies, including Emission.
+
+```sh
+bundle exec pod install
+```
 
 Once the `pod install` is complete, it will create the `Artsy.xcworkspace` file that you should open in Xcode.
 Workspaces hold Projects, and we have two projects; one for Artsy and one for CocoaPods.
@@ -20,12 +26,20 @@ Workspaces hold Projects, and we have two projects; one for Artsy and one for Co
 
 ### Running Tests
 
-In Xcode/AppCode:
-Tap `cmd + u` to run all tests, use `ctrl + alt + cmd + g` to run the last set you clicked on via the GUI. Tests _need_ to be ran on an iPhone 6 in iOS 9.
+We can only run tests in one specific environment, today that is `10.3` on an iPhone 6. This is because we use visual snapshots for UI regressions.
 
-To get the iOS9 SDK: open the prefs `cmd + ,` go to Components, then select 9.3.
+You can install the iOS 10 SDK by opening Xcode's preferences, going to "Components" then downloading "10.3.x". Once it's all downloaded, it will show
+up in the dropdown in the top left corner.
 
-Command line:
+
+#### To run test in Xcode
+
+Tap `cmd + u` to run all tests, use `ctrl + alt + cmd + g` to run the last set you clicked on via the GUI. 
+
+We run 
+
+#### Command line
+
 ```
 make clean
 make
@@ -44,8 +58,4 @@ We have [cert troubleshooting here](https://github.com/artsy/eigen/blob/master/d
 
 ### Connecting a device.
 
-Xcode will prompt you to join a team, then to enable the device for development. When If you have to choose a team, choose the uppercase *ART.SY INC.* team.
-
-Choose Preferences, Accounts, which should list your Apple ID and membership.
-
-Choose Window, Organizer, which should list your device. The provisioning profile in the Provisioning Profiles tab under the device should include *iOS Team Provisioning Profile: net.artsy.artsy.dev* and *net.artsy.artsy.beta*. You may need to download these from Certificaties, Identifiers && Profiles.
+Xcode will prompt you to join a team, then to enable the device for development. When If you have to choose a team, choose *Art.sY Inc.*.
