@@ -20,21 +20,21 @@ Get setup [here](docs/getting_started.md). Further documentation can be found in
 
 Instead of `make oss` below, run `make artsy` to set up [spacecommander](https://github.com/square/spacecommander) and [SwiftLint](https://github.com/realm/SwiftLint). 
 
-Make sure you have an environment variable of `ARTSY_STAFF_MEMBER` set to be truthy too.
+Then you'll want to find "Eigen" in our Engineering 1Password for your ENV vars, CocoaPods Keys should ask during the `pod install`.
 
-**Important**: when making bug fixes or new features, think carefully about which branch to make them on. `master` is currently being worked on for new feature work, and `3.2.7-release` is for important bug fixes. We're [working on improving this](https://github.com/artsy/eigen/issues/2444), feedback welcome.
+### Quick Start
 
-### OSS Quick Start
-
-Want to get the app running as an OSS project? Run this in your shell:
+Want to get the app running ? Run this in your shell:
 
 ```sh
 git clone https://github.com/artsy/eigen.git
 cd eigen
 gem install bundler
 bundle install --without development distribution
-make oss
-bundle exec pod install
+
+make oss # or make artsy
+
+bundle exec pod install --repo-update
 open Artsy.xcworkspace
 ```
 
