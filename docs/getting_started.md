@@ -2,26 +2,7 @@
 
 ### Fork and Clone
 
-Fork https://github.com/artsy/eigen and clone it locally.
-
-### Ruby dependencies
-
-```sh
-git clone https://github.com/artsy/eigen
-cd eigen
-bundle install
-```
-
-### iOS Dependencies
-
-Now that you've got the Gems, you'll need to Pods. We use CocoaPods for all our dependencies, including Emission.
-
-```sh
-bundle exec pod install
-```
-
-Once the `pod install` is complete, it will create the `Artsy.xcworkspace` file that you should open in Xcode.
-Workspaces hold Projects, and we have two projects; one for Artsy and one for CocoaPods.
+Follow the instructions in [the README](https://github.com/artsy/eigen#docs).
 
 
 ### Running Tests
@@ -36,18 +17,13 @@ up in the dropdown in the top left corner.
 
 Tap `cmd + u` to run all tests, use `ctrl + alt + cmd + g` to run the last set you clicked on via the GUI. 
 
-We run 
-
 #### Command line
 
-```
-make clean
-make
-```
+You can run tests via the CLI using:
 
-Then you're good to go. Learn about what things are architectually [here](https://github.com/artsy/eigen/blob/master/docs/overview.md), then move [to the blog.](http://artsy.github.io/blog/categories/eigen/).
-
----
+```sh
+make test
+```
 
 ### Certificates
 
@@ -59,3 +35,7 @@ We have [cert troubleshooting here](https://github.com/artsy/eigen/blob/master/d
 ### Connecting a device.
 
 Xcode will prompt you to join a team, then to enable the device for development. When If you have to choose a team, choose *Art.sY Inc.*.
+
+### Reading more
+
+Learn about what things are architectually [here](https://github.com/artsy/eigen/blob/master/docs/overview.md), then move [to the blog.](http://artsy.github.io/blog/categories/eigen/) for more indepth dicsussions on Eigen.

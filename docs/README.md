@@ -2,13 +2,6 @@
 
 ## Artsy Eigen
 
-Quick Links
------------
-
-* [Hockey App](http://hockeyapp.net)
-* [Beta Link](http://artsy.net/supersecretbeta)
-* [Dealing with Certificates](https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html)
-
 Getting Started
 ---------------------
 

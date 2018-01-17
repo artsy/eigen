@@ -22,25 +22,15 @@ The ARRouter is the class in-between the app and the API. Providing a way to gen
 #### Emission
 
 Some views inside Eigen are built with React Native. We keep these in a Pod of their own and develop them separately in the [Emission repo](https://github.com/artsy/emission). As of this writing, the Emission views are:
-* Home view controller (the first thing you see when you start the app)
+
+* Home view controller
+* User Favourites
 * Artist view controller
 * Gene view controller
 * Works For You/Notifications view controller
+* All of Consignments
 
-To update the Emission version once the pod itself has been [successfully deployed](https://github.com/artsy/emission#deployment), follow these steps, using the new Emission version as VERSION:
-```shell
-cd Pods
-git checkout master
-git pull
-cd ..
-pod update Emission
-cd Pods
-git add .
-git commit -m "[Emission] Update to VERSION"
-git push
-```
-
-## Creating
+Ideally at this point for any major work for a View Controller you should consider porting it to TypeScript and moving it to Emission.
 
 #### Showing Artwork Thumbnail
 
