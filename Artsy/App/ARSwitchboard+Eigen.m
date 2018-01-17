@@ -6,14 +6,12 @@
 #import "ARAdminSettingsViewController.h"
 #import "ARArtworkSetViewController.h"
 #import "ARShowViewController.h"
-#import "ARGeneViewController.h"
 #import "ARArtworkInfoViewController.h"
 #import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARFairGuideContainerViewController.h"
 #import "ARAuctionWebViewController.h"
-#import "ARFavoritesViewController.h"
 #import "ARFairMapViewController.h"
 #import "ARProfileViewController.h"
 #import "ARMutableLinkViewController.h"
@@ -167,11 +165,6 @@
 
 - (UIViewController *)loadGeneWithID:(NSString *)geneID refineParams:(NSDictionary *)params
 {
-    BOOL blacklistUsingReactGenes = self.echo.features[@"DisableReactGenes"] != nil;
-    if (blacklistUsingReactGenes) {
-        return [[ARGeneViewController alloc] initWithGeneID:geneID];
-    }
-
     return [[ARGeneComponentViewController alloc] initWithGeneID:geneID refineSettings:params];
 }
 

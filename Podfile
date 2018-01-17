@@ -41,10 +41,6 @@ target 'Artsy' do
   pod 'SDWebImage', '>= 3.7.2' # 3.7.2 contains a fix that allows you to not force decoding each image, which uses lots of memory
 
   # Core
-
-  # This is used once on the inquiryVC, could be pulled out
-  pod 'ALPValidator'
-
   pod 'ARGenericTableViewController', :git => 'https://github.com/orta/ARGenericTableViewController.git'
   pod 'CocoaLumberjack', :git => 'https://github.com/CocoaLumberjack/CocoaLumberjack.git' # Unreleased > 2.0.1 version has a CP modulemap fix
   pod 'FLKAutoLayout', :git => 'https://github.com/orta/FLKAutoLayout.git', :branch => 'v1'
@@ -110,9 +106,6 @@ target 'Artsy' do
 
   # Used in Live Auctions to hold user-state
   pod 'JWTDecode'
-
-  # This can be changed when 0.5.2 is out
-  pod 'AppHub', :git => 'https://github.com/orta/apphub.git', :branch => "build_list"
 
   # Note: This is a Swift Pod
   pod 'Sentry'

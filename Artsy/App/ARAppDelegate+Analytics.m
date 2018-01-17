@@ -34,11 +34,9 @@
 #import "ARShowViewController.h"
 #import "ARProfileViewController.h"
 #import "ARAppSearchViewController.h"
-#import "ARInquireForArtworkViewController.h"
 #import "ARArtworkViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARSignUpSplashViewController.h"
-#import "ARGeneViewController.h"
 #import "ARPersonalizeViewController.h"
 #import "AROnboardingPersonalizeTableViewController.h"
 #import "ARPriceRangeViewController.h"
@@ -47,7 +45,6 @@
 #import "ARFairViewController.h"
 #import "ARFairSearchViewController.h"
 #import "ARSharingController.h"
-#import "ARFavoritesViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARArtistBiographyViewController.h"
 #import "ARFairMapViewController.h"
@@ -128,10 +125,6 @@
     ARAnalyticsEventShouldFireBlock heartedShouldFireBlock = ^BOOL(id controller, NSArray *parameters) {
         ARHeartButton *sender = parameters.firstObject;
         return sender.isHearted;
-    };
-
-    ARAnalyticsEventShouldFireBlock unheartedShouldFireBlock = ^BOOL(id controller, NSArray *parameters) {
-        return !heartedShouldFireBlock(controller, parameters);
     };
 
     [ARAnalytics setupWithAnalytics:
@@ -393,37 +386,6 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARInquireForArtworkViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsInquiryError,
-                            ARAnalyticsSelectorName: @"inquiryFailed:",
-                            ARAnalyticsProperties: ^NSDictionary*(ARInquireForArtworkViewController *controller, NSArray *parameters) {
-
-                                NSError *error = [parameters firstObject];
-                                NSData *data = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
-                                NSDictionary *recoverySuggestion;
-                                NSString *responseString = @"";
-                                if (data) {
-                                    recoverySuggestion = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                    responseString = [recoverySuggestion objectForKey:@"message"];
-                                }
-
-                                return @{
-                                    @"errors" : ([error localizedDescription] ?: [error description]) ?: @"",
-                                    @"response" : responseString ?: @"",
-                                    @"artwork_id" : controller.artwork.artworkID ?: @"",
-                                    @"inquirable" : controller.artwork.inquireable ?: @1
-                                };
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsSubmittedInquiry,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(inquiryCompleted:)),
-                        },
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARFairMapAnnotationCallOutView.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -452,32 +414,6 @@
                                     @"fair_id" : view.fair.fairID ?: @"",
                                     @"profile_id" : view.fair.organizer.profileID ?: @"",
                                     @"href" : view.annotation.href ?: @""
-                                };
-                            },
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARGeneViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsGeneView,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARGeneViewController *controller, NSArray *_){
-                                return @{
-                                    @"gene_id" : controller.gene.geneID ?: @"",
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsGeneFollow,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowingGene:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARGeneViewController *controller, NSArray *parameters){
-                                ARHeartButton *sender = parameters.firstObject;
-                                return @{
-                                    @"followed": sender.isHearted? @"yes" : @"no",
-                                    @"gene_id" : controller.gene.geneID ?: @"",
-                                    @"source_screen": @"gene page"
                                 };
                             },
                         }
@@ -1111,22 +1047,6 @@
                             ARAnalyticsPageName: @"Artwork More Info",
                             ARAnalyticsSelectorName: @"viewDidAppear:",
                             ARAnalyticsProperties: ^NSDictionary *(ARArtworkInfoViewController *controller, NSArray *_) {
-                                return @{
-                                    @"owner_type": @"artwork",
-                                    @"owner_id": controller.artwork.artworkUUID ?: @"",
-                                    @"owner_slug": controller.artwork.artworkID ?: @""
-                                };
-                            }
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARInquireForArtworkViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsPageName: @"Contact gallery",
-                            ARAnalyticsSelectorName: @"viewDidAppear:",
-                            ARAnalyticsProperties: ^NSDictionary *(ARInquireForArtworkViewController *controller, NSArray *_) {
                                 return @{
                                     @"owner_type": @"artwork",
                                     @"owner_id": controller.artwork.artworkUUID ?: @"",

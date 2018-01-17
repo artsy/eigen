@@ -3,8 +3,8 @@
 #import "ARAppConstants.h"
 #import "ARTopMenuViewController.h"
 #import "ARNavigationController.h"
-#import "ARFavoritesViewController.h"
 #import "User.h"
+#import "ARSwitchBoard.h"
 
 
 @implementation ARApplicationShortcutItemDelegate
@@ -41,22 +41,10 @@
 - (void)openFavorites
 {
     ARNavigationController *rootNavigationController = [[ARTopMenuViewController sharedController] rootNavigationController];
-
-    // TODO MAXIM: add new demo mode here
-//    if (!ARIsRunningInDemoMode && [User isLocalTemporaryUser]) {
-//        ARTrialContext context = ARTrialContextShowingFavorites;
-//        [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
-//            if (newUser) {
-//                [[ARTopMenuViewController sharedController].tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
-//                
-//            } else {
-//                [rootNavigationController pushViewController:[[ARFavoritesViewController alloc] init] animated:NO];
-//            }
-//        }];
-//        return;
-//    }
-
-    [rootNavigationController pushViewController:[[ARFavoritesViewController alloc] init] animated:NO];
+    UIViewController *favourites = [[ARSwitchBoard sharedInstance] loadPath:@"/favorites"];
+    if (favourites) {
+        [rootNavigationController pushViewController:favourites animated:YES];
+    }
 }
 
 @end

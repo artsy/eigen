@@ -13,7 +13,6 @@
 #import "ARBrowseCategoriesViewController.h"
 #import "ARArtworkSetViewController.h"
 #import "ARExternalWebBrowserViewController.h"
-#import "ARGeneViewController.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARPaymentRequestWebViewController.h"
 #import "ARProfileViewController.h"
@@ -344,18 +343,6 @@ describe(@"ARSwitchboard", ^{
             id subject = [switchboard routeInternalURL:[NSURL URLWithString:@"http://artsy.net/gene/surrealism"] fair:nil];
             NSString *classString = NSStringFromClass([subject class]);
             expect(classString).to.contain(@"ARGeneComponent");
-        });
-
-        it(@"does not route to react gene when echo has a feature called 'DisableReactGenes'", ^{
-            switchboard = [[ARSwitchBoard alloc] init];
-            [switchboard updateRoutes];
-            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
-            echo.features = @{ @"DisableReactGenes" : [[Feature alloc] initWithName:@"" state:@1] };
-            switchboard.echo = echo;
-
-            id subject = [switchboard loadPath:@"/gene/mygene"];
-            NSString *classString = NSStringFromClass([subject class]);
-            expect(classString).to.contain(@"ARGeneViewController");
         });
 
         it(@"routes auctions", ^{

@@ -18,7 +18,6 @@
 #import "UIViewController+SimpleChildren.h"
 #import "ARFairMapAnnotationCallOutView.h"
 #import "ARArtworkSetViewController.h"
-#import "ARGeneViewController.h"
 #import "ARSearchFieldButton.h"
 #import "SiteFeature.h"
 #import "ARCustomEigenLabels.h"
