@@ -52,7 +52,7 @@ oss:
 	bundle exec pod keys set "SegmentProductionWriteKey" "-"
 	bundle exec pod keys set "SegmentDevWriteKey" "-"
 	bundle exec pod keys set "AdjustProductionAppToken" "-"
-	bundle exec pod keys set "ArtsyEchoProductionToken" "948adc8b723fc4f7522cf85bb2ce1d02dca4b5eafda6e061c435"
+	bundle exec pod keys set "ArtsyEchoProductionToken" "-"
 	bundle exec pod keys set "SentryProductionDSN" "-"
 	bundle exec pod keys set "SentryStagingDSN" "-"
 
