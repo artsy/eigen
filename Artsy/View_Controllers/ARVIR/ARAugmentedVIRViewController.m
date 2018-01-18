@@ -63,14 +63,14 @@ NS_ASSUME_NONNULL_BEGIN
             self.textLabel.text = @"Slowly pan the room with your phone";
 
             self.button.hidden = YES;
-           [self.spinner startAnimating];
+           [self.spinner fadeInAnimated:YES];
         },
         @(OnboardingStepFinishedDetectingPlanes) : ^{
             self.textLabel.hidden = NO;
             self.textLabel.text = @"Slowly pan the room with your phone";
 
             self.button.hidden = NO;
-            [self.spinner stopAnimating];
+            [self.spinner fadeInAnimated:YES];
             [self.button setImage:[UIImage imageNamed:@"BackArrow"] forState:UIControlStateNormal];
         },
         @(OnboardingStepPlacePhoneOnWall): ^{
@@ -85,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
             self.textLabel.text = @"Place your phone on the wall where you want to see the work";
 
             self.button.hidden = NO;
-            [self.spinner stopAnimating];
+            [self.spinner fadeOutAnimated:YES];
             [self.button setImage:[UIImage imageNamed:@"BackArrow"] forState:UIControlStateNormal];
         },
         @(OnboardingStepViewing): ^{
@@ -97,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
             self.imageMaterial.transparency = 0.5;
 
             self.button.hidden = NO;
-            [self.spinner stopAnimating];
+            [self.spinner fadeOutAnimated:YES];
             [self.button setImage:[UIImage imageNamed:@"reset"] forState:UIControlStateNormal];
         }
     };
