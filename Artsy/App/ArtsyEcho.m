@@ -19,7 +19,10 @@
         // Prevent all networking in a testing environment.
         updateCheckCompleted(NO);
     } else {
-        [super checkForUpdates:updateCheckCompleted];
+        ArtsyKeys *keys = [ArtsyKeys new];
+        if(![[keys artsyEchoProductionToken] isEqualToString:@"-"]) {
+            [super checkForUpdates:updateCheckCompleted];
+        }
     }
 }
 
