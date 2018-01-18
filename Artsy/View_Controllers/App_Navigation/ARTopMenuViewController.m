@@ -25,6 +25,7 @@
 #import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
 #import <objc/runtime.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 #import <Emission/ARHomeComponentViewController.h>
@@ -155,8 +156,8 @@ static const CGFloat ARMenuButtonDimension = 50;
     // Layout
     [tabContentView alignTopEdgeWithView:self.view predicate:@"0"];
     [tabContentView alignLeading:@"0" trailing:@"0" toView:self.view];
-    [tabContentView constrainBottomSpaceToView:self.tabContainer predicate:@"0"];
     [tabContentView constrainWidthToView:self.view predicate:@"0"];
+    [tabContentView constrainBottomSpaceToView:self.tabContainer predicate:@"0"];
 
     [tabContainer constrainHeight:@(ARMenuButtonDimension).stringValue];
     [tabContainer alignLeading:@"0" trailing:@"0" toView:self.view];
@@ -390,17 +391,26 @@ static const CGFloat ARMenuButtonDimension = 50;
     button.badgeCount = number;
 }
 
+- (CGFloat)bottomMargin
+{
+    // iPhone X support
+    if (@available(iOS 11.0, *)) {
+        return self.view.safeAreaInsets.bottom * -1;
+    } else {
+        return 0;
+    }
+}
+
 #pragma mark - ARMenuAwareViewController
 
 - (void)hideToolbar:(BOOL)hideToolbar animated:(BOOL)animated
 {
-    BOOL isCurrentlyHiding = (self.tabBottomConstraint.constant != 0);
-    if (isCurrentlyHiding == hideToolbar) {
-        return;
-    }
+    CGFloat bottomMargin = [self bottomMargin];
+    CGFloat newConstant = hideToolbar ? CGRectGetHeight(self.tabContainer.frame) : bottomMargin;
+    if (newConstant == self.tabBottomConstraint.constant) { return; }
 
     [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
-        self.tabBottomConstraint.constant = hideToolbar ? CGRectGetHeight(self.tabContainer.frame) : 0;
+        self.tabBottomConstraint.constant = newConstant;
 
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
