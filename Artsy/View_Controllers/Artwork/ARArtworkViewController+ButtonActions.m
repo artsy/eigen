@@ -108,7 +108,8 @@
     }
 
     ARInquiryComponentViewController *inquireVC = [[ARInquiryComponentViewController alloc] initWithArtworkID:self.artwork.artworkID];
-    [[ARTopMenuViewController sharedController] presentViewController:inquireVC animated:YES completion:nil];
+    //[[ARTopMenuViewController sharedController] presentViewController:inquireVC animated:YES completion:nil];
+    [[ARTopMenuViewController sharedController] pushViewController:inquireVC];
 }
 
 - (void)tappedAuctionInfo
