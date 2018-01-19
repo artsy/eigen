@@ -50,7 +50,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
         self.scrollIndicatorInsets = UIEdgeInsetsMake(20, 0, 0, 0);
     }
 
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor blackColor];
     self.stackView.backgroundColor = [UIColor whiteColor];
     self.stackView.bottomMarginHeight = 20;
 
