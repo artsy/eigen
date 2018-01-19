@@ -1,5 +1,22 @@
-// Please add your own contribution below inside the Master section
-// These docs are aimed at developers, but are shown inside collector GMV's channel
+<!--
+
+// Please add your own contribution below inside the Master section, no need to
+// set a version number, that happens during a deploy.
+//
+// These docs are aimed at product people, so please limit technical
+// terminology in here.
+//
+// Things that warrant a CHANGELOG entry:
+//
+//   * New Features
+//   * Bug fixes across releases (not between betas)
+//   * Major dev tool updates
+
+-->
+
+## Master
+
+* Fixed the ordering of Home/Auctions - damassi
 
 ### 1.4.0
 
