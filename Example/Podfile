@@ -23,7 +23,7 @@ target 'Emission' do
 
   # As this runs dev, we need the developer web socket
   pod 'React', :path => react_path, :subspecs => %w(DevSupport)
-  pod 'Yoga', :path => yoga_path
+  pod 'yoga', :path => yoga_path
 
   pod 'Sentry', :subspecs => ['Core', 'KSCrash']
   pod 'SentryReactNative', :path => sentry_path
@@ -70,12 +70,10 @@ post_install do |installer|
     config.build_settings['CLANG_WARN_STRICT_PROTOTYPES'] = 'NO'
   end
 
-  # This fixes a bug in our Home tab view; it can probably be removed when we upgrade to RN 0.50+
-  # See https://github.com/artsy/collector-experience/issues/751
-  react_scrollview_file = '../node_modules/react-native/React/Views/RCTScrollView.m'
-  react_scrollview_old_code = 'self.contentOffset = CGPointMake(
-    MAX(0, MIN(originalOffset.x, fullContentSize.width - boundsSize.width)),
-    MAX(0, MIN(originalOffset.y, fullContentSize.height - boundsSize.height)));'
-  react_scrollview_new_code = 'self.contentOffset= originalOffset;'
+  # Bug with 0.51 where they include the TV remote handler without using it
+  # It's fixed in master.
+  react_scrollview_file = '../node_modules/react-native/React/Views/RCTModalHostView.m'
+  react_scrollview_old_code = '#import "RCTTVRemoteHandler.h"'
+  react_scrollview_new_code = '//#import "RCTTVRemoteHandler.h"'
   edit_pod_file react_scrollview_file, react_scrollview_old_code, react_scrollview_new_code
 end

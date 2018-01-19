@@ -8,7 +8,9 @@ const { File } = require("babel-core/lib/transformation/file")
 const { SourceMapConsumer } = require("source-map")
 
 const upstream = require("./upstream")
-const { compactMapping } = require("metro-bundler/src/Bundler/source-map")
+// const { compactMapping } = require("metro-bundler/src/Bundler/source-map")
+
+const { compactMapping } = require("metro-source-map")
 
 /**
  * This is a copy of upstream.transform, but modified to:
@@ -18,17 +20,17 @@ const { compactMapping } = require("metro-bundler/src/Bundler/source-map")
  * 4. Store raw mappings of translated source-map so that RN can use them.
  **/
 function transformTypeScript(src, filename, options) {
-  options = options || {};
+  options = options || {}
 
-  const OLD_BABEL_ENV = process.env.BABEL_ENV;
-  process.env.BABEL_ENV = options.dev ? "development" : "production";
+  const OLD_BABEL_ENV = process.env.BABEL_ENV
+  process.env.BABEL_ENV = options.dev ? "development" : "production"
 
   try {
     const compilerOptions = buildTSCompilerOptionsConfig()
     const tsResult = ts.transpileModule(src, { compilerOptions })
 
-    const babelConfig = buildBabelConfig(filename, options);
-    const transformResult = babel.transform(tsResult.outputText, babelConfig);
+    const babelConfig = buildBabelConfig(filename, options)
+    const transformResult = babel.transform(tsResult.outputText, babelConfig)
 
     const generateResult = generate(
       transformResult.ast,
@@ -40,7 +42,7 @@ function transformTypeScript(src, filename, options) {
         sourceMaps: true,
       },
       src
-    );
+    )
 
     // Translate generated source-map back to transformed JS source-map, which maps back to original TS code.
     generateResult.map = mergeSourceMaps(transformResult.map, generateResult.map)
@@ -58,9 +60,9 @@ function transformTypeScript(src, filename, options) {
       code: generateResult.code,
       filename,
       map,
-    };
+    }
   } finally {
-    process.env.BABEL_ENV = OLD_BABEL_ENV;
+    process.env.BABEL_ENV = OLD_BABEL_ENV
   }
 }
 
@@ -120,4 +122,4 @@ function transform({ filename, localPath, options, src }) {
     console.error(e)
   }
 }
-module.exports.transform = transform;
+module.exports.transform = transform

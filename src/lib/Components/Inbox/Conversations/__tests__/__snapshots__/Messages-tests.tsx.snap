@@ -45,7 +45,6 @@ exports[`looks correct when rendered 1`] = `
   onScroll={[Function]}
   onScrollBeginDrag={[Function]}
   onScrollEndDrag={[Function]}
-  onViewableItemsChanged={undefined}
   refreshControl={
     <RefreshControlMock
       onRefresh={[Function]}
@@ -71,6 +70,7 @@ exports[`looks correct when rendered 1`] = `
     ]
   }
   updateCellsBatchingPeriod={50}
+  viewabilityConfigCallbackPairs={Array []}
   windowSize={21}
 >
   <RCTRefreshControl />
@@ -78,13 +78,18 @@ exports[`looks correct when rendered 1`] = `
     <View
       onLayout={[Function]}
       style={
-        Object {
-          "transform": Array [
-            Object {
-              "scaleY": -1,
-            },
-          ],
-        }
+        Array [
+          Object {
+            "flexDirection": "column-reverse",
+          },
+          Object {
+            "transform": Array [
+              Object {
+                "scaleY": -1,
+              },
+            ],
+          },
+        ]
       }
     >
       <View
@@ -131,7 +136,6 @@ exports[`looks correct when rendered 1`] = `
             <Text
               accessible={true}
               allowFontScaling={true}
-              disabled={false}
               ellipsizeMode="tail"
               style={
                 Array [
@@ -188,7 +192,6 @@ exports[`looks correct when rendered 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -218,7 +221,6 @@ exports[`looks correct when rendered 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -256,7 +258,6 @@ exports[`looks correct when rendered 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [

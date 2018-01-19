@@ -287,7 +287,6 @@ exports[`looks correct when rendered 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [
@@ -836,4 +835,4 @@ exports[`looks correct when rendered 1`] = `
     />
   </View>
 </RCTScrollView>
-`;
+`

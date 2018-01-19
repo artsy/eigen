@@ -89,7 +89,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   style={
                     Array [
@@ -109,6 +108,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                   Add notes about how you aquired the work. If you’re not sure add any details about how long you’ve had the work.
                 </Text>
                 <TextInput
+                  allowFontScaling={true}
                   autoCapitalize="sentences"
                   autoFocus={false}
                   keyboardAppearance="dark"
@@ -154,6 +154,7 @@ exports[`Sets up the right view hierarchy 1`] = `
         accessibilityTraits={undefined}
         accessible={true}
         collapsable={undefined}
+        hasTVPreferredFocus={undefined}
         hitSlop={undefined}
         isTVSelectable={true}
         nativeID={undefined}
@@ -179,7 +180,6 @@ exports[`Sets up the right view hierarchy 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -291,6 +291,7 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
                 }
               >
                 <TextInput
+                  allowFontScaling={true}
                   autoCapitalize="sentences"
                   autoFocus={false}
                   keyboardAppearance="dark"
@@ -336,6 +337,7 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
         accessibilityTraits={undefined}
         accessible={true}
         collapsable={undefined}
+        hasTVPreferredFocus={undefined}
         hitSlop={undefined}
         isTVSelectable={true}
         nativeID={undefined}
@@ -361,7 +363,6 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [

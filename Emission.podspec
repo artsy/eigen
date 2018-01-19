@@ -30,7 +30,7 @@ podspec = Pod::Spec.new do |s|
   s.dependency 'Artsy+UIFonts', '>= 3.0.0'
   s.dependency 'Extraction', '>= 1.2.1'
 
-  s.dependency 'Yoga', "#{react_native_version}.React"
+  s.dependency 'yoga', "#{react_native_version}.React"
   s.dependency 'React/Core', react_native_version
   s.dependency 'React/BatchedBridge', react_native_version
   s.dependency 'React/RCTAnimation', react_native_version

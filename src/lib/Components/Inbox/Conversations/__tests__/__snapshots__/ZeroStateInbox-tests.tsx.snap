@@ -20,17 +20,17 @@ exports[`looks correct for iPad in landscape mode when the user has no conversat
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
     onScrollEndDrag={[Function]}
-    onViewableItemsChanged={undefined}
     renderItem={[Function]}
     scrollEventThrottle={500}
     stickyHeaderIndices={Array []}
     updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
     windowSize={21}
   >
     <View />
   </RCTScrollView>
 </View>
-`;
+`
 
 exports[`looks correct for iPad in portrait mode when the user has no conversations 1`] = `
 <View>
@@ -52,17 +52,17 @@ exports[`looks correct for iPad in portrait mode when the user has no conversati
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
     onScrollEndDrag={[Function]}
-    onViewableItemsChanged={undefined}
     renderItem={[Function]}
     scrollEventThrottle={500}
     stickyHeaderIndices={Array []}
     updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
     windowSize={21}
   >
     <View />
   </RCTScrollView>
 </View>
-`;
+`
 
 exports[`looks correct for iPhone 4 when the user has no conversations 1`] = `
 <View>
@@ -84,17 +84,17 @@ exports[`looks correct for iPhone 4 when the user has no conversations 1`] = `
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
     onScrollEndDrag={[Function]}
-    onViewableItemsChanged={undefined}
     renderItem={[Function]}
     scrollEventThrottle={500}
     stickyHeaderIndices={Array []}
     updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
     windowSize={21}
   >
     <View />
   </RCTScrollView>
 </View>
-`;
+`
 
 exports[`looks correct for iPhone 5 when the user has no conversations 1`] = `
 <View>
@@ -116,17 +116,17 @@ exports[`looks correct for iPhone 5 when the user has no conversations 1`] = `
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
     onScrollEndDrag={[Function]}
-    onViewableItemsChanged={undefined}
     renderItem={[Function]}
     scrollEventThrottle={500}
     stickyHeaderIndices={Array []}
     updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
     windowSize={21}
   >
     <View />
   </RCTScrollView>
 </View>
-`;
+`
 
 exports[`looks correct for iPhone 6 when the user has no conversations 1`] = `
 <View>
@@ -148,14 +148,14 @@ exports[`looks correct for iPhone 6 when the user has no conversations 1`] = `
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
     onScrollEndDrag={[Function]}
-    onViewableItemsChanged={undefined}
     renderItem={[Function]}
     scrollEventThrottle={500}
     stickyHeaderIndices={Array []}
     updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
     windowSize={21}
   >
     <View />
   </RCTScrollView>
 </View>
-`;
+`

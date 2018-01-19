@@ -66,6 +66,7 @@ exports[`renders correctly 1`] = `
             accessibilityTraits={undefined}
             accessible={true}
             collapsable={undefined}
+            hasTVPreferredFocus={undefined}
             hitSlop={undefined}
             isTVSelectable={true}
             nativeID={undefined}
@@ -88,7 +89,6 @@ exports[`renders correctly 1`] = `
             <Text
               accessible={true}
               allowFontScaling={true}
-              disabled={false}
               ellipsizeMode="tail"
               style={
                 Array [
@@ -122,7 +122,6 @@ exports[`renders correctly 1`] = `
             <Text
               accessible={true}
               allowFontScaling={true}
-              disabled={false}
               ellipsizeMode="tail"
               style={
                 Array [
@@ -165,7 +164,6 @@ exports[`renders correctly 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -188,14 +186,13 @@ exports[`renders correctly 1`] = `
                   ]
                 }
               >
-                 
+
               </Text>
             </View>
           </View>
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [
@@ -251,14 +248,7 @@ exports[`renders correctly 1`] = `
           onResponderTerminate={[Function]}
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
-          style={
-            Array [
-              Object {
-                "backgroundColor": "transparent",
-              },
-              undefined,
-            ]
-          }
+          style={null}
           testID={undefined}
           tvParallaxProperties={undefined}
         >
@@ -270,7 +260,7 @@ exports[`renders correctly 1`] = `
                   "borderWidth": 1,
                   "flexDirection": "row",
                 },
-                undefined,
+                null,
               ]
             }
           >
@@ -311,7 +301,6 @@ exports[`renders correctly 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 numberOfLines={1}
                 style={
@@ -371,7 +360,6 @@ exports[`renders correctly 1`] = `
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                     style={
                       Array [
@@ -390,6 +378,7 @@ exports[`renders correctly 1`] = `
           </View>
         </View>
         <TextInput
+          allowFontScaling={true}
           autoFocus={false}
           keyboardAppearance="dark"
           multiline={true}
@@ -426,6 +415,7 @@ exports[`renders correctly 1`] = `
       accessibilityTraits={undefined}
       accessible={true}
       collapsable={undefined}
+      hasTVPreferredFocus={undefined}
       hitSlop={undefined}
       isTVSelectable={true}
       nativeID={undefined}
@@ -451,7 +441,6 @@ exports[`renders correctly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -473,4 +462,4 @@ exports[`renders correctly 1`] = `
     </View>
   </View>
 </View>
-`;
+`

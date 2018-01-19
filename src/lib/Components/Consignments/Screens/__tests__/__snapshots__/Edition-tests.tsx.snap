@@ -95,7 +95,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     <Text
                       accessible={true}
                       allowFontScaling={true}
-                      disabled={false}
                       ellipsizeMode="tail"
                       style={
                         Array [
@@ -140,28 +139,25 @@ exports[`Sets up the right view hierarchy 1`] = `
                       style={
                         Array [
                           Object {
-                            "backgroundColor": "transparent",
+                            "alignItems": "center",
+                            "backgroundColor": "green",
+                            "borderColor": "white",
+                            "borderRadius": 16,
+                            "borderWidth": 1,
+                            "height": 34,
+                            "width": 64,
                           },
-                          Array [
-                            Object {
-                              "alignItems": "center",
-                              "backgroundColor": "green",
-                              "borderColor": "white",
-                              "borderRadius": 16,
-                              "borderWidth": 1,
-                              "height": 34,
-                              "width": 64,
-                            },
-                            Object {
-                              "backgroundColor": "black",
-                            },
-                          ],
+                          Object {
+                            "backgroundColor": "black",
+                          },
                         ]
                       }
                       testID={undefined}
                       tvParallaxProperties={undefined}
                     >
-                      <View>
+                      <View
+                        style={null}
+                      >
                         <View
                           style={
                             Array [
@@ -179,7 +175,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                           <Text
                             accessible={true}
                             allowFontScaling={true}
-                            disabled={false}
                             ellipsizeMode="tail"
                             style={
                               Array [
@@ -202,7 +197,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                           <Text
                             accessible={true}
                             allowFontScaling={true}
-                            disabled={false}
                             ellipsizeMode="tail"
                             style={
                               Array [
@@ -274,7 +268,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     <Text
                       accessible={true}
                       allowFontScaling={true}
-                      disabled={false}
                       ellipsizeMode="tail"
                       style={
                         Array [
@@ -319,28 +312,25 @@ exports[`Sets up the right view hierarchy 1`] = `
                       style={
                         Array [
                           Object {
-                            "backgroundColor": "transparent",
+                            "alignItems": "center",
+                            "backgroundColor": "green",
+                            "borderColor": "white",
+                            "borderRadius": 16,
+                            "borderWidth": 1,
+                            "height": 34,
+                            "width": 64,
                           },
-                          Array [
-                            Object {
-                              "alignItems": "center",
-                              "backgroundColor": "green",
-                              "borderColor": "white",
-                              "borderRadius": 16,
-                              "borderWidth": 1,
-                              "height": 34,
-                              "width": 64,
-                            },
-                            Object {
-                              "backgroundColor": "black",
-                            },
-                          ],
+                          Object {
+                            "backgroundColor": "black",
+                          },
                         ]
                       }
                       testID={undefined}
                       tvParallaxProperties={undefined}
                     >
-                      <View>
+                      <View
+                        style={null}
+                      >
                         <View
                           style={
                             Array [
@@ -358,7 +348,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                           <Text
                             accessible={true}
                             allowFontScaling={true}
-                            disabled={false}
                             ellipsizeMode="tail"
                             style={
                               Array [
@@ -381,7 +370,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                           <Text
                             accessible={true}
                             allowFontScaling={true}
-                            disabled={false}
                             ellipsizeMode="tail"
                             style={
                               Array [
@@ -453,7 +441,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     <Text
                       accessible={true}
                       allowFontScaling={true}
-                      disabled={false}
                       ellipsizeMode="tail"
                       style={
                         Array [
@@ -498,28 +485,25 @@ exports[`Sets up the right view hierarchy 1`] = `
                       style={
                         Array [
                           Object {
-                            "backgroundColor": "transparent",
+                            "alignItems": "center",
+                            "backgroundColor": "green",
+                            "borderColor": "white",
+                            "borderRadius": 16,
+                            "borderWidth": 1,
+                            "height": 34,
+                            "width": 64,
                           },
-                          Array [
-                            Object {
-                              "alignItems": "center",
-                              "backgroundColor": "green",
-                              "borderColor": "white",
-                              "borderRadius": 16,
-                              "borderWidth": 1,
-                              "height": 34,
-                              "width": 64,
-                            },
-                            Object {
-                              "backgroundColor": "black",
-                            },
-                          ],
+                          Object {
+                            "backgroundColor": "black",
+                          },
                         ]
                       }
                       testID={undefined}
                       tvParallaxProperties={undefined}
                     >
-                      <View>
+                      <View
+                        style={null}
+                      >
                         <View
                           style={
                             Array [
@@ -537,7 +521,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                           <Text
                             accessible={true}
                             allowFontScaling={true}
-                            disabled={false}
                             ellipsizeMode="tail"
                             style={
                               Array [
@@ -560,7 +543,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                           <Text
                             accessible={true}
                             allowFontScaling={true}
-                            disabled={false}
                             ellipsizeMode="tail"
                             style={
                               Array [
@@ -640,6 +622,7 @@ exports[`Sets up the right view hierarchy 1`] = `
         accessibilityTraits={undefined}
         accessible={true}
         collapsable={undefined}
+        hasTVPreferredFocus={undefined}
         hitSlop={undefined}
         isTVSelectable={true}
         nativeID={undefined}
@@ -665,7 +648,6 @@ exports[`Sets up the right view hierarchy 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -785,7 +767,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                     <Text
                       accessible={true}
                       allowFontScaling={true}
-                      disabled={false}
                       ellipsizeMode="tail"
                       style={
                         Array [
@@ -830,28 +811,25 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                       style={
                         Array [
                           Object {
-                            "backgroundColor": "transparent",
+                            "alignItems": "center",
+                            "backgroundColor": "green",
+                            "borderColor": "white",
+                            "borderRadius": 16,
+                            "borderWidth": 1,
+                            "height": 34,
+                            "width": 64,
                           },
-                          Array [
-                            Object {
-                              "alignItems": "center",
-                              "backgroundColor": "green",
-                              "borderColor": "white",
-                              "borderRadius": 16,
-                              "borderWidth": 1,
-                              "height": 34,
-                              "width": 64,
-                            },
-                            Object {
-                              "backgroundColor": "black",
-                            },
-                          ],
+                          Object {
+                            "backgroundColor": "black",
+                          },
                         ]
                       }
                       testID={undefined}
                       tvParallaxProperties={undefined}
                     >
-                      <View>
+                      <View
+                        style={null}
+                      >
                         <View
                           style={
                             Array [
@@ -869,7 +847,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                           <Text
                             accessible={true}
                             allowFontScaling={true}
-                            disabled={false}
                             ellipsizeMode="tail"
                             style={
                               Array [
@@ -892,7 +869,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                           <Text
                             accessible={true}
                             allowFontScaling={true}
-                            disabled={false}
                             ellipsizeMode="tail"
                             style={
                               Array [
@@ -983,6 +959,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                         }
                       >
                         <TextInput
+                          allowFontScaling={true}
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
@@ -1042,6 +1019,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                         }
                       >
                         <TextInput
+                          allowFontScaling={true}
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
@@ -1094,7 +1072,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                     <Text
                       accessible={true}
                       allowFontScaling={true}
-                      disabled={false}
                       ellipsizeMode="tail"
                       style={
                         Array [
@@ -1139,28 +1116,25 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                       style={
                         Array [
                           Object {
-                            "backgroundColor": "transparent",
+                            "alignItems": "center",
+                            "backgroundColor": "green",
+                            "borderColor": "white",
+                            "borderRadius": 16,
+                            "borderWidth": 1,
+                            "height": 34,
+                            "width": 64,
                           },
-                          Array [
-                            Object {
-                              "alignItems": "center",
-                              "backgroundColor": "green",
-                              "borderColor": "white",
-                              "borderRadius": 16,
-                              "borderWidth": 1,
-                              "height": 34,
-                              "width": 64,
-                            },
-                            Object {
-                              "backgroundColor": "black",
-                            },
-                          ],
+                          Object {
+                            "backgroundColor": "black",
+                          },
                         ]
                       }
                       testID={undefined}
                       tvParallaxProperties={undefined}
                     >
-                      <View>
+                      <View
+                        style={null}
+                      >
                         <View
                           style={
                             Array [
@@ -1178,7 +1152,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                           <Text
                             accessible={true}
                             allowFontScaling={true}
-                            disabled={false}
                             ellipsizeMode="tail"
                             style={
                               Array [
@@ -1201,7 +1174,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                           <Text
                             accessible={true}
                             allowFontScaling={true}
-                            disabled={false}
                             ellipsizeMode="tail"
                             style={
                               Array [
@@ -1273,7 +1245,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                     <Text
                       accessible={true}
                       allowFontScaling={true}
-                      disabled={false}
                       ellipsizeMode="tail"
                       style={
                         Array [
@@ -1318,28 +1289,25 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                       style={
                         Array [
                           Object {
-                            "backgroundColor": "transparent",
+                            "alignItems": "center",
+                            "backgroundColor": "green",
+                            "borderColor": "white",
+                            "borderRadius": 16,
+                            "borderWidth": 1,
+                            "height": 34,
+                            "width": 64,
                           },
-                          Array [
-                            Object {
-                              "alignItems": "center",
-                              "backgroundColor": "green",
-                              "borderColor": "white",
-                              "borderRadius": 16,
-                              "borderWidth": 1,
-                              "height": 34,
-                              "width": 64,
-                            },
-                            Object {
-                              "backgroundColor": "black",
-                            },
-                          ],
+                          Object {
+                            "backgroundColor": "black",
+                          },
                         ]
                       }
                       testID={undefined}
                       tvParallaxProperties={undefined}
                     >
-                      <View>
+                      <View
+                        style={null}
+                      >
                         <View
                           style={
                             Array [
@@ -1357,7 +1325,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                           <Text
                             accessible={true}
                             allowFontScaling={true}
-                            disabled={false}
                             ellipsizeMode="tail"
                             style={
                               Array [
@@ -1380,7 +1347,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                           <Text
                             accessible={true}
                             allowFontScaling={true}
-                            disabled={false}
                             ellipsizeMode="tail"
                             style={
                               Array [
@@ -1460,6 +1426,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
         accessibilityTraits={undefined}
         accessible={true}
         collapsable={undefined}
+        hasTVPreferredFocus={undefined}
         hitSlop={undefined}
         isTVSelectable={true}
         nativeID={undefined}
@@ -1485,7 +1452,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [

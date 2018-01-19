@@ -44,6 +44,7 @@ exports[`looks correct when rendered 1`] = `
     }
   >
     <TextInput
+      allowFontScaling={true}
       autoFocus={false}
       keyboardAppearance="dark"
       multiline={true}
@@ -134,6 +135,7 @@ ShallowWrapper {
           active={false}
         >
           <TextInput
+            allowFontScaling={true}
             autoFocus={false}
             keyboardAppearance="dark"
             multiline={true}
@@ -180,6 +182,7 @@ ShallowWrapper {
           "active": false,
           "children": Array [
             <TextInput
+              allowFontScaling={true}
               autoFocus={false}
               keyboardAppearance="dark"
               multiline={true}
@@ -220,6 +223,7 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
+              "allowFontScaling": true,
               "autoFocus": false,
               "keyboardAppearance": "dark",
               "multiline": true,
@@ -290,6 +294,7 @@ ShallowWrapper {
             active={false}
           >
             <TextInput
+              allowFontScaling={true}
               autoFocus={false}
               keyboardAppearance="dark"
               multiline={true}
@@ -336,6 +341,7 @@ ShallowWrapper {
             "active": false,
             "children": Array [
               <TextInput
+                allowFontScaling={true}
                 autoFocus={false}
                 keyboardAppearance="dark"
                 multiline={true}
@@ -376,6 +382,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
+                "allowFontScaling": true,
                 "autoFocus": false,
                 "keyboardAppearance": "dark",
                 "multiline": true,
@@ -488,6 +495,7 @@ exports[`regarding the send button disables it when there is no text 1`] = `
     }
   >
     <TextInput
+      allowFontScaling={true}
       autoFocus={false}
       keyboardAppearance="dark"
       multiline={true}

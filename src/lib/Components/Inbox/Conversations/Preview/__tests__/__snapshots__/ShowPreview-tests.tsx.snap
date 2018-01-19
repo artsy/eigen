@@ -17,14 +17,7 @@ exports[`renders correctly for a fair booth 1`] = `
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={
-    Array [
-      Object {
-        "backgroundColor": "transparent",
-      },
-      undefined,
-    ]
-  }
+  style={null}
   testID={undefined}
   tvParallaxProperties={undefined}
 >
@@ -36,7 +29,7 @@ exports[`renders correctly for a fair booth 1`] = `
           "borderWidth": 1,
           "flexDirection": "row",
         },
-        undefined,
+        null,
       ]
     }
   >
@@ -78,7 +71,6 @@ exports[`renders correctly for a fair booth 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -105,7 +97,6 @@ exports[`renders correctly for a fair booth 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -145,14 +136,7 @@ exports[`renders correctly for a regular show 1`] = `
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={
-    Array [
-      Object {
-        "backgroundColor": "transparent",
-      },
-      undefined,
-    ]
-  }
+  style={null}
   testID={undefined}
   tvParallaxProperties={undefined}
 >
@@ -164,7 +148,7 @@ exports[`renders correctly for a regular show 1`] = `
           "borderWidth": 1,
           "flexDirection": "row",
         },
-        undefined,
+        null,
       ]
     }
   >
@@ -206,7 +190,6 @@ exports[`renders correctly for a regular show 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -233,7 +216,6 @@ exports[`renders correctly for a regular show 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={

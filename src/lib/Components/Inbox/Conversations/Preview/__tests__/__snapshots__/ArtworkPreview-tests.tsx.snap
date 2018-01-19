@@ -17,14 +17,7 @@ exports[`handles dateless artworks 1`] = `
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={
-    Array [
-      Object {
-        "backgroundColor": "transparent",
-      },
-      undefined,
-    ]
-  }
+  style={null}
   testID={undefined}
   tvParallaxProperties={undefined}
 >
@@ -36,7 +29,7 @@ exports[`handles dateless artworks 1`] = `
           "borderWidth": 1,
           "flexDirection": "row",
         },
-        undefined,
+        null,
       ]
     }
   >
@@ -77,7 +70,6 @@ exports[`handles dateless artworks 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -137,7 +129,6 @@ exports[`handles dateless artworks 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [
@@ -148,14 +139,14 @@ exports[`handles dateless artworks 1`] = `
               ]
             }
           >
-            , 
+            ,
           </Text>
         </Text>
       </View>
     </View>
   </View>
 </View>
-`;
+`
 
 exports[`renders correctly 1`] = `
 <View
@@ -174,14 +165,7 @@ exports[`renders correctly 1`] = `
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={
-    Array [
-      Object {
-        "backgroundColor": "transparent",
-      },
-      undefined,
-    ]
-  }
+  style={null}
   testID={undefined}
   tvParallaxProperties={undefined}
 >
@@ -193,7 +177,7 @@ exports[`renders correctly 1`] = `
           "borderWidth": 1,
           "flexDirection": "row",
         },
-        undefined,
+        null,
       ]
     }
   >
@@ -234,7 +218,6 @@ exports[`renders correctly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -294,7 +277,6 @@ exports[`renders correctly 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [
@@ -312,4 +294,4 @@ exports[`renders correctly 1`] = `
     </View>
   </View>
 </View>
-`;
+`

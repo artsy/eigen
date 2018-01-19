@@ -1,9 +1,9 @@
-const blacklist = require("metro-bundler/src/blacklist")
+// const blacklist = require("metro-bundler/src/blacklist")
 
 var config = {
-  getBlacklistRE(platform) {
-    return blacklist(platform, [/coverage\/.*/])
-  },
+  // getBlacklistRE(platform) {
+  //   return blacklist(platform, [/coverage\/.*/])
+  // },
 
   getSourceExts() {
     return ["js", "ts", "tsx"]

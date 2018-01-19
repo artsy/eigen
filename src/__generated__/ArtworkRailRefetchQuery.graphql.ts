@@ -116,7 +116,7 @@ fragment Artwork_artwork on Artwork {
     }
     bidder_positions_count
     sale {
-      is_open
+      is_closed
       __id
     }
     __id
@@ -223,7 +223,7 @@ return {
   "operationKind": "query",
   "name": "ArtworkRailRefetchQuery",
   "id": null,
-  "text": "query ArtworkRailRefetchQuery(\n  $__id: ID!\n  $fetchContent: Boolean!\n) {\n  node(__id: $__id) {\n    __typename\n    ...ArtworkRail_rail_abFTe\n    __id\n  }\n}\n\nfragment ArtworkRail_rail_abFTe on HomePageArtworkModule {\n  ...ArtworkRailHeader_rail\n  __id\n  key\n  params {\n    medium\n    price_range\n    __id: id\n  }\n  context {\n    __typename\n    ... on HomePageModuleContextFollowedArtist {\n      artist {\n        href\n        __id\n      }\n    }\n    ... on HomePageModuleContextRelatedArtist {\n      artist {\n        href\n        __id\n      }\n    }\n    ... on HomePageModuleContextFair {\n      href\n      __id\n    }\n    ... on HomePageModuleContextGene {\n      href\n    }\n    ... on HomePageModuleContextSale {\n      href\n    }\n    ... on Node {\n      __id\n    }\n  }\n  results @include(if: $fetchContent) {\n    ...GenericGrid_artworks\n    __id\n  }\n}\n\nfragment ArtworkRailHeader_rail on HomePageArtworkModule {\n  title\n  key\n  context {\n    __typename\n    ... on HomePageModuleContextRelatedArtist {\n      artist {\n        id\n        __id\n      }\n      based_on {\n        name\n        __id\n      }\n    }\n    ... on Node {\n      __id\n    }\n    ... on HomePageModuleContextFair {\n      __id\n    }\n  }\n  __id\n}\n\nfragment GenericGrid_artworks on Artwork {\n  __id\n  id\n  image {\n    aspect_ratio\n  }\n  ...Artwork_artwork\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  id\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_open\n      __id\n    }\n    __id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id\n  }\n  partner {\n    name\n    __id\n  }\n  href\n  __id\n}\n",
+  "text": "query ArtworkRailRefetchQuery(\n  $__id: ID!\n  $fetchContent: Boolean!\n) {\n  node(__id: $__id) {\n    __typename\n    ...ArtworkRail_rail_abFTe\n    __id\n  }\n}\n\nfragment ArtworkRail_rail_abFTe on HomePageArtworkModule {\n  ...ArtworkRailHeader_rail\n  __id\n  key\n  params {\n    medium\n    price_range\n    __id: id\n  }\n  context {\n    __typename\n    ... on HomePageModuleContextFollowedArtist {\n      artist {\n        href\n        __id\n      }\n    }\n    ... on HomePageModuleContextRelatedArtist {\n      artist {\n        href\n        __id\n      }\n    }\n    ... on HomePageModuleContextFair {\n      href\n      __id\n    }\n    ... on HomePageModuleContextGene {\n      href\n    }\n    ... on HomePageModuleContextSale {\n      href\n    }\n    ... on Node {\n      __id\n    }\n  }\n  results @include(if: $fetchContent) {\n    ...GenericGrid_artworks\n    __id\n  }\n}\n\nfragment ArtworkRailHeader_rail on HomePageArtworkModule {\n  title\n  key\n  context {\n    __typename\n    ... on HomePageModuleContextRelatedArtist {\n      artist {\n        id\n        __id\n      }\n      based_on {\n        name\n        __id\n      }\n    }\n    ... on Node {\n      __id\n    }\n    ... on HomePageModuleContextFair {\n      __id\n    }\n  }\n  __id\n}\n\nfragment GenericGrid_artworks on Artwork {\n  __id\n  id\n  image {\n    aspect_ratio\n  }\n  ...Artwork_artwork\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  id\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_closed\n      __id\n    }\n    __id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id\n  }\n  partner {\n    name\n    __id\n  }\n  href\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -513,7 +513,7 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "is_open",
+                                "name": "is_closed",
                                 "args": null,
                                 "storageKey": null
                               },

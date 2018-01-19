@@ -13,17 +13,17 @@ PODS:
     - Artsy+UIColors
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
-    - React/BatchedBridge (= 0.48.4)
-    - React/Core (= 0.48.4)
-    - React/RCTAnimation (= 0.48.4)
-    - React/RCTCameraRoll (= 0.48.4)
-    - React/RCTImage (= 0.48.4)
-    - React/RCTLinkingIOS (= 0.48.4)
-    - React/RCTNetwork (= 0.48.4)
-    - React/RCTText (= 0.48.4)
+    - React/BatchedBridge (= 0.52.0)
+    - React/Core (= 0.52.0)
+    - React/RCTAnimation (= 0.52.0)
+    - React/RCTCameraRoll (= 0.52.0)
+    - React/RCTImage (= 0.52.0)
+    - React/RCTLinkingIOS (= 0.52.0)
+    - React/RCTNetwork (= 0.52.0)
+    - React/RCTText (= 0.52.0)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
-    - Yoga (= 0.48.4.React)
+    - yoga (= 0.52.0.React)
   - Extraction (1.2.3):
     - Extraction/ARAnimationContinuation (= 1.2.3)
     - Extraction/ARLoadFailureView (= 1.2.3)
@@ -63,37 +63,41 @@ PODS:
   - NSURL+QueryDictionary (1.2.0)
   - ORStackView (2.0.3):
     - FLKAutoLayout
-  - React (0.48.4):
-    - React/Core (= 0.48.4)
-  - React/BatchedBridge (0.48.4):
+  - React (0.52.0):
+    - React/Core (= 0.52.0)
+  - React/BatchedBridge (0.52.0):
     - React/Core
     - React/cxxreact_legacy
-  - React/Core (0.48.4):
-    - Yoga (= 0.48.4.React)
-  - React/cxxreact_legacy (0.48.4):
+  - React/Core (0.52.0):
+    - yoga (= 0.52.0.React)
+  - React/cxxreact_legacy (0.52.0):
     - React/jschelpers_legacy
-  - React/DevSupport (0.48.4):
+    - React/jsinspector_legacy
+  - React/DevSupport (0.52.0):
     - React/Core
     - React/RCTWebSocket
-  - React/jschelpers_legacy (0.48.4)
-  - React/RCTAnimation (0.48.4):
+  - React/fishhook (0.52.0)
+  - React/jschelpers_legacy (0.52.0)
+  - React/jsinspector_legacy (0.52.0)
+  - React/RCTAnimation (0.52.0):
     - React/Core
-  - React/RCTBlob (0.48.4):
+  - React/RCTBlob (0.52.0):
     - React/Core
-  - React/RCTCameraRoll (0.48.4):
+  - React/RCTCameraRoll (0.52.0):
     - React/Core
     - React/RCTImage
-  - React/RCTImage (0.48.4):
+  - React/RCTImage (0.52.0):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.48.4):
+  - React/RCTLinkingIOS (0.52.0):
     - React/Core
-  - React/RCTNetwork (0.48.4):
+  - React/RCTNetwork (0.52.0):
     - React/Core
-  - React/RCTText (0.48.4):
+  - React/RCTText (0.52.0):
     - React/Core
-  - React/RCTWebSocket (0.48.4):
+  - React/RCTWebSocket (0.52.0):
     - React/Core
+    - React/fishhook
     - React/RCTBlob
   - SAMKeychain (1.5.0)
   - SDWebImage (3.8.2):
@@ -110,7 +114,7 @@ PODS:
     - Sentry (~> 3.9.0)
     - Sentry/KSCrash (~> 3.9.0)
   - UIView+BooleanAnimations (1.0.2)
-  - Yoga (0.48.4.React)
+  - yoga (0.52.0.React)
 
 DEPENDENCIES:
   - ARGenericTableViewController
@@ -124,7 +128,7 @@ DEPENDENCIES:
   - Sentry/Core
   - Sentry/KSCrash
   - SentryReactNative (from `../node_modules/react-native-sentry`)
-  - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 EXTERNAL SOURCES:
   Artsy+Authentication:
@@ -138,7 +142,7 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native
   SentryReactNative:
     :path: ../node_modules/react-native-sentry
-  Yoga:
+  yoga:
     :path: ../node_modules/react-native/ReactCommon/yoga
 
 CHECKOUT OPTIONS:
@@ -152,7 +156,7 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   Artsy+UIFonts: d38c82636e000b1dee31b7bec0268e1841dac17f
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
-  Emission: d5a03d538ac61b4074ab0370ad7d68f2419a7400
+  Emission: 3bc00df3a21a90b68aef0a425ae43e31e6f71993
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
@@ -160,14 +164,14 @@ SPEC CHECKSUMS:
   KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
-  React: 59267c3a5811102116842a84a29efaca58167ee8
+  React: 43e97926f429d846050880666de1809e22dd5cc5
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
   SentryReactNative: a292506edfa707119e3aa155892cdb07e453a93a
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
-  Yoga: de6cde41559145f06b816e2bab5bfa980447798b
+  yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: f0c9cdfda9e9f74df0800f76126ce5df042e3805
+PODFILE CHECKSUM: b3b074b67fd61cf88f25d1a73707790af69623ba
 
 COCOAPODS: 1.4.0

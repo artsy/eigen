@@ -10,49 +10,49 @@
  *
  * @flow
  */
-"use strict";
+"use strict"
 
-const babel = require("babel-core");
-const crypto = require("crypto");
-const externalHelpersPlugin = require("babel-plugin-external-helpers");
-const fs = require("fs");
-const generate = require("babel-generator").default;
-const inlineRequiresPlugin = require("babel-preset-fbjs/plugins/inline-requires");
-const json5 = require("json5");
-const makeHMRConfig = require("babel-preset-react-native/configs/hmr");
-const path = require("path");
-const resolvePlugins = require("babel-preset-react-native/lib/resolvePlugins");
+const babel = require("babel-core")
+const crypto = require("crypto")
+const externalHelpersPlugin = require("babel-plugin-external-helpers")
+const fs = require("fs")
+const generate = require("babel-generator").default
+const inlineRequiresPlugin = require("babel-preset-fbjs/plugins/inline-requires")
+const json5 = require("json5")
+const makeHMRConfig = require("babel-preset-react-native/configs/hmr")
+const path = require("path")
+const resolvePlugins = require("babel-preset-react-native/lib/resolvePlugins")
 
-const { compactMapping } = require("metro-bundler/src/Bundler/source-map");
+const { compactMapping } = require("metro-bundler/src/Bundler/source-map")
 
 const cacheKeyParts = [
   fs.readFileSync(__filename),
   require("babel-plugin-external-helpers/package.json").version,
   require("babel-preset-fbjs/package.json").version,
   require("babel-preset-react-native/package.json").version,
-];
+]
 
 /**
  * Return a memoized function that checks for the existence of a
  * project level .babelrc file, and if it doesn't exist, reads the
  * default RN babelrc file and uses that.
  */
-const getBabelRC = (function () {
-  let babelRC = null;
+const getBabelRC = (function() {
+  let babelRC = null
 
   return function _getBabelRC(projectRoot) {
     if (babelRC !== null) {
-      return babelRC;
+      return babelRC
     }
 
-    babelRC = { plugins: [] };
+    babelRC = { plugins: [] }
 
     // Let's look for the .babelrc in the project root.
     // In the future let's look into adding a command line option to specify
     // this location.
-    let projectBabelRCPath;
+    let projectBabelRCPath
     if (projectRoot) {
-      projectBabelRCPath = path.resolve(__dirname, "..", ".babelrc");
+      projectBabelRCPath = path.resolve(__dirname, "..", ".babelrc")
     }
 
     // If a .babelrc file doesn't exist in the project,
@@ -66,10 +66,10 @@ const getBabelRC = (function () {
       babelRC.plugins = resolvePlugins(babelRC.plugins)
     } else {
       // if we find a .babelrc file we tell babel to use it
-      babelRC.extends = projectBabelRCPath;
+      babelRC.extends = projectBabelRCPath
     }
 
-    return babelRC;
+    return babelRC
   }
 })()
 
@@ -78,43 +78,43 @@ const getBabelRC = (function () {
  * config object with the appropriate plugins.
  */
 function buildBabelConfig(filename, options) {
-  const babelRC = getBabelRC(options.projectRoot);
+  const babelRC = getBabelRC(options.projectRoot)
 
   const extraConfig = {
     code: false,
     filename,
-  };
+  }
 
-  let config = Object.assign({}, babelRC, extraConfig);
+  let config = Object.assign({}, babelRC, extraConfig)
 
   // Add extra plugins
-  const extraPlugins = [externalHelpersPlugin];
+  const extraPlugins = [externalHelpersPlugin]
 
-  var inlineRequires = options.inlineRequires;
-  var blacklist = typeof inlineRequires === "object" ? inlineRequires.blacklist : null;
+  var inlineRequires = options.inlineRequires
+  var blacklist = typeof inlineRequires === "object" ? inlineRequires.blacklist : null
   if (inlineRequires && !(blacklist && filename in blacklist)) {
-    extraPlugins.push(inlineRequiresPlugin);
+    extraPlugins.push(inlineRequiresPlugin)
   }
 
-  config.plugins = extraPlugins.concat(config.plugins);
+  config.plugins = extraPlugins.concat(config.plugins)
 
   if (options.hot) {
-    const hmrConfig = makeHMRConfig(options, filename);
-    config = Object.assign({}, config, hmrConfig);
+    const hmrConfig = makeHMRConfig(options, filename)
+    config = Object.assign({}, config, hmrConfig)
   }
 
-  return Object.assign({}, babelRC, config);
+  return Object.assign({}, babelRC, config)
 }
 
 function transform(src, filename, options) {
-  options = options || {};
+  options = options || {}
 
-  const OLD_BABEL_ENV = process.env.BABEL_ENV;
-  process.env.BABEL_ENV = options.dev ? "development" : "production";
+  const OLD_BABEL_ENV = process.env.BABEL_ENV
+  process.env.BABEL_ENV = options.dev ? "development" : "production"
 
   try {
-    const babelConfig = buildBabelConfig(filename, options);
-    const { ast, ignored } = babel.transform(src, babelConfig);
+    const babelConfig = buildBabelConfig(filename, options)
+    const { ast, ignored } = babel.transform(src, babelConfig)
 
     if (ignored) {
       return {
@@ -122,7 +122,7 @@ function transform(src, filename, options) {
         code: src,
         filename,
         map: null,
-      };
+      }
     } else {
       const result = generate(
         ast,
@@ -134,28 +134,28 @@ function transform(src, filename, options) {
           sourceMaps: true,
         },
         src
-      );
+      )
 
       return {
         ast,
         code: result.code,
         filename,
         map: options.generateSourceMaps ? result.map : result.rawMappings.map(compactMapping),
-      };
+      }
     }
   } finally {
-    process.env.BABEL_ENV = OLD_BABEL_ENV;
+    process.env.BABEL_ENV = OLD_BABEL_ENV
   }
 }
 
 function getCacheKey(options) {
-  var key = crypto.createHash("md5");
-  cacheKeyParts.forEach(part => key.update(part));
-  return key.digest("hex");
+  var key = crypto.createHash("md5")
+  cacheKeyParts.forEach(part => key.update(part))
+  return key.digest("hex")
 }
 
-module.exports = ({
+module.exports = {
   transform,
   getCacheKey,
   buildBabelConfig,
-});
+}

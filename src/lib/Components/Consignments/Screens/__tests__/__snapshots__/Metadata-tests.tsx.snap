@@ -204,6 +204,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                         }
                       >
                         <TextInput
+                          allowFontScaling={true}
                           autoCorrect={false}
                           autoFocus={false}
                           clearButtonMode="while-editing"
@@ -278,6 +279,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                         }
                       >
                         <TextInput
+                          allowFontScaling={true}
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
@@ -351,6 +353,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                         }
                       >
                         <TextInput
+                          allowFontScaling={true}
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
@@ -424,6 +427,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                         }
                       >
                         <TextInput
+                          allowFontScaling={true}
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
@@ -485,6 +489,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                         }
                       >
                         <TextInput
+                          allowFontScaling={true}
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
@@ -559,6 +564,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                         }
                       >
                         <TextInput
+                          allowFontScaling={true}
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
@@ -611,7 +617,6 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       <Text
                         accessible={true}
                         allowFontScaling={true}
-                        disabled={false}
                         ellipsizeMode="tail"
                         style={
                           Array [
@@ -656,28 +661,25 @@ exports[`state is set up with empty consignment metadata 1`] = `
                         style={
                           Array [
                             Object {
-                              "backgroundColor": "transparent",
+                              "alignItems": "center",
+                              "backgroundColor": "green",
+                              "borderColor": "white",
+                              "borderRadius": 16,
+                              "borderWidth": 1,
+                              "height": 34,
+                              "width": 64,
                             },
-                            Array [
-                              Object {
-                                "alignItems": "center",
-                                "backgroundColor": "green",
-                                "borderColor": "white",
-                                "borderRadius": 16,
-                                "borderWidth": 1,
-                                "height": 34,
-                                "width": 64,
-                              },
-                              Object {
-                                "backgroundColor": "black",
-                              },
-                            ],
+                            Object {
+                              "backgroundColor": "black",
+                            },
                           ]
                         }
                         testID={undefined}
                         tvParallaxProperties={undefined}
                       >
-                        <View>
+                        <View
+                          style={null}
+                        >
                           <View
                             style={
                               Array [
@@ -695,7 +697,6 @@ exports[`state is set up with empty consignment metadata 1`] = `
                             <Text
                               accessible={true}
                               allowFontScaling={true}
-                              disabled={false}
                               ellipsizeMode="tail"
                               style={
                                 Array [
@@ -718,7 +719,6 @@ exports[`state is set up with empty consignment metadata 1`] = `
                             <Text
                               accessible={true}
                               allowFontScaling={true}
-                              disabled={false}
                               ellipsizeMode="tail"
                               style={
                                 Array [
@@ -826,7 +826,6 @@ exports[`state is set up with empty consignment metadata 1`] = `
                         <Text
                           accessible={true}
                           allowFontScaling={true}
-                          disabled={false}
                           ellipsizeMode="tail"
                           style={
                             Object {
@@ -872,6 +871,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
           accessibilityTraits={undefined}
           accessible={true}
           collapsable={undefined}
+          hasTVPreferredFocus={undefined}
           hitSlop={undefined}
           isTVSelectable={true}
           nativeID={undefined}
@@ -897,7 +897,6 @@ exports[`state is set up with empty consignment metadata 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [
@@ -1034,6 +1033,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                         }
                       >
                         <TextInput
+                          allowFontScaling={true}
                           autoCorrect={false}
                           autoFocus={false}
                           clearButtonMode="while-editing"
@@ -1108,6 +1108,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                         }
                       >
                         <TextInput
+                          allowFontScaling={true}
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
@@ -1181,6 +1182,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                         }
                       >
                         <TextInput
+                          allowFontScaling={true}
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
@@ -1254,6 +1256,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                         }
                       >
                         <TextInput
+                          allowFontScaling={true}
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
@@ -1315,6 +1318,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                         }
                       >
                         <TextInput
+                          allowFontScaling={true}
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
@@ -1389,6 +1393,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                         }
                       >
                         <TextInput
+                          allowFontScaling={true}
                           autoCorrect={false}
                           clearButtonMode="while-editing"
                           keyboardAppearance="dark"
@@ -1441,7 +1446,6 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       <Text
                         accessible={true}
                         allowFontScaling={true}
-                        disabled={false}
                         ellipsizeMode="tail"
                         style={
                           Array [
@@ -1486,28 +1490,25 @@ exports[`state is set up with filled consignment metadata 1`] = `
                         style={
                           Array [
                             Object {
-                              "backgroundColor": "transparent",
+                              "alignItems": "center",
+                              "backgroundColor": "green",
+                              "borderColor": "white",
+                              "borderRadius": 16,
+                              "borderWidth": 1,
+                              "height": 34,
+                              "width": 64,
                             },
-                            Array [
-                              Object {
-                                "alignItems": "center",
-                                "backgroundColor": "green",
-                                "borderColor": "white",
-                                "borderRadius": 16,
-                                "borderWidth": 1,
-                                "height": 34,
-                                "width": 64,
-                              },
-                              Object {
-                                "backgroundColor": "black",
-                              },
-                            ],
+                            Object {
+                              "backgroundColor": "black",
+                            },
                           ]
                         }
                         testID={undefined}
                         tvParallaxProperties={undefined}
                       >
-                        <View>
+                        <View
+                          style={null}
+                        >
                           <View
                             style={
                               Array [
@@ -1525,7 +1526,6 @@ exports[`state is set up with filled consignment metadata 1`] = `
                             <Text
                               accessible={true}
                               allowFontScaling={true}
-                              disabled={false}
                               ellipsizeMode="tail"
                               style={
                                 Array [
@@ -1548,7 +1548,6 @@ exports[`state is set up with filled consignment metadata 1`] = `
                             <Text
                               accessible={true}
                               allowFontScaling={true}
-                              disabled={false}
                               ellipsizeMode="tail"
                               style={
                                 Array [
@@ -1656,7 +1655,6 @@ exports[`state is set up with filled consignment metadata 1`] = `
                         <Text
                           accessible={true}
                           allowFontScaling={true}
-                          disabled={false}
                           ellipsizeMode="tail"
                           style={
                             Object {
@@ -1702,6 +1700,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
           accessibilityTraits={undefined}
           accessible={true}
           collapsable={undefined}
+          hasTVPreferredFocus={undefined}
           hitSlop={undefined}
           isTVSelectable={true}
           nativeID={undefined}
@@ -1727,7 +1726,6 @@ exports[`state is set up with filled consignment metadata 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [

@@ -68,7 +68,7 @@ fragment Artwork_artwork on Artwork {
     }
     bidder_positions_count
     sale {
-      is_open
+      is_closed
       __id
     }
     __id
@@ -136,7 +136,7 @@ return {
   "operationKind": "query",
   "name": "ArtworksQuery",
   "id": null,
-  "text": "query ArtworksQuery(\n  $count: Int!\n  $cursor: String\n) {\n  me {\n    ...Artworks_me_1G22uz\n    __id\n  }\n}\n\nfragment Artworks_me_1G22uz on Me {\n  saved_artworks {\n    artworks_connection(private: true, first: $count, after: $cursor) {\n      pageInfo {\n        endCursor\n        hasNextPage\n      }\n      edges {\n        node {\n          ...GenericGrid_artworks\n          __id\n          __typename\n        }\n        cursor\n      }\n    }\n    __id\n  }\n  __id\n}\n\nfragment GenericGrid_artworks on Artwork {\n  __id\n  id\n  image {\n    aspect_ratio\n  }\n  ...Artwork_artwork\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  id\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_open\n      __id\n    }\n    __id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id\n  }\n  partner {\n    name\n    __id\n  }\n  href\n  __id\n}\n",
+  "text": "query ArtworksQuery(\n  $count: Int!\n  $cursor: String\n) {\n  me {\n    ...Artworks_me_1G22uz\n    __id\n  }\n}\n\nfragment Artworks_me_1G22uz on Me {\n  saved_artworks {\n    artworks_connection(private: true, first: $count, after: $cursor) {\n      pageInfo {\n        endCursor\n        hasNextPage\n      }\n      edges {\n        node {\n          ...GenericGrid_artworks\n          __id\n          __typename\n        }\n        cursor\n      }\n    }\n    __id\n  }\n  __id\n}\n\nfragment GenericGrid_artworks on Artwork {\n  __id\n  id\n  image {\n    aspect_ratio\n  }\n  ...Artwork_artwork\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  id\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_closed\n      __id\n    }\n    __id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id\n  }\n  partner {\n    name\n    __id\n  }\n  href\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -387,7 +387,7 @@ return {
                                   {
                                     "kind": "ScalarField",
                                     "alias": null,
-                                    "name": "is_open",
+                                    "name": "is_closed",
                                     "args": null,
                                     "storageKey": null
                                   },
