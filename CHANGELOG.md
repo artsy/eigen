@@ -16,6 +16,8 @@
 
 ## Master
 
+* Fixed the top margin for home - orta
+
 ### 1.4.1
 
 * Fixed the ordering of Home/Auctions - damassi
