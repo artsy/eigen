@@ -16,6 +16,8 @@
 
 ## Master
 
+### 1.4.1
+
 * Fixed the ordering of Home/Auctions - damassi
 * Fixes some top margins for iPhone X support - orta
 * [Dev] Emulates how Eigen handles status bars - orta
