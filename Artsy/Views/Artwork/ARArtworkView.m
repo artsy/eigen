@@ -45,11 +45,6 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     self.scrollEnabled = YES;
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-    if ([self.parentViewController.navigationController isKindOfClass:ARNavigationController.class]) {
-        self.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
-        self.scrollIndicatorInsets = UIEdgeInsetsMake(20, 0, 0, 0);
-    }
-
     self.backgroundColor = [UIColor blackColor];
     self.stackView.backgroundColor = [UIColor whiteColor];
     self.stackView.bottomMarginHeight = 20;

@@ -110,16 +110,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 {
     [super viewDidLoad];
 
-    _statusBarView = [[UIView alloc] init];
-    _statusBarView.backgroundColor = UIColor.blackColor;
-
-    [self.view addSubview:_statusBarView];
-
-    _statusBarVerticalConstraint = [_statusBarView constrainHeight:@"20"];
-    [_statusBarView constrainWidthToView:self.view predicate:@"0"];
-    [_statusBarView alignTopEdgeWithView:self.view predicate:@"0"];
-    [_statusBarView alignLeadingEdgeWithView:self.view predicate:@"0"];
-
     _backButton = [[ARMenuButton alloc] init];
     [_backButton ar_extendHitTestSizeByWidth:10 andHeight:10];
     [_backButton setImage:[UIImage imageNamed:@"BackArrow"] forState:UIControlStateNormal];
@@ -127,10 +117,18 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     _backButton.adjustsImageWhenDisabled = NO;
 
     [self.view addSubview:_backButton];
-    [_backButton constrainTopSpaceToView:_statusBarView predicate:@"12"];
+    [_backButton alignTopEdgeWithView:self.view predicate:@"12"];
     [_backButton alignLeadingEdgeWithView:self.view predicate:@"12"];
     _backButton.accessibilityIdentifier = @"Back";
     _backButton.alpha = 0;
+}
+
+// Handle modal changes to status bars
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self updateStatusBar:self.topViewController animated:animated];
 }
 
 #pragma mark - Rotation
@@ -209,11 +207,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
         self.observedViewController = nil;
     }
 
-    BOOL useWhite = [self shouldUseWhiteBackground:viewController];
-
-    [self showBackButton:[self shouldShowBackButtonForViewController:viewController] animated:NO];
-    [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:NO white:useWhite];
-    [self setNeedsStatusBarAppearanceUpdate];
+    [self updateStatusBar:viewController animated:animated];
 
     BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
     [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:NO];
@@ -221,6 +215,15 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     if ((id)viewController != self.searchViewController) {
         [self removeViewControllerFromStack:self.searchViewController];
     }
+}
+
+- (void)updateStatusBar:(UIViewController *)viewController animated:(BOOL)animated
+{
+    BOOL useWhite = [self shouldUseWhiteBackground:viewController];
+
+    [self showBackButton:[self shouldShowBackButtonForViewController:viewController] animated:animated];
+    [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:animated white:useWhite];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 #pragma mark - UIGestureRecognizerDelegate
@@ -314,16 +317,7 @@ ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
 
 - (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated white:(BOOL)isWhite
 {
-    CGFloat visibleAlpha = isWhite ? 0.98 : 1;
-
-    [UIView animateIf:animated duration:ARAnimationDuration:^{
-        self.statusBarView.backgroundColor = isWhite ? UIColor.whiteColor : UIColor.blackColor;
-        self.statusBarView.alpha = visible ? visibleAlpha : 0;
-        
-        self.statusBarVerticalConstraint.constant = visible ? 20 : 0;
-        
-        if (animated) { [self.view setNeedsLayout]; }
-    }];
+    [[ARTopMenuViewController sharedController] showStatusBarBackground:visible animated:animated white:isWhite];
 }
 
 static BOOL

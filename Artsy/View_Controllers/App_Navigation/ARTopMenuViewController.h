@@ -45,6 +45,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Hides the toolbar
 - (void)hideToolbar:(BOOL)hideToolbar animated:(BOOL)animated;
 
+/// Shows/Hides the status bar, and sets the color
+- (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated white:(BOOL)white;
+
 /// Used in search to exit out of search and back into a previous tab.
 - (void)returnToPreviousTab;
 

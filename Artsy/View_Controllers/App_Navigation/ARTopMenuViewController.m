@@ -103,6 +103,9 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 @property (readwrite, nonatomic, assign) BOOL hidesToolbarMenu;
 
+@property (nonatomic, strong) UIView *statusBarView;
+@property (nonatomic, strong) NSLayoutConstraint *statusBarVerticalConstraint;
+
 @property (readwrite, nonatomic, assign) enum ARTopTabControllerIndex selectedTabIndex;
 @property (readwrite, nonatomic, strong) NSLayoutConstraint *tabBottomConstraint;
 
@@ -131,6 +134,16 @@ static const CGFloat ARMenuButtonDimension = 50;
     self.view.backgroundColor = [UIColor whiteColor];
     self.selectedTabIndex = -1;
 
+    _statusBarView = [[UIView alloc] init];
+    _statusBarView.backgroundColor = UIColor.blackColor;
+
+    [self.view addSubview:_statusBarView];
+
+    _statusBarVerticalConstraint = [_statusBarView constrainHeight:@"20"];
+    [_statusBarView constrainWidthToView:self.view predicate:@"0"];
+    [_statusBarView alignTopEdgeWithView:self.view predicate:@"0"];
+    [_statusBarView alignLeadingEdgeWithView:self.view predicate:@"0"];
+
     self.navigationDataSource = _navigationDataSource ?: [[ARTopMenuNavigationDataSource alloc] init];
 
     // TODO: Turn into custom view?
@@ -154,7 +167,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     [self.view addSubview:tabContentView];
 
     // Layout
-    [tabContentView alignTopEdgeWithView:self.view predicate:@"0"];
+    [tabContentView constrainTopSpaceToView:_statusBarView predicate:@"0"];
     [tabContentView alignLeading:@"0" trailing:@"0" toView:self.view];
     [tabContentView constrainWidthToView:self.view predicate:@"0"];
     [tabContentView constrainBottomSpaceToView:self.tabContainer predicate:@"0"];
@@ -196,6 +209,30 @@ static const CGFloat ARMenuButtonDimension = 50;
     if ([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding) {
         [self fadeInFromOnboarding];
     }
+}
+
+- (CGFloat)statusBarHeight
+{
+    // iPhone X support
+    if (@available(iOS 11.0, *)) {
+        return self.view.safeAreaInsets.top;
+    } else {
+        return 20;
+    }
+}
+
+- (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated white:(BOOL)isWhite
+{
+    CGFloat visibleAlpha = isWhite ? 0.98 : 1;
+
+    [UIView animateIf:animated duration:ARAnimationDuration:^{
+        self.statusBarView.backgroundColor = isWhite ? UIColor.whiteColor : UIColor.blackColor;
+        self.statusBarView.alpha = visible ? visibleAlpha : 0;
+
+        self.statusBarVerticalConstraint.constant = visible ? [self statusBarHeight] : 0;
+
+        if (animated) { [self.view setNeedsLayout]; }
+    }];
 }
 
 - (void)fadeInFromOnboarding

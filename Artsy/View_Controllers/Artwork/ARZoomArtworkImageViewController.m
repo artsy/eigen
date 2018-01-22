@@ -45,6 +45,11 @@
     return YES;
 }
 
+- (BOOL)hidesStatusBarBackground
+{
+    return YES;
+}
+
 - (void)loadView
 {
     UIView *clearView = [[UIView alloc] init];
