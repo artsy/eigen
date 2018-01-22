@@ -76,12 +76,14 @@ class Sales extends React.Component<Props, State> {
       },
     ]
 
+    // The `renderItem` is alway
     return (
       <SectionList
         contentContainerStyle={SectionListStyles.contentContainer}
         stickySectionHeadersEnabled={false}
         sections={sections}
         keyExtractor={item => item.id}
+        renderItem={() => undefined}
         refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
       />
     )

@@ -12,10 +12,10 @@
     "outDir": "build",
     "plugins": [{ "name": "typescript-styled-plugin" }],
     "pretty": true,
-    "rootDir": "src",
     "strictNullChecks": false,
     "target": "es6",
-    "types": ["jest", "react", "react-native"]
+    "types": ["jest", "react", "react-native"],
+    "noEmit": true
   },
   "include": ["typings/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "dangerfile.ts"],
   "exclude": [
