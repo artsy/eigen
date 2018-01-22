@@ -19,9 +19,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import TabBar, { Tab } from "lib/Components/TabBar"
 
-const TabBarContainer = styled.View`
-  margin-top: 20px;
-`
+const TabBarContainer = styled.View``
 
 interface Props {
   selectedArtist?: string

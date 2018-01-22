@@ -21,7 +21,7 @@
   [backButton constrainWidth:@"40" height:@"40"];
   _backButton = backButton;
 
-  UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:@" " modifierFlags:UIKeyModifierControl action:@selector(toggleNav)];
+  UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:@"|" modifierFlags:UIKeyModifierControl action:@selector(toggleNav)];
   [self addKeyCommand: command];
 }
 
