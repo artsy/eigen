@@ -24,6 +24,7 @@
 		6011C24E1DAF697B00CE54E5 /* EigenLikeAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C24D1DAF697B00CE54E5 /* EigenLikeAdminViewController.m */; };
 		6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */; };
 		6011C2561DAF835900CE54E5 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6011C2551DAF835900CE54E5 /* logo@2x.png */; };
+		60218E2920168D4E00A6C66B /* ARTopMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60218E2820168D4E00A6C66B /* ARTopMenuViewController.m */; };
 		605E32A51F3A0F0C00CFFE21 /* TakePhotoPromisable.m in Sources */ = {isa = PBXBuildFile; fileRef = 605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */; };
 		608A60D61F75614700B6EF83 /* AppSetup.m in Sources */ = {isa = PBXBuildFile; fileRef = 608A60D51F75614700B6EF83 /* AppSetup.m */; };
 		608C6DBB1FA263290044E235 /* CommitNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 608C6DBA1FA263290044E235 /* CommitNetworkModel.m */; };
@@ -94,6 +95,8 @@
 		6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnroutedViewController.m; sourceTree = "<group>"; };
 		6011C2551DAF835900CE54E5 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		60204ADD1D9D590900204628 /* Emission.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Emission.entitlements; sourceTree = "<group>"; };
+		60218E2720168D4E00A6C66B /* ARTopMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTopMenuViewController.h; sourceTree = "<group>"; };
+		60218E2820168D4E00A6C66B /* ARTopMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTopMenuViewController.m; sourceTree = "<group>"; };
 		605E32A31F3A0F0C00CFFE21 /* TakePhotoPromisable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TakePhotoPromisable.h; path = Modules/TakePhotoPromisable.h; sourceTree = "<group>"; };
 		605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TakePhotoPromisable.m; path = Modules/TakePhotoPromisable.m; sourceTree = "<group>"; };
 		607673A21ECC4C9F005848B5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -303,6 +306,8 @@
 				60A1A77A1DA3A230005E3357 /* Resources */,
 				51F3E9A21CF3B8A4004A2013 /* EigenLikeNavigationController.h */,
 				51F3E9A31CF3B8A4004A2013 /* EigenLikeNavigationController.m */,
+				60218E2720168D4E00A6C66B /* ARTopMenuViewController.h */,
+				60218E2820168D4E00A6C66B /* ARTopMenuViewController.m */,
 			);
 			name = Navigation;
 			sourceTree = "<group>";
@@ -616,6 +621,7 @@
 				6011C2461DAF61AF00CE54E5 /* ARTickedTableViewCell.m in Sources */,
 				60AE1D801EE7DF9C00FC800A /* PRNetworkModel.m in Sources */,
 				60E4ABF71EE7D85000E8C3B1 /* LoadingSpinner.m in Sources */,
+				60218E2920168D4E00A6C66B /* ARTopMenuViewController.m in Sources */,
 				60F61A8B1DAF982B00A72101 /* AuthenticationManager.m in Sources */,
 				608A60D61F75614700B6EF83 /* AppSetup.m in Sources */,
 				6011C2471DAF61AF00CE54E5 /* ARAnimatedTickView.m in Sources */,

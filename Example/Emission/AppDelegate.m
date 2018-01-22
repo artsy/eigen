@@ -4,6 +4,7 @@
 #import "ARDefaults.h"
 #import "AppSetup.h"
 
+#import "ARTopMenuViewController.h"
 #import "EigenLikeNavigationController.h"
 #import "ARRootViewController.h"
 #import "UnroutedViewController.h"
@@ -64,7 +65,7 @@ randomBOOL(void)
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.window.backgroundColor = [UIColor whiteColor];
-  self.window.rootViewController = self.navigationController;
+  self.window.rootViewController = [[ARTopMenuViewController alloc] initWithNavigationController:self.navigationController];;
   [self.window makeKeyAndVisible];
   
   if ([auth isAuthenticated]) {
