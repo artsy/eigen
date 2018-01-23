@@ -1,23 +1,26 @@
 import React, { Component } from "react"
+import { ScrollView } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import styled from "styled-components/native"
 
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import ZeroState from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
-const Container = styled.ScrollView`
-  padding: 20px;
-  flex: 1;
-`
-
 interface Props extends RelayProps {
   relay?: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
 }
 
-export class SavedWorks extends Component<Props> {
+interface State {
+  fetchingMoreData: boolean
+}
+
+export class SavedWorks extends Component<Props, State> {
+  state = {
+    fetchingMoreData: false,
+  }
+
   loadMore = () => {
     if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
       return
@@ -43,20 +46,25 @@ export class SavedWorks extends Component<Props> {
   render() {
     const artworks = this.props.me.saved_artworks.artworks_connection.edges.map(edge => edge.node)
 
-    const EmptyState = (
-      <ZeroState
-        title="You haven’t followed any artists yet"
-        subtitle="Follow artists to get notified about new works that have been added to Artsy."
-      />
-    )
+    if (artworks.length === 0) {
+      return (
+        <ZeroState
+          title="You haven’t followed any artists yet"
+          subtitle="Follow artists to get notified about new works that have been added to Artsy."
+        />
+      )
+    }
 
-    const Content = (
-      <Container onScroll={isCloseToBottom(this.loadMore)} scrollEventThrottle={400}>
-        <GenericGrid artworks={artworks} />
-      </Container>
+    return (
+      <ScrollView
+        onScroll={isCloseToBottom(this.loadMore)}
+        scrollEventThrottle={400}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ padding: 20 }}
+      >
+        <GenericGrid artworks={artworks} isLoading={this.state.fetchingMoreData} />
+      </ScrollView>
     )
-
-    return artworks.length ? Content : EmptyState
   }
 }
 
