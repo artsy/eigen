@@ -91,6 +91,11 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     return YES;
 }
 
+- (BOOL)hidesStatusBarBackground
+{
+    return YES;
+}
+
 #pragma mark - UIViewController
 
 - (void)viewDidAppear:(BOOL)animated
