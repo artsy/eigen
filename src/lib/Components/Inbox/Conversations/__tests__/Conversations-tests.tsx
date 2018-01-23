@@ -3,17 +3,27 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
+import { getTextTree } from "lib/utils/getTestWrapper"
+
 import { Conversations } from "../"
 
-it("looks correct when rendered", () => {
-  const tree = renderer.create(<Conversations me={meProps} relay={{ hasMore: jest.fn() } as any} />).toJSON()
-  expect(tree).toMatchSnapshot()
-})
 
-it("doesn't render the header when there are no messages", () => {
-  const tree = renderer.create(<Conversations me={mePropsEmpty} relay={{ hasMore: jest.fn() } as any} />).toJSON()
-  expect(tree).toMatchSnapshot()
-})
+describe("messaging inbox", () => {
+  it("looks correct when rendered", () => {
+    const tree = renderer.create(<Conversations me={meProps} relay={{ hasMore: jest.fn() } as any} />).toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  it("looks correct when rendered without messages", () => {
+    const tree = renderer.create(<Conversations me={mePropsEmpty} relay={{ hasMore: jest.fn() } as any} />).toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  it("doesn't render the header when there are no messages", () => {
+    const expected = "Messages"
+    const inboxText = getTextTree(<Conversations me={mePropsEmpty} relay={{ hasMore: jest.fn() } as any} />)
+    expect(inboxText).not.toContain(expected)
+  })
 
 const meProps = {
   initials: "JC",
