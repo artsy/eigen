@@ -139,7 +139,8 @@ static const CGFloat ARMenuButtonDimension = 50;
 
     [self.view addSubview:_statusBarView];
 
-    _statusBarVerticalConstraint = [_statusBarView constrainHeight:@"20"];
+    NSString *statusBarHeight = [NSString stringWithFormat:@"%@", @([self statusBarHeight])];
+    _statusBarVerticalConstraint = [_statusBarView constrainHeight:statusBarHeight];
     [_statusBarView constrainWidthToView:self.view predicate:@"0"];
     [_statusBarView alignTopEdgeWithView:self.view predicate:@"0"];
     [_statusBarView alignLeadingEdgeWithView:self.view predicate:@"0"];
