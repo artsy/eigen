@@ -2,37 +2,7 @@
 
 exports[`looks correct for iPad in landscape mode when the user has no conversations 1`] = `
 <View>
-  <View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      style={
-        Array [
-          Object {
-            "color": "black",
-            "fontSize": 30,
-            "paddingLeft": 20,
-            "paddingRight": 20,
-            "textAlign": "left",
-          },
-          Array [
-            Object {
-              "marginBottom": -10,
-              "marginTop": 20,
-            },
-            undefined,
-          ],
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
-        ]
-      }
-    >
-      Messages
-    </Text>
-  </View>
+  <View />
   <RCTScrollView
     data={Array []}
     disableVirtualization={false}
@@ -64,37 +34,7 @@ exports[`looks correct for iPad in landscape mode when the user has no conversat
 
 exports[`looks correct for iPad in portrait mode when the user has no conversations 1`] = `
 <View>
-  <View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      style={
-        Array [
-          Object {
-            "color": "black",
-            "fontSize": 30,
-            "paddingLeft": 20,
-            "paddingRight": 20,
-            "textAlign": "left",
-          },
-          Array [
-            Object {
-              "marginBottom": -10,
-              "marginTop": 20,
-            },
-            undefined,
-          ],
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
-        ]
-      }
-    >
-      Messages
-    </Text>
-  </View>
+  <View />
   <RCTScrollView
     data={Array []}
     disableVirtualization={false}
@@ -126,37 +66,7 @@ exports[`looks correct for iPad in portrait mode when the user has no conversati
 
 exports[`looks correct for iPhone 4 when the user has no conversations 1`] = `
 <View>
-  <View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      style={
-        Array [
-          Object {
-            "color": "black",
-            "fontSize": 30,
-            "paddingLeft": 20,
-            "paddingRight": 20,
-            "textAlign": "left",
-          },
-          Array [
-            Object {
-              "marginBottom": -10,
-              "marginTop": 20,
-            },
-            undefined,
-          ],
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
-        ]
-      }
-    >
-      Messages
-    </Text>
-  </View>
+  <View />
   <RCTScrollView
     data={Array []}
     disableVirtualization={false}
@@ -188,37 +98,7 @@ exports[`looks correct for iPhone 4 when the user has no conversations 1`] = `
 
 exports[`looks correct for iPhone 5 when the user has no conversations 1`] = `
 <View>
-  <View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      style={
-        Array [
-          Object {
-            "color": "black",
-            "fontSize": 30,
-            "paddingLeft": 20,
-            "paddingRight": 20,
-            "textAlign": "left",
-          },
-          Array [
-            Object {
-              "marginBottom": -10,
-              "marginTop": 20,
-            },
-            undefined,
-          ],
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
-        ]
-      }
-    >
-      Messages
-    </Text>
-  </View>
+  <View />
   <RCTScrollView
     data={Array []}
     disableVirtualization={false}
@@ -250,37 +130,7 @@ exports[`looks correct for iPhone 5 when the user has no conversations 1`] = `
 
 exports[`looks correct for iPhone 6 when the user has no conversations 1`] = `
 <View>
-  <View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      disabled={false}
-      ellipsizeMode="tail"
-      style={
-        Array [
-          Object {
-            "color": "black",
-            "fontSize": 30,
-            "paddingLeft": 20,
-            "paddingRight": 20,
-            "textAlign": "left",
-          },
-          Array [
-            Object {
-              "marginBottom": -10,
-              "marginTop": 20,
-            },
-            undefined,
-          ],
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
-        ]
-      }
-    >
-      Messages
-    </Text>
-  </View>
+  <View />
   <RCTScrollView
     data={Array []}
     disableVirtualization={false}
