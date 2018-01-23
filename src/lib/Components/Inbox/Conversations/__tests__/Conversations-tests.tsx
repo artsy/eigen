@@ -10,6 +10,11 @@ it("looks correct when rendered", () => {
   expect(tree).toMatchSnapshot()
 })
 
+it("doesn't render the header when there are no messages", () => {
+  const tree = renderer.create(<Conversations me={mePropsEmpty} relay={{ hasMore: jest.fn() } as any} />).toJSON()
+  expect(tree).toMatchSnapshot()
+})
+
 const meProps = {
   initials: "JC",
   conversations: {
@@ -74,5 +79,15 @@ const meProps = {
         },
       },
     ],
+  },
+}
+
+const mePropsEmpty = {
+  initials: "JC",
+  conversations: {
+    pageInfo: {
+      hasNextPage: false,
+    },
+    edges: [],
   },
 }

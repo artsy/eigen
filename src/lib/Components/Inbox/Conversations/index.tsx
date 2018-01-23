@@ -105,7 +105,7 @@ export class Conversations extends Component<Props, State> {
       <View>
         <View>
           {this.props.headerView}
-          {this.conversations && <Headline>Messages</Headline>}
+          {this.conversations.length > 0 && <Headline>Messages</Headline>}
         </View>
         <FlatList
           data={this.state.conversations}
