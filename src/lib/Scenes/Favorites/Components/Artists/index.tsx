@@ -3,44 +3,59 @@ import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import SavedItemRow from "lib/Components/Lists/SavedItemRow"
+import Spinner from "lib/Components/Spinner"
 import ZeroState from "lib/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
-class Artists extends React.Component<RelayProps> {
-  render() {
-    const rows: any[] = this.props.me.followed_artists_connection.edges.map(e => e.node.artist)
-    const EmptyState = (
-      <ZeroState
-        title="You haven’t followed any artists yet"
-        subtitle="When you’ve found an artist you like, follow them to get updates on new works that become available."
-      />
-    )
+interface State {
+  fetchingMoreData: boolean
+}
 
-    const loadMore = () => {
-      if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
-        return
-      }
+class Artists extends React.Component<RelayProps, State> {
+  state = {
+    fetchingMoreData: false,
+  }
 
-      this.props.relay.loadMore(PAGE_SIZE, error => {
-        if (error) {
-          // FIXME: Handle error
-          console.error("Artists/index.tsx", error.message)
-        }
-      })
+  loadMore = () => {
+    if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
+      return
     }
 
-    const ArtistsList = (
+    this.setState({ fetchingMoreData: true })
+    this.props.relay.loadMore(PAGE_SIZE, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Artists/index.tsx", error.message)
+      }
+      this.setState({ fetchingMoreData: false })
+    })
+  }
+
+  render() {
+    const rows: any[] = this.props.me.followed_artists_connection.edges.map(e => e.node.artist)
+
+    if (rows.length === 0) {
+      return (
+        <ZeroState
+          title="You haven’t followed any artists yet"
+          subtitle="When you’ve found an artist you like, follow them to get updates on new works that become available."
+        />
+      )
+    }
+
+    return (
       <FlatList
         data={rows}
         keyExtractor={({ __id }) => __id}
         renderItem={item => <SavedItemRow {...item.item} />}
-        onEndReached={loadMore}
+        onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
+        ListFooterComponent={
+          this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
+        }
       />
     )
-
-    return rows.length ? ArtistsList : EmptyState
   }
 }
 

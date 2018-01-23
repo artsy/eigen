@@ -3,43 +3,58 @@ import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import SavedItemRow from "lib/Components/Lists/SavedItemRow"
+import Spinner from "lib/Components/Spinner"
 import ZeroState from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 
-export class Categories extends React.Component<RelayProps> {
-  render() {
-    const rows: any[] = this.props.me.followed_genes.edges.map(edge => edge.node.gene)
-    const EmptyState = (
-      <ZeroState
-        title="You’re not following any categories yet"
-        subtitle="Find a few categories to help improve your artwork recommendations."
-      />
-    )
+interface State {
+  fetchingMoreData: boolean
+}
 
-    const loadMore = () => {
-      if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
-        return
-      }
+export class Categories extends React.Component<RelayProps, State> {
+  state = {
+    fetchingMoreData: false,
+  }
 
-      this.props.relay.loadMore(PAGE_SIZE, error => {
-        if (error) {
-          // FIXME: Handle error
-          console.error("Artists/index.tsx", error.message)
-        }
-      })
+  loadMore = () => {
+    if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
+      return
     }
 
-    const CategoriesList = (
+    this.setState({ fetchingMoreData: true })
+    this.props.relay.loadMore(PAGE_SIZE, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Artists/index.tsx", error.message)
+      }
+      this.setState({ fetchingMoreData: false })
+    })
+  }
+
+  render() {
+    const rows: any[] = this.props.me.followed_genes.edges.map(edge => edge.node.gene)
+
+    if (rows.length === 0) {
+      return (
+        <ZeroState
+          title="You’re not following any categories yet"
+          subtitle="Find a few categories to help improve your artwork recommendations."
+        />
+      )
+    }
+
+    return (
       <FlatList
         data={rows}
         keyExtractor={({ __id }) => __id}
         renderItem={data => <SavedItemRow square_image {...data.item} />}
-        onEndReached={loadMore}
+        onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
+        ListFooterComponent={
+          this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
+        }
       />
     )
-
-    return rows.length ? CategoriesList : EmptyState
   }
 }
 
