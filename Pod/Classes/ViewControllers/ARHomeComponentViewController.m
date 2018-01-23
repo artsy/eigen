@@ -14,15 +14,4 @@
     return self;
 }
 
-- (NSLayoutConstraint *)topLayoutConstraintWithRootView:(UIView *)rootView;
-{
-  return [NSLayoutConstraint constraintWithItem:rootView
-                                      attribute:NSLayoutAttributeTop
-                                      relatedBy:NSLayoutRelationEqual
-                                         toItem:self.view
-                                      attribute:NSLayoutAttributeTop
-                                     multiplier:1
-                                       constant:0];
-}
-
 @end

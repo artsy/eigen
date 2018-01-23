@@ -42,7 +42,13 @@
 
   self.rootView.translatesAutoresizingMaskIntoConstraints = NO;
   [self.view addConstraints:@[
-    [self topLayoutConstraintWithRootView:self.rootView],
+    [NSLayoutConstraint constraintWithItem:self.rootView
+                                 attribute:NSLayoutAttributeTop
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:self.topLayoutGuide
+                                 attribute:NSLayoutAttributeBottom
+                                multiplier:1
+                                  constant:0],
     [NSLayoutConstraint constraintWithItem:self.rootView
                                  attribute:NSLayoutAttributeLeading
                                  relatedBy:NSLayoutRelationEqual
@@ -81,17 +87,6 @@
     NSMutableDictionary *appProperties = [self.rootView.appProperties mutableCopy];
     appProperties[@"isVisible"] = @NO;
     self.rootView.appProperties = appProperties;
-}
-
-- (NSLayoutConstraint *)topLayoutConstraintWithRootView:(UIView *)rootView;
-{
-  return [NSLayoutConstraint constraintWithItem:rootView
-                                      attribute:NSLayoutAttributeTop
-                                      relatedBy:NSLayoutRelationEqual
-                                         toItem:self.topLayoutGuide
-                                      attribute:NSLayoutAttributeBottom
-                                     multiplier:1
-                                       constant:0];
 }
 
 - (BOOL)shouldAutorotate;
