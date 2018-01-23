@@ -5,6 +5,7 @@ upcoming:
     dev:
       - Updates to Xcode 9.1 - orta
       - Deletes un-used View Controllers - orta
+      - Adds a 1024 app icon image - orta
 
     user_facing:
       - iPhone X support [eventually] - orta
