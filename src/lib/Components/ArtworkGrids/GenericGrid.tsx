@@ -4,12 +4,14 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
+import Spinner from "lib/Components/Spinner"
 import Artwork from "./Artwork"
 
 interface Props extends RelayProps {
   sectionDirection: "column" // FIXME: We don’t actually support more options atm
   sectionMargin: number
   itemMargin: number
+  isLoading?: boolean
 }
 
 interface State {
@@ -137,6 +139,7 @@ class GenericArtworksGrid extends React.Component<Props, State> {
         <View style={styles.container} accessibilityLabel="Artworks Content View">
           {artworks}
         </View>
+        {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
       </View>
     )
   }
@@ -145,6 +148,7 @@ class GenericArtworksGrid extends React.Component<Props, State> {
 interface Styles {
   container: ViewStyle
   section: ViewStyle
+  spinner: ViewStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -153,6 +157,9 @@ const styles = StyleSheet.create<Styles>({
   },
   section: {
     flexDirection: "column",
+  },
+  spinner: {
+    marginTop: 20,
   },
 })
 
