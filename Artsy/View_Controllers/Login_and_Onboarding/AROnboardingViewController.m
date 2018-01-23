@@ -197,12 +197,22 @@
     [self.view addSubview:self.progressBackgroundBar];
 
     [self.progressBackgroundBar constrainHeight:@"5"];
+
+    // iPhone X support
+    if (@available(iOS 11.0, *)) {
+        [NSLayoutConstraint activateConstraints:@[
+            [self.progressBackgroundBar.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+        ]];
+    } else {
+        [self.progressBackgroundBar alignTopEdgeWithView:self.view predicate:@"0"];
+    }
+
     [self.progressBackgroundBar constrainWidthToView:self.view predicate:@"0"];
-    [self.progressBackgroundBar alignTopEdgeWithView:self.view predicate:@"0"];
+
     [self.progressBackgroundBar alignLeadingEdgeWithView:self.view predicate:@"0"];
 
     self.progressBar.backgroundColor = [UIColor blackColor];
-    [self.view addSubview:self.progressBar];
+    [self.progressBackgroundBar addSubview:self.progressBar];
 
     self.progressBar.alpha = 0;
     self.progressBackgroundBar.alpha = 0;
