@@ -17,6 +17,7 @@
 ## Master
 
 * Fixed the top margin for home - orta
+* Fixed the messages header when there's no convos - maxim
 
 ### 1.4.1
 
