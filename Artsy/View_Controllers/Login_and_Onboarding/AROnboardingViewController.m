@@ -40,6 +40,7 @@
 @property (nonatomic) UIScreenEdgePanGestureRecognizer *screenSwipeGesture;
 @property (nonatomic, strong, readwrite) NSMutableSet *followedItemsDuringOnboarding;
 @property (nonatomic, assign, readwrite) NSInteger budgetRange;
+@property (nonatomic, strong, readwrite) NSLayoutConstraint *iPhoneXStatusBarHeightConstraint;
 @property (nonatomic, strong, readwrite) UIView *progressBar;
 @property (nonatomic, strong, readwrite) UIView *progressBackgroundBar;
 @property (nonatomic, strong, readwrite) NSString *email;
@@ -82,7 +83,6 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.view.tintColor = [UIColor artsyPurpleRegular];
 
-    [self setupProgressView];
 
     self.screenSwipeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(edgeSwiped:)];
     self.screenSwipeGesture.edges = UIRectEdgeLeft;
@@ -98,7 +98,12 @@
     self.tempTextField.returnKeyType = UIReturnKeyNext;
     self.tempTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     [self.view addSubview:self.tempTextField];
-    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self setupProgressView];
 }
 
 - (void)dealloc
@@ -190,23 +195,21 @@
 
 - (void)setupProgressView
 {
+    UIView *iPhoneXStatusBar = [[UIView alloc] init];
+    iPhoneXStatusBar.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:iPhoneXStatusBar];
+    [iPhoneXStatusBar alignTopEdgeWithView:self.view predicate:@"0"];
+    [iPhoneXStatusBar constrainWidthToView:self.view predicate:@"0"];
+    self.iPhoneXStatusBarHeightConstraint = [iPhoneXStatusBar constrainHeight:@"0"];
+
     self.progressBar = [[UIView alloc] init];
     self.progressBackgroundBar = [[UIView alloc] init];
 
     self.progressBackgroundBar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Hash"]];
     [self.view addSubview:self.progressBackgroundBar];
 
+    [self.progressBackgroundBar constrainTopSpaceToView:iPhoneXStatusBar predicate:@"0"];
     [self.progressBackgroundBar constrainHeight:@"5"];
-
-    // iPhone X support
-    if (@available(iOS 11.0, *)) {
-        [NSLayoutConstraint activateConstraints:@[
-            [self.progressBackgroundBar.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
-        ]];
-    } else {
-        [self.progressBackgroundBar alignTopEdgeWithView:self.view predicate:@"0"];
-    }
-
     [self.progressBackgroundBar constrainWidthToView:self.view predicate:@"0"];
 
     [self.progressBackgroundBar alignLeadingEdgeWithView:self.view predicate:@"0"];
@@ -223,7 +226,7 @@
     CGFloat progressWidth = self.view.frame.size.width * progress;
 
     [UIView animateWithDuration:0.3 delay:0.1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self.progressBar.frame = CGRectMake(0, 0, progressWidth, 5);
+        self.progressBar.frame = CGRectMake(0, CGRectGetHeight(self.progressBackgroundBar.bounds) - 5, progressWidth, 5);
         if (self.progressBar.alpha == 0) {
             self.progressBar.alpha = 0.7;
             self.progressBackgroundBar.alpha = 0.7;
@@ -255,6 +258,14 @@
     [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
         self.backgroundView.alpha = 0;
     }];
+
+    // iPhone X support
+    if (@available(iOS 11.0, *)) {
+        [UIView animateWithDuration:ARAnimationDuration animations:^{
+            self.iPhoneXStatusBarHeightConstraint.constant = self.view.safeAreaInsets.top;
+            [self.view layoutIfNeeded];
+        }];
+    }
 
     [self presentPersonalizationEmail];
 }

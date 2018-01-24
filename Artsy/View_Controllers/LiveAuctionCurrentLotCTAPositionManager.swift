@@ -8,6 +8,8 @@ class LiveAuctionCurrentLotCTAPositionManager: NSObject {
     let salesPerson: LiveAuctionsSalesPersonType
     let bottomPositionConstraint: NSLayoutConstraint
 
+    var safeBottomMargin: CGFloat = 0
+
     fileprivate var currentLot: LiveAuctionLotViewModelType?
     fileprivate var isIgnoringScrollEvents = false
 
@@ -50,6 +52,7 @@ extension PublicFunctions {
 
         let atRestOffset = scrollView.contentSize.width / 3
         let offset = scrollView.contentOffset.x
+        let shownConstraintConstant = visibleConstraintConstant - safeBottomMargin
 
         /*
          First determine if we're scrolling left or right, also determine the factor by
@@ -79,13 +82,13 @@ extension PublicFunctions {
         switch currentLot.lotID {
         case originLot.lotID:
             // Moving away from current lot.
-            bottomPositionConstraint.constant = lerp(from: visibleConstraintConstant, to: hiddenConstraintConstant, by: factor)
+            bottomPositionConstraint.constant = lerp(from: shownConstraintConstant, to: hiddenConstraintConstant, by: factor)
         case targetLot.lotID:
             // Moving towards current lot.
-            bottomPositionConstraint.constant = lerp(from: hiddenConstraintConstant, to: visibleConstraintConstant, by: factor)
+            bottomPositionConstraint.constant = lerp(from: hiddenConstraintConstant, to: shownConstraintConstant, by: factor)
         default:
             // Neither origin nor target is the current lot.
-            bottomPositionConstraint.constant = visibleConstraintConstant
+            bottomPositionConstraint.constant = shownConstraintConstant
         }
     }
 
@@ -100,7 +103,8 @@ extension PublicFunctions {
         if currentLot.lotID == focusedLot.lotID {
             bottomPositionConstraint.constant = hiddenConstraintConstant
         } else {
-            bottomPositionConstraint.constant = visibleConstraintConstant
+            let shownConstraintConstant = visibleConstraintConstant - safeBottomMargin
+            bottomPositionConstraint.constant = shownConstraintConstant
         }
     }
 }
