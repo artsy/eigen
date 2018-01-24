@@ -88,6 +88,10 @@
     if (self.comingBack && self.state == AROnboardingStagePersonalizeEmail) {
         [self.onboardingTextFields.emailField becomeFirstResponder];
     }
+
+    // We need an auto-layout render pass for the iPhone X,
+    // as the status bar safe values are only available here, instead of during viewDidLoad etc
+    [self finaliseValuesForiPadWithInterfaceOrientation:UIApplication.sharedApplication.statusBarOrientation];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -124,10 +128,11 @@
 
     [self.onboardingNavigationItems constrainWidthToView:self.view predicate:@"0"];
     [self.onboardingNavigationItems constrainHeight:@"50"];
+
     self.navigationItemsBottomConstraint = [self.onboardingNavigationItems alignBottomEdgeWithView:self.view predicate:@"0"];
 
     CGRect keyboardFrame = [(AROnboardingViewController *)self.delegate keyboardFrame];
-    if (CGRectGetHeight(keyboardFrame)>0) {
+    if (CGRectGetHeight(keyboardFrame) > 0) {
         self.navigationItemsBottomConstraint.constant = -keyboardFrame.size.height;
     }
     [self.onboardingNavigationItems alignLeadingEdgeWithView:self.view predicate:@"0"];
@@ -143,7 +148,7 @@
         self.spaceHeaderToTop = [self.headerView alignTopEdgeWithView:self.view predicate:self.useLargeLayout ? @"80" : @"20"];
         [self.headerView constrainHeight:@"120"];
     } else {
-        self.spaceHeaderToTop = [self.headerView alignTopEdgeWithView:self.view predicate:self.useLargeLayout ? @"80" : @"30"];
+        self.spaceHeaderToTop = [self.headerView alignTopEdgeWithView:self.view predicate:self.useLargeLayout ? @"80" : @"60"];
         [self.headerView constrainHeight:@"160"];
     }
 
@@ -229,17 +234,38 @@
     [self finaliseValuesForiPadWithInterfaceOrientation:toInterfaceOrientation];
 }
 
+- (CGFloat)statusBarHeight
+{
+    // iPhone X support
+    if (@available(iOS 11.0, *)) {
+        return self.view.safeAreaInsets.top;
+    } else {
+        return 20;
+    }
+}
+
 - (void)finaliseValuesForiPadWithInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    CGFloat statusBarHeight = [self statusBarHeight];
     if (self.spaceHeaderToTop && self.spaceFieldsToHeader) {
         if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
-            self.spaceHeaderToTop.constant = 20;
+            self.spaceHeaderToTop.constant = statusBarHeight;
             self.spaceFieldsToHeader.constant = -35;
         } else {
-            self.spaceHeaderToTop.constant = self.useLargeLayout ? 80 : 30;
+            self.spaceHeaderToTop.constant =  statusBarHeight + (self.useLargeLayout ? 60 : 10);
             self.spaceFieldsToHeader.constant = self.useLargeLayout ? 145 : 5;
         }
     }
+
+
+    // iPhone X support for the bottom button
+    if (@available(iOS 11.0, *)) {
+        // It will default to 0 in the init code, but we have to wait until the view is in the heirarchy
+        // before `self.view.safeAreaInsets.bottom` will actually return a useful value
+        if (self.view.safeAreaInsets.bottom && self.navigationItemsBottomConstraint.constant == 0) {
+            self.navigationItemsBottomConstraint.constant = -1 * self.view.safeAreaInsets.bottom;
+        }
+    };
 }
 
 - (void)addTextFields
@@ -263,7 +289,6 @@
 {
     self.onboardingButtonsView = [[ARLoginButtonsView alloc] init];
     [self.view addSubview:self.onboardingButtonsView];
-    
     
     [self.onboardingButtonsView constrainWidthToView:self.view predicate:self.useLargeLayout ? @"*.6" : @"*.9"];
     [self.onboardingButtonsView alignCenterXWithView:self.view predicate:@"0"];

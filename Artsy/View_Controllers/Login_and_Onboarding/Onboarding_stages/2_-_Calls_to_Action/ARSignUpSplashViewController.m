@@ -131,8 +131,10 @@
 {
     self.imageView = [[ARCrossfadingImageView alloc] init];
     self.imageView.shouldLoopImages = YES;
+
     [self.view addSubview:self.imageView];
     [self.imageView alignToView:self.view];
+
     self.imageView.userInteractionEnabled = YES;
 
 
@@ -170,7 +172,6 @@
 
 - (void)setupControls;
 {
-
     self.getStartedButton = [[ARBlackFlatButton alloc] init];
     [self.getStartedButton setTitle:@"GET STARTED" forState:UIControlStateNormal];
     [self.getStartedButton addTarget:self action:@selector(startOnboarding:) forControlEvents:UIControlEventTouchUpInside];
@@ -203,13 +204,23 @@
     [self.descriptionLabel alignCenterXWithView:self.view predicate:@"0"];
     self.spaceDescription = [self.descriptionLabel constrainBottomSpaceToView:self.getStartedButton predicate:self.useLargeLayout ? @"-190" : @"-25"];
     
-    [self.getStartedButton alignBottomEdgeWithView:self.view predicate:self.useLargeLayout ? @"-170" : @"-80"];
+    [self.getStartedButton alignBottomEdgeWithView:label predicate:self.useLargeLayout ? @"-170" : @"-80"];
     [self.getStartedButton alignCenterXWithView:self.view predicate:@"0"];
     [self.getStartedButton constrainWidth:self.useLargeLayout ? @"340" : @"300" height:@"40"];
     
     [label constrainWidth:@"280" height:@"40"];
     [label alignCenterXWithView:self.view predicate:@"0"];
-    [label alignBottomEdgeWithView:self.view predicate:self.useLargeLayout ? @"-55" : @"-10"];
+
+    // iPhone X support
+    if (@available(iOS 11.0, *)) {
+        CGFloat constant = self.useLargeLayout ? -55 : -10;
+        [NSLayoutConstraint activateConstraints:@[
+              [label.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor constant:constant]
+        ]];
+
+    } else {
+        [label alignBottomEdgeWithView:self.view predicate:self.useLargeLayout ? @"-55" : @"-10"];
+    }
 
     [self hideControls];
     [self finaliseValuesForiPadWithInterfaceOrientation:UIApplication.sharedApplication.statusBarOrientation];

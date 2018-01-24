@@ -167,8 +167,8 @@ class LiveAuctionLotSetViewController: UIViewController {
         currentLotView.addTarget(nil, action: #selector(LiveAuctionLotSetViewController.jumpToLiveLot), for: .touchUpInside)
         view.addSubview(currentLotView)
         let jumpToCurrentLotCTABottomConstraint = currentLotView.alignBottomEdge(withView: view, predicate: "-5")
-        currentLotView.alignLeadingEdge(withView: view, predicate: "5")
-        currentLotView.alignTrailingEdge(withView: view, predicate: "-5")
+        currentLotView.alignLeadingEdge(withView: view, predicate: "20")
+        currentLotView.alignTrailingEdge(withView: view, predicate: "-20")
 
         currentLotCTAPositionManager = LiveAuctionCurrentLotCTAPositionManager(salesPerson: salesPerson, bottomPositionConstraint: jumpToCurrentLotCTABottomConstraint)
 
@@ -207,6 +207,11 @@ class LiveAuctionLotSetViewController: UIViewController {
 
         // Disable page view scrolling on iPad.
         pageViewScrollView?.isScrollEnabled = (view.window?.traitCollection.horizontalSizeClass == .compact)
+
+        // iPhone X support
+        if #available(iOS 11.0, *) {
+            currentLotCTAPositionManager.safeBottomMargin = view.safeAreaInsets.bottom
+        }
     }
 
     func updateTitle() {

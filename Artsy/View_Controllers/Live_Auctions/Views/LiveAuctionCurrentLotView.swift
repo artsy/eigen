@@ -14,6 +14,7 @@ class LiveAuctionCurrentLotView: UIButton {
         super.init(frame: CGRect.zero)
 
         backgroundColor = .artsyPurpleRegular()
+        layer.cornerRadius = 10
 
         let liveLotLabel = ARSansSerifLabel()
         liveLotLabel.font = .sansSerifFont(withSize: 12)
@@ -43,6 +44,8 @@ class LiveAuctionCurrentLotView: UIButton {
         thumbnailView.alignLeadingEdge(withView: self, predicate: "10")
         thumbnailView.constrainWidth("38", height: "38")
         thumbnailView.alignCenterY(withView: self, predicate: "0")
+        thumbnailView.layer.cornerRadius = 5
+        thumbnailView.layer.masksToBounds = true;
 
         liveLotLabel.constrainLeadingSpace(toView: thumbnailView, predicate: "10")
         liveLotLabel.alignTopEdge(withView: self, predicate: "10")
