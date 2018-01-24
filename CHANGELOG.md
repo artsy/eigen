@@ -16,6 +16,7 @@
 
 ## Master
 
+* Removed unused imports that Relay no longer requires - sarah
 * Fixed the top margin for home - orta
 * Fixed the messages header when there's no convos - maxim
 * Added pagination spinners to each Saves & Follows tab - alloy

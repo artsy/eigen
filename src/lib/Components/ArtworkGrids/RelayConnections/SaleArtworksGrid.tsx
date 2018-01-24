@@ -1,11 +1,6 @@
 import { createPaginationContainer, graphql } from "react-relay"
 import InfiniteScrollArtworksGrid, { Props as GridProps } from "../InfiniteScrollGrid"
 
-import Artwork from "../Artwork"
-// This is so that TypeScript won’t remove the seemingly unused `Artwork` import. Relay depends on it to exist.
-// tslint:disable-next-line:no-unused-expression
-Artwork
-
 // FIXME: This is really only done because the scrollgrid does not accept a `sale` prop and currently the way things are
 //        setup type-checking fails because users correctly do pass a `sale` prop. This should be made correct when work
 //        is continued on a RN version of a Sale.

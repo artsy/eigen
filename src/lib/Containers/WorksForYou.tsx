@@ -15,11 +15,6 @@ import {
 
 import Events from "../NativeModules/Events"
 
-// FIXME: IS this kind of empty import still needed?
-import GenericGrid from "../Components/ArtworkGrids/GenericGrid"
-// tslint:disable-next-line:no-unused-expression
-GenericGrid
-
 import { PAGE_SIZE } from "lib/data/constants"
 
 import ZeroState from "lib/Components/States/ZeroState"
