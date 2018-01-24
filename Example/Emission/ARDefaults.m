@@ -24,12 +24,17 @@ NSString *const ARRNPackagerHostDefault = @"ARStagingRNPackagerHostDefault";
   useStagingDefault = NO;
 #endif
 
+  NSString *ipPath = [[NSBundle mainBundle] pathForResource:@"ip" ofType:@"txt"];
+  NSString *ipGuess = [[NSString stringWithContentsOfFile:ipPath encoding:NSUTF8StringEncoding error:nil]
+             stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+  NSString *host = ipGuess ? ipGuess : @"localhost";
+
   [[NSUserDefaults standardUserDefaults] registerDefaults:@{
     ARUseStagingDefault : @(useStagingDefault),
     ARStagingAPIURLDefault : @"https://stagingapi.artsy.net",
     ARStagingWebURLDefault : @"https://staging.artsy.net",
     ARStagingMetaphysicsURLDefault : @"https://metaphysics-staging.artsy.net",
-    ARRNPackagerHostDefault : @"localhost",
+    ARRNPackagerHostDefault : host,
   }];
 }
 

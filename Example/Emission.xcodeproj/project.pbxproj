@@ -382,6 +382,7 @@
 				510DCB0A1CCA69EC0075E8CB /* Sources */,
 				510DCB0B1CCA69EC0075E8CB /* Frameworks */,
 				513510561DAFBBB9007223BF /* Compile JS Bundle for Release */,
+				5157C2E92018C82400DE6B07 /* Record Packager Host IP for Debug */,
 				510DCB0C1CCA69EC0075E8CB /* Resources */,
 				510E94FE1CCB87F100BDF098 /* Create Clang compilation DB */,
 				BD012BCCAEAB7DB916DE7D2D /* [CP] Embed Pods Frameworks */,
@@ -569,6 +570,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ \"$CONFIGURATION\" = \"Release\" ]\nthen\ncd .. && npm run bundle\nfi";
+			showEnvVarsInLog = 0;
+		};
+		5157C2E92018C82400DE6B07 /* Record Packager Host IP for Debug */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Record Packager Host IP for Debug";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Taken from https://github.com/facebook/react-native/blob/2716f53220f947c690d5f627286aad51313256a0/scripts/react-native-xcode.sh\n\n# Print commands before executing them (useful for troubleshooting)\nset -x\nDEST=$CONFIGURATION_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\n\nif [[ \"$CONFIGURATION\" = \"Debug\" && ! \"$PLATFORM_NAME\" == *simulator ]]; then\nPLISTBUDDY='/usr/libexec/PlistBuddy'\nPLIST=$TARGET_BUILD_DIR/$INFOPLIST_PATH\nIP=$(ipconfig getifaddr en0)\nif [ -z \"$IP\" ]; then\nIP=$(ifconfig | grep 'inet ' | grep -v ' 127.' | cut -d\\   -f2  | awk 'NR==1{print $1}')\nfi\n\nif [ -z ${DISABLE_XIP+x} ]; then\nIP=\"$IP.xip.io\"\nfi\n\n$PLISTBUDDY -c \"Add NSAppTransportSecurity:NSExceptionDomains:localhost:NSTemporaryExceptionAllowsInsecureHTTPLoads bool true\" \"$PLIST\"\n$PLISTBUDDY -c \"Add NSAppTransportSecurity:NSExceptionDomains:$IP:NSTemporaryExceptionAllowsInsecureHTTPLoads bool true\" \"$PLIST\"\necho \"$IP\" > \"$DEST/ip.txt\"\nfi";
 			showEnvVarsInLog = 0;
 		};
 		6E41E6A6664172F7C45F3D36 /* [CP] Check Pods Manifest.lock */ = {
