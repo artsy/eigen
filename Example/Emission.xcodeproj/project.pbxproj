@@ -25,7 +25,6 @@
 		6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */; };
 		6011C2561DAF835900CE54E5 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6011C2551DAF835900CE54E5 /* logo@2x.png */; };
 		60218E2920168D4E00A6C66B /* ARTopMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60218E2820168D4E00A6C66B /* ARTopMenuViewController.m */; };
-		605E32A51F3A0F0C00CFFE21 /* TakePhotoPromisable.m in Sources */ = {isa = PBXBuildFile; fileRef = 605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */; };
 		608A60D61F75614700B6EF83 /* AppSetup.m in Sources */ = {isa = PBXBuildFile; fileRef = 608A60D51F75614700B6EF83 /* AppSetup.m */; };
 		608C6DBB1FA263290044E235 /* CommitNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 608C6DBA1FA263290044E235 /* CommitNetworkModel.m */; };
 		60A1A77E1DA3A23C005E3357 /* BackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */; };
@@ -97,8 +96,6 @@
 		60204ADD1D9D590900204628 /* Emission.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Emission.entitlements; sourceTree = "<group>"; };
 		60218E2720168D4E00A6C66B /* ARTopMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTopMenuViewController.h; sourceTree = "<group>"; };
 		60218E2820168D4E00A6C66B /* ARTopMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTopMenuViewController.m; sourceTree = "<group>"; };
-		605E32A31F3A0F0C00CFFE21 /* TakePhotoPromisable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TakePhotoPromisable.h; path = Modules/TakePhotoPromisable.h; sourceTree = "<group>"; };
-		605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TakePhotoPromisable.m; path = Modules/TakePhotoPromisable.m; sourceTree = "<group>"; };
 		607673A21ECC4C9F005848B5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6077F28F1EE56723004F054D /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		608A60D41F75614700B6EF83 /* AppSetup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppSetup.h; sourceTree = "<group>"; };
@@ -227,15 +224,6 @@
 			name = Launch;
 			sourceTree = "<group>";
 		};
-		605E32A21F3A0EED00CFFE21 /* Modules */ = {
-			isa = PBXGroup;
-			children = (
-				605E32A31F3A0F0C00CFFE21 /* TakePhotoPromisable.h */,
-				605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */,
-			);
-			name = Modules;
-			sourceTree = "<group>";
-		};
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
@@ -332,7 +320,6 @@
 		60F61A881DAF849700A72101 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				605E32A21F3A0EED00CFFE21 /* Modules */,
 				510DCB131CCA69EC0075E8CB /* AppDelegate.h */,
 				510DCB141CCA69EC0075E8CB /* AppDelegate.m */,
 				608A60D41F75614700B6EF83 /* AppSetup.h */,
@@ -628,7 +615,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */,
-				605E32A51F3A0F0C00CFFE21 /* TakePhotoPromisable.m in Sources */,
 				6011C2451DAF61AF00CE54E5 /* ARAdminTableViewCell.m in Sources */,
 				608C6DBB1FA263290044E235 /* CommitNetworkModel.m in Sources */,
 				60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */,

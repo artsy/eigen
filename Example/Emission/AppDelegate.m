@@ -30,8 +30,6 @@
 #import "PRNetworkModel.h"
 #import "CommitNetworkModel.h"
 
-#import "TakePhotoPromisable.h"
-
 static BOOL
 randomBOOL(void)
 {
@@ -41,8 +39,6 @@ randomBOOL(void)
 @interface AppDelegate ()
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, strong) LoadingSpinner *spinner;
-@property (nonatomic, strong) TakePhotoPromisable *takePhotoPromisable;
-
 @end
 
 @implementation AppDelegate
@@ -196,11 +192,6 @@ randomBOOL(void)
   emission.worksForYouModule.setNotificationsCount = ^(NSInteger count) {
     sleep(1);
     NSLog(@"Set notifications count: %ld", (long)count);
-  };
-
-  self.takePhotoPromisable = [TakePhotoPromisable new];
-  emission.cameraModule.triggerCreatingACameraPhoto = ^(UIViewController * _Nonnull controller, RCTPromiseResolveBlock  _Nonnull resolve, RCTPromiseRejectBlock  _Nonnull reject) {
-    [self.takePhotoPromisable showCameraModal:controller resolver:resolve rejecter:reject];
   };
 }
 

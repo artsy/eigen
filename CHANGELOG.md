@@ -21,6 +21,7 @@
 * Fixed the messages header when there's no convos - maxim
 * Added pagination spinners to each Saves & Follows tab - alloy
 * Automatically default packager host to build machine when running a dev build on device - alloy
+* Handle errors that can occur when using the camera and move UIImagePickerController code into Emission - alloy
 
 ### 1.4.1
 
