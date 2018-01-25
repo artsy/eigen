@@ -8,6 +8,7 @@
 #import <Artsy+Authentication/ArtsyAuthentication.h>
 #import <Artsy+Authentication/ArtsyAuthenticationRouter.h>
 #import <Artsy+Authentication/ArtsyToken.h>
+#import <Keys/EmissionKeys.h>
 
 @interface AuthenticationManager()
 @property (nonatomic, strong) UIViewController *viewController;
@@ -73,9 +74,14 @@
 
 - (void)authenticateWithEmail:(NSString *)email password:(NSString *)password keychainService:(NSString *)service completion:(dispatch_block_t)completion;
 {
-  // These are from Eigen OSS: https://github.com/artsy/eigen/blob/0e193d1b/Makefile#L36-L37
-  ArtsyAuthentication *auth = [[ArtsyAuthentication alloc] initWithClientID:@"e750db60ac506978fc70"
-                                                               clientSecret:@"3a33d2085cbd1176153f99781bbce7c6"];
+  EmissionKeys *keys = [[EmissionKeys alloc] init];
+
+  if(![keys artsyAPIClientKey] || ![keys artsyAPIClientSecret]) {
+    @throw @"You need to set up your CocoaPods Keys, you may have to run `bundle exec pod install` in the Example dir.";
+  }
+
+  ArtsyAuthentication *auth = [[ArtsyAuthentication alloc] initWithClientID:[keys artsyAPIClientKey]
+                                                               clientSecret:[keys artsyAPIClientSecret]];
 
   BOOL useStaging = [[NSUserDefaults standardUserDefaults] boolForKey:ARUseStagingDefault];
   auth.router.staging = useStaging;
