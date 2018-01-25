@@ -92,8 +92,6 @@ export default class Info extends React.Component<Props, State> {
   goToLocationTapped = () =>
     this.props.navigator.push({ component: Location, passProps: { updateWithResult: this.updateLocation } })
 
-  goToFinalSubmission = () => this.setState({ state: "SUBMITTED" }, () => this.submitFinalSubmission(this.state))
-
   updateArtist = (result: SearchResult) => this.updateStateAndMetaphysics({ artist: result })
   updateMetadata = (result: ConsignmentMetadata) => this.updateStateAndMetaphysics({ metadata: result })
   updateProvenance = (result: string) => this.updateStateAndMetaphysics({ provenance: result })
@@ -134,21 +132,20 @@ export default class Info extends React.Component<Props, State> {
     return null
   }
 
-  submitFinalSubmission = async (setup: ConsignmentSetup) => {
-    this.setState(setup, async () => {
-      this.showConfirmationScreen()
-      let hasSubmittedSuccessfully = true
-      try {
-        await this.updateLocalStateAndMetaphysics()
-        await AsyncStorage.removeItem(consignmentsStateKey)
-        this.submissionDraftSubmitted()
-      } catch (error) {
-        console.error("Overview final submission: " + error)
-        hasSubmittedSuccessfully = false
-      }
+  submitFinalSubmission = async () => {
+    this.showConfirmationScreen()
 
-      this.setState({ hasSubmittedSuccessfully })
-    })
+    let hasSubmittedSuccessfully = true
+    try {
+      await updateSubmission({ ...(this.state as ConsignmentSetup), state: "SUBMITTED" }, this.state.submission_id)
+      await AsyncStorage.removeItem(consignmentsStateKey)
+      this.submissionDraftSubmitted()
+    } catch (error) {
+      console.error("Overview final submission: " + error)
+      hasSubmittedSuccessfully = false
+    }
+
+    this.setState({ hasSubmittedSuccessfully })
   }
 
   @track((_props, state) => ({
@@ -244,7 +241,7 @@ export default class Info extends React.Component<Props, State> {
             </View>
             <Row style={{ justifyContent: "center", marginTop: isPad ? 80 : -30 }}>
               {this.state.hasLoaded && (
-                <Button text="SUBMIT" onPress={canSubmit ? this.goToFinalSubmission : undefined} />
+                <Button text="SUBMIT" onPress={canSubmit ? this.submitFinalSubmission : undefined} />
               )}
             </Row>
             <Row style={{ justifyContent: "center" }}>
