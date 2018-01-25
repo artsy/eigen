@@ -54,7 +54,7 @@ it("resets the cache when a final submission is made", async () => {
   }
 
   // Make a call to the
-  await overview.submitFinalSubmission({ signed: true })
+  await overview.submitFinalSubmission()
 
   expect(AsyncStorage.removeItem).toBeCalledWith(key)
 })
