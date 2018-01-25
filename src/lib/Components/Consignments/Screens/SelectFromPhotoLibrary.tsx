@@ -8,8 +8,21 @@ import { BodyText as P } from "../Typography"
 
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
 
-import { CameraRoll, Dimensions, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
+import {
+  Alert,
+  CameraRoll,
+  Dimensions,
+  Linking,
+  NativeModules,
+  NavigatorIOS,
+  Route,
+  ScrollView,
+  View,
+  ViewProperties,
+} from "react-native"
 import { ConsignmentSetup } from "../index"
+
+const { ARCocoaConstantsModule, ARTakeCameraPhotoModule } = NativeModules
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -123,36 +136,68 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
   getCameraRollPhotos = (params: any) => CameraRoll.getPhotos(params)
 
   onPressNewPhoto = () => {
-    return triggerCamera(this).then(success => {
-      if (success) {
-        // Grab the most recent photo
-        // and add it to the top
+    return triggerCamera(this)
+      .then(success => {
+        if (success) {
+          // Grab the most recent photo
+          // and add it to the top
 
-        const fetchParams: any = {
-          first: 1,
-          assetType: "Photos",
-        }
-
-        this.getCameraRollPhotos(fetchParams).then(photos => {
-          if (!photos.edges || photos.edges.length === 0) {
-            console.error("SelectFromLibrary: Got no photos when looking for most recent")
-          } else {
-            const photo = photos.edges.map(e => e.node)[0]
-
-            // Update selection
-            this.state.selection.add(photo.image.uri)
-            this.setState({
-              selection: this.state.selection,
-              // An item in cameraImage is a subset of the photo that we pass in,
-              // so we `as any` to avoid a compiler error
-              cameraImages: [photo].concat(this.state.cameraImages as any),
-            })
+          const fetchParams: any = {
+            first: 1,
+            assetType: "Photos",
           }
-        })
-      } else {
-        console.error("SelectFromLibrary: Did not receive a photo from call to getPhotos")
-      }
-    })
+
+          this.getCameraRollPhotos(fetchParams).then(photos => {
+            if (!photos.edges || photos.edges.length === 0) {
+              console.error("SelectFromLibrary: Got no photos when looking for most recent")
+            } else {
+              const photo = photos.edges.map(e => e.node)[0]
+
+              // Update selection
+              this.state.selection.add(photo.image.uri)
+              this.setState({
+                selection: this.state.selection,
+                // An item in cameraImage is a subset of the photo that we pass in,
+                // so we `as any` to avoid a compiler error
+                cameraImages: [photo].concat(this.state.cameraImages as any),
+              })
+            }
+          })
+        } else {
+          console.log("SelectFromLibrary: Did not receive a photo from call to getPhotos")
+        }
+      })
+      .catch(error => {
+        const errors = ARTakeCameraPhotoModule.errorCodes
+        switch (error.code) {
+          case errors.cameraNotAvailable:
+          case errors.imageMediaNotAvailable:
+            Alert.alert(error.message)
+            break
+
+          case errors.cameraAccessDenied:
+            Alert.alert(
+              error.message,
+              "Please enable camera access from Settings to be able to take photos of your artwork.",
+              [
+                { text: "Cancel" },
+                {
+                  text: "Settings",
+                  onPress: () => Linking.openURL(ARCocoaConstantsModule.UIApplicationOpenSettingsURLString),
+                },
+              ]
+            )
+            break
+
+          case errors.saveFailed:
+            const underlyingError = error.userInfo && error.userInfo.NSUnderlyingError
+            Alert.alert(error.message, underlyingError && `${underlyingError.message} (${underlyingError.code})`)
+            break
+
+          default:
+            console.error(error)
+        }
+      })
   }
 
   onNewSelectionState = (_state: Set<string>) => this.setState({ selection: this.state.selection })

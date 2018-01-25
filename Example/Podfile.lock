@@ -18,6 +18,7 @@ PODS:
     - React/RCTAnimation (= 0.48.4)
     - React/RCTCameraRoll (= 0.48.4)
     - React/RCTImage (= 0.48.4)
+    - React/RCTLinkingIOS (= 0.48.4)
     - React/RCTNetwork (= 0.48.4)
     - React/RCTText (= 0.48.4)
     - SDWebImage (< 4, >= 3.7.2)
@@ -85,6 +86,8 @@ PODS:
   - React/RCTImage (0.48.4):
     - React/Core
     - React/RCTNetwork
+  - React/RCTLinkingIOS (0.48.4):
+    - React/Core
   - React/RCTNetwork (0.48.4):
     - React/Core
   - React/RCTText (0.48.4):
@@ -149,7 +152,7 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   Artsy+UIFonts: d38c82636e000b1dee31b7bec0268e1841dac17f
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
-  Emission: e91c4a2ed5db0aeee885cd1b5faba850ed1df336
+  Emission: 45ff5a85820a1fae4a75512b6e220c9f04e6c810
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c

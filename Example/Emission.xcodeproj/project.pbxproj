@@ -25,7 +25,6 @@
 		6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2501DAF7B6D00CE54E5 /* UnroutedViewController.m */; };
 		6011C2561DAF835900CE54E5 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6011C2551DAF835900CE54E5 /* logo@2x.png */; };
 		60218E2920168D4E00A6C66B /* ARTopMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60218E2820168D4E00A6C66B /* ARTopMenuViewController.m */; };
-		605E32A51F3A0F0C00CFFE21 /* TakePhotoPromisable.m in Sources */ = {isa = PBXBuildFile; fileRef = 605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */; };
 		608A60D61F75614700B6EF83 /* AppSetup.m in Sources */ = {isa = PBXBuildFile; fileRef = 608A60D51F75614700B6EF83 /* AppSetup.m */; };
 		608C6DBB1FA263290044E235 /* CommitNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 608C6DBA1FA263290044E235 /* CommitNetworkModel.m */; };
 		60A1A77E1DA3A23C005E3357 /* BackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */; };
@@ -97,8 +96,6 @@
 		60204ADD1D9D590900204628 /* Emission.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Emission.entitlements; sourceTree = "<group>"; };
 		60218E2720168D4E00A6C66B /* ARTopMenuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTopMenuViewController.h; sourceTree = "<group>"; };
 		60218E2820168D4E00A6C66B /* ARTopMenuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTopMenuViewController.m; sourceTree = "<group>"; };
-		605E32A31F3A0F0C00CFFE21 /* TakePhotoPromisable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TakePhotoPromisable.h; path = Modules/TakePhotoPromisable.h; sourceTree = "<group>"; };
-		605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TakePhotoPromisable.m; path = Modules/TakePhotoPromisable.m; sourceTree = "<group>"; };
 		607673A21ECC4C9F005848B5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6077F28F1EE56723004F054D /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		608A60D41F75614700B6EF83 /* AppSetup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppSetup.h; sourceTree = "<group>"; };
@@ -227,15 +224,6 @@
 			name = Launch;
 			sourceTree = "<group>";
 		};
-		605E32A21F3A0EED00CFFE21 /* Modules */ = {
-			isa = PBXGroup;
-			children = (
-				605E32A31F3A0F0C00CFFE21 /* TakePhotoPromisable.h */,
-				605E32A41F3A0F0C00CFFE21 /* TakePhotoPromisable.m */,
-			);
-			name = Modules;
-			sourceTree = "<group>";
-		};
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
@@ -332,7 +320,6 @@
 		60F61A881DAF849700A72101 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				605E32A21F3A0EED00CFFE21 /* Modules */,
 				510DCB131CCA69EC0075E8CB /* AppDelegate.h */,
 				510DCB141CCA69EC0075E8CB /* AppDelegate.m */,
 				608A60D41F75614700B6EF83 /* AppSetup.h */,
@@ -382,6 +369,7 @@
 				510DCB0A1CCA69EC0075E8CB /* Sources */,
 				510DCB0B1CCA69EC0075E8CB /* Frameworks */,
 				513510561DAFBBB9007223BF /* Compile JS Bundle for Release */,
+				5157C2E92018C82400DE6B07 /* Record Packager Host IP for Debug */,
 				510DCB0C1CCA69EC0075E8CB /* Resources */,
 				510E94FE1CCB87F100BDF098 /* Create Clang compilation DB */,
 				BD012BCCAEAB7DB916DE7D2D /* [CP] Embed Pods Frameworks */,
@@ -571,6 +559,21 @@
 			shellScript = "if [ \"$CONFIGURATION\" = \"Release\" ]\nthen\ncd .. && npm run bundle\nfi";
 			showEnvVarsInLog = 0;
 		};
+		5157C2E92018C82400DE6B07 /* Record Packager Host IP for Debug */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Record Packager Host IP for Debug";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Taken from https://github.com/facebook/react-native/blob/2716f53220f947c690d5f627286aad51313256a0/scripts/react-native-xcode.sh\n\n# Print commands before executing them (useful for troubleshooting)\nset -x\nDEST=$CONFIGURATION_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\n\nif [[ \"$CONFIGURATION\" = \"Debug\" && ! \"$PLATFORM_NAME\" == *simulator ]]; then\nPLISTBUDDY='/usr/libexec/PlistBuddy'\nPLIST=$TARGET_BUILD_DIR/$INFOPLIST_PATH\nIP=$(ipconfig getifaddr en0)\nif [ -z \"$IP\" ]; then\nIP=$(ifconfig | grep 'inet ' | grep -v ' 127.' | cut -d\\   -f2  | awk 'NR==1{print $1}')\nfi\n\nif [ -z ${DISABLE_XIP+x} ]; then\nIP=\"$IP.xip.io\"\nfi\n\n$PLISTBUDDY -c \"Add NSAppTransportSecurity:NSExceptionDomains:localhost:NSTemporaryExceptionAllowsInsecureHTTPLoads bool true\" \"$PLIST\"\n$PLISTBUDDY -c \"Add NSAppTransportSecurity:NSExceptionDomains:$IP:NSTemporaryExceptionAllowsInsecureHTTPLoads bool true\" \"$PLIST\"\necho \"$IP\" > \"$DEST/ip.txt\"\nfi";
+			showEnvVarsInLog = 0;
+		};
 		6E41E6A6664172F7C45F3D36 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -612,7 +615,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */,
-				605E32A51F3A0F0C00CFFE21 /* TakePhotoPromisable.m in Sources */,
 				6011C2451DAF61AF00CE54E5 /* ARAdminTableViewCell.m in Sources */,
 				608C6DBB1FA263290044E235 /* CommitNetworkModel.m in Sources */,
 				60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */,

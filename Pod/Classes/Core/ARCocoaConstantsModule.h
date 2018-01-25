@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
 
-@interface ARTakeCameraPhotoModule : NSObject <RCTBridgeModule>
+@interface ARCocoaConstantsModule : NSObject <RCTBridgeModule>
 @end

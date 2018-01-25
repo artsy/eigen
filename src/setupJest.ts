@@ -51,3 +51,16 @@ mockedModule("./lib/Components/Artist/About.tsx", "About")
 
 // Gene tests
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
+
+import { NativeModules } from "react-native"
+NativeModules.ARTakeCameraPhotoModule = {
+  errorCodes: {
+    cameraNotAvailable: "cameraNotAvailable",
+    imageMediaNotAvailable: "imageMediaNotAvailable",
+    cameraAccessDenied: "cameraAccessDenied",
+    saveFailed: "saveFailed",
+  },
+}
+NativeModules.ARCocoaConstantsModule = {
+  UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
+}
