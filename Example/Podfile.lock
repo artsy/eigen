@@ -48,6 +48,7 @@ PODS:
     - Extraction/ARAnimationContinuation
   - FLKAutoLayout (1.0.0)
   - ISO8601DateFormatter (0.8)
+  - Keys (1.0.0)
   - KSCrash/Core (1.15.16):
     - KSCrash/Reporting/Filters/Basic
   - KSCrash/Recording (1.15.16):
@@ -114,6 +115,7 @@ DEPENDENCIES:
   - Artsy+UIFonts
   - Emission (from `../`)
   - FLKAutoLayout
+  - Keys (from `Pods/CocoaPodsKeys`)
   - React/DevSupport (from `../node_modules/react-native`)
   - SAMKeychain
   - Sentry/Core
@@ -127,6 +129,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/Artsy-Authentication.git
   Emission:
     :path: ../
+  Keys:
+    :path: Pods/CocoaPodsKeys
   React:
     :path: ../node_modules/react-native
   SentryReactNative:
@@ -149,6 +153,7 @@ SPEC CHECKSUMS:
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
+  Keys: 9c35bf00f612ee1d48556f4a4b9b4551e224e90f
   KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
@@ -160,6 +165,6 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: ccefa1454b2e9825dce3b2df98088b7f0e3c2675
 
-PODFILE CHECKSUM: ddd86458ef3f2e842a3e315ac2ac20148e8f8bd3
+PODFILE CHECKSUM: 2cf2436a62a8ff1fdedabf788a88e2d9ccbcc353
 
 COCOAPODS: 1.3.1

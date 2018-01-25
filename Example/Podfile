@@ -46,6 +46,14 @@ target 'Emission' do
                               :branch => 'fetch-user-details'
 end
 
+plugin 'cocoapods-keys', {
+  :target => 'Emission',
+  :keys => [
+    'ArtsyAPIClientSecret',   # Authing to the Artsy API
+    'ArtsyAPIClientKey',      #
+  ]
+}
+
 def edit_pod_file(file, old_code, new_code)
   code = File.read(file)
   if code.include?(old_code)
