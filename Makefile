@@ -3,7 +3,7 @@ YARN := $(shell command -v yarn 2> /dev/null)
 WATCHMAN := $(shell command -v watchman 2> /dev/null)
 CODE := $(shell command -v code 2> /dev/null)
 
-oss:
+setup:
 ifndef BREW
     $(error "Please install homebrew before running `make oss`: https://brew.sh")
 endif
@@ -28,9 +28,6 @@ endif
 	@echo "Installing Node Dependencies"
 	yarn install
 
-	@echo "Installing Cocoa Dependencies"
-	cd Example && bundle && bundle exec pod install
-
 	@echo "Installing Hooks for Styling and Compile-checks"
 	echo "#!/bin/sh\nyarn run lint-staged\n" > .git/hooks/pre-commit; chmod +x .git/hooks/pre-commit
 	echo "#!/bin/sh\nyarn run type-check\n" > .git/hooks/pre-push; chmod +x .git/hooks/pre-push
@@ -47,6 +44,15 @@ endif
 	@echo "Any other details can be found in the README."
 	@echo "Enjoy!"
 	@echo ""
+
+
+artsy:
+	cd Example && bundle && bundle exec pod install
+
+oss:
+	@echo "Installing Cocoa Dependencies"
+	cd Example && bundle && bundle exec pod keys set ArtsyAPIClientSecret "3a33d2085cbd1176153f99781bbce7c6" Emission
+	cd Example && bundle exec pod keys set ArtsyAPIClientKey "e750db60ac506978fc70"
 
 
 JQ := $(shell command -v jq 2> /dev/null)

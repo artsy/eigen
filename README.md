@@ -10,9 +10,9 @@ Inside Emission you will find:
 
 ### Meta
 
-* __State:__ production
-* __Point People:__ [@sarahscott](https://github.com/sarahscott), [@alloy](https://github.com/alloy)
-* __CI:__ [![Build Status](https://travis-ci.org/artsy/emission.svg?branch=master)](https://travis-ci.org/artsy/emission)
+* **State:** production
+* **Point People:** [@sarahscott](https://github.com/sarahscott), [@alloy](https://github.com/alloy)
+* **CI:** [![Build Status](https://travis-ci.org/artsy/emission.svg?branch=master)](https://travis-ci.org/artsy/emission)
 
 This is a core [Artsy Mobile](https://github.com/artsy/mobile) OSS project, along with [Energy](https://github.com/artsy/energy), [Eidolon](https://github.com/artsy/eidolon), [Eigen](https://github.com/artsy/eigen) and [Emergence](https://github.com/artsy/emergence).
 
@@ -22,9 +22,12 @@ Want to know more about Emission? Read the [mobile](http://artsy.github.io/blog/
 
 ### Installation
 
-*Automated install*: `git clone https://github.com/artsy/emission.git; cd emission; make oss`.
+_Automated install_:
 
-*Manual install*
+* **OSS**: `git clone https://github.com/artsy/emission.git; cd emission; make setup; make oss`.
+* **Artsy**: `git clone https://github.com/artsy/emission.git; cd emission; make setup; make artsy`. Then look in 1password for the Eigen keys.
+
+_Manual install_
 
 1. Make sure to check out submodules with `git submodule update --init`
 1. Install [Node.js][node], and [Yarn][yarn]: `$ brew install node yarn`
@@ -38,12 +41,14 @@ Want to know more about Emission? Read the [mobile](http://artsy.github.io/blog/
 ### Running the project:
 
 1. Run `$ yarn start` from the top directory, which will:
+
    * Clean the example app’s Xcode build dir.
    * Start the example app’s React Native packager.
    * Start the React Storybooks environment.
 
 2. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
-  * If you already have the app installed, you can run `open -a Simulator` to open the last sim, and then `xcrun simctl launch booted net.artsy.Emission` to open the app.
+
+* If you already have the app installed, you can run `open -a Simulator` to open the last sim, and then `xcrun simctl launch booted net.artsy.Emission` to open the app.
 
 ### Daily Development
 
@@ -73,12 +78,11 @@ There is a comprehensive document covering [the various options](docs/debugging.
    * The GraphQL schema of metaphysics that Relay uses to generate queries from: `$ yarn run sync-schema`
    * The colors defined in Artsy’s style-guide: `$ yarn run sync-colors`
 
-
 ### Understanding Relay
 
 We have some debugging tip [when using Relay](docs/relay.md).
 
-----
+---
 
 Try quitting and restarting your node instance if you change something Relay-related and you run into this error:
 
@@ -100,40 +104,45 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 ### Resources
 
 * React Native:
-  - http://makeitopen.com
-  - https://github.com/fbsamples/f8app/
-  - http://facebook.github.io/react-native/docs/getting-started.html
-  - http://beginning-mobile-app-development-with-react-native.com/book-preview.html
+
+  * http://makeitopen.com
+  * https://github.com/fbsamples/f8app/
+  * http://facebook.github.io/react-native/docs/getting-started.html
+  * http://beginning-mobile-app-development-with-react-native.com/book-preview.html
 
 * Relay:
-  - https://facebook.github.io/relay/docs/getting-started.html
-  - https://github.com/facebook/relay/tree/master/examples
-  - https://github.com/fbsamples/f8app/
+
+  * https://facebook.github.io/relay/docs/getting-started.html
+  * https://github.com/facebook/relay/tree/master/examples
+  * https://github.com/fbsamples/f8app/
 
 * TypeScript:
-  - https://www.typescriptlang.org
-  - https://github.com/basarat/typescript-book
+
+  * https://www.typescriptlang.org
+  * https://github.com/basarat/typescript-book
 
 * Testing:
-  - https://facebook.github.io/jest/
-  - https://facebook.github.io/jest/docs/api.html#content
-  - https://facebook.github.io/jest/blog/2016/07/27/jest-14.html
+
+  * https://facebook.github.io/jest/
+  * https://facebook.github.io/jest/docs/api.html#content
+  * https://facebook.github.io/jest/blog/2016/07/27/jest-14.html
 
 * Flexbox:
-  - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
-  - http://blog.krawaller.se/posts/a-react-app-demonstrating-css3-flexbox/
-  - https://egghead.io/courses/flexbox-fundamentals
+
+  * https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+  * http://blog.krawaller.se/posts/a-react-app-demonstrating-css3-flexbox/
+  * https://egghead.io/courses/flexbox-fundamentals
 
 * React Native Storybooks:
-  - https://github.com/storybooks/storybook/
-  - https://github.com/storybooks/storybook/tree/master/app/react-native
+
+  * https://github.com/storybooks/storybook/
+  * https://github.com/storybooks/storybook/tree/master/app/react-native
 
 * React Native Debugger:
-  - https://github.com/jhen0409/react-native-debugger
+  * https://github.com/jhen0409/react-native-debugger
 
-
-[React Native]: http://facebook.github.io/react-native/
-[Eigen]: https://github.com/artsy/eigen
+[react native]: http://facebook.github.io/react-native/
+[eigen]: https://github.com/artsy/eigen
 [yarn]: https://yarnpkg.com
 [flow]: http://flowtype.org
 [node]: http://nodejs.org
