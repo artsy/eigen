@@ -1,5 +1,8 @@
 import Overview from "../Overview"
 
+jest.mock("../../Submission/update", () => jest.fn())
+import updateSubmission from "../../Submission/update"
+
 jest.mock("../../Submission/uploadPhotoToGemini", () => ({ uploadImageAndPassToGemini: jest.fn() }))
 import { uploadImageAndPassToGemini } from "../../Submission/uploadPhotoToGemini"
 
@@ -36,4 +39,12 @@ it("doesnt upload a photo when when uploading is true", () => {
   })
   overview.uploadPhotosIfNeeded()
   expect(uploadImageAndPassToGemini).not.toBeCalled()
+})
+
+it("calls update submission when submitting a non-draft version", () => {
+  const overview = new Overview({ nav, route, setup: { submission_id: "123" } })
+  overview.showConfirmationScreen = () => void overview.submitFinalSubmission()
+
+  overview.submitFinalSubmission()
+  expect(updateSubmission).toBeCalledWith({ state: "SUBMITTED", submission_id: "123" }, "123")
 })

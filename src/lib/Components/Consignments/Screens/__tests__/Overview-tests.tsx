@@ -120,16 +120,6 @@ describe("Updating State", () => {
     overview.updateProvenance("This is my provenance")
     expect(stateMock).toBeCalledWith({ provenance: "This is my provenance" }, update)
   })
-
-  it("adds submitted before triggering final submission on submit", () => {
-    overview.goToFinalSubmission()
-    expect(stateMock).toBeCalledWith({ state: "SUBMITTED" }, expect.anything())
-  })
-
-  it("adds submitted before triggering final submission on submit", () => {
-    overview.goToFinalSubmission()
-    expect(stateMock).toBeCalledWith({ state: "SUBMITTED" }, expect.anything())
-  })
 })
 
 it("requires the same metadata props as force", () => {
