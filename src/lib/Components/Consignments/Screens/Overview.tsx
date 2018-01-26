@@ -135,9 +135,10 @@ export default class Info extends React.Component<Props, State> {
   submitFinalSubmission = async () => {
     this.showConfirmationScreen()
 
+    const submission = this.state as ConsignmentSetup
     let hasSubmittedSuccessfully = true
     try {
-      await updateSubmission({ ...(this.state as ConsignmentSetup), state: "SUBMITTED" }, this.state.submission_id)
+      await updateSubmission({ ...submission, state: "SUBMITTED" }, this.state.submission_id)
       await AsyncStorage.removeItem(consignmentsStateKey)
       this.submissionDraftSubmitted()
     } catch (error) {

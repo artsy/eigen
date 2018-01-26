@@ -21,6 +21,7 @@
 * Fixed the messages header when there's no convos - maxim
 * Added pagination spinners to each Saves & Follows tab - alloy
 * [Dev] Moved to CocoaPods keys - orta
+* Fix for consignments analytics not being triggered correctly - orta
 
 ### 1.4.1
 

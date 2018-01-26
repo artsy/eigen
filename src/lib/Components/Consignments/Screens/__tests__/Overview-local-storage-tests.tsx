@@ -48,11 +48,6 @@ it("resets the cache when a final submission is made", async () => {
   overview.uploadPhotosIfNeeded = () => Promise.resolve()
   overview.showConfirmationScreen = () => true
 
-  // Expect the state to get called, and replicate the behavior
-  overview.setState = (_, callback) => {
-    callback()
-  }
-
   // Make a call to the
   await overview.submitFinalSubmission()
 
