@@ -25,6 +25,7 @@
 * [Dev] Moved to CocoaPods keys - orta
 * Fix for consignments analytics not being triggered correctly - orta
 * [Dev] Make it possible to impersonate a user given their ID and an access token - alloy
+* Re-instate the Relay Classic behaviour where any GraphQL response errors would lead to showing the ‘UNABLE TO LOAD’ view - alloy
 
 ### 1.4.1
 

@@ -26,7 +26,16 @@ export function metaphysics<T>(
         throw error
       }
     })
-    .then<T>(response => response.json())
+    .then<T & { errors: any[] }>(response => response.json())
+    .then(json => {
+      if (json.errors) {
+        json.errors.forEach(console.error)
+        // Throw here so that our error view gets shown.
+        // See https://github.com/facebook/relay/issues/1913
+        throw new Error("Server-side error occurred")
+      }
+      return json
+    })
 }
 
 export default function query<T>(url: string): Promise<T> {
