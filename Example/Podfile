@@ -65,7 +65,9 @@ end
 post_install do |installer|
   emission = installer.pods_project.targets.find { |target| target.name == 'Emission' }
   emission.build_configurations.each do |config|
-    config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = "YES"
+    config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'YES'
+    # Work around https://github.com/rs/SDWebImage/issues/2022, because we don’t want to upgrade to SDWebImage 4 atm.
+    config.build_settings['CLANG_WARN_STRICT_PROTOTYPES'] = 'NO'
   end
 
   # This fixes a bug in our Home tab view; it can probably be removed when we upgrade to RN 0.50+
