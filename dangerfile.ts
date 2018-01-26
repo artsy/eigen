@@ -187,3 +187,14 @@ if (hasNativeCodeChanges && !hasPackageJSONChanges && !acceptedNoNativeChanges) 
      change for the update to the \`"native-code-version"\`. If this is fine, add #native_no_changes to your PR message.`
   )
 }
+
+const AppDelegate = fs.readFileSync("Example/Emission/AppDelegate.m", "utf8")
+if (
+  !AppDelegate.includes("static NSString *UserID = nil;") ||
+  !AppDelegate.includes("static NSString *UserAccessToken = nil;")
+) {
+  fail(
+    "Sensitive user credentials have been left in this PR, please remove those and sqaush the commits so no trace " +
+      "of them is left behind."
+  )
+}

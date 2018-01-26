@@ -24,6 +24,7 @@
 * Handle errors that can occur when using the camera and move UIImagePickerController code into Emission - alloy
 * [Dev] Moved to CocoaPods keys - orta
 * Fix for consignments analytics not being triggered correctly - orta
+* [Dev] Make it possible to impersonate a user given their ID and an access token - alloy
 
 ### 1.4.1
 
