@@ -30,6 +30,11 @@
 #import "PRNetworkModel.h"
 #import "CommitNetworkModel.h"
 
+// If you have the ID of a user and an access token for them, you can impersonate them by hardcoding those here.
+// Obviously you should *never* check these in!
+static NSString *UserID = nil;
+static NSString *UserAccessToken = nil;
+
 static BOOL
 randomBOOL(void)
 {
@@ -51,7 +56,8 @@ randomBOOL(void)
   AppSetup *setup = [AppSetup ambientSetup];
   NSString *service = setup.inStaging? @"Emission-Staging" : @"Emission-Production";
 
-  AuthenticationManager *auth = [[AuthenticationManager alloc] initWithService:service];
+  BOOL isImpersonating = UserID && UserAccessToken;
+  AuthenticationManager *auth = isImpersonating ? nil : [[AuthenticationManager alloc] initWithService:service];
   self.spinner = [LoadingSpinner new];
 
   ARRootViewController *rootVC = [ARRootViewController new];
@@ -63,17 +69,18 @@ randomBOOL(void)
   self.window.backgroundColor = [UIColor whiteColor];
   self.window.rootViewController = [[ARTopMenuViewController alloc] initWithNavigationController:self.navigationController];;
   [self.window makeKeyAndVisible];
-  
-  if ([auth isAuthenticated]) {
-    NSString *accessToken = [auth token];
-    if (accessToken) {
-      if(setup.usingPRBuild) {
-        [self downloadPRBuildAndLoginWithAuth:auth keychainService:service];
-      } else if(!setup.usingRNP && setup.usingMaster) {
-        [self downloadMasterAndLoginWithAuth:auth keychainService:service];
-      } else {
-        [self setupEmissionWithUserID:[auth userID] accessToken:accessToken keychainService:service];
-      }
+
+  BOOL isAuthenticated = isImpersonating || auth.isAuthenticated;
+  NSString *userID = isImpersonating ? UserID : auth.userID;
+  NSString *accessToken = isImpersonating ? UserAccessToken : auth.token;
+
+  if (isAuthenticated) {
+    if (setup.usingPRBuild) {
+      [self downloadPRBuildAndLoginWithUserID:userID accessToken:accessToken keychainService:service];
+    } else if(!setup.usingRNP && setup.usingMaster) {
+      [self downloadMasterAndLoginWithUserID:userID accessToken:accessToken keychainService:service];
+    } else {
+      [self setupEmissionWithUserID:userID accessToken:accessToken keychainService:service];
     }
   } else {
     [self.spinner presentSpinnerOnViewController:rootVC title:@"Logging in" subtitle:nil completion:^{
@@ -247,7 +254,9 @@ randomBOOL(void)
   [navigationController.visibleViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)downloadPRBuildAndLoginWithAuth:(AuthenticationManager *)auth keychainService:(NSString *)service
+- (void)downloadPRBuildAndLoginWithUserID:(NSString *)userID
+                              accessToken:(NSString *)accessToken
+                          keychainService:(NSString *)service
 {
   PRNetworkModel *network = [PRNetworkModel new];
   NSUInteger prNumber = [[NSUserDefaults standardUserDefaults] integerForKey:ARPREmissionIDDefault];
@@ -256,13 +265,15 @@ randomBOOL(void)
   [self.spinner presentSpinnerOnViewController:self.navigationController title:@"Downloading PR JS" subtitle:subtitle completion:^{
     [network downloadJavaScriptForPRNumber:prNumber completion:^(NSURL * _Nullable downloadedFileURL, NSError * _Nullable error) {
       [self.navigationController dismissViewControllerAnimated:YES completion:^{
-        [self setupEmissionWithUserID:[auth userID] accessToken:[auth token] keychainService:service];
+        [self setupEmissionWithUserID:userID accessToken:accessToken keychainService:service];
       }];
     }];
   }];
 }
 
-- (void)downloadMasterAndLoginWithAuth:(AuthenticationManager *)auth keychainService:(NSString *)service
+- (void)downloadMasterAndLoginWithUserID:(NSString *)userID
+                             accessToken:(NSString *)accessToken
+                         keychainService:(NSString *)service
 {
   CommitNetworkModel *network = [CommitNetworkModel new];
   [network downloadJavaScriptForMasterCommit:^(NSString * _Nullable title, NSString * _Nullable subtitle) {
@@ -272,7 +283,7 @@ randomBOOL(void)
     // We got the JS
     if (downloadedFileURL) {
       [self.navigationController dismissViewControllerAnimated:YES completion:^{
-        [self setupEmissionWithUserID:[auth userID] accessToken:[auth token] keychainService:service];
+        [self setupEmissionWithUserID:userID accessToken:accessToken keychainService:service];
       }];
     }
     NSLog(@"Error: %@", error);
