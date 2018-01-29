@@ -81,27 +81,6 @@ describe(@"loadProfile", ^{
         [apiMock verify];
         [apiMock stopMocking];
     });
-    
-    pending(@"loads martsy view on failure", ^{
-        id apiMock = [OCMockObject mockForClass:[ArtsyAPI class]];
-        
-        id viewControllerMock = [OCMockObject partialMockForObject:viewController];
-        [[viewControllerMock expect] loadMartsyView];
-        
-        [[apiMock expect] getProfileForProfileID:profileID success:OCMOCK_ANY failure:[OCMArg checkWithBlock:^BOOL(void (^obj)(NSError *error)) {
-            if (obj) {
-                obj(nil);
-            }
-            return YES;
-        }]];
-        
-        [viewController loadProfile];
-        
-        [viewControllerMock verify];
-        
-        [apiMock verify];
-        [apiMock stopMocking];
-    });
 
     context(@"fair", ^{
         __block id apiMock;
@@ -142,8 +121,13 @@ describe(@"loadProfile", ^{
 
         it(@"loads a fairvc on iphone with a fair", ^{
             [ARTestContext stubDevice:ARDeviceTypePhone5];
+            // Shows the web view
+            [[viewControllerMock expect] loadMartsyView];
+            // Removes the web view
+            [[viewControllerMock expect] ar_removeChildViewController:OCMOCK_ANY];
+
             [[viewControllerMock expect] showViewController:[OCMArg checkForClass:[ARFairViewController class]]];
-            [[viewControllerMock reject] loadMartsyView];
+
             [[apiMock expect] getProfileForProfileID:profileID success:[OCMArg checkWithBlock:^BOOL(void (^obj)(Profile *profile)) {
                 Profile *profile = [Profile modelWithJSON:@{
                     @"id" : @"profile-id",
@@ -167,25 +151,11 @@ describe(@"loadProfile", ^{
             [ARTestContext stopStubbing];
         });
 
-        it(@"loads martsy on ipad", ^{
+        it(@"always loads martsy on ipad", ^{
             [ARTestContext stubDevice:ARDeviceTypePad];
             [[viewControllerMock reject] showViewController:[OCMArg checkForClass:[ARFairViewController class]]];
             [[viewControllerMock expect] loadMartsyView];
-            [[apiMock expect] getProfileForProfileID:profileID success:[OCMArg checkWithBlock:^BOOL(void (^obj)(Profile *profile)) {
-                Profile *profile = [Profile modelWithJSON:@{
-                    @"id" : @"profile-id",
-                    @"owner_type" : @"FairOrganizer",
-                    @"owner" : @{
-                        @"id" : @"user-id",
-                        @"default_fair_id" : @"default-fair-id"
-                    }
-                }];
-
-                if (obj) {
-                    obj(profile);
-                }
-                return YES;
-            }] failure:OCMOCK_ANY];
+            [[apiMock reject] getProfileForProfileID:profileID success:OCMOCK_ANY failure:OCMOCK_ANY];
             
             [viewController loadProfile];
             [viewControllerMock verify];
