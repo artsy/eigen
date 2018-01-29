@@ -47,7 +47,9 @@ const TabLabel: any = styled.Text`
   color: ${(props: TabLabelProps) => (props.active ? "black" : colors["gray-medium"])};
 `
 
-export const Tab: React.SFC<TabProps> = ({ children }) => <View style={{ flex: 1 }}>{children}</View>
+export const Tab: React.SFC<TabProps> = ({ children }) => (
+  <View style={{ flex: 1, overflow: "hidden" }}>{children}</View>
+)
 
 export default class TabBar extends React.Component<TabBarProps, null> {
   renderTab(name, page, isTabActive, onPressHandler) {
