@@ -1,7 +1,7 @@
 import React from "react"
 import { RefreshControl, SectionList, StyleSheet } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
-// import LotsByFollowedArtists from "./Components/LotsByFollowedArtists"
+import LotsByFollowedArtists from "./Components/LotsByFollowedArtists"
 import { SaleList } from "./Components/SaleList"
 import { ZeroState } from "./Components/ZeroState"
 
@@ -69,12 +69,11 @@ class Sales extends React.Component<Props, State> {
         title: "Current Timed Auctions",
         renderItem: props => <SaleList {...props} />,
       },
-      // TODO: https://github.com/artsy/collector-experience/issues/905
-      // {
-      //   data: [{ data: this.data.viewer }],
-      //   title: "Lots by Artists You Follow",
-      //   renderItem: props => <LotsByFollowedArtists title={props.section.title} viewer={props.item.data} />,
-      // },
+      {
+        data: [{ data: this.data.viewer }],
+        title: "Lots by Artists You Follow",
+        renderItem: props => <LotsByFollowedArtists title={props.section.title} viewer={props.item.data} />,
+      },
     ]
 
     return (
@@ -98,8 +97,7 @@ export default createRefetchContainer(
         href
         live_start_at
       }
-      # TODO: https://github.com/artsy/collector-experience/issues/905
-      #...LotsByFollowedArtists_viewer
+      ...LotsByFollowedArtists_viewer
     }
   `,
   graphql`

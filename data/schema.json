@@ -983,6 +983,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "live_sale",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "gene_ids",
                   "description": null,
                   "type": {
@@ -1938,6 +1948,16 @@
                 },
                 {
                   "name": "include_artworks_by_followed_artists",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "live_sale",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
@@ -40361,6 +40381,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "live_sale",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "gene_ids",
                   "description": null,
                   "type": {
@@ -41316,6 +41346,16 @@
                 },
                 {
                   "name": "include_artworks_by_followed_artists",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "live_sale",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
