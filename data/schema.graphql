@@ -271,7 +271,7 @@ type ArtistEdge {
 }
 
 type ArtistHighlights {
-  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnection
+  partners(represented_by: Boolean, partner_category: [String], display_on_partner_profile: Boolean, after: String, first: Int, before: String, last: Int): PartnerArtistConnection
 }
 
 type ArtistItem implements Node {
@@ -1916,7 +1916,7 @@ type Conversation implements Node {
   initial_message: String!
 
   # This is a snippet of text from the last message.
-  last_message: String!
+  last_message: String
   last_message_at(
     convert_to_utc: Boolean
     format: String
@@ -1944,7 +1944,7 @@ type Conversation implements Node {
   items: [ConversationItem]
 
   # A connection for all messages in a single conversation
-  messages(sort: sort, after: String, first: Int, before: String, last: Int): MessageConnection
+  messages(sort: sort, ignoreBlankMessages: Boolean, after: String, first: Int, before: String, last: Int): MessageConnection
 
   # True if there is an unread message by the user.
   unread: Boolean
