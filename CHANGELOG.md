@@ -16,6 +16,8 @@
 
 ## Master
 
+### 1.4.2
+
 * Allow blank Messages in Conversation - sarah
 * Removed unused imports that Relay no longer requires - sarah
 * Fixed the top margin for home - orta
@@ -23,15 +25,15 @@
 * Added pagination spinners to each Saves & Follows tab - alloy
 * Automatically default packager host to build machine when running a dev build on device - alloy
 * Handle errors that can occur when using the camera and move UIImagePickerController code into Emission - alloy
-* [Dev] Moved to CocoaPods keys - orta
 * Fix for consignments analytics not being triggered correctly - orta
-* [Dev] Make it possible to impersonate a user given their ID and an access token - alloy
 * Re-instate the Relay Classic behaviour where any GraphQL response errors would lead to showing the ‘UNABLE TO LOAD’ view - alloy
 * Make sure ArtworkCarouselHeader queries for all required artist details regardless of what type of suggestion it’s showing - alloy
 * Possibly fix a crash that would occur when dispatching analytics events - alloy
 * The fairs rail is now constrained to just it's tab - orta
 * Re-enable Lots by Artists You Follow and hide it when there are no live sale lots - alloy
 * Don’t crash on trying to JSON parse a network error - alloy
+* [Dev] Moved to CocoaPods keys - orta
+* [Dev] Make it possible to impersonate a user given their ID and an access token - alloy
 
 ### 1.4.1
 
