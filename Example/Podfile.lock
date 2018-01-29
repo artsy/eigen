@@ -9,7 +9,7 @@ PODS:
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
     - UIView+BooleanAnimations
-  - Emission (1.4.1):
+  - Emission (1.4.2):
     - Artsy+UIColors
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
@@ -96,9 +96,9 @@ PODS:
     - React/Core
     - React/RCTBlob
   - SAMKeychain (1.5.0)
-  - SDWebImage (3.7.5):
-    - SDWebImage/Core (= 3.7.5)
-  - SDWebImage/Core (3.7.5)
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
   - Sentry (3.9.1):
     - Sentry/Core (= 3.9.1)
     - Sentry/KSCrash (= 3.9.1)
@@ -162,7 +162,7 @@ SPEC CHECKSUMS:
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   React: 59267c3a5811102116842a84a29efaca58167ee8
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
-  SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
   SentryReactNative: a292506edfa707119e3aa155892cdb07e453a93a
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
