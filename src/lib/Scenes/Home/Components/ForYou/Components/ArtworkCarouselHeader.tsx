@@ -45,7 +45,7 @@ interface State {
 const track: Track<Props, State> = _track
 
 @track()
-class ArtworkCarouselHeader extends Component<Props & RelayPropsWorkaround, State> {
+class ArtworkCarouselHeader extends Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = { following: props.rail.key === "followed_artist" }
@@ -64,7 +64,7 @@ class ArtworkCarouselHeader extends Component<Props & RelayPropsWorkaround, Stat
   }
 
   followAnnotation() {
-    if (this.props.rail.key === "related_artists") {
+    if (this.props.rail.context.__typename === "HomePageModuleContextRelatedArtist") {
       const name = this.props.rail.context.based_on.name
       return <SerifText style={styles.followAnnotation}>{"Based on " + name}</SerifText>
     }
@@ -108,8 +108,6 @@ class ArtworkCarouselHeader extends Component<Props & RelayPropsWorkaround, Stat
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, context.artist.id, (error, following) => {
       if (error) {
         console.error("ArtworkCarouselHeader.tsx", error)
-      } else {
-        // success
       }
       this.setState({ following })
     })
@@ -159,6 +157,13 @@ export default createFragmentContainer(
       title
       key
       context {
+        __typename
+        ... on HomePageModuleContextFollowedArtist {
+          artist {
+            _id
+            id
+          }
+        }
         ... on HomePageModuleContextRelatedArtist {
           artist {
             _id
@@ -177,15 +182,23 @@ interface RelayProps {
   rail: {
     title: string | null
     key: string | null
-    context: any
-  }
-}
-
-// FIXME: What is this workaround? Can we stop using it?
-// Also the context in RelayProps above was set to be an array, now cast to "any" for release
-// Should figure out why
-interface RelayPropsWorkaround {
-  rail: {
-    context: any
+    context:
+      | {
+          __typename: "HomePageModuleContextFollowedArtist"
+          artist: {
+            _id: string
+            id: string
+          }
+        }
+      | {
+          __typename: "HomePageModuleContextRelatedArtist"
+          artist: {
+            _id: string
+            id: string
+          }
+          based_on: {
+            name: string
+          }
+        }
   }
 }
