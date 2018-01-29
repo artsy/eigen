@@ -43,14 +43,14 @@ describe("after rendering", () => {
     const worksTabIndex = artist.availableTabs().indexOf("WORKS")
 
     artist.componentWillMount()
-    expect(artist.state).toEqual({ selectedTabIndex: worksTabIndex })
+    expect(artist.state).toEqual({ selectedTabIndex: worksTabIndex, selectedTabTitle: "WORKS" })
   })
 
   it("mounts at the first tab index if artist has no works", () => {
     const artist = new Artist(artistProps(true, { partner_shows: 1 }))
 
     artist.componentWillMount()
-    expect(artist.state).toEqual({ selectedTabIndex: 0 })
+    expect(artist.state).toEqual({ selectedTabIndex: 0, selectedTabTitle: "ABOUT" })
   })
 })
 
