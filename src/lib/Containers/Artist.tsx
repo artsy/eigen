@@ -7,10 +7,10 @@ import About from "lib/Components/Artist/About"
 import Artworks from "lib/Components/Artist/Artworks"
 import Header from "lib/Components/Artist/Header"
 import Shows from "lib/Components/Artist/Shows"
-import Events from "lib/NativeModules/Events"
 
 import { SwitchEvent } from "lib/Components/SwitchView"
 import TabView from "lib/Components/TabView"
+import { Schema, Track, track as _track } from "lib/utils/track"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -20,22 +20,51 @@ const TABS = {
   SHOWS: "SHOWS",
 }
 
-export class Artist extends Component<RelayProps & ViewProperties> {
-  state: {
-    selectedTabIndex: number
-  }
+// tslint:disable-next-line:no-empty-interface
+interface Props extends RelayProps {}
 
+interface State {
+  selectedTabIndex: number
+  selectedTabTitle: string
+}
+
+const track: Track<Props, State> = _track
+
+@track()
+export class Artist extends Component<Props & ViewProperties, State> {
   componentWillMount() {
-    const worksTab = this.availableTabs().indexOf(TABS.WORKS)
+    const tabs = this.availableTabs()
+    const worksTab = tabs.indexOf(TABS.WORKS)
     if (worksTab > -1) {
-      this.state = { selectedTabIndex: worksTab }
+      this.state = { selectedTabIndex: worksTab, selectedTabTitle: TABS.WORKS }
     } else {
-      this.state = { selectedTabIndex: 0 }
+      this.state = { selectedTabIndex: 0, selectedTabTitle: tabs[0] }
     }
   }
 
-  tabSelectionDidChange = (event: SwitchEvent) => {
-    this.setState({ selectedTabIndex: event.nativeEvent.selectedIndex })
+  @track((props, state) => {
+    let actionName
+    switch (state.selectedTabTitle) {
+      case TABS.ABOUT:
+        actionName = Schema.ActionNames.ArtistAbout
+        break
+      case TABS.WORKS:
+        actionName = Schema.ActionNames.ArtistWorks
+        break
+      case TABS.SHOWS:
+        actionName = Schema.ActionNames.ArtistShows
+        break
+    }
+    return {
+      action_name: actionName,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: props.artist._id,
+      owner_slug: props.artist.id,
+      owner_type: Schema.OwnerEntityTypes.Artist,
+    }
+  })
+  tabSelectionDidChange(event: SwitchEvent) {
+    this.setState({ selectedTabIndex: event.nativeEvent.selectedIndex, selectedTabTitle: this.selectedTabTitle() })
   }
 
   availableTabs = () => {
@@ -61,16 +90,6 @@ export class Artist extends Component<RelayProps & ViewProperties> {
     return this.availableTabs()[this.state.selectedTabIndex]
   }
 
-  // This is *not* called on the initial render, thus it will only post events for when the user actually taps a tab.
-  componentDidUpdate() {
-    Events.postEvent({
-      name: "Tapped artist view tab",
-      tab: this.selectedTabTitle().toLowerCase(),
-      artist_id: this.props.artist._id,
-      artist_slug: this.props.artist.id,
-    })
-  }
-
   renderSelectedTab = () => {
     switch (this.selectedTabTitle()) {
       case TABS.ABOUT:
@@ -87,7 +106,7 @@ export class Artist extends Component<RelayProps & ViewProperties> {
       <TabView
         titles={this.availableTabs()}
         selectedIndex={this.state.selectedTabIndex}
-        onSelectionChange={this.tabSelectionDidChange}
+        onSelectionChange={this.tabSelectionDidChange.bind(this)}
         style={styles.tabView}
       >
         {this.renderSelectedTab()}

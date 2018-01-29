@@ -27,6 +27,7 @@
 * [Dev] Make it possible to impersonate a user given their ID and an access token - alloy
 * Re-instate the Relay Classic behaviour where any GraphQL response errors would lead to showing the ‘UNABLE TO LOAD’ view - alloy
 * Make sure ArtworkCarouselHeader queries for all required artist details regardless of what type of suggestion it’s showing - alloy
+* Possibly fix a crash that would occur when dispatching analytics events
 
 ### 1.4.1
 

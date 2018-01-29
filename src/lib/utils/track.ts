@@ -124,8 +124,11 @@ export namespace Schema {
     /**
      * Artist Page Events
      */
+    ArtistAbout = "artistAbout",
     ArtistFollow = "artistFollow",
     ArtistUnfollow = "artistUnfollow",
+    ArtistWorks = "artistWorks",
+    ArtistShows = "artistShows",
 
     /**
      * Gene Page Events
