@@ -96,6 +96,11 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     return YES;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 #pragma mark - UIViewController
 
 - (void)viewDidAppear:(BOOL)animated
@@ -143,7 +148,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     UIView *inFrontOfArtworkView = self.chairImageView ?: self.artworkImageView;
     [self.view insertSubview:self.artworkImageView belowSubview:inFrontOfArtworkView];
 
-    UITapGestureRecognizer *exitTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self.navigationController action:@selector(popViewControllerAnimated:)];
+    UITapGestureRecognizer *exitTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedArtwork)];
     self.artworkImageView.userInteractionEnabled = YES;
     [self.artworkImageView addGestureRecognizer:exitTapGesture];
 }
