@@ -589,10 +589,9 @@ static const CGFloat ARMenuButtonDimension = 50;
 
     if (!alreadySelectedTab) {
         [self.tabContentView forceSetViewController:presentableController atIndex:index animated:animated];
-    }
-    
-    if (showSelectedArtistFromUniversalLink) {
-        [self.tabContentView forceSetViewController:presentableController atIndex:index animated:NO];
+    } else if (showSelectedArtistFromUniversalLink) {
+        // We are already on Home, and need to force the tab view to show the new Home with its selected artist & without animation
+        [self.tabContentView forceSetViewController:presentableController atIndex:ARTopTabControllerIndexHome animated:NO];
     }
 }
 

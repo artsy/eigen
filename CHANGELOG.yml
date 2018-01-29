@@ -3,6 +3,7 @@ upcoming:
     details: Bug Fixes / iPhone X / ARVIR
     emission_version: 1.4.x
     dev:
+      - Fixes blank view when coming from a deep link to Works For You tab - sarah
       - Updates to Xcode 9.1 - orta
       - Deletes un-used View Controllers - orta
       - Adds a 1024 app icon image - orta
