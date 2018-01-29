@@ -10,8 +10,12 @@ export default (Component: React.ReactType, initialProps: object = {}): RenderCa
     if (error) {
       const networkError = error as any
       if (networkError.response && networkError.response._bodyInit) {
-        const data = networkError.response._bodyInit || {}
-        console.error(`Metaphysics Error: ${error.message}\n`, JSON.parse(data))
+        let data = networkError.response._bodyInit || "{}"
+        try {
+          data = JSON.parse(data)
+          // tslint:disable-next-line:no-empty
+        } catch (e) {}
+        console.error(`Metaphysics Error: ${error.message}\n`, data)
       }
 
       if (retrying) {
