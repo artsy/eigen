@@ -27,7 +27,6 @@ const HorizontalLayout = styled.View`
 
 const Card = styled.View`
   height: 120px;
-  align-items: center;
   margin-left: 20px;
   margin-right: 20px;
 `
@@ -38,7 +37,7 @@ const CardContent = styled(HorizontalLayout)`
 
 const TextPreview = styled(VerticalLayout)`
   margin-left: 10;
-  height: 70px;
+  max-height: 70px;
   align-self: center;
 `
 
@@ -148,7 +147,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
 
     const partnerName = conversation.to.name
 
-    const conversationText = conversation.last_message.replace(/\n/g, " ")
+    const conversationText = conversation.last_message && conversation.last_message.replace(/\n/g, " ")
     const date = moment(conversation.last_message_at).fromNow(true) + " ago"
     return (
       <TouchableWithoutFeedback onPress={() => this.conversationSelected()}>
@@ -161,7 +160,7 @@ export class ConversationSnippet extends React.Component<Props, any> {
                 <DateHeading>{conversation.unread && <UnreadIndicator />}</DateHeading>
               </HorizontalLayout>
               {this.renderTitleForItem(item)}
-              <P>{conversationText}</P>
+              {conversationText && <P>{conversationText}</P>}
               <MetadataText>{date}</MetadataText>
             </TextPreview>
           </CardContent>
