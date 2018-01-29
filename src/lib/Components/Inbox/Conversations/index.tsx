@@ -50,11 +50,7 @@ export class Conversations extends Component<Props, State> {
     let conversations = []
 
     if (me) {
-      conversations = me.conversations.edges
-        .filter(({ node }) => {
-          return node && node.last_message
-        })
-        .map(edge => edge.node)
+      conversations = me.conversations.edges.map(edge => edge.node)
     }
 
     return conversations

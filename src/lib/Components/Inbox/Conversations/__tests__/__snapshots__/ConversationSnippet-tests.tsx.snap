@@ -18,7 +18,6 @@ exports[`renders correctly with a show 1`] = `
   style={
     Array [
       Object {
-        "alignItems": "center",
         "height": 120,
         "marginLeft": 20,
         "marginRight": 20,
@@ -72,8 +71,8 @@ exports[`renders correctly with a show 1`] = `
           Array [
             Object {
               "alignSelf": "center",
-              "height": 70,
               "marginLeft": 10,
+              "maxHeight": 70,
             },
             undefined,
           ],
@@ -283,7 +282,6 @@ exports[`renders correctly with an artwork 1`] = `
   style={
     Array [
       Object {
-        "alignItems": "center",
         "height": 120,
         "marginLeft": 20,
         "marginRight": 20,
@@ -337,8 +335,8 @@ exports[`renders correctly with an artwork 1`] = `
           Array [
             Object {
               "alignSelf": "center",
-              "height": 70,
               "marginLeft": 10,
+              "maxHeight": 70,
             },
             undefined,
           ],

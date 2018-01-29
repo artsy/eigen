@@ -142,7 +142,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
           style={
             Array [
               Object {
-                "alignItems": "center",
                 "height": 120,
                 "marginLeft": 20,
                 "marginRight": 20,
@@ -196,8 +195,8 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                   Array [
                     Object {
                       "alignSelf": "center",
-                      "height": 70,
                       "marginLeft": 10,
+                      "maxHeight": 70,
                     },
                     undefined,
                   ],
@@ -433,7 +432,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
           style={
             Array [
               Object {
-                "alignItems": "center",
                 "height": 120,
                 "marginLeft": 20,
                 "marginRight": 20,
@@ -487,8 +485,8 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                   Array [
                     Object {
                       "alignSelf": "center",
-                      "height": 70,
                       "marginLeft": 10,
+                      "maxHeight": 70,
                     },
                     undefined,
                   ],
