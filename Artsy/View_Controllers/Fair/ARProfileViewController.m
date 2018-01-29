@@ -60,29 +60,40 @@
 
 - (void)loadProfile
 {
-    [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
-
-    [ArtsyAPI getProfileForProfileID:self.profileID success:^(Profile *profile) {
-
-        if ([profile.profileOwner isKindOfClass:[Fair class]] && ![UIDevice isPad]) {
-            NSString * fairID = ((Fair *) profile.profileOwner).fairID;
-            Fair *fair = [[Fair alloc] initWithFairID:fairID];
-
-            ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:fair andProfile:profile];
-
-            RAC(self, hidesNavigationButtons) = RACObserve(viewController, hidesNavigationButtons);
-
-            [self showViewController:viewController];
-        } else {
-            [self loadMartsyView];
-        }
-
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-    } failure:^(NSError *error) {
-        ARErrorLog(@"Error getting Profile %@, falling back to Martsy.", self.profileID);
+    // We have no unique vanity URLs for iPad, so always load the martsy view
+    if ([UIDevice isPad]) {
         [self loadMartsyView];
-        [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-    }];
+    } else {
+        // We need to figure out if it's a fair URL or not
+        //
+        // So let's load the martsy view now, and at the same time
+        // make a request to find whether the vanity URL represents a
+        // fair, so that we can show the native VCs on iPhone
+        [self loadMartsyView];
+        [self ar_presentIndeterminateLoadingIndicatorAnimated:YES];
+
+        [ArtsyAPI getProfileForProfileID:self.profileID success:^(Profile *profile) {
+            // It's a fair
+            if ([profile.profileOwner isKindOfClass:[Fair class]]) {
+                // Remove the loading martsy view, and replace it with the ARFairVC
+                [self ar_removeChildViewController: self.childViewControllers.firstObject];
+
+                NSString * fairID = ((Fair *) profile.profileOwner).fairID;
+                Fair *fair = [[Fair alloc] initWithFairID:fairID];
+
+                ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:fair andProfile:profile];
+
+                RAC(self, hidesNavigationButtons) = RACObserve(viewController, hidesNavigationButtons);
+
+                [self showViewController:viewController];
+            }
+
+            [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+        } failure:^(NSError *error) {
+            ARErrorLog(@"Error getting Profile %@, falling back to Martsy.", self.profileID);
+            [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+        }];
+    }
 }
 
 - (void)loadMartsyView

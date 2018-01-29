@@ -11,6 +11,7 @@ upcoming:
       - iPhone X support - orta
       - Augmented Reality View in Room lab feature, defaults to off - orta/lazerwalker
       - Removes the status bar in the old VIR - orta
+      - speeds up martsy pages - orta
 
 releases:
   - version: 4.0.0
