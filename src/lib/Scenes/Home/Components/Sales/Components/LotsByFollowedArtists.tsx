@@ -3,8 +3,6 @@ import { ScrollView } from "react-native"
 import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
-import { once } from "lodash"
-
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
@@ -13,56 +11,44 @@ import { SectionHeader } from "./SectionHeader"
 
 const DEFAULT_TITLE = "Lots by Artists You Follow"
 
-export class LotsByFollowedArtists extends Component<Props> {
+interface State {
+  fetchingMoreData: boolean
+}
+
+export class LotsByFollowedArtists extends Component<Props, State> {
   state = {
-    artworks: [],
+    fetchingMoreData: false,
   }
 
-  componentWillMount() {
-    this.setState({
-      artworks: this.artworks,
+  loadMore = () => {
+    if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
+      return
+    }
+
+    this.setState({ fetchingMoreData: true })
+    this.props.relay.loadMore(PAGE_SIZE, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("LotsByFollowedArtists.tsx", error.message)
+      }
+      this.setState({ fetchingMoreData: false })
     })
   }
 
-  componentDidUpdate() {
-    const { artworks } = this
-
-    if (artworks.length > 0 && artworks.length !== this.state.artworks.length) {
-      this.setState({
-        artworks: this.artworks,
-      })
-    }
-  }
-
-  get artworks() {
-    const { viewer } = this.props
-
-    const artworks =
-      (viewer.sale_artworks &&
-        viewer.sale_artworks.edges
-          .filter(({ node }) => node.sale && node.sale.is_open)
-          .map(({ node }) => node.artwork)) ||
-      []
-
-    return artworks
-  }
-
   render() {
-    const { relay, title = DEFAULT_TITLE } = this.props
-    const showSpinner = relay.hasMore() && relay.isLoading()
+    const artworks = this.props.viewer.sale_artworks.edges.map(edge => edge.node.artwork)
+    if (artworks.length === 0) {
+      return null
+    }
 
-    const loadMore =
-      relay.hasMore() &&
-      once(() => {
-        relay.loadMore(PAGE_SIZE, x => x)
-      })
+    const { title = DEFAULT_TITLE } = this.props
 
     return (
-      <ScrollView onScroll={isCloseToBottom(loadMore)} scrollEventThrottle={400}>
+      <ScrollView onScroll={isCloseToBottom(this.loadMore)} scrollEventThrottle={400}>
         <SectionHeader title={title} />
         <Container>
-          <GenericGrid artworks={this.state.artworks} />
-          {showSpinner && <Spinner style={{ marginTop: 20 }} />}
+          <GenericGrid artworks={artworks} />
+          {this.state.fetchingMoreData && <Spinner style={{ marginTop: 20 }} />}
         </Container>
       </ScrollView>
     )
@@ -74,8 +60,12 @@ export default createPaginationContainer(
   graphql.experimental`
     fragment LotsByFollowedArtists_viewer on Viewer
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-      sale_artworks: sale_artworks(first: $count, after: $cursor, include_artworks_by_followed_artists: true)
-        @connection(key: "LotsByFollowedArtists_sale_artworks") {
+      sale_artworks: sale_artworks(
+        first: $count
+        after: $cursor
+        live_sale: true
+        include_artworks_by_followed_artists: true
+      ) @connection(key: "LotsByFollowedArtists_sale_artworks") {
         pageInfo {
           endCursor
           hasNextPage
@@ -83,9 +73,6 @@ export default createPaginationContainer(
         edges {
           cursor
           node {
-            sale {
-              is_open
-            }
             artwork {
               ...GenericGrid_artworks
             }
@@ -120,9 +107,6 @@ interface Props {
       edges: Array<{
         node: {
           artwork: object | null
-          sale: {
-            is_open: boolean | null
-          } | null
         }
       }> | null
     } | null

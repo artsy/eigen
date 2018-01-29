@@ -30,6 +30,8 @@
 * Make sure ArtworkCarouselHeader queries for all required artist details regardless of what type of suggestion it’s showing - alloy
 * Possibly fix a crash that would occur when dispatching analytics events - alloy
 * The fairs rail is now constrained to just it's tab - orta
+* Re-enable Lots by Artists You Follow and hide it when there are no live sale lots - alloy
+* Don’t crash on trying to JSON parse a network error - alloy
 
 ### 1.4.1
 
