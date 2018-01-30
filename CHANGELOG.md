@@ -16,6 +16,8 @@
 
 ## Master
 
+* Allow blank messages in Conversations, but only if they have attachments - sarah
+
 ### 1.4.2
 
 * Allow blank Messages in Conversation - sarah
