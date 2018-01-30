@@ -19,7 +19,6 @@
 #import "ARRootViewController.h"
 #import "ARAppStatus.h"
 #import "ARRouter.h"
-#import "AREmissionCameraController.h"
 
 #import <Aerodramus/Aerodramus.h>
 #import <Keys/ArtsyKeys.h>
@@ -223,11 +222,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     };
 
 #pragma mark - Native Module: WorksForYou
-
-    emission.cameraModule.triggerCreatingACameraPhoto = ^(UIViewController * _Nonnull controller, RCTPromiseResolveBlock  _Nonnull resolve, RCTPromiseRejectBlock  _Nonnull reject) {
-        AREmissionCameraController *cameraController = [[AREmissionCameraController alloc] initWithResolver:resolve rejecter:reject];
-        [controller presentViewController:cameraController animated:YES completion:nil];
-    };
 
 }
 
