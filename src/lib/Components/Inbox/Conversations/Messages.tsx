@@ -109,7 +109,11 @@ export class Messages extends React.Component<Props, State> {
   render() {
     const edges = (this.props.conversation.messages || { edges: [] }).edges
     const messageCount = edges.length
-    const messages = edges.map((edge, index) => {
+
+    const containsContent = edge =>
+      (edge.node.body && edge.node.body.length) || (edge.node.attachments && edge.node.attachments.length)
+
+    const messages = edges.filter(edge => containsContent(edge)).map((edge, index) => {
       const isFirstMessage = this.props.relay && !this.props.relay.hasMore() && index === messageCount - 1
       return { first_message: isFirstMessage, key: edge.cursor, ...edge.node }
     })
@@ -182,6 +186,9 @@ export default createPaginationContainer(
               impulse_id
               is_from_user
               body
+              attachments {
+                id
+              }
               ...Message_message
             }
           }
@@ -258,6 +265,8 @@ interface RelayProps {
             __id: string
             impulse_id: string
             is_from_user: boolean
+            body: string
+            attachments: any
           } | null
         }>
       }
