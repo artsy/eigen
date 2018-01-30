@@ -71,7 +71,7 @@
     "prop-types": "^15.5.10",
     "query-string": "^4.1.0",
     "react": "16.2.0",
-    "react-native": "0.52.1",
+    "react-native": "0.52.2",
     "react-native-hyperlink": "0.0.11",
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
     "react-native-scrollable-tab-view": "^0.8.0",
@@ -80,12 +80,12 @@
     "react-tracking": "^5.0.0",
     "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/relay-runtime-1.5.0-artsy.3.tgz",
     "remove-markdown": "0.1.0",
-    "styled-components": "^3.0.1"
+    "styled-components": "^3.1.4"
   },
   "devDependencies": {
     "@playlyfe/gql": "^2.3.2",
-    "@storybook/react-native": "^3.2.0",
-    "@types/jest": "^22.0.1",
+    "@storybook/react-native": "^3.3.11",
+    "@types/jest": "^22.1.1",
     "@types/lodash": "^4.14.64",
     "@types/query-string": "^5.0.0",
     "@types/react": "^16.0.5",
@@ -108,7 +108,7 @@
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
     "jest": "^22.1.4",
-    "jest-styled-components": "^4.9.0",
+    "jest-styled-components": "^4.10.0",
     "lint-staged": "^6.0.0",
     "patch-package": "^5.0.0",
     "postinstall-prepare": "^1.0.1",
@@ -123,10 +123,10 @@
     "relay-compiler-language-typescript": "^0.9.0",
     "relay2ts": "^0.2.0",
     "snapshot-diff": "^0.2.1",
-    "stylelint": "^7.13.0",
-    "stylelint-config-standard": "^16.0.0",
-    "stylelint-processor-styled-components": "^0.1.2",
-    "ts-jest": "^22.0.1",
+    "stylelint": "^8.4.0",
+    "stylelint-config-standard": "^18.0.0",
+    "stylelint-processor-styled-components": "^1.2.2",
+    "ts-jest": "^22.0.2",
     "tslint": "^5.8.0",
     "tslint-config-prettier": "^1.6.0",
     "typescript": "^2.5.3",
@@ -148,6 +148,8 @@
       "^lib/(.*)": "<rootDir>/src/lib/$1"
     },
     "transform": {
+      "^[./a-zA-Z0-9$_-]+\\.(bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp)$":
+        "<rootDir>/node_modules/react-native/jest/assetFileTransformer.js",
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },

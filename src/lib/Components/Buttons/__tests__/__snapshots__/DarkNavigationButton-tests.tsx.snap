@@ -43,7 +43,6 @@ exports[`renders properly 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -59,7 +58,11 @@ exports[`renders properly 1`] = `
       uI am a navigation button
     </Text>
     <Image
-      source={1}
+      source={
+        Object {
+          "testUri": "../../../images/horizontal_chevron_white.png",
+        }
+      }
     />
   </View>
 </View>
