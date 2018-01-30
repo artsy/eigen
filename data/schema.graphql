@@ -1944,7 +1944,7 @@ type Conversation implements Node {
   items: [ConversationItem]
 
   # A connection for all messages in a single conversation
-  messages(sort: sort, ignoreBlankMessages: Boolean, after: String, first: Int, before: String, last: Int): MessageConnection
+  messages(sort: sort, after: String, first: Int, before: String, last: Int): MessageConnection
 
   # True if there is an unread message by the user.
   unread: Boolean
@@ -4573,7 +4573,7 @@ type Query {
     id: String!
   ): SaleArtwork
 
-  # Sale Artworks Elastic Search results
+  # Sale Artworks search results
   sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, live_sale: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String, after: String, first: Int, before: String, last: Int): SaleArtworksConnection
 
   # A list of Sales
@@ -5857,7 +5857,7 @@ type Viewer {
     id: String!
   ): SaleArtwork
 
-  # Sale Artworks Elastic Search results
+  # Sale Artworks search results
   sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, live_sale: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String, after: String, first: Int, before: String, last: Int): SaleArtworksConnection
 
   # A list of Sales
