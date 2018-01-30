@@ -14,8 +14,6 @@
       "yarn relay && react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
     "bundle-with-storybooks":
       "yarn relay && react-native bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output  Pod/Assets/Emission.js --assets-dest Pod/Assets",
-    "clean-example":
-      "cd Example && xcodebuild -workspace Emission.xcworkspace -scheme Emission -destination 'platform=iOS Simulator,name=iPhone 6' clean",
     "type-check": "tsc --noEmit --pretty",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "lint-fix": "lint -- --fix",
@@ -24,7 +22,7 @@
     "stylelint-project": " stylelint -- 'src/**/*.{ts,tsx}'",
     "ci": "yarn relay && yarn type-check && yarn lint && yarn prettier-project -l && yarn test:ci",
     "danger": "danger",
-    "start": "yarn clean-example && yarn start-servers",
+    "start": "yarn start-servers",
     "start-servers": "concurrently --kill-others 'yarn start-packager' 'yarn relay --watch' 'yarn storybook'",
     "start-packager":
       "env REACT_DEBUGGER=\"$([ -d '/Applications/React Native Debugger.app' ] && echo \"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\")\" node node_modules/react-native/local-cli/cli.js start",
