@@ -168,8 +168,7 @@ export default createPaginationContainer(
           initials
         }
         initial_message
-        messages(first: $count, after: $after, sort: DESC, ignoreBlankMessages: true)
-          @connection(key: "Messages_messages", filters: []) {
+        messages(first: $count, after: $after, sort: DESC) @connection(key: "Messages_messages", filters: []) {
           pageInfo {
             startCursor
             endCursor
