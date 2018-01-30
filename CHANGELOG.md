@@ -17,6 +17,7 @@
 ## Master
 
 * Allow blank messages in Conversations, but only if they have attachments - sarah
+* Hack fix for the consignments done button on iPhone X - orta
 
 ### 1.4.2
 

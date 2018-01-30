@@ -1916,7 +1916,7 @@
             },
             {
               "name": "sale_artworks",
-              "description": "Sale Artworks Elastic Search results",
+              "description": "Sale Artworks search results",
               "args": [
                 {
                   "name": "aggregations",
@@ -28905,16 +28905,6 @@
                   "defaultValue": null
                 },
                 {
-                  "name": "ignoreBlankMessages",
-                  "description": null,
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "Boolean",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                },
-                {
                   "name": "after",
                   "description": null,
                   "type": {
@@ -41314,7 +41304,7 @@
             },
             {
               "name": "sale_artworks",
-              "description": "Sale Artworks Elastic Search results",
+              "description": "Sale Artworks search results",
               "args": [
                 {
                   "name": "aggregations",
