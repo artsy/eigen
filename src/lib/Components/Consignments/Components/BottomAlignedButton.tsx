@@ -1,5 +1,5 @@
 import React from "react"
-import { KeyboardAvoidingView, TouchableOpacity, View } from "react-native"
+import { Dimensions, KeyboardAvoidingView, TouchableOpacity, View } from "react-native"
 
 import { Colors } from "lib/data/colors"
 import { Fonts } from "lib/data/fonts"
@@ -33,7 +33,9 @@ export interface BottomAlignedProps extends React.Props<JSX.Element> {
   verticalOffset?: number
 }
 
-const defaultVerticalOffset = 15
+// TODO: Remove this once React Native has beem updated
+const isPhoneX = Dimensions.get("window").height === 812 && Dimensions.get("window").width === 375
+const defaultVerticalOffset = isPhoneX ? 30 : 15
 
 const BottomAlignedButton: React.SFC<BottomAlignedProps> = props => (
   <KeyboardAvoidingView
