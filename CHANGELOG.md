@@ -16,6 +16,8 @@
 
 ## Master
 
+* Hack fix for the consignments done button on iPhone X - orta
+
 ### 1.4.2
 
 * Allow blank Messages in Conversation - sarah
