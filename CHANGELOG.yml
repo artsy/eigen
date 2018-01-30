@@ -1,7 +1,7 @@
 upcoming:
     version: 4.0.1
     details: Bug Fixes / iPhone X / ARVIR
-    emission_version: 1.4.x
+    emission_version: 1.4.2
     dev:
       - Fixes blank view when coming from a deep link to Works For You tab - sarah
       - Updates to Xcode 9.1 - orta
