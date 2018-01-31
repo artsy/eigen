@@ -1,5 +1,5 @@
 import React from "react"
-import { Dimensions, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -32,7 +32,7 @@ const Header = styled.View`
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
-  padding: 10px 10px;
+  padding: 10px;
 `
 
 const Footer = styled.View`
@@ -69,15 +69,11 @@ const Metadata = styled.Text`
   font-size: 10px;
 `
 
-export class SaleListItem extends React.Component<RelayProps, null> {
-  get containerWidth(): number {
-    const screenSize = Dimensions.get("window")
-    const isIPad = screenSize.width > 700
-    const numColumns = isIPad ? 4 : 2
-    const gutterSize = isIPad ? 100 : 60
-    return (screenSize.width - gutterSize) / numColumns
-  }
+interface Props extends RelayProps {
+  containerWidth: number
+}
 
+export class SaleListItem extends React.Component<Props, null> {
   handleTap = () => {
     const { sale: { live_url_if_open, href } } = this.props
     const url = (live_url_if_open || href) as string
@@ -88,7 +84,7 @@ export class SaleListItem extends React.Component<RelayProps, null> {
     const item = this.props.sale
     const image = item.cover_image
     const timestamp = item.display_timely_at.toUpperCase()
-    const containerWidth = this.containerWidth
+    const containerWidth = this.props.containerWidth
 
     const Container = styled.View`
       width: ${containerWidth}px;
