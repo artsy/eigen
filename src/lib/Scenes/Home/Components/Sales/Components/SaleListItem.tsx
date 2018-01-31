@@ -70,18 +70,10 @@ const Metadata = styled.Text`
 `
 
 interface Props extends RelayProps {
-  screenWidth: number
+  containerWidth: number
 }
 
 export class SaleListItem extends React.Component<Props, null> {
-  get containerWidth(): number {
-    const screenWidth = this.props.screenWidth
-    const isIPad = screenWidth > 700
-    const numColumns = isIPad ? 4 : 2
-    const gutterSize = isIPad ? 100 : 60
-    return (screenWidth - gutterSize) / numColumns
-  }
-
   handleTap = () => {
     const { sale: { live_url_if_open, href } } = this.props
     const url = (live_url_if_open || href) as string
@@ -92,7 +84,7 @@ export class SaleListItem extends React.Component<Props, null> {
     const item = this.props.sale
     const image = item.cover_image
     const timestamp = item.display_timely_at.toUpperCase()
-    const containerWidth = this.containerWidth
+    const containerWidth = this.props.containerWidth
 
     const Container = styled.View`
       width: ${containerWidth}px;
