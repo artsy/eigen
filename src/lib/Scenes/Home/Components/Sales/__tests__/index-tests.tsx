@@ -1,7 +1,9 @@
 import { shallow } from "enzyme"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
+
+import { renderWithLayout } from "lib/tests/renderWithLayout"
+
 import Sales from "../index"
 
 jest.mock("WebView", () => "WebView")
@@ -14,7 +16,7 @@ it("renders the ZeroState when there are no sales", () => {
 })
 
 it("looks correct when rendered", () => {
-  const auctions = renderer.create(<Sales {...props} />)
+  const auctions = renderWithLayout(<Sales {...props} />, { width: 1000 })
   expect(auctions).toMatchSnapshot()
 })
 

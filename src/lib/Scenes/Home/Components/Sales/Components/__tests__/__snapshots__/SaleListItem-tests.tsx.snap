@@ -18,12 +18,12 @@ exports[`renders correctly 1`] = `
   style={
     Array [
       Object {
-        "height": "NaNpx",
+        "height": 201.5,
         "marginBottom": 10,
         "marginLeft": 10,
         "marginRight": 10,
         "marginTop": 10,
-        "width": "NaNpx",
+        "width": 162.5,
       },
       undefined,
     ]
