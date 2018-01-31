@@ -6,7 +6,7 @@ import * as renderer from "react-test-renderer"
 import SaleListItem from "../SaleListItem"
 
 it("renders correctly", () => {
-  const sale = renderer.create(<SaleListItem sale={props} screenWidth={750} />)
+  const sale = renderer.create(<SaleListItem sale={props} containerWidth={750} />)
   expect(sale).toMatchSnapshot()
 })
 

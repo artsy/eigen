@@ -32,7 +32,7 @@ const Header = styled.View`
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
-  padding: 10px 10px;
+  padding: 10px;
 `
 
 const Footer = styled.View`
