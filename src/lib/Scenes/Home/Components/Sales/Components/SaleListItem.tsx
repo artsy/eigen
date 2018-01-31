@@ -1,5 +1,5 @@
 import React from "react"
-import { Dimensions, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -69,13 +69,17 @@ const Metadata = styled.Text`
   font-size: 10px;
 `
 
-export class SaleListItem extends React.Component<RelayProps, null> {
+interface Props extends RelayProps {
+  screenWidth: number
+}
+
+export class SaleListItem extends React.Component<Props, null> {
   get containerWidth(): number {
-    const screenSize = Dimensions.get("window")
-    const isIPad = screenSize.width > 700
+    const screenWidth = this.props.screenWidth
+    const isIPad = screenWidth > 700
     const numColumns = isIPad ? 4 : 2
     const gutterSize = isIPad ? 100 : 60
-    return (screenSize.width - gutterSize) / numColumns
+    return (screenWidth - gutterSize) / numColumns
   }
 
   handleTap = () => {

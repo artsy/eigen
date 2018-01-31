@@ -16,6 +16,7 @@
 
 ## Master
 
+* Fix for SaleList not updating its dimensions upon rotation - sarah
 * Allow blank messages in Conversations, but only if they have attachments - sarah
 * Hack fix for the consignments done button on iPhone X - orta
 

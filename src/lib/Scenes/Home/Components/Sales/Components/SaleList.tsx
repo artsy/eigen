@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash"
 import React, { Component } from "react"
-import { Dimensions, FlatList, View } from "react-native"
+import { Dimensions, FlatList, LayoutChangeEvent, View } from "react-native"
 
 import SaleListItem from "./SaleListItem"
 import { SectionHeader } from "./SectionHeader"
@@ -15,7 +15,20 @@ interface Props {
   }
 }
 
-export class SaleList extends Component<Props> {
+interface State {
+  screenWidth: number
+}
+
+export class SaleList extends Component<Props, State> {
+  state = {
+    screenWidth: 1,
+  }
+
+  onLayout = (event: LayoutChangeEvent) => {
+    const screenWidth = event.nativeEvent.layout.width
+    this.setState({ screenWidth })
+  }
+
   render() {
     const { item, section } = this.props
     const numColumns = Dimensions.get("window").width > 700 ? 4 : 2
@@ -29,7 +42,7 @@ export class SaleList extends Component<Props> {
     }
 
     return (
-      <View style={style}>
+      <View style={style} onLayout={this.onLayout}>
         <SectionHeader title={section.title} style={{ paddingTop: this.props.section.isFirstItem ? 0 : 22 }} />
         <FlatList
           contentContainerStyle={{
@@ -40,7 +53,7 @@ export class SaleList extends Component<Props> {
           data={item.data}
           numColumns={numColumns}
           keyExtractor={row => row.__id}
-          renderItem={row => <SaleListItem key={row.index} sale={row.item} />}
+          renderItem={row => <SaleListItem key={row.index} sale={row.item} screenWidth={this.state.screenWidth} />}
         />
       </View>
     )
