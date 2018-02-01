@@ -993,6 +993,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "is_auction",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "gene_ids",
                   "description": null,
                   "type": {
@@ -1958,6 +1968,16 @@
                 },
                 {
                   "name": "live_sale",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "is_auction",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
@@ -40381,6 +40401,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "is_auction",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "gene_ids",
                   "description": null,
                   "type": {
@@ -41346,6 +41376,16 @@
                 },
                 {
                   "name": "live_sale",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "is_auction",
                   "description": null,
                   "type": {
                     "kind": "SCALAR",
