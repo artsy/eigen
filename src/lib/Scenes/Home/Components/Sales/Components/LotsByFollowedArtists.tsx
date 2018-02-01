@@ -64,6 +64,7 @@ export default createPaginationContainer(
         first: $count
         after: $cursor
         live_sale: true
+        is_auction: true
         include_artworks_by_followed_artists: true
       ) @connection(key: "LotsByFollowedArtists_sale_artworks") {
         pageInfo {
