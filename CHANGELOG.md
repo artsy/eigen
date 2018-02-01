@@ -16,6 +16,10 @@
 
 ## Master
 
+### 1.4.5
+
+* Schema fixes for LotsByFollowedArtists.tsx - ashkan
+
 ### 1.4.4
 
 * Fix for consignment welcome text not fitting on iPhone 5s - orta
