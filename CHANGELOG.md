@@ -16,6 +16,11 @@
 
 ## Master
 
+### 1.4.4
+
+* Fix for consignment welcome text not fitting on iPhone 5s - orta
+* The sale images in the auctions section now fits correctly on iPhone - orta
+
 ### 1.4.3
 
 * Fix for SaleList not updating its dimensions upon rotation - sarah

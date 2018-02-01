@@ -68,7 +68,7 @@ const Title = Text`
 /* TODO: This should actually have a reduced line gap, but there doesn’t appear to be a way to do so. Maybe native? */
 const BaseHeadline: StyledFunction<DeviceProps & TextProperties> = styled(Typography.LargeHeadline)
 const SmallHeadline = BaseHeadline`
-  font-size: 20;
+  font-size:   ${({ isTiny }) => (isTiny ? 18 : 20)} ;
   line-height: 22;
   flex: 1;
   padding: 0;

@@ -70,14 +70,14 @@ static NSArray<NSString *> *ErrorJSKeys = nil;
 + (NSString *)errorMessageForCode:(ARTakeCameraPhotoError)errorCode;
 {
     NSString *message = ErrorMessages[errorCode];
-    NSAssert(message, @"Unknown ARTakeCameraPhotoError code `%lu`", errorCode);
+//    NSAssert(message, @"Unknown ARTakeCameraPhotoError code `%lu`", errorCode);
     return message;
 }
 
 + (NSString *)errorCodeAsString:(ARTakeCameraPhotoError)errorCode;
 {
     NSString *code = ErrorStringCodes[errorCode];
-    NSAssert(code, @"Unknown ARTakeCameraPhotoError code `%lu`", errorCode);
+//    NSAssert(code, @"Unknown ARTakeCameraPhotoError code `%lu`", errorCode);
     return code;
 }
 

@@ -30,7 +30,7 @@ export class SaleList extends Component<Props, State> {
     const screenWidth = event.nativeEvent.layout.width
     const isIPad = screenWidth > 700
     const columnCount = isIPad ? 4 : 2
-    const gutterSize = isIPad ? 80 : 60
+    const gutterSize = isIPad ? 80 : 40
     const columnWidth = (screenWidth - gutterSize) / columnCount
     this.setState({ columnCount, columnWidth })
   }
