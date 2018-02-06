@@ -58,7 +58,7 @@ class ArtworkCarouselHeader extends Component<Props, State> {
       <TouchableWithoutFeedback onPress={this.props.handleViewAll}>
         <View style={styles.container}>
           <SectionTitle>{this.props.rail.title}</SectionTitle>
-          {this.props.rail.context && this.followAnnotation()}
+          {this.followAnnotation()}
           {this.actionButton()}
         </View>
       </TouchableWithoutFeedback>
@@ -66,9 +66,9 @@ class ArtworkCarouselHeader extends Component<Props, State> {
   }
 
   followAnnotation() {
-    if (this.props.rail.context.__typename === "HomePageModuleContextRelatedArtist") {
-      const name = this.props.rail.context.based_on.name
-      return <SerifText style={styles.followAnnotation}>{"Based on " + name}</SerifText>
+    const context = this.props.rail.relatedArtistContext
+    if (context && context.based_on) {
+      return <SerifText style={styles.followAnnotation}>{`Based on ${context.based_on.name}`}</SerifText>
     }
   }
 
@@ -98,20 +98,18 @@ class ArtworkCarouselHeader extends Component<Props, State> {
     }
   }
 
-  // FIXME: There is some bug here either in our TS language plugin or worse in Relay. Even though we query for `artist`
-  //        in `HomePageModuleContextRelatedArtist`, it does not appear in ArtworkCarouselHeader_rail.graphql.ts
-  //
-  //        This can be seen much more clear when adding `__typename` to the `context` part in `ArtworkRail.tsx`.
-  //
-  @track(props => ({
-    action_name: Schema.ActionNames.HomeArtistArtworksBlockFollow,
-    action_type: Schema.ActionTypes.Tap,
-    owner_id: props.rail.context.artist._id,
-    owner_slug: props.rail.context.artist.id,
-    owner_type: Schema.OwnerEntityTypes.Artist,
-  }))
+  @track(props => {
+    const artist = props.rail.followedArtistContext.artist || props.rail.relatedArtistContext.artist
+    return {
+      action_name: Schema.ActionNames.HomeArtistArtworksBlockFollow,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: artist._id,
+      owner_slug: artist.id,
+      owner_type: Schema.OwnerEntityTypes.Artist,
+    }
+  })
   handleFollowChange() {
-    const context = this.props.rail.context
+    const context = this.props.rail.followedArtistContext || this.props.rail.relatedArtistContext
     ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, context.artist.id, (error, following) => {
       if (error) {
         console.error("ArtworkCarouselHeader.tsx", error)
@@ -163,14 +161,16 @@ export default createFragmentContainer(
     fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
       title
       key
-      context {
-        __typename
+      # This aliasing selection of the context is done to work around a type generator bug, see below.
+      followedArtistContext: context {
         ... on HomePageModuleContextFollowedArtist {
           artist {
             _id
             id
           }
         }
+      }
+      relatedArtistContext: context {
         ... on HomePageModuleContextRelatedArtist {
           artist {
             _id
@@ -181,6 +181,31 @@ export default createFragmentContainer(
           }
         }
       }
+      # FIXME: There is a bug in the Relay transformer used before generating Flow types, and thus also our TS type
+      #        generator, that leads to a union selection _with_ a __typename selection being normalized incorrectly.
+      #        What ends up happening is that _only_ the common selection is being omitted from the second fragment,
+      #        i.e. in this case the artist selection is not present in the second fragment.
+      #
+      #        This can be seen much more clear when adding __typename to the context part in ArtworkRail.tsx.
+      #
+      # context {
+      #   __typename
+      #   ... on HomePageModuleContextFollowedArtist {
+      #     artist {
+      #       _id
+      #       id
+      #     }
+      #   }
+      #   ... on HomePageModuleContextRelatedArtist {
+      #     artist {
+      #       _id
+      #       id
+      #     }
+      #     based_on {
+      #       name
+      #     }
+      #   }
+      # }
     }
   `
 )

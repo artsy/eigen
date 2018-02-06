@@ -4,21 +4,20 @@ import { ConcreteFragment } from "relay-runtime";
 export type ArtworkCarouselHeader_rail = {
     readonly title: string | null;
     readonly key: string | null;
-    readonly context: ({
-        readonly __typename: "HomePageModuleContextFollowedArtist";
-        readonly artist: ({
+    readonly followedArtistContext: ({
+        readonly artist?: ({
             readonly _id: string;
             readonly id: string;
         }) | null;
-    } | {
-        readonly __typename: "HomePageModuleContextRelatedArtist";
-        readonly based_on: ({
+    }) | null;
+    readonly relatedArtistContext: ({
+        readonly artist?: ({
+            readonly _id: string;
+            readonly id: string;
+        }) | null;
+        readonly based_on?: ({
             readonly name: string | null;
         }) | null;
-    } | {
-        /*This will never be '% other', but we need some
-        value in case none of the concrete values match.*/
-        readonly __typename: "%other";
     }) | null;
 };
 
@@ -82,20 +81,33 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
+      "alias": "followedArtistContext",
       "name": "context",
       "storageKey": null,
       "args": null,
       "concreteType": null,
       "plural": false,
       "selections": [
+        v0,
         {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "__typename",
-          "args": null,
-          "storageKey": null
-        },
+          "kind": "InlineFragment",
+          "type": "HomePageModuleContextFollowedArtist",
+          "selections": [
+            v1
+          ]
+        }
+      ],
+      "idField": "__id"
+    },
+    {
+      "kind": "LinkedField",
+      "alias": "relatedArtistContext",
+      "name": "context",
+      "storageKey": null,
+      "args": null,
+      "concreteType": null,
+      "plural": false,
+      "selections": [
         v0,
         {
           "kind": "InlineFragment",
@@ -123,13 +135,6 @@ return {
               "idField": "__id"
             }
           ]
-        },
-        {
-          "kind": "InlineFragment",
-          "type": "HomePageModuleContextFollowedArtist",
-          "selections": [
-            v1
-          ]
         }
       ],
       "idField": "__id"
@@ -139,5 +144,5 @@ return {
   "idField": "__id"
 };
 })();
-(node as any).hash = '6f3dd39ce9e202bb0db432281860fbeb';
+(node as any).hash = 'b6e75f07a90466a7811c73bd3e12abc1';
 export default node;

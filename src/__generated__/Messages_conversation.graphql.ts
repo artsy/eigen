@@ -35,8 +35,10 @@ export type Messages_conversation = {
             }) | null> | null;
     }) | null;
     readonly items: ReadonlyArray<({
-            readonly item: ({
-                readonly __typename: "Artwork";
+            readonly artwork: ({
+                readonly href?: string | null;
+            }) | null;
+            readonly show: ({
                 readonly href?: string | null;
             }) | null;
         }) | null> | null;
@@ -74,13 +76,6 @@ v3 = {
   "storageKey": null
 },
 v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__typename",
-  "args": null,
-  "storageKey": null
-},
-v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
@@ -272,7 +267,13 @@ return {
                   "name": "Message_message",
                   "args": null
                 },
-                v4
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "__typename",
+                  "args": null,
+                  "storageKey": null
+                }
               ],
               "idField": "__id"
             }
@@ -291,7 +292,32 @@ return {
       "selections": [
         {
           "kind": "LinkedField",
-          "alias": null,
+          "alias": "artwork",
+          "name": "item",
+          "storageKey": null,
+          "args": null,
+          "concreteType": null,
+          "plural": false,
+          "selections": [
+            v0,
+            {
+              "kind": "InlineFragment",
+              "type": "Artwork",
+              "selections": [
+                v4,
+                {
+                  "kind": "FragmentSpread",
+                  "name": "ArtworkPreview_artwork",
+                  "args": null
+                }
+              ]
+            }
+          ],
+          "idField": "__id"
+        },
+        {
+          "kind": "LinkedField",
+          "alias": "show",
           "name": "item",
           "storageKey": null,
           "args": null,
@@ -304,23 +330,9 @@ return {
               "type": "Show",
               "selections": [
                 v4,
-                v5,
                 {
                   "kind": "FragmentSpread",
                   "name": "ShowPreview_show",
-                  "args": null
-                }
-              ]
-            },
-            {
-              "kind": "InlineFragment",
-              "type": "Artwork",
-              "selections": [
-                v4,
-                v5,
-                {
-                  "kind": "FragmentSpread",
-                  "name": "ArtworkPreview_artwork",
                   "args": null
                 }
               ]
@@ -334,5 +346,5 @@ return {
   "idField": "__id"
 };
 })();
-(node as any).hash = '9d5aece440e35ed26b7629e574b321c8';
+(node as any).hash = '943535ecfc6ac6a8a0561ac1e6bdf065';
 export default node;

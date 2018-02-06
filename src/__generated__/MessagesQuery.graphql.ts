@@ -66,15 +66,19 @@ fragment Messages_conversation_2QE1um on Conversation {
     }
   }
   items {
-    item {
+    artwork: item {
       __typename
       ... on Artwork {
-        __typename
         href
         ...ArtworkPreview_artwork
       }
+      ... on Node {
+        __id
+      }
+    }
+    show: item {
+      __typename
       ... on Show {
-        __typename
         href
         ...ShowPreview_show
       }
@@ -269,7 +273,7 @@ return {
   "operationKind": "query",
   "name": "MessagesQuery",
   "id": null,
-  "text": "query MessagesQuery(\n  $conversationID: String!\n  $count: Int!\n  $after: String\n) {\n  me {\n    conversation(id: $conversationID) {\n      ...Messages_conversation_2QE1um\n      __id\n    }\n    __id\n  }\n}\n\nfragment Messages_conversation_2QE1um on Conversation {\n  __id\n  id\n  from {\n    name\n    email\n    initials\n  }\n  to {\n    name\n    initials\n  }\n  initial_message\n  messages(first: $count, after: $after, sort: DESC) {\n    pageInfo {\n      startCursor\n      endCursor\n      hasPreviousPage\n      hasNextPage\n    }\n    edges {\n      cursor\n      node {\n        __id\n        impulse_id\n        is_from_user\n        body\n        attachments {\n          id\n        }\n        ...Message_message\n        __typename\n      }\n    }\n  }\n  items {\n    item {\n      __typename\n      ... on Artwork {\n        __typename\n        href\n        ...ArtworkPreview_artwork\n      }\n      ... on Show {\n        __typename\n        href\n        ...ShowPreview_show\n      }\n      ... on Node {\n        __id\n      }\n    }\n  }\n}\n\nfragment Message_message on Message {\n  body\n  created_at\n  is_from_user\n  from {\n    name\n    email\n  }\n  invoice {\n    payment_url\n    ...InvoicePreview_invoice\n    __id\n  }\n  attachments {\n    id\n    content_type\n    download_url\n    file_name\n    ...ImagePreview_attachment\n    ...PDFPreview_attachment\n  }\n  __id\n}\n\nfragment ArtworkPreview_artwork on Artwork {\n  id\n  _id\n  title\n  artist_names\n  date\n  image {\n    url\n  }\n  __id\n}\n\nfragment ShowPreview_show on Show {\n  id\n  _id\n  name\n  cover_image {\n    url\n  }\n  fair {\n    name\n    __id\n  }\n  partner {\n    __typename\n    ... on Partner {\n      name\n    }\n    ... on Node {\n      __id\n    }\n    ... on ExternalPartner {\n      __id\n    }\n  }\n  __id\n}\n\nfragment InvoicePreview_invoice on Invoice {\n  payment_url\n  state\n  total\n  lewitt_invoice_id\n  __id\n}\n\nfragment ImagePreview_attachment on Attachment {\n  download_url\n  ...AttachmentPreview_attachment\n}\n\nfragment PDFPreview_attachment on Attachment {\n  file_name\n  ...AttachmentPreview_attachment\n}\n\nfragment AttachmentPreview_attachment on Attachment {\n  id\n}\n",
+  "text": "query MessagesQuery(\n  $conversationID: String!\n  $count: Int!\n  $after: String\n) {\n  me {\n    conversation(id: $conversationID) {\n      ...Messages_conversation_2QE1um\n      __id\n    }\n    __id\n  }\n}\n\nfragment Messages_conversation_2QE1um on Conversation {\n  __id\n  id\n  from {\n    name\n    email\n    initials\n  }\n  to {\n    name\n    initials\n  }\n  initial_message\n  messages(first: $count, after: $after, sort: DESC) {\n    pageInfo {\n      startCursor\n      endCursor\n      hasPreviousPage\n      hasNextPage\n    }\n    edges {\n      cursor\n      node {\n        __id\n        impulse_id\n        is_from_user\n        body\n        attachments {\n          id\n        }\n        ...Message_message\n        __typename\n      }\n    }\n  }\n  items {\n    artwork: item {\n      __typename\n      ... on Artwork {\n        href\n        ...ArtworkPreview_artwork\n      }\n      ... on Node {\n        __id\n      }\n    }\n    show: item {\n      __typename\n      ... on Show {\n        href\n        ...ShowPreview_show\n      }\n      ... on Node {\n        __id\n      }\n    }\n  }\n}\n\nfragment Message_message on Message {\n  body\n  created_at\n  is_from_user\n  from {\n    name\n    email\n  }\n  invoice {\n    payment_url\n    ...InvoicePreview_invoice\n    __id\n  }\n  attachments {\n    id\n    content_type\n    download_url\n    file_name\n    ...ImagePreview_attachment\n    ...PDFPreview_attachment\n  }\n  __id\n}\n\nfragment ArtworkPreview_artwork on Artwork {\n  id\n  _id\n  title\n  artist_names\n  date\n  image {\n    url\n  }\n  __id\n}\n\nfragment ShowPreview_show on Show {\n  id\n  _id\n  name\n  cover_image {\n    url\n  }\n  fair {\n    name\n    __id\n  }\n  partner {\n    __typename\n    ... on Partner {\n      name\n    }\n    ... on Node {\n      __id\n    }\n    ... on ExternalPartner {\n      __id\n    }\n  }\n  __id\n}\n\nfragment InvoicePreview_invoice on Invoice {\n  payment_url\n  state\n  total\n  lewitt_invoice_id\n  __id\n}\n\nfragment ImagePreview_attachment on Attachment {\n  download_url\n  ...AttachmentPreview_attachment\n}\n\nfragment PDFPreview_attachment on Attachment {\n  file_name\n  ...AttachmentPreview_attachment\n}\n\nfragment AttachmentPreview_attachment on Attachment {\n  id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -638,7 +642,61 @@ return {
                 "selections": [
                   {
                     "kind": "LinkedField",
-                    "alias": null,
+                    "alias": "artwork",
+                    "name": "item",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": null,
+                    "plural": false,
+                    "selections": [
+                      v7,
+                      v2,
+                      {
+                        "kind": "InlineFragment",
+                        "type": "Artwork",
+                        "selections": [
+                          v8,
+                          v3,
+                          v9,
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "title",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "artist_names",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "date",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "image",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "plural": false,
+                            "selections": v10
+                          }
+                        ]
+                      }
+                    ],
+                    "idField": "__id"
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": "show",
                     "name": "item",
                     "storageKey": null,
                     "args": null,
@@ -651,7 +709,6 @@ return {
                         "kind": "InlineFragment",
                         "type": "Show",
                         "selections": [
-                          v7,
                           v8,
                           v3,
                           v9,
@@ -700,47 +757,6 @@ return {
                               }
                             ],
                             "idField": "__id"
-                          }
-                        ]
-                      },
-                      {
-                        "kind": "InlineFragment",
-                        "type": "Artwork",
-                        "selections": [
-                          v7,
-                          v8,
-                          v3,
-                          v9,
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "title",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "artist_names",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "date",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "image",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Image",
-                            "plural": false,
-                            "selections": v10
                           }
                         ]
                       }
