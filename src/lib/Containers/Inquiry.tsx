@@ -16,6 +16,8 @@ import ARSwitchBoard from "../NativeModules/SwitchBoard"
 import { gravityURL } from "../relay/config"
 import { NetworkError } from "../utils/errors"
 
+import { Inquiry_artwork } from "__generated__/Inquiry_artwork.graphql"
+
 const isPad = Dimensions.get("window").width > 700
 
 const Container = styled.View`
@@ -85,16 +87,20 @@ const ResponseRateLine = styled.View`
   margin-top: 5;
 `
 
+interface Props {
+  artwork: Inquiry_artwork
+}
+
 interface State {
   text: string
   sending: boolean
 }
 
-const track: Track<RelayProps, State, Schema.Entity> = _track
+const track: Track<Props, State, Schema.Entity> = _track
 
 @track()
-export class Inquiry extends React.Component<RelayProps, any> {
-  constructor(props) {
+export class Inquiry extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
       text: this.props.artwork.contact_message,
@@ -221,7 +227,7 @@ export class Inquiry extends React.Component<RelayProps, any> {
               multiline={true}
               autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
               onEndEditing={() => {
-                this.setState({ active: false, text: null })
+                this.setState({ text: null })
               }}
               onChangeText={text => this.setState({ text })}
             />
@@ -236,6 +242,7 @@ export default createFragmentContainer(
   Inquiry,
   graphql`
     fragment Inquiry_artwork on Artwork {
+      _id
       id
       contact_message
       partner {
@@ -245,14 +252,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  artwork: {
-    _id: string
-    id: string
-    contact_message: string
-    partner: {
-      name: string
-    }
-  }
-}

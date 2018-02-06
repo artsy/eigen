@@ -8,6 +8,7 @@ ShallowWrapper {
     me={
       Object {
         "conversation": Object {
+          "__id": "conversation-420",
           "from": Object {
             "email": "anita@garibaldi.br",
             "initials": "AG",
@@ -32,6 +33,7 @@ ShallowWrapper {
               "title": "The Mythic Being: Sol’s Drawing #1–5",
             },
           ],
+          "last_message_id": "222",
           "messages": Object {
             "edges": Array [
               Object {
@@ -53,6 +55,7 @@ ShallowWrapper {
             "initials": "KK",
             "name": "Kimberly Klark",
           },
+          "unread": false,
         },
         "initials": "JC",
       }
@@ -94,6 +97,7 @@ ShallowWrapper {
         <Messages
           conversation={
             Object {
+              "__id": "conversation-420",
               "from": Object {
                 "email": "anita@garibaldi.br",
                 "initials": "AG",
@@ -118,6 +122,7 @@ ShallowWrapper {
                   "title": "The Mythic Being: Sol’s Drawing #1–5",
                 },
               ],
+              "last_message_id": "222",
               "messages": Object {
                 "edges": Array [
                   Object {
@@ -139,6 +144,7 @@ ShallowWrapper {
                 "initials": "KK",
                 "name": "Kimberly Klark",
               },
+              "unread": false,
             }
           }
           onDataFetching={[Function]}
@@ -146,7 +152,7 @@ ShallowWrapper {
       </Styled(View)>,
       "disabled": false,
       "onSubmit": [Function],
-      "value": undefined,
+      "value": null,
     },
     "ref": [Function],
     "rendered": Object {
@@ -173,6 +179,7 @@ ShallowWrapper {
           <Messages
             conversation={
               Object {
+                "__id": "conversation-420",
                 "from": Object {
                   "email": "anita@garibaldi.br",
                   "initials": "AG",
@@ -197,6 +204,7 @@ ShallowWrapper {
                     "title": "The Mythic Being: Sol’s Drawing #1–5",
                   },
                 ],
+                "last_message_id": "222",
                 "messages": Object {
                   "edges": Array [
                     Object {
@@ -218,6 +226,7 @@ ShallowWrapper {
                   "initials": "KK",
                   "name": "Kimberly Klark",
                 },
+                "unread": false,
               }
             }
             onDataFetching={[Function]}
@@ -300,6 +309,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "conversation": Object {
+              "__id": "conversation-420",
               "from": Object {
                 "email": "anita@garibaldi.br",
                 "initials": "AG",
@@ -324,6 +334,7 @@ ShallowWrapper {
                   "title": "The Mythic Being: Sol’s Drawing #1–5",
                 },
               ],
+              "last_message_id": "222",
               "messages": Object {
                 "edges": Array [
                   Object {
@@ -345,6 +356,7 @@ ShallowWrapper {
                 "initials": "KK",
                 "name": "Kimberly Klark",
               },
+              "unread": false,
             },
             "onDataFetching": [Function],
           },
@@ -381,6 +393,7 @@ ShallowWrapper {
           <Messages
             conversation={
               Object {
+                "__id": "conversation-420",
                 "from": Object {
                   "email": "anita@garibaldi.br",
                   "initials": "AG",
@@ -405,6 +418,7 @@ ShallowWrapper {
                     "title": "The Mythic Being: Sol’s Drawing #1–5",
                   },
                 ],
+                "last_message_id": "222",
                 "messages": Object {
                   "edges": Array [
                     Object {
@@ -426,6 +440,7 @@ ShallowWrapper {
                   "initials": "KK",
                   "name": "Kimberly Klark",
                 },
+                "unread": false,
               }
             }
             onDataFetching={[Function]}
@@ -433,7 +448,7 @@ ShallowWrapper {
         </Styled(View)>,
         "disabled": false,
         "onSubmit": [Function],
-        "value": undefined,
+        "value": null,
       },
       "ref": [Function],
       "rendered": Object {
@@ -460,6 +475,7 @@ ShallowWrapper {
             <Messages
               conversation={
                 Object {
+                  "__id": "conversation-420",
                   "from": Object {
                     "email": "anita@garibaldi.br",
                     "initials": "AG",
@@ -484,6 +500,7 @@ ShallowWrapper {
                       "title": "The Mythic Being: Sol’s Drawing #1–5",
                     },
                   ],
+                  "last_message_id": "222",
                   "messages": Object {
                     "edges": Array [
                       Object {
@@ -505,6 +522,7 @@ ShallowWrapper {
                     "initials": "KK",
                     "name": "Kimberly Klark",
                   },
+                  "unread": false,
                 }
               }
               onDataFetching={[Function]}
@@ -587,6 +605,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "conversation": Object {
+                "__id": "conversation-420",
                 "from": Object {
                   "email": "anita@garibaldi.br",
                   "initials": "AG",
@@ -611,6 +630,7 @@ ShallowWrapper {
                     "title": "The Mythic Being: Sol’s Drawing #1–5",
                   },
                 ],
+                "last_message_id": "222",
                 "messages": Object {
                   "edges": Array [
                     Object {
@@ -632,6 +652,7 @@ ShallowWrapper {
                   "initials": "KK",
                   "name": "Kimberly Klark",
                 },
+                "unread": false,
               },
               "onDataFetching": [Function],
             },
@@ -663,6 +684,7 @@ ShallowWrapper {
     me={
       Object {
         "conversation": Object {
+          "__id": "conversation-420",
           "from": Object {
             "email": "anita@garibaldi.br",
             "initials": "AG",
@@ -687,6 +709,7 @@ ShallowWrapper {
               "title": "The Mythic Being: Sol’s Drawing #1–5",
             },
           ],
+          "last_message_id": "222",
           "messages": Object {
             "edges": Array [
               Object {
@@ -708,6 +731,7 @@ ShallowWrapper {
             "initials": "KK",
             "name": "Kimberly Klark",
           },
+          "unread": false,
         },
         "initials": "JC",
       }
@@ -749,6 +773,7 @@ ShallowWrapper {
         <Messages
           conversation={
             Object {
+              "__id": "conversation-420",
               "from": Object {
                 "email": "anita@garibaldi.br",
                 "initials": "AG",
@@ -773,6 +798,7 @@ ShallowWrapper {
                   "title": "The Mythic Being: Sol’s Drawing #1–5",
                 },
               ],
+              "last_message_id": "222",
               "messages": Object {
                 "edges": Array [
                   Object {
@@ -794,6 +820,7 @@ ShallowWrapper {
                 "initials": "KK",
                 "name": "Kimberly Klark",
               },
+              "unread": false,
             }
           }
           onDataFetching={[Function]}
@@ -801,7 +828,7 @@ ShallowWrapper {
       </Styled(View)>,
       "disabled": false,
       "onSubmit": [Function],
-      "value": undefined,
+      "value": null,
     },
     "ref": [Function],
     "rendered": Object {
@@ -828,6 +855,7 @@ ShallowWrapper {
           <Messages
             conversation={
               Object {
+                "__id": "conversation-420",
                 "from": Object {
                   "email": "anita@garibaldi.br",
                   "initials": "AG",
@@ -852,6 +880,7 @@ ShallowWrapper {
                     "title": "The Mythic Being: Sol’s Drawing #1–5",
                   },
                 ],
+                "last_message_id": "222",
                 "messages": Object {
                   "edges": Array [
                     Object {
@@ -873,6 +902,7 @@ ShallowWrapper {
                   "initials": "KK",
                   "name": "Kimberly Klark",
                 },
+                "unread": false,
               }
             }
             onDataFetching={[Function]}
@@ -955,6 +985,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "conversation": Object {
+              "__id": "conversation-420",
               "from": Object {
                 "email": "anita@garibaldi.br",
                 "initials": "AG",
@@ -979,6 +1010,7 @@ ShallowWrapper {
                   "title": "The Mythic Being: Sol’s Drawing #1–5",
                 },
               ],
+              "last_message_id": "222",
               "messages": Object {
                 "edges": Array [
                   Object {
@@ -1000,6 +1032,7 @@ ShallowWrapper {
                 "initials": "KK",
                 "name": "Kimberly Klark",
               },
+              "unread": false,
             },
             "onDataFetching": [Function],
           },
@@ -1036,6 +1069,7 @@ ShallowWrapper {
           <Messages
             conversation={
               Object {
+                "__id": "conversation-420",
                 "from": Object {
                   "email": "anita@garibaldi.br",
                   "initials": "AG",
@@ -1060,6 +1094,7 @@ ShallowWrapper {
                     "title": "The Mythic Being: Sol’s Drawing #1–5",
                   },
                 ],
+                "last_message_id": "222",
                 "messages": Object {
                   "edges": Array [
                     Object {
@@ -1081,6 +1116,7 @@ ShallowWrapper {
                   "initials": "KK",
                   "name": "Kimberly Klark",
                 },
+                "unread": false,
               }
             }
             onDataFetching={[Function]}
@@ -1088,7 +1124,7 @@ ShallowWrapper {
         </Styled(View)>,
         "disabled": false,
         "onSubmit": [Function],
-        "value": undefined,
+        "value": null,
       },
       "ref": [Function],
       "rendered": Object {
@@ -1115,6 +1151,7 @@ ShallowWrapper {
             <Messages
               conversation={
                 Object {
+                  "__id": "conversation-420",
                   "from": Object {
                     "email": "anita@garibaldi.br",
                     "initials": "AG",
@@ -1139,6 +1176,7 @@ ShallowWrapper {
                       "title": "The Mythic Being: Sol’s Drawing #1–5",
                     },
                   ],
+                  "last_message_id": "222",
                   "messages": Object {
                     "edges": Array [
                       Object {
@@ -1160,6 +1198,7 @@ ShallowWrapper {
                     "initials": "KK",
                     "name": "Kimberly Klark",
                   },
+                  "unread": false,
                 }
               }
               onDataFetching={[Function]}
@@ -1242,6 +1281,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "conversation": Object {
+                "__id": "conversation-420",
                 "from": Object {
                   "email": "anita@garibaldi.br",
                   "initials": "AG",
@@ -1266,6 +1306,7 @@ ShallowWrapper {
                     "title": "The Mythic Being: Sol’s Drawing #1–5",
                   },
                 ],
+                "last_message_id": "222",
                 "messages": Object {
                   "edges": Array [
                     Object {
@@ -1287,6 +1328,7 @@ ShallowWrapper {
                   "initials": "KK",
                   "name": "Kimberly Klark",
                 },
+                "unread": false,
               },
               "onDataFetching": [Function],
             },

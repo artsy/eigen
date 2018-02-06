@@ -13,6 +13,8 @@ import Spinner from "../../Spinner"
 import SectionTitle from "../SectionTitle"
 import ArtistCard, { ArtistCardQuery, ArtistCardResponse, ArtistFollowButtonStatusSetter } from "./ArtistCard"
 
+import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
+
 const Animation = {
   yDelta: 20,
   duration: {
@@ -22,9 +24,10 @@ const Animation = {
   easing: Easing.out(Easing.cubic),
 }
 
-interface Props extends ViewProperties, RelayProps {
+interface Props extends ViewProperties {
   registerRailModule?: (rail: ArtistRail | null) => void
-  relay?: RelayRefetchProp
+  relay: RelayRefetchProp
+  rail: ArtistRail_rail
 }
 
 interface State {
@@ -295,7 +298,7 @@ function suggestedArtistQuery(artistID: string): string {
 
 export default createRefetchContainer(
   ArtistRail,
-  graphql.experimental`
+  graphql`
     fragment ArtistRail_rail on HomePageArtistModule
       @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: false }) {
       __id
@@ -307,7 +310,7 @@ export default createRefetchContainer(
       }
     }
   `,
-  graphql.experimental`
+  graphql`
     query ArtistRailRefetchQuery($__id: ID!, $fetchContent: Boolean!) {
       node(__id: $__id) {
         ...ArtistRail_rail @arguments(fetchContent: $fetchContent)
@@ -315,14 +318,3 @@ export default createRefetchContainer(
     }
   `
 )
-
-interface RelayProps {
-  rail: {
-    __id: string
-    key: string | null
-    results: Array<{
-      _id: string
-      __id: string
-    } | null> | null
-  }
-}

@@ -23,6 +23,7 @@ Object.keys(devices).forEach(device => {
           conversations: {
             pageInfo: {
               hasNextPage: false,
+              endCursor: null,
             },
             edges: [],
           },

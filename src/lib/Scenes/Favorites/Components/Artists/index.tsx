@@ -1,6 +1,6 @@
 import React from "react"
 import { FlatList } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import SavedItemRow from "lib/Components/Lists/SavedItemRow"
 import Spinner from "lib/Components/Spinner"
@@ -8,11 +8,18 @@ import ZeroState from "lib/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
+import { Artists_me } from "__generated__/Artists_me.graphql"
+
+interface Props {
+  me: Artists_me
+  relay: RelayPaginationProp
+}
+
 interface State {
   fetchingMoreData: boolean
 }
 
-class Artists extends React.Component<RelayProps, State> {
+class Artists extends React.Component<Props, State> {
   state = {
     fetchingMoreData: false,
   }
@@ -59,10 +66,10 @@ class Artists extends React.Component<RelayProps, State> {
   }
 }
 
-export default createPaginationContainer<RelayProps>(
+export default createPaginationContainer(
   Artists,
   {
-    me: graphql.experimental`
+    me: graphql`
       fragment Artists_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followed_artists_connection(first: $count, after: $cursor)
@@ -91,7 +98,7 @@ export default createPaginationContainer<RelayProps>(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.me && props.me.followed_artists_connection
+      return props.me && (props.me.followed_artists_connection as ConnectionData)
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -102,7 +109,7 @@ export default createPaginationContainer<RelayProps>(
     getVariables(_props, pageInfo, _fragmentVariables) {
       return pageInfo
     },
-    query: graphql.experimental`
+    query: graphql`
       query ArtistsMeQuery($count: Int!, $cursor: String) {
         me {
           ...Artists_me @arguments(count: $count, cursor: $cursor)
@@ -111,12 +118,3 @@ export default createPaginationContainer<RelayProps>(
     `,
   }
 )
-
-interface RelayProps {
-  relay?: RelayPaginationProp
-  me: {
-    followed_artists_connection: {
-      edges: any[]
-    } | null
-  } | null
-}

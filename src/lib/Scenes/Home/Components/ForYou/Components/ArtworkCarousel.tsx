@@ -25,6 +25,8 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Disposable } from "relay-runtime"
 import ArtworkCarouselHeader from "./ArtworkCarouselHeader"
 
+import { ArtworkCarousel_rail } from "__generated__/ArtworkCarousel_rail.graphql"
+
 // tslint:disable-next-line:no-var-requires
 const chevron: ImageURISource = require("../../../../../../../images/chevron.png")
 
@@ -42,9 +44,10 @@ const additionalContentRails = [
 
 export const minRailHeight = 400
 
-interface Props extends ViewProperties, RelayProps {
+interface Props extends ViewProperties {
+  rail: ArtworkCarousel_rail
+  relay: RelayRefetchProp
   registerRailModule?: (rail: ArtworkCarousel | null) => void
-  relay?: RelayRefetchProp
 }
 
 interface State {
@@ -54,7 +57,7 @@ interface State {
   loadFailed: boolean
 }
 
-export class ArtworkCarousel extends Component<Props & RelayPropsWorkaround, State> {
+export class ArtworkCarousel extends Component<Props, State> {
   inflightRequest: Disposable
 
   state = {
@@ -177,7 +180,7 @@ export class ArtworkCarousel extends Component<Props & RelayPropsWorkaround, Sta
     return (
       <View style={[styles.gridContainer, { height: this.gridContainerHeight() }]}>
         <View onLayout={this.onGridLayout.bind(this)}>
-          <GenericGrid artworks={this.props.rail.results} />
+          <GenericGrid artworks={this.props.rail.results as any} />
         </View>
       </View>
     )
@@ -277,7 +280,7 @@ export class ArtworkCarousel extends Component<Props & RelayPropsWorkaround, Sta
 
     return (
       <View accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
-        <ArtworkCarouselHeader rail={this.props.rail} handleViewAll={this.handleViewAll} />
+        <ArtworkCarouselHeader rail={this.props.rail as any} handleViewAll={this.handleViewAll} />
         <View style={this.railStyle()}>{this.renderModuleResults()}</View>
       </View>
     )
@@ -329,7 +332,7 @@ const styles = StyleSheet.create<Styles>({
 
 export default createRefetchContainer(
   ArtworkCarousel,
-  graphql.experimental`
+  graphql`
     fragment ArtworkCarousel_rail on HomePageArtworkModule
       @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: false }) {
       ...ArtworkCarouselHeader_rail
@@ -365,7 +368,7 @@ export default createRefetchContainer(
       }
     }
   `,
-  graphql.experimental`
+  graphql`
     query ArtworkCarouselRefetchQuery($__id: ID!, $fetchContent: Boolean!) {
       node(__id: $__id) {
         ...ArtworkCarousel_rail @arguments(fetchContent: $fetchContent)
@@ -373,21 +376,3 @@ export default createRefetchContainer(
     }
   `
 )
-
-interface RelayProps {
-  rail: {
-    __id: string
-    key: string | null
-    params: {
-      medium: string | null
-      price_range: string | null
-    } | null
-    context: Array<boolean | number | string | null> | null
-    results: Array<boolean | number | string | null> | null
-  }
-}
-interface RelayPropsWorkaround {
-  rail: {
-    context: any
-  }
-}

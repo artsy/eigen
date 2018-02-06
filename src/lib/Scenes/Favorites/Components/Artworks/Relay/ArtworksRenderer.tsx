@@ -8,7 +8,7 @@ export default ({ render }) => {
   return (
     <QueryRenderer
       environment={environment}
-      query={graphql.experimental`
+      query={graphql`
         query ArtworksRendererQuery($count: Int!, $cursor: String) {
           me {
             ...Artworks_me @arguments(count: $count, cursor: $cursor)

@@ -7,7 +7,13 @@ import SerifText from "../../Text/Serif"
 import SmallList from "./SmallList"
 import VariableSizeShowsList from "./VariableSizeShowsList"
 
-class Shows extends React.Component<RelayProps> {
+import { Shows_artist } from "__generated__/Shows_artist.graphql"
+
+interface Props {
+  artist: Shows_artist
+}
+
+class Shows extends React.Component<Props> {
   render() {
     return (
       <View style={styles.container}>
@@ -35,7 +41,7 @@ class Shows extends React.Component<RelayProps> {
   pastShowsList() {
     // TODO: Use `this.props.relay.getVariables().isPad` when this gets merged: https://github.com/facebook/relay/pull/1868
     if (this.props.artist.past_large_shows) {
-      return <VariableSizeShowsList showSize={"medium"} shows={this.props.artist.past_large_shows} />
+      return <VariableSizeShowsList showSize={"medium"} shows={this.props.artist.past_large_shows as any} />
     } else {
       return <SmallList shows={this.props.artist.past_small_shows} style={{ marginTop: -8, marginBottom: 50 }} />
     }
@@ -89,14 +95,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  artist: {
-    current_shows: Array<boolean | number | string | null> | null
-    upcoming_shows: Array<boolean | number | string | null> | null
-    past_small_shows: Array<boolean | number | string | null> | null
-    past_large_shows: Array<{
-      __id: string | null
-    }> | null
-  }
-}

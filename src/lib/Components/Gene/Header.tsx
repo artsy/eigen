@@ -1,7 +1,7 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
+import { Dimensions, NativeModules, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
 
 import { Schema, Track, track as _track } from "../../utils/track"
@@ -9,22 +9,22 @@ import { Schema, Track, track as _track } from "../../utils/track"
 import InvertedButton from "../Buttons/InvertedButton"
 import Headline from "../Text/Headline"
 
-interface HeaderProps extends ViewProperties, RelayProps {
+import { Header_gene } from "__generated__/Header_gene.graphql"
+
+interface Props {
+  gene: Header_gene
   shortForm: boolean
 }
 
-interface HeaderState {
+interface State {
   following: boolean | null
 }
 
-const track: Track<HeaderProps, HeaderState> = _track
+const track: Track<Props, State> = _track
 
 @track()
-class Header extends React.Component<HeaderProps, HeaderState> {
-  constructor(props) {
-    super(props)
-    this.state = { following: null }
-  }
+class Header extends React.Component<Props, State> {
+  state = { following: null }
 
   componentDidMount() {
     NativeModules.ARTemporaryAPIModule.followStatusForGene(this.props.gene._id, (error, following) => {
@@ -153,11 +153,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  gene: {
-    _id: string
-    id: string
-    name: string | null
-  }
-}

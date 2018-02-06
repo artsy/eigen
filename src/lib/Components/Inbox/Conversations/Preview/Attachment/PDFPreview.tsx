@@ -7,6 +7,8 @@ import colors from "lib/data/colors"
 
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 
+import { PDFPreview_attachment } from "__generated__/PDFPreview_attachment.graphql"
+
 const Container = styled.View`
   border-width: 1;
   border-color: ${colors["gray-regular"]};
@@ -29,7 +31,9 @@ const Icon = styled(Image)`
   margin-bottom: 12;
 `
 
-interface Props extends AttachmentProps, RelayProps {}
+interface Props extends AttachmentProps {
+  attachment: PDFPreview_attachment
+}
 
 export const PDFPreview: React.SFC<Props> = ({ attachment, onSelected }) => (
   <AttachmentPreview attachment={attachment as any} onSelected={onSelected}>
@@ -51,9 +55,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  attachment: {
-    file_name?: string
-  }
-}

@@ -9,7 +9,6 @@ import {
   TextStyle,
   TouchableWithoutFeedback,
   View,
-  ViewProperties,
   ViewStyle,
 } from "react-native"
 
@@ -23,6 +22,8 @@ import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import SectionTitle from "../../SectionTitle"
 
+import { ArtworkCarouselHeader_rail } from "__generated__/ArtworkCarouselHeader_rail.graphql"
+
 const isPad = Dimensions.get("window").width > 700
 
 const additionalContentRails = [
@@ -34,7 +35,8 @@ const additionalContentRails = [
   "generic_gene",
 ]
 
-interface Props extends ViewProperties, RelayProps {
+interface Props {
+  rail: ArtworkCarouselHeader_rail
   handleViewAll: () => void
 }
 
@@ -46,7 +48,7 @@ const track: Track<Props, State> = _track
 
 @track()
 class ArtworkCarouselHeader extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = { following: props.rail.key === "followed_artist" }
   }
@@ -96,6 +98,11 @@ class ArtworkCarouselHeader extends Component<Props, State> {
     }
   }
 
+  // FIXME: There is some bug here either in our TS language plugin or worse in Relay. Even though we query for `artist`
+  //        in `HomePageModuleContextRelatedArtist`, it does not appear in ArtworkCarouselHeader_rail.graphql.ts
+  //
+  //        This can be seen much more clear when adding `__typename` to the `context` part in `ArtworkRail.tsx`.
+  //
   @track(props => ({
     action_name: Schema.ActionNames.HomeArtistArtworksBlockFollow,
     action_type: Schema.ActionTypes.Tap,
@@ -177,28 +184,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  rail: {
-    title: string | null
-    key: string | null
-    context:
-      | {
-          __typename: "HomePageModuleContextFollowedArtist"
-          artist: {
-            _id: string
-            id: string
-          }
-        }
-      | {
-          __typename: "HomePageModuleContextRelatedArtist"
-          artist: {
-            _id: string
-            id: string
-          }
-          based_on: {
-            name: string
-          }
-        }
-  }
-}

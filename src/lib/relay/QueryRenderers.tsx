@@ -65,7 +65,7 @@ export const ConversationRenderer: React.SFC<ConversationRendererProps> = ({ ren
   return (
     <QueryRenderer
       environment={environment}
-      query={graphql.experimental`
+      query={graphql`
         query QueryRenderersConversationQuery($conversationID: String!) {
           me {
             ...Conversation_me
@@ -108,7 +108,7 @@ export const GeneRenderer: React.SFC<GeneRendererProps> = ({ render, geneID, med
   return (
     <QueryRenderer
       environment={environment}
-      query={graphql.experimental`
+      query={graphql`
         query QueryRenderersGeneQuery($geneID: String!, $medium: String, $price_range: String) {
           gene(id: $geneID) {
             ...Gene_gene @arguments(medium: $medium, price_range: $price_range)
@@ -154,7 +154,7 @@ export const WorksForYouRenderer: React.SFC<WorksForYouRendererProps> = ({ rende
   return (
     <QueryRenderer
       environment={environment}
-      query={graphql.experimental`
+      query={graphql`
         query QueryRenderersWorksForYouQuery($selectedArtist: String!) {
           viewer {
             ...WorksForYou_viewer @arguments(selectedArtist: $selectedArtist)

@@ -10,11 +10,13 @@ import Message from "./Message"
 import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
 
+import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
+
 const isPad = Dimensions.get("window").width > 700
 
 interface Props {
-  conversation?: RelayProps["me"]["conversation"]
-  relay?: RelayPaginationProp
+  conversation: Messages_conversation
+  relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
 }
 
@@ -41,6 +43,7 @@ export class Messages extends React.Component<Props, State> {
     const partnerName = conversation.to.name
     const senderName = item.is_from_user ? conversation.from.name : partnerName
     const initials = item.is_from_user ? conversation.from.initials : conversation.to.initials
+    // FIXME: This is the same bug as described in ArtworkCarouselHeader.
     return (
       <Message
         index={index}
@@ -54,7 +57,7 @@ export class Messages extends React.Component<Props, State> {
           item.first_message &&
           conversationItem.__typename === "Artwork" && (
             <ArtworkPreview
-              artwork={conversationItem}
+              artwork={conversationItem as any}
               onSelected={() => ARSwitchBoard.presentNavigationViewController(this, conversationItem.href)}
             />
           )
@@ -63,7 +66,7 @@ export class Messages extends React.Component<Props, State> {
           item.first_message &&
           conversationItem.__typename === "Show" && (
             <ShowPreview
-              show={conversationItem}
+              show={conversationItem as any}
               onSelected={() => ARSwitchBoard.presentNavigationViewController(this, conversationItem.href)}
             />
           )
@@ -107,16 +110,18 @@ export class Messages extends React.Component<Props, State> {
   }
 
   render() {
-    const edges = (this.props.conversation.messages || { edges: [] }).edges
+    const edges = (this.props.conversation.messages && this.props.conversation.messages.edges) || []
     const messageCount = edges.length
 
-    const containsContent = edge =>
-      (edge.node.body && edge.node.body.length) || (edge.node.attachments && edge.node.attachments.length)
+    const messages = edges
+      .filter(edge => {
+        return (edge.node.body && edge.node.body.length) || (edge.node.attachments && edge.node.attachments.length)
+      })
+      .map((edge, index) => {
+        const isFirstMessage = this.props.relay && !this.props.relay.hasMore() && index === messageCount - 1
+        return { first_message: isFirstMessage, key: edge.cursor, ...edge.node }
+      })
 
-    const messages = edges.filter(edge => containsContent(edge)).map((edge, index) => {
-      const isFirstMessage = this.props.relay && !this.props.relay.hasMore() && index === messageCount - 1
-      return { first_message: isFirstMessage, key: edge.cursor, ...edge.node }
-    })
     const refreshControl = <RefreshControl refreshing={this.state.reloadingData} onRefresh={this.reload.bind(this)} />
 
     const messagesStyles = isPad
@@ -157,7 +162,7 @@ export class Messages extends React.Component<Props, State> {
 export default createPaginationContainer(
   Messages,
   {
-    conversation: graphql.experimental`
+    conversation: graphql`
       fragment Messages_conversation on Conversation
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
         __id
@@ -228,7 +233,7 @@ export default createPaginationContainer(
         after: paginationInfo.cursor,
       }
     },
-    query: graphql.experimental`
+    query: graphql`
       query MessagesQuery($conversationID: String!, $count: Int!, $after: String) {
         me {
           conversation(id: $conversationID) {
@@ -239,40 +244,3 @@ export default createPaginationContainer(
     `,
   }
 )
-
-interface RelayProps {
-  me: {
-    conversation: {
-      id: string
-      __id: string
-      to: {
-        name: string
-        initials: string
-      }
-      from: {
-        name: string
-        email: string
-        initials: string
-      }
-      initial_message: string
-      messages: {
-        pageInfo?: {
-          hasNextPage: boolean
-        }
-        edges: Array<{
-          cursor: string
-          node: {
-            __id: string
-            impulse_id: string
-            is_from_user: boolean
-            body: string
-            attachments: any
-          } | null
-        }>
-      }
-      items: Array<{
-        item: any
-      }>
-    }
-  }
-}

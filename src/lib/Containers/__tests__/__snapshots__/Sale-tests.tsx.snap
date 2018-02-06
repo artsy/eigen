@@ -423,6 +423,7 @@ exports[`state looks okay by default 1`] = `
                 ],
               }
             }
+            showImage={false}
           />
         </View>
       </View>

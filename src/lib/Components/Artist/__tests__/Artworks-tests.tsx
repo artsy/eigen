@@ -12,6 +12,6 @@ it("renders properly", () => {
       for_sale_artworks: 2,
     },
   }
-  const artworks = renderer.create(<Artworks artist={artist as any} />).toJSON()
+  const artworks = renderer.create(<Artworks artist={artist} />).toJSON()
   expect(artworks).toMatchSnapshot()
 })

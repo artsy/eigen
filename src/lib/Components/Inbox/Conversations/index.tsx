@@ -12,13 +12,16 @@ import ConversationSnippet, { Props as ConversationSnippetProps } from "./Conver
 
 import { PAGE_SIZE } from "lib/data/constants"
 
+import { Conversations_me } from "__generated__/Conversations_me.graphql"
+
 const Headline = styled(LargeHeadline)`
   margin-top: 20px;
   margin-bottom: -10px;
 `
 
-interface Props extends RelayProps {
-  relay?: RelayPaginationProp
+interface Props {
+  me: Conversations_me
+  relay: RelayPaginationProp
   headerView?: JSX.Element
   onRefresh?: () => any
 }
@@ -73,7 +76,7 @@ export class Conversations extends Component<Props, State> {
     }
   }
 
-  refreshConversations = (callback: () => void) => {
+  refreshConversations = (callback?: () => void) => {
     const { relay } = this.props
 
     if (!relay.isLoading()) {
@@ -126,7 +129,7 @@ export class Conversations extends Component<Props, State> {
 export default createPaginationContainer(
   Conversations,
   {
-    me: graphql.experimental`
+    me: graphql`
       fragment Conversations_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         conversations(first: $count, after: $cursor) @connection(key: "Conversations_conversations") {
@@ -165,7 +168,7 @@ export default createPaginationContainer(
         cursor,
       }
     },
-    query: graphql.experimental`
+    query: graphql`
       query ConversationsQuery($count: Int!, $cursor: String) {
         me {
           ...Conversations_me @arguments(count: $count, cursor: $cursor)
@@ -173,20 +176,4 @@ export default createPaginationContainer(
       }
     `,
   }
-) as React.ComponentClass<Props>
-
-interface RelayProps {
-  me: {
-    conversations: {
-      pageInfo: {
-        hasNextPage: boolean
-      } | null
-      edges: Array<{
-        node: {
-          id: string | null
-          last_message: string
-        } | null
-      } | null> | null
-    } | null
-  }
-}
+)

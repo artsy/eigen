@@ -1,17 +1,24 @@
 import React from "react"
 import { FlatList } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import SavedItemRow from "lib/Components/Lists/SavedItemRow"
 import Spinner from "lib/Components/Spinner"
 import ZeroState from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 
+import { Categories_me } from "__generated__/Categories_me.graphql"
+
+interface Props {
+  me: Categories_me
+  relay: RelayPaginationProp
+}
+
 interface State {
   fetchingMoreData: boolean
 }
 
-export class Categories extends React.Component<RelayProps, State> {
+export class Categories extends React.Component<Props, State> {
   state = {
     fetchingMoreData: false,
   }
@@ -58,10 +65,10 @@ export class Categories extends React.Component<RelayProps, State> {
   }
 }
 
-export default createPaginationContainer<RelayProps>(
+export default createPaginationContainer(
   Categories,
   {
-    me: graphql.experimental`
+    me: graphql`
       fragment Categories_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followed_genes(first: $count, after: $cursor) @connection(key: "Categories_followed_genes") {
@@ -89,7 +96,7 @@ export default createPaginationContainer<RelayProps>(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.me && props.me.followed_genes
+      return props.me && (props.me.followed_genes as ConnectionData)
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -100,7 +107,7 @@ export default createPaginationContainer<RelayProps>(
     getVariables(_props, pageInfo, _fragmentVariables) {
       return pageInfo
     },
-    query: graphql.experimental`
+    query: graphql`
       query CategoriesMeQuery($count: Int!, $cursor: String) {
         me {
           ...Categories_me @arguments(count: $count, cursor: $cursor)
@@ -109,12 +116,3 @@ export default createPaginationContainer<RelayProps>(
     `,
   }
 )
-
-interface RelayProps {
-  relay?: RelayPaginationProp
-  me: {
-    followed_genes: {
-      edges: any[] | null
-    } | null
-  } | null
-}

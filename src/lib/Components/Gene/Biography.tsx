@@ -6,11 +6,15 @@ import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
 
 import SerifText from "../Text/Serif"
 
+import { Biography_gene } from "__generated__/Biography_gene.graphql"
+
 const sideMargin = Dimensions.get("window").width > 700 ? 50 : 0
 
-interface Props extends ViewProperties, RelayProps {}
+interface Props extends ViewProperties {
+  gene: Biography_gene
+}
 
-class Biography extends React.Component<Props, any> {
+class Biography extends React.Component<Props> {
   render() {
     const gene = this.props.gene
     if (!gene.description) {
@@ -52,9 +56,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  gene: {
-    description: string | null
-  }
-}

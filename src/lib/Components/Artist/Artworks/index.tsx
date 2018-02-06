@@ -1,6 +1,6 @@
 import React, { Component } from "react"
-import { StyleSheet, View, ViewProperties } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { StyleSheet, View } from "react-native"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 import ArtistForSaleArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistForSaleArtworksGrid"
 import ArtistNotForSaleArtworksGrid from "../../ArtworkGrids/RelayConnections/ArtistNotForSaleArtworksGrid"
@@ -9,6 +9,8 @@ import Separator from "lib/Components/Separator"
 import SerifText from "lib/Components/Text/Serif"
 
 import colors from "lib/data/colors"
+
+import { Artworks_artist } from "__generated__/Artworks_artist.graphql"
 
 interface RenderSectionParams {
   title: string
@@ -19,8 +21,9 @@ interface RenderSectionParams {
   mapPropsToArtworksConnection: (Props) => any
 }
 
-interface Props extends RelayProps, ViewProperties {
-  relay?: RelayProps
+interface Props {
+  relay: RelayProp
+  artist: Artworks_artist
 }
 
 interface State {
@@ -115,7 +118,7 @@ const styles = StyleSheet.create({
 
 export default createFragmentContainer(
   Artworks,
-  graphql.experimental`
+  graphql`
     fragment Artworks_artist on Artist {
       counts {
         artworks
@@ -126,12 +129,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  artist: {
-    counts: {
-      artworks: boolean | number | string | null
-      for_sale_artworks: boolean | number | string | null
-    } | null
-  }
-}

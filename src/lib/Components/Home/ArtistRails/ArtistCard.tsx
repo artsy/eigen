@@ -9,7 +9,6 @@ import {
   TextStyle,
   TouchableWithoutFeedback,
   View,
-  ViewProperties,
   ViewStyle,
 } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
@@ -22,11 +21,14 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import ImageView from "lib/Components/OpaqueImageView"
 
+import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
+
 type ArtistFollowHandlerResult = Promise<Animated.EndResult>
 export type ArtistFollowButtonStatusSetter = (status: boolean) => ArtistFollowHandlerResult
 export type ArtistFollowHandler = (setFollowButtonStatus: ArtistFollowButtonStatusSetter) => void
 
-interface Props extends ViewProperties, RelayProps {
+interface Props {
+  artist: ArtistCard_artist
   onFollow?: ArtistFollowHandler
 }
 
@@ -37,13 +39,10 @@ interface State {
 }
 
 export class ArtistCard extends React.Component<Props, State> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      processingChange: false,
-      followStatusChanged: null,
-      following: null,
-    }
+  state = {
+    processingChange: false,
+    followStatusChanged: null,
+    following: null,
   }
 
   handleTap() {
@@ -254,17 +253,3 @@ export const ArtistCardQuery = `
 `
 
 export default ArtistCardContainer
-
-interface RelayProps {
-  artist: {
-    id: string
-    _id: string
-    href: string | null
-    name: string | null
-    formatted_artworks_count: string | null
-    formatted_nationality_and_birthday: string | null
-    image: {
-      url: string | null
-    } | null
-  }
-}

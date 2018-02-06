@@ -12,10 +12,13 @@ import InvertedButton from "../Buttons/InvertedButton"
 import Headline from "../Text/Headline"
 import SerifText from "../Text/Serif"
 
+import { Header_artist } from "__generated__/Header_artist.graphql"
+
 const isPad = Dimensions.get("window").width > 700
 
-// tslint:disable-next-line:no-empty-interface
-interface Props extends RelayProps {}
+interface Props {
+  artist: Header_artist
+}
 
 interface State {
   following: boolean
@@ -210,16 +213,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  artist: {
-    _id: string
-    id: string
-    name: string | null
-    nationality: string | null
-    birthday: string | null
-    counts: {
-      follows: boolean | number | string | null
-    } | null
-  }
-}

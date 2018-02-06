@@ -4,7 +4,7 @@ import InfiniteScrollArtworksGrid from "../InfiniteScrollGrid"
 const GeneArtworksGrid = createPaginationContainer(
   InfiniteScrollArtworksGrid,
   {
-    filtered_artworks: graphql.experimental`
+    filtered_artworks: graphql`
       fragment GeneArtworksGrid_filtered_artworks on FilterArtworks
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
@@ -53,7 +53,7 @@ const GeneArtworksGrid = createPaginationContainer(
         sort: props.sort,
       }
     },
-    query: graphql.experimental`
+    query: graphql`
       query GeneArtworksGridQuery($__id: ID!, $count: Int!, $cursor: String, $sort: String) {
         node(__id: $__id) {
           ... on FilterArtworks {

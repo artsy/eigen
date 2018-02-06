@@ -4,7 +4,7 @@ import InfiniteScrollArtworksGrid from "../InfiniteScrollGrid"
 const ArtistNotForSaleArtworksGrid = createPaginationContainer(
   InfiniteScrollArtworksGrid,
   {
-    artist: graphql.experimental`
+    artist: graphql`
       fragment ArtistNotForSaleArtworksGrid_artist on Artist
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
@@ -56,7 +56,7 @@ const ArtistNotForSaleArtworksGrid = createPaginationContainer(
         filter,
       }
     },
-    query: graphql.experimental`
+    query: graphql`
       query ArtistNotForSaleArtworksGridQuery(
         $__id: ID!
         $count: Int!

@@ -6,6 +6,7 @@ exports[`renders properly 1`] = `
     Object {
       "articles": Array [],
       "has_metadata": true,
+      "id": "banksy",
       "is_display_auction_link": true,
       "related_artists": Array [],
     }

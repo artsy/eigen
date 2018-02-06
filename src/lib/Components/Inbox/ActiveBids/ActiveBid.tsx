@@ -7,6 +7,8 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { BodyText, MetadataText } from "../Typography"
 
+import { ActiveBid_bid } from "__generated__/ActiveBid_bid.graphql"
+
 const isPad = Dimensions.get("window").width > 700
 
 const Container = styled.View`
@@ -59,19 +61,17 @@ const StatusLabel = styled(MetadataText)`
 
 type BidStatus = "winning" | "reserve" | "losing" | "live_auction"
 
+interface Props {
+  bid: ActiveBid_bid
+}
+
 interface State {
   status: BidStatus
 }
 
-class ActiveBid extends React.Component<RelayProps, State> {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      status: "losing",
-    }
-
-    this.handleTap = this.handleTap.bind(this)
+class ActiveBid extends React.Component<Props, State> {
+  state = {
+    status: "losing" as BidStatus,
   }
 
   componentDidMount() {
@@ -109,7 +109,7 @@ class ActiveBid extends React.Component<RelayProps, State> {
     }
   }
 
-  handleTap() {
+  handleTap = () => {
     const bid = this.props.bid
     // push user into live auction if it's open; otherwise go to artwork
     const href = this.state.status === "live_auction" ? bid.sale.href : bid.most_recent_bid.sale_artwork.artwork.href
@@ -185,35 +185,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  bid: {
-    is_leading_bidder: boolean | null
-    sale: {
-      href: string | null
-      is_live_open: boolean | null
-    } | null
-    most_recent_bid: {
-      max_bid: {
-        display: string | null
-      } | null
-      sale_artwork: {
-        artwork: {
-          href: string | null
-          image: {
-            url: string | null
-          } | null
-          artist_names: string | null
-        } | null
-        counts: {
-          bidder_positions: number | null
-        } | null
-        highest_bid: {
-          display: string | null
-        } | null
-        lot_number: string | null
-        reserve_status: string | null
-      } | null
-    } | null
-  }
-}

@@ -11,6 +11,8 @@ import { NotificationsManager, PaymentRequestPaidNotification } from "lib/Native
 
 import { Schema, Track, track as _track } from "../../../../utils/track"
 
+import { InvoicePreview_invoice } from "__generated__/InvoicePreview_invoice.graphql"
+
 const Container = styled.View`
   border-width: 1;
   border-color: ${colors["gray-regular"]};
@@ -65,10 +67,11 @@ const CostLabel = styled(PaymentRequest)`
   font-weight: bold;
 `
 
-export interface Props extends RelayProps {
+export interface Props {
+  invoice: InvoicePreview_invoice
+  relay: RelayRefetchProp
   onSelected: () => void
   conversationId: string
-  relay?: RelayRefetchProp
   notification?: PaymentRequestPaidNotification
 }
 
@@ -187,12 +190,3 @@ export default createRefetchContainer(
     }
   `
 )
-
-interface RelayProps {
-  invoice: {
-    payment_url: string | null
-    state: "PAID" | "VOID" | "REFUNDED" | "UNPAID" | null
-    total: string | null
-    lewitt_invoice_id: string
-  }
-}

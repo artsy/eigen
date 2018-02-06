@@ -1,10 +1,16 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { LayoutChangeEvent, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
+import { LayoutChangeEvent, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 
 import SerifText from "../Text/Serif"
 import RelatedArtist from "./RelatedArtist"
+
+import { RelatedArtists_artists } from "__generated__/RelatedArtists_artists.graphql"
+
+interface Props {
+  artists: RelatedArtists_artists
+}
 
 interface State {
   columns: number
@@ -14,16 +20,13 @@ interface State {
   }
 }
 
-class RelatedArtists extends React.Component<RelayProps & ViewProperties, State> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      columns: 0,
-      imageSize: {
-        width: 1,
-        height: 1,
-      },
-    }
+class RelatedArtists extends React.Component<Props, State> {
+  state = {
+    columns: 0,
+    imageSize: {
+      width: 1,
+      height: 1,
+    },
   }
 
   layoutState(currentLayout): State {
@@ -66,7 +69,7 @@ class RelatedArtists extends React.Component<RelayProps & ViewProperties, State>
   renderArtists() {
     const artists = this.props.artists
     const artistViews = artists.map(artist => {
-      return <RelatedArtist key={artist.__id} artist={artist} imageSize={this.state.imageSize} />
+      return <RelatedArtist key={artist.__id} artist={artist as any} imageSize={this.state.imageSize} />
     })
 
     const numberOfTrailingViews = artists.length % this.state.columns
@@ -114,18 +117,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  artists: Array<{
-    __id: string
-    href: string | null
-    name: string | null
-    counts: {
-      for_sale_artworks: boolean | number | string | null
-      artworks: boolean | number | string | null
-    } | null
-    image: {
-      url: string | null
-    } | null
-  } | null> | null
-}

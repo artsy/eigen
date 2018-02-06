@@ -6,6 +6,8 @@ import styled from "styled-components/native"
 
 import colors from "lib/data/colors"
 
+import { AttachmentPreview_attachment } from "__generated__/AttachmentPreview_attachment.graphql"
+
 const Container = styled.View`
   flex-direction: row;
 `
@@ -18,9 +20,11 @@ export interface AttachmentProps {
   onSelected?: (attachmentID: string) => void
 }
 
-interface Props extends AttachmentProps, RelayProps {}
+interface Props extends AttachmentProps {
+  attachment: AttachmentPreview_attachment
+}
 
-export class AttachmentPreview extends React.Component<Props, null> {
+export class AttachmentPreview extends React.Component<Props> {
   render() {
     const { attachment, children, onSelected } = this.props
     return (
@@ -42,9 +46,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  attachment: {
-    id: string
-  }
-}

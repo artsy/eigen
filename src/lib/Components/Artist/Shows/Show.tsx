@@ -1,16 +1,19 @@
 import React from "react"
-import { TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+import { TouchableWithoutFeedback, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import OpaqueImageView from "../../OpaqueImageView"
 import Metadata from "./Metadata"
 
-interface Props extends RelayProps, ViewProperties {
+import { Show_show } from "__generated__/Show_show.graphql"
+
+interface Props {
+  show: Show_show
   styles?: {
-    container?: any
-    image?: any
-    metadata?: any
+    container?: ViewStyle
+    image?: ViewStyle
+    metadata?: ViewStyle
   }
 }
 
@@ -49,12 +52,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  show: {
-    href: string | null
-    cover_image: {
-      url: string | null
-    } | null
-  }
-}

@@ -9,7 +9,6 @@ import {
   TextStyle,
   TouchableWithoutFeedback,
   View,
-  ViewProperties,
   ViewStyle,
 } from "react-native"
 const { ARTemporaryAPIModule } = NativeModules
@@ -22,6 +21,8 @@ import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import SectionTitle from "../SectionTitle"
 
+import { ArtworkRailHeader_rail } from "__generated__/ArtworkRailHeader_rail.graphql"
+
 const isPad = Dimensions.get("window").width > 700
 
 const additionalContentRails = [
@@ -33,7 +34,8 @@ const additionalContentRails = [
   "generic_gene",
 ]
 
-interface Props extends ViewProperties, RelayProps {
+interface Props {
+  rail: ArtworkRailHeader_rail
   handleViewAll: () => void
 }
 
@@ -41,8 +43,8 @@ interface State {
   following: boolean
 }
 
-class ArtworkRailHeader extends React.Component<Props & RelayPropsWorkaround, State> {
-  constructor(props) {
+class ArtworkRailHeader extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = { following: props.rail.key === "followed_artist" }
   }
@@ -166,16 +168,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  rail: {
-    title: string | null
-    key: string | null
-    context: Array<boolean | number | string | null> | null
-  }
-}
-interface RelayPropsWorkaround {
-  rail: {
-    context: any
-  }
-}

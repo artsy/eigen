@@ -8,7 +8,10 @@ import fonts from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import ImageView from "../OpaqueImageView"
 
-interface Props extends RelayProps {
+import { RelatedArtist_artist } from "__generated__/RelatedArtist_artist.graphql"
+
+interface Props {
+  artist: RelatedArtist_artist
   imageSize: {
     width: number
   }
@@ -88,17 +91,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  artist: {
-    href: string | null
-    name: string | null
-    counts: {
-      for_sale_artworks: boolean | number | string | null
-      artworks: boolean | number | string | null
-    } | null
-    image: {
-      url: string | null
-    } | null
-  }
-}

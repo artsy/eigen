@@ -6,6 +6,12 @@ import ArtistRail, { ArtistRail as ArtistRailType } from "lib/Components/Home/Ar
 import ArtworkCarousel, { ArtworkCarousel as ArtworkCarouselType } from "./Components/ArtworkCarousel"
 import FairsRail, { FairsRail as FairsRailType } from "./Components/FairsRail"
 
+import { ForYou_forYou } from "__generated__/ForYou_forYou.graphql"
+
+interface Props extends ViewProperties {
+  forYou: ForYou_forYou
+}
+
 interface State {
   rowData: Array<{
     type: "artwork" | "artist" | "fairs"
@@ -17,7 +23,7 @@ interface State {
 
 type RailModule = ArtistRailType | FairsRailType | ArtworkCarouselType | null
 
-export class ForYou extends React.Component<ViewProperties & RelayProps, State> {
+export class ForYou extends React.Component<Props, State> {
   currentScrollOffset?: number = 0
   railModules: RailModule[] = []
 
@@ -119,7 +125,7 @@ export class ForYou extends React.Component<ViewProperties & RelayProps, State> 
             case "artist":
               return <ArtistRail key={data.__id} rail={data} registerRailModule={registerRailModule} />
             case "fairs":
-              return <FairsRail fairs_module={data} registerRailModule={registerRailModule} />
+              return <FairsRail key={data.__id} fairs_module={data} registerRailModule={registerRailModule} />
           }
         }}
         keyExtractor={(item, index) => item.data.type + String(index)}
@@ -163,15 +169,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  forYou: {
-    artwork_modules: Array<{
-      __id: string
-    } | null> | null
-    artist_modules: Array<{
-      __id: string
-    } | null> | null
-    fairs_module: any | null
-  }
-}

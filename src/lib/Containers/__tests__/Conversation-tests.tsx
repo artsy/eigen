@@ -78,6 +78,7 @@ it("sends message when composer is submitted", async () => {
 const props = {
   initials: "JC",
   conversation: {
+    __id: "conversation-420",
     id: "420",
     from: {
       name: "Anita Garibaldi",
@@ -85,7 +86,9 @@ const props = {
       initials: "AG",
     },
     to: { name: "Kimberly Klark", initials: "KK" },
+    unread: false,
     initial_message: "Adoro! Por favor envie-me mais informações",
+    last_message_id: "222",
     messages: {
       edges: [
         {

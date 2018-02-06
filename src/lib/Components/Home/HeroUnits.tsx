@@ -7,7 +7,11 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import OpaqueImageView from "../OpaqueImageView"
 import Headline from "../Text/Headline"
 
-interface Props extends ViewProperties, RelayProps {}
+import { HeroUnits_hero_units } from "__generated__/HeroUnits_hero_units.graphql"
+
+interface Props extends ViewProperties {
+  hero_units: HeroUnits_hero_units
+}
 
 interface State {
   width?: number
@@ -17,14 +21,11 @@ interface State {
 }
 
 class HeroUnits extends React.Component<Props, State> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      width: null,
-      height: null,
-      margin: null,
-      fontSize: 0,
-    }
+  state = {
+    width: null,
+    height: null,
+    margin: null,
+    fontSize: 0,
   }
 
   handleLayout = (event: LayoutChangeEvent) => {
@@ -97,14 +98,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  hero_units: Array<{
-    __id: string
-    href: string | null
-    title: string | null
-    heading: string | null
-    narrow_image_url: string | null
-    wide_image_url: string | null
-  } | null> | null
-}

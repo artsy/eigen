@@ -20,11 +20,13 @@ it("looks right for bids in live open auctions", () => {
 
 const bid = (_isLive?: boolean, isOpen?: boolean) => {
   return {
+    is_leading_bidder: false,
     sale: {
       is_live_open: isOpen,
       href: "/to-the-auction",
     },
     most_recent_bid: {
+      __id: "bid-most-recent",
       id: "594933e6275b244305851e9c",
       display_max_bid_amount_dollars: "$10,000",
       max_bid: {
@@ -32,6 +34,7 @@ const bid = (_isLive?: boolean, isOpen?: boolean) => {
         display: "$10,000",
       },
       sale_artwork: {
+        reserve_status: null,
         counts: {
           bidder_positions: 1,
         },
@@ -45,7 +48,10 @@ const bid = (_isLive?: boolean, isOpen?: boolean) => {
         artwork: {
           id: "robert-longo-untitled-dividing-time",
           title: "Untitled (Dividing Time)",
+          href: "/artwork/robert-longo-untitled-dividing-time",
+          artist_names: "Robert Longo",
           image: {
+            url: "https://d32dm0rphc51dk.cloudfront.net/4GlhFa7ci5-0W25sjDNFIQ/large.jpg",
             image_url: "https://d32dm0rphc51dk.cloudfront.net/4GlhFa7ci5-0W25sjDNFIQ/:version.jpg",
           },
           artist: {

@@ -5,6 +5,8 @@ import styled from "styled-components/native"
 import { LargeHeadline } from "../Typography"
 import ActiveBid from "./ActiveBid"
 
+import { ActiveBids_me } from "__generated__/ActiveBids_me.graphql"
+
 const Container = styled.View`
   margin-top: 20px;
   margin-bottom: 40px;
@@ -14,23 +16,18 @@ const Headline = styled(LargeHeadline)`
   margin-bottom: -10px;
 `
 
-interface Props extends RelayProps {
-  relay?: RelayRefetchProp
+interface Props {
+  relay: RelayRefetchProp
+  me: ActiveBids_me
 }
 
 interface State {
   fetchingData: boolean
 }
 
-class ActiveBids extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-
-    this.state = {
-      fetchingData: false,
-    }
-
-    this.refreshActiveBids = this.refreshActiveBids.bind(this)
+export class ActiveBids extends React.Component<Props, State> {
+  state = {
+    fetchingData: false,
   }
 
   hasContent() {
@@ -39,12 +36,12 @@ class ActiveBids extends React.Component<Props, State> {
 
   renderRows() {
     const bids = this.props.me.lot_standings.map(bidData => {
-      return <ActiveBid key={bidData.most_recent_bid.__id} bid={bidData} />
+      return <ActiveBid key={bidData.most_recent_bid.__id} bid={bidData as any} />
     })
     return bids
   }
 
-  refreshActiveBids(callback) {
+  refreshActiveBids = (callback?: () => void) => {
     if (this.state.fetchingData) {
       return
     }
@@ -102,14 +99,4 @@ export default createRefetchContainer(
       }
     }
   `
-) as React.ComponentClass<Props>
-
-interface RelayProps {
-  me: {
-    lot_standings: Array<{
-      most_recent_bid: {
-        __id: string
-      } | null
-    } | null> | null
-  }
-}
+)

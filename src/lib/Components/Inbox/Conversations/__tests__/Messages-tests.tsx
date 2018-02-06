@@ -20,6 +20,12 @@ const props = {
   to: { name: "Kimberly Klark", initials: "KK" },
   initial_message: "Adoro! Por favor envie-me mais informações",
   messages: {
+    pageInfo: {
+      startCursor: null,
+      endCursor: null,
+      hasPreviousPage: false,
+      hasNextPage: false,
+    },
     edges: [
       {
         cursor: "some-cursor",
@@ -43,7 +49,7 @@ const props = {
     {
       title: "The Mythic Being: Sol’s Drawing #1–5",
       item: {
-        __typename: "Artwork",
+        __typename: "Artwork" as "Artwork",
         id: "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
         href: "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
         title: "The Mythic Being: Sol’s Drawing #1–5",

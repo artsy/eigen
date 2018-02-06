@@ -1,5 +1,5 @@
 import React from "react"
-import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
+import { Dimensions, StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import removeMarkdown from "remove-markdown"
@@ -7,9 +7,15 @@ import removeMarkdown from "remove-markdown"
 import Headline from "../Text/Headline"
 import SerifText from "../Text/Serif"
 
+import { Biography_artist } from "__generated__/Biography_artist.graphql"
+
 const sideMargin = Dimensions.get("window").width > 700 ? 50 : 0
 
-class Biography extends React.Component<RelayProps & ViewProperties> {
+interface Props {
+  artist: Biography_artist
+}
+
+class Biography extends React.Component<Props> {
   render() {
     const artist = this.props.artist
     if (!artist.blurb && !artist.bio) {
@@ -65,10 +71,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  artist: {
-    bio: string | null
-    blurb: string | null
-  }
-}

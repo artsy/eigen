@@ -68,7 +68,7 @@ export class Sale extends React.Component<Props, State> {
     const commonPadding = this.commonPadding
     return (
       <View style={{ paddingLeft: commonPadding, paddingRight: commonPadding, backgroundColor: "white" }}>
-        <Header sale={this.props.sale} />
+        <Header sale={this.props.sale} showImage={false} />
       </View>
     )
   }
@@ -158,7 +158,7 @@ const styles = StyleSheet.create<Styles>({
 
 export default createRefetchContainer(
   Sale,
-  graphql.experimental`
+  graphql`
     fragment Sale_sale on Sale {
       id
       name
@@ -166,7 +166,7 @@ export default createRefetchContainer(
       ...SaleArtworksGrid_sale
     }
   `,
-  graphql.experimental`
+  graphql`
     query SaleRefetchQuery($saleID: String!) {
       sale(id: $saleID) {
         ...Sale_sale

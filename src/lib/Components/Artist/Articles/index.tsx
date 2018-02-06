@@ -1,11 +1,17 @@
 import React, { Component } from "react"
-import { ScrollView, StyleSheet, View, ViewProperties } from "react-native"
+import { ScrollView, StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import SerifText from "../../Text/Serif"
 import Article from "./Article"
 
-class Articles extends Component<RelayProps & ViewProperties> {
+import { Articles_articles } from "__generated__/Articles_articles.graphql"
+
+interface Props {
+  articles: Articles_articles
+}
+
+class Articles extends Component<Props> {
   render() {
     const articles = this.props.articles
     return (
@@ -44,9 +50,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  articles: Array<{
-    __id: string
-  } | null> | null
-}

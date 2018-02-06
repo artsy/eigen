@@ -13,6 +13,8 @@ import { Colors } from "lib/data/colors"
 import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
 
+import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
+
 const isPad = Dimensions.get("window").width > 700
 
 const VerticalLayout = styled.View`
@@ -79,14 +81,15 @@ const SeparatorLine = styled.View`
   ${isPad ? "align-self: center; width: 708;" : ""};
 `
 
-export interface Props extends RelayProps {
+export interface Props {
+  conversation: ConversationSnippet_conversation
   onSelected?: () => void
 }
 
 const track: Track<Props, null, Schema.Entity> = _track
 
 @track()
-export class ConversationSnippet extends React.Component<Props, any> {
+export class ConversationSnippet extends React.Component<Props> {
   renderTitleForItem(item) {
     if (item.__typename === "Artwork") {
       const artworkTitle = `${item.title.trim()}, `
@@ -207,18 +210,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  conversation: {
-    id: string | null
-    to: {
-      name: string
-    }
-    last_message: string
-    last_message_at: string | null
-    unread: boolean
-    items: Array<{
-      item: any
-    } | null> | null
-  }
-}

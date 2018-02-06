@@ -16,7 +16,7 @@ const RootContainer: React.SFC<any> = ({ Component }) => {
   return (
     <QueryRenderer
       environment={createEnvironment()}
-      query={graphql.experimental`
+      query={graphql`
         query InboxQuery($cursor: String) {
           me {
             ...Inbox_me @arguments(after: $cursor)

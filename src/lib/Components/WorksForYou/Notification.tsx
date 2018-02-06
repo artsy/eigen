@@ -9,14 +9,19 @@ import SerifText from "../Text/Serif"
 
 import colors from "lib/data/colors"
 
-export class Notification extends React.Component<RelayProps, any> {
+import { Notification_notification } from "__generated__/Notification_notification.graphql"
+
+interface Props {
+  // Special notifications will pass down an artistHref. Otherwise, grab it from the artworks.
+  notification: Notification_notification & { artistHref?: string }
+}
+
+export class Notification extends React.Component<Props> {
   handleArtistTap() {
-    // Special notifications will pass down an artistHref. Otherwise, grab it from the artworks
     const artistHref = this.props.notification.artistHref || this.props.notification.artworks[0].artists[0].href
-    if (!artistHref) {
-      return
+    if (artistHref) {
+      SwitchBoard.presentNavigationViewController(this, artistHref)
     }
-    SwitchBoard.presentNavigationViewController(this, artistHref)
   }
 
   render() {
@@ -41,7 +46,7 @@ export class Notification extends React.Component<RelayProps, any> {
           </View>
         </TouchableWithoutFeedback>
         <View style={styles.gridContainer}>
-          <GenericGrid artworks={notification.artworks} />
+          <GenericGrid artworks={notification.artworks as any} />
         </View>
       </View>
     )
@@ -113,17 +118,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  notification: {
-    summary: string
-    artists: string
-    artworks: any[]
-    image: {
-      resized: {
-        url: string
-      }
-    } | null
-    artistHref?: string | null
-  }
-}
