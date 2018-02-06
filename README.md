@@ -24,8 +24,8 @@ Want to know more about Emission? Read the [mobile](http://artsy.github.io/blog/
 
 _Automated install_:
 
-* **OSS**: `git clone https://github.com/artsy/emission.git; cd emission; make setup; make oss`.
-* **Artsy**: `git clone https://github.com/artsy/emission.git; cd emission; make setup; make artsy`. Then look in 1password for the Eigen keys.
+* **OSS**: `git clone https://github.com/artsy/emission.git && cd emission && make setup && make oss` 
+* **Artsy**: `git clone https://github.com/artsy/emission.git && cd emission && make setup && make artsy`. Then look in 1password for the Eigen keys.
 
 _Manual install_
 
