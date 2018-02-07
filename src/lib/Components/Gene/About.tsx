@@ -8,7 +8,13 @@ import Biography from "./Biography"
 import RelatedArtists from "../RelatedArtists"
 import Separator from "../Separator"
 
-class About extends React.Component<RelayProps> {
+import { About_gene } from "__generated__/About_gene.graphql"
+
+interface Props {
+  gene: About_gene
+}
+
+class About extends React.Component<Props> {
   render() {
     return (
       <View>
@@ -29,7 +35,7 @@ class About extends React.Component<RelayProps> {
 
   relatedArtists() {
     return (this.props.gene.trending_artists || []).length ? (
-      <RelatedArtists artists={this.props.gene.trending_artists} />
+      <RelatedArtists artists={this.props.gene.trending_artists as any} />
     ) : null
   }
 }
@@ -55,9 +61,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  gene: {
-    trending_artists: Array<boolean | number | string | null> | null
-  }
-}

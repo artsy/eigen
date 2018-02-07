@@ -2,13 +2,16 @@ import React from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
-import ActiveBids from "lib/Components/Inbox/ActiveBids"
-import Conversations from "lib/Components/Inbox/Conversations"
+import ActiveBids, { ActiveBids as ActiveBidsRef } from "lib/Components/Inbox/ActiveBids"
+import Conversations, { Conversations as ConversationsRef } from "lib/Components/Inbox/Conversations"
 import ZeroStateInbox from "lib/Components/Inbox/Conversations/ZeroStateInbox"
 import { RefreshControl } from "react-native"
 
-interface Props extends RelayProps {
-  relay?: RelayRefetchProp
+import { Inbox_me } from "__generated__/Inbox_me.graphql"
+
+interface Props {
+  me: Inbox_me
+  relay: RelayRefetchProp
   isVisible: boolean
 }
 
@@ -21,17 +24,11 @@ const Container = styled.ScrollView`
 `
 
 export class Inbox extends React.Component<Props, State> {
-  conversations: any
-  activeBids: any
+  conversations: ConversationsRef
+  activeBids: ActiveBidsRef
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      fetchingData: false,
-    }
-
-    this.fetchData = this.fetchData.bind(this)
+  state = {
+    fetchingData: false,
   }
 
   componentWillReceiveProps(newProps) {
@@ -40,7 +37,7 @@ export class Inbox extends React.Component<Props, State> {
     }
   }
 
-  fetchData() {
+  fetchData = () => {
     if (this.state.fetchingData) {
       return
     }
@@ -49,9 +46,8 @@ export class Inbox extends React.Component<Props, State> {
 
     if (this.activeBids && this.conversations) {
       // Allow Conversations & Active Bids to properly force-fetch themselves.
-      // The stored refs are the Relay containers; the components themselves are nested under as refs.
-      this.activeBids.refs.component.refreshActiveBids()
-      this.conversations.refs.component.refreshConversations(() => {
+      this.activeBids.refreshActiveBids()
+      this.conversations.refreshConversations(() => {
         this.setState({ fetchingData: false })
       })
     } else {
@@ -65,10 +61,11 @@ export class Inbox extends React.Component<Props, State> {
     const hasBids = this.props.me.lot_standings.length > 0
     const hasConversations =
       this.props.me.conversations_existence_check && this.props.me.conversations_existence_check.edges.length > 0
+    // TODO: Pretty sure I’ve seen that Relay containers have a ‘component ref’ property, we should be using that.
     return hasBids || hasConversations ? (
       <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
-        <ActiveBids me={this.props.me as any} ref={activeBids => (this.activeBids = activeBids)} />
-        <Conversations me={this.props.me as any} ref={conversations => (this.conversations = conversations)} />
+        <ActiveBids me={this.props.me as any} componentRef={activeBids => (this.activeBids = activeBids)} />
+        <Conversations me={this.props.me as any} componentRef={conversations => (this.conversations = conversations)} />
       </Container>
     ) : (
       <ZeroStateInbox />
@@ -117,20 +114,3 @@ export default createRefetchContainer(
     }
   `
 )
-
-interface RelayProps {
-  me: {
-    lot_standings: Array<{
-      active_bid: {
-        __id: string
-      } | null
-    } | null> | null
-    conversations_existence_check: {
-      edges: Array<{
-        node: {
-          id: string | null
-        } | null
-      } | null> | null
-    } | null
-  }
-}

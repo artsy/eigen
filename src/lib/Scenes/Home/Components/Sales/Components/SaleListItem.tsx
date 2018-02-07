@@ -8,6 +8,8 @@ import Serif from "lib/Components/Text/Serif"
 import fonts from "lib/data/fonts"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 
+import { SaleListItem_sale } from "__generated__/SaleListItem_sale.graphql"
+
 const Image = styled(OpaqueImageView)`
   position: absolute;
   top: 0;
@@ -69,11 +71,12 @@ const Metadata = styled.Text`
   font-size: 10px;
 `
 
-interface Props extends RelayProps {
+interface Props {
+  sale: SaleListItem_sale
   containerWidth: number
 }
 
-export class SaleListItem extends React.Component<Props, null> {
+export class SaleListItem extends React.Component<Props> {
   handleTap = () => {
     const { sale: { live_url_if_open, href } } = this.props
     const url = (live_url_if_open || href) as string
@@ -136,22 +139,3 @@ export default createFragmentContainer(SaleListItem, {
     }
   `,
 })
-
-interface RelayProps {
-  sale: {
-    id: string
-    name: string
-    href: string
-    is_open: boolean
-    is_live_open: boolean
-    live_url_if_open: boolean | null
-    start_at: string | null
-    end_at: string | null
-    registration_ends_at: string | null
-    live_start_at: string | null
-    display_timely_at: string | null
-    cover_image: {
-      url: string | null
-    }
-  } | null
-}

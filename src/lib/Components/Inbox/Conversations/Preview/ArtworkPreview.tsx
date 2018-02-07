@@ -12,6 +12,8 @@ import { Colors } from "lib/data/colors"
 import { Fonts } from "lib/data/fonts"
 import styled from "styled-components/native"
 
+import { ArtworkPreview_artwork } from "__generated__/ArtworkPreview_artwork.graphql"
+
 const Container = styled.View`
   border-width: 1;
   border-color: ${Colors.GrayRegular};
@@ -50,14 +52,15 @@ const TitleAndDate = styled.View`
   flex-direction: row;
   justify-content: flex-start;
 `
-interface Props extends RelayProps {
+interface Props {
+  artwork: ArtworkPreview_artwork
   onSelected?: () => void
 }
 
 const track: Track<Props> = _track
 
 @track()
-export class ArtworkPreview extends React.Component<Props, any> {
+export class ArtworkPreview extends React.Component<Props> {
   @track(props => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationAttachmentArtwork,
@@ -110,16 +113,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  artwork: {
-    id: string | null
-    _id: string | null
-    title: string | null
-    artist_names: string | null
-    date: string | null
-    image: {
-      url: string | null
-    } | null
-  }
-}

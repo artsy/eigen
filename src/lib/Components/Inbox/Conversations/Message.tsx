@@ -16,6 +16,8 @@ import InvoicePreview from "./Preview/InvoicePreview"
 
 import { Schema, Track, track as _track } from "../../../utils/track"
 
+import { Message_message } from "__generated__/Message_message.graphql"
+
 const isPad = Dimensions.get("window").width > 700
 
 const VerticalLayout = styled.View`
@@ -76,7 +78,8 @@ const PreviewContainer = styled.View`
   margin-bottom: 10;
 `
 
-interface Props extends RelayProps {
+interface Props {
+  message: Message_message
   senderName: string
   initials?: string
   artworkPreview?: JSX.Element
@@ -90,7 +93,7 @@ interface Props extends RelayProps {
 const track: Track<Props> = _track
 
 @track()
-export class Message extends React.Component<Props, any> {
+export class Message extends React.Component<Props> {
   renderAttachmentPreviews(attachments: Props["message"]["attachments"]) {
     // This function does not use the arrow syntax, because it shouldn’t be force bound to this component. Instead, it
     // gets bound to the AttachmentPreview component instance that’s touched, so we can pass `this` to `findNodeHandle`.
@@ -178,7 +181,11 @@ export class Message extends React.Component<Props, any> {
 
             {message.invoice && (
               <PreviewContainer>
-                <InvoicePreview invoice={message.invoice} onSelected={previewInvoice} conversationId={conversationId} />
+                <InvoicePreview
+                  invoice={message.invoice as any}
+                  onSelected={previewInvoice}
+                  conversationId={conversationId}
+                />
               </PreviewContainer>
             )}
 
@@ -221,21 +228,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  message: {
-    body: string | null
-    created_at: string | null
-    is_from_user: boolean
-    invoice: any | null
-    from: {
-      name: string | null
-      email: string
-    }
-    attachments: Array<{
-      id: string
-      content_type: string
-      download_url: string
-    }>
-  }
-}

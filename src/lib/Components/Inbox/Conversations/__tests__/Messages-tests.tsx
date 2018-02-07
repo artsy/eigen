@@ -5,7 +5,7 @@ import * as renderer from "react-test-renderer"
 import Messages from "../Messages"
 
 it("looks correct when rendered", () => {
-  const messages = renderer.create(<Messages conversation={props} />) as any
+  const messages = renderer.create(<Messages conversation={props as any} />)
   expect(messages).toMatchSnapshot()
 })
 
@@ -20,6 +20,12 @@ const props = {
   to: { name: "Kimberly Klark", initials: "KK" },
   initial_message: "Adoro! Por favor envie-me mais informações",
   messages: {
+    pageInfo: {
+      startCursor: null,
+      endCursor: null,
+      hasPreviousPage: false,
+      hasNextPage: false,
+    },
     edges: [
       {
         cursor: "some-cursor",
@@ -41,9 +47,7 @@ const props = {
   },
   items: [
     {
-      title: "The Mythic Being: Sol’s Drawing #1–5",
-      item: {
-        __typename: "Artwork",
+      artwork: {
         id: "adrian-piper-the-mythic-being-sols-drawing-number-1-5",
         href: "/artwork/adrian-piper-the-mythic-being-sols-drawing-number-1-5",
         title: "The Mythic Being: Sol’s Drawing #1–5",

@@ -1,7 +1,7 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { Dimensions, StyleSheet, View, ViewProperties } from "react-native"
+import { Dimensions, StyleSheet, View } from "react-native"
 
 import NavButton from "../Buttons/NavigationButton"
 import RelatedArtists from "../RelatedArtists"
@@ -9,11 +9,13 @@ import Separator from "../Separator"
 import Articles from "./Articles"
 import Biography from "./Biography"
 
-interface Props extends ViewProperties {
-  artist: any
+import { About_artist } from "__generated__/About_artist.graphql"
+
+interface Props {
+  artist: About_artist
 }
 
-class About extends React.Component<Props, null> {
+class About extends React.Component<Props> {
   render() {
     return (
       <View>
@@ -28,7 +30,7 @@ class About extends React.Component<Props, null> {
     if (this.props.artist.has_metadata) {
       return (
         <View>
-          <Biography artist={this.props.artist} />
+          <Biography artist={this.props.artist as any} />
           {this.auctionResults()}
           <Separator style={styles.sectionSeparator} />
         </View>
@@ -51,7 +53,7 @@ class About extends React.Component<Props, null> {
     if (this.props.artist.articles.length) {
       return (
         <View>
-          <Articles articles={this.props.artist.articles} />
+          <Articles articles={this.props.artist.articles as any} />
           <Separator style={styles.sectionSeparator} />
         </View>
       )
@@ -60,7 +62,7 @@ class About extends React.Component<Props, null> {
 
   relatedArtists() {
     return this.props.artist.related_artists.length ? (
-      <RelatedArtists artists={this.props.artist.related_artists} />
+      <RelatedArtists artists={this.props.artist.related_artists as any} />
     ) : null
   }
 }

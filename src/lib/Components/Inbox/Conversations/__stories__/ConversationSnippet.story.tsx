@@ -14,9 +14,7 @@ const conversation = {
   items: [
     {
       item: {
-        __typename: "Artwork",
-        id: "bradley-theodore-karl-and-anna-face-off-diptych",
-        href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
+        __typename: "Artwork" as "Artwork",
         title: "Karl and Anna Face Off (Diptych)",
         date: "2016",
         artist_names: "Bradley Theodore",

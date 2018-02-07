@@ -1,11 +1,14 @@
 import React, { Component } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { LayoutChangeEvent, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
+import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 
 import Show from "./Show"
 
-interface Props extends RelayProps, ViewProperties {
+import { VariableSizeShowsList_shows } from "__generated__/VariableSizeShowsList_shows.graphql"
+
+interface Props {
+  shows: VariableSizeShowsList_shows
   showSize: "medium" | "large"
 }
 
@@ -96,9 +99,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  shows: Array<{
-    __id: string
-  } | null> | null
-}

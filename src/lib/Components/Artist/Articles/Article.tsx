@@ -7,7 +7,13 @@ import fonts from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import ImageView from "../../OpaqueImageView"
 
-class Article extends React.Component<RelayProps & ViewProperties> {
+import { Article_article } from "__generated__/Article_article.graphql"
+
+interface Props extends ViewProperties {
+  article: Article_article
+}
+
+class Article extends React.Component<Props> {
   handleTap() {
     SwitchBoard.presentNavigationViewController(this, this.props.article.href)
   }
@@ -83,16 +89,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  article: {
-    thumbnail_title: string | null
-    href: string | null
-    author: {
-      name: string | null
-    } | null
-    thumbnail_image: {
-      url: string | null
-    } | null
-  }
-}

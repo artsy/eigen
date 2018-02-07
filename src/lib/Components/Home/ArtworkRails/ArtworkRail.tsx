@@ -24,6 +24,8 @@ import fonts from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import ArtworkRailHeader from "./ArtworkRailHeader"
 
+import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
+
 // tslint:disable-next-line:no-var-requires
 const chevron: ImageURISource = require("../../../../../images/chevron.png")
 
@@ -41,8 +43,9 @@ const additionalContentRails = [
 
 export const minRailHeight = 400
 
-interface Props extends ViewProperties, RelayProps {
-  relay?: RelayRefetchProp
+interface Props extends ViewProperties {
+  relay: RelayRefetchProp
+  rail: ArtworkRail_rail
 }
 
 interface State {
@@ -52,16 +55,12 @@ interface State {
   didPerformFetch: boolean
 }
 
-export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, State> {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      expanded: false,
-      gridHeight: 0,
-      loadFailed: false,
-      didPerformFetch: false,
-    }
+export class ArtworkRail extends React.Component<Props, State> {
+  state = {
+    expanded: false,
+    gridHeight: 0,
+    loadFailed: false,
+    didPerformFetch: false,
   }
 
   componentDidMount() {
@@ -176,7 +175,7 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
     return (
       <View style={[styles.gridContainer, { height: this.gridContainerHeight() }]}>
         <View onLayout={this.onGridLayout.bind(this)}>
-          <GenericGrid artworks={this.props.rail.results} />
+          <GenericGrid artworks={this.props.rail.results as any} />
         </View>
       </View>
     )
@@ -248,7 +247,7 @@ export class ArtworkRail extends React.Component<Props & RelayPropsWorkaround, S
 
     return (
       <View accessibilityLabel="Artwork Rail" style={{ paddingBottom: this.state.expanded ? 0 : 12 }}>
-        <ArtworkRailHeader rail={this.props.rail} handleViewAll={this.handleViewAll} />
+        <ArtworkRailHeader rail={this.props.rail as any} handleViewAll={this.handleViewAll} />
         <View style={this.railStyle()}>{this.renderModuleResults()}</View>
       </View>
     )
@@ -300,7 +299,7 @@ const styles = StyleSheet.create<Styles>({
 
 export default createRefetchContainer(
   ArtworkRail,
-  graphql.experimental`
+  graphql`
     fragment ArtworkRail_rail on HomePageArtworkModule
       @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: false }) {
       ...ArtworkRailHeader_rail
@@ -336,7 +335,7 @@ export default createRefetchContainer(
       }
     }
   `,
-  graphql.experimental`
+  graphql`
     query ArtworkRailRefetchQuery($__id: ID!, $fetchContent: Boolean!) {
       node(__id: $__id) {
         ...ArtworkRail_rail @arguments(fetchContent: $fetchContent)
@@ -344,21 +343,3 @@ export default createRefetchContainer(
     }
   `
 )
-
-interface RelayProps {
-  rail: {
-    __id: string
-    key: string | null
-    params: {
-      medium: string | null
-      price_range: string | null
-    } | null
-    context: Array<boolean | number | string | null> | null
-    results: Array<boolean | number | string | null> | null
-  }
-}
-interface RelayPropsWorkaround {
-  rail: {
-    context: any
-  }
-}

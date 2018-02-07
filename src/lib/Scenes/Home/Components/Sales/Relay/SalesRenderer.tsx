@@ -6,7 +6,7 @@ export function SalesRenderer({ render }) {
   return (
     <QueryRenderer
       environment={defaultEnvironment}
-      query={graphql.experimental`
+      query={graphql`
         query SalesRendererQuery {
           viewer {
             ...Sales_viewer

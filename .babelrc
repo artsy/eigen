@@ -1,4 +1,4 @@
 {
-  "plugins": ["relay"],
+  "plugins": [["relay", { "artifactDirectory": "./src/__generated__" }]],
   "presets": ["react-native"]
 }

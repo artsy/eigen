@@ -12,6 +12,8 @@ import Separator from "lib/Components/Separator"
 import SerifText from "lib/Components/Text/Serif"
 import { Router } from "lib/utils/router"
 
+import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
+
 const AvatarCircle = styled.View`
   background-color: ${Colors.GrayRegular};
   height: 123;
@@ -59,7 +61,7 @@ const ButtonDescriptionText = styled(SerifText)`
  *      [OT]
  *   Orta Therox
  */
-const Header = ({ me }) => (
+const Header: React.SFC<{ me: MyProfile_me }> = ({ me }) => (
   <HeaderWrapper>
     <AvatarCircle>
       <AvatarText>{me.initials}</AvatarText>
@@ -86,9 +88,11 @@ const ProfileButton = ({ section, description, isTop, onPress }) => (
   </TouchableOpacity>
 )
 
-interface Props extends ViewProperties, RelayProps {}
+interface Props extends ViewProperties {
+  me: MyProfile_me
+}
 
-export class MyProfile extends React.Component<Props, {}> {
+export class MyProfile extends React.Component<Props> {
   render() {
     // TODO: go to overview / implement below
     // const windowDimensions = Dimensions.get("window")
@@ -129,10 +133,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  me: {
-    name: string | null
-    initials: string | null
-  }
-}

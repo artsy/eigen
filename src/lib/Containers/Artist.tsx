@@ -12,6 +12,8 @@ import { SwitchEvent } from "lib/Components/SwitchView"
 import TabView from "lib/Components/TabView"
 import { Schema, Track, track as _track } from "lib/utils/track"
 
+import { Artist_artist } from "__generated__/Artist_artist.graphql"
+
 const isPad = Dimensions.get("window").width > 700
 
 const TABS = {
@@ -20,8 +22,9 @@ const TABS = {
   SHOWS: "SHOWS",
 }
 
-// tslint:disable-next-line:no-empty-interface
-interface Props extends RelayProps {}
+interface Props extends ViewProperties {
+  artist: Artist_artist
+}
 
 interface State {
   selectedTabIndex: number
@@ -31,7 +34,7 @@ interface State {
 const track: Track<Props, State> = _track
 
 @track()
-export class Artist extends Component<Props & ViewProperties, State> {
+export class Artist extends Component<Props, State> {
   componentWillMount() {
     const tabs = this.availableTabs()
     const worksTab = tabs.indexOf(TABS.WORKS)
@@ -93,11 +96,11 @@ export class Artist extends Component<Props & ViewProperties, State> {
   renderSelectedTab = () => {
     switch (this.selectedTabTitle()) {
       case TABS.ABOUT:
-        return <About artist={this.props.artist} />
+        return <About artist={this.props.artist as any} />
       case TABS.WORKS:
-        return <Artworks artist={this.props.artist} />
+        return <Artworks artist={this.props.artist as any} />
       case TABS.SHOWS:
-        return <Shows artist={this.props.artist} />
+        return <Shows artist={this.props.artist as any} />
     }
   }
 
@@ -126,7 +129,7 @@ export class Artist extends Component<Props & ViewProperties, State> {
     return (
       <ScrollView scrollsToTop={true} automaticallyAdjustContentInsets={false}>
         <View style={{ paddingLeft: commonPadding, paddingRight: commonPadding }}>
-          <Header artist={this.props.artist} />
+          <Header artist={this.props.artist as any} />
           {displayTabView ? this.renderTabView() : this.renderSingleTab()}
         </View>
       </ScrollView>
@@ -167,28 +170,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  artist: {
-    _id: string | null
-    id: string | null
-    birthday: string | null
-    counts: {
-      articles: boolean | number | string | null
-      artworks: boolean | number | string | null
-      follows: boolean | number | string | null
-      partner_shows: boolean | number | string | null
-      related_artists: boolean | number | string | null
-      for_sale_artworks: boolean | number | string | null
-    } | null
-    has_metadata: boolean | null
-    name: string | null
-    nationality: string | null
-    current_shows: Array<boolean | number | string | null> | null
-    upcoming_shows: Array<boolean | number | string | null> | null
-    past_small_shows: Array<boolean | number | string | null> | null
-    past_large_shows: Array<{
-      __id: string | null
-    }> | null
-  }
-}

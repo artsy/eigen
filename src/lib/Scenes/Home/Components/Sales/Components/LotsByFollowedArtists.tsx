@@ -47,7 +47,7 @@ export class LotsByFollowedArtists extends Component<Props, State> {
       <ScrollView onScroll={isCloseToBottom(this.loadMore)} scrollEventThrottle={400}>
         <SectionHeader title={title} />
         <Container>
-          <GenericGrid artworks={artworks} />
+          <GenericGrid artworks={artworks as any} />
           {this.state.fetchingMoreData && <Spinner style={{ marginTop: 20 }} />}
         </Container>
       </ScrollView>
@@ -57,7 +57,7 @@ export class LotsByFollowedArtists extends Component<Props, State> {
 
 export default createPaginationContainer(
   LotsByFollowedArtists,
-  graphql.experimental`
+  graphql`
     fragment LotsByFollowedArtists_viewer on Viewer
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
       sale_artworks: sale_artworks(
@@ -86,7 +86,7 @@ export default createPaginationContainer(
     getConnectionFromProps: ({ viewer }) => viewer && (viewer.sale_artworks as ConnectionData),
     getFragmentVariables: (prevVars, totalCount) => ({ ...prevVars, count: totalCount }),
     getVariables: (_props, { count, cursor }) => ({ count, cursor }),
-    query: graphql.experimental`
+    query: graphql`
       query LotsByFollowedArtistsQuery($count: Int!, $cursor: String) {
         viewer {
           ...LotsByFollowedArtists_viewer @arguments(count: $count, cursor: $cursor)

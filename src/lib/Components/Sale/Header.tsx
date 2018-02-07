@@ -4,12 +4,14 @@ import { createFragmentContainer, graphql } from "react-relay"
 import OpaqueImageView from "../OpaqueImageView"
 import Headline from "../Text/Headline"
 
-class Header extends React.Component<RelayProps, {}> {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
+import { Header_sale } from "__generated__/Header_sale.graphql"
 
+interface Props {
+  sale: Header_sale
+  showImage: boolean
+}
+
+class Header extends React.Component<Props> {
   render() {
     const { width, height } = Dimensions.get("window")
     const sale = this.props.sale
@@ -36,6 +38,7 @@ export default createFragmentContainer(
   Header,
   graphql`
     fragment Header_sale on Sale {
+      name
       cover_image {
         href
       }
@@ -64,12 +67,3 @@ const styles = StyleSheet.create<Styles>({
     fontSize: isPad ? 20 : 14,
   },
 })
-
-interface RelayProps {
-  sale: {
-    _id: string
-    id: string
-    name: string | null
-  }
-  showImage: boolean
-}

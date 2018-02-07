@@ -16,20 +16,17 @@ it("renders correctly with a show", () => {
 })
 
 const artwork = {
-  __typename: "Artwork",
-  id: "bradley-theodore-karl-and-anna-face-off-diptych",
-  href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
+  __typename: "Artwork" as "Artwork",
   title: "Karl and Anna Face Off (Diptych)",
   date: "2016",
   artist_names: "Bradley Theodore",
   image: {
     url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
-    image_url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/:version.jpg",
   },
 }
 
 const show = {
-  __typename: "Show",
+  __typename: "Show" as "Show",
   fair: {
     name: "Catty Fair",
   },

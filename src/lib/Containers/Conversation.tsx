@@ -17,6 +17,8 @@ import { sendConversationMessage } from "../Components/Inbox/Conversations/SendC
 
 import { updateConversation } from "../Components/Inbox/Conversations/UpdateConversation"
 
+import { Conversation_me } from "__generated__/Conversation_me.graphql"
+
 const Container = styled.View`
   flex: 1;
   flex-direction: column;
@@ -36,8 +38,9 @@ const HeaderTextContainer = styled.View`
   justify-content: center;
 `
 
-interface Props extends RelayProps {
-  relay?: RelayPaginationProp
+interface Props {
+  me: Conversation_me
+  relay: RelayPaginationProp
   onMessageSent?: (text: string) => void
 }
 
@@ -46,7 +49,7 @@ interface State {
   isConnected: boolean
   markedMessageAsRead: boolean
   fetchingData: boolean
-  failedMessageText?: string
+  failedMessageText: string | null
 }
 
 const track: Track<Props, State> = _track
@@ -55,17 +58,13 @@ const track: Track<Props, State> = _track
 export class Conversation extends React.Component<Props, State> {
   composer: Composer
 
-  constructor(props) {
-    super(props)
-
-    // Assume if the component loads, connection exists (this way the banner won't flash unnecessarily)
-    this.state = {
-      sendingMessage: false,
-      isConnected: true,
-      markedMessageAsRead: false,
-      fetchingData: false,
-    }
-    this.handleConnectivityChange = this.handleConnectivityChange.bind(this)
+  // Assume if the component loads, connection exists (this way the banner won't flash unnecessarily)
+  state = {
+    sendingMessage: false,
+    isConnected: true,
+    markedMessageAsRead: false,
+    fetchingData: false,
+    failedMessageText: null,
   }
 
   componentDidMount() {
@@ -77,7 +76,7 @@ export class Conversation extends React.Component<Props, State> {
     NetInfo.isConnected.removeEventListener("connectionChange", this.handleConnectivityChange)
   }
 
-  handleConnectivityChange(isConnected) {
+  handleConnectivityChange = isConnected => {
     this.setState({ isConnected })
   }
 
@@ -189,22 +188,3 @@ export default createFragmentContainer(Conversation, {
     }
   `,
 })
-
-interface RelayProps {
-  me: {
-    conversation: {
-      id: string
-      __id: string
-      to: {
-        name: string
-        initials: string
-      }
-      from: {
-        email: string
-      }
-      last_message_id: string
-      initial_message: string
-      unread: boolean
-    }
-  }
-}

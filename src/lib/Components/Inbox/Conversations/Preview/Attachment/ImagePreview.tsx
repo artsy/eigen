@@ -5,12 +5,16 @@ import styled from "styled-components/native"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 
+import { ImagePreview_attachment } from "__generated__/ImagePreview_attachment.graphql"
+
 const Image = styled(OpaqueImageView)`
   height: 150;
   flex: 1;
 `
 
-interface Props extends AttachmentProps, RelayProps {}
+interface Props extends AttachmentProps {
+  attachment: ImagePreview_attachment
+}
 
 export const ImagePreview: React.SFC<Props> = ({ attachment, onSelected }) => (
   <AttachmentPreview attachment={attachment as any} onSelected={onSelected}>
@@ -27,9 +31,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  attachment: {
-    download_url?: string
-  }
-}

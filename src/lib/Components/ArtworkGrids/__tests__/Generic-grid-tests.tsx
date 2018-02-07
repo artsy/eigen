@@ -16,6 +16,7 @@ it("renders properly", () => {
 const artwork = () => {
   return {
     __id: "artwork-long-title",
+    id: "long-title",
     title: "DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM",
     date: "2012",
     sale_message: null,

@@ -12,6 +12,8 @@ import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import styled from "styled-components/native"
 
+import { ShowPreview_show } from "__generated__/ShowPreview_show.graphql"
+
 const Container = styled.View`
   border-width: 1;
   border-color: ${colors["gray-regular"]};
@@ -47,14 +49,15 @@ const Title = styled.Text`
   font-size: 14;
 `
 
-interface Props extends RelayProps {
+interface Props {
+  show: ShowPreview_show
   onSelected?: () => void
 }
 
 const track: Track<Props> = _track
 
 @track()
-export class ShowPreview extends React.Component<Props, any> {
+export class ShowPreview extends React.Component<Props> {
   @track(props => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationAttachmentShow,
@@ -104,20 +107,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  show: {
-    id: string | null
-    _id: string | null
-    name: string | null
-    cover_image: {
-      url: string | null
-    } | null
-    fair: {
-      name: string | null
-    } | null
-    partner: {
-      name: string | null
-    } | null
-  }
-}

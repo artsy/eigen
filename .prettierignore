@@ -1,0 +1,2 @@
+src/__generated__/*.ts
+node_modules

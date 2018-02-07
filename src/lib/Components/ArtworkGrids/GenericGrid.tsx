@@ -7,10 +7,13 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import Spinner from "lib/Components/Spinner"
 import Artwork from "./Artwork"
 
-interface Props extends RelayProps {
-  sectionDirection: "column" // FIXME: We don’t actually support more options atm
-  sectionMargin: number
-  itemMargin: number
+import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql"
+
+interface Props {
+  artworks: GenericGrid_artworks
+  sectionDirection?: "column" // FIXME: We don’t actually support more options atm
+  sectionMargin?: number
+  itemMargin?: number
   isLoading?: boolean
 }
 
@@ -21,19 +24,14 @@ interface State {
 
 class GenericArtworksGrid extends React.Component<Props, State> {
   static defaultProps = {
-    sectionDirection: "column",
+    sectionDirection: "column" as "column",
     sectionMargin: 20,
     itemMargin: 20,
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      sectionDimension: 0,
-      sectionCount: 0,
-    }
-
-    this.onLayout = this.onLayout.bind(this)
+  state = {
+    sectionDimension: 0,
+    sectionCount: 0,
   }
 
   tappedOnArtwork = (artworkID: string) => {
@@ -178,13 +176,3 @@ const GenericGrid = createFragmentContainer(
 )
 
 export default GenericGrid
-
-interface RelayProps {
-  artworks: Array<{
-    __id: string
-    id: string
-    image: {
-      aspect_ratio: number | null
-    } | null
-  } | null> | null
-}

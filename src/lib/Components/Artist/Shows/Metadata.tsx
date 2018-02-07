@@ -7,7 +7,13 @@ import SerifText from "lib/Components/Text/Serif"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 
-class Metadata extends React.Component<RelayProps & ViewProperties> {
+import { Metadata_show } from "__generated__/Metadata_show.graphql"
+
+interface Props extends ViewProperties {
+  show: Metadata_show
+}
+
+class Metadata extends React.Component<Props> {
   render() {
     const partnerName = this.props.show.partner && this.props.show.partner.name
     return (
@@ -88,19 +94,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  show: {
-    kind: string | null
-    name: string | null
-    exhibition_period: string | null
-    status_update: string | null
-    status: string | null
-    partner: {
-      name: string | null
-    } | null
-    location: {
-      city: string | null
-    } | null
-  }
-}

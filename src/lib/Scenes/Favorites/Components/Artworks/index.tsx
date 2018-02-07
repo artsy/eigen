@@ -1,14 +1,17 @@
 import React, { Component } from "react"
 import { ScrollView } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import ZeroState from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
-interface Props extends RelayProps {
-  relay?: RelayPaginationProp
+import { Artworks_me } from "__generated__/Artworks_me.graphql"
+
+interface Props {
+  me: Artworks_me
+  relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
 }
 
@@ -62,7 +65,7 @@ export class SavedWorks extends Component<Props, State> {
         style={{ flex: 1 }}
         contentContainerStyle={{ padding: 20 }}
       >
-        <GenericGrid artworks={artworks} isLoading={this.state.fetchingMoreData} />
+        <GenericGrid artworks={artworks as any} isLoading={this.state.fetchingMoreData} />
       </ScrollView>
     )
   }
@@ -71,7 +74,7 @@ export class SavedWorks extends Component<Props, State> {
 export default createPaginationContainer(
   SavedWorks,
   {
-    me: graphql.experimental`
+    me: graphql`
       fragment Artworks_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
         saved_artworks {
@@ -94,7 +97,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.me && props.me.saved_artworks.artworks_connection
+      return props.me && (props.me.saved_artworks.artworks_connection as ConnectionData)
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -109,7 +112,7 @@ export default createPaginationContainer(
         cursor,
       }
     },
-    query: graphql.experimental`
+    query: graphql`
       query ArtworksQuery($count: Int!, $cursor: String) {
         me {
           ...Artworks_me @arguments(count: $count, cursor: $cursor)
@@ -118,15 +121,3 @@ export default createPaginationContainer(
     `,
   }
 )
-
-interface RelayProps {
-  me: {
-    saved_artworks: {
-      artworks_connection: {
-        edges: Array<{
-          node: any | null
-        }> | null
-      } | null
-    } | null
-  } | null
-}

@@ -22,8 +22,11 @@ import Notification from "lib/Components/WorksForYou/Notification"
 import colors from "lib/data/colors"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
-interface Props extends RelayProps {
-  relay?: RelayPaginationProp
+import { WorksForYou_viewer } from "__generated__/WorksForYou_viewer.graphql"
+
+interface Props {
+  relay: RelayPaginationProp
+  viewer: WorksForYou_viewer
 }
 
 interface State {
@@ -72,6 +75,8 @@ export class WorksForYou extends React.Component<Props, State> {
     const artist = this.props.viewer.selectedArtist
 
     return {
+      // This is just some unique ID, don’t rely on MP being able to retrieve a notification by this ID.
+      __id: `notification-${artist.id}`,
       message: artist.artworks.length + (artist.artworks.length > 1 ? " Works Added" : " Work Added"),
       artists: artist.name,
       artworks: artist.artworks,
@@ -183,7 +188,7 @@ const styles = StyleSheet.create<Styles>({
 const WorksForYouContainer = createPaginationContainer(
   WorksForYou,
   {
-    viewer: graphql.experimental`
+    viewer: graphql`
       fragment WorksForYou_viewer on Viewer
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
@@ -209,6 +214,7 @@ const WorksForYouContainer = createPaginationContainer(
           }
         }
         selectedArtist: artist(id: $selectedArtist) {
+          id
           href
           name
           image {
@@ -243,7 +249,7 @@ const WorksForYouContainer = createPaginationContainer(
         cursor,
       }
     },
-    query: graphql.experimental`
+    query: graphql`
       query WorksForYouQuery($count: Int!, $cursor: String) {
         viewer {
           ...WorksForYou_viewer @arguments(count: $count, cursor: $cursor)
@@ -254,30 +260,3 @@ const WorksForYouContainer = createPaginationContainer(
 )
 
 export default WorksForYouContainer
-
-interface RelayProps {
-  viewer: {
-    me: {
-      followsAndSaves: {
-        notifications: {
-          pageInfo: {
-            hasNextPage: boolean
-          }
-          edges: Array<{
-            node: any | null
-          }>
-        }
-      }
-    }
-    selectedArtist?: {
-      name: string
-      image: {
-        resized: {
-          url: string
-        }
-      } | null
-      artworks: any[]
-      href: string
-    } | null
-  }
-}

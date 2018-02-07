@@ -539,6 +539,7 @@ exports[`renders correctly 1`] = `
       </View>
     </View>
     <Conversations
+      componentRef={[Function]}
       me={
         Object {
           "conversations": Object {

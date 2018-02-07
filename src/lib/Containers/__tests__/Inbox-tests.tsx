@@ -1,5 +1,6 @@
 import React from "react"
 import "react-native"
+import { Environment } from "relay-runtime"
 
 import { renderWithLayout } from "lib/tests/renderWithLayout"
 import * as renderer from "react-test-renderer"
@@ -14,7 +15,7 @@ const emptyMeProps = {
 }
 
 it("renders correctly", () => {
-  const tree = renderer.create(<Inbox me={meProps()} />).toJSON()
+  const tree = renderer.create(<Inbox me={meProps()} isVisible={true} />).toJSON()
   expect(tree).toMatchSnapshot()
 })
 
@@ -26,15 +27,19 @@ it("shows empty state if there's no data", () => {
 })
 
 it("Shows a zero state when there are no bids/conversations", () => {
-  const tree = JSON.stringify(renderWithLayout(<Inbox me={emptyMeProps} />, { width: 768, height: 1024 }))
+  const tree = JSON.stringify(
+    renderWithLayout(<Inbox me={emptyMeProps} isVisible={true} />, { width: 768, height: 1024 })
+  )
   // Taken from the title in ZeroStateInbox
   expect(tree).toContain("BUYING ART ON ARTSY IS SIMPLE")
 })
 
 it("It requests a relay refetch when fetchData is called in ZeroState", () => {
   const relayEmptyProps = {
-    ...emptyMeProps,
+    me: emptyMeProps,
+    isVisible: true,
     relay: {
+      environment: null as Environment,
       refetch: jest.fn(),
     },
   }

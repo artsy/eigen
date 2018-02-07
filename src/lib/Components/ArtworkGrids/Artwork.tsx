@@ -8,7 +8,10 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import ImageView from "../OpaqueImageView"
 import SerifText from "../Text/Serif"
 
-interface Props extends RelayProps {
+import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
+
+interface Props {
+  artwork: Artwork_artwork
   // Passes the Artwork ID back up to another component
   // ideally, this would be used to send an array of Artworks
   // through to Eigen where this item is the default selected one.
@@ -145,36 +148,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  artwork: {
-    id: string
-    title: string | null
-    date: string | null
-    sale_message: string | null
-    is_in_auction: boolean | null
-    sale_artwork: {
-      opening_bid: {
-        display: string | null
-      } | null
-      current_bid: {
-        display: string | null
-      } | null
-      bidder_positions_count: number | null
-      sale: {
-        is_open: boolean | null
-      } | null
-    } | null
-    image: {
-      url: string | null
-      aspect_ratio: number | null
-    } | null
-    artists: Array<{
-      name: string | null
-    } | null> | null
-    partner: {
-      name: string | null
-    } | null
-    href: string | null
-  }
-}

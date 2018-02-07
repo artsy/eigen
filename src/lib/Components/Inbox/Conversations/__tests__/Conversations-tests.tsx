@@ -25,10 +25,10 @@ describe("messaging inbox", () => {
   })
 
   const meProps = {
-    initials: "JC",
     conversations: {
       pageInfo: {
         hasNextPage: false,
+        endCursor: null,
       },
       edges: [
         {
@@ -92,10 +92,10 @@ describe("messaging inbox", () => {
   }
 
   const mePropsEmpty = {
-    initials: "JC",
     conversations: {
       pageInfo: {
         hasNextPage: false,
+        endCursor: null,
       },
       edges: [],
     },

@@ -12,10 +12,11 @@ beforeAll(() => {
 it("renders properly", () => {
   const gene = {
     __id: "gene-deep-time",
+    _id: "gravity-id",
     id: "deep-time",
     name: "Deep Time",
   }
 
-  const header = renderer.create(<Header gene={gene} />).toJSON()
+  const header = renderer.create(<Header gene={gene} shortForm={false} />).toJSON()
   expect(header).toMatchSnapshot()
 })

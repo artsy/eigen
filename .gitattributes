@@ -1,1 +1,2 @@
 CHANGELOG.md merge=union
+src/__generated__/*.graphql.ts linguist-generated

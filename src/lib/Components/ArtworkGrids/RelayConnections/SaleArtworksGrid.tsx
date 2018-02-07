@@ -12,7 +12,7 @@ interface Props extends GridProps {
 const SaleArtworksGrid = createPaginationContainer<Props>(
   InfiniteScrollArtworksGrid as any,
   {
-    sale: graphql.experimental`
+    sale: graphql`
       fragment SaleArtworksGrid_sale on Sale
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         __id
@@ -58,7 +58,7 @@ const SaleArtworksGrid = createPaginationContainer<Props>(
         cursor,
       }
     },
-    query: graphql.experimental`
+    query: graphql`
       query SaleArtworksGridQuery($__id: ID!, $count: Int!, $cursor: String) {
         node(__id: $__id) {
           ... on Sale {

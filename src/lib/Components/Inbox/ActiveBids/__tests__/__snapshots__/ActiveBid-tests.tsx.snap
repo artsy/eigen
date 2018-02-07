@@ -44,7 +44,7 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
     }
   >
     <AROpaqueImageView
-      imageURL={undefined}
+      imageURL="https://d32dm0rphc51dk.cloudfront.net/4GlhFa7ci5-0W25sjDNFIQ/large.jpg"
       style={
         Array [
           Object {
@@ -121,7 +121,7 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
           ]
         }
       >
-        Lot 8 · undefined 
+        Lot 8 · Robert Longo 
       </Text>
       <Text
         accessible={true}
@@ -206,7 +206,7 @@ exports[`looks right for bids in live open auctions 1`] = `
     }
   >
     <AROpaqueImageView
-      imageURL={undefined}
+      imageURL="https://d32dm0rphc51dk.cloudfront.net/4GlhFa7ci5-0W25sjDNFIQ/large.jpg"
       style={
         Array [
           Object {
@@ -283,7 +283,7 @@ exports[`looks right for bids in live open auctions 1`] = `
           ]
         }
       >
-        Lot 8 · undefined 
+        Lot 8 · Robert Longo 
       </Text>
       <Text
         accessible={true}
@@ -368,7 +368,7 @@ exports[`renders correctly 1`] = `
     }
   >
     <AROpaqueImageView
-      imageURL={undefined}
+      imageURL="https://d32dm0rphc51dk.cloudfront.net/4GlhFa7ci5-0W25sjDNFIQ/large.jpg"
       style={
         Array [
           Object {
@@ -445,7 +445,7 @@ exports[`renders correctly 1`] = `
           ]
         }
       >
-        Lot 8 · undefined 
+        Lot 8 · Robert Longo 
       </Text>
       <Text
         accessible={true}

@@ -6,12 +6,18 @@ import Show from "./Show"
 
 import colors from "lib/data/colors"
 
+import { SmallList_shows } from "__generated__/SmallList_shows.graphql"
+
+interface Props extends ViewProperties {
+  shows: SmallList_shows
+}
+
 interface State {
   dataSource: ListViewDataSource
 }
 
-class SmallList extends React.Component<RelayProps & ViewProperties, State> {
-  constructor(props) {
+class SmallList extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
       dataSource: new ListView.DataSource({
@@ -67,7 +73,3 @@ export default createFragmentContainer(
     }
   `
 )
-
-interface RelayProps {
-  shows: Array<{} | null> | null
-}

@@ -8,6 +8,8 @@ import ImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import SectionTitle from "lib/Scenes/Home/Components/SectionTitle"
 
+import { FairsRail_fairs_module } from "__generated__/FairsRail_fairs_module.graphql"
+
 const Container = styled.View`
   margin-bottom: 15;
 `
@@ -29,9 +31,10 @@ const TouchableWrapper = styled.View`
   margin-right: 4;
 `
 
-interface Props extends RelayProps {
+interface Props {
+  relay: RelayRefetchProp
+  fairs_module: FairsRail_fairs_module
   registerRailModule?: (module: FairsRail | null) => void
-  relay?: RelayRefetchProp
 }
 
 export class FairsRail extends Component<Props, null> {
@@ -124,18 +127,3 @@ export default createFragmentContainer(
     }
   `
 )
-interface RelayProps {
-  fairs_module: {
-    results: Array<{
-      id: string
-      name: string
-      profile: {
-        href: string
-      } | null
-      mobile_image: {
-        id: string
-        url: string
-      } | null
-    } | null> | null
-  }
-}
