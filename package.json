@@ -11,16 +11,16 @@
   "main": "index.ios.js",
   "scripts": {
     "bundle":
-      "yarn relay && react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
+      "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
     "bundle-with-storybooks":
-      "yarn relay && react-native bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output  Pod/Assets/Emission.js --assets-dest Pod/Assets",
+      "react-native bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output  Pod/Assets/Emission.js --assets-dest Pod/Assets",
     "type-check": "tsc --noEmit --pretty",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "lint-fix": "lint -- --fix",
     "prettier-write": "prettier --write",
     "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
     "stylelint-project": " stylelint -- 'src/**/*.{ts,tsx}'",
-    "ci": "yarn relay && yarn type-check && yarn lint && yarn prettier-project -l && yarn test:ci",
+    "ci": "yarn type-check && yarn lint && yarn prettier-project -l && yarn test:ci",
     "danger": "danger",
     "start": "yarn start-servers",
     "start-servers": "concurrently --kill-others 'yarn start-packager' 'yarn relay --watch' 'yarn storybook'",
