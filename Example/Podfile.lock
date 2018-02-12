@@ -13,17 +13,17 @@ PODS:
     - Artsy+UIColors
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
-    - React/BatchedBridge (= 0.52.0)
-    - React/Core (= 0.52.0)
-    - React/RCTAnimation (= 0.52.0)
-    - React/RCTCameraRoll (= 0.52.0)
-    - React/RCTImage (= 0.52.0)
-    - React/RCTLinkingIOS (= 0.52.0)
-    - React/RCTNetwork (= 0.52.0)
-    - React/RCTText (= 0.52.0)
+    - React/BatchedBridge (= 0.52.2)
+    - React/Core (= 0.52.2)
+    - React/RCTAnimation (= 0.52.2)
+    - React/RCTCameraRoll (= 0.52.2)
+    - React/RCTImage (= 0.52.2)
+    - React/RCTLinkingIOS (= 0.52.2)
+    - React/RCTNetwork (= 0.52.2)
+    - React/RCTText (= 0.52.2)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
-    - yoga (= 0.52.0.React)
+    - yoga (= 0.52.2.React)
   - Extraction (1.2.3):
     - Extraction/ARAnimationContinuation (= 1.2.3)
     - Extraction/ARLoadFailureView (= 1.2.3)
@@ -63,39 +63,39 @@ PODS:
   - NSURL+QueryDictionary (1.2.0)
   - ORStackView (2.0.3):
     - FLKAutoLayout
-  - React (0.52.0):
-    - React/Core (= 0.52.0)
-  - React/BatchedBridge (0.52.0):
+  - React (0.52.2):
+    - React/Core (= 0.52.2)
+  - React/BatchedBridge (0.52.2):
     - React/Core
     - React/cxxreact_legacy
-  - React/Core (0.52.0):
-    - yoga (= 0.52.0.React)
-  - React/cxxreact_legacy (0.52.0):
+  - React/Core (0.52.2):
+    - yoga (= 0.52.2.React)
+  - React/cxxreact_legacy (0.52.2):
     - React/jschelpers_legacy
     - React/jsinspector_legacy
-  - React/DevSupport (0.52.0):
+  - React/DevSupport (0.52.2):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.52.0)
-  - React/jschelpers_legacy (0.52.0)
-  - React/jsinspector_legacy (0.52.0)
-  - React/RCTAnimation (0.52.0):
+  - React/fishhook (0.52.2)
+  - React/jschelpers_legacy (0.52.2)
+  - React/jsinspector_legacy (0.52.2)
+  - React/RCTAnimation (0.52.2):
     - React/Core
-  - React/RCTBlob (0.52.0):
+  - React/RCTBlob (0.52.2):
     - React/Core
-  - React/RCTCameraRoll (0.52.0):
+  - React/RCTCameraRoll (0.52.2):
     - React/Core
     - React/RCTImage
-  - React/RCTImage (0.52.0):
+  - React/RCTImage (0.52.2):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.52.0):
+  - React/RCTLinkingIOS (0.52.2):
     - React/Core
-  - React/RCTNetwork (0.52.0):
+  - React/RCTNetwork (0.52.2):
     - React/Core
-  - React/RCTText (0.52.0):
+  - React/RCTText (0.52.2):
     - React/Core
-  - React/RCTWebSocket (0.52.0):
+  - React/RCTWebSocket (0.52.2):
     - React/Core
     - React/fishhook
     - React/RCTBlob
@@ -114,7 +114,7 @@ PODS:
     - Sentry (~> 3.9.0)
     - Sentry/KSCrash (~> 3.9.0)
   - UIView+BooleanAnimations (1.0.2)
-  - yoga (0.52.0.React)
+  - yoga (0.52.2.React)
 
 DEPENDENCIES:
   - ARGenericTableViewController
@@ -164,7 +164,7 @@ SPEC CHECKSUMS:
   KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
-  React: 43e97926f429d846050880666de1809e22dd5cc5
+  React: a40f127b0fd411640b2f247091e3f03775eed3cd
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
@@ -172,6 +172,6 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: b3b074b67fd61cf88f25d1a73707790af69623ba
+PODFILE CHECKSUM: cc52aaa255c364539079f00eebd73c980643bf4f
 
 COCOAPODS: 1.4.0

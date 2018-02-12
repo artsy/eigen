@@ -107,7 +107,7 @@
     "danger-plugin-jest": "^1.1.0",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
-    "jest": "^22.1.4",
+    "jest": "^22.2.2",
     "jest-styled-components": "^4.10.0",
     "lint-staged": "^6.0.0",
     "patch-package": "^5.0.0",

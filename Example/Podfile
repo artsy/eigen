@@ -76,4 +76,7 @@ post_install do |installer|
   react_scrollview_old_code = '#import "RCTTVRemoteHandler.h"'
   react_scrollview_new_code = '//#import "RCTTVRemoteHandler.h"'
   edit_pod_file react_scrollview_file, react_scrollview_old_code, react_scrollview_new_code
+
+  # https://github.com/facebook/react-native/pull/17783
+  edit_pod_file '../node_modules/react-native/React.podspec', "Libraries/Text/*.{h,m}", "Libraries/Text/**/*.{h,m}"
 end
