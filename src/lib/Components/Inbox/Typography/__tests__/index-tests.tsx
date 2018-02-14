@@ -1,7 +1,6 @@
 import { shallow } from "enzyme"
 import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
 
 import { Subtitle } from "../"
 
