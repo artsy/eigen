@@ -18,7 +18,6 @@ interface Props {
   conversation: Messages_conversation
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
-  ref?: any
 }
 
 interface State {

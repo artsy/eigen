@@ -13,6 +13,8 @@ import ConnectivityBanner from "../Components/ConnectivityBanner"
 
 import Composer from "../Components/Inbox/Conversations/Composer"
 import Messages from "../Components/Inbox/Conversations/Messages"
+import { Messages as MessagesComponent } from "../Components/Inbox/Conversations/Messages"
+
 import { sendConversationMessage } from "../Components/Inbox/Conversations/SendConversationMessage"
 
 import { updateConversation } from "../Components/Inbox/Conversations/UpdateConversation"
@@ -56,7 +58,7 @@ const track: Track<Props, State> = _track
 
 @track()
 export class Conversation extends React.Component<Props, State> {
-  messages?: any
+  messages?: MessagesComponent
   composer: Composer
 
   // Assume if the component loads, connection exists (this way the banner won't flash unnecessarily)
