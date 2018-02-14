@@ -58,7 +58,7 @@ const track: Track<Props, State> = _track
 
 @track()
 export class Conversation extends React.Component<Props, State> {
-  messages?: MessagesComponent
+  messages: MessagesComponent
   composer: Composer
 
   // Assume if the component loads, connection exists (this way the banner won't flash unnecessarily)

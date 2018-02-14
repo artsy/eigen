@@ -31,7 +31,7 @@ const LoadingIndicator = styled.ActivityIndicator`
 `
 
 export class Messages extends React.Component<Props, State> {
-  flatList: FlatList<any> | any
+  flatList: FlatList<any>
 
   state = {
     fetchingMoreData: false,
@@ -142,7 +142,7 @@ export class Messages extends React.Component<Props, State> {
         inverted={!this.state.shouldStickFirstMessageToTop}
         data={this.state.shouldStickFirstMessageToTop ? messages.reverse() : messages}
         renderItem={this.renderMessage.bind(this)}
-        ref={flatList => (this.flatList = flatList)}
+        ref={flatList => (this.flatList = flatList as any)}
         keyExtractor={({ __id }) => __id}
         keyboardShouldPersistTaps="always"
         onEndReached={this.loadMore.bind(this)}
