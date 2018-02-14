@@ -56,6 +56,7 @@ const track: Track<Props, State> = _track
 
 @track()
 export class Conversation extends React.Component<Props, State> {
+  messages?: any
   composer: Composer
 
   // Assume if the component loads, connection exists (this way the banner won't flash unnecessarily)
@@ -145,7 +146,7 @@ export class Conversation extends React.Component<Props, State> {
               this.messageFailedToSend(error, text)
             }
           )
-          this.refs.messagesRef.refs.component.scrollToLastMessage()
+          this.messages.refs.component.scrollToLastMessage()
         }}
       >
         <Container>
@@ -157,7 +158,7 @@ export class Conversation extends React.Component<Props, State> {
           </Header>
           {!this.state.isConnected && <ConnectivityBanner />}
           <Messages
-            ref={"messagesRef"}
+            ref={messages => (this.messages = messages)}
             conversation={conversation as any}
             onDataFetching={loading => {
               this.setState({ fetchingData: loading })

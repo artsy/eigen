@@ -16,8 +16,9 @@ const isPad = Dimensions.get("window").width > 700
 
 interface Props {
   conversation: Messages_conversation
-  relay: RelayPaginationProp
+  relay?: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
+  ref?: any
 }
 
 interface State {
@@ -31,6 +32,8 @@ const LoadingIndicator = styled.ActivityIndicator`
 `
 
 export class Messages extends React.Component<Props, State> {
+  flatList: FlatList<any> | any
+
   state = {
     fetchingMoreData: false,
     reloadingData: false,
@@ -98,7 +101,7 @@ export class Messages extends React.Component<Props, State> {
   }
 
   scrollToLastMessage() {
-    this.refs.flatList.scrollToIndex({ animated: true, index: 0, viewOffset: 0 })
+    this.flatList.scrollToIndex({ animated: true, index: 0, viewOffset: 0 })
   }
 
   reload() {
@@ -140,7 +143,7 @@ export class Messages extends React.Component<Props, State> {
         inverted={!this.state.shouldStickFirstMessageToTop}
         data={this.state.shouldStickFirstMessageToTop ? messages.reverse() : messages}
         renderItem={this.renderMessage.bind(this)}
-        ref={"flatList"}
+        ref={flatList => (this.flatList = flatList)}
         keyExtractor={({ __id }) => __id}
         keyboardShouldPersistTaps="always"
         onEndReached={this.loadMore.bind(this)}
