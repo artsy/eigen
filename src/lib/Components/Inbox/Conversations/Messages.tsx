@@ -97,6 +97,10 @@ export class Messages extends React.Component<Props, State> {
     })
   }
 
+  scrollToLastMessage() {
+    this.refs.flatList.scrollToIndex({ animated: true, index: 0, viewOffset: 0 })
+  }
+
   reload() {
     const count = this.props.conversation.messages.edges.length
     this.setState({ reloadingData: true })
@@ -129,13 +133,14 @@ export class Messages extends React.Component<Props, State> {
           width: 708,
           alignSelf: "center",
         }
-      : {}
+      : ({} as any)
 
     return (
       <FlatList
         inverted={!this.state.shouldStickFirstMessageToTop}
         data={this.state.shouldStickFirstMessageToTop ? messages.reverse() : messages}
         renderItem={this.renderMessage.bind(this)}
+        ref={"flatList"}
         keyExtractor={({ __id }) => __id}
         keyboardShouldPersistTaps="always"
         onEndReached={this.loadMore.bind(this)}
