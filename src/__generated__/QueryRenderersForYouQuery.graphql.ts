@@ -38,7 +38,7 @@ fragment ArtworkCarousel_rail on HomePageArtworkModule {
   params {
     medium
     price_range
-    id
+    __id: id
   }
   context {
     __typename
@@ -181,8 +181,7 @@ v4 = {
     },
     v3,
     v0
-  ],
-  "idField": "__id"
+  ]
 },
 v5 = {
   "kind": "ScalarField",
@@ -214,8 +213,7 @@ v9 = [
     "args": null,
     "concreteType": "Artist",
     "plural": false,
-    "selections": v8,
-    "idField": "__id"
+    "selections": v8
   }
 ];
 return {
@@ -223,7 +221,7 @@ return {
   "operationKind": "query",
   "name": "QueryRenderersForYouQuery",
   "id": null,
-  "text": "query QueryRenderersForYouQuery {\n  forYou: home_page {\n    ...ForYou_forYou\n  }\n}\n\nfragment ForYou_forYou on HomePage {\n  artwork_modules(max_rails: -1, max_followed_gene_rails: -1, order: [ACTIVE_BIDS, RECOMMENDED_WORKS, FOLLOWED_ARTISTS, RELATED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES, GENERIC_GENES], exclude: [FOLLOWED_ARTISTS]) {\n    __id\n    ...ArtworkCarousel_rail\n  }\n  artist_modules {\n    __id\n    ...ArtistRail_rail\n  }\n  fairs_module {\n    ...FairsRail_fairs_module\n  }\n}\n\nfragment ArtworkCarousel_rail on HomePageArtworkModule {\n  ...ArtworkCarouselHeader_rail\n  __id\n  key\n  params {\n    medium\n    price_range\n    id\n  }\n  context {\n    __typename\n    ... on HomePageModuleContextFollowedArtist {\n      artist {\n        href\n        __id\n      }\n    }\n    ... on HomePageModuleContextRelatedArtist {\n      artist {\n        href\n        __id\n      }\n    }\n    ... on HomePageModuleContextFair {\n      href\n      __id\n    }\n    ... on HomePageModuleContextGene {\n      href\n    }\n    ... on HomePageModuleContextSale {\n      href\n    }\n    ... on Node {\n      __id\n    }\n  }\n}\n\nfragment ArtistRail_rail on HomePageArtistModule {\n  __id\n  key\n}\n\nfragment FairsRail_fairs_module on HomePageFairsModule {\n  results {\n    id\n    name\n    profile {\n      href\n      __id\n    }\n    mobile_image {\n      id\n      url\n    }\n    __id\n  }\n}\n\nfragment ArtworkCarouselHeader_rail on HomePageArtworkModule {\n  title\n  key\n  followedArtistContext: context {\n    __typename\n    ... on HomePageModuleContextFollowedArtist {\n      artist {\n        _id\n        id\n        __id\n      }\n    }\n    ... on Node {\n      __id\n    }\n    ... on HomePageModuleContextFair {\n      __id\n    }\n  }\n  relatedArtistContext: context {\n    __typename\n    ... on HomePageModuleContextRelatedArtist {\n      artist {\n        _id\n        id\n        __id\n      }\n      based_on {\n        name\n        __id\n      }\n    }\n    ... on Node {\n      __id\n    }\n    ... on HomePageModuleContextFair {\n      __id\n    }\n  }\n  __id\n}\n",
+  "text": "query QueryRenderersForYouQuery {\n  forYou: home_page {\n    ...ForYou_forYou\n  }\n}\n\nfragment ForYou_forYou on HomePage {\n  artwork_modules(max_rails: -1, max_followed_gene_rails: -1, order: [ACTIVE_BIDS, RECOMMENDED_WORKS, FOLLOWED_ARTISTS, RELATED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES, GENERIC_GENES], exclude: [FOLLOWED_ARTISTS]) {\n    __id\n    ...ArtworkCarousel_rail\n  }\n  artist_modules {\n    __id\n    ...ArtistRail_rail\n  }\n  fairs_module {\n    ...FairsRail_fairs_module\n  }\n}\n\nfragment ArtworkCarousel_rail on HomePageArtworkModule {\n  ...ArtworkCarouselHeader_rail\n  __id\n  key\n  params {\n    medium\n    price_range\n    __id: id\n  }\n  context {\n    __typename\n    ... on HomePageModuleContextFollowedArtist {\n      artist {\n        href\n        __id\n      }\n    }\n    ... on HomePageModuleContextRelatedArtist {\n      artist {\n        href\n        __id\n      }\n    }\n    ... on HomePageModuleContextFair {\n      href\n      __id\n    }\n    ... on HomePageModuleContextGene {\n      href\n    }\n    ... on HomePageModuleContextSale {\n      href\n    }\n    ... on Node {\n      __id\n    }\n  }\n}\n\nfragment ArtistRail_rail on HomePageArtistModule {\n  __id\n  key\n}\n\nfragment FairsRail_fairs_module on HomePageFairsModule {\n  results {\n    id\n    name\n    profile {\n      href\n      __id\n    }\n    mobile_image {\n      id\n      url\n    }\n    __id\n  }\n}\n\nfragment ArtworkCarouselHeader_rail on HomePageArtworkModule {\n  title\n  key\n  followedArtistContext: context {\n    __typename\n    ... on HomePageModuleContextFollowedArtist {\n      artist {\n        _id\n        id\n        __id\n      }\n    }\n    ... on Node {\n      __id\n    }\n    ... on HomePageModuleContextFair {\n      __id\n    }\n  }\n  relatedArtistContext: context {\n    __typename\n    ... on HomePageModuleContextRelatedArtist {\n      artist {\n        _id\n        id\n        __id\n      }\n      based_on {\n        name\n        __id\n      }\n    }\n    ... on Node {\n      __id\n    }\n    ... on HomePageModuleContextFair {\n      __id\n    }\n  }\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -338,8 +336,7 @@ return {
                       v4
                     ]
                   }
-                ],
-                "idField": "__id"
+                ]
               },
               {
                 "kind": "LinkedField",
@@ -368,13 +365,11 @@ return {
                         "selections": [
                           v5,
                           v0
-                        ],
-                        "idField": "__id"
+                        ]
                       }
                     ]
                   }
-                ],
-                "idField": "__id"
+                ]
               },
               {
                 "kind": "LinkedField",
@@ -399,9 +394,14 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v3
-                ],
-                "idField": "id"
+                  {
+                    "kind": "ScalarField",
+                    "alias": "__id",
+                    "name": "id",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
               },
               {
                 "kind": "LinkedField",
@@ -439,11 +439,9 @@ return {
                     "type": "HomePageModuleContextFollowedArtist",
                     "selections": v9
                   }
-                ],
-                "idField": "__id"
+                ]
               }
-            ],
-            "idField": "__id"
+            ]
           },
           {
             "kind": "LinkedField",
@@ -456,8 +454,7 @@ return {
             "selections": [
               v0,
               v1
-            ],
-            "idField": "__id"
+            ]
           },
           {
             "kind": "LinkedField",
@@ -487,8 +484,7 @@ return {
                     "args": null,
                     "concreteType": "Profile",
                     "plural": false,
-                    "selections": v8,
-                    "idField": "__id"
+                    "selections": v8
                   },
                   {
                     "kind": "LinkedField",
@@ -510,8 +506,7 @@ return {
                     ]
                   },
                   v0
-                ],
-                "idField": "__id"
+                ]
               }
             ]
           }

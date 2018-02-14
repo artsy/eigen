@@ -62,8 +62,7 @@ return {
             "args": null
           },
           v0
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   },
@@ -96,8 +95,7 @@ return {
             "storageKey": null
           },
           v0
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   }

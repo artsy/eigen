@@ -287,8 +287,7 @@ return {
             "args": null
           },
           v1
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   },
@@ -564,12 +563,10 @@ return {
                                 "storageKey": null
                               },
                               v1
-                            ],
-                            "idField": "__id"
+                            ]
                           },
                           v6
-                        ],
-                        "idField": "__id"
+                        ]
                       }
                     ]
                   }
@@ -657,8 +654,7 @@ return {
                           }
                         ]
                       }
-                    ],
-                    "idField": "__id"
+                    ]
                   },
                   {
                     "kind": "LinkedField",
@@ -700,8 +696,7 @@ return {
                             "selections": [
                               v3,
                               v1
-                            ],
-                            "idField": "__id"
+                            ]
                           },
                           {
                             "kind": "LinkedField",
@@ -721,13 +716,11 @@ return {
                                   v3
                                 ]
                               }
-                            ],
-                            "idField": "__id"
+                            ]
                           }
                         ]
                       }
-                    ],
-                    "idField": "__id"
+                    ]
                   }
                 ]
               },
@@ -738,12 +731,10 @@ return {
                 "args": null,
                 "storageKey": null
               }
-            ],
-            "idField": "__id"
+            ]
           },
           v1
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   }

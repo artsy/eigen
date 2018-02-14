@@ -276,8 +276,7 @@ return {
             ]
           },
           v2
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   },
@@ -361,8 +360,7 @@ return {
                   v6
                 ]
               }
-            ],
-            "idField": "__id"
+            ]
           },
           {
             "kind": "LinkedField",
@@ -451,8 +449,7 @@ return {
                         "storageKey": null
                       },
                       v2
-                    ],
-                    "idField": "__id"
+                    ]
                   }
                 ]
               },
@@ -632,12 +629,10 @@ return {
                                     "storageKey": null
                                   },
                                   v2
-                                ],
-                                "idField": "__id"
+                                ]
                               },
                               v2
-                            ],
-                            "idField": "__id"
+                            ]
                           },
                           {
                             "kind": "LinkedField",
@@ -654,8 +649,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": v9,
-                            "idField": "__id"
+                            "selections": v9
                           },
                           {
                             "kind": "LinkedField",
@@ -665,8 +659,7 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": v9,
-                            "idField": "__id"
+                            "selections": v9
                           },
                           v5,
                           {
@@ -676,8 +669,7 @@ return {
                             "args": null,
                             "storageKey": null
                           }
-                        ],
-                        "idField": "__id"
+                        ]
                       },
                       {
                         "kind": "ScalarField",
@@ -715,11 +707,9 @@ return {
                   "sort"
                 ]
               }
-            ],
-            "idField": "__id"
+            ]
           }
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   }

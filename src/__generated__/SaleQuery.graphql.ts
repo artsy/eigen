@@ -187,8 +187,7 @@ return {
             "args": null
           },
           v2
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   },
@@ -411,12 +410,10 @@ return {
                                     "storageKey": null
                                   },
                                   v2
-                                ],
-                                "idField": "__id"
+                                ]
                               },
                               v2
-                            ],
-                            "idField": "__id"
+                            ]
                           },
                           {
                             "kind": "LinkedField",
@@ -433,8 +430,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": v7,
-                            "idField": "__id"
+                            "selections": v7
                           },
                           {
                             "kind": "LinkedField",
@@ -444,12 +440,10 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": v7,
-                            "idField": "__id"
+                            "selections": v7
                           },
                           v5
-                        ],
-                        "idField": "__id"
+                        ]
                       },
                       v2,
                       {
@@ -459,8 +453,7 @@ return {
                         "args": null,
                         "storageKey": null
                       }
-                    ],
-                    "idField": "__id"
+                    ]
                   },
                   {
                     "kind": "ScalarField",
@@ -489,8 +482,7 @@ return {
             "key": "SaleArtworksGrid_saleArtworks",
             "filters": null
           }
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   }

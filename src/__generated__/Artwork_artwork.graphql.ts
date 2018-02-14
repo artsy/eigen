@@ -121,12 +121,10 @@ return {
               "storageKey": null
             },
             v1
-          ],
-          "idField": "__id"
+          ]
         },
         v1
-      ],
-      "idField": "__id"
+      ]
     },
     {
       "kind": "ScalarField",
@@ -210,8 +208,7 @@ return {
       ],
       "concreteType": "Artist",
       "plural": true,
-      "selections": v2,
-      "idField": "__id"
+      "selections": v2
     },
     {
       "kind": "LinkedField",
@@ -221,8 +218,7 @@ return {
       "args": null,
       "concreteType": "Partner",
       "plural": false,
-      "selections": v2,
-      "idField": "__id"
+      "selections": v2
     },
     {
       "kind": "ScalarField",
@@ -232,8 +228,7 @@ return {
       "storageKey": null
     },
     v1
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = '201b580860a9e4b1c04d9e8fa07300ca';

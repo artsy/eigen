@@ -50,8 +50,7 @@ v3 = [
     "selections": [
       v1,
       v0
-    ],
-    "idField": "__id"
+    ]
   }
 ];
 return {
@@ -106,13 +105,12 @@ return {
         },
         {
           "kind": "ScalarField",
-          "alias": null,
+          "alias": "__id",
           "name": "id",
           "args": null,
           "storageKey": null
         }
-      ],
-      "idField": "id"
+      ]
     },
     {
       "kind": "LinkedField",
@@ -149,8 +147,7 @@ return {
           "type": "HomePageModuleContextFollowedArtist",
           "selections": v3
         }
-      ],
-      "idField": "__id"
+      ]
     },
     {
       "kind": "Condition",
@@ -172,13 +169,11 @@ return {
               "args": null
             },
             v0
-          ],
-          "idField": "__id"
+          ]
         }
       ]
     }
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = '40c7c47c0d5c7633cf5205f9bf043c9b';

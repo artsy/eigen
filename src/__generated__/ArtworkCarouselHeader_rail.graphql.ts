@@ -55,8 +55,7 @@ v1 = {
       "storageKey": null
     },
     v0
-  ],
-  "idField": "__id"
+  ]
 };
 return {
   "kind": "Fragment",
@@ -96,8 +95,7 @@ return {
             v1
           ]
         }
-      ],
-      "idField": "__id"
+      ]
     },
     {
       "kind": "LinkedField",
@@ -131,17 +129,14 @@ return {
                   "storageKey": null
                 },
                 v0
-              ],
-              "idField": "__id"
+              ]
             }
           ]
         }
-      ],
-      "idField": "__id"
+      ]
     },
     v0
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = 'b6e75f07a90466a7811c73bd3e12abc1';

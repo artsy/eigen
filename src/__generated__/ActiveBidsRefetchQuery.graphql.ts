@@ -54,7 +54,7 @@ fragment ActiveBid_bid on LotStanding {
       }
       highest_bid {
         display
-        id
+        __id: id
       }
       lot_number
       reserve_status
@@ -91,7 +91,7 @@ return {
   "operationKind": "query",
   "name": "ActiveBidsRefetchQuery",
   "id": null,
-  "text": "query ActiveBidsRefetchQuery {\n  me {\n    ...ActiveBids_me\n    __id\n  }\n}\n\nfragment ActiveBids_me on Me {\n  lot_standings(live: true) {\n    most_recent_bid {\n      __id\n    }\n    ...ActiveBid_bid\n  }\n  __id\n}\n\nfragment ActiveBid_bid on LotStanding {\n  is_leading_bidder\n  sale {\n    href\n    is_live_open\n    __id\n  }\n  most_recent_bid {\n    __id\n    max_bid {\n      display\n    }\n    sale_artwork {\n      artwork {\n        href\n        image {\n          url\n        }\n        artist_names\n        __id\n      }\n      counts {\n        bidder_positions\n      }\n      highest_bid {\n        display\n        id\n      }\n      lot_number\n      reserve_status\n      __id\n    }\n  }\n}\n",
+  "text": "query ActiveBidsRefetchQuery {\n  me {\n    ...ActiveBids_me\n    __id\n  }\n}\n\nfragment ActiveBids_me on Me {\n  lot_standings(live: true) {\n    most_recent_bid {\n      __id\n    }\n    ...ActiveBid_bid\n  }\n  __id\n}\n\nfragment ActiveBid_bid on LotStanding {\n  is_leading_bidder\n  sale {\n    href\n    is_live_open\n    __id\n  }\n  most_recent_bid {\n    __id\n    max_bid {\n      display\n    }\n    sale_artwork {\n      artwork {\n        href\n        image {\n          url\n        }\n        artist_names\n        __id\n      }\n      counts {\n        bidder_positions\n      }\n      highest_bid {\n        display\n        __id: id\n      }\n      lot_number\n      reserve_status\n      __id\n    }\n  }\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -115,8 +115,7 @@ return {
             "args": null
           },
           v0
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   },
@@ -217,8 +216,7 @@ return {
                             "storageKey": null
                           },
                           v0
-                        ],
-                        "idField": "__id"
+                        ]
                       },
                       {
                         "kind": "LinkedField",
@@ -250,13 +248,12 @@ return {
                           v1,
                           {
                             "kind": "ScalarField",
-                            "alias": null,
+                            "alias": "__id",
                             "name": "id",
                             "args": null,
                             "storageKey": null
                           }
-                        ],
-                        "idField": "id"
+                        ]
                       },
                       {
                         "kind": "ScalarField",
@@ -273,11 +270,9 @@ return {
                         "storageKey": null
                       },
                       v0
-                    ],
-                    "idField": "__id"
+                    ]
                   }
-                ],
-                "idField": "__id"
+                ]
               },
               {
                 "kind": "ScalarField",
@@ -304,14 +299,12 @@ return {
                     "storageKey": null
                   },
                   v0
-                ],
-                "idField": "__id"
+                ]
               }
             ]
           },
           v0
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   }

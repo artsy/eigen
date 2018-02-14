@@ -213,8 +213,7 @@ return {
               }
             ]
           }
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   },
@@ -443,12 +442,10 @@ return {
                                     "storageKey": null
                                   },
                                   v2
-                                ],
-                                "idField": "__id"
+                                ]
                               },
                               v2
-                            ],
-                            "idField": "__id"
+                            ]
                           },
                           {
                             "kind": "LinkedField",
@@ -465,8 +462,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": v5,
-                            "idField": "__id"
+                            "selections": v5
                           },
                           {
                             "kind": "LinkedField",
@@ -476,8 +472,7 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": v5,
-                            "idField": "__id"
+                            "selections": v5
                           },
                           {
                             "kind": "ScalarField",
@@ -487,8 +482,7 @@ return {
                             "storageKey": null
                           },
                           v3
-                        ],
-                        "idField": "__id"
+                        ]
                       },
                       {
                         "kind": "ScalarField",
@@ -540,8 +534,7 @@ return {
               }
             ]
           }
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   }

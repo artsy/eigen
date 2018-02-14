@@ -164,8 +164,7 @@ return {
                       "name": "Artwork_artwork",
                       "args": null
                     }
-                  ],
-                  "idField": "__id"
+                  ]
                 },
                 v0,
                 {
@@ -175,8 +174,7 @@ return {
                   "args": null,
                   "storageKey": null
                 }
-              ],
-              "idField": "__id"
+              ]
             },
             {
               "kind": "ScalarField",
@@ -189,8 +187,7 @@ return {
         }
       ]
     }
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = '173f04eab71fced664dcf4a84bf3f3c5';

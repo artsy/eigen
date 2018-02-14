@@ -94,7 +94,7 @@ fragment ActiveBid_bid on LotStanding {
       }
       highest_bid {
         display
-        id
+        __id: id
       }
       lot_number
       reserve_status
@@ -223,7 +223,7 @@ return {
   "operationKind": "query",
   "name": "InboxQuery",
   "id": null,
-  "text": "query InboxQuery {\n  me {\n    ...Inbox_me_38v0Te\n    __id\n  }\n}\n\nfragment Inbox_me_38v0Te on Me {\n  lot_standings(live: true) {\n    most_recent_bid {\n      __id\n    }\n  }\n  conversations_existence_check: conversations(first: 1) {\n    edges {\n      node {\n        id\n        __id\n      }\n    }\n  }\n  ...Conversations_me\n  ...ActiveBids_me\n  __id\n}\n\nfragment Conversations_me on Me {\n  conversations(first: 10, after: \"\") {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      node {\n        id\n        last_message\n        ...ConversationSnippet_conversation\n        __id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id\n}\n\nfragment ActiveBids_me on Me {\n  lot_standings(live: true) {\n    most_recent_bid {\n      __id\n    }\n    ...ActiveBid_bid\n  }\n  __id\n}\n\nfragment ActiveBid_bid on LotStanding {\n  is_leading_bidder\n  sale {\n    href\n    is_live_open\n    __id\n  }\n  most_recent_bid {\n    __id\n    max_bid {\n      display\n    }\n    sale_artwork {\n      artwork {\n        href\n        image {\n          url\n        }\n        artist_names\n        __id\n      }\n      counts {\n        bidder_positions\n      }\n      highest_bid {\n        display\n        id\n      }\n      lot_number\n      reserve_status\n      __id\n    }\n  }\n}\n\nfragment ConversationSnippet_conversation on Conversation {\n  id\n  to {\n    name\n  }\n  last_message\n  last_message_at\n  unread\n  items {\n    item {\n      __typename\n      ... on Artwork {\n        date\n        title\n        artist_names\n        image {\n          url\n        }\n      }\n      ... on Show {\n        fair {\n          name\n          __id\n        }\n        name\n        cover_image {\n          url\n        }\n      }\n      ... on Node {\n        __id\n      }\n    }\n  }\n  __id\n}\n",
+  "text": "query InboxQuery {\n  me {\n    ...Inbox_me_38v0Te\n    __id\n  }\n}\n\nfragment Inbox_me_38v0Te on Me {\n  lot_standings(live: true) {\n    most_recent_bid {\n      __id\n    }\n  }\n  conversations_existence_check: conversations(first: 1) {\n    edges {\n      node {\n        id\n        __id\n      }\n    }\n  }\n  ...Conversations_me\n  ...ActiveBids_me\n  __id\n}\n\nfragment Conversations_me on Me {\n  conversations(first: 10, after: \"\") {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      node {\n        id\n        last_message\n        ...ConversationSnippet_conversation\n        __id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id\n}\n\nfragment ActiveBids_me on Me {\n  lot_standings(live: true) {\n    most_recent_bid {\n      __id\n    }\n    ...ActiveBid_bid\n  }\n  __id\n}\n\nfragment ActiveBid_bid on LotStanding {\n  is_leading_bidder\n  sale {\n    href\n    is_live_open\n    __id\n  }\n  most_recent_bid {\n    __id\n    max_bid {\n      display\n    }\n    sale_artwork {\n      artwork {\n        href\n        image {\n          url\n        }\n        artist_names\n        __id\n      }\n      counts {\n        bidder_positions\n      }\n      highest_bid {\n        display\n        __id: id\n      }\n      lot_number\n      reserve_status\n      __id\n    }\n  }\n}\n\nfragment ConversationSnippet_conversation on Conversation {\n  id\n  to {\n    name\n  }\n  last_message\n  last_message_at\n  unread\n  items {\n    item {\n      __typename\n      ... on Artwork {\n        date\n        title\n        artist_names\n        image {\n          url\n        }\n      }\n      ... on Show {\n        fair {\n          name\n          __id\n        }\n        name\n        cover_image {\n          url\n        }\n      }\n      ... on Node {\n        __id\n      }\n    }\n  }\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -254,8 +254,7 @@ return {
             ]
           },
           v1
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   },
@@ -333,8 +332,7 @@ return {
                           v5,
                           v6,
                           v1
-                        ],
-                        "idField": "__id"
+                        ]
                       },
                       {
                         "kind": "LinkedField",
@@ -364,9 +362,14 @@ return {
                         "plural": false,
                         "selections": [
                           v2,
-                          v7
-                        ],
-                        "idField": "id"
+                          {
+                            "kind": "ScalarField",
+                            "alias": "__id",
+                            "name": "id",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
                       },
                       {
                         "kind": "ScalarField",
@@ -383,11 +386,9 @@ return {
                         "storageKey": null
                       },
                       v1
-                    ],
-                    "idField": "__id"
+                    ]
                   }
-                ],
-                "idField": "__id"
+                ]
               },
               {
                 "kind": "ScalarField",
@@ -414,8 +415,7 @@ return {
                     "storageKey": null
                   },
                   v1
-                ],
-                "idField": "__id"
+                ]
               }
             ]
           },
@@ -455,8 +455,7 @@ return {
                     "selections": [
                       v7,
                       v1
-                    ],
-                    "idField": "__id"
+                    ]
                   }
                 ]
               }
@@ -596,8 +595,7 @@ return {
                                     "selections": [
                                       v8,
                                       v1
-                                    ],
-                                    "idField": "__id"
+                                    ]
                                   },
                                   v8,
                                   {
@@ -634,15 +632,13 @@ return {
                                   v5
                                 ]
                               }
-                            ],
-                            "idField": "__id"
+                            ]
                           }
                         ]
                       },
                       v1,
                       v9
-                    ],
-                    "idField": "__id"
+                    ]
                   },
                   {
                     "kind": "ScalarField",
@@ -678,8 +674,7 @@ return {
             "filters": null
           },
           v1
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   }

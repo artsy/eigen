@@ -149,8 +149,7 @@ return {
                   "selections": [
                     v0,
                     v1
-                  ],
-                  "idField": "__id"
+                  ]
                 },
                 v0,
                 {
@@ -202,14 +201,12 @@ return {
                 }
               ]
             }
-          ],
-          "idField": "__id"
+          ]
         }
       ]
     },
     v1
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = 'cbb14f6e62aa56f7c8e18f2ef16e8662';

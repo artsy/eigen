@@ -88,8 +88,7 @@ return {
           "storageKey": null
         },
         v1
-      ],
-      "idField": "__id"
+      ]
     },
     {
       "kind": "LinkedField",
@@ -158,8 +157,7 @@ return {
                   "storageKey": null
                 },
                 v1
-              ],
-              "idField": "__id"
+              ]
             },
             {
               "kind": "LinkedField",
@@ -191,13 +189,12 @@ return {
                 v2,
                 {
                   "kind": "ScalarField",
-                  "alias": null,
+                  "alias": "__id",
                   "name": "id",
                   "args": null,
                   "storageKey": null
                 }
-              ],
-              "idField": "id"
+              ]
             },
             {
               "kind": "ScalarField",
@@ -214,11 +211,9 @@ return {
               "storageKey": null
             },
             v1
-          ],
-          "idField": "__id"
+          ]
         }
-      ],
-      "idField": "__id"
+      ]
     }
   ]
 };

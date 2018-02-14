@@ -173,8 +173,7 @@ return {
                   "args": null,
                   "storageKey": null
                 }
-              ],
-              "idField": "__id"
+              ]
             },
             {
               "kind": "ScalarField",
@@ -187,8 +186,7 @@ return {
         }
       ]
     }
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = '2faee4dd09360c72d85e4cc0417940d3';

@@ -184,8 +184,7 @@ return {
                     "name": "Message_message",
                     "args": null
                   }
-                ],
-                "idField": "__id"
+                ]
               }
             ]
           }
@@ -299,8 +298,7 @@ return {
                         "storageKey": null
                       },
                       v5
-                    ],
-                    "idField": "__id"
+                    ]
                   },
                   {
                     "kind": "LinkedField",
@@ -341,8 +339,7 @@ return {
                       }
                     ]
                   }
-                ],
-                "idField": "__id"
+                ]
               }
             ]
           }

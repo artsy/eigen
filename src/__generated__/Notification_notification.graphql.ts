@@ -80,8 +80,7 @@ return {
               "storageKey": null
             },
             v0
-          ],
-          "idField": "__id"
+          ]
         },
         {
           "kind": "FragmentSpread",
@@ -89,8 +88,7 @@ return {
           "args": null
         },
         v0
-      ],
-      "idField": "__id"
+      ]
     },
     {
       "kind": "LinkedField",
@@ -135,8 +133,7 @@ return {
       ]
     },
     v0
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = '9bcd451b9edfda79aacce192d92db290';

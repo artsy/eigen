@@ -69,13 +69,11 @@ return {
               "name": "ArtistCard_artist",
               "args": null
             }
-          ],
-          "idField": "__id"
+          ]
         }
       ]
     }
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = '7318209746f30396590ed7fad9d8db09';

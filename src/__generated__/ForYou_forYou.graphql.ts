@@ -82,8 +82,7 @@ return {
           "name": "ArtworkCarousel_rail",
           "args": null
         }
-      ],
-      "idField": "__id"
+      ]
     },
     {
       "kind": "LinkedField",
@@ -100,8 +99,7 @@ return {
           "name": "ArtistRail_rail",
           "args": null
         }
-      ],
-      "idField": "__id"
+      ]
     },
     {
       "kind": "LinkedField",

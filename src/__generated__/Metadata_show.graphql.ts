@@ -79,8 +79,7 @@ return {
       "selections": [
         v0,
         v1
-      ],
-      "idField": "__id"
+      ]
     },
     {
       "kind": "LinkedField",
@@ -99,12 +98,10 @@ return {
           "storageKey": null
         },
         v1
-      ],
-      "idField": "__id"
+      ]
     },
     v1
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = '10185232d146c1a914944c67e6b71060';
