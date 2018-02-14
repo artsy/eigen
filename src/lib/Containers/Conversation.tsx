@@ -146,7 +146,7 @@ export class Conversation extends React.Component<Props, State> {
               this.messageFailedToSend(error, text)
             }
           )
-          this.messages.refs.component.scrollToLastMessage()
+          this.messages.scrollToLastMessage()
         }}
       >
         <Container>
@@ -158,7 +158,7 @@ export class Conversation extends React.Component<Props, State> {
           </Header>
           {!this.state.isConnected && <ConnectivityBanner />}
           <Messages
-            ref={messages => (this.messages = messages)}
+            componentRef={messages => (this.messages = messages)}
             conversation={conversation as any}
             onDataFetching={loading => {
               this.setState({ fetchingData: loading })
