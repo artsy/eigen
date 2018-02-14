@@ -136,7 +136,7 @@ export class Messages extends React.Component<Props, State> {
           width: 708,
           alignSelf: "center",
         }
-      : ({} as any)
+      : {}
 
     return (
       <FlatList
