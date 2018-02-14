@@ -28,7 +28,7 @@ const Subtitle: React.SFC<TextProperties> = props => {
   const children: string = (props as any).children
   const style = [styles.subtitleDefault, props.style || {}, styles.subtitleRequired]
   return (
-    <Text key={children} style={style}>
+    <Text {...props} key={children} style={style}>
       {children}
     </Text>
   )
