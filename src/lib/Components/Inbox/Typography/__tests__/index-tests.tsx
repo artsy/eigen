@@ -5,11 +5,11 @@ import "react-native"
 import { Subtitle } from "../"
 
 it("passes on props to subtitle", () => {
-  const subtitle = shallow(
+  const text = shallow(
     <Subtitle numberOfLines={1} ellipsizeMode={"middle"}>
       My Subtitle
     </Subtitle>
   ).dive()
-  expect(subtitle.props().numberOfLines).toBe(1)
-  expect(subtitle.props().ellipsizeMode).toBe("middle")
+  expect(text.props().numberOfLines).toBe(1)
+  expect(text.props().ellipsizeMode).toBe("middle")
 })
