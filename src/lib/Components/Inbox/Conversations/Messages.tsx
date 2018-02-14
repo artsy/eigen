@@ -16,7 +16,7 @@ const isPad = Dimensions.get("window").width > 700
 
 interface Props {
   conversation: Messages_conversation
-  relay?: RelayPaginationProp
+  relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
   ref?: any
 }
