@@ -10,7 +10,6 @@ it("passes on props to subtitle", () => {
       My Subtitle
     </Subtitle>
   ).dive()
-  console.log(subtitle.props())
   expect(subtitle.props().numberOfLines).toBe(1)
   expect(subtitle.props().ellipsizeMode).toBe("middle")
 })
