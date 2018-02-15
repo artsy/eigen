@@ -24,6 +24,7 @@
 - (void)showOnboardingWithState:(enum ARInitialOnboardingState)state;
 
 - (void)finishOnboarding:(AROnboardingViewController *)viewController animated:(BOOL)animated;
+- (void)startupApp;
 
 @end
 

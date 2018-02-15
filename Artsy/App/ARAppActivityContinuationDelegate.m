@@ -25,6 +25,7 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler;
 {
+    [[ARAppDelegate sharedInstance] startupApp];
     NSURL *URL = nil;
     if ([userActivity.activityType isEqualToString:CSSearchableItemActionType]) {
         URL = [NSURL URLWithString:userActivity.userInfo[CSSearchableItemActivityIdentifier]];
