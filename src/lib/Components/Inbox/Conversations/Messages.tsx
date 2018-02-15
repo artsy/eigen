@@ -100,7 +100,8 @@ export class Messages extends React.Component<Props, State> {
   }
 
   scrollToLastMessage() {
-    this.flatList.scrollToIndex({ animated: true, index: 0, viewOffset: 0 })
+    // TODO: This will break in the new RN without a viewOffset parameter
+    this.flatList.scrollToIndex({ animated: true, index: 0 })
   }
 
   reload() {
