@@ -134,12 +134,10 @@ return {
           "args": null,
           "storageKey": null
         }
-      ],
-      "idField": "__id"
+      ]
     },
     v0
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = 'af2ea77ea1be72f5d6d7072b5909b8ea';

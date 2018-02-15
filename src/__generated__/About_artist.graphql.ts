@@ -76,8 +76,7 @@ return {
           "args": null
         },
         v0
-      ],
-      "idField": "__id"
+      ]
     },
     {
       "kind": "LinkedField",
@@ -94,12 +93,10 @@ return {
           "args": null
         },
         v0
-      ],
-      "idField": "__id"
+      ]
     },
     v0
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = '0d92b625a9f137deef4539f44df5d64c';

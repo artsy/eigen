@@ -77,8 +77,7 @@ const node: ConcreteFragment = {
       ],
       "storageKey": "background_image_url(version:\"WIDE\")"
     }
-  ],
-  "idField": "__id"
+  ]
 };
 (node as any).hash = '3c5a06f04a69b982da948725f333c9ed';
 export default node;

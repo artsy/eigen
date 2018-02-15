@@ -84,8 +84,7 @@ return {
       "selections": [
         v0,
         v1
-      ],
-      "idField": "__id"
+      ]
     },
     {
       "kind": "LinkedField",
@@ -104,12 +103,10 @@ return {
             v0
           ]
         }
-      ],
-      "idField": "__id"
+      ]
     },
     v1
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = 'e42f90e100b31f3feebfdb128960badd';

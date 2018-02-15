@@ -391,8 +391,7 @@ v16 = {
   "args": null,
   "concreteType": "Partner",
   "plural": false,
-  "selections": v10,
-  "idField": "__id"
+  "selections": v10
 },
 v17 = {
   "kind": "LinkedField",
@@ -411,8 +410,7 @@ v17 = {
       "storageKey": null
     },
     v2
-  ],
-  "idField": "__id"
+  ]
 },
 v18 = [
   v2,
@@ -600,12 +598,10 @@ v22 = [
                     "storageKey": null
                   },
                   v2
-                ],
-                "idField": "__id"
+                ]
               },
               v2
-            ],
-            "idField": "__id"
+            ]
           },
           {
             "kind": "LinkedField",
@@ -622,8 +618,7 @@ v22 = [
             ],
             "concreteType": "Artist",
             "plural": true,
-            "selections": v10,
-            "idField": "__id"
+            "selections": v10
           },
           v16,
           v7,
@@ -634,8 +629,7 @@ v22 = [
             "args": null,
             "storageKey": null
           }
-        ],
-        "idField": "__id"
+        ]
       },
       {
         "kind": "ScalarField",
@@ -694,8 +688,7 @@ return {
             "args": null
           },
           v2
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   },
@@ -848,8 +841,7 @@ return {
                 "plural": false,
                 "selections": v9
               }
-            ],
-            "idField": "__id"
+            ]
           },
           {
             "kind": "LinkedField",
@@ -877,8 +869,7 @@ return {
                 "args": null,
                 "concreteType": "Author",
                 "plural": false,
-                "selections": v10,
-                "idField": "__id"
+                "selections": v10
               },
               {
                 "kind": "LinkedField",
@@ -890,8 +881,7 @@ return {
                 "plural": false,
                 "selections": v9
               }
-            ],
-            "idField": "__id"
+            ]
           },
           {
             "kind": "LinkedField",
@@ -908,8 +898,7 @@ return {
             ],
             "concreteType": "PartnerShow",
             "plural": true,
-            "selections": v18,
-            "idField": "__id"
+            "selections": v18
           },
           {
             "kind": "LinkedField",
@@ -926,8 +915,7 @@ return {
             ],
             "concreteType": "PartnerShow",
             "plural": true,
-            "selections": v18,
-            "idField": "__id"
+            "selections": v18
           },
           {
             "kind": "LinkedField",
@@ -1035,8 +1023,7 @@ return {
                   v16,
                   v17,
                   v2
-                ],
-                "idField": "__id"
+                ]
               }
             ]
           },
@@ -1053,13 +1040,11 @@ return {
                 "args": v24,
                 "concreteType": "PartnerShow",
                 "plural": true,
-                "selections": v18,
-                "idField": "__id"
+                "selections": v18
               }
             ]
           }
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   }

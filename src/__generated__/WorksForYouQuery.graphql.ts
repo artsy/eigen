@@ -297,12 +297,10 @@ v12 = {
           "storageKey": null
         },
         v1
-      ],
-      "idField": "__id"
+      ]
     },
     v1
-  ],
-  "idField": "__id"
+  ]
 },
 v13 = [
   v5,
@@ -316,8 +314,7 @@ v14 = {
   "args": null,
   "concreteType": "Partner",
   "plural": false,
-  "selections": v13,
-  "idField": "__id"
+  "selections": v13
 },
 v15 = {
   "kind": "LinkedField",
@@ -546,8 +543,7 @@ return {
                                       v4,
                                       v1,
                                       v5
-                                    ],
-                                    "idField": "__id"
+                                    ]
                                   },
                                   v6,
                                   v7,
@@ -558,8 +554,7 @@ return {
                                   v12,
                                   v14,
                                   v4
-                                ],
-                                "idField": "__id"
+                                ]
                               },
                               v15,
                               {
@@ -569,8 +564,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               }
-                            ],
-                            "idField": "__id"
+                            ]
                           },
                           {
                             "kind": "ScalarField",
@@ -616,8 +610,7 @@ return {
                 ]
               },
               v1
-            ],
-            "idField": "__id"
+            ]
           },
           {
             "kind": "LinkedField",
@@ -677,17 +670,14 @@ return {
                     "args": v3,
                     "concreteType": "Artist",
                     "plural": true,
-                    "selections": v13,
-                    "idField": "__id"
+                    "selections": v13
                   },
                   v14,
                   v4
-                ],
-                "idField": "__id"
+                ]
               },
               v1
-            ],
-            "idField": "__id"
+            ]
           }
         ]
       },

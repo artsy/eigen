@@ -52,8 +52,7 @@ return {
           "plural": false,
           "selections": [
             v0
-          ],
-          "idField": "__id"
+          ]
         },
         {
           "kind": "FragmentSpread",
@@ -63,8 +62,7 @@ return {
       ]
     },
     v0
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = '7a308d9363d144841752a8266770a87e';

@@ -274,8 +274,7 @@ return {
                   "args": null,
                   "storageKey": null
                 }
-              ],
-              "idField": "__id"
+              ]
             }
           ]
         }
@@ -312,8 +311,7 @@ return {
                 }
               ]
             }
-          ],
-          "idField": "__id"
+          ]
         },
         {
           "kind": "LinkedField",
@@ -337,13 +335,11 @@ return {
                 }
               ]
             }
-          ],
-          "idField": "__id"
+          ]
         }
       ]
     }
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = '943535ecfc6ac6a8a0561ac1e6bdf065';

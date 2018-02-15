@@ -59,8 +59,7 @@ return {
           "plural": false,
           "selections": [
             v0
-          ],
-          "idField": "__id"
+          ]
         }
       ]
     },
@@ -106,8 +105,7 @@ return {
                   "storageKey": null
                 },
                 v0
-              ],
-              "idField": "__id"
+              ]
             }
           ]
         }
@@ -124,8 +122,7 @@ return {
       "args": null
     },
     v0
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = 'c9ffaa700d881c26db63082d921448bf';

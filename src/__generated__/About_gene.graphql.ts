@@ -43,12 +43,10 @@ return {
           "args": null
         },
         v0
-      ],
-      "idField": "__id"
+      ]
     },
     v0
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = 'f49aab34dd4e87ee0079aac465f2313a';
