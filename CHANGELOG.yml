@@ -1,10 +1,5 @@
 upcoming:
-  - version: 4.0.2
-    dev:
-      - Fixes universal links in iOS 11 - sarah
-
-releases:
-  - version: 4.0.1
+    version: 4.0.1
     details: Bug Fixes / iPhone X / ARVIR
     emission_version: 1.4.5
     dev:
@@ -20,6 +15,7 @@ releases:
       - Removes the status bar in the old VIR - orta
       - speeds up martsy pages - orta
 
+releases:
   - version: 4.0.0
     details: Messaging / Consignments / Tabbed Home
     emission_version: 1.4.0
