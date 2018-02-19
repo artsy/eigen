@@ -14,6 +14,7 @@ upcoming:
       - Augmented Reality View in Room lab feature, defaults to off - orta/lazerwalker
       - Removes the status bar in the old VIR - orta
       - speeds up martsy pages - orta
+      - Show Online Exclusive label for shows without location - ashkan
 
 releases:
   - version: 4.0.0
