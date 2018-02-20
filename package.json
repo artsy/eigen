@@ -35,9 +35,10 @@
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
     "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && yarn dump-schema -- ../../data && rm -rf node_modules",
     "sync-schema:localhost": "cd ../metaphysics && yarn dump-schema -- ../emission/data",
-    "version": "yarn install && yarn bundle && pushd Example && bundle install && bundle exec pod update Emission && popd && git add Pod/Assets Example/Podfile.lock",
-    "postversion": "git push --follow-tags && env EMISSION_ROOT=\"$(pwd)\" pod repo push artsy --allow-warnings --use-json --skip-import-validation",
-    "postinstall": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h && ./scripts/post_installs.sh || true",
+    "version":
+      "yarn install && yarn bundle && pushd Example && bundle install && bundle exec pod update Emission && popd && git add Pod/Assets Example/Podfile.lock",
+    "postversion":
+      "git push --follow-tags && env EMISSION_ROOT=\"$(pwd)\" pod repo push artsy --allow-warnings --use-json --skip-import-validation",
     "prestorybook": "rnstl",
     "prepare": "patch-package"
   },
@@ -154,15 +155,10 @@
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "/__tests__/.*-tests.(ts|tsx|js)$",
-    "testPathIgnorePatterns": [
-      "\\.snap$",
-      "<rootDir>/build",
-      "<rootDir>/node_modules/"
-    ],
-    "setupFiles": [
-      "./src/setupJest.ts"
-    ],
-    "cacheDirectory": ".jest/cache"
+    "testPathIgnorePatterns": ["\\.snap$", "<rootDir>/build", "<rootDir>/node_modules/"],
+    "setupFiles": ["./src/setupJest.ts"],
+    "cacheDirectory": ".jest/cache",
+    "modulePathIgnorePatterns": ["<rootDir>/externals"]
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
