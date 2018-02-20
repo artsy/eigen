@@ -586,8 +586,10 @@ static const CGFloat ARMenuButtonDimension = 50;
     if (presentableController.viewControllers.count > 1) {
         [presentableController popToRootViewControllerAnimated:(animated && alreadySelectedTab)];
     }
-
-    if (!alreadySelectedTab) {
+    
+    /// If app is launching and hasn't yet set a tab, it's not ready to forceSet a view controller
+    BOOL appIsLaunching = self.selectedTabIndex < 0;
+    if (!alreadySelectedTab && !appIsLaunching) {
         [self.tabContentView forceSetViewController:presentableController atIndex:index animated:animated];
     } else if (showSelectedArtistFromUniversalLink) {
         // We are already on Home, and need to force the tab view to show the new Home with its selected artist & without animation
