@@ -12,6 +12,7 @@ export function metaphysics<T>(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "User-Agent": "Emission",
       "X-USER-ID": Emission.userID,
       "X-ACCESS-TOKEN": Emission.authenticationToken,
     },
