@@ -333,6 +333,10 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
             ARSerifLabel *addressLabel = [self metadataLabel:self.show.location.addressAndCity];
             addressLabel.tag = ARFairShowViewLocationAddress;
             [self.view.stackView addSubview:addressLabel withTopMargin:@"8" sideMargin:[self sideMarginPredicate]];
+        } else if (self.show.location == nil || self.show.fairLocation == nil) {
+            ARSerifLabel *addressLabel = [self metadataLabel:@"Online Exclusive"];
+            addressLabel.tag = ARFairShowViewLocationAddress;
+            [self.view.stackView addSubview:addressLabel withTopMargin:@"8" sideMargin:[self sideMarginPredicate]];
         }
 
         if (self.show.officialDescription) {
