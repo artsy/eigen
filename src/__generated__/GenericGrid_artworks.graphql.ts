@@ -57,8 +57,7 @@ const node: ConcreteFragment = {
       "name": "Artwork_artwork",
       "args": null
     }
-  ],
-  "idField": "__id"
+  ]
 };
 (node as any).hash = 'f3d9eb010a87118abf180da5138dd4e9';
 export default node;

@@ -72,8 +72,7 @@ return {
       ],
       "concreteType": "PartnerShow",
       "plural": true,
-      "selections": v1,
-      "idField": "__id"
+      "selections": v1
     },
     {
       "kind": "LinkedField",
@@ -90,8 +89,7 @@ return {
       ],
       "concreteType": "PartnerShow",
       "plural": true,
-      "selections": v1,
-      "idField": "__id"
+      "selections": v1
     },
     v0,
     {
@@ -107,8 +105,7 @@ return {
           "args": v2,
           "concreteType": "PartnerShow",
           "plural": true,
-          "selections": v1,
-          "idField": "__id"
+          "selections": v1
         }
       ]
     },
@@ -132,13 +129,11 @@ return {
               "args": null
             },
             v0
-          ],
-          "idField": "__id"
+          ]
         }
       ]
     }
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = '588c371cc29143140554481da8e4570a';

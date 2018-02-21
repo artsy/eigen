@@ -95,6 +95,7 @@ ShallowWrapper {
           </Styled(View)>
         </Styled(View)>
         <Messages
+          componentRef={[Function]}
           conversation={
             Object {
               "__id": "conversation-420",
@@ -177,6 +178,7 @@ ShallowWrapper {
           </Styled(View)>,
           false,
           <Messages
+            componentRef={[Function]}
             conversation={
               Object {
                 "__id": "conversation-420",
@@ -308,6 +310,7 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
+            "componentRef": [Function],
             "conversation": Object {
               "__id": "conversation-420",
               "from": Object {
@@ -391,6 +394,7 @@ ShallowWrapper {
             </Styled(View)>
           </Styled(View)>
           <Messages
+            componentRef={[Function]}
             conversation={
               Object {
                 "__id": "conversation-420",
@@ -473,6 +477,7 @@ ShallowWrapper {
             </Styled(View)>,
             false,
             <Messages
+              componentRef={[Function]}
               conversation={
                 Object {
                   "__id": "conversation-420",
@@ -604,6 +609,7 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
+              "componentRef": [Function],
               "conversation": Object {
                 "__id": "conversation-420",
                 "from": Object {
@@ -771,6 +777,7 @@ ShallowWrapper {
           </Styled(View)>
         </Styled(View)>
         <Messages
+          componentRef={[Function]}
           conversation={
             Object {
               "__id": "conversation-420",
@@ -853,6 +860,7 @@ ShallowWrapper {
           </Styled(View)>,
           false,
           <Messages
+            componentRef={[Function]}
             conversation={
               Object {
                 "__id": "conversation-420",
@@ -984,6 +992,7 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
+            "componentRef": [Function],
             "conversation": Object {
               "__id": "conversation-420",
               "from": Object {
@@ -1067,6 +1076,7 @@ ShallowWrapper {
             </Styled(View)>
           </Styled(View)>
           <Messages
+            componentRef={[Function]}
             conversation={
               Object {
                 "__id": "conversation-420",
@@ -1149,6 +1159,7 @@ ShallowWrapper {
             </Styled(View)>,
             false,
             <Messages
+              componentRef={[Function]}
               conversation={
                 Object {
                   "__id": "conversation-420",
@@ -1280,6 +1291,7 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
+              "componentRef": [Function],
               "conversation": Object {
                 "__id": "conversation-420",
                 "from": Object {

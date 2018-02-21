@@ -64,7 +64,7 @@
   "files": ["index.js", "data", "lib"],
   "resolutions": {
     "graphql": "^0.12.3",
-    "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.1/relay-runtime-1.5.0-artsy.1.tgz"
+    "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/relay-runtime-1.5.0-artsy.3.tgz"
   },
   "dependencies": {
     "lodash": "^4.17.4",
@@ -77,9 +77,9 @@
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-sentry": "^0.30.2",
-    "react-relay": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.1/react-relay-1.5.0-artsy.1.tgz",
+    "react-relay": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/react-relay-1.5.0-artsy.3.tgz",
     "react-tracking": "^5.0.0",
-    "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.1/relay-runtime-1.5.0-artsy.1.tgz",
+    "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/relay-runtime-1.5.0-artsy.3.tgz",
     "remove-markdown": "0.1.0",
     "styled-components": "^2.0.0"
   },
@@ -97,7 +97,7 @@
     "awesome-typescript-loader": "^3.2.3",
     "babel-jest": "^18.0.0",
     "babel-plugin-relay":
-      "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.1/babel-plugin-relay-1.5.0-artsy.1.tgz",
+      "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/babel-plugin-relay-1.5.0-artsy.3.tgz",
     "babel-polyfill": "^6.13.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
@@ -121,7 +121,7 @@
     "react-test-renderer": "16.0.0-alpha.12",
     "recursive-readdir-sync": "^1.0.6",
     "relay-compiler":
-      "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.1/relay-compiler-1.5.0-artsy.1.tgz",
+      "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/relay-compiler-1.5.0-artsy.3.tgz",
     "relay-compiler-language-typescript": "^0.9.0",
     "relay2ts": "^0.2.0",
     "snapshot-diff": "^0.2.1",

@@ -31,6 +31,8 @@ const LoadingIndicator = styled.ActivityIndicator`
 `
 
 export class Messages extends React.Component<Props, State> {
+  flatList: FlatList<any>
+
   state = {
     fetchingMoreData: false,
     reloadingData: false,
@@ -97,6 +99,11 @@ export class Messages extends React.Component<Props, State> {
     })
   }
 
+  scrollToLastMessage() {
+    // TODO: This will break in the new RN without a viewOffset parameter
+    this.flatList.scrollToIndex({ animated: true, index: 0 })
+  }
+
   reload() {
     const count = this.props.conversation.messages.edges.length
     this.setState({ reloadingData: true })
@@ -136,6 +143,7 @@ export class Messages extends React.Component<Props, State> {
         inverted={!this.state.shouldStickFirstMessageToTop}
         data={this.state.shouldStickFirstMessageToTop ? messages.reverse() : messages}
         renderItem={this.renderMessage.bind(this)}
+        ref={flatList => (this.flatList = flatList as any)}
         keyExtractor={({ __id }) => __id}
         keyboardShouldPersistTaps="always"
         onEndReached={this.loadMore.bind(this)}

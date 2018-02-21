@@ -168,8 +168,7 @@ return {
             ]
           },
           v1
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   },
@@ -327,8 +326,7 @@ return {
                                     "selections": [
                                       v2,
                                       v1
-                                    ],
-                                    "idField": "__id"
+                                    ]
                                   },
                                   v2,
                                   {
@@ -380,15 +378,13 @@ return {
                                   }
                                 ]
                               }
-                            ],
-                            "idField": "__id"
+                            ]
                           }
                         ]
                       },
                       v1,
                       v3
-                    ],
-                    "idField": "__id"
+                    ]
                   },
                   {
                     "kind": "ScalarField",
@@ -424,8 +420,7 @@ return {
             "filters": null
           },
           v1
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   }

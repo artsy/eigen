@@ -60,8 +60,7 @@ return {
           "storageKey": null
         },
         v0
-      ],
-      "idField": "__id"
+      ]
     },
     {
       "kind": "LinkedField",
@@ -89,8 +88,7 @@ return {
       ]
     },
     v0
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = '0c88898acb243d600094f137ff15cde0';

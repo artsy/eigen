@@ -73,8 +73,7 @@ return {
               "storageKey": null
             },
             v1
-          ],
-          "idField": "__id"
+          ]
         },
         {
           "kind": "LinkedField",
@@ -96,8 +95,7 @@ return {
           ]
         },
         v1
-      ],
-      "idField": "__id"
+      ]
     }
   ]
 };

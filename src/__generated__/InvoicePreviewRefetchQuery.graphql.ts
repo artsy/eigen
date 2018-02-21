@@ -111,12 +111,10 @@ return {
                 "args": null
               },
               v2
-            ],
-            "idField": "__id"
+            ]
           },
           v2
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   },
@@ -172,12 +170,10 @@ return {
                 "storageKey": null
               },
               v2
-            ],
-            "idField": "__id"
+            ]
           },
           v2
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   }

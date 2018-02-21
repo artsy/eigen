@@ -53,8 +53,7 @@ const node: ConcreteFragment = {
       "args": null,
       "storageKey": null
     }
-  ],
-  "idField": "__id"
+  ]
 };
 (node as any).hash = '56513ea1e11975c64fc4c4ee843b52f8';
 export default node;

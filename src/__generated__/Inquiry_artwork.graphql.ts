@@ -65,8 +65,7 @@ return {
           "storageKey": null
         },
         v0
-      ],
-      "idField": "__id"
+      ]
     },
     {
       "kind": "FragmentSpread",
@@ -74,8 +73,7 @@ return {
       "args": null
     },
     v0
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = '1af371838f3f0980e5bdf7ddc7af01ee';

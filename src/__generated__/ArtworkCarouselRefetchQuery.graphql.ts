@@ -31,7 +31,7 @@ fragment ArtworkCarousel_rail_abFTe on HomePageArtworkModule {
   params {
     medium
     price_range
-    id
+    __id: id
   }
   context {
     __typename
@@ -224,8 +224,7 @@ v6 = {
     },
     v5,
     v2
-  ],
-  "idField": "__id"
+  ]
 },
 v7 = [
   {
@@ -259,8 +258,7 @@ v10 = [
     "selections": [
       v8,
       v2
-    ],
-    "idField": "__id"
+    ]
   }
 ],
 v11 = [
@@ -277,7 +275,7 @@ return {
   "operationKind": "query",
   "name": "ArtworkCarouselRefetchQuery",
   "id": null,
-  "text": "query ArtworkCarouselRefetchQuery(\n  $__id: ID!\n  $fetchContent: Boolean!\n) {\n  node(__id: $__id) {\n    __typename\n    ...ArtworkCarousel_rail_abFTe\n    __id\n  }\n}\n\nfragment ArtworkCarousel_rail_abFTe on HomePageArtworkModule {\n  ...ArtworkCarouselHeader_rail\n  __id\n  key\n  params {\n    medium\n    price_range\n    id\n  }\n  context {\n    __typename\n    ... on HomePageModuleContextFollowedArtist {\n      artist {\n        href\n        __id\n      }\n    }\n    ... on HomePageModuleContextRelatedArtist {\n      artist {\n        href\n        __id\n      }\n    }\n    ... on HomePageModuleContextFair {\n      href\n      __id\n    }\n    ... on HomePageModuleContextGene {\n      href\n    }\n    ... on HomePageModuleContextSale {\n      href\n    }\n    ... on Node {\n      __id\n    }\n  }\n  results @include(if: $fetchContent) {\n    ...GenericGrid_artworks\n    __id\n  }\n}\n\nfragment ArtworkCarouselHeader_rail on HomePageArtworkModule {\n  title\n  key\n  followedArtistContext: context {\n    __typename\n    ... on HomePageModuleContextFollowedArtist {\n      artist {\n        _id\n        id\n        __id\n      }\n    }\n    ... on Node {\n      __id\n    }\n    ... on HomePageModuleContextFair {\n      __id\n    }\n  }\n  relatedArtistContext: context {\n    __typename\n    ... on HomePageModuleContextRelatedArtist {\n      artist {\n        _id\n        id\n        __id\n      }\n      based_on {\n        name\n        __id\n      }\n    }\n    ... on Node {\n      __id\n    }\n    ... on HomePageModuleContextFair {\n      __id\n    }\n  }\n  __id\n}\n\nfragment GenericGrid_artworks on Artwork {\n  __id\n  id\n  image {\n    aspect_ratio\n  }\n  ...Artwork_artwork\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  id\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_open\n      __id\n    }\n    __id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id\n  }\n  partner {\n    name\n    __id\n  }\n  href\n  __id\n}\n",
+  "text": "query ArtworkCarouselRefetchQuery(\n  $__id: ID!\n  $fetchContent: Boolean!\n) {\n  node(__id: $__id) {\n    __typename\n    ...ArtworkCarousel_rail_abFTe\n    __id\n  }\n}\n\nfragment ArtworkCarousel_rail_abFTe on HomePageArtworkModule {\n  ...ArtworkCarouselHeader_rail\n  __id\n  key\n  params {\n    medium\n    price_range\n    __id: id\n  }\n  context {\n    __typename\n    ... on HomePageModuleContextFollowedArtist {\n      artist {\n        href\n        __id\n      }\n    }\n    ... on HomePageModuleContextRelatedArtist {\n      artist {\n        href\n        __id\n      }\n    }\n    ... on HomePageModuleContextFair {\n      href\n      __id\n    }\n    ... on HomePageModuleContextGene {\n      href\n    }\n    ... on HomePageModuleContextSale {\n      href\n    }\n    ... on Node {\n      __id\n    }\n  }\n  results @include(if: $fetchContent) {\n    ...GenericGrid_artworks\n    __id\n  }\n}\n\nfragment ArtworkCarouselHeader_rail on HomePageArtworkModule {\n  title\n  key\n  followedArtistContext: context {\n    __typename\n    ... on HomePageModuleContextFollowedArtist {\n      artist {\n        _id\n        id\n        __id\n      }\n    }\n    ... on Node {\n      __id\n    }\n    ... on HomePageModuleContextFair {\n      __id\n    }\n  }\n  relatedArtistContext: context {\n    __typename\n    ... on HomePageModuleContextRelatedArtist {\n      artist {\n        _id\n        id\n        __id\n      }\n      based_on {\n        name\n        __id\n      }\n    }\n    ... on Node {\n      __id\n    }\n    ... on HomePageModuleContextFair {\n      __id\n    }\n  }\n  __id\n}\n\nfragment GenericGrid_artworks on Artwork {\n  __id\n  id\n  image {\n    aspect_ratio\n  }\n  ...Artwork_artwork\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  id\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_open\n      __id\n    }\n    __id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id\n  }\n  partner {\n    name\n    __id\n  }\n  href\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -308,8 +306,7 @@ return {
             ]
           },
           v2
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   },
@@ -359,8 +356,7 @@ return {
                       v6
                     ]
                   }
-                ],
-                "idField": "__id"
+                ]
               },
               {
                 "kind": "LinkedField",
@@ -386,13 +382,11 @@ return {
                         "args": null,
                         "concreteType": "Artist",
                         "plural": false,
-                        "selections": v7,
-                        "idField": "__id"
+                        "selections": v7
                       }
                     ]
                   }
-                ],
-                "idField": "__id"
+                ]
               },
               {
                 "kind": "LinkedField",
@@ -417,9 +411,14 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v5
-                ],
-                "idField": "id"
+                  {
+                    "kind": "ScalarField",
+                    "alias": "__id",
+                    "name": "id",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
               },
               {
                 "kind": "LinkedField",
@@ -457,8 +456,7 @@ return {
                     "type": "HomePageModuleContextFollowedArtist",
                     "selections": v10
                   }
-                ],
-                "idField": "__id"
+                ]
               },
               {
                 "kind": "Condition",
@@ -583,12 +581,10 @@ return {
                                 "storageKey": null
                               },
                               v2
-                            ],
-                            "idField": "__id"
+                            ]
                           },
                           v2
-                        ],
-                        "idField": "__id"
+                        ]
                       },
                       {
                         "kind": "LinkedField",
@@ -605,8 +601,7 @@ return {
                         ],
                         "concreteType": "Artist",
                         "plural": true,
-                        "selections": v7,
-                        "idField": "__id"
+                        "selections": v7
                       },
                       {
                         "kind": "LinkedField",
@@ -616,19 +611,16 @@ return {
                         "args": null,
                         "concreteType": "Partner",
                         "plural": false,
-                        "selections": v7,
-                        "idField": "__id"
+                        "selections": v7
                       },
                       v8
-                    ],
-                    "idField": "__id"
+                    ]
                   }
                 ]
               }
             ]
           }
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   }

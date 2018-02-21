@@ -82,8 +82,7 @@ return {
             "args": null
           },
           v0
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   },
@@ -209,8 +208,7 @@ return {
                               }
                             ]
                           }
-                        ],
-                        "idField": "__id"
+                        ]
                       },
                       v0,
                       {
@@ -220,8 +218,7 @@ return {
                         "args": null,
                         "storageKey": null
                       }
-                    ],
-                    "idField": "__id"
+                    ]
                   },
                   {
                     "kind": "ScalarField",
@@ -251,8 +248,7 @@ return {
             "filters": null
           },
           v0
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   }

@@ -114,8 +114,7 @@ return {
             ]
           },
           v1
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   },
@@ -247,8 +246,7 @@ return {
                               }
                             ]
                           }
-                        ],
-                        "idField": "__id"
+                        ]
                       },
                       v1,
                       {
@@ -258,8 +256,7 @@ return {
                         "args": null,
                         "storageKey": null
                       }
-                    ],
-                    "idField": "__id"
+                    ]
                   },
                   {
                     "kind": "ScalarField",
@@ -295,8 +292,7 @@ return {
             "filters": null
           },
           v1
-        ],
-        "idField": "__id"
+        ]
       }
     ]
   }

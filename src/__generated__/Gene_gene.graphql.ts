@@ -166,8 +166,7 @@ return {
                   "storageKey": null
                 },
                 v0
-              ],
-              "idField": "__id"
+              ]
             }
           ]
         },
@@ -184,12 +183,10 @@ return {
           ]
         },
         v0
-      ],
-      "idField": "__id"
+      ]
     },
     v0
-  ],
-  "idField": "__id"
+  ]
 };
 })();
 (node as any).hash = 'b5dcbf530f6765ce1470ecc52166870e';

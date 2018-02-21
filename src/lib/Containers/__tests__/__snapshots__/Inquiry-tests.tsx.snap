@@ -352,7 +352,8 @@ exports[`renders correctly 1`] = `
                   accessible={true}
                   allowFontScaling={true}
                   disabled={false}
-                  ellipsizeMode="tail"
+                  ellipsizeMode="middle"
+                  numberOfLines={1}
                   style={
                     Array [
                       Object {
