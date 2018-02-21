@@ -1,3 +1,9 @@
+jest.mock("react-native", () => ({
+  NativeModules: {
+    Emission: { userAgent: "Emission" },
+  },
+}))
+
 import metaphysics from "lib/metaphysics"
 
 declare const global: any

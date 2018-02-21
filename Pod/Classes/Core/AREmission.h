@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 // Server configuration
 @property (nonatomic, copy, readonly) NSString *gravityAPIHost;
 @property (nonatomic, copy, readonly) NSString *metaphysicsAPIHost;
+@property (nonatomic, copy, readonly) NSString *userAgent;
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
@@ -31,7 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
                      sentryDSN:(nullable NSString *)sentryDSN
               googleMapsAPIKey:(nullable NSString *)googleAPIKey
                    gravityHost:(NSString *)gravity
-               metaphysicsHost:(NSString *)metaphysics;
+               metaphysicsHost:(NSString *)metaphysics
+                     userAgent:(NSString *)userAgent;
 @end
 
 
