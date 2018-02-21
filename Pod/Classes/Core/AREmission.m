@@ -26,6 +26,8 @@ RCT_EXPORT_MODULE(Emission);
     // Empty is falsy in JS, so these are fine too.
     @"googleMapsAPIKey": self.googleMapsAPIKey ?: @"",
     @"sentryDSN": self.sentryDSN ?: @"",
+
+    @"userAgent": self.userAgent ?: @"",
   };
 }
 
@@ -35,6 +37,7 @@ RCT_EXPORT_MODULE(Emission);
               googleMapsAPIKey:(NSString *)googleAPIKey
                    gravityHost:(NSString *)gravity
                metaphysicsHost:(NSString *)metaphysics
+                     userAgent:(nonnull NSString *)userAgent
 {
     self = [super init];
     _userID = userID.copy;
@@ -43,6 +46,7 @@ RCT_EXPORT_MODULE(Emission);
     _googleMapsAPIKey = googleAPIKey.copy;
     _gravityAPIHost = gravity.copy;
     _metaphysicsAPIHost = metaphysics.copy;
+    _userAgent = userAgent.copy;
     return self;
 }
 @end
