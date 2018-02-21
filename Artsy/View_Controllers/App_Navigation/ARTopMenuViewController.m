@@ -557,10 +557,10 @@ static const CGFloat ARMenuButtonDimension = 50;
     // If there is an existing instance at that index, use it. Otherwise use the instance passed in as viewController.
     // If for some reason something went wrong, default to Home
     BOOL alreadySelectedTab = self.selectedTabIndex == index;
-    BOOL showSelectedArtistFromUniversalLink = [viewController isKindOfClass:ARHomeComponentViewController.class] && [(ARHomeComponentViewController *)viewController selectedArtist];
+    BOOL showWorksForYouWithSelectedArtistFromUniversalLink = [viewController isKindOfClass:ARHomeComponentViewController.class] && [(ARHomeComponentViewController *)viewController selectedArtist];
     switch (index) {
         case ARTopTabControllerIndexHome:
-            if (showSelectedArtistFromUniversalLink) {
+            if (showWorksForYouWithSelectedArtistFromUniversalLink) {
                 NSString *selectedArtistID = [(ARHomeComponentViewController *)viewController selectedArtist];
                 presentableController = [self.navigationDataSource navigationControllerAtIndex:ARTopTabControllerIndexHome parameters:@{@"artist_id": selectedArtistID}];
             } else {
@@ -591,7 +591,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     BOOL appIsLaunching = self.selectedTabIndex < 0;
     if (!alreadySelectedTab && !appIsLaunching) {
         [self.tabContentView forceSetViewController:presentableController atIndex:index animated:animated];
-    } else if (showSelectedArtistFromUniversalLink) {
+    } else if (showWorksForYouWithSelectedArtistFromUniversalLink) {
         // We are already on Home, and need to force the tab view to show the new Home with its selected artist & without animation
         [self.tabContentView forceSetViewController:presentableController atIndex:ARTopTabControllerIndexHome animated:NO];
     }
