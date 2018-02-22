@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash"
 import React, { Component } from "react"
-import { FlatList, LayoutChangeEvent, View } from "react-native"
+import { Dimensions, FlatList, LayoutChangeEvent, View } from "react-native"
 
 import SaleListItem from "./SaleListItem"
 import { SectionHeader } from "./SectionHeader"
@@ -21,18 +21,25 @@ interface State {
 }
 
 export class SaleList extends Component<Props, State> {
-  state = {
-    columnCount: 0,
-    columnWidth: 0,
+  constructor(props) {
+    super(props)
+
+    // We only need to check if this is an iPad once and then use onLayout for rotation
+    const isIPad = Dimensions.get("window").width > 700
+    const columnCount = isIPad ? 4 : 2
+
+    this.state = {
+      columnCount,
+      columnWidth: 0,
+    }
   }
 
   onLayout = (event: LayoutChangeEvent) => {
     const screenWidth = event.nativeEvent.layout.width
     const isIPad = screenWidth > 700
-    const columnCount = isIPad ? 4 : 2
     const gutterSize = isIPad ? 80 : 40
-    const columnWidth = (screenWidth - gutterSize) / columnCount
-    this.setState({ columnCount, columnWidth })
+    const columnWidth = (screenWidth - gutterSize) / this.state.columnCount
+    this.setState({ columnWidth })
   }
 
   render() {
