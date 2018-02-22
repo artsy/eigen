@@ -14,7 +14,7 @@
 
 -->
 
-## Master
+## 1.4.6
 
 * Scroll to last sent message upon send - sarah
 * Upgrade to latest Relay, including our custome Node ID and language plugin patches - alloy
