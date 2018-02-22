@@ -16,7 +16,7 @@ export type Artwork_artwork = {
         }) | null;
         readonly bidder_positions_count: number | null;
         readonly sale: ({
-            readonly is_open: boolean | null;
+            readonly is_closed: boolean | null;
         }) | null;
     }) | null;
     readonly image: ({

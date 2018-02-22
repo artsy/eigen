@@ -17,7 +17,7 @@ describe("in an open sale", () => {
       current_bid: null,
       bidder_positions_count: 0,
       sale: {
-        is_open: true,
+        is_closed: false,
       },
     }
     const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork)} />).toJSON()
@@ -30,7 +30,7 @@ describe("in an open sale", () => {
       current_bid: { display: "$200" },
       bidder_positions_count: 1,
       sale: {
-        is_open: true,
+        is_closed: false,
       },
     }
     const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork)} />).toJSON()
@@ -45,7 +45,21 @@ describe("in a closed sale", () => {
       current_bid: { display: "$200" },
       bidder_positions_count: 1,
       sale: {
-        is_open: false,
+        is_closed: true,
+      },
+    }
+    const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork)} />).toJSON()
+    expect(artwork).toMatchSnapshot()
+  })
+
+  it("renders bid when an auction is about to open, but not closed or finished", () => {
+    const saleArtwork = {
+      opening_bid: { display: "$100" },
+      current_bid: { display: "$200" },
+      bidder_positions_count: 1,
+      sale: {
+        is_closed: false,
+        // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
     const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork)} />).toJSON()

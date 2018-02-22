@@ -70,7 +70,7 @@ class Artwork extends React.Component<Props, any> {
   saleMessage() {
     const artwork = this.props.artwork
     if (artwork.is_in_auction && artwork.sale_artwork) {
-      if (artwork.sale_artwork.sale.is_open) {
+      if (!artwork.sale_artwork.sale.is_closed) {
         let numberOfBids = null
         try {
           numberOfBids = artwork.sale_artwork.bidder_positions_count
@@ -131,7 +131,7 @@ export default createFragmentContainer(
         }
         bidder_positions_count
         sale {
-          is_open
+          is_closed
         }
       }
       image {
