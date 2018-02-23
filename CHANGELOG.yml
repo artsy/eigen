@@ -11,6 +11,7 @@ releases:
   - version: 4.0.1
     details: Bug Fixes / iPhone X
     emission_version: 1.4.5
+    date: Feb 1, 2018
     dev:
       - Fixes blank view when coming from a deep link to Works For You tab - sarah
       - Updates to Xcode 9.1 - orta
