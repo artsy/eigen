@@ -4,13 +4,13 @@
 @class ARWindow;
 
 // This class, and infact the complete JSDecoupledAppDelegate class, is not used during testing.
-// The test app delegate class is ARTestHelper and is responsible for seting up the test env.
+// The test app delegate class is ARTestHelper and is responsible for setting up the test env.
 //
 // When testing the various decoupled app delegate classes, simply use the shared app delegate
 // (`[JSDecoupledAppDelegate sharedAppDelegate]`) to perform your tests on.
 
 
-@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate>
+@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate, JSApplicationURLResourceOpeningDelegate>
 
 + (ARAppDelegate *)sharedInstance;
 

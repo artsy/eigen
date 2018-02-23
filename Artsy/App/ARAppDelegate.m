@@ -346,6 +346,8 @@ static ARAppDelegate *_sharedInstance = nil;
     _referralURLRepresentation = options[UIApplicationOpenURLOptionsSourceApplicationKey];
     _landingURLRepresentation = [url absoluteString];
 
+    NSLog(@"ref: %@, landing: %@", _referralURLRepresentation, _landingURLRepresentation);
+    
     [self lookAtURLForAnalytics:url];
 
 
