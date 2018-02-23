@@ -1,9 +1,18 @@
 upcoming:
-    version: 4.0.1
-    details: Bug Fixes / iPhone X / ARVIR
-    emission_version: 1.4.5
+    version: 4.0.2
+    emission_version: 1.4.6
     dev:
       - Fixes universal links in iOS 11 - sarah
+
+    user_facing:
+      - Show Online Exclusive label for shows without location - ashkan
+
+releases:
+  - version: 4.0.1
+    details: Bug Fixes / iPhone X
+    emission_version: 1.4.5
+    date: Feb 1, 2018
+    dev:
       - Fixes blank view when coming from a deep link to Works For You tab - sarah
       - Updates to Xcode 9.1 - orta
       - Deletes un-used View Controllers - orta
@@ -14,9 +23,7 @@ upcoming:
       - Augmented Reality View in Room lab feature, defaults to off - orta/lazerwalker
       - Removes the status bar in the old VIR - orta
       - speeds up martsy pages - orta
-      - Show Online Exclusive label for shows without location - ashkan
 
-releases:
   - version: 4.0.0
     details: Messaging / Consignments / Tabbed Home
     emission_version: 1.4.0

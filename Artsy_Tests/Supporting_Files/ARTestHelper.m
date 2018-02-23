@@ -65,7 +65,8 @@
                                                                             sentryDSN:@""
                                                                      googleMapsAPIKey:@""
                                                                           gravityHost:gravity
-                                                                      metaphysicsHost:metaphysics];
+                                                                      metaphysicsHost:metaphysics
+                                                                            userAgent:@"Eigen Tests"];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:nil];
     [AREmission setSharedInstance:emission];

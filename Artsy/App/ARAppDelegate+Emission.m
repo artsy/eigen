@@ -97,7 +97,8 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                                                             sentryDSN:sentryDSN
                                                                      googleMapsAPIKey:[keys googleMapsAPIKey]
                                                                           gravityHost:gravity
-                                                                      metaphysicsHost:metaphysics];
+                                                                      metaphysicsHost:metaphysics
+                                                                            userAgent:ARRouter.userAgent];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];
     [AREmission setSharedInstance:emission];
