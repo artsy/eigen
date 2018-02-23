@@ -4,6 +4,9 @@ upcoming:
     dev:
       - Fixes universal links in iOS 11 - sarah
 
+      - ARVIR:
+        - Adds a new VIR intro screen - orta
+
     user_facing:
       - Show Online Exclusive label for shows without location - ashkan
 
