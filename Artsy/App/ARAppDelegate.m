@@ -115,11 +115,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    [self setupForAppLaunch];
-}
-
-- (void)setupForAppLaunch
-{
     // In case everything's already set up
     if (self.window) {
         return;
@@ -212,15 +207,6 @@ static ARAppDelegate *_sharedInstance = nil;
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
 }
-
-/// This is called when the app is almost done launching
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    /// Make sure we set up here so there is an ARTopMenuViewController for routing when launching from a universal link
-    [self setupForAppLaunch];
-    return YES;
-}
-
 
 - (void)startupApp
 {

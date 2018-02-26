@@ -470,6 +470,8 @@
 		6033D7771DA3EDFA00EAC2F5 /* GeneRefineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6033D7761DA3EDFA00EAC2F5 /* GeneRefineSettings.swift */; };
 		6034EB1D175F68350070478D /* SiteHeroUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 6034EB1C175F68350070478D /* SiteHeroUnit.m */; };
 		6034EB2F1760A9BE0070478D /* ARTopMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6034EB2B1760A9BD0070478D /* ARTopMenuViewController.m */; };
+		6036B1DE20337EC700763E10 /* ARAugmentRealitySetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B1DD20337EC700763E10 /* ARAugmentRealitySetupViewController.m */; };
+		6036B1E1203384DD00763E10 /* ARAugmentRealitySetupViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B1E0203384DC00763E10 /* ARAugmentRealitySetupViewControllerSpec.m */; };
 		6036B5651760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B5641760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m */; };
 		6037442516D4227500AE7788 /* ARSwitchBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 6037442416D4227500AE7788 /* ARSwitchBoard.m */; };
 		60388703189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 60388702189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.m */; };
@@ -1519,6 +1521,9 @@
 		6034EB2A1760A9BD0070478D /* ARTopMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTopMenuViewController.h; sourceTree = "<group>"; };
 		6034EB2B1760A9BD0070478D /* ARTopMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTopMenuViewController.m; sourceTree = "<group>"; };
 		6035C25E1DACF14000CC4647 /* gene_refine_example_full.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = gene_refine_example_full.json; sourceTree = "<group>"; };
+		6036B1DC20337EC700763E10 /* ARAugmentRealitySetupViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAugmentRealitySetupViewController.h; sourceTree = "<group>"; };
+		6036B1DD20337EC700763E10 /* ARAugmentRealitySetupViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentRealitySetupViewController.m; sourceTree = "<group>"; };
+		6036B1E0203384DC00763E10 /* ARAugmentRealitySetupViewControllerSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentRealitySetupViewControllerSpec.m; sourceTree = "<group>"; };
 		6036B5631760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+SiteFunctions.h"; sourceTree = "<group>"; };
 		6036B5641760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+SiteFunctions.m"; sourceTree = "<group>"; };
 		6037442316D4227500AE7788 /* ARSwitchBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSwitchBoard.h; sourceTree = "<group>"; };
@@ -2583,6 +2588,7 @@
 		3CB97D8D18870979008C44FE /* View Controller Tests */ = {
 			isa = PBXGroup;
 			children = (
+				6036B1DF2033843900763E10 /* ARVIR */,
 				6019A90B1C7F9D9C00E292FA /* Live Auction */,
 				517201C01C6A239E007148B7 /* Auction */,
 				60DCDAD41C65339600BB61D7 /* Components */,
@@ -3107,12 +3113,12 @@
 				CB2C960317D3B4B500B36B44 /* ARFeedLinkUnitViewController.m */,
 				064330E3170F526200FF6C41 /* ARArtistViewController.h */,
 				064330E4170F526200FF6C41 /* ARArtistViewController.m */,
-				60289227176BE98C00512977 /* ARViewInRoomViewController.h */,
-				60289228176BE98C00512977 /* ARViewInRoomViewController.m */,
 				60CF980617BF79CA005ED59B /* ARArtistBiographyViewController.h */,
 				60CF980717BF79CA005ED59B /* ARArtistBiographyViewController.m */,
 				60C5ADB81C5A28B700E2822E /* ARModelInfiniteScrollViewController.swift */,
 				60A4A63D1D05C924005946EF /* UIViewController+BlurredStatusView.swift */,
+				60289227176BE98C00512977 /* ARViewInRoomViewController.h */,
+				60289228176BE98C00512977 /* ARViewInRoomViewController.m */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -3519,6 +3525,14 @@
 			);
 			name = "App Navigation";
 			path = App_Navigation;
+			sourceTree = "<group>";
+		};
+		6036B1DF2033843900763E10 /* ARVIR */ = {
+			isa = PBXGroup;
+			children = (
+				6036B1E0203384DC00763E10 /* ARAugmentRealitySetupViewControllerSpec.m */,
+			);
+			path = ARVIR;
 			sourceTree = "<group>";
 		};
 		60388700189C0ED600D3EEAA /* Utils */ = {
@@ -4235,6 +4249,8 @@
 				60BCE10C1FF2B8A500071AA6 /* ARAugmentedRealityConfig.m */,
 				60BCE10D1FF2B8A500071AA6 /* ARAugmentedVIRViewController.h */,
 				60BCE10E1FF2B8A500071AA6 /* ARAugmentedVIRViewController.m */,
+				6036B1DC20337EC700763E10 /* ARAugmentRealitySetupViewController.h */,
+				6036B1DD20337EC700763E10 /* ARAugmentRealitySetupViewController.m */,
 			);
 			name = ARViewInRoom;
 			path = ARVIR;
@@ -5633,6 +5649,7 @@
 				342F9CDD0CDC753B394F3CFC /* Fair.m in Sources */,
 				601E31B01C80E35600D09F73 /* LiveAuctionLot.m in Sources */,
 				342F9D3F000632CC30AC5260 /* ARNavigationButtonsViewController.m in Sources */,
+				6036B1DE20337EC700763E10 /* ARAugmentRealitySetupViewController.m in Sources */,
 				60C1C3181C5FA34400EC98EE /* ARSerifNavigationViewController.m in Sources */,
 				5EFEF1C81CEB7C5800E3AAB2 /* LiveAuctionLotCollectionViewDataSource.swift in Sources */,
 				60F9B08F1D83255800DBAC8C /* ARAdminNetworkModel.m in Sources */,
@@ -5817,6 +5834,7 @@
 				D37CBC4B1AF2C62E00A69019 /* ARFairNetworkModelTests.m in Sources */,
 				5E9A782019068EDF00734E1B /* ARProfileViewControllerTests.m in Sources */,
 				E6EC246118F7069300C89192 /* PartnerTests.m in Sources */,
+				6036B1E1203384DD00763E10 /* ARAugmentRealitySetupViewControllerSpec.m in Sources */,
 				3CD3679F189ADBEF00285DF7 /* ARPostFeedItemLinkViewTests.m in Sources */,
 				3CA55D8918BFF8F800B44CD3 /* MapFeatureTests.m in Sources */,
 				3C6CB60518ABC7BB008DFE3B /* UserTests.m in Sources */,
