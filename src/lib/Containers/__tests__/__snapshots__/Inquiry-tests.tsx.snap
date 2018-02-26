@@ -186,7 +186,7 @@ exports[`renders correctly 1`] = `
                   ]
                 }
               >
-
+                 
               </Text>
             </View>
           </View>
@@ -340,7 +340,6 @@ exports[`renders correctly 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="middle"
                   numberOfLines={1}
                   style={
@@ -462,4 +461,4 @@ exports[`renders correctly 1`] = `
     </View>
   </View>
 </View>
-`
+`;

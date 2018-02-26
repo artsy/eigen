@@ -76,7 +76,8 @@ const track: Track<Props, State> = _track
 export class Gene extends React.Component<Props, State> {
   foregroundHeight: number = 200
 
-  componentWillMount() {
+  constructor(props: Props) {
+    super(props)
     this.state = {
       selectedTabIndex: 0,
       showingStickyHeader: true,

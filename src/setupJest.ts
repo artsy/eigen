@@ -26,7 +26,10 @@ console.error = (message?: any) => {
 }
 
 jest.mock("./lib/metaphysics.ts")
+
 jest.mock("react-tracking")
+// Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
+jest.mock("react-tracking/build/dispatchTrackingEvent")
 
 jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
   NotificationsManager: {
@@ -63,4 +66,10 @@ NativeModules.ARTakeCameraPhotoModule = {
 }
 NativeModules.ARCocoaConstantsModule = {
   UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
+}
+NativeModules.ARSwitchBoardModule = {
+  presentNavigationViewController: jest.fn(),
+  presentModalViewController: jest.fn(),
+  presentMediaPreviewController: jest.fn(),
+  presentArtworksSet: jest.fn(),
 }

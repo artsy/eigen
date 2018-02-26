@@ -6,6 +6,8 @@ import * as renderer from "react-test-renderer"
 import Circle from "../CircleImage"
 
 it("renders properly", () => {
-  const button = renderer.create(<Circle source={require("../../images/email.png")} />).toJSON()
+  const button = renderer
+    .create(<Circle source={require("../../../../../../images/consignments/email.png")} />)
+    .toJSON()
   expect(button).toMatchSnapshot()
 })

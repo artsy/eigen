@@ -1,3 +1,8 @@
+import { AsyncStorage } from "react-native"
+AsyncStorage.setItem = jest.fn()
+AsyncStorage.getItem = jest.fn()
+AsyncStorage.removeItem = jest.fn()
+
 import Overview from "../Overview"
 
 jest.mock("../../Submission/update", () => jest.fn())

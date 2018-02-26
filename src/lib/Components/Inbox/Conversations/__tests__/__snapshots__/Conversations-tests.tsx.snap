@@ -711,11 +711,11 @@ exports[`messaging inbox looks correct when rendered without messages 1`] = `
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
     onScrollEndDrag={[Function]}
-    onViewableItemsChanged={undefined}
     renderItem={[Function]}
     scrollEventThrottle={500}
     stickyHeaderIndices={Array []}
     updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
     windowSize={21}
   >
     <View />

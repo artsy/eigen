@@ -109,7 +109,6 @@ exports[`handles dateless artworks 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="middle"
           numberOfLines={1}
           style={
@@ -139,14 +138,14 @@ exports[`handles dateless artworks 1`] = `
               ]
             }
           >
-            ,
+            , 
           </Text>
         </Text>
       </View>
     </View>
   </View>
 </View>
-`
+`;
 
 exports[`renders correctly 1`] = `
 <View
@@ -257,7 +256,6 @@ exports[`renders correctly 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="middle"
           numberOfLines={1}
           style={
@@ -294,4 +292,4 @@ exports[`renders correctly 1`] = `
     </View>
   </View>
 </View>
-`
+`;
