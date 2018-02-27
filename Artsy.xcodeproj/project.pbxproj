@@ -518,10 +518,6 @@
 		607E2E8717C8E87E00396120 /* ARArtworkPreviewImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 607E2E8617C8E87E00396120 /* ARArtworkPreviewImageView.m */; };
 		607E2E8A17C9121500396120 /* ARZoomImageTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 607E2E8917C9121500396120 /* ARZoomImageTransition.m */; };
 		6082B2051B46ADDE00953BC8 /* stubbed_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082B2041B46ADDE00953BC8 /* stubbed_image.png */; };
-		6082C5AC2044A8D200F00635 /* Chevron_Black.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082C5AA2044A8D200F00635 /* Chevron_Black.png */; };
-		6082C5AD2044A8D200F00635 /* Chevron_Black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082C5AB2044A8D200F00635 /* Chevron_Black@2x.png */; };
-		6082C5B02044A8DF00F00635 /* Chevron_Black.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082C5AE2044A8DF00F00635 /* Chevron_Black.png */; };
-		6082C5B12044A8DF00F00635 /* Chevron_Black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082C5AF2044A8DF00F00635 /* Chevron_Black@2x.png */; };
 		6082C5B42044A90C00F00635 /* Chevron_White_Left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082C5B22044A90B00F00635 /* Chevron_White_Left@2x.png */; };
 		6082C5B52044A90C00F00635 /* Chevron_White_Left@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6082C5B32044A90C00F00635 /* Chevron_White_Left@3x.png */; };
 		60838EAF17728C5D00869F6E /* ARHeartButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 60838EAE17728C5D00869F6E /* ARHeartButton.m */; };
@@ -1611,10 +1607,6 @@
 		607E2E8817C9121500396120 /* ARZoomImageTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARZoomImageTransition.h; sourceTree = "<group>"; };
 		607E2E8917C9121500396120 /* ARZoomImageTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARZoomImageTransition.m; sourceTree = "<group>"; };
 		6082B2041B46ADDE00953BC8 /* stubbed_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stubbed_image.png; sourceTree = "<group>"; };
-		6082C5AA2044A8D200F00635 /* Chevron_Black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Chevron_Black.png; path = "Pods/Artsy+UILabels/Pod/Assets/Chevron_Black.png"; sourceTree = SOURCE_ROOT; };
-		6082C5AB2044A8D200F00635 /* Chevron_Black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Chevron_Black@2x.png"; path = "Pods/Artsy+UILabels/Pod/Assets/Chevron_Black@2x.png"; sourceTree = SOURCE_ROOT; };
-		6082C5AE2044A8DF00F00635 /* Chevron_Black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Chevron_Black.png; path = "Pods/Artsy+UILabels/Pod/Assets/Chevron_Black.png"; sourceTree = SOURCE_ROOT; };
-		6082C5AF2044A8DF00F00635 /* Chevron_Black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Chevron_Black@2x.png"; path = "Pods/Artsy+UILabels/Pod/Assets/Chevron_Black@2x.png"; sourceTree = SOURCE_ROOT; };
 		6082C5B22044A90B00F00635 /* Chevron_White_Left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Chevron_White_Left@2x.png"; sourceTree = "<group>"; };
 		6082C5B32044A90C00F00635 /* Chevron_White_Left@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Chevron_White_Left@3x.png"; sourceTree = "<group>"; };
 		60838EAD17728C5D00869F6E /* ARHeartButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHeartButton.h; sourceTree = "<group>"; };
@@ -4353,10 +4345,6 @@
 		60E719FF1B4C60A0008948FA /* Launch */ = {
 			isa = PBXGroup;
 			children = (
-				6082C5AA2044A8D200F00635 /* Chevron_Black.png */,
-				6082C5AB2044A8D200F00635 /* Chevron_Black@2x.png */,
-				6082C5AE2044A8DF00F00635 /* Chevron_Black.png */,
-				6082C5AF2044A8DF00F00635 /* Chevron_Black@2x.png */,
 				60E71A001B4C60AC008948FA /* Artsy_Logo.png */,
 			);
 			name = Launch;
@@ -4884,13 +4872,11 @@
 				3C4AE96819094969009C0E8B /* SearchIcon_LightGrey@2x.png in Resources */,
 				608B706C17D4A1C80088A56C /* Artwork_Icon_Share.png in Resources */,
 				608C6DC71FAA11630044E235 /* nav_messaging@2x.png in Resources */,
-				6082C5AC2044A8D200F00635 /* Chevron_Black.png in Resources */,
 				E66A0A8319C2125400ECEB1A /* full_logo_white_large@2x.png in Resources */,
 				60E719FE1B4C6032008948FA /* Launch Screen.xib in Resources */,
 				E6FFEAB519C7925600A0D7DE /* splash_1@2x~ipad.jpg in Resources */,
 				1C5AAEB71CD87D9B00515B73 /* SearchButton@3x.png in Resources */,
 				6012313618B2E44A00B7667F /* MapButtonAction@2x.png in Resources */,
-				6082C5B02044A8DF00F00635 /* Chevron_Black.png in Resources */,
 				608B706317D4A1C80088A56C /* ActionButton@2x.png in Resources */,
 				5E17B1951C59645E00CE6E98 /* Track@2x.png in Resources */,
 				5E20BB6B1C62C81600C6D781 /* CircularInfoButton.png in Resources */,
@@ -4961,13 +4947,11 @@
 				0631FA6F1705E77F000A5ED3 /* mail.html in Resources */,
 				5EFB45741F22831000328A6B /* static_sale_data.graphql in Resources */,
 				3C4AE98A19094DAA009C0E8B /* MapAnnotation_VIP@2x.png in Resources */,
-				6082C5AD2044A8D200F00635 /* Chevron_Black@2x.png in Resources */,
 				3C4AE98019094DAA009C0E8B /* MapAnnotation_GenericEvent@2x.png in Resources */,
 				5EFB45721F2280CE00328A6B /* favorites.graphql in Resources */,
 				3C4AE98619094DAA009C0E8B /* MapAnnotation_Saved@2x.png in Resources */,
 				E6FFEAB719C7925600A0D7DE /* splash_2@2x~ipad.jpg in Resources */,
 				608B706917D4A1C80088A56C /* Heart_White@2x.png in Resources */,
-				6082C5B12044A8DF00F00635 /* Chevron_Black@2x.png in Resources */,
 				1CC9EBA51CC76CDD00A74E3C /* followButtonChecked@2x.png in Resources */,
 				E6FFEABC19C7925600A0D7DE /* splash_4@2x~iphone.jpg in Resources */,
 				66A43C6B1CE48FA800FFD6ED /* SearchButtonWhite@2x.png in Resources */,

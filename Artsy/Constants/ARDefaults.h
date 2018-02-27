@@ -43,7 +43,7 @@ extern NSString *const AREmissionHeadVersionDefault;
 
 extern NSString *const ARAugmentedRealityCameraAccessGiven;
 extern NSString *const ARAugmentedRealityHasSuccessfullyRan;
-
+extern NSString *const ARAugmentedRealityHasSeenSetup;
 
 @interface ARDefaults : NSObject
 + (void)setup;

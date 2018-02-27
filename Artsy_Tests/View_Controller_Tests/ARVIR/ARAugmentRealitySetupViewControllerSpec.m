@@ -12,18 +12,23 @@
 
 SpecBegin(ARAugmentRealitySetupViewController);
 
-ForgeriesUserDefaults *completedDefaults = [ForgeriesUserDefaults defaults:@{
-    ARAugmentedRealityCameraAccessGiven: @(YES),
-    ARAugmentedRealityHasSuccessfullyRan: @(YES)
-}];
+
 
 ForgeriesUserDefaults *untouchedDefaults = [ForgeriesUserDefaults defaults:@{
     ARAugmentedRealityCameraAccessGiven: @(NO),
+    ARAugmentedRealityHasSeenSetup: @(NO),
     ARAugmentedRealityHasSuccessfullyRan: @(NO)
 }];
 
 ForgeriesUserDefaults *deniedDefaults = [ForgeriesUserDefaults defaults:@{
     ARAugmentedRealityCameraAccessGiven: @(NO),
+    ARAugmentedRealityHasSeenSetup: @(YES),
+    ARAugmentedRealityHasSuccessfullyRan: @(YES)
+}];
+
+ForgeriesUserDefaults *completedDefaults = [ForgeriesUserDefaults defaults:@{
+    ARAugmentedRealityCameraAccessGiven: @(YES),
+    ARAugmentedRealityHasSeenSetup: @(YES),
     ARAugmentedRealityHasSuccessfullyRan: @(YES)
 }];
 
@@ -33,6 +38,19 @@ it(@"defaults to asking for camera access",^{
 
     expect(vc).to.haveValidSnapshot();
 });
+
+it(@"viewWillAppear sets ARAugmentedRealityHasSeenSetup",^{
+    ForgeriesUserDefaults *defaults = [ForgeriesUserDefaults defaults:@{
+      ARAugmentedRealityHasSeenSetup: @(NO)
+    }];
+
+    ARAugmentRealitySetupViewController *vc = [[ARAugmentRealitySetupViewController alloc] initWithMovieURL:nil config:nil];
+    vc.defaults = (id)defaults;
+    [vc viewWillAppear:NO];
+
+    expect([defaults boolForKey:ARAugmentedRealityHasSeenSetup]).to.beTruthy();
+});
+
 
 it(@"has different settings when denied access",^{
     ARAugmentRealitySetupViewController *vc = [[ARAugmentRealitySetupViewController alloc] initWithMovieURL:nil config:nil];
@@ -61,12 +79,12 @@ describe(@"canOpenARView", ^{
 
 describe(@"back", ^{
     it(@"calls pop",^{
-//        id navMock = [OCMockObject observerMock];
-//        [[navMock stub] popViewControllerAnimated:NO];
-//
-//        ARAugmentRealitySetupViewController *vc = [[ARAugmentRealitySetupViewController alloc] initWithMovieURL:nil config:nil];
-//        [vc back];
-//        [navMock verify];
+        id navMock = [OCMockObject mockForClass:[UINavigationController class]];
+        [[navMock stub] popViewControllerAnimated:NO];
+
+        ARAugmentRealitySetupViewController *vc = [[ARAugmentRealitySetupViewController alloc] initWithMovieURL:nil config:nil];
+        [vc back];
+        [navMock verify];
     });
 });
 

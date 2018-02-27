@@ -12,7 +12,7 @@
 
 @interface ARAugmentRealitySetupViewController ()
 @property (nonatomic, copy) NSURL *movieURL;
-@property (nonatomic, copy) NSUserDefaults *defaults;
+@property (nonatomic, strong) NSUserDefaults *defaults;
 @property (nonatomic, strong) ARAugmentedRealityConfig *config;
 
 @property (nonatomic, weak) UILabel *subtitleLabel;
@@ -42,9 +42,11 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room using aug
 {
     [super viewDidLoad];
 
+    BOOL firstTime = ![self.defaults boolForKey:ARAugmentedRealityHasSeenSetup];
     BOOL hasGivenAccess = [self.defaults boolForKey:ARAugmentedRealityCameraAccessGiven];
-    NSString *buttonTitle = hasGivenAccess ? hasDeniedAccessButtonTitle : needsAccessButtonTitle;
-    NSString *subtitleText = hasGivenAccess ? hasDeniedAccessSubtitle : needsAccessSubtitle;
+
+    NSString *buttonTitle = firstTime && !hasGivenAccess ? needsAccessButtonTitle : hasDeniedAccessButtonTitle ;
+    NSString *subtitleText = firstTime && !hasGivenAccess ? needsAccessSubtitle: hasDeniedAccessSubtitle;
     SEL nextButtonSelector = hasGivenAccess ? @selector(sendToSettings) : @selector(next);
 
     AVPlayerViewController *playVC = [[AVPlayerViewController alloc] init];
@@ -109,6 +111,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room using aug
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.defaults setBool:YES forKey:ARAugmentedRealityHasSeenSetup];
 
     // Re-run the validation steps when they've come back from settings
     if (self.hasSentToSettings) {
