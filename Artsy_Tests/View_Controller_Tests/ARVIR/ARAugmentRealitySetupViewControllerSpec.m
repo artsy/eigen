@@ -1,9 +1,9 @@
 @import Forgeries;
 
 #import "ARDefaults.h"
-#import "ARAugmentRealitySetupViewController.h"
+#import "ARAugmentedVIRSetupViewController.h"
 
-@interface ARAugmentRealitySetupViewController ()
+@interface ARAugmentedVIRSetupViewController ()
 @property (nonatomic, copy) NSUserDefaults *defaults;
 
 - (void)back;
@@ -33,7 +33,7 @@ ForgeriesUserDefaults *completedDefaults = [ForgeriesUserDefaults defaults:@{
 }];
 
 it(@"defaults to asking for camera access",^{
-    ARAugmentRealitySetupViewController *vc = [[ARAugmentRealitySetupViewController alloc] initWithMovieURL:nil config:nil];
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
     vc.defaults = (id)untouchedDefaults;
 
     expect(vc).to.haveValidSnapshot();
@@ -44,7 +44,7 @@ it(@"viewWillAppear sets ARAugmentedRealityHasSeenSetup",^{
       ARAugmentedRealityHasSeenSetup: @(NO)
     }];
 
-    ARAugmentRealitySetupViewController *vc = [[ARAugmentRealitySetupViewController alloc] initWithMovieURL:nil config:nil];
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
     vc.defaults = (id)defaults;
     [vc viewWillAppear:NO];
 
@@ -53,7 +53,7 @@ it(@"viewWillAppear sets ARAugmentedRealityHasSeenSetup",^{
 
 
 it(@"has different settings when denied access",^{
-    ARAugmentRealitySetupViewController *vc = [[ARAugmentRealitySetupViewController alloc] initWithMovieURL:nil config:nil];
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
     vc.defaults = (id)deniedDefaults;
     expect(vc).to.haveValidSnapshot();
 });
@@ -61,18 +61,18 @@ it(@"has different settings when denied access",^{
 
 describe(@"canSkipARSetup", ^{
     it(@"returns true with the right defaults",^{
-        expect([ARAugmentRealitySetupViewController canSkipARSetup:(id)completedDefaults]).to.beTruthy();
+        expect([ARAugmentedVIRSetupViewController canSkipARSetup:(id)completedDefaults]).to.beTruthy();
     });
 
     it(@"returns false with incomplete defaults",^{
-        expect([ARAugmentRealitySetupViewController canSkipARSetup:(id)deniedDefaults]).to.beFalsy();
+        expect([ARAugmentedVIRSetupViewController canSkipARSetup:(id)deniedDefaults]).to.beFalsy();
     });
 });
 
 
 describe(@"canOpenARView", ^{
     it(@"returns false, because tests run on iOS 10",^{
-        expect([ARAugmentRealitySetupViewController canOpenARView]).to.beFalsy();
+        expect([ARAugmentedVIRSetupViewController canOpenARView]).to.beFalsy();
     });
 });
 
@@ -82,7 +82,7 @@ describe(@"back", ^{
         id navMock = [OCMockObject mockForClass:[UINavigationController class]];
         [[navMock stub] popViewControllerAnimated:NO];
 
-        ARAugmentRealitySetupViewController *vc = [[ARAugmentRealitySetupViewController alloc] initWithMovieURL:nil config:nil];
+        ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
         [vc back];
         [navMock verify];
     });

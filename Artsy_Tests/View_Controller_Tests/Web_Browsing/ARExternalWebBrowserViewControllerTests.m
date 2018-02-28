@@ -21,7 +21,7 @@ afterEach(^{
 
 it(@"sets the scroll view's `delegate` if it belongs to ARNavigationController", ^{
     [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
-    [[ARNavigationController alloc] initWithRootViewController:vc];
+    __unused [[ARNavigationController alloc] initWithRootViewController:vc];
     expect(vc.scrollView.delegate).to.equal(vc);
 });
 

@@ -470,7 +470,7 @@
 		6033D7771DA3EDFA00EAC2F5 /* GeneRefineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6033D7761DA3EDFA00EAC2F5 /* GeneRefineSettings.swift */; };
 		6034EB1D175F68350070478D /* SiteHeroUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 6034EB1C175F68350070478D /* SiteHeroUnit.m */; };
 		6034EB2F1760A9BE0070478D /* ARTopMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6034EB2B1760A9BD0070478D /* ARTopMenuViewController.m */; };
-		6036B1DE20337EC700763E10 /* ARAugmentRealitySetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B1DD20337EC700763E10 /* ARAugmentRealitySetupViewController.m */; };
+		6036B1DE20337EC700763E10 /* ARAugmentedVIRSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B1DD20337EC700763E10 /* ARAugmentedVIRSetupViewController.m */; };
 		6036B1E1203384DD00763E10 /* ARAugmentRealitySetupViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B1E0203384DC00763E10 /* ARAugmentRealitySetupViewControllerSpec.m */; };
 		6036B5651760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B5641760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m */; };
 		6037442516D4227500AE7788 /* ARSwitchBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 6037442416D4227500AE7788 /* ARSwitchBoard.m */; };
@@ -609,6 +609,8 @@
 		60BC92F31BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BC92F21BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m */; };
 		60BCE10F1FF2B8A500071AA6 /* ARAugmentedRealityConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BCE10C1FF2B8A500071AA6 /* ARAugmentedRealityConfig.m */; };
 		60BCE1101FF2B8A500071AA6 /* ARAugmentedVIRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BCE10E1FF2B8A500071AA6 /* ARAugmentedVIRViewController.m */; };
+		60BF0C4B204736900017D9BA /* ARAugmentedVIRSceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BF0C4A204736900017D9BA /* ARAugmentedVIRSceneController.m */; };
+		60BF0C4F204737110017D9BA /* SCNArtworkNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BF0C4E204737110017D9BA /* SCNArtworkNode.m */; };
 		60C1C3101C5F497700EC98EE /* ScrollingStickyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1C30F1C5F497700EC98EE /* ScrollingStickyHeaderView.swift */; };
 		60C1C3181C5FA34400EC98EE /* ARSerifNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C1C3171C5FA34400EC98EE /* ARSerifNavigationViewController.m */; };
 		60C26DEA1BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C26DE91BBC6D7600229CE8 /* AREmbeddedModelsPreviewDelegate.m */; };
@@ -1523,8 +1525,8 @@
 		6034EB2A1760A9BD0070478D /* ARTopMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTopMenuViewController.h; sourceTree = "<group>"; };
 		6034EB2B1760A9BD0070478D /* ARTopMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTopMenuViewController.m; sourceTree = "<group>"; };
 		6035C25E1DACF14000CC4647 /* gene_refine_example_full.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = gene_refine_example_full.json; sourceTree = "<group>"; };
-		6036B1DC20337EC700763E10 /* ARAugmentRealitySetupViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAugmentRealitySetupViewController.h; sourceTree = "<group>"; };
-		6036B1DD20337EC700763E10 /* ARAugmentRealitySetupViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentRealitySetupViewController.m; sourceTree = "<group>"; };
+		6036B1DC20337EC700763E10 /* ARAugmentedVIRSetupViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAugmentedVIRSetupViewController.h; sourceTree = "<group>"; };
+		6036B1DD20337EC700763E10 /* ARAugmentedVIRSetupViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRSetupViewController.m; sourceTree = "<group>"; };
 		6036B1E0203384DC00763E10 /* ARAugmentRealitySetupViewControllerSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentRealitySetupViewControllerSpec.m; sourceTree = "<group>"; };
 		6036B5631760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+SiteFunctions.h"; sourceTree = "<group>"; };
 		6036B5641760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+SiteFunctions.m"; sourceTree = "<group>"; };
@@ -1749,6 +1751,10 @@
 		60BCE10C1FF2B8A500071AA6 /* ARAugmentedRealityConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedRealityConfig.m; sourceTree = "<group>"; };
 		60BCE10D1FF2B8A500071AA6 /* ARAugmentedVIRViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAugmentedVIRViewController.h; sourceTree = "<group>"; };
 		60BCE10E1FF2B8A500071AA6 /* ARAugmentedVIRViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRViewController.m; sourceTree = "<group>"; };
+		60BF0C49204736900017D9BA /* ARAugmentedVIRSceneController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAugmentedVIRSceneController.h; sourceTree = "<group>"; };
+		60BF0C4A204736900017D9BA /* ARAugmentedVIRSceneController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRSceneController.m; sourceTree = "<group>"; };
+		60BF0C4D204737110017D9BA /* SCNArtworkNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCNArtworkNode.h; sourceTree = "<group>"; };
+		60BF0C4E204737110017D9BA /* SCNArtworkNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCNArtworkNode.m; sourceTree = "<group>"; };
 		60C1C30F1C5F497700EC98EE /* ScrollingStickyHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingStickyHeaderView.swift; sourceTree = "<group>"; };
 		60C1C3161C5FA34400EC98EE /* ARSerifNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSerifNavigationViewController.h; sourceTree = "<group>"; };
 		60C1C3171C5FA34400EC98EE /* ARSerifNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSerifNavigationViewController.m; sourceTree = "<group>"; };
@@ -4253,13 +4259,25 @@
 			children = (
 				60BCE10B1FF2B8A500071AA6 /* ARAugmentedRealityConfig.h */,
 				60BCE10C1FF2B8A500071AA6 /* ARAugmentedRealityConfig.m */,
+				60BF0C49204736900017D9BA /* ARAugmentedVIRSceneController.h */,
+				60BF0C4A204736900017D9BA /* ARAugmentedVIRSceneController.m */,
 				60BCE10D1FF2B8A500071AA6 /* ARAugmentedVIRViewController.h */,
 				60BCE10E1FF2B8A500071AA6 /* ARAugmentedVIRViewController.m */,
-				6036B1DC20337EC700763E10 /* ARAugmentRealitySetupViewController.h */,
-				6036B1DD20337EC700763E10 /* ARAugmentRealitySetupViewController.m */,
+				6036B1DC20337EC700763E10 /* ARAugmentedVIRSetupViewController.h */,
+				6036B1DD20337EC700763E10 /* ARAugmentedVIRSetupViewController.m */,
+				60BF0C4C204736FE0017D9BA /* Nodes */,
 			);
 			name = ARViewInRoom;
 			path = ARVIR;
+			sourceTree = "<group>";
+		};
+		60BF0C4C204736FE0017D9BA /* Nodes */ = {
+			isa = PBXGroup;
+			children = (
+				60BF0C4D204737110017D9BA /* SCNArtworkNode.h */,
+				60BF0C4E204737110017D9BA /* SCNArtworkNode.m */,
+			);
+			path = Nodes;
 			sourceTree = "<group>";
 		};
 		60C1C3111C5F9C6500EC98EE /* Auction Presentation */ = {
@@ -5544,6 +5562,7 @@
 				3C4AE9A419096CED009C0E8B /* ARFairMapAnnotationCallOutView.m in Sources */,
 				60BCE1101FF2B8A500071AA6 /* ARAugmentedVIRViewController.m in Sources */,
 				60D83DE8189EAB82001672E9 /* ARFairShowMapper.m in Sources */,
+				60BF0C4F204737110017D9BA /* SCNArtworkNode.m in Sources */,
 				607E2E8A17C9121500396120 /* ARZoomImageTransition.m in Sources */,
 				6016C198178C2C33008EC8E7 /* ARArtworkMasonryModule.m in Sources */,
 				5162E5911F71AE7C00E404CD /* ARPaymentRequestWebViewController.m in Sources */,
@@ -5633,6 +5652,7 @@
 				6016C190178C2B7F008EC8E7 /* AREmbeddedModelsViewController.m in Sources */,
 				CB821E7918217AF500CC934E /* ARAuctionBannerView.m in Sources */,
 				5E4E329F1E4E6BD000C7F724 /* LotStandingsView.swift in Sources */,
+				60BF0C4B204736900017D9BA /* ARAugmentedVIRSceneController.m in Sources */,
 				60889874175DEBC2008C9319 /* ARFeedSubclasses.m in Sources */,
 				6034EB1D175F68350070478D /* SiteHeroUnit.m in Sources */,
 				6034EB2F1760A9BE0070478D /* ARTopMenuViewController.m in Sources */,
@@ -5657,7 +5677,7 @@
 				342F9CDD0CDC753B394F3CFC /* Fair.m in Sources */,
 				601E31B01C80E35600D09F73 /* LiveAuctionLot.m in Sources */,
 				342F9D3F000632CC30AC5260 /* ARNavigationButtonsViewController.m in Sources */,
-				6036B1DE20337EC700763E10 /* ARAugmentRealitySetupViewController.m in Sources */,
+				6036B1DE20337EC700763E10 /* ARAugmentedVIRSetupViewController.m in Sources */,
 				60C1C3181C5FA34400EC98EE /* ARSerifNavigationViewController.m in Sources */,
 				5EFEF1C81CEB7C5800E3AAB2 /* LiveAuctionLotCollectionViewDataSource.swift in Sources */,
 				60F9B08F1D83255800DBAC8C /* ARAdminNetworkModel.m in Sources */,

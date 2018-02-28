@@ -9,7 +9,7 @@
 
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRViewController.h"
-
+#import "ARAugmentedVIRSceneController.h"
 
 typedef void (^OnboardingStepBlock)(void);
 
@@ -22,10 +22,14 @@ NS_ENUM(NSUInteger, OnboardingStep) {
 };
 
 
+API_AVAILABLE(ios(11.0))
 @interface ARAugmentedVIRViewController () <ARSCNViewDelegate>
 NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) ARSCNView *sceneView;
+
+@property (nonatomic, strong) id <ARSCNViewDelegate, ARVIRInteractive, ARSessionObserver> visualsDelegate;
+
 
 @property (nonatomic, strong, nullable) SCNNode *artwork;
 @property (nonatomic, strong, nullable) SCNNode *plane;
@@ -55,23 +59,19 @@ NS_ASSUME_NONNULL_BEGIN
     if (!self) return nil;
 
     _config = config;
-    _sceneView = [[ARSCNView alloc] init];
+
+    if (@available(iOS 11.0, *)) {
+        _sceneView = [[ARSCNView alloc] init];
+        _visualsDelegate = [[ARAugmentedVIRSceneController alloc] initWithSession:_sceneView.session config:config scene:_sceneView];
+    }
 
     self.steps = @{
        @(OnboardingStepDetectingPlanes) : ^{
             self.textLabel.hidden = NO;
-            self.textLabel.text = @"Slowly pan the room with your phone";
+            self.textLabel.text = @"Aim at an object on the wall and move your phone in a circle.";
 
             self.button.hidden = YES;
-           [self.spinner fadeInAnimated:YES];
-        },
-        @(OnboardingStepFinishedDetectingPlanes) : ^{
-            self.textLabel.hidden = NO;
-            self.textLabel.text = @"Slowly pan the room with your phone";
-
-            self.button.hidden = NO;
             [self.spinner fadeInAnimated:YES];
-            [self.button setImage:[UIImage imageNamed:@"BackArrow"] forState:UIControlStateNormal];
         },
         @(OnboardingStepPlacePhoneOnWall): ^{
             self.textLabel.hidden = NO;
@@ -88,18 +88,6 @@ NS_ASSUME_NONNULL_BEGIN
             [self.spinner fadeOutAnimated:YES];
             [self.button setImage:[UIImage imageNamed:@"BackArrow"] forState:UIControlStateNormal];
         },
-        @(OnboardingStepViewing): ^{
-            [self placeArt];
-            self.textLabel.hidden = YES;
-
-            self.placedCameraPosition = self.sceneView.session.currentFrame.camera.transform;
-            self.blackMaterial.transparency = 0.5;
-            self.imageMaterial.transparency = 0.5;
-
-            self.button.hidden = NO;
-            [self.spinner fadeOutAnimated:YES];
-            [self.button setImage:[UIImage imageNamed:@"reset"] forState:UIControlStateNormal];
-        }
     };
 
     return self;
@@ -124,17 +112,6 @@ NS_ASSUME_NONNULL_BEGIN
 
     self.sceneView.scene = scene;
 
-    // Art materials
-    SCNMaterial *blackMaterial = [SCNMaterial material];
-    blackMaterial.diffuse.contents = [UIColor blackColor];
-    blackMaterial.locksAmbientWithDiffuse = YES;
-    self.blackMaterial = blackMaterial;
-
-    SCNMaterial *imageMaterial = [[SCNMaterial alloc] init];
-    imageMaterial.diffuse.contents = self.config.image;
-    imageMaterial.locksAmbientWithDiffuse = YES;
-    self.imageMaterial = imageMaterial;
-
     // Button
     UIButton *button = [[ARMenuButton alloc] init];
     [button ar_extendHitTestSizeByWidth:10 andHeight:10];
@@ -155,18 +132,6 @@ NS_ASSUME_NONNULL_BEGIN
     ]];
     self.button = button;
 
-    ARSpinner *spinner = [[ARSpinner alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-    spinner.translatesAutoresizingMaskIntoConstraints = false;
-    spinner.spinnerColor = [UIColor whiteColor];
-
-    [self.view addSubview:spinner];
-    [self.view addConstraints: @[
-        [spinner.centerXAnchor constraintEqualToAnchor:button.centerXAnchor],
-        [spinner.centerYAnchor constraintEqualToAnchor:button.centerYAnchor]
-    ]];
-
-    self.spinner = spinner;
-
     // Text label
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.textColor = UIColor.whiteColor;
@@ -179,7 +144,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     [self.view addConstraints: @[
         [label.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:12.0],
-        [label.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant: -20.0],
+        [label.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant: -40.0],
         [label.trailingAnchor constraintEqualToAnchor:button.leadingAnchor constant: 12.0]
     ]];
     self.textLabel = label;
@@ -201,48 +166,6 @@ NS_ASSUME_NONNULL_BEGIN
     self.steps[@(self.currentStep)]();
 }
 
-- (void)placeArt {
-
-    CGFloat width = [[[[NSMeasurement alloc] initWithDoubleValue:self.config.size.width
-                                                            unit:NSUnitLength.inches]
-                      measurementByConvertingToUnit:NSUnitLength.meters]
-                     doubleValue];
-    
-    CGFloat height = [[[[NSMeasurement alloc] initWithDoubleValue:self.config.size.height
-                                                             unit:NSUnitLength.inches]
-                       measurementByConvertingToUnit:NSUnitLength.meters]
-                      doubleValue];
-
-    CGFloat length = [[[[NSMeasurement alloc] initWithDoubleValue:self.config.depth
-                                                             unit:NSUnitLength.inches]
-                       measurementByConvertingToUnit:NSUnitLength.meters]
-                      doubleValue];
-
-    SCNBox *box = [SCNBox boxWithWidth:width height:height length:length chamferRadius:0];
-
-    // TODO: It seems ARKit glitches out and is inconsistent about which face is the front/back.
-    // For now, simply showing the image on both sides gets the job done.
-    box.materials =  @[self.imageMaterial, self.blackMaterial, self.imageMaterial, self.blackMaterial, self.blackMaterial, self.blackMaterial];
-
-    simd_float4x4 newLocationSimD = self.sceneView.session.currentFrame.camera.transform;
-    SCNVector3 newLocation = SCNVector3Make(newLocationSimD.columns[3].x, newLocationSimD.columns[3].y, newLocationSimD.columns[3].z - 0.1);
-
-    self.artwork = [SCNNode nodeWithGeometry:box];
-    self.artwork.position = newLocation;
-    [self.sceneView.scene.rootNode addChildNode:self.artwork];
-
-    // To properly move the art in the real world, we project a vertical plane we can hitTest against later
-    // TODO: I wonder if we can generate this automatically later, rather than having a hidden object in our 3D scene
-
-    // There doesn't appear to be a way to flat-out create an infinite plane.
-    // 1000x1000 meters seems like a sensible upper bound that doesn't destroy performance
-    SCNPlane *infinitePlane = [SCNPlane planeWithWidth:1000 height:1000];
-    self.plane = [SCNNode nodeWithGeometry:infinitePlane];
-    self.plane.position = newLocation;
-    self.plane.hidden = true;
-
-    [self.sceneView.scene.rootNode addChildNode: self.plane];
-}
 
 - (void)reset {
     [self.artwork removeFromParentNode];
@@ -301,19 +224,26 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (void)session:(ARSession *)session didFailWithError:(NSError *)error {
-    // Present an error message to the user
-    
+- (void)renderer:(id<SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor
+{
+    [self.visualsDelegate renderer:renderer didUpdateNode:node forAnchor:anchor];
 }
 
-- (void)sessionWasInterrupted:(ARSession *)session {
-    // Inform the user that the session has been interrupted, for example, by presenting an overlay
-    
+- (void)renderer:(id <SCNSceneRenderer>)renderer didAddNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor;
+{
+    [self.visualsDelegate renderer:renderer didAddNode:node forAnchor:anchor];
 }
 
-- (void)sessionInterruptionEnded:(ARSession *)session {
-    // Reset tracking and/or remove existing anchors if consistent tracking is required
+- (void)renderer:(id<SCNSceneRenderer>)renderer willRenderScene:(SCNScene *)scene atTime:(NSTimeInterval)time
+{
+    [self.visualsDelegate renderer:renderer willRenderScene:scene atTime:time];
 }
+
+- (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame;
+{
+    [self.visualsDelegate session:session didUpdateFrame:frame];
+}
+
 
 - (BOOL)hidesToolbarMenu
 {
