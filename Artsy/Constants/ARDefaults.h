@@ -34,10 +34,16 @@ extern NSString *const ARPushNotificationFollowArtist;
 extern NSString *const ARPushNotificationsDialogueLastSeenDate;
 
 #pragma mark -
-#pragma mark Admin features
+#pragma mark admin features
 
 extern NSString *const AREmissionHeadVersionDefault;
 
+#pragma mark -
+#pragma mark user permissions
+
+extern NSString *const ARAugmentedRealityCameraAccessGiven;
+extern NSString *const ARAugmentedRealityHasSuccessfullyRan;
+extern NSString *const ARAugmentedRealityHasSeenSetup;
 
 @interface ARDefaults : NSObject
 + (void)setup;
