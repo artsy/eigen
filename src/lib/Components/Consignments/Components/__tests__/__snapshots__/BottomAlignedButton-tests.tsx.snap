@@ -2,6 +2,7 @@
 
 exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
 <View
+  enabled={true}
   keyboardVerticalOffset={15}
   onLayout={[Function]}
   style={
@@ -102,6 +103,7 @@ exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
 
 exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results Component 1`] = `
 <View
+  enabled={true}
   keyboardVerticalOffset={15}
   onLayout={[Function]}
   style={

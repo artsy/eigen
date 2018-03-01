@@ -128,6 +128,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
       }
     >
       <View
+        enabled={true}
         keyboardVerticalOffset={15}
         onLayout={[Function]}
         style={
@@ -957,6 +958,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
       }
     >
       <View
+        enabled={true}
         keyboardVerticalOffset={15}
         onLayout={[Function]}
         style={

@@ -10,6 +10,7 @@ exports[`looks correct for iPad in landscape mode when the user has no conversat
     getItemCount={[Function]}
     horizontal={false}
     initialNumToRender={10}
+    invertStickyHeaders={undefined}
     keyExtractor={[Function]}
     maxToRenderPerBatch={10}
     numColumns={1}
@@ -30,7 +31,7 @@ exports[`looks correct for iPad in landscape mode when the user has no conversat
     <View />
   </RCTScrollView>
 </View>
-`
+`;
 
 exports[`looks correct for iPad in portrait mode when the user has no conversations 1`] = `
 <View>
@@ -42,6 +43,7 @@ exports[`looks correct for iPad in portrait mode when the user has no conversati
     getItemCount={[Function]}
     horizontal={false}
     initialNumToRender={10}
+    invertStickyHeaders={undefined}
     keyExtractor={[Function]}
     maxToRenderPerBatch={10}
     numColumns={1}
@@ -62,7 +64,7 @@ exports[`looks correct for iPad in portrait mode when the user has no conversati
     <View />
   </RCTScrollView>
 </View>
-`
+`;
 
 exports[`looks correct for iPhone 4 when the user has no conversations 1`] = `
 <View>
@@ -74,6 +76,7 @@ exports[`looks correct for iPhone 4 when the user has no conversations 1`] = `
     getItemCount={[Function]}
     horizontal={false}
     initialNumToRender={10}
+    invertStickyHeaders={undefined}
     keyExtractor={[Function]}
     maxToRenderPerBatch={10}
     numColumns={1}
@@ -94,7 +97,7 @@ exports[`looks correct for iPhone 4 when the user has no conversations 1`] = `
     <View />
   </RCTScrollView>
 </View>
-`
+`;
 
 exports[`looks correct for iPhone 5 when the user has no conversations 1`] = `
 <View>
@@ -106,6 +109,7 @@ exports[`looks correct for iPhone 5 when the user has no conversations 1`] = `
     getItemCount={[Function]}
     horizontal={false}
     initialNumToRender={10}
+    invertStickyHeaders={undefined}
     keyExtractor={[Function]}
     maxToRenderPerBatch={10}
     numColumns={1}
@@ -126,7 +130,7 @@ exports[`looks correct for iPhone 5 when the user has no conversations 1`] = `
     <View />
   </RCTScrollView>
 </View>
-`
+`;
 
 exports[`looks correct for iPhone 6 when the user has no conversations 1`] = `
 <View>
@@ -138,6 +142,7 @@ exports[`looks correct for iPhone 6 when the user has no conversations 1`] = `
     getItemCount={[Function]}
     horizontal={false}
     initialNumToRender={10}
+    invertStickyHeaders={undefined}
     keyExtractor={[Function]}
     maxToRenderPerBatch={10}
     numColumns={1}
@@ -158,4 +163,4 @@ exports[`looks correct for iPhone 6 when the user has no conversations 1`] = `
     <View />
   </RCTScrollView>
 </View>
-`
+`;

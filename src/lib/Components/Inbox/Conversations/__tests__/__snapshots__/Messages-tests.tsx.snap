@@ -32,6 +32,7 @@ exports[`looks correct when rendered 1`] = `
   getItemCount={[Function]}
   horizontal={false}
   initialNumToRender={10}
+  invertStickyHeaders={true}
   inverted={true}
   keyExtractor={[Function]}
   keyboardShouldPersistTaps="always"

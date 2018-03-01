@@ -2,6 +2,7 @@
 
 exports[`looks correct when rendered 1`] = `
 <View
+  enabled={true}
   keyboardVerticalOffset={20}
   onLayout={[Function]}
   style={
@@ -453,6 +454,7 @@ ShallowWrapper {
 
 exports[`regarding the send button disables it when there is no text 1`] = `
 <View
+  enabled={true}
   keyboardVerticalOffset={20}
   onLayout={[Function]}
   style={
