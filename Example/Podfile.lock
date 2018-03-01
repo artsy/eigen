@@ -9,21 +9,23 @@ PODS:
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
     - UIView+BooleanAnimations
+  - boost-for-react-native (1.63.0)
+  - DoubleConversion (1.1.5)
   - Emission (1.4.6):
     - Artsy+UIColors
     - Artsy+UIFonts (>= 3.0.0)
     - Extraction (>= 1.2.1)
-    - React/BatchedBridge (= 0.52.2)
-    - React/Core (= 0.52.2)
-    - React/RCTAnimation (= 0.52.2)
-    - React/RCTCameraRoll (= 0.52.2)
-    - React/RCTImage (= 0.52.2)
-    - React/RCTLinkingIOS (= 0.52.2)
-    - React/RCTNetwork (= 0.52.2)
-    - React/RCTText (= 0.52.2)
+    - React/Core (= 0.54.0)
+    - React/CxxBridge (= 0.54.0)
+    - React/RCTAnimation (= 0.54.0)
+    - React/RCTCameraRoll (= 0.54.0)
+    - React/RCTImage (= 0.54.0)
+    - React/RCTLinkingIOS (= 0.54.0)
+    - React/RCTNetwork (= 0.54.0)
+    - React/RCTText (= 0.54.0)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
-    - yoga (= 0.52.2.React)
+    - yoga (= 0.54.0.React)
   - Extraction (1.2.3):
     - Extraction/ARAnimationContinuation (= 1.2.3)
     - Extraction/ARLoadFailureView (= 1.2.3)
@@ -48,6 +50,11 @@ PODS:
   - Extraction/UIView+ARSpinner (1.2.3):
     - Extraction/ARAnimationContinuation
   - FLKAutoLayout (1.0.0)
+  - Folly (2016.09.26.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
+  - glog (0.3.4)
   - ISO8601DateFormatter (0.8)
   - Keys (1.0.0)
   - KSCrash/Core (1.15.16):
@@ -63,39 +70,45 @@ PODS:
   - NSURL+QueryDictionary (1.2.0)
   - ORStackView (2.0.3):
     - FLKAutoLayout
-  - React (0.52.2):
-    - React/Core (= 0.52.2)
-  - React/BatchedBridge (0.52.2):
+  - React (0.54.0):
+    - React/Core (= 0.54.0)
+  - React/Core (0.54.0):
+    - yoga (= 0.54.0.React)
+  - React/CxxBridge (0.54.0):
+    - Folly (= 2016.09.26.00)
     - React/Core
-    - React/cxxreact_legacy
-  - React/Core (0.52.2):
-    - yoga (= 0.52.2.React)
-  - React/cxxreact_legacy (0.52.2):
-    - React/jschelpers_legacy
-    - React/jsinspector_legacy
-  - React/DevSupport (0.52.2):
+    - React/cxxreact
+  - React/cxxreact (0.54.0):
+    - boost-for-react-native (= 1.63.0)
+    - Folly (= 2016.09.26.00)
+    - React/jschelpers
+    - React/jsinspector
+  - React/DevSupport (0.54.0):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.52.2)
-  - React/jschelpers_legacy (0.52.2)
-  - React/jsinspector_legacy (0.52.2)
-  - React/RCTAnimation (0.52.2):
+  - React/fishhook (0.54.0)
+  - React/jschelpers (0.54.0):
+    - Folly (= 2016.09.26.00)
+    - React/PrivateDatabase
+  - React/jsinspector (0.54.0)
+  - React/PrivateDatabase (0.54.0)
+  - React/RCTAnimation (0.54.0):
     - React/Core
-  - React/RCTBlob (0.52.2):
+  - React/RCTBlob (0.54.0):
     - React/Core
-  - React/RCTCameraRoll (0.52.2):
+  - React/RCTCameraRoll (0.54.0):
     - React/Core
     - React/RCTImage
-  - React/RCTImage (0.52.2):
+  - React/RCTImage (0.54.0):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.52.2):
+  - React/RCTLinkingIOS (0.54.0):
     - React/Core
-  - React/RCTNetwork (0.52.2):
+  - React/RCTNetwork (0.54.0):
     - React/Core
-  - React/RCTText (0.52.2):
+  - React/RCTText (0.54.0):
     - React/Core
-  - React/RCTWebSocket (0.52.2):
+  - React/RCTWebSocket (0.54.0):
     - React/Core
     - React/fishhook
     - React/RCTBlob
@@ -114,14 +127,17 @@ PODS:
     - Sentry (~> 3.9.0)
     - Sentry/KSCrash (~> 3.9.0)
   - UIView+BooleanAnimations (1.0.2)
-  - yoga (0.52.2.React)
+  - yoga (0.54.0.React)
 
 DEPENDENCIES:
   - ARGenericTableViewController
   - Artsy+Authentication/email (from `https://github.com/artsy/Artsy-Authentication.git`, branch `fetch-user-details`)
   - Artsy+UIFonts
+  - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Emission (from `../`)
   - FLKAutoLayout
+  - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Keys (from `Pods/CocoaPodsKeys`)
   - React/DevSupport (from `../node_modules/react-native`)
   - SAMKeychain
@@ -134,8 +150,14 @@ EXTERNAL SOURCES:
   Artsy+Authentication:
     :branch: fetch-user-details
     :git: https://github.com/artsy/Artsy-Authentication.git
+  DoubleConversion:
+    :podspec: ../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec
   Emission:
     :path: ../
+  Folly:
+    :podspec: ../node_modules/react-native/third-party-podspecs/Folly.podspec
+  glog:
+    :podspec: ../node_modules/react-native/third-party-podspecs/glog.podspec
   Keys:
     :path: Pods/CocoaPodsKeys
   React:
@@ -156,15 +178,19 @@ SPEC CHECKSUMS:
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   Artsy+UIFonts: d38c82636e000b1dee31b7bec0268e1841dac17f
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
-  Emission: 3bc00df3a21a90b68aef0a425ae43e31e6f71993
+  boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
+  Emission: 51505894af64d6fe128d94f3fa33785e9af4b086
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
+  Folly: 211775e49d8da0ca658aebc8eab89d642935755c
+  glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   Keys: af65e23feef2a047b3277b1ef0399f1209ef9d46
   KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
-  React: a40f127b0fd411640b2f247091e3f03775eed3cd
+  React: c237e42de9c70e5cac6eeb52b4cfd3a0910c1f00
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
@@ -172,6 +198,6 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: cc52aaa255c364539079f00eebd73c980643bf4f
+PODFILE CHECKSUM: 128959142ec5a788e779c9a2f4497b309bba756d
 
 COCOAPODS: 1.4.0

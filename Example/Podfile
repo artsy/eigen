@@ -16,6 +16,9 @@ install! 'cocoapods', :deterministic_uuids => false
 node_modules_path = '../node_modules'
 react_path = File.join(node_modules_path, 'react-native')
 yoga_path = File.join(react_path, 'ReactCommon/yoga')
+folly_spec_path = File.join(react_path, 'third-party-podspecs/Folly.podspec')
+glog_spec_path = File.join(react_path, 'third-party-podspecs/glog.podspec')
+double_conversion_spec_path = File.join(react_path, 'third-party-podspecs/DoubleConversion.podspec')
 sentry_path = File.join(node_modules_path, 'react-native-sentry')
 
 target 'Emission' do
@@ -24,6 +27,9 @@ target 'Emission' do
   # As this runs dev, we need the developer web socket
   pod 'React', :path => react_path, :subspecs => %w(DevSupport)
   pod 'yoga', :path => yoga_path
+  pod 'Folly', :podspec => folly_spec_path
+  pod 'DoubleConversion', :podspec => double_conversion_spec_path
+  pod 'glog', :podspec => glog_spec_path
 
   pod 'Sentry', :subspecs => ['Core', 'KSCrash']
   pod 'SentryReactNative', :path => sentry_path
