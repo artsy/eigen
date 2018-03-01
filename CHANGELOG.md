@@ -14,6 +14,10 @@
 
 -->
 
+## Master
+
+* Upgrade to React Native 0.54.0 - alloy
+
 ## 1.4.6
 
 * Scroll to last sent message upon send - sarah
