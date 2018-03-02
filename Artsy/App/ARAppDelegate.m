@@ -115,6 +115,11 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    [self setupForAppLaunch];
+}
+
+- (void)setupForAppLaunch
+{
     // In case everything's already set up
     if (self.window) {
         return;
@@ -146,11 +151,11 @@ static ARAppDelegate *_sharedInstance = nil;
     NSInteger numberOfRuns = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
 
     BOOL shouldShowOnboarding;
-    
+
     BOOL firstTimeUser = (numberOfRuns == 1);
     BOOL hasAccount = [[ARUserManager sharedManager] hasExistingAccount];
     AROnboardingUserProgressStage onboardingState = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
-    
+
     if (firstTimeUser && !hasAccount && (onboardingState == AROnboardingStageDefault)) {
         // you are a fresh install - you will be onboarding and we set the enum to check when you come back
         [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarding forKey:AROnboardingUserProgressionStage];
@@ -165,7 +170,7 @@ static ARAppDelegate *_sharedInstance = nil;
         // fallback, if the user has no account, they have to log in / onboard to prevent crash
         shouldShowOnboarding = YES;
     }
-    
+
     if (ARIsRunningInDemoMode) {
         [self.viewController presentViewController:[[ARDemoSplashViewController alloc] init] animated:NO completion:nil];
         [self performSelector:@selector(finishDemoSplash) withObject:nil afterDelay:1];
@@ -207,6 +212,15 @@ static ARAppDelegate *_sharedInstance = nil;
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
 }
+
+/// This is called when the app is almost done launching
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    /// Make sure we set up here so there is an ARTopMenuViewController for routing when launching from a universal link
+    [self setupForAppLaunch];
+    return YES;
+}
+
 
 - (void)startupApp
 {
@@ -332,8 +346,8 @@ static ARAppDelegate *_sharedInstance = nil;
          annotation:(id)annotation
 {
     return [self application:application openURL:url options:@{
-       UIApplicationOpenURLOptionsSourceApplicationKey: sourceApplication ?: @"",
-       UIApplicationOpenURLOptionsAnnotationKey: annotation  ?: @""
+        UIApplicationOpenURLOptionsSourceApplicationKey: sourceApplication ?: @"",
+        UIApplicationOpenURLOptionsAnnotationKey: annotation  ?: @""
     }];
 }
 
