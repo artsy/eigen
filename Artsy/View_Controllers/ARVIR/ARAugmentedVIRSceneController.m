@@ -54,16 +54,10 @@ NSInteger wallHeight = 5;
 
         NSArray <SCNHitTestResult *> *results = [sceneView hitTest:point options: options];
         for (SCNHitTestResult *result in results) {
-            NSLog(@"-- %@", result.node);
 
             if ([self.invisibleWalls containsObject:result.node] || [self.detectedPlanes containsObject:result.node] ) {
-                //            self.artwork.position = result.worldCoordinates;
 
                 SCNBox *box = [SCNArtworkNode nodeWithConfig:self.config];
-
-                //            simd_float4x4 newLocationSimD = sceneView.session.currentFrame.camera.transform;
-                //            SCNVector3 newLocation = SCNVector3Make(newLocationSimD.columns[3].x, newLocationSimD.columns[3].y, newLocationSimD.columns[3].z);
-
                 SCNNode *artwork = [SCNNode nodeWithGeometry:box];
                 artwork.position = result.localCoordinates;
                 [result.node addChildNode:artwork];
@@ -76,6 +70,16 @@ NSInteger wallHeight = 5;
         }
     }
 }
+
+- (void)placeArtwork {
+
+}
+
+
+- (void)restartArtwork {
+
+}
+
 
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0));
 {
@@ -112,8 +116,8 @@ NSInteger wallHeight = 5;
     }
 }
 
-- (void)renderer:(id<SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor
-API_AVAILABLE(ios(11.0)){
+- (void)renderer:(id<SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor API_AVAILABLE(ios(11.0))
+{
     // Used to update and re-align vertical planes as ARKit sends new updates for the positioning
     if(!anchor) { return; }
     if(![anchor isKindOfClass:ARPlaneAnchor.class]) { return; }

@@ -9,13 +9,8 @@
 - (void)restartArtwork;
 @end
 
-@interface ARAugmentedVIRSceneController : NSObject <ARSCNViewDelegate, ARVIRInteractive, ARSessionObserver>
+@interface ARAugmentedVIRSceneController : NSObject <ARSCNViewDelegate, ARVIRInteractive, ARSessionDelegate>
 
 - (instancetype)initWithSession:(ARSession *)session config:(ARAugmentedRealityConfig *)config scene:(SCNView *)scene API_AVAILABLE(ios(11.0));
-
-- (void)tappedScreen:(UITapGestureRecognizer *)gesture;
-
-- (void)placeArtwork;
-- (void)restartArtwork;
 
 @end

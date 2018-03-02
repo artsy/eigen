@@ -6,6 +6,7 @@ upcoming:
 
       - ARVIR:
         - Adds a new VIR intro screen, which handles disabled states - orta
+        - Updates the AR aspect of the app to be based on the 11.3 version - orta
 
     user_facing:
       - Show Online Exclusive label for shows without location - ashkan
