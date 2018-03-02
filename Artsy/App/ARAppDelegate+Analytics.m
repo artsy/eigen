@@ -82,6 +82,8 @@
 
 - (void)lookAtURLForAnalytics:(NSURL *)url
 {
+    NSString *anonymousID = [ARUserManager sharedManager].localTemporaryUserUUID;
+    [Adjust addSessionPartnerParameter:@"anonymous_id" value:anonymousID];
     [Adjust appWillOpenUrl:url];
     [ARAnalytics event:ARAnalyticsDeepLinkOpened withProperties:@{@"link" : url.absoluteString}];
 }
