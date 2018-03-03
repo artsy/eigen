@@ -2,6 +2,8 @@ upcoming:
     version: 4.0.3
     emission_version: 1.4.6
     dev:
+      - Potential fixes for Adjust session registering with anon users - orta
+
       - ARVIR:
         - Adds a new VIR intro screen, which handles disabled states - orta
 
