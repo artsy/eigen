@@ -3,6 +3,7 @@ upcoming:
     emission_version: 1.4.6
     dev:
       - Fixes universal links in iOS 11 - sarah
+      - Potential fixes for Adjust session registering with anon users - orta
 
       - ARVIR:
         - Adds a new VIR intro screen, which handles disabled states - orta
