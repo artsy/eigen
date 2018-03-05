@@ -1,17 +1,22 @@
 upcoming:
-    version: 4.0.2
+    version: 4.0.3
     emission_version: 1.4.6
     dev:
-      - Fixes universal links in iOS 11 - sarah
       - Potential fixes for Adjust session registering with anon users - orta
 
       - ARVIR:
         - Adds a new VIR intro screen, which handles disabled states - orta
 
+releases:
+  - version: 4.0.2
+    emission_version: 1.4.6
+    date: Feb 23, 2018
+    dev:
+      - Fixes universal links in iOS 11 - sarah
+
     user_facing:
       - Show Online Exclusive label for shows without location - ashkan
 
-releases:
   - version: 4.0.1
     details: Bug Fixes / iPhone X
     emission_version: 1.4.5
