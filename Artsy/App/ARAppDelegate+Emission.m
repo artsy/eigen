@@ -235,7 +235,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 @implementation ARHomeComponentViewController (ARRootViewController)
 
-- (BOOL)isRootViewController
+- (BOOL)isRootNavViewController
 {
     return YES;
 }
@@ -247,7 +247,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 @implementation ARWorksForYouComponentViewController (ARRootViewController)
 
-- (BOOL)isRootViewController
+- (BOOL)isRootNavViewController
 {
     return YES;
 }

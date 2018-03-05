@@ -212,7 +212,7 @@
 
 #pragma mark - ARRootViewController
 
-- (BOOL)isRootViewController
+- (BOOL)isRootNavViewController
 {
     return YES;
 }
