@@ -3,6 +3,7 @@
 #import "ARCustomEigenLabels.h"
 #import "Artist.h"
 #import "Artwork.h"
+#import "Artwork+AttributionClassStrings.h"
 #import "ARFonts.h"
 #import "ARTextView.h"
 #import "Fair.h"
@@ -18,6 +19,7 @@ typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
     ARDetailArtworkMedium,
     ARDetailDimensionInches,
     ARDetailDimensionCM,
+    ARDetailAttributionClass,
     ARDetailCollectionInstitution,
     ARDetailImageRights,
     ARDetailPartner,
@@ -51,7 +53,7 @@ typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
 - (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate>)delegate
 {
     _delegate = delegate;
-   __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
     [self.artwork onArtworkUpdate:^{
         __strong typeof (wself) sself = wself;
         [sself updateWithArtwork:self.artwork];
@@ -103,6 +105,17 @@ typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
 
         case ARDetailDimensionCM: {
             view = [[ARSerifLabel alloc] init];
+            break;
+        }
+
+        case ARDetailAttributionClass: {
+            view = [[UIView alloc] init];
+            UILabel *label = [[ARSerifLabel alloc] init];
+            [view addSubview:label];
+            [view constrainHeightToView:label predicate:@"0"];
+            [label constrainBottomSpaceToView:view predicate:@"0"];
+            [label constrainWidthToView:view predicate:@"0"];
+            [label alignCenterXWithView:view predicate:@"0"];
             break;
         }
 
@@ -198,6 +211,15 @@ typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
         dimensionCMLabel.text = artwork.dimensionsCM;
 
         [self addSubview:dimensionCMLabel withTopMargin:@"4" sideMargin:@"0"];
+    }
+
+    if (artwork.attributionClass.length) {
+        UIView *view = [self viewFor:ARDetailAttributionClass];
+
+        ARSerifLabel *attributionClassLabel = [view subviews][0];
+        attributionClassLabel.text = artwork.shortDescriptionForAttributionClass;
+
+        [self addSubview:view withTopMargin:@"40" sideMargin:@"0"];
     }
 
     if (artwork.imageRights.length) {
