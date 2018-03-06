@@ -8,23 +8,6 @@ Enzyme.configure({ adapter: new Adapter() })
 import diff from "snapshot-diff"
 expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 
-const originalConsoleError = console.error
-
-// Remove on the next React-Native update.
-console.error = (message?: any) => {
-  if (
-    typeof message === "string" &&
-    (message.includes("PropTypes has been moved to a separate package.") ||
-      message.includes("React.createClass is no longer supported.") ||
-      message.includes("Check the render method of `ScrollViewMock`. It was passed a child from ListViewMock.") ||
-      message.includes("setState(...): Can only update a mounted or mounting component."))
-  ) {
-    // NOOP
-  } else {
-    originalConsoleError(message)
-  }
-}
-
 jest.mock("react-tracking")
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
 jest.mock("react-tracking/build/dispatchTrackingEvent")

@@ -46,6 +46,7 @@ it("resets the cache when a final submission is made", async () => {
   const overview = new Overview({ setup: {} })
   overview.uploadPhotosIfNeeded = () => Promise.resolve()
   overview.showConfirmationScreen = () => true
+  overview.setState = jest.fn()
 
   // Make a call to the
   await overview.submitFinalSubmission()

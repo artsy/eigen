@@ -45,6 +45,8 @@ it("It requests a relay refetch when fetchData is called in ZeroState", () => {
   }
 
   const inbox = new ActualInbox(relayEmptyProps)
+  inbox.setState = jest.fn()
+
   inbox.fetchData()
   expect(relayEmptyProps.relay.refetch).toBeCalled()
 })
