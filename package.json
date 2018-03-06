@@ -10,8 +10,10 @@
   },
   "main": "index.ios.js",
   "scripts": {
-    "bundle": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
-    "bundle-with-storybooks": "react-native bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output  Pod/Assets/Emission.js --assets-dest Pod/Assets",
+    "bundle":
+      "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
+    "bundle-with-storybooks":
+      "react-native bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output  Pod/Assets/Emission.js --assets-dest Pod/Assets",
     "type-check": "tsc --noEmit --pretty",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "lint-fix": "lint -- --fix",
@@ -22,18 +24,22 @@
     "danger": "danger",
     "start": "yarn start-servers",
     "start-servers": "concurrently --kill-others 'yarn start-packager' 'yarn relay --watch' 'yarn storybook'",
-    "start-packager": "env REACT_DEBUGGER=\"$([ -d '/Applications/React Native Debugger.app' ] && echo \"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\")\" node node_modules/react-native/local-cli/cli.js start",
+    "start-packager":
+      "env REACT_DEBUGGER=\"$([ -d '/Applications/React Native Debugger.app' ] && echo \"open 'rndebugger://set-debugger-loc?host=localhost&port=8081' --args\")\" node node_modules/react-native/local-cli/cli.js start",
     "storybook": "storybook start -p 9001 -c .storybook --skip-packager",
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
     "open-sim": "open -a Simulator",
     "open-emission": "xcrun simctl launch booted net.artsy.Emission",
     "test": "jest",
-    "test:ci": "jest --outputFile test-results.json --json",
+    "test:ci": "jest --outputFile test-results.json --json --runInBand",
     "testing": "jest --watch",
-    "relay": "relay-compiler --src ./src --schema data/schema.graphql --language typescript --artifactDirectory ./src/__generated__",
-    "sync-colors": "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
+    "relay":
+      "relay-compiler --src ./src --schema data/schema.graphql --language typescript --artifactDirectory ./src/__generated__",
+    "sync-colors":
+      "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
-    "sync-schema": "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && yarn dump-schema -- ../../data && rm -rf node_modules",
+    "sync-schema":
+      "cd externals/metaphysics && git fetch && git checkout origin/master && yarn install && yarn dump-schema -- ../../data && rm -rf node_modules",
     "sync-schema:localhost": "cd ../metaphysics && yarn dump-schema -- ../emission/data",
     "version":
       "yarn install && yarn bundle && pushd Example && bundle install && bundle exec pod update Emission && popd && git add Pod/Assets Example/Podfile.lock",
@@ -46,22 +52,14 @@
     "type": "git",
     "url": "git+https://github.com/artsy/emission.git"
   },
-  "keywords": [
-    "artsy",
-    "react",
-    "react-native"
-  ],
+  "keywords": ["artsy", "react", "react-native"],
   "author": "Eloy Durán",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/artsy/emission/issues"
   },
   "homepage": "https://github.com/artsy/emission#readme",
-  "files": [
-    "index.js",
-    "data",
-    "lib"
-  ],
+  "files": ["index.js", "data", "lib"],
   "resolutions": {
     "graphql": "^0.12.3",
     "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/relay-runtime-1.5.0-artsy.3.tgz"
@@ -120,7 +118,8 @@
     "react-storybooks-relay-container": "^1.0.0",
     "react-test-renderer": "^16.3.0-alpha.1",
     "recursive-readdir-sync": "^1.0.6",
-    "relay-compiler": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/relay-compiler-1.5.0-artsy.3.tgz",
+    "relay-compiler":
+      "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/relay-compiler-1.5.0-artsy.3.tgz",
     "relay-compiler-language-typescript": "^0.9.0",
     "relay2ts": "^0.2.0",
     "snapshot-diff": "^0.2.1",
@@ -140,11 +139,7 @@
         "useBabelrc": true
       }
     },
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
     "moduleNameMapper": {
       "^lib/(.*)": "<rootDir>/src/lib/$1"
     },
@@ -161,25 +156,13 @@
     "modulePathIgnorePatterns": ["<rootDir>/externals"]
   },
   "lint-staged": {
-    "*.@(ts|tsx)": [
-      "tslint --fix",
-      "yarn run prettier-write --",
-      "git add"
-    ],
-    "*.json": [
-      "yarn run prettier-write --",
-      "git add"
-    ],
-    "*.md": [
-      "yarn run prettier-write --",
-      "git add"
-    ]
+    "*.@(ts|tsx)": ["tslint --fix", "yarn run prettier-write --", "git add"],
+    "*.json": ["yarn run prettier-write --", "git add"],
+    "*.md": ["yarn run prettier-write --", "git add"]
   },
   "config": {
     "react-native-storybook-loader": {
-      "searchDir": [
-        "./src"
-      ],
+      "searchDir": ["./src"],
       "pattern": "**/*.story.tsx",
       "outputFile": "./storybook/storyLoader.js"
     }
