@@ -82,6 +82,7 @@
 
 - (void)lookAtURLForAnalytics:(NSURL *)url
 {
+    [ARUserManager identifyAnalyticsUser];
     [Adjust appWillOpenUrl:url];
     [ARAnalytics event:ARAnalyticsDeepLinkOpened withProperties:@{@"link" : url.absoluteString}];
 }

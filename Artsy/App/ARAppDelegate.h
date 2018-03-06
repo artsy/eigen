@@ -10,7 +10,7 @@
 // (`[JSDecoupledAppDelegate sharedAppDelegate]`) to perform your tests on.
 
 
-@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate>
+@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate, JSApplicationURLResourceOpeningDelegate>
 
 + (ARAppDelegate *)sharedInstance;
 

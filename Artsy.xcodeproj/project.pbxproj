@@ -662,6 +662,8 @@
 		66A43C681CE470C400FFD6ED /* Hash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C651CE470C400FFD6ED /* Hash@2x.png */; };
 		66A43C691CE470C400FFD6ED /* Hash@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C661CE470C400FFD6ED /* Hash@3x.png */; };
 		66A43C6B1CE48FA800FFD6ED /* SearchButtonWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C6A1CE48FA800FFD6ED /* SearchButtonWhite@2x.png */; };
+		6F3D85ED204DD876000BF304 /* Artwork+AttributionClassStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3D85EC204DD876000BF304 /* Artwork+AttributionClassStrings.m */; };
+		6F3D85F0204DDB37000BF304 /* ArtworkAttributionClassTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3D85EE204DDB1C000BF304 /* ArtworkAttributionClassTests.m */; };
 		7091E01A0E49F283EF9BF395 /* Pods_Artsy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BEA0E7F562681F61B29D4C4 /* Pods_Artsy.framework */; };
 		7F45A1682003C7100063D6B5 /* conversations.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 7F45A1672003C7100063D6B5 /* conversations.graphql */; };
 		837CEC841C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */; };
@@ -1840,6 +1842,9 @@
 		66A43C651CE470C400FFD6ED /* Hash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hash@2x.png"; sourceTree = "<group>"; };
 		66A43C661CE470C400FFD6ED /* Hash@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hash@3x.png"; sourceTree = "<group>"; };
 		66A43C6A1CE48FA800FFD6ED /* SearchButtonWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SearchButtonWhite@2x.png"; sourceTree = "<group>"; };
+		6F3D85EB204DD876000BF304 /* Artwork+AttributionClassStrings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Artwork+AttributionClassStrings.h"; sourceTree = "<group>"; };
+		6F3D85EC204DD876000BF304 /* Artwork+AttributionClassStrings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Artwork+AttributionClassStrings.m"; sourceTree = "<group>"; };
+		6F3D85EE204DDB1C000BF304 /* ArtworkAttributionClassTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArtworkAttributionClassTests.m; sourceTree = "<group>"; };
 		7F45A1672003C7100063D6B5 /* conversations.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = conversations.graphql; sourceTree = "<group>"; };
 		83282D751EB0D9F1006F30C2 /* ARRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRootViewController.h; sourceTree = "<group>"; };
 		837CEC821C876B7C00A7E0E1 /* ArtsyAPI+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Notifications.h"; sourceTree = "<group>"; };
@@ -3637,6 +3642,8 @@
 				499A5893166683AB004B0E2F /* Artist.m */,
 				60B6F13C16638815007C9587 /* Artwork.h */,
 				60B6F13D16638815007C9587 /* Artwork.m */,
+				6F3D85EB204DD876000BF304 /* Artwork+AttributionClassStrings.h */,
+				6F3D85EC204DD876000BF304 /* Artwork+AttributionClassStrings.m */,
 				342F9A17225A44AC4BE26303 /* PartnerShowFairLocation.m */,
 				342F9C73F3EBBD7348B5CB83 /* PartnerShowFairLocation.h */,
 				342F93E38025E2D2DA90C6DA /* MapFeature.m */,
@@ -4518,6 +4525,7 @@
 				600E73531DAD42EC0007BF39 /* RefineGeneStubs */,
 				3C22227018C647CC00B7CE3A /* Data */,
 				3C7A7FA618C6EDAB00E8D336 /* ArtworkTests.m */,
+				6F3D85EE204DDB1C000BF304 /* ArtworkAttributionClassTests.m */,
 				600E73511DAD42D40007BF39 /* GeneRefineSettingTests.swift */,
 				3CCCC89C18997948008015DD /* FairTests.m */,
 				3CA55D8818BFF8F800B44CD3 /* MapFeatureTests.m */,
@@ -5474,6 +5482,7 @@
 				5E0AEB7819B9EA43009F34DE /* ARShowNetworkModel.m in Sources */,
 				E616B2481911664900D1CBC6 /* ARArtworkView.m in Sources */,
 				60647C791A95095800A45247 /* ARFairPopupViewController.m in Sources */,
+				6F3D85ED204DD876000BF304 /* Artwork+AttributionClassStrings.m in Sources */,
 				E676A62B18F3421600B9AF2C /* ARSeparatorViews.m in Sources */,
 				607E2E7E17C8CA4D00396120 /* ARZoomArtworkImageViewController.m in Sources */,
 				5E20BB671C62C00D00C6D781 /* AuctionCircularButtons.swift in Sources */,
@@ -5897,6 +5906,7 @@
 				5E7598061D9D92F60084AAEC /* LiveAuctionLotBidHistoryGestureControllerTests.swift in Sources */,
 				E6F111A018A2A7CB00D33C3E /* ARBrowseFeaturedLinksCollectionViewControllerTests.m in Sources */,
 				3C7A7FA718C6EDAB00E8D336 /* ArtworkTests.m in Sources */,
+				6F3D85F0204DDB37000BF304 /* ArtworkAttributionClassTests.m in Sources */,
 				5EE9A3E11D1211230014A3C9 /* BiddingIncrementSpecs.swift in Sources */,
 				E67E1DB219475642004252E0 /* ARAnimatedTickViewTest.m in Sources */,
 				604151E51A7998E300D5F9CA /* NSDate+RangeTests.m in Sources */,
