@@ -1,6 +1,6 @@
 @protocol ARRootViewController <NSObject>
 
 @optional
-- (BOOL)isRootViewController;
+- (BOOL)isRootNavViewController;
 
 @end

@@ -1,11 +1,12 @@
 upcoming:
-    version: 4.0.3
-    emission_version: 1.4.6
-    dev:
-      - Potential fixes for Adjust session registering with anon users - orta
-
-      - ARVIR:
-        - Adds a new VIR intro screen, which handles disabled states - orta
+  version: 4.0.3
+  emission_version: 1.4.6
+  dev:
+    - Potential fixes for Adjust session registering with anon users - orta
+  user_facing:
+    - Fix for 11.3 users - orta
+  ARVIR:
+    - Adds a new VIR intro screen, which handles disabled states - orta
 
 releases:
   - version: 4.0.2
