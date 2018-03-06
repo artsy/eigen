@@ -73,7 +73,7 @@ class AuctionInformationViewController: UIViewController {
         if let thumbnail = saleViewModel.profileImageURL {
             let partnerNameThumbnail = UIImageView()
             stackView?.addSubview(partnerNameThumbnail, withTopMargin: "20")
-            partnerNameThumbnail.ar_setImage(with: thumbnail as URL!)
+            partnerNameThumbnail.ar_setImage(with: thumbnail)
             partnerNameThumbnail.alignLeadingEdge(withView: view, predicate: "20")
             partnerNameThumbnail.constrainWidth("50")
             partnerNameThumbnail.constrainHeight("50")

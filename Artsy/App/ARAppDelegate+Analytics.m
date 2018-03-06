@@ -123,11 +123,6 @@
     hockey.disableCrashManager = YES;
     hockey.disableUpdateManager = YES;
 
-    ARAnalyticsEventShouldFireBlock heartedShouldFireBlock = ^BOOL(id controller, NSArray *parameters) {
-        ARHeartButton *sender = parameters.firstObject;
-        return sender.isHearted;
-    };
-
     [ARAnalytics setupWithAnalytics:
     @{
         ARHockeyAppBetaID: @"306e66bde3cb91a2043f2606cf335700",
