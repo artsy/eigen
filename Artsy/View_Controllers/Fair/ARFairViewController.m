@@ -388,7 +388,8 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
     [UIView animateIf:self.animatesSearchBehavior duration:ARAnimationDuration:^{
         self.searchVC.view.alpha = 0.0;
     } completion:^(BOOL finished) {
-        [self ar_removeChildViewController:self.searchVC], self.searchVC = nil;
+        [self ar_removeChildViewController:self.searchVC];
+        self.searchVC = nil;
     }];
 }
 

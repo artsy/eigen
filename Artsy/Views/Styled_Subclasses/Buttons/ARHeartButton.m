@@ -92,7 +92,7 @@
     _status = status;
 
    __weak typeof (self) wself = self;
-    void (^animation)() = ^() {
+    void (^animation)(void) = ^() {
         __strong typeof (wself) sself = wself;
         if (status == ARHeartStatusYes) {
             [sself.backView removeFromSuperview];

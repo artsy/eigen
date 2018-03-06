@@ -133,7 +133,8 @@
     self.view.scrollsToTop = NO;
     [self.view.relatedArtworksView cancelRequests];
     [super viewDidDisappear:ARPerformWorkAsynchronously && animated];
-    [self.updateInterfaceWhenAuctionChangesTimer invalidate], self.updateInterfaceWhenAuctionChangesTimer = nil;
+    [self.updateInterfaceWhenAuctionChangesTimer invalidate];
+    self.updateInterfaceWhenAuctionChangesTimer = nil;
 }
 
 - (void)setHasFinishedScrolling

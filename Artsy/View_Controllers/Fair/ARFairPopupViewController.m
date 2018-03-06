@@ -79,7 +79,7 @@ AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;
     }];
 }
 
-- (void)animateOut:(BOOL)animated :(void (^)())completion
+- (void)animateOut:(BOOL)animated :(void (^)(void))completion
 {
     NSParameterAssert(completion);
 
