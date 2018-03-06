@@ -49,6 +49,8 @@ begin
   # Common error when making a new version
   fail "Upcoming is an array, it should be an object" if readme_data["upcoming"].is_a? Array
 
+  fail "There must be a `user_facing`` section in upcoming" unless readme_data["upcoming"]["user_facing"]
+
   # Tie all releases to a date
   readme_data["releases"].each do |release|
     fail "Release #{release['version']} does not have a date" unless release["date"]
