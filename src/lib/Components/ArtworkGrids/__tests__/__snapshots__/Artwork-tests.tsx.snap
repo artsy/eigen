@@ -30,7 +30,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -58,7 +57,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -79,7 +77,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -109,7 +106,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -137,7 +133,11 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
     }
   >
     <Image
-      source={1}
+      source={
+        Object {
+          "testUri": "../../../images/paddle.png",
+        }
+      }
       style={
         Object {
           "marginRight": 4,
@@ -147,7 +147,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={

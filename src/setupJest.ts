@@ -25,8 +25,6 @@ console.error = (message?: any) => {
   }
 }
 
-jest.mock("./lib/metaphysics.ts")
-
 jest.mock("react-tracking")
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
 jest.mock("react-tracking/build/dispatchTrackingEvent")
@@ -55,6 +53,7 @@ mockedModule("./lib/Components/Artist/About.tsx", "About")
 // Gene tests
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 
+// Native modules
 import { NativeModules } from "react-native"
 NativeModules.ARTakeCameraPhotoModule = {
   errorCodes: {
