@@ -183,8 +183,8 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
     }
 
     func attributify(_ string: String, _ color: UIColor, strike: Bool = false) -> NSAttributedString {
-        var attributes: [String:AnyObject] = [NSForegroundColorAttributeName : color]
-        if strike { attributes[NSStrikethroughStyleAttributeName] = NSUnderlineStyle.styleSingle.rawValue as AnyObject? }
+        var attributes: [String:AnyObject] = [NSAttributedStringKey.foregroundColor.rawValue : color]
+        if strike { attributes[NSAttributedStringKey.strikethroughStyle] = NSUnderlineStyle.styleSingle.rawValue as AnyObject? }
         return NSAttributedString(string: string, attributes:attributes)
     }
 

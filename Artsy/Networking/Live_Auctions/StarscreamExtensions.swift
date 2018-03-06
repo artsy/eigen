@@ -1,6 +1,12 @@
 import Starscream
 
 extension WebSocket: SocketType {
+    var onConnect: (() -> Void)? {
+        get {
+            return () => {}
+        }
+    }
+
     func write(string: String) {
         write(string: string, completion: nil)
     }

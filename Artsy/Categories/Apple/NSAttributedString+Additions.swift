@@ -7,10 +7,10 @@ extension NSAttributedString {
         let copy = NSMutableAttributedString(attributedString: self)
 
         enumerateAttributes(in: NSRange(location: 0, length: length), options: []) { (attrs, range, _) in
-            guard let font = attrs[NSFontAttributeName] as? UIFont else { return }
+            guard let font = attrs[NSAttributedStringKey.font] as? UIFont else { return }
 
             if font.isBold {
-                copy.setAttributes([NSFontAttributeName: UIFont.serifSemiBoldFont(withSize: font.pointSize)], range: range)
+                copy.setAttributes([NSAttributedStringKey.font: UIFont.serifSemiBoldFont(withSize: font.pointSize)], range: range)
             }
         }
 

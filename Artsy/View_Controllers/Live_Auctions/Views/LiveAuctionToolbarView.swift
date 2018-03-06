@@ -25,7 +25,7 @@ class LiveAuctionToolbarView: UIView {
     }
 
     func attributify(_ string: String, color: UIColor = .black) -> NSAttributedString {
-        return NSAttributedString(string: string.uppercased(), attributes: [NSForegroundColorAttributeName: color])
+        return NSAttributedString(string: string.uppercased(), attributes: [NSAttributedStringKey.foregroundColor: color])
     }
 
     func setupViews() {
@@ -184,7 +184,7 @@ class LiveAuctionToolbarView: UIView {
 
     fileprivate lazy var formatter = DateFormatter()
 
-    func updateTimerLabel(_ timer: Timer) {
+    @objc func updateTimerLabel(_ timer: Timer) {
         guard let startDate = lotViewModel.dateLotOpened else { return }
         let now = Date().timeIntervalSinceReferenceDate
         let date = Date(timeIntervalSinceReferenceDate: now - startDate.timeIntervalSinceReferenceDate)

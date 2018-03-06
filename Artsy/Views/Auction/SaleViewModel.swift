@@ -189,7 +189,7 @@ extension SaleArtwork: AuctionOrderable {
 
     var currentBid: Int {
         guard let saleHighestBid = self.saleHighestBid else { return 0 }
-        return saleHighestBid.cents as Int
+        return saleHighestBid.cents as! Int
     }
 }
 

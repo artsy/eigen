@@ -76,7 +76,7 @@ extension UIViewController {
                 let textStack = ORStackView()
                 textStack.addSerifPageTitle(title, subtitle: subtitle)
                 textStack.subviews
-                    .flatMap { $0 as? UILabel }
+                    .compactMap { $0 as? UILabel }
                     .forEach { label in
                         label.textColor = .white
                         label.backgroundColor = .clear

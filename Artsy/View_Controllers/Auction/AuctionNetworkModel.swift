@@ -104,7 +104,7 @@ func combine<A, B, C, D>(
     let observable = Observable<(Result<A>, Result<B>, Result<C>, Result<D>)>()
     let notifyIfComplete: () -> Void = {
         if let aResult = aResult, let bResult = bResult, let cResult = cResult, let dResult = dResult {
-            observable.update(aResult, bResult, cResult, dResult)
+            observable.update((aResult, bResult, cResult, dResult))
         }
     }
 

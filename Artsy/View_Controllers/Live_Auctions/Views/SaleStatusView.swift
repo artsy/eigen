@@ -38,7 +38,7 @@ class SaleStatusView: UIView {
         return nil
     }
 
-    func userDidTapStatusView() {
+    @objc func userDidTapStatusView() {
         // We're using NSNotificationCenter because setting up a delegate chain would be too cumbersome.
         NotificationCenter.default.post(name: NSNotification.Name.ARAuctionSaleOnHoldBannerTapped, object: self)
     }

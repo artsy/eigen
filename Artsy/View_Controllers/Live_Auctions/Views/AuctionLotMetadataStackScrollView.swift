@@ -185,8 +185,8 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleUp), for: UIControlState())
         toggle.imageView?.alignTrailingEdge(withView: toggle, predicate: "0")
         toggle.imageTopConstraint =  toggle.imageView?.alignTopEdge(withView: toggle, predicate: "4")
-        toggle.setContentHuggingPriority(1000, for: .horizontal)
-        toggle.setContentCompressionResistancePriority(1000, for: .horizontal)
+        toggle.setContentHuggingPriority(UILayoutPriority(rawValue: 1000), for: .horizontal)
+        toggle.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .horizontal)
 
         // Extend its hit range, as it's like ~20px otherwise
         toggle.ar_extendHitTestSize(byWidth: 20, andHeight: 40)

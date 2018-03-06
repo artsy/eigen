@@ -56,7 +56,7 @@ class LiveAuctionBidButton: ARFlatButton {
     override func setup() {
         super.setup()
         shouldDimWhenDisabled = false
-        setContentCompressionResistancePriority(1000, for: .vertical)
+        setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .vertical)
         addTarget(self, action: #selector(tappedBidButton), for: .touchUpInside)
         viewModel.progressSignal.subscribe(attemptSetupWithState)
         viewModel.bidPendingSignal.subscribe(updateForBidProgress)
@@ -65,7 +65,7 @@ class LiveAuctionBidButton: ARFlatButton {
         spinner.spinnerColor = .white
     }
 
-    func tappedBidButton() {
+    @objc func tappedBidButton() {
         guard let state = viewModel.progressSignal.peek() else { return }
         switch state {
         case .active(let bidState):

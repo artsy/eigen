@@ -41,9 +41,9 @@ class LiveAuctionsAdminViewController: UIViewController {
         }
     }
 
-    func scrolltoBottom() {
+    @objc func scrolltoBottom() {
         guard let textView = textView else { return }
-        textView.scrollRangeToVisible(NSRange(location: textView.text.characters.count - 2, length: 1))
+        textView.scrollRangeToVisible(NSRange(location: textView.text.count - 2, length: 1))
     }
 
     func reloadData() {

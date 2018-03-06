@@ -52,7 +52,7 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
         return traitDependentAutorotateSupport
     }
 
-    func dismissMe() {
+    @objc func dismissMe() {
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
 

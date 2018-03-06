@@ -105,7 +105,7 @@ func test_SocketCreator() -> LiveAuctionSocketCommunicator.SocketCreator {
 
 class Test_Socket: SocketType {
     var onText: ((String) -> Void)?
-    var onConnect: ((Void) -> Void)?
+    var onConnect: (() -> Void)?
     var onDisconnect: ((NSError?) -> Void)?
 
     var writes = [String]()

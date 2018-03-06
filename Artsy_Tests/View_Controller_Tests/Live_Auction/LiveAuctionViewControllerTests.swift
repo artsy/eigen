@@ -40,7 +40,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
             subject.staticDataFetcher = Stubbed_StaticDataFetcher()
             subject.suppressJumpingToOpenLots = true
 
-            subject.salesPersonCreator = { _ in
+            subject.salesPersonCreator = { _,_,_  in
                 return fakeSalesPerson
             }
 

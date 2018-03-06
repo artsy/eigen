@@ -237,7 +237,7 @@ extension AuctionInformationViewController {
         var currentlyExpandedEntryView: EntryView?
 
         var entryViews: [EntryView] {
-            return self.stackView.subviews.flatMap { $0 as? EntryView }
+            return self.stackView.subviews.compactMap { $0 as? EntryView }
         }
 
         required init(entries: [AuctionInformation.FAQEntry]) {
@@ -374,7 +374,7 @@ extension AuctionInformationViewController {
             tapDirection.transform = CGAffineTransform.identity
         }
 
-        func didTap() {
+        @objc func didTap() {
             tapHandler(self)
         }
     }

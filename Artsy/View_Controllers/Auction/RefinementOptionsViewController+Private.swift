@@ -34,7 +34,7 @@ extension RefinementOptionsViewController {
         // Tableview of all the content
         let tableView = self.createTableView()
         view.addSubview(tableView)
-        tableView.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow+1, for: .vertical)
+        tableView.setContentCompressionResistancePriority(UILayoutPriority.defaultLow+1, for: .vertical)
         tableView.constrainTopSpace(toView: spacer, predicate: "20")
         tableView.alignLeading("0", trailing: "0", toView: view)
         self.tableView = tableView

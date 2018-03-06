@@ -257,12 +257,12 @@ class LiveAuctionLotSetViewController: UIViewController {
         navigationItem.rightBarButtonItems = items
     }
 
-    func dismissModal() {
+    @objc func dismissModal() {
         guard let presentor = splitViewController?.presentingViewController else { return }
         presentor.dismiss(animated: true, completion: nil)
     }
 
-    func moreInfo() {
+    @objc func moreInfo() {
         guard let sale = saleNetworkModel.sale else { return }
 
         let saleVM = SaleViewModel(sale: sale, saleArtworks: [], bidders: biddersNetworkModel.bidders, lotStandings: [])
@@ -273,7 +273,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         self.navigationController?.present(nav, animated: true, completion: nil)
     }
 
-    func showLots() {
+    @objc func showLots() {
         let lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
         lotListController.delegate = self
         lotListController.selectedIndex = salesPerson.currentFocusedLotIndex.peek()
@@ -326,7 +326,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         }
     }
 
-    func jumpToLiveLot() {
+    @objc func jumpToLiveLot() {
         // currentLotSignal might have a nil, and peek() returns a wrapped optional, so we need to double-unwrap.
         guard case let .some(.some(currentLot)) = salesPerson.currentLotSignal.peek() else { return }
         guard let liveLotIndex = salesPerson.indexForViewModel(currentLot) else { return }

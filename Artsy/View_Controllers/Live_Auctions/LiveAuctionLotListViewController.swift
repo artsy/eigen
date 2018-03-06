@@ -121,7 +121,7 @@ class LiveAuctionLotListViewController: UICollectionViewController {
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 
-    func showAdminMenu(_ button: UIButton) {
+    @objc func showAdminMenu(_ button: UIButton) {
         let adminVC = LiveAuctionsAdminViewController(salesPerson: salesPerson)
         self.navigationController?.pushViewController(adminVC, animated: true)
     }

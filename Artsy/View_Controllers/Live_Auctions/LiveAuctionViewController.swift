@@ -175,13 +175,13 @@ class LiveAuctionViewController: UIViewController {
         closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
     }
 
-    func userHasChangedRegistrationStatus() {
+    @objc func userHasChangedRegistrationStatus() {
         // We receive the notification while not at the foremost of the VC hierarhcy, so we need 
         // to delay until we reappear.
         registrationStatusChanged = true
     }
 
-    func dismissLiveAuctionsModal() {
+    @objc func dismissLiveAuctionsModal() {
         overlaySubscription?.unsubscribe()
         saleOnHoldSubscription?.unsubscribe()
         self.presentingViewController?.dismiss(animated: true, completion: nil)
@@ -201,7 +201,7 @@ class LiveAuctionViewController: UIViewController {
         }
     }
 
-    func showSaleOnHoldBanner() {
+    @objc func showSaleOnHoldBanner() {
         saleOnHoldBanner = SaleOnHoldOverlayView(messages: saleOnHoldMessageSignal).then {
             view.addSubview($0)
             $0.align(toView: view)

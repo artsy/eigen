@@ -4,14 +4,14 @@ import Artsy_UIColors
 extension UILabel {
 
     func makeSubstringFaint(_ substring: String) {
-        makeSubstring(substring, useAttributes: [NSForegroundColorAttributeName: UIColor.artsyGraySemibold()])
+        makeSubstring(substring, useAttributes: [NSAttributedStringKey.foregroundColor: UIColor.artsyGraySemibold()])
     }
 
     func makeSubstring(_ substring: String, useFont font: UIFont) {
-        makeSubstring(substring, useAttributes: [NSFontAttributeName: font])
+        makeSubstring(substring, useAttributes: [NSAttributedStringKey.font: font])
     }
 
-    func makeSubstring(_ substring: String, useAttributes attributes: [String: Any]) {
+    func makeSubstring(_ substring: String, useAttributes attributes: [NSAttributedStringKey: Any]) {
         guard let
             attributedText = self.attributedText?.mutableCopy() as? NSMutableAttributedString,
             let text: NSString = self.text as NSString?
