@@ -107,14 +107,11 @@ target 'Artsy' do
   # Used in Live Auctions to hold user-state
   pod 'JWTDecode'
 
-  # Note: This is a Swift Pod
   pod 'Sentry'
 
   target 'Artsy Tests' do
     inherit! :search_paths
 
-    # Temporary, should be removed post CP 1.0
-    # https://github.com/facebook/ios-snapshot-test-case/pull/141
     pod 'FBSnapshotTestCase'
     pod 'Expecta+Snapshots'
     pod 'OHHTTPStubs'
@@ -154,8 +151,10 @@ post_install do |installer|
       config.build_settings['EXPANDED_CODE_SIGN_IDENTITY'] = ""
       config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
       config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
+#      config.build_settings['SWIFT_VERSION'] = '3.3'
     end
   end
+
 
   react = installer.pods_project.targets.find { |target| target.name == 'React' }
   react.build_configurations.each do |config|

@@ -5,7 +5,7 @@ import Starscream
 protocol SocketType: class {
     var onText: ((String) -> Void)? { get set }
     var onConnect: (() -> Void)? { get set }
-    var onDisconnect: ((NSError?) -> Void)? { get set }
+    var onDisconnect: ((Error?) -> Void)? { get set }
 
     func write(string: String)
     func writePing()
@@ -68,7 +68,8 @@ class LiveAuctionSocketCommunicator: NSObject, LiveAuctionSocketCommunicatorType
         return { host, saleID in
             let url = URL(string: "\(host)/socket?saleId=\(saleID)")
             let websocket = WebSocket(url: url!) // swiftlint:disable:this force_unwrapping
-            websocket.origin = nil
+            // TODO: Discover whether we actually need this
+//            websocket.origin = nil
             return websocket
         }
     }
@@ -89,18 +90,20 @@ private extension SocketSetup {
         let caller = TimerCaller(callback: applyUnowned(self, LiveAuctionSocketCommunicator.pingSocket)) // Only allowed because we invalidate the timer in deinit
         timer = Timer.scheduledTimer(timeInterval: 1, target: caller, selector: #selector(TimerCaller.invoke), userInfo: nil, repeats: true)
         socket.onText = applyUnowned(self, LiveAuctionSocketCommunicator.receivedText)
-        socket.onConnect = applyUnowned(self, LiveAuctionSocketCommunicator.socketConnected)
+        let a = applyUnowned(self, LiveAuctionSocketCommunicator.socketConnected)
+        socket.onConnect = a
         socket.onDisconnect = applyUnowned(self, LiveAuctionSocketCommunicator.socketDisconnected)
         socket.connect()
     }
 
-    func socketConnected() {
+    func socketConnected() -> Void {
         print("Socket connected")
         socket.write(string: "{\"type\":\"Authorize\",\"jwt\":\"\(jwt.string)\"}")
         socketConnectionSignal.update(true)
+        return Void()
     }
 
-    func socketDisconnected(_ error: NSError?) {
+    func socketDisconnected(_ error: Error?) {
         print("Socket disconnected: \(String(describing: error))")
         socketConnectionSignal.update(false)
 
@@ -110,7 +113,7 @@ private extension SocketSetup {
         }
     }
 
-    func pingSocket() {
+    func pingSocket() -> Void {
         socket.writePing()
     }
 
