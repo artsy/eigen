@@ -101,7 +101,7 @@ fragment Artwork_artwork on Artwork {
     }
     bidder_positions_count
     sale {
-      is_open
+      is_closed
       __id
     }
     __id
@@ -247,7 +247,7 @@ return {
   "operationKind": "query",
   "name": "GeneRefetchQuery",
   "id": null,
-  "text": "query GeneRefetchQuery(\n  $geneID: String!\n  $sort: String\n  $medium: String\n  $price_range: String\n) {\n  gene(id: $geneID) {\n    ...Gene_gene_1GUEBN\n    __id\n  }\n}\n\nfragment Gene_gene_1GUEBN on Gene {\n  ...Header_gene\n  ...About_gene\n  filtered_artworks(size: 0, medium: $medium, price_range: $price_range, sort: $sort, aggregations: [MEDIUM, PRICE_RANGE, TOTAL], for_sale: true) {\n    total\n    aggregations {\n      slice\n      counts {\n        id\n        name\n        count\n        __id\n      }\n    }\n    ...GeneArtworksGrid_filtered_artworks_2GL9EE\n    __id\n  }\n  __id\n}\n\nfragment Header_gene on Gene {\n  _id\n  id\n  name\n  __id\n}\n\nfragment About_gene on Gene {\n  ...Biography_gene\n  trending_artists {\n    ...RelatedArtists_artists\n    __id\n  }\n  __id\n}\n\nfragment GeneArtworksGrid_filtered_artworks_2GL9EE on FilterArtworks {\n  __id\n  artworks: artworks_connection(first: 10, after: \"\", sort: $sort) {\n    pageInfo {\n      hasNextPage\n      startCursor\n      endCursor\n    }\n    edges {\n      node {\n        id\n        __id\n        image {\n          aspect_ratio\n        }\n        ...Artwork_artwork\n        __typename\n      }\n      cursor\n    }\n  }\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  id\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_open\n      __id\n    }\n    __id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id\n  }\n  partner {\n    name\n    __id\n  }\n  href\n  __id\n}\n\nfragment Biography_gene on Gene {\n  description\n  __id\n}\n\nfragment RelatedArtists_artists on Artist {\n  __id\n  ...RelatedArtist_artist\n}\n\nfragment RelatedArtist_artist on Artist {\n  href\n  name\n  counts {\n    for_sale_artworks\n    artworks\n  }\n  image {\n    url(version: \"large\")\n  }\n  __id\n}\n",
+  "text": "query GeneRefetchQuery(\n  $geneID: String!\n  $sort: String\n  $medium: String\n  $price_range: String\n) {\n  gene(id: $geneID) {\n    ...Gene_gene_1GUEBN\n    __id\n  }\n}\n\nfragment Gene_gene_1GUEBN on Gene {\n  ...Header_gene\n  ...About_gene\n  filtered_artworks(size: 0, medium: $medium, price_range: $price_range, sort: $sort, aggregations: [MEDIUM, PRICE_RANGE, TOTAL], for_sale: true) {\n    total\n    aggregations {\n      slice\n      counts {\n        id\n        name\n        count\n        __id\n      }\n    }\n    ...GeneArtworksGrid_filtered_artworks_2GL9EE\n    __id\n  }\n  __id\n}\n\nfragment Header_gene on Gene {\n  _id\n  id\n  name\n  __id\n}\n\nfragment About_gene on Gene {\n  ...Biography_gene\n  trending_artists {\n    ...RelatedArtists_artists\n    __id\n  }\n  __id\n}\n\nfragment GeneArtworksGrid_filtered_artworks_2GL9EE on FilterArtworks {\n  __id\n  artworks: artworks_connection(first: 10, after: \"\", sort: $sort) {\n    pageInfo {\n      hasNextPage\n      startCursor\n      endCursor\n    }\n    edges {\n      node {\n        id\n        __id\n        image {\n          aspect_ratio\n        }\n        ...Artwork_artwork\n        __typename\n      }\n      cursor\n    }\n  }\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  id\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_closed\n      __id\n    }\n    __id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id\n  }\n  partner {\n    name\n    __id\n  }\n  href\n  __id\n}\n\nfragment Biography_gene on Gene {\n  description\n  __id\n}\n\nfragment RelatedArtists_artists on Artist {\n  __id\n  ...RelatedArtist_artist\n}\n\nfragment RelatedArtist_artist on Artist {\n  href\n  name\n  counts {\n    for_sale_artworks\n    artworks\n  }\n  image {\n    url(version: \"large\")\n  }\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -638,7 +638,7 @@ return {
                                   {
                                     "kind": "ScalarField",
                                     "alias": null,
-                                    "name": "is_open",
+                                    "name": "is_closed",
                                     "args": null,
                                     "storageKey": null
                                   },

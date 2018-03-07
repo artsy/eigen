@@ -1,4 +1,4 @@
-import "jest-styled-components"
+// import "jest-styled-components"
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"

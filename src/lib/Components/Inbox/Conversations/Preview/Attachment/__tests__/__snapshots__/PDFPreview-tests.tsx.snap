@@ -17,14 +17,7 @@ exports[`renders correctly 1`] = `
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={
-    Array [
-      Object {
-        "backgroundColor": "transparent",
-      },
-      undefined,
-    ]
-  }
+  style={null}
   testID={undefined}
   tvParallaxProperties={undefined}
 >
@@ -34,7 +27,7 @@ exports[`renders correctly 1`] = `
         Object {
           "flexDirection": "row",
         },
-        undefined,
+        null,
       ]
     }
   >
@@ -54,7 +47,11 @@ exports[`renders correctly 1`] = `
       }
     >
       <Image
-        source={1}
+        source={
+          Object {
+            "testUri": "../../../images/pdf.png",
+          }
+        }
         style={
           Array [
             Object {
@@ -86,7 +83,6 @@ exports[`renders correctly 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
         >
           This is a great PDF telling you all about cats

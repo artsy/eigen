@@ -45,14 +45,7 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -64,14 +57,13 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -106,7 +98,11 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -138,14 +134,7 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -157,14 +146,13 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -199,7 +187,11 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -231,14 +223,7 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -250,14 +235,13 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -292,7 +276,11 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -324,14 +312,7 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -343,14 +324,13 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -385,7 +365,11 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -417,14 +401,7 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -436,14 +413,13 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -478,7 +454,11 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -510,14 +490,7 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -529,14 +502,13 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -571,7 +543,11 @@ exports[`TODO states: Looks right when Empty Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -635,14 +611,7 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -654,14 +623,13 @@ exports[`TODO states: Looks right when With Artist 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -698,7 +666,11 @@ exports[`TODO states: Looks right when With Artist 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -730,14 +702,7 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -749,14 +714,13 @@ exports[`TODO states: Looks right when With Artist 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -791,7 +755,11 @@ exports[`TODO states: Looks right when With Artist 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -823,14 +791,7 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -842,14 +803,13 @@ exports[`TODO states: Looks right when With Artist 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -884,7 +844,11 @@ exports[`TODO states: Looks right when With Artist 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -916,14 +880,7 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -935,14 +892,13 @@ exports[`TODO states: Looks right when With Artist 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -977,7 +933,11 @@ exports[`TODO states: Looks right when With Artist 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -1009,14 +969,7 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -1028,14 +981,13 @@ exports[`TODO states: Looks right when With Artist 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -1070,7 +1022,11 @@ exports[`TODO states: Looks right when With Artist 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -1102,14 +1058,7 @@ exports[`TODO states: Looks right when With Artist 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -1121,14 +1070,13 @@ exports[`TODO states: Looks right when With Artist 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -1163,7 +1111,11 @@ exports[`TODO states: Looks right when With Artist 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -1227,14 +1179,7 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -1246,14 +1191,13 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -1288,7 +1232,11 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -1320,14 +1268,7 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -1339,14 +1280,13 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -1381,7 +1321,11 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -1413,14 +1357,7 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -1432,14 +1369,13 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -1476,7 +1412,11 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -1508,14 +1448,7 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -1527,14 +1460,13 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -1569,7 +1501,11 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -1601,14 +1537,7 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -1620,14 +1549,13 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -1662,7 +1590,11 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -1694,14 +1626,7 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -1713,14 +1638,13 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -1755,7 +1679,11 @@ exports[`TODO states: Looks right when With Just Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -1819,14 +1747,7 @@ exports[`TODO states: Looks right when With Location 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -1838,14 +1759,13 @@ exports[`TODO states: Looks right when With Location 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -1882,7 +1802,11 @@ exports[`TODO states: Looks right when With Location 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -1914,14 +1838,7 @@ exports[`TODO states: Looks right when With Location 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -1933,14 +1850,13 @@ exports[`TODO states: Looks right when With Location 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -1977,7 +1893,11 @@ exports[`TODO states: Looks right when With Location 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -2009,14 +1929,7 @@ exports[`TODO states: Looks right when With Location 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -2028,14 +1941,13 @@ exports[`TODO states: Looks right when With Location 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -2072,7 +1984,11 @@ exports[`TODO states: Looks right when With Location 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -2104,14 +2020,7 @@ exports[`TODO states: Looks right when With Location 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -2123,14 +2032,13 @@ exports[`TODO states: Looks right when With Location 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -2165,7 +2073,11 @@ exports[`TODO states: Looks right when With Location 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -2197,14 +2109,7 @@ exports[`TODO states: Looks right when With Location 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -2216,14 +2121,13 @@ exports[`TODO states: Looks right when With Location 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -2258,7 +2162,11 @@ exports[`TODO states: Looks right when With Location 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -2290,14 +2198,7 @@ exports[`TODO states: Looks right when With Location 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -2309,14 +2210,13 @@ exports[`TODO states: Looks right when With Location 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -2351,7 +2251,11 @@ exports[`TODO states: Looks right when With Location 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -2415,14 +2319,7 @@ exports[`TODO states: Looks right when With Long 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -2434,14 +2331,13 @@ exports[`TODO states: Looks right when With Long 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -2476,7 +2372,11 @@ exports[`TODO states: Looks right when With Long 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -2508,14 +2408,7 @@ exports[`TODO states: Looks right when With Long 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -2527,14 +2420,13 @@ exports[`TODO states: Looks right when With Long 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -2569,7 +2461,11 @@ exports[`TODO states: Looks right when With Long 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -2601,14 +2497,7 @@ exports[`TODO states: Looks right when With Long 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -2620,14 +2509,13 @@ exports[`TODO states: Looks right when With Long 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -2662,7 +2550,11 @@ exports[`TODO states: Looks right when With Long 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -2694,14 +2586,7 @@ exports[`TODO states: Looks right when With Long 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -2713,14 +2598,13 @@ exports[`TODO states: Looks right when With Long 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -2755,7 +2639,11 @@ exports[`TODO states: Looks right when With Long 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -2787,14 +2675,7 @@ exports[`TODO states: Looks right when With Long 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -2806,14 +2687,13 @@ exports[`TODO states: Looks right when With Long 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -2848,7 +2728,11 @@ exports[`TODO states: Looks right when With Long 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -2880,14 +2764,7 @@ exports[`TODO states: Looks right when With Long 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -2899,14 +2776,13 @@ exports[`TODO states: Looks right when With Long 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -2943,7 +2819,11 @@ exports[`TODO states: Looks right when With Long 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -3007,14 +2887,7 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -3026,14 +2899,13 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -3070,7 +2942,11 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -3102,14 +2978,7 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -3121,14 +2990,13 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -3165,7 +3033,11 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -3197,14 +3069,7 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -3216,14 +3081,13 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -3260,7 +3124,11 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -3292,14 +3160,7 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -3311,14 +3172,13 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -3353,7 +3213,11 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -3385,14 +3249,7 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -3404,14 +3261,13 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -3446,7 +3302,11 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -3478,14 +3338,7 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -3497,14 +3350,13 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -3539,7 +3391,11 @@ exports[`TODO states: Looks right when With Metadata 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -3603,14 +3459,7 @@ exports[`TODO states: Looks right when With One 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -3622,14 +3471,13 @@ exports[`TODO states: Looks right when With One 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -3666,7 +3514,11 @@ exports[`TODO states: Looks right when With One 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -3698,14 +3550,7 @@ exports[`TODO states: Looks right when With One 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -3717,14 +3562,13 @@ exports[`TODO states: Looks right when With One 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -3761,7 +3605,11 @@ exports[`TODO states: Looks right when With One 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -3793,14 +3641,7 @@ exports[`TODO states: Looks right when With One 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -3812,14 +3653,13 @@ exports[`TODO states: Looks right when With One 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -3854,7 +3694,11 @@ exports[`TODO states: Looks right when With One 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -3886,14 +3730,7 @@ exports[`TODO states: Looks right when With One 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -3905,14 +3742,13 @@ exports[`TODO states: Looks right when With One 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -3947,7 +3783,11 @@ exports[`TODO states: Looks right when With One 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -3979,14 +3819,7 @@ exports[`TODO states: Looks right when With One 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -3998,14 +3831,13 @@ exports[`TODO states: Looks right when With One 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -4040,7 +3872,11 @@ exports[`TODO states: Looks right when With One 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -4072,14 +3908,7 @@ exports[`TODO states: Looks right when With One 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -4091,14 +3920,13 @@ exports[`TODO states: Looks right when With One 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -4133,7 +3961,11 @@ exports[`TODO states: Looks right when With One 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -4197,14 +4029,7 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -4216,14 +4041,13 @@ exports[`TODO states: Looks right when With Photos 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -4260,7 +4084,11 @@ exports[`TODO states: Looks right when With Photos 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -4292,14 +4120,7 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -4311,14 +4132,13 @@ exports[`TODO states: Looks right when With Photos 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -4355,7 +4175,11 @@ exports[`TODO states: Looks right when With Photos 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -4387,14 +4211,7 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -4406,14 +4223,13 @@ exports[`TODO states: Looks right when With Photos 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -4448,7 +4264,11 @@ exports[`TODO states: Looks right when With Photos 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -4480,14 +4300,7 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -4499,14 +4312,13 @@ exports[`TODO states: Looks right when With Photos 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -4541,7 +4353,11 @@ exports[`TODO states: Looks right when With Photos 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -4573,14 +4389,7 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -4592,14 +4401,13 @@ exports[`TODO states: Looks right when With Photos 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -4634,7 +4442,11 @@ exports[`TODO states: Looks right when With Photos 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -4666,14 +4478,7 @@ exports[`TODO states: Looks right when With Photos 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -4685,14 +4490,13 @@ exports[`TODO states: Looks right when With Photos 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -4727,7 +4531,11 @@ exports[`TODO states: Looks right when With Photos 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -4791,14 +4599,7 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -4810,14 +4611,13 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -4854,7 +4654,11 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -4886,14 +4690,7 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -4905,14 +4702,13 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -4949,7 +4745,11 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -4981,14 +4781,7 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -5000,14 +4793,13 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -5044,7 +4836,11 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -5076,14 +4872,7 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -5095,14 +4884,13 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -5137,7 +4925,11 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/plus.png",
+            }
+          }
         />
       </View>
     </View>
@@ -5169,14 +4961,7 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -5188,14 +4973,13 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -5232,7 +5016,11 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>
@@ -5264,14 +5052,7 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-        },
-        undefined,
-      ]
-    }
+    style={null}
     testID={undefined}
     tvParallaxProperties={undefined}
   >
@@ -5283,14 +5064,13 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
             "flexDirection": "row",
             "height": 60,
           },
-          undefined,
+          null,
         ]
       }
     >
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -5327,7 +5107,11 @@ exports[`TODO states: Looks right when With Provenance 1`] = `
         }
       >
         <Image
-          source={1}
+          source={
+            Object {
+              "testUri": "../../../images/consignments/black-tick.png",
+            }
+          }
         />
       </View>
     </View>

@@ -15,7 +15,11 @@ exports[`InvoicePreview renders correctly 1`] = `
   }
 >
   <Image
-    source={1}
+    source={
+      Object {
+        "testUri": "../../../images/payment_request.png",
+      }
+    }
     style={
       Array [
         Object {
@@ -47,7 +51,6 @@ exports[`InvoicePreview renders correctly 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -64,7 +67,6 @@ exports[`InvoicePreview renders correctly 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -100,7 +102,6 @@ exports[`InvoicePreview renders correctly 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [

@@ -35,14 +35,18 @@ const track: Track<Props, State> = _track
 
 @track()
 export class Artist extends Component<Props, State> {
-  componentWillMount() {
+  initialTabState() {
     const tabs = this.availableTabs()
     const worksTab = tabs.indexOf(TABS.WORKS)
     if (worksTab > -1) {
-      this.state = { selectedTabIndex: worksTab, selectedTabTitle: TABS.WORKS }
+      return { selectedTabIndex: worksTab, selectedTabTitle: TABS.WORKS }
     } else {
-      this.state = { selectedTabIndex: 0, selectedTabTitle: tabs[0] }
+      return { selectedTabIndex: 0, selectedTabTitle: tabs[0] }
     }
+  }
+
+  componentWillMount() {
+    this.setState(this.initialTabState())
   }
 
   @track((props, state) => {

@@ -18,7 +18,11 @@ exports[`renders properly 1`] = `
   }
 >
   <Image
-    source={1}
+    source={
+      Object {
+        "testUri": "../../../images/consignments/email.png",
+      }
+    }
   />
 </View>
 `;

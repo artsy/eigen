@@ -57,7 +57,6 @@ exports[`renders properly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Object {
@@ -70,7 +69,11 @@ exports[`renders properly 1`] = `
         I AM A NAVIGATION BUTTON
       </Text>
       <Image
-        source={1}
+        source={
+          Object {
+            "testUri": "../../../images/horizontal_chevron.png",
+          }
+        }
         style={
           Object {
             "alignSelf": "center",

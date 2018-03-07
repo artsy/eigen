@@ -48,7 +48,6 @@ exports[`renders correctly 1`] = `
       accessible={true}
       active={false}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -99,7 +98,6 @@ exports[`renders correctly 1`] = `
       accessible={true}
       active={false}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -150,7 +148,6 @@ exports[`renders correctly 1`] = `
       accessible={true}
       active={false}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [

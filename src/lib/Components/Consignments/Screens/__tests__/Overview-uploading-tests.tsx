@@ -1,3 +1,8 @@
+import { AsyncStorage } from "react-native"
+AsyncStorage.setItem = jest.fn()
+AsyncStorage.getItem = jest.fn()
+AsyncStorage.removeItem = jest.fn()
+
 import Overview from "../Overview"
 
 jest.mock("../../Submission/update", () => jest.fn())
@@ -23,6 +28,7 @@ it("uploads a photo when there's an photo without upload as true", () => {
     route,
     setup: { submission_id: 1, photos: [{ file: "/a/b/c.png", uploaded: false }] },
   })
+  overview.setState = jest.fn()
   overview.uploadPhotosIfNeeded()
   expect(uploadImageAndPassToGemini).toBeCalledWith("/a/b/c.png", "private", 1)
 })
@@ -43,6 +49,7 @@ it("doesnt upload a photo when when uploading is true", () => {
 
 it("calls update submission when submitting a non-draft version", () => {
   const overview = new Overview({ nav, route, setup: { submission_id: "123" } })
+  overview.setState = jest.fn()
   overview.showConfirmationScreen = () => void overview.submitFinalSubmission()
 
   overview.submitFinalSubmission()

@@ -116,7 +116,7 @@ return {
             {
               "kind": "ScalarField",
               "alias": null,
-              "name": "is_open",
+              "name": "is_closed",
               "args": null,
               "storageKey": null
             },
@@ -231,5 +231,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '201b580860a9e4b1c04d9e8fa07300ca';
+(node as any).hash = 'b2a7307ba488c5d9504c820688368a97';
 export default node;

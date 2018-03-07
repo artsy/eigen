@@ -40,7 +40,7 @@ const track: Track<Props, State> = _track
   context_screen: Schema.PageNames.ConsignmentsOverView,
   context_screen_owner_type: Schema.OwnerEntityTypes.Consignment,
 })
-export default class Info extends React.Component<Props, State> {
+export default class Overview extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = props.setup || {}
