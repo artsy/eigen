@@ -76,7 +76,6 @@ class Sales extends React.Component<Props, State> {
       },
     ]
 
-    // The `renderItem` is alway
     return (
       <SectionList
         contentContainerStyle={SectionListStyles.contentContainer}
