@@ -312,7 +312,9 @@ class LiveAuctionLotSetViewController: UIViewController {
         }
 
         // To make sure we can handle transitioning to the next live auction
-        salesPerson.currentLotSignal.subscribe(applyWeakly(self, LiveAuctionLotSetViewController.hasChangedCurrentLot))
+        salesPerson.currentLotSignal.subscribe { [weak self] currentLot in
+            self?.hasChangedCurrentLot(currentLot)
+        }
     }
 
     func jumpToLotAtIndex(_ index: Int) {

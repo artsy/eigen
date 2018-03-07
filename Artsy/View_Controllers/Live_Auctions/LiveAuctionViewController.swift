@@ -89,7 +89,9 @@ class LiveAuctionViewController: UIViewController {
         guard loadingView == nil else { return } // Already showing a loading view, don't show another.
 
         loadingView = LiveAuctionLoadingView().then {
-            $0.operation = applyWeakly(self, LiveAuctionViewController.dismissLiveAuctionsModal)
+            $0.operation = { [weak self] in
+                self?.dismissLiveAuctionsModal()
+            }
             view.addSubview($0)
             $0.align(toView: view)
         }

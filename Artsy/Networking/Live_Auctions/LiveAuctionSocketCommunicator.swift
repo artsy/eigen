@@ -87,12 +87,20 @@ private extension SocketSetup {
 
     /// Connects to, then authenticates against, the socket. Listens for sale events once authenticated.
     func setupSocket() {
-        let caller = TimerCaller(callback: applyUnowned(self, LiveAuctionSocketCommunicator.pingSocket)) // Only allowed because we invalidate the timer in deinit
+        // Only allowed because we invalidate the timer in deinit
+        let caller = TimerCaller { [unowned self] in
+            self.pingSocket()
+        }
         timer = Timer.scheduledTimer(timeInterval: 1, target: caller, selector: #selector(TimerCaller.invoke), userInfo: nil, repeats: true)
-        socket.onText = applyUnowned(self, LiveAuctionSocketCommunicator.receivedText)
-        let a = applyUnowned(self, LiveAuctionSocketCommunicator.socketConnected)
-        socket.onConnect = a
-        socket.onDisconnect = applyUnowned(self, LiveAuctionSocketCommunicator.socketDisconnected)
+        socket.onText = { [unowned self] text in
+            self.receivedText(text)
+        }
+        socket.onConnect = { [unowned self] in
+            self.socketConnected()
+        }
+        socket.onDisconnect = { [unowned self] error in
+            self.socketDisconnected(error)
+        }
         socket.connect()
     }
 
