@@ -74,7 +74,6 @@ NS_ASSUME_NONNULL_BEGIN
         UIGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panMoved:)];
         [self.sceneView addGestureRecognizer:panGesture];
 
-
         // Button
         UIButton *backButton = [[ARMenuButton alloc] init];
         [backButton ar_extendHitTestSizeByWidth:10 andHeight:10];
@@ -129,8 +128,8 @@ NS_ASSUME_NONNULL_BEGIN
     if (@available(iOS 11.3, *)) {
         ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
 
-        // While Xcode 10.3 is in beta, we won't be shipping builds with it
-        #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 1130000
+        // While Xcode 10.3 is in beta, we won't be shipping CI builds with it
+        #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110300
         configuration.planeDetection = ARPlaneDetectionVertical;
         #endif
 

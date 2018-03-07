@@ -51,7 +51,7 @@ class AuctionViewControllerTests: QuickSpec {
             var device: ARDeviceType!
 
             beforeEach {
-                let now = NSDate()!
+                let now = NSDate() as Date!
                 let endTime = now.addingTimeInterval(3600.9) // 0.9 is to cover the possibility a clock tick happens between this line and the next.
                 dateMock = ARTestContext.freezeTime(now)
 

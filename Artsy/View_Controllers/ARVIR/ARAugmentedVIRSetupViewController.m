@@ -28,6 +28,10 @@ NSString *const needsAccessSubtitle = @"To view works in your room using augment
 NSString *const hasDeniedAccessButtonTitle = @"Update Camera Access";
 NSString *const hasDeniedAccessSubtitle = @"To view works in your room using augmented reality, we’ll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.";
 
+NSString *const hasAccessButtonTitle = @"Continue";
+NSString *const hasAccessSubtitle = @"To view works in your room using augmented reality, find a wall and [something].";
+
+
 @implementation ARAugmentedVIRSetupViewController
 
 - (instancetype)initWithMovieURL:(NSURL *)movieURL config:(ARAugmentedRealityConfig *)config
@@ -48,7 +52,10 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room using aug
 
     NSString *buttonTitle = firstTime && !hasGivenAccess ? needsAccessButtonTitle : hasDeniedAccessButtonTitle ;
     NSString *subtitleText = firstTime && !hasGivenAccess ? needsAccessSubtitle: hasDeniedAccessSubtitle;
-    SEL nextButtonSelector = hasGivenAccess ? @selector(sendToSettings) : @selector(next);
+    buttonTitle = hasGivenAccess ? hasAccessButtonTitle : buttonTitle;
+    subtitleText = hasGivenAccess ? hasAccessSubtitle : buttonTitle;
+
+    SEL nextButtonSelector = firstTime || hasGivenAccess ? @selector(next) : @selector(sendToSettings);
 
     AVPlayerViewController *playVC = [[AVPlayerViewController alloc] init];
     playVC.player = [[AVPlayer alloc] initWithURL: self.movieURL];

@@ -1,6 +1,7 @@
 @import OpenGLES;
 @import ARKit;
 
+#import "ARDefaults.h"
 #import "SCNArtworkNode.h"
 #import "ARAugmentedVIRSceneController.h"
 
@@ -56,6 +57,7 @@ NSInteger wallHeight = 5;
         for (SCNHitTestResult *result in results) {
 
             if ([self.invisibleWalls containsObject:result.node] || [self.detectedPlanes containsObject:result.node] ) {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:ARAugmentedRealityHasSuccessfullyRan];
 
                 SCNBox *box = [SCNArtworkNode nodeWithConfig:self.config];
                 SCNNode *artwork = [SCNNode nodeWithGeometry:box];
