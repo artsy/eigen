@@ -3,6 +3,7 @@ upcoming:
   emission_version: 1.4.6
   dev:
     - Potential fixes for Adjust session registering with anon users - orta
+    - Removes `apply` function family from SwiftExtensions.swift - ash
   user_facing:
     - Fix for 11.3 users - orta
   ARVIR:
