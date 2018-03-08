@@ -3,10 +3,10 @@
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
 #import "UIImage+ImageFromColor.h"
-#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
 #import "ARTopMenuViewController.h"
-@import Artsy_UILabels;
-@import ObjectiveSugar;
+#import <Artsy+UILabels/Artsy+UILabels.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 
 @interface ARSerifNavigationBar : UINavigationBar

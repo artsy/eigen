@@ -1,6 +1,4 @@
 import UIKit
-import FLKAutoLayout
-import SDWebImage
 
 class LotStandingsLotView: UIView {
     typealias Config = (lotStanding: LotStanding, drawBottomBorder: Bool, isCompact: Bool)

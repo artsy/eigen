@@ -1,4 +1,4 @@
-@import Artsy_UILabels;
-#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <Artsy+UILabels/Artsy+UILabels.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
 #import "ARSeparatorViews.h"
 #import "ARCustomEigenLabels.h"

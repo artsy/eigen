@@ -1,10 +1,5 @@
 import UIKit
 import Interstellar
-import Artsy_UIButtons
-import Artsy_UILabels
-import Artsy_UIFonts
-import FLKAutoLayout
-import ORStackView
 
 class LiveAuctionLotViewController: UIViewController {
     let index: Int

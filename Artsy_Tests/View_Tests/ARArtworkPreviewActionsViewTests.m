@@ -1,6 +1,6 @@
 #import "ARArtworkPreviewActionsView.h"
 #import "ARHeartButton.h"
-#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
 
 
 @interface ARArtworkPreviewActionsView (Testing)

@@ -1,8 +1,8 @@
 #import "AROnboardingHeaderView.h"
 #import "UIColor+ArtsyColors.h"
 
-#import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
-#import <Artsy_UILabels/Artsy+UILabels.h>
+#import "ARFonts.h"
+#import <Artsy+UILabels/Artsy+UILabels.h>
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 

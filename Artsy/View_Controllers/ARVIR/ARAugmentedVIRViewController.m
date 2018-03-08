@@ -3,7 +3,7 @@
 
 #import "ARFonts.h"
 #import "ARSpinner.h"
-#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import "UIView+HitTestExpansion.h"
 

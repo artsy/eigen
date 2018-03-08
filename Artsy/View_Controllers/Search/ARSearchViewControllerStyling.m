@@ -1,9 +1,9 @@
 #import "ARSearchViewControllerStyling.h"
 #import "UIDevice-Hardware.h"
 
-@import FLKAutoLayout;
-@import Artsy_UIFonts;
-@import Artsy_UIColors;
+#import <FLKAutoLayout/FLKAutoLayout.h>
+#import "ARFonts.h"
+#import <Artsy+UIColors/UIColor+ArtsyColors.h>
 
 
 @implementation ARSearchViewControllerStyling

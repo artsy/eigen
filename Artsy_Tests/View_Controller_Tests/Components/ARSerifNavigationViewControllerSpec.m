@@ -1,5 +1,5 @@
 #import "ARSerifNavigationViewController.h"
-@import Artsy_UIColors;
+#import <Artsy+UIColors/UIColor+ArtsyColors.h>
 @import Forgeries;
 
 

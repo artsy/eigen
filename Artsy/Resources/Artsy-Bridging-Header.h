@@ -99,3 +99,26 @@
 #import <CommonCrypto/CommonHMAC.h>
 
 #import "ARExternalWebBrowserViewController.h"
+
+// All these were previously Pod dynamic frameworks and now static libraries
+#import "ARFonts.h"
+#import <Artsy+UILabels/Artsy+UILabels.h>
+#import <Artsy+UILabels/UIView+ARDrawing.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <Artsy+UIColors/UIColor+ArtsyColors.h>
+#import <ARAnalytics/ARAnalytics.h>
+#import <ARAnalytics/HockeyAppProvider.h>
+#import <EDColor/EDColor.h>
+#import <Extraction/ARSpinner.h>
+#import <FLKAutoLayout/FLKAutoLayout.h>
+#import <FXBlurView/FXBlurView.h>
+#import <HockeySDK-Source/HockeySDK.h>
+#import <MARKRangeSlider/MARKRangeSlider.h>
+#import <ORStackView/ORStackView.h>
+#import <ORStackView/ORStackScrollView.h>
+#import <ORStackView/ORTagBasedAutoStackView.h>
+#import <SDWebImage/SDWebImagePrefetcher.h>
+#import <SDWebImage/UIImageView+WebCache.h>
+#import <SSFadingScrollView/SSFadingScrollView.h>
+#import <UICKeyChainStore/UICKeyChainStore.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>

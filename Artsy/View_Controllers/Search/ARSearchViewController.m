@@ -9,9 +9,9 @@
 #import "UIView+HitTestExpansion.h"
 #import "UIDevice-Hardware.h"
 
-@import Artsy_UILabels;
+#import <Artsy+UILabels/Artsy+UILabels.h>
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
-#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <AFNetworking/AFNetworking.h>
 

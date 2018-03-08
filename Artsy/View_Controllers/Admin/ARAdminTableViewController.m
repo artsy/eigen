@@ -3,7 +3,7 @@
 #import "ARAdminTableViewCell.h"
 #import "ARTickedTableViewCell.h"
 
-@import Artsy_UIFonts;
+#import "ARFonts.h"
 
 NSString *const AROptionCell = @"OptionCell";
 NSString *const ARLabOptionCell = @"LabOptionCell";

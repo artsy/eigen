@@ -1,7 +1,7 @@
 #import "AROnboardingSearchField.h"
 #import "UIColor+ArtsyColors.h"
 
-#import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
+#import "ARFonts.h"
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 #define CLEAR_BUTTON_TAG 0xbada55

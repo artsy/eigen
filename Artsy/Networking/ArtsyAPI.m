@@ -15,7 +15,7 @@
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
-@import ARAnalytics;
+#import <ARAnalytics/ARAnalytics.h>
 
 
 NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))

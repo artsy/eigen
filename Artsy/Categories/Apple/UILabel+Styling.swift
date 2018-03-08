@@ -1,5 +1,4 @@
 import UIKit
-import Artsy_UIColors
 
 extension UILabel {
 

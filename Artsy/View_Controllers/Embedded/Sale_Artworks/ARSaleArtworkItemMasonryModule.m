@@ -2,7 +2,7 @@
 #import "ARSaleArtworkMasonryCollectionViewCell.h"
 #import "Artsy-Swift.h"
 
-@import ARCollectionViewMasonryLayout;
+#import <ARCollectionViewMasonryLayout/ARCollectionViewMasonryLayout.h>
 
 static CGFloat marginForTraitCollection(UITraitCollection *traitCollection)
 {

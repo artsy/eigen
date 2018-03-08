@@ -1,5 +1,4 @@
 import UIKit
-import Artsy_UIButtons
 import Then
 
 class LiveAuctionLoadingView: UIView {

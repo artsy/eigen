@@ -4,8 +4,8 @@
 #import "ARFonts.h"
 #import "SaleArtwork.h"
 
-#import <Artsy_UILabels/UIView+ARDrawing.h>
-#import <Artsy_UILabels/NSNumberFormatter+ARCurrency.h>
+#import <Artsy+UILabels/UIView+ARDrawing.h>
+#import <Artsy+UILabels/NSNumberFormatter+ARCurrency.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 

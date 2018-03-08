@@ -9,7 +9,7 @@
 #import "Bid.h"
 #import "ARTwoWayDictionaryTransformer.h"
 
-@import ObjectiveSugar;
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 
 @interface Sale ()

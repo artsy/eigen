@@ -1,7 +1,7 @@
 #import "ARSaleArtworkItemFlowModule.h"
 #import "ARSaleArtworkFlowCollectionViewCell.h"
 
-@import ARCollectionViewMasonryLayout;
+#import <ARCollectionViewMasonryLayout/ARCollectionViewMasonryLayout.h>
 
 
 @interface ARSaleArtworkItemFlowModule () <ARCollectionViewMasonryLayoutDelegate>
