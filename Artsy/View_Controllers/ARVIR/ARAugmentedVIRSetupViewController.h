@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 @class ARAugmentedRealityConfig;
 
-@interface ARAugmentRealitySetupViewController : UIViewController
+@interface ARAugmentedVIRSetupViewController : UIViewController
 
 - (instancetype)initWithMovieURL:(NSURL *)movieURL config:(ARAugmentedRealityConfig *)config;
 

@@ -28,6 +28,7 @@
 #import "ARTopMenuViewController.h"
 #import "ARLogger.h"
 #import "Artsy-Swift.h"
+#import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRViewController.h"
 #import <Emission/ARInquiryComponentViewController.h>
@@ -78,12 +79,19 @@
 
 - (void)tappedArtworkViewInRoom
 {
-    if([AROptions boolForOption:AROptionsUseARVIR]) {
+    BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];
+    BOOL shouldSkipSetup = [ARAugmentedVIRSetupViewController canSkipARSetup:[NSUserDefaults standardUserDefaults]];
+
+    if(supportsARVIR &&  [AROptions boolForOption:AROptionsUseARVIR]) {
         CGSize size = CGSizeMake(self.artwork.widthInches, self.artwork.heightInches);
         ARAugmentedRealityConfig *config = [[ARAugmentedRealityConfig alloc] initWithImage:self.imageView.image size:size];
-        ARAugmentedVIRViewController *viewInRoomVC = [[ARAugmentedVIRViewController alloc] initWithConfig:config];
-        [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
-
+        if (shouldSkipSetup) {
+            ARAugmentedVIRViewController *viewInRoomVC = [[ARAugmentedVIRViewController alloc] initWithConfig:config];
+            [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
+        } else {
+            ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:config];
+            [self.navigationController pushViewController:setupVC animated:ARPerformWorkAsynchronously];
+        }
     } else {
         ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:self.artwork];
         [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
