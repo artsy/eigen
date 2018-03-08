@@ -9,17 +9,19 @@ API_AVAILABLE(ios(11.0))
 @interface ARAugmentedVIRSceneController()
 @property (nonatomic, weak) ARSession *session;
 @property (nonatomic, weak) ARSCNView *sceneView;
+@property (nonatomic, weak) id <ARVIRDelegate> delegate;
 @property (nonatomic, strong) ARAugmentedRealityConfig *config;
 @property (nonatomic, strong) NSArray<SCNNode *> *detectedPlanes;
 @property (nonatomic, strong) NSArray<SCNNode *> *invisibleWalls;
 @property (nonatomic, strong) SCNNode *ghostWork;
+@property (assign) BOOL hasSentRegisteredCallback;
 @end
 
-NSInteger wallHeight = 5;
+NSInteger wallHeightMeters = 5;
 
 @implementation ARAugmentedVIRSceneController
 
-- (instancetype)initWithSession:(ARSession *)session config:(ARAugmentedRealityConfig *)config scene:(ARSCNView *)scene
+- (instancetype)initWithSession:(ARSession *)session config:(ARAugmentedRealityConfig *)config scene:(ARSCNView *)scene delegate:(id <ARVIRDelegate>)delegate
 {
     self = [super init];
     _session = session;
@@ -27,6 +29,7 @@ NSInteger wallHeight = 5;
     _config = config;
     _invisibleWalls = @[];
     _detectedPlanes = @[];
+    _delegate = delegate;
     return self;
 }
 
@@ -56,6 +59,7 @@ NSInteger wallHeight = 5;
         NSArray <SCNHitTestResult *> *results = [sceneView hitTest:point options: options];
         for (SCNHitTestResult *result in results) {
 
+            // Raycast the current artwork on to the invisible wall, and make the ghost invisible
             if ([self.invisibleWalls containsObject:result.node] || [self.detectedPlanes containsObject:result.node] ) {
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:ARAugmentedRealityHasSuccessfullyRan];
 
@@ -65,21 +69,26 @@ NSInteger wallHeight = 5;
                 [result.node addChildNode:artwork];
                 self.ghostWork.opacity = 0;
 
+                [self.delegate hasPlacedArtwork];
                 return;
-            } else {
-                NSLog(@"Childs %@", result.node.childNodes);
             }
         }
     }
 }
 
-- (void)placeArtwork {
+- (void)placeArtwork
+{
 
 }
 
 
-- (void)restartArtwork {
+- (void)restart
+{
+    self.invisibleWalls = @[];
+    self.detectedPlanes = @[];
 
+    [self.ghostWork removeFromParentNode];
+    self.ghostWork = nil;
 }
 
 
@@ -147,6 +156,11 @@ NSInteger wallHeight = 5;
     if(!anchor) { return; }
     if(![anchor isKindOfClass:ARPlaneAnchor.class]) { return; }
 
+    // Send a callback that we're in a state to attach works
+    if(!self.hasSentRegisteredCallback) {
+        [self.delegate hasRegisteredPlanes];
+        self.hasSentRegisteredCallback = YES;
+    }
 
     // Create an anchor node, which can get moved around as we become more sure of where the
     // plane actually is.
@@ -177,13 +191,16 @@ NSInteger wallHeight = 5;
 
 - (SCNNode *)invisibleWallNodeForPlaneAnchor:(ARPlaneAnchor *)planeAnchor API_AVAILABLE(ios(11.0))
 {
-    SCNPlane *infinitePlane = [SCNPlane planeWithWidth:32 height:wallHeight];
-    infinitePlane.materials.firstObject.diffuse.contents = [UIColor clearColor];
+    SCNPlane *hiddenPlane = [SCNPlane planeWithWidth:32 height:wallHeightMeters];
+    hiddenPlane.materials.firstObject.diffuse.contents = [UIColor clearColor];
 
-    SCNNode *hittablePlane = [SCNNode nodeWithGeometry:infinitePlane];
+    SCNNode *hittablePlane = [SCNNode nodeWithGeometry:hiddenPlane];
 
     SCNVector3 wallCenter = SCNVector3FromFloat3(planeAnchor.center);
-    wallCenter.y -= wallHeight * 0.8;
+    // As we're creating a wall, we want it to be raised higher than it would be lower.
+    // E.g. a wall goes more "up" than "down" from the planes y center point
+    wallCenter.y -= wallHeightMeters * 0.8;
+    // The plane will always be a *tiny* bit infront of the wall, so offset a bit
     wallCenter.x -= 0.1;
     hittablePlane.position = wallCenter;
     hittablePlane.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);

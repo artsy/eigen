@@ -488,6 +488,13 @@
 		6044CFC4179D64F500CE4132 /* Theme.json in Resources */ = {isa = PBXBuildFile; fileRef = 6044CFC3179D64F500CE4132 /* Theme.json */; };
 		6044CFC8179DD3C200CE4132 /* ARTheme+HeightAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6044CFC7179DD3C200CE4132 /* ARTheme+HeightAdditions.m */; };
 		60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60476F4B1AD87DB200670502 /* UIKit.framework */; };
+		604E081B2051C5B700785717 /* ARVIRBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08172051C5B200785717 /* ARVIRBack@2x.png */; };
+		604E081C2051C5B700785717 /* ARVIRBack@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08182051C5B200785717 /* ARVIRBack@3x.png */; };
+		604E081D2051C5B700785717 /* ARVIRRefresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08192051C5B300785717 /* ARVIRRefresh@2x.png */; };
+		604E081E2051C5B700785717 /* ARVIRRefresh@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E081A2051C5B400785717 /* ARVIRRefresh@3x.png */; };
+		604E08202051DDF700785717 /* ARAugmentedVIRViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 604E081F2051DDF700785717 /* ARAugmentedVIRViewControllerSpec.m */; };
+		604E08232051E9E000785717 /* ARVIRPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08212051E9DF00785717 /* ARVIRPhone@2x.png */; };
+		604E08242051E9E000785717 /* ARVIRPhone@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08222051E9E000785717 /* ARVIRPhone@3x.png */; };
 		605002E317D8912300C090B8 /* Artwork_Icon_Share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E217D8912300C090B8 /* Artwork_Icon_Share@2x.png */; };
 		605002E917D9F5DC00C090B8 /* SmallMoreVerticalArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E717D9F5DC00C090B8 /* SmallMoreVerticalArrow.png */; };
 		605002EA17D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */; };
@@ -1561,6 +1568,13 @@
 		6044CFC6179DD3C200CE4132 /* ARTheme+HeightAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARTheme+HeightAdditions.h"; sourceTree = "<group>"; };
 		6044CFC7179DD3C200CE4132 /* ARTheme+HeightAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARTheme+HeightAdditions.m"; sourceTree = "<group>"; };
 		60476F4B1AD87DB200670502 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		604E08172051C5B200785717 /* ARVIRBack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRBack@2x.png"; sourceTree = "<group>"; };
+		604E08182051C5B200785717 /* ARVIRBack@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRBack@3x.png"; sourceTree = "<group>"; };
+		604E08192051C5B300785717 /* ARVIRRefresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRRefresh@2x.png"; sourceTree = "<group>"; };
+		604E081A2051C5B400785717 /* ARVIRRefresh@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRRefresh@3x.png"; sourceTree = "<group>"; };
+		604E081F2051DDF700785717 /* ARAugmentedVIRViewControllerSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRViewControllerSpec.m; sourceTree = "<group>"; };
+		604E08212051E9DF00785717 /* ARVIRPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRPhone@2x.png"; sourceTree = "<group>"; };
+		604E08222051E9E000785717 /* ARVIRPhone@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRPhone@3x.png"; sourceTree = "<group>"; };
 		605002E217D8912300C090B8 /* Artwork_Icon_Share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Artwork_Icon_Share@2x.png"; sourceTree = "<group>"; };
 		605002E717D9F5DC00C090B8 /* SmallMoreVerticalArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallMoreVerticalArrow.png; sourceTree = "<group>"; };
 		605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SmallMoreVerticalArrow@2x.png"; sourceTree = "<group>"; };
@@ -3546,6 +3560,7 @@
 			isa = PBXGroup;
 			children = (
 				6036B1E0203384DC00763E10 /* ARAugmentRealitySetupViewControllerSpec.m */,
+				604E081F2051DDF700785717 /* ARAugmentedVIRViewControllerSpec.m */,
 			);
 			path = ARVIR;
 			sourceTree = "<group>";
@@ -3900,6 +3915,12 @@
 				605002E217D8912300C090B8 /* Artwork_Icon_Share@2x.png */,
 				608B703B17D4A1C70088A56C /* Artwork_Icon_VIR.png */,
 				608B703C17D4A1C70088A56C /* Artwork_Icon_VIR@2x.png */,
+				604E08172051C5B200785717 /* ARVIRBack@2x.png */,
+				604E08182051C5B200785717 /* ARVIRBack@3x.png */,
+				604E08212051E9DF00785717 /* ARVIRPhone@2x.png */,
+				604E08222051E9E000785717 /* ARVIRPhone@3x.png */,
+				604E08192051C5B300785717 /* ARVIRRefresh@2x.png */,
+				604E081A2051C5B400785717 /* ARVIRRefresh@3x.png */,
 				518B421D1B57CF7100210A02 /* AttentionIcon@2x.png */,
 				5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */,
 				5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */,
@@ -4861,6 +4882,7 @@
 			files = (
 				3C4AE98319094DAA009C0E8B /* MapAnnotation_Installation@2x.png in Resources */,
 				608B706D17D4A1C80088A56C /* Artwork_Icon_VIR.png in Resources */,
+				604E08232051E9E000785717 /* ARVIRPhone@2x.png in Resources */,
 				600B8B451C4FCEEC00776F84 /* CHANGELOG.yml in Resources */,
 				1CC9EBA61CC76CDD00A74E3C /* followButtonChecked@3x.png in Resources */,
 				608B707B17D4A1C80088A56C /* FooterBackground@2x.png in Resources */,
@@ -4881,6 +4903,7 @@
 				608B708B17D4A1C80088A56C /* SidebarButtonBG@2x.png in Resources */,
 				E6FFEAB919C7925600A0D7DE /* splash_3@2x~ipad.jpg in Resources */,
 				E6F84CFF1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png in Resources */,
+				604E081B2051C5B700785717 /* ARVIRBack@2x.png in Resources */,
 				E6FFEABB19C7925600A0D7DE /* splash_4@2x~ipad.jpg in Resources */,
 				3C4AE97D19094DAA009C0E8B /* MapAnnotation_CoatCheck@2x.png in Resources */,
 				3C4AE97C19094DAA009C0E8B /* MapAnnotation_Artsy@2x.png in Resources */,
@@ -4907,6 +4930,7 @@
 				5E17B1951C59645E00CE6E98 /* Track@2x.png in Resources */,
 				5E20BB6B1C62C81600C6D781 /* CircularInfoButton.png in Resources */,
 				602F03471CB2912D008A999D /* LiveAuctions.storyboard in Resources */,
+				604E08242051E9E000785717 /* ARVIRPhone@3x.png in Resources */,
 				5E6BA6EA1C56B5D700B942C1 /* CircularCancelButton.png in Resources */,
 				49BA7E0E1655ABE600C06572 /* InfoPlist.strings in Resources */,
 				608C6DCE1FAA11630044E235 /* nav_favs@3x.png in Resources */,
@@ -4953,6 +4977,7 @@
 				51E576091BFFA16C00A146C1 /* Artsy.Store.entitlements in Resources */,
 				608C6DC81FAA11630044E235 /* nav_favs@2x.png in Resources */,
 				3C4AE98919094DAA009C0E8B /* MapAnnotation_Default@2x.png in Resources */,
+				604E081C2051C5B700785717 /* ARVIRBack@3x.png in Resources */,
 				3C4AE99519094F96009C0E8B /* ViewInRoom_Man_3@2x.png in Resources */,
 				608B706B17D4A1C80088A56C /* Heart_Black@2x.png in Resources */,
 				605191971C7526200002E11A /* navigation_more_arrow_vertical@2x.png in Resources */,
@@ -4996,6 +5021,7 @@
 				E6FFEAB819C7925600A0D7DE /* splash_2@2x~iphone.jpg in Resources */,
 				1C09DFA81E53BAAD003F7BA7 /* onboardingspinner@2x.png in Resources */,
 				608B708317D4A1C80088A56C /* MoreArrow@2x.png in Resources */,
+				604E081E2051C5B700785717 /* ARVIRRefresh@3x.png in Resources */,
 				60A0EA031C511C31002754A8 /* Echo.json in Resources */,
 				5E956E591CD2AD6E005C2332 /* live_auctions_socket.json in Resources */,
 				3C4AE9A619098916009C0E8B /* MapAnnotationCallout_Anchor@2x.png in Resources */,
@@ -5004,6 +5030,7 @@
 				E65BB5231A408A29004C4DB4 /* TextfieldClearButton.png in Resources */,
 				608C6DCC1FAA11630044E235 /* nav_messaging@3x.png in Resources */,
 				66A43C681CE470C400FFD6ED /* Hash@2x.png in Resources */,
+				604E081D2051C5B700785717 /* ARVIRRefresh@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5841,6 +5868,7 @@
 				603338361CF3572A0085AB5A /* ARUserManager+TestExtensions.swift in Sources */,
 				51D141B71AF0F14B000091CF /* ARTestHelper.m in Sources */,
 				601E53371B84C41F00679E10 /* ARArtworkViewControllerBuyButtonTests.m in Sources */,
+				604E08202051DDF700785717 /* ARAugmentedVIRViewControllerSpec.m in Sources */,
 				E65BB51F1A3FB552004C4DB4 /* ARAppSearchViewControllerSpec.m in Sources */,
 				5EA250631C4EDBE7001E4950 /* ARCountdownViewTests.m in Sources */,
 				3CE7F34418A99E6D002BA993 /* SiteHeroUnitTests.m in Sources */,
