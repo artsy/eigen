@@ -51,9 +51,9 @@ class AuctionViewControllerTests: QuickSpec {
             var device: ARDeviceType!
 
             beforeEach {
-                let now = NSDate() as Date!
+                let now = NSDate()
                 let endTime = now.addingTimeInterval(3600.9) // 0.9 is to cover the possibility a clock tick happens between this line and the next.
-                dateMock = ARTestContext.freezeTime(now)
+                dateMock = ARTestContext.freezeTime(now as Date!)
 
                 sale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "The 🎉 Sale", "endDate": endTime], error: Void())
                 saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
@@ -186,7 +186,7 @@ class AuctionViewControllerTests: QuickSpec {
                         test_saleArtworkWithLotNumber(3, artistName: "Sarah", bidCount: 2, highestBidCents: 50_00),
                         test_saleArtworkWithLotNumber(4, artistName: "Eloy", bidCount: 17, highestBidCents: 1000_000_00),
                         test_saleArtworkWithLotNumber(5, artistName: "Maxim", bidCount: 6, highestBidCents: 5011_00),
-                    ], bidders: [qualifiedBidder])
+                        ], bidders: [qualifiedBidder])
                     saleViewModel.stubbedAuctionState.insert(.userIsRegistered)
 
                     subject = AuctionViewController(saleID: sale.saleID)
@@ -544,7 +544,7 @@ func test_saleArtworkWithLotNumber(_ lotNumber: Int, artistName: String, bidCoun
         "artist": artistJSON,
         "title": "roly poly",
         "images": imagesJSON,
-    ]
+        ]
     let saleArtwork = SaleArtwork(json:
         [
             "id": "sale",

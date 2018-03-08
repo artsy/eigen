@@ -12,8 +12,6 @@
 
 SpecBegin(ARAugmentRealitySetupViewController);
 
-
-
 ForgeriesUserDefaults *untouchedDefaults = [ForgeriesUserDefaults defaults:@{
     ARAugmentedRealityCameraAccessGiven: @(NO),
     ARAugmentedRealityHasSeenSetup: @(NO),
@@ -30,6 +28,12 @@ ForgeriesUserDefaults *completedDefaults = [ForgeriesUserDefaults defaults:@{
     ARAugmentedRealityCameraAccessGiven: @(YES),
     ARAugmentedRealityHasSeenSetup: @(YES),
     ARAugmentedRealityHasSuccessfullyRan: @(YES)
+}];
+
+ForgeriesUserDefaults *setupButNotRanDefaults = [ForgeriesUserDefaults defaults:@{
+    ARAugmentedRealityCameraAccessGiven: @(YES),
+    ARAugmentedRealityHasSeenSetup: @(YES),
+    ARAugmentedRealityHasSuccessfullyRan: @(NO)
 }];
 
 it(@"defaults to asking for camera access",^{
@@ -55,6 +59,13 @@ it(@"viewWillAppear sets ARAugmentedRealityHasSeenSetup",^{
 it(@"has different settings when denied access",^{
     ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
     vc.defaults = (id)deniedDefaults;
+    expect(vc).to.haveValidSnapshot();
+});
+
+
+it(@"has different settings when you have given access but not succedded in putting a work on the wall",^{
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
+    vc.defaults = (id)setupButNotRanDefaults;
     expect(vc).to.haveValidSnapshot();
 });
 

@@ -129,9 +129,8 @@ NS_ASSUME_NONNULL_BEGIN
         ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
 
         // While Xcode 10.3 is in beta, we won't be shipping CI builds with it
-        #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110300
-        configuration.planeDetection = ARPlaneDetectionVertical;
-        #endif
+//        configuration.planeDetection = ARPlaneDetectionVertical;
+        configuration.planeDetection = 2;
 
         // Run the view's session
         [self.sceneView.session runWithConfiguration:configuration];
