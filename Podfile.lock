@@ -297,6 +297,65 @@ DEPENDENCIES:
   - VCRURLConnection
   - XCTest+OHHTTPStubSuiteCleanUp
 
+SPEC REPOS:
+  https://github.com/artsy/Specs.git:
+    - Aerodramus
+    - Artsy+UIColors
+    - Artsy+UIFonts
+    - Artsy+UILabels
+    - Artsy-UIButtons
+    - Emission
+    - Extraction
+    - React
+    - SentryReactNative
+    - Yoga
+  https://github.com/CocoaPods/Specs.git:
+    - Adjust
+    - AFNetworkActivityLogger
+    - AFNetworking
+    - Analytics
+    - ARAnalytics
+    - Bolts
+    - DHCShakeNotifier
+    - EDColor
+    - Expecta
+    - Expecta+Snapshots
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - FBSnapshotTestCase
+    - Forgeries
+    - FXBlurView
+    - iRate
+    - JSDecoupledAppDelegate
+    - JWTDecode
+    - KSCrash
+    - KSDeferred
+    - Mantle
+    - MARKRangeSlider
+    - MMMarkdown
+    - MultiDelegate
+    - Nimble
+    - Nimble-Snapshots
+    - NPKeyboardLayoutGuide
+    - ObjectiveSugar
+    - OCMock
+    - OHHTTPStubs
+    - ORKeyboardReactingApplication
+    - ORStackView
+    - Quick
+    - ReactiveCocoa
+    - RSSwizzle
+    - SDWebImage
+    - Sentry
+    - Specta
+    - Starscream
+    - SwiftyJSON
+    - Then
+    - UICKeyChainStore
+    - UIView+BooleanAnimations
+    - VCRURLConnection
+    - XCTest+OHHTTPStubSuiteCleanUp
+
 EXTERNAL SOURCES:
   AFOAuth1Client:
     :git: https://github.com/lxcid/AFOAuth1Client.git
@@ -403,7 +462,7 @@ SPEC CHECKSUMS:
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
-  Keys: 9c35bf00f612ee1d48556f4a4b9b4551e224e90f
+  Keys: af65e23feef2a047b3277b1ef0399f1209ef9d46
   KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
@@ -437,6 +496,6 @@ SPEC CHECKSUMS:
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 2efb0a2b24e5c17cf1aea8c785d4428bd077f667
 
-PODFILE CHECKSUM: 60550150ccfae7600da677dbbf689902c701ff8e
+PODFILE CHECKSUM: 56ed6bad2e299fc7d276845c416e79e0887685bb
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.4.0

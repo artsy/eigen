@@ -9,7 +9,7 @@ source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '8.0'
-use_frameworks!
+use_frameworks!(false)
 inhibit_all_warnings!
 
 # Note: These should be reflected _accurately_ in the environment of
