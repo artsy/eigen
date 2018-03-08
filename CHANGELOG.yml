@@ -6,6 +6,7 @@ upcoming:
 
 releases:
   - version: 4.0.3
+    date: TBA
     emission_version: 1.4.6
     dev:
       - Potential fixes for Adjust session registering with anon users - orta
