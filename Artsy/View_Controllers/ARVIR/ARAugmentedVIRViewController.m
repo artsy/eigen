@@ -55,15 +55,13 @@ NS_ASSUME_NONNULL_BEGIN
         // Set the view's delegate
         self.sceneView.delegate = self;
 
-        // Show statistics such as fps and timing information
-        self.sceneView.showsStatistics = YES;
 
         // Create a new scene
         SCNScene *scene = [[SCNScene alloc] init];
 
-        if (@available(iOS 11.0, *)) {
-            self.sceneView.debugOptions = ARSCNDebugOptionShowWorldOrigin | ARSCNDebugOptionShowFeaturePoints;
-        }
+        // Debugging options
+//      self.sceneView.debugOptions = ARSCNDebugOptionShowWorldOrigin | ARSCNDebugOptionShowFeaturePoints;
+//      self.sceneView.showsStatistics = YES;
 
         self.sceneView.scene = scene;
         self.sceneView.session.delegate = self;

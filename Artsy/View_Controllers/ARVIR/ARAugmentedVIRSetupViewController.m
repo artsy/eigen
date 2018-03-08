@@ -1,5 +1,6 @@
 @import AVKit;
 @import ARKit;
+@import Artsy_UIFonts;
 @import Artsy_UIButtons;
 @import Artsy_UILabels;
 @import FLKAutoLayout;
@@ -53,7 +54,7 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
     NSString *buttonTitle = firstTime && !hasGivenAccess ? needsAccessButtonTitle : hasDeniedAccessButtonTitle ;
     NSString *subtitleText = firstTime && !hasGivenAccess ? needsAccessSubtitle: hasDeniedAccessSubtitle;
     buttonTitle = hasGivenAccess ? hasAccessButtonTitle : buttonTitle;
-    subtitleText = hasGivenAccess ? hasAccessSubtitle : buttonTitle;
+    subtitleText = hasGivenAccess ? hasAccessSubtitle : subtitleText;
 
     SEL nextButtonSelector = firstTime || hasGivenAccess ? @selector(next) : @selector(sendToSettings);
 
@@ -66,13 +67,14 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
     [self.view addSubview:overlay];
     [overlay alignToView:self.view];
 
-    ARButton *allowAccessButton = [[ARClearFlatButton alloc] init];
+    ARButton *allowAccessButton = [[ARWhiteFlatButton alloc] init];
     [allowAccessButton setTitle:buttonTitle forState:UIControlStateNormal];
     [allowAccessButton addTarget:self action:nextButtonSelector forControlEvents:UIControlEventTouchUpInside];
     [overlay addSubview:allowAccessButton];
     self.button = allowAccessButton;
 
     UILabel *subtitle = [[ARSerifLabel alloc] init];
+    subtitle.font = [UIFont displaySansSerifFontWithSize:16];
     subtitle.backgroundColor = [UIColor clearColor];
     subtitle.textColor = [UIColor whiteColor];
     subtitle.text = subtitleText;
@@ -81,6 +83,7 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
     self.subtitleLabel = subtitle;
 
     UILabel *title = [[ARSansSerifLabel alloc] init];
+    title.font = [UIFont sansSerifFontWithSize:20];
     title.backgroundColor = [UIColor clearColor];
     title.textColor = [UIColor whiteColor];
     title.text = @"IN ROOM AR VIEWER";
@@ -96,16 +99,16 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
     [allowAccessButton alignCenterWithView:overlay];
 
     // Push up subtitle from the button
-    [subtitle constrainBottomSpaceToView:allowAccessButton predicate:@"-30"];
-    [subtitle alignCenterXWithView:allowAccessButton predicate:@"0"];
-    [subtitle constrainWidth:@"240"];
+    [subtitle constrainBottomSpaceToView:allowAccessButton predicate:@"-35"];
+    [subtitle alignCenterXWithView:self.view predicate:@"0"];
+    [subtitle alignLeading:@"20" trailing:@"-20" toView:self.view];
 
     // Push up title from the subtitle
-    [title constrainBottomSpaceToView:subtitle predicate:@"-20"];
-    [title alignCenterXWithView:subtitle predicate:@"0"];
+    [title constrainBottomSpaceToView:subtitle predicate:@"-12"];
+    [title alignCenterXWithView:self.view predicate:@"0"];
 
     // Align the back button to the bottom
-    [backButton alignCenterXWithView:overlay predicate:@"0"];
+    [backButton alignCenterXWithView:self.view predicate:@"0"];
 
     if (@available(iOS 11.0, *)) {
         [NSLayoutConstraint activateConstraints:@[
