@@ -80,18 +80,23 @@
 - (void)tappedArtworkViewInRoom
 {
     BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];
-    BOOL shouldSkipSetup = [ARAugmentedVIRSetupViewController canSkipARSetup:[NSUserDefaults standardUserDefaults]];
 
-    if(supportsARVIR &&  [AROptions boolForOption:AROptionsUseARVIR]) {
-        CGSize size = CGSizeMake(self.artwork.widthInches, self.artwork.heightInches);
-        ARAugmentedRealityConfig *config = [[ARAugmentedRealityConfig alloc] initWithImage:self.imageView.image size:size];
-        if (shouldSkipSetup) {
-            ARAugmentedVIRViewController *viewInRoomVC = [[ARAugmentedVIRViewController alloc] initWithConfig:config];
-            [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
-        } else {
-            ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:config];
-            [self.navigationController pushViewController:setupVC animated:ARPerformWorkAsynchronously];
-        }
+    if(supportsARVIR && [AROptions boolForOption:AROptionsUseARVIR]) {
+        [ARAugmentedVIRSetupViewController canSkipARSetup:[NSUserDefaults standardUserDefaults] callback:^(bool shouldSkipSetup) {
+
+            CGSize size = CGSizeMake(self.artwork.widthInches, self.artwork.heightInches);
+            ARAugmentedRealityConfig *config = [[ARAugmentedRealityConfig alloc] initWithImage:self.imageView.image size:size];
+            config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
+
+            if (shouldSkipSetup) {
+                ARAugmentedVIRViewController *viewInRoomVC = [[ARAugmentedVIRViewController alloc] initWithConfig:config];
+                [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
+            } else {
+                ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:config];
+                [self.navigationController pushViewController:setupVC animated:ARPerformWorkAsynchronously];
+            }
+        }];
+
     } else {
         ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:self.artwork];
         [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];

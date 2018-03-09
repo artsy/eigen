@@ -37,7 +37,7 @@ NSInteger wallHeightMeters = 5;
 
 - (void)pannedOnScreen:(UIPanGestureRecognizer *)gesture;
 {
- // TODO
+    // TODO
 }
 
 - (void)tappedOnScreen:(UITapGestureRecognizer *)gesture
@@ -53,10 +53,10 @@ NSInteger wallHeightMeters = 5;
         CGPoint point = [gesture locationOfTouch:0 inView:sceneView];
 
         NSDictionary *options = @{
-            SCNHitTestIgnoreHiddenNodesKey: @NO,
-            SCNHitTestFirstFoundOnlyKey: @YES,
-            SCNHitTestOptionSearchMode: @(SCNHitTestSearchModeAll)
-        };
+                                  SCNHitTestIgnoreHiddenNodesKey: @NO,
+                                  SCNHitTestFirstFoundOnlyKey: @YES,
+                                  SCNHitTestOptionSearchMode: @(SCNHitTestSearchModeAll)
+                                  };
 
         NSArray <SCNHitTestResult *> *results = [sceneView hitTest:point options: options];
         for (SCNHitTestResult *result in results) {
@@ -104,9 +104,7 @@ NSInteger wallHeightMeters = 5;
 
     [self.artwork removeFromParentNode];
     self.artwork = nil;
-
 }
-
 
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0));
 {

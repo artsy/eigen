@@ -1,18 +1,20 @@
 @import ARKit;
 @import SceneKit;
 
+#import "ARMenuAwareViewController.h"
+#import "ARDispatchManager.h"
 #import "ARFonts.h"
+#import "ARAppConstants.h"
 #import "ARSpinner.h"
 #import <Artsy_UIButtons/ARButtonSubclasses.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
-#import "UIView+HitTestExpansion.h"
 
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRViewController.h"
-#import "ARAugmentedVIRSceneController.h"
+#import "ARAugmentedVIRInteractionController.h"
 
 API_AVAILABLE(ios(11.0))
-@interface ARAugmentedVIRViewController () <ARSCNViewDelegate, ARSessionDelegate, ARVIRDelegate>
+@interface ARAugmentedVIRViewController () <ARSCNViewDelegate, ARSessionDelegate, ARVIRDelegate, ARMenuAwareViewController>
 NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) ARSCNView *sceneView;
@@ -39,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     if (@available(iOS 11.0, *)) {
         _sceneView = [[ARSCNView alloc] init];
-        _visualsDelegate = [[ARAugmentedVIRSceneController alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
+        _visualsDelegate = [[ARAugmentedVIRInteractionController alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
     }
 
     return self;
@@ -51,15 +53,17 @@ NS_ASSUME_NONNULL_BEGIN
         self.view.backgroundColor = UIColor.whiteColor;
         [super viewDidLoad];
 
-        self.sceneView.frame = self.view.frame;
         [self.view addSubview:self.sceneView];
+        [self.sceneView alignToView:self.view];
 
         // Create a new scene
         SCNScene *scene = [[SCNScene alloc] init];
 
         // Debugging options
-//      self.sceneView.debugOptions = ARSCNDebugOptionShowWorldOrigin | ARSCNDebugOptionShowFeaturePoints;
-//      self.sceneView.showsStatistics = YES;
+        if (self.config.debugMode) {
+          self.sceneView.debugOptions = ARSCNDebugOptionShowWorldOrigin | ARSCNDebugOptionShowFeaturePoints;
+          self.sceneView.showsStatistics = YES;
+        }
 
         // Set the view's delegate
         self.sceneView.delegate = self;
@@ -76,6 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
         ARClearFlatButton *backButton = [[ARClearFlatButton alloc] init];
         [backButton setBorderColor:[UIColor clearColor] forState:UIControlStateNormal];
         [backButton setBorderColor:[UIColor clearColor] forState:UIControlStateHighlighted];
+        [backButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
         [backButton setImage:[UIImage imageNamed:@"ARVIRBack"] forState:UIControlStateNormal];
         backButton.translatesAutoresizingMaskIntoConstraints = false;
         [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
@@ -88,6 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
         [resetButton addTarget:self action:@selector(resetAR) forControlEvents:UIControlEventTouchUpInside];
         [resetButton setBorderColor:[UIColor clearColor] forState:UIControlStateNormal];
         [resetButton setBorderColor:[UIColor clearColor] forState:UIControlStateHighlighted];
+        [resetButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
         [self.view addSubview:resetButton];
 
         // Show
@@ -130,7 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
 
         [self.view addConstraints: @[
             [label.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:50.0],
-            [label.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant: -40.0],
+            [label.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant: -140.0],
             [label.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant: -50.0]
         ]];
 
@@ -140,28 +146,51 @@ NS_ASSUME_NONNULL_BEGIN
         self.phoneImage = phoneImage;
 
         [self initialState];
+
+        if (ARPerformWorkAsynchronously) {
+            [self animateImageView];
+        }
     }
 }
 
 - (void)initialState
 {
-    self.resetButton.hidden = YES;
-    self.phoneImage.hidden = NO;
-    self.textLabel.text = @"Aim at an object on your wall and move your phone in a circle.";
+    ar_dispatch_main_queue(^{
+        self.resetButton.hidden = YES;
+        self.phoneImage.hidden = NO;
+        self.textLabel.text = @"Aim at an object on your wall and move your phone in a circle.";
+    });
 }
 
 - (void)hasRegisteredPlanes
 {
-    self.resetButton.hidden = NO;
-    self.phoneImage.hidden = YES;
-    self.textLabel.text = @"Tap the screen to place the work.";
+    ar_dispatch_main_queue(^{
+        self.resetButton.hidden = NO;
+        self.phoneImage.hidden = YES;
+        self.textLabel.text = @"Tap the screen to place the work.";
+    });
 }
 
 - (void)hasPlacedArtwork
 {
-    self.resetButton.hidden = NO;
-    self.phoneImage.hidden = YES;
-    self.textLabel.text = @"Keep your phone pointed at the work and walk around the room.";
+    ar_dispatch_main_queue(^{
+        self.resetButton.hidden = NO;
+        self.phoneImage.hidden = YES;
+        self.textLabel.text = @"";
+    });
+}
+
+// Rotate the imageview around in a circle
+- (void)animateImageView
+{
+    UIBezierPath *circlePath = [UIBezierPath bezierPathWithArcCenter:self.view.center radius:10 startAngle:0 endAngle:M_PI * 2 clockwise:YES];
+    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+
+    animation.path = circlePath.CGPath;
+    animation.duration = 1.3;
+    animation.repeatCount = HUGE;
+
+    [self.phoneImage.layer addAnimation:animation forKey:@"orbit"];
 }
 
 - (void)back
@@ -172,6 +201,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)resetAR
 {
+    [self initialState];
     [self.visualsDelegate restart];
 }
 
@@ -248,6 +278,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)hidesBottomBarWhenPushed
 {
     return YES;
+}
+
+- (BOOL)hidesStatusBarBackground
+{
+    return YES;
+}
+
+- (BOOL)shouldAutorotate;
+{
+    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations;
+{
+    return self.shouldAutorotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
 NS_ASSUME_NONNULL_END

@@ -7,12 +7,14 @@
 @import UIView_BooleanAnimations;
 
 #import "ARDefaults.h"
+#import "UIDevice-Hardware.h"
+#import "ARMenuAwareViewController.h"
 #import "ARAugmentedRealityConfig.h"
 #import "UIViewController+SimpleChildren.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedVIRViewController.h"
 
-@interface ARAugmentedVIRSetupViewController ()
+@interface ARAugmentedVIRSetupViewController () <ARMenuAwareViewController>
 @property (nonatomic, copy) NSURL *movieURL;
 @property (nonatomic, strong) NSUserDefaults *defaults;
 @property (nonatomic, strong) ARAugmentedRealityConfig *config;
@@ -23,6 +25,8 @@
 @property (nonatomic, assign) BOOL hasSentToSettings;
 @end
 
+NSString *const arTitle = @"Art in your home";
+
 NSString *const needsAccessButtonTitle = @"Allow camera access";
 NSString *const needsAccessSubtitle = @"To view works in your room using augmented reality, we’ll need access to your camera.";
 
@@ -31,7 +35,6 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room using aug
 
 NSString *const hasAccessButtonTitle = @"Continue";
 NSString *const hasAccessSubtitle = @"To view works in your room using augmented reality, find a wall and [something].";
-
 
 @implementation ARAugmentedVIRSetupViewController
 
@@ -48,74 +51,90 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
 {
     [super viewDidLoad];
 
-    BOOL firstTime = ![self.defaults boolForKey:ARAugmentedRealityHasSeenSetup];
-    BOOL hasGivenAccess = [self.defaults boolForKey:ARAugmentedRealityCameraAccessGiven];
-
-    NSString *buttonTitle = firstTime && !hasGivenAccess ? needsAccessButtonTitle : hasDeniedAccessButtonTitle ;
-    NSString *subtitleText = firstTime && !hasGivenAccess ? needsAccessSubtitle: hasDeniedAccessSubtitle;
-    buttonTitle = hasGivenAccess ? hasAccessButtonTitle : buttonTitle;
-    subtitleText = hasGivenAccess ? hasAccessSubtitle : subtitleText;
-
-    SEL nextButtonSelector = firstTime || hasGivenAccess ? @selector(next) : @selector(sendToSettings);
-
-    AVPlayerViewController *playVC = [[AVPlayerViewController alloc] init];
-    playVC.player = [[AVPlayer alloc] initWithURL: self.movieURL];
-    playVC.showsPlaybackControls = NO;
-    [self ar_addAlignedModernChildViewController:playVC];
-
-    UIView *overlay = [[UIView alloc] init];
-    [self.view addSubview:overlay];
-    [overlay alignToView:self.view];
-
-    ARButton *allowAccessButton = [[ARWhiteFlatButton alloc] init];
-    [allowAccessButton setTitle:buttonTitle forState:UIControlStateNormal];
-    [allowAccessButton addTarget:self action:nextButtonSelector forControlEvents:UIControlEventTouchUpInside];
-    [overlay addSubview:allowAccessButton];
-    self.button = allowAccessButton;
-
-    UILabel *subtitle = [[ARSerifLabel alloc] init];
-    subtitle.font = [UIFont displaySansSerifFontWithSize:16];
-    subtitle.backgroundColor = [UIColor clearColor];
-    subtitle.textColor = [UIColor whiteColor];
-    subtitle.text = subtitleText;
-    subtitle.textAlignment = NSTextAlignmentCenter;
-    [overlay addSubview:subtitle];
-    self.subtitleLabel = subtitle;
-
-    UILabel *title = [[ARSansSerifLabel alloc] init];
-    title.font = [UIFont sansSerifFontWithSize:20];
-    title.backgroundColor = [UIColor clearColor];
-    title.textColor = [UIColor whiteColor];
-    title.text = @"IN ROOM AR VIEWER";
-    title.numberOfLines = 1;
-    [overlay addSubview:title];
-
-    UIButton *backButton = [self.class createBackButton];
-    [backButton setTitle:@"Back to artwork" forState:UIControlStateNormal];
-    [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-    [overlay addSubview:backButton];
-
-    // Align the button to the exact center of the view
-    [allowAccessButton alignCenterWithView:overlay];
-
-    // Push up subtitle from the button
-    [subtitle constrainBottomSpaceToView:allowAccessButton predicate:@"-35"];
-    [subtitle alignCenterXWithView:self.view predicate:@"0"];
-    [subtitle alignLeading:@"20" trailing:@"-20" toView:self.view];
-
-    // Push up title from the subtitle
-    [title constrainBottomSpaceToView:subtitle predicate:@"-12"];
-    [title alignCenterXWithView:self.view predicate:@"0"];
-
-    // Align the back button to the bottom
-    [backButton alignCenterXWithView:self.view predicate:@"0"];
-
+    // ARKit is on on 11.0 so, this removes a bunch of warnings
     if (@available(iOS 11.0, *)) {
-        [NSLayoutConstraint activateConstraints:@[
-            [backButton.bottomAnchor constraintEqualToSystemSpacingBelowAnchor:overlay.safeAreaLayoutGuide.bottomAnchor multiplier:0]
-        ]];
-    } else {
-        [backButton constrainBottomSpaceToView:self.flk_bottomLayoutGuide predicate:@"-20"];
+        // Re-use the class check, this means it takes into account whether permissions have been changed after a user
+        // has successfully set up an Artwork.
+        [self.class canSkipARSetup:self.defaults callback:^(bool hasGivenAccess) {
+            BOOL firstTime = ![self.defaults boolForKey:ARAugmentedRealityHasSeenSetup];
+
+            // Main potential states:
+            //
+            //  - First time with permission (given from consignments)
+            //  - First time without permission
+            //  - Xth time with permission because they couldn't place a work
+            //  - Xth time without permission because they denied after the fact
+            //
+            NSString *buttonTitle = firstTime && !hasGivenAccess ? needsAccessButtonTitle : hasDeniedAccessButtonTitle ;
+            NSString *subtitleText = firstTime && !hasGivenAccess ? needsAccessSubtitle: hasDeniedAccessSubtitle;
+            buttonTitle = hasGivenAccess ? hasAccessButtonTitle : buttonTitle;
+            subtitleText = hasGivenAccess ? hasAccessSubtitle : subtitleText;
+
+            SEL nextButtonSelector = firstTime || hasGivenAccess ? @selector(next) : @selector(sendToSettings);
+
+            // Have a potential background video, otherwise it's a black screen
+            AVPlayerViewController *playVC = [[AVPlayerViewController alloc] init];
+            playVC.player = [[AVPlayer alloc] initWithURL: self.movieURL];
+            playVC.showsPlaybackControls = NO;
+
+            // Add the AV player as a childVC, aligned edge to edge
+            [playVC willMoveToParentViewController:self];
+            [self addChildViewController:playVC];
+            [self.view addSubview:playVC.view];
+            [playVC.view alignToView:self.view];
+            [playVC didMoveToParentViewController:self];
+
+            UIView *overlay = [[UIView alloc] init];
+            [self.view addSubview:overlay];
+            [overlay alignToView:self.view];
+
+            ARButton *allowAccessButton = [[ARWhiteFlatButton alloc] init];
+            [allowAccessButton setTitle:buttonTitle forState:UIControlStateNormal];
+            [allowAccessButton addTarget:self action:nextButtonSelector forControlEvents:UIControlEventTouchUpInside];
+            [overlay addSubview:allowAccessButton];
+            self.button = allowAccessButton;
+
+            UILabel *subtitle = [[ARSerifLabel alloc] init];
+            subtitle.font = [UIFont displaySansSerifFontWithSize:16];
+            subtitle.backgroundColor = [UIColor clearColor];
+            subtitle.textColor = [UIColor whiteColor];
+            subtitle.text = subtitleText;
+            subtitle.textAlignment = NSTextAlignmentCenter;
+            [overlay addSubview:subtitle];
+            self.subtitleLabel = subtitle;
+
+            UILabel *title = [[ARSansSerifLabel alloc] init];
+            title.font = [UIFont sansSerifFontWithSize:20];
+            title.backgroundColor = [UIColor clearColor];
+            title.textColor = [UIColor whiteColor];
+            title.text = [arTitle uppercaseString];
+            title.numberOfLines = 1;
+            [overlay addSubview:title];
+
+            UIButton *backButton = [self.class createBackButton];
+            [backButton setTitle:@"Back to work" forState:UIControlStateNormal];
+            [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+            [overlay addSubview:backButton];
+
+            // Align the button to the exact center of the view
+            [allowAccessButton alignCenterWithView:overlay];
+
+            // Push up subtitle from the button
+            [subtitle constrainBottomSpaceToView:allowAccessButton predicate:@"-35"];
+            [subtitle alignCenterXWithView:self.view predicate:@"0"];
+            [subtitle alignLeading:@"20" trailing:@"-20" toView:self.view];
+
+            // Push up title from the subtitle
+            [title constrainBottomSpaceToView:subtitle predicate:@"-12"];
+            [title alignCenterXWithView:self.view predicate:@"0"];
+
+            // Align the back button to the bottom
+            [backButton alignCenterXWithView:self.view predicate:@"0"];
+
+            [NSLayoutConstraint activateConstraints:@[
+                [backButton.bottomAnchor constraintEqualToSystemSpacingBelowAnchor:overlay.safeAreaLayoutGuide.bottomAnchor multiplier:0]
+            ]];
+        }];
     }
 }
 
@@ -170,11 +189,22 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
     }
 }
 
-+ (BOOL)canSkipARSetup:(NSUserDefaults *)defaults
++ (void)canSkipARSetup:(NSUserDefaults *)defaults callback:(void (^)(bool allowedAccess))closure
 {
     BOOL access = [defaults boolForKey:ARAugmentedRealityCameraAccessGiven];
     BOOL used = [defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
-    return access && used;
+    BOOL shouldBeFine = access && used;
+    if (!shouldBeFine) {
+        closure(FALSE);
+
+    } else {
+        // If someone has revoked camera access after the initial acceptence
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                closure(granted);
+            });
+        }];
+    }
 }
 
 + (void)validateAVAccess:(NSUserDefaults *)defaults callback:(void (^)(bool allowedAccess))closure
@@ -201,6 +231,26 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
     [backButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
     [backButton setTitleColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
     return backButton;
+}
+
+- (BOOL)hidesBackButton
+{
+    return YES;
+}
+
+- (BOOL)hidesToolbarMenu
+{
+    return YES;
+}
+
+- (BOOL)shouldAutorotate;
+{
+    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations;
+{
+    return self.shouldAutorotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
 @end
