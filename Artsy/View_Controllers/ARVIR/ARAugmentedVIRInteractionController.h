@@ -1,5 +1,5 @@
-@import ARKit;
 @class ARAugmentedRealityConfig;
+@import ARKit;
 
 /** What callbacks from user actions should the host VC pass to the interaction controller */
 @protocol ARVIRInteractive
@@ -23,8 +23,8 @@
  This class should handle all SceneKit and ARKit object rendering, and attaching. From there
  it will send messages back when important user actions via the ARVIRDelegate.
 
- The abstraciont is so that when making new interactions you can just copy & paste this file, rename it,
- and assign the new object in the ARViewController. Then it's easy to iterate.
+ The abstraction is being that when making new interactions you can just copy & paste this file, rename it,
+ and assign the new object in the ARViewController.
  */
 @interface ARAugmentedVIRInteractionController : NSObject <ARSCNViewDelegate, ARVIRInteractive, ARSessionDelegate>
 

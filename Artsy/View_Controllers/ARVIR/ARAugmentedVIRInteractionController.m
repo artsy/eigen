@@ -106,6 +106,7 @@ NSInteger wallHeightMeters = 5;
     self.artwork = nil;
 }
 
+
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0));
 {
     if (!self.invisibleWalls.count) {
@@ -197,7 +198,7 @@ NSInteger wallHeightMeters = 5;
     plane.firstMaterial.diffuse.contents = planeColor;
 
     SCNNode *planeNode = [SCNNode nodeWithGeometry:plane];
-    planeNode.position = SCNVector3Make(planeAnchor.center.x, planeAnchor.center.y, planeAnchor.center.z);  //
+    planeNode.position = SCNVector3Make(planeAnchor.center.x, planeAnchor.center.y, planeAnchor.center.z);
     planeNode.name = @"Detected Area";
 
     planeNode.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
@@ -207,7 +208,10 @@ NSInteger wallHeightMeters = 5;
 - (SCNNode *)invisibleWallNodeForPlaneAnchor:(ARPlaneAnchor *)planeAnchor API_AVAILABLE(ios(11.0))
 {
     SCNPlane *hiddenPlane = [SCNPlane planeWithWidth:32 height:wallHeightMeters];
-    hiddenPlane.materials.firstObject.diffuse.contents = [UIColor clearColor];
+
+    UIColor *planeColor = self.config.debugMode ? [UIColor colorWithRed:0.410 green:0.000 blue:0.775 alpha:0.50] : [UIColor clearColor];
+
+    hiddenPlane.materials.firstObject.diffuse.contents = planeColor;
 
     SCNNode *hittablePlane = [SCNNode nodeWithGeometry:hiddenPlane];
 

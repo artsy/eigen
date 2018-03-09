@@ -1,6 +1,8 @@
- #import <ARAnalytics/ARAnalytics.h>
+#import <ARAnalytics/ARAnalytics.h>
+#import <ObjectiveSugar/NSArray+ObjectiveSugar.h>
 #import <Adjust/Adjust.h>
 
+#import "ArtsyEcho.h"
 #import "ARAuctionWebViewController.h"
 #import "Artist.h"
 #import "Artwork.h"
@@ -32,7 +34,6 @@
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRViewController.h"
 #import <Emission/ARInquiryComponentViewController.h>
-
 
 @implementation ARArtworkViewController (ButtonActions)
 
@@ -92,7 +93,18 @@
                 ARAugmentedVIRViewController *viewInRoomVC = [[ARAugmentedVIRViewController alloc] initWithConfig:config];
                 [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
             } else {
-                ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:config];
+                // Currently an empty string, which is interpreted as nil
+                // When a video is set, go to:
+                // https://echo-web-production.herokuapp.com/accounts/1/messages
+                // (Creds in 1pass) and update the ARVIRVideo message with the full URL
+                //
+                ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+                Message *setupURL = [[echo.messages select:^BOOL(Message *message) {
+                    return [message.name isEqualToString:@"ARVIRVideo"];
+                }] firstObject];
+
+                NSURL *movieURL = setupURL && setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
+                ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
                 [self.navigationController pushViewController:setupVC animated:ARPerformWorkAsynchronously];
             }
         }];

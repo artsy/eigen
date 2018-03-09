@@ -4,7 +4,8 @@
 #import "ARAugmentedVIRInteractionController.h"
 
 /**
-
+ A view controller which handles interacting with an VIRInteractionController to
+ present a view in room experience.
  */
 @interface ARAugmentedVIRViewController : UIViewController <ARVIRDelegate>
 
