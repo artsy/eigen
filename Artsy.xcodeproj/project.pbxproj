@@ -6338,6 +6338,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -6470,6 +6471,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -6510,6 +6512,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
