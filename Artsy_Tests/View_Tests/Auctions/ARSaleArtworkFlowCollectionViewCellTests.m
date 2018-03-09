@@ -1,7 +1,6 @@
 #import "ARSaleArtworkFlowCollectionViewCell.h"
 #import "UIImage+ImageFromColor.h"
-@import Expecta_Snapshots;
-@import OCMock;
+#import "Artsy-Swift.h"
 
 SpecBegin(ARSaleArtworkFlowCollectionViewCell);
 

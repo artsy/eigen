@@ -2,7 +2,6 @@ import Quick
 import Nimble
 import UIKit
 import Nimble_Snapshots
-import FLKAutoLayout
 
 @testable
 import Artsy

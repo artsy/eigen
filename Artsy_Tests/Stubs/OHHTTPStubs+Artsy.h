@@ -1,6 +1,6 @@
 @import Foundation;
-@import OHHTTPStubs;
 
+#import <OHHTTPStubs/OHHTTPStubs.h>
 
 @interface OHHTTPStubs (Artsy)
 

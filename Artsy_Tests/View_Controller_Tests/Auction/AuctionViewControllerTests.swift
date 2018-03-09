@@ -3,9 +3,7 @@ import Nimble
 import Nimble_Snapshots
 import UIKit
 import Interstellar
-import Forgeries
-import OCMock
-import Mantle
+
 @testable
 import Artsy
 

@@ -1,4 +1,4 @@
-@import Forgeries;
+#import <Forgeries/ForgeriesUserDefaults.h>
 
 #import "ARDefaults.h"
 #import "ARAugmentedVIRSetupViewController.h"

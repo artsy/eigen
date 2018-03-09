@@ -3,8 +3,6 @@ import Nimble
 import Nimble_Snapshots
 import Interstellar
 import UIKit
-import SDWebImage
-
 
 @testable
 import Artsy
