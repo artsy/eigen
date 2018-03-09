@@ -6,6 +6,7 @@
 @import FLKAutoLayout;
 @import UIView_BooleanAnimations;
 
+#import "ARAppConstants.h"
 #import "ARDefaults.h"
 #import "UIDevice-Hardware.h"
 #import "ARMenuAwareViewController.h"
@@ -51,91 +52,93 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
 {
     [super viewDidLoad];
 
-    // ARKit is on on 11.0 so, this removes a bunch of warnings
-    if (@available(iOS 11.0, *)) {
-        // Re-use the class check, this means it takes into account whether permissions have been changed after a user
-        // has successfully set up an Artwork.
-        [self.class canSkipARSetup:self.defaults callback:^(bool hasGivenAccess) {
-            BOOL firstTime = ![self.defaults boolForKey:ARAugmentedRealityHasSeenSetup];
+    // Re-use the class check, this means it takes into account whether permissions have been changed after a user
+    // has successfully set up an Artwork.
+    [self.class canSkipARSetup:self.defaults callback:^(bool hasGivenAccess) {
+        BOOL firstTime = ![self.defaults boolForKey:ARAugmentedRealityHasSeenSetup];
 
-            // Main potential states:
-            //
-            //  - First time with permission (given from consignments)
-            //  - First time without permission
-            //  - Xth time with permission because they couldn't place a work
-            //  - Xth time without permission because they denied after the fact
-            //
-            NSString *buttonTitle = firstTime && !hasGivenAccess ? needsAccessButtonTitle : hasDeniedAccessButtonTitle ;
-            NSString *subtitleText = firstTime && !hasGivenAccess ? needsAccessSubtitle: hasDeniedAccessSubtitle;
-            buttonTitle = hasGivenAccess ? hasAccessButtonTitle : buttonTitle;
-            subtitleText = hasGivenAccess ? hasAccessSubtitle : subtitleText;
+        // Main potential states:
+        //
+        //  - First time with permission (given from consignments)
+        //  - First time without permission
+        //  - Xth time with permission because they couldn't place a work
+        //  - Xth time without permission because they denied after the fact
+        //
+        NSString *buttonTitle = firstTime && !hasGivenAccess ? needsAccessButtonTitle : hasDeniedAccessButtonTitle ;
+        NSString *subtitleText = firstTime && !hasGivenAccess ? needsAccessSubtitle: hasDeniedAccessSubtitle;
+        buttonTitle = hasGivenAccess ? hasAccessButtonTitle : buttonTitle;
+        subtitleText = hasGivenAccess ? hasAccessSubtitle : subtitleText;
 
-            SEL nextButtonSelector = firstTime || hasGivenAccess ? @selector(next) : @selector(sendToSettings);
+        SEL nextButtonSelector = firstTime || hasGivenAccess ? @selector(next) : @selector(sendToSettings);
 
-            // Have a potential background video, otherwise it's a black screen
-            AVPlayerViewController *playVC = [[AVPlayerViewController alloc] init];
-            playVC.player = [[AVPlayer alloc] initWithURL: self.movieURL];
-            playVC.showsPlaybackControls = NO;
+        // Have a potential background video, otherwise it's a black screen
+        AVPlayerViewController *playVC = [[AVPlayerViewController alloc] init];
+        playVC.player = [[AVPlayer alloc] initWithURL: self.movieURL];
+        playVC.showsPlaybackControls = NO;
 
-            // Add the AV player as a childVC, aligned edge to edge
-            [playVC willMoveToParentViewController:self];
-            [self addChildViewController:playVC];
-            [self.view addSubview:playVC.view];
-            [playVC.view alignToView:self.view];
-            [playVC didMoveToParentViewController:self];
+        // Add the AV player as a childVC, aligned edge to edge
+        [playVC willMoveToParentViewController:self];
+        [self addChildViewController:playVC];
+        [self.view addSubview:playVC.view];
+        [playVC.view alignToView:self.view];
+        [playVC didMoveToParentViewController:self];
 
-            UIView *overlay = [[UIView alloc] init];
-            [self.view addSubview:overlay];
-            [overlay alignToView:self.view];
+        UIView *overlay = [[UIView alloc] init];
+        [self.view addSubview:overlay];
+        [overlay alignToView:self.view];
 
-            ARButton *allowAccessButton = [[ARWhiteFlatButton alloc] init];
-            [allowAccessButton setTitle:buttonTitle forState:UIControlStateNormal];
-            [allowAccessButton addTarget:self action:nextButtonSelector forControlEvents:UIControlEventTouchUpInside];
-            [overlay addSubview:allowAccessButton];
-            self.button = allowAccessButton;
+        ARButton *allowAccessButton = [[ARWhiteFlatButton alloc] init];
+        [allowAccessButton setTitle:buttonTitle forState:UIControlStateNormal];
+        [allowAccessButton addTarget:self action:nextButtonSelector forControlEvents:UIControlEventTouchUpInside];
+        [overlay addSubview:allowAccessButton];
+        self.button = allowAccessButton;
 
-            UILabel *subtitle = [[ARSerifLabel alloc] init];
-            subtitle.font = [UIFont displaySansSerifFontWithSize:16];
-            subtitle.backgroundColor = [UIColor clearColor];
-            subtitle.textColor = [UIColor whiteColor];
-            subtitle.text = subtitleText;
-            subtitle.textAlignment = NSTextAlignmentCenter;
-            [overlay addSubview:subtitle];
-            self.subtitleLabel = subtitle;
+        UILabel *subtitle = [[ARSerifLabel alloc] init];
+        subtitle.font = [UIFont displaySansSerifFontWithSize:16];
+        subtitle.backgroundColor = [UIColor clearColor];
+        subtitle.textColor = [UIColor whiteColor];
+        subtitle.text = subtitleText;
+        subtitle.textAlignment = NSTextAlignmentCenter;
+        [overlay addSubview:subtitle];
+        self.subtitleLabel = subtitle;
 
-            UILabel *title = [[ARSansSerifLabel alloc] init];
-            title.font = [UIFont sansSerifFontWithSize:20];
-            title.backgroundColor = [UIColor clearColor];
-            title.textColor = [UIColor whiteColor];
-            title.text = [arTitle uppercaseString];
-            title.numberOfLines = 1;
-            [overlay addSubview:title];
+        UILabel *title = [[ARSansSerifLabel alloc] init];
+        title.font = [UIFont sansSerifFontWithSize:20];
+        title.backgroundColor = [UIColor clearColor];
+        title.textColor = [UIColor whiteColor];
+        title.text = [arTitle uppercaseString];
+        title.numberOfLines = 1;
+        [overlay addSubview:title];
 
-            UIButton *backButton = [self.class createBackButton];
-            [backButton setTitle:@"Back to work" forState:UIControlStateNormal];
-            [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-            [overlay addSubview:backButton];
+        UIButton *backButton = [self.class createBackButton];
+        [backButton setTitle:@"Back to work" forState:UIControlStateNormal];
+        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        [overlay addSubview:backButton];
 
-            // Align the button to the exact center of the view
-            [allowAccessButton alignCenterWithView:overlay];
+        // Align the button to the exact center of the view
+        [allowAccessButton alignCenterWithView:overlay];
 
-            // Push up subtitle from the button
-            [subtitle constrainBottomSpaceToView:allowAccessButton predicate:@"-35"];
-            [subtitle alignCenterXWithView:self.view predicate:@"0"];
-            [subtitle alignLeading:@"20" trailing:@"-20" toView:self.view];
+        // Push up subtitle from the button
+        [subtitle constrainBottomSpaceToView:allowAccessButton predicate:@"-35"];
+        [subtitle alignCenterXWithView:self.view predicate:@"0"];
+        [subtitle alignLeading:@"20" trailing:@"-20" toView:self.view];
 
-            // Push up title from the subtitle
-            [title constrainBottomSpaceToView:subtitle predicate:@"-12"];
-            [title alignCenterXWithView:self.view predicate:@"0"];
+        // Push up title from the subtitle
+        [title constrainBottomSpaceToView:subtitle predicate:@"-12"];
+        [title alignCenterXWithView:self.view predicate:@"0"];
 
-            // Align the back button to the bottom
-            [backButton alignCenterXWithView:self.view predicate:@"0"];
+        // Align the back button to the bottom
+        [backButton alignCenterXWithView:self.view predicate:@"0"];
 
+        // ARKit is on on 11.0 so, this removes a bunch of warnings
+        if (@available(iOS 11.0, *)) {
             [NSLayoutConstraint activateConstraints:@[
                 [backButton.bottomAnchor constraintEqualToSystemSpacingBelowAnchor:overlay.safeAreaLayoutGuide.bottomAnchor multiplier:0]
             ]];
-        }];
-    }
+        } else {
+            [backButton alignBottomEdgeWithView:self.view predicate:@"-20"];
+        }
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -198,6 +201,10 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
         closure(FALSE);
 
     } else {
+        if (!ARPerformWorkAsynchronously) {
+            closure(YES);
+            return;
+        }
         // If someone has revoked camera access after the initial acceptence
         [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
             dispatch_async(dispatch_get_main_queue(), ^{

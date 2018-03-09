@@ -35,6 +35,8 @@ API_AVAILABLE(ios(11.0))
 
 @end
 
+// These wont' show until we migrate the sim to 11.x
+
 SpecBegin(ARAugmentedVIRViewController);
 if (@available(iOS 11.3, *)) {
 

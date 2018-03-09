@@ -24,11 +24,11 @@ ForgeriesUserDefaults *deniedDefaults = [ForgeriesUserDefaults defaults:@{
     ARAugmentedRealityHasSuccessfullyRan: @(YES)
 }];
 
-ForgeriesUserDefaults *completedDefaults = [ForgeriesUserDefaults defaults:@{
-    ARAugmentedRealityCameraAccessGiven: @(YES),
-    ARAugmentedRealityHasSeenSetup: @(YES),
-    ARAugmentedRealityHasSuccessfullyRan: @(YES)
-}];
+//ForgeriesUserDefaults *completedDefaults = [ForgeriesUserDefaults defaults:@{
+//    ARAugmentedRealityCameraAccessGiven: @(YES),
+//    ARAugmentedRealityHasSeenSetup: @(YES),
+//    ARAugmentedRealityHasSuccessfullyRan: @(YES)
+//}];
 
 ForgeriesUserDefaults *setupButNotRanDefaults = [ForgeriesUserDefaults defaults:@{
     ARAugmentedRealityCameraAccessGiven: @(YES),
@@ -71,14 +71,17 @@ it(@"has different settings when you have given access but not succedded in putt
 
 
 describe(@"canSkipARSetup", ^{
+//    This now relies on the check for camera permissions on a user, which makes testing it
+//    not worth the coverage
+//
 //    it(@"returns true with the right defaults",^{
 //        expect([ARAugmentedVIRSetupViewController canSkipARSetup:(id)completedDefaults]).to.beTruthy();
 //    });
 
     it(@"returns false with incomplete defaults",^{
-        BOOL called = NO;
+        __block BOOL called = NO;
         [ARAugmentedVIRSetupViewController canSkipARSetup:(id)deniedDefaults callback:^(bool shouldSkipSetup) {
-            called = YES
+            called = YES;
             expect(shouldSkipSetup).to.beFalsy();
         }];
 

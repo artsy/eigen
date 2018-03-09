@@ -9,6 +9,7 @@ upcoming:
     - Add attribution class aka "classification" to artwork view - anandaroop/oxaudo
   ARVIR:
     - Adds a new VIR intro screen, which handles disabled states - orta
+    - Updated "wall attachment" style AR flow - orta
 
 releases:
   - version: 4.0.2
