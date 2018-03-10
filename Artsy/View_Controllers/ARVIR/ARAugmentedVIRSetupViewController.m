@@ -197,21 +197,24 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
     BOOL access = [defaults boolForKey:ARAugmentedRealityCameraAccessGiven];
     BOOL used = [defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
     BOOL shouldBeFine = access && used;
+    // We know it's a no, so return early
     if (!shouldBeFine) {
-        closure(FALSE);
-
-    } else {
-        if (!ARPerformWorkAsynchronously) {
-            closure(YES);
-            return;
-        }
-        // If someone has revoked camera access after the initial acceptence
-        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                closure(granted);
-            });
-        }];
+        return closure(NO);
     }
+
+    // If you're in a sync environment (e.g. testing) return YES
+    if (!ARPerformWorkAsynchronously) {
+        return closure(YES);
+    }
+
+    // Otherwise, check if someone has revoked camera access after the initial acceptence
+    // It won't prompt, as in order to be here you must have accepted it beforehand
+    [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            closure(granted);
+        });
+    }];
+
 }
 
 + (void)validateAVAccess:(NSUserDefaults *)defaults callback:(void (^)(bool allowedAccess))closure

@@ -12,6 +12,7 @@
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRViewController.h"
 #import "ARAugmentedVIRInteractionController.h"
+#import "ARAugmentedVIRSetupViewController.h"
 
 API_AVAILABLE(ios(11.0))
 @interface ARAugmentedVIRViewController () <ARSCNViewDelegate, ARSessionDelegate, ARVIRDelegate, ARMenuAwareViewController>
@@ -195,7 +196,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)back
 {
-    // TODO ensure we jump past the SetupVC
+    // Ensure we jump past the SetupVC
+    NSArray *vcs = self.navigationController.viewControllers;
+    for (UIViewController *controller in vcs.reverseObjectEnumerator) {
+        if(![controller isKindOfClass:ARAugmentedVIRSetupViewController.class] && ![controller isKindOfClass:self.class]) {
+            [self.navigationController popToViewController:controller animated:YES];
+            return;
+        }
+    }
+
+    // I can't think of an edge case for this, but better to be comprehensive
     [self.navigationController popViewControllerAnimated:YES];
 }
 

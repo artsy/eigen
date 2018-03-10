@@ -16,7 +16,7 @@ API_AVAILABLE(ios(11.0))
 @property (nonatomic, strong) NSArray<SCNNode *> *invisibleWalls;
 @property (nonatomic, strong) SCNNode *ghostWork;
 @property (nonatomic, strong) SCNNode *artwork;
-@property (nonatomic, assign) BOOL hasSentRegisteredCallback;
+@property (nonatomic, assign) BOOL  hasSentRegisteredCallback;
 @end
 
 NSInteger wallHeightMeters = 5;
@@ -53,10 +53,10 @@ NSInteger wallHeightMeters = 5;
         CGPoint point = [gesture locationOfTouch:0 inView:sceneView];
 
         NSDictionary *options = @{
-                                  SCNHitTestIgnoreHiddenNodesKey: @NO,
-                                  SCNHitTestFirstFoundOnlyKey: @YES,
-                                  SCNHitTestOptionSearchMode: @(SCNHitTestSearchModeAll)
-                                  };
+            SCNHitTestIgnoreHiddenNodesKey: @NO,
+            SCNHitTestFirstFoundOnlyKey: @YES,
+            SCNHitTestOptionSearchMode: @(SCNHitTestSearchModeAll)
+        };
 
         NSArray <SCNHitTestResult *> *results = [sceneView hitTest:point options: options];
         for (SCNHitTestResult *result in results) {
@@ -88,17 +88,6 @@ NSInteger wallHeightMeters = 5;
 
 - (void)restart
 {
-    for (SCNNode *wall in self.invisibleWalls) {
-        [wall removeFromParentNode];
-    }
-
-    for (SCNNode *wall in self.detectedPlanes) {
-        [wall removeFromParentNode];
-    }
-
-    self.invisibleWalls = @[];
-    self.detectedPlanes = @[];
-
     [self.ghostWork removeFromParentNode];
     self.ghostWork = nil;
 
@@ -109,7 +98,8 @@ NSInteger wallHeightMeters = 5;
 
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0));
 {
-    if (!self.invisibleWalls.count) {
+    // Bail early if we don't have walls to fire at, or have an artwork already up
+    if (!self.invisibleWalls.count || self.artwork) {
         return;
     }
 
@@ -122,6 +112,7 @@ NSInteger wallHeightMeters = 5;
     NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.sceneView.center options: options];
     for (SCNHitTestResult *result in results) {
         if ([self.invisibleWalls containsObject:result.node]) {
+            // Create a ghost work if we don't have one already
             if (!self.ghostWork) {
                 SCNArtworkNode *ghostBox = [SCNArtworkNode nodeWithConfig:self.config];
                 SCNNode *ghostWork = [SCNNode nodeWithGeometry:ghostBox];
@@ -131,6 +122,7 @@ NSInteger wallHeightMeters = 5;
                 self.ghostWork = ghostWork;
             }
 
+            SCNTransaction.animationDuration = 0.1;
             self.ghostWork.position = result.localCoordinates;
             return;
         }
@@ -148,6 +140,8 @@ NSInteger wallHeightMeters = 5;
     if(!anchor) { return; }
     if(![anchor isKindOfClass:ARPlaneAnchor.class]) { return; }
 
+    // Animate instead of jumping positions
+    SCNTransaction.animationDuration = 0.1;
     ARPlaneAnchor *planeAnchor = (id)anchor;
 
     for (SCNNode *planeNode in node.childNodes) {
