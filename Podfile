@@ -209,4 +209,15 @@ post_install do |installer|
       end
     end
   end
+
+  # TODO: Might be nice to have a `cocoapods-patch` plugin that applies patches like `patch-package` does for npm.
+  %w(
+    Pods/Nimble/Sources/NimbleObjectiveC
+    Pods/Nimble-Snapshots
+    Pods/Quick/Sources/QuickObjectiveC
+  ).flat_map { |x| Dir.glob(File.join(x, "**/*.{h,m}")) }.each do |header|
+    contents = File.read(header)
+    patched = contents.sub(/["<]\w+\/(\w+-Swift\.h)[">]/, '"\1"')
+    File.write(header, patched) if Regexp.last_match
+  end
 end
