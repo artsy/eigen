@@ -34,7 +34,7 @@
 #import "UIDevice-Hardware.h"
 
 #import <ORStackView/ORStackScrollView.h>
-#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>

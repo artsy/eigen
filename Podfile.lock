@@ -2,7 +2,7 @@ PODS:
   - Adjust (4.12.1):
     - Adjust/Core (= 4.12.1)
   - Adjust/Core (4.12.1)
-  - Aerodramus (0.3.1):
+  - Aerodramus (0.3.2):
     - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
     - AFNetworking/NSURLConnection (~> 2.0)
@@ -297,6 +297,65 @@ DEPENDENCIES:
   - VCRURLConnection
   - XCTest+OHHTTPStubSuiteCleanUp
 
+SPEC REPOS:
+  https://github.com/artsy/Specs.git:
+    - Aerodramus
+    - Artsy+UIColors
+    - Artsy+UIFonts
+    - Artsy+UILabels
+    - Artsy-UIButtons
+    - Emission
+    - Extraction
+    - React
+    - SentryReactNative
+    - Yoga
+  https://github.com/CocoaPods/Specs.git:
+    - Adjust
+    - AFNetworkActivityLogger
+    - AFNetworking
+    - Analytics
+    - ARAnalytics
+    - Bolts
+    - DHCShakeNotifier
+    - EDColor
+    - Expecta
+    - Expecta+Snapshots
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - FBSnapshotTestCase
+    - Forgeries
+    - FXBlurView
+    - iRate
+    - JSDecoupledAppDelegate
+    - JWTDecode
+    - KSCrash
+    - KSDeferred
+    - Mantle
+    - MARKRangeSlider
+    - MMMarkdown
+    - MultiDelegate
+    - Nimble
+    - Nimble-Snapshots
+    - NPKeyboardLayoutGuide
+    - ObjectiveSugar
+    - OCMock
+    - OHHTTPStubs
+    - ORKeyboardReactingApplication
+    - ORStackView
+    - Quick
+    - ReactiveCocoa
+    - RSSwizzle
+    - SDWebImage
+    - Sentry
+    - Specta
+    - Starscream
+    - SwiftyJSON
+    - Then
+    - UICKeyChainStore
+    - UIView+BooleanAnimations
+    - VCRURLConnection
+    - XCTest+OHHTTPStubSuiteCleanUp
+
 EXTERNAL SOURCES:
   AFOAuth1Client:
     :git: https://github.com/lxcid/AFOAuth1Client.git
@@ -369,7 +428,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Adjust: 3d11ee5856dd0474d26496f4fa5a110e9f3ec264
-  Aerodramus: 648bab2c441eb6116db823e6301b1f2d4d2b61a0
+  Aerodramus: a23208fd4d76a32ee4ca425a8e29319e6c6a9bdc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
@@ -403,7 +462,7 @@ SPEC CHECKSUMS:
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
-  Keys: 9c35bf00f612ee1d48556f4a4b9b4551e224e90f
+  Keys: af65e23feef2a047b3277b1ef0399f1209ef9d46
   KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
@@ -437,6 +496,6 @@ SPEC CHECKSUMS:
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 2efb0a2b24e5c17cf1aea8c785d4428bd077f667
 
-PODFILE CHECKSUM: 60550150ccfae7600da677dbbf689902c701ff8e
+PODFILE CHECKSUM: bfce08f5368b056402569d5f60618cdfba59eea6
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.4.0

@@ -1,7 +1,7 @@
 #import "AROnboardingFollowableTableViewCell.h"
 #import "UIColor+ArtsyColors.h"
 
-#import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
+#import "ARFonts.h"
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 

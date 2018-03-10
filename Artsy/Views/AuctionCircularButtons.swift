@@ -1,6 +1,4 @@
 import Foundation
-import Artsy_UIButtons
-import FLKAutoLayout
 
 @objc enum CircularButtonType: NSInteger {
     case cancel

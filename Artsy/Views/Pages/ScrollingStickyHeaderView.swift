@@ -1,9 +1,3 @@
-import Artsy_UILabels
-import Artsy_UIButtons
-import UIView_BooleanAnimations
-
-import SSFadingScrollView
-
 /// Provides a ScrollingStickyHeaderView which can switch between two sizes
 /// depending on whether it is stuck to the top of the screen
 

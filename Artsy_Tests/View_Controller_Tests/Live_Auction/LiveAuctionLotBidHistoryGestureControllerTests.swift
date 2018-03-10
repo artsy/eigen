@@ -1,7 +1,6 @@
 import Quick
 import Nimble
 import UIKit
-import Forgeries
 
 @testable
 import Artsy

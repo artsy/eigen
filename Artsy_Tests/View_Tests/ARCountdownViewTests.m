@@ -1,5 +1,4 @@
 #import "ARCountdownView.h"
-@import Forgeries;
 
 SpecBegin(ARCountdownView);
 

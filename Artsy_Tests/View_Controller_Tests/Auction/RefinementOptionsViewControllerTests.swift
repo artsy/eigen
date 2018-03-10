@@ -2,9 +2,9 @@ import Quick
 import Nimble
 import Nimble_Snapshots
 import UIKit
+
 @testable
 import Artsy
-import MARKRangeSlider
 
 class RefinementOptionsViewControllerSpec: QuickSpec {
     override func spec() {

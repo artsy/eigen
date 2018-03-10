@@ -1,5 +1,4 @@
 import UIKit
-import FLKAutoLayout
 
 class LiveAuctionLotImageCollectionViewCell: UICollectionViewCell {
     fileprivate var userInterfaceNeedsSetup = true

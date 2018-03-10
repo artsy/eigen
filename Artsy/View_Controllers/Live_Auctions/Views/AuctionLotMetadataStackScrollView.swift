@@ -1,10 +1,5 @@
 import UIKit
-import ORStackView
 import Interstellar
-import Artsy_UIButtons
-import Artsy_UILabels
-import Artsy_UIFonts
-import FLKAutoLayout
 
 class AuctionLotMetadataStackScrollView: ORStackScrollView {
     let aboveFoldStack = TextStack()

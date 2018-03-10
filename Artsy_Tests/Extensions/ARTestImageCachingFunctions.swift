@@ -1,5 +1,4 @@
 import UIKit
-import SDWebImage
 
 func cacheColoredImageForURL(_ url: URL?, color: UIColor = UIColor.debugColourPurple()) {
     precondition(url != nil)

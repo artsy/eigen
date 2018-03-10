@@ -1,6 +1,6 @@
 import Quick
 import Nimble
-import Mantle
+
 @testable
 import Artsy
 

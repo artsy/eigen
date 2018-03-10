@@ -2,7 +2,7 @@
 
 #import "ARFonts.h"
 
-@import Artsy_UILabels;
+#import <Artsy+UILabels/Artsy+UILabels.h>
 #import <EDColor/EDColor.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>

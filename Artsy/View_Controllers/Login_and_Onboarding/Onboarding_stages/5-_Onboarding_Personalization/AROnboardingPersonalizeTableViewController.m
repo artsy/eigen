@@ -9,7 +9,7 @@
 #import "AROnboardingPersonalizationGeneImageStateReconciler.h"
 
 #import <Extraction/ARSpinner.h>
-#import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
+#import "ARFonts.h"
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 

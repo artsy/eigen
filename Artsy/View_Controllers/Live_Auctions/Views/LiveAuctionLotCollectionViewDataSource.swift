@@ -1,5 +1,4 @@
 import UIKit
-import SDWebImage
 
 class LiveAuctionLotCollectionViewDataSource: NSObject {
 

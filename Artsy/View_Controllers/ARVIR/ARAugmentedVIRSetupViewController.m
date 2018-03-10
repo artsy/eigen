@@ -1,9 +1,10 @@
 @import AVKit;
 @import ARKit;
-@import Artsy_UIButtons;
-@import Artsy_UILabels;
-@import FLKAutoLayout;
-@import UIView_BooleanAnimations;
+
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <Artsy+UILabels/Artsy+UILabels.h>
+#import <FLKAutoLayout/FLKAutoLayout.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 
 #import "ARDefaults.h"
 #import "ARAugmentedRealityConfig.h"

@@ -1,5 +1,4 @@
 import UIKit
-import Artsy_UIButtons
 
 class SerifModalWebNavigationController: UINavigationController, UINavigationControllerDelegate {
     override init(rootViewController: UIViewController) {
