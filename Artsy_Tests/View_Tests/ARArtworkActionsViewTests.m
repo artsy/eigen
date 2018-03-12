@@ -1,13 +1,11 @@
-#import <Forgeries/ForgeriesUserDefaults.h>
-#import "ARAppConstants.h"
 #import "ARArtworkActionsView.h"
 #import "ARAuctionBidderStateLabel.h"
 #import "ORStackView+ArtsyViews.h"
 #import "ARArtworkPriceView.h"
 #import "ARArtworkAuctionPriceView.h"
 
+
 @interface ARArtworkActionsView ()
-@property (nonatomic, strong) NSUserDefaults *defaults;
 @property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic, strong) SaleArtwork *saleArtwork;
 @property (nonatomic, strong) ARBorderLabel *bidderStatusLabel;

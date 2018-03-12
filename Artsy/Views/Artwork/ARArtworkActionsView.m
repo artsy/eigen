@@ -31,7 +31,6 @@
 @property (nonatomic, strong) SaleArtwork *saleArtwork;
 @property (nonatomic, strong) ARNavigationButtonsViewController *navigationButtonsVC;
 @property (nonatomic, strong) ARSpinner *spinner;
-@property (nonatomic, strong) NSUserDefaults *defaults;
 
 @end
 
@@ -52,7 +51,6 @@
 
     _artwork = artwork;
     self.bottomMarginHeight = 0;
-    _defaults = [NSUserDefaults standardUserDefaults];
 
     return self;
 }
