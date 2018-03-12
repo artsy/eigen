@@ -18,8 +18,8 @@
 
 #import "Artsy-Swift.h"
 
-#import <Artsy_UIButtons/ARButtonSubclasses.h>
-#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>

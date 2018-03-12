@@ -1,7 +1,5 @@
 import UIKit
-import HockeySDK_Source
 import Photos
-import ARAnalytics
 import ReplayKit
 
 class ARHockeyFeedbackDelegate: NSObject {

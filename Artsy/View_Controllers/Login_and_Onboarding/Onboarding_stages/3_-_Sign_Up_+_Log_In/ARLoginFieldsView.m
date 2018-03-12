@@ -3,9 +3,9 @@
 #import "ARSecureTextFieldWithPlaceholder.h"
 #import "UIColor+ArtsyColors.h"
 
-#import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
+#import "ARFonts.h"
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
 
 
 

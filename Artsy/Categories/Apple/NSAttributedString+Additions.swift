@@ -1,6 +1,5 @@
 import Foundation
 import UIKit
-import Artsy_UIFonts
 
 extension NSAttributedString {
     func makeBoldOccurencesSansSerifSemiBold() -> NSAttributedString {

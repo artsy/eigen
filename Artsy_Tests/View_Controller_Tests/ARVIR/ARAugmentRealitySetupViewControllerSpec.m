@@ -1,4 +1,4 @@
-@import Forgeries;
+#import <Forgeries/ForgeriesUserDefaults.h>
 
 #import "ARDefaults.h"
 #import "ARAugmentedVIRSetupViewController.h"
@@ -24,11 +24,11 @@ ForgeriesUserDefaults *deniedDefaults = [ForgeriesUserDefaults defaults:@{
     ARAugmentedRealityHasSuccessfullyRan: @(YES)
 }];
 
-//ForgeriesUserDefaults *completedDefaults = [ForgeriesUserDefaults defaults:@{
-//    ARAugmentedRealityCameraAccessGiven: @(YES),
-//    ARAugmentedRealityHasSeenSetup: @(YES),
-//    ARAugmentedRealityHasSuccessfullyRan: @(YES)
-//}];
+ForgeriesUserDefaults *completedDefaults = [ForgeriesUserDefaults defaults:@{
+    ARAugmentedRealityCameraAccessGiven: @(YES),
+    ARAugmentedRealityHasSeenSetup: @(YES),
+    ARAugmentedRealityHasSuccessfullyRan: @(YES)
+}];
 
 ForgeriesUserDefaults *setupButNotRanDefaults = [ForgeriesUserDefaults defaults:@{
     ARAugmentedRealityCameraAccessGiven: @(YES),
@@ -71,12 +71,16 @@ it(@"has different settings when you have given access but not succedded in putt
 
 
 describe(@"canSkipARSetup", ^{
-//    This now relies on the check for camera permissions on a user, which makes testing it
-//    not worth the coverage
-//
-//    it(@"returns true with the right defaults",^{
-//        expect([ARAugmentedVIRSetupViewController canSkipARSetup:(id)completedDefaults]).to.beTruthy();
-//    });
+    it(@"returns true with the right defaults",^{
+        __block BOOL called = NO;
+        [ARAugmentedVIRSetupViewController canSkipARSetup:(id)completedDefaults callback:^(bool shouldSkipSetup) {
+            called = YES;
+            expect(shouldSkipSetup).to.beTruthy();
+        }];
+
+        // In prod, this won't be sync, but we want to verify the code actually ran
+        expect(called).to.beTruthy();
+    });
 
     it(@"returns false with incomplete defaults",^{
         __block BOOL called = NO;

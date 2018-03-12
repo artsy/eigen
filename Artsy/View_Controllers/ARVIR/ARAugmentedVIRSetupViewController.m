@@ -1,10 +1,11 @@
 @import AVKit;
 @import ARKit;
-@import Artsy_UIFonts;
-@import Artsy_UIButtons;
-@import Artsy_UILabels;
-@import FLKAutoLayout;
-@import UIView_BooleanAnimations;
+
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <Artsy+UILabels/Artsy+UILabels.h>
+#import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
+#import <FLKAutoLayout/FLKAutoLayout.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 
 #import "ARAppConstants.h"
 #import "ARDefaults.h"

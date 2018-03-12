@@ -1,6 +1,4 @@
 import UIKit
-import Artsy_UILabels
-import EDColor
 
 fileprivate let height: CGFloat = 32
 

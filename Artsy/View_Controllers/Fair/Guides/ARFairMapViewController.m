@@ -27,7 +27,7 @@
 #import "ARMacros.h"
 
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
-#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <EDColor/EDColor.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>

@@ -6,7 +6,7 @@
 #import "ARFonts.h"
 #import "ARAppConstants.h"
 #import "ARSpinner.h"
-#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 
 #import "ARAugmentedRealityConfig.h"

@@ -1,10 +1,6 @@
 import UIKit
-import Artsy_UIButtons
 import Interstellar
-import UICKeyChainStore
 import SwiftyJSON
-import FXBlurView
-import ORStackView
 
 typealias SalesPersonCreator = (LiveSale, JWT, BiddingCredentials) -> LiveAuctionsSalesPersonType
 

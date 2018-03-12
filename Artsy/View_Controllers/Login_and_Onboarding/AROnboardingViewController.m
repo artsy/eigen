@@ -29,7 +29,7 @@
 
 #import "UIDevice-Hardware.h"
 
-#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <Extraction/UIView+ARSpinner.h>
 

@@ -1,6 +1,5 @@
 import UIKit
 import Then
-import FLKAutoLayout
 
 class LotStandingsTitleView: UIView {
     let isCompact: Bool

@@ -1,7 +1,5 @@
 import UIKit
 import ObjectiveC
-import Artsy_UIButtons
-import ORStackView
 
 private var statusViewAssociatedKey: Int = 0
 

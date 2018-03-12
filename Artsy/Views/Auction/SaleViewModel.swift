@@ -1,5 +1,4 @@
 import Foundation
-import Artsy_UILabels
 
 class SaleViewModel: NSObject {
     fileprivate let sale: Sale

@@ -2,8 +2,7 @@ import Quick
 import Nimble
 import Nimble_Snapshots
 import UIKit
-import Mantle
-import Forgeries
+
 @testable
 import Artsy
 

@@ -31,7 +31,7 @@
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
 
-@import Artsy_UILabels;
+#import <Artsy+UILabels/Artsy+UILabels.h>
 #import <ORStackView/ORTagBasedAutoStackView.h>
 #import <ORStackView/ORStackScrollView.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>

@@ -1,6 +1,4 @@
 import UIKit
-import Artsy_UILabels
-import Artsy_UIFonts
 import Then
 
 private typealias PrivateFunctions = LotListCollectionViewCell

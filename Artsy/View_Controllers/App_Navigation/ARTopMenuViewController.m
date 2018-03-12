@@ -21,8 +21,8 @@
 #import "Artsy-Swift.h"
 
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
-#import <Artsy_UIButtons/ARButtonSubclasses.h>
-#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <objc/runtime.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>

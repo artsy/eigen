@@ -8,7 +8,7 @@
 
 #import "UIImageView+AsyncImageLoading.h"
 
-#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 
 @interface ARFairPopupViewController ()
 

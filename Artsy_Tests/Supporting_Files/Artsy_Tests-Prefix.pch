@@ -4,9 +4,10 @@
     #import <Foundation/Foundation.h>
     #import <Specta/Specta.h>
     #import <Expecta/Expecta.h>
-    #import <Expecta_Snapshots/EXPMatchers+FBSnapshotTest.h>
+    #import <Expecta+Snapshots/EXPMatchers+FBSnapshotTest.h>
     #import <OHHTTPStubs/OHHTTPStubs.h>
     #import <OCMock/OCMock.h>
+    #import <Forgeries/ForgeriesTraitCollections.h>
 
     // Not sure why, but Xcode isn't picking up on this from Expecta.
     #define failure(...) EXP_failure((__VA_ARGS__))
@@ -23,7 +24,7 @@
     #import <ReactiveCocoa/ReactiveCocoa.h>
 
     // Needed to "see" Swift files in the unit test target.
-    #import "Artsy-Swift.h"
+//    #import "Artsy-Swift.h"
 
     #import "ArtsyAPI.h"
     #import "ArtsyAPI+Artworks.h"
@@ -115,4 +116,5 @@
     #import "ARAutoLayoutDebugging.h"
     #import "StyledSubclasses.h"
     #import "UIViewController+Testing.h"
+    #import "UIViewController+SimpleChildren.h"
 #endif
