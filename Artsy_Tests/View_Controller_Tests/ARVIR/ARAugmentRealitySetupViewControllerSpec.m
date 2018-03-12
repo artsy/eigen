@@ -37,7 +37,7 @@ ForgeriesUserDefaults *setupButNotRanDefaults = [ForgeriesUserDefaults defaults:
 }];
 
 it(@"defaults to asking for camera access",^{
-    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil ];
     vc.defaults = (id)untouchedDefaults;
 
     expect(vc).to.haveValidSnapshot();
@@ -72,11 +72,25 @@ it(@"has different settings when you have given access but not succedded in putt
 
 describe(@"canSkipARSetup", ^{
     it(@"returns true with the right defaults",^{
-        expect([ARAugmentedVIRSetupViewController canSkipARSetup:(id)completedDefaults]).to.beTruthy();
+        __block BOOL called = NO;
+        [ARAugmentedVIRSetupViewController canSkipARSetup:(id)completedDefaults callback:^(bool shouldSkipSetup) {
+            called = YES;
+            expect(shouldSkipSetup).to.beTruthy();
+        }];
+
+        // In prod, this won't be sync, but we want to verify the code actually ran
+        expect(called).to.beTruthy();
     });
 
     it(@"returns false with incomplete defaults",^{
-        expect([ARAugmentedVIRSetupViewController canSkipARSetup:(id)deniedDefaults]).to.beFalsy();
+        __block BOOL called = NO;
+        [ARAugmentedVIRSetupViewController canSkipARSetup:(id)deniedDefaults callback:^(bool shouldSkipSetup) {
+            called = YES;
+            expect(shouldSkipSetup).to.beFalsy();
+        }];
+
+        // Also verify synchronous behavior
+        expect(called).to.beTruthy();
     });
 });
 

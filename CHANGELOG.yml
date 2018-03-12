@@ -2,7 +2,13 @@ upcoming:
   version: 4.0.4
   emission_version: 1.4.6
   user_facing:
+    - None yet
+  dev:
     - Reduce time spent in dyld at launch by changing Pods from dynamic frameworks to static libraries - alloy
+  ARVIR:
+    - Adds a new VIR intro screen, which handles disabled states - orta
+    - VIR Video is controlled by echo - orta
+    - Updated "wall attachment" style AR flow - orta
 
 releases:
   - version: 4.0.3

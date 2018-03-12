@@ -1,6 +1,8 @@
- #import <ARAnalytics/ARAnalytics.h>
+#import <ARAnalytics/ARAnalytics.h>
+#import <ObjectiveSugar/NSArray+ObjectiveSugar.h>
 #import <Adjust/Adjust.h>
 
+#import "ArtsyEcho.h"
 #import "ARAuctionWebViewController.h"
 #import "Artist.h"
 #import "Artwork.h"
@@ -32,7 +34,6 @@
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRViewController.h"
 #import <Emission/ARInquiryComponentViewController.h>
-
 
 @implementation ARArtworkViewController (ButtonActions)
 
@@ -71,8 +72,8 @@
         thumbnailImageURL = self.artwork.defaultImage.urlForThumbnailImage;
     }
     ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.artwork
-                                                                            thumbnailImageURL:thumbnailImageURL
-                                                                                        image:image];
+                  thumbnailImageURL:thumbnailImageURL
+                              image:image];
     [sharingController presentActivityViewControllerFromView:sender];
 }
 
@@ -80,18 +81,34 @@
 - (void)tappedArtworkViewInRoom
 {
     BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];
-    BOOL shouldSkipSetup = [ARAugmentedVIRSetupViewController canSkipARSetup:[NSUserDefaults standardUserDefaults]];
 
-    if(supportsARVIR &&  [AROptions boolForOption:AROptionsUseARVIR]) {
-        CGSize size = CGSizeMake(self.artwork.widthInches, self.artwork.heightInches);
-        ARAugmentedRealityConfig *config = [[ARAugmentedRealityConfig alloc] initWithImage:self.imageView.image size:size];
-        if (shouldSkipSetup) {
-            ARAugmentedVIRViewController *viewInRoomVC = [[ARAugmentedVIRViewController alloc] initWithConfig:config];
-            [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
-        } else {
-            ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:config];
-            [self.navigationController pushViewController:setupVC animated:ARPerformWorkAsynchronously];
-        }
+    if(supportsARVIR && [AROptions boolForOption:AROptionsUseARVIR]) {
+        [ARAugmentedVIRSetupViewController canSkipARSetup:[NSUserDefaults standardUserDefaults] callback:^(bool shouldSkipSetup) {
+
+            CGSize size = CGSizeMake(self.artwork.widthInches, self.artwork.heightInches);
+            ARAugmentedRealityConfig *config = [[ARAugmentedRealityConfig alloc] initWithImage:self.imageView.image size:size];
+            config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
+
+            if (shouldSkipSetup) {
+                ARAugmentedVIRViewController *viewInRoomVC = [[ARAugmentedVIRViewController alloc] initWithConfig:config];
+                [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
+            } else {
+                // Currently an empty string, which is interpreted as nil
+                // When a video is set, go to:
+                // https://echo-web-production.herokuapp.com/accounts/1/messages
+                // (Creds in 1pass) and update the ARVIRVideo message with the full URL
+                //
+                ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+                Message *setupURL = [[echo.messages select:^BOOL(Message *message) {
+                    return [message.name isEqualToString:@"ARVIRVideo"];
+                }] firstObject];
+
+                NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
+                ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
+                [self.navigationController pushViewController:setupVC animated:ARPerformWorkAsynchronously];
+            }
+        }];
+
     } else {
         ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:self.artwork];
         [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];

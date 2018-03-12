@@ -487,6 +487,13 @@
 		6044CFC4179D64F500CE4132 /* Theme.json in Resources */ = {isa = PBXBuildFile; fileRef = 6044CFC3179D64F500CE4132 /* Theme.json */; };
 		6044CFC8179DD3C200CE4132 /* ARTheme+HeightAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6044CFC7179DD3C200CE4132 /* ARTheme+HeightAdditions.m */; };
 		60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60476F4B1AD87DB200670502 /* UIKit.framework */; };
+		604E081B2051C5B700785717 /* ARVIRBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08172051C5B200785717 /* ARVIRBack@2x.png */; };
+		604E081C2051C5B700785717 /* ARVIRBack@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08182051C5B200785717 /* ARVIRBack@3x.png */; };
+		604E081D2051C5B700785717 /* ARVIRRefresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08192051C5B300785717 /* ARVIRRefresh@2x.png */; };
+		604E081E2051C5B700785717 /* ARVIRRefresh@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E081A2051C5B400785717 /* ARVIRRefresh@3x.png */; };
+		604E08202051DDF700785717 /* ARAugmentedVIRViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 604E081F2051DDF700785717 /* ARAugmentedVIRViewControllerSpec.m */; };
+		604E08232051E9E000785717 /* ARVIRPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08212051E9DF00785717 /* ARVIRPhone@2x.png */; };
+		604E08242051E9E000785717 /* ARVIRPhone@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 604E08222051E9E000785717 /* ARVIRPhone@3x.png */; };
 		605002E317D8912300C090B8 /* Artwork_Icon_Share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E217D8912300C090B8 /* Artwork_Icon_Share@2x.png */; };
 		605002E917D9F5DC00C090B8 /* SmallMoreVerticalArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E717D9F5DC00C090B8 /* SmallMoreVerticalArrow.png */; };
 		605002EA17D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */; };
@@ -608,7 +615,7 @@
 		60BC92F31BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BC92F21BBEC89B00D13E56 /* ARApplicationShortcutItemDelegate.m */; };
 		60BCE10F1FF2B8A500071AA6 /* ARAugmentedRealityConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BCE10C1FF2B8A500071AA6 /* ARAugmentedRealityConfig.m */; };
 		60BCE1101FF2B8A500071AA6 /* ARAugmentedVIRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BCE10E1FF2B8A500071AA6 /* ARAugmentedVIRViewController.m */; };
-		60BF0C4B204736900017D9BA /* ARAugmentedVIRSceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BF0C4A204736900017D9BA /* ARAugmentedVIRSceneController.m */; };
+		60BF0C4B204736900017D9BA /* ARAugmentedVIRInteractionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BF0C4A204736900017D9BA /* ARAugmentedVIRInteractionController.m */; };
 		60BF0C4F204737110017D9BA /* SCNArtworkNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BF0C4E204737110017D9BA /* SCNArtworkNode.m */; };
 		60C1C3101C5F497700EC98EE /* ScrollingStickyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1C30F1C5F497700EC98EE /* ScrollingStickyHeaderView.swift */; };
 		60C1C3181C5FA34400EC98EE /* ARSerifNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C1C3171C5FA34400EC98EE /* ARSerifNavigationViewController.m */; };
@@ -1560,6 +1567,13 @@
 		6044CFC6179DD3C200CE4132 /* ARTheme+HeightAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARTheme+HeightAdditions.h"; sourceTree = "<group>"; };
 		6044CFC7179DD3C200CE4132 /* ARTheme+HeightAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARTheme+HeightAdditions.m"; sourceTree = "<group>"; };
 		60476F4B1AD87DB200670502 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		604E08172051C5B200785717 /* ARVIRBack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRBack@2x.png"; sourceTree = "<group>"; };
+		604E08182051C5B200785717 /* ARVIRBack@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRBack@3x.png"; sourceTree = "<group>"; };
+		604E08192051C5B300785717 /* ARVIRRefresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRRefresh@2x.png"; sourceTree = "<group>"; };
+		604E081A2051C5B400785717 /* ARVIRRefresh@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRRefresh@3x.png"; sourceTree = "<group>"; };
+		604E081F2051DDF700785717 /* ARAugmentedVIRViewControllerSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRViewControllerSpec.m; sourceTree = "<group>"; };
+		604E08212051E9DF00785717 /* ARVIRPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRPhone@2x.png"; sourceTree = "<group>"; };
+		604E08222051E9E000785717 /* ARVIRPhone@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRPhone@3x.png"; sourceTree = "<group>"; };
 		605002E217D8912300C090B8 /* Artwork_Icon_Share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Artwork_Icon_Share@2x.png"; sourceTree = "<group>"; };
 		605002E717D9F5DC00C090B8 /* SmallMoreVerticalArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallMoreVerticalArrow.png; sourceTree = "<group>"; };
 		605002E817D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SmallMoreVerticalArrow@2x.png"; sourceTree = "<group>"; };
@@ -1752,8 +1766,8 @@
 		60BCE10C1FF2B8A500071AA6 /* ARAugmentedRealityConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedRealityConfig.m; sourceTree = "<group>"; };
 		60BCE10D1FF2B8A500071AA6 /* ARAugmentedVIRViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAugmentedVIRViewController.h; sourceTree = "<group>"; };
 		60BCE10E1FF2B8A500071AA6 /* ARAugmentedVIRViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRViewController.m; sourceTree = "<group>"; };
-		60BF0C49204736900017D9BA /* ARAugmentedVIRSceneController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAugmentedVIRSceneController.h; sourceTree = "<group>"; };
-		60BF0C4A204736900017D9BA /* ARAugmentedVIRSceneController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRSceneController.m; sourceTree = "<group>"; };
+		60BF0C49204736900017D9BA /* ARAugmentedVIRInteractionController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAugmentedVIRInteractionController.h; sourceTree = "<group>"; };
+		60BF0C4A204736900017D9BA /* ARAugmentedVIRInteractionController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRInteractionController.m; sourceTree = "<group>"; };
 		60BF0C4D204737110017D9BA /* SCNArtworkNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCNArtworkNode.h; sourceTree = "<group>"; };
 		60BF0C4E204737110017D9BA /* SCNArtworkNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCNArtworkNode.m; sourceTree = "<group>"; };
 		60C1C30F1C5F497700EC98EE /* ScrollingStickyHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingStickyHeaderView.swift; sourceTree = "<group>"; };
@@ -3546,6 +3560,7 @@
 			isa = PBXGroup;
 			children = (
 				6036B1E0203384DC00763E10 /* ARAugmentRealitySetupViewControllerSpec.m */,
+				604E081F2051DDF700785717 /* ARAugmentedVIRViewControllerSpec.m */,
 			);
 			path = ARVIR;
 			sourceTree = "<group>";
@@ -3900,6 +3915,12 @@
 				605002E217D8912300C090B8 /* Artwork_Icon_Share@2x.png */,
 				608B703B17D4A1C70088A56C /* Artwork_Icon_VIR.png */,
 				608B703C17D4A1C70088A56C /* Artwork_Icon_VIR@2x.png */,
+				604E08172051C5B200785717 /* ARVIRBack@2x.png */,
+				604E08182051C5B200785717 /* ARVIRBack@3x.png */,
+				604E08212051E9DF00785717 /* ARVIRPhone@2x.png */,
+				604E08222051E9E000785717 /* ARVIRPhone@3x.png */,
+				604E08192051C5B300785717 /* ARVIRRefresh@2x.png */,
+				604E081A2051C5B400785717 /* ARVIRRefresh@3x.png */,
 				518B421D1B57CF7100210A02 /* AttentionIcon@2x.png */,
 				5EF9E1151C56D0B900CD80DB /* AuctionRefineCheck.png */,
 				5EF9E1161C56D0B900CD80DB /* AuctionRefineCheck@2x.png */,
@@ -4266,8 +4287,8 @@
 			children = (
 				60BCE10B1FF2B8A500071AA6 /* ARAugmentedRealityConfig.h */,
 				60BCE10C1FF2B8A500071AA6 /* ARAugmentedRealityConfig.m */,
-				60BF0C49204736900017D9BA /* ARAugmentedVIRSceneController.h */,
-				60BF0C4A204736900017D9BA /* ARAugmentedVIRSceneController.m */,
+				60BF0C49204736900017D9BA /* ARAugmentedVIRInteractionController.h */,
+				60BF0C4A204736900017D9BA /* ARAugmentedVIRInteractionController.m */,
 				60BCE10D1FF2B8A500071AA6 /* ARAugmentedVIRViewController.h */,
 				60BCE10E1FF2B8A500071AA6 /* ARAugmentedVIRViewController.m */,
 				6036B1DC20337EC700763E10 /* ARAugmentedVIRSetupViewController.h */,
@@ -4857,6 +4878,7 @@
 			files = (
 				3C4AE98319094DAA009C0E8B /* MapAnnotation_Installation@2x.png in Resources */,
 				608B706D17D4A1C80088A56C /* Artwork_Icon_VIR.png in Resources */,
+				604E08232051E9E000785717 /* ARVIRPhone@2x.png in Resources */,
 				600B8B451C4FCEEC00776F84 /* CHANGELOG.yml in Resources */,
 				1CC9EBA61CC76CDD00A74E3C /* followButtonChecked@3x.png in Resources */,
 				608B707B17D4A1C80088A56C /* FooterBackground@2x.png in Resources */,
@@ -4877,6 +4899,7 @@
 				608B708B17D4A1C80088A56C /* SidebarButtonBG@2x.png in Resources */,
 				E6FFEAB919C7925600A0D7DE /* splash_3@2x~ipad.jpg in Resources */,
 				E6F84CFF1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png in Resources */,
+				604E081B2051C5B700785717 /* ARVIRBack@2x.png in Resources */,
 				E6FFEABB19C7925600A0D7DE /* splash_4@2x~ipad.jpg in Resources */,
 				3C4AE97D19094DAA009C0E8B /* MapAnnotation_CoatCheck@2x.png in Resources */,
 				3C4AE97C19094DAA009C0E8B /* MapAnnotation_Artsy@2x.png in Resources */,
@@ -4903,6 +4926,7 @@
 				5E17B1951C59645E00CE6E98 /* Track@2x.png in Resources */,
 				5E20BB6B1C62C81600C6D781 /* CircularInfoButton.png in Resources */,
 				602F03471CB2912D008A999D /* LiveAuctions.storyboard in Resources */,
+				604E08242051E9E000785717 /* ARVIRPhone@3x.png in Resources */,
 				5E6BA6EA1C56B5D700B942C1 /* CircularCancelButton.png in Resources */,
 				49BA7E0E1655ABE600C06572 /* InfoPlist.strings in Resources */,
 				608C6DCE1FAA11630044E235 /* nav_favs@3x.png in Resources */,
@@ -4949,6 +4973,7 @@
 				51E576091BFFA16C00A146C1 /* Artsy.Store.entitlements in Resources */,
 				608C6DC81FAA11630044E235 /* nav_favs@2x.png in Resources */,
 				3C4AE98919094DAA009C0E8B /* MapAnnotation_Default@2x.png in Resources */,
+				604E081C2051C5B700785717 /* ARVIRBack@3x.png in Resources */,
 				3C4AE99519094F96009C0E8B /* ViewInRoom_Man_3@2x.png in Resources */,
 				608B706B17D4A1C80088A56C /* Heart_Black@2x.png in Resources */,
 				605191971C7526200002E11A /* navigation_more_arrow_vertical@2x.png in Resources */,
@@ -4992,6 +5017,7 @@
 				E6FFEAB819C7925600A0D7DE /* splash_2@2x~iphone.jpg in Resources */,
 				1C09DFA81E53BAAD003F7BA7 /* onboardingspinner@2x.png in Resources */,
 				608B708317D4A1C80088A56C /* MoreArrow@2x.png in Resources */,
+				604E081E2051C5B700785717 /* ARVIRRefresh@3x.png in Resources */,
 				60A0EA031C511C31002754A8 /* Echo.json in Resources */,
 				5E956E591CD2AD6E005C2332 /* live_auctions_socket.json in Resources */,
 				3C4AE9A619098916009C0E8B /* MapAnnotationCallout_Anchor@2x.png in Resources */,
@@ -5000,6 +5026,7 @@
 				E65BB5231A408A29004C4DB4 /* TextfieldClearButton.png in Resources */,
 				608C6DCC1FAA11630044E235 /* nav_messaging@3x.png in Resources */,
 				66A43C681CE470C400FFD6ED /* Hash@2x.png in Resources */,
+				604E081D2051C5B700785717 /* ARVIRRefresh@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5525,7 +5552,7 @@
 				6016C190178C2B7F008EC8E7 /* AREmbeddedModelsViewController.m in Sources */,
 				CB821E7918217AF500CC934E /* ARAuctionBannerView.m in Sources */,
 				5E4E329F1E4E6BD000C7F724 /* LotStandingsView.swift in Sources */,
-				60BF0C4B204736900017D9BA /* ARAugmentedVIRSceneController.m in Sources */,
+				60BF0C4B204736900017D9BA /* ARAugmentedVIRInteractionController.m in Sources */,
 				60889874175DEBC2008C9319 /* ARFeedSubclasses.m in Sources */,
 				6034EB1D175F68350070478D /* SiteHeroUnit.m in Sources */,
 				6034EB2F1760A9BE0070478D /* ARTopMenuViewController.m in Sources */,
@@ -5705,6 +5732,7 @@
 				603338361CF3572A0085AB5A /* ARUserManager+TestExtensions.swift in Sources */,
 				51D141B71AF0F14B000091CF /* ARTestHelper.m in Sources */,
 				601E53371B84C41F00679E10 /* ARArtworkViewControllerBuyButtonTests.m in Sources */,
+				604E08202051DDF700785717 /* ARAugmentedVIRViewControllerSpec.m in Sources */,
 				E65BB51F1A3FB552004C4DB4 /* ARAppSearchViewControllerSpec.m in Sources */,
 				5EA250631C4EDBE7001E4950 /* ARCountdownViewTests.m in Sources */,
 				3CE7F34418A99E6D002BA993 /* SiteHeroUnitTests.m in Sources */,
