@@ -30,19 +30,17 @@
     }
 
     BOOL useMaster = ![[KSCrash sharedInstance] crashedLastLaunch];
-    BOOL usePRBuild = [defaults boolForKey:ARUsePREmissionDefault];
+    BOOL usePRBuild = NO;
     BOOL useRNP = NO;
     BOOL isSimulator = NO;
-
-// Comment both of these to set yourself up as though you were running the beta
 
 #if TARGET_IPHONE_SIMULATOR
     isSimulator = YES;
 #endif
 
-
+    // Comment these out to set yourself up as though you were running the beta
+    usePRBuild = [defaults boolForKey:ARUsePREmissionDefault];
     useMaster = useMaster || isSimulator;
-
     useRNP = isSimulator || [defaults boolForKey:ARForceUseRNPDefault];
 
     if (usePRBuild) {
