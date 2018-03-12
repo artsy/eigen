@@ -1,4 +1,3 @@
-@import Forgeries;
 @class ARSCNView, SCNScene;
 
 #import "ARDefaults.h"
