@@ -3,7 +3,7 @@
 #import <Sentry/Sentry.h>
 #import <Sentry/SentryFileManager.h>
 
-@import FLKAutoLayout;
+#import <FLKAutoLayout/FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 #import "ARAppStatus.h"

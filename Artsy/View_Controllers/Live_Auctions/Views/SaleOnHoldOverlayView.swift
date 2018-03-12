@@ -1,10 +1,5 @@
 import UIKit
-import FLKAutoLayout
 import Then
-import ORStackView
-import Artsy_UILabels
-import Artsy_UIButtons
-import Artsy_UIFonts
 import Interstellar
 
 protocol SaleOnHoldOverlayViewDelegate {

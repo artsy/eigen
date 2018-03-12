@@ -2,8 +2,7 @@ import Quick
 import Nimble
 import Nimble_Snapshots
 import UIKit
-import Forgeries
-import FLKAutoLayout
+
 @testable
 import Artsy
 

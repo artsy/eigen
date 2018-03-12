@@ -12,9 +12,9 @@
 
 #import "Artsy-Swift.h"
 
-@import Artsy_UILabels;
-#import <Artsy_UIButtons/ARButtonSubclasses.h>
-#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <Artsy+UILabels/Artsy+UILabels.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 

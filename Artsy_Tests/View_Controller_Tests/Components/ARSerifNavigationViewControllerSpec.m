@@ -1,6 +1,6 @@
 #import "ARSerifNavigationViewController.h"
-@import Artsy_UIColors;
-@import Forgeries;
+#import <Artsy+UIColors/UIColor+ArtsyColors.h>
+#import <Artsy+UIColors/UIColor+DebugColours.h>
 
 
 @interface ARSerifNavigationViewController ()

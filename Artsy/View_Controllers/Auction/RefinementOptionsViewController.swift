@@ -1,6 +1,4 @@
 import UIKit
-import MARKRangeSlider
-import ARAnalytics
 
 protocol RefinementOptionsViewControllerDelegate: class {
     associatedtype R: RefinableType

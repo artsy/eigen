@@ -72,8 +72,8 @@
         thumbnailImageURL = self.artwork.defaultImage.urlForThumbnailImage;
     }
     ARSharingController *sharingController = [ARSharingController sharingControllerWithObject:self.artwork
-                                                                            thumbnailImageURL:thumbnailImageURL
-                                                                                        image:image];
+                  thumbnailImageURL:thumbnailImageURL
+                              image:image];
     [sharingController presentActivityViewControllerFromView:sender];
 }
 
@@ -103,7 +103,7 @@
                     return [message.name isEqualToString:@"ARVIRVideo"];
                 }] firstObject];
 
-                NSURL *movieURL = setupURL && setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
+                NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
                 ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
                 [self.navigationController pushViewController:setupVC animated:ARPerformWorkAsynchronously];
             }

@@ -1,11 +1,5 @@
 import UIKit
-import Artsy_UIButtons
-import Artsy_UILabels
-import Artsy_UIFonts
-import FLKAutoLayout
-import ORStackView
 import Interstellar
-import UICKeyChainStore
 
 class LiveAuctionLotSetViewController: UIViewController {
     let salesPerson: LiveAuctionsSalesPersonType

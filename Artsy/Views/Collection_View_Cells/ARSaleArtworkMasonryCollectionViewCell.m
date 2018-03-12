@@ -1,8 +1,8 @@
-@import Artsy_UILabels;
-@import Artsy_UIFonts;
-@import Artsy_UIColors;
-@import FLKAutoLayout;
-@import ObjectiveSugar;
+#import <Artsy+UILabels/Artsy+UILabels.h>
+#import "ARFonts.h"
+#import <Artsy+UIColors/UIColor+ArtsyColors.h>
+#import <FLKAutoLayout/FLKAutoLayout.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 #import "NSArray+Additions.h"
 #import "ARAspectRatioImageView.h"

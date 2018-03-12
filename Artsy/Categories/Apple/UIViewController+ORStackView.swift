@@ -1,5 +1,4 @@
 import UIKit
-import ORStackView
 
 extension UIViewController {
     /// Creates a new tag-based stack scroll view, configures it, and sets it to self.view.

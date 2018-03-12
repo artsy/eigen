@@ -1,6 +1,5 @@
+#import <UIKit/UIKit.h>
 #import <ARGenericTableViewController/ARGenericTableViewController.h>
-
-#import <Foundation/Foundation.h>
 
 /// Tickable cells
 extern NSString *const AROptionCell;

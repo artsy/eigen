@@ -3,7 +3,7 @@ import Nimble
 import Nimble_Snapshots
 import Foundation
 import Interstellar
-import OHHTTPStubs
+
 @testable
 import Artsy
 
