@@ -30,7 +30,7 @@
 NSString *const arTitle = @"Art in your home";
 
 NSString *const needsAccessButtonTitle = @"Allow camera access";
-NSString *const needsAccessSubtitle = @"To view works in your room using augmented reality, we’ll need access to your camera.";
+NSString *const needsAccessSubtitle = @"To view works in your room, we'll need access to your camera.";
 
 NSString *const hasDeniedAccessButtonTitle = @"Update Camera Access";
 NSString *const hasDeniedAccessSubtitle = @"To view works in your room using augmented reality, we’ll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.";

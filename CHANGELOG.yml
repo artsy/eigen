@@ -2,6 +2,7 @@ upcoming:
   version: 4.0.4
   emission_version: 1.4.6
   user_facing:
+    - Artwork action buttons (fav/map/vir/share) now center horizontally on iPhone - orta
     - None yet
   dev:
     - Reduce time spent in dyld at launch by changing Pods from dynamic frameworks to static libraries - alloy

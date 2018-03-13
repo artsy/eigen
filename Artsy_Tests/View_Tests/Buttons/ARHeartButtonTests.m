@@ -68,4 +68,18 @@ describe(@"hearted", ^{
 });
 
 
+describe(@"bordered", ^{
+
+    it(@"handles not having a border when unhearted", ^{
+        [_button setBordered:NO];
+        expect(_button).will.haveValidSnapshotNamed(@"unbordered-unhearted");
+    });
+
+    it(@"handles not having a border", ^{
+        [_button setBordered:NO];
+        [_button setHearted:YES];
+        expect(_button).will.haveValidSnapshotNamed(@"unbordered-hearted");
+    });
+});
+
 SpecEnd;
