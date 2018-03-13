@@ -565,7 +565,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"$CONFIGURATION\" = \"Release\" ]\nthen\ncd .. && npm run bundle\nfi";
+			shellScript = "if [ \"$CONFIGURATION\" = \"Release\" ]\nthen\nexport NVM_DIR=\"$HOME/.nvm\"\n[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"\ncd .. && nvm use && npm run bundle\nfi";
 			showEnvVarsInLog = 0;
 		};
 		5157C2E92018C82400DE6B07 /* Record Packager Host IP for Debug */ = {

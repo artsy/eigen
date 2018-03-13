@@ -13,7 +13,7 @@ import {
 import colors from "lib/data/colors"
 
 const GeminiHost = "d7hftxdivxxvm.cloudfront.net"
-const ImageQuality = 85
+const ImageQuality = 80
 
 interface Props {
   /** The URL from where to fetch the image. */
