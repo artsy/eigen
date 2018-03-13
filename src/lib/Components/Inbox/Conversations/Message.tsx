@@ -149,9 +149,6 @@ export class Message extends React.Component<Props, any> {
     const isPending = !message.created_at
 
     const fromName = message.from.name
-    const fromEmail = message.from.email
-
-    const fromSignature = fromName ? `${fromName} · ${fromEmail}` : fromEmail
 
     let previewInvoice
     if (message.invoice) {
@@ -186,7 +183,7 @@ export class Message extends React.Component<Props, any> {
 
             {this.renderBody()}
 
-            {!message.is_from_user && <FromSignature>{fromSignature}</FromSignature>}
+            {!message.is_from_user && <FromSignature>{fromName}</FromSignature>}
           </TextContainer>
         </Content>
         {this.props.index !== 0 && <Seperator />}
