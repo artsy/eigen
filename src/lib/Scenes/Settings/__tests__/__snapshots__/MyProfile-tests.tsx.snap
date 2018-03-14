@@ -35,7 +35,6 @@ exports[`looks like expected 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -53,7 +52,6 @@ exports[`looks like expected 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -99,6 +97,7 @@ exports[`looks like expected 1`] = `
         accessibilityTraits={undefined}
         accessible={true}
         collapsable={undefined}
+        hasTVPreferredFocus={undefined}
         hitSlop={undefined}
         isTVSelectable={true}
         nativeID={undefined}
@@ -135,7 +134,6 @@ exports[`looks like expected 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [
@@ -154,7 +152,6 @@ exports[`looks like expected 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             numberOfLines={1}
             style={
@@ -199,6 +196,7 @@ exports[`looks like expected 1`] = `
         accessibilityTraits={undefined}
         accessible={true}
         collapsable={undefined}
+        hasTVPreferredFocus={undefined}
         hitSlop={undefined}
         isTVSelectable={true}
         nativeID={undefined}
@@ -222,7 +220,6 @@ exports[`looks like expected 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [
@@ -241,7 +238,6 @@ exports[`looks like expected 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             numberOfLines={1}
             style={

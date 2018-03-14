@@ -8,25 +8,9 @@ Enzyme.configure({ adapter: new Adapter() })
 import diff from "snapshot-diff"
 expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 
-const originalConsoleError = console.error
-
-// Remove on the next React-Native update.
-console.error = (message?: any) => {
-  if (
-    typeof message === "string" &&
-    (message.includes("PropTypes has been moved to a separate package.") ||
-      message.includes("React.createClass is no longer supported.") ||
-      message.includes("Check the render method of `ScrollViewMock`. It was passed a child from ListViewMock.") ||
-      message.includes("setState(...): Can only update a mounted or mounting component."))
-  ) {
-    // NOOP
-  } else {
-    originalConsoleError(message)
-  }
-}
-
-jest.mock("./lib/metaphysics.ts")
 jest.mock("react-tracking")
+// Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
+jest.mock("react-tracking/build/dispatchTrackingEvent")
 
 jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
   NotificationsManager: {
@@ -52,6 +36,7 @@ mockedModule("./lib/Components/Artist/About.tsx", "About")
 // Gene tests
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 
+// Native modules
 import { NativeModules } from "react-native"
 NativeModules.ARTakeCameraPhotoModule = {
   errorCodes: {
@@ -63,4 +48,10 @@ NativeModules.ARTakeCameraPhotoModule = {
 }
 NativeModules.ARCocoaConstantsModule = {
   UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
+}
+NativeModules.ARSwitchBoardModule = {
+  presentNavigationViewController: jest.fn(),
+  presentModalViewController: jest.fn(),
+  presentMediaPreviewController: jest.fn(),
+  presentArtworksSet: jest.fn(),
 }

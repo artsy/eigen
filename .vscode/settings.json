@@ -5,7 +5,8 @@
     "*.h": "objective-c",
     "*.js": "javascriptreact",
     "*.snap": "javascriptreact",
-    ".stylelintrc": "json"
+    ".stylelintrc": "json",
+    "yarn.lock": "text"
   },
   "eslint.enable": false,
   "flow.enabled": false,

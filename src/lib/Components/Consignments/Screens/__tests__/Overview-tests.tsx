@@ -62,6 +62,7 @@ describe("Opening the right page", () => {
 })
 
 describe("Updating State", () => {
+  const navigator: any = { push: jest.fn() }
   let overview: Overview
   let stateMock: jest.Mock<any>
   let update: any

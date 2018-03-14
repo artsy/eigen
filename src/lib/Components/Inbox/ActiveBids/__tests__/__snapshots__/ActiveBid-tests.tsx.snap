@@ -77,7 +77,6 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -104,7 +103,6 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -126,7 +124,6 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -239,7 +236,6 @@ exports[`looks right for bids in live open auctions 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -266,7 +262,6 @@ exports[`looks right for bids in live open auctions 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -288,7 +283,6 @@ exports[`looks right for bids in live open auctions 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -401,7 +395,6 @@ exports[`renders correctly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -428,7 +421,6 @@ exports[`renders correctly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -450,7 +442,6 @@ exports[`renders correctly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [

@@ -19,7 +19,6 @@ describe("callbacks", () => {
     const navigator: any = { pop: jest.fn() }
     const updateWithProvenance = jest.fn()
     const provenance = new Provenance({ navigator, route: {}, updateWithProvenance })
-    provenance.setState({ provenance: "Acquired by my father somewhere" })
 
     provenance.doneTapped()
 

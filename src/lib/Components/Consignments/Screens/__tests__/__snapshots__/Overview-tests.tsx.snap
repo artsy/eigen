@@ -51,7 +51,6 @@ exports[`Sets up the right view hierarchy 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [
@@ -77,7 +76,6 @@ exports[`Sets up the right view hierarchy 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [
@@ -151,14 +149,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                 onResponderTerminate={[Function]}
                 onResponderTerminationRequest={[Function]}
                 onStartShouldSetResponder={[Function]}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                    },
-                    undefined,
-                  ]
-                }
+                style={null}
                 testID={undefined}
                 tvParallaxProperties={undefined}
               >
@@ -170,14 +161,13 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "flexDirection": "row",
                         "height": 60,
                       },
-                      undefined,
+                      null,
                     ]
                   }
                 >
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                     style={
                       Array [
@@ -212,7 +202,11 @@ exports[`Sets up the right view hierarchy 1`] = `
                     }
                   >
                     <Image
-                      source={1}
+                      source={
+                        Object {
+                          "testUri": "../../../images/consignments/plus.png",
+                        }
+                      }
                     />
                   </View>
                 </View>
@@ -244,14 +238,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                 onResponderTerminate={[Function]}
                 onResponderTerminationRequest={[Function]}
                 onStartShouldSetResponder={[Function]}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                    },
-                    undefined,
-                  ]
-                }
+                style={null}
                 testID={undefined}
                 tvParallaxProperties={undefined}
               >
@@ -263,14 +250,13 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "flexDirection": "row",
                         "height": 60,
                       },
-                      undefined,
+                      null,
                     ]
                   }
                 >
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                     style={
                       Array [
@@ -305,7 +291,11 @@ exports[`Sets up the right view hierarchy 1`] = `
                     }
                   >
                     <Image
-                      source={1}
+                      source={
+                        Object {
+                          "testUri": "../../../images/consignments/plus.png",
+                        }
+                      }
                     />
                   </View>
                 </View>
@@ -337,14 +327,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                 onResponderTerminate={[Function]}
                 onResponderTerminationRequest={[Function]}
                 onStartShouldSetResponder={[Function]}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                    },
-                    undefined,
-                  ]
-                }
+                style={null}
                 testID={undefined}
                 tvParallaxProperties={undefined}
               >
@@ -356,14 +339,13 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "flexDirection": "row",
                         "height": 60,
                       },
-                      undefined,
+                      null,
                     ]
                   }
                 >
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                     style={
                       Array [
@@ -398,7 +380,11 @@ exports[`Sets up the right view hierarchy 1`] = `
                     }
                   >
                     <Image
-                      source={1}
+                      source={
+                        Object {
+                          "testUri": "../../../images/consignments/plus.png",
+                        }
+                      }
                     />
                   </View>
                 </View>
@@ -430,14 +416,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                 onResponderTerminate={[Function]}
                 onResponderTerminationRequest={[Function]}
                 onStartShouldSetResponder={[Function]}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                    },
-                    undefined,
-                  ]
-                }
+                style={null}
                 testID={undefined}
                 tvParallaxProperties={undefined}
               >
@@ -449,14 +428,13 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "flexDirection": "row",
                         "height": 60,
                       },
-                      undefined,
+                      null,
                     ]
                   }
                 >
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                     style={
                       Array [
@@ -491,7 +469,11 @@ exports[`Sets up the right view hierarchy 1`] = `
                     }
                   >
                     <Image
-                      source={1}
+                      source={
+                        Object {
+                          "testUri": "../../../images/consignments/plus.png",
+                        }
+                      }
                     />
                   </View>
                 </View>
@@ -523,14 +505,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                 onResponderTerminate={[Function]}
                 onResponderTerminationRequest={[Function]}
                 onStartShouldSetResponder={[Function]}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                    },
-                    undefined,
-                  ]
-                }
+                style={null}
                 testID={undefined}
                 tvParallaxProperties={undefined}
               >
@@ -542,14 +517,13 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "flexDirection": "row",
                         "height": 60,
                       },
-                      undefined,
+                      null,
                     ]
                   }
                 >
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                     style={
                       Array [
@@ -584,7 +558,11 @@ exports[`Sets up the right view hierarchy 1`] = `
                     }
                   >
                     <Image
-                      source={1}
+                      source={
+                        Object {
+                          "testUri": "../../../images/consignments/plus.png",
+                        }
+                      }
                     />
                   </View>
                 </View>
@@ -616,14 +594,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                 onResponderTerminate={[Function]}
                 onResponderTerminationRequest={[Function]}
                 onStartShouldSetResponder={[Function]}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                    },
-                    undefined,
-                  ]
-                }
+                style={null}
                 testID={undefined}
                 tvParallaxProperties={undefined}
               >
@@ -635,14 +606,13 @@ exports[`Sets up the right view hierarchy 1`] = `
                         "flexDirection": "row",
                         "height": 60,
                       },
-                      undefined,
+                      null,
                     ]
                   }
                 >
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                     style={
                       Array [
@@ -677,7 +647,11 @@ exports[`Sets up the right view hierarchy 1`] = `
                     }
                   >
                     <Image
-                      source={1}
+                      source={
+                        Object {
+                          "testUri": "../../../images/consignments/plus.png",
+                        }
+                      }
                     />
                   </View>
                 </View>
@@ -756,7 +730,6 @@ exports[`Sets up the right view hierarchy 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [

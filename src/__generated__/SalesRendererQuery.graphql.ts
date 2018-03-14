@@ -90,7 +90,7 @@ fragment Artwork_artwork on Artwork {
     }
     bidder_positions_count
     sale {
-      is_open
+      is_closed
       __id
     }
     __id
@@ -136,18 +136,11 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_open",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
@@ -161,21 +154,21 @@ v5 = {
   ],
   "storageKey": "url(version:\"large\")"
 },
-v6 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "aspect_ratio",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
   "args": null,
   "storageKey": null
 },
-v8 = [
+v7 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -184,16 +177,16 @@ v8 = [
     "storageKey": null
   }
 ],
-v9 = [
-  v4,
-  v7
+v8 = [
+  v3,
+  v6
 ];
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "SalesRendererQuery",
   "id": null,
-  "text": "query SalesRendererQuery {\n  viewer {\n    ...Sales_viewer\n  }\n}\n\nfragment Sales_viewer on Viewer {\n  sales(live: true, is_auction: true, size: 100, sort: TIMELY_AT_NAME_ASC) {\n    ...SaleListItem_sale\n    href\n    live_start_at\n    __id\n  }\n  ...LotsByFollowedArtists_viewer\n}\n\nfragment SaleListItem_sale on Sale {\n  id\n  name\n  href\n  is_open\n  is_live_open\n  live_url_if_open\n  start_at\n  end_at\n  registration_ends_at\n  live_start_at\n  display_timely_at\n  cover_image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  __id\n}\n\nfragment LotsByFollowedArtists_viewer on Viewer {\n  sale_artworks: sale_artworks(first: 10, live_sale: true, is_auction: true, include_artworks_by_followed_artists: true) {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      cursor\n      node {\n        artwork {\n          ...GenericGrid_artworks\n          __id\n        }\n        __id\n        __typename\n      }\n    }\n  }\n}\n\nfragment GenericGrid_artworks on Artwork {\n  __id\n  id\n  image {\n    aspect_ratio\n  }\n  ...Artwork_artwork\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  id\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_open\n      __id\n    }\n    __id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id\n  }\n  partner {\n    name\n    __id\n  }\n  href\n  __id\n}\n",
+  "text": "query SalesRendererQuery {\n  viewer {\n    ...Sales_viewer\n  }\n}\n\nfragment Sales_viewer on Viewer {\n  sales(live: true, is_auction: true, size: 100, sort: TIMELY_AT_NAME_ASC) {\n    ...SaleListItem_sale\n    href\n    live_start_at\n    __id\n  }\n  ...LotsByFollowedArtists_viewer\n}\n\nfragment SaleListItem_sale on Sale {\n  id\n  name\n  href\n  is_open\n  is_live_open\n  live_url_if_open\n  start_at\n  end_at\n  registration_ends_at\n  live_start_at\n  display_timely_at\n  cover_image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  __id\n}\n\nfragment LotsByFollowedArtists_viewer on Viewer {\n  sale_artworks: sale_artworks(first: 10, live_sale: true, is_auction: true, include_artworks_by_followed_artists: true) {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      cursor\n      node {\n        artwork {\n          ...GenericGrid_artworks\n          __id\n        }\n        __id\n        __typename\n      }\n    }\n  }\n}\n\nfragment GenericGrid_artworks on Artwork {\n  __id\n  id\n  image {\n    aspect_ratio\n  }\n  ...Artwork_artwork\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  id\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_closed\n      __id\n    }\n    __id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id\n  }\n  partner {\n    name\n    __id\n  }\n  href\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
@@ -272,7 +265,13 @@ return {
               },
               v1,
               v2,
-              v3,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "is_open",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -287,7 +286,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v4,
+              v3,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -325,11 +324,11 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v5,
-                  v6
+                  v4,
+                  v5
                 ]
               },
-              v7
+              v6
             ]
           },
           {
@@ -427,7 +426,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v7,
+                          v6,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -437,8 +436,8 @@ return {
                             "concreteType": "Image",
                             "plural": false,
                             "selections": [
-                              v6,
-                              v5
+                              v5,
+                              v4
                             ]
                           },
                           {
@@ -480,7 +479,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkOpeningBid",
                                 "plural": false,
-                                "selections": v8
+                                "selections": v7
                               },
                               {
                                 "kind": "LinkedField",
@@ -490,7 +489,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkCurrentBid",
                                 "plural": false,
-                                "selections": v8
+                                "selections": v7
                               },
                               {
                                 "kind": "ScalarField",
@@ -508,11 +507,17 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  v3,
-                                  v7
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "is_closed",
+                                    "args": null,
+                                    "storageKey": null
+                                  },
+                                  v6
                                 ]
                               },
-                              v7
+                              v6
                             ]
                           },
                           {
@@ -530,7 +535,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": v9
+                            "selections": v8
                           },
                           {
                             "kind": "LinkedField",
@@ -540,12 +545,12 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": v9
+                            "selections": v8
                           },
                           v2
                         ]
                       },
-                      v7,
+                      v6,
                       {
                         "kind": "ScalarField",
                         "alias": null,

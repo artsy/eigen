@@ -20,14 +20,12 @@ const exampleProps = {
 }
 
 describe("state", () => {
-  it("sets up the initial state in componentWillMount", () => {
+  it("sets up the initial state", () => {
     const gene = new Gene({
       gene: null,
       medium: "glitch",
       price_range: "*-*",
     })
-
-    gene.componentWillMount()
 
     expect(gene.state).toEqual({
       selectedTabIndex: 0,
@@ -71,9 +69,6 @@ describe("state", () => {
         selectedPrice: "1000-80000",
         sort: "-desc",
       })
-
-    // Mount it to set up initial state
-    gene.componentWillMount()
 
     // Then when the gene has been tapped, it returns the refine data above
     return gene.refineTapped(null).then(() => {
