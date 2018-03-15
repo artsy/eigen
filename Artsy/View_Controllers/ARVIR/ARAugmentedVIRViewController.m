@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) UIImageView *phoneImage;
 @property (nonatomic, weak, nullable) UIButton *backButton;
 @property (nonatomic, weak, nullable) UIButton *resetButton;
+@property (nonatomic, weak, nullable) UIButton *placeArtworkButton;
 @property (nonatomic, weak, nullable) UILabel *textLabel;
 
 @property (nonatomic, strong, readonly) ARAugmentedRealityConfig *config;
@@ -97,7 +98,7 @@ NS_ASSUME_NONNULL_BEGIN
         [resetButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
         [self.view addSubview:resetButton];
 
-        // Show
+        // A phone image which rotates to indicate how to calibrate
         UIImageView *phoneImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRPhone"]];
         phoneImage.translatesAutoresizingMaskIntoConstraints = false;
         [self.view addSubview:phoneImage];
@@ -117,7 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
             [phoneImage.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
         ]];
 
-        // Text label
+        // Text label for messaging
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
         label.textColor = UIColor.whiteColor;
         label.font = [UIFont displaySansSerifFontWithSize:16];
@@ -141,10 +142,22 @@ NS_ASSUME_NONNULL_BEGIN
             [label.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant: -50.0]
         ]];
 
+        ARWhiteFlatButton *placeArtworkButton = [[ARWhiteFlatButton alloc] initWithFrame:CGRectMake(0, 0, 144, 44)];
+        [placeArtworkButton setTitle:@"Tap to Place" forState:UIControlStateNormal];
+        [placeArtworkButton addTarget:self action:@selector(placeArtwork) forControlEvents:UIControlEventTouchUpInside];
+
+        [self.view addSubview:placeArtworkButton];
+
+        [placeArtworkButton alignCenterXWithView:self.view predicate:@"0"];
+        [placeArtworkButton constrainHeight:@"44"];
+        [placeArtworkButton constrainWidth:@"140"];
+        [placeArtworkButton alignBottomEdgeWithView:self.view predicate:@"-140"];
+
         self.textLabel = label;
         self.backButton = backButton;
         self.resetButton = resetButton;
         self.phoneImage = phoneImage;
+        self.placeArtworkButton = placeArtworkButton;
 
         [self initialState];
 
@@ -159,6 +172,7 @@ NS_ASSUME_NONNULL_BEGIN
     ar_dispatch_main_queue(^{
         self.resetButton.hidden = YES;
         self.phoneImage.hidden = NO;
+        self.placeArtworkButton.hidden = YES;
         self.textLabel.text = @"Aim at an object on your wall and move your phone in a circle.";
     });
 }
@@ -168,8 +182,26 @@ NS_ASSUME_NONNULL_BEGIN
     ar_dispatch_main_queue(^{
         self.resetButton.hidden = NO;
         self.phoneImage.hidden = YES;
+        self.placeArtworkButton.hidden = YES;
         self.textLabel.text = @"Tap the screen to place the work.";
     });
+}
+
+- (void)isShowingGhostWork:(BOOL)showing
+{
+    ar_dispatch_main_queue(^{
+        self.placeArtworkButton.hidden = NO;
+        self.placeArtworkButton.enabled = showing;
+        self.textLabel.text = @"";
+        self.resetButton.hidden = NO;
+        self.phoneImage.hidden = YES;
+    });
+}
+
+- (void)placeArtwork
+{
+    [self.visualsDelegate placeArtwork];
+    self.placeArtworkButton.hidden = YES;
 }
 
 - (void)hasPlacedArtwork

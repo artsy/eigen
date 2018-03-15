@@ -57,6 +57,7 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
     // has successfully set up an Artwork.
     [self.class canSkipARSetup:self.defaults callback:^(bool hasGivenAccess) {
         BOOL firstTime = ![self.defaults boolForKey:ARAugmentedRealityHasSeenSetup];
+        BOOL notCompleted = ![self.defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
 
         // Main potential states:
         //
@@ -67,10 +68,10 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
         //
         NSString *buttonTitle = firstTime && !hasGivenAccess ? needsAccessButtonTitle : hasDeniedAccessButtonTitle ;
         NSString *subtitleText = firstTime && !hasGivenAccess ? needsAccessSubtitle: hasDeniedAccessSubtitle;
-        buttonTitle = hasGivenAccess ? hasAccessButtonTitle : buttonTitle;
-        subtitleText = hasGivenAccess ? hasAccessSubtitle : subtitleText;
+        buttonTitle = hasGivenAccess || notCompleted ? hasAccessButtonTitle : buttonTitle;
+        subtitleText = hasGivenAccess || notCompleted ? hasAccessSubtitle : subtitleText;
 
-        SEL nextButtonSelector = firstTime || hasGivenAccess ? @selector(next) : @selector(sendToSettings);
+        SEL nextButtonSelector = firstTime || hasGivenAccess || notCompleted ? @selector(next) : @selector(sendToSettings);
 
         // Have a potential background video, otherwise it's a black screen
         AVPlayerViewController *playVC = [[AVPlayerViewController alloc] init];

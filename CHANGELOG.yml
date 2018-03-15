@@ -10,6 +10,7 @@ upcoming:
     - Adds a new VIR intro screen, which handles disabled states - orta
     - VIR Video is controlled by echo - orta
     - Updated "wall attachment" style AR flow - orta
+    - Pan gestures move the artwork, and you use a place button to attach the work to a wall - orta
 
 releases:
   - version: 4.0.3

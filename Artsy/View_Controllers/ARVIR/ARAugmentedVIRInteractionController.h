@@ -6,12 +6,14 @@
 - (void)pannedOnScreen:(UIPanGestureRecognizer *)gesture;
 - (void)tappedOnScreen:(UITapGestureRecognizer *)gesture;
 
+- (void)placeArtwork;
 - (void)restart;
 @end
 
 /** Callbacks for UI changes */
 @protocol ARVIRDelegate
 - (void)hasRegisteredPlanes;
+- (void)isShowingGhostWork:(BOOL)showing;
 - (void)hasPlacedArtwork;
 @end
 

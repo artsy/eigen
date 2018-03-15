@@ -16,7 +16,8 @@ API_AVAILABLE(ios(11.0))
 @property (nonatomic, strong) NSArray<SCNNode *> *invisibleWalls;
 @property (nonatomic, strong) SCNNode *ghostWork;
 @property (nonatomic, strong) SCNNode *artwork;
-@property (nonatomic, assign) BOOL  hasSentRegisteredCallback;
+@property (nonatomic, assign) BOOL hasSentRegisteredCallback;
+@property (nonatomic, assign) CGPoint pointOnScreenForArtworkProjection;
 @end
 
 NSInteger wallHeightMeters = 5;
@@ -32,33 +33,33 @@ NSInteger wallHeightMeters = 5;
     _invisibleWalls = @[];
     _detectedPlanes = @[];
     _delegate = delegate;
+    CGRect bounds = [UIScreen mainScreen].bounds;
+    _pointOnScreenForArtworkProjection =CGPointMake(bounds.size.width/2, bounds.size.height/2);
     return self;
 }
 
 - (void)pannedOnScreen:(UIPanGestureRecognizer *)gesture;
 {
-    // TODO
+    if (gesture.numberOfTouches) {
+        self.pointOnScreenForArtworkProjection = [gesture locationOfTouch:0 inView:gesture.view];
+    }
 }
 
 - (void)tappedOnScreen:(UITapGestureRecognizer *)gesture
 {
-    if (![gesture.view isKindOfClass:SCNView.class]) {
-        NSLog(@"Tap wasn't on a SCNView");
-        return;
-    }
+    // NOOP
+}
 
+- (void)placeArtwork
+{
     if (@available(iOS 11.0, *)) {
-        ARSCNView *sceneView = (id)gesture.view;
-
-        CGPoint point = [gesture locationOfTouch:0 inView:sceneView];
-
         NSDictionary *options = @{
             SCNHitTestIgnoreHiddenNodesKey: @NO,
             SCNHitTestFirstFoundOnlyKey: @YES,
             SCNHitTestOptionSearchMode: @(SCNHitTestSearchModeAll)
         };
 
-        NSArray <SCNHitTestResult *> *results = [sceneView hitTest:point options: options];
+        NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForArtworkProjection options: options];
         for (SCNHitTestResult *result in results) {
 
             // Raycast the current artwork on to the invisible wall, and make the ghost invisible
@@ -80,12 +81,6 @@ NSInteger wallHeightMeters = 5;
     }
 }
 
-- (void)placeArtwork
-{
-
-}
-
-
 - (void)restart
 {
     [self.ghostWork removeFromParentNode];
@@ -94,7 +89,6 @@ NSInteger wallHeightMeters = 5;
     [self.artwork removeFromParentNode];
     self.artwork = nil;
 }
-
 
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0));
 {
@@ -109,7 +103,7 @@ NSInteger wallHeightMeters = 5;
         SCNHitTestOptionSearchMode: @(SCNHitTestSearchModeAll)
     };
 
-    NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.sceneView.center options: options];
+    NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForArtworkProjection options: options];
     for (SCNHitTestResult *result in results) {
         if ([self.invisibleWalls containsObject:result.node]) {
             // Create a ghost work if we don't have one already
@@ -124,11 +118,13 @@ NSInteger wallHeightMeters = 5;
 
             SCNTransaction.animationDuration = 0.1;
             self.ghostWork.position = result.localCoordinates;
+            [self.delegate isShowingGhostWork:YES];
             return;
         }
     }
 
     if (self.ghostWork) {
+        [self.delegate isShowingGhostWork:NO];
         [self.ghostWork removeFromParentNode];
         self.ghostWork = nil;
     }
