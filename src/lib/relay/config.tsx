@@ -21,7 +21,13 @@ export { metaphysicsURL, gravityURL }
 //
 declare var global: any
 if (__DEV__ && global.originalXMLHttpRequest !== undefined) {
-  global.XMLHttpRequest = global.originalXMLHttpRequest
+  /**
+   * TODO: Recording network access in Chrome Dev Tools is disabled for now.
+   *
+   * @see https://github.com/jhen0409/react-native-debugger/issues/209
+   */
+  // global.XMLHttpRequest = global.originalXMLHttpRequest
+
   // tslint:disable-next-line:no-var-requires
   require("react-relay/lib/RelayNetworkDebug").init()
 }
