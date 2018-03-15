@@ -80,7 +80,9 @@ class LiveAuctionStateManager: NSObject {
             self?.handleSaleOnHoldState(response)
         }
 
-        socketCommunicator.operatorConnectedSignal.subscribe(applyWeakly(self, LiveAuctionStateManager.handleOperatorConnectedState))
+        socketCommunicator.operatorConnectedSignal.subscribe { [weak self] state in
+            self?.handleOperatorConnectedState(state)
+        }
     }
 }
 

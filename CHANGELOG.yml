@@ -1,6 +1,9 @@
 upcoming:
   version: 4.0.4
   emission_version: 1.4.6
+  dev:
+    - Potential fixes for Adjust session registering with anon users - orta
+    - Removes `apply` function family from SwiftExtensions.swift - ash
   user_facing:
     - Artwork action buttons (fav/map/vir/share) now center horizontally on iPhone - orta
     - None yet
