@@ -1,5 +1,6 @@
 #import "AREchoContentsViewController.h"
-@import Aerodramus;
+
+#import <Aerodramus/Aerodramus.h>
 #import "Artsy-Swift.h"
 #import "ARSwitchBoard.h"
 

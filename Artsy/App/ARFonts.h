@@ -1,9 +1,11 @@
-#import <Artsy_UIColors/UIColor+ArtsyColors.h>
+#import <UIKit/UIFont.h>
 
-#if __has_include(<Artsy_UIFonts/UIFont+ArtsyFonts.h>)
-#import <Artsy_UIFonts/UIFont+ArtsyFonts.h>
+#import <Artsy+UIColors/UIColor+ArtsyColors.h>
+
+#if __has_include(<Artsy+UIFonts/UIFont+ArtsyFonts.h>)
+#import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
 #endif
 
-#if __has_include(<Artsy_UIFonts/UIFont+OSSArtsyFonts.h>)
-#import <Artsy_UIFonts/UIFont+OSSArtsyFonts.h>
+#if __has_include(<Artsy+UIFonts/UIFont+OSSArtsyFonts.h>)
+#import <Artsy+UIFonts/UIFont+OSSArtsyFonts.h>
 #endif

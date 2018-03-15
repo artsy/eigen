@@ -1,4 +1,4 @@
-#import <Artsy_UIButtons/ARButtonSubclasses.h>
+#import <Artsy-UIButtons/ARButtonSubclasses.h>
 
 #import "ARHeartStatus.h"
 
@@ -13,4 +13,6 @@
 - (void)setHearted:(BOOL)hearted;
 - (void)setHearted:(BOOL)hearted animated:(BOOL)animated;
 
+/// Should the heart button feature a border?
+- (void)setBordered:(BOOL)bordered;
 @end

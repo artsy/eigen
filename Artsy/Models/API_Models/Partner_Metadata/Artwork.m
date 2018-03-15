@@ -62,6 +62,7 @@
         ar_keypath(Artwork.new, additionalInfo) : @"additional_information",
         ar_keypath(Artwork.new, dimensionsCM) : @"dimensions.cm",
         ar_keypath(Artwork.new, dimensionsInches) : @"dimensions.in",
+        ar_keypath(Artwork.new, attributionClass) : @"attribution_class",
         ar_keypath(Artwork.new, displayTitle) : @"display",
         ar_keypath(Artwork.new, editionSets) : @"edition_sets",
         ar_keypath(Artwork.new, exhibitionHistory) : @"exhibition_history",

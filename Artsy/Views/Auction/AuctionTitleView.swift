@@ -1,8 +1,4 @@
 import UIKit
-import Artsy_UIButtons
-import Artsy_UILabels
-import Artsy_UIFonts
-import FLKAutoLayout
 
 @objc protocol AuctionTitleViewDelegate: class {
     func userDidPressInfo(_ titleView: AuctionTitleView)

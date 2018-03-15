@@ -3,9 +3,7 @@ import Nimble
 import Nimble_Snapshots
 import UIKit
 import Interstellar
-import Forgeries
-import OCMock
-import Mantle
+
 @testable
 import Artsy
 
@@ -186,7 +184,7 @@ class AuctionViewControllerTests: QuickSpec {
                         test_saleArtworkWithLotNumber(3, artistName: "Sarah", bidCount: 2, highestBidCents: 50_00),
                         test_saleArtworkWithLotNumber(4, artistName: "Eloy", bidCount: 17, highestBidCents: 1000_000_00),
                         test_saleArtworkWithLotNumber(5, artistName: "Maxim", bidCount: 6, highestBidCents: 5011_00),
-                    ], bidders: [qualifiedBidder])
+                        ], bidders: [qualifiedBidder])
                     saleViewModel.stubbedAuctionState.insert(.userIsRegistered)
 
                     subject = AuctionViewController(saleID: sale.saleID)
@@ -544,7 +542,7 @@ func test_saleArtworkWithLotNumber(_ lotNumber: Int, artistName: String, bidCoun
         "artist": artistJSON,
         "title": "roly poly",
         "images": imagesJSON,
-    ]
+        ]
     let saleArtwork = SaleArtwork(json:
         [
             "id": "sale",

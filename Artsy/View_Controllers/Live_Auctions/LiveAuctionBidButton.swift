@@ -1,7 +1,5 @@
 import QuartzCore
 import Interstellar
-import Artsy_UIButtons
-import Extraction
 
 enum LiveAuctionBidButtonState: Equatable {
     case active(biddingState: LiveAuctionBiddingProgressState)

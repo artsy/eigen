@@ -29,7 +29,7 @@
 
 #import "UIDevice-Hardware.h"
 
-#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <Extraction/UIView+ARSpinner.h>
 
@@ -584,13 +584,16 @@
                                                                           // there's already a user with this email
                                                                           __strong typeof (wself) sself = wself;
                                                                           [sself displayError:@"User already exists with this email. Please log in with your email and password."];
+                                                                          [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
+
                                                                           return;
                                                                       }
                                                                   }
                                                                   
                                                                   // something else went wrong
                                                                   ARErrorLog(@"Couldn't link Facebook account. Error: %@. The server said: %@", error.localizedDescription, JSON);
-                                                                  [sself displayError:@"Couldn't link Facebook account"];;
+                                                                  [sself displayError:@"Couldn't link Facebook account"];
+                                                                  [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                                               }];
         
     } else {

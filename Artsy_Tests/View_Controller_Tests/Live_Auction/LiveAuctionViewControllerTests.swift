@@ -3,7 +3,6 @@ import Nimble
 import Nimble_Snapshots
 import UIKit
 import Interstellar
-import Forgeries
 
 @testable
 import Artsy

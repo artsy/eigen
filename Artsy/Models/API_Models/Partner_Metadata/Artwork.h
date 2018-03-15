@@ -42,6 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *dimensionsCM;
 @property (nonatomic, copy) NSString *dimensionsInches;
 
+@property (nonatomic, copy) NSString *attributionClass;
+
 // The artist that created the artwork. This may be `nil`.
 @property (nonatomic, strong) Artist *_Nullable artist;
 @property (nonatomic, copy) NSString *imageFormatAddress;

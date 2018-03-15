@@ -1,6 +1,5 @@
 import UIKit
 import Then
-import FLKAutoLayout
 
 class LotStandingsView: UIView {
     typealias LotStandingTappedClosure = (Int) -> Void

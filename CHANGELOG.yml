@@ -1,19 +1,38 @@
 upcoming:
-  version: 4.0.3
+  version: 4.0.4
   emission_version: 1.4.6
-  dev:
-    - Potential fixes for Adjust session registering with anon users - orta
   user_facing:
-    - Fix for 11.3 users - orta
+    - Artwork action buttons (fav/map/vir/share) now center horizontally on iPhone - orta
+    - None yet
+  dev:
+    - Reduce time spent in dyld at launch by changing Pods from dynamic frameworks to static libraries - alloy
   ARVIR:
     - Adds a new VIR intro screen, which handles disabled states - orta
+    - VIR Video is controlled by echo - orta
+    - Updated "wall attachment" style AR flow - orta
 
 releases:
+  - version: 4.0.3
+    date: TBA
+    emission_version: 1.4.6
+    dev:
+      - Potential fixes for Adjust session registering with anon users - orta
+      - Updates Facebook SDKs - orta
+    user_facing:
+      - Fix for 11.3 users - orta
+      - Add attribution class aka "classification" to artwork view - anandaroop/oxaudo
+    ARVIR:
+      - Adds a new VIR intro screen, which handles disabled states - orta
+
   - version: 4.0.2
     emission_version: 1.4.6
     date: Feb 23, 2018
     dev:
       - Fixes universal links in iOS 11 - sarah
+
+      - ARVIR:
+        - Adds a new VIR intro screen, which handles disabled states - orta
+        - Updates the AR aspect of the app to be based on the 11.3 version - orta
 
     user_facing:
       - Show Online Exclusive label for shows without location - ashkan

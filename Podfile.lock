@@ -2,7 +2,7 @@ PODS:
   - Adjust (4.12.1):
     - Adjust/Core (= 4.12.1)
   - Adjust/Core (4.12.1)
-  - Aerodramus (0.3.1):
+  - Aerodramus (0.3.2):
     - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
     - AFNetworking/NSURLConnection (~> 2.0)
@@ -49,7 +49,7 @@ PODS:
   - ARTiledImageView (1.2.0):
     - SDWebImage/Core
   - Artsy+UIColors (3.1.0)
-  - Artsy+UIFonts (3.1.3)
+  - Artsy+UIFonts (3.2.0)
   - Artsy+UILabels (2.2.0):
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
@@ -57,12 +57,12 @@ PODS:
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
     - UIView+BooleanAnimations
-  - Bolts (1.7.0):
-    - Bolts/AppLinks (= 1.7.0)
-    - Bolts/Tasks (= 1.7.0)
-  - Bolts/AppLinks (1.7.0):
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
     - Bolts/Tasks
-  - Bolts/Tasks (1.7.0)
+  - Bolts/Tasks (1.9.0)
   - CocoaLumberjack (2.0.1):
     - CocoaLumberjack/Default (= 2.0.1)
     - CocoaLumberjack/Extensions (= 2.0.1)
@@ -116,9 +116,9 @@ PODS:
   - Extraction/UILabel+Typography (1.2.3)
   - Extraction/UIView+ARSpinner (1.2.3):
     - Extraction/ARAnimationContinuation
-  - FBSDKCoreKit (4.10.1):
-    - Bolts (~> 1.5)
-  - FBSDKLoginKit (4.10.1):
+  - FBSDKCoreKit (4.31.0):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.31.0):
     - FBSDKCoreKit
   - FBSnapshotTestCase (2.1.4):
     - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
@@ -297,6 +297,65 @@ DEPENDENCIES:
   - VCRURLConnection
   - XCTest+OHHTTPStubSuiteCleanUp
 
+SPEC REPOS:
+  https://github.com/artsy/Specs.git:
+    - Aerodramus
+    - Artsy+UIColors
+    - Artsy+UIFonts
+    - Artsy+UILabels
+    - Artsy-UIButtons
+    - Emission
+    - Extraction
+    - React
+    - SentryReactNative
+    - Yoga
+  https://github.com/CocoaPods/Specs.git:
+    - Adjust
+    - AFNetworkActivityLogger
+    - AFNetworking
+    - Analytics
+    - ARAnalytics
+    - Bolts
+    - DHCShakeNotifier
+    - EDColor
+    - Expecta
+    - Expecta+Snapshots
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - FBSnapshotTestCase
+    - Forgeries
+    - FXBlurView
+    - iRate
+    - JSDecoupledAppDelegate
+    - JWTDecode
+    - KSCrash
+    - KSDeferred
+    - Mantle
+    - MARKRangeSlider
+    - MMMarkdown
+    - MultiDelegate
+    - Nimble
+    - Nimble-Snapshots
+    - NPKeyboardLayoutGuide
+    - ObjectiveSugar
+    - OCMock
+    - OHHTTPStubs
+    - ORKeyboardReactingApplication
+    - ORStackView
+    - Quick
+    - ReactiveCocoa
+    - RSSwizzle
+    - SDWebImage
+    - Sentry
+    - Specta
+    - Starscream
+    - SwiftyJSON
+    - Then
+    - UICKeyChainStore
+    - UIView+BooleanAnimations
+    - VCRURLConnection
+    - XCTest+OHHTTPStubSuiteCleanUp
+
 EXTERNAL SOURCES:
   AFOAuth1Client:
     :git: https://github.com/lxcid/AFOAuth1Client.git
@@ -369,7 +428,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Adjust: 3d11ee5856dd0474d26496f4fa5a110e9f3ec264
-  Aerodramus: 648bab2c441eb6116db823e6301b1f2d4d2b61a0
+  Aerodramus: a23208fd4d76a32ee4ca425a8e29319e6c6a9bdc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
@@ -379,10 +438,10 @@ SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  Artsy+UIFonts: d38c82636e000b1dee31b7bec0268e1841dac17f
+  Artsy+UIFonts: d29579aa105e3709032651fb3145d24f8339e905
   Artsy+UILabels: 7cb6e290a4f70dddba037b7dbeb21e90b49d7275
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
-  Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
@@ -390,8 +449,8 @@ SPEC CHECKSUMS:
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
-  FBSDKCoreKit: d2aaed5e9ab7d8d6301c533376a1fbff1cf3deb5
-  FBSDKLoginKit: 699ff169080e3072de4b9b0faca90bf23dc36deb
+  FBSDKCoreKit: 54db4c581123745d25a9f7c1608020b3aeabd118
+  FBSDKLoginKit: 95a252ddffd6919c0f132a02292f0824616d8709
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
@@ -403,7 +462,7 @@ SPEC CHECKSUMS:
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
-  Keys: 9c35bf00f612ee1d48556f4a4b9b4551e224e90f
+  Keys: af65e23feef2a047b3277b1ef0399f1209ef9d46
   KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   KSDeferred: e72d005162986b2978e1e2eee17fbce1c6876cfe
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
@@ -437,6 +496,6 @@ SPEC CHECKSUMS:
   XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 2efb0a2b24e5c17cf1aea8c785d4428bd077f667
 
-PODFILE CHECKSUM: 300b4a27c62655007a858f0a58ecc21e49d4a513
+PODFILE CHECKSUM: 7de0aa4665de7d448814b027b89b956f5da562fb
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.4.0

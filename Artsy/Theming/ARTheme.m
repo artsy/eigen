@@ -2,7 +2,7 @@
 
 #import "ARLogger.h"
 
-@import Artsy_UIFonts;
+#import "ARFonts.h"
 #import <EDColor/EDColor.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 

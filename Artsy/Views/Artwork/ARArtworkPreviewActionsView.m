@@ -9,7 +9,7 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 const CGFloat ARArtworkActionButtonSpacing = 8;
-
+const CGFloat ARArtworkActionButtonNoCircleSpacing = 30;
 
 @interface ARArtworkPreviewActionsView ()
 
@@ -31,13 +31,14 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
 
 @implementation ARArtworkPreviewActionsView
 
-- (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair
+- (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair modern:(BOOL)modern
 {
     self = [super init];
     if (!self) {
         return nil;
     }
 
+    _modern = modern;
     _shareButton = [self newShareButton];
     _favoriteButton = [self newFavoriteButton];
 
@@ -61,9 +62,16 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
 - (ARHeartButton *)newFavoriteButton
 {
     ARHeartButton *button = [[ARHeartButton alloc] init];
+    [button setBordered:!self.modern];
+
     [self addSubview:button];
     button.accessibilityIdentifier = @"Favorite Artwork";
     [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+
+    if (self.modern) {
+        button.layer.borderWidth = 0;
+    }
+
     return button;
 }
 
@@ -88,6 +96,10 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
     [self addSubview:button];
     button.accessibilityIdentifier = identifier;
     [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+
+    if (self.modern) {
+        button.layer.borderWidth = 0;
+    }
     return button;
 }
 
@@ -181,7 +193,8 @@ const CGFloat ARArtworkActionButtonSpacing = 8;
     [buttons addObjectsFromArray:@[ self.favoriteButton, self.shareButton ]];
 
     if (buttons.count > 0) {
-        [UIView spaceOutViewsHorizontally:buttons predicate:@(ARArtworkActionButtonSpacing).stringValue];
+        CGFloat margin = self.modern ? ARArtworkActionButtonNoCircleSpacing : ARArtworkActionButtonSpacing;
+        [UIView spaceOutViewsHorizontally:buttons predicate:@(margin).stringValue];
         [(UIView *)[buttons firstObject] alignLeadingEdgeWithView:self predicate:@"0"];
         [(UIView *)[buttons lastObject] alignTrailingEdgeWithView:self predicate:@"0"];
         [UIView alignTopAndBottomEdgesOfViews:[buttons arrayByAddingObject:self]];

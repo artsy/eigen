@@ -1,5 +1,4 @@
 import UIKit
-import ORStackView
 
 class LotStandingsLotListView: ORStackView {
     let saleViewModel: SaleViewModel

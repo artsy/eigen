@@ -12,6 +12,7 @@ extern NSString *const AROptionsDisableNativeLiveAuctions;
 extern NSString *const AROptionsStagingReactEnv;
 extern NSString *const AROptionsDevReactEnv;
 extern NSString *const AROptionsUseARVIR;
+extern NSString *const AROptionsDebugARVIR;
 
 @interface AROptions : NSObject
 

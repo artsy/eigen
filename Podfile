@@ -9,7 +9,7 @@ source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '8.0'
-use_frameworks!
+use_frameworks!(false)
 inhibit_all_warnings!
 
 # Note: These should be reflected _accurately_ in the environment of
@@ -207,5 +207,16 @@ post_install do |installer|
         file.puts contents
       end
     end
+  end
+
+  # TODO: Might be nice to have a `cocoapods-patch` plugin that applies patches like `patch-package` does for npm.
+  %w(
+    Pods/Nimble/Sources/NimbleObjectiveC
+    Pods/Nimble-Snapshots
+    Pods/Quick/Sources/QuickObjectiveC
+  ).flat_map { |x| Dir.glob(File.join(x, "**/*.{h,m}")) }.each do |header|
+    contents = File.read(header)
+    patched = contents.sub(/["<]\w+\/(\w+-Swift\.h)[">]/, '"\1"')
+    File.write(header, patched) if Regexp.last_match
   end
 end

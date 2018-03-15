@@ -1,6 +1,5 @@
 import UIKit
 import Interstellar
-import FLKAutoLayout
 
 class LiveAuctionToolbarView: UIView {
 

@@ -9,7 +9,7 @@
 #import "ARMacros.h"
 
 #import "MTLModel+JSON.h"
-@import ObjectiveSugar;
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 
 @interface Profile () {

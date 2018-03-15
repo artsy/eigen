@@ -1,9 +1,9 @@
-@import Forgeries;
+#import <Forgeries/ForgeriesUserDefaults.h>
 
 #import "ARDefaults.h"
-#import "ARAugmentRealitySetupViewController.h"
+#import "ARAugmentedVIRSetupViewController.h"
 
-@interface ARAugmentRealitySetupViewController ()
+@interface ARAugmentedVIRSetupViewController ()
 @property (nonatomic, copy) NSUserDefaults *defaults;
 
 - (void)back;
@@ -11,8 +11,6 @@
 
 
 SpecBegin(ARAugmentRealitySetupViewController);
-
-
 
 ForgeriesUserDefaults *untouchedDefaults = [ForgeriesUserDefaults defaults:@{
     ARAugmentedRealityCameraAccessGiven: @(NO),
@@ -32,8 +30,14 @@ ForgeriesUserDefaults *completedDefaults = [ForgeriesUserDefaults defaults:@{
     ARAugmentedRealityHasSuccessfullyRan: @(YES)
 }];
 
+ForgeriesUserDefaults *setupButNotRanDefaults = [ForgeriesUserDefaults defaults:@{
+    ARAugmentedRealityCameraAccessGiven: @(YES),
+    ARAugmentedRealityHasSeenSetup: @(YES),
+    ARAugmentedRealityHasSuccessfullyRan: @(NO)
+}];
+
 it(@"defaults to asking for camera access",^{
-    ARAugmentRealitySetupViewController *vc = [[ARAugmentRealitySetupViewController alloc] initWithMovieURL:nil config:nil];
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil ];
     vc.defaults = (id)untouchedDefaults;
 
     expect(vc).to.haveValidSnapshot();
@@ -44,7 +48,7 @@ it(@"viewWillAppear sets ARAugmentedRealityHasSeenSetup",^{
       ARAugmentedRealityHasSeenSetup: @(NO)
     }];
 
-    ARAugmentRealitySetupViewController *vc = [[ARAugmentRealitySetupViewController alloc] initWithMovieURL:nil config:nil];
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
     vc.defaults = (id)defaults;
     [vc viewWillAppear:NO];
 
@@ -53,26 +57,47 @@ it(@"viewWillAppear sets ARAugmentedRealityHasSeenSetup",^{
 
 
 it(@"has different settings when denied access",^{
-    ARAugmentRealitySetupViewController *vc = [[ARAugmentRealitySetupViewController alloc] initWithMovieURL:nil config:nil];
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
     vc.defaults = (id)deniedDefaults;
+    expect(vc).to.haveValidSnapshot();
+});
+
+
+it(@"has different settings when you have given access but not succedded in putting a work on the wall",^{
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
+    vc.defaults = (id)setupButNotRanDefaults;
     expect(vc).to.haveValidSnapshot();
 });
 
 
 describe(@"canSkipARSetup", ^{
     it(@"returns true with the right defaults",^{
-        expect([ARAugmentRealitySetupViewController canSkipARSetup:(id)completedDefaults]).to.beTruthy();
+        __block BOOL called = NO;
+        [ARAugmentedVIRSetupViewController canSkipARSetup:(id)completedDefaults callback:^(bool shouldSkipSetup) {
+            called = YES;
+            expect(shouldSkipSetup).to.beTruthy();
+        }];
+
+        // In prod, this won't be sync, but we want to verify the code actually ran
+        expect(called).to.beTruthy();
     });
 
     it(@"returns false with incomplete defaults",^{
-        expect([ARAugmentRealitySetupViewController canSkipARSetup:(id)deniedDefaults]).to.beFalsy();
+        __block BOOL called = NO;
+        [ARAugmentedVIRSetupViewController canSkipARSetup:(id)deniedDefaults callback:^(bool shouldSkipSetup) {
+            called = YES;
+            expect(shouldSkipSetup).to.beFalsy();
+        }];
+
+        // Also verify synchronous behavior
+        expect(called).to.beTruthy();
     });
 });
 
 
 describe(@"canOpenARView", ^{
     it(@"returns false, because tests run on iOS 10",^{
-        expect([ARAugmentRealitySetupViewController canOpenARView]).to.beFalsy();
+        expect([ARAugmentedVIRSetupViewController canOpenARView]).to.beFalsy();
     });
 });
 
@@ -82,7 +107,7 @@ describe(@"back", ^{
         id navMock = [OCMockObject mockForClass:[UINavigationController class]];
         [[navMock stub] popViewControllerAnimated:NO];
 
-        ARAugmentRealitySetupViewController *vc = [[ARAugmentRealitySetupViewController alloc] initWithMovieURL:nil config:nil];
+        ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
         [vc back];
         [navMock verify];
     });

@@ -1,5 +1,5 @@
 #import "ARExpectaExtensions.h"
-@import Forgeries;
+#import <Forgeries/ForgeriesTraitCollections.h>
 
 void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber, const char *fileName, BOOL record, BOOL async, NSString *name, id (^block)())
 {

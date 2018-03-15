@@ -33,7 +33,8 @@
     _fair = fair;
 
     ARArtworkPreviewImageView *artworkPreview = [[ARArtworkPreviewImageView alloc] init];
-    ARArtworkPreviewActionsView *previewActionsView = [[ARArtworkPreviewActionsView alloc] initWithArtwork:artwork andFair:fair];
+    ARArtworkPreviewActionsView *previewActionsView = [[ARArtworkPreviewActionsView alloc] initWithArtwork:artwork andFair:fair modern: ![UIDevice isPad]];
+
     ARArtworkDetailView *artworkDetailView = [[ARArtworkDetailView alloc] initWithArtwork:artwork andFair:fair];
     ARArtworkActionsView *artworkActionsView = [[ARArtworkActionsView alloc] initWithArtwork:artwork];
     self.artworkPreview = artworkPreview;
@@ -88,12 +89,23 @@
     // Constraints that apply to iPhone and vertical iPad
     NSMutableArray *verticalConstraints = [NSMutableArray array];
 
-    [verticalConstraints addObject:[right constrainTopSpaceToView:left predicate:@"28"]];
+    // The iPad keeping the borders on the icons means that it's visual weight is different, so it
+    // needs a larger top padding
+    NSString *topPadding = [UIDevice isPad] ? @"28" : @"14";
+    [verticalConstraints addObject:[right constrainTopSpaceToView:left predicate:topPadding]];
     [verticalConstraints addObject:[left alignTrailingEdgeWithView:self predicate:@(-imageMargin).stringValue]];
     [verticalConstraints addObject:[right alignLeadingEdgeWithView:self predicate:@(margin).stringValue]];
 
     [verticalConstraints addObject:[previewActionsView alignTopEdgeWithView:right predicate:@"0"]];
-    [verticalConstraints addObject:[previewActionsView alignTrailingEdgeWithView:right predicate:@"0"]];
+
+    if ([UIDevice isPad]) {
+        // Trailing align buttons
+        [verticalConstraints addObject:[previewActionsView alignTrailingEdgeWithView:right predicate:@"0"]];
+    } else {
+        // center align buttons
+        [verticalConstraints addObject:[previewActionsView alignCenterXWithView:right predicate:@"0"]];
+    }
+
     [verticalConstraints addObject:[artworkActionsView constrainTopSpaceToView:artworkDetailView predicate:@"8"]];
 
     if ([UIDevice isPad]) {

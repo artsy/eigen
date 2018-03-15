@@ -7,7 +7,7 @@
 #import "Map.h"
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
-@import Artsy_UIColors;
+#import <Artsy+UIColors/UIColor+ArtsyColors.h>
 
 @interface ARFairMapPreview ()
 @property (nonatomic, weak, readonly) Map *map;

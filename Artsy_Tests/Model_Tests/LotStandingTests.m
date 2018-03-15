@@ -1,3 +1,5 @@
+#import "Artsy-Swift.h"
+
 SpecBegin(LotStanding);
 
 it(@"deserializes the sale artwork", ^{

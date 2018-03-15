@@ -1,7 +1,4 @@
 import UIKit
-import Artsy_UIColors
-import FLKAutoLayout
-import SDWebImage
 
 class AuctionBannerView: UIView {
     let viewModel: SaleViewModel

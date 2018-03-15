@@ -1,7 +1,7 @@
 import Quick
 import Nimble
 import Interstellar
-import OHHTTPStubs
+
 @testable
 import Artsy
 

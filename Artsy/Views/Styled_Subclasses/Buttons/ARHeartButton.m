@@ -30,7 +30,6 @@
     _backView = backView;
 
     CALayer *whiteLayer = _backView.layer;
-    whiteLayer.borderColor = [UIColor artsyGrayRegular].CGColor;
     whiteLayer.borderWidth = 1;
     whiteLayer.cornerRadius = dimension * .5f;
     whiteLayer.backgroundColor = [UIColor whiteColor].CGColor;
@@ -42,17 +41,34 @@
 
     CALayer *purpleLayer = _frontView.layer;
     purpleLayer.backgroundColor = [UIColor artsyPurpleRegular].CGColor;
-    purpleLayer.borderColor = [UIColor whiteColor].CGColor;
     purpleLayer.cornerRadius = dimension * .5f;
 
     _status = ARHeartStatusNotFetched;
 
     self.enabled = NO;
+    [self setBordered:YES];
 
     [self addSubview:self.backView];
     self.layer.borderWidth = 1;
 
     return self;
+}
+
+- (void)setBordered:(BOOL)bordered
+{
+    if (bordered) {
+        // Purple side
+        self.frontView.layer.borderColor = [UIColor whiteColor].CGColor;
+        // White side
+        self.backView.layer.borderColor = [UIColor artsyGrayRegular].CGColor;
+    } else {
+        // Purple side
+        self.frontView.layer.borderColor = [UIColor clearColor].CGColor;
+        // White side
+        self.backView.layer.borderColor = [UIColor clearColor].CGColor;
+        // The button itself, rather than the two views on it
+        self.layer.borderColor = [UIColor clearColor].CGColor;
+    }
 }
 
 - (BOOL)isHearted
@@ -115,5 +131,6 @@
         animation();
     }
 }
+
 
 @end

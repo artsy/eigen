@@ -1,5 +1,5 @@
-#import <HockeySDK_Source/HockeySDK.h>
-#import <HockeySDK_Source/BITFeedbackManager.h>
+#import <HockeySDK-Source/HockeySDK.h>
+#import <HockeySDK-Source/BITFeedbackManager.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <ReplayKit/ReplayKit.h>
 

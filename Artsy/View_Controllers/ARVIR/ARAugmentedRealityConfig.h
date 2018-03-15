@@ -1,5 +1,6 @@
 @import UIKit;
 
+/** An object to set up the ARVIR environment */
 @interface ARAugmentedRealityConfig : NSObject
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (nonnull instancetype)initWithImage:(nonnull UIImage *)image
                                  size:(CGSize)size
                                 depth:(CGFloat)depth;
+
+/** Should we show more information in the UI */
+@property (nonatomic, assign) BOOL debugMode;
 
 NS_ASSUME_NONNULL_END
 @end

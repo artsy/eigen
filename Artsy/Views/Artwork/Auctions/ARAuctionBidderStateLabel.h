@@ -1,4 +1,4 @@
-@import Artsy_UILabels;
+#import <Artsy+UILabels/Artsy+UILabels.h>
 
 @class SaleArtwork;
 

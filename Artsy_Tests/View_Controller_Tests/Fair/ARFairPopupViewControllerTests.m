@@ -1,5 +1,7 @@
 #import "ARFairPopupViewController.h"
-@import SDWebImage;
+
+#import <SDWebImage/SDWebImageManager.h>
+#import <Artsy+UIColors/UIColor+ArtsyColors.h>
 
 SpecBegin(ARFairPopupViewController);
 

@@ -1,6 +1,4 @@
 import UIKit
-import ORStackView
-import Artsy_UIFonts
 
 class TextStack: ORStackView {
     @discardableResult
