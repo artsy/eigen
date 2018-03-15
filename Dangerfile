@@ -4,6 +4,7 @@
 # Sometimes its a README fix, or something like that - which isn't relevant for
 # including in a CHANGELOG for example
 declared_trivial = github.pr_title.include?("#trivial") || github.pr_body.include?("#trivial")
+declared_knowns_dev_tools = github.pr_body.include?("#known")
 
 # Just to let people know
 warn("PR is classed as Work in Progress") if github.pr_title.include? "[WIP]"
@@ -20,11 +21,13 @@ fail("fdescribe left in tests") if `grep -r fdescribe Artsy_Tests/`.length > 1
 fail("fit left in tests") if `grep -rI "fit(@" Artsy_Tests/`.length > 1
 fail("fit left in tests") if `grep -rI "fit(" Artsy_Tests/`.length > 1
 
+
 # Devs shouldn't ship changes to this file
 ["Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+DeveloperExtras.m",
  "Artsy/View_Controllers/App_Navigation/ARTopMenuViewController+SwiftDeveloperExtras.swift",
  "Artsy.xcodeproj/xcshareddata/xcschemes/Artsy.xcscheme"].each do |dev_file|
-  fail("Developer Specific file shouldn't be changed") if git.modified_files.include? dev_file
+  msg = declared_knowns_dev_tools ? warn : fail
+  msg("Developer Specific file shouldn't be changed, you can skip by adding #known to the PR body") if git.modified_files.include? dev_file
 end
 
 # Did you make analytics changes? Well you should also include a change to our analytics spec
