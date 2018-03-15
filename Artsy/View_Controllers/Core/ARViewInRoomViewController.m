@@ -460,6 +460,9 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     self.debugSizeLabel.text = [NSString stringWithFormat:@" %@ \n %@ px \n at %f", self.artwork.dimensionsInches, NSStringFromCGSize(self.artworkImageView.bounds.size), self.zoomScale];
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self.rotationDelegate willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
@@ -480,6 +483,8 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 {
     [self.rotationDelegate didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
+
+#pragma clang diagnostic pop
 
 - (NSDictionary *)dictionaryForAnalytics
 {

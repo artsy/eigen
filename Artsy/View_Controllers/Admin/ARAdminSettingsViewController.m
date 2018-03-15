@@ -339,7 +339,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return cellData;
 }
 
-- (void)updateEmissionVersion:(void (^)())completion;
+- (void)updateEmissionVersion:(void (^)(void))completion;
 {
     __block NSString *subtitleMessage = @"Emission from master";
     ARAdminNetworkModel *model = [[ARAdminNetworkModel alloc] init];

@@ -49,7 +49,7 @@
     } failure:failure];
 }
 
-- (void)getNextPage:(void (^)(NSArray *items))success failure:(void (^)(NSError *error))failure completion:(void (^)())completion
+- (void)getNextPage:(void (^)(NSArray *items))success failure:(void (^)(NSError *error))failure completion:(void (^)(void))completion
 {
     if (self.networking) {
         return;
