@@ -19,7 +19,7 @@ class LiveAuctionLotCollectionViewDataSource: NSObject {
     }
 
     func beginThumbnailPrecache() {
-        let thumbnailURLs = (1..<salesPerson.lotCount).map { return salesPerson.lotViewModelForIndex($0).urlForThumbnail }
+        let thumbnailURLs = (1..<salesPerson.lotCount).compactMap { return salesPerson.lotViewModelForIndex($0).urlForThumbnail }
         imagePrefetcher?.prefetchURLs(thumbnailURLs)
     }
 
