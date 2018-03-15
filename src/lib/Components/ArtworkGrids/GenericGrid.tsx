@@ -34,6 +34,8 @@ class GenericArtworksGrid extends React.Component<Props, State> {
     sectionCount: 0,
   }
 
+  width = 0
+
   tappedOnArtwork = (artworkID: string) => {
     const allArtworkIDs = this.props.artworks.map(a => a.id)
     const index = allArtworkIDs.indexOf(artworkID)
@@ -57,10 +59,19 @@ class GenericArtworksGrid extends React.Component<Props, State> {
 
   onLayout = (event: LayoutChangeEvent) => {
     const layout = event.nativeEvent.layout
-    const newLayoutState = this.layoutState(layout)
-    if (layout.width > 0) {
-      this.setState(newLayoutState)
+    if (layout.width !== this.width) {
+      // this means we've rotated or are on our initial load
+      this.width = layout.width
+      this.setState(this.layoutState(layout))
     }
+  }
+
+  shouldComponentUpdate(_, nextState) {
+    if (this.state.sectionCount === nextState.sectionCount) {
+      // if there's a change in columns, we'll need to re-render
+      return false
+    }
+    return true
   }
 
   sectionedArtworks() {
