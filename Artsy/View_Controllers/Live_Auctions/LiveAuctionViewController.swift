@@ -41,7 +41,7 @@ class LiveAuctionViewController: UIViewController {
     lazy var app = UIApplication.shared
     var suppressJumpingToOpenLots = false
 
-    init(saleSlugOrID: String) {
+    @objc init(saleSlugOrID: String) {
         self.saleSlugOrID = saleSlugOrID
 
         super.init(nibName: nil, bundle: nil)

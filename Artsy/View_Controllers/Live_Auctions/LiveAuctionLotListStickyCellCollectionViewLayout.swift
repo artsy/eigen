@@ -68,7 +68,7 @@ extension Overrides {
         guard let superAttributesArray = super.layoutAttributesForElements(in: rect) else { return nil }
         guard superAttributesArray.isNotEmpty else { return [] }
 
-        var attributesArray = superAttributesArray.flatMap { $0 }
+        var attributesArray = superAttributesArray.compactMap { $0 }
 
         // Guarantee any selected cell is presented, regardless of the rect.
         if let currentIndex = currentIndex {

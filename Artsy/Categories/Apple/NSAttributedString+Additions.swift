@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 extension NSAttributedString {
-    func makeBoldOccurencesSansSerifSemiBold() -> NSAttributedString {
+    @objc func makeBoldOccurencesSansSerifSemiBold() -> NSAttributedString {
         let copy = NSMutableAttributedString(attributedString: self)
 
         enumerateAttributes(in: NSRange(location: 0, length: length), options: []) { (attrs, range, _) in

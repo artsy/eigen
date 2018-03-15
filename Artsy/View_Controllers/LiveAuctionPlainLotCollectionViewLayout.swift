@@ -35,7 +35,7 @@ class LiveAuctionPlainLotCollectionViewLayout: UICollectionViewFlowLayout, LiveA
 
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         // Regardless of the rect, we always return the one layout attributes
-        return [layoutAttributesForItem(at: IndexPath(item: 1, section: 0))].flatMap { $0 }
+        return [layoutAttributesForItem(at: IndexPath(item: 1, section: 0))].compactMap { $0 }
     }
 
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {

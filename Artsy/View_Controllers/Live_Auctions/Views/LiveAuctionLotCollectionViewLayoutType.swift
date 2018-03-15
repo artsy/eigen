@@ -8,7 +8,7 @@ protocol LiveAuctionLotCollectionViewDelegateLayout: class {
 }
 
 protocol LiveAuctionLotCollectionViewLayoutType: class {
-    unowned var delegate: LiveAuctionLotCollectionViewDelegateLayout { get }
+    var delegate: LiveAuctionLotCollectionViewDelegateLayout { get }
 
     var repulsionConstant: CGFloat { get set }
 }

@@ -28,7 +28,7 @@ extension PrivateFunctions {
         (0..<numberOfLotStandings)
             .map { saleViewModel.lotStanding(at: $0) }
             .enumerated()
-            .flatMap { (index, lotStanding) -> LotStandingsLotView? in
+            .compactMap { (index, lotStanding) -> LotStandingsLotView? in
                 let drawBottomBorder = (index != numberOfLotStandings - 1)
                 let lotView = LotStandingsLotView.fromNib(isCompact: isCompact, lotStanding: lotStanding, drawBottomBorder: drawBottomBorder)
                 lotView?.tappedClosure = { [weak self] in

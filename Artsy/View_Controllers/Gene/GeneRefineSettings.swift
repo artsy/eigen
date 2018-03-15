@@ -6,7 +6,7 @@ import SwiftyJSON
 /// and the refine setting VC.
 
 class RefineSwiftCoordinator : NSObject {
-    static func showRefineSettingForGeneSettings(_ viewController: UIViewController, initial: [String: AnyObject], current: [String: AnyObject], completion: @escaping (_ newRefineSettings: [String: AnyObject]?) -> ()) {
+    @objc static func showRefineSettingForGeneSettings(_ viewController: UIViewController, initial: [String: AnyObject], current: [String: AnyObject], completion: @escaping (_ newRefineSettings: [String: AnyObject]?) -> ()) {
         guard let initialSettings = GeneRefineSettings.refinementFromAggregationJSON(initial, initial:true) else { return completion(nil) }
         guard let currentSettings = GeneRefineSettings.refinementFromAggregationJSON(current, initial:false) else { return completion(nil) }
 

@@ -2,8 +2,8 @@ import UIKit
 import Then
 
 class AuctionViewController: UIViewController {
-    let saleID: String
-    var saleViewModel: SaleViewModel!
+    @objc let saleID: String
+    @objc var saleViewModel: SaleViewModel!
     var appeared = false
 
     var headerStack: ORStackView?
@@ -31,7 +31,7 @@ class AuctionViewController: UIViewController {
         return AuctionNetworkModel(saleID: self.saleID)
     }()
 
-    init(saleID: String) {
+    @objc init(saleID: String) {
         self.saleID = saleID
         super.init(nibName: nil, bundle: nil)
     }

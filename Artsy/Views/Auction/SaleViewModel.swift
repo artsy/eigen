@@ -66,7 +66,7 @@ extension SaleViewModel {
     }
 
     // This is used by analytics
-    var saleAvailabilityString: String {
+    @objc var saleAvailabilityString: String {
         switch saleAvailability {
         case .active: return "active"
         case .closed: return "closed"
@@ -207,8 +207,8 @@ private extension SaleViewModel {
     }
 
     var lowEstimates: [Int] {
-        return saleArtworks.flatMap { saleArtwork in
-            return Int(saleArtwork.lowEstimateCents ?? 0)
+        return saleArtworks.compactMap { saleArtwork in
+            return Int(truncating: saleArtwork.lowEstimateCents ?? 0)
         }
     }
 }

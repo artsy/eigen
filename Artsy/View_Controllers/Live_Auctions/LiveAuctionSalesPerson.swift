@@ -119,8 +119,8 @@ extension ComputedProperties {
         // "Partner Name: The Awesome Sale", and we want just "Partner Name"
         let colonRange = saleName?.range(of: ":", options: [], range: nil, locale: nil)
 
-        if let colonRange = colonRange {
-            return saleName!.substring(to: colonRange.lowerBound)
+        if colonRange != nil {
+            return saleName!.components(separatedBy: ":").first!
         } else {
             return saleName!
         }
