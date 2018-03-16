@@ -13,9 +13,6 @@ class SaleViewModel: NSObject {
         self.bidders = bidders
         self.lotStandings = lotStandings
     }
-}
-
-extension SaleViewModel {
 
     var saleIsClosed: Bool {
         switch saleAvailability {

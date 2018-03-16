@@ -104,9 +104,11 @@ func test_SocketCreator() -> LiveAuctionSocketCommunicator.SocketCreator {
 }
 
 class Test_Socket: SocketType {
+    var onDisconnect: ((Error?) -> Void)?
+
     var onText: ((String) -> Void)?
     var onConnect: (() -> Void)?
-    var onDisconnect: ((NSError?) -> Void)?
+//    var onDisconnect: ((NSError?) -> Void)?
 
     var writes = [String]()
     var datas = [Data]()

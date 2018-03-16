@@ -1,7 +1,7 @@
 #import "ARExpectaExtensions.h"
 #import <Forgeries/ForgeriesTraitCollections.h>
 
-void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber, const char *fileName, BOOL record, BOOL async, NSString *name, id (^block)())
+void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber, const char *fileName, BOOL record, BOOL async, NSString *name, id (^block)(void))
 {
     void (^snapshot)(id, NSString *) = ^void(id sut, NSString *suffix) {
 
@@ -60,12 +60,12 @@ void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber,
     });
 }
 
-void _itTestsSyncronouslyWithDevicesRecordingWithName(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)())
+void _itTestsSyncronouslyWithDevicesRecordingWithName(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)(void))
 {
     _itTestsWithDevicesRecordingAsynchronouslyWithName(self, lineNumber, fileName, record, NO, name, block);
 }
 
-void _itTestsAsyncronouslyWithDevicesRecordingWithName(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)())
+void _itTestsAsyncronouslyWithDevicesRecordingWithName(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)(void))
 {
     _itTestsWithDevicesRecordingAsynchronouslyWithName(self, lineNumber, fileName, record, YES, name, block);
 }

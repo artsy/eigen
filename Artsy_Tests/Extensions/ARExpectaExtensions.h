@@ -15,5 +15,5 @@
 #define itHasSnapshotsForDevices(...) _itTestsSyncronouslyWithDevicesRecordingWithName(self, __LINE__, __FILE__, NO, nil, (__VA_ARGS__))
 
 /// Usage of this should be limited
-void _itTestsAsyncronouslyWithDevicesRecordingWithName(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)());
-void _itTestsSyncronouslyWithDevicesRecordingWithName(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)());
+void _itTestsAsyncronouslyWithDevicesRecordingWithName(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)(void));
+void _itTestsSyncronouslyWithDevicesRecordingWithName(id self, int lineNumber, const char *fileName, BOOL record, NSString *name, id (^block)(void));

@@ -2,9 +2,9 @@
 #import "ARArtworkView.h"
 
 
-void stubEmptyBidderPositions();
-void stubEmptySaleArtworks();
-void stubSaleArtwork();
+void stubEmptyBidderPositions(void);
+void stubEmptySaleArtworks(void);
+void stubSaleArtwork(void);
 void stubBidder(BOOL requiresApproval);
 
 @interface ARArtworkViewController ()
