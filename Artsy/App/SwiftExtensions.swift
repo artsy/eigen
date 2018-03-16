@@ -61,3 +61,14 @@ extension Array {
         return reversed().first(closure)
     }
 }
+
+// TODO: Remove this when we have standardized on Xcode 9.3.
+#if swift(>=4.1)
+#else
+    /// Extension for adding Swift 4.1 methods to our runtime, to support Swift 4.0 concurrently.
+    extension Sequence {
+        func compactMap<ElementOfResult>(_ transform: (Self.Element) throws -> ElementOfResult?) rethrows -> [ElementOfResult] {
+            return try flatMap(transform)
+        }
+    }
+#endif

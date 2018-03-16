@@ -20,7 +20,7 @@ import UIKit
 
 extension ARTopMenuViewController {
 
-    func runSwiftDeveloperExtras() {
+    @objc func runSwiftDeveloperExtras() {
         // run swift code here at startup
     }
 }
