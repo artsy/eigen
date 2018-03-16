@@ -16,7 +16,7 @@
 
 ## Master
 
-* Upgrade to React Native 0.54.0 - alloy
+* Upgrade to React Native 0.54.2 - alloy
 * Follow Force and reduce image quality to 80 - alloy
 * Inquiries use the same user-agent as emission - orta
 * Optimise the generic artwork grid for rotation - maxim
