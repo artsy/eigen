@@ -18,6 +18,7 @@
 
 * Upgrade to React Native 0.54.0 - alloy
 * Follow Force and reduce image quality to 80 - alloy
+* Inquiries use the same user-agent as emission - alloy
 
 ## 1.4.6
 
