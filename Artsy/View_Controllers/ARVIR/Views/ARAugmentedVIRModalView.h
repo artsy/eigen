@@ -1,7 +1,9 @@
 #import <UIKit/UIKit.h>
 
+@class ARAugmentedVIRModalView;
+
 @protocol VIRModalDelegate
-- (void)hitTryAgainFromModal;
+- (void)hitTryAgainFromModal:(ARAugmentedVIRModalView *)modal;
 @end
 
 @interface ARAugmentedVIRModalView : UIView

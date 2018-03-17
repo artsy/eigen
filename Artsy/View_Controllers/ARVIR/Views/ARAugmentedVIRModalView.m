@@ -22,7 +22,7 @@
 
     ARButton *allowAccessButton = [[ARWhiteFlatButton alloc] init];
     [allowAccessButton setTitle:@"TRY AGAIN" forState:UIControlStateNormal];
-    [allowAccessButton addTarget:self.delegate action:@selector(hitTryAgainFromModal) forControlEvents:UIControlEventTouchUpInside];
+    [allowAccessButton addTarget:self.delegate action:@selector(hitRetry) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:allowAccessButton];
 
     UILabel *subtitle = [[UILabel alloc] init];
@@ -44,6 +44,11 @@
     [subtitle alignLeading:@"40" trailing:@"-40" toView:self];
 
     return self;
+}
+
+- (void)hitRetry
+{
+    [self.delegate hitTryAgainFromModal:self];
 }
 
 @end

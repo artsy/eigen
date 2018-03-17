@@ -12,14 +12,15 @@
 #import "ARAugmentedVIRViewController.h"
 #import "ARAugmentedVIRInteractionController.h"
 #import "ARAugmentedVIRSetupViewController.h"
+#import "ARAugmentedVIRModalView.h"
 
 API_AVAILABLE(ios(11.0))
-@interface ARAugmentedVIRViewController () <ARSCNViewDelegate, ARSessionDelegate, ARVIRDelegate, ARMenuAwareViewController>
+@interface ARAugmentedVIRViewController () <ARSCNViewDelegate, ARSessionDelegate, ARVIRDelegate, ARMenuAwareViewController, VIRModalDelegate>
 NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) ARSCNView *sceneView;
 
-@property (nonatomic, strong) id <ARSCNViewDelegate, ARVIRInteractive, ARSessionDelegate> visualsDelegate;
+@property (nonatomic, strong) id <ARSCNViewDelegate, ARVIRInteractive, ARSessionDelegate> interactionController;
 
 @property (nonatomic, weak, nullable) UIImageView *phoneImage;
 @property (nonatomic, weak, nullable) UIButton *backButton;
@@ -42,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     if (@available(iOS 11.0, *)) {
         _sceneView = [[ARSCNView alloc] init];
-        _visualsDelegate = [[ARAugmentedVIRInteractionController alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
+        _interactionController = [[ARAugmentedVIRInteractionController alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
     }
 
     return self;
@@ -166,6 +167,8 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+// What to show when we first
+
 - (void)initialState
 {
     ar_dispatch_main_queue(^{
@@ -173,8 +176,43 @@ NS_ASSUME_NONNULL_BEGIN
         self.phoneImage.hidden = NO;
         self.placeArtworkButton.hidden = YES;
         self.textLabel.text = @"Aim at an object on your wall and move your phone in a circle.";
+
+        if (ARPerformWorkAsynchronously) {
+            [self startTimerForModal];
+        }
     });
+
 }
+
+// Wait 30 seconds from starting AR, then show a timeout modal if a wall hasn't been found.
+
+- (void)startTimerForModal
+{
+    CGFloat wallTimeoutWarning = ARPerformWorkAsynchronously ? 30 : 0;
+    [self performSelector:@selector(showModalForError) withObject:nil afterDelay:wallTimeoutWarning];
+}
+
+// Pop up an error message
+
+- (void)showModalForError
+{
+    NSString *errorMessage = @"We’re having trouble finding your wall. Make sure the room is well-lit or try focusing on a different object on the wall.";
+    ARAugmentedVIRModalView *modal = [[ARAugmentedVIRModalView alloc] initWithTitle:errorMessage delegate:self];
+    [self.view addSubview:modal];
+    [modal alignToView:self];
+
+    [self viewWillDisappear:YES];
+}
+
+// Re-create the AR session, and start again
+
+- (void)hitTryAgainFromModal:(ARAugmentedVIRModalView *)modal
+{
+    [modal removeFromSuperview];
+    [self viewWillAppear:YES];
+}
+
+// Offer the ability to place an artwork
 
 - (void)hasRegisteredPlanes
 {
@@ -183,8 +221,13 @@ NS_ASSUME_NONNULL_BEGIN
         self.phoneImage.hidden = YES;
         self.placeArtworkButton.hidden = YES;
         self.textLabel.text = @"Tap the screen to place the work.";
+
+        [self.class cancelPreviousPerformRequestsWithTarget:self selector:@selector(showModalForError) object:nil];
     });
 }
+
+// Toggle the enabled on the place button based on whether the
+// ghost artwork is showing or not
 
 - (void)isShowingGhostWork:(BOOL)showing
 {
@@ -197,11 +240,15 @@ NS_ASSUME_NONNULL_BEGIN
     });
 }
 
+// Request to place an artwork with the interaction controller
+
 - (void)placeArtwork
 {
-    [self.visualsDelegate placeArtwork];
+    [self.interactionController placeArtwork];
     self.placeArtworkButton.hidden = YES;
 }
+
+// Once we known we've placed an artwork, update the UI
 
 - (void)hasPlacedArtwork
 {
@@ -213,6 +260,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 // Rotate the imageview around in a circle
+
 - (void)animateImageView
 {
     UIBezierPath *circlePath = [UIBezierPath bezierPathWithArcCenter:self.view.center radius:10 startAngle:0 endAngle:M_PI * 2 clockwise:YES];
@@ -224,6 +272,8 @@ NS_ASSUME_NONNULL_BEGIN
 
     [self.phoneImage.layer addAnimation:animation forKey:@"orbit"];
 }
+
+// Pop back, and potentially skip the AR Setup VC if it's there
 
 - (void)back
 {
@@ -240,23 +290,32 @@ NS_ASSUME_NONNULL_BEGIN
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+// When a user requests to reset, update the UI to the beginnning
+
 - (void)resetAR
 {
     [self initialState];
-    [self.visualsDelegate restart];
+    [self.interactionController restart];
 }
+
+// This is a NOOP with the current interaction controller, but can be used with different a one
 
 - (IBAction)screenTapped:(UITapGestureRecognizer *)gesture
 {
-    [self.visualsDelegate tappedOnScreen:gesture];
+    [self.interactionController tappedOnScreen:gesture];
 }
+
+// Used to let the interaction controller potentially move the artwork around
 
 - (IBAction)panMoved:(UIPanGestureRecognizer *)gesture
 {
-    [self.visualsDelegate pannedOnScreen:gesture];
+    [self.interactionController pannedOnScreen:gesture];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+// When you leave and come back to this VC, ARKit cannot correctly keep track of the world, need to reset
+
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     
     // Create a session configuration
@@ -269,10 +328,16 @@ NS_ASSUME_NONNULL_BEGIN
 
         // Run the view's session
         [self.sceneView.session runWithConfiguration:configuration];
+
+        // Reset the delegate
+        [self.interactionController restart];
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+// If we can't show the screen, pause AR
+
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
     
     // Pause the view's session
@@ -280,6 +345,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - ARSCNViewDelegate
+
+// Currently unused, might be useful for either debugging, or showing the state of "connection" for AR to the world.
 
 - (void)session:(ARSession *)session cameraDidChangeTrackingState:(ARCamera *)camera  API_AVAILABLE(ios(11.0))
 {
@@ -291,20 +358,29 @@ NS_ASSUME_NONNULL_BEGIN
             break;
     }
 }
+
+// Delegate calls passed through to the interaction controller
+
 - (void)renderer:(id<SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor API_AVAILABLE(ios(11.0))
 {
-    [self.visualsDelegate renderer:renderer didUpdateNode:node forAnchor:anchor];
+    [self.interactionController renderer:renderer didUpdateNode:node forAnchor:anchor];
 }
+
+// Delegate calls passed through to the interaction controller
 
 - (void)renderer:(id <SCNSceneRenderer>)renderer didAddNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor API_AVAILABLE(ios(11.0))
 {
-    [self.visualsDelegate renderer:renderer didAddNode:node forAnchor:anchor];
+    [self.interactionController renderer:renderer didAddNode:node forAnchor:anchor];
 }
+
+// Delegate calls passed through to the interaction controller
 
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0))
 {
-    [self.visualsDelegate session:session didUpdateFrame:frame];
+    [self.interactionController session:session didUpdateFrame:frame];
 }
+
+// Eigen specific callbacks
 
 - (BOOL)hidesToolbarMenu
 {
