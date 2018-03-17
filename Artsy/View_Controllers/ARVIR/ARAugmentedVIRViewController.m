@@ -5,7 +5,6 @@
 #import "ARDispatchManager.h"
 #import "ARFonts.h"
 #import "ARAppConstants.h"
-#import "ARSpinner.h"
 #import <Artsy-UIButtons/ARButtonSubclasses.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 
