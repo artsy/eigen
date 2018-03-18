@@ -57,7 +57,10 @@ oss:
 
 JQ := $(shell command -v jq 2> /dev/null)
 RNVERSION=$(shell cd node_modules/react-native && pod ipc spec React.podspec | jq '.version' -r)
-YOGAVERSION=$(shell cd node_modules/react-native/ReactCommon/yoga && pod ipc spec Yoga.podspec | jq '.version' -r)
+YOGAVERSION=$(shell cd node_modules/react-native/ReactCommon/yoga && pod ipc spec yoga.podspec | jq '.version' -r)
+FOLLYVERSION=$(shell cd node_modules/react-native/third-party-podspecs && pod ipc spec Folly.podspec | jq '.version' -r)
+DOUBLECONVERSIONVERSION=$(shell cd node_modules/react-native/third-party-podspecs && pod ipc spec DoubleConversion.podspec | jq '.version' -r)
+GLOGVERSION=$(shell cd node_modules/react-native/third-party-podspecs && pod ipc spec glog.podspec | jq '.version' -r)
 YOGA_SRC_BEFORE=yoga\/\*\*\/\*.{c,h}
 YOGA_SRC_AFTER=ReactCommon\/yoga\/yoga\/\*\*\/\*.\{c,h\}
 
@@ -71,11 +74,17 @@ endif
 
 	@echo "Creating folder in artsy specs repo";
 	mkdir ~/.cocoapods/repos/artsy/React/$(RNVERSION)
-	mkdir ~/.cocoapods/repos/artsy/Yoga/$(YOGAVERSION)
+	mkdir ~/.cocoapods/repos/artsy/yoga/$(YOGAVERSION)
+	mkdir ~/.cocoapods/repos/artsy/Folly/$(FOLLYVERSION)
+	mkdir ~/.cocoapods/repos/artsy/DoubleConversion/$(DOUBLECONVERSIONVERSION)
+	mkdir ~/.cocoapods/repos/artsy/glog/$(GLOGVERSION)
 
 	@echo "Putting JSON specs in the folders";
 	cd node_modules/react-native && pod ipc spec React.podspec >  ~/.cocoapods/repos/artsy/React/$(RNVERSION)/React.podspec.json
-	cd node_modules/react-native/ReactCommon/yoga && pod ipc spec Yoga.podspec >  ~/.cocoapods/repos/artsy/Yoga/$(YOGAVERSION)/Yoga.podspec.json
+	cd node_modules/react-native/ReactCommon/yoga && pod ipc spec yoga.podspec >  ~/.cocoapods/repos/artsy/yoga/$(YOGAVERSION)/yoga.podspec.json
+	cd node_modules/react-native/third-party-podspecs && pod ipc spec Folly.podspec >  ~/.cocoapods/repos/artsy/Folly/$(FOLLYVERSION)/Folly.podspec.json
+	cd node_modules/react-native/third-party-podspecs && pod ipc spec DoubleConversion.podspec >  ~/.cocoapods/repos/artsy/DoubleConversion/$(DOUBLECONVERSIONVERSION)/DoubleConversion.podspec.json
+	cd node_modules/react-native/third-party-podspecs && pod ipc spec glog.podspec >  ~/.cocoapods/repos/artsy/glog/$(GLOGVERSION)/glog.podspec.json
 
 	@echo "Modifying Yoga to reflect the React Native repo paths"
 	sed -i -e 's/$(YOGA_SRC_BEFORE)/$(YOGA_SRC_AFTER)/g' ~/.cocoapods/repos/artsy/Yoga/$(YOGAVERSION)/Yoga.podspec.json
