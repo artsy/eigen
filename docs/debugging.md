@@ -35,7 +35,9 @@ Relay will log debugging info for each query it performs in the ‘Console’ ta
 
 ![screen shot 2017-05-03 at 09 10 30](https://cloud.githubusercontent.com/assets/2320/25651038/1f313b84-2fe1-11e7-98ca-71c431946a53.png)
 
-However, like any other networking, the raw request/response information is also available from the ‘Network’ tab:
+However, like any other networking, the raw request/response information can be made available from the ‘Network’ tab by
+[enabling the Network Inspector](https://github.com/jhen0409/react-native-debugger/blob/master/docs/network-inspect-of-chrome-devtools.md)
+from the React Native Debugger app’s contextual menu:
 
 ![screen shot 2017-05-03 at 09 15 11](https://cloud.githubusercontent.com/assets/2320/25651045/293100c4-2fe1-11e7-83a6-728d2d3c14f9.png)
 
